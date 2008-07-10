@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>{% block title %}{% endblock %}</title>
+<script type="text/javascript" src="/media/js/jquery-latest.pack.js"></script>
+<script type="text/javascript" src="/media/js/jquery.form.js"></script>
+<script type="text/javascript" src="/media/js/jquery.validate.pack.js"></script>
+<script type="text/javascript" src="/media/js/dimensions.js"></script>
+<script type="text/javascript" src="/media/js/autocomplete.js"></script>
+<script type="text/javascript" src="/media/js/gestorpsi.forms.js"></script>
+<script type="text/javascript" src="/media/js/gestorpsi.frontend.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/media/css/layout.css" />
+<link rel="stylesheet" type="text/css" href="/media/css/autocomplete.css" />
+
+<script type="text/javascript" >
+/*
+$(function(){
+  setAutoComplete("id_parente", "parenteResults", "/lookup/");
+});
+*/
+</script>
+</head>
+{% load i18n %}
+
+<body>
+<div id="loading">
+<p>{% trans "Loading" %} ...</p>
+</div>
+<div id="bar"><h1>[GestorPsi]</h1>
+</div>
+	<div id="menu_log">
+		<ul>
+			<li><a href="#email">{% trans "email" %}</a></li>|<li><a href="preferencias">{% trans "preferences" %}</a></li>|<li><a href="#sair">{% trans "quit" %}</a></li>
+		</ul>
+	</div>
+	<div id="menus">
+	<div id="main_menu">
+		<ul>
+			<li><a id="start" class="main_menu pointer active ajax_link">{% trans "start" %}</a></li>
+			<li><a id="addressbook" class="main_menu ajax_link">{% trans "calendar" %}</a></li>
+			<li><a id="customers" class="main_menu ajax_link" url="/contacts/">{% trans "customers" %}</a></li>
+			<li><a id="contacts" class="main_menu ajax_link">{% trans "contacts" %}</a></li>
+			<li><a id="myoffice" class="main_menu ajax_link">{% trans "establishment" %}</a></li>
+		</ul>
+	</div>
+	<div id="sub_menu">
+		<ul id="sub_customers" style="display:none">
+			<li><a class="ajax_link active first pointer" url="/contacts/">{% trans "all" %}</a></li>
+			<li><a class="ajax_link" url="/contacts/add/">{% trans "add" %}</a></li>
+			<li><a class="ajax_link" >{% trans "search" %}</a></li>
+			<li><a class="ajax_link">{% trans "booked" %}</a></li>
+			<li><a class="ajax_link">{% trans "actives" %}</a></li>
+			<li><a class="ajax_link">{% trans "waiting" %}</a></li>
+		</ul>
+		
+		<ul id="sub_contacts" style="display:none">
+			<li><a class="ajax_link first active" url="/contacts/">{% trans "all" %}</a></li>
+			<li><a class="ajax_link" url="/contacts/add/">{% trans "add" %}</a></li>
+			<li><a class="ajax_link" >{% trans "search" %}</a></li>
+		</ul>
+		
+		<ul class="opened_tabs">
+			<li><a href="" class="active" style="display: none;">{% trans "customers" %}</a></li>
+		</ul>
+		<ul id="sub_contacts">
+		</ul>
+	</div>
+	</div>
+	<div id="content">
+		<div id="msg_area" class="alert" style="display: none">
+			<!-- notification area -->
+		</div>
+		<div id="core">
+			<!--  page core -->
+		</div>
+	</div>
+</body>
+</html>

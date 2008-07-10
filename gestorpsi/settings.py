@@ -100,6 +100,7 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     #'gestorpsi.organization',
     'gestorpsi.contacts',
+    'gestorpsi.frontend', #load at last
 )
 
 DEFAULT_EMAIL_MIMETYPE = 'html'

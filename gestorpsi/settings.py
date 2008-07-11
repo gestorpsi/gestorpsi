@@ -100,6 +100,8 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     #'gestorpsi.organization',
     'gestorpsi.contacts',
+    'gestorpsi.places',
+    'gestorpsi.client',
     'gestorpsi.frontend', #load at last
 )
 

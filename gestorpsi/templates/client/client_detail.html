@@ -1,0 +1,11 @@
+<h2>Client: <i>{{ client.name }}</i></h2>
+
+<form action="/client/update" method="post">
+
+	<table border=1>
+		{{ clientForm.as_table }}
+	</table>
+
+	<input type="submit" value="Save" />
+
+</form>

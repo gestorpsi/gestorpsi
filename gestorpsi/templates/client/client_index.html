@@ -1,0 +1,8 @@
+<h1>Clients</h1>
+<hr>
+ <a href="{% url gestorpsi.client.views.add %}">Add new Client</a>
+<hr>
+{% for l in clientList %}
+        <a href="{% url gestorpsi.client.views.detail l.id %}">{{ l.name }}({{l.email }}) </a>
+        <strong>[</strong><small><a href="{% url gestorpsi.client.views.delete l.id %}">Delete</a></small><strong>]</strong> <br>
+{% endfor %}

@@ -1,0 +1,26 @@
+<h2>Add new Client<h2>
+
+<hr>{{ result }}<hr>
+
+<form action="{% url gestorpsi.client.views.save %}" method="post">
+
+<p>CLIENT</p>
+<table border=1>
+	{{ clientForm.as_table }}
+</table>
+<p>PHONE NUMBERS</p>
+<table border=1>
+	{{ phoneForm.as_table }}
+</table>
+<br/>
+<table border=1>
+	{{ phoneForm.as_table }}
+</table>
+<br/>
+<table border=2>
+	{{ phoneForm.as_table }}
+</table>
+
+<input type="submit" value="Save" />
+
+</form>

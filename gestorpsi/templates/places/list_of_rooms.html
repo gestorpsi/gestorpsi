@@ -1,0 +1,11 @@
+<html>
+	<body>
+	
+	<h2> List of rooms: </h2> 
+	 		{% for room in room_list %}
+	    		<table border= 1>
+	       			{{ room.as_table }}
+	    		</table><br>
+	 		{% endfor %}
+	</body>
+</html>

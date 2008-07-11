@@ -1,0 +1,14 @@
+<html>
+<body>
+    
+    <h1> Update Place </h1>
+    <form method="POST" action= "{% url gestorpsi.places.views.update a_place.id %}" >
+        <table border= 1>
+           {{ place_form.as_table }}
+        </table>        
+       <br>
+       <input type="submit" name="submit" value="Update" />
+    </form>
+    
+</body>
+</html>

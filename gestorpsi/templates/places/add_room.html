@@ -1,0 +1,14 @@
+<html>
+	<body>
+	
+	<h1> Add Room </h1>
+    <form method="POST" action= "{% url gestorpsi.places.views.save_room %}" >
+        <table border= 1>
+           {{ room_form.as_table }}
+        </table>        
+       <br>
+       <input type="submit" name="submit" value="Save" />
+    </form>
+    
+	</body>	
+</html>

@@ -10,6 +10,7 @@ a, a:visited {
 	text-decoration: none;
 	color: #2688AE;
 	font-weight: bold;
+	cursor: pointer;
 }
 a:hover {
 	color: #2688AE;

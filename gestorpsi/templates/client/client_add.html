@@ -1,5 +1,126 @@
-<h2>Add new Client<h2>
+{% load i18n %}
+{% include "core/ajax_page.html" %}
 
+<div id="msg_area" class="alert" style="display:none"><!-- ou class="error" ou sem classe -->
+{% trans "Customer added successful! New register functions has been enable" %}
+</div>
+<h2 id="title_addressbook" style="display:none"></h2>
+
+
+<h2 id="title_clients">Cadastrando Cliente</h2>
+<p class="description">Preencha os campos e clique em salvar para cadastrar um novo cliente</p>
+
+<!--		
+<h2 id="title_clients">Benjamin Franklin</h2>
+<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a> nonnoono nonono noono<br />
+nonononoo<br />
+-->
+
+</p>
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
+
+<form action="{% url gestorpsi.client.views.save %}" method="post" id="form_people">
+
+<div id="main_area">
+	<a href="" id="help">&nbsp;</a>
+	<h3><span id="client_add_infotypes">Informações Básicas</span></h3>
+	<ul id="form_options" class="float_menu" style="display:none;">
+		<li><label><input name="this" type="radio" value="" /> Informa&ccedil;&otilde;es b&aacute;sicas</label></li>
+		<li><label><input name="this" type="radio" value="" /> Dados completos</label></li>
+
+		<li><label><input name="this" type="radio" value="" /> Prontu&aacute;rio cl&iacute;nico</label></li>
+		<li><label><input name="this" type="radio" value="" /> Dados s&oacute;cio-demogr&aacute;ficos</label></li>
+		<li><label><input name="this" type="radio" value="" /> Dados s&oacute;cio-economcos</label></li>
+
+		
+	</ul>
+		<div id="photo">
+			<img src="img/male_generic_photo.gif.png" />
+			<a href="" id="male" class="active"><span>Male</span></a>
+			<a href="" id="female"><span>Female</span></a>
+			<a href="" class="clips" >Foto</a>
+			<a href="" class="delete" title="delete" ><span>Delete</span></a>
+
+
+		</div> 
+<label>Nome<br />
+		<input type="text" name="name" class="big" value="" id="id_name" />
+</label>
+		<input type="hidden" name="email" value="teste@teste.com" />
+		<input type="hidden" name="birthDate" value="1966-04-10" />
+		  
+		<label>Apelido<br />
+		<input type="text" class="small" value="" />
+</label>
+		<label>Idade<br />
+
+		<input type="text" class="small" value="" />
+</label>
+		<label>Endereço<br />
+		<input type="text" class="big" value="" />
+</label>
+		<label>Número<br />
+		<input type="text" class="medium" value="" />
+</label>
+
+		<label>Cidade<br />
+		<input type="text" class="big" value="" />
+</label>
+		<label>Estado<br />
+		<input type="text" class="small" value="" />
+</label>
+		<label>Tipo<br />
+
+		<select name="type_addrs" class="small">
+			<option>Comercial</option>
+			<option>Residencial</option>
+			<option>Correspond&ecirc;ncia</option>
+		</select></label>
+
+		<label class="clear">DDD&nbsp;Fone<br />
+
+		<input type="text" name="area" id="id_area" class="small" value="" /></label>
+		<label>Telefone<br />
+		<input type="text" id="id_phoneNumber" class="big" name="phoneNumber" /></label>
+		<label>Tipo<br />
+		<select name="type_phone" class="small">
+			<option selected="selected">Comercial</option>
+			<option>Residencial</option>
+
+		</select></label>
+		
+		<!-- Aparece no click em Foto
+		<label>Foto<br />
+		<input type="file" class="big" id="send_file" size="33"/>
+		</label>-->
+</div>
+<div id="sidebar">
+	<div class="bg_blue">
+		<input name="save" type="submit" value="Salvar" />
+		<input name="save" type="button" value="Cancelar" />
+		
+		<div id="msg_info">
+		Apagar arquivo?
+			<p>&Uacute;ltima edi&ccedil;&atilde;o por LPanebr em 17 de 
+			Novembro, 2007 &agrave;s 17:36 h</p>
+
+		</div>
+	</div>
+	<div id="people_actions" style="display:none">	
+	<h3>Ações de Registro</h3>
+	<ul>
+		<li><a href="realizar_admissao.html" id="admit">Realizar Admiss&atilde;o</a></li>
+	</ul>
+	</div>	
+</div>
+
+</form>
+
+<!--
+
+<h2>Add new Client<h2>
+wwwwwwwww
 <hr>{{ result }}<hr>
 
 <form action="{% url gestorpsi.client.views.save %}" method="post">
@@ -24,3 +145,5 @@
 <input type="submit" value="Save" />
 
 </form>
+
+-->

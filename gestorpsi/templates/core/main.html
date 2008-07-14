@@ -1,23 +1,22 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type"content="text/html; charset=iso-8859-1"/>
 <title>{% block title %}{% endblock %}</title>
-<script type="text/javascript" src="/media/js/jquery-latest.pack.js"></script>
-<script type="text/javascript" src="/media/js/jquery.form.js"></script>
-<script type="text/javascript" src="/media/js/jquery.validate.pack.js"></script>
-<script type="text/javascript" src="/media/js/dimensions.js"></script>
-<script type="text/javascript" src="/media/js/autocomplete.js"></script>
-<script type="text/javascript" src="/media/js/gestorpsi.forms.js"></script>
-<script type="text/javascript" src="/media/js/gestorpsi.frontend.js"></script>
+<script type="text/javascript"src="/media/js/jquery-latest.pack.js"></script>
+<script type="text/javascript"src="/media/js/jquery.form.js"></script>
+<script type="text/javascript"src="/media/js/jquery.validate.pack.js"></script>
+<script type="text/javascript"src="/media/js/dimensions.js"></script>
+<script type="text/javascript"src="/media/js/autocomplete.js"></script>
+<script type="text/javascript"src="/media/js/gestorpsi.frontend.js"></script>
 
-<link rel="stylesheet" type="text/css" href="/media/css/layout.css" />
-<link rel="stylesheet" type="text/css" href="/media/css/autocomplete.css" />
+<link rel="stylesheet"type="text/css"href="/media/css/layout.css"/>
+<link rel="stylesheet"type="text/css"href="/media/css/autocomplete.css"/>
 
-<script type="text/javascript" >
+<script type="text/javascript">
 /*
 $(function(){
-  setAutoComplete("id_parente", "parenteResults", "/lookup/");
+  setAutoComplete("id_parente","parenteResults","/lookup/");
 });
 */
 </script>
@@ -38,40 +37,42 @@ $(function(){
 	<div id="menus">
 	<div id="main_menu">
 		<ul>
-			<li><a id="start" class="main_menu pointer active ajax_link">{% trans "start" %}</a></li>
-			<li><a id="addressbook" class="main_menu ajax_link">{% trans "calendar" %}</a></li>
-			<li><a id="customers" class="main_menu ajax_link" url="/contacts/">{% trans "customers" %}</a></li>
-			<li><a id="contacts" class="main_menu ajax_link">{% trans "contacts" %}</a></li>
-			<li><a id="myoffice" class="main_menu ajax_link">{% trans "establishment" %}</a></li>
+			<li><a id="start" class="main_menu active">{% trans "start" %}</a></li>
+			<li><a id="addressbook" class="main_menu">{% trans "calendar" %}</a></li>
+			<li><a id="customers" class="main_menu" href="/client">{% trans "customers" %}</a></li>
+			<li><a id="contacts" class="main_menu">{% trans "contacts" %}</a></li>
+			<li><a id="myoffice" class="main_menu">{% trans "establishment" %}</a></li>
 		</ul>
 	</div>
 	<div id="sub_menu">
-		<ul id="sub_customers" style="display:none">
-			<li><a class="ajax_link active first pointer" url="/client">{% trans "all" %}</a></li>
-			<li><a class="ajax_link" url="/client/add">{% trans "add" %}</a></li>
-			<li><a class="ajax_link" >{% trans "search" %}</a></li>
-			<li><a class="ajax_link">{% trans "booked" %}</a></li>
-			<li><a class="ajax_link">{% trans "actives" %}</a></li>
-			<li><a class="ajax_link">{% trans "waiting" %}</a></li>
+		<ul id="sub_customers"style="display:none">
+			<li><a class="active first" href="/client">{% trans "all" %}</a></li>
+			<li><a href="/client/add">{% trans "add" %}</a></li>
+			<li><a>{% trans "search" %}</a></li>
+			<li><a>{% trans "booked" %}</a></li>
+			<li><a>{% trans "actives" %}</a></li>
+			<li><a>{% trans "waiting" %}</a></li>
 		</ul>
 		
-		<ul id="sub_contacts" style="display:none">
-			<li><a class="ajax_link first active" url="/contacts/">{% trans "all" %}</a></li>
-			<li><a class="ajax_link" url="/contacts/add/">{% trans "add" %}</a></li>
-			<li><a class="ajax_link" >{% trans "search" %}</a></li>
+		<ul id="sub_contacts"style="display:none">
+			<li><a class="first active" href="/contacts/">{% trans "all" %}</a></li>
+			<li><a href="/contacts/add/">{% trans "add" %}</a></li>
+			<li><a>{% trans "search" %}</a></li>
 		</ul>
 		
 		<ul class="opened_tabs">
-			<li><a href="" class="active" style="display: none;">{% trans "customers" %}</a></li>
+			<li><a href="" class="active"style="display: none;">{% trans "customers" %}</a></li>
 		</ul>
 		<ul id="sub_contacts">
 		</ul>
 	</div>
 	</div>
 	<div id="content">
+                <!--
 		<div id="msg_area" class="alert" style="display: none">
-			<!-- notification area -->
+			
 		</div>
+                -->
 		<div id="core">
 			<!--  page core -->
 		</div>

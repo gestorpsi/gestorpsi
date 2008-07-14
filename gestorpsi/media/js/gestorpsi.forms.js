@@ -1,22 +1,23 @@
 $(document).ready(function(){
 
-
-
-$('#people_form').validate({event:"submit",
-           rules: {
-		id_nome: {
-		    required: true,
-		    minLength: 2
-              	},
-		},
-              submitHandler: function(form) {
-		    $(form).ajaxSubmit();
-			$('#notifications').html('Registro adicionado com sucesso.');
-			$('#notifications').css('display', 'block');
-			
-			
-                    
-              }
-           });
+    $('#form_people').validate({event:"submit",
+                               rules: {
+                                    name: {
+                                        required: true
+                                        
+                                    }
+                                  },
+                                  messages: {
+                                        name: 'Please enter a valid Name'
+                                  },
+                                  submitHandler: function(form) {
+                                        $(form).ajaxSubmit();
+                                        $('#msg_area').show();
+                                        $('#people_actions').show();
+                                        
+                                      
+                                        
+                                  }
+                               });
 
 });

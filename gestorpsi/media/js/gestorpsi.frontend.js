@@ -9,19 +9,19 @@ $(document).ready(function(){
  		}); 		
 	
 	/** ajax_link: load content inside div core */
-	$("#menus a.ajax_link").each(function(){
+	$("#menus a").each(function(){
 	       var link = $(this);
 	       link.click(function() {
 				$.ajax({
-					url: link.attr('url'),
+					url: link.attr('href'),
 					type: 'GET',
 					dataType: 'html',
 					timeout: 1000,
 					error: function(){
-						alert('Error loading template '+link.attr('url'));
+						alert('Error loading template '+link.attr('href'));
 					},
 					success: function(data){
-						if(!link.attr('url')) {
+						if(!link.attr('href')) {
 							//alert('I am a ajaxlink, but i dont have an "url" atributte defined in my "<a>" tag =[');
 						} else {
 							$("#core").html(data);
@@ -31,6 +31,7 @@ $(document).ready(function(){
 						alert('enviado');
 					}
 				});
+				return false;
 			})
 		});
 		

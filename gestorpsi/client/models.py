@@ -5,6 +5,7 @@ class Client(models.Model):
     name = models.CharField('Complete Name', max_length=200, help_text='Put your full name', core=True)
     email = models.EmailField('e-mail')
     birthDate = models.DateField('Birthdate', core=True)
+    active = models.BooleanField(default=True)
     def __unicode__(self):
         return self.name
     class Meta:
@@ -15,6 +16,7 @@ class Client(models.Model):
 class ClientForm(ModelForm):
     class Meta:
         model = Client
+        exclude = ('active')
 
 class Phone(models.Model):
     area = models.CharField('Area Code',max_length=2, core=True)

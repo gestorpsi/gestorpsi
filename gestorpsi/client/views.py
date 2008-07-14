@@ -7,14 +7,14 @@ def index(request):
     return render_to_response('client/client_index.html', {'clientList': Client.objects.all().filter(active = True) })
 
 def form(request, client_id=0):
+    phones = []
     try:
         client = get_object_or_404(Client, pk=client_id)
-        phones = []
         for phone in client.phone_set.all():
             phones.append(phone)
     except:
         client = Client()
-    return render_to_response('client/client_add.html', {'client': client, 'phones': phones } )
+    return render_to_response('client/client_form.html', {'client': client, 'phones': phones } )
     
 
 def save(request):

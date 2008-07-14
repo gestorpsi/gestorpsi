@@ -1,6 +1,8 @@
+{% load i18n %}
 {% include "core/ajax_page.html" %}
 
 {% if clientList %}
+
 
 
 <div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
@@ -10,13 +12,13 @@ Esta caixa é mostrada quando há mensagens
 <h2 id="title_addressbook" style="display: none"></h2>
 <h2 id="title_clients" style="display: none"></h2>
 
-<h2 id="title_contacts">Todos os Contatos</h2>
-<p class="description">Exibindo <a href="#">127 clientes</a>.</p>
+<h2 id="title_contacts">{% trans "All Customers" %}</h2>
+<p class="description">{% trans "Displaying" %} <a href="/client">{{ clientList|length }} {% trans "customer(s)" %}</a>.</p>
 <h2 id="title_myoffice" style="display: none"></h2>
 
 
 <div id="main_area" class="contact">
-<div id="search_header">
+<div id="search_header" style="display: none">
 
         <a href="" id="letter_fwd">
         C</a>
@@ -67,7 +69,8 @@ Esta caixa é mostrada quando há mensagens
         {% for l in clientList %}
         <tr>
 
-                <td><a href="{% url gestorpsi.client.views.detail l.id %}">{{ l.name }}</a></td>
+                <!--<td><a href="{% url gestorpsi.client.views.form l.id %}">{{ l.name }}</a></td>-->
+                <td><a href="/client/{{ l.id }}">{{ l.name }}</a></td>
                 <!--
                 <strong>[</strong><small><a href="{% url gestorpsi.client.views.delete l.id %}">Delete</a></small><strong>]</strong> <br>
                 <td>(11) 2301 0751</td>

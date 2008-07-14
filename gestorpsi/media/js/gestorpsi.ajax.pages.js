@@ -9,7 +9,7 @@ $(document).ready(function(){
 	
 	
 	/**
-	* GLOBAL: ajaxlink: load content inside div core
+	* GLOBAL: AjaxLink: load content inside div core
 	*/
 	
 	$("#core a").each(function(){

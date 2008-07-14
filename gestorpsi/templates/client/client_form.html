@@ -6,21 +6,46 @@
 </div>
 <h2 id="title_addressbook" style="display:none"></h2>
 
+{% if client.id %}
+	<h2 id="title_clients">{{ client.name }}</h2>
+	<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a> nonnoono nonono noono<br />
+	nonononoo<br />
+	<script>
+	$(document).ready(function(){
+		$('#sub_menu ul li a').removeClass('active');
+		$("#sub_menu_client_extras").html('<li><a class="active makemeajax" id="client_{{ client.id }}" href="/client/{{ client.id }}">{{ client.name }}</a></li>');
+		
+		$(".makemeajax").each(function(){
+		var link = $(this);
+		link.click(function() {
+			 $.get(link.attr('href'),
+				 function(data) {
+					 if(!link.attr('href')) {
+						 alert('I am a ajaxlink, but i dont have the "href" atributte defined in the "<a>" tag');
+						 exit();
+					 } else {
+						 $("#core").html(data);
+					 }
+					 
+			 });
+			 return false;
+			 })
+		 });
+		
+	});
+		
+	</script>
+{% else %}
+	<h2 id="title_clients">Cadastrando Cliente</h2>
+	<p class="description">Preencha os campos e clique em salvar para cadastrar um novo cliente</p>
+{% endif %}
 
-<h2 id="title_clients">Cadastrando Cliente</h2>
-<p class="description">Preencha os campos e clique em salvar para cadastrar um novo cliente</p>
-
-<!--		
-<h2 id="title_clients">Benjamin Franklin</h2>
-<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a> nonnoono nonono noono<br />
-nonononoo<br />
--->
 
 </p>
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
 
-<form action="{% url gestorpsi.client.views.save %}" method="post" id="form_people">
+<form action="/client/{% if client.id %}{{ client.id }}/{% endif %}save" method="post" id="form_people">
 
 <div id="main_area">
 	<a href="" id="help">&nbsp;</a>
@@ -45,7 +70,7 @@ nonononoo<br />
 
 		</div> 
 <label>Nome<br />
-		<input type="text" name="name" class="big" value="" id="id_name" />
+		<input type="text" name="name" class="big" value="{{ client.name }}" id="id_name" />
 </label>
 		<input type="hidden" name="email" value="teste@teste.com" />
 		<input type="hidden" name="birthDate" value="1966-04-10" />

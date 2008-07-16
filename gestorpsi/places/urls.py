@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('gestorpsi.places.views.',
+urlpatterns = patterns('gestorpsi.place.views',
     (r'^$', 'index' ),
     (r'^add/$', 'add'),
     (r'^save/$', 'save'),

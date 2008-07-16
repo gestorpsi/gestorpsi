@@ -1,0 +1,13 @@
+<html>
+	<body>
+	
+	<h1>List of Places:</h1>
+	
+	{% for place in list_of_places %}
+			<li> <a href= "{% url gestorpsi.place.views.get place.id %}"> {{ place }} </a>
+			<p> {{ place.address }}</p>
+			<a href= "{% url gestorpsi.place.views.add_room place.id %}">[Add Room]</a><br><br>
+	{% endfor %}
+	
+	</body>
+</html>

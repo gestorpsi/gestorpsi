@@ -20,6 +20,9 @@ class Place( models.Model ):
 
    def __unicode__(self):
       return "%s" % self.description
+  
+   class Meta:
+       ordering = ['address']
 
    class Admin:
       pass
@@ -42,7 +45,8 @@ class RoomType( models.Model ):
 class Room( models.Model ):
    description= models.CharField( max_length= 80 )
    size= models.IntegerField()
-   place= models.ForeignKey( Place, related_name='place' )
+   place= models.ForeignKey( Place, related_name= 'place' )
+   room_type= models.ForeignKey( RoomType, related_name= 'room_type' )
 
    def __unicode__(self):
       return "%s" % self.description

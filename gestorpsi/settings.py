@@ -11,7 +11,7 @@ EMAIL_FROM = 'GestorPsi <webmaster@gestorpsi.com.br>'
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'postgresql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+DATABASE_ENGINE = 'postgresql_psycopg2'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 DATABASE_NAME = 'gestor'             # Or path to database file if using sqlite3.
 DATABASE_USER = 'gestor'             # Not used with sqlite3.
 DATABASE_PASSWORD = 'gestor'         # Not used with sqlite3.

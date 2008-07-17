@@ -99,13 +99,14 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     #'gestorpsi.organization',
-    'gestorpsi.contacts',
+    #'gestorpsi.contacts',
     'gestorpsi.place',
     'gestorpsi.client',
     'gestorpsi.phone',
     'gestorpsi.address',
     'gestorpsi.person',
     'gestorpsi.document',
+    'gestorpsi.internet',
     'gestorpsi.frontend', #load at last
 )
 

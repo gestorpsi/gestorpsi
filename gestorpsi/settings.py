@@ -102,6 +102,10 @@ INSTALLED_APPS = (
     'gestorpsi.contacts',
     'gestorpsi.place',
     'gestorpsi.client',
+    'gestorpsi.phone',
+    'gestorpsi.address',
+    'gestorpsi.person',
+    'gestorpsi.document',
     'gestorpsi.frontend', #load at last
 )
 

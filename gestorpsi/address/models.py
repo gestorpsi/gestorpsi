@@ -27,16 +27,14 @@ class City(models.Model):
     class Meta:
         ordering = ['name']
 
-# to be deleted
-#addressType = models.CharField(max_length=1, choices=addressType_list)
-addressType_list = (('0','HOME'), ('1','WORK'), ('2','MAIL_ONLY'))
-
 class AddressType(models.Model):
     description = models.CharField(max_length=20)
     def __unicode__(self):
         return self.description
+    class Admin: pass
 
 class Address(models.Model):
+    # Falta colocar NUMERO da casa
     addressPrefix = models.CharField(max_length=10)
     addressLine1 = models.CharField(max_length=50)
     addressLine2 = models.CharField(max_length=50)
@@ -48,3 +46,5 @@ class Address(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey()
+    def __unicode__(self):
+        return "%s %s\n%s" % (self.addressPrefix, self.addressLine1, self.addressLine2)

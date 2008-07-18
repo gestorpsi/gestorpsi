@@ -8,8 +8,9 @@ $(document).ready(function(){
   		 $(this).hide();
  		}); 		
 	
+	
 	/** ajax_link: load content inside div core */
-	$("#menus a").each(function(){
+	$("#menus a:not(.notajax)").each(function(){
 	       var link = $(this);
 	       link.click(function() {
 				$.ajax({
@@ -63,6 +64,8 @@ $(document).ready(function(){
 	       		link.addClass('active');
 			})
 		});	
+
+
 
 		
 });

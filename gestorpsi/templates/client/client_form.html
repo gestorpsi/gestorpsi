@@ -2,7 +2,11 @@
 {% include "core/ajax_page.html" %}
 
 <div id="msg_area" class="alert" style="display:none"><!-- ou class="error" ou sem classe -->
-{% trans "Customer added successful! New register functions has been enable" %}
+{% if not client.id %}
+	{% trans "Client added successful!" %}
+{% else %}
+	{% trans "Client saved successful!" %}
+{% endif %}
 </div>
 <h2 id="title_addressbook" style="display:none"></h2>
 
@@ -12,6 +16,9 @@
 	nonononoo<br />
 	<script>
 	$(document).ready(function(){
+		/**
+		create new tab when editing an user
+		*/
 		$('#sub_menu ul li a').removeClass('active');
 		$("#sub_menu_client_extras").html('<li><a class="active makemeajax" id="client_{{ client.id }}" href="/client/{{ client.id }}">{{ client.name }}</a></li>');
 		
@@ -31,13 +38,13 @@
 			 return false;
 			 })
 		 });
-		
+
 	});
 		
 	</script>
 {% else %}
-	<h2 id="title_clients">Cadastrando Cliente</h2>
-	<p class="description">Preencha os campos e clique em salvar para cadastrar um novo cliente</p>
+	<h2 id="title_clients">{% trans "Adding New Client" %}</h2>
+	<p class="description">{% trans "Inform the client details then click on Save button" %}</p>
 {% endif %}
 
 
@@ -45,81 +52,190 @@
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
 
-<form action="/client/{% if client.id %}{{ client.id }}/{% endif %}save" method="post" id="form_people">
 
+<form action="/client/{% if client.id %}{{ client.id }}/{% endif %}save" method="post" id="form_people">	
 <div id="main_area">
+
 	<a href="" id="help">&nbsp;</a>
-	<h3><span id="client_add_infotypes">Informações Básicas</span></h3>
+	<!-- DataTypes form menu -->
+	<h3><span id="client_add_infotypes">{% trans "Demographic" %}</span></h3>
 	<ul id="form_options" class="float_menu" style="display:none;">
-		<li><label><input name="this" type="radio" value="" /> Informa&ccedil;&otilde;es b&aacute;sicas</label></li>
-		<li><label><input name="this" type="radio" value="" /> Dados completos</label></li>
-
-		<li><label><input name="this" type="radio" value="" /> Prontu&aacute;rio cl&iacute;nico</label></li>
-		<li><label><input name="this" type="radio" value="" /> Dados s&oacute;cio-demogr&aacute;ficos</label></li>
-		<li><label><input name="this" type="radio" value="" /> Dados s&oacute;cio-economcos</label></li>
-
-		
+		<li><label><input name="this" type="radio" value="" checked/>{% trans "Demographic" %}</label></li>
+		<li><label><input name="this" type="radio" value="" />{% trans "Socio-Demographic" %}</label></li>
+		<li><label><input name="this" type="radio" value="" />{% trans "Socio-Economic" %}</label></li>
 	</ul>
-		<div id="photo">
-			<img src="img/male_generic_photo.gif.png" />
-			<a href="" id="male" class="active"><span>Male</span></a>
-			<a href="" id="female"><span>Female</span></a>
-			<a href="" class="clips" >Foto</a>
-			<a href="" class="delete" title="delete" ><span>Delete</span></a>
+	<div id="photo">
+		<img id="img_people" src="/media/img/male_generic_photo.gif.png" />
+		<a id="male" class="notajax gender{% ifequal person.gender 'M' %} active{% endifequal %}" value="M"><span>{% trans "Male" %}</span></a>
+		<a id="female" class="notajax gender{% ifequal person.gender 'F' %} active{% endifequal %}" value="F"><span>{% trans "Female" %}</span></a>
+
+		<a class="clips notajax" >{% trans "Photo" %}</a>
+		<input type="hidden" name="photo" value="{{ person.photo }}" id="id_photo">
+		<a href="notajax" class="delete" title="delete" onclick="$('#id_photo').val(''); $('img#img_people').attr('src', '/media/img/male_generic_photo.gif.png'); "><span>{% trans "Delete" %}</span></a>
+		<input type="hidden" name="gender" value="{{ person.gender }}" id="id_gender">
+
+	</div> 
 
 
-		</div> 
-<label>Nome<br />
-		<input type="text" name="name" class="big" value="{{ client.name }}" id="id_name" />
-</label>
-		<input type="hidden" name="email" value="teste@teste.com" />
-		<input type="hidden" name="birthDate" value="1966-04-10" />
-		  
-		<label>Apelido<br />
-		<input type="text" class="small" value="" />
-</label>
-		<label>Idade<br />
-
-		<input type="text" class="small" value="" />
-</label>
-		<label>Endereço<br />
-		<input type="text" class="big" value="" />
-</label>
-		<label>Número<br />
-		<input type="text" class="medium" value="" />
-</label>
-
-		<label>Cidade<br />
-		<input type="text" class="big" value="" />
-</label>
-		<label>Estado<br />
-		<input type="text" class="small" value="" />
-</label>
-		<label>Tipo<br />
-
-		<select name="type_addrs" class="small">
-			<option>Comercial</option>
-			<option>Residencial</option>
-			<option>Correspond&ecirc;ncia</option>
-		</select></label>
-
-		<label class="clear">DDD&nbsp;Fone<br />
-
-		<input type="text" name="area" id="id_area" class="small" value="" /></label>
-		<label>Telefone<br />
-		<input type="text" id="id_phoneNumber" class="big" name="phoneNumber" /></label>
-		<label>Tipo<br />
-		<select name="type_phone" class="small">
-			<option selected="selected">Comercial</option>
-			<option>Residencial</option>
-
-		</select></label>
+	<!--
+	People Personal Identification Form	
+	-->
+	
+	<fieldset>
+		<legend>{% trans "Personal Identification" %}</legend>
+			<label>{% trans "Name" %}<br />
+			<input type="text" name="name" class="extrabig" value="{{ person.name }}" id="id_name" />
+			</label>
+			<label>{% trans "CPF" %}<br />
+			<input type="text" name="cpf" class="medium" value="{{ person.cpf }}" id="id_cpf" />
+			</label>
+			<label>{% trans "RG" %}<br />
+			<input type="text" name="rg" class="medium" value="{{ person.rg }}" id="id_rg" />
+			</label>
+			<label>{% trans "Issuer" %}<br />
+			<input type="text" name="issuer" class="small" value="{{ person.issuer }}" id="id_issuer" />
+			</label>
+	</fieldset>
+	
+	<!--
+	People Personal Profile Form	
+	-->
 		
-		<!-- Aparece no click em Foto
-		<label>Foto<br />
-		<input type="file" class="big" id="send_file" size="33"/>
-		</label>-->
+	<fieldset>
+		<legend>{% trans "Personal Profile" %}</legend>
+			<label>{% trans "Birthdate" %}<br />
+			<input type="text" name="birthDate" class="calendar birthdate" value="{{ person.birthdate }}" id="id_birthDate" />
+			</label>
+			<label>{% trans "Age" %}<br />
+			<input type="text" name="age" class="extrasmall" value="{{ person.age }}" id="id_age" />
+			</label>
+			<label>{% trans "Naturality" %}<br />
+			<input type="text" name="birthPlace" class="medium" value="{{ person.birthPlace }}" id="id_birthPlace" />
+			</label>
+			<label>{% trans "Region" %}<br />
+			<input type="text" name="birthRegion" class="extrasmall" value="{{ person.birthRegion }}" id="id_birthRegion" />
+			</label>
+			<label>{% trans "Nationality" %}<br />
+			<input type="text" name="nationality" class="medium" value="{{ person.nationality }}" id="id_nationality" />
+			</label>
+	</fieldset>
+	
+	
+	<!--
+	people addresses  
+	-->
+		
+	<fieldset>
+		<legend>{% trans "Addresses" %}</legend>
+			<div class="form_address">
+				
+					<label>{% trans "Prefix" %}<br />
+					<input type="text" class="small" name="addressLine1" value="" />
+					</label>
+				
+					<label>{% trans "Street" %}<br />
+					<input type="text" class="big" name="addressLine2" value="" />
+					</label>
+					
+					<label>{% trans "Number" %}<br />
+					<input type="text" class="extrasmall" name="number" value="" />
+					</label>
+					
+					<label>{% trans "Aditional" %}<br />
+					<input type="text" class="small" name="addressLine2" value="" />
+					</label>		
+					
+					<label>{% trans "ZIP Code" %}<br />
+					<input type="text" class="small" value="" />
+					</label>
+					
+					<label>{% trans "Neighborhood" %}<br />
+					<input type="text" class="medium" name="neighborhood" value="" />
+					</label>
+					
+					<label>{% trans "City" %}<br />
+					<input type="text" class="medium" value="" />
+					</label>
+
+					<label>{% trans "State" %}<br />
+					<input type="text" class="extrasmall" value="" />
+					</label>
+
+					<label>{% trans "Type" %}<br />
+					<select name="type_addrs" class="small">
+						<option>Comercial</option>
+						<option>Residencial</option>
+						<option>Correspond&ecirc;ncia</option>
+					</select></label>
+				
+			</div>
+			
+		<label id="address_more" class="add_to_form"><a class="notajax">{% trans "Add Address" %}</a></label>	
+	</fieldset>
+	
+	
+	<!--
+	people phone numbers
+	-->
+		
+	<fieldset>
+		
+		<legend>{% trans "Phones" %}</legend>
+		<div id="showmephones">
+			{% for phone in phones %}
+			<div class="form_phone_box" id="phone_{{ forloop.counter }}">
+			<div class="form_phone">
+
+				
+
+					<label>{% trans "Area" %}<br />
+					<input type="text" class="extrasmall" name="area" value="{{ phone.area }}" />
+					</label>
+				
+					<label>{% trans "Number" %}<br />
+					<input type="text" class="big" name="phoneNumber" value="{{ phone.phoneNumber }}" />
+					</label>
+					
+					<label>{% trans "Extension" %}<br />
+					<input type="text" class="small" name="ext" value="{{ phone.ext }}" />
+					</label>
+							
+					<label>{% trans "Phone Type" %}<br />
+					<select name="phoneType" class="small">
+						<option>Comercial</option>
+						<option>Residencial</option>
+						<option>Móvel</option>
+					</select></label>
+
+				</div>
+
+				
+			</div>
+			<label><a class="notajax phone_less" onclick="$('#phone_{{ forloop.counter }}').hide(); $(this).hide()">Delete Phone</a></label>
+			{% endfor %}
+		
+			
+		<label id="phone_more" class="add_to_form"><a class="notajax">{% trans "Add Phone" %}</a></label>	
+		</div>
+	</fieldset>
+	<div id="display"></div>
+	
+	<!--
+	<label class="clear">DDD&nbsp;Fone<br />
+
+	<input type="text" name="area" id="id_area" class="small" value="" /></label>
+	<label>Telefone<br />
+	<input type="text" id="id_phoneNumber" class="big" name="phoneNumber" /></label>
+	<label>Tipo<br />
+	<select name="type_phone" class="small">
+		<option selected="selected">Comercial</option>
+		<option>Residencial</option>
+	</select></label>
+	
+	-->
+	
 </div>
+
 <div id="sidebar">
 	<div class="bg_blue">
 		<input name="save" type="submit" value="Salvar" />
@@ -137,38 +253,21 @@
 	<ul>
 		<li><a href="realizar_admissao.html" id="admit">Realizar Admiss&atilde;o</a></li>
 	</ul>
-	</div>	
+	</div>
 </div>
 
 </form>
 
-<!--
 
-<h2>Add new Client<h2>
-wwwwwwwww
-<hr>{{ result }}<hr>
+<!-- upload form -->
+<div id="photo_form_upload_dragplace">
+<div id="photo_form_upload">
+		{% trans "Select a picture" %}:
+		<form action="/upload/" method="post" id="form_file" name="form_file" enctype="multipart/form-data">
+		<input type="file" class="file" name="file" id="id_file" onchange="$('#form_file').submit()"/>
+		</form>
+		<small><a class="notajax" onclick="$('#photo_form_upload_dragplace').hide();">{% trans "Cancel" %}</a></small>
+</div>
+</div>
 
-<form action="{% url gestorpsi.client.views.save %}" method="post">
 
-<p>CLIENT</p>
-<table border=1>
-	{{ clientForm.as_table }}
-</table>
-<p>PHONE NUMBERS</p>
-<table border=1>
-	{{ phoneForm.as_table }}
-</table>
-<br/>
-<table border=1>
-	{{ phoneForm.as_table }}
-</table>
-<br/>
-<table border=2>
-	{{ phoneForm.as_table }}
-</table>
-
-<input type="submit" value="Save" />
-
-</form>
-
--->

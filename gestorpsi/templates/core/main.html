@@ -1,17 +1,22 @@
 <!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+{% load i18n %}
 <meta http-equiv="Content-Type"content="text/html; charset=iso-8859-1"/>
-<title>{% block title %}{% endblock %}</title>
+<title>GestorPsi - {% trans "Sistema de gestão de Serviços em Psicologia" %}{% block title %}{% endblock %}</title>
 <script type="text/javascript"src="/media/js/jquery-latest.pack.js"></script>
 <script type="text/javascript"src="/media/js/jquery.form.js"></script>
 <script type="text/javascript"src="/media/js/jquery.validate.pack.js"></script>
 <script type="text/javascript"src="/media/js/dimensions.js"></script>
 <script type="text/javascript"src="/media/js/autocomplete.js"></script>
+<script type="text/javascript"src="/media/js/jquery-ui-personalized-1.5.2.min.js"></script>
+<script type="text/javascript"src="/media/js/interface.js"></script>
 <script type="text/javascript"src="/media/js/gestorpsi.frontend.js"></script>
+
 
 <link rel="stylesheet"type="text/css"href="/media/css/layout.css"/>
 <link rel="stylesheet"type="text/css"href="/media/css/autocomplete.css"/>
+<link rel="stylesheet"type="text/css"href="/media/css/datePicker.css"/>
 
 <script type="text/javascript">
 /*
@@ -21,12 +26,13 @@ $(function(){
 */
 </script>
 </head>
-{% load i18n %}
 
 <body>
-<div id="loading">
-<p>{% trans "Loading" %} ...</p>
-</div>
+
+<div id="over" style="display:none">
+</div>  
+
+
 <div id="bar"><h1>[GestorPsi]</h1>
 </div>
 	<div id="menu_log">
@@ -39,9 +45,9 @@ $(function(){
 		<ul>
 			<li><a id="start" class="main_menu active">{% trans "start" %}</a></li>
 			<li><a id="addressbook" class="main_menu">{% trans "calendar" %}</a></li>
-			<li><a id="customers" class="main_menu" href="/client">{% trans "customers" %}</a></li>
+			<li><a id="customers" class="main_menu" href="/client">{% trans "clients" %}</a></li>
 			<li><a id="contacts" class="main_menu">{% trans "contacts" %}</a></li>
-			<li><a id="myoffice" class="main_menu">{% trans "establishment" %}</a></li>
+			<li><a id="myoffice" class="main_menu">{% trans "organization" %}</a></li>
 		</ul>
 	</div>
 	<div id="sub_menu">
@@ -62,7 +68,7 @@ $(function(){
 		</ul>
 		
 		<ul class="opened_tabs">
-			<li><a href="" class="active"style="display: none;">{% trans "customers" %}</a></li>
+			<li><a href="" class="active" style="display: none;">{% trans "customers" %}</a></li>
 		</ul>
 		<ul id="sub_contacts">
 		</ul>
@@ -74,8 +80,13 @@ $(function(){
 			
 		</div>
                 -->
+     
 		<div id="core">
 			<!--  page core -->
+		</div>
+	
+		<div id="loading">
+			<p>{% trans "Loading" %} ...</p>
 		</div>
 	</div>
 </body>

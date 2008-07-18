@@ -16,6 +16,7 @@ a:hover {
 	color: #2688AE;
 	text-decoration: underline;
 }
+
 #bar {
 	background: #005A7D url(../img/logo_gestorpsi_peq.gif) no-repeat;
 	height: 18px;
@@ -223,7 +224,7 @@ div#sub_menu a.active {
 }
 #photo {
 	float: right;
-	margin-top: 30px;
+	margin-top: 17px;
 	margin-right: 15px;
 	width: 116px;
 }
@@ -274,7 +275,7 @@ a.prase_edit {
 	padding-top: 5px;
 }
 #photo .clips {
-	margin-left: 20px;
+	margin-left: 10px;
 }
 #photo a:hover, #photo a.active {
 	background-position: 0 -18px;
@@ -324,12 +325,26 @@ margin-left: 15px;
 .big {
 	width: 344px;
 }
+
+.extrabig {
+	width: 532px;
+}
+
 .medium {
 	width: 175px;
 }
 .small {
 	width: 76px;
 }
+
+.extrasmall {
+	width: 38px;
+}
+
+.calendar {
+	width: 96px;
+}
+
 select {
 	height: 32px;
 	font-size:16px;
@@ -554,7 +569,7 @@ hr {
 
 #loading p { 
 padding: 15px 45px; 
-	position: fixed;
+	position: absolute;
 	bottom: 0px;
 	right: 0px;
 	display:none;
@@ -680,6 +695,84 @@ padding: 15px 45px;
 
 .ajax_link {
 	cursor: pointer;
+}
+
+fieldset legend {
+	color: #999999;
+	padding: 0px 5px 0px 5px;
+	margin: 0 0 0 8px;
+}
+
+form fieldset {
+	border: 1px solid #CCCCCC;
+	padding: 0px 0 15px 0px;
+	margin: 10px 10px 0 10px;
+}
+
+#photo_form_upload {
+	position: absolute;
+	margin-top: 0px;
+	margin-left: 350px;
+	_margin-left: -350px;
+	_margin-top: -100px;
+	background-color: #fff;
+	border: 1px solid black;
+	padding: 30px 30px 30px 30px;
+	
+}
+
+#photo_form_upload_dragplace {
+/*
+	position: absolute;
+	left:350px;
+	top:0px;
+	width:250px;
+	background-color:#f0f5FF;
+	border: 1px solid #000;
+	z-index: 50;
+	*/
+	width: 850px;
+	height: 120px;
+	display:none;
+}
+
+#over {
+	width: 110%;
+	position: fixed;
+	margin: -55px 0 75px -22px;
+	background:  url("/media/img/transp75.png");
+	/*border-top: 1px solid #1D76BB;
+	border-bottom: 1px solid #1D76BB;
+*/
+	z-index: 6;
+	min-height: 500px;
+}
+
+img#img_people {
+	width: 116px;
+	height: 134px;
+}
+
+label.add_to_form {
+float: right;
+margin-top: 50px;
+margin-right: 20px;
+}
+
+div.form_address_box, div.form_phone_box {
+clear: both;
+float: none;
+display: block;
+margin-bottom: 100px;
+margin-top: 150px;
+border-bottom: 1px solid #cccccc;
+}
+
+div.form_phone_box {
+margin-bottom: 0px;
+margin-top: 0px;
+border-bottom: 0px solid #cccccc;
+
 }
 
 

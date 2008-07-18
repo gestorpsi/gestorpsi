@@ -12,7 +12,7 @@ $(document).ready(function(){
 	* GLOBAL: AjaxLink: load content inside div core
 	*/
 	
-	$("#core a").each(function(){
+	$("#core a:not(.notajax)").each(function(){
 		var link = $(this);
 		link.click(function() {
 			 $.get(link.attr('href'),
@@ -41,8 +41,16 @@ $(document).ready(function(){
 		 });
 	});
 	
+	
+	/** 
+	 * jQuery UI DatePicker
+	 */
+	
+	$('.birthdate').datepicker({ dateFormat: 'dd/mm/yy', changeYear: true, yearRange: '-120:+0', duration: 'fast' });
+	
 
-});
+	
+ });
 
 	
 

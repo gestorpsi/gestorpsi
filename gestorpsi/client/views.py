@@ -22,7 +22,7 @@ def form(request, client_id=0):
             phones.append(phone)
     except:
         client = Client()
-    return render_to_response('client/client_form.html', {'client': client, 'phones': phones } )
+    return render_to_response('client/client_form.html', {'client': client, 'phones': phones, 'person': client } )
 
 def save(request, client_id=0):
     try:

@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+    <title>Cadastro de Estabelecimentos</title>
+</head>
+<body>
+    
+    <h3>{{ message }}</h3>
+    
+    <form method="post" action=".">
+        <table>
+            {% for field in eForm %}
+            <h3>{{ field.label_tag }}</h3>
+            {{ field }}
+            {% endfor %}
+        </table>        
+        
+        <br> 
+              
+        
+        <input type="submit" name="submit" value="Adicionar" />
+    </form>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+</head>
+<body>
+
+	<h2> List of careProfessionals: </h2> 
+	 		{% for careP in careProfessional_list %}
+	    		<table border= 1>
+	       			{{ careP.as_table }}
+	    		</table><br>
+	 		{% endfor %}
+	</body>
+
+</body>
+</html>

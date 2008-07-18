@@ -8,7 +8,7 @@ urlpatterns = patterns('',
     #(r'^demo/', include('django.contrib.admin.urls')),
     (r'^$', 'gestorpsi.frontend.views.index'),
     (r'^admin/', include('django.contrib.admin.urls')),
-    (r'^contacts/', include('gestorpsi.contacts.urls')),
+    #(r'^contact/', include('gestorpsi.contact.urls')),
     (r'^place/', include('gestorpsi.place.urls')),
     (r'^client/', include('gestorpsi.client.urls')),
     

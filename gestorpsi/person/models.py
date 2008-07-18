@@ -24,8 +24,10 @@ class Person(models.Model):
     photo = models.ImageField('Photo', upload_to="client_photos", null=True)
     birthDate = models.DateField('Birthdate', null=True)
     birthPlace = models.ForeignKey(City, null=True)
-    gender = models.ForeignKey(Gender,null=True)
-    maritalStatus = models.ForeignKey(MaritalStatus,null=True)
+    #gender = models.CharField('Gender',max_length=1, choices=GENDER_CHOICES)
+    #maritalStatus = models.CharField('', max_length=1, choices=MARITAL_CHOICES)
+    gender = models.ForeignKey(Gender, null = True)
+    maritalStatus = models.ForeignKey(MaritalStatus, null = True)   
     # Reduntante pois ja temos birthPlace
     nationality = models.ForeignKey(Country)
     active = models.BooleanField(default=True)
@@ -33,6 +35,7 @@ class Person(models.Model):
     phones = generic.GenericRelation(Phone, null=True)
     address = generic.GenericRelation(Address, null=True)
     document = generic.GenericRelation(Document, null=True)
+    
     emails  = generic.GenericRelation(Email, null=True)
     sites = generic.GenericRelation(Site, null=True)
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True)

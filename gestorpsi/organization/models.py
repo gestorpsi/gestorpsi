@@ -1,6 +1,7 @@
 from django.db import models
 from django.newforms import ModelForm
 from django.contrib.contenttypes import generic
+from gestorpsi.sponsor.models import Sponsor
 from gestorpsi.phone.models import Phone
 from gestorpsi.person.models import Person
 from gestorpsi.address.models import Country, City, Address
@@ -21,7 +22,8 @@ class Organization(models.Model):
     
     phones = generic.GenericRelation(Phone, null=True)
     address = generic.GenericRelation(Address, null=True)
-    organization = models.ForeignKey('self', related_name="%(class)s_related", null=True)    
+    organization = models.ForeignKey('self', related_name="%(class)s_related", null=True)
+    sponsor = models.ForeignKey(Sponsor, null=True)    
     
                           
     def __unicode__(self):

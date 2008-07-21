@@ -6,7 +6,7 @@ from gestorpsi.address.models import State
 class Issuer(models.Model):
     description = models.CharField(max_length=30)
     def __unicode__(self):
-        return self.description
+        return u"%s" % self.description
     class Admin: pass
 
 class Document(models.Model):
@@ -19,4 +19,4 @@ class Document(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey()
     def __unicode__(self):
-        return "RG: %s / %s / %s\nCPF: %s" % (self.identityCard, self.issuer, self.state, self.cpf)
+        return u"RG: %s / %s / %s\nCPF: %s" % (self.identityCard, self.issuer, self.state, self.cpf)

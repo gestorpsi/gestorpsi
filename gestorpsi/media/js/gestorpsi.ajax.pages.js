@@ -49,8 +49,7 @@ $(document).ready(function(){
 	$('.birthdate').datepicker({ dateFormat: 'dd/mm/yy', changeYear: true, yearRange: '-120:+0', duration: 'fast' });
 	
 
-	
- });
+});
 
 	
 

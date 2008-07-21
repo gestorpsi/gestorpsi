@@ -1,0 +1,28 @@
+{% load i18n %}
+<div class="form_phone_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="phone_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
+	<div class="form_phone">
+		<label>{% trans "Area" %}<br />
+		<input type="text" class="extrasmall" name="area" value="{{ phone.area }}" mask="99" />
+		</label>
+	
+		<label>{% trans "Number" %}<br />
+		<input type="text" class="big" name="phoneNumber" value="{{ phone.phoneNumber }}" mask="99999999" />
+		</label>
+		
+		<label>{% trans "Extension" %}<br />
+		<input type="text" class="small" name="ext" value="{{ phone.ext }}" />
+		</label>
+				
+		<label>{% trans "Phone Type" %}<br />
+		<select name="phoneType" class="small">
+			<option>Comercial</option>
+			<option>Residencial</option>
+			<option>Móvel</option>
+		</select></label>
+	</div>
+</div>
+{% if client.id %}
+<label><a class="notajax phone_less" onclick="$('#phone_{{ forloop.counter }}').remove(); $(this).remove()">{% trans "Delete Phone" %}</a></label>
+{% endif %}
+
+

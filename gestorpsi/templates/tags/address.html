@@ -1,0 +1,49 @@
+{% load i18n %}
+<div class="form_address_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="address_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
+	<div class="form_address">
+		
+			<label>{% trans "Prefix" %}<br />
+			<input type="text" class="small" name="addressLine1" value="" />
+			</label>
+		
+			<label>{% trans "Street" %}<br />
+			<input type="text" class="big" name="addressLine2" value="" />
+			</label>
+			
+			<label>{% trans "Number" %}<br />
+			<input type="text" class="extrasmall" name="number" value="" />
+			</label>
+			
+			<label>{% trans "Aditional" %}<br />
+			<input type="text" class="small" name="addressLine2" value="" />
+			</label>		
+			
+			<label>{% trans "ZIP Code" %}<br />
+			<input type="text" class="small" value="" />
+			</label>
+			
+			<label>{% trans "Neighborhood" %}<br />
+			<input type="text" class="medium" name="neighborhood" value="" />
+			</label>
+			
+			<label>{% trans "City" %}<br />
+			<input type="text" class="medium" value="" />
+			</label>
+
+			<label>{% trans "State" %}<br />
+			<input type="text" class="extrasmall" value="" />
+			</label>
+
+			<label>{% trans "Type" %}<br />
+			<select name="type_addrs" class="small">
+				<option>Comercial</option>
+				<option>Residencial</option>
+				<option>Correspond&ecirc;ncia</option>
+			</select></label>
+		
+	</div>
+	
+</div>
+{% if client.id %}
+<label><a class="notajax address_less" onclick="$('#address_{{ forloop.counter }}').remove(); $(this).remove()">{% trans "Delete Address" %}</a></label>
+{% endif %}

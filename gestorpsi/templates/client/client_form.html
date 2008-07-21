@@ -53,7 +53,7 @@
 <h2 id="title_myoffice" style="display:none"></h2>
 
 
-<form action="/client/{% if client.id %}{{ client.id }}/{% endif %}save" method="post" id="form_people">	
+<form action="/client/{% if client.id %}{{ client.id }}/{% endif %}save/" method="post" id="form_people">	
 <div id="main_area">
 
 	<a href="" id="help">&nbsp;</a>
@@ -75,22 +75,24 @@
 		<input type="hidden" name="gender" value="{{ person.gender }}" id="id_gender">
 
 	</div> 
-
-
+	
+	<!-- DELETEMEEEEEEEE ASAP!!!!!!!!!!!!!!!! -->
+	
+	<input type="hidden" name="email" value="joao@joao.com">
 	<!--
 	People Personal Identification Form	
 	-->
 	
-	<fieldset>
+	<fieldset id="fieldset_personal_identification">
 		<legend>{% trans "Personal Identification" %}</legend>
 			<label>{% trans "Name" %}<br />
 			<input type="text" name="name" class="extrabig" value="{{ person.name }}" id="id_name" />
 			</label>
 			<label>{% trans "CPF" %}<br />
-			<input type="text" name="cpf" class="medium" value="{{ person.cpf }}" id="id_cpf" />
+			<input type="text" name="cpf" class="medium" value="{{ person.cpf }}" id="id_cpf" mask="999.999.999-99" />
 			</label>
 			<label>{% trans "RG" %}<br />
-			<input type="text" name="rg" class="medium" value="{{ person.rg }}" id="id_rg" />
+			<input type="text" name="rg" class="medium" value="{{ person.rg }}" id="id_rg" mask="99.999.999-9"/>
 			</label>
 			<label>{% trans "Issuer" %}<br />
 			<input type="text" name="issuer" class="small" value="{{ person.issuer }}" id="id_issuer" />
@@ -101,10 +103,10 @@
 	People Personal Profile Form	
 	-->
 		
-	<fieldset>
+	<fieldset id="fieldset_personal_profile">
 		<legend>{% trans "Personal Profile" %}</legend>
 			<label>{% trans "Birthdate" %}<br />
-			<input type="text" name="birthDate" class="calendar birthdate" value="{{ person.birthdate }}" id="id_birthDate" />
+			<input type="text" name="birthDate" class="calendar birthdate" value="{{ person.birthDate }}" id="id_birthDate" />
 			</label>
 			<label>{% trans "Age" %}<br />
 			<input type="text" name="age" class="extrasmall" value="{{ person.age }}" id="id_age" />
@@ -125,50 +127,15 @@
 	people addresses  
 	-->
 		
-	<fieldset>
+	<fieldset id="fieldset_address">
 		<legend>{% trans "Addresses" %}</legend>
-			<div class="form_address">
-				
-					<label>{% trans "Prefix" %}<br />
-					<input type="text" class="small" name="addressLine1" value="" />
-					</label>
-				
-					<label>{% trans "Street" %}<br />
-					<input type="text" class="big" name="addressLine2" value="" />
-					</label>
-					
-					<label>{% trans "Number" %}<br />
-					<input type="text" class="extrasmall" name="number" value="" />
-					</label>
-					
-					<label>{% trans "Aditional" %}<br />
-					<input type="text" class="small" name="addressLine2" value="" />
-					</label>		
-					
-					<label>{% trans "ZIP Code" %}<br />
-					<input type="text" class="small" value="" />
-					</label>
-					
-					<label>{% trans "Neighborhood" %}<br />
-					<input type="text" class="medium" name="neighborhood" value="" />
-					</label>
-					
-					<label>{% trans "City" %}<br />
-					<input type="text" class="medium" value="" />
-					</label>
-
-					<label>{% trans "State" %}<br />
-					<input type="text" class="extrasmall" value="" />
-					</label>
-
-					<label>{% trans "Type" %}<br />
-					<select name="type_addrs" class="small">
-						<option>Comercial</option>
-						<option>Residencial</option>
-						<option>Correspond&ecirc;ncia</option>
-					</select></label>
-				
-			</div>
+			{% if not addresses %}
+				{% include "tags/address.html" %}
+			{% else %}
+				{% for address in addresses %}
+					{% include "tags/address.html" %}
+				{% endfor %}
+			{% endif %}
 			
 		<label id="address_more" class="add_to_form"><a class="notajax">{% trans "Add Address" %}</a></label>	
 	</fieldset>
@@ -178,47 +145,19 @@
 	people phone numbers
 	-->
 		
-	<fieldset>
-		
+	<fieldset id="fieldset_phone">
 		<legend>{% trans "Phones" %}</legend>
-		<div id="showmephones">
-			{% for phone in phones %}
-			<div class="form_phone_box" id="phone_{{ forloop.counter }}">
-			<div class="form_phone">
-
-				
-
-					<label>{% trans "Area" %}<br />
-					<input type="text" class="extrasmall" name="area" value="{{ phone.area }}" />
-					</label>
-				
-					<label>{% trans "Number" %}<br />
-					<input type="text" class="big" name="phoneNumber" value="{{ phone.phoneNumber }}" />
-					</label>
-					
-					<label>{% trans "Extension" %}<br />
-					<input type="text" class="small" name="ext" value="{{ phone.ext }}" />
-					</label>
-							
-					<label>{% trans "Phone Type" %}<br />
-					<select name="phoneType" class="small">
-						<option>Comercial</option>
-						<option>Residencial</option>
-						<option>Móvel</option>
-					</select></label>
-
-				</div>
-
-				
-			</div>
-			<label><a class="notajax phone_less" onclick="$('#phone_{{ forloop.counter }}').hide(); $(this).hide()">Delete Phone</a></label>
-			{% endfor %}
-		
-			
+			{% if not phones %}
+				{% include "tags/phone.html" %}
+			{% else %}
+				{% for phone in phones %}
+					{% include "tags/phone.html" %}
+				{% endfor %}
+			{% endif %}
 		<label id="phone_more" class="add_to_form"><a class="notajax">{% trans "Add Phone" %}</a></label>	
-		</div>
-	</fieldset>
-	<div id="display"></div>
+		</fieldset>
+		
+	<!-- <div id="display"></div> -->
 	
 	<!--
 	<label class="clear">DDD&nbsp;Fone<br />

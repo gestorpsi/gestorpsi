@@ -79,6 +79,23 @@ $(document).ready(function(){
 	});
 	
 	
+	 /** Mask for all fields
+	 * 
+	 * search for a mask attribute in all forms
+	 * 
+	 * you just must to define it, in your input field like:
+	 * <input type="text" name="phone" mask="((999) 999-9999)" />
+	 */
+
+	function loadMask() {
+	$("form input:text").each(function(){
+		var field = $(this);
+		if(field.attr('mask')) {
+			$(field).mask(field.attr('mask'));
+		}
+		});
+	}	
+	loadMask();
 		
 	/** 
 		add address form 
@@ -86,23 +103,25 @@ $(document).ready(function(){
 	
 	$('#address_more a').click(function() {
 		total = $(".form_address_box").length + 1;
-		$("#address_more").before('<div class="form_address_box" id="address_'+total+'">'+$(".form_address").html()+'<label><a class="notajax address_less" onclick="$(\'#address_'+total+'\').hide();">Delete Address</a></label></div>');
+		$("#address_more").before('<div class="form_address_box" id="address_'+total+'"><div class="form_address">'+$(".form_address").html()+'<label><a class="notajax address_less" onclick="$(\'#address_'+total+'\').remove();">Delete Address</a></label></div></div>');
+		loadMask();
 		$('#address_'+total+' input:text').val('');
 		
 	});
-
+	
 	/** 
 		add phone form
 	 */
 	
 	$('#phone_more a').click(function() {
 		total = $(".form_phone_box").length + 1;
-		$("#phone_more").before('<div class="form_phone_box" id="phone_'+total+'">'+$(".form_phone").html()+'<label><a class="notajax phone_less" onclick="$(\'#phone_'+total+'\').remove();">Delete Phone</a></label></div>');
+		$("#phone_more").before('<div class="form_phone_box" id="phone_'+total+'"><div class="form_phone">'+$(".form_phone").html()+'<label><a class="notajax phone_less" onclick="$(\'#phone_'+total+'\').remove();">Delete Phone</a></label></div></div>');
+		loadMask();
 		$('#phone_'+total+' input:text').val('');
 		
 	});
-
-						   
+	
+			   
 	                                                             
 
 });

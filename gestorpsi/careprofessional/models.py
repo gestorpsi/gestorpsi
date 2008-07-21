@@ -25,9 +25,9 @@ class ProfessionalIdentification(models.Model):
     class Admin:
         pass
     
-class CareProfessional(Person):
+class CareProfessional(models.Model):
     professionalIdentification = models.ForeignKey(ProfessionalIdentification, edit_inline = models.TABULAR, num_in_admin=1, core=True)
-    org = models.ManyToManyField(Organization)
+    person = models.OneToOneField(Person)
      
      # Generic Relationship
     #content_type = models.ForeignKey(ContentType)

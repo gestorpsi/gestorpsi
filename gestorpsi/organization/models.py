@@ -19,11 +19,11 @@ class Organization(models.Model):
     email = models.EmailField('email', null=True)
     site = models.URLField('site', max_length=50, null=True)           
     
-    organization = models.ManyToManyField('self')
     phones = generic.GenericRelation(Phone, null=True)
     address = generic.GenericRelation(Address, null=True)
-                     
-     
+    organization = models.ForeignKey('self', related_name="%(class)s_related", null=True)    
+    
+                          
     def __unicode__(self):
         return self.name    
     

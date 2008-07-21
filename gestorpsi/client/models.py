@@ -1,34 +1,71 @@
 from django.db import models
-from django.newforms import ModelForm
+from gestorpsi.person.models import Person
 
-class Client(models.Model): 
-    name = models.CharField('Complete Name', max_length=200, help_text='Put your full name', core=True)
-    email = models.EmailField('e-mail')
-    birthDate = models.DateField('Birthdate', core=True)
-    active = models.BooleanField(default=True)
+class PersonLink(models.Model):
+    person = models.OneToOneField(Person)
+    relation = models.CharField(max_length=10)
+    responsible = models.BooleanField(default=False)
     def __unicode__(self):
-        return self.name
-    class Meta:
-        ordering = ['name']
-    class Admin:
-        pass
+        return u"%s" % self.person.firstName
 
-class ClientForm(ModelForm):
-    class Meta:
-        model = Client
-        exclude = ('active')
-
-class Phone(models.Model):
-    area = models.CharField('Area Code',max_length=2, core=True)
-    phoneNumber = models.CharField('Phone Number', max_length=8, core=True)
-    ext = models.CharField('Extension', max_length=4, blank=True)
-    client = models.ForeignKey(Client, edit_inline=models.TABULAR, num_in_admin=1)
+class Client(models.Model):
+    person = models.OneToOneField(Person)
+    idRecord = models.CharField(max_length=10)
+    legacyRecord = models.CharField(max_length=10)
+    healthDocument = models.CharField(max_length=10)
+    indication = models.CharField(max_length=10)
+    clientStatus = models.CharField(max_length=10)
+    personLink = models.ManyToManyField(PersonLink)
     def __unicode__(self):
-        return "(%s) %s" % (self.area, self.phoneNumber)
-    class Admin:
-        pass
+        return u"%s" % self.person.firstName
 
-class PhoneForm(ModelForm):
-    class Meta:
-        model = Phone
-        exclude = ('client')
+"""
+Testes do Models no shell de Cliente e seus vinculos
+
+from gestorpsi.person.models import Person
+from gestorpsi.client.models import Client, PersonLink
+
+# Seleciona algumas pessoas ja existentes
+p1 = Person.objects.get(pk=1)
+p2 = Person.objects.get(pk=2)
+p3 = Person.objects.get(pk=3)
+
+# Cria um Cliente
+c = Client()
+c.idRecord = '1234'
+c.legacyRecord = '1234'
+c.healthDocument = '1234'
+c.indication = 'ninguem'
+c.clientStatus = 'ativo'
+c.person = p1
+c.save()
+
+# Cria o primeiro vinculo
+l1 = PersonLink()
+l1.relation = 'pai'
+l1.responsible = True
+l1.person = p2
+l1.save()
+
+# Cria o segundo vinculo
+l2 = PersonLink()
+l2.relation = 'mae'
+l2.responsible = True
+l2.person = p3
+l2.save()
+
+# Nao precisa chamar save()
+c.personLink.add(l1)
+c.personLink.add(l2)
+
+# Lista todos os vinculos do Cliente
+from gestorpsi.client.models import Client
+c = Client.objects.get(pk=1)
+c.personLink.all()
+
+# Lista quem esta vinculado a uma pessoa X
+from gestorpsi.client.models import PersonLink
+p = PersonLink.objects.get(pk=1)
+p.client_set.all()
+
+"""

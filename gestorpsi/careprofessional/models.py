@@ -100,4 +100,6 @@ class CareProfessional(models.Model):
     person = models.OneToOneField(Person)
     comments = models.CharField('comments',max_length=200, core=True)
      
+    class Admin:
+       pass
     

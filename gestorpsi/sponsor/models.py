@@ -3,8 +3,15 @@ from django.newforms import ModelForm
 from django.contrib.contenttypes import generic
 from gestorpsi.phone.models import Phone
 from gestorpsi.person.models import Person
+from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Country, City, Address
 
+
+class TaxWithHold(models.Model):
+    description = models.CharField(max_length=50)
+    def __unicode__(self):
+        return u"%s" % self.description
+    class Admin: pass
 
 
 class Sponsor(models.Model):
@@ -13,10 +20,14 @@ class Sponsor(models.Model):
     healthRegion = models.CharField('healthRegion',max_length=10, null=True)
     bankBranch = models.CharField('bankBranch',max_length=10, null=True)
     account = models.CharField('account',max_length=15, null=True)
-    taxWithHold = models.CharField('taxWithHold',max_length=20, null=True)
+    
+    taxWithHold = models.OneToOneField(TaxWithHold, null=True)
         
     phones = generic.GenericRelation(Phone, null=True)
-    address = generic.GenericRelation(Address, null=True)        
+    address = generic.GenericRelation(Address, null=True) 
+    emails  = generic.GenericRelation(Email, null=True)
+    sites = generic.GenericRelation(Site, null=True)
+    instantMessengers =generic.GenericRelation(InstantMessenger, null=True)       
     
                           
     def __unicode__(self):

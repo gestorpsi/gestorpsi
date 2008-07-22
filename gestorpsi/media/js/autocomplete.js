@@ -13,19 +13,21 @@
 // global variables
 var acListTotal   =  0;
 var acListCurrent = -1;
-var acDelay		  = 500;
+var acDelay		  = 0;
 var acURL		  = null;
 var acSearchId	  = null;
 var acResultsId	  = null;
 var acSearchField = null;
 var acResultsDiv  = null;
+acSetValueOn	  = null;
 
-function setAutoComplete(field_id, results_id, get_url){
+function setAutoComplete(field_id, results_id, get_url, field_id_real){
 
 	// initialize vars
 	acSearchId  = "#" + field_id;
 	acResultsId = "#" + results_id;
 	acURL 		= get_url;
+	acSetValueOn= "#" + field_id_real;
 
 	// create the results div
 	$("body").append('<div id="' + results_id + '"></div>');
@@ -93,7 +95,8 @@ function autoComplete(lastValue)
 
 			// create a div for each result
 			for(i=0; i < ansLength; i++) {
-				newData += '<div class="unselected">' + json[i] + '</div>';
+				newData += '<div class="unselected" itemid="' + json[i][0] + '">' + json[i][1] + '</div>';
+
 			}
 
 			// update the results div
@@ -102,7 +105,7 @@ function autoComplete(lastValue)
 			
 			// for all divs in results
 			var divs = $(acResultsId + " > div");
-		
+			
 			// on mouse over clean previous selected and set a new one
 			divs.mouseover( function() {
 				divs.each(function(){ this.className = "unselected"; });
@@ -111,8 +114,10 @@ function autoComplete(lastValue)
 		
 			// on click copy the result text to the search field and hide
 			divs.click( function() {
+				$(acSetValueOn).val($(this).attr('itemid'));
 				acSearchField.val(this.childNodes[0].nodeValue);
 				clearAutoComplete();
+				
 			});
 
 		} else {

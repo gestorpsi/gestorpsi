@@ -1,7 +1,21 @@
 $(document).ready(function(){
 	
 	/**
-	 * table itens change class (zebra)
+	 * 
+	 *  rows table switch classes
+	 * 
+	 * _description:
+	 * 
+	 *  change classes rows in a table
+	 * 
+	 * 	tables must to have 'zebra' class
+	 *
+	 *	eg.: 
+	 * 		<table class="zebra">
+	 * 			<tr><td>Hello Baby!</td></tr>
+	 * 			<tr><td>You know what i like!</td></tr>
+	 * 		</table>
+	 * 
 	 */
 	
 	$('table.zebra tr:odd').addClass('zebra_0');
@@ -9,7 +23,18 @@ $(document).ready(function(){
 	
 	
 	/**
-	* GLOBAL: AjaxLink: load content inside div core
+	* 
+	* ajaxlink
+	* 
+	* _description:
+	* 
+	* load content inside the div "core"
+	* 
+	* to exclude this function, in your personalized links, define 'notajax' as class in your <a> tag.
+	*   
+	* eg.:
+	* 	<a class="notajax" href="http://disneyland.disney.go.com/">I'm an ajaxless link!</a>
+	* 
 	*/
 	
 	$("#core a:not(.notajax)").each(function(){
@@ -31,7 +56,11 @@ $(document).ready(function(){
 
 
 	/**
-	 * client (customers): show menu options
+	 * client (customers)
+	 * 
+	 * _description:
+	 * 
+	 * show menu options
 	 */
 	
 	$("#main_area span#client_add_infotypes").each(function(){
@@ -44,6 +73,11 @@ $(document).ready(function(){
 	
 	/** 
 	 * jQuery UI DatePicker
+	 * 
+	 * _description:
+	 * 
+	 * load calendar
+	 * 
 	 */
 	
 	$('.birthdate').datepicker({ dateFormat: 'dd/mm/yy', changeYear: true, yearRange: '-120:+0', duration: 'fast' });

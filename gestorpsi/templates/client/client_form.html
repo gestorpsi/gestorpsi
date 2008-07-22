@@ -70,15 +70,16 @@
 		<a id="female" class="notajax gender{% ifequal person.gender 'F' %} active{% endifequal %}" value="F"><span>{% trans "Female" %}</span></a>
 
 		<a class="clips notajax" >{% trans "Photo" %}</a>
-		<input type="hidden" name="photo" value="{{ person.photo }}" id="id_photo">
+		<input type="hidden" name="photo" value="{{ person.photo }}" id="id_photo" />
 		<a href="notajax" class="delete" title="delete" onclick="$('#id_photo').val(''); $('img#img_people').attr('src', '/media/img/male_generic_photo.gif.png'); "><span>{% trans "Delete" %}</span></a>
-		<input type="hidden" name="gender" value="{{ person.gender }}" id="id_gender">
+		<input type="hidden" name="gender" value="{{ person.gender }}" id="id_gender" />
 
 	</div> 
 	
 	<!-- DELETEMEEEEEEEE ASAP!!!!!!!!!!!!!!!! -->
 	
-	<input type="hidden" name="email" value="joao@joao.com">
+	<input type="hidden" name="email" value="joao@joao.com" />
+	
 	<!--
 	People Personal Identification Form	
 	-->
@@ -156,22 +157,6 @@
 			{% endif %}
 		<label id="phone_more" class="add_to_form"><a class="notajax">{% trans "Add Phone" %}</a></label>	
 		</fieldset>
-		
-	<!-- <div id="display"></div> -->
-	
-	<!--
-	<label class="clear">DDD&nbsp;Fone<br />
-
-	<input type="text" name="area" id="id_area" class="small" value="" /></label>
-	<label>Telefone<br />
-	<input type="text" id="id_phoneNumber" class="big" name="phoneNumber" /></label>
-	<label>Tipo<br />
-	<select name="type_phone" class="small">
-		<option selected="selected">Comercial</option>
-		<option>Residencial</option>
-	</select></label>
-	
-	-->
 	
 </div>
 

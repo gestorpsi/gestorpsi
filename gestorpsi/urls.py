@@ -11,6 +11,6 @@ urlpatterns = patterns('',
     #(r'^contact/', include('gestorpsi.contact.urls')),
     (r'^place/', include('gestorpsi.place.urls')),
     (r'^client/', include('gestorpsi.client.urls')),
-    
+    (r'^address/', include('gestorpsi.address.urls')),
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'media/', 'show_indexes': True}),
 )

@@ -34,6 +34,7 @@ class AddressType(models.Model):
     class Admin: pass
 
 class Address(models.Model):
+    # Brazil Address
     addressPrefix = models.CharField(max_length=10)
     addressLine1 = models.CharField(max_length=50, blank=True)
     addressLine2 = models.CharField(max_length=50, blank=True)
@@ -41,7 +42,11 @@ class Address(models.Model):
     neighborhood = models.CharField(max_length=30, blank=True)
     zipCode = models.CharField(max_length=10, blank=True)
     addressType = models.ForeignKey(AddressType)
-    city = models.ForeignKey(City)
+    city = models.ForeignKey(City, null=True)
+    # Foreign Address
+    foreignCountry = models.ForeignKey(Country, null=True)
+    foreignState   = models.CharField(max_length=20, blank=True)
+    foreignCity    = models.CharField(max_length=50, blank=True)
     # Generic Relationship
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()

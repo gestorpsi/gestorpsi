@@ -19,9 +19,22 @@ $(document).ready(function(){
 				name: 'Please enter a valid Name'
 		},
 		submitHandler: function(form) {
-			$(form).ajaxSubmit();
-			$('#msg_area').show();
-			$('#people_actions').show();
+			var options = { 
+				success:    function(filename) { 
+					// show success alert
+					$('#msg_area, #msg_area .alert').show();
+					$('#msg_area').addClass('alert');
+					// show new options for clients
+					$('#people_actions').show();
+				},
+				error: function(){
+					// show error alert
+					$('#msg_area, #msg_area .error').show();
+					$('#msg_area').addClass('error');
+				}
+			}; 
+			$(form).ajaxSubmit(options);
+
 		}
 	});
     
@@ -36,15 +49,6 @@ $(document).ready(function(){
 	 */
 	
 	$('#form_file').validate({event:"submit",
-		rules: {
-			file: {
-				required: true
-				
-			}
-		  },
-		messages: {
-			file: 'Please enter a valid file'
-		},
 		submitHandler: function(form) {
 			var options = { 
 				success:    function(filename) { 
@@ -206,7 +210,7 @@ $(document).ready(function(){
 	// we must to 'reload' auto-complete function, when a field text is drawed by some javascript function 
 	
 	function reloadautocomplete() {
-		$('.city_search').unbind().autocomplete();
+		$('.city_search').unbind().autocomplete(); // necessary for IE6
 		$('.city_search').autocomplete("/address/search/city/", {
 			width: 355,
 			selectFirst: true,

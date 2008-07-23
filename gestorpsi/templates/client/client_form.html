@@ -1,13 +1,19 @@
 {% load i18n %}
 {% include "core/ajax_page.html" %}
 
-<div id="msg_area" class="alert" style="display:none"><!-- ou class="error" ou sem classe -->
-{% if not client.id %}
-	{% trans "Client added successful!" %}
-{% else %}
-	{% trans "Client saved successful!" %}
-{% endif %}
+<div id="msg_area" style="display:none"><!-- ou class="error" ou sem classe -->
+	<div class="alert" style="display:none">
+		{% if not client.id %}
+			{% trans "Client added successful!" %}
+		{% else %}
+			{% trans "Client saved successful!" %}
+		{% endif %}
+	</div>
+	<div class="error" style="display:none">
+		{% trans "Error adding new Client!" %}
+	</div>
 </div>
+
 <h2 id="title_addressbook" style="display:none"></h2>
 
 {% if client.id %}

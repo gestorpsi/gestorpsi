@@ -206,6 +206,7 @@ $(document).ready(function(){
 	// we must to 'reload' auto-complete function, when a field text is drawed by some javascript function 
 	
 	function reloadautocomplete() {
+		$('.city_search').unbind().autocomplete();
 		$('.city_search').autocomplete("/address/search/city/", {
 			width: 355,
 			selectFirst: true,

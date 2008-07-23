@@ -34,13 +34,14 @@
 			</select>
 			</label>
 			
-			<div id="address_autocomplete_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
+			<div class="address_autocomplete" id="address_autocomplete_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
+			
 				<label>{% trans "City (Region)" %}<br />
 				<input type="text" class="city_search big" value=""  />
 				</label>
 				
 				<!-- 
-				don't remove this label !!!!
+				don't remove and dont change the position of this label !!!!
 				this receive the id of the city when selected
 				-->
 				<label style="display:none;"><br />
@@ -49,9 +50,14 @@
 			
 			</div>
 			
-			<div id="address_noautocomplete_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}" style="display:none">
+			<div class="address_noautocomplete" id="address_noautocomplete_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}" style="display:none">
+			
+				<label>{% trans "City" %}<br />
+				<input type="text" name="gringo_city" class="big" value=""  />
+				</label>
+				
 				<label>{% trans "State" %}<br />
-				<input type="text" id="id_state" class="extrasmall" value="" />
+				<input type="text" name="gringo_state" id="id_state" class="extrasmall" value="" />
 				</label>
 			
 			</div>

@@ -173,6 +173,7 @@ $(document).ready(function(){
 		$("#address_more").before('<div class="form_address_box" id="address_'+total+'"><div class="form_address">'+$(".form_address").html()+'<label><a class="notajax address_less" onclick="$(\'#address_'+total+'\').remove();">Delete Address</a></label></div></div>');
 		reloadmask('#address_'+total);
 		reloadautocomplete();
+		reloadCountries()
 		$('#address_'+total+' input:text').val('');
 		
 	});
@@ -219,26 +220,32 @@ $(document).ready(function(){
 		});
 	}
 	
-	// load auto-complete for the first tag address 
-	reloadautocomplete()
+	reloadautocomplete() // load auto-complete for the first tag address 
 		
 	
 	/** 
+	 * other countries address, not registered in database
+	 * 
 	 * if another country is selected, change form fields ..
 	 * 
-	 * !! NOT FINISHED
-	 * 
 	 */
+	 
+	function reloadCountries() {
+		$('form select.country').change(function() {
+			selectField = $(this);
+			var form_address_div_id = selectField.parents("div.form_address_box:first").attr("id");
+						
+			if(selectField.val() == 33) { // Brazil
+				$('#'+form_address_div_id+' div.address_noautocomplete').hide();
+				$('#'+form_address_div_id+' div.address_autocomplete').show();
+			} else {
+				$('#'+form_address_div_id+' div.address_autocomplete').hide();
+				$('#'+form_address_div_id+' div.address_noautocomplete').show();
+			}
+			});
+	}
 	
-	$('form select.country').change(function() {
-		select = $(this);
-		//alert($('select + div').attr('id'));
-		//alert(select.parent().next().find("div").attr('id'));
-		if(option.val() == 33) {
-		}
-		});
-	
-	   
+	reloadCountries(); // load countries select for the first tag address 
 	   
 	
 

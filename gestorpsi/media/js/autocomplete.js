@@ -13,7 +13,7 @@
 // global variables
 var acListTotal   =  0;
 var acListCurrent = -1;
-var acDelay		  = 0;
+var acDelay		  = 500;
 var acURL		  = null;
 var acSearchId	  = null;
 var acResultsId	  = null;

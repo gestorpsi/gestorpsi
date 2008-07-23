@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	
+
 	/**
 	 * 
 	 *  rows table switch classes

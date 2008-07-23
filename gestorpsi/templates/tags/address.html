@@ -11,28 +11,51 @@
 			</label>
 			
 			<label>{% trans "Number" %}<br />
-			<input type="text" class="extrasmall" name="number" value="" />
+			<input type="text" class="small" name="number" value="" />
 			</label>
 			
 			<label>{% trans "Aditional" %}<br />
 			<input type="text" class="small" name="addressLine2" value="" />
 			</label>		
 			
-			<label>{% trans "ZIP Code" %}<br />
-			<input type="text" class="small" value="" />
-			</label>
-			
 			<label>{% trans "Neighborhood" %}<br />
-			<input type="text" class="medium" name="neighborhood" value="" />
+			<input type="text" class="big" name="neighborhood" value="" />
 			</label>
 			
-			<label>{% trans "City" %}<br />
+			<label>{% trans "ZIP Code" %}<br />
 			<input type="text" class="medium" value="" />
 			</label>
-
-			<label>{% trans "State" %}<br />
-			<input type="text" class="extrasmall" value="" />
+			
+			<label>{% trans "Country" %}<br />
+			<select name="country" class="select country">
+			{% for country in countries %}
+				<option value="{{ country.id }}" {% if not client.id %}{% ifequal country.id 33%}selected{% endifequal %}{% endif %}>{{ country.name }}</option>
+			{% endfor %}
+			</select>
 			</label>
+			
+			<div id="address_autocomplete_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
+				<label>{% trans "City (Region)" %}<br />
+				<input type="text" class="city_search big" value=""  />
+				</label>
+				
+				<!-- 
+				don't remove this label !!!!
+				this receive the id of the city when selected
+				-->
+				<label style="display:none;"><br />
+				<input type="hidden" class="small" name="city" value="" id="id_city" />
+				</label>
+			
+			</div>
+			
+			<div id="address_noautocomplete_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}" style="display:none">
+				<label>{% trans "State" %}<br />
+				<input type="text" id="id_state" class="extrasmall" value="" />
+				</label>
+			
+			</div>
+	
 
 			<label>{% trans "Type" %}<br />
 			<select name="type_addrs" class="small">

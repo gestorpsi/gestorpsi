@@ -148,7 +148,7 @@ $(document).ready(function(){
 	// we must to 'reload' mask function, when a field text is drawed by some javascript function 
 	// see: address form, phone form
 	
-	function automaskme(pattern) {
+	function reloadmask(pattern) {
 		$("form "+pattern+" input:text").each(function(){
 			var field = $(this);
 			if(field.attr('mask')) {
@@ -171,7 +171,8 @@ $(document).ready(function(){
 	$('#address_more a').click(function() {
 		total = $(".form_address_box").length + 1;
 		$("#address_more").before('<div class="form_address_box" id="address_'+total+'"><div class="form_address">'+$(".form_address").html()+'<label><a class="notajax address_less" onclick="$(\'#address_'+total+'\').remove();">Delete Address</a></label></div></div>');
-		automaskme('#address_'+total);
+		reloadmask('#address_'+total);
+		reloadautocomplete();
 		$('#address_'+total+' input:text').val('');
 		
 	});
@@ -189,7 +190,7 @@ $(document).ready(function(){
 	$('#phone_more a').click(function() {
 		total = $(".form_phone_box").length + 1;
 		$("#phone_more").before('<div class="form_phone_box" id="phone_'+total+'"><div class="form_phone">'+$(".form_phone").html()+'<label><a class="notajax phone_less" onclick="$(\'#phone_'+total+'\').remove();">Delete Phone</a></label></div></div>');
-		automaskme('#phone_'+total);
+		reloadmask('#phone_'+total);
 		$('#phone_'+total+' input:text').val('');
 		
 	});
@@ -200,10 +201,48 @@ $(document).ready(function(){
 	 * 
 	 */
 	
-	$(function(){
-		if($('#city_search')) 
-	    	setAutoComplete("city_search", "city_search_list", "/address/search/city/", "city");
-	});
+	
+	// we must to 'reload' auto-complete function, when a field text is drawed by some javascript function 
+	
+	function reloadautocomplete() {
+		$('.city_search').autocomplete("/address/search/city/", {
+			width: 355,
+			selectFirst: true,
+			minChars: 3
+		});
+		$(".city_search").result(function(event, data, formatted) {
+			// set city id to the hidden field
+			if (data) {
+				$(this).parent().next().find("input:hidden").val(data[1]);
+			}
+			//alert($('#id_city').val());
+		});
+	}
+	
+	// load auto-complete for the first tag address 
+	reloadautocomplete()
+		
+	
+	/** 
+	 * if another country is selected, change form fields ..
+	 * 
+	 * !! NOT FINISHED
+	 * 
+	 */
+	
+	$('form select.country').change(function() {
+		select = $(this);
+		//alert($('select + div').attr('id'));
+		//alert(select.parent().next().find("div").attr('id'));
+		if(option.val() == 33) {
+		}
+		});
+	
+	   
+	   
+	
+
+  
 
 
 });

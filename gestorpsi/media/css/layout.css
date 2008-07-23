@@ -774,7 +774,7 @@ margin-top: 0px;
 
 .form_address_box.first {
 border-bottom: 0px solid #cccccc;
-margin-bottom: 140px;
+margin-bottom: 210px;
 }
 
 
@@ -789,3 +789,6 @@ border-bottom: 0px solid #cccccc;
 margin-bottom: 10px;
 }
 
+select.country {
+width: 150px;
+}

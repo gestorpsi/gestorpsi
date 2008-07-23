@@ -110,6 +110,7 @@ INSTALLED_APPS = (
     'gestorpsi.person',
     'gestorpsi.document',
     'gestorpsi.internet',
+    'gestorpsi.upload',
     'gestorpsi.frontend', #load at last
 )
 

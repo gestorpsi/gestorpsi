@@ -1,16 +1,26 @@
 from django.http import HttpResponse, Http404 
 from gestorpsi.address.models import City
-#from django.core import serializers
-#from django.utils import simplejson
 
 def search_city(request, city_name):
-    cidades = City.objects.filter(name__istartswith = city_name)
-    resultado = "["
-    for cidade in cidades:
-        resultado += "[%s,\"%s (%s)\"]," % (cidade.id, cidade.name, cidade.state.shortName)
-    resultado += "]"        
-    return HttpResponse("%s" % resultado)
+    result = ""
+    if len(city_name) >= 3:
+        cities = City.objects.filter(name__istartswith = city_name)
+        for city in cities:
+            result += "%s (%s)|%s|\n" % (city.name, city.state.shortName, city.id)
+        #result = "["
+        #for city in cities:
+        #    result += "[%s,\"%s (%s)\"]," % (city.id, city.name, city.state.shortName)
+        #result += "]" 
+    return HttpResponse("%s" % result)
 
-    #data1 = serializers.serialize("json", City.objects.filter(name__istartswith = city_name), ensure_ascii=False)
-    #data2 = serializers.serialize("json", City.objects.filter(name__istartswith = city_name), fields=('id','name'), ensure_ascii=False)
-    #return HttpResponse(data1, mimetype="text/javascript")
+#def select_city(request, city_id):
+#    city = City.objects.get(pk=city_id)
+#    return HttpResponse("[[\"%s\",\"%s\"]]" % (city.id, city.name))
+#
+#def select_state(request, city_id):
+#    city = City.objects.get(pk=city_id)
+#    return HttpResponse("[[\"%s\",\"%s\"]]" % (city.state.id, city.state.shortName))
+#
+#def select_country(request, city_id):
+#    city = City.objects.get(pk=city_id)
+#    return HttpResponse("[[\"%s\",\"%s\"]]" % (city.state.country.id, city.state.country.name))

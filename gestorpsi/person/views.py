@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django import newforms as forms
 from gestorpsi.person.models import Person, PersonForm
 from gestorpsi.phone.models import Phone
+from gestorpsi.address.models import Country, City, Address, AddressType
 
 def phoneList(areas, numbers, exts, types):
     total = len(numbers)
@@ -32,15 +33,31 @@ def save(request, person_id=0):
         person = Person()
     person.name = request.POST['name']
     person.nickname = request.POST['nickname']
-    person.photo = request.POST['photo']
+    #person.photo = request.POST['photo']
     person.email = request.POST['email']
     person.birthDate = request.POST['birthDate']
-    person.gender = Gender.objects.get(pk = request.POST['gender'])
+    person.gender = request.POST['gender']
     person.maritalStatus = MaritalStatus.objects.get(pk = request.POST['maritalStatus'])
     person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])    
     person.active = request.POST['active']
+    person.address.addressPrefix = request.POST['addressPrefix']
+    person.address.addressLine1 = request.POST['addressLine1']
+    person.address.addressLine2 = request.POST['addressLine2']
+    person.address.addressNumber = request.POST['addressNumber']
+    person.address.neighborhood = request.POST['neighborhood']
+    person.address.zipCode = request.POST['zipCode']
+    person.address.addressType = AddressType.objects.get(pk=request.POST['addressType'])
     
+    if (request.POST['city']==""):
+        person.address.foreignCountry = Country.objects.get(pk= request.POST['country']) 
+        person.address.foreignState = request.POST['state']
+        person.address.foreignCity = request.POST['city']
+    else:
+        person.address.foreignCountry = Country.objects.get(pk= request.POST['country'])        
+        person.address.city = City.objects.get(pk= request.POST['city'])
+        
     person.save()
+    
     person.phones.all().delete()
     for phone in phoneList(request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType')):
         phone.content_object = person

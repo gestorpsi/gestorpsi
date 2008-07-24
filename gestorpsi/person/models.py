@@ -6,11 +6,8 @@ from gestorpsi.address.models import Country, City, Address
 from gestorpsi.document.models import Document
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 
-class Gender(models.Model):
-    description = models.CharField(max_length=15)
-    def __unicode__(self):
-        return u"%s" % self.description
-    class Admin: pass
+   
+Gender = ( ('0','No Information'),('1','Female'), ('2','Male'))    
 
 class MaritalStatus(models.Model):
     description = models.CharField(max_length=20)
@@ -25,7 +22,7 @@ class Person(models.Model):
     photo = models.ImageField('Photo', upload_to="client_photos", null=True)
     birthDate = models.DateField('Birthdate', null=True)
     birthPlace = models.ForeignKey(City, null=True)
-    gender = models.ForeignKey(Gender, null=True)
+    gender = models.CharField(max_length=1, choices=Gender) 
     maritalStatus = models.ForeignKey(MaritalStatus, null=True)   
     # Reduntante pois ja temos birthPlace
     # nationality = models.ForeignKey(Country)

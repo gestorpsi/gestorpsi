@@ -1,0 +1,23 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+</head>
+<body>
+
+ 	<form method="post" action="{% url gestorpsi.person.views.save %}">
+        <table>
+            {% for field in person %}
+            <h3>{{ field.label_tag }}</h3>
+            {{ field }}
+            {% endfor %}
+        </table>        
+        
+        <br> 
+              
+        
+        <input type="submit" name="submit" value="Adicionar" />
+    </form>
+
+</body>
+</html>

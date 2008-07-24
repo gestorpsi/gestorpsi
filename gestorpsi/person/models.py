@@ -1,4 +1,5 @@
 from django.db import models
+from django.newforms import ModelForm
 from django.contrib.contenttypes import generic
 from gestorpsi.phone.models import Phone
 from gestorpsi.address.models import Country, City, Address
@@ -38,8 +39,14 @@ class Person(models.Model):
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True)
     def __unicode__(self):
         return u"%s" % self.name
+    
+    class Admin: pass
     class Meta:
         ordering = ['name']
+        
+class PersonForm(ModelForm):
+    class Meta:
+        model= Person
         
 """
 Teste do Models no shell de Pessoa e suas ligacoes

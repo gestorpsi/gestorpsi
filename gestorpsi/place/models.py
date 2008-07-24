@@ -1,5 +1,6 @@
 from django.db import models
 from django.newforms import ModelForm
+from gestorpsi.organization.models import Organization
 import unittest
 
 class Address( models.Model ):
@@ -17,6 +18,8 @@ class Place( models.Model ):
    description= models.CharField( max_length= 80 )
    visible= models.BooleanField()
    address= models.ForeignKey( Address ) 
+   
+   organization = models.ForeignKey(Organization)
 
    def __unicode__(self):
       return "%s" % self.description

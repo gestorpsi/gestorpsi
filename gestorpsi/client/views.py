@@ -2,7 +2,9 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django import newforms as forms
 from gestorpsi.client.models import Client
+from gestorpsi.person.models import Person
 from gestorpsi.phone.models import Phone
+from gestorpsi.address.models import Address
 
 def phoneList(areas, numbers, exts, types):
     total = len(numbers)
@@ -18,14 +20,17 @@ def index(request):
 def form(request, client_id=0):
     try:
         phones = []
+        addresses = []
         client = get_object_or_404(Client, pk=client_id)
         person= Person.objects.filter( id__exact= client.id ).get( id= client.id )
-        for phone in client.phones.all():
+        for phone in person.phones.all():
             phones.append(phone)
+        for address in person.address.all():
+            addresses.append(address)    
     except:
         client = Client()
         person= Person()
-    return render_to_response('client/client_form.html', {'client': client, 'phones': phones, 'person': person } )
+    return render_to_response('client/client_form.html', {'client': client, 'phones': phones, 'object': person, 'addresses': addresses, } )
 
 def save(request, client_id=0):
     try:

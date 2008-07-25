@@ -16,6 +16,9 @@ class Client(models.Model):
     indication = models.CharField(max_length=10)
     clientStatus = models.CharField(max_length=10)
     personLink = models.ManyToManyField(PersonLink)
+    
+    active = models.BooleanField(default=True)
+    
     def __unicode__(self):
         return u"%s" % self.person.name
 

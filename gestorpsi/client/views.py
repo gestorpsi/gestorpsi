@@ -1,6 +1,7 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django import newforms as forms
+from gestorpsi.address.models import Country
 from gestorpsi.client.models import Client
 from gestorpsi.person.models import Person
 from gestorpsi.phone.models import Phone
@@ -30,7 +31,7 @@ def form(request, client_id=0):
     except:
         client = Client()
         person= Person()
-    return render_to_response('client/client_form.html', {'client': client, 'phones': phones, 'object': person, 'addresses': addresses, 'countries': Country.objects.all(), } )
+    return render_to_response('client/client_form.html', {'client': client, 'phones': phones, 'person': person } )
 
 def save(request, client_id=0):
     try:

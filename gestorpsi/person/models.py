@@ -25,8 +25,7 @@ class Person(models.Model):
     gender = models.CharField(max_length=1, choices=Gender) 
     maritalStatus = models.ForeignKey(MaritalStatus, null=True)   
     # Reduntante pois ja temos birthPlace
-    # nationality = models.ForeignKey(Country)
-    active = models.BooleanField(default=True)
+    # nationality = models.ForeignKey(Country)    
     
     phones = generic.GenericRelation(Phone, null=True)
     address = generic.GenericRelation(Address, null=True)

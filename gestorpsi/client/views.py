@@ -19,12 +19,13 @@ def form(request, client_id=0):
     try:
         phones = []
         client = get_object_or_404(Client, pk=client_id)
-        # colocar client.phones.all() direto no return
+        person= Person.objects.filter( id__exact= client.id ).get( id= client.id )
         for phone in client.phones.all():
             phones.append(phone)
     except:
         client = Client()
-    return render_to_response('client/client_form.html', {'client': client, 'phones': phones, 'person': client } )
+        person= Person()
+    return render_to_response('client/client_form.html', {'client': client, 'phones': phones, 'person': person } )
 
 def save(request, client_id=0):
     try:

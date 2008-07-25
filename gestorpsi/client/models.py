@@ -17,7 +17,7 @@ class Client(models.Model):
     clientStatus = models.CharField(max_length=10)
     personLink = models.ManyToManyField(PersonLink)
     def __unicode__(self):
-        return u"%s" % self.person.firstName
+        return u"%s" % self.person.name
 
 """
 Testes do Models no shell de Cliente e seus vinculos

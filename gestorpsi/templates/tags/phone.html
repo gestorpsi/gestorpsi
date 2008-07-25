@@ -21,7 +21,7 @@
 		</select></label>
 	</div>
 </div>
-{% if client.id %}
+{% if object.id %}
 <label><a class="notajax phone_less" onclick="$('#phone_{{ forloop.counter }}').remove(); $(this).remove()">{% trans "Delete Phone" %}</a></label>
 {% endif %}
 

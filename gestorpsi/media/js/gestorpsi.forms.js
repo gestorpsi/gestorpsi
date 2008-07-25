@@ -108,7 +108,6 @@ $(document).ready(function(){
 	* 
 	*/
 
-	// 
 	$('a.clips').click(function() {
 		$('#photo_form_upload_dragplace').show();
 	});

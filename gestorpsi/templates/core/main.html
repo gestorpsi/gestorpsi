@@ -52,11 +52,20 @@
 			<li><a id="addressbook" class="main_menu">{% trans "calendar" %}</a></li>
 			<li><a id="customers" class="main_menu" href="/client">{% trans "clients" %}</a></li>
 			<li><a id="contacts" class="main_menu">{% trans "contacts" %}</a></li>
-			<li><a id="myoffice" class="main_menu">{% trans "organization" %}</a></li>
+			<li><a id="myoffice" class="main_menu">{% trans "organization" %}</a>
+				<ul style="display:none">
+					<li><a id="places">{% trans "My Organization" %}</a></li>
+					<li><a id="places">{% trans "Places" %}</a></li>
+					<li><a id="services">{% trans "Services" %}</a></li>
+					<!-- <li><a id="rooms">{% trans "Rooms" %}</a></li> -->
+					<li><a id="equipament">{% trans "Equipaments" %}</a></li>
+					<!-- <li><a id="team">{% trans "Team" %}</a></li> -->
+				</ul>
+			</li>
 		</ul>
 	</div>
 	<div id="sub_menu">
-		<ul id="sub_customers"style="display:none">
+		<ul id="sub_customers" style="display:none">
 			<li><a class="active first" href="/client">{% trans "all" %}</a></li>
 			<li><a href="/client/add">{% trans "add" %}</a></li>
 			<li><a>{% trans "search" %}</a></li>
@@ -66,7 +75,7 @@
                         <span id="sub_menu_client_extras"></span>
 		</ul>
 		
-		<ul id="sub_contacts"style="display:none">
+		<ul id="sub_contacts" style="display:none">
 			<li><a class="first active" href="/contacts/">{% trans "all" %}</a></li>
 			<li><a href="/contacts/add/">{% trans "add" %}</a></li>
 			<li><a>{% trans "search" %}</a></li>

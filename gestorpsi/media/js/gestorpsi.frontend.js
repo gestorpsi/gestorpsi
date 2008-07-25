@@ -37,36 +37,60 @@ $(document).ready(function(){
 		});
 		
 	/** menu selection */
-	$("#main_menu li a").each(function(){
+	$("#main_menu > ul > li > a").each(function(){
 	       var link = $(this);
 	       link.click(function() {
-	       		/** hide all sub_menu menu */
+	       	//alert('ok1');
+	       		// hide all sub_menu menu
 	       		$('#sub_menu ul').hide();
-	       		/** remove active from main_menu */
+	       		// remove active from main_menu
 	       		$('.main_menu').removeClass('active');
-	       		/** make active on clicked menu item */
+	       		// make active on clicked menu item
 	       		link.addClass('active');
-	       		/** show only selected */
+	       		// show only selected
 	       		$('#sub_'+link.attr('id')).show();
-	       		/** reset submenu to first option */
+	       		// reset submenu to first option
 	       		$('#sub_menu ul li a').removeClass('active');
 	       		$('#sub_menu ul li a.first').addClass('active');
+	       		
+	       		// show submenu horizontal (used in 'organization') if exists
+	       		//alert('ok1');
+	       		submenu = link.next('ul');
+	       		//alert('ok2');
+	       		//submenu.show();
+	       		//alert('ok3');
+	       		submenu.show().fadeIn();
+				
+				// hide submenu horizontal when mouse is out of sub-menu range
+				submenu_li = link.next('ul li');
+				
+				submenu_li.mouseover(function(){
+					submenu.show();
+				})
+				submenu_li.mouseout(function(){
+					submenu.hide();
+				})
+				
+				// hide submenu horizontal an item is selected
+				
+				array = submenu.children().children();
+				array.each(function() { $(this).click(function() { submenu.hide(); } ); });
+				
 			})
 		});
 		
 	/** sub menu selection */
+	
 	$("#sub_menu ul li a").each(function(){
 	       var link = $(this);
 	       link.click(function() {
-		       	/** remove active classes from sub_menu itens */
+		       	// remove active classes from sub_menu itens 
 	       		$('#sub_menu ul li a').removeClass('active');
-	       		/** make active on clicked menu item */
+	       		// make active on clicked menu item
 	       		link.addClass('active');
 			})
 		});	
-
-
-
+	
 		
 });
 

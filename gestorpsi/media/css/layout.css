@@ -128,6 +128,44 @@ div#sub_menu a.active {
 	border-bottom: none;
 
 }
+
+#myoffice.main_menu {
+width: 139px;
+}
+
+#main_menu a#places {background: url(../img/16/office.png) no-repeat 25px 4px;}
+#main_menu a#services {background: url(../img/16/games.png) no-repeat 25px 4px;}
+#main_menu a#rooms {background: url(../img/16/rooms.png) no-repeat 25px 4px;}
+#main_menu a#equipament {background: url(../img/16/stuff.png) no-repeat 25px 4px;}
+#main_menu a#team {background: url(../img/16/system-users.png) no-repeat 25px 4px;}
+
+#main_menu ul li ul {
+	display: block;
+	position: absolute;
+	top: 49px;
+	left: 356px;
+	width: 177px;
+	height: 112px;
+	background: #FCFCFC;
+	z-index: 5;
+	border-bottom: 1px solid #838383;
+	border-left: 1px solid #838383;
+	border-right: 1px solid #838383;
+	padding-top: 10px;
+}
+#main_menu ul li ul li a{
+	float: none;
+	font-weight: normal;
+	padding: 5px 3px 3px 50px;
+	border: none;
+}
+#main_menu ul li ul li a:hover{
+	float: none;
+	font-weight: normal;
+	padding: 5px 3px 4px 50px;
+	border: none;
+}
+
 #sub_menu ul.opened_tabs {
 	
 	/*para alinhar relativo a direita*/
@@ -213,6 +251,17 @@ div#sub_menu a.active {
 	background: url(../img/bg_options.gif) no-repeat;
 	cursor: pointer;
 }
+
+#main_area div.label {
+	float: left;
+	color: #916F6F;
+	font-size: 11px;
+	margin: 10px 0 0 6px;
+	line-height: 20px;
+	padding: 0
+}
+#content #main_area div[class=label] {margin-left: 12px}
+
 #help {
 	display: block;
 	float: right;

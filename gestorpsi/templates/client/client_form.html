@@ -3,7 +3,7 @@
 
 <div id="msg_area" style="display:none"><!-- ou class="error" ou sem classe -->
 	<div class="alert" style="display:none">
-		{% if not client.id %}
+		{% if not object.id %}
 			{% trans "Client added successful!" %}
 		{% else %}
 			{% trans "Client saved successful!" %}
@@ -16,8 +16,8 @@
 
 <h2 id="title_addressbook" style="display:none"></h2>
 
-{% if client.id %}
-	<h2 id="title_clients">{{ client.name }}</h2>
+{% if object.id %}
+	<h2 id="title_clients">{{ object.name }}</h2>
 	<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a> nonnoono nonono noono<br />
 	nonononoo<br />
 	<script>
@@ -26,7 +26,7 @@
 		create new tab when editing an user
 		*/
 		$('#sub_menu ul li a').removeClass('active');
-		$("#sub_menu_client_extras").html('<li><a class="active makemeajax" id="client_{{ client.id }}" href="/client/{{ client.id }}">{{ client.name }}</a></li>');
+		$("#sub_menu_client_extras").html('<li><a class="active makemeajax" id="client_{{ client.id }}" href="/person/{{ client.id }}">{{ object.name }}</a></li>');
 		
 		$(".makemeajax").each(function(){
 		var link = $(this);
@@ -59,7 +59,7 @@
 <h2 id="title_myoffice" style="display:none"></h2>
 
 
-<form action="/client/{% if client.id %}{{ client.id }}/{% endif %}save/" method="post" id="form_people">	
+<form action="/client/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_people">	
 <div id="main_area">
 
 	<a href="" id="help">&nbsp;</a>
@@ -72,19 +72,15 @@
 	</ul>
 	<div id="photo">
 		<img id="img_people" src="/media/img/male_generic_photo.gif.png" />
-		<a id="male" class="notajax gender{% ifequal person.gender 'M' %} active{% endifequal %}" value="M"><span>{% trans "Male" %}</span></a>
-		<a id="female" class="notajax gender{% ifequal person.gender 'F' %} active{% endifequal %}" value="F"><span>{% trans "Female" %}</span></a>
+		<a id="male" class="notajax gender{% ifequal object.gender '2' %} active{% endifequal %}" value="2"><span>{% trans "Male" %}</span></a>
+		<a id="female" class="notajax gender{% ifequal object.gender '1' %} active{% endifequal %}" value="1"><span>{% trans "Female" %}</span></a>
 
 		<a class="clips notajax" >{% trans "Photo" %}</a>
-		<input type="hidden" name="photo" value="{{ person.photo }}" id="id_photo" />
+		<input type="hidden" name="photo" value="{{ object.photo }}" id="id_photo" />
 		<a href="notajax" class="delete" title="delete" onclick="$('#id_photo').val(''); $('img#img_people').attr('src', '/media/img/male_generic_photo.gif.png'); "><span>{% trans "Delete" %}</span></a>
-		<input type="hidden" name="gender" value="{{ person.gender }}" id="id_gender" />
+		<input type="hidden" name="gender" value="{{ object.gender }}" id="id_gender" />
 
 	</div> 
-	
-	<!-- DELETEMEEEEEEEE ASAP!!!!!!!!!!!!!!!! -->
-	
-	<input type="hidden" name="email" value="joao@joao.com" />
 	
 	<!--
 	People Personal Identification Form	
@@ -93,16 +89,16 @@
 	<fieldset id="fieldset_personal_identification">
 		<legend>{% trans "Personal Identification" %}</legend>
 			<label>{% trans "Name" %}<br />
-			<input type="text" name="name" class="extrabig" value="{{ person.name }}" id="id_name" />
+			<input type="text" name="name" class="extrabig" value="{{ object.name }}" id="id_name" />
 			</label>
 			<label>{% trans "CPF" %}<br />
-			<input type="text" name="cpf" class="medium" value="{{ person.cpf }}" id="id_cpf" mask="999.999.999-99" />
+			<input type="text" name="cpf" class="medium" value="{{ object.cpf }}" id="id_cpf" mask="999.999.999-99" />
 			</label>
 			<label>{% trans "RG" %}<br />
-			<input type="text" name="rg" class="medium" value="{{ person.rg }}" id="id_rg" mask="99.999.999-9"/>
+			<input type="text" name="rg" class="medium" value="{{ object.identityCard }}" id="id_rg" mask="99.999.999-9"/>
 			</label>
 			<label>{% trans "Issuer" %}<br />
-			<input type="text" name="issuer" class="small" value="{{ person.issuer }}" id="id_issuer" />
+			<input type="text" name="issuer" class="small" value="{{ object.issuer }}" id="id_issuer" />
 			</label>
 	</fieldset>
 	
@@ -113,20 +109,29 @@
 	<fieldset id="fieldset_personal_profile">
 		<legend>{% trans "Personal Profile" %}</legend>
 			<label>{% trans "Birthdate" %}<br />
-			<input type="text" name="birthDate" class="calendar birthdate" value="{{ person.birthDate }}" id="id_birthDate" />
+			<input type="text" name="birthDate" class="calendar birthdate" value="{% if object.id %}{{ object.birthDate }}{% endif %}" id="id_birthDate" />
 			</label>
 			<label>{% trans "Age" %}<br />
-			<input type="text" name="age" class="extrasmall" value="{{ person.age }}" id="id_age" />
+			<input type="text" name="age" class="extrasmall" value="{{ object.age }}" id="id_age" />
 			</label>
 			<label>{% trans "Naturality" %}<br />
-			<input type="text" name="birthPlace" class="medium" value="{{ person.birthPlace }}" id="id_birthPlace" />
+			<input type="text" class="medium city_search" />
+			</label>
+			<!-- 
+				don't remove and dont change the position of this label !!!!
+				this receive the id of the city when selected
+			-->
+			<label style="display:none"><br />
+			<input type="hidden" class="small" name="birthPlace" value="{% if object.id %}{{ object.birthPlace }}{% endif %}" id="id_birthPlace" />
 			</label>
 			<label>{% trans "Region" %}<br />
-			<input type="text" name="birthRegion" class="extrasmall" value="{{ person.birthRegion }}" id="id_birthRegion" />
+			<input type="text" name="birthRegion" class="extrasmall" value="{{ object.birthRegion }}" id="id_birthRegion" />
 			</label>
+			<!--
 			<label>{% trans "Nationality" %}<br />
-			<input type="text" name="nationality" class="medium" value="{{ person.nationality }}" id="id_nationality" />
+			<input type="text" name="nationality" class="medium" value="{{ object.nationality }}" id="id_nationality" />
 			</label>
+			-->
 	</fieldset>
 	
 	
@@ -168,20 +173,20 @@
 
 <div id="sidebar">
 	<div class="bg_blue">
-		<input name="save" type="submit" value="Salvar" />
-		<input name="save" type="button" value="Cancelar" />
+		<input name="save" type="submit" value="{% trans 'Save' %}" />
+		<input name="save" type="button" value="{% trans 'Cancel' %}" />
 		
 		<div id="msg_info">
-		Apagar arquivo?
-			<p>&Uacute;ltima edi&ccedil;&atilde;o por LPanebr em 17 de 
+		{% trans "Delete Object" %}?
+			<p>{% trans 'Last revision by' %} Adminstrador {% trans 'in' %} 17 de 
 			Novembro, 2007 &agrave;s 17:36 h</p>
 
 		</div>
 	</div>
 	<div id="people_actions" style="display:none">	
-	<h3>Ações de Registro</h3>
+	<h3>{% trans 'Object Actions' %}</h3>
 	<ul>
-		<li><a href="realizar_admissao.html" id="admit">Realizar Admiss&atilde;o</a></li>
+		<li><!--<a href="realizar_admissao.html" id="admit">-->Realizar Admiss&atilde;o<!--</a>--></li>
 	</ul>
 	</div>
 </div>

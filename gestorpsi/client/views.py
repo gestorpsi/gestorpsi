@@ -35,14 +35,15 @@ def addressList(addressPrefix, addressLine1, addressLine2, addressNumber, neighb
 
 
 def index(request): 
-    return render_to_response('client/client_index.html', {'clientList': Client.objects.all().filter(active = True) })
+    return render_to_response('client/client_index.html', {'clientList': Person.objects.all() })
 
 def form(request, client_id=0):
     try:
-        phones = []
+    	phones = []
         addresses = []
-        client = get_object_or_404(Client, pk=client_id)
-        person= Person.objects.filter( id__exact= client.id ).get( id= client.id )
+        client = get_object_or_404(Person, pk=client_id)
+        #client = get_object_or_404(Client, pk=client_id)
+        #person= Person.objects.filter( id__exact= client.id ).get( id= client.id )
         for phone in person.phones.all():
             phones.append(phone)
         for address in person.address.all():
@@ -50,7 +51,7 @@ def form(request, client_id=0):
     except:
         client = Client()
         person= Person()
-    return render_to_response('client/client_form.html', {'client': client, 'phones': phones, 'person': person } )
+    return render_to_response('client/client_form.html', {'object': client, 'phones': phones, 'addresses': addresses } )
 
 
 def save(request, person_id=0):
@@ -59,13 +60,16 @@ def save(request, person_id=0):
     except Http404:
         person = Person()
     person.name = request.POST['name']
-    person.nickname = request.POST['nickname']
+    #person.nickname = request.POST['nickname']
     #person.photo = request.POST['photo']
-    person.email = request.POST['email']
-    person.birthDate = request.POST['birthDate']
+    #person.email = request.POST['email']
+    if(request.POST['birthDate']):
+        person.birthDate = request.POST['birthDate']
     person.gender = request.POST['gender']
-    person.maritalStatus = MaritalStatus.objects.get(pk = request.POST['maritalStatus'])
-    person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
+    #person.maritalStatus = MaritalStatus.objects.get(pk = request.POST['maritalStatus'])
+    if(request.POST['birthPlace']):
+        person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
+    
     person.save() 
       
 #    address = Address()
@@ -100,7 +104,7 @@ def save(request, person_id=0):
         phone.content_object = person
         phone.save()
     
-    return render_to_response('client/client_index.html', {'clientList': person.objects.all().filter(active = True) })
+    return render_to_response('client/client_index.html')
 
 
 def delete(request, client_id):

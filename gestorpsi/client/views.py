@@ -4,7 +4,7 @@ from django import newforms as forms
 from gestorpsi.client.models import Client
 from gestorpsi.person.models import Person
 from gestorpsi.phone.models import Phone
-from gestorpsi.address.models import Address
+from gestorpsi.address.models import Address, Country
 
 def phoneList(areas, numbers, exts, types):
     total = len(numbers)
@@ -30,7 +30,7 @@ def form(request, client_id=0):
     except:
         client = Client()
         person= Person()
-    return render_to_response('client/client_form.html', {'client': client, 'phones': phones, 'object': person, 'addresses': addresses, } )
+    return render_to_response('client/client_form.html', {'client': client, 'phones': phones, 'object': person, 'addresses': addresses, 'countries': Country.objects.all(), } )
 
 def save(request, client_id=0):
     try:

@@ -1,39 +1,29 @@
 from django.db import models
 from django.newforms import ModelForm
+from gestorpsi.address.models import Address
+from gestorpsi.phone.models import Phone
+from django.contrib.contenttypes import generic
 from gestorpsi.organization.models import Organization
-import unittest
 
-class Address( models.Model ):
-   street= models.CharField( max_length= 200 )
-   city= models.CharField( max_length= 80 )
-
-   def __unicode__(self):
-      return "Street: %s, City: %s" % ( self.street, self.city )
-
-   class Admin:
-      pass
-
-
+class PlaceType( models.Model ):
+    description= models.CharField( max_length= 80 )
+    
+    def __unicode__(self):
+        return "%s" % self.description
+    
 class Place( models.Model ):
-   description= models.CharField( max_length= 80 )
+   label= models.CharField( max_length= 80 )
    visible= models.BooleanField()
-   address= models.ForeignKey( Address ) 
-   
+   address= generic.GenericRelation( Address )
+   phones= generic.GenericRelation( Phone )
+   place_type= models.ForeignKey( PlaceType )
    organization = models.ForeignKey(Organization)
 
    def __unicode__(self):
-      return "%s" % self.description
-  
-   class Meta:
-       ordering = ['address']
+      return "%s" % self.label
 
    class Admin:
       pass
-
-class PlaceForm(ModelForm):
-    class Meta:
-        model= Place
-
 
 class RoomType( models.Model ):
    description= models.CharField( max_length= 45, unique= True )
@@ -44,12 +34,12 @@ class RoomType( models.Model ):
    class Admin:
       pass
 
-
 class Room( models.Model ):
    description= models.CharField( max_length= 80 )
-   size= models.IntegerField()
+   dimension= models.IntegerField()
    place= models.ForeignKey( Place, related_name= 'place' )
    room_type= models.ForeignKey( RoomType, related_name= 'room_type' )
+   furniture= models.TextField()
 
    def __unicode__(self):
       return "%s" % self.description
@@ -61,3 +51,6 @@ class RoomForm(ModelForm):
       class Meta:
           model= Room
 
+class PlaceForm(ModelForm):
+    class Meta:
+        model= Place

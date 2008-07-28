@@ -80,7 +80,7 @@ $(document).ready(function(){
 	 * 
 	 */
 	
-	$('.birthdate').datepicker({ dateFormat: 'dd/mm/yy', changeYear: true, yearRange: '-120:+0', duration: 'fast' });
+	$('.birthdate').datepicker({ dateFormat: 'yy-mm-dd', changeYear: true, yearRange: '-120:+0', duration: 'fast' });
 	
 
 });

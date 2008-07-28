@@ -22,19 +22,21 @@ def addressList(addressPrefixs, addressLines1, addressLines2, addressNumbers, ne
     for i in range(0, total):
         if (len(addressLines1[i])):
             
-            if(len(city_ids[i])<1):
-                #city_id=City.objects.get(pk=city_ids[i])
+            #Permitir que Cidade ou Pais seja em branco
+            #Do jeito que esta ocorrera uma exception  
+            if(len(city_ids[i])):
+                #city_id=City.objects.get(pk=city_ids[i])          
                 address.append(Address(addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
                                    addressNumber=addressNumbers[i], neighborhood=neighborhoods[i], zipCode=zipCodes[i],
                                    addressType=AddressType.objects.get(pk=addressTypes[i]),                                   
-                                   foreignCountry=country_ids[i],
+                                   foreignCountry=Country.objects.get(pk=country_ids[i]),
                                    foreignState=stateChars[i],
                                    foreignCity=cityChars[i]))
             else:
                 address.append(Address(addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
                                    addressNumber=addressNumbers[i], neighborhood=neighborhoods[i], zipCode=zipCodes[i],
                                    addressType=AddressType.objects.get(pk=addressTypes[i]),
-                                   city = city_ids[i]))                            
+                                   city = City.objects.get(pk=city_ids[i])))                            
             
     return address
 

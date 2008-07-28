@@ -22,20 +22,19 @@ def addressList(addressPrefixs, addressLines1, addressLines2, addressNumbers, ne
     for i in range(0, total):
         if (len(addressLines1[i])):
             
-            if(len(city_ids[i])):
-                city_id=City.objects.get(pk=city_ids[i])
-                
-            if(len(country_ids[i])):
-                country_id=Country.objects.get(pk=country_ids[i])
-
-            address.append(Address(addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
+            if(len(city_ids[i])<1):
+                #city_id=City.objects.get(pk=city_ids[i])
+                address.append(Address(addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
                                    addressNumber=addressNumbers[i], neighborhood=neighborhoods[i], zipCode=zipCodes[i],
-                                   addressType=AddressType.objects.get(pk=addressTypes[i]),
-                                   city = city_id,
-                                   foreignCountry=country_id,
+                                   addressType=AddressType.objects.get(pk=addressTypes[i]),                                   
+                                   foreignCountry=country_ids[i],
                                    foreignState=stateChars[i],
                                    foreignCity=cityChars[i]))
-
+            else:
+                address.append(Address(addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
+                                   addressNumber=addressNumbers[i], neighborhood=neighborhoods[i], zipCode=zipCodes[i],
+                                   addressType=AddressType.objects.get(pk=addressTypes[i]),
+                                   city = city_ids[i]))                            
             
     return address
 
@@ -62,6 +61,7 @@ def form(request, object_id=0):
 
 
 def save(request, object_id=0):
+    test=" "
     try:
         object = get_object_or_404(Person, pk=object_id)
     except Http404:

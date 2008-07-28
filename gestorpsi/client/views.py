@@ -44,13 +44,13 @@ def form(request, client_id=0):
         client = get_object_or_404(Person, pk=client_id)
         #client = get_object_or_404(Client, pk=client_id)
         #person= Person.objects.filter( id__exact= client.id ).get( id= client.id )
-        for phone in person.phones.all():
+        for phone in client.phones.all():
             phones.append(phone)
-        for address in person.address.all():
+        for address in client.address.all():
             addresses.append(address)    
     except:
-        client = Client()
-        person= Person()
+        #client = Client()
+        client= Person()
     return render_to_response('client/client_form.html', {'object': client, 'phones': phones, 'addresses': addresses } )
 
 

@@ -17,7 +17,6 @@ class MaritalStatus(models.Model):
 
 class Person(models.Model):
     name = models.CharField('Name', max_length=60)
-    #lastName = models.CharField('Name', max_length=30)
     nickname = models.CharField('Nickname', max_length=20, null=True)
     photo = models.ImageField('Photo', upload_to="client_photos", null=True)
     birthDate = models.DateField('Birthdate', null=True)

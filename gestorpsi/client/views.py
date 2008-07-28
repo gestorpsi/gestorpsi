@@ -20,7 +20,7 @@ def addressList(addressPrefix, addressLine1, addressLine2, addressNumber, neighb
     address = []
     for i in range(0, total):
         if (len(addressLine1[i])):
-            address.append(Address(addressPrefix=addressPrefix[i], addressLine1=addressLine1[i], addressLine2=addressLine2[1], 
+            address.append(Address(addressPrefix=addressPrefix[i], addressLine1=addressLine1[i], addressLine2=addressLine2[i], 
                                    addressNumber=addressNumber[i], neighborhood=neighborhood[i], zipCode=zipCode[i],                                    
                                    stateChar=stateChar[i], cityChar=cityChar[i]))
             if(len(addressType[i])):
@@ -51,7 +51,7 @@ def form(request, object_id=0):
     except:
         #client = Client()
         object= Person()
-    return render_to_response('client/client_form.html', {'object': object, 'phones': phones, 'addresses': addresses } )
+    return render_to_response('client/client_form.html', {'object': object, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all() } )
 
 
 def save(request, object_id=0):
@@ -68,7 +68,7 @@ def save(request, object_id=0):
     object.gender = request.POST['gender']
     #person.maritalStatus = MaritalStatus.objects.get(pk = request.POST['maritalStatus'])
     if(request.POST['birthPlace']):
-        object.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
+       object.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
     
     object.save() 
       

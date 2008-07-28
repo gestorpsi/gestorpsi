@@ -15,20 +15,27 @@ def phoneList(areas, numbers, exts, types):
     return phones
 
 
-def addressList(addressPrefix, addressLine1, addressLine2, addressNumber, neighborhood, zipCode, addressType, city_id, country_id, stateChar, cityChar):
-    total = len(addressLine1)
+def addressList(addressPrefixs, addressLines1, addressLines2, addressNumbers, neighborhoods, zipCodes, addressTypes, city_ids, country_ids, stateChars, cityChars):
+    total = len(addressLines1)
     address = []
+    
     for i in range(0, total):
-        if (len(addressLine1[i])):
-            address.append(Address(addressPrefix=addressPrefix[i], addressLine1=addressLine1[i], addressLine2=addressLine2[i], 
-                                   addressNumber=addressNumber[i], neighborhood=neighborhood[i], zipCode=zipCode[i],                                    
-                                   stateChar=stateChar[i], cityChar=cityChar[i]))
-            if(len(addressType[i])):
-               addressType=AddressType.objects.get(pk=addressType[i])
-            if(len(city_id[i])):
-                city_id=City.objects.get(pk=city_id[i])
-            if(len(country_id[i])):
-                country_id=Country.objects.get(pk=country_id[i])
+        if (len(addressLines1[i])):
+            
+            if(len(city_ids[i])):
+                city_id=City.objects.get(pk=city_ids[i])
+                
+            if(len(country_ids[i])):
+                country_id=Country.objects.get(pk=country_ids[i])
+
+            address.append(Address(addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
+                                   addressNumber=addressNumbers[i], neighborhood=neighborhoods[i], zipCode=zipCodes[i],
+                                   addressType=AddressType.objects.get(pk=addressTypes[i]),
+                                   city = city_id,
+                                   foreignCountry=country_id,
+                                   foreignState=stateChars[i],
+                                   foreignCity=cityChars[i]))
+
             
     return address
 
@@ -88,7 +95,7 @@ def save(request, object_id=0):
 #        person.address.foreignCountry = Country.objects.get(pk= request.POST['country'])        
 #        person.address.city = City.objects.get(pk= request.POST['city'])
    
-   
+    
     object.address.all().delete()
     for address in addressList(request.POST.getlist('addressPrefix'), request.POST.getlist('addressLine1'), 
                                request.POST.getlist('addressLine2'), request.POST.getlist('addressNumber'),

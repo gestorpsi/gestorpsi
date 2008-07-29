@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('gestorpsi.place.views',
     (r'^$', 'index' ),
+    (r'^(?P<object_id>\d+)/$', 'form'),
     (r'^add/$', 'add'),
     (r'^save/$', 'save'),
     (r'^delete/(\d+)$', 'delete'),

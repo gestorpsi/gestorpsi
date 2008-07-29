@@ -17,7 +17,7 @@ class Place( models.Model ):
    address= generic.GenericRelation( Address )
    phones= generic.GenericRelation( Phone )
    place_type= models.ForeignKey( PlaceType )
-   organization = models.ForeignKey(Organization)
+   organization = models.ForeignKey(Organization, null= True)
 
    def __unicode__(self):
       return "%s" % self.label

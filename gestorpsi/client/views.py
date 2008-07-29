@@ -48,10 +48,9 @@ def index(request):
 
 def form(request, object_id=0):
     try:
-    	phones = []
+        phones = []
         addresses = []
-        object = get_object_or_404(Person, pk=object_id)
-        #client = get_object_or_404(Client, pk=object_id)
+        object = get_object_or_404(Person, pk=object_id)        
         #person= Person.objects.filter( id__exact= client.id ).get( id= client.id )
         for phone in object.phones.all():
             phones.append(phone)
@@ -63,14 +62,13 @@ def form(request, object_id=0):
     return render_to_response('client/client_form.html', {'object': object, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all() } )
 
 
-def save(request, object_id=0):
-    test=" "
+def save(request, object_id=0):    
     try:
         object = get_object_or_404(Person, pk=object_id)
     except Http404:
         object = Person()
     object.name = request.POST['name']
-    person.nickname = request.POST['nickname']
+    object.nickname = request.POST['nickname']
     #person.photo = request.POST['photo']   
     if(request.POST['birthDate']):
         object.birthDate = request.POST['birthDate']
@@ -83,7 +81,7 @@ def save(request, object_id=0):
     
     email = Email()
     email.email=request.POST['email']
-    if(request.POST['email_type']==""):
+    if(len(request.POST['email_type'])):
         email.email_type=EmailType.objects.get(pk=1)
     else:
         email.email_type=EmailType.objects.get(pk=request.POST['email_type'])

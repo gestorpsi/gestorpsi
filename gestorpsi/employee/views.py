@@ -114,7 +114,7 @@ def save(request, object_id=0):
     object.person = person
     object.save()
     
-    return render_to_response('employee/employee_index.html')
+    return render_to_response('employee/employee_index.html', {'employeeList': Employee.objects.all().filter(active = True) })
 
 
 def delete(request, object_id):

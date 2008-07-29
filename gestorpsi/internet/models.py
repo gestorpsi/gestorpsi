@@ -7,6 +7,7 @@ class EmailType(models.Model):
     description= models.CharField( max_length= 45 )
     def __unicode__(self):
         return self.description
+    class Admin: pass
 
 class Email(models.Model):
     email= models.EmailField(blank=True)

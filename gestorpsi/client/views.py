@@ -5,6 +5,7 @@ from gestorpsi.client.models import Client
 from gestorpsi.person.models import Person, PersonForm
 from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.address.models import Country, City, Address, AddressType
+from gestorpsi.internet.models import Email, EmailType
 
 def phoneList(areas, numbers, exts, types):
     total = len(numbers)
@@ -69,9 +70,8 @@ def save(request, object_id=0):
     except Http404:
         object = Person()
     object.name = request.POST['name']
-    #person.nickname = request.POST['nickname']
-    #person.photo = request.POST['photo']
-    #person.email = request.POST['email']
+    person.nickname = request.POST['nickname']
+    #person.photo = request.POST['photo']   
     if(request.POST['birthDate']):
         object.birthDate = request.POST['birthDate']
     object.gender = request.POST['gender']
@@ -80,23 +80,15 @@ def save(request, object_id=0):
        object.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
     
     object.save() 
-      
-#    address = Address()
-#    address.addressPrefix = request.POST['addressPrefix']
-#    address.addressLine1 = request.POST['addressLine1']
-#    address.addressLine2 = request.POST['addressLine2']
-#    address.addressNumber = request.POST['addressNumber']
-#    address.neighborhood = request.POST['neighborhood']
-#    address.zipCode = request.POST['zipCode']
-#    address.addressType = AddressType.objects.get(pk=request.POST['addressType'])
-#    if (request.POST['city']==""):
-#        person.address.foreignCountry = Country.objects.get(pk= request.POST['country']) 
-#        person.address.foreignState = request.POST['state']
-#        person.address.foreignCity = request.POST['city']
-#    else:
-#        person.address.foreignCountry = Country.objects.get(pk= request.POST['country'])        
-#        person.address.city = City.objects.get(pk= request.POST['city'])
-   
+    
+    email = Email()
+    email.email=request.POST['email']
+    if(request.POST['email_type']==""):
+        email.email_type=EmailType.objects.get(pk=1)
+    else:
+        email.email_type=EmailType.objects.get(pk=request.POST['email_type'])
+    email.content_object = object
+    email.save()   
     
     object.address.all().delete()
     for address in addressList(request.POST.getlist('addressPrefix'), request.POST.getlist('addressLine1'), 

@@ -20,7 +20,7 @@
 	<h2 id="title_clients">{{ object.name }}</h2>
 	<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a> nonnoono nonono noono<br />
 	nonononoo<br />
-	<script>
+	<script type="text/javascript">
 	$(document).ready(function(){
 		/**
 		create new tab when editing an user
@@ -109,7 +109,7 @@
 	<fieldset id="fieldset_personal_profile">
 		<legend>{% trans "Personal Profile" %}</legend>
 			<label>{% trans "Birthdate" %}<br />
-			<input type="text" name="birthDate" class="calendar birthdate" value="{% if object.id %}{{ object.birthDate }}{% endif %}" id="id_birthDate" />
+			<input type="text" name="birthDate" class="calendar birthdate" value="{% ifnotequal object.birthDate None %}{{ object.birthDate }}{% endifnotequal %}" id="id_birthDate" />
 			</label>
 			<label>{% trans "Age" %}<br />
 			<input type="text" name="age" class="extrasmall" value="{{ object.age }}" id="id_age" />
@@ -122,7 +122,7 @@
 				this receive the id of the city when selected
 			-->
 			<label style="display:none"><br />
-			<input type="hidden" class="small" name="birthPlace" value="{% if object.id %}{{ object.birthPlace }}{% endif %}" id="id_birthPlace" />
+			<input type="hidden" class="small" name="birthPlace" value="{% ifnotequal object.birthPlace None %}{{ object.birthPlace }}{% endifnotequal %}" id="id_birthPlace" />
 			</label>
 			<label>{% trans "Region" %}<br />
 			<input type="text" name="birthRegion" class="extrasmall" value="{{ object.birthRegion }}" id="id_birthRegion" />

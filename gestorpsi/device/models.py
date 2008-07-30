@@ -1,4 +1,5 @@
 from django.db import models
+from django.newforms import ModelForm
 
 DURABILITY_TYPE= ( ('1','CONSUMABLE'), ('2', 'DURABLE') )
 MOBILITY_TYPE= ( ( '1', 'FIX' ), ( '2', 'MOBILE' ) )
@@ -9,7 +10,14 @@ class DeviceType(models.Model):
     restriction= models.CharField( max_length= 100 )
     
     def __unicode__(self):
-        return "durability: %s, mobility: %s, restriction: %s" % (self.durability, self.mobility, self.restriction) 
+        return "durability: %s, mobility: %s, restriction: %s" % (self.durability, self.mobility, self.restriction)
+    
+    class Admin:
+        pass
+
+class DeviceTypeForm(ModelForm):
+      class Meta:
+          model= DeviceType
     
 class Device(models.Model):
     description= models.CharField( max_length= 80 )
@@ -18,6 +26,13 @@ class Device(models.Model):
     
     def __unicode__(self):
         return "description: %s, number of devices: %s, number of available devices: %s" % (self.description, self.total_quantity, self.available_quantity)
+    
+    class Admin:
+        pass
+
+class DeviceForm(ModelForm):
+      class Meta:
+          model= Device
     
 class DeviceDetails(models.Model):
     brand= models.CharField( max_length= 80 )
@@ -29,6 +44,13 @@ class DeviceDetails(models.Model):
     
     def __unicode__(self):
         return "brand: %s, model: %s, comments: %s" % (self.brand, self.model, self.comments)
+    
+    class Admin:
+        pass
+
+class DeviceDetailsForm(ModelForm):
+      class Meta:
+          model= DeviceDetails
 
 """
 from gestorpsi.device.models import Device, DeviceDetails, DeviceType

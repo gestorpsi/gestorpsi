@@ -1,0 +1,21 @@
+<html>
+<body>
+    
+    <form method="POST" action= "{% url gestorpsi.device.views.save object.id %}" >
+    	<h1> Device Details </h1>
+        <table border= 1>
+           {{ device_details_form.as_table }}
+        </table>
+        <h1> Device Info </h1>
+        <table border= 1>
+           {{ device_form.as_table }}
+        </table>
+        <h1> Device Type </h1>
+        <table border= 1>
+           {{ device_type_form.as_table }}
+        </table>
+       <br>
+       <input type="submit" name="submit" value="Save" />
+    </form>
+</body>
+</html>

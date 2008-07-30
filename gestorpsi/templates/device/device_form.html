@@ -1,0 +1,10 @@
+<html>
+	<head>Device Form</head>
+	<body>
+			{% for device_details in list_of_device_details %}
+			<h2>Device details: </h2> {{ device_details }} <br>
+			<h2>Device: </h2> {{ device_details.device }} <br>
+			<h2>Device type: </h2> {{ device_details.device_type }}
+			{% endfor %}
+	</body>
+</html>

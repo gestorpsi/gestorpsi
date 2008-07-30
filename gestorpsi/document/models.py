@@ -9,11 +9,19 @@ class Issuer(models.Model):
         return u"%s" % self.description
     class Admin: pass
 
+class TypeDocument(models.Model):
+    description = models.CharField(max_length=30)
+    mask = models.CharField(max_length=30)
+    def __unicode__(self):
+        return u"%s" % self.description
+    class Admin: pass
+
 class Document(models.Model):
-    identityCard = models.CharField('Identity Card', max_length=15)
+    typeDocument = models.ForeignKey(TypeDocument)
+    document = models.CharField(max_length=50)
     issuer = models.ForeignKey(Issuer)
-    state = models.ForeignKey(State)
-    cpf = models.CharField('CPF', max_length=14)
+    state = models.ForeignKey(State, null=True)
+    
     #Generic Relationship
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()

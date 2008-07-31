@@ -41,15 +41,17 @@ def addressList(addressPrefixs, addressLines1, addressLines2, addressNumbers, ne
                 #city_id=City.objects.get(pk=city_ids[i])          
                 objects.append(Address(addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
                                    addressNumber=addressNumbers[i], neighborhood=neighborhoods[i], zipCode=zipCodes[i],
-                                   addressType=AddressType.objects.get(pk=addressTypes[i]),                                   
-                                   foreignCountry=Country.objects.get(pk=country_ids[i]),
-                                   foreignState=stateChars[i],
-                                   foreignCity=cityChars[i]))
+                                   addressType=AddressType.objects.get(pk=addressTypes[i]),
+                                   city = City.objects.get(pk=city_ids[i])
+                                  ))
             else:
                 objects.append(Address(addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
                                    addressNumber=addressNumbers[i], neighborhood=neighborhoods[i], zipCode=zipCodes[i],
                                    addressType=AddressType.objects.get(pk=addressTypes[i]),
-                                   city = City.objects.get(pk=city_ids[i])))                            
+                                    foreignCountry=Country.objects.get(pk=country_ids[i]),
+                                   foreignState=stateChars[i],
+                                   foreignCity=cityChars[i]
+                                   ))
             
     return objects
 
@@ -80,6 +82,7 @@ def form(request, object_id=0):
         for document in object.document.all():
             documents.append(document)
         
+        
     except:
         object= Person()
         
@@ -99,10 +102,13 @@ def save(request, object_id=0):
         object.birthDate = request.POST['birthDate']
     object.gender = request.POST['gender']
     #person.maritalStatus = MaritalStatus.objects.get(pk = request.POST['maritalStatus'])
-    if(request.POST['birthPlace']):
-       object.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
+
+    # birthPlace (Naturality)
+    if not (request.POST['birthPlace']):
+        object.birthPlace = None
+    else:
+        object.birthPlace = City.objects.get(pk = request.POST['birthPlace'])    
     
-    # save it
     object.save() 
     
     #

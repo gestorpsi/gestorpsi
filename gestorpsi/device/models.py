@@ -1,5 +1,6 @@
 from django.db import models
 from gestorpsi.organization.models import Organization
+from django.newforms import ModelForm
 
 DURABILITY_TYPE= ( ('1','CONSUMABLE'), ('2', 'DURABLE') )
 MOBILITY_TYPE= ( ( '1', 'FIX' ), ( '2', 'MOBILE' ) )

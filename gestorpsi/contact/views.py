@@ -1,31 +1,93 @@
 from django.shortcuts import render_to_response, get_list_or_404, get_object_or_404
-from gestorpsi.contact.models import CareProfessional, CareProfessionalForm
+from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.organization.models import Organization
 from django.newforms import form_for_model
 
+def phoneList(areas, numbers, exts, types):
+    total = len(numbers)
+    phones = []
+    for i in range(0, total):
+        if (len(numbers[i])): 
+            phones.append(Phone(area=areas[i], phoneNumber=numbers[i], ext=exts[i], phoneType=PhoneType.objects.get(pk=types[i])))
+    return phones
+
+
+def addressList(addressPrefixs, addressLines1, addressLines2, addressNumbers, neighborhoods, zipCodes, addressTypes, city_ids, country_ids, stateChars, cityChars):
+    total = len(addressLines1)
+    address = []
+    
+    for i in range(0, total):
+        if (len(addressLines1[i])):
+            
+            #Permitir que Cidade ou Pais seja em branco
+            #Do jeito que esta ocorrera uma exception  
+            if(len(city_ids[i])):
+                #city_id=City.objects.get(pk=city_ids[i])          
+                address.append(Address(addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
+                                   addressNumber=addressNumbers[i], neighborhood=neighborhoods[i], zipCode=zipCodes[i],
+                                   addressType=AddressType.objects.get(pk=addressTypes[i]),                                   
+                                   foreignCountry=Country.objects.get(pk=country_ids[i]),
+                                   foreignState=stateChars[i],
+                                   foreignCity=cityChars[i]))
+            else:
+                address.append(Address(addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
+                                   addressNumber=addressNumbers[i], neighborhood=neighborhoods[i], zipCode=zipCodes[i],
+                                   addressType=AddressType.objects.get(pk=addressTypes[i]),
+                                   city = City.objects.get(pk=city_ids[i])))                            
+            
+    return address
+
+
+
 def index(request):
-    organization = Organization.objects.all()    
+    organization = Organization.objects.all()
+    #object = organization    
     return render_to_response('contact/contact_index.html', {'organization': organization})
 
 
-def get(request, organization_id):       
-    organization = get_object_or_404(Organization, pk=organization_id)    
+def form(request, object_id):       
+    object = get_object_or_404(Organization, pk=organization_id)    
     organizationForm = forms.form_for_instance(organization)
     eForm = organizationForm()
-    message=""
-    
-    if request.method =="POST":
-        if request.POST['submit']=='Alterar':                    
-            
-            try:                
-                eForm = organizationForm(request.POST.copy())
-                eForm.save()
-                message = 'Estabelecimento alterado'
-            except:
-                message = 'Nao foi possivel alterar este registro!'
+        
+    orgAddressbook = Organization()
+    orgAddressbook = Organization.objects.filter(organization=object.id)
 
     return render_to_response(
         'contact/contact_details.html', {'eForm': eForm, 'message': message})
+
+
+
+def save(request, object_id= 0, org_id=0):
+    try:
+        object= get_object_or_404(Organization, pk=object_id)
+    except Http404:
+        object= Place()
+    object.name= request.POST['name']
+    object.businessName= request.POST['businessName']
+    object.visible= get_visible( request.POST['visible'] )
+    
+    if(len(object.organization_id)):
+        object.organization = org_id
+    #organization
+    #object.organization= Organization.objects.get(pk= request.POST[ 'organization' ] )
+    object.save() 
+    
+    object.address.all().delete()
+    for address in addressList(request.POST.getlist('addressPrefix'), request.POST.getlist('addressLine1'), 
+                               request.POST.getlist('addressLine2'), request.POST.getlist('addressNumber'),
+                               request.POST.getlist('neighborhood'), request.POST.getlist('zipCode'), 
+                               request.POST.getlist('addressType'), request.POST.getlist('city'),
+                               request.POST.getlist('foreignCountry'), request.POST.getlist('foreignState'),
+                               request.POST.getlist('foreignCity') ):
+        address.content_object= object
+        address.save()
+    
+    object.phones.all().delete()    
+    for phone in phoneList(request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType')):
+        phone.content_object= object
+        phone.save()
+    return render_to_response( "contact/contact_index.html", { 'contactList': [ object ] } )
 
 
 def list_careProfessionals_related_to(request, organization_id):
@@ -33,6 +95,7 @@ def list_careProfessionals_related_to(request, organization_id):
     for careProfessional in CareProfessional.objects.filter( organization__id__exact= int(organization_id) ):
         careProfessional_list.append( CareProfessionalForm( instance= careProfessional ) )
     return render_to_response( 'contact/list_careProfessional.html', { 'careProfessional_list': careProfessional_list } ) 
+
 
 
 def delete_organization(request, organization_id):       
@@ -71,36 +134,6 @@ def delete_CareProfessional(request, organization_id):
         return render_to_response( 'contact/contact_msg.html', { 'message': "some problem occurred while saving the place" } )
 
 
-def form(request, organization_id):
-    try:
-        organization = Organization.objects.get(pk=organization_id)
-        
-        organizationForm = forms.form_for_model(organization)    
-        eForm = organizationForm()
-        #CareProfessionalForm = forms.form_for_model(CareProfessional, fields=('name', 'gender'))
-        #cpForm = CareProfessionalForm()    
-        
-        message=""    
-        
-        if request.method =="POST":
-            if request.POST['submit']=='Adicionar':            
-                postData = request.POST.copy()            
-                gender = postData['gender']            
-                
-                try:                
-                    eForm = organizationForm(request.POST.copy())
-                    eForm.save()
-                    message = 'Estabelecimento %s adicionado com sucesso' % name
-                except:
-                    message = 'Nao foi possivel incluir este registro!'
-                
-                
-        
-        return render_to_response(
-            'contact/contact_add.html', {'eForm': eForm, 'message': message})
-    except:
-        return render_to_response(
-            'contact/contact_add.html', {'eForm': eForm, 'message': message})
 
 
 def add_careProfessional(request, organization_id):              

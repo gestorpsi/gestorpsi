@@ -1,14 +1,9 @@
 from django.db import models
 from django.newforms import ModelForm
 from django.contrib.contenttypes import generic
-from gestorpsi.sponsor.models import Sponsor
 from gestorpsi.phone.models import Phone
-from gestorpsi.person.models import Person
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Country, City, Address
-from gestorpsi.device.models import DeviceDetails
-from gestorpsi.employee.models import Employee
-from gestorpsi.service.models import Service
 
 class PersonType(models.Model):
     description = models.CharField(max_length=30)
@@ -73,7 +68,7 @@ class Organization(models.Model):
     site = models.URLField('site', max_length=50, null=True)
     
     active = models.BooleanField(default=True)
-    icon = models.CharField('icon', max_length=30)          
+    icon = models.CharField('icon', max_length=30,null=True)          
     
     #Profile
     personType = models.OneToOneField(PersonType, null=True)
@@ -90,14 +85,15 @@ class Organization(models.Model):
     emails  = generic.GenericRelation(Email, null=True)
     sites = generic.GenericRelation(Site, null=True)
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True)
+    #organization = models.ManyToOneRel('self', related_name="%(class)s_related", null=True)
     organization = models.ForeignKey('self', related_name="%(class)s_related", null=True)
     
-    person = models.ForeignKey(Person, null=True)
-    sponsor = models.ForeignKey(Sponsor, null=True)    
-    deviceDetails = models.ForeignKey(DeviceDetails, null=True)
-    employee = models.ForeignKey(Employee, null=True)
-    service = models.ForeignKey(Service, null=True)
-                          
+    # person = models.ForeignKey(Person, null=True)
+    # sponsor = models.ForeignKey(Sponsor, null=True)    
+    # deviceDetails = models.ForeignKey(DeviceDetails, null=True)
+    # employee = models.ForeignKey(Employee, null=True)
+    # service = models.ForeignKey(Service, null=True)    
+                              
     def __unicode__(self):
         return self.name    
     

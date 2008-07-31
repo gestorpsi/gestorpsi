@@ -5,7 +5,7 @@ from gestorpsi.phone.models import Phone
 from gestorpsi.person.models import Person
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Country, City, Address
-
+from gestorpsi.organization.models import Organization
 
 class TaxWithHold(models.Model):
     description = models.CharField(max_length=50)
@@ -29,6 +29,7 @@ class Sponsor(models.Model):
     sites = generic.GenericRelation(Site, null=True)
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True)       
     
+    organization = models.ForeignKey(Organization, null=True)
                           
     def __unicode__(self):
         return self.name    

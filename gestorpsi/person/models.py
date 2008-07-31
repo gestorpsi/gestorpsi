@@ -5,6 +5,7 @@ from gestorpsi.phone.models import Phone
 from gestorpsi.address.models import Country, City, Address
 from gestorpsi.document.models import Document
 from gestorpsi.internet.models import Email, Site, InstantMessenger
+from gestorpsi.organization.models import Organization
 
    
 Gender = ( ('0','No Information'),('1','Female'), ('2','Male'))    
@@ -32,6 +33,9 @@ class Person(models.Model):
     emails  = generic.GenericRelation(Email, null=True)
     sites = generic.GenericRelation(Site, null=True)
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True)
+    
+    organization = models.ForeignKey(Organization, null=True)
+    
     def __unicode__(self):
         return u"%s" % self.name
     

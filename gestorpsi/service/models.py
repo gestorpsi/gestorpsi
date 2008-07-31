@@ -1,4 +1,5 @@
 from django.db import models
+from gestorpsi.organization.models import Organization
 
 class ServiceType(models.Model):
     name= models.CharField( max_length= 80 )
@@ -43,5 +44,7 @@ class Service(models.Model):
     description= models.CharField( max_length= 100 )
     keywords= models.CharField( max_length= 100 )
     agreements= models.ManyToManyField( Agreement )
-    research_project= models.ForeignKey( ResearchProject )    
+    research_project= models.ForeignKey( ResearchProject )
+    
+    organization = models.ForeignKey(Organization, null=True)    
     

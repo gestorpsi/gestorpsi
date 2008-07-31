@@ -1,5 +1,5 @@
 from django.db import models
-from django.newforms import ModelForm
+from gestorpsi.organization.models import Organization
 
 DURABILITY_TYPE= ( ('1','CONSUMABLE'), ('2', 'DURABLE') )
 MOBILITY_TYPE= ( ( '1', 'FIX' ), ( '2', 'MOBILE' ) )
@@ -41,6 +41,9 @@ class DeviceDetails(models.Model):
     comments= models.CharField( max_length= 80 )
     device_type= models.ForeignKey( DeviceType, related_name= 'device_type' )
     device= models.ForeignKey( Device, related_name= 'device' )
+    active = models.BooleanField(default=True)
+        
+    organization = models.ForeignKey(Organization, null=True)
     
     def __unicode__(self):
         return "brand: %s, model: %s, comments: %s" % (self.brand, self.model, self.comments)

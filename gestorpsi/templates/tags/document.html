@@ -24,6 +24,7 @@
 			{% trans "There is no types available to choice" %}
 		{% else %}
 		<select name="document_issuer" class="small">
+			<option></option>
 			{% for Issuer in Issuers %}
 				<option value="{{ Issuer.id }}"{% ifequal document.issuer.id Issuer.id %} selected{% endifequal %}>{{ Issuer }}</option>
 			{% endfor %}
@@ -34,6 +35,7 @@
 		
 		<label>{% trans "State" %}<br />
 			<select name="document_state" class="small">
+			<option></option>
 			{% for State in States %}
 				<option value="{{ State.id }}"{% ifequal document.state.id State.id %} selected{% endifequal %}>{{ State.shortName }}</option>
 			{% endfor %}

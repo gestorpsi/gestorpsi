@@ -1,9 +1,9 @@
 {% load i18n %}
 {% include "core/ajax_page.html" %}
 
-{% if clientList %}
-
-
+{% if not clientList %}
+ <div id="msg_area" class="alert">{% trans "There is no clients available." %}</div>
+{% else %}
 
 <div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
 Esta caixa é mostrada quando há mensagens
@@ -86,10 +86,6 @@ Esta caixa é mostrada quando há mensagens
 </table>
         
 </div>
-
-{% else %}
-
-	No clients are available.
 	
 {% endif %}
 

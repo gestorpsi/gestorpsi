@@ -1,0 +1,25 @@
+{% load i18n %}
+<div class="form_im_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="im_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
+	<div class="form_im">
+		<label>{% trans "Instant Messengers" %}<br />
+		<input type="text" class="big" name="identity" value="{{ email.email }}" />
+		</label>
+	
+		<label>{% trans "IM Type" %}<br />
+		{% if not IMNetworks %}
+			{% trans "There is no types available to choice" %}
+		{% else %}
+		<select name="network" class="small">
+		{% for IMNetwork in IMNetworks %}
+			<option value="{{ IMNetwork.id }}">{{ IMNetwork }}</option>
+		{% endfor %}
+		</select>
+		{% endif %}
+		</label>
+	</div>
+</div>
+{% if object.id %}
+<label><a class="notajax remove_from_form" onclick="$('#im_{{ forloop.counter }}').remove(); $(this).remove()">{% trans "Delete IM" %}</a></label>
+{% endif %}
+
+

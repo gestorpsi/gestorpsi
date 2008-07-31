@@ -6,23 +6,29 @@
 		</label>
 	
 		<label>{% trans "Number" %}<br />
-		<input type="text" class="big" name="phoneNumber" value="{{ phone.phoneNumber }}" mask="99999999" />
+		<input type="text" class="medium" name="phoneNumber" value="{{ phone.phoneNumber }}" mask="99999999" />
 		</label>
 		
 		<label>{% trans "Extension" %}<br />
 		<input type="text" class="small" name="ext" value="{{ phone.ext }}" />
 		</label>
 				
-		<label>{% trans "Phone Type" %}<br />
+		<label>{% trans "Type" %}<br />
+		{% if not PhoneTypes %}
+			{% trans "There is no types available to choice" %}
+		{% else %}
 		<select name="phoneType" class="small">
-			<option>Comercial</option>
-			<option>Residencial</option>
-			<option>Móvel</option>
-		</select></label>
+		{% for phoneType in PhoneTypes %}
+			<option value="{{ phoneType.id }}">{{ phoneType }}</option>
+		{% endfor %}
+		</select>
+		{% endif %}
+		</label>
+		
 	</div>
 </div>
 {% if object.id %}
-<label><a class="notajax phone_less" onclick="$('#phone_{{ forloop.counter }}').remove(); $(this).remove()">{% trans "Delete Phone" %}</a></label>
+<label><a class="notajax remove_from_form" onclick="$('#phone_{{ forloop.counter }}').remove(); $(this).remove()">{% trans "Delete Phone" %}</a></label>
 {% endif %}
 
 

@@ -1,0 +1,49 @@
+{% load i18n %}
+<div class="form_document_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="document_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
+	<div class="form_document">
+		
+		<label>{% trans "Type" %}<br />
+		{% if not TypeDocuments %}
+			{% trans "There is no types available to choice" %}
+		{% else %}
+		<select name="document_typeDocument" class="small">
+		{% for TypeDocument in TypeDocuments %}
+			<option value="{{ TypeDocument.id }}"{% ifequal document.typeDocument.id TypeDocument.id %} selected{% endifequal %}>{{ TypeDocument }}</option>
+		{% endfor %}
+		</select>
+		{% endif %}
+		</label>
+		
+		
+		<label>{% trans "Document" %}<br />
+		<input type="text" name="document_document" class="extramedium" value="{{ document.document }}" id="id_document" mask="{{ document.mask }}" />
+		</label>
+			
+		<label>{% trans "Issuer" %}<br />
+		{% if not Issuers %}
+			{% trans "There is no types available to choice" %}
+		{% else %}
+		<select name="document_issuer" class="small">
+			{% for Issuer in Issuers %}
+				<option value="{{ Issuer.id }}"{% ifequal document.issuer.id Issuer.id %} selected{% endifequal %}>{{ Issuer }}</option>
+			{% endfor %}
+		</select>
+		{% endif %}
+		</label>
+	
+		
+		<label>{% trans "State" %}<br />
+			<select name="document_state" class="small">
+			{% for State in States %}
+				<option value="{{ State.id }}"{% ifequal document.state.id State.id %} selected{% endifequal %}>{{ State.shortName }}</option>
+			{% endfor %}
+			</select>
+		</label>
+
+	</div>
+</div>
+{% if object.id %}
+<label><a class="notajax remove_from_form" onclick="$('#document_{{ forloop.counter }}').remove(); $(this).remove()">{% trans "Delete" %}</a></label>
+{% endif %}
+
+

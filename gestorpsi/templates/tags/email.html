@@ -1,0 +1,25 @@
+{% load i18n %}
+<div class="form_email_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="email_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
+	<div class="form_email">
+		<label>{% trans "Email" %}<br />
+		<input type="text" class="big" name="email" value="{{ email.email }}" />
+		</label>
+	
+		<label>{% trans "Type" %}<br />
+		{% if not EmailTypes %}
+			{% trans "There is no types available to choice" %}
+		{% else %}
+		<select name="email_type" class="small">
+		{% for EmailType in EmailTypes %}
+			<option value="{{ EmailType.id }}">{{ EmailType }}</option>
+		{% endfor %}
+		</select>
+		{% endif %}
+		</label>
+	</div>
+</div>
+{% if object.id %}
+<label><a class="notajax remove_from_form" onclick="$('#email_{{ forloop.counter }}').remove(); $(this).remove()">{% trans "Delete Email" %}</a></label>
+{% endif %}
+
+

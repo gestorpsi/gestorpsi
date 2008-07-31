@@ -1,0 +1,17 @@
+{% load i18n %}
+<div class="form_website_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="website_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
+	<div class="form_website">
+		<label>{% trans "URL" %}<br />
+		<input type="text" class="medium" name="site" value="{{ site.site }}" />
+		</label>
+		<label>{% trans "Description" %}<br />
+		<input type="text" class="big" name="site" value="{{ site.description }}" />
+		</label>
+	
+	</div>
+</div>
+{% if object.id %}
+<label><a class="notajax remove_from_form" onclick="$('#website_{{ forloop.counter }}').remove(); $(this).remove()">{% trans "Delete URL" %}</a></label>
+{% endif %}
+
+

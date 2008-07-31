@@ -382,6 +382,11 @@ margin-left: 15px;
 .medium {
 	width: 175px;
 }
+
+.extramedium {
+width: 280px;
+}
+
 .small {
 	width: 76px;
 }
@@ -802,16 +807,19 @@ img#img_people {
 	height: 134px;
 }
 
+label a.remove_from_form {
+display:block;
+clear: both;
+padding-top: 24px;
+}
+
 label.add_to_form {
-float: right;
-margin-top: 50px;
-margin-right: 20px;
+display:block;
+clear: both;
 }
 
 div.form_address_box, div.form_phone_box {
 clear: both;
-float: none;
-display: block;
 margin-bottom: 100px;
 margin-top: 150px;
 border-bottom: 1px solid #cccccc;
@@ -840,4 +848,14 @@ margin-bottom: 10px;
 
 select.country {
 width: 150px;
+}
+
+#footer {
+float: left;
+width: 100%;
+padding: 8px;
+margin-top: 20px;
+font-size: 10px;
+color: #cccccc;
+text-align:center;
 }

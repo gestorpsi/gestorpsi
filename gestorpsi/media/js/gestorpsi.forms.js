@@ -20,13 +20,15 @@ $(document).ready(function(){
 		},
 		submitHandler: function(form) {
 			var options = { 
-				success:    function(filename) { 
+				success:    function(response) { 
 					// show success alert
 					$('#msg_area, #msg_area .alert').show();
 					$('#msg_area').addClass('alert');
 					// show new options for clients
 					$('#people_actions').show();
-				},
+                                        // change action atribute to update it, not insert a new one
+                                        $('#form_people').attr('action','client/' + response + '/save/');
+                                   },
 				error: function(){
 					// show error alert
 					$('#msg_area, #msg_area .error').show();
@@ -129,7 +131,7 @@ $(document).ready(function(){
 	 * 
 	 * eg.:
 	 * 	<input type="text" name="phone" mask="((999) 9999-9999)" />
-	 *                                 ^^^^  ^^^^^^ ^^^^^^^^^^
+	 *                                      ^^^^  ^^^^^^ ^^^^^^^^^^
 	 * 
 	 * masks rules:
 	 * ------------------
@@ -159,6 +161,25 @@ $(document).ready(function(){
 			}
 			});
 	}
+
+          /** 
+	 * 
+	 * address form
+	 * 
+	 * _description:
+	 * 
+	 * append address tag
+	 * 
+	 */
+	
+	$('#document_more a').click(function() {
+		total = $(".form_document_box").length + 1;
+		$("#document_more").before('<div class="form_document_box" id="document_'+total+'"><div class="form_document">'+$(".form_document").html()+'<label><a class="notajax remove_from_form" onclick="$(\'#document_'+total+'\').remove();">Delete</a></label></div></div>');
+		reloadmask('#document_'+total);
+		$('#document_'+total+' input:text').val('');
+		
+	});
+	
 		
 		
 	/** 
@@ -173,7 +194,7 @@ $(document).ready(function(){
 	
 	$('#address_more a').click(function() {
 		total = $(".form_address_box").length + 1;
-		$("#address_more").before('<div class="form_address_box" id="address_'+total+'"><div class="form_address">'+$(".form_address").html()+'<label><a class="notajax address_less" onclick="$(\'#address_'+total+'\').remove();">Delete Address</a></label></div></div>');
+		$("#address_more").before('<div class="form_address_box" id="address_'+total+'"><div class="form_address">'+$(".form_address").html()+'<label><a class="notajax remove_from_form" onclick="$(\'#address_'+total+'\').remove();">Delete Address</a></label></div></div>');
 		reloadmask('#address_'+total);
 		reloadautocomplete();
 		reloadCountries()
@@ -193,12 +214,72 @@ $(document).ready(function(){
 	
 	$('#phone_more a').click(function() {
 		total = $(".form_phone_box").length + 1;
-		$("#phone_more").before('<div class="form_phone_box" id="phone_'+total+'"><div class="form_phone">'+$(".form_phone").html()+'<label><a class="notajax phone_less" onclick="$(\'#phone_'+total+'\').remove();">Delete Phone</a></label></div></div>');
+		$("#phone_more").before('<div class="form_phone_box" id="phone_'+total+'"><div class="form_phone">'+$(".form_phone").html()+'<label><a class="notajax remove_from_form" onclick="$(\'#phone_'+total+'\').remove();">Delete Phone</a></label></div></div>');
 		reloadmask('#phone_'+total);
 		$('#phone_'+total+' input:text').val('');
 		
 	});
 	
+        	
+	/** 
+	 * 
+	 * email form
+	 * 
+	 * _description:
+	 * 
+	 * append email form
+	 * 
+	 */
+	
+	$('#email_more a').click(function() {
+		total = $(".form_email_box").length + 1;
+		$("#email_more").before('<div class="form_email_box" id="email_'+total+'"><div class="form_email">'+$(".form_email").html()+'<label><a class="notajax remove_from_form" onclick="$(\'#email_'+total+'\').remove();">Delete Email</a></label></div></div>');
+		reloadmask('#email_'+total);
+		$('#email_'+total+' input:text').val('');
+		
+	});
+
+        	
+	/** 
+	 * 
+	 * IM form
+	 * 
+	 * _description:
+	 * 
+	 * append IM form
+	 * 
+	 */
+	
+	$('#im_more a').click(function() {
+		total = $(".form_im_box").length + 1;
+		$("#im_more").before('<div class="form_im_box" id="im_'+total+'"><div class="form_im">'+$(".form_im").html()+'<label><a class="notajax remove_from_form" onclick="$(\'#im_'+total+'\').remove();">Delete IM</a></label></div></div>');
+		reloadmask('#im_'+total);
+		$('#im_'+total+' input:text').val('');
+		
+	});
+
+  	
+	/** 
+	 * 
+	 * Website form
+	 * 
+	 * _description:
+	 * 
+	 * append Website form
+	 * 
+	 */
+	
+	$('#website_more a').click(function() {
+		total = $(".form_website_box").length + 1;
+		$("#website_more").before('<div class="form_website_box" id="website_'+total+'"><div class="form_website">'+$(".form_website").html()+'<label><a class="notajax remove_from_form" onclick="$(\'#website_'+total+'\').remove();">Delete Website</a></label></div></div>');
+		reloadmask('#website_'+total);
+		$('#website_'+total+' input:text').val('');
+		
+	});
+
+        
+
+        
 	/**
 	 * 
 	 * autocomplete text field

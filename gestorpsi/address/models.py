@@ -23,7 +23,7 @@ class City(models.Model):
     name = models.CharField(max_length=50)
     state = models.ForeignKey(State)
     def __unicode__(self):
-        return u"%s" % self.name
+        return u"%s (%s)" % (self.name, self.state.shortName)
     class Meta:
         ordering = ['name']
 

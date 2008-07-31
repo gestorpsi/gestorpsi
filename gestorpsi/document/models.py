@@ -19,12 +19,12 @@ class TypeDocument(models.Model):
 class Document(models.Model):
     typeDocument = models.ForeignKey(TypeDocument)
     document = models.CharField(max_length=50)
-    issuer = models.ForeignKey(Issuer)
-    state = models.ForeignKey(State, null=True)
+    issuer = models.ForeignKey(Issuer, null=True, blank=True)
+    state = models.ForeignKey(State, null=True, blank=True)
     
     #Generic Relationship
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey()
     def __unicode__(self):
-        return u"RG: %s / %s / %s\nCPF: %s" % (self.identityCard, self.issuer, self.state, self.cpf)
+        return u"%s: %s / %s - %s" % (self.typeDocument, self.document, self.issuer, self.state)

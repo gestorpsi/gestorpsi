@@ -18,15 +18,14 @@
 
 {% if object.id %}
 	<h2 id="title_clients">{{ object.name }}</h2>
-	<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a> nonnoono nonono noono<br />
-	nonononoo<br />
+	<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a><br />	
 	<script type="text/javascript">
 	$(document).ready(function(){
 		/**
 		create new tab when editing an user
 		*/
 		$('#sub_menu ul li a').removeClass('active');
-		$("#sub_menu_client_extras").html('<li><a class="active makemeajax" id="client_{{ client.id }}" href="/person/{{ client.id }}">{{ object.name }}</a></li>');
+		$("#sub_menu_client_extras").html('<li><a class="active makemeajax" id="client_{{ object.id }}" href="/client/{{ object.id }}">{{ object.name }}</a></li>');
 		
 		$(".makemeajax").each(function(){
 		var link = $(this);

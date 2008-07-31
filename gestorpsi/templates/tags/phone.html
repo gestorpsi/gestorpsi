@@ -19,7 +19,7 @@
 		{% else %}
 		<select name="phoneType" class="small">
 		{% for phoneType in PhoneTypes %}
-			<option value="{{ phoneType.id }}">{{ phoneType }}</option>
+			<option value="{{ phoneType.id }}"{% ifequal phone.phoneType.id phoneType.id %} selected{% endifequal %}>{{ phoneType }}</option>
 		{% endfor %}
 		</select>
 		{% endif %}

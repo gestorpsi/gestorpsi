@@ -69,7 +69,7 @@
 			{% else %}
 			<select name="addressType" class="small">
 				{% for AddressType in AddressTypes %}
-					<option value="{{ AddressType.id }}">{{ AddressType }}</option>
+					<option value="{{ AddressType.id }}"{% ifequal address.addressType.id AddressType.id %} selected{% endifequal %}>{{ AddressType }}</option>
 				{% endfor %}
 			</select>
 			{% endif %}

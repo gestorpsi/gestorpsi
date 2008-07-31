@@ -8,24 +8,32 @@ from gestorpsi.address.models import Country, City, State, Address, AddressType
 from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetwork
 from gestorpsi.document.models import Document, TypeDocument, Issuer
 
-
 def phoneList(areas, numbers, exts, types):
     total = len(numbers)
-    objects = []
+    objs = []
     for i in range(0, total):
         if (len(numbers[i])):
-            objects.append(Phone(area=areas[i], phoneNumber=numbers[i], ext=exts[i], phoneType=PhoneType.objects.get(pk=types[i])))
-    return objects
-
+            objs.append(Phone(area=areas[i], phoneNumber=numbers[i], ext=exts[i], phoneType=PhoneType.objects.get(pk=types[i])))
+    return objs
 
 # append documents
 def documentList(typeDocuments, documents, issuers, states):
-    total = len(documents)
-    objects = []
-    for i in range(0, total):
+    objs = []
+    for i in range(0, len(documents)):
         if (len(documents[i])):
-            objects.append(Document(typeDocument=TypeDocument.objects.get(pk=typeDocuments[i]), document=documents[i], issuer=Issuer.objects.get(pk=issuers[i]), state=State.objects.get(pk=states[i])))
-    return objects
+            
+            if len(typeDocuments[i]): td = TypeDocument.objects.get(pk=typeDocuments[i])
+            else: td = None
+
+            if len(issuers[i]): iss = Issuer.objects.get(pk=issuers[i])
+            else: iss = None
+
+            if len(states[i]): st = State.objects.get(pk=states[i])
+            else: st = None
+
+            objs.append(Document(typeDocument=td, document=documents[i], issuer=iss, state=st))
+
+    return objs
 
 # append addresses
 def addressList(addressPrefixs, addressLines1, addressLines2, addressNumbers, neighborhoods, zipCodes, addressTypes, city_ids, country_ids, stateChars, cityChars):
@@ -89,6 +97,7 @@ def form(request, object_id=0):
     return render_to_response('client/client_form.html', {'object': object, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), } )
 
 # save object
+## NEED OPEN TRANSACTION FOR THIS VIEW
 def save(request, object_id=0):    
     try:
         object = get_object_or_404(Person, pk=object_id)

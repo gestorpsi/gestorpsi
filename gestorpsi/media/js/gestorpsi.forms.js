@@ -8,7 +8,7 @@ $(document).ready(function(){
 	 * validate and post people (person) form.
 	 * 
 	 */
-
+     
     $('#form_people').validate({event:"submit",
 		rules: {
 			name: {
@@ -304,8 +304,15 @@ $(document).ready(function(){
 			//alert($('#id_city').val());
 		});
 	}
-	
-	reloadautocomplete() // load auto-complete for the first tag address 
+        	
+	reloadautocomplete() // load auto-complete for the first tag address
+        
+        // Reset value if city choices is blank
+        $('.city_search').keyup(function() {
+               if($(this).val() == '') {
+                   $(this).parent().next().find("input:hidden").val('');
+               }
+          });
 		
 	
 	/** 

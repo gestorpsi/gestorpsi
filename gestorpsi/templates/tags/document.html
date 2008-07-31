@@ -8,7 +8,7 @@
 		{% else %}
 		<select name="document_typeDocument" class="small">
 		{% for TypeDocument in TypeDocuments %}
-			<option value="{{ TypeDocument.id }}"{% ifequal document.typeDocument.id TypeDocument.id %} selected{% endifequal %}>{{ TypeDocument }}</option>
+			<option value="{{ TypeDocument.id }}" mask="{{ TypeDocument.mask}}"{% ifequal document.typeDocument.id TypeDocument.id %} selected{% endifequal %}>{{ TypeDocument }}</option>
 		{% endfor %}
 		</select>
 		{% endif %}

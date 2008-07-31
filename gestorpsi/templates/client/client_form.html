@@ -125,18 +125,20 @@
 			<input type="text" name="age" class="extrasmall" value="{{ object.age }}" id="id_age" />
 			</label>
 			<label>{% trans "Naturality" %}<br />
-			<input type="text" class="medium city_search" />
+			<input type="text" class="medium city_search" value="{% ifnotequal object.birthPlace None %}{{ object.birthPlace }}{% endifnotequal %}" />
 			</label>
 			<!-- 
 				don't remove and dont change the position of this label !!!!
 				this receive the id of the city when selected
 			-->
 			<label style="display:none"><br />
-			<input type="hidden" class="small" name="birthPlace" value="{% ifnotequal object.birthPlace None %}{{ object.birthPlace }}{% endifnotequal %}" id="id_birthPlace" />
+			<input type="hidden" class="small" name="birthPlace" value="{% if object.birthPlace_id %}{{ object.birthPlace_id }}{% endif %}" id="id_birthPlace" />
 			</label>
+			<!--
 			<label>{% trans "Region" %}<br />
 			<input type="text" name="birthRegion" class="extrasmall" value="{{ object.birthRegion }}" id="id_birthRegion" />
 			</label>
+			-->
 			<!--
 			<label>{% trans "Nationality" %}<br />
 			<input type="text" name="nationality" class="medium" value="{{ object.nationality }}" id="id_nationality" />

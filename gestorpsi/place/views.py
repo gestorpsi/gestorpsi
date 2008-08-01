@@ -1,34 +1,47 @@
 from django.shortcuts import render_to_response, get_object_or_404
+from django.http import HttpResponse, Http404
 from django.newforms import form_for_model, form_for_instance
-from gestorpsi.place.models import Place, PlaceForm, Room, RoomForm, RoomType, PlaceType
-from gestorpsi.address.models import Address, AddressType, AddressForm, City
-from gestorpsi.phone.models import Phone, PhoneForm
-from gestorpsi.client.views import phoneList
-from django.http import Http404
-from gestorpsi.client.views import addressList
-from gestorpsi.organization.models import Organization
 from django.core.exceptions import ObjectDoesNotExist
+from gestorpsi.place.models import Place, PlaceForm, Room, RoomForm, RoomType, PlaceType
+from gestorpsi.address.models import Address, AddressType, City
+from gestorpsi.phone.models import Phone, PhoneType
+from gestorpsi.phone.views import phoneList
+from gestorpsi.address.models import Country, City, State, Address, AddressType
+from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetwork
+from gestorpsi.address.views import addressList
+from gestorpsi.organization.models import Organization
 
 def index(request):
-    list_of_places= Place.objects.all()
+    object= Place.objects.all()
     return render_to_response( "place/place_index.html", locals() )
 
 #######################SHOULD BE TESTED (waiting feedback from cuzido)
 def form(request, object_id=0):
     try:
-        a_place= get_object_or_404(Place, pk=object_id)
+        phones = []
+        addresses = []
+        object= get_object_or_404(Place, pk=object_id)
+        
         #get all address
-        addresses= a_place.address.all()
+        addresses= object.address.all()
+        
         #get all related phones
-        phones= a_place.phones.all()
-        place_type= PlaceType.objects.get( pk= a_place.place_type_id )
-        organization= Organization.objects.get(pk= a_place.organization_id )
+        phones= object.phones.all()
+        
+        #place_type= PlaceType.objects.get( pk= a_place.place_type_id ) # commented by czd. sending it directly to template as: 'place_type': PlaceType.objects.all()
+        
+        organization= Organization.objects.get(pk= 1 ) # pk forcing to test view.
+        #organization= Organization.objects.get(pk= a_place.organization_id ) # uncomment me, when organization is ready
+        
     except (Http404, ObjectDoesNotExist): #new instances will be created if there is no place or organization
-        a_place= Place()
+        object= Place()
         place_type= PlaceType()
         organization= Organization()
-    return render_to_response('place/place_form.html', {'place': a_place, 'place_type': place_type, 
-                                                        'organization': organization, 'addresses': addresses, 'phones': phones } )
+    return render_to_response('place/place_form.html', {'object': object, 'place_type': PlaceType.objects.all(), 
+                                                        'organization': organization, 'addresses': addresses, 'phones': phones,
+                                                        'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(),
+                                                        'countries': Country.objects.all(),
+                                                        } )
 
 ###TODO#######################
 def add(request):
@@ -45,13 +58,35 @@ def save(request, object_id= 0):
         object= get_object_or_404(Place, pk=object_id)
     except Http404:
         object= Place()
+        
+    # place label (name)
     object.label= request.POST['label']
-    object.visible= get_visible( request.POST['visible'] )
+    
+    # is it visible
+    try:
+        object.visible= get_visible( request.POST['visible'] )
+    except:
+        object.visible = False
+        
     #place type
     object.place_type= PlaceType.objects.get( pk= request.POST[ 'place_type' ] )
-    #organization
+    
+    #organization ** will come from session **
     #object.organization= Organization.objects.get(pk= request.POST[ 'organization' ] )
+    
     object.save() 
+    
+    # flush addresses and re-insert it
+    object.address.all().delete()
+    for address in addressList(request.POST.getlist('addressPrefix'), request.POST.getlist('addressLine1'), 
+                               request.POST.getlist('addressLine2'), request.POST.getlist('addressNumber'),
+                               request.POST.getlist('neighborhood'), request.POST.getlist('zipCode'), 
+                               request.POST.getlist('addressType'), request.POST.getlist('city'),
+                               request.POST.getlist('foreignCountry'), request.POST.getlist('foreignState'),
+                               request.POST.getlist('foreignCity')):
+        address.content_object = object
+        address.save()
+    
     
     #address(es)
     #o trecho comentado abaixo ainda nao funciona
@@ -64,12 +99,15 @@ def save(request, object_id= 0):
 #                               request.POST.getlist('foreignCity') ):
 #        address.content_object= object
 #        address.save()
+
+    
     
     object.phones.all().delete()    
     for phone in phoneList(request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType')):
         phone.content_object= object
         phone.save()
-    return render_to_response( "place/place_index.html", { 'list_of_places': [ object ] } )
+    
+    return HttpResponse(object.id)
 
 #######################SHOULD BE TESTED (waiting feedback from cuzido)
 def delete(request, place_id):

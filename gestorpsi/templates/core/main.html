@@ -54,8 +54,8 @@
 			<li><a id="contacts" class="main_menu">{% trans "contacts" %}</a></li>
 			<li><a id="myoffice" class="main_menu">{% trans "organization" %}</a>
 				<ul style="display:none">
-					<li><a id="places">{% trans "My Organization" %}</a></li>
-					<li><a id="places">{% trans "Places" %}</a></li>
+					<li><a id="organization">{% trans "My Organization" %}</a></li>
+					<li><a id="places" href="/place">{% trans "Places" %}</a></li>
 					<li><a id="services">{% trans "Services" %}</a></li>
 					<!-- <li><a id="rooms">{% trans "Rooms" %}</a></li> -->
 					<li><a id="equipament">{% trans "Equipaments" %}</a></li>
@@ -79,6 +79,13 @@
 			<li><a class="first active" href="/contacts/">{% trans "all" %}</a></li>
 			<li><a href="/contacts/add/">{% trans "add" %}</a></li>
 			<li><a>{% trans "search" %}</a></li>
+		</ul>
+		
+		<ul id="sub_places" style="display:none">
+			<li><a class="first active" href="/place/">{% trans "all" %}</a></li>
+			<li><a href="/place/add/">{% trans "add" %}</a></li>
+			<li><a>{% trans "search" %}</a></li>
+			<span id="sub_menu_places_extras"></span>
 		</ul>
 		
 		<ul class="opened_tabs">

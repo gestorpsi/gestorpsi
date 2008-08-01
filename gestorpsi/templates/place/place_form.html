@@ -1,0 +1,207 @@
+{% load i18n %}
+{% include "core/ajax_page.html" %}
+
+<div id="msg_area" style="display:none"><!-- ou class="error" ou sem classe -->
+	<div class="alert" style="display:none">
+		{% if not object.id %}
+			{% trans "Place added successful!" %}
+		{% else %}
+			{% trans "Place saved successful!" %}
+		{% endif %}
+	</div>
+	<div class="error" style="display:none">
+		{% trans "Error adding new Place!" %}
+	</div>
+</div>
+
+{% if object.id %}
+	<h2 id="title_clients">{{ object.label }}</h2>
+	<p class="description"><br />	
+	<script type="text/javascript">
+	$(document).ready(function(){
+		/**
+		create new tab when editing an user
+		*/
+		$('#sub_menu ul li a').removeClass('active');
+		$("#sub_menu_places_extras").html('<li><a class="active makemeajax" id="client_{{ object.id }}" href="/place/{{ object.id }}">{{ object.label }}</a></li>');
+		
+		$(".makemeajax").each(function(){
+		var link = $(this);
+		link.click(function() {
+			 $.get(link.attr('href'),
+				 function(data) {
+					 if(!link.attr('href')) {
+						 alert('I am a ajaxlink, but i dont have the "href" atributte defined in the "<a>" tag');
+						 exit();
+					 } else {
+						 $("#core").html(data);
+					 }
+					 
+			 });
+			 return false;
+			 })
+		 });
+
+	});
+		
+	</script>
+{% else %}
+	<h2 id="title_clients">{% trans "Adding New Place" %}</h2>
+	<p class="description">{% trans "Inform the place details then click on Save button" %}</p>
+{% endif %}
+
+
+</p>
+
+<form action="/place/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_place">	
+<div id="main_area">
+
+	<a href="" id="help">&nbsp;</a>
+
+	<!--
+	Places must to have an Identification 
+	-->
+	
+	<fieldset id="fieldset_place_identification">
+		<legend>{% trans "Place Identification" %}</legend>
+			<label>{% trans "Identification" %}<br />
+			<input type="text" name="label" class="big" value="{{ object.label }}" id="id_label" />
+			</label>
+			<label>{% trans "Place Type" %}<br />
+			<select name="place_type">
+				{% for pt in place_type %}
+				<option value="{{ pt.id }}">{{ pt }}</option>
+				{% endfor %}
+			</select>
+				
+			</label>
+	</fieldset>
+
+	
+	<!--
+	place have only one address
+	-->
+		
+	<fieldset id="fieldset_address">
+		<legend>{% trans "Addresses" %}</legend>
+			{% if not addresses %}
+				{% include "tags/address.html" %}
+			{% else %}
+				{% for address in addresses %}
+					{% include "tags/address.html" %}
+				{% endfor %}
+			{% endif %}
+	</fieldset>
+	
+	
+	<!--
+	place have phones
+	-->
+		
+	<fieldset id="fieldset_phone">
+		<legend>{% trans "Phones" %}</legend>
+			{% if not phones %}
+				{% include "tags/phone.html" %}
+			{% else %}
+				{% for phone in phones %}
+					{% include "tags/phone.html" %}
+				{% endfor %}
+			{% endif %}
+		<label id="phone_more" class="add_to_form"><a class="notajax">{% trans "Add Phone" %}</a></label>	
+	</fieldset>
+
+	{% comment %}
+
+	<!--
+	emails addresses
+	-->
+		
+	<fieldset id="fieldset_email">
+		<legend>{% trans "Emails" %}</legend>
+			{% if not emails %}
+				{% include "tags/email.html" %}
+			{% else %}
+				{% for email in emails %}
+					{% include "tags/email.html" %}
+				{% endfor %}
+			{% endif %}
+		<label id="email_more" class="add_to_form"><a class="notajax">{% trans "Add Email" %}</a></label>
+	</fieldset>
+
+
+	
+	
+	<!--
+	Instant Messengers
+	-->
+		
+	<fieldset id="fieldset_im">
+		<legend>{% trans "Instant Messengers" %}</legend>
+			{% if not ims %}
+				{% include "tags/im.html" %}
+			{% else %}
+				{% for im in ims %}
+					{% include "tags/im.html" %}
+				{% endfor %}
+			{% endif %}
+		<label id="im_more" class="add_to_form"><a class="notajax">{% trans "Add IM" %}</a></label>
+	</fieldset>
+
+
+	<!--
+	WebSites
+	-->
+		
+	<fieldset id="fieldset_website">
+		<legend>{% trans "Websites" %}</legend>
+			{% if not websites %}
+				{% include "tags/website.html" %}
+			{% else %}
+				{% for website in websites %}
+					{% include "tags/website.html" %}
+				{% endfor %}
+			{% endif %}
+		<label id="website_more" class="add_to_form"><a class="notajax">{% trans "Add Website" %}</a></label>
+	</fieldset>
+
+	{% endcomment %}
+	
+	<!--
+	Places must to have a status
+	-->
+	
+	<fieldset id="fieldset_place_status">
+		<legend>{% trans "Place Status" %}</legend>
+			<label>
+			<input type="checkbox" name="visible" id="id_visible" /><label>{% trans "Visible?" %}
+			</label>
+	</fieldset>
+
+<br />	
+</div>
+
+<div id="sidebar">
+	<div class="bg_blue">
+		<input name="save" type="submit" value="{% trans 'Save' %}" />
+		<input name="save" type="button" value="{% trans 'Cancel' %}" />
+		
+		<div id="msg_info">
+		{% trans "Delete Object" %}?
+			<p>{% trans 'Last revision by' %} Adminstrador {% trans 'in' %} 17 de 
+			Novembro, 2007 &agrave;s 17:36 h</p>
+
+		</div>
+		</div>
+		<div id="place_actions" {% if not object.id %}style="display:none"{% endif %}>	
+		<h3>{% trans 'Object Actions' %}</h3>
+		<ul>
+			<li><a href="/place/add_room/{{ object.id }}" id="add_room">{% trans "Add Room" %}</a></li>
+		</ul>
+	</div>
+</div>
+
+</form>
+
+
+
+

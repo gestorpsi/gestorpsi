@@ -1,11 +1,12 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('gestorpsi.place.views',
-    (r'^$', 'index' ),
-    (r'^(?P<object_id>\d+)/$', 'form'),
-    (r'^add/$', 'add'),
-    (r'^save/$', 'save'),
-    (r'^delete/(\d+)$', 'delete'),
+    (r'^$', 'index'), # list objects
+    (r'^add/$', 'form'), # new object form
+    (r'^(?P<object_id>\d+)/$', 'form'), # edit object form
+    (r'^save/$', 'save'), # save new object
+    (r'^(?P<object_id>\d+)/save/$', 'save'), # update object
+    (r'^delete/(\d+)$', 'delete'), # delete object
     (r'^get/(\d+)$', 'get'),
     (r'^update/(\d+)$', 'update'),
     (r'^add_room/(\d+)$', 'add_room'),

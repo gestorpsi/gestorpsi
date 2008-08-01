@@ -11,9 +11,12 @@ class PlaceType( models.Model ):
     def __unicode__(self):
         return "%s" % self.description
     
+    class Admin:
+        pass
+    
 class Place( models.Model ):
    label= models.CharField( max_length= 80 )
-   visible= models.BooleanField()
+   visible= models.BooleanField(blank=True)
    address= generic.GenericRelation( Address )
    phones= generic.GenericRelation( Phone )
    place_type= models.ForeignKey( PlaceType )

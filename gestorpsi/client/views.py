@@ -4,17 +4,11 @@ from django import newforms as forms
 from gestorpsi.client.models import Client
 from gestorpsi.person.models import Person, PersonForm
 from gestorpsi.phone.models import Phone, PhoneType
+from gestorpsi.phone.views import phoneList
 from gestorpsi.address.models import Country, City, State, Address, AddressType
 from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetwork
 from gestorpsi.document.models import Document, TypeDocument, Issuer
-
-def phoneList(areas, numbers, exts, types):
-    total = len(numbers)
-    objs = []
-    for i in range(0, total):
-        if (len(numbers[i])):
-            objs.append(Phone(area=areas[i], phoneNumber=numbers[i], ext=exts[i], phoneType=PhoneType.objects.get(pk=types[i])))
-    return objs
+from gestorpsi.address.views import addressList
 
 # append documents
 def documentList(typeDocuments, documents, issuers, states):
@@ -35,38 +29,9 @@ def documentList(typeDocuments, documents, issuers, states):
 
     return objs
 
-# append addresses
-def addressList(addressPrefixs, addressLines1, addressLines2, addressNumbers, neighborhoods, zipCodes, addressTypes, city_ids, country_ids, stateChars, cityChars):
-    total = len(addressLines1)
-    objects = []
-    
-    for i in range(0, total):
-        if (len(addressLines1[i])):
-            
-            #Permitir que Cidade ou Pais seja em branco
-            #Do jeito que esta ocorrera uma exception  
-            if(len(city_ids[i])):
-                #city_id=City.objects.get(pk=city_ids[i])          
-                objects.append(Address(addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
-                                   addressNumber=addressNumbers[i], neighborhood=neighborhoods[i], zipCode=zipCodes[i],
-                                   addressType=AddressType.objects.get(pk=addressTypes[i]),
-                                   city = City.objects.get(pk=city_ids[i])
-                                  ))
-            else:
-                objects.append(Address(addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
-                                   addressNumber=addressNumbers[i], neighborhood=neighborhoods[i], zipCode=zipCodes[i],
-                                   addressType=AddressType.objects.get(pk=addressTypes[i]),
-                                    foreignCountry=Country.objects.get(pk=country_ids[i]),
-                                   foreignState=stateChars[i],
-                                   foreignCity=cityChars[i]
-                                   ))
-            
-    return objects
-
-
 # list objects
 def index(request):
-    return render_to_response('client/client_index.html', {'clientList': Person.objects.all() })
+    return render_to_response('client/client_index.html', {'object': Person.objects.all() })
 
 # add and edit form
 def form(request, object_id=0):

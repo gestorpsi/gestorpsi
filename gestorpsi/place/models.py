@@ -20,7 +20,7 @@ class Place( models.Model ):
    address= generic.GenericRelation( Address )
    phones= generic.GenericRelation( Phone )
    place_type= models.ForeignKey( PlaceType )
-   organization = models.ForeignKey(Organization, null= True)
+   organization = models.ForeignKey(Organization, null= True, blank= True)
 
    def __unicode__(self):
       return "%s" % self.label
@@ -40,7 +40,7 @@ class RoomType( models.Model ):
 class Room( models.Model ):
    description= models.CharField( max_length= 80 )
    dimension= models.IntegerField()
-   place= models.ForeignKey( Place, related_name= 'place' )
+   place= models.ForeignKey( Place )
    room_type= models.ForeignKey( RoomType, related_name= 'room_type' )
    furniture= models.TextField()
 

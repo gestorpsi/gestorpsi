@@ -45,10 +45,11 @@ def form(request, object_id=0 ):
         object= Place()
         place_type= PlaceType()
         organization= Organization()
-    return render_to_response('place/place_form.html', {'object': object, 'place_type': PlaceType.objects.all(), 
+    return render_to_response('place/place_form.html', {'object': object, 'PlaceTypes': PlaceType.objects.all(), 
                                                         'organization': organization, 'addresses': addresses, 'phones': phones,
                                                         'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(),
                                                         'countries': Country.objects.all(),
+                                                        'RoomTypes': RoomType.objects.all(), 
                                                         } )
 
 ###TODO#######################

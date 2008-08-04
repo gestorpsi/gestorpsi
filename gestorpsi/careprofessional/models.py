@@ -93,13 +93,14 @@ class ProfessionalIdentification(models.Model):
     
     class Admin:
         pass
-    
-class CareProfessional(models.Model):
-    professionalIdentification = models.ForeignKey(ProfessionalIdentification, edit_inline = models.TABULAR, num_in_admin=1, core=True)
-    professionalProfile = models.ForeignKey(ProfessionalProfile, edit_inline = models.TABULAR, num_in_admin=1, core=True)
-    person = models.OneToOneField(Person)
-    comments = models.CharField('comments',max_length=200, core=True)
      
+class CareProfessional(models.Model):
+    professionalIdentification = models.ForeignKey(ProfessionalIdentification, edit_inline = models.TABULAR, num_in_admin=1, core=True, null=True)
+    professionalProfile = models.ForeignKey(ProfessionalProfile, edit_inline = models.TABULAR, num_in_admin=1, core=True, null = True)
+    person = models.OneToOneField(Person)
+    comments = models.CharField('comments',max_length=200, core=True, null=True)
+    
+        
     class Admin:
        pass
     

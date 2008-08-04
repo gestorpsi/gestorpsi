@@ -3,6 +3,14 @@ from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.organization.models import Organization
 from django.newforms import form_for_model
 
+def careProfessionalList(names):
+    total = len(name)
+    careProfessionals = []
+    for i in range(0, total):
+        if (len(numbers[i])): 
+            careProfessionals.append(Person(name=names[i], organization = organization()))
+    return careProfessionals
+
 def phoneList(areas, numbers, exts, types):
     total = len(numbers)
     phones = []
@@ -40,35 +48,41 @@ def addressList(addressPrefixs, addressLines1, addressLines2, addressNumbers, ne
 
 
 def index(request):
-    organization = Organization.objects.all()
-    #object = organization    
-    return render_to_response('contact/contact_index.html', {'organization': organization})
+    object = Organization.objects.all()        
+    return render_to_response('contact/contact_index.html', {'organization': object})
 
 
-def form(request, object_id):       
-    object = get_object_or_404(Organization, pk=organization_id)    
-    organizationForm = forms.form_for_instance(organization)
-    eForm = organizationForm()
-        
-    orgAddressbook = Organization()
-    orgAddressbook = Organization.objects.filter(organization=object.id)
+def form(request, object_id):    
+    try:
+        phones = []
+        addresses = []
+        careProfessionals = []
+        object = get_object_or_404(Organization, pk=object_id)        
+        persons = object.person_set.all() 
+        for phone in person.phones.all():
+            phones.append(phone)
+        for address in person.address.all():
+            addresses.append(address)
+        for careProfessional in persons:
+            careProfessionals.append(careProfessional)    
+    except:        
+        object= Organization()
 
-    return render_to_response(
-        'contact/contact_details.html', {'eForm': eForm, 'message': message})
+        return render_to_response('contact/contact_details.html', {'contactList': object, 'phones': phones, 'addresses': addresses, 'careProfessionals':careProfessionals})
 
 
-
-def save(request, object_id= 0, org_id=0):
+def save(request, object_id= 0):
     try:
         object= get_object_or_404(Organization, pk=object_id)
     except Http404:
-        object= Place()
+        object= Organization()
     object.name= request.POST['name']
     object.businessName= request.POST['businessName']
     object.visible= get_visible( request.POST['visible'] )
     
-    if(len(object.organization_id)):
-        object.organization = org_id
+    #Sera utilizado quando existir um estabelecimento na seção
+    #if(len(object.organization_id)):
+    #    object.organization = org_idSection
     #organization
     #object.organization= Organization.objects.get(pk= request.POST[ 'organization' ] )
     object.save() 
@@ -86,7 +100,24 @@ def save(request, object_id= 0, org_id=0):
     object.phones.all().delete()    
     for phone in phoneList(request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType')):
         phone.content_object= object
-        phone.save()
+        phone.save()       
+        
+    persons = object.person_set.all()
+    for person in persons:
+        person.delete()
+    
+        
+    #    for phone in phoneList(request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType')):
+    #        phone.content_object= object
+    #        phone.save()
+                  
+    for person in careProfessionalList(request.POST.getlist('name')):
+        person.organization = object
+        person.save()
+        care = CareProfessional()
+        care.person = careProfessional
+        care.save()
+    
     return render_to_response( "contact/contact_index.html", { 'contactList': [ object ] } )
 
 

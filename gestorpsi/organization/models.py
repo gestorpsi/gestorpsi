@@ -84,8 +84,7 @@ class Organization(models.Model):
     address = generic.GenericRelation(Address, null=True)
     emails  = generic.GenericRelation(Email, null=True)
     sites = generic.GenericRelation(Site, null=True)
-    instantMessengers =generic.GenericRelation(InstantMessenger, null=True)
-    #organization = models.ManyToOneRel('self', related_name="%(class)s_related", null=True)
+    instantMessengers =generic.GenericRelation(InstantMessenger, null=True)    
     organization = models.ForeignKey('self', related_name="%(class)s_related", null=True, blank=True)
     
     # person = models.ForeignKey(Person, null=True)

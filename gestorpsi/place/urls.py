@@ -8,7 +8,6 @@ urlpatterns = patterns('gestorpsi.place.views',
     (r'^(?P<object_id>\d+)/save/$', 'save'), # update object
     (r'^delete/(\d+)$', 'delete'), # delete object
     (r'^get/(\d+)$', 'get'),
-    (r'^update/(\d+)$', 'update'),
     (r'^add_room/(\d+)$', 'add_room'),
     (r'^save_room/$', 'save_room'),
     (r'^list_rooms/(\d+)$', 'list_rooms_related_to'),

@@ -31,7 +31,7 @@ def documentList(typeDocuments, documents, issuers, states):
 
 # list objects
 def index(request):
-    return render_to_response('client/client_index.html', {'object': Person.objects.all() })
+    return render_to_response('client/client_index.html', {'object': Person.objects.all(), 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), })
 
 # add and edit form
 def form(request, object_id=0):
@@ -44,18 +44,14 @@ def form(request, object_id=0):
         object = get_object_or_404(Person, pk=object_id)        
 
         # person have phones
-        for phone in object.phones.all():
-            phones.append(phone)
+        phones= object.phones.all()
         
         # person have addresses
-        for address in object.address.all():
-            addresses.append(address)
+        addresses= object.address.all()
         
         # person have documents
-        for document in object.document.all():
-            documents.append(document)
-        
-        
+        documents =  object.document.all()
+            
     except:
         object= Person()
         

@@ -250,7 +250,7 @@
 
 		</div>
 	</div>
-	<div id="people_actions" style="display:none">	
+	<div id="people_actions" {% if not object.id %}style="display:none"{% endif %}>	
 	<h3>{% trans 'Object Actions' %}</h3>
 	<ul>
 		<li><!--<a href="realizar_admissao.html" id="admit">-->Realizar Admiss&atilde;o<!--</a>--></li>

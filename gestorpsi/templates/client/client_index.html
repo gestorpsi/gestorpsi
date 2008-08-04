@@ -1,7 +1,7 @@
 {% load i18n %}
 {% include "core/ajax_page.html" %}
 
-{% if not clientList %}
+{% if not object %}
  <div id="msg_area" class="alert">{% trans "There is no clients available." %}</div>
 {% else %}
 
@@ -66,7 +66,7 @@ Esta caixa é mostrada quando há mensagens
 </div>
 <table id="search_results" class="zebra" border="0" cellspacing="0" cellpadding="0">
 
-        {% for l in clientList %}
+        {% for l in object %}
         <tr>
 
                 <!--<td><a href="{% url gestorpsi.client.views.form l.id %}">{{ l.name }}</a></td>-->
@@ -76,7 +76,9 @@ Esta caixa é mostrada quando há mensagens
                 <td>(11) 2301 0751</td>
                 -->
                 <td>
-                 (11) 3333-3333
+               
+                (11) 1234-1234
+                 
                 <br> 
                 <a href="mailto:{{l.email }}">{{l.email }}</a></td>
                 <td class="icons">&nbsp;</td>

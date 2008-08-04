@@ -16,7 +16,7 @@ $(document).ready(function(){
 			}
 		},
 		messages: {
-				name: 'Please enter a valid Name'
+				name: 'This field is required'
 		},
 		submitHandler: function(form) {
 			var options = { 
@@ -28,6 +28,49 @@ $(document).ready(function(){
 					$('#people_actions').show();
                                         // change action atribute to update it, not insert a new one
                                         $('#form_people').attr('action','client/' + response + '/save/');
+                                   },
+				error: function(){
+					// show error alert
+					$('#msg_area, #msg_area .error').show();
+					$('#msg_area').addClass('error');
+				}
+			}; 
+			$(form).ajaxSubmit(options);
+
+		}
+	});
+    
+    
+    	/**
+	 * 
+	 * places post form
+	 * 
+	 * _description:
+	 * validate and post places form.
+	 * 
+	 */
+     
+    $('#form_place').validate({event:"submit",
+		rules: {
+			label: {
+				required: true
+			}
+		},
+		messages: {
+				name: 'This field is required'
+		},
+		submitHandler: function(form) {
+			var options = { 
+				success:    function(response) { 
+					// show success alert
+					$('#msg_area, #msg_area .alert').show();
+					$('#msg_area').addClass('alert');
+					// show new options for place
+					$('#place_actions').show();
+                                        // change action atribute to update it, not insert a new one
+                                        $('#form_place').attr('action','place/' + response + '/save/');
+                                        // set id, in add rooms link
+                                        $('#place_actions a#add_room').attr('href','place/add_room/' + response);
                                    },
 				error: function(){
 					// show error alert

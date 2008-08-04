@@ -49,7 +49,7 @@ a:hover {
 	display: inline;
 	list-style: none;
 }
-#main_menu a, #main_menu a:visited {
+#main_menu a {
 	display: block;
 	float: left;
 	list-style: none;
@@ -134,6 +134,7 @@ width: 139px;
 }
 
 #main_menu a#places {background: url(../img/16/office.png) no-repeat 25px 4px;}
+#main_menu a#organization {background: url(../img/16/office.png) no-repeat 25px 4px;}
 #main_menu a#services {background: url(../img/16/games.png) no-repeat 25px 4px;}
 #main_menu a#rooms {background: url(../img/16/rooms.png) no-repeat 25px 4px;}
 #main_menu a#equipament {background: url(../img/16/stuff.png) no-repeat 25px 4px;}
@@ -384,7 +385,7 @@ margin-left: 15px;
 }
 
 .extramedium {
-width: 280px;
+width: 310px;
 }
 
 .small {

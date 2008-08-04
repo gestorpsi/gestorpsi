@@ -11,12 +11,20 @@ from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetw
 from gestorpsi.address.views import addressList
 from gestorpsi.organization.models import Organization
 
+def roomList( descriptions, dimensions, room_types, furniture_descriptions ):
+    total= len(descriptions)
+    rooms= []
+    for i in range(0, total):
+        if ( len( description[i]) ): 
+            rooms.append( Room(description= descriptions[i], dimension= dimensions[i], place= Place(), room_type= RoomType.objects.get(pk= room_types[i] ), furniture= furniture_descriptions[i]) )
+    return rooms
+
 def index(request):
     object= Place.objects.all()
     return render_to_response( "place/place_index.html", locals() )
 
 #######################SHOULD BE TESTED (waiting feedback from cuzido)
-def form(request, object_id=0):
+def form(request, object_id=0 ):
     try:
         phones = []
         addresses = []
@@ -87,25 +95,20 @@ def save(request, object_id= 0):
         address.content_object = object
         address.save()
     
-    
-    #address(es)
-    #o trecho comentado abaixo ainda nao funciona
-#    object.address.all().delete()
-#    for address in addressList(request.POST.getlist('addressPrefix'), request.POST.getlist('addressLine1'), 
-#                               request.POST.getlist('addressLine2'), request.POST.getlist('addressNumber'),
-#                               request.POST.getlist('neighborhood'), request.POST.getlist('zipCode'), 
-#                               request.POST.getlist('addressType'), request.POST.getlist('city'),
-#                               request.POST.getlist('foreignCountry'), request.POST.getlist('foreignState'),
-#                               request.POST.getlist('foreignCity') ):
-#        address.content_object= object
-#        address.save()
-
-    
-    
     object.phones.all().delete()    
     for phone in phoneList(request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType')):
         phone.content_object= object
         phone.save()
+        
+    rooms= object.room_set.all()
+    #delete all rooms and...
+    for room in rooms:
+        room.delete()
+    #create new ones
+    for room in roomList( request.POST.getlist('description'), request.POST.getlist('dimension'), request.POST.getlist('room_type'),
+                               request.POST.getlist('furniture') ):
+       room.place= object
+       room.save()
     
     return HttpResponse(object.id)
 
@@ -145,13 +148,25 @@ def add_room(request, place_id):
     room_form= RoomForm( instance= room )
     return render_to_response( 'place/add_room.html', locals() )
 
-def save_room(request):
-    room= RoomForm( request.POST )
-    if room.is_valid():
-        room.save()
-        return render_to_response( 'place/place_msg.html', { 'msg': "It was successfully saved" } )
-    else:
+###TODO: this method yet uses form to perform its functionality, thus those implementation must be changed
+def save_room(request, id_object):
+    
+    try:
+        get_object_or_404( Place, pk= id_object)
+    except:
         return render_to_response( 'place/place_msg.html', { 'msg': "some problem occurred while saving the room" } )
+    
+    print "method save_room"
+    print id_object
+    room= Room()
+    room.description= request.POST['description']
+    room.dimension= request.POST['dimension']
+    room.place= Place.objects.get(pk= id_object)
+    room.room_type= RoomType.objects.get(pk= request.POST['room_type'] )
+    room.furniture= request.POST['furniture']
+    room.save()
+    object= Place.objects.all()
+    return render_to_response( "place/place_index.html", locals() )
 
 def list_rooms_related_to(request, place_id):
     room_list= []

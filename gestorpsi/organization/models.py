@@ -98,3 +98,94 @@ class Organization(models.Model):
     
     class Admin:
         pass
+"""
+from gestorpsi.organization.models import PersonType, AdministrationType, Dependency, FacilityType, CareType, Management, OrganizationType, ResearchEducationActivities, Organization
+person_type= PersonType( description= 'person type test' )
+person_type.save()
+
+##AdministrationType
+
+admin_type= AdministrationType( description= ' administration type test' )
+admin_type.save()
+
+##Dependency
+dependency= Dependency( description= 'dependency test' )
+dependency.save()
+
+##FacilityType
+facility_type= FacilityType( description= 'facility type test')
+facility_type.save()
+
+##CareType
+care_type= CareType( description= 'care type test' )
+care_type.save()
+
+##Management
+management= Management(description= 'management test' )
+management.save()
+
+##OrganizationType
+organization_type= OrganizationType( description= 'organization type test')
+organization_type.save()
+
+##ResearchEducationActivities
+research_education_activities= ResearchEducationActivities( description= 'research education activities test')
+research_education_activities.save()
+
+
+##Organization
+organization= Organization()
+organization.name= 'organization test'
+organization.bussinessName= 'business name test'
+organization.companyID= 9
+organization.healthCompanyID= 9
+organization.stateTaxID= 9
+organization.cityTaxID= 9
+organization.companyProfessionalLicense= 'XsDF'
+organization.accountableProfessional= 'XsDF'
+organization.email= 'organization@test.com.br'
+organization.site= 'www.gestorpsi.com.br'
+organization.active= True
+organization.icon= 'www.google.com.br'
+organization.personType= person_type
+organization.administrationType= admin_type
+organization.dependency= dependency
+organization.facilityType= facility_type
+organization.careType= care_type
+organization.management= management
+organization.organizationType= organization_type
+organization.researchEducationActivities= research_education_activities
+
+organization.save()
+
+from gestorpsi.address.models import AddressType, Address, City
+from gestorpsi.phone.models import Phone, PhoneType
+
+addressType=AddressType(description='Home')
+addressType.save()
+address = Address()
+address.addressPrefix= 'Rua'
+address.addressLine1= 'Rui Barbosa, 1234'
+address.addressLine2= 'Anexo II - Sala 4'
+address.neighborhood= 'Centro'
+address.zipCode= '12345-123'
+address.addressType= addressType
+address.city= City.objects.get(pk=44085)
+address.content_object= organization
+address.save()
+
+phoneType= PhoneType( description='Home' )
+phoneType.save()
+phone = Phone(area='16', phoneNumber='33643223', ext='ttt', phoneType=phoneType)
+phone.content_object = organization
+phone.save()
+
+
+address.save()
+phone.save()
+
+organization.save()
+
+
+
+"""

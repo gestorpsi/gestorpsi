@@ -2,6 +2,9 @@ from django.shortcuts import render_to_response, get_list_or_404, get_object_or_
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.organization.models import Organization
 from django.newforms import form_for_model
+from gestorpsi.address.views import addressList
+from gestorpsi.phone.views import phoneList
+
 
 def careProfessionalList(names):
     total = len(name)
@@ -10,41 +13,6 @@ def careProfessionalList(names):
         if (len(numbers[i])): 
             careProfessionals.append(Person(name=names[i], organization = organization()))
     return careProfessionals
-
-def phoneList(areas, numbers, exts, types):
-    total = len(numbers)
-    phones = []
-    for i in range(0, total):
-        if (len(numbers[i])): 
-            phones.append(Phone(area=areas[i], phoneNumber=numbers[i], ext=exts[i], phoneType=PhoneType.objects.get(pk=types[i])))
-    return phones
-
-
-def addressList(addressPrefixs, addressLines1, addressLines2, addressNumbers, neighborhoods, zipCodes, addressTypes, city_ids, country_ids, stateChars, cityChars):
-    total = len(addressLines1)
-    address = []
-    
-    for i in range(0, total):
-        if (len(addressLines1[i])):
-            
-            #Permitir que Cidade ou Pais seja em branco
-            #Do jeito que esta ocorrera uma exception  
-            if(len(city_ids[i])):
-                #city_id=City.objects.get(pk=city_ids[i])          
-                address.append(Address(addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
-                                   addressNumber=addressNumbers[i], neighborhood=neighborhoods[i], zipCode=zipCodes[i],
-                                   addressType=AddressType.objects.get(pk=addressTypes[i]),                                   
-                                   foreignCountry=Country.objects.get(pk=country_ids[i]),
-                                   foreignState=stateChars[i],
-                                   foreignCity=cityChars[i]))
-            else:
-                address.append(Address(addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
-                                   addressNumber=addressNumbers[i], neighborhood=neighborhoods[i], zipCode=zipCodes[i],
-                                   addressType=AddressType.objects.get(pk=addressTypes[i]),
-                                   city = City.objects.get(pk=city_ids[i])))                            
-            
-    return address
-
 
 
 def index(request):
@@ -68,7 +36,10 @@ def form(request, object_id):
     except:        
         object= Organization()
 
-        return render_to_response('contact/contact_details.html', {'contactList': object, 'phones': phones, 'addresses': addresses, 'careProfessionals':careProfessionals})
+        return render_to_response('contact/contact_details.html', {'contactList': object, 
+                                                                   'phones': phones, 
+                                                                   'addresses': addresses, 
+                                                                   'careProfessionals':careProfessionals})
 
 
 def save(request, object_id= 0):

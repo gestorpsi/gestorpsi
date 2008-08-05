@@ -58,6 +58,8 @@
 
 	<a href="" id="help">&nbsp;</a>
 
+<div id="place_form">
+
 	<!--
 	Places must to have an Identification 
 	-->
@@ -69,7 +71,7 @@
 			</label>
 			<label>{% trans "Place Type" %}<br />
 			<select name="place_type">
-				{% for pt in place_type %}
+				{% for pt in PlaceTypes %}
 				<option value="{{ pt.id }}">{{ pt }}</option>
 				{% endfor %}
 			</select>
@@ -177,11 +179,28 @@
 			</label>
 	</fieldset>
 
+</div>
+	
+	<fieldset id="fieldset_room_identification" style="display:none">
+	<legend>{% trans "Room Details" %}</legend>
+	
+		{% if not rooms %}
+			{% include "tags/room.html" %}
+		{% else %}
+		{% for room in rooms %}
+			{% include "tags/room.html" %}
+		{% endfor %}
+		{% endif %}
+
+		<div id="room_more"></div>
+
+	</fieldset>
 <br />	
 </div>
 
 <div id="sidebar">
 	<div class="bg_blue">
+		<input type="hidden" name="place" value="{{ object.id }}" />
 		<input name="save" type="submit" value="{% trans 'Save' %}" />
 		<input name="save" type="button" value="{% trans 'Cancel' %}" />
 		
@@ -195,8 +214,23 @@
 		<div id="place_actions" {% if not object.id %}style="display:none"{% endif %}>	
 		<h3>{% trans 'Object Actions' %}</h3>
 		<ul>
-			<li><a href="/place/add_room/{{ object.id }}" id="add_room">{% trans "Add Room" %}</a></li>
+			<li id="add_room" class="add_to_form"><a class="notajax">{% trans "Add room in this place" %}</a></li>
+			{# <li><a class="notajax" onclick="$('#place_form').hide(); $('.form_room_box').hide(); $('#fieldset_room_identification, #room_').show();" id="add_room">{% trans "Add Room" %}</a></li> #}
 		</ul>
+		
+		
+		<div id="div_list_rooms" style="display:{% if not rooms %}none{% endif %}">
+		<h3>{% trans 'Rooms from this place' %}</h3>
+		<ul>
+			<li class="li_rooms" style="display:none">&nbsp;</li>
+			{% for room in rooms %}
+			<li class="li_rooms"><a class="notajax" onclick="$('#place_form').hide(); $('.form_room_box').hide(); $('#fieldset_room_identification').show(); $('#room_{{ room.id }}').show();">{{ room }}</a></li>
+			{% endfor %}
+			
+		</ul>
+		</div>
+		
+		
 	</div>
 </div>
 

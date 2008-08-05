@@ -70,7 +70,10 @@ $(document).ready(function(){
                                         // change action atribute to update it, not insert a new one
                                         $('#form_place').attr('action','place/' + response + '/save/');
                                         // set id, in add rooms link
-                                        $('#place_actions a#add_room').attr('href','place/add_room/' + response);
+                                        //$('#place_actions a#add_room').attr('href','place/add_room/' + response);
+                                        // empty room add fields
+                                        //$('#room_'+total+' input:text').val('');
+                                        
                                    },
 				error: function(){
 					// show error alert
@@ -320,6 +323,45 @@ $(document).ready(function(){
 		
 	});
 
+
+	/** 
+	 * 
+	 * Place form
+	 * 
+	 * _description:
+	 * 
+	 * append Room add form
+	 * 
+	 */
+	
+	$('li#add_room a').click(function() {
+               $('#place_form').hide();
+               $('.form_room_box').hide();
+               $('#fieldset_room_identification').show();
+               total = $(".form_room_box").length + 1;
+               $("#room_more").before('<div class="form_room_box" id="room_'+total+'"><div class="form_room">'+$(".form_room").html()+'</div></div>');
+	       $('#room_'+total+' input:text').val('');
+
+               // auto insert new typing item, in the room list
+               
+               // first we need to clean item with empty names
+               $('li.li_rooms').each(function() {
+                    li = $(this);
+                    if($(li).text()=='') {
+                         li.remove();     
+                    }
+               });
+               // create new item in room list
+               $('li.li_rooms:last').after('<li class="li_rooms"><a class="notajax" onclick="$(\'#place_form\').hide(); $(\'.form_room_box\').hide(); $(\'#fieldset_room_identification\').show(); $(\'#room_'+total+'\').show();"></a></li>');
+               //alert($('#deleteme').html());
+               // update room name, in room list when new name is typing 
+               $('#room_'+total+' input.update_name').keyup(function() {
+                   $('#div_list_rooms').show();
+                   $('li.li_rooms:last a').text($(this).val());
+                });
+		
+	});
+
         
 
         
@@ -381,8 +423,6 @@ $(document).ready(function(){
 	}
 	
 	reloadCountries(); // load countries select for the first tag address 
-	   
-	
 
   
 

@@ -38,8 +38,8 @@ class RoomType( models.Model ):
       pass
 
 class Room( models.Model ):
-   description= models.CharField( max_length= 80 )
-   dimension= models.IntegerField()
+   description= models.CharField( max_length= 80, blank=True )
+   dimension= models.IntegerField(null=True, blank=True)
    place= models.ForeignKey( Place )
    room_type= models.ForeignKey( RoomType, related_name= 'room_type' )
    furniture= models.TextField()

@@ -15,8 +15,10 @@ def roomList( descriptions, dimensions, room_types, furniture_descriptions ):
     total= len(descriptions)
     rooms= []
     for i in range(0, total):
-        if ( len( description[i]) ): 
-            rooms.append( Room(description= descriptions[i], dimension= dimensions[i], place= Place(), room_type= RoomType.objects.get(pk= room_types[i] ), furniture= furniture_descriptions[i]) )
+        if ( len( descriptions[i]) ):
+            if not (dimensions[i]):
+                dimensions[i] = None
+            rooms.append( Room(description= descriptions[i], dimension= dimensions[i], place= Place(), room_type= RoomType.objects.get(pk=room_types[i]), furniture= furniture_descriptions[i]) )
     return rooms
 
 def index(request):
@@ -28,6 +30,7 @@ def form(request, object_id=0 ):
     try:
         phones = []
         addresses = []
+        rooms = []
         object= get_object_or_404(Place, pk=object_id)
         
         #get all address
@@ -35,6 +38,9 @@ def form(request, object_id=0 ):
         
         #get all related phones
         phones= object.phones.all()
+        
+        #get all related rooms
+        rooms= object.room_set.all()
         
         #place_type= PlaceType.objects.get( pk= a_place.place_type_id ) # commented by czd. sending it directly to template as: 'place_type': PlaceType.objects.all()
         
@@ -49,7 +55,8 @@ def form(request, object_id=0 ):
                                                         'organization': organization, 'addresses': addresses, 'phones': phones,
                                                         'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(),
                                                         'countries': Country.objects.all(),
-                                                        'RoomTypes': RoomType.objects.all(), 
+                                                        'RoomTypes': RoomType.objects.all(),
+                                                        'rooms': rooms,
                                                         } )
 
 ###TODO#######################
@@ -108,8 +115,8 @@ def save(request, object_id= 0):
     #create new ones
     for room in roomList( request.POST.getlist('description'), request.POST.getlist('dimension'), request.POST.getlist('room_type'),
                                request.POST.getlist('furniture') ):
-       room.place= object
-       room.save()
+        room.place= object
+        room.save()
     
     return HttpResponse(object.id)
 

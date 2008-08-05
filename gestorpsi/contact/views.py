@@ -51,7 +51,7 @@ def save(request, object_id= 0):
     object.businessName= request.POST['businessName']
     object.visible= get_visible( request.POST['visible'] )
     
-    #Sera utilizado quando existir um estabelecimento na seção
+    #Used if exist an organization in the session
     #if(len(object.organization_id)):
     #    object.organization = org_idSection
     #organization

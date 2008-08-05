@@ -104,3 +104,89 @@ class CareProfessional(models.Model):
     class Admin:
        pass
     
+
+"""
+from gestorpsi.address.models import Country
+from gestorpsi.person.models import Person
+from gestorpsi.organization.models import Organization
+from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, WorkPlaces, Profession, Agreement, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
+from gestorpsi.address.models import Country, State, City, Address, AddressType
+from gestorpsi.phone.models import Phone, PhoneType
+
+person= Person()
+person.name='jose silva'
+person.lastname='pereira'
+person.nationality = Country.objects.get(pk=33)
+person.save()
+
+instType = InstitutionType( description='testInstitution')
+instType.save()
+
+postGraduate = PostGraduate( description='posGraduateTest')
+postGraduate.save()
+
+resume = AcademicResume()
+resume.teachingInstitute = 'UFSCar'
+resume.institutionType = InstitutionType.objects.get(pk=1)
+resume.course = 'testCourse'
+resume.initialDateGraduation = '2000-10-01'
+resume.finalDateGraduation = '2005-10-01'
+resume.lattesResume = 'http://www.gestorpsi.com.br'
+resume.postGraduate = PostGraduate.objects.get(pk=1)
+resume.initialDatePostGraduate = '2006-03-01'
+resume.finalDatePostGraduate = '2008-03-01'
+resume.area = 'testArea'
+resume.save()
+
+workPlaces = WorkPlaces()
+workPlaces.name='Instituto de Psicologia'
+workPlaces.save()
+
+addressType=AddressType(description='Home')
+addressType.save()
+address = Address()
+address.addressPrefix = 'Rua'
+address.addressLine1 = 'Rui Barbosa, 1234'
+address.addressLine2 = 'Anexo II - Sala 4'
+address.neighborhood = 'Centro'
+address.zipCode = '12345-123'
+address.addressType = AddressType.objects.get(pk=1)
+address.city = City.objects.get(pk=44085)
+address.content_object = WorkPlaces.objects.get(pk=1)
+address.save()
+
+phoneType = PhoneType( description='Home' )
+phoneType.save()
+phone = Phone(area='16', phoneNumber='33643223', ext='ttt', phoneType=PhoneType.objects.get(pk=1))
+phone.content_object = WorkPlaces.objects.get(pk=1)
+phone.save()
+
+profession = Profession(number='10', description='Psicologo')
+profession.save()
+
+agreement = Agreement(description='Unimed')
+agreement.save()
+
+profile = ProfessionalProfile()
+profile.academicResume = AcademicResume.objects.get(pk=1)
+profile.initialPrifessionalActivities = '10/2000'
+profile.agreement = Agreement.objects.get(pk=1)
+profile.profession = Profession.objects.get(pk=1)
+profile.services = 'Psicanalise'
+profile.availableTime = '30 horas semanais'
+profile.workplace = WorkPlaces.objects.get(pk=1)
+profile.save()
+
+licence = LicenceBoard(name='CRRT' ,description='testtt')
+licence.save()
+
+identification = ProfessionalIdentification(registerNumber='111', licenceBoard = LicenceBoard.objects.get(pk=1))
+identification.save()
+
+care = CareProfessional()
+care.professionalIdentification = ProfessionalIdentification.objects.get(pk=1)
+care.professionalProfile = ProfessionalProfile.objects.get(pk=1)
+care.person = Person.objects.get(pk=1)
+care.comments = 'ate que enfim!!!'
+care.save()
+"""

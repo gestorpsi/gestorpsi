@@ -4,16 +4,9 @@ from django import newforms as forms
 from gestorpsi.client.models import Client
 from gestorpsi.phone.models import Phone
 
-def phoneList(areas, numbers, exts, types):
-    total = len(numbers)
-    phones = []
-    for i in range(0, total):
-        if (len(numbers[i])): 
-            phones.append(Phone(area=areas[i],phoneNumber=numbers[i],ext=exts[i],phoneType=types[i]))
-    return phones
 
 def index(request): 
-    return render_to_response('client/client_index.html', {'clientList': Client.objects.all().filter(active = True) })
+    return render_to_response('careprofessional/careprofessional_index.html', {'clientList': Client.objects.all().filter(active = True) })
 
 def form(request, client_id=0):
     try:

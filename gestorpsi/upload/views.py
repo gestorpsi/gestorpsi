@@ -7,14 +7,14 @@ from django.shortcuts import render_to_response
 from gestorpsi.settings import MEDIA_ROOT  
    
     
-def upload_client(request):  
+def send(request):  
 	if request.method == 'POST':
 		if 'file' in request.FILES:
 			file = request.FILES['file']  
 			filesize = len(file['content'])
 			filetype = file['content-type']
 			filename = file['filename']  
-			fd = open('%s/img/client/%s' % (MEDIA_ROOT, filename), 'wb')  
+			fd = open('%s/img/people/%s' % (MEDIA_ROOT, filename), 'wb')  
 			fd.write(file['content'])  
 			fd.close()
 		return HttpResponse(filename);

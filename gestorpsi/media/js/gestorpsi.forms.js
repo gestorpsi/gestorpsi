@@ -9,7 +9,7 @@ $(document).ready(function(){
 	 * 
 	 */
      
-    $('#form_people').validate({event:"submit",
+    $('.form_people').validate({event:"submit",
 		rules: {
 			name: {
 				required: true
@@ -27,7 +27,8 @@ $(document).ready(function(){
 					// show new options for clients
 					$('#people_actions').show();
                                         // change action atribute to update it, not insert a new one
-                                        $('#form_people').attr('action','client/' + response + '/save/');
+                                        $('#form_client').attr('action','client/' + response + '/save/');
+                                        $('#form_employee').attr('action','employee/' + response + '/save/');
                                    },
 				error: function(){
 					// show error alert
@@ -96,12 +97,13 @@ $(document).ready(function(){
 	 * 
 	 */
 	
-	$('#form_file').validate({event:"submit",
+	$('.form_file').validate({event:"submit",
 		submitHandler: function(form) {
 			var options = { 
 				success:    function(filename) { 
-					$('#id_photo').val('/media/img/client/' + filename);
-					$('img#img_people').attr('src', '/media/img/client/' + filename); 
+					$('#id_photo').val('/media/img/people/' + filename);
+                                        alert('valor em #id_photo: ' + $('#id_photo').val());
+					$('img#img_people').attr('src', '/media/img/people/' + filename); 
 				} 
 			}; 
 			$(form).ajaxSubmit(options);

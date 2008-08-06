@@ -2,7 +2,7 @@
 {% include "core/ajax_page.html" %}
 
 {% if not object %}
- <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/client/add/">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
+ <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/employee/add/">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
 {% else %}
 
 <div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
@@ -12,8 +12,8 @@ Esta caixa é mostrada quando há mensagens
 <h2 id="title_addressbook" style="display: none"></h2>
 <h2 id="title_clients" style="display: none"></h2>
 
-<h2 id="title_contacts">{% trans "All Customers" %}</h2>
-<p class="description">{% trans "Displaying" %} <a href="/client">{{ object|length }} {% trans "customer(s)" %}</a>.</p>
+<h2 id="title_contacts">{% trans "All Employees" %}</h2>
+<p class="description">{% trans "Displaying" %} <a href="/client">{{ object|length }} {% trans "employees(s)" %}</a>.</p>
 <h2 id="title_myoffice" style="display: none"></h2>
 
 
@@ -70,7 +70,7 @@ Esta caixa é mostrada quando há mensagens
         <tr>
 
                 <!--<td><a href="{% url gestorpsi.client.views.form l.id %}">{{ l.name }}</a></td>-->
-                <td><a href="/client/{{ l.id }}">{{ l.name }}</a></td>
+                <td><a href="/employee/{{ l.id }}">{{ l.person.name }}</a></td>
                 <!--
                 <strong>[</strong><small><a href="{% url gestorpsi.client.views.delete l.id %}">Delete</a></small><strong>]</strong> <br>
                 <td>(11) 2301 0751</td>

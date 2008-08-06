@@ -56,6 +56,7 @@
 				<ul style="display:none">
 					<li><a id="organization">{% trans "My Organization" %}</a></li>
 					<li><a id="places" href="/place">{% trans "Places" %}</a></li>
+					<li><a id="employees" href="/employee">{% trans "Employees" %}</a></li>
 					<li><a id="services">{% trans "Services" %}</a></li>
 					<!-- <li><a id="rooms">{% trans "Rooms" %}</a></li> -->
 					<li><a id="equipament">{% trans "Equipaments" %}</a></li>
@@ -87,6 +88,15 @@
 			<li><a>{% trans "search" %}</a></li>
 			<span id="sub_menu_places_extras"></span>
 		</ul>
+		
+		
+		<ul id="sub_employees" style="display:none">
+			<li><a class="first active" href="/employee/">{% trans "all" %}</a></li>
+			<li><a href="/employee/add/">{% trans "add" %}</a></li>
+			<li><a>{% trans "search" %}</a></li>
+			<span id="sub_menu_employees_extras"></span>
+		</ul>
+		
 		
 		<ul class="opened_tabs">
 			<li><a href="" class="active" style="display: none;">{% trans "customers" %}</a></li>

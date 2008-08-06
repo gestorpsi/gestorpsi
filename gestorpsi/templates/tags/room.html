@@ -1,0 +1,40 @@
+{% load i18n %}
+
+<div class="form_room_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="room_{{ room.id }}">
+	<div class="form_room">
+			<label>{% trans "Description" %}<br />
+			<input type="text" class="big update_name" name="description" value="{{ room.description }}" />
+			</label>
+			
+			<label>{% trans "Dimension" %}<br />
+			<input type="text" class="medium" name="dimension" value="{% ifnotequal room.dimension None %}{{ room.dimension }}{% endifnotequal %}" />
+			</label>
+				
+					
+			<label>{% trans "Type" %}<br />
+			{% if not RoomTypes %}
+				{% trans "There is no types available to choice" %}
+			{% else %}
+			<select name="room_type" class="big">
+			{% for RoomType in RoomTypes %}
+				<option value="{{ RoomType.id }}"{% ifequal room.RoomType.id RoomType.id %} selected{% endifequal %}>{{ RoomType }}</option>
+			{% endfor %}
+			</select>
+			{% endif %}
+			</label>
+			<br />
+			<label>{% trans "Furniture" %}<br />
+			<textarea name="furniture" class="big">{{ room.furniture }}</textarea>
+			
+			</label>
+	</div>
+
+{% if object.id %}
+<label><a class="notajax remove_from_form" onclick="$('#room_{{ forloop.counter }}').remove(); $(this).remove()">{% trans "Delete Room" %}</a></label>
+{% endif %}
+</div>
+
+
+
+
+

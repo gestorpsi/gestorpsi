@@ -19,7 +19,7 @@ class MaritalStatus(models.Model):
 class Person(models.Model):
     name = models.CharField('Name', max_length=60)
     nickname = models.CharField('Nickname', max_length=20, null=True, blank=True)
-    photo = models.ImageField('Photo', upload_to="client_photos", null=True)
+    photo = models.CharField(max_length=100)
     birthDate = models.DateField('Birthdate', null=True)
     birthPlace = models.ForeignKey(City, null=True)
     gender = models.CharField(max_length=1, choices=Gender) 

@@ -133,8 +133,10 @@ div#sub_menu a.active {
 width: 139px;
 }
 
+
+#main_menu a#organization {background: url(../img/16/go-home.png) no-repeat 25px 4px;}
 #main_menu a#places {background: url(../img/16/office.png) no-repeat 25px 4px;}
-#main_menu a#organization {background: url(../img/16/office.png) no-repeat 25px 4px;}
+#main_menu a#employees {background: url(../img/16/system-users.png) no-repeat 25px 4px;}
 #main_menu a#services {background: url(../img/16/games.png) no-repeat 25px 4px;}
 #main_menu a#rooms {background: url(../img/16/rooms.png) no-repeat 25px 4px;}
 #main_menu a#equipament {background: url(../img/16/stuff.png) no-repeat 25px 4px;}
@@ -146,13 +148,14 @@ width: 139px;
 	top: 49px;
 	left: 356px;
 	width: 177px;
-	height: 112px;
+	
 	background: #FCFCFC;
 	z-index: 5;
 	border-bottom: 1px solid #838383;
 	border-left: 1px solid #838383;
 	border-right: 1px solid #838383;
 	padding-top: 10px;
+        padding-bottom: 10px;
 }
 #main_menu ul li ul li a{
 	float: none;

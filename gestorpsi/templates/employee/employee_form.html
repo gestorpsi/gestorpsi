@@ -18,14 +18,14 @@
 
 {% if object.id %}
 	<h2 id="title_clients">{{ object.name }}</h2>
-	<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a><br />	
+	
 	<script type="text/javascript">
 	$(document).ready(function(){
 		/**
 		create new tab when editing an user
 		*/
 		$('#sub_menu ul li a').removeClass('active');
-		$("#sub_menu_client_extras").html('<li><a class="active makemeajax" id="client_{{ object.id }}" href="/client/{{ object.id }}">{{ object.name }}</a></li>');
+		$("#sub_menu_employees_extras").html('<li><a class="active makemeajax" id="object_{{ object.id }}" href="/employee/{{ object.id }}">{{ object.person.name }}</a></li>');
 		
 		$(".makemeajax").each(function(){
 		var link = $(this);
@@ -48,8 +48,8 @@
 		
 	</script>
 {% else %}
-	<h2 id="title_clients">{% trans "Adding New Client" %}</h2>
-	<p class="description">{% trans "Inform the client details then click on Save button" %}</p>
+	<h2 id="title_clients">{% trans "Adding New Employee" %}</h2>
+	<p class="description">{% trans "Inform the employee details then click on Save button" %}</p>
 {% endif %}
 
 
@@ -58,29 +58,25 @@
 <h2 id="title_myoffice" style="display:none"></h2>
 
 
-<form action="/client/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_client" class="form_people">	
+<form action="/employee/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_employee" class="form_people">	
 <div id="main_area">
 
 	<a href="" id="help">&nbsp;</a>
 	<!-- DataTypes form menu -->
-	<h3><span id="client_add_infotypes">{% trans "Demographic" %}</span></h3>
-	<ul id="form_options" class="float_menu" style="display:none;">
-		<li><label><input name="this" type="radio" value="" checked/>{% trans "Demographic" %}</label></li>
-		<li><label><input name="this" type="radio" value="" />{% trans "Socio-Demographic" %}</label></li>
-		<li><label><input name="this"rr type="radio" value="" />{% trans "Socio-Economic" %}</label></li>
-	</ul>
+	
 	<div id="photo">
 		<img id="img_people" src="{% if object.person.photo %}{{ object.person.photo }}{% else %}/media/img/male_generic_photo.gif.png{% endif %}" />
-		<a id="male" class="notajax gender{% ifequal object.gender '2' %} active{% endifequal %}" value="2"><span>{% trans "Male" %}</span></a>
-		<a id="female" class="notajax gender{% ifequal object.gender '1' %} active{% endifequal %}" value="1"><span>{% trans "Female" %}</span></a>
+		<a id="male" class="notajax gender{% ifequal object.person.gender '2' %} active{% endifequal %}" value="2"><span>{% trans "Male" %}</span></a>
+		<a id="female" class="notajax gender{% ifequal object.person.gender '1' %} active{% endifequal %}" value="1"><span>{% trans "Female" %}</span></a>
 
 		<a class="clips notajax" >{% trans "Photo" %}</a>
-		<input type="hidden" name="photo" value="{{ object.photo }}" id="id_photo" />
+		<input type="hidden" name="photo" value="" id="id_photo" />
 		<a href="notajax" class="delete" title="delete" onclick="$('#id_photo').val(''); $('img#img_people').attr('src', '/media/img/male_generic_photo.gif.png'); "><span>{% trans "Delete" %}</span></a>
-		<input type="hidden" name="gender" value="{{ object.gender }}" id="id_gender" />
+		<input type="hidden" name="gender" value="{{ object.person.gender }}" id="id_gender" />
 
 	</div> 
 	
+
 	<!--
 	People Personal Identification Form	
 	-->
@@ -88,10 +84,25 @@
 	<fieldset id="fieldset_personal_identification">
 		<legend>{% trans "Personal Identification" %}</legend>
 			<label>{% trans "Name" %}<br />
-			<input type="text" name="name" class="big" value="{{ object.name }}" id="id_name" />
+			<input type="text" name="name" class="big" value="{{ object.person.name }}" id="id_name" />
 			</label>
 			<label>{% trans "Nickname" %}<br />
-			<input type="text" name="nickname" class="big" value="{% ifnotequal object.nickname None %}{{ object.nickname }}{% endifnotequal %}" id="id_nickname" />
+			<input type="text" name="nickname" class="big" value="{% ifnotequal object.person.nickname None %}{{ object.person.nickname }}{% endifnotequal %}" id="id_nickname" />
+			</label>
+	</fieldset>
+
+	
+	<!--
+	Employee infos
+	-->
+	
+	<fieldset id="fieldset_employee_details">
+		<legend>{% trans "Personal Identification" %}</legend>
+			<label>{% trans "Job" %}<br />
+			<input type="text" name="job" class="big" value="{{ object.job }}" id="id_job" />
+			</label>
+			<label>{% trans "Hiredate" %}<br />
+			<input type="text" name="hiredate" class="calendar birthdate" value="{% ifnotequal object.hiredate None %}{{ object.hiredate }}{% endifnotequal %}" id="id_hiredate" />
 			</label>
 	</fieldset>
 
@@ -118,20 +129,20 @@
 	<fieldset id="fieldset_personal_profile">
 		<legend>{% trans "Personal Profile" %}</legend>
 			<label>{% trans "Birthdate" %}<br />
-			<input type="text" name="birthDate" class="calendar birthdate" value="{% ifnotequal object.birthDate None %}{{ object.birthDate }}{% endifnotequal %}" id="id_birthDate" />
+			<input type="text" name="birthDate" class="calendar birthdate" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate }}{% endifnotequal %}" id="id_birthDate" />
 			</label>
 			<label>{% trans "Age" %}<br />
-			<input type="text" name="age" class="extrasmall" value="{{ object.age }}" id="id_age" />
+			<input type="text" name="age" class="extrasmall" value="" id="id_age" />
 			</label>
 			<label>{% trans "Naturality" %}<br />
-			<input type="text" class="medium city_search" value="{% ifnotequal object.birthPlace None %}{{ object.birthPlace }}{% endifnotequal %}" />
+			<input type="text" class="medium city_search" value="{% ifnotequal object.person.birthPlace None %}{{ object.person.birthPlace }}{% endifnotequal %}" />
 			</label>
 			<!-- 
 				don't remove and dont change the position of this label !!!!
 				this receive the id of the city when selected
 			-->
 			<label style="display:none"><br />
-			<input type="hidden" class="small" name="birthPlace" value="{% if object.birthPlace_id %}{{ object.birthPlace_id }}{% endif %}" id="id_birthPlace" />
+			<input type="hidden" class="small" name="birthPlace" value="{% if object.person.birthPlace_id %}{{ object.person.birthPlace_id }}{% endif %}" id="id_birthPlace" />
 			</label>
 			<!--
 			<label>{% trans "Region" %}<br />
@@ -250,12 +261,7 @@
 
 		</div>
 	</div>
-	<div id="people_actions" {% if not object.id %}style="display:none"{% endif %}>	
-	<h3>{% trans 'Object Actions' %}</h3>
-	<ul>
-		<li><!--<a href="realizar_admissao.html" id="admit">-->Realizar Admiss&atilde;o<!--</a>--></li>
-	</ul>
-	</div>
+	
 </div>
 
 </form>

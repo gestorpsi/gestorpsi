@@ -102,8 +102,7 @@ $(document).ready(function(){
 			var options = { 
 				success:    function(filename) { 
 					$('#id_photo').val('/media/img/people/' + filename);
-                                        alert('valor em #id_photo: ' + $('#id_photo').val());
-					$('img#img_people').attr('src', '/media/img/people/' + filename); 
+                                        $('img#img_people').attr('src', '/media/img/people/' + filename); 
 				} 
 			}; 
 			$(form).ajaxSubmit(options);

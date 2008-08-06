@@ -70,7 +70,7 @@
 		<li><label><input name="this"rr type="radio" value="" />{% trans "Socio-Economic" %}</label></li>
 	</ul>
 	<div id="photo">
-		<img id="img_people" src="{% if object.person.photo %}{{ object.person.photo }}{% else %}/media/img/male_generic_photo.gif.png{% endif %}" />
+		<img id="img_people" src="{% if object.photo %}{{ object.photo }}{% else %}/media/img/male_generic_photo.gif.png{% endif %}" />
 		<a id="male" class="notajax gender{% ifequal object.gender '2' %} active{% endifequal %}" value="2"><span>{% trans "Male" %}</span></a>
 		<a id="female" class="notajax gender{% ifequal object.gender '1' %} active{% endifequal %}" value="1"><span>{% trans "Female" %}</span></a>
 

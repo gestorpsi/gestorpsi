@@ -49,7 +49,9 @@ def save(request, object_id=0):
         
     object.name = request.POST['name']
     object.nickname = request.POST['nickname']
-    #person.photo = request.POST['photo']   
+    
+    if(request.POST['photo']):
+        object.photo = request.POST['photo']   
     if(request.POST['birthDate']):
         object.birthDate = request.POST['birthDate']
     object.gender = request.POST['gender']

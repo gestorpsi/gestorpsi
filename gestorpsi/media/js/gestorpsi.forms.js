@@ -341,7 +341,10 @@ $(document).ready(function(){
                $('#fieldset_room_identification').show();
                total = $(".form_room_box").length + 1;
                $("#room_more").before('<div class="form_room_box" id="room_'+total+'"><div class="form_room">'+$(".form_room").html()+'</div></div>');
-	       $('#room_'+total+' input:text').val('');
+               // clean fields
+	       	   $('#room_'+total+' input:text').val('');
+	       	   $('#room_'+total+' textarea').text('');
+	       
 
                // auto insert new typing item, in the room list
                

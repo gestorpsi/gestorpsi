@@ -11,7 +11,7 @@ class Issuer(models.Model):
 
 class TypeDocument(models.Model):
     description = models.CharField(max_length=30)
-    mask = models.CharField(max_length=30)
+    mask = models.CharField(max_length=30, blank=True)
     def __unicode__(self):
         return u"%s" % self.description
     class Admin: pass

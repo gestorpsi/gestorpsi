@@ -17,11 +17,12 @@ def index(request):
 
 # add and edit form
 def form(request, object_id=0):
-    try:
-        phones = []
-        addresses = []
-        documents = []
+    
+    phones = []
+    addresses = []
+    documents = []
         
+    try:
         # if exists, get it to edit
         object = get_object_or_404(Person, pk=object_id)        
 
@@ -33,13 +34,14 @@ def form(request, object_id=0):
         
         # person have documents
         documents =  object.document.all()
+        
             
     except:
-        object= Person()
+        object = Person()
         
     return render_to_response('client/client_form.html', {'object': object, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), } )
-
-# save object
+ 
+ # save object
 ## NEED OPEN TRANSACTION FOR THIS VIEW
 def save(request, object_id=0):    
     try:

@@ -17,11 +17,12 @@ def index(request):
     return render_to_response('employee/employee_index.html', {'object': Employee.objects.all() })
 
 def form(request, object_id=0):
+    phones = []
+    addresses = []
+    documents = []
+    
     try:
-        phones = []
-        addresses = []
-        documents = []
-        
+   
         object = get_object_or_404(Employee, pk=object_id)        
       
         # person have phones
@@ -35,6 +36,7 @@ def form(request, object_id=0):
         
     except:        
         object= Employee()
+        
     return render_to_response('employee/employee_form.html', {'object': object, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), } )
 
 
@@ -47,7 +49,7 @@ def save(request, object_id=0):
     person = Person()
     person.name = request.POST['name']
     person.nickname = request.POST['nickname']
-    #person.photo = request.POST['photo']   
+    
     if(request.POST['birthDate']):
         person.birthDate = request.POST['birthDate']
     

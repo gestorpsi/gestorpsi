@@ -16,7 +16,7 @@
 		
 		
 		<label>{% trans "Document" %}<br />
-		<input type="text" name="document_document" class="extramedium" value="{{ document.document }}" id="id_document" mask="{{ document.mask }}" />
+		<input type="text" name="document_document" class="medium" value="{{ document.document }}" id="id_document" mask="{{ document.mask }}" />
 		</label>
 			
 		<label>{% trans "Issuer" %}<br />
@@ -41,11 +41,15 @@
 			{% endfor %}
 			</select>
 		</label>
-
+	
 	</div>
+
+	{% if object.id %}
+	<label><a class="notajax remove_from_form" onclick="$('#document_{{ forloop.counter }}').remove(); $(this).remove()">{% trans "Delete" %}</a></label>
+	{% endif %}
+
 </div>
-{% if object.id %}
-<label><a class="notajax remove_from_form" onclick="$('#document_{{ forloop.counter }}').remove(); $(this).remove()">{% trans "Delete" %}</a></label>
-{% endif %}
+
+
 
 

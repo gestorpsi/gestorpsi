@@ -8,19 +8,23 @@ class PersonLink(models.Model):
     def __unicode__(self):
         return u"%s" % self.person.firstName
 
+CLIENT_STATUS = ( ('0','Inativo'),('1','Ativo'))
 class Client(models.Model):
     person = models.OneToOneField(Person)
     idRecord = models.CharField(max_length=10)
     legacyRecord = models.CharField(max_length=10)
     healthDocument = models.CharField(max_length=10)
     indication = models.CharField(max_length=10)
-    clientStatus = models.CharField(max_length=10)
+    clientStatus = models.CharField(max_length=1, default = '1', choices=CLIENT_STATUS)
     personLink = models.ManyToManyField(PersonLink)
     
     #active = models.BooleanField(default=True)
     
     def __unicode__(self):
         return u"%s" % self.person.name
+    
+    class Meta:
+        ordering = ['person']
 
 """
 Testes do Models no shell de Cliente e seus vinculos

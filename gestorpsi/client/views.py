@@ -11,11 +11,11 @@ from gestorpsi.document.models import Document, TypeDocument, Issuer
 from gestorpsi.address.views import addressList
 from gestorpsi.document.views import documentList
 
-# list objects
+# list all active clients
 def index(request):
-    return render_to_response('client/client_index.html', {'object': Person.objects.all(), 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), })
+    return render_to_response('client/client_index.html', {'object': Client.objects.all().filter(clientStatus = '1'), 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), })
 
-# add and edit form
+# add or edit form
 def form(request, object_id=0):
     
     phones = []
@@ -24,48 +24,58 @@ def form(request, object_id=0):
         
     try:
         # if exists, get it to edit
-        object = get_object_or_404(Person, pk=object_id)        
-
+        object = get_object_or_404(Client, pk=object_id)        
+        print object
+        
         # person have phones
-        phones= object.phones.all()
+        phones= object.person.phones.all()
+        print phones
         
         # person have addresses
-        addresses= object.address.all()
+        addresses= object.person.address.all()
+        print addresses
         
         # person have documents
-        documents =  object.document.all()
+        documents = object.person.document.all()
+        print documents
         
             
     except:
-        object = Person()
+        object = Client()
         
     return render_to_response('client/client_form.html', {'object': object, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), } )
  
- # save object
+
+
 ## NEED OPEN TRANSACTION FOR THIS VIEW
+# Save or Update client object
 def save(request, object_id=0):    
     try:
-        object = get_object_or_404(Person, pk=object_id)
+        object = get_object_or_404(Client, pk=object_id)
+        person = object.person
     except Http404:
-        object = Person()
-        
-    object.name = request.POST['name']
-    object.nickname = request.POST['nickname']
+        object = Client()
+        person = Person()
+    
+    person.name = request.POST['name']
+    person.nickname = request.POST['nickname']
     
     if(request.POST['photo']):
-        object.photo = request.POST['photo']   
+        person.photo = request.POST['photo']   
     if(request.POST['birthDate']):
-        object.birthDate = request.POST['birthDate']
-    object.gender = request.POST['gender']
+        person.birthDate = request.POST['birthDate']
+    person.gender = request.POST['gender']
     #person.maritalStatus = MaritalStatus.objects.get(pk = request.POST['maritalStatus'])
 
     # birthPlace (Naturality)
     if not (request.POST['birthPlace']):
-        object.birthPlace = None
+        person.birthPlace = None
     else:
-        object.birthPlace = City.objects.get(pk = request.POST['birthPlace'])    
+        person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])    
     
-    object.save() 
+    person.save()
+    object.person = person
+    object.save()
     
     #
     #email = Email()
@@ -78,33 +88,33 @@ def save(request, object_id=0):
     #email.save()   
     
     # flush phones and re-insert it
-    object.phones.all().delete()
+    object.person.phones.all().delete()
     for phone in phoneList(request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType')):
-        phone.content_object = object
+        phone.content_object = object.person
         phone.save()
     
     # flush addresses and re-insert it
-    object.address.all().delete()
+    object.person.address.all().delete()
     for address in addressList(request.POST.getlist('addressPrefix'), request.POST.getlist('addressLine1'), 
                                request.POST.getlist('addressLine2'), request.POST.getlist('addressNumber'),
                                request.POST.getlist('neighborhood'), request.POST.getlist('zipCode'), 
                                request.POST.getlist('addressType'), request.POST.getlist('city'),
                                request.POST.getlist('foreignCountry'), request.POST.getlist('foreignState'),
                                request.POST.getlist('foreignCity')):
-        address.content_object = object
+        address.content_object = object.person
         address.save()
     
     # flush documents and re-insert it
-    object.document.all().delete()
+    object.person.document.all().delete()
     for document in documentList(request.POST.getlist('document_typeDocument'), request.POST.getlist('document_document'), request.POST.getlist('document_issuer'), request.POST.getlist('document_state')):
-        document.content_object = object
+        document.content_object = object.person
         document.save()
 
     return HttpResponse(object.id)
 
-# delete object
+# delete, pero no mucho, an object
 def delete(request, object_id):
     client = get_object_or_404(Client, pk=object_id)
-    client.active = False
+    client.clientStatus = '0'
     client.save()
-    return render_to_response('client/client_index.html', {'clientList': Client.objects.all().filter(active = True) })
+    return render_to_response('client/client_index.html', {'clientList': Client.objects.all().filter(clientStatus = '1') })

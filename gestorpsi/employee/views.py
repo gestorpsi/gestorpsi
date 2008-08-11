@@ -63,6 +63,8 @@ def save(request, object_id=0):
        
     if(request.POST['photo']):
        person.photo = request.POST['photo']
+    else:
+        person.photo = ''
     
     person.save()
     

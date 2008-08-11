@@ -17,7 +17,7 @@
 <h2 id="title_addressbook" style="display:none"></h2>
 
 {% if object.id %}
-	<h2 id="title_clients">{{ object.name }}</h2>
+	<h2 id="title_clients">{{ object.person.name }}</h2>
 	<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a><br />	
 	<script type="text/javascript">
 	$(document).ready(function(){
@@ -25,7 +25,7 @@
 		create new tab when editing an user
 		*/
 		$('#sub_menu ul li a').removeClass('active');
-		$("#sub_menu_client_extras").html('<li><a class="active makemeajax" id="client_{{ object.id }}" href="/client/{{ object.id }}">{{ object.name }}</a></li>');
+		$("#sub_menu_client_extras").html('<li><a class="active makemeajax" id="client_{{ object.id }}" href="/client/{{ object.id }}">{{ object.person.name }}</a></li>');
 		
 		$(".makemeajax").each(function(){
 		var link = $(this);
@@ -70,14 +70,14 @@
 		<li><label><input name="this"rr type="radio" value="" />{% trans "Socio-Economic" %}</label></li>
 	</ul>
 	<div id="photo">
-		<img id="img_people" src="{% if object.photo %}{{ object.photo }}{% else %}/media/img/male_generic_photo.gif.png{% endif %}" />
-		<a id="male" class="notajax gender{% ifequal object.gender '2' %} active{% endifequal %}" value="2"><span>{% trans "Male" %}</span></a>
-		<a id="female" class="notajax gender{% ifequal object.gender '1' %} active{% endifequal %}" value="1"><span>{% trans "Female" %}</span></a>
+		<img id="img_people" src="{% if object.person.photo %}{{ object.person.photo }}{% else %}/media/img/male_generic_photo.gif.png{% endif %}" />
+		<a id="male" class="notajax gender{% ifequal object.person.gender '2' %} active{% endifequal %}" value="2"><span>{% trans "Male" %}</span></a>
+		<a id="female" class="notajax gender{% ifequal object.person.gender '1' %} active{% endifequal %}" value="1"><span>{% trans "Female" %}</span></a>
 
 		<a class="clips notajax" >{% trans "Photo" %}</a>
-		<input type="hidden" name="photo" value="{{ object.photo }}" id="id_photo" />
+		<input type="hidden" name="photo" value="{{ object.person.photo }}" id="id_photo" />
 		<a href="notajax" class="delete" title="delete" onclick="$('#id_photo').val(''); $('img#img_people').attr('src', '/media/img/male_generic_photo.gif.png'); "><span>{% trans "Delete" %}</span></a>
-		<input type="hidden" name="gender" value="{{ object.gender }}" id="id_gender" />
+		<input type="hidden" name="gender" value="{{ object.person.gender }}" id="id_gender" />
 
 	</div> 
 	
@@ -88,10 +88,10 @@
 	<fieldset id="fieldset_personal_identification">
 		<legend>{% trans "Personal Identification" %}</legend>
 			<label>{% trans "Name" %}<br />
-			<input type="text" name="name" class="big" value="{{ object.name }}" id="id_name" />
+			<input type="text" name="name" class="big" value="{{ object.person.name }}" id="id_name" />
 			</label>
 			<label>{% trans "Nickname" %}<br />
-			<input type="text" name="nickname" class="big" value="{% ifnotequal object.nickname None %}{{ object.nickname }}{% endifnotequal %}" id="id_nickname" />
+			<input type="text" name="nickname" class="big" value="{% ifnotequal object.person.nickname None %}{{ object.person.nickname }}{% endifnotequal %}" id="id_nickname" />
 			</label>
 	</fieldset>
 
@@ -118,20 +118,20 @@
 	<fieldset id="fieldset_personal_profile">
 		<legend>{% trans "Personal Profile" %}</legend>
 			<label>{% trans "Birthdate" %}<br />
-			<input type="text" name="birthDate" class="calendar birthdate" value="{% ifnotequal object.birthDate None %}{{ object.birthDate }}{% endifnotequal %}" id="id_birthDate" />
+			<input type="text" name="birthDate" class="calendar birthdate" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate }}{% endifnotequal %}" id="id_birthDate" />
 			</label>
 			<label>{% trans "Age" %}<br />
 			<input type="text" name="age" class="extrasmall" value="{{ object.age }}" id="id_age" />
 			</label>
 			<label>{% trans "Naturality" %}<br />
-			<input type="text" class="extramedium city_search" value="{% ifnotequal object.birthPlace None %}{{ object.birthPlace }}{% endifnotequal %}" />
+			<input type="text" class="extramedium city_search" value="{% ifnotequal object.person.birthPlace None %}{{ object.person.birthPlace }}{% endifnotequal %}" />
 			</label>
 			<!-- 
 				don't remove and dont change the position of this label !!!!
 				this receive the id of the city when selected
 			-->
 			<label style="display:none"><br />
-			<input type="hidden" class="small" name="birthPlace" value="{% if object.birthPlace_id %}{{ object.birthPlace_id }}{% endif %}" id="id_birthPlace" />
+			<input type="hidden" class="small" name="birthPlace" value="{% if object.person.birthPlace_id %}{{ object.person.birthPlace_id }}{% endif %}" id="id_birthPlace" />
 			</label>
 			<!--
 			<label>{% trans "Region" %}<br />

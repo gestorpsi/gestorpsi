@@ -73,7 +73,7 @@ $(document).ready(function(){
                                         // set id, in add rooms link
                                         //$('#place_actions a#add_room').attr('href','place/add_room/' + response);
                                         // empty room add fields
-                                        //$('#room_'+total+' input:text').val('');
+                                        $('#room_ input:text').val('');
                                         
                                    },
 				error: function(){
@@ -340,10 +340,12 @@ $(document).ready(function(){
                $('.form_room_box').hide();
                $('#fieldset_room_identification').show();
                total = $(".form_room_box").length + 1;
+               
+               // add form
                $("#room_more").before('<div class="form_room_box" id="room_'+total+'"><div class="form_room">'+$(".form_room").html()+'</div></div>');
                // clean fields
-	       	   $('#room_'+total+' input:text').val('');
-	       	   $('#room_'+total+' textarea').text('');
+	       $('#room_'+total+' input:text').val('');
+	       $('#room_'+total+' textarea').text('');
 	       
 
                // auto insert new typing item, in the room list
@@ -365,8 +367,22 @@ $(document).ready(function(){
                 });
 		
 	});
-
-        
+          
+         /** show selected room fieldset  */ 
+          $('li.li_rooms a').click(function() {
+              $('#place_form').hide();
+              $('.form_room_box').hide();
+              $('#fieldset_room_identification').show();
+              $('#room_' + $(this).attr('display')).show();
+              //alert('#li_room_'+$(this).attr('display')+' a');
+              //$('#li_room_'+$(this).attr('display')+' a').text('Asjkajskajksjas');
+              $('#room_' + $(this).attr('display') + ' input.update_name').keyup(function() {
+                    //alert('#li_room_'+$(e).attr('display'));
+                    $('#li_room_'+$(this).attr('display')+' a').text($(this).val());
+                    //$('#li_room_'+$(this).attr('display')).text($(this).val());
+                    //alert('co!');
+               });
+          });
 
         
 	/**

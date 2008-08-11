@@ -224,7 +224,7 @@
 		<ul>
 			<li class="li_rooms" style="display:none">&nbsp;</li>
 			{% for room in rooms %}
-			<li class="li_rooms"><a class="notajax" onclick="$('#place_form').hide(); $('.form_room_box').hide(); $('#fieldset_room_identification').show(); $('#room_{{ room.id }}').show();">{{ room }}</a></li>
+			<li class="li_rooms" id="li_room_{{ room.id }}"><a class="notajax" display="{{ room.id }}">{{ room }}</a></li>
 			{% endfor %}
 			
 		</ul>

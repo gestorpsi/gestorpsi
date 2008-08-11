@@ -1,14 +1,23 @@
 $(document).ready(function(){
 	
 	/** global ajax events */
+	/*
 	$("#loading p").ajaxSend(function(evt, request, settings){
   		 $(this).show();
  		});
 	$("#loading p").ajaxStop(function(evt, request, settings){
   		 $(this).hide();
  		}); 		
+	*/
 	
-	
+        $("#loading p").bind("ajaxSend", function(){
+                $(this).show();
+        }).bind("ajaxComplete", function(){
+                $(this).hide();
+        });
+
+        
+        
 	/** ajax_link: load content inside div core */
 	$("#menus a:not(.notajax)").each(function(){
 	       var link = $(this);

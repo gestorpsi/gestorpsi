@@ -25,29 +25,23 @@ def form(request, object_id=0):
     try:
         # if exists, get it to edit
         object = get_object_or_404(Client, pk=object_id)        
-        print object
         
         # person have phones
         phones= object.person.phones.all()
-        print phones
         
         # person have addresses
         addresses= object.person.address.all()
-        print addresses
         
         # person have documents
         documents = object.person.document.all()
-        print documents
         
             
     except:
         object = Client()
         
     return render_to_response('client/client_form.html', {'object': object, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), } )
- 
 
 
-## NEED OPEN TRANSACTION FOR THIS VIEW
 # Save or Update client object
 def save(request, object_id=0):    
     try:

@@ -8,3 +8,5 @@ class Employee(models.Model):
     active = models.BooleanField(default=True)
     def __unicode__(self):
         return u"%s" % self.person.name
+    class Meta:
+        ordering = ['person']    

@@ -31,7 +31,7 @@ def save(request, object_id=0):
         object = get_object_or_404(Employee, pk=object_id)
         person = object.person
     except Http404:
-        object = Client()
+        object = Employee()
         person = Person()
     
     object.person = personSave(request, person)

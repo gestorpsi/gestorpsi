@@ -20,3 +20,8 @@ def documentList(typeDocuments, documents, issuers, states):
 
     return objs
 
+def documentSave(object, typeDocuments, documents, issuers, states):
+    object.document.all().delete()
+    for document in documentList(typeDocuments, documents, issuers, states):
+        document.content_object = object
+        document.save()

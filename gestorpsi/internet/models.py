@@ -1,4 +1,5 @@
 from django.db import models
+from django.newforms import ModelForm
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 
@@ -17,6 +18,10 @@ class Email(models.Model):
     content_object= generic.GenericForeignKey()
     def __unicode__(self):
         return self.email
+
+class EmailForm(ModelForm):
+    class Meta:
+        model= Email
 
 class Site(models.Model):
     description = models.CharField(max_length=30, blank=True)

@@ -49,6 +49,9 @@ class Service(models.Model):
     description= models.CharField( max_length= 100 )
     keywords= models.CharField( max_length= 100 )
     agreements= models.ManyToManyField( Agreement )
+    research_project= models.ForeignKey( ResearchProject )    
+    organization = models.ForeignKey(Organization, null=True)    
+    
     research_project= models.ForeignKey( ResearchProject )
     organization= models.ForeignKey(Organization, null=True)
     responsibles= models.ForeignKey( CareProfessional )

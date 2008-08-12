@@ -104,7 +104,7 @@ INSTALLED_APPS = (
     'gestorpsi.organization',
     'gestorpsi.careprofessional',
     'gestorpsi.psychologist',
-    #'gestorpsi.contact',
+    'gestorpsi.contact',
     'gestorpsi.place',
     'gestorpsi.device',
     'gestorpsi.service',

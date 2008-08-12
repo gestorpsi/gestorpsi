@@ -1,4 +1,5 @@
 from django.db import models
+from django.newforms import ModelForm
 from gestorpsi.person.models import Person
 from gestorpsi.organization.models import Organization
 from gestorpsi.phone.models import Phone
@@ -12,12 +13,20 @@ class InstitutionType(models.Model):
     def __unicode__(self):
         return u"%s" % self.description
     class Admin: pass
+
+class InstitutionTypeForm(ModelForm):
+    class Meta:
+        model= InstitutionType
     
 class PostGraduate(models.Model):
     description = models.CharField(max_length=50, null=True)
     def __unicode__(self):
         return u"%s" % self.description
     class Admin: pass
+    
+class PostGraduateForm(ModelForm):
+    class Meta:
+        model = PostGraduate
 
 class AcademicResume(models.Model):
     teachingInstitute = models.CharField(max_length=100, null=True)
@@ -33,7 +42,10 @@ class AcademicResume(models.Model):
     
     class Admin: 
         pass
-
+    
+class AcademicResumeForm(ModelForm):
+    class Meta:
+        model = AcademicResume
 
 class WorkPlaces(models.Model):
     name = models.CharField(max_length=30, null=True)
@@ -46,6 +58,10 @@ class WorkPlaces(models.Model):
     class Admin:
         pass
 
+class WorkPlacesForm(ModelForm):
+    class Meta:
+        model = WorkPlaces
+
 class Profession(models.Model):
     number = models.CharField(max_length=20, null=True)
     description = models.CharField(max_length=50, null=True)
@@ -53,13 +69,19 @@ class Profession(models.Model):
         return u"%s" % self.description
     class Admin: pass
 
+class ProfessionForm(ModelForm):
+    class Meta:
+        model= Profession
 
 class Agreement(models.Model):
     description = models.CharField(max_length=50, null=True)
     def __unicode__(self):
         return u"%s" % self.description
     class Admin: pass
-    
+
+class AgreementForm(ModelForm):
+    class Meta:
+        model= Agreement    
 
 class ProfessionalProfile(models.Model):
     academicResume = models.OneToOneField(AcademicResume, null=True)
@@ -73,6 +95,10 @@ class ProfessionalProfile(models.Model):
     class Admin: 
         pass
 
+class ProfessionalProfileForm(ModelForm):
+    class Meta:
+        model = ProfessionalProfile
+
 
 class LicenceBoard(models.Model):
     name = models.CharField('name',max_length=20, core=True)
@@ -84,6 +110,10 @@ class LicenceBoard(models.Model):
     class Admin:
         pass
 
+class LicenceBoardForm(ModelForm):
+    class Meta:
+        model= LicenceBoard
+
 class ProfessionalIdentification(models.Model):
     licenceBoard = models.ForeignKey(LicenceBoard, edit_inline = models.TABULAR, num_in_admin=1)
     registerNumber = models.CharField('registerNumber',max_length=50, core=True)    
@@ -93,17 +123,24 @@ class ProfessionalIdentification(models.Model):
     
     class Admin:
         pass
+
+class ProfessionalIdentificationForm(ModelForm):
+    class Meta:
+        model= ProfessionalIdentification
      
 class CareProfessional(models.Model):
     professionalIdentification = models.ForeignKey(ProfessionalIdentification, edit_inline = models.TABULAR, num_in_admin=1, core=True, null=True)
     professionalProfile = models.ForeignKey(ProfessionalProfile, edit_inline = models.TABULAR, num_in_admin=1, core=True, null = True)
     person = models.OneToOneField(Person)
     comments = models.CharField('comments',max_length=200, core=True, null=True)
-    
+    active = models.BooleanField(default=True)    
         
     class Admin:
        pass
     
+class CareProfessionalForm(ModelForm):
+    class Meta:
+        model= CareProfessional
 
 """
 from gestorpsi.address.models import Country

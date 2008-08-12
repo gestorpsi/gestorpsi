@@ -1,3 +1,4 @@
+from gestorpsi.address.models import City
 from gestorpsi.address.views import addressSave
 from gestorpsi.document.views import documentSave
 from gestorpsi.phone.views import phoneSave

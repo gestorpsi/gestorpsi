@@ -1,94 +1,12 @@
 {% load i18n %}
-{% include "core/ajax_page.html" %}
 
-{% if not object %}
- <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/employee/add/">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
-{% else %}
 
-<div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
-Esta caixa é mostrada quando há mensagens
+<div id="list" style="display:none" class="fast_menu_content">
+ {% include "employee/employee_list.html" %}
 </div>
 
-<h2 id="title_addressbook" style="display: none"></h2>
-<h2 id="title_clients" style="display: none"></h2>
-
-<h2 id="title_contacts">{% trans "All Employees" %}</h2>
-<p class="description">{% trans "Displaying" %} <a href="/client">{{ object|length }} {% trans "employees(s)" %}</a>.</p>
-<h2 id="title_myoffice" style="display: none"></h2>
-
-
-<div id="main_area" class="contact">
-<div id="search_header" style="display: none">
-
-        <a href="" id="letter_fwd">
-        C</a>
-        <a href="" id="letter_back">
-        A</a>
-        <div class="capital_letter">B</div><input name="" type="text" id="search" /><a href="" id="cleanup"></a>
-        <table id="letter_menu" border="0" cellspacing="0" cellpadding="2">
-        <tr>
-
-                <td><a href="">#</a></td>
-                <td><a href="">A</a></td>
-                <td><a href="" class="active">B</a></td>
-                <td><a href="">C</a></td>
-                <td><a href="">D</a></td>
-                <td><a href="">E</a></td>
-
-                <td><a href="">F</a></td>
-                <td><a href="">G</a></td>
-                <td><a href="">H</a></td>
-                <td><a href="">I</a></td>
-                <td><a href="">J</a></td>
-                <td><a href="">K</a></td>
-
-                <td><a href="">L</a></td>
-                <td><a href="">M</a></td>
-                <td><a href="">N</a></td>
-                <td><a href="">O</a></td>
-                <td><a href="">P</a></td>
-                <td><a href="">Q</a></td>
-
-                <td><a href="">R</a></td>
-                <td><a href="">S</a></td>
-                <td><a href="">T</a></td>
-                <td><a href="">U</a></td>
-                <td><a href="">V</a></td>
-                <td><a href="">W</a></td>
-
-                <td><a href="">X</a></td>
-                <td><a href="">Y</a></td>
-                <td><a href="">Z</a></td>
-        </tr>
-</table>
-        
-        
+<div id="form" style="display:none" class="fast_menu_content">
+ {% include "employee/employee_form.html" %} 
 </div>
-<table id="search_results" class="zebra" border="0" cellspacing="0" cellpadding="0">
 
-        {% for l in object %}
-        <tr>
-
-                <!--<td><a href="{% url gestorpsi.client.views.form l.id %}">{{ l.name }}</a></td>-->
-                <td><a href="/employee/{{ l.id }}">{{ l.person.name }}</a></td>
-                <!--
-                <strong>[</strong><small><a href="{% url gestorpsi.client.views.delete l.id %}">Delete</a></small><strong>]</strong> <br>
-                <td>(11) 2301 0751</td>
-                -->
-                <td>
-               
-                (11) 1234-1234
-                 
-                <br> 
-                <a href="mailto:{{l.email }}">{{l.email }}</a></td>
-                <td class="icons">&nbsp;</td>
-               
-        </tr>
-        {% endfor %}
-</table>
-        
-</div>
-	
-{% endif %}
-
-
+<input type="hidden" id="already_loaded" value="True" />

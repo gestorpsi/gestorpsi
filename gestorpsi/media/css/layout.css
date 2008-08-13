@@ -108,7 +108,7 @@ div#main_menu a.active {
 	color: #787878;
 	text-decoration: none;
 }
-#sub_menu a:hover, #sub_menu a.active  {
+#sub_menu a:hover, #sub_menu .active  {
 	background: #F7F7F7;
 	color: #000000;
 	-moz-border-radius-topleft: 8px;
@@ -118,7 +118,7 @@ div#main_menu a.active {
 	height: 16px;
 }
 
-div#sub_menu a.active {
+div#sub_menu .active {
 	background: #FFFFFF;
 	height: 16px;
 	border-top: 1px solid #838383;
@@ -169,7 +169,6 @@ width: 139px;
 	padding: 5px 3px 4px 50px;
 	border: none;
 }
-
 #sub_menu ul.opened_tabs {
 	
 	/*para alinhar relativo a direita*/
@@ -181,6 +180,47 @@ width: 139px;
 	left: 200px;*/
 	
 }
+
+#sub_menu ul.opened_tabs li .active {
+	padding-right: 15px;
+	border-right: 1px solid #838383;
+	border-top: 1px solid #838383;
+	border-left: 1px solid #838383;
+	-moz-border-radius-topright: 8px;
+	-moz-border-radius-topleft: 8px;
+	padding: 12px 0px 7px 19px;
+}
+
+#sub_menu ul.opened_tabs li .active a {
+	padding: 0;
+	border: none;
+	height: 16px;
+	-moz-border-radius-topright: 0;
+	-moz-border-radius-topleft: 0;
+}
+
+#sub_menu ul.opened_tabs li .active a:hover {
+	background: #FFFFFF;
+	-moz-border-radius-topright: 0;
+	-moz-border-radius-topleft: 0;
+}
+
+.close {
+	height: 16px;
+	width: 16px;
+	background: #FFFFFF url(../img/close.gif) no-repeat 1px 0;
+	margin-left: 5px;
+	margin-top: -7px;
+}
+
+.close span {
+	display: none;
+}
+
+#sub_menu ul.opened_tabs li .active a:hover.close {
+	background: #FFFFFF url(../img/closeOn.gif) no-repeat 1px 0
+}
+
 #content {
 	width: 990px;
 	margin-bottom: 10px;
@@ -222,7 +262,7 @@ width: 139px;
 	background: #CCCCCC;
 	border: 2px solid #999999;
 }
-#msg_area.alert {
+#msg_area.alert, #helping {
 	background:#FFFFCC;
 	border: 2px solid #FFFF00;
 }

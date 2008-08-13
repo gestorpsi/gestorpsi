@@ -1,50 +1,10 @@
 {% load i18n %}
 {% include "core/ajax_page.html" %}
 
-<div id="msg_area" style="display:none"><!-- ou class="error" ou sem classe -->
-	<div class="alert" style="display:none">
-		{% if not object.id %}
-			{% trans "Register added successful!" %}
-		{% else %}
-			{% trans "Register saved successful!" %}
-		{% endif %}
-	</div>
-	<div class="error" style="display:none">
-		{% trans "Error adding new register!" %}
-	</div>
-</div>
-
 {% if object.id %}
+	<div class="edit_form">
 	<h2 id="title_clients">{{ object.label }}</h2>
 	<p class="description"><br />	
-	<script type="text/javascript">
-	$(document).ready(function(){
-		/**
-		create new tab when editing an user
-		*/
-		$('#sub_menu ul li a').removeClass('active');
-		$("#sub_menu_places_extras").html('<li><a class="active makemeajax" id="client_{{ object.id }}" href="/place/{{ object.id }}">{{ object.label }}</a></li>');
-		
-		$(".makemeajax").each(function(){
-		var link = $(this);
-		link.click(function() {
-			 $.get(link.attr('href'),
-				 function(data) {
-					 if(!link.attr('href')) {
-						 alert('I am a ajaxlink, but i dont have the "href" atributte defined in the "<a>" tag');
-						 exit();
-					 } else {
-						 $("#core").html(data);
-					 }
-					 
-			 });
-			 return false;
-			 })
-		 });
-
-	});
-		
-	</script>
 {% else %}
 	<h2 id="title_clients">{% trans "Adding New Place" %}</h2>
 	<p class="description">{% trans "Inform the place details then click on Save button" %}</p>
@@ -67,7 +27,7 @@
 	<fieldset id="fieldset_place_identification">
 		<legend>{% trans "Place Identification" %}</legend>
 			<label>{% trans "Identification" %}<br />
-			<input type="text" name="label" class="big" value="{{ object.label }}" id="id_label" />
+			<input type="text" name="label" class="big tabtitle" value="{{ object.label }}" id="id_label" />
 			</label>
 			<label>{% trans "Place Type" %}<br />
 			<select name="place_type">
@@ -236,6 +196,8 @@
 
 </form>
 
-
+{% if object.id %}
+</div> <!-- edit_form -->
+{% endif %}
 
 

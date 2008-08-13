@@ -82,14 +82,41 @@ $(document).ready(function(){
 	
 	$('.birthdate').datepicker({ dateFormat: 'yy-mm-dd', changeYear: true, yearRange: '-120:+0', duration: 'fast' });
 	
+	
+	
+	/**
+         *
+         * open new tab when item is clicked (opened_tab)
+         * 
+         */
+        
+        $('#search_results.newtab tr td a').click(function() {
+                $('#sub_menu ul li a').removeClass('active'); // unselect other tabs
+		$("ul.opened_tabs").show(); // display tab
+		$("ul.opened_tabs li div a:first").text($(this).attr('title')); // set newtab title
+		$("ul.opened_tabs li div a:first").attr('href', $(this).attr('href')); // set url to new tab
+	});
+        
 
+        /**
+         *
+         * hide opened extra tabs when clicked
+         *
+         */
+        
+        $("ul.opened_tabs li div a.close").click(function() {
+		$("ul.opened_tabs").hide();
+		$(".edit_form").hide();
+		//loadURL('/client/', 'list');
+	});
+	
+	
 });
 
 	
 
 
 	
-
 
 
 

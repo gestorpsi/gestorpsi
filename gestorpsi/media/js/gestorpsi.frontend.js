@@ -1,55 +1,70 @@
 $(document).ready(function(){
 	
 	/** global ajax events */
-	/*
-	$("#loading p").ajaxSend(function(evt, request, settings){
-  		 $(this).show();
- 		});
-	$("#loading p").ajaxStop(function(evt, request, settings){
-  		 $(this).hide();
- 		}); 		
-	*/
-	
+		
         $("#loading p").bind("ajaxSend", function(){
                 $(this).show();
         }).bind("ajaxComplete", function(){
                 $(this).hide();
         });
 
+        /**
+         *
+         * Message Area (#msg_area)
+         *
+         * hide msg area in ever click
+         * 
+         */
+        
+        $('a').click(function() {
+                $('#msg_area').removeClass();
+                $('#msg_area').hide();
+                
+        });
         
         
 	/** ajax_link: load content inside div core */
 	$("#menus a:not(.notajax)").each(function(){
-	       var link = $(this);
-	       link.click(function() {
-				$.ajax({
-					url: link.attr('href'),
-					type: 'GET',
-					dataType: 'html',
-					timeout: 1000,
-					error: function(){
-						alert('Error loading template '+link.attr('href'));
-					},
-					success: function(data){
-						if(!link.attr('href')) {
-							//alert('I am a ajaxlink, but i dont have an "url" atributte defined in my "<a>" tag =[');
-						} else {
-							$("#core").html(data);
-						}
-					},
-					send: function(data) {
-						alert('enviado');
-					}
-				});
-				return false;
-			})
-		});
+                var link = $(this);
+                link.click(function() {
+                        // only reload, if it is not a fastmenu or a mainmenu link
+                        if($('#already_loaded').val() != 'True' || $(this).hasClass('main_menu')) {
+                                $.ajax({
+                                        url: link.attr('href'),
+                                        type: 'GET',
+                                        dataType: 'html',
+                                        timeout: 1000,
+                                        error: function(data){
+                                                alert('Error loading template '+link.attr('href'));
+                                        },
+                                        success: function(data){
+                                                if(!link.attr('href')) {
+                                                        //alert('I am a ajaxlink, but i dont have an "url" atributte defined in my "<a>" tag =[');
+                                                } else {
+                                                        $("#core").html(data);
+                                                        // if is defined page to display, show it
+                                                        if(link.attr('display')) {
+                                                                $('#'+link.attr('display')).show();
+                                                        } else {
+                                                                $('#list').show();
+                                                        }
+                                                }
+                                        },
+                                        send: function(data) {
+                                                alert('enviado');
+                                        }
+                                });
+                        }
+			return false;
+		})
+	});
 		
 	/** menu selection */
 	$("#main_menu > ul > li > a").each(function(){
 	       var link = $(this);
 	       link.click(function() {
                         //alert($(this).attr('id'));
+                        $('#already_loaded').val('False');
                         
                         if(!$(this).nextAll("ul:first").find("li > a").attr('id')) {
                                 // i am NOT a vertical menu
@@ -87,7 +102,7 @@ $(document).ready(function(){
                                 submenu.hide();
                         })
 				
-                        // hide submenu horizontal an item is selected
+                        // hide vertical submenu an item is selected
                         
                         array = submenu.children().children();
                         array.each(function() { $(this).click(function() {
@@ -108,7 +123,7 @@ $(document).ready(function(){
 		
 	/** sub menu selection */
 	
-	$("#sub_menu ul li a").each(function(){
+	$("#sub_menu ul li a:not(.close)").each(function(){
 	       var link = $(this);
 	       link.click(function() {
 		       	// remove active classes from sub_menu itens 
@@ -118,10 +133,71 @@ $(document).ready(function(){
 			})
 		});	
 	
-		
+	/**
+         *
+         * fast menu itens
+         *
+         * display content,  that already has been loaded (like client_list, client add form)
+         *
+         */
+        
+        
+        $('#sub_menu a.fastmenu').click(function() {
+                //alert('clicou?');
+                // hide all opened content        
+                $('.fast_menu_content').hide();
+                
+                // display choiced item and set it to already loaded
+                if(!$(this).attr('display'))
+                        display = 'list';
+                else
+                        display = $(this).attr('display');
+                
+                $('#' + display).show();
+                                
+                //$('#already_loaded').val('True');
+                return false;
+        });
+        
+        
+        /**
+	 * ajaxable
+	 *
+	 * function used to re-bind an URL (used in opened tabs, when a new link is added by JavaScript)
+	 *
+	 */
+	
+	
+	$(".ajaxable").click(function(){
+		$.get($(this).attr('href'),
+			function(data) {
+				$("#core").html(data);
+		});
+	});
+      
+
 });
 
 
+
+function loadURL(URL, showID) {
+        $.ajax({
+                url: URL,
+                type: 'GET',
+                dataType: 'html',
+                timeout: 1000,
+                
+                success: function(data){
+                        $("#core").html(data);
+                        $('#'+showID).show();
+        
+                },
+                 error: function(data){
+                        alert('Error loading URL ' +URL);
+                },
+                
+        });
+}
 
 
 

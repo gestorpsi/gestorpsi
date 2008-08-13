@@ -22,8 +22,7 @@ def roomList( descriptions, dimensions, room_types, furniture_descriptions ):
     return rooms
 
 def index(request):
-    object= Place.objects.all()
-    return render_to_response( "place/place_index.html", locals() )
+    return render_to_response( "place/place_index.html", {'object': Place.objects.all(), 'PlaceTypes': PlaceType.objects.all(), 'countries': Country.objects.all(), 'RoomTypes': RoomType.objects.all(), } )
 
 #######################SHOULD BE TESTED (waiting feedback from cuzido)
 def form(request, object_id=0 ):

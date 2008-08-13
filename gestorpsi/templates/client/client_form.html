@@ -1,57 +1,16 @@
 {% load i18n %}
 {% include "core/ajax_page.html" %}
 
-<div id="msg_area" style="display:none"><!-- ou class="error" ou sem classe -->
-	<div class="alert" style="display:none">
-		{% if not object.id %}
-			{% trans "Register added successful!" %}
-		{% else %}
-			{% trans "Register saved successful!" %}
-		{% endif %}
-	</div>
-	<div class="error" style="display:none">
-		{% trans "Error adding new register!" %}
-	</div>
-</div>
-
 <h2 id="title_addressbook" style="display:none"></h2>
 
 {% if object.id %}
+	<div class="edit_form">
 	<h2 id="title_clients">{{ object.person.name }}</h2>
 	<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a><br />	
-	<script type="text/javascript">
-	$(document).ready(function(){
-		/**
-		create new tab when editing an user
-		*/
-		$('#sub_menu ul li a').removeClass('active');
-		$("#sub_menu_client_extras").html('<li><a class="active makemeajax" id="client_{{ object.id }}" href="/client/{{ object.id }}">{{ object.person.name }}</a></li>');
-		
-		$(".makemeajax").each(function(){
-		var link = $(this);
-		link.click(function() {
-			 $.get(link.attr('href'),
-				 function(data) {
-					 if(!link.attr('href')) {
-						 alert('I am a ajaxlink, but i dont have the "href" atributte defined in the "<a>" tag');
-						 exit();
-					 } else {
-						 $("#core").html(data);
-					 }
-					 
-			 });
-			 return false;
-			 })
-		 });
-
-	});
-		
-	</script>
 {% else %}
 	<h2 id="title_clients">{% trans "Adding New Client" %}</h2>
 	<p class="description">{% trans "Inform the client details then click on Save button" %}</p>
 {% endif %}
-
 
 </p>
 <h2 id="title_contacts" style="display:none"></h2>
@@ -88,7 +47,7 @@
 	<fieldset id="fieldset_personal_identification">
 		<legend>{% trans "Personal Identification" %}</legend>
 			<label>{% trans "Name" %}<br />
-			<input type="text" name="name" class="big" value="{{ object.person.name }}" id="id_name" />
+			<input type="text" name="name" class="big tabtitle" value="{{ object.person.name }}" id="id_name" />
 			</label>
 			<label>{% trans "Nickname" %}<br />
 			<input type="text" name="nickname" class="big" value="{% ifnotequal object.person.nickname None %}{{ object.person.nickname }}{% endifnotequal %}" id="id_nickname" />
@@ -261,5 +220,6 @@
 </form>
 
 {% include "tags/upload.html" %}
-
-
+{% if object.id %}
+</div> <!-- edit_form -->
+{% endif %}

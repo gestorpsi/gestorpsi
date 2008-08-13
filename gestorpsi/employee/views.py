@@ -9,8 +9,7 @@ from gestorpsi.document.models import Document, TypeDocument, Issuer
 from gestorpsi.person.views import personSave
 
 def index(request): 
-    return render_to_response('employee/employee_index.html', {'object': Employee.objects.all().filter(active = True) })
-    #return render_to_response('employee/employee_index.html', {'object': Employee.objects.all() })
+    return render_to_response('employee/employee_index.html', {'object': Employee.objects.all().filter(active = True), 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), })
 
 def form(request, object_id=0):
     phones    = []

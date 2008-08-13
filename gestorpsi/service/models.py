@@ -1,6 +1,7 @@
 from django.db import models
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import CareProfessional
+from django.forms import ModelForm
 
 class ServiceType(models.Model):
     name= models.CharField( max_length= 80 )
@@ -50,11 +51,19 @@ class Service(models.Model):
     keywords= models.CharField( max_length= 100 )
     agreements= models.ManyToManyField( Agreement )
     research_project= models.ForeignKey( ResearchProject )    
-    organization = models.ForeignKey(Organization, null=True)    
-    
+    organization = models.ForeignKey(Organization, null=True)
+    active= models.BooleanField(default=True)
+        
     research_project= models.ForeignKey( ResearchProject )
     organization= models.ForeignKey(Organization, null=True)
-    responsibles= models.ForeignKey( CareProfessional )
+    responsibles= models.ManyToManyField( CareProfessional )
+        
+    def __unicode__(self):
+        return "Service name: %s, description: %s" % (self.name, self.description)
+
+class ServiceForm(ModelForm):
+    class Meta:
+        model= Service
 
 """
 
@@ -64,7 +73,25 @@ research_project.save()
 
 from gestorpsi.service.models import AgreementType
 agreement_type= AgreementType( description= 'agreement type test' )
+agreement_type.save()
 
+from gestorpsi.service.models import Agreement
+agreement= Agreement( name= 'an agreement', description= 'agreement test', agreement_type= agreement_type )
+agreement.save()
 
+from gestorpsi.service.models import Service
+from gestorpsi.organization.models import Organization
+from gestorpsi.careprofessional.models import CareProfessional
+service= Service()
+service.name= 'service test'
+service.description= 'service description'
+service.keywords= 'some keywords: Java, Ruby and Python'
+service.research_project= research_project
+service.organization= Organization.objects.get(pk=1)
+service.save()
+
+service.agreements.add( agreement )
+service.responsibles.add( CareProfessional.objects.get(pk=1) )
+service.save()
 
 """

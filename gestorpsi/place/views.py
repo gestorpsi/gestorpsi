@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404
-from django.newforms import form_for_model, form_for_instance
+#from django.newforms import form_for_model, form_for_instance
 from django.core.exceptions import ObjectDoesNotExist
 from gestorpsi.place.models import Place, PlaceForm, Room, RoomForm, RoomType, PlaceType
 from gestorpsi.address.models import Address, AddressType, City
@@ -59,12 +59,13 @@ def form(request, object_id=0 ):
                                                         'rooms': rooms,
                                                         } )
 
+######### newforms not available Django version 1.0-alpha_2-SVN-8327
 ###TODO#######################
 def add(request):
     place_form= PlaceForm()
-    AddressForm= form_for_model( Address )
+    AddressForm= None  ### form_for_model( Address )
     address_form= AddressForm()
-    PhoneForm= form_for_model( Phone )
+    PhoneForm= None ###form_for_model( Phone )
     phone_form= PhoneForm()
     return render_to_response( 'place/place_add.html', locals() )
 

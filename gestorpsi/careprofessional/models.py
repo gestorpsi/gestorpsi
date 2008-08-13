@@ -1,5 +1,5 @@
 from django.db import models
-from django.newforms import ModelForm
+from django.forms import ModelForm
 from gestorpsi.person.models import Person
 from gestorpsi.organization.models import Organization
 from gestorpsi.phone.models import Phone

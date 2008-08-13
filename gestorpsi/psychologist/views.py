@@ -1,6 +1,5 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
-from django.newforms import form_for_model, form_for_instance
 from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, AcademicResumeForm, WorkPlaces, WorkPlacesForm, Profession, Agreement, ProfessionalProfile, ProfessionalProfileForm, LicenceBoard, ProfessionalIdentification, ProfessionalIdentificationForm, CareProfessional, CareProfessionalForm, InstitutionTypeForm, PostGraduateForm, ProfessionForm, AgreementForm
 from gestorpsi.psychologist.models import Approaches, Area, AgeGroup, Psychologist, ApproachesForm, AreaForm, AgeGroupForm, PsychologistForm
 from gestorpsi.careprofessional.views import careProfessionalFill

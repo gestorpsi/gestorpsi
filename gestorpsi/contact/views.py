@@ -1,7 +1,6 @@
 from django.shortcuts import render_to_response, get_list_or_404, get_object_or_404
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.organization.models import Organization
-from django.newforms import form_for_model
 from gestorpsi.address.views import addressList
 from gestorpsi.phone.views import phoneList
 

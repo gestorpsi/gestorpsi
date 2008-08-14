@@ -1,6 +1,7 @@
 {% load i18n %}
 <div class="form_document_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="document_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
 	<div class="form_document">
+		<input type="hidden" name="documentId" value="{{ document.id }}" />
 		
 		<label>{% trans "Type" %}<br />
 		{% if not TypeDocuments %}

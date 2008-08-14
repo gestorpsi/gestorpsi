@@ -1,6 +1,8 @@
 {% load i18n %}
 <div class="form_phone_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="phone_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
 	<div class="form_phone">
+		<input type="hidden" name="phoneId" value="{{ phone.id }}" />
+		
 		<label>{% trans "Area" %}<br />
 		<input type="text" class="extrasmall" name="area" value="{{ phone.area }}" mask="99" />
 		</label>
@@ -10,7 +12,7 @@
 		</label>
 		
 		<label>{% trans "Extension" %}<br />
-		<input type="text" class="small" name="ext" value="{{ phone.ext }}" />
+		<input type="text" class="small" name="ext" value="{{ phone.ext }}" maxlength="4" />
 		</label>
 				
 		<label>{% trans "Type" %}<br />

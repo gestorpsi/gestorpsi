@@ -31,6 +31,7 @@ $(document).ready(function(){
                
                // show success alert
                $('#msg_area').show();
+               $('#msg_area').removeClass('error');
                $('#msg_area').addClass('alert');
                $('#msg_area').text('Register saved successful!');
                
@@ -40,6 +41,7 @@ $(document).ready(function(){
           error: function() {
                // show error alert
                $('#msg_area').show();
+               $('#msg_area').removeClass('alert');
                $('#msg_area').addClass('error');
                $('#msg_area').text('Error saving register!');
           }

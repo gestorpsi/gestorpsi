@@ -4,54 +4,88 @@ from django.contrib.contenttypes import generic
 from gestorpsi.phone.models import Phone
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Country, City, Address
+from django.contrib import admin
 
 class PersonType(models.Model):
     description = models.CharField(max_length=30)
     def __unicode__(self):
         return u"%s" % self.description
-    class Admin: pass
+
+class PersonTypeAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(PersonType, PersonTypeAdmin)
 
 class AdministrationType(models.Model):
     description = models.CharField(max_length=30)
     def __unicode__(self):
         return u"%s" % self.description
-    class Admin: pass
+
+class AdministrationTypeAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(AdministrationType, AdministrationTypeAdmin)
 
 class Dependency(models.Model):
     description = models.CharField(max_length=30)
     def __unicode__(self):
         return u"%s" % self.description
-    class Admin: pass
+
+class DependencyAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Dependency, DependencyAdmin)
 
 class FacilityType(models.Model):
     description = models.CharField(max_length=100)
     def __unicode__(self):
         return u"%s" % self.description
-    class Admin: pass
+
+class FacilityTypeAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(FacilityType, FacilityTypeAdmin)
 
 class CareType(models.Model):
     description = models.CharField(max_length=50)
     def __unicode__(self):
         return u"%s" % self.description
-    class Admin: pass
+
+class CareTypeAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(CareType, CareTypeAdmin)
 
 class Management(models.Model):
     description = models.CharField(max_length=50)
     def __unicode__(self):
         return u"%s" % self.description
-    class Admin: pass
+
+class ManagementAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Management, ManagementAdmin)
     
 class OrganizationType(models.Model):
     description = models.CharField(max_length=50)
     def __unicode__(self):
         return u"%s" % self.description
-    class Admin: pass
+
+class OrganizationTypeAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(OrganizationType, OrganizationTypeAdmin)
+
 
 class ResearchEducationActivities(models.Model):
     description = models.CharField(max_length=50)
     def __unicode__(self):
         return u"%s" % self.description
-    class Admin: pass
+
+class ResearchEducationActivitiesAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(ResearchEducationActivities, ResearchEducationActivitiesAdmin)
 
 
 class Organization(models.Model):
@@ -95,9 +129,13 @@ class Organization(models.Model):
                               
     def __unicode__(self):
         return self.name    
-    
-    class Admin:
-        pass
+
+class OrganizationAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Organization, OrganizationAdmin)    
+
+
 """
 from gestorpsi.organization.models import PersonType, AdministrationType, Dependency, FacilityType, CareType, Management, OrganizationType, ResearchEducationActivities, Organization
 person_type= PersonType( description= 'person type test' )

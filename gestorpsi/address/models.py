@@ -2,6 +2,7 @@ from django.db import models
 from django.forms import ModelForm
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from django.contrib import admin
 
 class Country(models.Model):
     name = models.CharField(max_length=50)
@@ -32,7 +33,12 @@ class AddressType(models.Model):
     description = models.CharField(max_length=20)
     def __unicode__(self):
         return u"%s" % self.description
-    class Admin: pass
+
+class AddressTypeAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(AddressType, AddressTypeAdmin)    
+
 
 class Address(models.Model):
     # Brazil Address

@@ -1,12 +1,17 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from django.contrib import admin
 
 class PhoneType(models.Model):
     description = models.CharField(max_length=20)
     def __unicode__(self):
         return self.description
-    class Admin: pass
+
+class PhoneTypeAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(PhoneType, PhoneTypeAdmin)
 
 class Phone(models.Model):
     area = models.CharField('Area Code',max_length=2, core=True)

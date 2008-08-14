@@ -6,13 +6,17 @@ from gestorpsi.phone.models import Phone
 from gestorpsi.address.models import Country, City, Address
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-
+from django.contrib import admin
 
 class InstitutionType(models.Model):
     description = models.CharField(max_length=50, null=True)
     def __unicode__(self):
         return u"%s" % self.description
-    class Admin: pass
+
+class InstitutionTypeAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(InstitutionType, InstitutionTypeAdmin)
 
 class InstitutionTypeForm(ModelForm):
     class Meta:
@@ -22,7 +26,11 @@ class PostGraduate(models.Model):
     description = models.CharField(max_length=50, null=True)
     def __unicode__(self):
         return u"%s" % self.description
-    class Admin: pass
+
+class PostGraduateAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(PostGraduate, PostGraduateAdmin)
     
 class PostGraduateForm(ModelForm):
     class Meta:
@@ -40,8 +48,10 @@ class AcademicResume(models.Model):
     finalDatePostGraduate = models.DateField(null=True)
     area = models.CharField(max_length=100, null=True)    
     
-    class Admin: 
-        pass
+class AcademicResumeAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(AcademicResume, AcademicResumeAdmin)
     
 class AcademicResumeForm(ModelForm):
     class Meta:
@@ -55,8 +65,10 @@ class WorkPlaces(models.Model):
     def __unicode__(self):
         return u"%s" % self.name
     
-    class Admin:
-        pass
+class WorkPlacesAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(WorkPlaces, WorkPlacesAdmin)
 
 class WorkPlacesForm(ModelForm):
     class Meta:
@@ -67,7 +79,11 @@ class Profession(models.Model):
     description = models.CharField(max_length=50, null=True)
     def __unicode__(self):
         return u"%s" % self.description
-    class Admin: pass
+
+class ProfessionAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Profession, ProfessionAdmin)
 
 class ProfessionForm(ModelForm):
     class Meta:
@@ -77,7 +93,11 @@ class Agreement(models.Model):
     description = models.CharField(max_length=50, null=True)
     def __unicode__(self):
         return u"%s" % self.description
-    class Admin: pass
+
+class AgreementAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Agreement, AgreementAdmin)
 
 class AgreementForm(ModelForm):
     class Meta:
@@ -92,8 +112,10 @@ class ProfessionalProfile(models.Model):
     availableTime = models.CharField(max_length=100, null=True)
     workplace = models.ForeignKey(WorkPlaces, null=True)
     
-    class Admin: 
-        pass
+class ProfessionalProfileAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(ProfessionalProfile, ProfessionalProfileAdmin)
 
 class ProfessionalProfileForm(ModelForm):
     class Meta:
@@ -107,8 +129,10 @@ class LicenceBoard(models.Model):
     def __unicode__(self):
         return self.name
     
-    class Admin:
-        pass
+class LicenceBoardAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(LicenceBoard, LicenceBoardAdmin)
 
 class LicenceBoardForm(ModelForm):
     class Meta:
@@ -121,8 +145,10 @@ class ProfessionalIdentification(models.Model):
     def __unicode__(self):
         return self.registerNumber
     
-    class Admin:
-        pass
+class ProfessionalIdentificationAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(ProfessionalIdentification, ProfessionalIdentificationAdmin)
 
 class ProfessionalIdentificationForm(ModelForm):
     class Meta:
@@ -135,9 +161,11 @@ class CareProfessional(models.Model):
     comments = models.CharField('comments',max_length=200, core=True, null=True)
     active = models.BooleanField(default=True)    
         
-    class Admin:
-       pass
-    
+class CareProfessionalAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(CareProfessional, CareProfessionalAdmin)
+
 class CareProfessionalForm(ModelForm):
     class Meta:
         model= CareProfessional

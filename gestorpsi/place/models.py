@@ -4,6 +4,7 @@ from gestorpsi.address.models import Address
 from gestorpsi.phone.models import Phone
 from django.contrib.contenttypes import generic
 from gestorpsi.organization.models import Organization
+from django.contrib import admin
 
 class PlaceType( models.Model ):
     description= models.CharField( max_length= 80 )
@@ -11,8 +12,10 @@ class PlaceType( models.Model ):
     def __unicode__(self):
         return "%s" % self.description
     
-    class Admin:
-        pass
+class PlaceTypeAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(PlaceType, PlaceTypeAdmin)
     
 class Place( models.Model ):
    label= models.CharField( max_length= 80 )
@@ -25,8 +28,10 @@ class Place( models.Model ):
    def __unicode__(self):
       return "%s" % self.label
 
-   class Admin:
-      pass
+class PlaceAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Place, PlaceAdmin)
 
 class RoomType( models.Model ):
    description= models.CharField( max_length= 45, unique= True )
@@ -34,8 +39,10 @@ class RoomType( models.Model ):
    def __unicode__(self):
       return "%s" % self.description
 
-   class Admin:
-      pass
+class RoomTypeAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(RoomType, RoomTypeAdmin)
 
 class Room( models.Model ):
    description= models.CharField( max_length= 80, blank=True )
@@ -47,9 +54,11 @@ class Room( models.Model ):
    def __unicode__(self):
       return "%s" % self.description
 
-   class Admin:
-      pass
-  
+class RoomAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Room, RoomAdmin)
+
 class RoomForm(ModelForm):
       class Meta:
           model= Room

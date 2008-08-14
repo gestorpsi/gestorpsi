@@ -6,7 +6,7 @@ from gestorpsi.address.models import Country, City, Address
 from gestorpsi.document.models import Document
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.organization.models import Organization
-
+from django.contrib import admin
    
 Gender = ( ('0','No Information'),('1','Female'), ('2','Male'))    
 
@@ -14,7 +14,12 @@ class MaritalStatus(models.Model):
     description = models.CharField(max_length=20)
     def __unicode__(self):
         return u"%s" % self.description
-    class Admin: pass
+
+class MaritalStatusAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(MaritalStatus, MaritalStatusAdmin)
+
 
 class Person(models.Model):
     name = models.CharField('Name', max_length=60)
@@ -39,10 +44,14 @@ class Person(models.Model):
     def __unicode__(self):
         return u"%s" % self.name
     
-    class Admin: pass
     class Meta:
         ordering = ['name']
-        
+
+class PersonAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Person, PersonAdmin)
+
 class PersonForm(ModelForm):
     class Meta:
         model= Person

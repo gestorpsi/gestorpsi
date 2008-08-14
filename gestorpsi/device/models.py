@@ -1,6 +1,7 @@
 from django.db import models
 from gestorpsi.organization.models import Organization
 from django.forms import ModelForm
+from django.contrib import admin
 
 DURABILITY_TYPE= ( ('1','CONSUMABLE'), ('2', 'DURABLE') )
 MOBILITY_TYPE= ( ( '1', 'FIX' ), ( '2', 'MOBILE' ) )
@@ -13,8 +14,10 @@ class DeviceType(models.Model):
     def __unicode__(self):
         return "durability: %s, mobility: %s, restriction: %s" % (self.durability, self.mobility, self.restriction)
     
-    class Admin:
-        pass
+class DeviceTypeAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(DeviceType, DeviceTypeAdmin)
 
 class DeviceTypeForm(ModelForm):
       class Meta:
@@ -28,8 +31,10 @@ class Device(models.Model):
     def __unicode__(self):
         return "description: %s, number of devices: %s, number of available devices: %s" % (self.description, self.total_quantity, self.available_quantity)
     
-    class Admin:
-        pass
+class DeviceAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Device, DeviceAdmin)    
 
 class DeviceForm(ModelForm):
       class Meta:
@@ -49,8 +54,10 @@ class DeviceDetails(models.Model):
     def __unicode__(self):
         return "brand: %s, model: %s, comments: %s" % (self.brand, self.model, self.comments)
     
-    class Admin:
-        pass
+class DeviceDetailsAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(DeviceDetails, DeviceDetailsAdmin)    
 
 class DeviceDetailsForm(ModelForm):
       class Meta:

@@ -1,0 +1,34 @@
+{% load i18n %}
+
+<!--
+people addresses  
+-->
+        
+<fieldset id="fieldset_address">
+        <legend>{% trans "Addresses" %}</legend>
+                {% if not addresses %}
+                        {% include "tags/address.html" %}
+                {% else %}
+                        {% for address in addresses %}
+                                {% include "tags/address.html" %}
+                        {% endfor %}
+                {% endif %}
+        <label id="address_more" class="add_to_form"><a class="notajax"><span>{% trans "Add Address" %}</span></a></label>	
+</fieldset>
+
+
+<!--
+people phone numbers
+-->
+        
+<fieldset id="fieldset_phone">
+        <legend>{% trans "Phones" %}</legend>
+                {% if not phones %}
+                        {% include "tags/phone.html" %}
+                {% else %}
+                        {% for phone in phones %}
+                                {% include "tags/phone.html" %}
+                        {% endfor %}
+                {% endif %}
+        <label id="phone_more" class="add_to_form"><a class="notajax"><span>{% trans "Add Phone" %}</span></a></label>	
+</fieldset>

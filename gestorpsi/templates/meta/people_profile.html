@@ -1,0 +1,36 @@
+{% load i18n %}
+
+	
+<!--
+People Personal Profile Form	
+-->
+        
+<fieldset id="fieldset_personal_profile">
+        <legend>{% trans "Personal Profile" %}</legend>
+                <label>{% trans "Birthdate" %}<br />
+                <input type="text" name="birthDate" class="calendar birthdate" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate }}{% endifnotequal %}" id="id_birthDate" />
+                </label>
+                <label>{% trans "Age" %}<br />
+                <input type="text" name="age" class="extrasmall" value="{{ object.age }}" id="id_age" />
+                </label>
+                <label>{% trans "Naturality" %}<br />
+                <input type="text" class="extramedium city_search" value="{% ifnotequal object.person.birthPlace None %}{{ object.person.birthPlace }}{% endifnotequal %}" />
+                </label>
+                <!-- 
+                        don't remove and dont change the position of this label !!!!
+                        this receive the id of the city when selected
+                -->
+                <label style="display:none"><br />
+                <input type="hidden" class="small" name="birthPlace" value="{% if object.person.birthPlace_id %}{{ object.person.birthPlace_id }}{% endif %}" id="id_birthPlace" />
+                </label>
+                <!--
+                <label>{% trans "Region" %}<br />
+                <input type="text" name="birthRegion" class="extrasmall" value="{{ object.birthRegion }}" id="id_birthRegion" />
+                </label>
+                -->
+                <!--
+                <label>{% trans "Nationality" %}<br />
+                <input type="text" name="nationality" class="medium" value="{{ object.nationality }}" id="id_nationality" />
+                </label>
+                -->
+</fieldset>

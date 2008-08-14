@@ -1,0 +1,53 @@
+{% load i18n %}
+
+<!--
+emails addresses
+-->
+        
+<fieldset id="fieldset_email">
+        <legend>{% trans "Emails" %}</legend>
+                {% if not emails %}
+                        {% include "tags/email.html" %}
+                {% else %}
+                        {% for email in emails %}
+                                {% include "tags/email.html" %}
+                        {% endfor %}
+                {% endif %}
+        <label id="email_more" class="add_to_form"><a class="notajax"><span>{% trans "Add Email" %}</span></a></label>
+</fieldset>
+
+
+
+
+<!--
+Instant Messengers
+-->
+        
+<fieldset id="fieldset_im">
+        <legend>{% trans "Instant Messengers" %}</legend>
+                {% if not ims %}
+                        {% include "tags/im.html" %}
+                {% else %}
+                        {% for im in ims %}
+                                {% include "tags/im.html" %}
+                        {% endfor %}
+                {% endif %}
+        <label id="im_more" class="add_to_form"><a class="notajax"><span>{% trans "Add IM" %}</span></a></label>
+</fieldset>
+
+
+<!--
+WebSites
+-->
+        
+<fieldset id="fieldset_website">
+        <legend>{% trans "Websites" %}</legend>
+                {% if not websites %}
+                        {% include "tags/website.html" %}
+                {% else %}
+                        {% for website in websites %}
+                                {% include "tags/website.html" %}
+                        {% endfor %}
+                {% endif %}
+        <label id="website_more" class="add_to_form"><a class="notajax"><span>{% trans "Add Website" %}</span></a></label>
+</fieldset>

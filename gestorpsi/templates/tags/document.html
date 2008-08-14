@@ -46,7 +46,7 @@
 	</div>
 
 	{% if object.id %}
-	<label><a class="notajax remove_from_form" onclick="$('#document_{{ forloop.counter }}').remove(); $(this).remove()">{% trans "Delete" %}</a></label>
+	<label><a class="notajax remove_from_form" delete="document_{{ forloop.counter }}"><span>{% trans "Delete" %}</span></a></label>
 	{% endif %}
 
 </div>

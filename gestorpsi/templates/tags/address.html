@@ -79,5 +79,5 @@
 	
 </div>
 {% if object.id %}
-<label><a class="notajax remove_from_form" onclick="$('#address_{{ forloop.counter }}').remove(); $(this).remove()">{% trans "Delete Address" %}</a></label>
+<label><a class="notajax remove_from_form" delete="address_{{ forloop.counter }}"><span>{% trans "Delete" %}</span></a></label>
 {% endif %}

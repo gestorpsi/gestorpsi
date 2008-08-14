@@ -38,10 +38,10 @@ $(document).ready(function(){
            },
           
           error: function() {
-                // show error alert
-                $('#msg_area').show();
-                $('#msg_area').addClass('error');
-                $('#msg_area').text('Error saving register!');
+               // show error alert
+               $('#msg_area').show();
+               $('#msg_area').addClass('error');
+               $('#msg_area').text('Error saving register!');
           }
      }; 
      
@@ -80,18 +80,18 @@ $(document).ready(function(){
      */
  
     $('#form_place').validate({event:"submit",
-		rules: {
-			label: {
-				required: true
-			}
-		},
-		messages: {
-				name: 'This field is required'
-		},
-		submitHandler: function(form) {
-			$(form).ajaxSubmit(form_options);
+          rules: {
+               label: {
+                       required: true
+               }
+          },
+          messages: {
+               name: 'This field is required'
+          },
+          submitHandler: function(form) {
+               $(form).ajaxSubmit(form_options);
 
-		}
+          }
 	});
     
     
@@ -105,16 +105,16 @@ $(document).ready(function(){
      */
 	
      $('.form_file').validate({event:"submit",
-             submitHandler: function(form) {
-                     var form_file_options = { 
-                             success:    function(filename) {
-                                    $('#id_photo').val('/media/img/people/' + filename);
-                                    $('img#img_people').attr('src', '/media/img/people/' + filename); 
-                             } 
-                     }; 
-                     $(form).ajaxSubmit(form_file_options);
-                     $('#photo_form_upload_dragplace').hide();
-             }
+          submitHandler: function(form) {
+               var form_file_options = { 
+                    success:    function(filename) {
+                         $('#id_photo').val('/media/img/people/' + filename);
+                         $('img#img_people').attr('src', '/media/img/people/' + filename); 
+                    } 
+               }; 
+               $(form).ajaxSubmit(form_file_options);
+               $('#photo_form_upload_dragplace').hide();
+          }
      });
 		   
 		   
@@ -129,10 +129,10 @@ $(document).ready(function(){
      
      $('#photo_form_upload_dragplace').Draggable(
      {
-         zIndex:    20,
-         ghosting:false,
-         opacity: 0.7,
-         handle:    '#photo_form_upload'
+          zIndex:    20,
+          ghosting:false,
+          opacity: 0.7,
+          handle:    '#photo_form_upload'
      }
      );
 
@@ -148,9 +148,9 @@ $(document).ready(function(){
       */
      
      $('.gender').click(function() { 
-             $('.gender').removeClass('active');
-             $(this).addClass('active');
-             $('#id_gender').val($(this).attr('value'));
+          $('.gender').removeClass('active');
+          $(this).addClass('active');
+          $('#id_gender').val($(this).attr('value'));
      });
 
 
@@ -165,7 +165,7 @@ $(document).ready(function(){
      */
      
      $('a.clips').click(function() {
-             $('#photo_form_upload_dragplace').show();
+          $('#photo_form_upload_dragplace').show();
      });
      
      
@@ -198,25 +198,44 @@ $(document).ready(function(){
      // search for input texts when BODY is loaded
      
      $("form input:text").each(function(){
-             var field = $(this);
-             if(field.attr('mask')) {
-                     $(field).mask(field.attr('mask'));
-             }
+          var field = $(this);
+          if(field.attr('mask')) {
+               $(field).mask(field.attr('mask'));
+          }
      });
      
      // we must to 'reload' mask function, when a field text is drawed by some javascript function 
      // see: address form, phone form
      
-     function reloadmask(pattern) {
-             $("form "+pattern+" input:text").each(function(){
-                     var field = $(this);
-                     if(field.attr('mask')) {
-                             $(field).mask(field.attr('mask'));
-                     }
-                     });
+     function reloadMask(pattern) {
+          $("form "+pattern+" input:text").each(function(){
+               var field = $(this);
+               if(field.attr('mask')) {
+                    $(field).mask(field.attr('mask'));
+               }
+          });
      }
      
-       /** 
+     
+     /**
+      *
+      * delete fields in forms
+      *
+      * used in oneToMany relationships registers
+      * eg. phones, address, emails, IMs ...
+      *
+      */
+     
+     function reloadDelete() {
+          $('a.remove_from_form').click(function() {
+               $('#' + $(this).attr('delete') + ' input').val(''); // clean input fields
+               $('#' + $(this).attr('delete')).hide(); // hide it
+               $($(this)).hide(); // so, hide me =)
+          });
+     }
+     reloadDelete()
+     
+     /** 
       * 
       * address form
       * 
@@ -227,10 +246,11 @@ $(document).ready(function(){
       */
      
      $('#document_more a').click(function() {
-             total = $(".form_document_box").length + 1;
-             $("#document_more").before('<div class="form_document_box" id="document_'+total+'"><div class="form_document">'+$(".form_document").html()+'<label><a class="notajax remove_from_form" onclick="$(\'#document_'+total+'\').remove();">Delete</a></label></div></div>');
-             reloadmask('#document_'+total);
-             $('#document_'+total+' input:text').val('');
+          total = $(".form_document_box").length + 1;
+          $("#document_more").before('<div class="form_document_box" id="document_'+total+'"><div class="form_document">'+$(".form_document").html()+'<label><a class="notajax remove_from_form" delete="document_'+total+'"><span>Delete</span></a></label></div></div>');
+          reloadMask('#document_'+total);
+          reloadDelete();
+          $('#document_'+total+' input').val('');
              
      });
      
@@ -247,13 +267,13 @@ $(document).ready(function(){
       */
      
      $('#address_more a').click(function() {
-             total = $(".form_address_box").length + 1;
-             $("#address_more").before('<div class="form_address_box" id="address_'+total+'"><div class="form_address">'+$(".form_address").html()+'<label><a class="notajax remove_from_form" onclick="$(\'#address_'+total+'\').remove();">Delete Address</a></label></div></div>');
-             reloadmask('#address_'+total);
-             reloadautocomplete();
-             reloadCountries()
-             $('#address_'+total+' input:text').val('');
-             
+          total = $(".form_address_box").length + 1;
+          $("#address_more").before('<div class="form_address_box" id="address_'+total+'"><div class="form_address">'+$(".form_address").html()+'<label><a class="notajax remove_from_form" delete="address_'+total+'"><span>Delete</span></a></label></div></div>');
+          reloadMask('#address_'+total);
+          reloadAutoComplete();
+          reloadCountries()
+          reloadDelete();
+          $('#address_'+total+' input').val('');
      });
      
      /** 
@@ -267,11 +287,11 @@ $(document).ready(function(){
       */
      
      $('#phone_more a').click(function() {
-             total = $(".form_phone_box").length + 1;
-             $("#phone_more").before('<div class="form_phone_box" id="phone_'+total+'"><div class="form_phone">'+$(".form_phone").html()+'<label><a class="notajax remove_from_form" onclick="$(\'#phone_'+total+'\').remove();">Delete Phone</a></label></div></div>');
-             reloadmask('#phone_'+total);
-             $('#phone_'+total+' input:text').val('');
-             
+          total = $(".form_phone_box").length + 1;
+          $("#phone_more").before('<div class="form_phone_box" id="phone_'+total+'"><div class="form_phone">'+$(".form_phone").html()+'<label><a class="notajax remove_from_form" delete="phone_'+total+'"><span>Delete</span></a></label></div></div>');
+          reloadMask('#phone_'+total);
+          reloadDelete();
+          $('#phone_'+total+' input').val('');
      });
      
              
@@ -286,11 +306,11 @@ $(document).ready(function(){
       */
      
      $('#email_more a').click(function() {
-             total = $(".form_email_box").length + 1;
-             $("#email_more").before('<div class="form_email_box" id="email_'+total+'"><div class="form_email">'+$(".form_email").html()+'<label><a class="notajax remove_from_form" onclick="$(\'#email_'+total+'\').remove();">Delete Email</a></label></div></div>');
-             reloadmask('#email_'+total);
-             $('#email_'+total+' input:text').val('');
-             
+          total = $(".form_email_box").length + 1;
+          $("#email_more").before('<div class="form_email_box" id="email_'+total+'"><div class="form_email">'+$(".form_email").html()+'<label><a class="notajax remove_from_form" delete="email_'+total+'"><span>Delete</span></a></label></div></div>');
+          reloadMask('#email_'+total);
+          reloadDelete();
+          $('#email_'+total+' input').val('');
      });
      
              
@@ -306,10 +326,10 @@ $(document).ready(function(){
      
      $('#im_more a').click(function() {
              total = $(".form_im_box").length + 1;
-             $("#im_more").before('<div class="form_im_box" id="im_'+total+'"><div class="form_im">'+$(".form_im").html()+'<label><a class="notajax remove_from_form" onclick="$(\'#im_'+total+'\').remove();">Delete IM</a></label></div></div>');
-             reloadmask('#im_'+total);
-             $('#im_'+total+' input:text').val('');
-             
+             $("#im_more").before('<div class="form_im_box" id="im_'+total+'"><div class="form_im">'+$(".form_im").html()+'<label><a class="notajax remove_from_form" delete="im_'+total+'">Delete</a></label></div></div>');
+             reloadMask('#im_'+total);
+             reloadDelete();
+             $('#im_'+total+' input').val('');
      });
      
      
@@ -324,11 +344,11 @@ $(document).ready(function(){
       */
      
      $('#website_more a').click(function() {
-             total = $(".form_website_box").length + 1;
-             $("#website_more").before('<div class="form_website_box" id="website_'+total+'"><div class="form_website">'+$(".form_website").html()+'<label><a class="notajax remove_from_form" onclick="$(\'#website_'+total+'\').remove();">Delete Website</a></label></div></div>');
-             reloadmask('#website_'+total);
-             $('#website_'+total+' input:text').val('');
-             
+          total = $(".form_website_box").length + 1;
+          $("#website_more").before('<div class="form_website_box" id="website_'+total+'"><div class="form_website">'+$(".form_website").html()+'<label><a class="notajax remove_from_form" delete="website_'+total+'">Delete Website</a></label></div></div>');
+          reloadMask('#website_'+total);
+          reloadDelete();
+          $('#website_'+total+' input').val('');
      });
      
      
@@ -343,55 +363,49 @@ $(document).ready(function(){
       */
      
      $('li#add_room a').click(function() {
-            $('#place_form').hide();
-            $('.form_room_box').hide();
-            $('#fieldset_room_identification').show();
-            total = $(".form_room_box").length + 1;
-            
-            // add form
-            $("#room_more").before('<div class="form_room_box" id="room_'+total+'"><div class="form_room">'+$(".form_room").html()+'</div></div>');
-            // clean fields
-            $('#room_'+total+' input:text').val('');
-            $('#room_'+total+' textarea').text('');
-            
+          $('#place_form').hide();
+          $('.form_room_box').hide();
+          $('#fieldset_room_identification').show();
+          total = $(".form_room_box").length + 1;
+          
+          // add form
+          $("#room_more").before('<div class="form_room_box" id="room_'+total+'"><div class="form_room">'+$(".form_room").html()+'</div></div>');
+          // clean fields
+          $('#room_'+total+' input').val('');
+          $('#room_'+total+' textarea').text('');
+          
      
-            // auto insert new typing item, in the room list
-            
-            // first we need to clean item with empty names
-            $('li.li_rooms').each(function() {
-                 li = $(this);
-                 if($(li).text()=='') {
-                      li.remove();     
-                 }
-            });
-            // create new item in room list
-            $('li.li_rooms:last').after('<li class="li_rooms"><a class="notajax" onclick="$(\'#place_form\').hide(); $(\'.form_room_box\').hide(); $(\'#fieldset_room_identification\').show(); $(\'#room_'+total+'\').show();"></a></li>');
-            //alert($('#deleteme').html());
-            // update room name, in room list when new name is typing 
-            $('#room_'+total+' input.update_name').keyup(function() {
-                $('#div_list_rooms').show();
-                $('li.li_rooms:last a').text($(this).val());
-             });
+          // auto insert new typing item, in the room list
+          
+          // first we need to clean item with empty names
+          $('li.li_rooms').each(function() {
+               li = $(this);
+               if($(li).text()=='') {
+                    li.remove();     
+               }
+          });
+          // create new item in room list
+          $('li.li_rooms:last').after('<li class="li_rooms"><a class="notajax" onclick="$(\'#place_form\').hide(); $(\'.form_room_box\').hide(); $(\'#fieldset_room_identification\').show(); $(\'#room_'+total+'\').show();"></a></li>');
+          // update room name, in room list when new name is typing 
+          $('#room_'+total+' input.update_name').keyup(function() {
+              $('#div_list_rooms').show();
+              $('li.li_rooms:last a').text($(this).val());
+           });
              
      });
        
-      /** show selected room fieldset  */ 
-       $('li.li_rooms a').click(function() {
-           $('#place_form').hide();
-           $('.form_room_box').hide();
-           $('#fieldset_room_identification').show();
-           $('#room_' + $(this).attr('display')).show();
-           //alert('#li_room_'+$(this).attr('display')+' a');
-           //$('#li_room_'+$(this).attr('display')+' a').text('Asjkajskajksjas');
-           $('#room_' + $(this).attr('display') + ' input.update_name').keyup(function() {
-                 //alert('#li_room_'+$(e).attr('display'));
-                 $('#li_room_'+$(this).attr('display')+' a').text($(this).val());
-                 //$('#li_room_'+$(this).attr('display')).text($(this).val());
-                 //alert('co!');
-            });
-       });
+     /** show selected room fieldset  */ 
+     $('li.li_rooms a').click(function() {
+         $('#place_form').hide();
+         $('.form_room_box').hide();
+         $('#fieldset_room_identification').show();
+         $('#room_' + $(this).attr('display')).show();
+         $('#room_' + $(this).attr('display') + ' input.update_name').keyup(function() {
+             $('#li_room_'+$(this).attr('display')+' a').text($(this).val());
+         });
+     });
      
-     
+   
      /**
       * 
       * autocomplete text field
@@ -401,7 +415,7 @@ $(document).ready(function(){
      
      // we must to 'reload' auto-complete function, when a field text is drawed by some javascript function 
      
-     function reloadautocomplete() {
+     function reloadAutoComplete() {
              $('.city_search').unbind().autocomplete(); // !!IMPORTANT: necessary for IE6 when you have multiple fields
              $('.city_search').autocomplete("/address/search/city/", {
                      width: 355,
@@ -416,7 +430,7 @@ $(document).ready(function(){
              });
      }
              
-     reloadautocomplete() // load auto-complete for the first tag address
+     reloadAutoComplete() // load auto-complete for the first tag address
      
      // Reset value if city choices is blank
      $('.city_search').keyup(function() {

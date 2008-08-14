@@ -30,7 +30,7 @@
 	</div>
 </div>
 {% if object.id %}
-<label><a class="notajax remove_from_form" onclick="$('#phone_{{ forloop.counter }}').remove(); $(this).remove()">{% trans "Delete Phone" %}</a></label>
+<label><a class="notajax remove_from_form" delete="phone_{{ forloop.counter }}"><span>{% trans "Delete" %}</span></a></label>
 {% endif %}
 
 

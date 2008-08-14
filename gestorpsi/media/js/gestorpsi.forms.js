@@ -228,7 +228,7 @@ $(document).ready(function(){
      
      function reloadDelete() {
           $('a.remove_from_form').click(function() {
-               $('#' + $(this).attr('delete') + ' input').val(''); // clean input fields
+               $('#' + $(this).attr('delete') + ' input:text').val(''); // clean input fields
                $('#' + $(this).attr('delete')).hide(); // hide it
                $($(this)).hide(); // so, hide me =)
           });

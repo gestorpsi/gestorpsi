@@ -13,7 +13,7 @@ emails addresses
                                 {% include "tags/email.html" %}
                         {% endfor %}
                 {% endif %}
-        <label id="email_more" class="add_to_form"><a class="notajax"><span>{% trans "Add Email" %}</span></a></label>
+        <label id="email_more" class="add_to_form"><a class="notajax" title="{% trans "Add Email" %}"><span>{% trans "Add Email" %}</span></a></label>
 </fieldset>
 
 
@@ -32,7 +32,7 @@ Instant Messengers
                                 {% include "tags/im.html" %}
                         {% endfor %}
                 {% endif %}
-        <label id="im_more" class="add_to_form"><a class="notajax"><span>{% trans "Add IM" %}</span></a></label>
+        <label id="im_more" class="add_to_form"><a class="notajax" title="{% trans "Add IM" %}"><span>{% trans "Add IM" %}</span></a></label>
 </fieldset>
 
 
@@ -49,5 +49,5 @@ WebSites
                                 {% include "tags/website.html" %}
                         {% endfor %}
                 {% endif %}
-        <label id="website_more" class="add_to_form"><a class="notajax"><span>{% trans "Add Website" %}</span></a></label>
+        <label id="website_more" class="add_to_form"><a class="notajax" title="{% trans "Add Website" %}"><span>{% trans "Add Website" %}</span></a></label>
 </fieldset>

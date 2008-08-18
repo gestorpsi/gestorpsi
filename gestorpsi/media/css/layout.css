@@ -820,15 +820,6 @@ form fieldset {
 }
 
 #photo_form_upload_dragplace {
-/*
-	position: absolute;
-	left:350px;
-	top:0px;
-	width:250px;
-	background-color:#f0f5FF;
-	border: 1px solid #000;
-	z-index: 50;
-	*/
 	width: 850px;
 	height: 120px;
 	display:none;
@@ -839,9 +830,6 @@ form fieldset {
 	position: fixed;
 	margin: -55px 0 75px -22px;
 	background:  url("/media/img/transp75.png");
-	/*border-top: 1px solid #1D76BB;
-	border-bottom: 1px solid #1D76BB;
-*/
 	z-index: 6;
 	min-height: 500px;
 }
@@ -851,61 +839,78 @@ img#img_people {
 	height: 134px;
 }
 
-label a.remove_from_form {
-display:block;
-clear: both;
-padding-top: 24px;
-}
-
 label.add_to_form {
-display:block;
-clear: both;
+	display:block;
+	clear: both;
 }
 
 div.form_address_box, div.form_phone_box {
-clear: both;
-margin-bottom: 100px;
-margin-top: 150px;
-border-bottom: 1px solid #cccccc;
+	clear: both;
+	margin-bottom: 100px;
+	margin-top: 150px;
+	border-bottom: 1px solid #cccccc;
 }
 
 div.form_address_box {
-margin-top: 0px;
+	margin-top: 0px;
 }
 
 .form_address_box.first {
-border-bottom: 0px solid #cccccc;
-margin-bottom: 210px;
+	border-bottom: 0px solid #cccccc;
+	margin-bottom: 210px;
 }
 
 
 div.form_phone_box {
-margin-bottom: 0px;
-margin-top: 0px;
-border-bottom: 0px solid #cccccc;
-
+	margin-bottom: 0px;
+	margin-top: 0px;
+	border-bottom: 0px solid #cccccc;
 }
 
 #fieldset_phone {
-margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 select.country {
-width: 150px;
+	width: 150px;
 }
 
 #footer {
-float: left;
-width: 100%;
-padding: 8px;
-margin-top: 20px;
-font-size: 10px;
-color: #cccccc;
-text-align:center;
+	float: left;
+	width: 100%;
+	padding: 8px;
+	margin-top: 20px;
+	font-size: 10px;
+	color: #cccccc;
+	text-align:center;
 }
 
 .form_document_box {
-padding-bottom: 65px;
-
+	padding-bottom: 65px;
 }
+
+
+label.add_to_form a {
+	background: url(../img/22/list-add.png) no-repeat;
+	padding-right: 22px;
+	padding-bottom: 22px;
+}
+
+label.add_to_form span {
+	display:none;
+}
+
+label a.remove_from_form {
+clear: both;
+display: block;
+	background: url(../img/22/list-remove.png) no-repeat;
+	padding-right: 22px;
+	padding-top: 22px;
+}
+
+label a.remove_from_form span {
+	display:none;
+}
+
+
 

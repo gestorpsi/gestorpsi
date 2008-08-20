@@ -1,0 +1,13 @@
+<html>
+<body>
+    
+    <form method="POST" action= "{% url gestorpsi.service.views.save object.id %}" >
+    	<h1> Service </h1>
+        <table border= 1>
+           {{ service_form.as_table }}
+        </table>
+       <br>
+       <input type="submit" name="submit" value="Save" />
+    </form>
+</body>
+</html>

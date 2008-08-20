@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib import admin
 
-class PhoneType(models.Model):
+class PhoneType(models.Model):          
     description = models.CharField(max_length=20)
     def __unicode__(self):
         return self.description

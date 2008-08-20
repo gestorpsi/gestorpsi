@@ -157,7 +157,7 @@ class ProfessionalIdentificationForm(ModelForm):
 class CareProfessional(models.Model):
     professionalIdentification = models.ForeignKey(ProfessionalIdentification, edit_inline = models.TABULAR, num_in_admin=1, core=True, null=True)
     professionalProfile = models.ForeignKey(ProfessionalProfile, edit_inline = models.TABULAR, num_in_admin=1, core=True, null = True)
-    person = models.OneToOneField(Person)
+    person = models.OneToOneField(Person, edit_inline = models.TABULAR, num_in_admin=1, core=True)
     comments = models.CharField('comments',max_length=200, core=True, null=True)
     active = models.BooleanField(default=True)    
         

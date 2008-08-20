@@ -149,10 +149,15 @@ $(document).ready(function(){
       * 
       */
      
-     $('.gender').click(function() { 
-          $('.gender').removeClass('active');
-          $(this).addClass('active');
-          $('#id_gender').val($(this).attr('value'));
+     $('.gender').click(function() {
+          if($(this).hasClass('active')) {
+               $('.gender').removeClass('active');
+               $('#id_gender').val($(this).attr(''));
+          } else {
+               $('.gender').removeClass('active');
+               $(this).addClass('active');
+               $('#id_gender').val($(this).attr('value'));
+          }
      });
 
 

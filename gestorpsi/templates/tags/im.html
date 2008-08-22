@@ -1,15 +1,16 @@
 {% load i18n %}
 <div class="form_im_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="im_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
 	<div class="form_im">
+		<input type="hidden" name="im_id" value="{{ im.id }}" />
 		<label>{% trans "Instant Messengers" %}<br />
-		<input type="text" class="big" name="identity" value="{{ email.email }}" />
+		<input type="text" class="big" name="im_identity" value="{{ im.identity }}" />
 		</label>
 	
 		<label>{% trans "IM Type" %}<br />
 		{% if not IMNetworks %}
 			{% trans "There is no types available to choice" %}
 		{% else %}
-		<select name="network" class="small">
+		<select name="im_network" class="small">
 		{% for IMNetwork in IMNetworks %}
 			<option value="{{ IMNetwork.id }}">{{ IMNetwork }}</option>
 		{% endfor %}

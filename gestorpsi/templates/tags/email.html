@@ -1,8 +1,9 @@
 {% load i18n %}
 <div class="form_email_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="email_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
 	<div class="form_email">
+		<input type="hidden" name="email_id" value="{{ email.id }}" />
 		<label>{% trans "Email" %}<br />
-		<input type="text" class="big" name="email" value="{{ email.email }}" />
+		<input type="text" class="big" name="email_email" value="{{ email.email }}" />
 		</label>
 	
 		<label>{% trans "Type" %}<br />

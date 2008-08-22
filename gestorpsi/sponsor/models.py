@@ -9,17 +9,34 @@ from gestorpsi.organization.models import Organization
 from django.contrib import admin
 
 class TaxWithHold(models.Model):
+    """    
+    This class represents a TaxWithHold type      
+    @author: Danilo S. Sanches
+    @version: 1.0 
+    """
     description = models.CharField(max_length=50)
     def __unicode__(self):
+        """
+        returns a representation of this TaxWithHold as an unicode  C{string}.
+        """
         return u"%s" % self.description
 
 class TaxWithHoldAdmin(admin.ModelAdmin):
+    """
+    I{This class was created only for testing purposes}
+    """
     pass
 
 admin.site.register(TaxWithHold, TaxWithHoldAdmin)
 
 
 class Sponsor(models.Model):
+    """    
+    This class represents a sponsor of organizations. 
+    This sponsor doesn't need to exist before of organization.       
+    @author: Danilo S. Sanches
+    @version: 1.0 
+    """
     name = models.CharField('name',max_length=100)    
     companyID = models.CharField('companyID',max_length=100, null=True)
     healthRegion = models.CharField('healthRegion',max_length=10, null=True)
@@ -37,9 +54,15 @@ class Sponsor(models.Model):
     organization = models.ForeignKey(Organization, null=True)
                           
     def __unicode__(self):
+        """
+        returns a representation of this sponsor as an unicode  C{string}.
+        """
         return self.name    
 
 class SponsorAdmin(admin.ModelAdmin):
+    """
+    I{This class was created only for testing purposes}
+    """
     pass
 
 admin.site.register(Sponsor, SponsorAdmin)

@@ -5,6 +5,16 @@ from gestorpsi.person.views import personSave
 
 def careProfessionalFill(request, object):
     
+    """
+    This method is necessary to fill careprofessional informations       
+
+    @param request: Informations received from specific page.
+    @param object: it saves careprofessional information.
+    @type object: CareProfessional
+    @return: careprofessional object
+        that is necessary for a careprofessional type.        
+    """
+    
     person = Person()
     object.person = personSave(request, person)   
     

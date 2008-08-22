@@ -7,88 +7,181 @@ from gestorpsi.address.models import Country, City, Address
 from django.contrib import admin
 
 class PersonType(models.Model):
+    """
+    This class represents a person type for organization profile. The person type can be (physical or juridical)  
+    @author: Danilo S. Sanches
+    @version: 1.0 
+    """
     description = models.CharField(max_length=30)
     def __unicode__(self):
+        """
+        returns a representation of this person type as an unicode  C{string}.
+        """
         return u"%s" % self.description
 
 class PersonTypeAdmin(admin.ModelAdmin):
+    """
+    I{This class was created only for testing purposes}
+    """
     pass
 
 admin.site.register(PersonType, PersonTypeAdmin)
 
 class AdministrationType(models.Model):
+    """
+    This class represents a administration type of Organization. This administration type can be (municipal, state, federal or private)  
+    @author: Danilo S. Sanches
+    @version: 1.0 
+    """
     description = models.CharField(max_length=30)
     def __unicode__(self):
+        """
+        returns a representation of this administration type as an unicode  C{string}.
+        """
         return u"%s" % self.description
 
 class AdministrationTypeAdmin(admin.ModelAdmin):
+    """
+    I{This class was created only for testing purposes}
+    """
     pass
 
 admin.site.register(AdministrationType, AdministrationTypeAdmin)
 
 class Dependency(models.Model):
+    """
+    This class represents the organization situation
+    @author: Danilo S. Sanches
+    @version: 1.0 
+    """
     description = models.CharField(max_length=30)
     def __unicode__(self):
+        """
+        returns a representation of this dependency as an unicode  C{string}.
+        """
         return u"%s" % self.description
 
 class DependencyAdmin(admin.ModelAdmin):
+    """
+    I{This class was created only for testing purposes}
+    """
     pass
 
 admin.site.register(Dependency, DependencyAdmin)
 
 class FacilityType(models.Model):
+    """
+    This class represents facility type  
+    @author: Danilo S. Sanches
+    @version: 1.0 
+    """
     description = models.CharField(max_length=100)
     def __unicode__(self):
+        """
+        returns a representation of this facility type as an unicode  C{string}.
+        """
         return u"%s" % self.description
 
 class FacilityTypeAdmin(admin.ModelAdmin):
+    """
+    I{This class was created only for testing purposes}
+    """
     pass
 
 admin.site.register(FacilityType, FacilityTypeAdmin)
 
 class CareType(models.Model):
+    """    
+    This class represents a care type provided
+    @author: Danilo S. Sanches
+    @version: 1.0 
+    """
     description = models.CharField(max_length=50)
     def __unicode__(self):
+        """
+        returns a representation of this care type as an unicode  C{string}.
+        """
         return u"%s" % self.description
 
 class CareTypeAdmin(admin.ModelAdmin):
+    """
+    I{This class was created only for testing purposes}
+    """
     pass
 
 admin.site.register(CareType, CareTypeAdmin)
 
 class Management(models.Model):
+    """    
+    This class represents a management type of organization 
+    @author: Danilo S. Sanches
+    @version: 1.0 
+    """
     description = models.CharField(max_length=50)
     def __unicode__(self):
+        """
+        returns a representation of this management as an unicode  C{string}.
+        """
         return u"%s" % self.description
 
 class ManagementAdmin(admin.ModelAdmin):
+    """
+    I{This class was created only for testing purposes}
+    """
     pass
 
 admin.site.register(Management, ManagementAdmin)
     
 class OrganizationType(models.Model):
+    """    
+    This class represents the organization type
+    @author: Danilo S. Sanches
+    @version: 1.0 
+    """
     description = models.CharField(max_length=50)
     def __unicode__(self):
+        """
+        returns a representation of this  organization type as an unicode  C{string}.
+        """
         return u"%s" % self.description
 
 class OrganizationTypeAdmin(admin.ModelAdmin):
+    """
+    I{This class was created only for testing purposes}
+    """
     pass
 
 admin.site.register(OrganizationType, OrganizationTypeAdmin)
 
-
+ ### it needs more description
 class ResearchEducationActivities(models.Model):
+    """    
+    This class represents the research activities from Organization.  
+    @author: Danilo S. Sanches
+    @version: 1.0 
+    """
     description = models.CharField(max_length=50)
     def __unicode__(self):
+        """
+        returns a representation of this research activities as an unicode  C{string}.
+        """
         return u"%s" % self.description
 
 class ResearchEducationActivitiesAdmin(admin.ModelAdmin):
+    """
+    I{This class was created only for testing purposes}
+    """
     pass
 
 admin.site.register(ResearchEducationActivities, ResearchEducationActivitiesAdmin)
 
 
 class Organization(models.Model):
+    """    
+    This class represents the organization model.   
+    @author: Danilo S. Sanches
+    @version: 1.0 
+    """
     #Identification
     name = models.CharField('name',max_length=100)
     businessName = models.CharField('businessName',max_length=100, null=True, blank=True)
@@ -118,7 +211,7 @@ class Organization(models.Model):
     address = generic.GenericRelation(Address, null=True)
     emails  = generic.GenericRelation(Email, null=True)
     sites = generic.GenericRelation(Site, null=True)
-    instantMessengers =generic.GenericRelation(InstantMessenger, null=True)    
+    instantMessengers =generic.GenericRel ### it needs more descriptionation(InstantMessenger, null=True)    
     organization = models.ForeignKey('self', related_name="%(class)s_related", null=True, blank=True)
     
     # person = models.ForeignKey(Person, null=True)
@@ -128,9 +221,15 @@ class Organization(models.Model):
     # service = models.ForeignKey(Service, null=True)    
                               
     def __unicode__(self):
+        """
+        returns a representation of this  organization as an unicode  C{string}.
+        """
         return self.name    
 
 class OrganizationAdmin(admin.ModelAdmin):
+    """
+    I{This class was created only for testing purposes}
+    """
     pass
 
 admin.site.register(Organization, OrganizationAdmin)    
@@ -190,7 +289,7 @@ organization.administrationType= admin_type
 organization.dependency= dependency
 organization.facilityType= facility_type
 organization.careType= care_type
-organization.management= management
+organization.management= management ### it needs more description
 organization.organizationType= organization_type
 organization.researchEducationActivities= research_education_activities
 

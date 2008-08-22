@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib import admin
+import audittrail
 
 class Country(models.Model):
     name = models.CharField(max_length=50)
@@ -58,6 +59,25 @@ class Address(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey()
+    
+    history = audittrail.AuditTrail()
+    
+    def __cmp__(self, other):
+        if (self.addressPrefix == other.addressPrefix) and \
+           (self.addressLine1 == other.addressLine1) and \
+           (self.addressLine2 == other.addressLine2) and \
+           (self.addressNumber == other.addressNumber) and \
+           (self.neighborhood == other.neighborhood) and \
+           (self.zipCode == other.zipCode) and \
+           (self.addressType == other.addressType) and \
+           (self.city == other.city) and \
+           (self.foreignCountry == other.foreignCountry) and \
+           (self.foreignState == other.foreignState) and \
+           (self.foreignCity == other.foreignCity):
+            return 0
+        else:
+            return 1    
+    
     def __unicode__(self):
         return u"%s %s\n%s" % (self.addressPrefix, self.addressLine1, self.addressLine2)
     

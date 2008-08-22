@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from gestorpsi.address.models import State
 from django.contrib import admin
+import audittrail
 
 class Issuer(models.Model):
     description = models.CharField(max_length=30)
@@ -36,5 +37,17 @@ class Document(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey()
+    
+    history = audittrail.AuditTrail()
+
+    def __cmp__(self, other):
+        if (self.typeDocument == other.typeDocument) and \
+           (self.document == other.document) and \
+           (self.issuer == other.issuer) and \
+           (self.state == other.state):
+            return 0
+        else:
+            return 1
+
     def __unicode__(self):
         return u"%s: %s / %s - %s" % (self.typeDocument, self.document, self.issuer, self.state)

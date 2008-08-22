@@ -2,8 +2,9 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib import admin
+import audittrail
 
-class PhoneType(models.Model):          
+class PhoneType(models.Model):
     description = models.CharField(max_length=20)
     def __unicode__(self):
         return self.description
@@ -22,6 +23,17 @@ class Phone(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey()
-
+    
+    history = audittrail.AuditTrail()
+    
+    def __cmp__(self, other):
+        if (self.area == other.area) and \
+           (self.phoneNumber == other.phoneNumber) and \
+           (self.ext == other.ext) and \
+           (self.phoneType == other.phoneType):
+            return 0
+        else:
+            return 1
+    
     def __unicode__(self):
         return "(%s) %s" % (self.area, self.phoneNumber)

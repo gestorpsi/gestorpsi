@@ -119,13 +119,11 @@ def form(request, object_id=0):
 def careProfessionalFill(request, object):
     
     """
-    This method is necessary to fill careprofessional informations       
-
-    @param request: Informations received from specific page.
-    @param object: it saves careprofessional information.
-    @type object: CareProfessional
-    @return: careprofessional object
-        that is necessary for a careprofessional type.        
+    This view function returns the informations about CareProfessional 
+    @param request: this is a request sent by the browser.
+    @type request: a instance of the class C{HttpRequest} created by the framework Django
+    @param object: it is the tyoe of CareProfessional that must be filled.
+    @type object: an instance of the built-in type C{Psychologist}.            
     """
     
     person = Person()

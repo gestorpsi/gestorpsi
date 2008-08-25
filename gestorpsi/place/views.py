@@ -1,6 +1,5 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404
-#from django.newforms import form_for_model, form_for_instance
 from django.core.exceptions import ObjectDoesNotExist
 from gestorpsi.place.models import Place, PlaceForm, Room, RoomForm, RoomType, PlaceType
 from gestorpsi.address.models import Address, AddressType, City
@@ -12,6 +11,21 @@ from gestorpsi.address.views import addressList
 from gestorpsi.organization.models import Organization
 
 def roomList( descriptions, dimensions, room_types, furniture_descriptions ):
+    """
+    This I{helper} method creates and returns a list of room based on a set of descriptions,
+    dimensions, room types and furnitures' descriptions that are passed as parameter.
+    @param descriptions: this is a list of descriptions which each of its elements will be used during the creation
+    of the rooms.
+    @type descriptions: a list of strings
+    @param dimensions: this is a list of dimensions
+    which each of its elements will be used during the creation
+    of the rooms.
+    @type dimensions: a list of integers
+    @param room_types: this is a list of room types; these room types will be used during the creation of the rooms.
+    @type room_types: a list of C{RoomType} instances.
+    @param furniture_descriptions: a list of funiture descriptions to be used during the creation of the rooms.
+    @type furniture_descriptions: a list of strings
+    """
     total= len(descriptions)
     rooms= []
     for i in range(0, total):
@@ -22,6 +36,11 @@ def roomList( descriptions, dimensions, room_types, furniture_descriptions ):
     return rooms
 
 def index(request):
+    """
+    This view function returns a list that contains all places currently in the system.
+    @param request: this is a request sent by the browser.
+    @type request: a instance of the class C{HttpRequest} created by the framework Django
+    """
     return render_to_response( "place/place_index.html", {'object': Place.objects.all(), 'PlaceTypes': PlaceType.objects.all(), 'countries': Country.objects.all(), 'RoomTypes': RoomType.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , } )
 
 #######################SHOULD BE TESTED (waiting feedback from cuzido)

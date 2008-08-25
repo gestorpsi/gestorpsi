@@ -6,10 +6,23 @@ from gestorpsi.organization.models import Organization
 from django.core.exceptions import ObjectDoesNotExist
 
 def index(request):
+    """
+    Returns a list that contains all the currently existing services.
+    @param request: this is a request sent by the browser.
+    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+    """
     list_of_services= Service.objects.all()
     return render_to_response( "service/service_index.html", locals() )
 
 def form(request, object_id):
+    """
+    This function view uses I{forms} to show the information related to the
+    C{Service} with id equals to I{object_id}
+    @param request: this is a request sent by the browser.
+    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+    @param object_id: id of the C{Service}.
+    @type object_id: an instance of the built-in class I{int}.
+    """
     try:
         object= get_object_or_404( Service, pk= object_id )
     except (Http404, ObjectDoesNotExist):
@@ -18,6 +31,14 @@ def form(request, object_id):
     return render_to_response('service/service_html.html', {'object': object, 'service_form': service_form } )
 
 def save_agreements( list_of_agreements, object ):
+    """
+    Saves the list of agreements passed as parameter and associate them with the
+    instance of service passed as parameter (I{object}).
+    @param list_of_agreements: list that contains the agreements which will be associated with the service.
+    @type object_id: an instance of the built-in class I{list}.
+    @param object: represents the id code of the service.
+    @type object_id: an instance of the built-in class I{list}.
+    """
     object.agreements.clear()
     object.save()
     for agreement_id in list_of_agreements:
@@ -25,6 +46,13 @@ def save_agreements( list_of_agreements, object ):
         object.agreements.add( agreement )
         
 def save_responsibles( list_of_responsibles, object ):
+    """
+    Saves the list of responsibles and associates it with the object passed as parameter.
+    @param list_of_responsibles: list that contains the responsibles which will be associated with the service (I{object}).
+    @type object_id: an instance of the built-in class I{list}.
+    @param object: represents the id code of the service.
+    @type object_id: an instance of the built-in class I{list}.
+    """
     object.responsibles.clear()
     object.save()
     for responsible_id in list_of_responsibles:
@@ -32,6 +60,11 @@ def save_responsibles( list_of_responsibles, object ):
         object.responsibles.add( responsible )
 
 def save(request, object_id):
+    """
+    This function view searches for the C{Service} with id equals to I{object_id}, if there is such a
+    C{Service} instance, it is loaded and updated with the values of the request object, otherwise a 
+    new C{Service} instance is created, filled with request's values and saved.
+    """
     try:
         object= get_object_or_404( Service, pk= object_id )
     except (Http404, ObjectDoesNotExist):
@@ -55,6 +88,10 @@ def save(request, object_id):
     return render_to_response('service/service_html.html', {'object': object, 'service_form': service_form } )
 
 def delete(request, object_id):
+    """
+    This function view searches for a C{Service} object which has the id equals to I{object_id}, if there is
+    such C{Service} instance it is deleted.
+    """
     object= get_object_or_404( Service, pk= object_id )
     object.delete()
     list_of_services= Service.objects.all()

@@ -81,7 +81,7 @@ def form(request, object_id=0):
                                                                               'ageGroup_form': ageGroup_form,
                                                                               'psychologist_form': psychologist_form })
 
-# Save or Update psychologist object
+# Save or Update psychpsychologistologist object
 def save(request, object_id=0):    
     """
     This function view saves a psychologist, its address and phones.
@@ -137,8 +137,8 @@ def delete(request, object_id):
     passed as parameter and change the field I{active} to "False' 
     @param request: this is a request sent by the browser.
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
-    @param object_id: represents the I{id} of the place to be deleted.
-    @type object_id: an instance of the built-in class c{int}.
+    @param object_id: represents the I{id} of the psychologist to be deleted.
+    @type object_id: an instance of the built-in class C{int}.
     """
     object = get_object_or_404(Psychologist, pk=object_id)
     object.active = False

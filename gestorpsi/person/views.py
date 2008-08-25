@@ -2,6 +2,7 @@ from gestorpsi.address.models import City
 from gestorpsi.address.views import address_save
 from gestorpsi.document.views import document_save
 from gestorpsi.phone.views import phone_save
+from gestorpsi.internet.views import email_save, site_save, im_save
 
 def personSave(request, person):
     # CHECK IF HAS CHANGES BEFORE SAVE
@@ -39,5 +40,10 @@ def personSave(request, person):
     
     # save documents (using Document APP) 
     document_save(person, request.POST.getlist('documentId'), request.POST.getlist('document_typeDocument'), request.POST.getlist('document_document'), request.POST.getlist('document_issuer'), request.POST.getlist('document_state'))
+    
+    # save internet data
+    email_save(person, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
+    site_save(person, request.POST.getlist('site_id'), request.POST.getlist('site_description'), request.POST.getlist('site_site'))
+    im_save(person, request.POST.getlist('im_id'), request.POST.getlist('im_identity'), request.POST.getlist('im_network'))
 
     return person

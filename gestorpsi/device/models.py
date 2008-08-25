@@ -4,15 +4,32 @@ from django.forms import ModelForm
 from django.contrib import admin
 
 DURABILITY_TYPE= ( ('1','CONSUMABLE'), ('2', 'DURABLE') )
+"""
+Devices are classified by their durability, thus this variable represents
+the two kinds of durability type that are used to classify them.
+"""
+
 MOBILITY_TYPE= ( ( '1', 'FIX' ), ( '2', 'MOBILE' ) )
+"""
+Similarly, devices are also classified by their mobility, thus this variable represents
+the two kinds of mobility type that are used to classify them.
+"""
 
 class DeviceType(models.Model):
+    """
+    This class represents device types.
+    @author: Vinicius H. S. Durelli
+    @version: 1.0
+    """
     durability= models.CharField( max_length= 1, choices=DURABILITY_TYPE )
     mobility= models.CharField( max_length= 1, choices= MOBILITY_TYPE )
     restriction= models.CharField( max_length= 100 )
     
     def __unicode__(self):
-        return "durability: %s, mobility: %s, restriction: %s" % (self.durability, self.mobility, self.restriction)
+      """
+      Returns a representation of this device type as an unicode C{string}.
+      """
+      return "durability: %s, mobility: %s, restriction: %s" % (self.durability, self.mobility, self.restriction)
     
 class DeviceTypeAdmin(admin.ModelAdmin):
     pass
@@ -24,12 +41,22 @@ class DeviceTypeForm(ModelForm):
           model= DeviceType
     
 class Device(models.Model):
+    """
+    The class C{Device} is used to represent devices in the context of the GestorPsi project. Using this class,
+    the user is able to query the quantity of some kind of device currently available as well as the number of existing
+    devices of the underlying type.
+    @author: Vinicius H. S. Durelli
+    @version: 1.0
+    """
     description= models.CharField( max_length= 80 )
     total_quantity= models.IntegerField()
     available_quantity= models.IntegerField()
     
     def __unicode__(self):
-        return "description: %s, number of devices: %s, number of available devices: %s" % (self.description, self.total_quantity, self.available_quantity)
+       """
+       Returns a representation of this device as an unicode C{string}.
+       """
+       return "description: %s, number of devices: %s, number of available devices: %s" % (self.description, self.total_quantity, self.available_quantity)
     
 class DeviceAdmin(admin.ModelAdmin):
     pass
@@ -41,6 +68,13 @@ class DeviceForm(ModelForm):
           model= Device
     
 class DeviceDetails(models.Model):
+    """
+    Instances of this class holds details about devices. For example, brand, comments, and so forth.
+    @author: Vinicius H. S. Durelli
+    @version: 1.0
+    @see: Device
+    @see: DeviceType
+    """
     brand= models.CharField( max_length= 80 )
     model= models.CharField( max_length= 80 )
     part_number= models.CharField( max_length= 45 )
@@ -52,7 +86,10 @@ class DeviceDetails(models.Model):
     organization = models.ForeignKey(Organization, null=True)
     
     def __unicode__(self):
-        return "brand: %s, model: %s, comments: %s" % (self.brand, self.model, self.comments)
+      """
+      Returns a representation of the details related to a particular device as an unicode C{string}.
+      """
+      return "brand: %s, model: %s, comments: %s" % (self.brand, self.model, self.comments)
     
 class DeviceDetailsAdmin(admin.ModelAdmin):
     pass

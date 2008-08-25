@@ -4,10 +4,23 @@ from django.shortcuts import render_to_response, get_object_or_404
 from gestorpsi.device.models import DeviceDetails, Device, DeviceType, DeviceDetailsForm, DeviceForm, DeviceTypeForm
 
 def index(request):
+    """
+    Returns details about all currently existing devices.
+    @param request: this is a request sent by the browser.
+    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+    """
     list_of_device_details= DeviceDetails.objects.all()
     return render_to_response( "device/device_form.html", {'list_of_device_details': list_of_device_details } )
 
 def form(request, object_id= 0):
+    """
+    This function views creates some I{forms objects} based on the I{object_id} passed, these I{forms} are
+    used to organize and easier the presentation of the information.
+    @param request: this is a request sent by the browser.
+    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+    @param object_id: the id of the C{DeviceDetails} instance which the information will be displayed.
+    @type object_id: an instance of the built-in class c{int}.
+    """
     try :
         object= get_object_or_404( DeviceDetails, pk= object_id )
         device= object.device
@@ -26,6 +39,15 @@ def form(request, object_id= 0):
                                                           'device_type_form': device_type_form } )
     
 def save(request, object_id=0 ):
+    """
+    This function view creates an instance of the class C{DeviceDetails} with id equals to I{object_id} and
+    uses the I{request} object to set the newly created class attributes. If there is some C{DeviceDetails}
+    with id equals to I{object_id} then this instance is updated with the I{request} information.
+    @param request: this is a request sent by the browser.
+    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+    @param object_id: the id of the C{DeviceDetails} instance to be saved or updated.
+    @type object_id: an instance of the built-in class c{int}.
+    """
     try:
         device_details= get_object_or_404( DeviceDetails, pk=object_id)
     except Http404:
@@ -76,6 +98,13 @@ def save(request, object_id=0 ):
     return render_to_response('device/device_form.html', {'list_of_device_details': [ device_details ] })
 
 def delete(request, object_id= 0):
+    """
+    This function view deletes the C{DeviceDetails} which has the id equals to I{object_id}.
+    @param request: this is a request sent by the browser.
+    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+    @param object_id: the id of the C{DeviceDetails} instance to be deleted.
+    @type object_id: an instance of the built-in class c{int}.
+    """
     try:
         device_details= get_object_or_404( DeviceDetails, pk=object_id)
         device_details.delete()

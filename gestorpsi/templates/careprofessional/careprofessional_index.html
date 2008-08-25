@@ -1,20 +1,12 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<title>CareProfessionals</title>
-</head>
-<body>
+{% load i18n %}
 
-<table id="search_results" class="zebra" border="0" cellspacing="0" cellpadding="0">
 
-        {% for l in object %}
-        <tr>
-                <!--<td><a href="{% url gestorpsi.client.views.form l.id %}">{{ l.name }}</a></td>-->
-                <td><a href="/careprofessional/{{ l.id }}">{{ l.person.name }}</a></td>               
-               
-        </tr>
-        {% endfor %}
-</table>     
+<div id="list" style="display:none" class="fast_menu_content">
+ {% include "careprofessional/careprofessional_list.html" %}
+</div>
 
-</body>
-</html>
+<div id="form" style="display:none" class="fast_menu_content">
+ {% include "careprofessional/careprofessional_form.html" %} 
+</div>
+
+<input type="hidden" id="already_loaded" value="True" />

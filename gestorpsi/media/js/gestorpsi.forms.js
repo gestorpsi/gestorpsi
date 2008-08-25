@@ -234,13 +234,14 @@ $(document).ready(function(){
       */
      
      function reloadDelete() {
+          $('a.remove_from_form').unbind();
           $('a.remove_from_form').click(function() {
                $('#' + $(this).attr('delete') + ' input:text').val(''); // clean input fields
-               $('#' + $(this).attr('delete')).hide(); // hide it
+               $('#' + $(this).attr('delete')).hide("slow"); // hide it
                $($(this)).hide(); // so, hide me =)
           });
      }
-     reloadDelete()
+     reloadDelete();
      
      /** 
       * 
@@ -471,7 +472,55 @@ $(document).ready(function(){
      
      reloadCountries(); // load countries select for the first tag address 
      
-
-
-
+      /** 
+      * 
+      * Care Professional Agreements
+      * 
+      * _description:
+      * 
+      * append agreement select
+      * 
+      */
+     
+     
+     
+     function reloadDestroyLabel() {
+          $('a.destroy_parent_label').unbind();
+          $('a.destroy_parent_label').click(function() {
+               $(this).parent('label:first').empty().fadeOut("slow");
+          });
+     }
+     
+     
+     function reloadProfessionalAgreement() {
+          $('#fieldset_professional_agreement select:last').change(function() {
+               total = $('#fieldset_professional_agreement select').length;
+              if($('#fieldset_professional_agreement select:last').val()) { // add only if last is not null
+                    $("#professional_agreement_more").before('<label class="professional_agreement">'+$('#fieldset_professional_agreement label span:first').html()+'<a class="remove_from_form destroy_parent_label inline"><span>Delete</span></a></label>');
+                    reloadProfessionalAgreement();
+                    reloadDestroyLabel();
+                    
+               }
+          });
+     }
+     
+     reloadProfessionalAgreement();
+     
+     
+     
+     function reloadProfessionalWorkPlace() {
+          $('#fieldset_professional_workplace select:last').change(function() {
+               total = $('#fieldset_professional_workplace select').length;
+              if($('#fieldset_professional_workplace select:last').val()) { // add only if last is not null
+                    $("#professional_workplace_more").before('<label class="professional_workplace">'+$('#fieldset_professional_workplace label span:first').html()+'<a class="remove_from_form destroy_parent_label inline"><span>Delete</span></a></label>');
+                    reloadProfessionalWorkPlace();
+                    reloadDestroyLabel();
+                    
+               }
+          });
+     }
+     
+     reloadProfessionalWorkPlace();
+     
+     
 });

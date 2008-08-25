@@ -1,71 +1,137 @@
-<html>
-<body>    
-    <form method="POST" action= "{% url gestorpsi.careprofessional.views.save %}" >
-        <br>
-        <h1>Person</h1>
-        <table border= 1>
-           {{ person_form.as_table }}
-           {{ person_form.photo.emails.email.label_tag }}
-           {{ person_form.emails.email }}
-           {{ person_form.emails.email_type.label_tag }}
-           {{ person_form.emails.email_type }}
-        </table>
-        <br>
-        <h1>Address</h1>
-        <table border= 1>
-           {{ address_form.as_table }}           
-        </table>        
-        <br>
-        
-        <h1>InstituteType</h1>
-        <table border= 1>
-           {{ institute_form.as_table }}           
-        </table>        
-        <br>
-        <h1>Pós Gradução</h1>
-        <table border= 1>
-           {{ postGraduate_form.as_table }}           
-        </table>        
-        <br>
-        <h1>Profissão</h1>
-        <table border= 1>
-           {{ profession_form.as_table }}           
-        </table>        
-        <br>
-        <h1>Convênio</h1>
-        <table border= 1>
-           {{ agreement_form.as_table }}           
-        </table>        
-        <br>        
-        <h1>Curriculum</h1>
-        <table border= 1>
-           {{ resume_form.as_table }}           
-        </table>        
-        <br>
-        <h1>Locais de Trablho</h1>
-        <table border= 1>
-           {{ workPlaces_form.as_table }}           
-        </table>        
-        <br>
-        <h1>Perfil</h1>
-        <table border= 1>
-           {{ profile_form.as_table }}           
-        </table>        
-        <br>        
-        <h1>Identificação</h1>
-        <table border= 1>
-           {{ identification_form.as_table }}           
-        </table>        
-        <br>
-        <table border= 1>
-           {{ careprofessional_form.comments.label_tag }}
-           {{ careprofessional_form.comments }}
-           {{ object.professionalProfile.academicResume.institutionType.description.label_tag }}
-           {{ object.professionalProfile.academicResume.institutionType.description }}
-        </table>        
-       <br>
-       <input type="submit" name="submit" value="Save" />
-    </form>
-    
-</body>
-</html>
+{% load i18n %}
+{% include "core/ajax_page.html" %}
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+{% if object.id %}
+	<div class="edit_form">
+	<h2 id="title_clients">{{ object.person.name }}</h2>
+{% else %}
+	<h2 id="title_clients">{% trans "Adding New Profesional" %}</h2>
+	<p class="description">{% trans "Inform the professional details then click on Save button" %}</p>
+{% endif %}
+
+
+</p>
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
+
+
+<form action="/psychologist/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_careprofessional" class="form_people">	
+<div id="main_area">
+
+	<a href="" id="help">&nbsp;</a>
+	<!-- DataTypes form menu -->
+	
+	
+	{% include "meta/people_indentification.html" %}
+	
+	<!--
+	Professional infos
+	-->
+	
+	<fieldset id="fieldset_professional_identification">
+		<legend>{% trans "Professional Identification" %}</legend>
+			<label>{% trans "Area" %}<br />
+			<select name="professional_area" class="medium">
+				{% for l in PROFESSIONAL_AREAS %}
+					<option value="{{ l.0 }}">{{ l.1 }}</option>
+				{% endfor %}
+			</select>
+			</label>
+			<label>{% trans "Licence" %}<br />
+			<select name="professional_licenceBoard" class="small">
+				{% for l in licenceBoardTypes %}
+				<option value="{{ l.id }}">{{ l }}</option>
+				{% endfor %}
+			</select>
+			</label>
+			<label>{% trans "Register Number" %}<br />
+				<input type="text" name="professional_registerNumber" />
+			</label>
+	</fieldset>
+
+	<fieldset id="fieldset_professional_profile">
+		<legend>{% trans "Professional Profile" %}</legend>
+			<label>{% trans "Inital Activities Date" %}<br />
+				<input type="text" name="professional_registerNumber" />
+			</label>
+			<label>{% trans "Services" %}<br />
+				<input type="text" name="professional_services" />
+			</label>
+			<label>{% trans "Available Time" %}<br />
+				<input type="text" name="professional_availableTime" />
+			</label>	
+	</fieldset>
+
+
+	<fieldset id="fieldset_professional_agreement">
+		<legend>{% trans "Professional Agreements" %}</legend>
+			<label class="professional_agreement">{% trans "Agreements" %}<br />
+			<span>
+			<select name="professional_agreement" class="extrabig">
+				<option value="">--------------------------------------------------------------------</option>
+				{% for l in AgreementTypes %}
+				<option value="{{ l.id }}">{{ l }}</option>
+				{% endfor %}
+			</select>
+			</span>
+			</label>
+	
+		<span id="professional_agreement_more"></span>
+	</fieldset>
+
+
+	<fieldset id="fieldset_professional_workplace">
+		<legend>{% trans "Professional Workplaces" %}</legend>
+			<label class="professional_workplace">{% trans "Workplaces" %}<br />
+			<span>
+			<select name="professional_workplace" class="extrabig">
+				<option value="">--------------------------------------------------------------------</option>
+				{% for l in WorkPlacesTypes %}
+				<option value="{{ l.id }}">{{ l }}</option>
+				{% endfor %}
+			</select>
+			</span>
+			</label>
+	
+		<span id="professional_workplace_more"></span>
+	</fieldset>
+
+	<fieldset id="fieldset_professional_status">
+		<legend>{% trans "Professional Status" %}</legend>
+			<label>
+			<input type="checkbox" name="professional_active" id="id_active" {% if object.active %} checked{% endif %} /><label>{% trans "Active?" %}
+			</label>
+	</fieldset>
+
+	{% include "meta/people_profile.html" %}
+	{% include "meta/addressbook.html" %}
+	{% include "meta/internet.html" %}
+
+<br />	
+</div>
+
+<div id="sidebar">
+	<div class="bg_blue">
+		<input name="save" type="submit" value="{% trans 'Save' %}" />
+		<input name="save" type="button" value="{% trans 'Cancel' %}" />
+		
+		<div id="msg_info">
+		{% trans "Delete Object" %}?
+			<p>{% trans 'Last revision by' %} Adminstrador {% trans 'in' %} 17 de 
+			Novembro, 2007 &agrave;s 17:36 h</p>
+
+		</div>
+	</div>
+	
+</div>
+
+</form>
+
+{% include "tags/upload.html" %}
+
+{% if object.id %}
+</div> <!-- edit_form -->
+{% endif %}
+

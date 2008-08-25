@@ -8,66 +8,6 @@ from gestorpsi.careprofessional.views import careProfessionalFill
 def index(request):
     return render_to_response('psychologist/psychologist_index.html', {'object': Psychologist.objects.all().filter(active = True)})
     
-
-def form(request, object_id=0):
-    try:
-        phones = []
-        addresses = []
-        
-        object = get_object_or_404(Psychologist, pk=object_id)
-        
-         # person have phones
-        phones= object.person.phones.all()
-        
-        # person have addresses
-        addresses= object.person.address.all()       
-                        
-        psychologist_form= PsychologistForm( instance=object )
-        
-        person = Person.objects.filter(id=object.person_id)
-        
-        person_form = PersonForm( instance=person )
-        
-    except:
-        object = CareProfessional()
-        careprofessional_form= CareProfessionalForm()
-        person_form = PersonForm()
-        address_form = AddressForm()
-        institute_form = InstitutionTypeForm()
-        postGraduate_form = PostGraduateForm()
-        profession_form = ProfessionForm()
-        agreement_form = AgreementForm ()
-        resume_form = AcademicResumeForm()
-        workPlaces_form = WorkPlacesForm()
-        profile_form = ProfessionalProfileForm()
-        identification_form = ProfessionalIdentificationForm()
-        approaches_form = ApproachesForm()
-        area_form = AreaForm()
-        ageGroup_form = AgeGroupForm()
-        psychologist_form= PsychologistForm()        
-        
-    return render_to_response('psychologist/psychologist_form.html', {'object': object, 
-                                                                              'careprofessional_form': careprofessional_form, 
-                                                                              'person_form': person_form, 
-                                                                              'institute_form': institute_form, 
-                                                                              'postGraduate_form': postGraduate_form, 
-                                                                              'profession_form': profession_form, 
-                                                                              'agreement_form': agreement_form, 
-                                                                              'resume_form': resume_form, 
-                                                                              'workPlaces_form': workPlaces_form, 
-                                                                              'profile_form': profile_form, 
-                                                                              'identification_form': identification_form, 
-                                                                              'address_form': address_form, 
-                                                                              'phones': phones, 
-                                                                              'countries': Country.objects.all(), 
-                                                                              'PhoneTypes': PhoneType.objects.all(), 
-                                                                              'AddressTypes': AddressType.objects.all(), 
-                                                                              'States': State.objects.all(),
-                                                                              'approaches_form': approaches_form,
-                                                                              'area_form': area_form,
-                                                                              'ageGroup_form': ageGroup_form,
-                                                                              'psychologist_form': psychologist_form })
-
 # Save or Update psychologist object
 def save(request, object_id=0):    
     try:
@@ -77,17 +17,17 @@ def save(request, object_id=0):
         
     #Approaches
     approaches = Approaches()
-    approaches.description = request.POST['description']
+    approaches.description = request.POST['professional_approaches']
     approaches.save()
     
     #Area
     area = Area()
-    area.description = request.POST['description']
+    area.description = request.POST['professional_area']
     area.save()        
     
     #AgeGroup
     ageGroup = AgeGroup()
-    ageGroup.description = request.POST['description']
+    ageGroup.description = request.POST['professional_age']
     ageGroup.save()     
      
     if(request.POST['approaches']):

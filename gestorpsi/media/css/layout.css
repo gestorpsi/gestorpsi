@@ -140,7 +140,7 @@ width: 139px;
 #main_menu a#services {background: url(../img/16/games.png) no-repeat 25px 4px;}
 #main_menu a#rooms {background: url(../img/16/rooms.png) no-repeat 25px 4px;}
 #main_menu a#equipament {background: url(../img/16/stuff.png) no-repeat 25px 4px;}
-#main_menu a#team {background: url(../img/16/system-users.png) no-repeat 25px 4px;}
+#main_menu a#careprofessional {background: url(../img/16/system-users.png) no-repeat 25px 4px;}
 
 #main_menu ul li ul {
 	display: block;
@@ -860,7 +860,6 @@ div.form_address_box {
 	margin-bottom: 210px;
 }
 
-
 div.form_phone_box {
 	margin-bottom: 0px;
 	margin-top: 0px;
@@ -901,12 +900,20 @@ label.add_to_form span {
 }
 
 label a.remove_from_form {
-clear: both;
-display: block;
-	background: url(../img/22/list-remove.png) no-repeat;
+	clear: both;
+	display: block;	
+	background: url(../img/22/list-remove.png) no-repeat;	
 	padding-right: 22px;
 	padding-top: 22px;
+	margin-top: 5px;
 }
+
+label a.remove_from_form.inline {	
+	display: inline !important;
+	padding-top: 0px;
+	margin-left: 10px;
+}
+
 
 label a.remove_from_form span {
 	display:none;

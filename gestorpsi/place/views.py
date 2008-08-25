@@ -12,7 +12,7 @@ from gestorpsi.organization.models import Organization
 
 def roomList( descriptions, dimensions, room_types, furniture_descriptions ):
     """
-    This I{helper} method creates and returns a list of room based on a set of descriptions,
+    This I{helper} function view creates and returns a list of room based on a set of descriptions,
     dimensions, room types and furnitures' descriptions that are passed as parameter.
     @param descriptions: this is a list of descriptions which each of its elements will be used during the creation
     of the rooms.
@@ -89,6 +89,13 @@ def add(request):
 
 #######################SHOULD BE TESTED (waiting feedback from cuzido)
 def save(request, object_id= 0):
+    """
+    This function view saves a place, its address, phones and rooms.
+    @param request: this is a request sent by the browser.
+    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+    @param object_id: it is the I{id} of the place that must be saved.
+    @type object_id: an instance of the built-in type C{int}. 
+    """
     try:
         object= get_object_or_404(Place, pk=object_id)
     except Http404:
@@ -97,7 +104,7 @@ def save(request, object_id= 0):
     # place label (name)
     object.label= request.POST['label']
     
-    # is it visible
+    # is it visible?
     try:
         object.visible= get_visible( request.POST['visible'] )
     except:
@@ -141,6 +148,15 @@ def save(request, object_id= 0):
 
 #######################SHOULD BE TESTED (waiting feedback from cuzido)
 def delete(request, place_id):
+    """
+    This function view search for a place which has the id equals to the C{int} (I{place_id})
+    passed as parameter. If there is such a place, it will be deleted; otherwise
+    it notifies that the operation has not been carried out.
+    @param request: this is a request sent by the browser.
+    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+    @param place_id: represents the I{id} of the place to be deleted.
+    @type place_id: an instance of the built-in class c{int}.
+    """
     try:
         place= Place.objects.get( pk= int(place_id) )
         place.delete()
@@ -170,21 +186,34 @@ def get(request, place_id):
         return render_to_response( 'place/place_update.html', { 'place_form': place_form, 'a_place': a_place, 'addresses': addresses, 'address_forms': address_forms, 'phones': phones, 'phones_forms': phones_forms } )
     
 def add_room(request, place_id):
+    """
+    This function view adds a I{empty} (filled with default values) room to the place which has the I{id} equals to I{place_id}.
+    @param request: this is a request sent by the browser.
+    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+    @param place_id: represents the I{id} of the place which the empty room will be added.
+    @type place_id: an instance of the built-in class c{int}. 
+    """
     a_place= load_place( place_id )
     room= Room( description= '', dimension= '', place= a_place, room_type= RoomType(), furniture= '' )
     room_form= RoomForm( instance= room )
     return render_to_response( 'place/add_room.html', locals() )
 
-###TODO: this method yet uses form to perform its functionality, thus those implementation must be changed
+###TODO: this function view yet uses form to perform its functionality, thus those implementation must be changed
 def save_room(request, id_object):
-    
+    """
+    This function view search for a place with the id equals to I{id_object}. If there is a place
+    with id equals to I{id_object}, a room is created and initialized using values retrieved of the
+    I{request} object and associated to the place which has the id equals to I{id_object}.
+    @param request: this is a request sent by the browser.
+    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+    @param place_id: represents the I{id} of the place which the room will be associated.
+    @type place_id: an instance of the built-in class c{int}.
+    """
     try:
         get_object_or_404( Place, pk= id_object)
     except:
         return render_to_response( 'place/place_msg.html', { 'msg': "some problem occurred while saving the room" } )
     
-    print "method save_room"
-    print id_object
     room= Room()
     room.description= request.POST['description']
     room.dimension= request.POST['dimension']
@@ -196,12 +225,27 @@ def save_room(request, id_object):
     return render_to_response( "place/place_index.html", locals() )
 
 def list_rooms_related_to(request, place_id):
+    """
+    Returns all rooms belonging to the place that has the id equals to the integer
+    passed as parameter.
+    @param request: this is a request sent by the browser.
+    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+    @param place_id: the id of the place.
+    @type place_id: an instance of the built-in class c{int}.
+    """
     room_list= []
     for room in Room.objects.filter( place__id__exact= int(place_id) ):
         room_list.append( RoomForm( instance= room ) )
     return render_to_response( 'place/list_of_rooms.html', { 'room_list': room_list } ) 
 
 def delete_room(request, room_id):
+    """
+    Deletes the room which has the id equals to I{room_id}.
+    @param request: this is a request sent by the browser.
+    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+    @param room_id: the id of the room to be deleted.
+    @type room_id: an instance of the built-in class c{int}.
+    """
     try:
         room= Room.objects.get( pk= int(room_id) )
         room.delete()
@@ -210,6 +254,13 @@ def delete_room(request, room_id):
         return render_to_response( 'place/place_msg.html', { 'msg': "Some problem occurred while deleting the room (or a place with id equal to %s does not exist)" % room_id } )
 
 def get_room(request, room_id ):
+    """
+    If there is a room with id equals to I{room_id}, this function view retrieves and shows it.
+    @param request: this is a request sent by the browser.
+    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+    @param room_id: the id of the room.
+    @type room_id: an instance of the built-in class c{int}.
+    """
     try:
         a_room= Room.objects.get( pk= int(room_id) )
         room_form= RoomForm( instance= a_room )
@@ -228,9 +279,20 @@ def update_room(request, room_id):
         return render_to_response( 'place/place_msg.html', { 'msg': "some problem occurred while updating the room" } )
 
 def load_place( place_id ):
+    """
+    Loads the place with id equals to I{place_id}
+    @param place_id: the id of the place.
+    @type place_id: an instance of the built-in class c{int}.
+    """
     return get_object_or_404(Place, pk=place_id)
 
 def get_visible( value ):
+    """
+    It is a helper function view used to handle the values I{'on'} and I{'off'}. If I{'on'} is passed to this function view
+    it returns C{True}, otherwise it returns C{False}.
+    @param value: a value, I{'on'} or I{'off'}.
+    @type value: a string that contains one of the following values: I{'on'} or I{'off'}.
+    """
     if ( value == 'on' ):
         return True
     else:

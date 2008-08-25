@@ -17,15 +17,21 @@ def form(request, object_id=0):
     phones    = []
     addresses = []
     documents = []
+    emails    = []
+    sites     = []
+    instantMessengers = []
     try:
         object    = get_object_or_404(Client, pk=object_id)        
         phones    = object.person.phones.all()
         addresses = object.person.address.all()
         documents = object.person.document.all()
+        emails    = object.person.emails.all()
+        sites     = object.person.sites.all()
+        instantMessengers = object.person.instantMessengers.all()
     except:
         object = Client()
     
-    return render_to_response('client/client_form.html', {'object': object, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), } )
+    return render_to_response('client/client_form.html', {'object': object, 'emails': emails, 'websites': sites, 'ims': instantMessengers, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), } )
 
 # Save or Update client object
 def save(request, object_id=0):    

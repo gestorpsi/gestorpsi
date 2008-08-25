@@ -12,7 +12,7 @@
 		{% else %}
 		<select name="im_network" class="small">
 		{% for IMNetwork in IMNetworks %}
-			<option value="{{ IMNetwork.id }}">{{ IMNetwork }}</option>
+			<option value="{{ IMNetwork.id }}" {% ifequal im.network.id IMNetwork.id %} selected{% endifequal %}>{{ IMNetwork }}</option>
 		{% endfor %}
 		</select>
 		{% endif %}

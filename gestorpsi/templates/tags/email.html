@@ -12,7 +12,7 @@
 		{% else %}
 		<select name="email_type" class="small">
 		{% for EmailType in EmailTypes %}
-			<option value="{{ EmailType.id }}">{{ EmailType }}</option>
+			<option value="{{ EmailType.id }}" {% ifequal email.email_type.id EmailType.id %} selected{% endifequal %}>{{ EmailType }}</option>
 		{% endfor %}
 		</select>
 		{% endif %}

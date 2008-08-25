@@ -4,21 +4,42 @@ from gestorpsi.careprofessional.models import CareProfessional
 from django.forms import ModelForm
 
 class ServiceType(models.Model):
+    """
+    This class holds information on available service types.
+    @author: Vinicius H. S. Durelli
+    @version: 1.0
+    """
     name= models.CharField( max_length= 80 )
     description= models.CharField( max_length= 100 )
 
 PROCEDURE_LIST= ( ( '1', 'SUS'), ( '2', 'CFP'), ( '3', 'GESTORPSI') )    
 class Procedure(models.Model):
+    """
+    This class represents a procedure.
+    @author: Vinicius H. S. Durelli
+    @version: 1.0
+    """
     id_proc= models.CharField( max_length= 20, blank= True )
     name= models.CharField( max_length= 80 )
     description= models.CharField( max_length= 80, blank= True )
     type= models.CharField( max_length= 1, choices= PROCEDURE_LIST )
 
 class Modality(models.Model):
+    """
+    Instances of this class are created to represent modalities. Modalities have a name and a description.
+    @author: Vinicius H. S. Durelli
+    @version: 1.0
+    """
     name= models.CharField( max_length= 80 )
     description= models.CharField( max_length= 100 )
     
 class GenericArea(models.Model):
+    """
+    C{GenericArea} holds ordinary information on areas. Instances of this class should not be instantiated, this class is used only
+    to provide a general structure that is inherited by its subclasses.
+    @author: Vinicius H. S. Durelli
+    @version: 1.0
+    """
     services= models.ManyToManyField( ServiceType )
     modalities= models.ManyToManyField( Modality )
     procedures= models.ManyToManyField( Procedure )
@@ -34,18 +55,38 @@ class Clinic(GenericArea):
     pass
 
 class AgreementType(models.Model):
+    """
+    This class represents an agreement type.
+    @author: Vinicius H. S. Durelli
+    @version: 1.0
+    """
     description= models.CharField( max_length= 80 )
 
 class Agreement(models.Model):
+    """
+    Instances of this class are used to represent agreements.
+    @author: Vinicius H. S. Durelli
+    @version: 1.0
+    """
     name= models.CharField( max_length= 45 )
     description= models.CharField( max_length= 80 )
     agreement_type= models.ForeignKey( AgreementType )
 
 class ResearchProject(models.Model):
+    """
+    This class holds information related to research projects.
+    @author: Vinicius H. S. Durelli
+    @version: 1.0
+    """
     name= models.CharField( max_length= 45 )
     description= models.CharField( max_length= 80 )
 
 class Service(models.Model):
+    """
+    This class is used to maintain information on services.
+    @author: Vinicius H. S. Durelli
+    @version: 1.0
+    """
     name= models.CharField( max_length= 80 )
     description= models.CharField( max_length= 100 )
     keywords= models.CharField( max_length= 100 )

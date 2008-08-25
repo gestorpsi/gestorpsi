@@ -5,6 +5,12 @@ from django.contrib import admin
 import audittrail
 
 class PhoneType(models.Model):
+    """
+    This class was created to represent phone types. Each phone type has
+    a short description.
+    @version: 1.0
+    @see: Phone
+    """
     description = models.CharField(max_length=20)
     def __unicode__(self):
         return self.description
@@ -15,6 +21,11 @@ class PhoneTypeAdmin(admin.ModelAdmin):
 admin.site.register(PhoneType, PhoneTypeAdmin)
 
 class Phone(models.Model):
+    """
+    This class holds information related to phone numbers.
+    @version: 1.0
+    @see: PhoneType
+    """
     area = models.CharField('Area Code',max_length=2, core=True)
     phoneNumber = models.CharField('Phone Number', max_length=8, core=True)
     ext = models.CharField('Extension', max_length=4, blank=True)
@@ -36,4 +47,8 @@ class Phone(models.Model):
             return 1
     
     def __unicode__(self):
+        """
+        Returns a representation of this phone number as a unicode C{string}; this C{string} follows the pattern:
+        I{(area) phone-number}.
+        """
         return "(%s) %s" % (self.area, self.phoneNumber)

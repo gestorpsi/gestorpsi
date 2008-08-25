@@ -40,19 +40,17 @@ $(document).ready(function(){
 	$("#core a:not(.notajax)").each(function(){
 		var link = $(this);
 		link.click(function() {
-			 $.get(link.attr('href'),
-				 function(data) {
-					 if(!link.attr('href')) {
-						 alert('I am a ajaxlink, but i dont have the "href" atributte defined in the "<a>" tag');
-						 exit();
-					 } else {
-						 $("#core").html(data);
-					 }
-					 
-			 });
-			 return false;
+			$("#core").load(link.attr('href'));
+			$.ajax({
+                                complete: function(){
+                                        if(link.attr('display')) {
+                                                $('#'+link.attr('display')).show();
+                                        }   
+                                }
+                                });
+			return false;
 			 })
-		 });
+		});
 
 
 	/**

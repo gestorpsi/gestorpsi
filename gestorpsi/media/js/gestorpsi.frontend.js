@@ -1,13 +1,23 @@
 $(document).ready(function(){
 	
 	/** global ajax events */
-		
+	
+        $.ajaxSetup( { timeout: 5000 } );
+        	
         $("#loading p").bind("ajaxSend", function(){
                 $(this).show();
         }).bind("ajaxComplete", function(){
                 $(this).hide();
         });
-
+        
+        $('#msg_area').ajaxError(function(event, request, settings, thrownError){
+                // show success alert
+               $(this).show();
+               $(this).removeClass('alert');
+               $(this).addClass('error');
+               $('#msg_area').html('<b>Error on Ajax request</b><br /><b>url called:</b> '+settings.url+"<br /><b>reason:</b> unknown");
+        });
+          
         /**
          *
          * Message Area (#msg_area)
@@ -29,30 +39,15 @@ $(document).ready(function(){
                 link.click(function() {
                         // only reload, if it is not a fastmenu or a mainmenu link
                         if($('#already_loaded').val() != 'True' || $(this).hasClass('main_menu')) {
+                                $("#core").load(link.attr('href'));
+                                
+                                // if is defined page to display, show it
                                 $.ajax({
-                                        url: link.attr('href'),
-                                        type: 'GET',
-                                        dataType: 'html',
-                                        timeout: 1000,
-                                        error: function(data){
-                                                alert('Error loading template '+link.attr('href'));
-                                        },
-                                        success: function(data){
-                                                if(!link.attr('href')) {
-                                                        //alert('I am a ajaxlink, but i dont have an "url" atributte defined in my "<a>" tag =[');
-                                                } else {
-                                                        $("#core").html(data);
-                                                        // if is defined page to display, show it
-                                                        if(link.attr('display')) {
-                                                                $('#'+link.attr('display')).show();
-                                                        } else {
-                                                                $('#list').show();
-                                                        }
-                                                }
-                                        },
-                                        send: function(data) {
-                                                alert('enviado');
-                                        }
+                                complete: function(){
+                                        if(link.attr('display')) {
+                                                $('#'+link.attr('display')).show();
+                                        }   
+                                }
                                 });
                         }
 			return false;

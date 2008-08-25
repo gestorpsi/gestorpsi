@@ -49,16 +49,16 @@
 	<div id="main_menu">
 		<ul>
 			<li><a id="start" class="main_menu active">{% trans "start" %}</a></li>
-			<li><a id="addressbook" class="main_menu">{% trans "calendar" %}</a></li>
-			<li><a id="customers" class="main_menu" href="/client/">{% trans "clients" %}</a></li>
-			<li><a id="contacts" class="main_menu">{% trans "contacts" %}</a></li>
-			<li><a id="myoffice" class="main_menu">{% trans "organization" %}</a>
+			<li><a id="addressbook" class="main_menu" display="list">{% trans "calendar" %}</a></li>
+			<li><a id="customers" class="main_menu" href="/client/" display="list">{% trans "clients" %}</a></li>
+			<li><a id="contacts" class="main_menu" display="list">{% trans "contacts" %}</a></li>
+			<li><a id="myoffice" class="main_menu" display="list">{% trans "organization" %}</a>
 				<ul style="display:none">
 					<li><a id="organization">{% trans "My Organization" %}</a></li>
 					<li><a id="places" href="/place/">{% trans "Places" %}</a></li>
-					<li><a id="employees" href="/employee/">{% trans "Employees" %}</a></li>
-					<li><a id="careprofessional" href="/careprofessional/">{% trans "Professionals" %}</a></li>
-					<li><a id="services">{% trans "Services" %}</a></li>
+					<li><a id="employees" href="/employee/" display="list">{% trans "Employees" %}</a></li>
+					<li><a id="careprofessional" href="/careprofessional/" display="list">{% trans "Professionals" %}</a></li>
+					<li><a id="services" display="list">{% trans "Services" %}</a></li>
 					<!-- <li><a id="rooms">{% trans "Rooms" %}</a></li> -->
 					<li><a id="equipament">{% trans "Equipaments" %}</a></li>
 					

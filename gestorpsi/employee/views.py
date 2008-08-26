@@ -17,6 +17,14 @@ def index(request):
     return render_to_response('employee/employee_index.html', {'object': Employee.objects.all().filter(active = True), 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), })
 
 def form(request, object_id=0):
+    """
+    This function view creates an employee form. If the object_id has a value, this form will be fill with employee information.
+    otherwise, a new form will be create
+    @param request: this is a request sent by the browser.
+    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+    @param object_id: it is the I{id} of the employee that must be saved.
+    @type object_id: an instance of the built-in type C{int}. 
+    """
     phones    = []
     addresses = []
     documents = []

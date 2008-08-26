@@ -193,7 +193,3 @@ function loadURL(URL, showID) {
                 
         });
 }
-
-
-
-

@@ -1,7 +1,7 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from gestorpsi.person.models import Person
-from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, AcademicResumeForm, WorkPlaces, WorkPlacesForm, Profession, Agreement, ProfessionalProfile, ProfessionalProfileForm, LicenceBoard, ProfessionalIdentification, ProfessionalIdentificationForm, CareProfessional, CareProfessionalForm, InstitutionTypeForm, PostGraduateForm, ProfessionForm, AgreementForm
+from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, Profession, Agreement, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
 from gestorpsi.person.views import personSave
 from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.address.models import Country, City, State, Address, AddressType
@@ -45,62 +45,11 @@ def form(request, object_id=0):
         addresses= object.person.address.all()
         
         # person have documents
-        documents = object.person.document.all()
-                        
-        #psychologist_form= PsychologistForm( instance=object )
-        
-        #person = Person.objects.filter(id=object.person_id)
-        
-        #person_form = PersonForm( instance=person )
-        
+        documents = object.person.document.all()                       
+                
     except:
-        object = CareProfessional()
-        '''
-        careprofessional_form= CareProfessionalForm()
-        person_form = PersonForm()
-        address_form = AddressForm()
-        institute_form = InstitutionTypeForm()
-        postGraduate_form = PostGraduateForm()
-        profession_form = ProfessionForm()
-        agreement_form = AgreementForm ()
-        resume_form = AcademicResumeForm()
-        workPlaces_form = WorkPlacesForm()
-        profile_form = ProfessionalProfileForm()
-        identification_form = ProfessionalIdentificationForm()
-        approaches_form = ApproachesForm()
-        area_form = AreaForm()
-        ageGroup_form = AgeGroupForm()
-        psychologist_form= PsychologistForm()        
-        '''
-
-    '''    
-    return render_to_response('careprofessional/careprofessional_form.html',
-                               
-                                {
-                                    'object': object, 
-                                    'careprofessional_form': careprofessional_form, 
-                                    'person_form': person_form, 
-                                    'institute_form': institute_form, 
-                                    'postGraduate_form': postGraduate_form, 
-                                    'profession_form': profession_form, 
-                                    'agreement_form': agreement_form, 
-                                    'resume_form': resume_form, 
-                                    'workPlaces_form': workPlaces_form, 
-                                    'profile_form': profile_form, 
-                                    'identification_form': identification_form, 
-                                    'address_form': address_form, 
-                                    'phones': phones, 
-                                    'countries': Country.objects.all(), 
-                                    'PhoneTypes': PhoneType.objects.all(), 
-                                    'AddressTypes': AddressType.objects.all(), 
-                                    'States': State.objects.all(),
-                                    'approaches_form': approaches_form,
-                                    'area_form': area_form,
-                                    'ageGroup_form': ageGroup_form,
-                                    'psychologist_form': psychologist_form }
-                                    
-                                )
-    '''
+        object = CareProfessional() 
+    
 
     return render_to_response('careprofessional/careprofessional_form.html',
                                
@@ -129,6 +78,7 @@ def careProfessionalFill(request, object):
     person = Person()
     object.person = personSave(request, person)   
     
+    """
     #InstitutionType
     instType = InstitutionType()
     instType.description = request.POST['description']
@@ -161,57 +111,42 @@ def careProfessionalFill(request, object):
     resume.initialDatePostGraduate = request.POST['initialDatePostGraduate']
     resume.finalDatePostGraduate = request.POST['finalDatePostGraduate']
     resume.area = request.POST['area']
-    resume.save()
-    
-    #workPlaces = WorkPlaces()
-    #workPlaces.name = request.POST['name']
-    #workPlaces.save()
-    
-    #    >>>>>>It's necessary for workplaces
-    #    addressType=AddressType(description='Home')
-    #    addressType.save()
-    #    address = Address()
-    #    address.addressPrefix = "Rua"
-    #    address.addressLine1 = "Rui Barbosa, 1234"
-    #    address.addressLine2 = "Anexo II - Sala 4"object = get_object_or_404(Employee, pk=object_id)    
-    #    address.neighborhood = "Centro"
-    #    address.zipCode = "12345-123"
-    #    address.addressType = AddressType.objects.get(pk=1)
-    #    address.city = City.objects.get(pk=44085)
-    #    address.content_object = WorkPlaces.objects.get(pk=1)
-    #    address.save()
-    #    
-    #    phoneType = PhoneType( description='Home' )
-    #    phoneType.save()
-    #    phone = Phone(area='16', phoneNumber='33643223', ext='ttt', phoneType=PhoneType.objects.get(pk=1))
-    #    phone.content_object = WorkPlaces.objects.get(pk=1)
-    #    phone.save()
+    resume.save()    
     
     #Profession
     profession = Profession()
     profession.number = request.POST['number']
     profession.description = request.POST['description']
     profession.save()
+    """ 
     
     #Agreement
-    agreement = Agreement()
-    agreement.description = request.POST['description']
-    agreement.save()
+    if(request.POST['professional_agreement']):
+        agreement = Agreement()
+        agreement.description = request.POST['professional_agreement']
+        agreement.save()
     
     #ProfessionalProfile
     profile = ProfessionalProfile()
+    
+    """
     if(request.POST['academicResume']):
         profile.academicResume = AcademicResume.objects.get(pk=request.POST['academicResume'])
     else:
         profile.academicResume = resume
     
     profile.initialPrifessionalActivities = request.POST['initialPrifessionalActivities']
-    
+        
     if(request.POST['agreement']):
         profile.agreement = Agreement.objects.get(pk=1)
     else:
         profile.agreement = agreement
+    """
     
+    if(request.POST['professional_agreement']):
+       profile.agreement = Agreement.objects.get(pk=request.POST['professional_agreement'])
+    
+    """
     if(request.POST['profession']):        
         profile.profession = Profession.objects.get(pk=1)
     else:
@@ -219,14 +154,14 @@ def careProfessionalFill(request, object):
         
     profile.services = request.POST['services']
     profile.availableTime = request.POST['availableTime']
-    
-    if(request.POST['workplace']):
-        profile.workplace = WorkPlaces.objects.get(pk=1)
-    else:
-        profile.workplace = workPlaces
-    
+    """
+       
+    if(request.POST['professional_workplace']):
+        profile.workplace = Place.objects.get(pk=request.POST['professional_workplace'])
+        
     profile.save()
     
+    """
     #LicenceBoard
     licence = LicenceBoard()
     licence.name = request.POST['name']
@@ -242,10 +177,13 @@ def careProfessionalFill(request, object):
     else:
         identification.licenceBoard = licence
     identification.save()
-
+    """
     object.professionalProfile = profile
+    
+    """
     object.professionalIdentification = identification    
     object.comments = request.POST['comments']
+    """
         
     return object
 

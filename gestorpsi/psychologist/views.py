@@ -1,7 +1,7 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
-from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, AcademicResumeForm, WorkPlaces, WorkPlacesForm, Profession, Agreement, ProfessionalProfile, ProfessionalProfileForm, LicenceBoard, ProfessionalIdentification, ProfessionalIdentificationForm, CareProfessional, CareProfessionalForm, InstitutionTypeForm, PostGraduateForm, ProfessionForm, AgreementForm
-from gestorpsi.psychologist.models import Approaches, Area, AgeGroup, Psychologist, ApproachesForm, AreaForm, AgeGroupForm, PsychologistForm
+from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, Profession, Agreement, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional 
+from gestorpsi.psychologist.models import Approaches, Area, AgeGroup, Psychologist
 from gestorpsi.careprofessional.views import careProfessionalFill
 
 
@@ -33,53 +33,22 @@ def form(request, object_id=0):
         phones= object.person.phones.all()
         
         # person have addresses
-        addresses= object.person.address.all()       
-                        
-        psychologist_form= PsychologistForm( instance=object )
-        
+        addresses= object.person.address.all()               
+                
         person = Person.objects.filter(id=object.person_id)
-        
-        person_form = PersonForm( instance=person )
+       
         
     except:
-        object = CareProfessional()
-        careprofessional_form= CareProfessionalForm()
-        person_form = PersonForm()
-        address_form = AddressForm()
-        institute_form = InstitutionTypeForm()
-        postGraduate_form = PostGraduateForm()
-        profession_form = ProfessionForm()
-        agreement_form = AgreementForm ()
-        resume_form = AcademicResumeForm()
-        workPlaces_form = WorkPlacesForm()
-        profile_form = ProfessionalProfileForm()
-        identification_form = ProfessionalIdentificationForm()
-        approaches_form = ApproachesForm()
-        area_form = AreaForm()
-        ageGroup_form = AgeGroupForm()
-        psychologist_form= PsychologistForm()        
+        object = Psychologist()
+                
         
-    return render_to_response('psychologist/psychologist_form.html', {'object': object, 
-                                                                              'careprofessional_form': careprofessional_form, 
-                                                                              'person_form': person_form, 
-                                                                              'institute_form': institute_form, 
-                                                                              'postGraduate_form': postGraduate_form, 
-                                                                              'profession_form': profession_form, 
-                                                                              'agreement_form': agreement_form, 
-                                                                              'resume_form': resume_form, 
-                                                                              'workPlaces_form': workPlaces_form, 
-                                                                              'profile_form': profile_form, 
-                                                                              'identification_form': identification_form, 
-                                                                              'address_form': address_form, 
+    return render_to_response('psychologist/psychologist_form.html', {'object': object,                                                                               
                                                                               'phones': phones, 
                                                                               'countries': Country.objects.all(), 
                                                                               'PhoneTypes': PhoneType.objects.all(), 
                                                                               'AddressTypes': AddressType.objects.all(), 
                                                                               'States': State.objects.all(),
-                                                                              'approaches_form': approaches_form,
-                                                                              'area_form': area_form,
-                                                                              'ageGroup_form': ageGroup_form,
-                                                                              'psychologist_form': psychologist_form })
+                                                                              })
 
 # Save or Update psychpsychologistologist object
 def save(request, object_id=0):    
@@ -94,7 +63,8 @@ def save(request, object_id=0):
         object = get_object_or_404(Psychologist, pk=object_id)        
     except Http404:
         object = Psychologist()
-        
+    
+    """    
     #Approaches
     approaches = Approaches()
     approaches.description = request.POST['professional_approaches']
@@ -110,21 +80,16 @@ def save(request, object_id=0):
     ageGroup.description = request.POST['professional_age']
     ageGroup.save()     
      
-    if(request.POST['approaches']):
-        object.approaches = Approaches.objects.get(pk=request.POST['approaches'])
-    else:
-        object.approaches = approaches
+    if(request.POST['professional_approaches']):
+        object.approaches = Approaches.objects.get(pk=request.POST['professional_approaches'])    
         
-    if(request.POST['specialistArea']):
-        object.specialistArea = Area.objects.get(pk=request.POST['specialistArea'])
-    else:
-        object.specialistArea = area
-    
-    if(request.POST['ageGroup']):
-        object.ageGroup = AgeGroup.objects.get(pk=request.POST['ageGroup'])
-    else:
-        object.ageGroup = ageGroup
-    
+    if(request.POST['professional_area']):
+        object.specialistArea = Area.objects.get(pk=request.POST['professional_area'])
+        
+    if(request.POST['professional_age']):
+        object.ageGroup = AgeGroup.objects.get(pk=request.POST['professional_age'])
+    """
+        
     object = careProfessionalFill(request, object)
     object.save()
 

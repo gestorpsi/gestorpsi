@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from gestorpsi.person.models import Person
 from gestorpsi.organization.models import Organization
 from gestorpsi.phone.models import Phone
+from gestorpsi.place.models import Place
 from gestorpsi.address.models import Country, City, Address
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
@@ -29,9 +30,6 @@ class InstitutionTypeAdmin(admin.ModelAdmin):
 
 admin.site.register(InstitutionType, InstitutionTypeAdmin)
 
-class InstitutionTypeForm(ModelForm):
-    class Meta:
-        model= InstitutionType
     
 class PostGraduate(models.Model):
     """    
@@ -54,9 +52,6 @@ class PostGraduateAdmin(admin.ModelAdmin):
 
 admin.site.register(PostGraduate, PostGraduateAdmin)
     
-class PostGraduateForm(ModelForm):
-    class Meta:
-        model = PostGraduate
 
 class AcademicResume(models.Model):
     """    
@@ -83,38 +78,6 @@ class AcademicResumeAdmin(admin.ModelAdmin):
 
 admin.site.register(AcademicResume, AcademicResumeAdmin)
     
-class AcademicResumeForm(ModelForm):
-    class Meta:
-        model = AcademicResume
-
-class WorkPlaces(models.Model):
-    """    
-    This class represents the workplaces where the careprofessional works       
-    @author: Danilo S. Sanches
-    @version: 1.0 
-    """
-    name = models.CharField(max_length=30, null=True)
-    phones = generic.GenericRelation(Phone, null=True)
-    address = generic.GenericRelation(Address, null=True)
-    
-    def __unicode__(self):
-        """
-        returns a representation of these WorkPlaces as an unicode  C{string}.
-        """
-        return u"%s" % self.name
-    
-class WorkPlacesAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(WorkPlaces, WorkPlacesAdmin)
-
-class WorkPlacesForm(ModelForm):
-    class Meta:
-        model = WorkPlaces
-
 class Profession(models.Model):
     """    
     This class represents the careprofessional's profession       
@@ -137,9 +100,6 @@ class ProfessionAdmin(admin.ModelAdmin):
 
 admin.site.register(Profession, ProfessionAdmin)
 
-class ProfessionForm(ModelForm):
-    class Meta:
-        model= Profession
 
 class Agreement(models.Model):
     """
@@ -162,9 +122,6 @@ class AgreementAdmin(admin.ModelAdmin):
 
 admin.site.register(Agreement, AgreementAdmin)
 
-class AgreementForm(ModelForm):
-    class Meta:
-        model= Agreement    
 
 class ProfessionalProfile(models.Model):
     """
@@ -178,7 +135,7 @@ class ProfessionalProfile(models.Model):
     profession = models.OneToOneField(Profession, null=True)
     services = models.CharField(max_length=100, null=True)
     availableTime = models.CharField(max_length=100, null=True)
-    workplace = models.ForeignKey(WorkPlaces, null=True)
+    workplace = models.ForeignKey(Place, null=True)
     
 class ProfessionalProfileAdmin(admin.ModelAdmin):
     """
@@ -187,10 +144,6 @@ class ProfessionalProfileAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(ProfessionalProfile, ProfessionalProfileAdmin)
-
-class ProfessionalProfileForm(ModelForm):
-    class Meta:
-        model = ProfessionalProfile
 
 
 class LicenceBoard(models.Model):
@@ -216,9 +169,6 @@ class LicenceBoardAdmin(admin.ModelAdmin):
 
 admin.site.register(LicenceBoard, LicenceBoardAdmin)
 
-class LicenceBoardForm(ModelForm):
-    class Meta:
-        model= LicenceBoard
 
 class ProfessionalIdentification(models.Model):
     """
@@ -243,9 +193,6 @@ class ProfessionalIdentificationAdmin(admin.ModelAdmin):
 
 admin.site.register(ProfessionalIdentification, ProfessionalIdentificationAdmin)
 
-class ProfessionalIdentificationForm(ModelForm):
-    class Meta:
-        model= ProfessionalIdentification
      
 class CareProfessional(models.Model):
     """
@@ -267,15 +214,12 @@ class CareProfessionalAdmin(admin.ModelAdmin):
 
 admin.site.register(CareProfessional, CareProfessionalAdmin)
 
-class CareProfessionalForm(ModelForm):
-    class Meta:
-        model= CareProfessional
 
 """
 from gestorpsi.address.models import Country
 from gestorpsi.person.models import Person
 from gestorpsi.organization.models import Organization
-from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, WorkPlaces, Profession, Agreement, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
+from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, Profession, Agreement, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
 from gestorpsi.address.models import Country, State, City, Address, AddressType
 from gestorpsi.phone.models import Phone, PhoneType
 
@@ -303,10 +247,6 @@ resume.initialDatePostGraduate = '2006-03-01'
 resume.finalDatePostGraduate = '2008-03-01'
 resume.area = 'testArea'
 resume.save()
-
-workPlaces = WorkPlaces()
-workPlaces.name='Instituto de Psicologia'
-workPlaces.save()
 
 addressType=AddressType(description='Home')
 addressType.save()
@@ -340,7 +280,6 @@ profile.agreement = Agreement.objects.get(pk=1)
 profile.profession = Profession.objects.get(pk=1)
 profile.services = 'Psicanalise'
 profile.availableTime = '30 horas semanais'
-profile.workplace = WorkPlaces.objects.get(pk=1)
 profile.save()
 
 licence = LicenceBoard(name='CRRT' ,description='testtt')

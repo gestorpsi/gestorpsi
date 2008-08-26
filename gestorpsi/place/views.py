@@ -4,11 +4,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from gestorpsi.place.models import Place, PlaceForm, Room, RoomForm, RoomType, PlaceType
 from gestorpsi.address.models import Address, AddressType, City
 from gestorpsi.phone.models import Phone, PhoneType
-from gestorpsi.phone.views import phoneList
 from gestorpsi.address.models import Country, City, State, Address, AddressType
 from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetwork
-from gestorpsi.address.views import addressList
 from gestorpsi.organization.models import Organization
+from gestorpsi.address.views import address_save
+from gestorpsi.phone.views import phone_save
 
 def roomList( descriptions, dimensions, room_types, furniture_descriptions ):
     """
@@ -118,21 +118,16 @@ def save(request, object_id= 0):
     
     object.save() 
     
-    # flush addresses and re-insert it
-    object.address.all().delete()
-    for address in addressList(request.POST.getlist('addressPrefix'), request.POST.getlist('addressLine1'), 
-                               request.POST.getlist('addressLine2'), request.POST.getlist('addressNumber'),
-                               request.POST.getlist('neighborhood'), request.POST.getlist('zipCode'), 
-                               request.POST.getlist('addressType'), request.POST.getlist('city'),
-                               request.POST.getlist('foreignCountry'), request.POST.getlist('foreignState'),
-                               request.POST.getlist('foreignCity')):
-        address.content_object = object
-        address.save()
+    # save addresses (using Address APP)
+    address_save(object, request.POST.getlist('addressId'), request.POST.getlist('addressPrefix'),
+                 request.POST.getlist('addressLine1'), request.POST.getlist('addressLine2'),
+                 request.POST.getlist('addressNumber'), request.POST.getlist('neighborhood'),
+                 request.POST.getlist('zipCode'), request.POST.getlist('addressType'),
+                 request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
+                 request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))
     
-    object.phones.all().delete()    
-    for phone in phoneList(request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType')):
-        phone.content_object= object
-        phone.save()
+    # save phone numbers (using Phone APP)
+    phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
         
     rooms= object.room_set.all()
     #delete all rooms and...

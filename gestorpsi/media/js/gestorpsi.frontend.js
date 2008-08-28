@@ -180,7 +180,7 @@ function loadURL(URL, showID) {
                 url: URL,
                 type: 'GET',
                 dataType: 'html',
-                timeout: 1000,
+                timeout: 5000,
                 
                 success: function(data){
                         $("#core").html(data);

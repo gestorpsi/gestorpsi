@@ -37,9 +37,9 @@ $(document).ready(function(){
 	* 
 	*/
 	
-	$("#core a:not(.notajax)").each(function(){
+	$("#core a:not(.notajax)").click(function(){
 		var link = $(this);
-		link.click(function() {
+		//link.click(function() {
 			$("#core").load(link.attr('href'));
 			$.ajax({
                                 complete: function(){
@@ -49,7 +49,7 @@ $(document).ready(function(){
                                 }
                                 });
 			return false;
-			 })
+		//	 })
 		});
 
 

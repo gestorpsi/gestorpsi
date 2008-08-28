@@ -7,17 +7,7 @@
 <script type="text/javascript"src="/media/js/jquery-latest.pack.js"></script> <!-- JQuery Core Library -->
 <script type="text/javascript"src="/media/js/jquery.form.js"></script> <!-- jQuery Form Plugin -->
 <script type="text/javascript"src="/media/js/jquery.validate.pack.js"></script> <!-- jQuery validation plug-in -->
-<!-- <script type="text/javascript"src="/media/js/dimensions.js"></script> --> <!-- AutoComplete Dependency -->
-<!-- <script type="text/javascript"src="/media/js/autocomplete.js"></script> --> <!-- Jquery AutoComplete Field (modified) -->
-
-<!-- jQuery plugin: Autocomplete -->
-<!--
-<script type="text/javascript" src="/media/js/autocomplete/jquery.bgiframe.min.js"></script>
-<script type="text/javascript" src="/media/js/autocomplete/jquery.ajaxQueue.js"></script>
-<script type="text/javascript" src="/media/js/autocomplete/thickbox-compressed.js"></script>
--->
 <script type="text/javascript" src="/media/js/autocomplete/jquery.autocomplete.js"></script>
-<!-- -->
 
 <script type="text/javascript"src="/media/js/jquery-ui-personalized-1.5.2.min.js"></script> <!-- JQuery UI with Draggable -->
 <script type="text/javascript"src="/media/js/jquery.maskedinput-1.1.3.pack.js"></script> <!-- JQuery Masked Input Plugin -->
@@ -26,7 +16,6 @@
 <script type="text/javascript"src="/media/js/gestorpsi.frontend.js"></script> <!-- gestorpsi interface (ajax links and other stuffs) -->
 
 <link rel="stylesheet"type="text/css"href="/media/css/layout.css"/> <!-- main stylesheets -->
-<!-- <link rel="stylesheet"type="text/css"href="/media/css/autocomplete.css"/> --> <!-- styles for ajax auto complete text field -->
 
 <link rel="stylesheet"type="text/css"href="/media/css/jquery.autocomplete.css"/> <!-- styles for ajax auto complete text field -->
 <link rel="stylesheet"type="text/css"href="/media/css/datePicker.css"/> <!-- styles for date calendar -->
@@ -52,7 +41,7 @@
 			<li><a id="addressbook" class="main_menu" display="list">{% trans "calendar" %}</a></li>
 			<li><a id="customers" class="main_menu" href="/client/" display="list">{% trans "clients" %}</a></li>
 			<li><a id="contacts" class="main_menu" display="list">{% trans "contacts" %}</a></li>
-			<li><a id="myoffice" class="main_menu" display="list">{% trans "organization" %}</a>
+			<li><a id="myoffice" class="main_menu notajax" display="list">{% trans "organization" %}</a>
 				<ul style="display:none">
 					<li><a id="organization">{% trans "My Organization" %}</a></li>
 					<li><a id="places" href="/place/">{% trans "Places" %}</a></li>

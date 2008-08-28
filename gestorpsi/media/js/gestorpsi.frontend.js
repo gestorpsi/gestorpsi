@@ -34,9 +34,9 @@ $(document).ready(function(){
         
         
 	/** ajax_link: load content inside div core */
-	$("#menus a:not(.notajax)").each(function(){
+	$("#menus a:not(.notajax)").click(function(){
                 var link = $(this);
-                link.click(function() {
+                //link.click(function() {
                         // only reload, if it is not a fastmenu or a mainmenu link
                         if($('#already_loaded').val() != 'True' || $(this).hasClass('main_menu')) {
                                 $("#core").load(link.attr('href'));
@@ -51,13 +51,13 @@ $(document).ready(function(){
                                 });
                         }
 			return false;
-		})
+		//})
 	});
 		
 	/** menu selection */
-	$("#main_menu > ul > li > a").each(function(){
+	$("#main_menu > ul > li > a").click(function(){
 	       var link = $(this);
-	       link.click(function() {
+	       //link.click(function() {
                         //alert($(this).attr('id'));
                         $('#already_loaded').val('False');
                         
@@ -113,7 +113,7 @@ $(document).ready(function(){
                                 
                                 } ); });
 				
-			})
+			//})
 		});
 		
 	/** sub menu selection */
@@ -189,7 +189,7 @@ function loadURL(URL, showID) {
                 },
                  error: function(data){
                         alert('Error loading URL ' +URL);
-                },
+                }
                 
         });
 }

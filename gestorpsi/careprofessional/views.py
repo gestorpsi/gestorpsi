@@ -37,6 +37,7 @@ def form(request, object_id=0):
     emails    = []
     sites     = []
     instantMessengers = []
+    documents = []
 
     try:
         object = get_object_or_404(CareProfessional, pk=object_id)
@@ -60,8 +61,7 @@ def form(request, object_id=0):
                                     'addresses': addresses,
                                     'phones': phones,
                                     'documents': documents,
-                                    'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
-                                    #'identification_form': identification_form,
+                                    'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,                                    
                                     'licenceBoardTypes': LicenceBoard.objects.all(),
                                     'AgreementTypes': Agreement.objects.all(),
                                     'WorkPlacesTypes': workplaces,
@@ -125,42 +125,36 @@ def careProfessionalFill(request, object):
     profession.save()
     """ 
     
-    #Agreement
-    if(request.POST['professional_agreement']):
-        agreement = Agreement()
-        agreement.description = request.POST['professional_agreement']
-        agreement.save()
+    
     
     #ProfessionalProfile
     profile = ProfessionalProfile()
     
     """
+    #Agreement
+    if(request.POST['professional_agreement']):
+        agreement = Agreement()
+        agreement.description = request.POST['professional_agreement']
+        agreement.save()
+        
     if(request.POST['academicResume']):
         profile.academicResume = AcademicResume.objects.get(pk=request.POST['academicResume'])
     else:
         profile.academicResume = resume
-    
-    profile.initialPrifessionalActivities = request.POST['initialPrifessionalActivities']
         
-    if(request.POST['agreement']):
-        profile.agreement = Agreement.objects.get(pk=1)
-    else:
-        profile.agreement = agreement
-    """
-    
-    if(request.POST['professional_agreement']):
-       profile.agreement = Agreement.objects.get(pk=request.POST['professional_agreement'])
-    
-    """
     if(request.POST['profession']):        
         profile.profession = Profession.objects.get(pk=1)
     else:
         profile.profession = profession
-        
-    profile.services = request.POST['services']
-    profile.availableTime = request.POST['availableTime']
     """
-       
+    profile.initialPrifessionalActivities = request.POST['professional_initialActivitiesDate']
+        
+    if(request.POST['professional_agreement']):
+        profile.agreement = Agreement.objects.get(pk=request.POST['professional_agreement'])
+            
+    profile.services = request.POST['professional_services']
+    profile.availableTime = request.POST['professional_availableTime']
+    
     if(request.POST['professional_workplace']):
         profile.workplace = Place.objects.get(pk=request.POST['professional_workplace'])
         
@@ -172,22 +166,20 @@ def careProfessionalFill(request, object):
     licence.name = request.POST['name']
     licence.description = request.POST['description']
     licence.save()
+    """
     
     #ProfessionalIdentification
     identification = ProfessionalIdentification()
-    identification.registerNumber = request.POST['registerNumber']
+    identification.registerNumber = request.POST['professional_registerNumber']
     
-    if(request.POST['licenceBoard']): 
-        identification.licenceBoard = LicenceBoard.objects.get(pk=1)
-    else:
-        identification.licenceBoard = licence
+    if(request.POST['professional_licenceBoard']): 
+        identification.licenceBoard = LicenceBoard.objects.get(pk=request.POST['professional_licenceBoard'])
+    
     identification.save()
-    """
-    object.professionalProfile = profile
     
-    """
+    object.professionalProfile = profile    
     object.professionalIdentification = identification    
-    object.comments = request.POST['comments']
-    """
+    #object.comments = request.POST['comments']
+    
         
     return object

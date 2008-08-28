@@ -130,7 +130,7 @@ class ProfessionalProfile(models.Model):
     @version: 1.0
     """
     academicResume = models.OneToOneField(AcademicResume, null=True)
-    initialPrifessionalActivities = models.CharField(max_length=10, null=True)
+    initialProfessionalActivities = models.CharField(max_length=10, null=True)
     agreement = models.ForeignKey(Agreement, null=True)
     profession = models.OneToOneField(Profession, null=True)
     services = models.CharField(max_length=100, null=True)

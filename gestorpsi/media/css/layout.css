@@ -169,9 +169,9 @@ width: 139px;
 	padding: 5px 3px 4px 50px;
 	border: none;
 }
+
 #sub_menu ul.opened_tabs {
 	float: right;
-	margin-right: 50px;
 }
 
 #sub_menu ul.opened_tabs li .active {
@@ -197,6 +197,7 @@ width: 139px;
 	-moz-border-radius-topright: 0;
 	-moz-border-radius-topleft: 0;
 }
+
 
 .close {
 	height: 16px;
@@ -499,6 +500,7 @@ textarea {
 	color: #E6E6E6;
 	cursor: pointer;
 }
+
 #sidebar p {
 	margin: 5px;
 	font-size: 10px;

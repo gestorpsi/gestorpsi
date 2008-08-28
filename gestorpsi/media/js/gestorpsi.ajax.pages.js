@@ -95,19 +95,29 @@ $(document).ready(function(){
 		$("ul.opened_tabs li div a:first").attr('href', $(this).attr('href')); // set url to new tab
 	});
         
-
         /**
          *
-         * hide opened extra tabs when clicked
+         * hide opened extra tabs when close (or Cancel Button) is clicked
          *
          */
         
-        $("ul.opened_tabs li div a.close").click(function() {
+        $("ul.opened_tabs li div a.close, .edit_form input#cancel_button").click(function() {
 		$("ul.opened_tabs").hide();
 		$(".edit_form").hide();
 		//loadURL('/client/', 'list');
 	});
 	
+	/**
+	* sidebar. cancel buttom if is a new register
+	*/
+	
+	$('#sidebar input#cancel_button').click(function() {
+	    $('div#form.fast_menu_content input:text').val('');
+	    $('div#form.fast_menu_content').hide();
+	    $('div#sub_menu ul li a').removeClass('active');
+	    $('div#sub_menu ul li a:first').addClass('active');
+	    $('div#list.fast_menu_content').show();
+	});
 	
 });
 

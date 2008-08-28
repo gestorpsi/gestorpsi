@@ -35,7 +35,7 @@ $(document).ready(function(){
          * 
          */
         
-        $('a').click(function() {
+        $('#menus a').click(function() {
                 $('#msg_area').removeClass();
                 $('#msg_area').hide();
                 

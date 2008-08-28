@@ -112,7 +112,7 @@
 		<div id="place_actions" {% if not object.id %}style="display:none"{% endif %}>	
 		<h3>{% trans 'Object Actions' %}</h3>
 		<ul>
-			<li id="add_room" class="add_to_form"><a class="notajax">{% trans "Add room in this place" %}</a></li>
+			<li id="add_room" class="add_to_form"><a class="notajax" href="#top">{% trans "Add room in this place" %}</a></li>
 			{# <li><a class="notajax" onclick="$('#place_form').hide(); $('.form_room_box').hide(); $('#fieldset_room_identification, #room_').show();" id="add_room">{% trans "Add Room" %}</a></li> #}
 		</ul>
 		
@@ -122,7 +122,7 @@
 		<ul>
 			<li class="li_rooms" style="display:none">&nbsp;</li>
 			{% for room in rooms %}
-			<li class="li_rooms" id="li_room_{{ room.id }}"><a class="notajax" display="{{ room.id }}">{{ room }}</a></li>
+			<li class="li_rooms" id="li_room_{{ room.id }}"><a class="notajax" display="{{ room.id }}" href="#top">{{ room }}</a></li>
 			{% endfor %}
 			
 		</ul>

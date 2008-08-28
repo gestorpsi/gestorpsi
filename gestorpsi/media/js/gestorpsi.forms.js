@@ -37,6 +37,9 @@ $(document).ready(function(){
                $('#msg_area').removeClass('error');
                $('#msg_area').addClass('alert');
                $('#msg_area').text('Register saved successful!');
+               // increment padding-top for blue save box
+               $('#sidebar').css('padding-top','234px');
+               
                
           
            },
@@ -47,21 +50,54 @@ $(document).ready(function(){
                $('#msg_area').removeClass('alert');
                $('#msg_area').addClass('error');
                $('#msg_area').text('Error saving register!');
+               $('#sidebar').css('padding-top','234px');
           }
      }; 
      
      
      /**
-     * save sidebar floating
+     * sidebar. floating box
      */
         
 
-        menuYloc = parseInt($(name).css("top").substring(0,$(name).css("top").indexOf("px")))  
-        $(window).scroll(function () {   
-                var offset = menuYloc+$(document).scrollTop()+"px";  
-                $(name).animate({top:offset},{duration:500,queue:false});  
-        });
+     menuYloc = parseInt($(name).css("top").substring(0,$(name).css("top").indexOf("px")))  
+     $(window).scroll(function () {   
+             var offset = menuYloc+$(document).scrollTop()+"px";  
+             $(name).animate({top:offset},{duration:300,queue:false});  
+     });
 
+     /**
+      * scroll to top
+      */
+     
+     $('#sidebar input.save_button, table.newtab tr td a').click(function() {
+          $.scrollTo( $('body'),  {top:'1px', left:'1px'}, 50);
+	  
+     });
+     
+     /**
+     *
+     * Message Area (#msg_area)
+     *
+     * hide msg area when cancel button is clicked
+     * 
+     */
+     
+     $('#sidebar input#cancel_button').click(function() {
+          $('#msg_area').removeClass();
+          $('#msg_area').hide();
+          $('div#sub_menu ul li a').removeClass('active');
+	  $('div#sub_menu ul li a:first').addClass('active');
+	  $('div#list.fast_menu_content').show();
+     });
+     
+     /**
+      * hide list when item is clicked
+      */
+     
+     $('table.newtab tr td a').click(function() {
+          $('div#list.fast_menu_content').hide('slow');
+     });
      
      /**
       * 

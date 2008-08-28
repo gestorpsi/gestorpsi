@@ -1,3 +1,6 @@
+var name = "#sidebar"; 
+var menuYloc = null;
+
 $(document).ready(function(){
 
      var form_options = { 
@@ -46,6 +49,19 @@ $(document).ready(function(){
                $('#msg_area').text('Error saving register!');
           }
      }; 
+     
+     
+     /**
+     * save sidebar floating
+     */
+        
+
+        menuYloc = parseInt($(name).css("top").substring(0,$(name).css("top").indexOf("px")))  
+        $(window).scroll(function () {   
+                var offset = menuYloc+$(document).scrollTop()+"px";  
+                $(name).animate({top:offset},{duration:500,queue:false});  
+        });
+
      
      /**
       * 
@@ -120,25 +136,6 @@ $(document).ready(function(){
      });
 		   
 		   
-     /**
-      * 
-      * file upload box
-      * 
-      * _description:
-      * make upload box moveable, as a 'draggable' box.
-      * 
-      */
-     
-     $('#photo_form_upload_dragplace').Draggable(
-     {
-          zIndex:    20,
-          ghosting:false,
-          opacity: 0.7,
-          handle:    '#photo_form_upload'
-     }
-     );
-
-
      /**
       * 
       * gender are choiced by icons ..

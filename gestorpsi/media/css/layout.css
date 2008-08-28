@@ -170,15 +170,8 @@ width: 139px;
 	border: none;
 }
 #sub_menu ul.opened_tabs {
-	
-	/*para alinhar relativo a direita*/
 	float: right;
 	margin-right: 50px;
-	
-	/*para alinhar relativo a esquerda
-	top: 15px;
-	left: 200px;*/
-	
 }
 
 #sub_menu ul.opened_tabs li .active {
@@ -394,6 +387,7 @@ a.prase_edit {
 #main_area .clear, #main_area .newline {
 	clear: left;
 }
+
 #main_area input[type=text], textarea {
 	font-size: 16px;
 	padding: 5px;
@@ -406,15 +400,17 @@ a.prase_edit {
 	background: #fff6d5;
 }
 .btn {
-padding: 5px 20px;
-margin-top: 22px;
+    padding: 5px 20px;
+    margin-top: 22px;
 }
 .btn2 {
-padding: 5px 20px;
-margin-top: 5px;
-margin-left: 15px;
+    padding: 5px 20px;
+    margin-top: 5px;
+    margin-left: 15px;
 }
+
 .giant {width: 670px;}
+
 .big {
 	width: 344px;
 }
@@ -462,15 +458,25 @@ select:focus {
 }
 textarea {
 }
+
 #sidebar {
-	margin-left: 753px;
+	position:absolute;  
+	top:0px;  
+	left:50%;
+	margin-left:120px;  
+	width: 240px;
+	padding-top: 165px;
 }
+
+
 #sidebar .bg_blue {
 	background: #005A7D;
 	border: 1px solid black;
 	color: #FFFFFF;
-	padding: 5px;
+	padding: 10px;
+	
 }
+
 #sidebar .bg_blue p {
 	color: #FFFFFF;
 }
@@ -522,6 +528,11 @@ textarea {
 #sidebar li #admit {
 	background: url(../img/ico_reg.png) no-repeat 0 3px;
 }
+
+#sidebar input.save_button {
+	width: 76px;
+}
+
 .float_menu {
 	padding: 5px;
 	border: 1px solid #999999;
@@ -535,6 +546,7 @@ textarea {
 	list-style: none;
 	line-height: 25px;
 }
+
 #form_options {
 	top: 20px;
 	left: -5px;
@@ -577,7 +589,7 @@ hr {
 .overflow table td {
 	padding: 5px;
 }
-/* Zebra nas linhas*/
+
 .zebra_0{background: #F2F2F2;}
 .zebra_1{background: #F9F9F9;}
 

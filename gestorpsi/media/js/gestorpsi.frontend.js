@@ -10,12 +10,21 @@ $(document).ready(function(){
                 $(this).hide();
         });
         
+
+
+        
+        
+        /**
+         * msg_area get global events
+         */
+        
         $('#msg_area').ajaxError(function(event, request, settings, thrownError){
                 // show success alert
                $(this).show();
                $(this).removeClass('alert');
                $(this).addClass('error');
-               $('#msg_area').html('<b>Error on Ajax request</b><br /><b>url called:</b> '+settings.url+"<br /><b>reason:</b> unknown");
+               $('#msg_area').html('<b>Error on Ajax request</b><br /><b>url called:</b> '+settings.url+"<br /><b>reason:</b> unknown<br>Submit a <a target=\"#blank\" href=\"http://suporte.gestorpsi.com.br\">suport request</a>");
+               $('#core').html('');
         });
           
         /**

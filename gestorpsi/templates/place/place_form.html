@@ -107,16 +107,8 @@
 <div id="sidebar">
 	<div class="bg_blue">
 		<input type="hidden" name="place" value="{{ object.id }}" />
-		<input name="save" type="submit" value="{% trans 'Save' %}" />
-		<input name="save" type="button" value="{% trans 'Cancel' %}" />
-		
-		<div id="msg_info">
-		{% trans "Delete Object" %}?
-			<p>{% trans 'Last revision by' %} Adminstrador {% trans 'in' %} 17 de 
-			Novembro, 2007 &agrave;s 17:36 h</p>
-
-		</div>
-		</div>
+		{% include "tags/save.html" %}
+	</div>
 		<div id="place_actions" {% if not object.id %}style="display:none"{% endif %}>	
 		<h3>{% trans 'Object Actions' %}</h3>
 		<ul>

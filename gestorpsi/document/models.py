@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
+
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from gestorpsi.address.models import State
 from django.contrib import admin
-import audittrail
+from gestorpsi.util import audittrail
 
 class Issuer(models.Model):
     description = models.CharField(max_length=30)

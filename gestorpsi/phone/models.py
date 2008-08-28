@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
+
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib import admin
-import audittrail
+from gestorpsi.util import audittrail
 
 class PhoneType(models.Model):
     """

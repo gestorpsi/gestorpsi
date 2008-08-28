@@ -5,7 +5,7 @@ from django.forms import ModelForm
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib import admin
-import audittrail
+from gestorpsi.util import audittrail
 
 class Country(models.Model):
     name = models.CharField(max_length=50)

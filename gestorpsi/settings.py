@@ -81,7 +81,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
-    #'gestorpsi.showqueries.ShowQueries',
+    'gestorpsi.showqueries.ShowQueries',
 )
 
 ROOT_URLCONF = 'gestorpsi.urls'
@@ -101,6 +101,7 @@ INSTALLED_APPS = (
     #'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
+    'gestorpsi.util',
     'gestorpsi.sponsor',
     'gestorpsi.organization',
     'gestorpsi.careprofessional',

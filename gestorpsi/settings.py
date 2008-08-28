@@ -81,7 +81,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
-    'gestorpsi.showqueries.ShowQueries',
+    'gestorpsi.util.showqueries.ShowQueries',
 )
 
 ROOT_URLCONF = 'gestorpsi.urls'

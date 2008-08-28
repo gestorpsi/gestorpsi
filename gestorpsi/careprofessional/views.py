@@ -2,13 +2,13 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from gestorpsi.person.models import Person
 from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, Profession, Agreement, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
-from gestorpsi.person.views import personSave
 from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.address.models import Country, City, State, Address, AddressType
 from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetwork
 from gestorpsi.document.models import Document, TypeDocument, Issuer
 from gestorpsi.place.models import Place
 from gestorpsi.organization.models import Organization
+from gestorpsi.person.views import person_save
 
 PROFESSIONAL_AREAS = (
     ('psycho','Psychologist','CRP'),
@@ -34,19 +34,18 @@ def form(request, object_id=0):
     phones = []
     addresses = []
     workplaces = Place.objects.all()  # aqui ta pegando todos os places, e eh preciso filtrar apenas para a organizacao que ta sendo usada. Mas nao consegui fazer isso =) ** ja inclui os imports de place e organization
-    
+    emails    = []
+    sites     = []
+    instantMessengers = []
+
     try:
         object = get_object_or_404(CareProfessional, pk=object_id)
-        
-         # person have phones
         phones= object.person.phones.all()
-        
-        # person have addresses
         addresses= object.person.address.all()
-        
-        # person have documents
         documents = object.person.document.all()                       
-                
+        emails    = object.person.emails.all()
+        sites     = object.person.sites.all()
+        instantMessengers = object.person.instantMessengers.all()
     except:
         object = CareProfessional() 
     
@@ -55,6 +54,12 @@ def form(request, object_id=0):
                                
                                 {
                                     'object': object,
+                                    'emails': emails,
+                                    'websites': sites,
+                                    'ims': instantMessengers,
+                                    'addresses': addresses,
+                                    'phones': phones,
+                                    'documents': documents,
                                     'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
                                     #'identification_form': identification_form,
                                     'licenceBoardTypes': LicenceBoard.objects.all(),
@@ -76,7 +81,7 @@ def careProfessionalFill(request, object):
     """
     
     person = Person()
-    object.person = personSave(request, person)   
+    object.person = person_save(request, person)   
     
     """
     #InstitutionType
@@ -186,7 +191,3 @@ def careProfessionalFill(request, object):
     """
         
     return object
-
-
-
-

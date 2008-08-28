@@ -6,7 +6,7 @@ from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.address.models import Country, City, State, Address, AddressType
 from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetwork
 from gestorpsi.document.models import Document, TypeDocument, Issuer
-from gestorpsi.person.views import personSave
+from gestorpsi.person.views import person_save
 
 # list all active clients
 def index(request):
@@ -42,7 +42,7 @@ def save(request, object_id=0):
         object = Client()
         person = Person()
 
-    object.person = personSave(request, person)
+    object.person = person_save(request, person)
     object.save()
 
     return HttpResponse(object.id)

@@ -10,6 +10,7 @@ $(document).ready(function(){
                $('#form_client').attr('action','client/' + response + '/save/');
                $('#form_employee').attr('action','employee/' + response + '/save/');
                $('#form_place').attr('action','place/' + response + '/save/');
+               $('#form_service').attr('action','service/' + response + '/save/');
               
                // open new tab
                $('#sub_menu ul li a').removeClass('active'); // unselect other tabs
@@ -147,6 +148,31 @@ $(document).ready(function(){
 
           }
 	});
+    
+
+    /**
+     * 
+     * service post form
+     * 
+     * _description:
+     * validate and post places form.
+     * 
+     */    
+    
+     $('#form_service').validate({event:"submit",
+       rules: {
+            service_name: {
+                    required: true
+            }
+       },
+       messages: {
+            service_name: 'This field is required'
+       },
+       submitHandler: function(form) {
+            $(form).ajaxSubmit(form_options);
+
+       }
+     });
     
     
     /**

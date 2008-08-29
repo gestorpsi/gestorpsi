@@ -38,7 +38,7 @@
 	<fieldset id="fieldset_service_details">
 		<legend>{% trans "Service Details" %}</legend>
 			<label>{% trans "Service Description" %}<br />
-				<textarea name="service_description" class="extrabig"></textarea>				
+				<textarea name="service_description" class="extrabig">{{ object.description }}</textarea>				
 			</label>
 			</label>
 				<label>{% trans "Keywords" %}<br />
@@ -136,7 +136,6 @@
 		<h3>{% trans 'Object Actions' %}</h3>
 		<ul>
 			<li id="add_room" class="add_to_form"><a class="notajax" href="#top">{% trans "Add room in this place" %}</a></li>
-			{# <li><a class="notajax" onclick="$('#place_form').hide(); $('.form_room_box').hide(); $('#fieldset_room_identification, #room_').show();" id="add_room">{% trans "Add Room" %}</a></li> #}
 		</ul>
 		
 		<!--

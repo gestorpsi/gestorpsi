@@ -1,0 +1,164 @@
+{% load i18n %}
+{% include "core/ajax_page.html" %}
+
+{% if object.id %}
+	<div class="edit_form">
+	<h2 id="title_clients">{{ object.label }}</h2>
+	<p class="description"><br />	
+{% else %}
+	<h2 id="title_clients">{% trans "Adding New Service" %}</h2>
+	<p class="description">{% trans "Inform the service details then click on Save button" %}</p>
+{% endif %}
+
+
+</p>
+
+<form action="/service/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_service">	
+<div id="main_area">
+
+	<a href="" id="help">&nbsp;</a>
+
+<div id="place_form">
+
+	<!--
+	Service Identification 
+	-->
+	
+	<fieldset id="fieldset_service_identification">
+		<legend>{% trans "Service Identification" %}</legend>
+			<label>{% trans "Service Name" %}<br />
+			<input type="text" name="service_name" class="extrabig tabtitle" value="{{ object.name }}" id="id_name" />
+			</label>
+	</fieldset>
+
+	<!--
+	Service Details 
+	-->
+	
+	<fieldset id="fieldset_service_details">
+		<legend>{% trans "Service Details" %}</legend>
+			<label>{% trans "Service Description" %}<br />
+				<textarea name="service_description" class="extrabig"></textarea>				
+			</label>
+			</label>
+				<label>{% trans "Keywords" %}<br />
+				<input type="text" name="service_keywords" class="extrabig tabtitle" value="{{ object.keywords }}" id="id_keywords" />
+			</label>
+			<label class="service_research_project">{% trans "Research Project" %}<br />
+				<span>
+				<select name="service_research_project" class="extrabig">
+					<option value=""></option>
+					{% for l in ResearchProjects %}
+					<option value="{{ l.id }}">{{ l }}</option>
+					{% endfor %}
+				</select>
+				</span>
+			</label>
+	</fieldset>
+	
+	<!--
+	Services Agreements
+	-->
+	
+	<fieldset id="fieldset_service_agreement">
+		<legend>{% trans "Service Agreements" %}</legend>
+			<label class="service_agreement">{% trans "Agreements" %}<br />
+			<span>
+			<select name="service_agreement" class="extrabig">
+				<option value=""></option>
+				{% for l in Agreements %}
+				<option value="{{ l.id }}">{{ l }}</option>
+				{% endfor %}
+			</select>
+			</span>
+			</label>
+	
+		<span id="service_agreement_more"></span>
+	</fieldset>
+
+	
+	<!--
+	Services Responsibles
+	-->
+	
+	<fieldset id="fieldset_professional_agreement">
+		<legend>{% trans "Service Responsibles" %}</legend>
+			<label class="professional_agreement">{% trans "Professional" %}<br />
+			<span>
+			<select name="service_responsibles" class="extrabig">
+				<option value=""></option>
+				{% for l in CareProfessionals %}
+				<option value="{{ l.id }}">{{ l }}</option>
+				{% endfor %}
+			</select>
+			</span>
+			</label>
+	
+		<span id="professional_agreement_more"></span>
+	</fieldset>	
+	
+	<!--
+	Service must to have a status
+	-->
+	
+	<fieldset id="fieldset_service_active">
+		<legend>{% trans "Service Status" %}</legend>
+			<label>
+			<input type="checkbox" name="service_active" id="id_active" {% if object.active %} checked{% endif %} /><label>{% trans "Active?" %}
+			</label>
+	</fieldset>
+
+</div>
+	
+	<!--<fieldset id="fieldset_room_identification" style="display:none">-->
+	<!--<legend>{% trans "Room Details" %}</legend>-->
+	<!---->
+	<!--	{% if not rooms %}-->
+	<!--		{% include "tags/room.html" %}-->
+	<!--	{% else %}-->
+	<!--	{% for room in rooms %}-->
+	<!--		{% include "tags/room.html" %}-->
+	<!--	{% endfor %}-->
+	<!--	{% endif %}-->
+	<!---->
+	<!--	<div id="room_more"></div>-->
+	<!---->
+	<!--</fieldset>-->
+<br />	
+</div>
+
+<div id="sidebar">
+	<div class="bg_blue">
+		<input type="hidden" name="place" value="{{ object.id }}" />
+		{% include "tags/save.html" %}
+	</div>
+		<div id="place_actions" {% if not object.id %}style="display:none"{% endif %}>	
+		<h3>{% trans 'Object Actions' %}</h3>
+		<ul>
+			<li id="add_room" class="add_to_form"><a class="notajax" href="#top">{% trans "Add room in this place" %}</a></li>
+			{# <li><a class="notajax" onclick="$('#place_form').hide(); $('.form_room_box').hide(); $('#fieldset_room_identification, #room_').show();" id="add_room">{% trans "Add Room" %}</a></li> #}
+		</ul>
+		
+		
+		<div id="div_list_rooms" style="display:{% if not rooms %}none{% endif %}">
+		<h3>{% trans 'Rooms from this place' %}</h3>
+		<ul>
+			<li class="li_rooms" style="display:none">&nbsp;</li>
+			{% for room in rooms %}
+			<li class="li_rooms" id="li_room_{{ room.id }}"><a class="notajax" display="{{ room.id }}" href="#top">{{ room }}</a></li>
+			{% endfor %}
+			
+		</ul>
+		</div>
+		
+		
+	</div>
+</div>
+
+</form>
+
+{% if object.id %}
+</div> <!-- edit_form -->
+{% endif %}
+
+

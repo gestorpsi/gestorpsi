@@ -2,6 +2,7 @@ from django.db import models
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import CareProfessional
 from django.forms import ModelForm
+from django.contrib import admin
 
 class ServiceType(models.Model):
     """
@@ -61,7 +62,9 @@ class AgreementType(models.Model):
     @version: 1.0
     """
     description= models.CharField( max_length= 80 )
-
+    def __unicode__(self):
+        return u'%s' % self.description
+    
 class Agreement(models.Model):
     """
     Instances of this class are used to represent agreements.
@@ -71,6 +74,8 @@ class Agreement(models.Model):
     name= models.CharField( max_length= 45 )
     description= models.CharField( max_length= 80 )
     agreement_type= models.ForeignKey( AgreementType )
+    def __unicode__(self):
+        return u'%s' % self.name
 
 class ResearchProject(models.Model):
     """
@@ -80,6 +85,8 @@ class ResearchProject(models.Model):
     """
     name= models.CharField( max_length= 45 )
     description= models.CharField( max_length= 80 )
+    def __unicode__(self):
+        return u'%s' % self.name
 
 class Service(models.Model):
     """
@@ -94,17 +101,22 @@ class Service(models.Model):
     research_project= models.ForeignKey( ResearchProject )    
     organization = models.ForeignKey(Organization, null=True)
     active= models.BooleanField(default=True)
-        
-    research_project= models.ForeignKey( ResearchProject )
     organization= models.ForeignKey(Organization, null=True)
     responsibles= models.ManyToManyField( CareProfessional )
         
     def __unicode__(self):
-        return "Service name: %s, description: %s" % (self.name, self.description)
+        return u"%s" % (self.name)
 
 class ServiceForm(ModelForm):
     class Meta:
         model= Service
+
+admin.site.register(Service)
+admin.site.register(ResearchProject)
+admin.site.register(Agreement)
+admin.site.register(AgreementType)
+
+
 
 """
 

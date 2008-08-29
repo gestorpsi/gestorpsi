@@ -11,8 +11,7 @@ def index(request):
     @param request: this is a request sent by the browser.
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
     """
-    list_of_services= Service.objects.all()
-    return render_to_response( "service/service_index.html", locals() )
+    return render_to_response( "service/service_index.html", { 'object':Service.objects.all(), 'Agreements': Agreement.objects.all(), 'ResearchProjects': ResearchProject.objects.all(), 'CareProfessionals': CareProfessional.objects.all() })
 
 def form(request, object_id=0):
     """
@@ -28,7 +27,7 @@ def form(request, object_id=0):
     except (Http404, ObjectDoesNotExist):
         object= Service()
     service_form= ServiceForm( instance= object )
-    return render_to_response('service/service_html.html', {'object': object, 'service_form': service_form } )
+    return render_to_response('service/service_form.html', {'object': object, 'service_form': service_form } )
 
 def save_agreements( list_of_agreements, object ):
     """

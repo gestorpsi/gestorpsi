@@ -70,8 +70,8 @@
 			<label class="professional_agreement">{% trans "Agreements" %}<br />
 			<span>
 			<select name="professional_agreement" class="extrabig">
-				<option value="">--------------------------------------------------------------------</option>
-				{% for l in AgreementTypes %}
+				<option value=""></option>
+				{% for l in Agreements %}
 				<option value="{{ l.id }}">{{ l }}</option>
 				{% endfor %}
 			</select>
@@ -87,7 +87,7 @@
 			<label class="professional_workplace">{% trans "Workplaces" %}<br />
 			<span>
 			<select name="professional_workplace" class="extrabig">
-				<option value="">--------------------------------------------------------------------</option>
+				<option value=""></option>
 				{% for l in WorkPlacesTypes %}
 				<option value="{{ l.id }}">{{ l }}</option>
 				{% endfor %}

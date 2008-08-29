@@ -507,11 +507,13 @@ $(document).ready(function(){
      
       /** 
       * 
-      * Care Professional Agreements
+      * Multilpe Agreements
       * 
       * _description:
       * 
       * append agreement select
+      *
+      * **it can be much better with one single solution
       * 
       */
      
@@ -554,6 +556,24 @@ $(document).ready(function(){
      }
      
      reloadProfessionalWorkPlace();
+     
+     
+          
+     function reloadServiceAgreement() {
+          $('#fieldset_service_agreement select:last').change(function() {
+               total = $('#fieldset_service_agreement select').length;
+              if($('#fieldset_service_agreement select:last').val()) { // add only if last is not null
+                    $("#service_agreement_more").before('<label class="professional_agreement">'+$('#fieldset_service_agreement label span:first').html()+'<a class="remove_from_form destroy_parent_label inline"><span>Delete</span></a></label>');
+                    reloadServiceAgreement();
+                    reloadDestroyLabel();
+                    
+               }
+          });
+     }
+     
+     reloadServiceAgreement();
+     
+   
      
      
 });

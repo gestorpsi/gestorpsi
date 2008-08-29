@@ -32,7 +32,7 @@
 			<label>{% trans "Place Type" %}<br />
 			<select name="place_type">
 				{% for pt in PlaceTypes %}
-				<option value="{{ pt.id }}">{{ pt }}</option>
+				<option value="{{ pt.id }}"{% ifequal object.place_type.id pt.id %} selected{% endifequal %}>{{ pt }}</option>
 				{% endfor %}
 			</select>
 				

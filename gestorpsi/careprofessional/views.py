@@ -23,7 +23,7 @@ def index(request):
                                     'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
                                     #'identification_form': identification_form,
                                     'licenceBoardTypes': LicenceBoard.objects.all(),
-                                    'AgreementTypes': Agreement.objects.all(),
+                                    'Agreements': Agreement.objects.all(),
                                     'WorkPlacesTypes': workplaces,
                                     'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(),
                                                                                

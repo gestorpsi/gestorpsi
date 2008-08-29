@@ -1,15 +1,15 @@
 {% load i18n %}
 
 {% if not object %}
-        <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/place/add/">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
+        <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/service/add/">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
 {% else %}
 
 <div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
 Esta caixa é mostrada quando há mensagens
 </div>
 
-<h2 id="title_contacts">{% trans "All Places" %}</h2>
-<p class="description">{% trans "Displaying" %} <a href="/place/">{{ object|length }} {% trans "place(s)" %}</a>.</p>
+<h2 id="title_contacts">{% trans "All Services" %}</h2>
+<p class="description">{% trans "Displaying" %} <a href="/service">{{ object|length }} {% trans "service(s)" %}</a>.</p>
 
 
 <div id="main_area" class="contact">
@@ -20,14 +20,16 @@ Esta caixa é mostrada quando há mensagens
         <tr>
 
                 <!--<td><a href="">{{ l.name }}</a></td>-->
-                <td><a href="/place/{{ o.id }}" title="{{ o }}">{{ o }}</a></td>
+                <td><a href="/service/{{ o.id }}" title="{{ o }}">{{ o }}</a><br />
+			{{ o.description }}
+		</td>
                 <!--
                 <strong>[</strong><small><a href="">Delete</a></small><strong>]</strong> <br>
                 <td>(11) 2301 0751</td>
                 -->
                 <td>
                
-                (11) 1234-1234
+                
                  
                 <br> 
                 <a href="mailto:{{l.email }}">{{l.email }}</a></td>

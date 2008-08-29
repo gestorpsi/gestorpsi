@@ -463,8 +463,7 @@ textarea {
 #sidebar {
 	position:absolute;  
 	top:0px;  
-	left:50%;
-	margin-left:120px;  
+	margin-left:750px;  
 	width: 240px;
 	padding-top: 165px;
 }

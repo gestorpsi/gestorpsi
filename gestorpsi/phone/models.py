@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib import admin
 from gestorpsi.util import audittrail
+from gestorpsi.util.uuid_field import UuidField
+from gestorpsi.util import CryptographicUtils as cryptoUtils
 
 class PhoneType(models.Model):
     """
@@ -28,16 +29,39 @@ class Phone(models.Model):
     @version: 1.0
     @see: PhoneType
     """
-    area = models.CharField('Area Code',max_length=2, core=True)
-    phoneNumber = models.CharField('Phone Number', max_length=8, core=True)
-    ext = models.CharField('Extension', max_length=4, blank=True)
+    id= UuidField( primary_key= True )
+    crypt_area = models.CharField('Area Code',max_length=16, core=True)
+    crypt_phoneNumber = models.CharField('Phone Number', max_length=32, core=True)
+    crypt_ext = models.CharField('Extension', max_length=16, blank=True)
     phoneType = models.ForeignKey(PhoneType)
     # Generic Relationship
     content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
+    object_id = models.CharField( max_length=256 )
     content_object = generic.GenericForeignKey()
     
     history = audittrail.AuditTrail()
+    
+    def _set_area(self, value):
+        self.crypt_area= cryptoUtils.encrypt_attrib( value )
+        
+    def _get_area(self):
+        return cryptoUtils.decrypt_attrib( self.crypt_area )
+    
+    def _set_phoneNumber(self, value):
+        self.crypt_phoneNumber= cryptoUtils.encrypt_attrib( value )
+        
+    def _get_phoneNumber(self):
+        return cryptoUtils.decrypt_attrib( self.crypt_phoneNumber )
+    
+    def _set_ext(self, value):
+        self.crypt_ext= cryptoUtils.encrypt_attrib( value )
+        
+    def _get_ext(self):
+        return cryptoUtils.decrypt_attrib( self.crypt_ext )
+    
+    area= property( _get_area, _set_area )
+    phoneNumber= property( _get_phoneNumber, _set_phoneNumber )
+    ext= property( _get_ext, _set_ext )
     
     def __cmp__(self, other):
         if (self.area == other.area) and \

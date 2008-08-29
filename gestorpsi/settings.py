@@ -101,6 +101,7 @@ INSTALLED_APPS = (
     #'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
+    'gestorpsi.authentication',
     'gestorpsi.util',
     'gestorpsi.sponsor',
     'gestorpsi.organization',

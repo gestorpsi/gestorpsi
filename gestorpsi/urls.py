@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import *
 from django.contrib import admin
+#from django.contrib.auth.views import login, logout
 
 admin.autodiscover()
 
@@ -8,12 +9,13 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Example:
     # (r'^gestor/', include('gestor.foo.urls')),
-
+    (r'^login/', include('gestorpsi.authentication.urls')),
+    
     # Uncomment this for admin:
     #(r'^demo/', include('django.contrib.admin.urls')),
     (r'^$', 'gestorpsi.frontend.views.index'),
     (r'^admin/(.*)', admin.site.root),
-    # OLD: (r'^admin/', include('django.contrib.admin.urls')),
+    # OLD: (r'^admin/', include('django.contrib.admin.urls')),    
     (r'^contact/', include('gestorpsi.contact.urls')),
     (r'^place/', include('gestorpsi.place.urls')),
     (r'^careprofessional/', include('gestorpsi.careprofessional.urls')),

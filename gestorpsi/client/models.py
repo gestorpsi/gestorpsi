@@ -1,5 +1,7 @@
 from django.db import models
 from gestorpsi.person.models import Person
+from gestorpsi.util.uuid_field import UuidField
+from gestorpsi.util import CryptographicUtils as cryptoUtils
 
 class PersonLink(models.Model):
     person = models.OneToOneField(Person)
@@ -10,15 +12,37 @@ class PersonLink(models.Model):
 
 CLIENT_STATUS = ( ('0','Inativo'),('1','Ativo'))
 class Client(models.Model):
+    id= UuidField( primary_key= True )
     person = models.OneToOneField(Person)
-    idRecord = models.CharField(max_length=10)
-    legacyRecord = models.CharField(max_length=10)
-    healthDocument = models.CharField(max_length=10)
+    crypt_idRecord = models.CharField(max_length=250)
+    crypt_legacyRecord = models.CharField(max_length=250)
+    crypt_healthDocument = models.CharField(max_length=250)
+
     indication = models.CharField(max_length=10)
     clientStatus = models.CharField(max_length=1, default = '1', choices=CLIENT_STATUS)
     personLink = models.ManyToManyField(PersonLink)
     
-    #active = models.BooleanField(default=True)
+    def _get_idRecord(self):
+        return cryptoUtils.decrypt_attrib( self.crypt_idRecord )
+    
+    def _set_idRecord(self, value):
+        self.crypt_idRecord= cryptoUtils.encrypt_attrib( value )
+    
+    def _get_legacyRecord(self):
+        return cryptoUtils.decrypt_attrib( self.crypt_legacyRecord )
+    
+    def _set_legacyRecord(self, value):
+        self.crypt_legacyRecord= cryptoUtils.encrypt_attrib( value )
+    
+    def _get_healthDocument(self):
+        return cryptoUtils.decrypt_attrib( self.crypt_healthDocument )
+    
+    def _set_healthDocument(self, value):
+        self.crypt_healthDocument= cryptoUtils.encrypt_attrib( value )
+    
+    idRecord= property( _get_idRecord, _set_idRecord )
+    legacyRecord= property( _get_legacyRecord, _set_legacyRecord )
+    healthDocument= property( _get_healthDocument, _set_healthDocument )
     
     def __unicode__(self):
         return u"%s" % self.person.name

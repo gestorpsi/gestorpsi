@@ -13,7 +13,7 @@ def index(request):
     return render_to_response('client/client_index.html', {'object': Client.objects.all().filter(clientStatus = '1'), 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), })
 
 # add or edit form
-def form(request, object_id=0):
+def form(request, object_id=""):
     phones    = []
     addresses = []
     documents = []
@@ -34,7 +34,8 @@ def form(request, object_id=0):
     return render_to_response('client/client_form.html', {'object': object, 'emails': emails, 'websites': sites, 'ims': instantMessengers, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), } )
 
 # Save or Update client object
-def save(request, object_id=0):    
+def save(request, object_id=""):
+
     try:
         object = get_object_or_404(Client, pk=object_id)
         person = object.person
@@ -48,7 +49,7 @@ def save(request, object_id=0):
     return HttpResponse(object.id)
 
 # delete (disable) a client
-def delete(request, object_id):
+def delete(request, object_id=""):
     client = get_object_or_404(Client, pk=object_id)
     client.clientStatus = '0'
     client.save()

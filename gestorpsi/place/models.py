@@ -46,7 +46,10 @@ class Place( models.Model ):
        Returns a representation of this place as an unicode C{string}.
        """
        return "%s" % self.label
-
+    
+    class Meta:
+        ordering = ['label']
+        
 class PlaceAdmin(admin.ModelAdmin):
     """
     I{This class was created only for testing purposes}

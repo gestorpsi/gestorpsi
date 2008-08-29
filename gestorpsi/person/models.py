@@ -7,6 +7,8 @@ from gestorpsi.document.models import Document
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.organization.models import Organization
 from django.contrib import admin
+from gestorpsi.util.uuid_field import UuidField
+from gestorpsi.util import CryptographicUtils as cryptoUtils
    
 Gender = ( ('0','No Information'),('1','Female'), ('2','Male'))    
 
@@ -22,30 +24,41 @@ admin.site.register(MaritalStatus, MaritalStatusAdmin)
 
 
 class Person(models.Model):
-    name = models.CharField('Name', max_length=60)
-    nickname = models.CharField('Nickname', max_length=20, null=True, blank=True)
+    id= UuidField( primary_key= True )
+    crypt_name = models.CharField('Name', max_length= 256 )
+    crypt_nickname = models.CharField('Nickname', max_length=250, null=True, blank=True)
+
     photo = models.CharField(max_length=100)
     birthDate = models.DateField('Birthdate', null=True)
     birthPlace = models.ForeignKey(City, null=True)
     gender = models.CharField(max_length=1, choices=Gender) 
-    maritalStatus = models.ForeignKey(MaritalStatus, null=True)   
-    # Reduntante pois ja temos birthPlace
-    # nationality = models.ForeignKey(Country)    
-    
+    maritalStatus = models.ForeignKey(MaritalStatus, null=True)
     phones = generic.GenericRelation(Phone, null=True)
     address = generic.GenericRelation(Address, null=True)
     document = generic.GenericRelation(Document, null=True)
     emails  = generic.GenericRelation(Email, null=True)
     sites = generic.GenericRelation(Site, null=True)
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True)
-    
+        
     organization = models.ForeignKey(Organization, null=True)
+    
+    def _get_name(self):
+        return cryptoUtils.decrypt_attrib( self.crypt_name )
+    
+    def _set_name(self, value):
+        self.crypt_name= cryptoUtils.encrypt_attrib( value )
+        
+    def _get_nickname(self):
+        return cryptoUtils.decrypt_attrib( self.crypt_nickname )
+    
+    def _set_nickname(self, value):
+        self.crypt_nickname= cryptoUtils.encrypt_attrib( value )
+    
+    name= property( _get_name, _set_name )
+    nickname= property( _get_nickname, _set_nickname )
     
     def __unicode__(self):
         return u"%s" % self.name
-    
-    class Meta:
-        ordering = ['name']
 
 class PersonAdmin(admin.ModelAdmin):
     pass

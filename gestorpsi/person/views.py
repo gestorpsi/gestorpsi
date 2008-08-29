@@ -6,14 +6,17 @@ from gestorpsi.internet.views import email_save, site_save, im_save
 
 def person_save(request, person):
     # CHECK IF HAS CHANGES BEFORE SAVE
-    person.name = request.POST['name']
+    person.name= request.POST['name']
     person.nickname = request.POST['nickname']
-
+    
+    
+    print "photo"
     if(request.POST['photo']):
         person.photo = request.POST['photo']
     else:
         person.photo = ''
 
+    print "birthdate"
     if(request.POST['birthDate']):
         person.birthDate = request.POST['birthDate']
     person.gender = request.POST['gender']

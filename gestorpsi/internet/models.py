@@ -88,16 +88,17 @@ class Site(models.Model):
         return self.site
 
 class IMNetwork(models.Model):
-    id= UuidField( primary_key= True )
-    crypt_description = models.CharField(max_length=56)
+    description = models.CharField(max_length=30)
+    #id= UuidField( primary_key= True )
+    #crypt_description = models.CharField(max_length=56)
     
-    def _set_description(self, value):
-        self.crypt_description= cryptoUtils.encrypt_attrib( value )
-        
-    def _get_description(self):
-        return cryptoUtils.decrypt_attrib( self.crypt_description )
-    
-    description= property( _get_description, _set_description )
+#    def _set_description(self, value):
+#        self.crypt_description= cryptoUtils.encrypt_attrib( value )
+#        
+#    def _get_description(self):
+#        return cryptoUtils.decrypt_attrib( self.crypt_description )
+#    
+#    description= property( _get_description, _set_description )
 
     def __unicode__(self):
         return self.description

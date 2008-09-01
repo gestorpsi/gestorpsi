@@ -10,16 +10,17 @@ from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import CryptographicUtils as cryptoUtils
 
 class Issuer(models.Model):
-    id= UuidField( primary_key= True )
-    crypt_description = models.CharField(max_length=96)
+    description = models.CharField(max_length=30)
+#    id= UuidField( primary_key= True )
+#    crypt_description = models.CharField(max_length=96)
     
-    def _set_description(self, value):
-        self.crypt_description= cryptoUtils.encrypt_attrib( value )
-        
-    def _get_description(self):
-        return cryptoUtils.decrypt_attrib( self.crypt_description )
-    
-    description= property( _get_description, _set_description )
+#    def _set_description(self, value):
+#        self.crypt_description= cryptoUtils.encrypt_attrib( value )
+#        
+#    def _get_description(self):
+#        return cryptoUtils.decrypt_attrib( self.crypt_description )
+#    
+#    description= property( _get_description, _set_description )
     
     def __unicode__(self):
         return u"%s" % self.description
@@ -30,16 +31,17 @@ class IssuerAdmin(admin.ModelAdmin):
 admin.site.register(Issuer, IssuerAdmin)
 
 class TypeDocument(models.Model):
-    crypt_description = models.CharField(max_length=96)
-    mask = models.CharField(max_length=30, blank=True)
-    
-    def _set_description(self, value):
-        self.crypt_description= cryptoUtils.encrypt_attrib( value )
-        
-    def _get_description(self):
-        return cryptoUtils.decrypt_attrib( self.crypt_description )
-    
-    description= property( _get_description, _set_description )
+    description = models.CharField(max_length=30)
+#    crypt_description = models.CharField(max_length=96)
+#    mask = models.CharField(max_length=30, blank=True)
+#    
+#    def _set_description(self, value):
+#        self.crypt_description= cryptoUtils.encrypt_attrib( value )
+#        
+#    def _get_description(self):
+#        return cryptoUtils.decrypt_attrib( self.crypt_description )
+#    
+#    description= property( _get_description, _set_description )
     
     def __unicode__(self):
         return u"%s" % self.description

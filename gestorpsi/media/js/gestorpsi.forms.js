@@ -1,7 +1,7 @@
 var name = "#sidebar"; 
 var menuYloc = null;
 
-$(document).ready(function(){
+$(document).unbind().ready(function(){
 
      var form_options = { 
           success: function(response) { 
@@ -531,75 +531,51 @@ $(document).ready(function(){
      
      reloadCountries(); // load countries select for the first tag address 
      
-      /** 
-      * 
-      * Multilpe Agreements
-      * 
-      * _description:
-      * 
-      * append agreement select
-      *
-      * **it can be much better with one single solution
-      * 
+
+
+     /**
+      * select itens from an available list options
+      * copy itens from an select multiple box to first prev sibling
       */
      
-     
-     
-     function reloadDestroyLabel() {
-          $('a.destroy_parent_label').unbind();
-          $('a.destroy_parent_label').click(function() {
-               $(this).parent('label:first').empty().fadeOut("slow");
+     function bind_select_itens_available() {
+          $('select.itens_available option').unbind().click(function() {
+               $(this).parent('select').prev().append('<option value="'+$(this).attr('value')+'">'+$(this).text()+'</option>');
+               $(this).remove();
+               bind_select_itens_selected();
           });
-     }
-     
-     
-     function reloadProfessionalAgreement() {
-          $('#fieldset_professional_agreement select:last').change(function() {
-               total = $('#fieldset_professional_agreement select').length;
-              if($('#fieldset_professional_agreement select:last').val()) { // add only if last is not null
-                    $("#professional_agreement_more").before('<label class="professional_agreement">'+$('#fieldset_professional_agreement label span:first').html()+'<a class="remove_from_form destroy_parent_label inline"><span>Delete</span></a></label>');
-                    reloadProfessionalAgreement();
-                    reloadDestroyLabel();
-                    
-               }
-          });
-     }
-     
-     reloadProfessionalAgreement();
-     
-     
-     
-     function reloadProfessionalWorkPlace() {
-          $('#fieldset_professional_workplace select:last').change(function() {
-               total = $('#fieldset_professional_workplace select').length;
-              if($('#fieldset_professional_workplace select:last').val()) { // add only if last is not null
-                    $("#professional_workplace_more").before('<label class="professional_workplace">'+$('#fieldset_professional_workplace label span:first').html()+'<a class="remove_from_form destroy_parent_label inline"><span>Delete</span></a></label>');
-                    reloadProfessionalWorkPlace();
-                    reloadDestroyLabel();
-                    
-               }
-          });
-     }
-     
-     reloadProfessionalWorkPlace();
-     
-     
           
-     function reloadServiceAgreement() {
-          $('#fieldset_service_agreement select:last').change(function() {
-               total = $('#fieldset_service_agreement select').length;
-              if($('#fieldset_service_agreement select:last').val()) { // add only if last is not null
-                    $("#service_agreement_more").before('<label class="professional_agreement">'+$('#fieldset_service_agreement label span:first').html()+'<a class="remove_from_form destroy_parent_label inline"><span>Delete</span></a></label>');
-                    reloadServiceAgreement();
-                    reloadDestroyLabel();
-                    
-               }
-          });
      }
      
-     reloadServiceAgreement();
+     function bind_select_itens_selected() {
+          $('select.itens_selected option').unbind().click(function() {
+               $(this).parent('select').next().append('<option value="'+$(this).attr('value')+'">'+$(this).text()+'</option>');
+               $(this).remove();
+               bind_select_itens_available();
+          });
+
+     }
      
-   
+     bind_select_itens_selected();
+     bind_select_itens_available();
+     
+     /*
+     var parentEls = $('select.itens_available option').parents('label');
+     */
+                          //
+                          //.map(function () { 
+                          //      return this.tagName; 
+                          //    })
+                          //.get().join(", ");
+     
+     //var parentEls = $('select.itens_available option').parent();                     
+                          
+    //$("#test").append("<strong>" + $(parentEls[0]).attr('id') + "</strong>");
+
+     
+
+     
+     
      
      
 });

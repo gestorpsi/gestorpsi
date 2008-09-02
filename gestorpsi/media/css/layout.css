@@ -453,6 +453,21 @@ select.medium {
 select.big, #send_file.big {
 	width: 353px;
 }
+
+select.multiple {
+	height: 80px;
+}
+
+select.multiple.small_fonts {
+font-size: 10px;
+}
+
+select.multiple.small {
+	height: 40px;
+	
+}
+
+
 select:focus {
 	background: #fff6d5;
 	border: 2px solid #2688ae;

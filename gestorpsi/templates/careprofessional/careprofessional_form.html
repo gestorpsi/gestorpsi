@@ -67,41 +67,39 @@
 
 	<fieldset id="fieldset_professional_agreement">
 		<legend>{% trans "Professional Agreements" %}</legend>
-			<label class="professional_agreement">{% trans "Agreements" %}<br />
+			<label>{% trans "Agreements" %}<br />
 			<span>
-			<select name="professional_agreement" class="extrabig">
-				<option value=""></option>
-				{% for l in Agreements %}
+			<select name="professional_agreement" multiple="multiple" class="select multiple extrabig">
+				{% for l in AgreementTypes %}
 				<option value="{{ l.id }}">{{ l }}</option>
 				{% endfor %}
 			</select>
 			</span>
 			</label>
-	
-		<span id="professional_agreement_more"></span>
 	</fieldset>
 
 
 	<fieldset id="fieldset_professional_workplace">
 		<legend>{% trans "Professional Workplaces" %}</legend>
-			<label class="professional_workplace">{% trans "Workplaces" %}<br />
+			<label>{% trans "Workplaces" %}<br />
 			<span>
-			<select name="professional_workplace" class="extrabig">
-				<option value=""></option>
+			<select name="professional_workplace" multiple="multiple" class="select multiple extrabig">
 				{% for l in WorkPlacesTypes %}
 				<option value="{{ l.id }}">{{ l }}</option>
 				{% endfor %}
 			</select>
 			</span>
 			</label>
-	
-		<span id="professional_workplace_more"></span>
 	</fieldset>
 
 	<fieldset id="fieldset_professional_status">
 		<legend>{% trans "Professional Status" %}</legend>
-			<label>
-			<input type="checkbox" name="professional_active" id="id_active" {% if object.active %} checked{% endif %} /><label>{% trans "Active?" %}
+			<label>{% trans "Active?" %}<br />
+			<select id="id_active" name="professional_active" class="small">
+				<option value="True" {% if object.active %} selected{% endif %}>{% trans "Yes" %}</option>
+				<option value="False" {% if not object.active %} selected{% endif %}>{% trans "No" %}</option>
+					
+			</select>
 			</label>
 	</fieldset>
 

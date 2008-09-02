@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).unbind().ready(function(){
 
 	/**
 	 * 
@@ -43,9 +43,18 @@ $(document).ready(function(){
 			$("#core").load(link.attr('href'));
 			$.ajax({
                                 complete: function(){
+					// if attribute exists, display div
                                         if(link.attr('display')) {
                                                 $('#'+link.attr('display')).show();
-                                        }   
+						
+						// if exists, change class in submenu to active
+						if(link.attr('sub_menu')) {
+							$('#sub_menu ul li a').removeClass('active');
+							// select option in submenu
+							$('div#sub_menu ul#'+link.attr('sub_menu')+' li a[display="'+link.attr('display')+'"]').addClass('active');
+						}
+						
+					}
                                 }
                                 });
 			return false;

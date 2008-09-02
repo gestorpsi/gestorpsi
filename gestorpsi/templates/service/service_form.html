@@ -29,21 +29,118 @@
 			<label>{% trans "Service Name" %}<br />
 			<input type="text" name="service_name" class="extrabig tabtitle" value="{{ object.name }}" id="id_name" />
 			</label>
-	</fieldset>
-
-	<!--
-	Service Details 
-	-->
-	
-	<fieldset id="fieldset_service_details">
-		<legend>{% trans "Service Details" %}</legend>
 			<label>{% trans "Service Description" %}<br />
 				<textarea name="service_description" class="extrabig">{{ object.description }}</textarea>				
 			</label>
+			<!--
 			</label>
 				<label>{% trans "Keywords" %}<br />
 				<input type="text" name="service_keywords" class="extrabig tabtitle" value="{{ object.keywords }}" id="id_keywords" />
 			</label>
+			-->
+	</fieldset>
+
+	<!--
+	Service Profile 
+	-->
+	
+	<fieldset id="fieldset_service_profile">
+		<legend>{% trans "Service Profile" %}</legend>
+	
+		<label>{% trans "Area" %}<br>
+		<select name="service_area" class="medium">
+			<option value="1">Clínica</option>
+			<option value="2" disabled>Escolar</option>
+			<option value="3" disabled>Esporte</option>
+			<option value="4" disabled>Jurídica</option>
+			<option value="5" disabled>Hospitalar</option>
+			<option value="6" disabled>Neuropsicologia</option>
+			<option value="7" disabled>Organizacional</option>
+			<option value="8" disabled>Psicopedagogia</option>
+			<option value="9" disabled>Psicologia Social</option>
+			<option value="10" disabled>Psicomotricidade</option>
+			<option value="11" disabled>Trânsito</option>
+		</select>
+		</label>
+		
+		
+		<label>{% trans "Service Type" %}<br />
+		<select name="service_type" class="medium">
+			<option value="1">Contínuo</option>
+			<option value="2">Não Contínuo</option>
+			<option value="3">Avaliação</option>
+			<option value="4">Triagem</option>
+			<option value="5">Supervisão e Interconsulta</option>
+			<option value="6">Serviços complementares</option>
+		</select>
+		</label>
+
+		<label>{% trans "Service Solicitation" %}<br />
+		<select name="service_type_solicitation" class="medium">
+			<option value="1">Individual</option>
+			<option value="2">Casal</option>
+			<option value="3">Familiar</option>
+			<option value="4">Grupo</option>
+		</select>
+		</label>
+
+		
+		<label>{% trans "Services Procedure" %}<br />
+		<select name="service_type_procedure" multiple="multiple" class="extramedium multiple itens_selected small_fonts">
+			
+		</select>
+		
+		<!--</label>-->
+		
+		<!--<label>{% trans "Services Procedures Availables" %}<br />-->
+		<select multiple="multiple" class="extramedium multiple itens_available small_fonts">
+			<option value="1">Abordagem Cognitivo - Comport. do Fumante p/ Atend/Paciente</option>
+			<option value="2">Acomp Crianças e Adolesc c Transt Mentais Semi-Int Máx 12</option>
+			<option value="3">Acomp Crianças e Adolesc c Transt Mentais Intens Máx 22</option>
+			<option value="4">Acomp Crianças e Adolesc c Transt Mentais Não -Int Máx 03</option>
+			<option value="5">Acomp Pac Dep Álcool/Drogas Dem Cuidados Intensivos Máx 22</option>
+			<option value="5">Acomp Pac Dep Álcool/Drogas Dem Cuidados Não Intens Máx 03</option>
+		</select>
+		</label>
+			<div id="test"></div>
+		
+		
+
+		
+		
+			
+	</fieldset>
+	
+
+	
+	<!--
+	Services Relations
+	-->
+	
+	<fieldset>
+		<legend>{% trans "Service Relations" %}</legend>
+	
+			<label>{% trans "Agreements" %}<br />
+			<span>
+			<select multiple="multiple" name="service_agreement" class="select multiple extrabig">
+				{% for l in Agreements %}
+				<option value="{{ l.id }}">{{ l }}</option>
+				{% endfor %}
+			</select>
+			</span>
+			</label>
+	
+			<label>{% trans "Professional" %}<br />
+			<span>
+			<select multiple="multiple" name="service_responsibles" class="select multiple extrabig">
+				<option value=""></option>
+				{% for l in CareProfessionals %}
+				<option value="{{ l.id }}">{{ l }}</option>
+				{% endfor %}
+			</select>
+			</span>
+			</label>
+	
 			<label class="service_research_project">{% trans "Research Project" %}<br />
 				<span>
 				<select name="service_research_project" class="extrabig">
@@ -54,47 +151,7 @@
 				</select>
 				</span>
 			</label>
-	</fieldset>
 	
-	<!--
-	Services Agreements
-	-->
-	
-	<fieldset id="fieldset_service_agreement">
-		<legend>{% trans "Service Agreements" %}</legend>
-			<label class="service_agreement">{% trans "Agreements" %}<br />
-			<span>
-			<select name="service_agreement" class="extrabig">
-				<option value=""></option>
-				{% for l in Agreements %}
-				<option value="{{ l.id }}">{{ l }}</option>
-				{% endfor %}
-			</select>
-			</span>
-			</label>
-	
-		<span id="service_agreement_more"></span>
-	</fieldset>
-
-	
-	<!--
-	Services Responsibles
-	-->
-	
-	<fieldset id="fieldset_professional_agreement">
-		<legend>{% trans "Service Responsibles" %}</legend>
-			<label class="professional_agreement">{% trans "Professional" %}<br />
-			<span>
-			<select name="service_responsibles" class="extrabig">
-				<option value=""></option>
-				{% for l in CareProfessionals %}
-				<option value="{{ l.id }}">{{ l }}</option>
-				{% endfor %}
-			</select>
-			</span>
-			</label>
-	
-		<span id="professional_agreement_more"></span>
 	</fieldset>	
 	
 	<!--
@@ -103,8 +160,11 @@
 	
 	<fieldset id="fieldset_service_active">
 		<legend>{% trans "Service Status" %}</legend>
-			<label>
-			<input type="checkbox" name="service_active" id="id_active" {% if object.active %} checked{% endif %} /><label>{% trans "Active?" %}
+			<label>{% trans "Active?" %}<br />
+			<select id="id_active" name="service_active" class="small">
+			<option value="True" {% if object.active %} selected{% endif %}>{% trans "Yes" %}</option>
+			<option value="False" {% if not object.active %} selected{% endif %}>{% trans "No" %}</option>
+			</select>
 			</label>
 	</fieldset>
 

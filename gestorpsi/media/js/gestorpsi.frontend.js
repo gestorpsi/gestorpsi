@@ -127,15 +127,13 @@ $(document).ready(function(){
 		
 	/** sub menu selection */
 	
-	$("#sub_menu ul li a:not(.close)").each(function(){
+	$("#sub_menu ul li a:not(.close)").click(function(){
 	       var link = $(this);
-	       link.click(function() {
-		       	// remove active classes from sub_menu itens 
-	       		$('#sub_menu ul li a').removeClass('active');
-	       		// make active on clicked menu item
-	       		link.addClass('active');
-			})
-		});	
+                // remove active classes from sub_menu itens 
+                $('#sub_menu ul li a').removeClass('active');
+                // make active on clicked menu item
+                link.addClass('active');
+	});	
 	
 	/**
          *

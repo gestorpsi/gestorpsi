@@ -538,18 +538,20 @@ $(document).unbind().ready(function(){
       * copy itens from an select multiple box to first prev sibling
       */
      
+     // available -> selected
      function bind_select_itens_available() {
           $('select.itens_available option').unbind().click(function() {
-               $(this).parent('select').prev().append('<option value="'+$(this).attr('value')+'">'+$(this).text()+'</option>');
-               $(this).remove();
+               $(this).parents('fieldset').children('label').children('select.itens_selected').append('<option value="'+$(this).attr('value')+'">'+$(this).text()+'</option>');
+               $(this).hide();
                bind_select_itens_selected();
           });
           
      }
      
+     // selected -> available
      function bind_select_itens_selected() {
           $('select.itens_selected option').unbind().click(function() {
-               $(this).parent('select').next().append('<option value="'+$(this).attr('value')+'">'+$(this).text()+'</option>');
+               $(this).parents('fieldset').children('label').children('select.itens_available').children('option[value='+$(this).attr('value')+']').show();
                $(this).remove();
                bind_select_itens_available();
           });
@@ -559,22 +561,20 @@ $(document).unbind().ready(function(){
      bind_select_itens_selected();
      bind_select_itens_available();
      
-     /*
-     var parentEls = $('select.itens_available option').parents('label');
-     */
-                          //
-                          //.map(function () { 
-                          //      return this.tagName; 
-                          //    })
-                          //.get().join(", ");
+     /**
+      * hide all itens available select boxes, and show only the first
+      */
      
-     //var parentEls = $('select.itens_available option').parent();                     
-                          
-    //$("#test").append("<strong>" + $(parentEls[0]).attr('id') + "</strong>");
-
+     $('fieldset select.multiple.itens_available:not(:first)').hide();
+     $('fieldset label a.select_multiple_menu:first').addClass('active');
      
-
-     
+     $('label a.select_multiple_menu').click(function() {
+          $(this).parents('fieldset').children('label').children('select.itens_available').hide();
+          $('#' + $(this).attr('display')).show();
+          $('fieldset label a.select_multiple_menu').removeClass('active');
+          $(this).addClass('active');
+                   
+     });
      
      
      

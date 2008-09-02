@@ -122,6 +122,14 @@ INSTALLED_APPS = (
     'gestorpsi.frontend', #load at last
 )
 
+AUTHENTICATION_BACKENDS = (
+    'gestorpsi.util.auth_backends.CustomUserModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    
+)
+
+CUSTOM_USER_MODEL = 'authentication.CustomUser'
+
 DEFAULT_EMAIL_MIMETYPE = 'html'
 
 # CACHE #

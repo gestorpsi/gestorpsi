@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -13,7 +14,9 @@ def user_authentication(request):
     if user is not None:
         if user.is_active:
             login(request, user)
-            return render_to_response('core/main.html', {'user': user })       
+            print user.organization
+            #return render_to_response('core/main.html', {'user': user })
+            return HttpResponseRedirect('/')       
     else:
             return render_to_response('registration/login.html', { 'message': "Invalid login" } )
  

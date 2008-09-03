@@ -4,6 +4,7 @@
 <title>GestorPsi</title>
 </head>
 <body>
+<h1>{{ message }}</h1>
  <form  method='POST' action="/login/authentication">
     <label for="username">User name:</label>
     <input type="text" name="username" value="" id="username">
@@ -11,6 +12,6 @@
     <input type="password" name="password" value="" id="password">
     <input type="submit" value="login" />
     <input type="hidden" name="next" value="{{ next|escape }}" />    
-  </form>
+  </form>  
   </body>
 </html>

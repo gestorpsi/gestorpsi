@@ -9,7 +9,7 @@ from gestorpsi.util import CryptographicUtils as cryptoUtils
 
 class CustomUser(User):
     organization = models.ManyToManyField(Organization, null=True)
-    try_login = models.IntegerField(null=True)
+    try_login = models.IntegerField(default = 0, null=True)
     crypt_temp = models.CharField(max_length=50, blank=True)
     
     # Use UserManager to get the create_user method, etc.

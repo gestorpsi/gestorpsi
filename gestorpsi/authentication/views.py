@@ -2,7 +2,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-
+from gestorpsi.authentication.models import CustomUser
 
 def login_page(request):
     return render_to_response('registration/login.html')
@@ -10,17 +10,53 @@ def login_page(request):
 def user_authentication(request):
     username = request.POST['username']
     password = request.POST['password']
-    user = authenticate(username=username, password=password)   
-    if user is not None:
-        if user.is_active:
-            login(request, user)
-            print user.organization
-            #return render_to_response('core/main.html', {'user': user })
-            return HttpResponseRedirect('/')       
+    if(unblocked_user(username)):
+        user = authenticate(username=username, password=password)   
+        #if user is not None:
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                clear_login(user)
+                print user , " - Organizacoes: " , user.organization
+                #return render_to_response('core/main.html', {'user': user })
+                return HttpResponseRedirect('/')       
+        else:
+                set_trylogin(username)
+                return render_to_response('registration/login.html', { 'message': "Invalid login" } )
     else:
-            return render_to_response('registration/login.html', { 'message': "Invalid login" } )
+        return render_to_response('registration/login.html', { 'message': "User Blocked" } )
  
 def logout_page(request):
     logout(request)
-    return HttpResponseRedirect('/login')
- 
+    return HttpResponseRedirect('/login') 
+
+def set_trylogin(user):     
+    filtered_user = CustomUser.objects.filter(username=user)
+    if(len(filtered_user)):        
+        found_user = filtered_user[0]    
+        old_number = found_user.try_login
+        old_number += 1
+        found_user.try_login = old_number        
+        found_user.save()
+        print found_user," - tentativas: ", found_user.try_login   
+       
+def clear_login(user):
+    user.try_login = 0
+    user.save()
+    print user," - tentativas: ", user.try_login
+    
+def change_password(user,new_password):
+    user.set_password(new_password)
+    user.save()
+    
+def unblocked_user(user):
+    filtered_user = CustomUser.objects.filter(username=user)
+    if(len(filtered_user)):
+        found_user = filtered_user[0]        
+        value = found_user.try_login
+        if (value > 3):            
+            return False
+        else:            
+            return True
+    else:
+        return True

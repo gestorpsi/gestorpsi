@@ -73,7 +73,8 @@ class Room( models.Model ):
    place= models.ForeignKey( Place )
    room_type= models.ForeignKey( RoomType, related_name= 'room_type' )
    furniture= models.TextField()
-
+   class Meta:
+       ordering = ['description']
    """
    Returns a representation of this room as an unicode C{string}.
    """

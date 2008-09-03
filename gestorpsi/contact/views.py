@@ -1,3 +1,4 @@
+"""
 from django.shortcuts import render_to_response, get_list_or_404, get_object_or_404
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.organization.models import Organization
@@ -142,3 +143,5 @@ def add_careProfessional(request, organization_id):
         careProfessional= CareProfessional( name= '', gender= '', organization= org )
         care_form= CareProfessionalForm( instance= careProfessional )
         return render_to_response( 'contact/add_careProfessional.html', {'care_form': care_form, 'message': message} )
+
+"""

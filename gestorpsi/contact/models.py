@@ -1,10 +1,12 @@
 from django.db import models
+
+"""
 from django.forms import ModelForm
 from django.contrib.contenttypes import generic
 from gestorpsi.organization.models import Organization
 from gestorpsi.phone.models import Phone
 from gestorpsi.address.models import Country, City, Address
-
+"""
 # Create your models here.
 #gender_list = (('M','Male'),('F','Female'))
 

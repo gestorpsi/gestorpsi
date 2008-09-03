@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from gestorpsi.phone.models import Phone, PhoneType
 
 # Check if phone fields are equals

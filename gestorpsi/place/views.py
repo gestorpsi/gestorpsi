@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.core.exceptions import ObjectDoesNotExist
@@ -44,7 +45,7 @@ def index(request):
     return render_to_response( "place/place_index.html", {'object': Place.objects.all(), 'PlaceTypes': PlaceType.objects.all(), 'countries': Country.objects.all(), 'RoomTypes': RoomType.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , } )
 
 #######################SHOULD BE TESTED (waiting feedback from cuzido)
-def form(request, object_id=0 ):
+def form(request, object_id=''):
     try:
         phones = []
         addresses = []
@@ -88,7 +89,7 @@ def add(request):
     return render_to_response( 'place/place_add.html', locals() )
 
 #######################SHOULD BE TESTED (waiting feedback from cuzido)
-def save(request, object_id= 0):
+def save(request, object_id=''):
     """
     This function view saves a place, its address, phones and rooms.
     @param request: this is a request sent by the browser.
@@ -153,7 +154,7 @@ def delete(request, place_id):
     @type place_id: an instance of the built-in class c{int}.
     """
     try:
-        place= Place.objects.get( pk= int(place_id) )
+        place= Place.objects.get( pk=place_id)
         place.delete()
         return render_to_response( 'place/place_msg.html', { 'msg': "It was successfully deleted" } )
     except Place.DoesNotExist:

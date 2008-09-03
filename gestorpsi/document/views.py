@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from gestorpsi.document.models import Document, TypeDocument, Issuer
 from gestorpsi.address.models import State
 

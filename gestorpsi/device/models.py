@@ -1,7 +1,7 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from gestorpsi.organization.models import Organization
 from django.forms import ModelForm
-from django.contrib import admin
 
 DURABILITY_TYPE= ( ('1','CONSUMABLE'), ('2', 'DURABLE') )
 """
@@ -30,16 +30,7 @@ class DeviceType(models.Model):
       Returns a representation of this device type as an unicode C{string}.
       """
       return "durability: %s, mobility: %s, restriction: %s" % (self.durability, self.mobility, self.restriction)
-    
-class DeviceTypeAdmin(admin.ModelAdmin):
-    pass
 
-admin.site.register(DeviceType, DeviceTypeAdmin)
-
-class DeviceTypeForm(ModelForm):
-      class Meta:
-          model= DeviceType
-    
 class Device(models.Model):
     """
     The class C{Device} is used to represent devices in the context of the GestorPsi project. Using this class,
@@ -57,16 +48,7 @@ class Device(models.Model):
        Returns a representation of this device as an unicode C{string}.
        """
        return "description: %s, number of devices: %s, number of available devices: %s" % (self.description, self.total_quantity, self.available_quantity)
-    
-class DeviceAdmin(admin.ModelAdmin):
-    pass
 
-admin.site.register(Device, DeviceAdmin)    
-
-class DeviceForm(ModelForm):
-      class Meta:
-          model= Device
-    
 class DeviceDetails(models.Model):
     """
     Instances of this class holds details about devices. For example, brand, comments, and so forth.
@@ -90,11 +72,14 @@ class DeviceDetails(models.Model):
       Returns a representation of the details related to a particular device as an unicode C{string}.
       """
       return "brand: %s, model: %s, comments: %s" % (self.brand, self.model, self.comments)
-    
-class DeviceDetailsAdmin(admin.ModelAdmin):
-    pass
 
-admin.site.register(DeviceDetails, DeviceDetailsAdmin)    
+class DeviceTypeForm(ModelForm):
+      class Meta:
+          model= DeviceType
+
+class DeviceForm(ModelForm):
+      class Meta:
+          model= Device
 
 class DeviceDetailsForm(ModelForm):
       class Meta:

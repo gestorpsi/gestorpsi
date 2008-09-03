@@ -3,7 +3,6 @@ from django.db import models
 from django.forms import ModelForm
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from django.contrib import admin
 from gestorpsi.util import audittrail
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import CryptographicUtils as cryptoUtils
@@ -38,11 +37,6 @@ class AddressType(models.Model):
     def __unicode__(self):
         return u"%s" % self.description
 
-class AddressTypeAdmin(admin.ModelAdmin):
-    pass
-
-admin.site.register(AddressType, AddressTypeAdmin)    
-
 class Address(models.Model):
     # Brazil Address
     id= UuidField( primary_key= True )
@@ -60,7 +54,7 @@ class Address(models.Model):
     foreignCity    = models.CharField(max_length=50, blank=True)
     # Generic Relationship
     content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
+    object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
     
     def _set_addressLine1(self, value):

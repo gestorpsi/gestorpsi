@@ -3,7 +3,6 @@ from django.db import models
 from django.forms import ModelForm
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from django.contrib import admin
 from gestorpsi.util import audittrail
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import CryptographicUtils as cryptoUtils
@@ -13,18 +12,13 @@ class EmailType(models.Model):
     def __unicode__(self):
         return self.description
 
-class EmailTypeAdmin(admin.ModelAdmin):
-    pass
-
-admin.site.register(EmailType, EmailTypeAdmin)
-
 class Email(models.Model):
     id= UuidField( primary_key= True )
     crypt_email = models.CharField( max_length= 232, blank=True)
     email_type = models.ForeignKey( EmailType )
     # Generic Relation
     content_type= models.ForeignKey(ContentType)
-    object_id= models.PositiveIntegerField()
+    object_id = models.CharField( max_length=36 )
     content_object= generic.GenericForeignKey()
     
     def _set_email(self, value):
@@ -57,7 +51,7 @@ class Site(models.Model):
     crypt_site = models.CharField(max_length=232, blank=True)
     # Generic Relation
     content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
+    object_id = models.CharField( max_length=36 )
     content_object = generic.GenericForeignKey()
     
     def _set_description(self, value):
@@ -89,24 +83,8 @@ class Site(models.Model):
 
 class IMNetwork(models.Model):
     description = models.CharField(max_length=30)
-    #id= UuidField( primary_key= True )
-    #crypt_description = models.CharField(max_length=56)
-    
-#    def _set_description(self, value):
-#        self.crypt_description= cryptoUtils.encrypt_attrib( value )
-#        
-#    def _get_description(self):
-#        return cryptoUtils.decrypt_attrib( self.crypt_description )
-#    
-#    description= property( _get_description, _set_description )
-
     def __unicode__(self):
         return self.description
-
-class IMNetworkAdmin(admin.ModelAdmin):
-    pass
-
-admin.site.register(IMNetwork, IMNetworkAdmin)
 
 class InstantMessenger(models.Model):
     id= UuidField( primary_key= True )
@@ -114,7 +92,7 @@ class InstantMessenger(models.Model):
     network = models.ForeignKey(IMNetwork, blank=True)
     # Generic Relation
     content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
+    object_id = models.CharField( max_length=36 )
     content_object = generic.GenericForeignKey()
     
     def _set_identity(self, value):

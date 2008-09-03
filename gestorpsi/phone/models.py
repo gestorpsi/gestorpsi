@@ -2,7 +2,6 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from django.contrib import admin
 from gestorpsi.util import audittrail
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import CryptographicUtils as cryptoUtils
@@ -11,6 +10,7 @@ class PhoneType(models.Model):
     """
     This class was created to represent phone types. Each phone type has
     a short description.
+    @author: Sergio Durand
     @version: 1.0
     @see: Phone
     """
@@ -18,25 +18,21 @@ class PhoneType(models.Model):
     def __unicode__(self):
         return self.description
 
-class PhoneTypeAdmin(admin.ModelAdmin):
-    pass
-
-admin.site.register(PhoneType, PhoneTypeAdmin)
-
 class Phone(models.Model):
     """
     This class holds information related to phone numbers.
+    @author: Sergio Durand
     @version: 1.0
     @see: PhoneType
     """
-    id= UuidField( primary_key= True )
-    crypt_area = models.CharField('Area Code',max_length=16, core=True)
-    crypt_phoneNumber = models.CharField('Phone Number', max_length=32, core=True)
-    crypt_ext = models.CharField('Extension', max_length=16, blank=True)
+    id= UuidField(primary_key=True)
+    crypt_area = models.CharField(max_length=16)
+    crypt_phoneNumber = models.CharField(max_length=32)
+    crypt_ext = models.CharField(max_length=16, blank=True)
     phoneType = models.ForeignKey(PhoneType)
     # Generic Relationship
     content_type = models.ForeignKey(ContentType)
-    object_id = models.CharField( max_length=256 )
+    object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
     
     history = audittrail.AuditTrail()

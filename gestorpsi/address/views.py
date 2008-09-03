@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.http import HttpResponse, Http404 
 from gestorpsi.address.models import Country, Address, City, AddressType
 

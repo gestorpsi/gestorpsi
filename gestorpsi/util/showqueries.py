@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+   This middleware shows all django generated sql 
+   @author: Sergio Durand
+   @version: 1.0
+"""
+
 from django.db import connection
 
 class ShowQueries:

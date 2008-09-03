@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
     Original Author:    Simon Johnston
     Date:               2007-08-01

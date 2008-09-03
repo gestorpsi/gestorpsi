@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from gestorpsi.person.models import Person
 from gestorpsi.util.uuid_field import UuidField

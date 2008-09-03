@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.forms import ModelForm
 from django.contrib.contenttypes import generic
@@ -6,7 +7,6 @@ from gestorpsi.address.models import Country, City, Address
 from gestorpsi.document.models import Document
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.organization.models import Organization
-from django.contrib import admin
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import CryptographicUtils as cryptoUtils
    
@@ -17,19 +17,13 @@ class MaritalStatus(models.Model):
     def __unicode__(self):
         return u"%s" % self.description
 
-class MaritalStatusAdmin(admin.ModelAdmin):
-    pass
-
-admin.site.register(MaritalStatus, MaritalStatusAdmin)
-
-
 class Person(models.Model):
     id= UuidField( primary_key= True )
-    crypt_name = models.CharField('Name', max_length= 256 )
-    crypt_nickname = models.CharField('Nickname', max_length=250, null=True, blank=True)
+    crypt_name = models.CharField(max_length= 256 )
+    crypt_nickname = models.CharField(max_length=250, null=True, blank=True)
 
     photo = models.CharField(max_length=100)
-    birthDate = models.DateField('Birthdate', null=True)
+    birthDate = models.DateField(null=True)
     birthPlace = models.ForeignKey(City, null=True)
     gender = models.CharField(max_length=1, choices=Gender) 
     maritalStatus = models.ForeignKey(MaritalStatus, null=True)
@@ -59,11 +53,6 @@ class Person(models.Model):
     
     def __unicode__(self):
         return u"%s" % self.name
-
-class PersonAdmin(admin.ModelAdmin):
-    pass
-
-admin.site.register(Person, PersonAdmin)
 
 class PersonForm(ModelForm):
     class Meta:

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.forms import ModelForm
 from django.contrib.contenttypes import generic
@@ -6,7 +7,6 @@ from gestorpsi.person.models import Person
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Country, City, Address
 from gestorpsi.organization.models import Organization
-from django.contrib import admin
 
 class TaxWithHold(models.Model):
     """    
@@ -21,15 +21,6 @@ class TaxWithHold(models.Model):
         """
         return u"%s" % self.description
 
-class TaxWithHoldAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(TaxWithHold, TaxWithHoldAdmin)
-
-
 class Sponsor(models.Model):
     """    
     This class represents a sponsor of organizations. 
@@ -37,11 +28,11 @@ class Sponsor(models.Model):
     @author: Danilo S. Sanches
     @version: 1.0 
     """
-    name = models.CharField('name',max_length=100)    
-    companyID = models.CharField('companyID',max_length=100, null=True)
-    healthRegion = models.CharField('healthRegion',max_length=10, null=True)
-    bankBranch = models.CharField('bankBranch',max_length=10, null=True)
-    account = models.CharField('account',max_length=15, null=True)
+    name = models.CharField(max_length=100)    
+    companyID = models.CharField(max_length=100, null=True)
+    healthRegion = models.CharField(max_length=10, null=True)
+    bankBranch = models.CharField(max_length=10, null=True)
+    account = models.CharField(max_length=15, null=True)
     
     taxWithHold = models.OneToOneField(TaxWithHold, null=True)
         
@@ -57,12 +48,4 @@ class Sponsor(models.Model):
         """
         returns a representation of this sponsor as an unicode  C{string}.
         """
-        return self.name    
-
-class SponsorAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(Sponsor, SponsorAdmin)
+        return self.name

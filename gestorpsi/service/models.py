@@ -1,8 +1,8 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import CareProfessional
 from django.forms import ModelForm
-from django.contrib import admin
 
 class ServiceType(models.Model):
     """
@@ -110,13 +110,6 @@ class Service(models.Model):
 class ServiceForm(ModelForm):
     class Meta:
         model= Service
-
-admin.site.register(Service)
-admin.site.register(ResearchProject)
-admin.site.register(Agreement)
-admin.site.register(AgreementType)
-
-
 
 """
 

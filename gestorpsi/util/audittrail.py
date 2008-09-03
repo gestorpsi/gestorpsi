@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
     Original Author:    Marty Alchin (first version)
     Date:               2008/July/14 (first version)

@@ -2,7 +2,6 @@
 from django.db import models
 from gestorpsi.organization.models import Organization
 from django.contrib.auth.models import User, UserManager
-from django.contrib import admin
 from gestorpsi.util import audittrail
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import CryptographicUtils as cryptoUtils
@@ -22,13 +21,3 @@ class CustomUser(User):
         return cryptoUtils.decrypt_attrib( self.crypt_temp )
     
     temp= property( _get_temp, _set_temp )
-
-class CustomUserAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(CustomUser, CustomUserAdmin)    
-
-    

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.forms import ModelForm
 from gestorpsi.person.models import Person
@@ -7,7 +8,6 @@ from gestorpsi.place.models import Place
 from gestorpsi.address.models import Country, City, Address
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from django.contrib import admin
 
 class InstitutionType(models.Model):
     """    
@@ -22,15 +22,6 @@ class InstitutionType(models.Model):
         """
         return u"%s" % self.description
 
-class InstitutionTypeAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(InstitutionType, InstitutionTypeAdmin)
-
-    
 class PostGraduate(models.Model):
     """    
     An instance of this class represents the postgraduate of careprofessional. This instance is relation on with careprofessional's academic resume      
@@ -43,15 +34,6 @@ class PostGraduate(models.Model):
         returns a representation of this  PostGraduate as an unicode  C{string}.
         """
         return u"%s" % self.description
-
-class PostGraduateAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(PostGraduate, PostGraduateAdmin)
-    
 
 class AcademicResume(models.Model):
     """    
@@ -69,15 +51,7 @@ class AcademicResume(models.Model):
     initialDatePostGraduate = models.DateField(null=True)
     finalDatePostGraduate = models.DateField(null=True)
     area = models.CharField(max_length=100, null=True)    
-    
-class AcademicResumeAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
 
-admin.site.register(AcademicResume, AcademicResumeAdmin)
-    
 class Profession(models.Model):
     """    
     This class represents the careprofessional's profession       
@@ -92,15 +66,6 @@ class Profession(models.Model):
         """
         return u"%s" % self.description
 
-class ProfessionAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(Profession, ProfessionAdmin)
-
-
 class Agreement(models.Model):
     """
     This class represents an agreement type that the careprofessional works
@@ -113,15 +78,6 @@ class Agreement(models.Model):
         returns a representation of this Agreement as an unicode  C{string}.
         """
         return u"%s" % self.description
-
-class AgreementAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(Agreement, AgreementAdmin)
-
 
 class ProfessionalProfile(models.Model):
     """
@@ -136,15 +92,6 @@ class ProfessionalProfile(models.Model):
     services = models.CharField(max_length=100, null=True)
     availableTime = models.CharField(max_length=100, null=True)
     workplace = models.ForeignKey(Place, null=True)
-    
-class ProfessionalProfileAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(ProfessionalProfile, ProfessionalProfileAdmin)
-
 
 class LicenceBoard(models.Model):
     """
@@ -152,23 +99,14 @@ class LicenceBoard(models.Model):
     @author: Danilo S. Sanches
     @version: 1.0
     """
-    name = models.CharField('name',max_length=20, core=True)
-    description = models.CharField('description',max_length=100, core=True)
+    name = models.CharField(max_length=20)
+    description = models.CharField(max_length=100)
     
     def __unicode__(self):
         """
         returns a representation of this licence board as an unicode  C{string}.
         """
         return self.name
-    
-class LicenceBoardAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(LicenceBoard, LicenceBoardAdmin)
-
 
 class ProfessionalIdentification(models.Model):
     """
@@ -176,44 +114,28 @@ class ProfessionalIdentification(models.Model):
     @author: Danilo S. Sanches
     @version: 1.0
     """
-    licenceBoard = models.ForeignKey(LicenceBoard, edit_inline = models.TABULAR, num_in_admin=1)
-    registerNumber = models.CharField('registerNumber',max_length=50, core=True)    
+    licenceBoard = models.ForeignKey(LicenceBoard)
+    registerNumber = models.CharField(max_length=50)    
     
     def __unicode__(self):
         """
         returns a representation of this professional identification as an unicode  C{string}.
         """
         return self.registerNumber
-    
-class ProfessionalIdentificationAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
 
-admin.site.register(ProfessionalIdentification, ProfessionalIdentificationAdmin)
-
-     
 class CareProfessional(models.Model):
     """
     This class represents a careprofessional 
     @author: Danilo S. Sanches
     @version: 1.0
     """
-    professionalIdentification = models.ForeignKey(ProfessionalIdentification, edit_inline = models.TABULAR, num_in_admin=1, core=True, null=True)
-    professionalProfile = models.ForeignKey(ProfessionalProfile, edit_inline = models.TABULAR, num_in_admin=1, core=True, null = True)
-    person = models.OneToOneField(Person, edit_inline = models.TABULAR, num_in_admin=1, core=True)
-    comments = models.CharField('comments',max_length=200, core=True, null=True)
-    active = models.BooleanField(default=True)    
-        
-class CareProfessionalAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(CareProfessional, CareProfessionalAdmin)
-
+    professionalIdentification = models.ForeignKey(ProfessionalIdentification, null=True)
+    professionalProfile = models.ForeignKey(ProfessionalProfile, null = True)
+    person = models.OneToOneField(Person)
+    comments = models.CharField(max_length=200, null=True)
+    active = models.BooleanField(default=True)
+    def __unicode__(self):
+        return u"%s" % self.person    
 
 """
 from gestorpsi.address.models import Country

@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.forms import ModelForm
 from django.contrib.contenttypes import generic
 from gestorpsi.phone.models import Phone
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Country, City, Address
-from django.contrib import admin
 
 class PersonType(models.Model):
     """
@@ -19,14 +19,6 @@ class PersonType(models.Model):
         """
         return u"%s" % self.description
 
-class PersonTypeAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(PersonType, PersonTypeAdmin)
-
 class AdministrationType(models.Model):
     """
     This class represents a administration type of Organization. This administration type can be (municipal, state, federal or private)  
@@ -39,14 +31,6 @@ class AdministrationType(models.Model):
         returns a representation of this administration type as an unicode  C{string}.
         """
         return u"%s" % self.description
-
-class AdministrationTypeAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(AdministrationType, AdministrationTypeAdmin)
 
 class Dependency(models.Model):
     """
@@ -61,14 +45,6 @@ class Dependency(models.Model):
         """
         return u"%s" % self.description
 
-class DependencyAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(Dependency, DependencyAdmin)
-
 class FacilityType(models.Model):
     """
     This class represents facility type  
@@ -81,14 +57,6 @@ class FacilityType(models.Model):
         returns a representation of this facility type as an unicode  C{string}.
         """
         return u"%s" % self.description
-
-class FacilityTypeAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(FacilityType, FacilityTypeAdmin)
 
 class CareType(models.Model):
     """    
@@ -103,14 +71,6 @@ class CareType(models.Model):
         """
         return u"%s" % self.description
 
-class CareTypeAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(CareType, CareTypeAdmin)
-
 class Management(models.Model):
     """    
     This class represents a management type of organization 
@@ -124,14 +84,6 @@ class Management(models.Model):
         """
         return u"%s" % self.description
 
-class ManagementAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(Management, ManagementAdmin)
-    
 class OrganizationType(models.Model):
     """    
     This class represents the organization type
@@ -145,15 +97,7 @@ class OrganizationType(models.Model):
         """
         return u"%s" % self.description
 
-class OrganizationTypeAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(OrganizationType, OrganizationTypeAdmin)
-
- ### it needs more description
+### it needs more description
 class ResearchEducationActivities(models.Model):
     """    
     This class represents the research activities from Organization.  
@@ -167,15 +111,6 @@ class ResearchEducationActivities(models.Model):
         """
         return u"%s" % self.description
 
-class ResearchEducationActivitiesAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(ResearchEducationActivities, ResearchEducationActivitiesAdmin)
-
-
 class Organization(models.Model):
     """    
     This class represents the organization model.   
@@ -183,19 +118,19 @@ class Organization(models.Model):
     @version: 1.0 
     """
     #Identification
-    name = models.CharField('name',max_length=100)
-    businessName = models.CharField('businessName',max_length=100, null=True, blank=True)
-    companyID = models.CharField('companyID',max_length=100, null=True, blank=True)
-    healthCompanyID = models.CharField('healthCompanyID',max_length=100, null=True, blank=True)
-    stateTaxID = models.CharField('stateTaxID',max_length=30, null=True, blank=True)
-    cityTaxID = models.CharField('cityTaxID',max_length=30, null=True, blank=True)
-    companyProfessionalLicense = models.CharField('companyProfessionalLicense',max_length=100, null=True, blank=True)
-    accountableProfessional = models.CharField('accountableProfessional',max_length=100, null=True, blank=True) 
-    email = models.EmailField('email', null=True, blank=True)
-    site = models.URLField('site', max_length=50, null=True, blank=True)
+    name = models.CharField(max_length=100)
+    businessName = models.CharField(max_length=100, blank=True)
+    companyID = models.CharField(max_length=100, blank=True)
+    healthCompanyID = models.CharField(max_length=100, blank=True)
+    stateTaxID = models.CharField(max_length=30, blank=True)
+    cityTaxID = models.CharField(max_length=30, blank=True)
+    companyProfessionalLicense = models.CharField(max_length=100, blank=True)
+    accountableProfessional = models.CharField(max_length=100, blank=True) 
+    email = models.EmailField(blank=True)
+    site = models.URLField(max_length=50, blank=True)
     
     active = models.BooleanField(default=True)
-    icon = models.CharField('icon', max_length=30,null=True, blank=True)          
+    icon = models.CharField(max_length=30, blank=True)          
     
     #Profile
     personType = models.OneToOneField(PersonType, null=True, blank=True)
@@ -211,7 +146,7 @@ class Organization(models.Model):
     address = generic.GenericRelation(Address, null=True)
     emails  = generic.GenericRelation(Email, null=True)
     sites = generic.GenericRelation(Site, null=True)
-    instantMessengers =generic.GenericRel ### it needs more descriptionation(InstantMessenger, null=True)    
+    instantMessengers =generic.GenericRelation(InstantMessenger, null=True) ### it needs more description    
     organization = models.ForeignKey('self', related_name="%(class)s_related", null=True, blank=True)
     
     # person = models.ForeignKey(Person, null=True)
@@ -225,15 +160,6 @@ class Organization(models.Model):
         returns a representation of this  organization as an unicode  C{string}.
         """
         return self.name    
-
-class OrganizationAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(Organization, OrganizationAdmin)    
-
 
 """
 from gestorpsi.organization.models import PersonType, AdministrationType, Dependency, FacilityType, CareType, Management, OrganizationType, ResearchEducationActivities, Organization

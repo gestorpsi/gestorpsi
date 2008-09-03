@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from gestorpsi.internet.models import Email, EmailType, Site, InstantMessenger, IMNetwork
 
 """ ************** Email section ************** """

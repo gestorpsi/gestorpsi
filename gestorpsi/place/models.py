@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.forms import ModelForm
 from gestorpsi.address.models import Address
 from gestorpsi.phone.models import Phone
 from django.contrib.contenttypes import generic
 from gestorpsi.organization.models import Organization
-from django.contrib import admin
+from gestorpsi.util.uuid_field import UuidField
 
 class PlaceType( models.Model ):
     """
@@ -19,21 +20,14 @@ class PlaceType( models.Model ):
         Returns a representation of this place type as an unicode C{string}.
         """
         return "%s" % self.description
-    
-class PlaceTypeAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
 
-admin.site.register(PlaceType, PlaceTypeAdmin)
-    
 class Place( models.Model ):
     """
     This class represents a place.
     @author: Vinicius H. S. Durelli
     @version: 1.0
     """
+    id = UuidField(primary_key=True)
     label= models.CharField( max_length= 80 )
     visible= models.BooleanField(blank=True)
     address= generic.GenericRelation( Address )
@@ -50,13 +44,6 @@ class Place( models.Model ):
     class Meta:
         ordering = ['label']
         
-class PlaceAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(Place, PlaceAdmin)
 
 class RoomType( models.Model ):
    """
@@ -73,13 +60,6 @@ class RoomType( models.Model ):
    def __unicode__(self):
       return "%s" % self.description
 
-class RoomTypeAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(RoomType, RoomTypeAdmin)
 
 class Room( models.Model ):
    """
@@ -99,14 +79,6 @@ class Room( models.Model ):
    """
    def __unicode__(self):
       return "%s" % self.description
-
-class RoomAdmin(admin.ModelAdmin):
-    """
-    I{This class was created only for testing purposes}
-    """
-    pass
-
-admin.site.register(Room, RoomAdmin)
 
 class RoomForm(ModelForm):
    class Meta:

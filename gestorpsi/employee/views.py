@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from gestorpsi.employee.models import Employee
@@ -28,15 +29,21 @@ def form(request, object_id=0):
     phones    = []
     addresses = []
     documents = []
+    emails    = []
+    sites     = []
+    instantMessengers = []    
     try:
         object    = get_object_or_404(Employee, pk=object_id)        
         phones    = object.person.phones.all()
         addresses = object.person.address.all()
         documents = object.person.document.all()
+        emails    = object.person.emails.all()
+        sites     = object.person.sites.all()
+        instantMessengers = object.person.instantMessengers.all()        
     except:        
         object= Employee()
         
-    return render_to_response('employee/employee_form.html', {'object': object, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), } )
+    return render_to_response('employee/employee_form.html', {'object': object, 'emails': emails, 'websites': sites, 'ims': instantMessengers, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), } )
 
 def save(request, object_id=0):
     """

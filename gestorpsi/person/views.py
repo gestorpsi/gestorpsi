@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from gestorpsi.address.models import City
 from gestorpsi.address.views import address_save
 from gestorpsi.document.views import document_save

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Crypto.Cipher import Blowfish
 import binascii
 from django.conf import settings

@@ -64,7 +64,7 @@
 		</label>
 		
 		
-		<label>{% trans "Service Type" %}<br />
+		<label>{% trans "Type" %}<br />
 		<select name="service_type" class="medium">
 			<option value="1">Contínuo</option>
 			<option value="2">Não Contínuo</option>
@@ -75,12 +75,37 @@
 		</select>
 		</label>
 
-		<label>{% trans "Service Solicitation" %}<br />
-		<select name="service_type_solicitation" class="medium">
+		<label>{% trans "Solicitation" %}<br />
+		<select name="service_solicitation" class="medium">
 			<option value="1">Individual</option>
 			<option value="2">Casal</option>
 			<option value="3">Familiar</option>
 			<option value="4">Grupo</option>
+		</select>
+		</label>
+		
+		<label>{% trans "Age" %}<br />
+		<select name="service_age" multiple="multiple" class="extramedium multiple small_fonts">
+			<option value="1">Criança (0 a 12 anos incompletos)</option>
+			<option value="2">Adolescente (12 a 18 anos incompletos)</option>
+			<option value="3">Adulto (18 a 60 anos)</option>
+			<option value="4">3ª Idade (superior a 60 anos)</option>
+		</select>
+		</label>
+		
+		<label>{% trans "Profession" %}<br />
+		<select name="service_age" multiple="multiple" class="extramedium multiple small_fonts">
+			<option value="2231-15">Médico (clinico geral)</option>
+			<option value="2231-42">Médico (neurologista)</option>
+			<option value="2231-53">Médico (psiquiatra)</option>
+			<option value="2516-05">Assistente social</option>
+			<option value="2235-05">Enfermeiro</option>
+			<option value="2236-05">Fisioterapeuta</option>
+			<option value="2238-10">Fonoaudiólogo</option>
+			<option value="2237-10">Nutricionista</option>
+			<option value="2394-15">Pedagogo</option>
+			<option value="2515">Psicólogo</option>
+			<option value="2236-20">Terapeuta ocupacional</option>
 		</select>
 		</label>
 
@@ -90,6 +115,7 @@
 		<legend>{% trans "Service Procedures" %}</legend>
 
 		<!-- itens to choice -->
+		
 		<label>
 			<a class="notajax select_multiple_menu" display="service_procedure_sus">sus</a>
 			<a class="notajax select_multiple_menu" display="service_procedure_gestorpsi">gestorpsi</a>

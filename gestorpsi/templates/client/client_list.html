@@ -66,17 +66,18 @@
 
                 <!--<td><a href="">{{ l.name }}</a></td>-->
                 <td><a href="/client/{{ l.id }}" title="{{ l.person.name }}">{{ l.person.name }}</a></td>
+                
                 <!--
                 <strong>[</strong><small><a href="">Delete</a></small><strong>]</strong> <br>
                 <td>(11) 2301 0751</td>
                 -->
+                
                 <td>
-               
-                (11) 1234-1234
-                 
-                <br> 
-                <a href="mailto:{{l.email }}">{{l.email }}</a></td>
-                <td class="icons">&nbsp;</td>
+               <!-- TERMINAR -->
+               <td>"{{ l.person.get_first_phone }}"</td>
+               <!-- TERMINAR -->
+                
+        		
                
         </tr>
         {% endfor %}

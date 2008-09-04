@@ -74,13 +74,10 @@ Esta caixa é mostrada quando há mensagens
                 <strong>[</strong><small><a href="">Delete</a></small><strong>]</strong> <br>
                 <td>(11) 2301 0751</td>
                 -->
-                <td>
-               
-                (11) 1234-1234
-                 
-                <br> 
-                <a href="mailto:{{l.email }}">{{l.email }}</a></td>
-                <td class="icons">&nbsp;</td>
+                <td>{{ l.person.get_first_phone }}
+                <br />
+                {{ l.person.get_first_email }}
+                </td>
                
         </tr>
         {% endfor %}

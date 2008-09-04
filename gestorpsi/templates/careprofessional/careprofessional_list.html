@@ -68,8 +68,12 @@ Esta caixa é mostrada quando há mensagens
         {% for l in object %}
         <tr>
                 <!--<td><a href="">{{ l.name }}</a></td>-->
-                <td><a href="/careprofessional/{{ l.id }}" title="{{ l.person.name }}">{{ l.person.name }}</a></td>               
-               
+                <td><a href="/careprofessional/{{ l.id }}" title="{{ l.person.name }}">{{ l.person.name }}</a></td>
+                
+                <td>{{ l.person.get_first_phone }}
+                <br />
+                {{ l.person.get_first_email }}
+                </td>
         </tr>
         {% endfor %}
 </table>

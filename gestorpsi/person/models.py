@@ -59,6 +59,13 @@ class Person(models.Model):
             return self.phones.all()[0]
         else:
             return ''
+    
+    def get_first_email(self):
+        if ( len( self.emails.all() ) != 0 ):
+            return self.emails.all()[0]
+        else:
+            return ''
+
 
 class PersonForm(ModelForm):
     class Meta:

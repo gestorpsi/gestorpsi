@@ -72,13 +72,10 @@
                 <td>(11) 2301 0751</td>
                 -->
                 
-                <td>
-               <!-- TERMINAR -->
-               <td>"{{ l.person.get_first_phone }}"</td>
-               <!-- TERMINAR -->
-                
-        		
-               
+               <td>{{ l.person.get_first_phone }}
+               <br />
+               {{ l.person.get_first_email }}
+               </td>
         </tr>
         {% endfor %}
 </table>

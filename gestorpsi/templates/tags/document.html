@@ -7,7 +7,7 @@
 		{% if not TypeDocuments %}
 			{% trans "There is no types available to choice" %}
 		{% else %}
-		<select name="document_typeDocument" class="small">
+		<select name="document_typeDocument" class="medium">
 		{% for TypeDocument in TypeDocuments %}
 			<option value="{{ TypeDocument.id }}" mask="{{ TypeDocument.mask}}"{% ifequal document.typeDocument.id TypeDocument.id %} selected{% endifequal %}>{{ TypeDocument }}</option>
 		{% endfor %}
@@ -24,7 +24,7 @@
 		{% if not Issuers %}
 			{% trans "There is no types available to choice" %}
 		{% else %}
-		<select name="document_issuer" class="small">
+		<select name="document_issuer" class="medium">
 			<option></option>
 			{% for Issuer in Issuers %}
 				<option value="{{ Issuer.id }}"{% ifequal document.issuer.id Issuer.id %} selected{% endifequal %}>{{ Issuer }}</option>
@@ -35,7 +35,7 @@
 	
 		
 		<label>{% trans "State" %}<br />
-			<select name="document_state" class="small">
+			<select name="document_state" class="state">
 			<option></option>
 			{% for State in States %}
 				<option value="{{ State.id }}"{% ifequal document.state.id State.id %} selected{% endifequal %}>{{ State.shortName }}</option>

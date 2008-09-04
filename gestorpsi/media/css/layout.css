@@ -448,7 +448,7 @@ select.small {
 	width: 85px;
 }
 select.medium {
-	width: 184px;
+	width: 174px;
 }
 select.big, #send_file.big {
 	width: 353px;
@@ -467,6 +467,9 @@ select.multiple.small {
 	
 }
 
+select.state {
+width: 55px;
+}
 
 select:focus {
 	background: #fff6d5;
@@ -899,7 +902,7 @@ div.form_phone_box {
 }
 
 select.country {
-	width: 150px;
+	width: 120px;
 }
 
 #footer {

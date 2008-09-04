@@ -19,7 +19,7 @@
 		{% if not PhoneTypes %}
 			{% trans "There is no types available to choice" %}
 		{% else %}
-		<select name="phoneType" class="small">
+		<select name="phoneType" class="medium">
 		{% for phoneType in PhoneTypes %}
 			<option value="{{ phoneType.id }}"{% ifequal phone.phoneType.id phoneType.id %} selected{% endifequal %}>{{ phoneType }}</option>
 		{% endfor %}

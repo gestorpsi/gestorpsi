@@ -10,7 +10,7 @@
 		{% if not IMNetworks %}
 			{% trans "There is no types available to choice" %}
 		{% else %}
-		<select name="im_network" class="small">
+		<select name="im_network" class="medium">
 		{% for IMNetwork in IMNetworks %}
 			<option value="{{ IMNetwork.id }}" {% ifequal im.network.id IMNetwork.id %} selected{% endifequal %}>{{ IMNetwork }}</option>
 		{% endfor %}

@@ -10,7 +10,7 @@
 		{% if not EmailTypes %}
 			{% trans "There is no types available to choice" %}
 		{% else %}
-		<select name="email_type" class="small">
+		<select name="email_type" class="medium">
 		{% for EmailType in EmailTypes %}
 			<option value="{{ EmailType.id }}" {% ifequal email.email_type.id EmailType.id %} selected{% endifequal %}>{{ EmailType }}</option>
 		{% endfor %}

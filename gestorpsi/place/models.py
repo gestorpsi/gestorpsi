@@ -68,6 +68,7 @@ class Room( models.Model ):
    @author: Vinicius H. S. Durelli
    @version: 1.0
    """
+   id = UuidField(primary_key=True)
    description= models.CharField( max_length= 80, blank=True )
    dimension= models.IntegerField(null=True, blank=True)
    place= models.ForeignKey( Place )

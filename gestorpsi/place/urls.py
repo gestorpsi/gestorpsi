@@ -1,20 +1,19 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('gestorpsi.place.views',
-    (r'^$', 'index'), # list objects
-    (r'^add/$', 'form'), # new object form
-    #(r'^(?P<object_id>\d+)/$', 'form'), # edit object form
+    (r'^$', 'index'),
+    (r'^add/$', 'form'),
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', 'form'),
-    (r'^save/$', 'save'), # save new object
-    #(r'^(?P<object_id>\d+)/save/$', 'save'), # update object
+    (r'^save/$', 'save'),
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', 'save'),
-    #(r'^delete/(\d+)$', 'delete'), # delete object
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/delete/$', 'delete'),  #delete object
-    (r'^get/(\d+)$', 'get'),
-    (r'^add_room/(\d+)$', 'add_room'),
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/delete/$', 'delete'),
+    
+    #(r'^get/(\d+)$', 'get'),  WILL BE DELETED !
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/add_room/$', 'add_room'),
     (r'^save_room/$', 'save_room'),
-    (r'^list_rooms/(\d+)$', 'list_rooms_related_to'),
-    (r'^delete_room/(\d+)$', 'delete_room'),
-    (r'^get_room/(\d+)$', 'get_room'),
-    (r'^update_room/(\d+)$', 'update_room'),
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save_room/$', 'save_room'),
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/list_rooms/$', 'list_rooms_related_to'),
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/delete_room/$', 'delete_room'),
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/get_room/$', 'get_room'),
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/update_room/$', 'update_room'),
 )

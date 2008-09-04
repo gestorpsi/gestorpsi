@@ -14,7 +14,7 @@ def index(request):
     return render_to_response('client/client_index.html', {'object': Client.objects.all().filter(clientStatus = '1'), 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), })
 
 # add or edit form
-def form(request, object_id=""):
+def form(request, object_id=''):
     phones    = []
     addresses = []
     documents = []
@@ -30,7 +30,6 @@ def form(request, object_id=""):
         sites     = object.person.sites.all()
         instantMessengers = object.person.instantMessengers.all()
     except:
-        print "to caindo aqui por algum motivo"
         object = Client()
     
     return render_to_response('client/client_form.html', {'object': object, 'emails': emails, 'websites': sites, 'ims': instantMessengers, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), } )

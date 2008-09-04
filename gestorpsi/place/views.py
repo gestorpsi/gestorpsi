@@ -11,7 +11,7 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.address.views import address_save
 from gestorpsi.phone.views import phone_save
 
-def roomList( descriptions, dimensions, room_types, furniture_descriptions ):
+def room_list( descriptions, dimensions, room_types, furniture_descriptions ):
     """
     This I{helper} function view creates and returns a list of room based on a set of descriptions,
     dimensions, room types and furnitures' descriptions that are passed as parameter.
@@ -27,9 +27,8 @@ def roomList( descriptions, dimensions, room_types, furniture_descriptions ):
     @param furniture_descriptions: a list of funiture descriptions to be used during the creation of the rooms.
     @type furniture_descriptions: a list of strings
     """
-    total= len(descriptions)
     rooms= []
-    for i in range(0, total):
+    for i in range(0, len(descriptions)):
         if ( len( descriptions[i]) ):
             if not (dimensions[i]):
                 dimensions[i] = None
@@ -42,31 +41,20 @@ def index(request):
     @param request: this is a request sent by the browser.
     @type request: a instance of the class C{HttpRequest} created by the framework Django
     """
-    return render_to_response( "place/place_index.html", {'object': Place.objects.all(), 'PlaceTypes': PlaceType.objects.all(), 'countries': Country.objects.all(), 'RoomTypes': RoomType.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , } )
+    return render_to_response( "place/place_index.html", {'object': Place.objects.all(), 'PlaceTypes': PlaceType.objects.all(), 'countries': Country.objects.all(), 'RoomTypes': RoomType.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), } )
 
-#######################SHOULD BE TESTED (waiting feedback from cuzido)
 def form(request, object_id=''):
     try:
         phones = []
         addresses = []
         rooms = []
         object= get_object_or_404(Place, pk=object_id)
-        
-        #get all address
         addresses= object.address.all()
-        
-        #get all related phones
         phones= object.phones.all()
-        
-        #get all related rooms
         rooms= object.room_set.all()
-        
-        #place_type= PlaceType.objects.get( pk= a_place.place_type_id ) # commented by czd. sending it directly to template as: 'place_type': PlaceType.objects.all()
-        
         organization= Organization.objects.get(pk= 1 ) # pk forcing to test view.
         #organization= Organization.objects.get(pk= a_place.organization_id ) # uncomment me, when organization is ready
-        
-    except (Http404, ObjectDoesNotExist): #new instances will be created if there is no place or organization
+    except (Http404, ObjectDoesNotExist):
         object= Place()
         place_type= PlaceType()
         organization= Organization()
@@ -75,20 +63,8 @@ def form(request, object_id=''):
                                                         'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(),
                                                         'countries': Country.objects.all(),
                                                         'RoomTypes': RoomType.objects.all(),
-                                                        'rooms': rooms,
-                                                        } )
+                                                        'rooms': rooms, } )
 
-######### newforms not available Django version 1.0-alpha_2-SVN-8327
-###TODO#######################
-def add(request):
-    place_form= PlaceForm()
-    AddressForm= None  ### form_for_model( Address )
-    address_form= AddressForm()
-    PhoneForm= None ###form_for_model( Phone )
-    phone_form= PhoneForm()
-    return render_to_response( 'place/place_add.html', locals() )
-
-#######################SHOULD BE TESTED (waiting feedback from cuzido)
 def save(request, object_id=''):
     """
     This function view saves a place, its address, phones and rooms.
@@ -101,8 +77,7 @@ def save(request, object_id=''):
         object= get_object_or_404(Place, pk=object_id)
     except Http404:
         object= Place()
-        
-    # place label (name)
+
     object.label= request.POST['label']
     
     # is it visible?
@@ -135,7 +110,7 @@ def save(request, object_id=''):
     for room in rooms:
         room.delete()
     #create new ones
-    for room in roomList( request.POST.getlist('description'), request.POST.getlist('dimension'), request.POST.getlist('room_type'),
+    for room in room_list( request.POST.getlist('description'), request.POST.getlist('dimension'), request.POST.getlist('room_type'),
                                request.POST.getlist('furniture') ):
         room.place= object
         room.save()
@@ -159,27 +134,6 @@ def delete(request, place_id):
         return render_to_response( 'place/place_msg.html', { 'msg': "It was successfully deleted" } )
     except Place.DoesNotExist:
         return render_to_response( 'place/place_msg.html', { 'msg': "Some problem occurred while deleting the place (or a place with id equal to %s does not exist)" % place_id } )
-
-def get(request, place_id):
-    try:
-        a_place= Place.objects.get( pk= int(place_id) )
-        place_form= PlaceForm( instance= a_place )
-        
-        #get all address
-        addresses= a_place.address.all()
-        address_forms= []
-        for address in addresses:
-            address_forms.append( AddressForm( instance= address ) )
-        #get all phones
-        phones= a_place.phones.all()
-        phones_forms= []
-        for ph in phones:
-            phones_forms.append( PhoneForm( instance= ph ) )
-            
-    except Place.DoesNotExist:
-        return render_to_response( 'place/place_msg.html', { 'msg': "A place with id equal to %s does not exist, thus it could not be updated" % place_id } )
-    else: 
-        return render_to_response( 'place/place_update.html', { 'place_form': place_form, 'a_place': a_place, 'addresses': addresses, 'address_forms': address_forms, 'phones': phones, 'phones_forms': phones_forms } )
     
 def add_room(request, place_id):
     """
@@ -195,7 +149,7 @@ def add_room(request, place_id):
     return render_to_response( 'place/add_room.html', locals() )
 
 ###TODO: this function view yet uses form to perform its functionality, thus those implementation must be changed
-def save_room(request, id_object):
+def save_room(request, id_object=''):
     """
     This function view search for a place with the id equals to I{id_object}. If there is a place
     with id equals to I{id_object}, a room is created and initialized using values retrieved of the
@@ -243,7 +197,7 @@ def delete_room(request, room_id):
     @type room_id: an instance of the built-in class c{int}.
     """
     try:
-        room= Room.objects.get( pk= int(room_id) )
+        room= Room.objects.get( pk= room_id )
         room.delete()
         return render_to_response( 'place/place_msg.html', { 'msg': "It was successfully deleted" } )
     except Room.DoesNotExist:

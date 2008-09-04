@@ -15,23 +15,25 @@ PROFESSIONAL_AREAS = (
     ('psycho','Psychologist','CRP'),
     )  
 
-
 def index(request):
-    workplaces = Place.objects.all()  # aqui ta pegando todos os places, e eh preciso filtrar apenas para a organizacao que ta sendo usada. Mas nao consegui fazer isso =) ** ja inclui os imports de place e organization
     return render_to_response('careprofessional/careprofessional_index.html', {
                                     'object': CareProfessional.objects.all().filter(active = True),
-                                    
                                     'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
                                     #'identification_form': identification_form,
                                     'licenceBoardTypes': LicenceBoard.objects.all(),
                                     'AgreementTypes': Agreement.objects.all(),
-                                    'WorkPlacesTypes': workplaces,
-                                    'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(),
-                                                                               
-                                                                               })
+                                    'WorkPlacesTypes': Place.objects.all(),  # aqui ta pegando todos os places, e eh preciso filtrar apenas para a organizacao que ta sendo usada. Mas nao consegui fazer isso =) ** ja inclui os imports de place e organization
+                                    'countries': Country.objects.all(),
+                                    'PhoneTypes': PhoneType.objects.all(),
+                                    'AddressTypes': AddressType.objects.all(),
+                                    'EmailTypes': EmailType.objects.all(),
+                                    'IMNetworks': IMNetwork.objects.all(),
+                                    'TypeDocuments': TypeDocument.objects.all(),
+                                    'Issuers': Issuer.objects.all(),
+                                    'States': State.objects.all(),})
   
 
-def form(request, object_id=0):
+def form(request, object_id=''):
     phones = []
     addresses = []
     workplaces = Place.objects.all()  # aqui ta pegando todos os places, e eh preciso filtrar apenas para a organizacao que ta sendo usada. Mas nao consegui fazer isso =) ** ja inclui os imports de place e organization
@@ -50,11 +52,8 @@ def form(request, object_id=0):
         instantMessengers = object.person.instantMessengers.all()
     except:
         object = CareProfessional() 
-    
 
-    return render_to_response('careprofessional/careprofessional_form.html',
-                               
-                                {
+    return render_to_response('careprofessional/careprofessional_form.html', {
                                     'object': object,
                                     'emails': emails,
                                     'websites': sites,
@@ -66,13 +65,16 @@ def form(request, object_id=0):
                                     'licenceBoardTypes': LicenceBoard.objects.all(),
                                     'AgreementTypes': Agreement.objects.all(),
                                     'WorkPlacesTypes': workplaces,
-                                    'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(),
-                                }
-                                    
-                                )
+                                    'countries': Country.objects.all(),
+                                    'PhoneTypes': PhoneType.objects.all(),
+                                    'AddressTypes': AddressType.objects.all(),
+                                    'EmailTypes': EmailType.objects.all(),
+                                    'IMNetworks': IMNetwork.objects.all() ,
+                                    'TypeDocuments': TypeDocument.objects.all(),
+                                    'Issuers': Issuer.objects.all(),
+                                    'States': State.objects.all(), })
 
-def careProfessionalFill(request, object):
-    
+def care_professional_fill(request, object):
     """
     This view function returns the informations about CareProfessional 
     @param request: this is a request sent by the browser.
@@ -125,9 +127,7 @@ def careProfessionalFill(request, object):
     profession.description = request.POST['description']
     profession.save()
     """ 
-    
-    
-    
+
     #ProfessionalProfile
     profile = ProfessionalProfile()
     
@@ -181,6 +181,5 @@ def careProfessionalFill(request, object):
     object.professionalProfile = profile    
     object.professionalIdentification = identification    
     #object.comments = request.POST['comments']
-    
-        
+
     return object

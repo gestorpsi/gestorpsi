@@ -8,6 +8,7 @@ from gestorpsi.place.models import Place
 from gestorpsi.address.models import Country, City, Address
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from gestorpsi.util.uuid_field import UuidField
 
 class InstitutionType(models.Model):
     """    
@@ -41,6 +42,7 @@ class AcademicResume(models.Model):
     @author: Danilo S. Sanches
     @version: 1.0 
     """
+    id= UuidField( primary_key= True )
     teachingInstitute = models.CharField(max_length=100, null=True)
     institutionType = models.OneToOneField(InstitutionType, null=True)
     course = models.CharField(max_length=100, null=True)
@@ -85,6 +87,7 @@ class ProfessionalProfile(models.Model):
     @author: Danilo S. Sanches
     @version: 1.0
     """
+    id= UuidField( primary_key= True )
     academicResume = models.OneToOneField(AcademicResume, null=True)
     initialProfessionalActivities = models.CharField(max_length=10, null=True)
     agreement = models.ForeignKey(Agreement, null=True)
@@ -114,6 +117,7 @@ class ProfessionalIdentification(models.Model):
     @author: Danilo S. Sanches
     @version: 1.0
     """
+    id= UuidField( primary_key= True )
     licenceBoard = models.ForeignKey(LicenceBoard)
     registerNumber = models.CharField(max_length=50)    
     
@@ -129,6 +133,7 @@ class CareProfessional(models.Model):
     @author: Danilo S. Sanches
     @version: 1.0
     """
+    id= UuidField( primary_key= True )
     professionalIdentification = models.ForeignKey(ProfessionalIdentification, null=True)
     professionalProfile = models.ForeignKey(ProfessionalProfile, null = True)
     person = models.OneToOneField(Person)

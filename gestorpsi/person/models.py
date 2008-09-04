@@ -53,6 +53,12 @@ class Person(models.Model):
     
     def __unicode__(self):
         return u"%s" % self.name
+    
+    def get_first_phone(self):
+        if ( len( self.phones.all() ) != 0 ):
+            return self.phones.all()[0]
+        else:
+            return ''
 
 class PersonForm(ModelForm):
     class Meta:

@@ -87,7 +87,13 @@ def care_professional_fill(request, object):
     @type object: an instance of the built-in type C{Psychologist}.            
     """
     
-    person = Person()
+    print request.POST
+    
+    try:
+        person = Person.objects.get(pk=object.person_id)        
+    except:        
+        person = Person()
+        
     object.person = person_save(request, person)   
     
     """
@@ -150,18 +156,22 @@ def care_professional_fill(request, object):
     if(request.POST['profession']):        
         profile.profession = Profession.objects.get(pk=1)
     else:
-        profile.profession = profession
+        profile.profession = profession        
     """
-    profile.initialPrifessionalActivities = request.POST['professional_initialActivitiesDate']
         
-    if(request.POST['professional_agreement']):
-        profile.agreement = Agreement.objects.get(pk=request.POST['professional_agreement'])
-            
+    profile.initialPrifessionalActivities = request.POST['professional_initialActivitiesDate']
+       
+        
+    if(len(request.POST['professional_agreement'])):
+        profile.agreement.add(Agreement.objects.get(pk=request.POST['professional_agreement']))
+                
     profile.services = request.POST['professional_services']
     profile.availableTime = request.POST['professional_availableTime']
     
-    if(request.POST['professional_workplace']):
-        profile.workplace = Place.objects.get(pk=request.POST['professional_workplace'])
+    if(len(request.POST['professional_workplace'])):
+        profile.workplace.add(Place.objects.get(pk=request.POST['professional_workplace']))
+    else:
+        profile.workplace = None
         
     profile.save()
     
@@ -177,8 +187,11 @@ def care_professional_fill(request, object):
     identification = ProfessionalIdentification()
     identification.registerNumber = request.POST['professional_registerNumber']
     
-    if(request.POST['professional_licenceBoard']): 
+    
+    if(request.POST['professional_licenceBoard']):         
         identification.licenceBoard = LicenceBoard.objects.get(pk=request.POST['professional_licenceBoard'])
+    else:
+        identification.licenceBoard = None
     
     identification.save()
     

@@ -90,11 +90,11 @@ class ProfessionalProfile(models.Model):
     id= UuidField( primary_key= True )
     academicResume = models.OneToOneField(AcademicResume, null=True)
     initialProfessionalActivities = models.CharField(max_length=10, null=True)
-    agreement = models.ForeignKey(Agreement, null=True)
+    agreement = models.ManyToManyField(Agreement, null=True)
     profession = models.OneToOneField(Profession, null=True)
     services = models.CharField(max_length=100, null=True)
     availableTime = models.CharField(max_length=100, null=True)
-    workplace = models.ForeignKey(Place, null=True)
+    workplace = models.ManyToManyField(Place, null=True)
 
 class LicenceBoard(models.Model):
     """
@@ -102,8 +102,8 @@ class LicenceBoard(models.Model):
     @author: Danilo S. Sanches
     @version: 1.0
     """
-    name = models.CharField(max_length=20)
-    description = models.CharField(max_length=100)
+    name = models.CharField(max_length=20, null=True)
+    description = models.CharField(max_length=100, null=True)
     
     def __unicode__(self):
         """
@@ -118,8 +118,8 @@ class ProfessionalIdentification(models.Model):
     @version: 1.0
     """
     id= UuidField( primary_key= True )
-    licenceBoard = models.ForeignKey(LicenceBoard)
-    registerNumber = models.CharField(max_length=50)    
+    licenceBoard = models.ForeignKey(LicenceBoard, null=True)
+    registerNumber = models.CharField(max_length=50, null=True)    
     
     def __unicode__(self):
         """
@@ -164,12 +164,12 @@ postGraduate.save()
 
 resume = AcademicResume()
 resume.teachingInstitute = 'UFSCar'
-resume.institutionType = InstitutionType.objects.get(pk=1)
+resume.institutionType = instType
 resume.course = 'testCourse'
 resume.initialDateGraduation = '2000-10-01'
 resume.finalDateGraduation = '2005-10-01'
 resume.lattesResume = 'http://www.gestorpsi.com.br'
-resume.postGraduate = PostGraduate.objects.get(pk=1)
+resume.postGraduate = postGraduate
 resume.initialDatePostGraduate = '2006-03-01'
 resume.finalDatePostGraduate = '2008-03-01'
 resume.area = 'testArea'
@@ -177,21 +177,20 @@ resume.save()
 
 addressType=AddressType(description='Home')
 addressType.save()
+
 address = Address()
 address.addressPrefix = 'Rua'
 address.addressLine1 = 'Rui Barbosa, 1234'
 address.addressLine2 = 'Anexo II - Sala 4'
 address.neighborhood = 'Centro'
 address.zipCode = '12345-123'
-address.addressType = AddressType.objects.get(pk=1)
-address.city = City.objects.get(pk=44085)
-address.content_object = WorkPlaces.objects.get(pk=1)
+address.addressType = addressType
+address.city = City.objects.get(pk=44218)
 address.save()
 
 phoneType = PhoneType( description='Home' )
 phoneType.save()
-phone = Phone(area='16', phoneNumber='33643223', ext='ttt', phoneType=PhoneType.objects.get(pk=1))
-phone.content_object = WorkPlaces.objects.get(pk=1)
+phone = Phone(area='16', phoneNumber='33643223', ext='ttt', phoneType=phoneType)
 phone.save()
 
 profession = Profession(number='10', description='Psicologo')

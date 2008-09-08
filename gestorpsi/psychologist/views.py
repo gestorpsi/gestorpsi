@@ -85,6 +85,8 @@ def save(request, object_id=''):
     """
         
     object = care_professional_fill(request, object)
+    print object
+    
     object.save()
 
     return HttpResponse(object.id)

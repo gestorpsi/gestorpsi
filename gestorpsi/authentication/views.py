@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from gestorpsi.authentication.models import CustomUser
+from gestorpsi.organization.models import Organization
 
 def login_page(request):
     return render_to_response('registration/login.html')
@@ -15,13 +16,18 @@ def user_authentication(request):
         #if user is not None:
         if user is not None:
             if user.is_active:
-                login(request, user)
-                clear_login(user)
-                if len(user.organization.all()) > 1:
+                #login(request, user)
+                request.session['temp_user'] = user                
+                clear_login(user)               
+                if len(user.organization.all()) > 1:                                                           
                     return render_to_response('registration/select_organization.html', { 'objects': user.organization.all()}) 
-                #print user , " - Organizacoes: " , user.organization
-                #return render_to_response('core/main.html', {'user': user })
+                    #print user , " - Organizacoes: " , user.organization
+                    #return render_to_response('core/main.html', {'user': user })
                 else:
+                    number_org = []
+                    number_org = user.organization.all()
+                    user.org_active = number_org[0]
+                    login(request, user)                                                            
                     return HttpResponseRedirect('/')       
         else:
                 set_trylogin(username)
@@ -34,7 +40,11 @@ def logout_page(request):
     return HttpResponseRedirect('/login') 
 
 def user_organization(request):
-    organization = request.POST['organization']
+    organization = Organization.objects.get(pk=request.POST['organization'])
+    user = request.session['temp_user']
+    del request.session['temp_user']        
+    user.org_active = organization    
+    login(request, user)    
     return render_to_response('core/main.html', { 'organization': organization } )
     #return HttpResponseRedirect('/') 
 
@@ -69,3 +79,4 @@ def unblocked_user(user):
             return True
     else:
         return True
+   

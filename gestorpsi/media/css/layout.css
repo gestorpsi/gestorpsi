@@ -884,6 +884,7 @@ div.form_address_box, div.form_phone_box {
 
 div.form_address_box {
 	margin-top: 0px;
+	margin-bottom: 210px;
 }
 
 .form_address_box.first {

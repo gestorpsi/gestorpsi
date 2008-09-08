@@ -1,3 +1,6 @@
+/**
+ * floating save box
+ */
 var name = "#sidebar"; 
 var menuYloc = null;
 
@@ -313,7 +316,7 @@ $(document).unbind().ready(function(){
       */
      
      $('#document_more a').click(function() {
-          total = $(".form_document_box").length + 1;
+          var total = $(".form_document_box").length + 1;
           $("#document_more").before('<div class="form_document_box" id="document_'+total+'"><div class="form_document">'+$(".form_document").html()+'<label><br /><a class="notajax remove_from_form" delete="document_'+total+'"><span>Delete</span></a></label></div></div>');
           reloadMask('#document_'+total);
           reloadDelete();
@@ -334,7 +337,7 @@ $(document).unbind().ready(function(){
       */
      
      $('#address_more a').click(function() {
-          total = $(".form_address_box").length + 1;
+          var total = $(".form_address_box").length + 1;
           $("#address_more").before('<div class="form_address_box" id="address_'+total+'"><div class="form_address">'+$(".form_address").html()+'<label><br /><a class="notajax remove_from_form" delete="address_'+total+'"><span>Delete</span></a></label></div></div>');
           reloadMask('#address_'+total);
           reloadAutoComplete();
@@ -354,7 +357,7 @@ $(document).unbind().ready(function(){
       */
      
      $('#phone_more a').click(function() {
-          total = $(".form_phone_box").length + 1;
+          var total = $(".form_phone_box").length + 1;
           $("#phone_more").before('<div class="form_phone_box" id="phone_'+total+'"><div class="form_phone">'+$(".form_phone").html()+'<label><br /><a class="notajax remove_from_form" delete="phone_'+total+'"><span>Delete</span></a></label></div></div>');
           reloadMask('#phone_'+total);
           reloadDelete();
@@ -373,7 +376,7 @@ $(document).unbind().ready(function(){
       */
      
      $('#email_more a').click(function() {
-          total = $(".form_email_box").length + 1;
+          var total = $(".form_email_box").length + 1;
           $("#email_more").before('<div class="form_email_box" id="email_'+total+'"><div class="form_email">'+$(".form_email").html()+'<label><br /><a class="notajax remove_from_form" delete="email_'+total+'"><span>Delete</span></a></label></div></div>');
           reloadMask('#email_'+total);
           reloadDelete();
@@ -392,7 +395,7 @@ $(document).unbind().ready(function(){
       */
      
      $('#im_more a').click(function() {
-             total = $(".form_im_box").length + 1;
+             var total = $(".form_im_box").length + 1;
              $("#im_more").before('<div class="form_im_box" id="im_'+total+'"><div class="form_im">'+$(".form_im").html()+'<label><br /><a class="notajax remove_from_form" delete="im_'+total+'"><span>Delete</span></a></label></div></div>');
              reloadMask('#im_'+total);
              reloadDelete();
@@ -411,7 +414,7 @@ $(document).unbind().ready(function(){
       */
      
      $('#website_more a').click(function() {
-          total = $(".form_website_box").length + 1;
+          var total = $(".form_website_box").length + 1;
           $("#website_more").before('<div class="form_website_box" id="website_'+total+'"><div class="form_website">'+$(".form_website").html()+'<label><br /><a class="notajax remove_from_form" delete="website_'+total+'"><span>Delete</span></a></label></div></div>');
           reloadMask('#website_'+total);
           reloadDelete();
@@ -433,7 +436,7 @@ $(document).unbind().ready(function(){
           $('#place_form').hide();
           $('.form_room_box').hide();
           $('#fieldset_room_identification').show();
-          total = $(".form_room_box").length + 1;
+          var total = $(".form_room_box").length + 1;
           
           // add form
           $("#room_more").before('<div class="form_room_box" id="room_'+total+'"><div class="form_room">'+$(".form_room").html()+'</div></div>');
@@ -516,7 +519,7 @@ $(document).unbind().ready(function(){
       
      function reloadCountries() {
              $('form select.country').change(function() {
-                     selectField = $(this);
+                     var selectField = $(this);
                      var form_address_div_id = selectField.parents("div.form_address_box:first").attr("id");
                                              
                      if(selectField.val() == 33) { // Brazil

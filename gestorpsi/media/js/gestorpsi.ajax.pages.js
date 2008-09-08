@@ -39,27 +39,25 @@ $(document).unbind().ready(function(){
 	
 	$("#core a:not(.notajax)").click(function(){
 		var link = $(this);
-		//link.click(function() {
-			$("#core").load(link.attr('href'));
-			$.ajax({
-                                complete: function(){
-					// if attribute exists, display div
-                                        if(link.attr('display')) {
-                                                $('#'+link.attr('display')).show();
-						
-						// if exists, change class in submenu to active
-						if(link.attr('sub_menu')) {
-							$('#sub_menu ul li a').removeClass('active');
-							// select option in submenu
-							$('div#sub_menu ul#'+link.attr('sub_menu')+' li a[display="'+link.attr('display')+'"]').addClass('active');
-						}
-						
+		$("#core").load(link.attr('href'));
+		$.ajax({
+			complete: function(){
+				// if attribute exists, display div
+				if(link.attr('display')) {
+					$('#'+link.attr('display')).show();
+					
+					// if exists, change class in submenu to active
+					if(link.attr('sub_menu')) {
+						$('#sub_menu ul li a').removeClass('active');
+						// select option in submenu
+						$('div#sub_menu ul#'+link.attr('sub_menu')+' li a[display="'+link.attr('display')+'"]').addClass('active');
 					}
-                                }
-                                });
-			return false;
-		//	 })
-		});
+					
+				}
+			}
+			});
+		return false;
+	});
 
 
 	/**

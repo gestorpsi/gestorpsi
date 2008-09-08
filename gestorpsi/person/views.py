@@ -4,6 +4,7 @@ from gestorpsi.address.views import address_save
 from gestorpsi.document.views import document_save
 from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
+from gestorpsi.person.models import MaritalStatus
 
 def person_save(request, person):
     # CHECK IF HAS CHANGES BEFORE SAVE
@@ -21,7 +22,13 @@ def person_save(request, person):
     if(request.POST['birthDate']):
         person.birthDate = request.POST['birthDate']
     person.gender = request.POST['gender']
-    #person.maritalStatus = MaritalStatus.objects.get(pk = request.POST['maritalStatus'])
+    
+    
+    # maritalStatus
+    if not (request.POST['maritalStatus']):
+        person.maritalStatus = None
+    else:
+        person.maritalStatus = MaritalStatus.objects.get(pk = request.POST['maritalStatus'])   
 
     # birthPlace (Naturality)
     if not (request.POST['birthPlace']):

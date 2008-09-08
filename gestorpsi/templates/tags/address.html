@@ -67,7 +67,7 @@
 		{% if not AddressTypes %}
 			{% trans "There is no types available to choice" %}
 		{% else %}
-		<select name="addressType" class="medium">
+		<select name="addressType" >
 			{% for AddressType in AddressTypes %}
 				<option value="{{ AddressType.id }}"{% ifequal address.addressType.id AddressType.id %} selected{% endifequal %}>{{ AddressType }}</option>
 			{% endfor %}

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
-from gestorpsi.person.models import Person
+from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, Profession, Agreement, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
 from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.address.models import Country, City, State, Address, AddressType
@@ -30,7 +30,9 @@ def index(request):
                                     'IMNetworks': IMNetwork.objects.all(),
                                     'TypeDocuments': TypeDocument.objects.all(),
                                     'Issuers': Issuer.objects.all(),
-                                    'States': State.objects.all(),})
+                                    'States': State.objects.all(),
+                                    'MaritalStatusTypes': MaritalStatus.objects.all(),
+                                    })
   
 
 def form(request, object_id=''):
@@ -72,7 +74,9 @@ def form(request, object_id=''):
                                     'IMNetworks': IMNetwork.objects.all() ,
                                     'TypeDocuments': TypeDocument.objects.all(),
                                     'Issuers': Issuer.objects.all(),
-                                    'States': State.objects.all(), })
+                                    'States': State.objects.all(),
+                                    'MaritalStatusTypes': MaritalStatus.objects.all(),
+                                    })
 
 def care_professional_fill(request, object):
     """

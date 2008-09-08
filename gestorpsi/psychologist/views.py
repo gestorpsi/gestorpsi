@@ -44,6 +44,8 @@ def form(request, object_id=''):
 
 # Save or Update psychpsychologistologist object
 def save(request, object_id=''):    
+    
+    print request.POST['professional_agreement']
     """
     This function view saves a psychologist, its address and phones.
     @param request: this is a request sent by the browser.

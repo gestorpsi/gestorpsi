@@ -17,18 +17,27 @@ def user_authentication(request):
             if user.is_active:
                 login(request, user)
                 clear_login(user)
-                print user , " - Organizacoes: " , user.organization
+                if len(user.organization.all()) > 1:
+                    return render_to_response('registration/select_organization.html', { 'objects': user.organization.all()}) 
+                #print user , " - Organizacoes: " , user.organization
                 #return render_to_response('core/main.html', {'user': user })
-                return HttpResponseRedirect('/')       
+                else:
+                    return HttpResponseRedirect('/')       
         else:
                 set_trylogin(username)
                 return render_to_response('registration/login.html', { 'message': "Invalid login" } )
     else:
-        return render_to_response('registration/login.html', { 'message': "User Blocked" } )
+        return render_to_response('registration/login.html', { 'message': "User blocked" } )
  
 def logout_page(request):
     logout(request)
     return HttpResponseRedirect('/login') 
+
+def user_organization(request):
+    organization = request.POST['organization']
+    return render_to_response('core/main.html', { 'organization': organization } )
+    #return HttpResponseRedirect('/') 
+
 
 def set_trylogin(user):     
     filtered_user = CustomUser.objects.filter(username=user)
@@ -54,7 +63,7 @@ def unblocked_user(user):
     if(len(filtered_user)):
         found_user = filtered_user[0]        
         value = found_user.try_login
-        if (value > 3):            
+        if (value > 10):            
             return False
         else:            
             return True

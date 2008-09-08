@@ -389,14 +389,14 @@ a.prase_edit {
 	clear: left;
 }
 
-#main_area input[type=text], textarea {
+#main_area input[type=text], input[type=password], textarea {
 	font-size: 16px;
 	padding: 5px;
 	border: 2px solid #F9F9F9;
 	background: #F9F9F9;
 	letter-spacing: 0.05em;
 }
-#main_area input[type=text]:focus, textarea:focus {
+#main_area input[type=text]:focus, input[type=password]:focus, textarea:focus {
 	border: 2px solid #2688ae;
 	background: #fff6d5;
 }
@@ -971,4 +971,37 @@ fieldset label a.select_multiple_menu.active {
 	border-left: 1px solid #999999;
 	border-right: 1px solid #999999;
 
+}
+
+/***********LOGIN*************/
+
+body #main_area.login {
+	width: 260px;
+    margin: 50px auto;
+    float: none;
+    height: 300px;
+    border: none;
+    background: none;
+    text-align: center;
+
+}
+body #loginform {
+	background:#ECECEC;
+    padding: 25px;
+    -moz-border-radius-topleft: 8px;
+	-moz-border-radius-topright: 8px;
+	-moz-border-radius-bottomleft: 8px;
+	-moz-border-radius-bottomright: 8px;
+    border: 1px solid #838383;
+
+}
+body #loginform  label {
+	text-align: left;
+}
+.forgetmenot label{
+	clear: both;
+	padding-right: 5px;
+    padding-top: 10px;
+    line-height: 12px;
+    text-align: left;
 }

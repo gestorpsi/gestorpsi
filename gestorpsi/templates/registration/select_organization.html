@@ -30,29 +30,21 @@
     <div id="main_area" class="login">
     
 
-        <h1>{{ message }}</h1>
-
-
-<form name="loginform" id="loginform" action="/login/authentication" method="post">
-
-	<p>
-		<label>Nome de Usuário</label><br />
-		<input type="text" name="username" id="username" value="" class="medium" tabindex="10" /></label>
-	</p>
+		<form name="loginform" id="loginform" action="/login/select_user_organization" method="post">
+		<p><label>Selecione uma organização</label><br /></p>
+		<p>
+		<select name="organization" class="medium" id="organization" >
 	
-	<p>
-		<label>Senha</label><br />
-		<input type="password" name="password" id="password" value="" class="medium" tabindex="20" /></label>
-	</p>
+			{% for object in objects %}
+				<option value="{{ object.id }}"> {{ object.name }} </option>
+			{% endfor %}
+		
+		</select>
+		</p>
+		<input type="submit" name="enter" id="enter" value="Entrar" tabindex="100" class="btn" />
+		</form>
 
-	<p class="forgetmenot">
-		<label>	<input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="90" /> Lembrar senha</label>
-	</p>  
-	<input type="submit" name="enter" id="enter" value="Entrar" tabindex="100" class="btn" />
-	<input type="hidden" name="next" value="{{ next|escape }}" />
-	</form>
-	
 
-</div>
+	</div>
 </body>
 </html>

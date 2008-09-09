@@ -25,16 +25,16 @@
 		<label>{% trans "ZIP Code" %}<br />
 		<input type="text" class="medium" name="zipCode" value="{{ address.zipCode }}" />
 		</label>
-		
+
 		<label>{% trans "Country" %}<br />
 		<select name="foreignCountry" class="select country">
 		{% for country in countries %}
-			<option value="{{ country.id }}" {% if not client.id %}{% ifequal country.id 33 %}selected{% endifequal %}{% endif %}>{{ country.name }}</option>
+			<option value="{{ country.id }}" {% if not address.foreignCountry_id %}{% ifequal country.id 33 %}selected{% endifequal %}{% else %}{% ifequal country.id address.foreignCountry_id %}selected{% endifequal %}{% endif %}>{{ country.name }}</option>
 		{% endfor %}
 		</select>
 		</label>
 		
-		<div class="address_autocomplete" id="address_autocomplete_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
+		<div class="address_autocomplete" id="address_autocomplete_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}" {% if address.foreignCity %}style="display:none"{% endif %}>
 		
 			<label>{% trans "City (Region)" %}<br />
 			<input type="text" class="city_search big" value="{% ifnotequal address.city None %}{{ address.city }}{% endifnotequal %}"  />
@@ -50,7 +50,7 @@
 		
 		</div>
 		
-		<div class="address_noautocomplete" id="address_noautocomplete_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}" style="display:none">
+		<div class="address_noautocomplete" id="address_noautocomplete_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}" {% if not address.foreignCity %}style="display:none"{% endif %}>
 		
 			<label>{% trans "City" %}<br />
 			<input type="text" name="foreignCity" class="big" value="{{ address.foreignCity }}"  />

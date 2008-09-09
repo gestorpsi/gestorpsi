@@ -787,7 +787,7 @@ padding: 15px 45px;
 	width: 715px;
 }
 #search_results td:first-child {
-	width: 300px;
+	width: 450px;
 }
 #search_results td {
 	padding: 10px 10px;
@@ -900,6 +900,10 @@ div.form_phone_box {
 
 #fieldset_phone {
 	margin-bottom: 10px;
+}
+
+fieldset#fieldset_personal_identification {
+	width: 540px;
 }
 
 select.country {

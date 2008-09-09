@@ -25,6 +25,7 @@ class State(models.Model):
         ordering = ['name']
 
 class City(models.Model):
+    ibge_code = models.CharField(max_length=10)
     name = models.CharField(max_length=50)
     state = models.ForeignKey(State)
     def __unicode__(self):

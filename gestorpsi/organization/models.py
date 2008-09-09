@@ -126,11 +126,9 @@ class Organization(models.Model):
     cityTaxID = models.CharField(max_length=30, blank=True)
     companyProfessionalLicense = models.CharField(max_length=100, blank=True)
     accountableProfessional = models.CharField(max_length=100, blank=True) 
-    email = models.EmailField(blank=True)
-    site = models.URLField(max_length=50, blank=True)
     
     active = models.BooleanField(default=True)
-    icon = models.CharField(max_length=30, blank=True)          
+    icon = models.CharField(max_length=100, blank=True)          
     
     #Profile
     personType = models.OneToOneField(PersonType, null=True, blank=True)

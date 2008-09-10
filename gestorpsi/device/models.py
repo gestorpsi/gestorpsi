@@ -21,7 +21,7 @@ class DeviceType(models.Model):
     @author: Vinicius H. S. Durelli
     @version: 1.0
     """
-    durability= models.CharField( max_length= 1, choices=DURABILITY_TYPE )
+    durability= models.CharField( max_length= 1, choices= DURABILITY_TYPE )
     mobility= models.CharField( max_length= 1, choices= MOBILITY_TYPE )
     restriction= models.CharField( max_length= 100 )
     
@@ -52,8 +52,8 @@ class Device(models.Model):
     @version: 1.0
     """
     description= models.CharField( max_length= 80 )
-    total_quantity= models.IntegerField()
-    available_quantity= models.IntegerField()
+    #total_quantity= models.IntegerField()
+    #available_quantity= models.IntegerField()
     
     def __unicode__(self):
        """

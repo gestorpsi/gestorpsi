@@ -10,7 +10,15 @@ def index(request):
     @param request: this is a request sent by the browser.
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
     """
-    list_of_device_details= DeviceDetails.objects.all()
+    list_of_device_details= []
+    for device in Device.objects.all():
+        details= []
+        details.append(device)
+        #total
+        details.append( len( DeviceDetails.objects.filter( device__id= device.id ) ) )
+        #available
+        details.append( len( DeviceDetails.objects.filter( device__id= device.id, active= False ) ) )
+        list_of_device_details.append( details )    
     return render_to_response( "device/device_form.html", {'list_of_device_details': list_of_device_details } )
 
 def form(request, object_id= 0):
@@ -62,18 +70,18 @@ def save(request, object_id=0 ):
     device_details.comments= request.POST[ 'comments' ]
     #device information
     device_description= request.POST[ 'description' ]
-    device_total_quantity= request.POST[ 'total_quantity' ]
-    device_available_quantity= request.POST[ 'available_quantity' ]
+    #device_total_quantity= request.POST[ 'total_quantity' ]
+    #device_available_quantity= request.POST[ 'available_quantity' ]
     
     if ( device_details.device != None ):
         device_details.device.description= device_description
-        device_details.device.total_quantity= device_total_quantity
-        device_details.device.available_quantity= device_available_quantity
+        #device_details.device.total_quantity= device_total_quantity
+        #device_details.device.available_quantity= device_available_quantity
     else:
         a_device= Device()
         a_device.description= device_description
-        a_device.total_quantity= device_total_quantity
-        a_device.available_quantity= device_available_quantity
+        #a_device.total_quantity= device_total_quantity
+        #a_device.available_quantity= device_available_quantity
         a_device.save()
         device_details.device= a_device
     

@@ -40,6 +40,12 @@ class Place( models.Model ):
        Returns a representation of this place as an unicode C{string}.
        """
        return "%s" % self.label
+   
+    def get_first_phone(self):
+       if ( len( self.phones.all() ) != 0 ):
+         return self.phones.all()[0]
+       else:
+         return ''
     
     class Meta:
         ordering = ['label']
@@ -81,6 +87,15 @@ class Room( models.Model ):
    """
    def __unicode__(self):
       return "%s" % self.description
+  
+   def __cmp__(self, other):
+      if (self.description == other.description ) and \
+         (self.dimension == other.dimension ) and \
+         (self.room_type.id == other.room_type.id ) and \
+         (self.furniture == other.furniture ):
+         return 0
+      else:
+         return 1
 
 class RoomForm(ModelForm):
    class Meta:

@@ -11,7 +11,7 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.address.views import address_save
 from gestorpsi.phone.views import phone_save
 
-def room_list( descriptions, dimensions, room_types, furniture_descriptions ):
+def room_list( ids, descriptions, dimensions, room_types, furniture_descriptions ):
     """
     This I{helper} function view creates and returns a list of room based on a set of descriptions,
     dimensions, room types and furnitures' descriptions that are passed as parameter.
@@ -32,7 +32,7 @@ def room_list( descriptions, dimensions, room_types, furniture_descriptions ):
         if ( len( descriptions[i]) ):
             if not (dimensions[i]):
                 dimensions[i] = None
-            rooms.append( Room(description= descriptions[i], dimension= dimensions[i], place= Place(), room_type= RoomType.objects.get(pk=room_types[i]), furniture= furniture_descriptions[i]) )
+            rooms.append( Room(id=ids[i], description= descriptions[i], dimension= dimensions[i], place= Place(), room_type= RoomType.objects.get(pk=room_types[i]), furniture= furniture_descriptions[i]) )
     return rooms
 
 def index(request):
@@ -104,20 +104,37 @@ def save(request, object_id=''):
     
     # save phone numbers (using Phone APP)
     phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
-        
-    rooms= object.room_set.all()
-    #delete all rooms and...
-    for room in rooms:
-        room.delete()
-    #create new ones
-    for room in room_list( request.POST.getlist('description'), request.POST.getlist('dimension'), request.POST.getlist('room_type'),
-                               request.POST.getlist('furniture') ):
-        room.place= object
-        room.save()
+    
+    save_rooms( object, request.POST.getlist( 'room_id' ), request.POST.getlist('description'), request.POST.getlist('dimension'), request.POST.getlist('room_type'), request.POST.getlist('furniture') )
     
     return HttpResponse(object.id)
 
-#######################SHOULD BE TESTED (waiting feedback from cuzido)
+def save_rooms( place, ids, descriptions, dimensions, room_types, furnitures ):
+
+    for room in room_list( ids, descriptions, dimensions, room_types, furnitures ):
+        result= is_equal( room )
+        if result == -1:
+            room.place= place
+            room.save()
+        elif result == 1:
+            room_from_db= Room.objects.get(pk= room.id)
+            room_from_db.description= room.description
+            room_from_db.dimension= room.dimension
+            room_from_db.room_type= room.room_type
+            room_from_db.furnitures= room.furniture
+            room_from_db.save() 
+
+def is_equal(a_room):
+    try:
+        print "ROOM ID= %s" % a_room.id
+        room_loaded_from_db= Room.objects.get( pk= a_room.id )
+    except:
+        return -1
+    if cmp(room_loaded_from_db, a_room) == 0:
+        return 0
+    else:
+        return 1
+
 def delete(request, place_id):
     """
     This function view search for a place which has the id equals to the C{int} (I{place_id})
@@ -164,7 +181,13 @@ def save_room(request, id_object=''):
     except:
         return render_to_response( 'place/place_msg.html', { 'msg': "some problem occurred while saving the room" } )
     
-    room= Room()
+    try:
+        print 'chamou save_room'
+        print request.POST[ 'room_id' ]
+        room= get_object_or_404(Room, pk= request.POST['room_id'] )
+    except:
+        room= Room()
+    
     room.description= request.POST['description']
     room.dimension= request.POST['dimension']
     room.place= Place.objects.get(pk= id_object)
@@ -203,7 +226,7 @@ def delete_room(request, room_id):
     except Room.DoesNotExist:
         return render_to_response( 'place/place_msg.html', { 'msg': "Some problem occurred while deleting the room (or a place with id equal to %s does not exist)" % room_id } )
 
-def get_room(request, room_id ):
+def get_room(request, id_object):
     """
     If there is a room with id equals to I{room_id}, this function view retrieves and shows it.
     @param request: this is a request sent by the browser.
@@ -212,7 +235,7 @@ def get_room(request, room_id ):
     @type room_id: an instance of the built-in class c{int}.
     """
     try:
-        a_room= Room.objects.get( pk= int(room_id) )
+        a_room= Room.objects.get( pk= int(id_object) )
         room_form= RoomForm( instance= a_room )
     except Room.DoesNotExist:
         return render_to_response( 'place/place_msg.html', { 'msg': "A room with id equal to %s does not exist, thus it could not be updated" % room_id } )

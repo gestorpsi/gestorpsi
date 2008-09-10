@@ -5,7 +5,7 @@
         <a id="male" class="notajax gender{% ifequal object.person.gender '2' %} active{% endifequal %}" value="2"><span>{% trans "Male" %}</span></a>
         <a id="female" class="notajax gender{% ifequal object.person.gender '1' %} active{% endifequal %}" value="1"><span>{% trans "Female" %}</span></a>
 
-        <a class="clips notajax" >{% trans "Photo" %}</a>
+        <a class="clips notajax">{% trans "Photo" %}</a>
         <input type="hidden" name="photo" value="{{ object.person.photo }}" id="id_photo" />
         <a href="notajax" class="delete" title="delete" onclick="$('#id_photo').val(''); $('img#img_people').attr('src', '/media/img/male_generic_photo.gif.png'); "><span>{% trans "Delete" %}</span></a>
         <input type="hidden" name="gender" value="{{ object.person.gender }}" id="id_gender" />

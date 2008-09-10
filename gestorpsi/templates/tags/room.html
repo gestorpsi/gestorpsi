@@ -2,6 +2,7 @@
 
 <div class="form_room_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="room_{{ room.id }}">
 	<div class="form_room">
+			<input type="hidden" name="room_id" value="{{ room.id }}" />
 			<label>{% trans "Description" %}<br />
 			<input type="text" class="big update_name" name="description" value="{{ room.description }}" display="{{ room.id }}" />
 			</label>

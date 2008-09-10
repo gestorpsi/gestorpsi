@@ -37,7 +37,7 @@
 		<div class="address_autocomplete" id="address_autocomplete_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}" {% if address.foreignCity %}style="display:none"{% endif %}>
 		
 			<label>{% trans "City (Region)" %}<br />
-			<input type="text" class="city_search big" value="{% ifnotequal address.city None %}{{ address.city }}{% endifnotequal %}"  />
+			<input type="text" class="city_search extramedium" value="{% ifnotequal address.city None %}{{ address.city }}{% endifnotequal %}"  />
 			</label>
 			
 			<!-- 
@@ -53,11 +53,11 @@
 		<div class="address_noautocomplete" id="address_noautocomplete_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}" {% if not address.foreignCity %}style="display:none"{% endif %}>
 		
 			<label>{% trans "City" %}<br />
-			<input type="text" name="foreignCity" class="big" value="{{ address.foreignCity }}"  />
+			<input type="text" name="foreignCity" class="extramedium address_foreignCity" value="{{ address.foreignCity }}"  />
 			</label>
 			
 			<label>{% trans "State" %}<br />
-			<input type="text" name="foreignState" id="id_state" class="extrasmall" value="{{ address.foreignState }}" />
+			<input type="text" name="foreignState" id="id_state" class="extrasmall address_foreignState" value="{{ address.foreignState }}" />
 			</label>
 		
 		</div>

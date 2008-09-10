@@ -518,18 +518,22 @@ $(document).unbind().ready(function(){
       */
       
      function reloadCountries() {
-             $('form select.country').change(function() {
+               $('form select.country').change(function() {
                      var selectField = $(this);
                      var form_address_div_id = selectField.parents("div.form_address_box:first").attr("id");
                                              
                      if(selectField.val() == 33) { // Brazil
-                             $('#'+form_address_div_id+' div.address_noautocomplete').hide();
-                             $('#'+form_address_div_id+' div.address_autocomplete').show();
+                         // reset oldvalues
+                         $(this).parents('div.form_address').children('div.address_noautocomplete').children('label').children('input').val('');
+                         $('#'+form_address_div_id+' div.address_noautocomplete').hide();
+                         $('#'+form_address_div_id+' div.address_autocomplete').show();
                      } else {
-                             $('#'+form_address_div_id+' div.address_autocomplete').hide();
-                             $('#'+form_address_div_id+' div.address_noautocomplete').show();
+                         // reset oldvalues
+                         $(this).parents('div.form_address').children('div.address_autocomplete').children('label').children('input').val('');
+                         $('#'+form_address_div_id+' div.address_autocomplete').hide();
+                         $('#'+form_address_div_id+' div.address_noautocomplete').show();
                      }
-                     });
+               });
      }
      
      reloadCountries(); // load countries select for the first tag address 

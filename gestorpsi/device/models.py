@@ -29,7 +29,19 @@ class DeviceType(models.Model):
       """
       Returns a representation of this device type as an unicode C{string}.
       """
-      return "durability: %s, mobility: %s, restriction: %s" % (self.durability, self.mobility, self.restriction)
+      return "durability: %s, mobility: %s, restriction: %s" % (self.print_durability(), self.print_mobility(), self.restriction)
+  
+    def print_durability(self):
+       if self.durability == '1':
+           return 'consumable'
+       else:
+           return 'durable'
+   
+    def print_mobility(self):
+       if self.mobility == '1':
+           return 'fix'
+       else:
+           return 'mobile'
 
 class Device(models.Model):
     """

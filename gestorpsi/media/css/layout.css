@@ -389,17 +389,27 @@ a.prase_edit {
 	clear: left;
 }
 
-#main_area input[type=text], input[type=password], textarea {
+#main_area input[type=text], input[type=submit].mini, input[type=password], textarea {
 	font-size: 16px;
 	padding: 5px;
 	border: 2px solid #F9F9F9;
 	background: #F9F9F9;
 	letter-spacing: 0.05em;
 }
+
+input[type=submit].mini {
+	padding: 2px 20px 6px 15px;
+	margin: 0 0 0 10px;
+	cursor: pointer;
+}
+
 #main_area input[type=text]:focus, input[type=password]:focus, textarea:focus {
 	border: 2px solid #2688ae;
 	background: #fff6d5;
 }
+
+
+
 .btn {
     padding: 5px 20px;
     margin-top: 22px;
@@ -425,7 +435,7 @@ a.prase_edit {
 }
 
 .extramedium {
-width: 310px;
+	width: 310px;
 }
 
 .small {
@@ -468,7 +478,7 @@ select.multiple.small {
 }
 
 select.state {
-width: 55px;
+	width: 55px;
 }
 
 select:focus {
@@ -966,7 +976,7 @@ fieldset label a.select_multiple_menu {
 	border-left: 1px solid #999999;
 	border-right: 1px solid #999999;
 	text-decoration: none;
-color: #666666;
+	color: #666666;
 }
 
 fieldset label a.select_multiple_menu.active {
@@ -975,6 +985,18 @@ fieldset label a.select_multiple_menu.active {
 	border-left: 1px solid #999999;
 	border-right: 1px solid #999999;
 
+}
+
+
+a.form_mini {
+	clear: both;
+	display: block;
+	padding: 10px 0 0 12px;
+	font-size: 10px;
+}
+
+div.form_mini {
+	display:none;
 }
 
 /***********LOGIN*************/

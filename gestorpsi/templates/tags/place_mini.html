@@ -1,0 +1,22 @@
+{% load i18n %}
+
+<div class="form_mini place_mini">
+<form action="/place/save/" method="post">	
+
+	<label>{% trans "Place Identification" %}<br />
+	<input type="text" name="label" class="big tabtitle" value="" id="id_label" />
+	</label>
+	<label>{% trans "Place Type" %}<br />
+	<select name="place_type">
+		{% for pt in PlaceTypes %}
+		<option value="{{ pt.id }}"{% ifequal object.place_type.id pt.id %} selected{% endifequal %}>{{ pt }}</option>
+		{% endfor %}
+	</select>
+	<input type="submit" name="submit" value="{% trans "Add" %}" class="mini" />
+		
+	</label>
+</form>
+</div>
+
+
+

@@ -7,7 +7,7 @@ from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.address.models import Country, City, State, Address, AddressType
 from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetwork
 from gestorpsi.document.models import Document, TypeDocument, Issuer
-from gestorpsi.place.models import Place
+from gestorpsi.place.models import Place, PlaceType
 from gestorpsi.organization.models import Organization
 from gestorpsi.person.views import person_save
 
@@ -32,6 +32,7 @@ def index(request):
                                     'Issuers': Issuer.objects.all(),
                                     'States': State.objects.all(),
                                     'MaritalStatusTypes': MaritalStatus.objects.all(),
+                                    'PlaceTypes': PlaceType.objects.all(),
                                     })
   
 
@@ -76,6 +77,7 @@ def form(request, object_id=''):
                                     'Issuers': Issuer.objects.all(),
                                     'States': State.objects.all(),
                                     'MaritalStatusTypes': MaritalStatus.objects.all(),
+                                    'PlaceTypes': PlaceType.objects.all(),
                                     })
 
 def care_professional_fill(request, object):

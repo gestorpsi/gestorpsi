@@ -126,7 +126,7 @@ $(document).unbind().ready(function(){
           
           }
 	});
-    
+   
 
     /**
      * 
@@ -136,7 +136,8 @@ $(document).unbind().ready(function(){
      * validate and post places form.
      * 
      */
- 
+
+    
     $('#form_place').validate({event:"submit",
           rules: {
                label: {
@@ -152,7 +153,7 @@ $(document).unbind().ready(function(){
           }
 	});
     
-
+    
     /**
      * 
      * service post form
@@ -581,6 +582,58 @@ $(document).unbind().ready(function(){
           $('fieldset label a.select_multiple_menu').removeClass('active');
           $(this).addClass('active');
                    
+     });
+     
+     
+     /**
+      * mini forms to quick add
+      */
+     
+     
+      var form_mini_options = {
+          success: function(response, message, form) {
+                    // get option label
+                    var text = $(form).parents('fieldset').children('div.form_mini').children('form').children('label').children('input:text').val();
+                    // add <option> selecting it
+                    $(form).parents('fieldset').children('label').children('select').prepend('<option value="+response+" selected>'+text+'</option>');
+                    // clean form
+                    $(form).parents('fieldset').children('div.form_mini').children('form').children('label').children('input:text').val('')
+                    
+               },
+          error: function() {
+               // show error alert
+               $('#msg_area').show();
+               $('#msg_area').removeClass('alert');
+               $('#msg_area').addClass('error');
+               $('#msg_area').text('Error saving register!');
+               $('#sidebar').css('padding-top','234px');
+          }
+     }; 
+     
+     $('a.form_mini').click(function() {
+          $('div.'+$(this).attr('display')).clone(true).insertAfter(this);
+          
+          $(this).hide();
+          $(this).parents('fieldset').children('div.form_mini').show();
+          
+          $(this).parents('fieldset').children('div.form_mini').children('form').validate({
+               event:"submit",
+               
+               
+               
+               rules: {
+                    label: {
+                            required: true
+                    }
+               },
+               messages: {
+                    name: 'This field is required'
+               },
+               submitHandler: function(form) {
+                    $(form).ajaxSubmit(form_mini_options);
+               }
+          });
+          
      });
      
      

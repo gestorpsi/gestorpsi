@@ -44,9 +44,10 @@ def user_organization(request):
     user = request.session['temp_user']
     del request.session['temp_user']        
     user.org_active = organization    
-    login(request, user)    
-    return render_to_response('core/main.html', { 'organization': organization } )
-    #return HttpResponseRedirect('/') 
+    login(request, user) 
+     
+    #return render_to_response('core/main.html', { 'organization': organization } )
+    return HttpResponseRedirect('/') 
 
 
 def set_trylogin(user):     

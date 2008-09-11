@@ -64,7 +64,7 @@
 					<li><a id="careprofessional" href="/careprofessional/" display="list">{% trans "Professionals" %}</a></li>
 					<li><a id="services" href="/service/" display="list">{% trans "Services" %}</a></li>
 					<!-- <li><a id="rooms">{% trans "Rooms" %}</a></li> -->
-					<li><a id="equipment">{% trans "Equipments" %}</a></li>
+					<li><a id="equipments" href="/device/" display="list">{% trans "Equipments" %}</a></li>
 					
 				</ul>
 			</li>
@@ -110,6 +110,13 @@
 		<ul id="sub_services" style="display:none">
 			<li><a display="list" class="first active fastmenu" href="/service/">{% trans "all" %}</a></li>
 			<li><a display="form" class="fastmenu" href="/service/">{% trans "add" %}</a></li>
+			<li><a>{% trans "search" %}</a></li>
+		</ul>
+
+		<!--devices-->		
+		<ul id="sub_equipments" style="display:none">
+			<li><a display="list" class="first active fastmenu" href="/device/">{% trans "all" %}</a></li>
+			<li><a display="form" class="fastmenu" href="/device/">{% trans "add" %}</a></li>
 			<li><a>{% trans "search" %}</a></li>
 		</ul>
 		

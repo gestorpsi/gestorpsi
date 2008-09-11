@@ -59,7 +59,7 @@ class Device(models.Model):
        """
        Returns a representation of this device as an unicode C{string}.
        """
-       return "description: %s, number of devices: %s, number of available devices: %s" % (self.description, self.total_quantity, self.available_quantity)
+       return "description: %s" % ( self.description )
 
 class DeviceDetails(models.Model):
     """

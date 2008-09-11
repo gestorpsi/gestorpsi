@@ -12,14 +12,14 @@ def index(request):
     """
     list_of_device_details= []
     for device in Device.objects.all():
-        details= []
-        details.append(device)
+        details= {}
+        details['device']= device
         #total
-        details.append( len( DeviceDetails.objects.filter( device__id= device.id ) ) )
+        details['total']= len( DeviceDetails.objects.filter( device__id= device.id ) )
         #available
-        details.append( len( DeviceDetails.objects.filter( device__id= device.id, active= False ) ) )
+        details['available']= len( DeviceDetails.objects.filter( device__id= device.id, active= False ) )
         list_of_device_details.append( details )    
-    return render_to_response( "device/device_form.html", {'list_of_device_details': list_of_device_details } )
+    return render_to_response( "device/device_form.html", {'object': list_of_device_details } )
 
 def form(request, object_id= 0):
     """

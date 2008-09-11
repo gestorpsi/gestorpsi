@@ -19,7 +19,8 @@ def index(request):
         #available
         details['available']= len( DeviceDetails.objects.filter( device__id= device.id, active= False ) )
         list_of_device_details.append( details )    
-    return render_to_response( "device/device_form.html", {'object': list_of_device_details } )
+    print len( list_of_device_details)
+    return render_to_response( "device/device_index.html", {'object': list_of_device_details, 'device_types': DeviceType.objects.all(), 'obj': Device.objects.all()} )
 
 def form(request, object_id= ''):
     """
@@ -30,6 +31,9 @@ def form(request, object_id= ''):
     @param object_id: the id of the C{DeviceDetails} instance which the information will be displayed.
     @type object_id: an instance of the built-in class c{int}.
     """
+    
+    
+    print "banana"
     try :
         object= get_object_or_404( DeviceDetails, pk= object_id )
         device= object.device
@@ -43,7 +47,7 @@ def form(request, object_id= ''):
     device_form= DeviceForm( instance= device )
     device_type_form= DeviceTypeForm( instance= device_type )
     
-    return render_to_response('device/device_html.html', {'object': object, 'device': device, 'device_type': device_type, 
+    return render_to_response('device/device_form.html', {'object': object, 'device': device, 'device_type': device_type, 
                                                           'device_details_form':device_details_form, 'device_form': device_form, 
                                                           'device_type_form': device_type_form } )
     
@@ -57,6 +61,8 @@ def save(request, object_id='' ):
     @param object_id: the id of the C{DeviceDetails} instance to be saved or updated.
     @type object_id: an instance of the built-in class c{int}.
     """
+    device_details = []
+    
     try:
         device_details= get_object_or_404( DeviceDetails, pk=object_id)
     except Http404:

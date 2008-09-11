@@ -1,10 +1,100 @@
-<html>
-	<head>Device Form</head>
-	<body>
-			{% for d in object %}
-			<h2>Device: </h2> {{ d.device }} <br>
-			<h2>Total: </h2> {{ d.total }} <br>
-			<h2>Available: </h2> {{ d.available }}
-			{% endfor %}
-	</body>
-</html>
+{% load i18n %}
+{% include "core/ajax_page.html" %}
+
+{% if obj.id %}
+	<div class="edit_form">
+	<h2 id="title_clients">{{ obj.label }}</h2>
+	<p class="description"><br />	
+{% else %}
+	<h2 id="title_clients">{% trans "Adding Equipments" %}</h2>
+	<p class="description">{% trans "Inform the equipment details then click on Save button" %}</p>
+{% endif %}
+
+
+</p>
+
+<form action="/device/{% if obj.id %}{{ obj.id }}/{% endif %}save/" method="post" id="form_device">	
+<div id="main_area">
+
+	<a href="" id="help">&nbsp;</a>
+
+<div id="place_form">
+
+	<!--
+	Places must to have an Identification 
+	-->
+	
+	<fieldset id="fieldset_device_identification">
+		<legend>{% trans "Adding equipment details" %}</legend>
+		
+			<label>{% trans "Brand" %}<br />
+			<input type="text" name="brand" class="big tabtitle" value="" id="brand" />
+			</label>
+			
+			<label>{% trans "Model" %}<br />
+			<input type="text" name="g" class="big tabtitle" value="" id="model" />
+			</label>
+			
+			<label>{% trans "Part number" %}<br />
+			<input type="text" name="part_number" class="big tabtitle" value="" id="part_number" />
+			</label>
+			
+			<label>{% trans "Comments" %}<br />
+			<input type="text" name="comments" class="big tabtitle" value="" id="comments" />
+			</label>
+			
+				
+	</fieldset>
+	<br>
+	
+	<!--
+	devices categories
+	-->
+		
+	<fieldset id="description">
+			<label>{% trans "Device" %}<br />
+			<select name="device">
+				{% for d in object %}
+				<option value="{{ d.device.id }}">{{ d.device.description }}</option>
+				{% endfor %}
+			</select>
+				
+			</label>
+	</fieldset>
+	
+
+	<!--
+	device types
+	-->
+	<fieldset id="fieldset_device_type">
+			<label>{% trans "Device Type" %}<br />
+			<select name="select_device_type">
+				{% for dv in device_types %}
+				<option value="{{ dv.id }}">{{ dv }}</option>
+				{% endfor %}
+			</select>
+			</label>	
+	</fieldset>
+	<br>
+	
+
+	
+
+
+
+</div>
+	
+<div id="sidebar">
+	<div class="bg_blue">
+		{% include "tags/save.html" %}
+	</div>
+	
+</div>
+
+</form>
+
+{% if obj.id %}
+</div> <!-- edit_form -->
+{% endif %}
+
+

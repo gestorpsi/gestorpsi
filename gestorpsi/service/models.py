@@ -3,6 +3,7 @@ from django.db import models
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import CareProfessional
 from django.forms import ModelForm
+from gestorpsi.util.uuid_field import UuidField
 
 class ServiceType(models.Model):
     """
@@ -94,6 +95,7 @@ class Service(models.Model):
     @author: Vinicius H. S. Durelli
     @version: 1.0
     """
+    id= UuidField(primary_key=True)
     name= models.CharField( max_length= 80 )
     description= models.CharField( max_length= 100 )
     keywords= models.CharField( max_length= 100 )

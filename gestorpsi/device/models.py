@@ -2,6 +2,7 @@
 from django.db import models
 from gestorpsi.organization.models import Organization
 from django.forms import ModelForm
+from gestorpsi.util.uuid_field import UuidField
 
 DURABILITY_TYPE= ( ('1','CONSUMABLE'), ('2', 'DURABLE') )
 """
@@ -21,6 +22,7 @@ class DeviceType(models.Model):
     @author: Vinicius H. S. Durelli
     @version: 1.0
     """
+    id= UuidField(primary_key=True)
     durability= models.CharField( max_length= 1, choices= DURABILITY_TYPE )
     mobility= models.CharField( max_length= 1, choices= MOBILITY_TYPE )
     restriction= models.CharField( max_length= 100 )
@@ -51,6 +53,7 @@ class Device(models.Model):
     @author: Vinicius H. S. Durelli
     @version: 1.0
     """
+    id= UuidField(primary_key=True)
     description= models.CharField( max_length= 80 )
     #total_quantity= models.IntegerField()
     #available_quantity= models.IntegerField()
@@ -69,6 +72,7 @@ class DeviceDetails(models.Model):
     @see: Device
     @see: DeviceType
     """
+    id= UuidField(primary_key=True)
     brand= models.CharField( max_length= 80 )
     model= models.CharField( max_length= 80 )
     part_number= models.CharField( max_length= 45 )

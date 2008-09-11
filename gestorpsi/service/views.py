@@ -14,7 +14,7 @@ def index(request):
     """
     return render_to_response( "service/service_index.html", { 'object':Service.objects.all(), 'Agreements': Agreement.objects.all(), 'ResearchProjects': ResearchProject.objects.all(), 'CareProfessionals': CareProfessional.objects.all() })
 
-def form(request, object_id=0):
+def form(request, object_id= ''):
     """
     This function view uses I{forms} to show the information related to the
     C{Service} with id equals to I{object_id}
@@ -59,7 +59,7 @@ def save_responsibles( list_of_responsibles, object ):
         responsible= CareProfessional.objects.get(pk= responsible_id )
         object.responsibles.add( responsible )
 
-def save(request, object_id=0):
+def save(request, object_id= ''):
     """
     This function view searches for the C{Service} with id equals to I{object_id}, if there is such a
     C{Service} instance, it is loaded and updated with the values of the request object, otherwise a 
@@ -87,7 +87,7 @@ def save(request, object_id=0):
     service_form= ServiceForm( instance= object )
     return render_to_response('service/service_html.html', {'object': object, 'service_form': service_form } )
 
-def delete(request, object_id=0):
+def delete(request, object_id= ''):
     """
     This function view searches for a C{Service} object which has the id equals to I{object_id}, if there is
     such C{Service} instance it is deleted.

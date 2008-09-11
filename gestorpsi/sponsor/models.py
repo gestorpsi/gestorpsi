@@ -7,6 +7,7 @@ from gestorpsi.person.models import Person
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Country, City, Address
 from gestorpsi.organization.models import Organization
+from gestorpsi.util.uuid_field import UuidField
 
 class TaxWithHold(models.Model):
     """    
@@ -28,6 +29,7 @@ class Sponsor(models.Model):
     @author: Danilo S. Sanches
     @version: 1.0 
     """
+    id= UuidField(primary_key=True)
     name = models.CharField(max_length=100)    
     companyID = models.CharField(max_length=100, null=True)
     healthRegion = models.CharField(max_length=10, null=True)

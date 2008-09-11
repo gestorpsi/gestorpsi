@@ -5,6 +5,7 @@ from django.contrib.contenttypes import generic
 from gestorpsi.phone.models import Phone
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Country, City, Address
+from gestorpsi.util.uuid_field import UuidField
 
 class PersonType(models.Model):
     """
@@ -117,7 +118,7 @@ class Organization(models.Model):
     @author: Danilo S. Sanches
     @version: 1.0 
     """
-    #Identification
+    id= UuidField(primary_key=True)
     name = models.CharField(max_length=100)
     businessName = models.CharField(max_length=100, blank=True)
     companyID = models.CharField(max_length=100, blank=True)

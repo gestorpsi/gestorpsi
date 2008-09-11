@@ -21,7 +21,7 @@ def index(request):
         list_of_device_details.append( details )    
     return render_to_response( "device/device_form.html", {'object': list_of_device_details } )
 
-def form(request, object_id= 0):
+def form(request, object_id= ''):
     """
     This function views creates some I{forms objects} based on the I{object_id} passed, these I{forms} are
     used to organize and easier the presentation of the information.
@@ -47,7 +47,7 @@ def form(request, object_id= 0):
                                                           'device_details_form':device_details_form, 'device_form': device_form, 
                                                           'device_type_form': device_type_form } )
     
-def save(request, object_id=0 ):
+def save(request, object_id='' ):
     """
     This function view creates an instance of the class C{DeviceDetails} with id equals to I{object_id} and
     uses the I{request} object to set the newly created class attributes. If there is some C{DeviceDetails}
@@ -106,7 +106,7 @@ def save(request, object_id=0 ):
     device_details.save()
     return render_to_response('device/device_form.html', {'list_of_device_details': [ device_details ] })
 
-def delete(request, object_id= 0):
+def delete(request, object_id= ''):
     """
     This function view deletes the C{DeviceDetails} which has the id equals to I{object_id}.
     @param request: this is a request sent by the browser.

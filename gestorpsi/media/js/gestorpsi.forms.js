@@ -638,4 +638,27 @@ $(document).unbind().ready(function(){
      
      
      
+     /**
+      * fieldsets collapsed
+      */
+     
+     $('fieldset:not(:first)').children().hide();
+     $('fieldset:not(:first)').children('legend').show();
+     $('fieldset:not(:first)').addClass('collapsed');
+     
+     
+     $('fieldset').children('legend').click(function() {
+          if($(this).attr('opened')!='True') {
+               $(this).parents('fieldset').removeClass('collapsed');
+               $(this).parents('fieldset').children().show();
+               $(this).parents('fieldset').children().children().show();
+               $(this).attr('opened','True');
+          } else {
+               $(this).parents('fieldset').addClass('collapsed');
+               $(this).parents('fieldset').children().children().hide();
+               $(this).parents('fieldset').children('label,br,a').hide();
+               $(this).attr('opened','False');
+          }
+     });
+     
 });

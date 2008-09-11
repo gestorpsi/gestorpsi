@@ -1031,3 +1031,14 @@ body #loginform  label {
     line-height: 12px;
     text-align: left;
 }
+
+
+fieldset.collapsed {
+	border: 0px;
+	height: 1px;
+	padding: 0 0 0 0;
+}
+
+fieldset {
+	cursor: pointer;
+}

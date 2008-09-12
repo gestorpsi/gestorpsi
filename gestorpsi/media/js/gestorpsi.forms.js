@@ -642,12 +642,12 @@ $(document).unbind().ready(function(){
       * fieldsets collapsed
       */
      
-     $('fieldset:not(:first)').children().hide();
-     $('fieldset:not(:first)').children('legend').show();
-     $('fieldset:not(:first)').addClass('collapsed');
+     $('form.collapsable fieldset:not(:first)').children().hide();
+     $('form.collapsable fieldset:not(:first)').children('legend').show();
+     $('form.collapsable fieldset:not(:first)').addClass('collapsed');
      
      
-     $('fieldset').children('legend').click(function() {
+     $('form.collapsable fieldset').children('legend').click(function() {
           if($(this).attr('opened')!='True') {
                $(this).parents('fieldset').removeClass('collapsed');
                $(this).parents('fieldset').children().show();

@@ -16,13 +16,24 @@ PROFESSIONAL_AREAS = (
     )  
 
 def index(request):
+    #user = request.user
+    care_professionals = CareProfessional.objects.all()
+    #care_professionals = CareProfessional.objects.filter(person__organization = user.org_active.id) 
+          
+#    for i in range(0, len(persons)):
+#        if (len(CareProfessional.objects.filter(person=persons[i].id))):        
+#            care_professionals.append(CareProfessional.objects.filter(person=persons[i].id))   
+    
+        
+    #org_results = Person.objects.
     return render_to_response('careprofessional/careprofessional_index.html', {
-                                    'object': CareProfessional.objects.all().filter(active = True),
+                                    'object': care_professionals,
                                     'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
                                     #'identification_form': identification_form,
                                     'licenceBoardTypes': LicenceBoard.objects.all(),
                                     'AgreementTypes': Agreement.objects.all(),
-                                    'WorkPlacesTypes': Place.objects.all(),  # aqui ta pegando todos os places, e eh preciso filtrar apenas para a organizacao que ta sendo usada. Mas nao consegui fazer isso =) ** ja inclui os imports de place e organization
+                                    'WorkPlacesTypes': Place.objects.all(),
+                                   # 'WorkPlacesTypes': Place.objects.filter(organization = user.org_active.id),  # aqui ta pegando todos os places, e eh preciso filtrar apenas para a organizacao que ta sendo usada. Mas nao consegui fazer isso =) ** ja inclui os imports de place e organization
                                     'countries': Country.objects.all(),
                                     'PhoneTypes': PhoneType.objects.all(),
                                     'AddressTypes': AddressType.objects.all(),
@@ -88,15 +99,12 @@ def care_professional_fill(request, object):
     @param object: it is the tyoe of CareProfessional that must be filled.
     @type object: an instance of the built-in type C{Psychologist}.            
     """
-    
-    print request.POST
-    
     try:
-        person = Person.objects.get(pk=object.person_id)        
+        person= Person.objects.get(pk=object.person_id)        
     except:        
-        person = Person()
-        
-    object.person = person_save(request, person)   
+        person= Person()
+       
+    object.person= person_save(request, person)   
     
     """
     #InstitutionType
@@ -141,7 +149,12 @@ def care_professional_fill(request, object):
     """ 
 
     #ProfessionalProfile
-    profile = ProfessionalProfile()
+    try:
+        profile= ProfessionalProfile.objects.get(pk= object.professionalProfile_id )
+        print "existe perfil"        
+    except:        
+        print "nao existe perfil"
+        profile= ProfessionalProfile()
     
     """
     #Agreement
@@ -160,45 +173,45 @@ def care_professional_fill(request, object):
     else:
         profile.profession = profession        
     """
-        
-    profile.initialPrifessionalActivities = request.POST['professional_initialActivitiesDate']
-       
-        
-    if(len(request.POST['professional_agreement'])):
-        profile.agreement.add(Agreement.objects.get(pk=request.POST['professional_agreement']))
-                
-    profile.services = request.POST['professional_services']
-    profile.availableTime = request.POST['professional_availableTime']
     
-    if(len(request.POST['professional_workplace'])):
-        profile.workplace.add(Place.objects.get(pk=request.POST['professional_workplace']))
-    else:
-        profile.workplace = None
-        
+    profile.initialProfessionalActivities = request.POST[ 'professional_initialActivitiesDate' ]
+    profile.availableTime = request.POST['professional_availableTime']
     profile.save()
     
-    """
-    #LicenceBoard
-    licence = LicenceBoard()
-    licence.name = request.POST['name']
-    licence.description = request.POST['description']
-    licence.save()
-    """
+    #profile.services = request.POST['professional_services']    
     
+    if ( len( request.POST.getlist( 'professional_agreement' ) ) ):
+        for agreemt_id in request.POST.getlist( 'professional_agreement' ):
+               #load agreement using the id retrieved from POST
+               agreemt= Agreement.objects.get( pk= agreemt_id )
+               #links the recently loaded agreement
+               profile.agreement.add( agreemt )
+
+    if ( len(request.POST.getlist( 'professional_workplace' ) ) ):
+        for wplace_id in request.POST.getlist( 'professional_workplace' ):
+            #load the workplace
+            wplace= Place.objects.get( pk= wplace_id )
+            #associate the place loaded
+            profile.workplace.add( wplace )
+
+    object.professionalProfile= profile
+
     #ProfessionalIdentification
-    identification = ProfessionalIdentification()
-    identification.registerNumber = request.POST['professional_registerNumber']
-    
-    
+    try:
+        identification =  ProfessionalIdentification.objects.get(pk = object.professionalIdentification_id )
+    except:
+        identification = ProfessionalIdentification()
+
     if(request.POST['professional_licenceBoard']):         
         identification.licenceBoard = LicenceBoard.objects.get(pk=request.POST['professional_licenceBoard'])
     else:
         identification.licenceBoard = None
     
+    identification.registerNumber = request.POST['professional_registerNumber']
     identification.save()
-    
-    object.professionalProfile = profile    
-    object.professionalIdentification = identification    
+
+    object.professionalIdentification = identification   
+     
     #object.comments = request.POST['comments']
 
     return object

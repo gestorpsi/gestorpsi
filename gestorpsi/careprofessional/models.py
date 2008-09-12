@@ -95,6 +95,12 @@ class ProfessionalProfile(models.Model):
     services = models.CharField(max_length=100, null=True)
     availableTime = models.CharField(max_length=100, null=True)
     workplace = models.ManyToManyField(Place, null=True)
+    
+    def __unicode__(self):
+        """
+        returns a representation of this professional profile as an unicode  C{string}.
+        """
+        return "initial professional activities= %s; agreements= %s" % ( self.initialProfessionalActivities, self.agreement.all() )
 
 class LicenceBoard(models.Model):
     """
@@ -134,8 +140,8 @@ class CareProfessional(models.Model):
     @version: 1.0
     """
     id= UuidField( primary_key= True )
-    professionalIdentification = models.ForeignKey(ProfessionalIdentification, null=True)
-    professionalProfile = models.ForeignKey(ProfessionalProfile, null = True)
+    professionalIdentification = models.OneToOneField(ProfessionalIdentification, null=True)
+    professionalProfile = models.OneToOneField(ProfessionalProfile, null = True)
     person = models.OneToOneField(Person)
     comments = models.CharField(max_length=200, null=True)
     active = models.BooleanField(default=True)

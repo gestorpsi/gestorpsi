@@ -49,6 +49,16 @@ def form(request, object_id= ''):
     return render_to_response('device/device_form.html', {'object': object, 'device': device, 'device_type': device_type, 
                                                           'device_details_form':device_details_form, 'device_form': device_form, 
                                                           'device_type_form': device_type_form } )
+
+def list_details(request, object_id= ''):
+    try:
+        device= Device.objects.get(pk= object_id)
+    except:
+        device= Device()
+    
+    list_of_dev_details= DeviceDetails.objects.all().filter( device= device.id )
+    return render_to_response('device/device_list_details.html', { 'object': list_of_dev_details } )
+
     
 def save(request, object_id='' ):
     """

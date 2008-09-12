@@ -6,6 +6,7 @@ from django.contrib.contenttypes import generic
 from gestorpsi.util import audittrail
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import CryptographicUtils as cryptoUtils
+from gestorpsi.util import audittrail
 
 class Country(models.Model):
     name = models.CharField(max_length=50)
@@ -57,6 +58,8 @@ class Address(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
+    
+    history= audittrail.AuditTrail()
     
     def _set_addressLine1(self, value):
         self.crypt_addressLine1= cryptoUtils.encrypt_attrib( value )

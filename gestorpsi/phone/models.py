@@ -35,7 +35,7 @@ class Phone(models.Model):
     object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
     
-    history = audittrail.AuditTrail()
+    history= audittrail.AuditTrail()
     
     def _set_area(self, value):
         self.crypt_area= cryptoUtils.encrypt_attrib( value )

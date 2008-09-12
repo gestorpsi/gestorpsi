@@ -3,6 +3,7 @@ from django.db import models
 from django.forms import ModelForm
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.util.uuid_field import UuidField
+from gestorpsi.util import audittrail
 
 class Approaches(models.Model):
     """
@@ -53,7 +54,9 @@ class Psychologist(CareProfessional):
      id= UuidField( primary_key= True )
      approaches = models.OneToOneField(Approaches, null=True)
      specialistArea = models.ForeignKey(Area, null=True)
-     ageGroup = models.OneToOneField(AgeGroup, null=True)   
+     ageGroup = models.OneToOneField(AgeGroup, null=True)
+    
+     history= audittrail.AuditTrail()   
 
 class AreaForm(ModelForm):
     class Meta:

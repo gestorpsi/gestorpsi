@@ -8,6 +8,7 @@ from gestorpsi.document.models import Document
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
+from gestorpsi.util import audittrail
 from gestorpsi.util import CryptographicUtils as cryptoUtils
    
 Gender = ( ('0','No Information'),('1','Female'), ('2','Male'))    
@@ -35,6 +36,8 @@ class Person(models.Model):
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True)
         
     organization = models.ForeignKey(Organization, null=True)
+    
+    history= audittrail.AuditTrail()
     
     def _get_name(self):
         return cryptoUtils.decrypt_attrib( self.crypt_name )

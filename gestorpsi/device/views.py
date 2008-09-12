@@ -70,7 +70,6 @@ def save(request, object_id='' ):
     @param object_id: the id of the C{DeviceDetails} instance to be saved or updated.
     @type object_id: an instance of the built-in class c{int}.
     """
-    
     try:
         device_details= get_object_or_404( DeviceDetails, pk=object_id)
     except Http404:

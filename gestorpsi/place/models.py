@@ -6,6 +6,7 @@ from gestorpsi.phone.models import Phone
 from django.contrib.contenttypes import generic
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
+from gestorpsi.util import audittrail
 
 class PlaceType( models.Model ):
     """
@@ -34,6 +35,8 @@ class Place( models.Model ):
     phones= generic.GenericRelation( Phone )
     place_type= models.ForeignKey( PlaceType )
     organization = models.ForeignKey(Organization, null= True, blank= True)
+    
+    history= audittrail.AuditTrail()
 
     def __unicode__(self):
        """

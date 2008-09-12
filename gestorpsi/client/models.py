@@ -3,6 +3,7 @@ from django.db import models
 from gestorpsi.person.models import Person
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import CryptographicUtils as cryptoUtils
+from gestorpsi.util import audittrail
 
 class PersonLink(models.Model):
     person = models.OneToOneField(Person)
@@ -22,6 +23,8 @@ class Client(models.Model):
     indication = models.CharField(max_length=10)
     clientStatus = models.CharField(max_length=1, default = '1', choices=CLIENT_STATUS)
     personLink = models.ManyToManyField(PersonLink)
+    
+    history= audittrail.AuditTrail()
     
     def _get_idRecord(self):
         return cryptoUtils.decrypt_attrib( self.crypt_idRecord )

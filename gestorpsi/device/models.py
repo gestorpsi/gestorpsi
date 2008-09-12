@@ -3,6 +3,7 @@ from django.db import models
 from gestorpsi.organization.models import Organization
 from django.forms import ModelForm
 from gestorpsi.util.uuid_field import UuidField
+from gestorpsi.util import audittrail
 
 DURABILITY_TYPE= ( ('1','CONSUMABLE'), ('2', 'DURABLE') )
 """
@@ -55,8 +56,8 @@ class Device(models.Model):
     """
     id= UuidField(primary_key=True)
     description= models.CharField( max_length= 80 )
-    #total_quantity= models.IntegerField()
-    #available_quantity= models.IntegerField()
+    
+    history= audittrail.AuditTrail()
     
     def __unicode__(self):
        """
@@ -80,7 +81,7 @@ class DeviceDetails(models.Model):
     device_type= models.ForeignKey( DeviceType, related_name= 'device_type' )
     device= models.ForeignKey( Device, related_name= 'device' )
     active = models.BooleanField(default=True)
-        
+    
     organization = models.ForeignKey(Organization, null=True)
     
     def __unicode__(self):

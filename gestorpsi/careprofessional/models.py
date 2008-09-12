@@ -9,6 +9,7 @@ from gestorpsi.address.models import Country, City, Address
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from gestorpsi.util.uuid_field import UuidField
+from gestorpsi.util import audittrail
 
 class InstitutionType(models.Model):
     """    
@@ -145,6 +146,9 @@ class CareProfessional(models.Model):
     person = models.OneToOneField(Person)
     comments = models.CharField(max_length=200, null=True)
     active = models.BooleanField(default=True)
+    
+    history= audittrail.AuditTrail()
+    
     def __unicode__(self):
         return u"%s" % self.person    
 

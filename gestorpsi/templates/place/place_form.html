@@ -13,7 +13,7 @@
 
 </p>
 
-<form action="/place/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_place collapsable">	
+<form action="/place/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="collapsable" id="form_place">	
 <div id="main_area">
 
 	<a href="" id="help">&nbsp;</a>
@@ -30,7 +30,7 @@
 			<input type="text" name="label" class="big tabtitle" value="{{ object.label }}" id="id_label" />
 			</label>
 			<label>{% trans "Place Type" %}<br />
-			<select name="place_type">
+			<select name="place_type" class="medium">
 				{% for pt in PlaceTypes %}
 				<option value="{{ pt.id }}"{% ifequal object.place_type.id pt.id %} selected{% endifequal %}>{{ pt }}</option>
 				{% endfor %}

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404
+from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from gestorpsi.device.models import DeviceDetails, Device, DeviceType, DeviceDetailsForm, DeviceForm, DeviceTypeForm
 
@@ -20,7 +20,7 @@ def index(request):
         details['available']= len( DeviceDetails.objects.filter( device__id= device.id, active= False ) )
         list_of_device_details.append( details )    
     print len( list_of_device_details)
-    return render_to_response( "device/device_index.html", {'object': list_of_device_details, 'device_types': DeviceType.objects.all(), 'obj': Device.objects.all()} )
+    return render_to_response( "device/device_index.html", {'object': list_of_device_details, 'device_types': DeviceType.objects.all()} )
 
 def form(request, object_id= ''):
     """
@@ -32,8 +32,7 @@ def form(request, object_id= ''):
     @type object_id: an instance of the built-in class c{int}.
     """
     
-    
-    print "banana"
+
     try :
         object= get_object_or_404( DeviceDetails, pk= object_id )
         device= object.device
@@ -61,56 +60,51 @@ def save(request, object_id='' ):
     @param object_id: the id of the C{DeviceDetails} instance to be saved or updated.
     @type object_id: an instance of the built-in class c{int}.
     """
-    device_details = []
     
     try:
         device_details= get_object_or_404( DeviceDetails, pk=object_id)
     except Http404:
-        object= DeviceDetails()
-        object.device= Device(); device= object.device
-        object.device_type= DeviceType(); device_type= object.device_type
+        device_details= DeviceDetails()
+        device_details.device= Device(); device= device_details.device
+        device_details.device_type= DeviceType(); device_type= device_details.device_type
         
     device_details.brand= request.POST[ 'brand' ]
     device_details.model= request.POST[ 'model' ] 
     device_details.part_number= request.POST[ 'part_number' ]
     device_details.comments= request.POST[ 'comments' ]
     #device information
-    device_description= request.POST[ 'description' ]
-    #device_total_quantity= request.POST[ 'total_quantity' ]
-    #device_available_quantity= request.POST[ 'available_quantity' ]
+    print "POST= %s" % request.POST
+    try:
+        device= get_object_or_404( Device, pk= request.POST[ 'device' ])
+    except Http404:
+        device= Device()
+        device.description= ''
+        device.save()
     
-    if ( device_details.device != None ):
-        device_details.device.description= device_description
-        #device_details.device.total_quantity= device_total_quantity
-        #device_details.device.available_quantity= device_available_quantity
-    else:
-        a_device= Device()
-        a_device.description= device_description
-        #a_device.total_quantity= device_total_quantity
-        #a_device.available_quantity= device_available_quantity
-        a_device.save()
-        device_details.device= a_device
+    print device 
+    device_details.device= device
     
     #device type information
-    device_type_durability= request.POST[ 'durability' ]
-    device_type_mobility= request.POST[ 'mobility' ]
-    device_type_restriction= request.POST[ 'restriction' ]
+    #device_type_durability= request.POST[ 'durability' ]
+    #device_type_mobility= request.POST[ 'mobility' ]
+    #device_type_restriction= request.POST[ 'restriction' ]
     
-    if ( device_details.device_type != None ):
-        device_details.device_type.durability = device_type_durability
-        device_details.device_type.mobility = device_type_mobility
-        device_details.device_type.restriction= device_type_restriction
-        device_details.device_type.save()
-    else:
+    try:
+        device_type= get_object_or_404( DeviceType, pk= request.POST[ 'select_device_type' ])
+    except Http404:
         device_type= DeviceType()
-        device_type.durability= device_type_durability
-        device_type.mobility= device_type_mobility
-        device_type.restriction= device_type_restriction
+        device_type.durability= '1'
+        device_type.mobility= '1'
+        device_type;restriction= 'none'
         device_type.save()
-        device_details.device_type= device_type
     
+    device_details.device_type= device_type    
     device_details.save()
-    return render_to_response('device/device_form.html', {'list_of_device_details': [ device_details ] })
+    #return render_to_response('device/device_index.html', {'list_of_device_details': [ device_details ] })
+    return HttpResponse(device_details.id)
+
+
+    
 
 def delete(request, object_id= ''):
     """

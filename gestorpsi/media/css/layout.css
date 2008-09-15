@@ -60,6 +60,7 @@ a:hover {
 	background-position: 7px 7px; 
 	background-repeat: no-repeat;
 }
+
 #main_menu a:hover, #main_menu a.active  {
 	background-color: #FCFCFC;
 	background-position: 6px 6px;
@@ -78,11 +79,23 @@ div#main_menu a.active {
 	background-color: #ECECEC;
 	height: 16px;
 }
-#start { background-image: url(../img/16/user-desktop.png);}
-#addressbook {background-image: url(../img/16/office-calendar.png);}
-#contacts {background-image: url(../img/16/address-book-new.png);}
-#customers {background-image: url(../img/16/system-users.png);}
-#myoffice {background-image: url(../img/16/go-home.png);}
+
+#start { 
+	background-image: url(../img/16/user-desktop.png);
+	}
+#addressbook {
+	background-image: url(../img/16/office-calendar.png);
+	}
+#contacts {
+	background-image: url(../img/16/address-book-new.png);
+	}
+#customers {
+	background-image: url(../img/16/system-users.png);
+	}
+#myoffice {
+	background-image: url(../img/16/go-home.png);
+	}
+
 #sub_menu {
 	background: #ECECEC;
 	border-top: 1px solid #838383;
@@ -130,7 +143,7 @@ div#sub_menu .active {
 }
 
 #myoffice.main_menu {
-width: 139px;
+	width: 139px;
 }
 
 
@@ -242,6 +255,7 @@ width: 139px;
 #content h2#title_addressbook {background: url(../img/42/office-calendar.png) no-repeat 20px 15px;}
 #content h2#title_contacts {background: url(../img/42/address-book-new.png) no-repeat 20px 15px;}
 #content h2#title_myoffice {background: url(../img/42/go-home.png) no-repeat 20px 15px;}
+#content h2#title_device {background: url(../img/42/go-device.png) no-repeat 20px 15px;}
 
 #content p.description {
 	font-size: 9px;
@@ -999,6 +1013,24 @@ div.form_mini {
 	display:none;
 }
 
+
+/*** Devices menu ****/
+
+table.devices tr.sub_item {
+	display: none;
+	}
+
+table.devices td.sub_item {
+	padding-left: 25px !important;
+	}	
+	
+
+table.devices td.item {
+	cursor: pointer;
+	}
+
+
+
 /***********LOGIN*************/
 
 body #main_area.login {
@@ -1042,3 +1074,4 @@ fieldset.collapsed {
 fieldset {
 	cursor: pointer;
 }
+

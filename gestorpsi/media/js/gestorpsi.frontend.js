@@ -23,7 +23,12 @@ $(document).ready(function(){
                $(this).show();
                $(this).removeClass('alert');
                $(this).addClass('error');
-               $('#msg_area').html('<b>Error on Ajax request</b><br /><b>url called:</b> '+settings.url+"<br /><b>reason:</b> unknown<br>Submit a <a target=\"#blank\" href=\"http://suporte.gestorpsi.com.br\">suport request</a>");
+               
+               var error_details = $(request.responseText).children("#summary h1").html();
+               error_details += "<br />";
+               error_details += $(request.responseText).children(".exception_value").html();
+
+               $('#msg_area').html('<b>Error on Ajax request</b><br /><b>url called:</b> '+settings.url+'<br /><b>error details:</b> '+error_details+'<br /><br />Submit a <a target=\"#blank\" href=\"http://suporte.gestorpsi.com.br\">suport request</a>');
                $('#core').html('');
         });
           

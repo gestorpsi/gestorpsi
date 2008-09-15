@@ -1,19 +1,20 @@
 {% load i18n %}
 {% include "core/ajax_page.html" %}
 
-{% if obj.id %}
+
+{% if object.id %}
 	<div class="edit_form">
-	<h2 id="title_clients">{{ obj.label }}</h2>
+	<h2 id="title_device">{{ device.description }}</h2>
 	<p class="description"><br />	
 {% else %}
-	<h2 id="title_clients">{% trans "Adding Equipments" %}</h2>
+	<h2 id="title_device">{% trans "Adding Equipments" %}</h2>
 	<p class="description">{% trans "Inform the equipment details then click on Save button" %}</p>
 {% endif %}
 
 
 </p>
 
-<form action="/device/{% if obj.id %}{{ obj.id }}/{% endif %}save/" method="post" id="form_device collapsable">	
+<form action="/device/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_device">	
 <div id="main_area">
 
 	<a href="" id="help">&nbsp;</a>
@@ -28,19 +29,19 @@
 		<legend>{% trans "Adding equipment details" %}</legend>
 		
 			<label>{% trans "Brand" %}<br />
-			<input type="text" name="brand" class="big tabtitle" value="" id="brand" />
+			<input type="text" name="brand" class="big tabtitle" value="{{ object.brand }}" id="brand" />
 			</label>
 			
 			<label>{% trans "Model" %}<br />
-			<input type="text" name="g" class="big tabtitle" value="" id="model" />
+			<input type="text" name="model" class="big tabtitle" value="{{ object.model }}" id="model" />
 			</label>
 			
 			<label>{% trans "Part number" %}<br />
-			<input type="text" name="part_number" class="big tabtitle" value="" id="part_number" />
+			<input type="text" name="part_number" class="big tabtitle" value="{{ object.part_number }}" id="part_number" />
 			</label>
 			
 			<label>{% trans "Comments" %}<br />
-			<input type="text" name="comments" class="big tabtitle" value="" id="comments" />
+			<input type="text" name="comments" class="big tabtitle" value="{{ object.comments }}" id="comments" />
 			</label>
 			
 				
@@ -52,10 +53,11 @@
 	-->
 		
 	<fieldset id="description">
+	<legend>{% trans "Device" %}</legend>
 			<label>{% trans "Device" %}<br />
 			<select name="device">
-				{% for d in object %}
-				<option value="{{ d.device.id }}">{{ d.device.description }}</option>
+				{% for d in dc %}
+				<option value="{{ d.id }}"{% ifequal d.id device.id %} selected {% endifequal %}>{{ d }}</option>
 				{% endfor %}
 			</select>
 				
@@ -67,10 +69,11 @@
 	device types
 	-->
 	<fieldset id="fieldset_device_type">
+		<legend>{% trans "Device Type" %}</legend>
 			<label>{% trans "Device Type" %}<br />
 			<select name="select_device_type">
-				{% for dv in device_types %}
-				<option value="{{ dv.id }}">{{ dv }}</option>
+				{% for dv in dt %}
+				<option value="{{ dv.id }}"{% ifequal dv.id object.device_type.id %} selected {% endifequal %}>{{ dv }}</option>
 				{% endfor %}
 			</select>
 			</label>	
@@ -86,14 +89,14 @@
 	
 <div id="sidebar">
 	<div class="bg_blue">
+		<input type="hidden" name="place" value="{{ object.device.id }}" />
 		{% include "tags/save.html" %}
 	</div>
-	
 </div>
 
 </form>
 
-{% if obj.id %}
+{% if object.id %}
 </div> <!-- edit_form -->
 {% endif %}
 

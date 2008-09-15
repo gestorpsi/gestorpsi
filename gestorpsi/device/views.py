@@ -18,8 +18,9 @@ def index(request):
         details['total']= len( DeviceDetails.objects.filter( device__id= device.id ) )
         #available
         details['available']= len( DeviceDetails.objects.filter( device__id= device.id, active= False ) )
-        list_of_device_details.append( details )    
-    print len( list_of_device_details)
+        details['dt']= DeviceDetails.objects.all().filter( device= device.id )
+        list_of_device_details.append( details )
+         
     return render_to_response( "device/device_index.html", {'object': list_of_device_details, 'device_types': DeviceType.objects.all()} )
 
 def form(request, object_id= ''):
@@ -42,22 +43,23 @@ def form(request, object_id= ''):
         object.device= Device(); device= object.device
         object.device_type= DeviceType(); device_type= object.device_type
     
-    device_details_form= DeviceDetailsForm( instance= object )
-    device_form= DeviceForm( instance= device )
-    device_type_form= DeviceTypeForm( instance= device_type )
+
+    device_categ= Device.objects.all()
+    device_type= DeviceType.objects.all()
+    list_of_dev_details= DeviceDetails.objects.all()
     
     return render_to_response('device/device_form.html', {'object': object, 'device': device, 'device_type': device_type, 
-                                                          'device_details_form':device_details_form, 'device_form': device_form, 
-                                                          'device_type_form': device_type_form } )
-
-def list_details(request, object_id= ''):
-    try:
-        device= Device.objects.get(pk= object_id)
-    except:
-        device= Device()
+                                                          'dc': device_categ, 'dt': device_type,
+                                                          'list_dvt': list_of_dev_details } )
     
-    list_of_dev_details= DeviceDetails.objects.all().filter( device= device.id )
-    return render_to_response('device/device_list_details.html', { 'object': list_of_dev_details } )
+#def device_list(request, object_id= ''):
+#    try:
+#        device= Device.objects.get(pk= object_id)
+#    except:
+#        device= Device()
+#    
+#    list_of_dev_details= DeviceDetails.objects.all().filter( device= device.id )
+#   return render_to_response('device/device_list_details.html', { 'object': list_of_dev_details } )
 
     
 def save(request, object_id='' ):
@@ -109,8 +111,9 @@ def save(request, object_id='' ):
     
     device_details.device_type= device_type    
     device_details.save()
-    #return render_to_response('device/device_index.html', {'list_of_device_details': [ device_details ] })
+    #return render_to_response('device/device_form.html', {'list_of_device_details': [ device_details ] })
     return HttpResponse(device_details.id)
+
 
 
     

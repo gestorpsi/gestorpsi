@@ -107,7 +107,7 @@ from gestorpsi.device.models import Device, DeviceDetails, DeviceType
 
 #the line below creates a device type
 device_type= DeviceType( durability= '1', mobility= '1', restriction= 'a restriction' )
-device_type.save()
+device_type.save()list_of_dev_details= DeviceDetails.objects.all().filter( device= device.id )
 DeviceType.objects.all()
 
 #the line below shows how to create and save an instance of the class Device

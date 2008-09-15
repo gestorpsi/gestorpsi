@@ -126,6 +126,16 @@ $(document).unbind().ready(function(){
 	    $('div#list.fast_menu_content').show();
 	});
 	
+	
+
+	$("table.devices td.item").click(function(){
+		var class_name_to_display = $(this).attr('display');
+		$('.' + class_name_to_display).toggle();
+	});
+
+
+	
+	
 });
 
 	

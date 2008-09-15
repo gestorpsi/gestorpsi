@@ -594,8 +594,19 @@ $(document).unbind().ready(function(){
           success: function(response, message, form) {
                     // get option label
                     var text = $(form).parents('fieldset').children('div.form_mini').children('form').children('label').children('input:text').val();
-                    // add <option> selecting it
-                    $(form).parents('fieldset').children('label').children('select').prepend('<option value="+response+" selected>'+text+'</option>');
+                    // add <option> to asmselect select box
+                    $(form).parents('fieldset').children('label').children('div').children('select.asmSelect:first').append('<option value='+response+' disabled="disabled">'+text+'</option>');
+                    
+                    // add <option> to real multiselect 
+                    $(form).parents('fieldset').children('label').children('div').children('select.multiple').append('<option value='+response+' selected="selected">'+text+'</option>');
+                    
+                    // append it to list
+                    $(form).parents('fieldset').children('label').children('div').children('ol').append('<li style="display: list-item;" class="asmListItem"><span class="asmListItemLabel">'+text+'</span><a class="asmListItemRemove dyn_added">remove</a></li>');
+                              
+                    $('a.asmListItemRemove.dyn_added').unbind().click(function() {
+                         $(this).parents("li").remove();
+                    }); 
+                    
                     // clean form
                     $(form).parents('fieldset').children('div.form_mini').children('form').children('label').children('input:text').val('')
                     
@@ -618,9 +629,6 @@ $(document).unbind().ready(function(){
           
           $(this).parents('fieldset').children('div.form_mini').children('form').validate({
                event:"submit",
-               
-               
-               
                rules: {
                     label: {
                             required: true
@@ -660,5 +668,14 @@ $(document).unbind().ready(function(){
                $(this).attr('opened','False');
           }
      });
+     
+     /**
+      * select multiple plugin
+      */
+     
+     $("select[multiple].asm").asmSelect({
+          animate: true
+     });
+
      
 });

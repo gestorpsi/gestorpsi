@@ -85,7 +85,7 @@
 		</label>
 		
 		<label>{% trans "Age" %}<br />
-		<select name="service_age" multiple="multiple" class="extramedium multiple small_fonts">
+		<select name="service_age" multiple="multiple" class="extramedium multiple small_fonts asm">
 			<option value="1">Criança (0 a 12 anos incompletos)</option>
 			<option value="2">Adolescente (12 a 18 anos incompletos)</option>
 			<option value="3">Adulto (18 a 60 anos)</option>
@@ -94,7 +94,7 @@
 		</label>
 		
 		<label>{% trans "Profession" %}<br />
-		<select name="service_age" multiple="multiple" class="extramedium multiple small_fonts">
+		<select name="service_age" multiple="multiple" class="extramedium multiple small_fonts asm">
 			<option value="2231-15">Médico (clinico geral)</option>
 			<option value="2231-42">Médico (neurologista)</option>
 			<option value="2231-53">Médico (psiquiatra)</option>
@@ -171,7 +171,7 @@
 	
 			<label>{% trans "Agreements" %}<br />
 			<span>
-			<select multiple="multiple" name="service_agreement" class="select multiple extrabig">
+			<select multiple="multiple" name="service_agreement" class="select multiple extrabig asm">
 				{% for l in Agreements %}
 				<option value="{{ l.id }}">{{ l }}</option>
 				{% endfor %}
@@ -181,7 +181,7 @@
 	
 			<label>{% trans "Professional" %}<br />
 			<span>
-			<select multiple="multiple" name="service_responsibles" class="select multiple extrabig">
+			<select multiple="multiple" name="service_responsibles" class="select multiple extrabig asm">
 				{% for l in CareProfessionals %}
 				<option value="{{ l.id }}">{{ l }}</option>
 				{% endfor %}

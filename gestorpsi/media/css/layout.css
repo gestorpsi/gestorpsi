@@ -478,6 +478,10 @@ select.big, #send_file.big {
 	width: 353px;
 }
 
+select.asmSelect {
+	width: 500px;
+}
+
 select.multiple {
 	height: 80px;
 }

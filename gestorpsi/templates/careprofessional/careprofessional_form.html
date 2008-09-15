@@ -47,43 +47,41 @@
 			</select>
 			</label>
 			<label>{% trans "Register Number" %}<br />
-				<input type="text" name="professional_registerNumber" />
+				<input type="text" name="professional_registerNumber" value="{{ professional_registerNumber }}" />
 			</label>
 	</fieldset>
 
 	<fieldset id="fieldset_professional_profile">
 		<legend>{% trans "Professional Profile" %}</legend>
 			<label>{% trans "Inital Activities Date" %}<br />
-				<input type="text" name="professional_initialActivitiesDate" />
+				<input type="text" name="professional_initialActivitiesDate" value="{{ object.professionalProfile.initialProfessionalActivities }}" />
 			</label>
 			<label>{% trans "Services" %}<br />
-				<input type="text" name="professional_services" />
+				<input type="text" name="professional_services" value="{{ object.professionalProfile.services }}" />
 			</label>
 			<label>{% trans "Available Time" %}<br />
-				<input type="text" name="professional_availableTime" />
+				<input type="text" name="professional_availableTime" value="{{ object.professionalProfile.availableTime }}" />
 			</label>	
 	</fieldset>
-
 
 	<fieldset id="fieldset_professional_agreement">
 		<legend>{% trans "Professional Agreements" %}</legend>
 			<label>{% trans "Agreements" %}<br />
-			<select name="professional_agreement" multiple="multiple" class="select multiple extrabig">
+			<select name="professional_agreement" multiple="multiple" class="select multiple extrabig asm">
 				{% for l in AgreementTypes %}
-				<option value="{{ l.id }}">{{ l }}</option>
+				<option value="{{ l.id }}"{% for a in agreements %}{% ifequal a.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
 				{% endfor %}
 			</select>
 			</label>
 	</fieldset>
 
-
 	<fieldset id="fieldset_professional_workplace">
 		<legend>{% trans "Professional Workplaces" %}</legend>
 			
 			<label>{% trans "Workplaces" %}<br />
-			<select name="professional_workplace" multiple="multiple" class="select multiple extrabig">
+			<select name="professional_workplace" multiple="multiple" class="select multiple extrabig asm">
 				{% for l in WorkPlacesTypes %}
-				<option value="{{ l.id }}">{{ l }}</option>
+				<option value="{{ l.id }}"{% for w in workplaces %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
 				{% endfor %}
 			</select>
 			</label>

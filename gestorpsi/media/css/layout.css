@@ -1022,16 +1022,16 @@ div.form_mini {
 
 table.devices tr.sub_item {
 	display: none;
-	}
+}
 
 table.devices td.sub_item {
 	padding-left: 25px !important;
-	}	
+}	
 	
 
 table.devices td.item {
 	cursor: pointer;
-	}
+}
 
 
 
@@ -1039,33 +1039,35 @@ table.devices td.item {
 
 body #main_area.login {
 	width: 260px;
-    margin: 50px auto;
-    float: none;
-    height: 300px;
-    border: none;
-    background: none;
-    text-align: center;
-
+	margin: 50px auto;
+	float: none;
+	height: 300px;
+	border: none;
+	background: none;
+	text-align: center;
 }
+
 body #loginform {
 	background:#ECECEC;
-    padding: 25px;
-    -moz-border-radius-topleft: 8px;
+	padding: 25px;
+	-moz-border-radius-topleft: 8px;
 	-moz-border-radius-topright: 8px;
 	-moz-border-radius-bottomleft: 8px;
 	-moz-border-radius-bottomright: 8px;
-    border: 1px solid #838383;
+	border: 1px solid #838383;
 
 }
+
 body #loginform  label {
 	text-align: left;
 }
+
 .forgetmenot label{
 	clear: both;
 	padding-right: 5px;
-    padding-top: 10px;
-    line-height: 12px;
-    text-align: left;
+	padding-top: 10px;
+	line-height: 12px;
+	text-align: left;
 }
 
 
@@ -1073,6 +1075,10 @@ fieldset.collapsed {
 	border: 0px;
 	height: 1px;
 	padding: 0 0 0 0;
+}
+
+fieldset.collapsed legend {
+	color: #000;
 }
 
 fieldset {

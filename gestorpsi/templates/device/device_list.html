@@ -1,6 +1,6 @@
 {% load i18n %}
 
-{% if not obj %}
+{% if not object %}
         <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/device/add/" class="fastmenu" sub_menu="sub_devices" display="form">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
 {% else %}
 
@@ -8,22 +8,28 @@
 Esta caixa é mostrada quando há mensagens
 </div>
 
-<h2 id="title_contacts">{% trans "All Devices" %}</h2>
+<h2 id="title_device">{% trans "All Devices" %}</h2>
 <p class="description">{% trans "Displaying" %} <a href="/device/" display="list">{{ object|length }} {% trans "device(s)" %}</a>.</p>
 
 
 
 <div id="main_area" class="contact">
 
-<table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+<table id="search_results" class="zebra newtab devices" border="0" cellspacing="0" cellpadding="0">
 
 
         {% for o in object %}
         <tr>
-        	<td><a href="/device/{{ o.device.id }}" title="{{ o.device }}">{{ o.device.description }} (Total: {{ o.total }}) (Available: {{ o.available }}) </a></td>
-        	
-			<br>
+        	<td class="item" display="device_{{ o.device.id }}">{{ o.device.description }} (Total: {{ o.total }}) (Available: {{ o.available }}) </a></td>
+
         </tr>
+        
+	   {% for list in o.dt %}
+				<tr class="sub_item device_{{ o.device.id }}">
+					<td class="sub_item" ><a href="/device/{{ list.id }}" title="{{ list }}">{{ list }} </a></td>
+				</tr>
+   			{% endfor %}
+		
         
         {% endfor %}
         

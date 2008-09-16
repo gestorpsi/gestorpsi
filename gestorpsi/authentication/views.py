@@ -6,7 +6,7 @@ from gestorpsi.authentication.models import CustomUser
 from gestorpsi.organization.models import Organization
 
 def login_page(request):
-    check_user()
+   
     return render_to_response('registration/login.html')
 
 def user_authentication(request):
@@ -86,21 +86,3 @@ def unblocked_user(user):
     else:
         return True
 
-def check_user():    
-    user = CustomUser.objects.all()
-    if( len(user) < 1):
-        ##Organization
-        organization = Organization()
-        organization.name = 'Organization_test_1'
-        organization.active = True
-        organization.save()
-        
-        #User
-        user = CustomUser.objects.create_user('demo','demo@gestorpsi.com.br','demo')
-        user.temp ='demo'
-        user.organization.add(organization)
-        user.save()
-                
-    else:
-        print "There are " , len(user) , "users"
-        

@@ -677,9 +677,30 @@ $(document).unbind().ready(function(){
       * fieldsets collapsed
       */
      
-     $('form.collapsable fieldset:not(:first)').children().hide();
-     $('form.collapsable fieldset:not(:first)').children('legend').show();
-     $('form.collapsable fieldset:not(:first)').addClass('collapsed');
+     
+     $('form.collapsable fieldset:not(:first)').each(function() {
+          fieldset_id = $(this).attr('id');
+          $('#' + fieldset_id + ' label input').each(function() {
+               if($(this).val()) { // not empty fields. so, not collapse it
+                    $(this).parents('fieldset').attr('opened','True');
+               }
+          });
+          // do the same for select multiple fields
+          $('#' + fieldset_id + ' label select.multiple option').each(function() {
+               if($(this).attr('selected'))
+                    $(this).parents('fieldset').attr('opened','True');
+          });
+          
+          
+     });
+     
+     $('form.collapsable fieldset:not(:first, .not_collapsable)').each(function() {
+          if($(this).attr('opened')!='True') {
+                    $(this).children().hide();
+                    $(this).children('legend').show();
+                    $(this).addClass('collapsed');
+          }
+     });
      
      
      $('form.collapsable fieldset').children('legend').click(function() {
@@ -695,6 +716,7 @@ $(document).unbind().ready(function(){
                $(this).attr('opened','False');
           }
      });
+     
      
      /**
       * select multiple plugin

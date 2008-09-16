@@ -57,7 +57,7 @@
 			<label>{% trans "Device" %}<br />
 			<select name="device">
 				{% for d in dc %}
-				<option value="{{ d.id }}"{% ifequal d.id device.id %} selected {% endifequal %}>{{ d }}</option>
+				<option value="{{ d.id }}"{% ifequal d.id device.id %} selected {% endifequal %}>{{ d.description }}</option>
 				{% endfor %}
 			</select>
 				

@@ -16,15 +16,11 @@ PROFESSIONAL_AREAS = (
     )  
 
 def index(request):
-    #user = request.user
-    care_professionals = CareProfessional.objects.all()
-    #care_professionals = CareProfessional.objects.filter(person__organization = user.org_active.id) 
+    user = request.user
+    #care_professionals = CareProfessional.objects.all()
+    care_professionals = CareProfessional.objects.filter(person__organization = user.org_active.id) 
           
-#    for i in range(0, len(persons)):
-#        if (len(CareProfessional.objects.filter(person=persons[i].id))):        
-#            care_professionals.append(CareProfessional.objects.filter(person=persons[i].id))   
-    
-        
+#            
     #org_results = Person.objects.
     return render_to_response('careprofessional/careprofessional_index.html', {
                                     'object': care_professionals,
@@ -32,8 +28,8 @@ def index(request):
                                     #'identification_form': identification_form,
                                     'licenceBoardTypes': LicenceBoard.objects.all(),
                                     'AgreementTypes': Agreement.objects.all(),
-                                    'WorkPlacesTypes': Place.objects.all(),
-                                   # 'WorkPlacesTypes': Place.objects.filter(organization = user.org_active.id),  # aqui ta pegando todos os places, e eh preciso filtrar apenas para a organizacao que ta sendo usada. Mas nao consegui fazer isso =) ** ja inclui os imports de place e organization
+                                   # 'WorkPlacesTypes': Place.objects.all(),
+                                    'WorkPlacesTypes': Place.objects.filter(organization = user.org_active.id),  # aqui ta pegando todos os places, e eh preciso filtrar apenas para a organizacao que ta sendo usada. Mas nao consegui fazer isso =) ** ja inclui os imports de place e organization
                                     'countries': Country.objects.all(),
                                     'PhoneTypes': PhoneType.objects.all(),
                                     'AddressTypes': AddressType.objects.all(),
@@ -48,9 +44,10 @@ def index(request):
   
 
 def form(request, object_id=''):
+    user = request.user
     phones = []
     addresses = []
-    workplaces = Place.objects.all()  # aqui ta pegando todos os places, e eh preciso filtrar apenas para a organizacao que ta sendo usada. Mas nao consegui fazer isso =) ** ja inclui os imports de place e organization
+    workplaces = Place.objects.filter(organization = user.org_active.id)
     emails    = []
     sites     = []
     instantMessengers = []

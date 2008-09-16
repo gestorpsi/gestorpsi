@@ -10,6 +10,8 @@ class CustomUser(User):
     organization = models.ManyToManyField(Organization, null=True)
     try_login = models.IntegerField(default = 0, null=True)
     crypt_temp = models.CharField(max_length=50, blank=True)
+    org_active = models.OneToOneField(Organization, related_name="org_active", null=True)
+    
     # Use UserManager to get the create_user method, etc.
     objects = UserManager()
     

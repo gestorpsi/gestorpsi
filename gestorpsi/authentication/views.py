@@ -6,6 +6,7 @@ from gestorpsi.authentication.models import CustomUser
 from gestorpsi.organization.models import Organization
 
 def login_page(request):
+    check_user()
     return render_to_response('registration/login.html')
 
 def user_authentication(request):
@@ -13,7 +14,6 @@ def user_authentication(request):
     password = request.POST['password']
     if(unblocked_user(username)):
         user = authenticate(username=username, password=password)   
-        #if user is not None:
         if user is not None:
             if user.is_active:
                 #login(request, user)
@@ -27,8 +27,10 @@ def user_authentication(request):
                     number_org = []
                     number_org = user.organization.all()
                     user.org_active = number_org[0]
-                    login(request, user)                                                            
-                    return HttpResponseRedirect('/')       
+                    login(request, user)                  
+                                                                                
+                    return HttpResponseRedirect('/')
+                           
         else:
                 set_trylogin(username)
                 return render_to_response('registration/login.html', { 'message': "Invalid login" } )
@@ -37,16 +39,15 @@ def user_authentication(request):
  
 def logout_page(request):
     logout(request)
-    return HttpResponseRedirect('/login') 
+    return HttpResponseRedirect('/') 
 
 def user_organization(request):
     organization = Organization.objects.get(pk=request.POST['organization'])
     user = request.session['temp_user']
     del request.session['temp_user']        
     user.org_active = organization    
-    login(request, user) 
-     
-    #return render_to_response('core/main.html', { 'organization': organization } )
+    login(request, user)    
+    
     return HttpResponseRedirect('/') 
 
 
@@ -65,9 +66,13 @@ def clear_login(user):
     user.save()
     print user," - tentativas: ", user.try_login
     
-def change_password(user,new_password):
-    user.set_password(new_password)
-    user.save()
+def change_password(user,current_password, new_password):    
+    if check_password(current_password):   
+        user.set_password(new_password)
+        org = user.org_active
+        user.org_active = None
+        user.save()
+        user.org_active = org       
     
 def unblocked_user(user):
     filtered_user = CustomUser.objects.filter(username=user)
@@ -80,4 +85,22 @@ def unblocked_user(user):
             return True
     else:
         return True
-   
+
+def check_user():    
+    user = CustomUser.objects.all()
+    if( len(user) < 1):
+        ##Organization
+        organization = Organization()
+        organization.name = 'Organization_test_1'
+        organization.active = True
+        organization.save()
+        
+        #User
+        user = CustomUser.objects.create_user('demo','demo@gestorpsi.com.br','demo')
+        user.temp ='demo'
+        user.organization.add(organization)
+        user.save()
+                
+    else:
+        print "There are " , len(user) , "users"
+        

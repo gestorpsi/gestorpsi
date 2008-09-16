@@ -24,11 +24,11 @@ People Personal Profile Form
                 <input type="hidden" class="small" name="birthPlace" value="{% if object.person.birthPlace_id %}{{ object.person.birthPlace_id }}{% endif %}" id="id_birthPlace" />
                 </label>
                 <label>{% trans "Marital Status" %}<br />
-                <select name="maritalStatus" class="select">
-		{% for m in MaritalStatusTypes %}
-			<option value="{{ m.id }}"{% ifequal m.id object.person.maritalStatus_id %} selected{% endifequal %}>{{ m }}</option>
-		{% endfor %}
-		</select>
+	                <select name="maritalStatus" class="select">
+						{% for m in MaritalStatusTypes %}
+							<option value="{{ m.id }}"{% ifequal m.id object.person.maritalStatus_id %} selected{% endifequal %}>{{ m }}</option>
+						{% endfor %}
+					</select>
                 </label>
                 
                 

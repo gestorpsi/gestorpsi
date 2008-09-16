@@ -12,7 +12,9 @@ def index(request):
     @param request: this is a request sent by the browser.
     @type request: a instance of the class C{HttpRequest} created by the framework Django
     """
-    return render_to_response('psychologist/psychologist_index.html', {'object': Psychologist.objects.all().filter(active = True)})
+    user = request.user
+    
+    return render_to_response('psychologist/psychologist_index.html', {'object': Psychologist.objects.filter(person__organization = user.org_active.id, active = True)})
     
 
 def form(request, object_id=''):
@@ -44,15 +46,7 @@ def form(request, object_id=''):
 
 # Save or Update psychpsychologistologist object
 def save(request, object_id=''):    
-    
-    print request.POST['professional_agreement']
-    """
-    This function view saves a psychologist, its address and phones.
-    @param request: this is a request sent by the browser.
-    @type request: an instance of the class C{HttpRequest} created by the framework Django.
-    @param object_id: it is the I{id} of the psychologist that must be saved.
-    @type object_id: an instance of the built-in type C{int}. 
-    """
+
     try:
         object = get_object_or_404(Psychologist, pk=object_id)        
     except Http404:
@@ -85,8 +79,6 @@ def save(request, object_id=''):
     """
         
     object = care_professional_fill(request, object)
-    print object
-    
     object.save()
 
     return HttpResponse(object.id)

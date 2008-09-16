@@ -10,8 +10,9 @@ def index(request):
     @param request: this is a request sent by the browser.
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
     """
+    user = request.user
     list_of_device_details= []
-    for device in Device.objects.all():
+    for device in Device.objects.filter(organization = user.org_active.id):
         details= {}
         details['device']= device
         #total
@@ -33,7 +34,6 @@ def form(request, object_id= ''):
     @type object_id: an instance of the built-in class c{int}.
     """
     
-
     try :
         object= get_object_or_404( DeviceDetails, pk= object_id )
         device= object.device
@@ -77,10 +77,10 @@ def save(request, object_id='' ):
     except Http404:
         device_details= DeviceDetails()
         device_details.device= Device(); device= device_details.device
-        device_details.device_type= DeviceType(); device_type= device_details.device_type
-        
+        device_details.device_type= DeviceType(); device_type= device_details.device_type            
+          
     device_details.brand= request.POST[ 'brand' ]
-    device_details.model= request.POST[ 'model' ] 
+    #device_details.model= request.POST[ 'model' ] 
     device_details.part_number= request.POST[ 'part_number' ]
     device_details.comments= request.POST[ 'comments' ]
     #device information
@@ -89,7 +89,9 @@ def save(request, object_id='' ):
         device= get_object_or_404( Device, pk= request.POST[ 'device' ])
     except Http404:
         device= Device()
+        user = request.user
         device.description= ''
+        device.organization = user.org_active 
         device.save()
     
     print device 
@@ -114,9 +116,6 @@ def save(request, object_id='' ):
     #return render_to_response('device/device_form.html', {'list_of_device_details': [ device_details ] })
     return HttpResponse(device_details.id)
 
-
-
-    
 
 def delete(request, object_id= ''):
     """

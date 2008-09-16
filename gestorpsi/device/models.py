@@ -57,6 +57,8 @@ class Device(models.Model):
     id= UuidField(primary_key=True)
     description= models.CharField( max_length= 80 )
     
+    organization = models.ForeignKey(Organization, null=True)
+    
     history= audittrail.AuditTrail()
     
     def __unicode__(self):
@@ -80,9 +82,7 @@ class DeviceDetails(models.Model):
     comments= models.CharField( max_length= 80 )
     device_type= models.ForeignKey( DeviceType, related_name= 'device_type' )
     device= models.ForeignKey( Device, related_name= 'device' )
-    active = models.BooleanField(default=True)
-    
-    organization = models.ForeignKey(Organization, null=True)
+    active = models.BooleanField(default=True)   
     
     def __unicode__(self):
       """

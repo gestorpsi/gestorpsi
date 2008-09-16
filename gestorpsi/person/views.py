@@ -4,7 +4,7 @@ from gestorpsi.address.views import address_save
 from gestorpsi.document.views import document_save
 from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
-from gestorpsi.person.models import MaritalStatus
+from gestorpsi.person.models import Person, MaritalStatus
 
 def person_save(request, person):
     # CHECK IF HAS CHANGES BEFORE SAVE
@@ -25,10 +25,13 @@ def person_save(request, person):
     
     
     # maritalStatus
-    if not (request.POST['maritalStatus']):
+    try:
+        if not (request.POST['maritalStatus']):
+            person.maritalStatus = None
+        else:
+            person.maritalStatus = MaritalStatus.objects.get(pk = request.POST['maritalStatus'])
+    except:
         person.maritalStatus = None
-    else:
-        person.maritalStatus = MaritalStatus.objects.get(pk = request.POST['maritalStatus'])   
 
     # birthPlace (Naturality)
     if not (request.POST['birthPlace']):
@@ -36,6 +39,9 @@ def person_save(request, person):
     else:
         person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])    
 
+# ************* USUARIO NA SESSAO 
+    user = request.user
+    person.organization = user.org_active    
     person.save()
 
     # save phone numbers (using Phone APP)

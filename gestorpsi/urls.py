@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     
     # Uncomment this for admin:
     #(r'^demo/', include('django.contrib.admin.urls')),
-    (r'^$', 'gestorpsi.frontend.views.index'),
+    (r'^$', 'gestorpsi.frontend.views.index'),    
     (r'^admin/(.*)', admin.site.root),
     # OLD: (r'^admin/', include('django.contrib.admin.urls')),    
     (r'^contact/', include('gestorpsi.contact.urls')),

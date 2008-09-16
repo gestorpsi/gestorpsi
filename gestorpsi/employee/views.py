@@ -15,7 +15,18 @@ def index(request):
     @param request: this is a request sent by the browser.
     @type request: a instance of the class C{HttpRequest} created by the framework Django
     """ 
-    return render_to_response('employee/employee_index.html', {'object': Employee.objects.all().filter(active = True), 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), 'MaritalStatusTypes': MaritalStatus.objects.all(), })
+    user = request.user
+    
+    return render_to_response('employee/employee_index.html', {'object': Employee.objects.filter(person__organization = user.org_active.id, active = True), 
+                                                               'countries': Country.objects.all(), 
+                                                               'PhoneTypes': PhoneType.objects.all(), 
+                                                               'AddressTypes': AddressType.objects.all(), 
+                                                               'EmailTypes': EmailType.objects.all(), 
+                                                               'IMNetworks': IMNetwork.objects.all() , 
+                                                               'TypeDocuments': TypeDocument.objects.all(), 
+                                                               'Issuers': Issuer.objects.all(), 
+                                                               'States': State.objects.all(), 
+                                                               'MaritalStatusTypes': MaritalStatus.objects.all(), })
 
 def form(request, object_id= ''):
     """

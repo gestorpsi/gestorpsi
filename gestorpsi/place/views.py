@@ -41,10 +41,14 @@ def index(request):
     @param request: this is a request sent by the browser.
     @type request: a instance of the class C{HttpRequest} created by the framework Django
     """
-    return render_to_response( "place/place_index.html", {'object': Place.objects.all(), 'PlaceTypes': PlaceType.objects.all(), 'countries': Country.objects.all(), 'RoomTypes': RoomType.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), } )
+    user = request.user
+    print request.user
+    print user.org_active
+    return render_to_response( "place/place_index.html", {'object': Place.objects.filter(organization=user.org_active.id), 'PlaceTypes': PlaceType.objects.all(), 'countries': Country.objects.all(), 'RoomTypes': RoomType.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), } )
 
 def form(request, object_id=''):
     try:
+        user = request.user
         phones = []
         addresses = []
         rooms = []
@@ -52,12 +56,12 @@ def form(request, object_id=''):
         addresses= object.address.all()
         phones= object.phones.all()
         rooms= object.room_set.all()
-        organization= Organization.objects.get(pk= 1 ) # pk forcing to test view.
+        organization= Organization.objects.get(pk= user.org_active.id) # pk forcing to test view.
         #organization= Organization.objects.get(pk= a_place.organization_id ) # uncomment me, when organization is ready
     except (Http404, ObjectDoesNotExist):
         object= Place()
         place_type= PlaceType()
-        organization= Organization()
+        #organization= Organization()
     return render_to_response('place/place_form.html', {'object': object, 'PlaceTypes': PlaceType.objects.all(), 
                                                         'organization': organization, 'addresses': addresses, 'phones': phones,
                                                         'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(),
@@ -90,8 +94,10 @@ def save(request, object_id=''):
     object.place_type= PlaceType.objects.get( pk= request.POST[ 'place_type' ] )
     
     #organization ** will come from session **
-    #object.organization= Organization.objects.get(pk= request.POST[ 'organization' ] )
-    
+    #object.organization= Organization.objects.get(pk= request.POST[ 'organization' ] )    
+    #get organization from the user session
+    user = request.user
+    object.organization = user.org_active    
     object.save() 
     
     # save addresses (using Address APP)

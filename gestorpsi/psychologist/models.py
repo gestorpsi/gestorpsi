@@ -51,12 +51,12 @@ class Psychologist(CareProfessional):
      @version: 1.0
      @see: CareProfessional
      """
-     id= UuidField( primary_key= True )
      approaches = models.OneToOneField(Approaches, null=True)
      specialistArea = models.ForeignKey(Area, null=True)
      ageGroup = models.OneToOneField(AgeGroup, null=True)
     
-     history= audittrail.AuditTrail()   
+     #history_psyc = audittrail.AuditTrail()
+     
 
 class AreaForm(ModelForm):
     class Meta:

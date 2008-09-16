@@ -5,8 +5,7 @@ from django.http import HttpResponseRedirect
 from gestorpsi.authentication.models import CustomUser
 from gestorpsi.organization.models import Organization
 
-def login_page(request):
-   
+def login_page(request):   
     return render_to_response('registration/login.html')
 
 def user_authentication(request):

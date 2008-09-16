@@ -80,7 +80,7 @@ def save(request, object_id='' ):
         device_details.device_type= DeviceType(); device_type= device_details.device_type            
           
     device_details.brand= request.POST[ 'brand' ]
-    #device_details.model= request.POST[ 'model' ] 
+    device_details.model= request.POST[ 'model' ] 
     device_details.part_number= request.POST[ 'part_number' ]
     device_details.comments= request.POST[ 'comments' ]
     #device information

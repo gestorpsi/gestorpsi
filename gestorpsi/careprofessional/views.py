@@ -47,11 +47,12 @@ def form(request, object_id=''):
     user = request.user
     phones = []
     addresses = []
-    workplaces = Place.objects.filter(organization = user.org_active.id)
     emails    = []
     sites     = []
     instantMessengers = []
     documents = []
+    workplaces = []
+    agreements = []
 
     try:
         object = get_object_or_404(CareProfessional, pk=object_id)
@@ -61,6 +62,8 @@ def form(request, object_id=''):
         emails    = object.person.emails.all()
         sites     = object.person.sites.all()
         instantMessengers = object.person.instantMessengers.all()
+        workplaces = object.professionalProfile.workplace.all()
+        agreements = object.professionalProfile.agreement.all()
     except:
         object = CareProfessional() 
 
@@ -75,7 +78,7 @@ def form(request, object_id=''):
                                     'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,                                    
                                     'licenceBoardTypes': LicenceBoard.objects.all(),
                                     'AgreementTypes': Agreement.objects.all(),
-                                    'WorkPlacesTypes': workplaces,
+                                    'WorkPlacesTypes': Place.objects.filter(organization = user.org_active.id),
                                     'countries': Country.objects.all(),
                                     'PhoneTypes': PhoneType.objects.all(),
                                     'AddressTypes': AddressType.objects.all(),
@@ -86,6 +89,8 @@ def form(request, object_id=''):
                                     'States': State.objects.all(),
                                     'MaritalStatusTypes': MaritalStatus.objects.all(),
                                     'PlaceTypes': PlaceType.objects.all(),
+                                    'workplaces': workplaces,
+                                    'agreements': agreements,                                    
                                     })
 
 def care_professional_fill(request, object):

@@ -341,13 +341,14 @@ div#sub_menu .active {
 #photo a span {
 	display: none;
 }
+
 #male {
 	background:url(../img/ico_male.gif) no-repeat;
-	width: 14px
+	width: 16px
 }
 #female {
 	background:url(../img/ico_female.gif) no-repeat;
-	width: 14px
+	width: 16px
 }
 a.delete {
 	display: block;

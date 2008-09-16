@@ -92,20 +92,22 @@
 			
 	</fieldset>
 
-	<fieldset id="fieldset_professional_status">
-		<legend>{% trans "Professional Status" %}</legend>
-			<label>{% trans "Active?" %}<br />
-			<select id="id_active" name="professional_active" class="small">
-				<option value="True" {% if object.active %} selected{% endif %}>{% trans "Yes" %}</option>
-				<option value="False" {% if not object.active %} selected{% endif %}>{% trans "No" %}</option>
-					
-			</select>
-			</label>
-	</fieldset>
 
 	{% include "meta/people_profile.html" %}
 	{% include "meta/addressbook.html" %}
 	{% include "meta/internet.html" %}
+
+
+	<fieldset id="fieldset_professional_status" class="not_collapsable">
+		<legend>{% trans "Professional Status" %}</legend>
+			<label>{% trans "Active?" %}<br />
+			<select id="id_active" name="professional_active" class="small">
+				<option value="True" {% if not object.id %}selected{% else %}{% if object.active %} selected{% endif %}{% endif %}>{% trans "Yes" %}</option>
+				<option value="False" {% if object.id %}{% if not object.active %} selected{% endif %}{% endif %}>{% trans "No" %}</option>
+					
+			</select>
+			</label>
+	</fieldset>
 
 <br />	
 </div>

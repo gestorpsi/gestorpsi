@@ -14,6 +14,7 @@ $(document).unbind().ready(function(){
                $('#form_employee').attr('action','employee/' + response + '/save/');
                $('#form_place').attr('action','place/' + response + '/save/');
                $('#form_service').attr('action','service/' + response + '/save/');
+               $('#form_device').attr('action','device/' + response + '/save/');
               
                // open new tab
                $('#sub_menu ul li a').removeClass('active'); // unselect other tabs
@@ -177,6 +178,32 @@ $(document).unbind().ready(function(){
 
        }
      });
+    
+    
+     /**
+     * 
+     * device post form
+     * 
+     * _description:
+     * validate and post devices form.
+     * 
+     */    
+    
+     $('#form_device').validate({event:"submit",
+       rules: {
+            brand: {
+                    required: true
+            }
+       },
+       messages: {
+            brand: 'This field is required'
+       },
+       submitHandler: function(form) {
+            $(form).ajaxSubmit(form_options);
+
+       }
+     });
+    
     
     
     /**

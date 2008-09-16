@@ -21,7 +21,7 @@ def index(request):
         details['dt']= DeviceDetails.objects.all().filter( device= device.id )
         list_of_device_details.append( details )
          
-    return render_to_response( "device/device_index.html", {'object': list_of_device_details, 'device_types': DeviceType.objects.all()} )
+    return render_to_response( "device/device_index.html", {'object': list_of_device_details, 'dt': DeviceType.objects.all(), 'dc': Device.objects.all()} )
 
 def form(request, object_id= ''):
     """

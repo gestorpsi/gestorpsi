@@ -51,17 +51,15 @@ $(document).ready(function(){
 	/** ajax_link: load content inside div core */
 	$("#menus a:not(.notajax)").click(function(){
                 var link = $(this);
-                if($('#already_loaded').val() != 'True' || $(this).hasClass('main_menu')) {
-                        $("#core").load(link.attr('href'));
-                        
-                        // if is defined page to display, show it
-                        $.ajax({
-                        complete: function(){
-                                if(link.attr('display')) {
-                                        $('#core .fast_menu_content').hide();
-                                        $('#'+link.attr('display')).show();
-                                }   
-                        }
+                if($('#already_loaded').val() != 'True' || $(this).hasClass('main_menu'))  {
+                        $("#core").load(link.attr('href'),'',function() {
+                                $.ajax({
+                                success: function() {
+                                                $('#core div.fast_menu_content').hide();
+                                                $('#core #'+link.attr('display')).show()
+        ;
+                                        }
+                                });
                         });
                 }
                 return false;

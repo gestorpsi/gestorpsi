@@ -1,7 +1,7 @@
 {% load i18n %}
 
 {% if not object %}
-        <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/device/" class="fastmenu" sub_menu="sub_devices" display="form">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
+        <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/device/" class="fastmenu notajax" sub_menu="sub_devices" display="form">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
 {% else %}
 
 <div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->

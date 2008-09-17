@@ -45,7 +45,6 @@ $(document).unbind().ready(function(){
 				// if attribute exists, display div
 				if(link.attr('display')) {
 					$('#'+link.attr('display')).show();
-					
 					// if exists, change class in submenu to active
 					if(link.attr('sub_menu')) {
 						$('#sub_menu ul li a').removeClass('active');
@@ -105,6 +104,7 @@ $(document).unbind().ready(function(){
         /**
          *
          * hide opened extra tabs when close (or Cancel Button) is clicked
+         * !! only for editing registers
          *
          */
         
@@ -132,6 +132,29 @@ $(document).unbind().ready(function(){
 		var class_name_to_display = $(this).attr('display');
 		$('.' + class_name_to_display).toggle();
 	});
+	
+	
+	$('#core a.fastmenu').click(function() {
+		// hide all opened content        
+		$('.fast_menu_content').hide();
+		
+		// display choiced item and set it to already loaded
+		if(!$(this).attr('display'))
+			display = 'list';
+		else
+			display = $(this).attr('display');
+		
+		$('#' + display).show();
+	
+		link = $(this);
+		if(link.attr('sub_menu')) {
+			$('#sub_menu ul li a').removeClass('active');
+			// select option in submenu
+			$('div#sub_menu ul#'+link.attr('sub_menu')+' li a[display="'+link.attr('display')+'"]').addClass('active');
+		}
+	
+		return false;
+        });
 
 
 	

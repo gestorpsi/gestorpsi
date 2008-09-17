@@ -30,6 +30,7 @@ $(document).ready(function(){
 
                $('#msg_area').html('<b>Error on Ajax request</b><br /><b>url called:</b> '+settings.url+'<br /><b>error details:</b> '+error_details+'<br /><br />Submit a <a target=\"#blank\" href=\"http://suporte.gestorpsi.com.br\">suport request</a>');
                $('#core').html('');
+               return false;
         });
           
         /**
@@ -57,6 +58,7 @@ $(document).ready(function(){
                         $.ajax({
                         complete: function(){
                                 if(link.attr('display')) {
+                                        $('#core .fast_menu_content').hide();
                                         $('#'+link.attr('display')).show();
                                 }   
                         }
@@ -145,19 +147,19 @@ $(document).ready(function(){
         
         
         $('#sub_menu a.fastmenu').click(function() {
-                //alert('clicou?');
-                // hide all opened content        
-                $('.fast_menu_content').hide();
+                // hide all opened content
+                $('#core .fast_menu_content').hide();
                 
                 // display choiced item and set it to already loaded
                 if(!$(this).attr('display'))
                         display = 'list';
                 else
                         display = $(this).attr('display');
-                
-                $('#' + display).show();
 
+                $('#' + display).show();
+                
                 return false;
+                
         });
         
         

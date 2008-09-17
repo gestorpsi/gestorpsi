@@ -10,6 +10,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import audittrail
+from gestorpsi.organization.models import Agreement
 
 class InstitutionType(models.Model):
     """    
@@ -69,18 +70,18 @@ class Profession(models.Model):
         """
         return u"%s" % self.description
 
-class Agreement(models.Model):
-    """
-    This class represents an agreement type that the careprofessional works
-    @author: Danilo S. Sanches
-    @version: 1.0
-    """
-    description = models.CharField(max_length=50, null=True)
-    def __unicode__(self):
-        """
-        returns a representation of this Agreement as an unicode  C{string}.
-        """
-        return u"%s" % self.description
+#class Agreement(models.Model):
+#    """
+#    This class represents an agreement type that the careprofessional works
+#    @author: Danilo S. Sanches
+#    @version: 1.0
+#    """
+#    description = models.CharField(max_length=50, null=True)
+#    def __unicode__(self):
+#        """
+#        returns a representation of this Agreement as an unicode  C{string}.
+#        """
+#        return u"%s" % self.description
 
 class ProfessionalProfile(models.Model):
     """
@@ -156,7 +157,7 @@ class CareProfessional(models.Model):
 from gestorpsi.address.models import Country
 from gestorpsi.person.models import Person
 from gestorpsi.organization.models import Organization
-from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, Profession, Agreement, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
+from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, Profession, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
 from gestorpsi.address.models import Country, State, City, Address, AddressType
 from gestorpsi.phone.models import Phone, PhoneType
 

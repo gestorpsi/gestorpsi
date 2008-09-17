@@ -7,7 +7,7 @@
 """
 
 from django.contrib import admin
-from gestorpsi.service.models import Service, ResearchProject, Agreement, AgreementType
+from gestorpsi.service.models import Service, ResearchProject
 
 class ServiceAdmin(admin.ModelAdmin):
     pass
@@ -15,13 +15,5 @@ class ServiceAdmin(admin.ModelAdmin):
 class ResearchProjectAdmin(admin.ModelAdmin):
     pass
 
-class AgreementAdmin(admin.ModelAdmin):
-    pass
-
-class AgreementTypeAdmin(admin.ModelAdmin):
-    pass
-
 admin.site.register(Service, ServiceAdmin)
 admin.site.register(ResearchProject, ResearchProjectAdmin)
-admin.site.register(Agreement, AgreementAdmin)
-admin.site.register(AgreementType, AgreementTypeAdmin)

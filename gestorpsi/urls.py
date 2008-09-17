@@ -4,8 +4,6 @@ from django.contrib import admin
 
 admin.autodiscover()
 
-
-
 urlpatterns = patterns('',
     # Example:
     # (r'^gestor/', include('gestor.foo.urls')),

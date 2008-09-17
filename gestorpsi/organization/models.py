@@ -158,7 +158,30 @@ class Organization(models.Model):
         """
         returns a representation of this  organization as an unicode  C{string}.
         """
-        return self.name    
+        return self.name
+
+class AgreementType(models.Model):
+    """
+    This class represents an agreement type.
+    @author: Vinicius H. S. Durelli
+    @version: 1.0
+    """
+    description= models.CharField( max_length= 80 )
+    def __unicode__(self):
+        return u'%s' % self.description
+
+class Agreement(models.Model):
+    """
+    This class represents an agreement type that the careprofessional works
+    @author: Danilo S. Sanches
+    @version: 1.0
+    """
+    description = models.CharField(max_length=50, null=True)
+    def __unicode__(self):
+        """
+        returns a representation of this Agreement as an unicode  C{string}.
+        """
+        return u"%s" % self.description
 
 """
 from gestorpsi.organization.models import PersonType, AdministrationType, Dependency, FacilityType, CareType, Management, OrganizationType, ResearchEducationActivities, Organization

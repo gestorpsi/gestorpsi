@@ -5,11 +5,17 @@
    @author: Sergio Durand
    @version: 1.0
 """
-
 from django.contrib import admin
 from gestorpsi.organization.models import PersonType, AdministrationType, Dependency
 from gestorpsi.organization.models import FacilityType, CareType, Management, OrganizationType
 from gestorpsi.organization.models import ResearchEducationActivities, Organization
+from gestorpsi.organization.models import Agreement, AgreementType
+
+class AgreementAdmin(admin.ModelAdmin):
+    pass
+
+class AgreementTypeAdmin(admin.ModelAdmin):
+    pass
 
 class PersonTypeAdmin(admin.ModelAdmin):
     pass
@@ -38,6 +44,8 @@ class ResearchEducationActivitiesAdmin(admin.ModelAdmin):
 class OrganizationAdmin(admin.ModelAdmin):
     pass
 
+admin.site.register(Agreement, AgreementAdmin)
+admin.site.register(AgreementType, AgreementTypeAdmin)
 admin.site.register(PersonType, PersonTypeAdmin)
 admin.site.register(AdministrationType, AdministrationTypeAdmin)
 admin.site.register(Dependency, DependencyAdmin)

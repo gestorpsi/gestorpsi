@@ -4,6 +4,7 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import CareProfessional
 from django.forms import ModelForm
 from gestorpsi.util.uuid_field import UuidField
+from gestorpsi.organization.models import Agreement
 
 class ServiceType(models.Model):
     """
@@ -56,27 +57,6 @@ class Clinic(GenericArea):
     #FAIXA ETARIA
     pass
 
-class AgreementType(models.Model):
-    """
-    This class represents an agreement type.
-    @author: Vinicius H. S. Durelli
-    @version: 1.0
-    """
-    description= models.CharField( max_length= 80 )
-    def __unicode__(self):
-        return u'%s' % self.description
-    
-class Agreement(models.Model):
-    """
-    Instances of this class are used to represent agreements.
-    @author: Vinicius H. S. Durelli
-    @version: 1.0
-    """
-    name= models.CharField( max_length= 45 )
-    description= models.CharField( max_length= 80 )
-    agreement_type= models.ForeignKey( AgreementType )
-    def __unicode__(self):
-        return u'%s' % self.name
 
 class ResearchProject(models.Model):
     """
@@ -123,6 +103,7 @@ from gestorpsi.service.models import AgreementType
 agreement_type= AgreementType( description= 'agreement type test' )
 agreement_type.save()
 
+
 from gestorpsi.service.models import Agreement
 agreement= Agreement( name= 'an agreement', description= 'agreement test', agreement_type= agreement_type )
 agreement.save()
@@ -141,5 +122,4 @@ service.save()
 service.agreements.add( agreement )
 service.responsibles.add( CareProfessional.objects.get(pk=1) )
 service.save()
-
 """

@@ -7,9 +7,10 @@
 """
 from django.contrib import admin
 from gestorpsi.careprofessional.models import PostGraduate, InstitutionType, AcademicResume
-from gestorpsi.careprofessional.models import Profession, Agreement, ProfessionalProfile
+from gestorpsi.careprofessional.models import Profession, ProfessionalProfile
 from gestorpsi.careprofessional.models import LicenceBoard, ProfessionalIdentification
 from gestorpsi.careprofessional.models import CareProfessional
+from gestorpsi.organization.models import Agreement
 
 class InstitutionTypeAdmin(admin.ModelAdmin):
     pass
@@ -21,9 +22,6 @@ class AcademicResumeAdmin(admin.ModelAdmin):
     pass
 
 class ProfessionAdmin(admin.ModelAdmin):
-    pass
-
-class AgreementAdmin(admin.ModelAdmin):
     pass
 
 class ProfessionalProfileAdmin(admin.ModelAdmin):
@@ -42,7 +40,6 @@ admin.site.register(PostGraduate, PostGraduateAdmin)
 admin.site.register(InstitutionType, InstitutionTypeAdmin)
 admin.site.register(AcademicResume, AcademicResumeAdmin)
 admin.site.register(Profession, ProfessionAdmin)
-admin.site.register(Agreement, AgreementAdmin)
 admin.site.register(ProfessionalProfile, ProfessionalProfileAdmin)
 admin.site.register(LicenceBoard, LicenceBoardAdmin)
 admin.site.register(ProfessionalIdentification, ProfessionalIdentificationAdmin)

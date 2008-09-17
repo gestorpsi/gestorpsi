@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404
-from gestorpsi.service.models import Service, ServiceForm, ResearchProject, Agreement
+from gestorpsi.service.models import Service, ServiceForm, ResearchProject
+from gestorpsi.organization.models import Agreement
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.organization.models import Organization
 from django.core.exceptions import ObjectDoesNotExist

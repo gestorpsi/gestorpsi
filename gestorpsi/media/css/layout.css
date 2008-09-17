@@ -984,7 +984,7 @@ label a.remove_from_form span {
 	display:none;
 }
 
-div#form.fast_menu_content, div#list.fast_menu_content {
+div#form.fast_menu_content {
 	display: none;	
 }
 

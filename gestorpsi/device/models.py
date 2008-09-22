@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from gestorpsi.organization.models import Organization
 from django.forms import ModelForm
+from gestorpsi.organization.models import Organization
+from gestorpsi.place.models import Room
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import audittrail
+
 
 DURABILITY_TYPE= ( ('1','CONSUMABLE'), ('2', 'DURABLE') )
 """
@@ -75,20 +77,22 @@ class DeviceDetails(models.Model):
     @see: Device
     @see: DeviceType
     """
-    id= UuidField(primary_key=True)
-    brand= models.CharField( max_length= 80 )
-    model= models.CharField( max_length= 80 )
-    part_number= models.CharField( max_length= 45 )
+    id = UuidField(primary_key=True)
+    brand = models.CharField( max_length= 80 )
+    model = models.CharField( max_length= 80 )
+    part_number = models.CharField( max_length= 45 )
+    durability = models.CharField( max_length= 1, choices= DURABILITY_TYPE )
+    lendable = models.BooleanField(default=True)
     comments= models.CharField( max_length= 80 )
-    device_type= models.ForeignKey( DeviceType, related_name= 'device_type' )
+    room = models.ForeignKey(Room, related_name='room', null=True)
     device= models.ForeignKey( Device, related_name= 'device' )
-    active = models.BooleanField(default=True)   
-    
+    #device_type= models.ForeignKey( DeviceType, related_name= 'device_type' )
+
     def __unicode__(self):
       """
       Returns a representation of the details related to a particular device as an unicode C{string}.
       """
-      return "brand: %s, model: %s, comments: %s" % (self.brand, self.model, self.comments)
+      return u"%s - %s" % (self.brand, self.model)
 
 class DeviceTypeForm(ModelForm):
       class Meta:

@@ -6,7 +6,7 @@ from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import CryptographicUtils as cryptoUtils
 
 class CustomUser(User):
-    id= UuidField(primary_key=True)
+    #id= UuidField(primary_key=True)
     organization = models.ManyToManyField(Organization, null=True)
     try_login = models.IntegerField(default = 0, null=True)
     crypt_temp = models.CharField(max_length=50, blank=True)

@@ -27,13 +27,13 @@ TIME_ZONE = 'America/Sao_Paulo'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'pt'
+LANGUAGE_CODE = 'pt_BR'
 
 _ = lambda s: s
 
 LANGUAGES = (
-    ('pt', _('Brazilian Portuguese')),
-    ('en', _('English')),
+    ('pt_BR', _('Brazilian Portuguese')),
+    ('en_US', _('English')),
 )
 
 
@@ -77,9 +77,9 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
     #'gestorpsi.util.showqueries.ShowQueries',
 )

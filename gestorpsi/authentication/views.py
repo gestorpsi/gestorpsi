@@ -2,6 +2,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
+from django.conf import settings
 from gestorpsi.authentication.models import CustomUser
 from gestorpsi.organization.models import Organization
 
@@ -78,7 +79,7 @@ def unblocked_user(user):
     if(len(filtered_user)):
         found_user = filtered_user[0]        
         value = found_user.try_login
-        if (value > 10):            
+        if (value >= settings.PASSWORD_RETIRES):            
             return False
         else:            
             return True

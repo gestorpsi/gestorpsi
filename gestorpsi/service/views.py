@@ -13,7 +13,9 @@ def index(request):
     @param request: this is a request sent by the browser.
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
     """
-    return render_to_response( "service/service_index.html", { 'object':Service.objects.all(), 'Agreements': Agreement.objects.all(), 'ResearchProjects': ResearchProject.objects.all(), 'CareProfessionals': CareProfessional.objects.all() })
+    user = request.user
+    
+    return render_to_response( "service/service_index.html", { 'object':Service.objects.filter(organization = user.org_active ), 'Agreements': Agreement.objects.all(), 'ResearchProjects': ResearchProject.objects.all(), 'CareProfessionals': CareProfessional.objects.all() })
 
 def form(request, object_id= ''):
     """
@@ -70,6 +72,9 @@ def save(request, object_id= ''):
         object= get_object_or_404( Service, pk= object_id )
     except (Http404, ObjectDoesNotExist):
         object= Service()
+        user = request.user
+        object.organization = user.org_active 
+        
     
     object.name= request.POST['name']
     object.description= request.POST['description']
@@ -77,9 +82,9 @@ def save(request, object_id= ''):
     object.research_project= ResearchProject.objects.get(pk= request.POST['research_project'])
     object.save()
     
-    if ( request.POST['organization'] != '' ):
-        organization= Organization.objects.get(pk= request.POST['organization'] )
-        object.organization= organization
+#    if ( request.POST['organization'] != '' ):
+#        organization= Organization.objects.get(pk= request.POST['organization'] )
+#        object.organization= organization
     
     save_agreements( request.POST.getlist('agreements'), object )
     save_responsibles( request.POST.getlist('responsibles'), object )

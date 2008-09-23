@@ -65,18 +65,29 @@ $(document).ready(function(){
                 return false;
 		});
 		
-	/** menu selection */
-	$("#main_menu > ul > li > a").click(function(){
+	/** horizontal menu selection */
+	$("#main_menu > ul > li > a:not(.vertical)").click(function(){
 	       var link = $(this);
                 $('#already_loaded').val('False');
                 
-                if(!$(this).nextAll("ul:first").find("li > a").attr('id')) {
-                        // i am NOT a vertical menu
-                        // so lets, hide all sub_menu menu
-                        // ** for vertical menu, sub_menus will hide, just when itens clicked
-                        $('#sub_menu ul').hide();
-                }
-                
+                $('#sub_menu ul').hide();
+
+                // remove active from main_menu
+                $('.main_menu').removeClass('active');
+                // make active on clicked menu item
+                link.addClass('active');
+                // show only selected
+                $('#sub_'+link.attr('id')).show();
+                // reset submenu to first option
+                $('#sub_menu ul li a').removeClass('active');
+                $('#sub_menu ul li a.first').addClass('active');
+        });
+
+
+	/** vertical menu selection */
+	$("#main_menu > ul > li > a.vertical").mouseover(function(){
+	       var link = $(this);
+                $('#already_loaded').val('False');
                 
                 // remove active from main_menu
                 $('.main_menu').removeClass('active');
@@ -87,10 +98,6 @@ $(document).ready(function(){
                 // reset submenu to first option
                 $('#sub_menu ul li a').removeClass('active');
                 $('#sub_menu ul li a.first').addClass('active');
-                
-                /**
-                 * Vertical Menu
-                 */
                 
                 // show VERTICAL submenu  (used in 'organization') if exists
                 submenu = link.next('ul');
@@ -124,6 +131,8 @@ $(document).ready(function(){
                         } );
                 });
 	});
+
+
 		
 	/** sub menu selection */
 	

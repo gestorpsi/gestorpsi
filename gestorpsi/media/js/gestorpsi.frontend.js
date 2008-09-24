@@ -41,17 +41,19 @@ $(document).ready(function(){
          * 
          */
         
-        $('#menus a').click(function() {
+        $('#menus a, #sub_menu a').click(function() {
                 $('#msg_area').removeClass();
                 $('#msg_area').hide();
+                $('#sidebar').css('padding-top','165px');
                 
         });
         
         
 	/** ajax_link: load content inside div core */
-	$("#menus a:not(.notajax)").click(function(){
+	$("#menus a:not(.notajax, .fastmenu)").click(function(){
                 var link = $(this);
-                if($('#already_loaded').val() != 'True' || $(this).hasClass('main_menu'))  {
+                
+                //if($('#already_loaded').val() != 'True' || $(this).hasClass('main_menu'))  {
                         $("#core").load(link.attr('href'),'',function() {
                                 $.ajax({
                                 success: function() {
@@ -61,7 +63,7 @@ $(document).ready(function(){
                                         }
                                 });
                         });
-                }
+                //}
                 return false;
 		});
 		
@@ -87,7 +89,7 @@ $(document).ready(function(){
 	/** vertical menu selection */
 	$("#main_menu > ul > li > a.vertical").mouseover(function(){
 	       var link = $(this);
-                $('#already_loaded').val('False');
+                //$('#already_loaded').val('False');
                 
                 // remove active from main_menu
                 $('.main_menu').removeClass('active');
@@ -138,11 +140,13 @@ $(document).ready(function(){
 	
 	$("#sub_menu ul li a:not(.close)").click(function(){
 	        var link = $(this);
+
                 // remove active classes from sub_menu itens 
                 $('#sub_menu ul li a').removeClass('active');
                 // make active on clicked menu item
                 link.addClass('active');
-	});	
+	});
+
 	
 	/**
          *
@@ -156,7 +160,7 @@ $(document).ready(function(){
         $('#sub_menu a.fastmenu').click(function() {
                 // hide all opened content
                 $('#core .fast_menu_content').hide();
-                
+
                 // display choiced item and set it to already loaded
                 if(!$(this).attr('display'))
                         display = 'list';

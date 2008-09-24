@@ -7,27 +7,39 @@ var menuYloc = null;
 $(document).unbind().ready(function(){
 
      var form_options = { 
-          success: function(response) { 
+          success: function(response, request, form) {
+               var editing = null;
+               if($(form).parents('#edit_form').html()) {
+                    editing = true;
+               }
+               
+               // adding new register! after saved, move the content from the add form, to the edit form
+               if(!editing)  {
+                    $('div#form').attr('id','tmp');
+                    $('div#edit_form').attr('id','form');
+                    $('div#tmp').attr('id','edit_form');
+                    $('div#form').html($('div#edit_form').html());
+                    $('div.fast_menu_content').hide();
+                    bindAjaxForms();
+                    bindFormActions();
+                    $('div#edit_form').show();
+               }
                
                // change action atribute to update it, not insert a new one
-               $('#form_client').attr('action','client/' + response + '/save/');
-               $('#form_employee').attr('action','employee/' + response + '/save/');
-               $('#form_place').attr('action','place/' + response + '/save/');
-               $('#form_service').attr('action','service/' + response + '/save/');
-               $('#form_device').attr('action','device/' + response + '/save/');
+               $('div#edit_form .form_client').attr('action','client/' + response + '/save/');
+               $('div#edit_form .form_employee').attr('action','employee/' + response + '/save/');
+               $('div#edit_form .form_place').attr('action','place/' + response + '/save/');
+               $('div#edit_form .form_service').attr('action','service/' + response + '/save/');
+               $('div#edit_form .form_device').attr('action','device/' + response + '/save/');
               
                // open new tab
                $('#sub_menu ul li a').removeClass('active'); // unselect other tabs
                $("ul.opened_tabs").show(); // display tab
-               $("ul.opened_tabs li div a:first").text($('input.tabtitle').val()); // set newtab title
-               $("ul.opened_tabs li div a:first").attr('href', $('form:first').attr('action').replace("/save/", "")); // set url to new tab
-               
-               // set ADD tab to reload the form on the next click
-               $('#already_loaded').val('False');
-               
+               $("ul.opened_tabs li div a:first, div#edit_form h2#title_clients").text($('div#edit_form input.tabtitle').val()); // set newtab title
+
                // set new tab opened to closeable when clicked
                $('div#form').addClass('edit_form');
-               
+              
                // show new options for people
                $('#people_actions').show();
                
@@ -35,18 +47,15 @@ $(document).unbind().ready(function(){
                $('#place_actions').show();
                
                // empty room add fields
-               $('#room_ input:text').val('');
+               $('div#edit_form #room_ input:text').val('');
                
                // show success alert
                $('#msg_area').show();
                $('#msg_area').removeClass('error');
                $('#msg_area').addClass('alert');
-               $('#msg_area').text('Register saved successful!');
+               $('#msg_area').text('Register saved successfully!');
                // increment padding-top for blue save box
-               $('#sidebar').css('padding-top','234px');
-               
-               
-          
+               $('.sidebar').css('padding-top','234px');
            },
           
           error: function() {
@@ -64,7 +73,7 @@ $(document).unbind().ready(function(){
      * sidebar. floating box
      */
         
-
+     
      menuYloc = parseInt($(name).css("top").substring(0,$(name).css("top").indexOf("px")))  
      $(window).scroll(function () {   
              var offset = menuYloc+$(document).scrollTop()+"px";  
@@ -101,133 +110,152 @@ $(document).unbind().ready(function(){
       */
      
      $('table.newtab tr td a').click(function() {
-          $('div#list.fast_menu_content').hide('slow');
+          $('div#list.fast_menu_content').hide();
      });
      
-     /**
-      * 
-      * people post form
-      * 
-      * _description:
-      * validate and post people (person) form.
-      * 
-      */
-
-    $('.form_people').validate({event:"submit",
-          rules: {
-               name: {
-                      required: true
-               }
-          },
-          messages: {
-              name: 'This field is required'
-          },
-          submitHandler: function(form) {
-               $(form).ajaxSubmit(form_options);
+     
+     function bindAjaxForms() {
           
-          }
-	});
-   
-
-    /**
-     * 
-     * places post form
-     * 
-     * _description:
-     * validate and post places form.
-     * 
-     */
-
-    
-    $('#form_place').validate({event:"submit",
-          rules: {
-               label: {
-                       required: true
+          /**
+           * 
+           * people post form
+           * 
+           * _description:
+           * validate and post people (person) form.
+           * 
+           */
+     
+          $('.form_people').each(function() {
+               $(this).validate({event:"submit",
+               rules: {
+                    name: {
+                           required: true
+                    }
+               },
+               messages: {
+                   name: 'This field is required'
+               },
+               submitHandler: function(form) {
+                    $(form).ajaxSubmit(form_options);
+               
                }
-          },
-          messages: {
-               name: 'This field is required'
-          },
-          submitHandler: function(form) {
-               $(form).ajaxSubmit(form_options);
+               });
+          });
+     
+          
+       
+     
+         /**
+          * 
+          * places post form
+          * 
+          * _description:
+          * validate and post places form.
+          * 
+          */
+     
+          
+          $('.form_place').each(function() {
+               $(this).validate({event:"submit",
+                rules: {
+                     label: {
+                             required: true
+                     }
+                },
+                messages: {
+                     name: 'This field is required'
+                },
+                submitHandler: function(form) {
+                     $(form).ajaxSubmit(form_options);
+               
+                }
+               });
+           });
+         
+         
+         /**
+          * 
+          * service post form
+          * 
+          * _description:
+          * validate and post places form.
+          * 
+          */    
+         
+          $('.form_service').each(function() {
+               $(this).validate({event:"submit",
+               rules: {
+                   service_name: {
+                           required: true
+                   }
+               },
+               messages: {
+                   service_name: 'This field is required'
+               },
+               submitHandler: function(form) {
+                   $(form).ajaxSubmit(form_options);
+               
+               }
+               });  
+          });
+         
+         
+          /**
+          * 
+          * device post form
+          * 
+          * _description:
+          * validate and post devices form.
+          * 
+          */    
+         
+          $('.form_device').each(function() {
+               $(this).validate({event:"submit",
+               rules: {
+                 brand: {
+                         required: true
+                 }
+               },
+               messages: {
+                 brand: 'This field is required'
+               },
+               submitHandler: function(form) {
+                 $(form).ajaxSubmit(form_options);
+               
+               }
+               });
+          });
+         
+         
+         
+         /**
+          * 
+          * fileupload
+          * 
+          * _description:
+          * validate and post people picture from a form.
+          * 
+          */
+             
+          $('.form_file').each(function() {
+               $(this).validate({event:"submit",
+                 submitHandler: function(form) {
+                      var form_file_options = { 
+                           success:    function(filename) {
+                                $('#id_photo').val('/media/img/people/' + filename);
+                                $('img#img_people').attr('src', '/media/img/people/' + filename); 
+                           } 
+                      }; 
+                      $(form).ajaxSubmit(form_file_options);
+                      $('#photo_form_upload_dragplace').hide();
+                 }
+               });  
+          });
 
-          }
-	});
-    
-    
-    /**
-     * 
-     * service post form
-     * 
-     * _description:
-     * validate and post places form.
-     * 
-     */    
-    
-     $('#form_service').validate({event:"submit",
-       rules: {
-            service_name: {
-                    required: true
-            }
-       },
-       messages: {
-            service_name: 'This field is required'
-       },
-       submitHandler: function(form) {
-            $(form).ajaxSubmit(form_options);
 
-       }
-     });
-    
-    
-     /**
-     * 
-     * device post form
-     * 
-     * _description:
-     * validate and post devices form.
-     * 
-     */    
-    
-     $('#form_device').validate({event:"submit",
-       rules: {
-            brand: {
-                    required: true
-            }
-       },
-       messages: {
-            brand: 'This field is required'
-       },
-       submitHandler: function(form) {
-            $(form).ajaxSubmit(form_options);
-
-       }
-     });
-    
-    
-    
-    /**
-     * 
-     * fileupload
-     * 
-     * _description:
-     * validate and post people picture from a form.
-     * 
-     */
-	
-     $('.form_file').validate({event:"submit",
-          submitHandler: function(form) {
-               var form_file_options = { 
-                    success:    function(filename) {
-                         $('#id_photo').val('/media/img/people/' + filename);
-                         $('img#img_people').attr('src', '/media/img/people/' + filename); 
-                    } 
-               }; 
-               $(form).ajaxSubmit(form_file_options);
-               $('#photo_form_upload_dragplace').hide();
-          }
-     });
-		   
+     }
+     
+     bindAjaxForms();
 		   
      /**
       * 
@@ -333,210 +361,217 @@ $(document).unbind().ready(function(){
      }
      reloadDelete();
      
-     /** 
-      * 
-      * address form
-      * 
-      * _description:
-      * 
-      * append address tag
-      * 
-      */
      
-     $('#document_more a').click(function() {
-          var total = $(".form_document_box").length + 1;
-          $("#document_more").before('<div class="form_document_box" id="document_'+total+'"><div class="form_document">'+$(".form_document").html()+'<label><br /><a class="notajax remove_from_form" delete="document_'+total+'"><span>Delete</span></a></label></div></div>');
-          reloadMask('#document_'+total);
-          reloadDelete();
-          $('#document_'+total+' input').val('');
-             
-     });
-     
-             
-             
-     /** 
-      * 
-      * address form
-      * 
-      * _description:
-      * 
-      * append address tag
-      * 
-      */
-     
-     $('#address_more a').click(function() {
-          var total = $(".form_address_box").length + 1;
-          $("#address_more").before('<div class="form_address_box" id="address_'+total+'"><div class="form_address">'+$(".form_address").html()+'<label><br /><a class="notajax remove_from_form" delete="address_'+total+'"><span>Delete</span></a></label></div></div>');
-          reloadMask('#address_'+total);
-          reloadAutoComplete();
-          reloadCountries()
-          reloadDelete();
-          $('#address_'+total+' input').val('');
-     });
-     
-     /** 
-      * 
-      * phone form
-      * 
-      * _description:
-      * 
-      * append phone form
-      * 
-      */
-     
-     $('#phone_more a').click(function() {
-          var total = $(".form_phone_box").length + 1;
-          $("#phone_more").before('<div class="form_phone_box" id="phone_'+total+'"><div class="form_phone">'+$(".form_phone").html()+'<label><br /><a class="notajax remove_from_form" delete="phone_'+total+'"><span>Delete</span></a></label></div></div>');
-          reloadMask('#phone_'+total);
-          reloadDelete();
-          $('#phone_'+total+' input').val('');
-     });
-     
-             
-     /** 
-      * 
-      * email form
-      * 
-      * _description:
-      * 
-      * append email form
-      * 
-      */
-     
-     $('#email_more a').click(function() {
-          var total = $(".form_email_box").length + 1;
-          $("#email_more").before('<div class="form_email_box" id="email_'+total+'"><div class="form_email">'+$(".form_email").html()+'<label><br /><a class="notajax remove_from_form" delete="email_'+total+'"><span>Delete</span></a></label></div></div>');
-          reloadMask('#email_'+total);
-          reloadDelete();
-          $('#email_'+total+' input').val('');
-     });
-     
-             
-     /** 
-      * 
-      * IM form
-      * 
-      * _description:
-      * 
-      * append IM form
-      * 
-      */
-     
-     $('#im_more a').click(function() {
-             var total = $(".form_im_box").length + 1;
-             $("#im_more").before('<div class="form_im_box" id="im_'+total+'"><div class="form_im">'+$(".form_im").html()+'<label><br /><a class="notajax remove_from_form" delete="im_'+total+'"><span>Delete</span></a></label></div></div>');
-             reloadMask('#im_'+total);
-             reloadDelete();
-             $('#im_'+total+' input').val('');
-     });
-     
-     
-     /** 
-      * 
-      * Website form
-      * 
-      * _description:
-      * 
-      * append Website form
-      * 
-      */
-     
-     $('#website_more a').click(function() {
-          var total = $(".form_website_box").length + 1;
-          $("#website_more").before('<div class="form_website_box" id="website_'+total+'"><div class="form_website">'+$(".form_website").html()+'<label><br /><a class="notajax remove_from_form" delete="website_'+total+'"><span>Delete</span></a></label></div></div>');
-          reloadMask('#website_'+total);
-          reloadDelete();
-          $('#website_'+total+' input').val('');
-     });
-     
-     
-     /** 
-      * 
-      * Place form
-      * 
-      * _description:
-      * 
-      * append Room add form
-      * 
-      */
-     
-     $('li#add_room a').click(function() {
-          $('#place_form').hide();
-          $('.form_room_box').hide();
-          $('#fieldset_room_identification').show();
-          var total = $(".form_room_box").length + 1;
+     function bindFormActions() {
+         
+          /** 
+           * 
+           * address form
+           * 
+           * _description:
+           * 
+           * append address tag
+           * 
+           */
           
-          // add form
-          $("#room_more").before('<div class="form_room_box" id="room_'+total+'"><div class="form_room">'+$(".form_room").html()+'</div></div>');
-          // clean fields
-          $('#room_'+total+' input').val('');
-          $('#room_'+total+' textarea').text('');
-          
-     
-          // auto insert new typing item, in the room list
-          
-          // first we need to clean item with empty names
-          $('li.li_rooms').each(function() {
-               li = $(this);
-               if($(li).text()=='') {
-                    li.remove();     
-               }
+          $('#document_more a').unbind().click(function() {
+               var total = $(".form_document_box").length + 1;
+               $("#document_more").before('<div class="form_document_box" id="document_'+total+'"><div class="form_document">'+$(".form_document").html()+'<label><br /><a class="notajax remove_from_form" delete="document_'+total+'"><span>Delete</span></a></label></div></div>');
+               reloadMask('#document_'+total);
+               reloadDelete();
+               $('#document_'+total+' input').val('');
+                  
           });
-          // create new item in room list
-          $('li.li_rooms:last').after('<li class="li_rooms"><a class="notajax" onclick="$(\'#place_form\').hide(); $(\'.form_room_box\').hide(); $(\'#fieldset_room_identification\').show(); $(\'#room_'+total+'\').show();"></a></li>');
-          // update room name, in room list when new name is typing 
-          $('#room_'+total+' input.update_name').keyup(function() {
-              $('#div_list_rooms').show();
-              $('li.li_rooms:last a').text($(this).val());
-           });
-             
-     });
-       
-     /** show selected room fieldset  */ 
-     $('li.li_rooms a').click(function() {
-         $('#place_form').hide();
-         $('.form_room_box').hide();
-         $('#fieldset_room_identification').show();
-         $('#room_' + $(this).attr('display')).show();
-         $('#room_' + $(this).attr('display') + ' input.update_name').keyup(function() {
-             $('#li_room_'+$(this).attr('display')+' a').text($(this).val());
-         });
-     });
+          
+                  
+                  
+          /** 
+           * 
+           * address form
+           * 
+           * _description:
+           * 
+           * append address tag
+           * 
+           */
+          
+          $('#address_more a').unbind().click(function() {
+               var total = $(".form_address_box").length + 1;
+               $("#address_more").before('<div class="form_address_box" id="address_'+total+'"><div class="form_address">'+$(".form_address").html()+'<label><br /><a class="notajax remove_from_form" delete="address_'+total+'"><span>Delete</span></a></label></div></div>');
+               reloadMask('#address_'+total);
+               reloadAutoComplete();
+               reloadCountries()
+               reloadDelete();
+               $('#address_'+total+' input').val('');
+          });
+          
+          /** 
+           * 
+           * phone form
+           * 
+           * _description:
+           * 
+           * append phone form
+           * 
+           */
+          
+          $('#phone_more a').unbind().click(function() {
+               var total = $(".form_phone_box").length + 1;
+               $("#phone_more").before('<div class="form_phone_box" id="phone_'+total+'"><div class="form_phone">'+$(".form_phone").html()+'<label><br /><a class="notajax remove_from_form" delete="phone_'+total+'"><span>Delete</span></a></label></div></div>');
+               reloadMask('#phone_'+total);
+               reloadDelete();
+               $('#phone_'+total+' input').val('');
+          });
+          
+                  
+          /** 
+           * 
+           * email form
+           * 
+           * _description:
+           * 
+           * append email form
+           * 
+           */
+          
+          $('#email_more a').unbind().click(function() {
+               var total = $(".form_email_box").length + 1;
+               $("#email_more").before('<div class="form_email_box" id="email_'+total+'"><div class="form_email">'+$(".form_email").html()+'<label><br /><a class="notajax remove_from_form" delete="email_'+total+'"><span>Delete</span></a></label></div></div>');
+               reloadMask('#email_'+total);
+               reloadDelete();
+               $('#email_'+total+' input').val('');
+          });
+          
+                  
+          /** 
+           * 
+           * IM form
+           * 
+           * _description:
+           * 
+           * append IM form
+           * 
+           */
+          
+          $('#im_more a').unbind().click(function() {
+                  var total = $(".form_im_box").length + 1;
+                  $("#im_more").before('<div class="form_im_box" id="im_'+total+'"><div class="form_im">'+$(".form_im").html()+'<label><br /><a class="notajax remove_from_form" delete="im_'+total+'"><span>Delete</span></a></label></div></div>');
+                  reloadMask('#im_'+total);
+                  reloadDelete();
+                  $('#im_'+total+' input').val('');
+          });
+          
+          
+          /** 
+           * 
+           * Website form
+           * 
+           * _description:
+           * 
+           * append Website form
+           * 
+           */
+          
+          $('#website_more a').unbind().click(function() {
+               var total = $(".form_website_box").length + 1;
+               $("#website_more").before('<div class="form_website_box" id="website_'+total+'"><div class="form_website">'+$(".form_website").html()+'<label><br /><a class="notajax remove_from_form" delete="website_'+total+'"><span>Delete</span></a></label></div></div>');
+               reloadMask('#website_'+total);
+               reloadDelete();
+               $('#website_'+total+' input').val('');
+          });
+          
+          
+          /** 
+           * 
+           * Place form
+           * 
+           * _description:
+           * 
+           * append Room add form
+           * 
+           */
+          
+          $('div#edit_form li#add_room a').unbind().click(function() {
+               $('div#edit_form #place_form').hide();
+               $('div#edit_form .form_room_box').hide();
+               $('div#edit_form #fieldset_room_identification').show();
+               var total = $("div#edit_form .form_room_box").length + 1;
+               
+               // add form
+               $("div#edit_form #room_more").before('<div class="form_room_box" id="room_'+total+'"><div class="form_room">'+$(".form_room").html()+'</div></div>');
+               // clean fields
+               $('div#edit_form #room_'+total+' input').val('');
+               $('div#edit_form #room_'+total+' textarea').text('');
+               
+          
+               // auto insert new typing item, in the room list
+               
+               // first we need to clean item with empty names
+               $('div#edit_form li.li_rooms').each(function() {
+                    li = $(this);
+                    if($(li).text()=='') {
+                         li.remove();     
+                    }
+               });
+               // create new item in room list
+               $('div#edit_form li.li_rooms:last').after('<li class="li_rooms"><a class="notajax" onclick="$(\'#place_form\').hide(); $(\'.form_room_box\').hide(); $(\'#fieldset_room_identification\').show(); $(\'#room_'+total+'\').show();"></a></li>');
+               // update room name, in room list when new name is typing 
+               $('div#edit_form #room_'+total+' input.update_name').unbind().keyup(function() {
+                   $('div#edit_form #div_list_rooms').show();
+                   $('div#edit_form li.li_rooms:last a').text($(this).val());
+                });
+                  
+          });
+            
+          /** show selected room fieldset  */ 
+          $('div#edit_form li.li_rooms a').unbind().click(function() {
+              $('div#edit_form #place_form').hide();
+              $('div#edit_form .form_room_box').hide();
+              $('div#edit_form #fieldset_room_identification').show();
+              $('div#edit_form #room_' + $(this).attr('display')).show();
+              $('div#edit_form #room_' + $(this).attr('display') + ' input.update_name').unbind().keyup(function() {
+                  $('div#edit_form #li_room_'+$(this).attr('display')+' a').text($(this).val());
+              });
+          });
+
+          // Reset value if city choices is blank
+          $('.city_search').keyup(function() {
+                 if($(this).val() == '') {
+                     $(this).parent().next().find("input:hidden").val('');
+                 }
+            });
      
-   
-     /**
-      * 
-      * autocomplete text field
-      * 
-      */
-     
-     
-     // we must to 'reload' auto-complete function, when a field text is drawed by some javascript function 
-     
-     function reloadAutoComplete() {
-             $('.city_search').unbind().autocomplete(); // !!IMPORTANT: necessary for IE6 when you have multiple fields
-             $('.city_search').autocomplete("/address/search/city/", {
-                     width: 355,
-                     selectFirst: true,
-                     minChars: 3
-             });
-             $(".city_search").result(function(event, data, formatted) {
-                     // set city id to the hidden field
-                     if (data) {
-                             $(this).parent().next().find("input:hidden").val(data[1]);
-                     }
-             });
      }
-             
-     reloadAutoComplete() // load auto-complete for the first tag address
      
-     // Reset value if city choices is blank
-     $('.city_search').keyup(function() {
-            if($(this).val() == '') {
-                $(this).parent().next().find("input:hidden").val('');
-            }
-       });
-             
+     bindFormActions();     
+        
+          /**
+           * 
+           * autocomplete text field
+           * 
+           */
+          
+          
+          // we must to 'reload' auto-complete function, when a field text is drawed by some javascript function 
+          
+          function reloadAutoComplete() {
+                  $('.city_search').unbind().autocomplete(); // !!IMPORTANT: necessary for IE6 when you have multiple fields
+                  $('.city_search').autocomplete("/address/search/city/", {
+                          width: 355,
+                          selectFirst: true,
+                          minChars: 3
+                  });
+                  $(".city_search").result(function(event, data, formatted) {
+                          // set city id to the hidden field
+                          if (data) {
+                                  $(this).parent().next().find("input:hidden").val(data[1]);
+                          }
+                  });
+          }
+                  
+          reloadAutoComplete() // load auto-complete for the first tag address
+          
+
      
      /** 
       * other countries address, not registered in database
@@ -677,7 +712,7 @@ $(document).unbind().ready(function(){
       * fieldsets collapsed
       */
      
-     
+     /*
      $('form.collapsable fieldset:not(:first)').each(function() {
           fieldset_id = $(this).attr('id');
           $('#' + fieldset_id + ' label input').each(function() {
@@ -716,7 +751,7 @@ $(document).unbind().ready(function(){
                $(this).attr('opened','False');
           }
      });
-     
+     */
      
      /**
       * select multiple plugin

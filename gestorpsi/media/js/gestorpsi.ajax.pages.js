@@ -37,7 +37,7 @@ $(document).unbind().ready(function(){
 	* 
 	*/
 	
-	$("#core a:not(.notajax)").click(function(){
+	$("#core :not(table.zebra tr td) a:not(.notajax)").click(function(){
 		var link = $(this);
 		$("#core").load(link.attr('href'));
 		$.ajax({
@@ -55,6 +55,24 @@ $(document).unbind().ready(function(){
 				}
 			}
 			});
+		return false;
+	});
+
+
+	/**
+	* 
+	* apeend edit form
+	* 
+	* _description:
+	* 
+	* append form content inside the div "core"
+	* 
+	*/
+	
+	$("#core table.zebra tr td a").click(function(){
+		var link = $(this);
+		$("#core div#edit_form").load(link.attr('href'));
+		$("#core div#edit_form").show();
 		return false;
 	});
 
@@ -80,12 +98,22 @@ $(document).unbind().ready(function(){
 	 * 
 	 * _description:
 	 * 
-	 * load calendar
+	 * load Birthdate's style calendar 
 	 * 
 	 */
 	
 	$('.birthdate').datepicker({ dateFormat: 'yy-mm-dd', changeYear: true, yearRange: '-120:+0', duration: 'fast' });
 	
+	/** 
+	 * jQuery UI DatePicker
+	 * 
+	 * _description:
+	 * 
+	 * load Care Professional
+	 * 
+	 */	
+
+	$('.initialActivities').datepicker({ dateFormat: 'yy-mm', changeYear: true, yearRange: '-100:+0', duration: 'fast' });
 	
 	
 	/**
@@ -98,7 +126,17 @@ $(document).unbind().ready(function(){
                 $('#sub_menu ul li a').removeClass('active'); // unselect other tabs
 		$("ul.opened_tabs").show(); // display tab
 		$("ul.opened_tabs li div a:first").text($(this).attr('title')); // set newtab title
-		$("ul.opened_tabs li div a:first").attr('href', $(this).attr('href')); // set url to new tab
+		
+		$("ul.opened_tabs li div a:first").unbind().click(function() {
+			$('#core .fast_menu_content').hide();
+			$('#core div#edit_form').show();
+			$('#sub_menu ul li a').removeClass('active');
+		});
+		
+		//$("ul.opened_tabs li div a:first").attr('display', 'edit_form');
+		//$("ul.opened_tabs li div a:first").addClass('fastmenu');
+		//display="form" class="fastmenu" href="/client/"
+		//$("ul.opened_tabs li div a:first").attr('href', $(this).attr('href')); // set url to new tab
 	});
         
         /**
@@ -111,7 +149,8 @@ $(document).unbind().ready(function(){
         $("ul.opened_tabs li div a.close, .edit_form input#cancel_button").click(function() {
 		$("ul.opened_tabs").hide();
 		$(".edit_form").hide();
-		//loadURL('/client/', 'list');
+		$('div#sub_menu li a[display="list"]').addClass('active');
+		$('div#list.fast_menu_content').show();
 	});
 	
 	/**

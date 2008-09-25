@@ -58,7 +58,7 @@ $(document).unbind().ready(function(){
                $('#msg_area').fadeTo(2500, 0.40);
 
                // increment padding-top for blue save box
-               $('.sidebar').css('padding-top','234px');
+               //$('.sidebar').css('padding-top','234px');
            },
           
           error: function() {

@@ -68,6 +68,12 @@ class Person(models.Model):
             return self.emails.all()[0]
         else:
             return ''
+        
+    def get_first_site(self):
+        if ( len( self.sites.all() ) != 0 ):
+            return self.sites.all()[0]
+        else:
+            return ''        
 
 
 class PersonForm(ModelForm):

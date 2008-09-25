@@ -1,35 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html lang="en">
-<head>
-    <title>AddressBook</title>
-</head>
-<body>
-    {% if eList %}
-    <h1>Estabelecimentos Cadastrados</h1>    
-    <ul>
-    {% for list in eList %}
-    <li>
-        <a href="{% url gestorpsi.contacts.views.details list.id %}">{{ list.name }}</a>
-    </li>           
-    {% endfor %}
-    </ul>    
-    {% else %}
-        <p>Nenhum Estabelecimento Cadastrado</p>
-    {% endif %}
-    
-    
-    
-    
-    {% if cpList %}
-    <h1>Profissionais Cadastrados</h1>
-    <ul>
-    {% for plist in cpList %}
-        <li>{{ plist.name }}</li>
-    {% endfor %}
-    </ul>
-    {% else %}
-        <p>Nenhum Profissional Cadastrado</p>
-    {% endif %}
-    
-</body>
-</html>
+{% load i18n %}
+
+
+<div id="list" class="fast_menu_content">
+ {% include "contact/contact_list.html" %}
+</div>
+
+<div id="form" class="fast_menu_content">
+ {% include "contact/contact_form.html" %} 
+</div>
+
+<input type="hidden" id="already_loaded" value="True" />
+

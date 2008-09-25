@@ -1,0 +1,92 @@
+{% load i18n %}
+
+{% if not object %}
+<div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/contact/add/" display="form" class="fastmenu" sub_menu="sub_contacts">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
+{% else %}
+
+<div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
+Esta caixa é mostrada quando há mensagens
+</div>
+
+<h2 id="title_contacts">{% trans "All Contacts" %}</h2>
+<p class="description">{% trans "Displaying" %} <a href="/contact/" display="list">{{ object|length }}  {% trans " general contact(s), " %} </a> <a href="/contact/" display="list"> {{ places|length }} {% trans " place(s) and " %} </a> <a href="/contact/" display="list">{{ persons|length }} {% trans " person(s)" %}</a>.</p>
+
+
+<div id="main_area" class="contact">
+	<div id="search_header">
+				<a href="" id="letter_fwd">
+				C</a>
+				<a href="" id="letter_back">
+				A</a>
+				<div class="capital_letter">B</div><input name="" id="search" type="text"><a href="" id="cleanup"></a>
+				<table id="letter_menu" border="0" cellpadding="2" cellspacing="0">
+				<tbody><tr>
+					<td><a href="" class="active">#</a></td>
+					<td><a href="">A</a></td>
+					<td><a href="">B</a></td>
+					<td><a href="">C</a></td>
+					<td><a href="">D</a></td>
+					<td><a href="">E</a></td>
+					<td><a href="">F</a></td>
+					<td><a href="">G</a></td>
+					<td><a href="">H</a></td>
+					<td><a href="">I</a></td>
+					<td><a href="">J</a></td>
+					<td><a href="">K</a></td>
+					<td><a href="">L</a></td>
+					<td><a href="">M</a></td>
+					<td><a href="">N</a></td>
+					<td><a href="">O</a></td>
+					<td><a href="">P</a></td>
+					<td><a href="">Q</a></td>
+					<td><a href="">R</a></td>
+					<td><a href="">S</a></td>
+					<td><a href="">T</a></td>
+					<td><a href="">U</a></td>
+					<td><a href="">V</a></td>
+					<td><a href="">W</a></td>
+					<td><a href="">X</a></td>
+					<td><a href="">Y</a></td>
+					<td><a href="">Z</a></td>
+				</tr>
+		</tbody></table>
+					
+	</div>
+
+
+	<table id="search_results" class="zebra" border="0" cellspacing="0" cellpadding="0">
+	<tbody>
+
+        {% for p in persons %}
+        	<td><a href="/contact/{{ p.id }}" title="{{ p }}">{{  p.name  }}</a><br />
+				QUE ATRIBUTO É ESTE?<br /></td>
+				<td>{{ p.get_first_phone }}<br />
+				<a href="mailto:{{ p.get_first_email }}">{{ p.get_first_email }}</a><br />
+				<a href="#">{{ p.get_first_site }}</a></td>
+			<!--  I didn't found this attribute in the model -->	
+			<td class="icons"><img src="img/16/proffessional.png" width="16" height="16" /></td>
+
+              
+        </tr>
+        {% endfor %}
+
+        {% for o in places %}
+            <td><a href="/contact/{{ o.id }}" title="{{ o }}">{{  o.label  }}</a><br />
+		  	QUE ATRIBUTO É ESTE?<br /></td>
+				<td>{{ o.get_first_phone }}<br />
+				<a href="mailto:{{ o.get_first_email }}">{{ o.get_first_email }}</a><br />
+				<!-- a href="#">{{ o.get_first_site }}</a></td> -->
+			<!--  I didn't found this attribute in the model -->	
+			<td class="icons"><img src="img/16/office.png" width="16" height="16" /></td>
+             
+        </tr>
+        {% endfor %}
+        
+	</tbody>        
+	</table>
+        
+</div>
+
+	
+{% endif %}
+

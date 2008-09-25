@@ -67,7 +67,7 @@ $(document).unbind().ready(function(){
                $('#msg_area').addClass('error');
                $('#msg_area').text('Error saving register!');
                $('#msg_area').show();
-               $('#sidebar').css('padding-top','234px');
+               //$('#sidebar').css('padding-top','234px');
           }
      }; 
      
@@ -76,22 +76,22 @@ $(document).unbind().ready(function(){
      * sidebar. floating box
      */
         
-     
+     /*
      menuYloc = parseInt($(name).css("top").substring(0,$(name).css("top").indexOf("px")))  
      $(window).scroll(function () {   
              var offset = menuYloc+$(document).scrollTop()+"px";  
              $(name).animate({top:offset},{duration:300,queue:false});  
      });
-
+     */
      /**
       * scroll to top
       */
-     
+     /*
      $('#sidebar input.save_button, table.newtab tr td a').click(function() {
           $.scrollTo( $('body'),  {top:'1px', left:'1px'}, 50);
 	  
      });
-     
+     */
      /**
      *
      * Message Area (#msg_area)

@@ -1,3 +1,42 @@
+from django.shortcuts import render_to_response, get_list_or_404, get_object_or_404
+from django.http import HttpResponse, Http404
+from django.core.exceptions import ObjectDoesNotExist
+from gestorpsi.organization.models import Organization
+from gestorpsi.phone.models import Phone
+from gestorpsi.address.models import Country, City, Address
+from gestorpsi.person.models import Person
+from gestorpsi.place.models import Place
+
+
+def index(request):
+    
+    total= []
+    
+    #list_of_orgs= []
+    #for orgs in Organization.objects.all():
+     #   orgs= {}
+      #  orgs['organization']= orgs
+       # list_of_orgs.append( orgs )
+        #total.append( orgs )
+    
+    list_of_places= []
+    for places in Place.objects.all():
+        places= {}
+        places['places']= places
+        list_of_places.append( places )
+        total.append( places )
+    
+    list_of_pers= []    
+    for persons in Person.objects.all():
+        persons= {}
+        persons['person']= persons
+        list_of_pers.append( persons )
+        total.append( persons )
+        
+         
+    return render_to_response('contact/contact_index.html', { 'object': total, 'places': Place.objects.all(), 'persons': Person.objects.all() })
+    #return render_to_response('contact/contact_index.html', { 'object': total, 'orgs': Organization.objects.all(), 'persons': Person.objects.all() })
+
 """
 from django.shortcuts import render_to_response, get_list_or_404, get_object_or_404
 from gestorpsi.careprofessional.models import CareProfessional

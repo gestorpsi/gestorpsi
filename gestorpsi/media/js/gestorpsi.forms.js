@@ -50,20 +50,23 @@ $(document).unbind().ready(function(){
                $('div#edit_form #room_ input:text').val('');
                
                // show success alert
-               $('#msg_area').show();
                $('#msg_area').removeClass('error');
                $('#msg_area').addClass('alert');
                $('#msg_area').text('Register saved successfully!');
+               $('#msg_area').fadeTo(0, 1);
+               $('#msg_area').show();
+               $('#msg_area').fadeTo(2500, 0.40);
+
                // increment padding-top for blue save box
                $('.sidebar').css('padding-top','234px');
            },
           
           error: function() {
                // show error alert
-               $('#msg_area').show();
                $('#msg_area').removeClass('alert');
                $('#msg_area').addClass('error');
                $('#msg_area').text('Error saving register!');
+               $('#msg_area').show();
                $('#sidebar').css('padding-top','234px');
           }
      }; 
@@ -133,7 +136,7 @@ $(document).unbind().ready(function(){
                     }
                },
                messages: {
-                   name: 'This field is required'
+                   name: gettext('This field is required')
                },
                submitHandler: function(form) {
                     $(form).ajaxSubmit(form_options);

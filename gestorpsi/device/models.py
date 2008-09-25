@@ -3,6 +3,7 @@ from django.db import models
 from django.forms import ModelForm
 from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Room
+from gestorpsi.careprofessional.models import Profession
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import audittrail
 
@@ -78,15 +79,15 @@ class DeviceDetails(models.Model):
     @see: DeviceType
     """
     id = UuidField(primary_key=True)
-    brand = models.CharField( max_length= 80 )
-    model = models.CharField( max_length= 80 )
-    part_number = models.CharField( max_length= 45 )
-    durability = models.CharField( max_length= 1, choices= DURABILITY_TYPE )
-    lendable = models.BooleanField(default=True)
-    comments= models.CharField( max_length= 80 )
-    room = models.ForeignKey(Room, related_name='room', null=True)
-    device= models.ForeignKey( Device, related_name= 'device' )
-    #device_type= models.ForeignKey( DeviceType, related_name= 'device_type' )
+    brand = models.CharField( max_length=80 )
+    model = models.CharField( max_length=80 )
+    part_number = models.CharField( max_length=45 )
+    durability = models.CharField( max_length=1, choices=DURABILITY_TYPE )
+    lendable = models.BooleanField( default=True )
+    restriction = models.ManyToManyField( Profession, null=True )
+    room = models.ForeignKey( Room, related_name='room', null=True )
+    device = models.ForeignKey( Device, related_name='device' )
+    comments = models.CharField( max_length=200 )
 
     def __unicode__(self):
       """

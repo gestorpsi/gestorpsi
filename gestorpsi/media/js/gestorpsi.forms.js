@@ -136,7 +136,7 @@ $(document).unbind().ready(function(){
                     }
                },
                messages: {
-                   name: gettext('This field is required')
+                   name: 'This field is required'
                },
                submitHandler: function(form) {
                     $(form).ajaxSubmit(form_options);

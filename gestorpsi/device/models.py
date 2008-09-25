@@ -7,7 +7,6 @@ from gestorpsi.careprofessional.models import Profession
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import audittrail
 
-
 DURABILITY_TYPE= ( ('1','CONSUMABLE'), ('2', 'DURABLE') )
 """
 Devices are classified by their durability, thus this variable represents

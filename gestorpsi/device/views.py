@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from gestorpsi.device.models import DeviceDetails, Device, DeviceType, DeviceDetailsForm, DeviceForm, DeviceTypeForm
+from gestorpsi.organization.models import Organization
 
 def index(request):
     """
@@ -11,7 +12,12 @@ def index(request):
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
     """
     return render_to_response( "device/device_index.html", {'all_dev': Device.objects.all() } )
-    
+
+def save_device(request, object_id= ''):
+    new_device= request.POST['description']
+    new_device= Organization.objects.get( pk= request.POST['organization'] )
+    new_device.save()
+    return HttpResponse(new_device.id)             
 
 def form(request, object_id= ''):
     """
@@ -40,15 +46,6 @@ def form(request, object_id= ''):
     return render_to_response('device/device_form.html', {'object': object, 'device': device, 'device_type': device_type, 
                                                           'dc': device_categ, 'dt': device_type,
                                                           'list_dvt': list_of_dev_details } )
-    
-#def device_list(request, object_id= ''):
-#    try:
-#        device= Device.objects.get(pk= object_id)
-#    except:
-#        device= Device()
-#    
-#    list_of_dev_details= DeviceDetails.objects.all().filter( device= device.id )
-#   return render_to_response('device/device_list_details.html', { 'object': list_of_dev_details } )
 
     
 def save(request, object_id='' ):
@@ -71,9 +68,11 @@ def save(request, object_id='' ):
     device_details.brand= request.POST[ 'brand' ]
     device_details.model= request.POST[ 'model' ] 
     device_details.part_number= request.POST[ 'part_number' ]
+    device_details.durability= request.POST[ 'durability' ]
+    device_details.lendable= request.POST[ 'lendable' ]
+    device_details.room= Room.objects.get( pk= request.POST['room'] )
     device_details.comments= request.POST[ 'comments' ]
     #device information
-    print "POST= %s" % request.POST
     try:
         device= get_object_or_404( Device, pk= request.POST[ 'device' ])
     except Http404:
@@ -82,27 +81,10 @@ def save(request, object_id='' ):
         device.description= ''
         device.organization = user.org_active 
         device.save()
-    
-    print device 
+        
     device_details.device= device
-    
-    #device type information
-    #device_type_durability= request.POST[ 'durability' ]
-    #device_type_mobility= request.POST[ 'mobility' ]
-    #device_type_restriction= request.POST[ 'restriction' ]
-    
-    try:
-        device_type= get_object_or_404( DeviceType, pk= request.POST[ 'select_device_type' ])
-    except Http404:
-        device_type= DeviceType()
-        device_type.durability= '1'
-        device_type.mobility= '1'
-        device_type;restriction= 'none'
-        device_type.save()
-    
-    device_details.device_type= device_type    
+        
     device_details.save()
-    #return render_to_response('device/device_form.html', {'list_of_device_details': [ device_details ] })
     return HttpResponse(device_details.id)
 
 

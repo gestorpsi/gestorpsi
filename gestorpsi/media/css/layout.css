@@ -283,6 +283,7 @@ div#sub_menu .active {
 	background:#FFCCCC;
 	border: 2px solid #FF0000;
 }
+
 #main_area {
 	width: 715px;
 	min-height: 270px;
@@ -1089,5 +1090,9 @@ fieldset.collapsed legend {
 
 fieldset {
 	cursor: pointer;
+}
+
+label label.error {
+	color: red!important;
 }
 

@@ -256,7 +256,7 @@ msgstr "Equipamentos"
 #: templates/core/main.html:122 templates/core/main.html.py:129
 #: templates/core/main.html:136
 msgid "all"
-msgstr "Tudo"
+msgstr "Todos"
 
 #: templates/core/main.html:94 templates/core/main.html.py:103
 #: templates/core/main.html:109 templates/core/main.html.py:116

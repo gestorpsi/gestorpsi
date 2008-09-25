@@ -69,6 +69,12 @@ class Device(models.Model):
        Returns a representation of this device as an unicode C{string}.
        """
        return "description: %s" % ( self.description )
+    """
+    Returns a list of all related device details 
+    """
+    def get_all_device_details(self):
+        return DeviceDetails.objects.filter( device__id= self.id )
+
 
 class DeviceDetails(models.Model):
     """
@@ -84,7 +90,7 @@ class DeviceDetails(models.Model):
     part_number = models.CharField( max_length=45 )
     durability = models.CharField( max_length=1, choices=DURABILITY_TYPE )
     lendable = models.BooleanField( default=True )
-    restriction = models.ManyToManyField( Profession, null=True )
+    restriction = models.ManyToManyField( Profession, null=True, blank=True)
     room = models.ForeignKey( Room, related_name='room', null=True )
     device = models.ForeignKey( Device, related_name='device' )
     comments = models.CharField( max_length=200 )

@@ -90,7 +90,7 @@ div#main_menu a.active {
 	background-image: url(../img/16/address-book-new.png);
 	}
 #customers {
-	background-image: url(../img/16/system-users.png);
+	background-image: url(../img/16/people-clients.png);
 	}
 #myoffice {
 	background-image: url(../img/16/go-home.png);
@@ -149,11 +149,11 @@ div#sub_menu .active {
 
 #main_menu a#organization {background: url(../img/16/go-home.png) no-repeat 25px 4px;}
 #main_menu a#places {background: url(../img/16/office.png) no-repeat 25px 4px;}
-#main_menu a#employees {background: url(../img/16/system-users.png) no-repeat 25px 4px;}
-#main_menu a#services {background: url(../img/16/games.png) no-repeat 25px 4px;}
+#main_menu a#employees {background: url(../img/16/people-employee.png) no-repeat 25px 4px;}
+#main_menu a#services {background: url(../img/16/services.png) no-repeat 25px 4px;}
 #main_menu a#rooms {background: url(../img/16/rooms.png) no-repeat 25px 4px;}
 #main_menu a#devices {background: url(../img/16/stuff.png) no-repeat 25px 4px;}
-#main_menu a#careprofessional {background: url(../img/16/system-users.png) no-repeat 25px 4px;}
+#main_menu a#careprofessional {background: url(../img/16/people-professional.png) no-repeat 25px 4px;}
 
 #main_menu ul li ul {
 	display: block;
@@ -251,11 +251,16 @@ div#sub_menu .active {
 #content a {
 	font-weight: normal;
 }
-#content h2#title_clients {background: url(../img/42/system-users.png) no-repeat 20px 15px;}
-#content h2#title_addressbook {background: url(../img/42/office-calendar.png) no-repeat 20px 15px;}
+#content h2.title_clients {background: url(../img/42/people-clients.png) no-repeat 20px 15px;}
+#content h2.title_employee {background: url(../img/42/people-employee.png) no-repeat 20px 15px;}
+#content h2.title_professional {background: url(../img/42/people-professional.png) no-repeat 20px 15px;}
+
+#content h2.title_addressbook {background: url(../img/42/office-calendar.png) no-repeat 20px 15px;}
 #content h2#title_contacts {background: url(../img/42/address-book-new.png) no-repeat 20px 15px;}
-#content h2#title_myoffice {background: url(../img/42/go-home.png) no-repeat 20px 15px;}
-#content h2#title_device {background: url(../img/42/go-device.png) no-repeat 20px 15px;}
+#content h2.title_myoffice {background: url(../img/42/go-home.png) no-repeat 20px 15px;}
+#content h2.title_device {background: url(../img/42/stuff.png) no-repeat 20px 15px;}
+#content h2.title_services {background: url(../img/42/services.png) no-repeat 20px 15px;}
+#content h2.title_places {background: url(../img/42/office.png) no-repeat 20px 15px;}
 
 #content p.description {
 	font-size: 9px;

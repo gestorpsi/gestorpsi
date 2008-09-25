@@ -4,10 +4,10 @@
 
 {% if object.id %}
 	<div class="edit_form">
-	<h2 id="title_clients">{{ object.person.name }}</h2>
+	<h2 class="title_clients">{{ object.person.name }}</h2>
 	<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a><br />	
 {% else %}
-	<h2 id="title_clients">{% trans "Adding New Client" %}</h2>
+	<h2 class="title_clients">{% trans "Adding New Client" %}</h2>
 	<p class="description">{% trans "Inform the client details then click on Save button" %}</p>
 {% endif %}
 

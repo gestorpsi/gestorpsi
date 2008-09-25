@@ -146,6 +146,22 @@ div#sub_menu .active {
 	width: 139px;
 }
 
+#myoffice.main_menu_big, .main_menu_big {
+	width: 230px !important;
+}
+
+.main_menu_listing_big {
+	width: 268px !important;
+}
+
+.main_menu_listing {
+	width: 177px !important;
+}
+
+#myoffice span {
+	
+}
+
 
 #main_menu a#organization {background: url(../img/16/go-home.png) no-repeat 25px 4px;}
 #main_menu a#places {background: url(../img/16/office.png) no-repeat 25px 4px;}

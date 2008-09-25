@@ -69,7 +69,15 @@ $(document).ready(function(){
 		
 	/** horizontal menu selection */
 	$("#main_menu > ul > li > a:not(.vertical)").click(function(){
-	       var link = $(this);
+                
+                // reset vertical menu to original size
+                var vertical_menu = $('#main_menu > ul > li > a.vertical');
+                vertical_menu.removeClass('main_menu_big');
+                vertical_menu.addClass('main_menu');
+                vertical_menu.children('span').remove();
+                $('#main_menu ul li ul').addClass('main_menu_listing'); 
+                
+	        var link = $(this);
                 $('#already_loaded').val('False');
                 
                 $('#sub_menu ul').hide();
@@ -88,7 +96,7 @@ $(document).ready(function(){
 
 	/** vertical menu selection */
 	$("#main_menu > ul > li > a.vertical").mouseover(function(){
-	       var link = $(this);
+               var link = $(this);
                 //$('#already_loaded').val('False');
                 
                 // remove active from main_menu
@@ -120,6 +128,13 @@ $(document).ready(function(){
                 array = submenu.children().children();
                 array.each(function() {
                         $(this).click(function() {
+                        link.removeClass('main_menu');
+                        link.addClass('main_menu_big');
+                        $('#main_menu ul li ul').removeClass('main_menu_listing');
+                        $('#main_menu ul li ul').addClass('main_menu_listing_big');
+                        
+                        link.children('span').remove();
+                        link.append('<span>&nbsp;>&nbsp;'+$(this).text()+'</span>');
                         // hide Vertical menu
                         submenu.hide();
                         

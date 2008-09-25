@@ -10,13 +10,8 @@ def index(request):
     @param request: this is a request sent by the browser.
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
     """
+    return render_to_response( "device/device_index.html", {'all_dev': Device.objects.all() } )
     
-    all_dev= Device.objects.all() #all device
-    all_dev_and_dev_details= {} #all devices and related device details
-    for dev in Device.objects.all():
-        all_dev_and_dev_details[ dev ]= DeviceDetails.objects.filter( device__id= dev.id )
-         
-    return render_to_response( "device/device_index.html", {'all_dev': all_dev, 'all_dev_and_dev_details': all_dev_and_dev_details } )
 
 def form(request, object_id= ''):
     """

@@ -173,7 +173,7 @@ $(document).unbind().ready(function(){
 	});
 	
 	
-	$('#core a.fastmenu').click(function() {
+	$('#core a.fastmenu, #core p.description a').click(function() {
 		// hide all opened content        
 		$('.fast_menu_content').hide();
 		

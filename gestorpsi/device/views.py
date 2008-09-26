@@ -11,7 +11,7 @@ def index(request):
     @param request: this is a request sent by the browser.
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
     """
-    return render_to_response( "device/device_index.html", {'all_dev': Device.objects.all() } )
+    return render_to_response( "device/device_index.html", {'object': Device.objects.all() } )
 
 def save_device(request, object_id= ''):
     new_device= request.POST['description']

@@ -57,6 +57,7 @@ def form(request, object_id=''):
         phones= object.phones.all()
         rooms= object.room_set.all()
         organization= Organization.objects.get(pk= user.org_active.id) # pk forcing to test view.
+        last_update = object.history.latest('_audit_timestamp')._audit_timestamp
         #organization= Organization.objects.get(pk= a_place.organization_id ) # uncomment me, when organization is ready
     except (Http404, ObjectDoesNotExist):
         object= Place()
@@ -67,7 +68,9 @@ def form(request, object_id=''):
                                                         'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(),
                                                         'countries': Country.objects.all(),
                                                         'RoomTypes': RoomType.objects.all(),
-                                                        'rooms': rooms, } )
+                                                        'rooms': rooms,
+                                                        'last_update': last_update
+                                                        } )
 
 def save(request, object_id=''):
     """

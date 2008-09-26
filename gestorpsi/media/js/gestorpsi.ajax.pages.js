@@ -71,8 +71,15 @@ $(document).unbind().ready(function(){
 	
 	$("#core table.zebra tr td a").click(function(){
 		var link = $(this);
+		$('ul.opened_tabs').hide();
 		$("#core div#edit_form").load(link.attr('href'));
-		$("#core div#edit_form").show();
+		$.ajax({
+			complete: function(){
+				$('ul.opened_tabs').show();
+				$("#core div#edit_form").show();
+			}
+		});
+		
 		return false;
 	});
 
@@ -132,11 +139,6 @@ $(document).unbind().ready(function(){
 			$('#core div#edit_form').show();
 			$('#sub_menu ul li a').removeClass('active');
 		});
-		
-		//$("ul.opened_tabs li div a:first").attr('display', 'edit_form');
-		//$("ul.opened_tabs li div a:first").addClass('fastmenu');
-		//display="form" class="fastmenu" href="/client/"
-		//$("ul.opened_tabs li div a:first").attr('href', $(this).attr('href')); // set url to new tab
 	});
         
         /**

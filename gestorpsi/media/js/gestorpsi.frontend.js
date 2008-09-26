@@ -184,6 +184,7 @@ $(document).ready(function(){
 
                 $('#' + display).show();
                 
+                $('.sidebar').css('padding-top','167px');
                 return false;
                 
         });

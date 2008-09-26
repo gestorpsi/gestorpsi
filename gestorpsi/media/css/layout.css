@@ -603,6 +603,14 @@ textarea {
 	width: 76px;
 }
 
+div#form span.editing {
+	display: none;
+}
+
+div#edit_form span.adding {
+	display: none;
+}
+
 .float_menu {
 	padding: 5px;
 	border: 1px solid #999999;
@@ -748,9 +756,8 @@ hr {
 }
 
 #loading p { 
-padding: 15px 45px; 
 	position: absolute;
-	bottom: 0px;
+	top: 90px;
 	right: 0px;
 	display:none;
 }
@@ -1104,11 +1111,9 @@ fieldset.collapsed legend {
 	color: #000;
 }
 
-fieldset {
-	cursor: pointer;
-}
-
 label label.error {
 	color: red!important;
+	font-weight: bold;
+	font-size: 14px !important;
 }
 

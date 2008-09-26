@@ -49,6 +49,10 @@ $(document).unbind().ready(function(){
                // empty room add fields
                $('div#edit_form #room_ input:text').val('');
                
+               // show last update info
+               $('div#edit_form span.editing span.last').hide();
+               $('div#edit_form span.editing span.now').show();
+               
                // show success alert
                $('#msg_area').removeClass('error');
                $('#msg_area').addClass('alert');

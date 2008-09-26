@@ -3,8 +3,18 @@
 <input class="save_button" name="cancel" id="cancel_button" type="button" value="{% trans 'Cancel' %}" />
 
 <div id="msg_info">
-{% trans "Delete Object" %}?
-	<p>{% trans 'Last revision by' %} Adminstrador {% trans 'in' %} 17 de 
-	Novembro, 2007 &agrave;s 17:36 h</p>
-
+	<p>
+		<span class="adding">
+		{% trans "This register are not saved yet. Click Save to register it." %}
+		</span>
+		<span class="editing">
+			{% trans 'Last revision by' %} {#{% trans 'in' %}#}
+			<span class="last">
+			{{ last_update|date:"r"|slice:":-9"}}&nbsp;hs
+			</span>
+			<span class="now" style="display:none;">
+			{% trans "less than one minute" %}
+			</span>
+		</span>
+	</p>
 </div>

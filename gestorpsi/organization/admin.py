@@ -9,7 +9,17 @@ from django.contrib import admin
 from gestorpsi.organization.models import PersonType, AdministrationType, Dependency
 from gestorpsi.organization.models import FacilityType, CareType, Management, OrganizationType
 from gestorpsi.organization.models import ResearchEducationActivities, Organization
-from gestorpsi.organization.models import Agreement, AgreementType
+from gestorpsi.organization.models import Agreement, AgreementType, AgeGroup
+from gestorpsi.organization.models import ProcedureProvider, Procedure
+
+class AgeGroupAdmin(admin.ModelAdmin):
+    pass
+
+class ProcedureProviderAdmin(admin.ModelAdmin):
+    pass
+
+class ProcedureAdmin(admin.ModelAdmin):
+    pass
 
 class AgreementAdmin(admin.ModelAdmin):
     pass
@@ -55,3 +65,6 @@ admin.site.register(Management, ManagementAdmin)
 admin.site.register(OrganizationType, OrganizationTypeAdmin)
 admin.site.register(ResearchEducationActivities, ResearchEducationActivitiesAdmin)
 admin.site.register(Organization, OrganizationAdmin)
+admin.site.register(AgeGroup, AgeGroupAdmin)
+admin.site.register(ProcedureProvider, ProcedureProviderAdmin)
+admin.site.register(Procedure, ProcedureAdmin)

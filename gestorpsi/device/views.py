@@ -4,6 +4,11 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from gestorpsi.device.models import DeviceDetails, Device, DeviceType, DeviceDetailsForm, DeviceForm, DeviceTypeForm
 from gestorpsi.organization.models import Organization
+from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, Profession, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
+from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
+from gestorpsi.place.models import Place
+
+
 
 def index(request):
     """
@@ -11,22 +16,31 @@ def index(request):
     @param request: this is a request sent by the browser.
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
     """
-    return render_to_response( "device/device_index.html", {'object': Device.objects.all() } )
+    return render_to_response( "device/device_index.html", {'object': Device.objects.all(),
+                                                            'organizations': Organization.objects.all(),
+                                                            'places': Place.objects.all(), 
+                                                            'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS } )
 
-def save_device(request, object_id= ''):
-    new_device= request.POST['description']
-    new_device= Organization.objects.get( pk= request.POST['organization'] )
-    new_device.save()
-    return HttpResponse(new_device.id)
+#def save_device(request, object_id= ''):
+#    new_device= request.POST['description']
+#   new_device= Organization.objects.get( pk= request.POST['organization'] )
+#    new_device.save()
+#    return HttpResponse(new_device.id)
 
-def form(request, device_details_id= ''):
-    all_devices= Device.objects.all()
+
+
+
+def form(request, object_id= ''):
     try:
-        device_details= get_object_or_404( DeviceDetails, pk= device_details_id )
+        device_details= get_object_or_404( DeviceDetails, pk= object_id )
     except Http404:
         device_details= DeviceDetails() #if there isn't such a device_details_id, a new 'device details' will be created
     
-    return render_to_response('device/device_form.html', {'all_devices': all_devices, 'device_details': device_details } )
+    return render_to_response('device/device_form.html', {'object': Device.objects.all(), 
+                                                          'device_details': device_details,
+                                                          'organizations': Organization.objects.all(), 
+                                                          'places': Place.objects.all(),
+                                                          'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS } )
                      
 
 #def form(request, object_id= ''):

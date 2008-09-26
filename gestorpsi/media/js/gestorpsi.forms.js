@@ -35,8 +35,9 @@ $(document).unbind().ready(function(){
                // open new tab
                $('#sub_menu ul li a').removeClass('active'); // unselect other tabs
                $("ul.opened_tabs").show(); // display tab
-               $("ul.opened_tabs li div a:first, div#edit_form h2#title_clients").text($('div#edit_form input.tabtitle').val()); // set newtab title
-
+               $("ul.opened_tabs li div a:first, div#edit_form h2.title_clients").text($('div#edit_form input.tabtitle').val()); // set newtab title
+               $('div#edit_form p.description').hide();
+               
                // set new tab opened to closeable when clicked
                $('div#form').addClass('edit_form');
               

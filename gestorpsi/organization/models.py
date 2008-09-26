@@ -216,7 +216,7 @@ class Procedure(models.Model):
     """
     This class represents procedures provided by entities like the Sistema Único de Saúde (SUS).
     """
-    procedure_code= models.CharField( max_length= 20, null= False )
+    procedure_code= models.CharField( max_length= 20, null= True )
     description= models.CharField( max_length= 100, null= False )
     procedure= models.ForeignKey( ProcedureProvider )
 

@@ -19,18 +19,14 @@ def save_device(request, object_id= ''):
     new_device.save()
     return HttpResponse(new_device.id)
 
-def form(request, device_id= '', device_details_id= ''):
-    try: 
-        device= get_object_or_404( Device, pk= device_id )
-    except Http404:
-        device= Device() #if there isn't such a device_id, a new device will be created
-    
+def form(request, device_details_id= ''):
+    all_devices= Device.objects.all()
     try:
         device_details= get_object_or_404( DeviceDetails, pk= device_details_id )
     except Http404:
         device_details= DeviceDetails() #if there isn't such a device_details_id, a new 'device details' will be created
     
-    return render_to_response('device/device_form.html', {'device': device, 'device_details': device_details } )
+    return render_to_response('device/device_form.html', {'all_devices': all_devices, 'device_details': device_details } )
                      
 
 #def form(request, object_id= ''):

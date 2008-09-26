@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<div class="form_mini place_mini">
+<form action="/device/save/" method="post">	
+
+	<label>{% trans "Device" %}<br />
+		<input type="text" name="label" class="big tabtitle" value="" id="id_label" />
+	</label>
+	<label>{% trans "Save" %}<br />
+		<input type="submit" name="submit" value="{% trans "Add" %}" class="mini" />		
+	</label>
+</form>
+</div>
+

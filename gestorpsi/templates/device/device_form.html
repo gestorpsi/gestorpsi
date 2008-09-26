@@ -4,7 +4,7 @@
 
 {% if object.id %}
 	<div class="edit_form">
-	<h2 class="title_device">{{ device.description }}</h2>
+	<h2 class="title_device">{{ object.description }}</h2>
 	<p class="description"><br />	
 {% else %}
 	<h2 class="title_device">{% trans "Adding Equipments" %}</h2>
@@ -12,92 +12,155 @@
 {% endif %}
 
 
-</p>
-
-<form action="/device/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_device" class="form_device">	
+<form action="/device/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_device">	
 <div id="main_area">
+<a href="" id="help">&nbsp;</a>
 
-	<a href="" id="help">&nbsp;</a>
+	<div id="device_form">
 
-<div id="place_form">
+		<!-- device -->
+	
+		<fieldset id="fieldset_device">
+		<legend>{% trans "Devices" %}</legend>
+			
+			<label>{% trans "Type" %}<br />
+			<select name="select_device" class="select extrabig asm">
+				{% for l in object %}
+				<option value="{{ l.id }}"{% for w in object %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l.description }}</option>
+				{% endfor %}
+			</select>
+			</label>
+			<br />
+			<a class="form_mini" display="place_mini">{% trans "Add New Device" %}</a>
+		</fieldset>	
+	
 
-	<!--
-	Places must to have an Identification 
-	-->
+	<!-- identification -->
 	
 	<fieldset id="fieldset_device_identification">
 		<legend>{% trans "Adding equipment details" %}</legend>
 		
 			<label>{% trans "Brand" %}<br />
-			<input type="text" name="brand" class="big tabtitle" value="{{ object.brand }}" id="brand" />
+			<input type="text" name="brand" class="big tabtitle" value="{{ device_details.brand }}" id="brand" />
 			</label>
 			
 			<label>{% trans "Model" %}<br />
-			<input type="text" name="model" class="big tabtitle" value="{{ object.model }}" id="model" />
+			<input type="text" name="model" class="big tabtitle" value="{{ device_details.model }}" id="model" />
 			</label>
 			
 			<label>{% trans "Part number" %}<br />
-			<input type="text" name="part_number" class="big tabtitle" value="{{ object.part_number }}" id="part_number" />
+			<input type="text" name="part_number" class="big tabtitle" value="{{ device_details.part_number }}" id="part_number" />
 			</label>
 			
 			<label>{% trans "Comments" %}<br />
-			<input type="text" name="comments" class="big tabtitle" value="{{ object.comments }}" id="comments" />
+			<input type="text" name="comments" class="big tabtitle" value="{{ device_details.comments }}" id="comments" />
 			</label>
 			
 				
 	</fieldset>
-	<br>
 	
-	<!--
-	devices categories
-	-->
-		
-	<fieldset id="description">
-	<legend>{% trans "Device" %}</legend>
-			<label>{% trans "Device" %}<br />
-			<select name="device">
-				{% for d in dc %}
-				<option value="{{ d.id }}"{% ifequal d.id device.id %} selected {% endifequal %}>{{ d.description }}</option>
-				{% endfor %}
-			</select>
-				
+	
+	<!--  lendable checkbox -->
+     
+     <fieldset id="fieldset_lendable_status">
+		<legend>{% trans "Lendable Status" %}</legend>
+			<label>
+			<input type="checkbox" name="visible" id="id_visible" {% if device_details.lendable %} checked{% endif %} /><label>{% trans "Lendable?" %}
 			</label>
 	</fieldset>
 	
-
-	<!--
-	device types
-	-->
-	<fieldset id="fieldset_device_type">
-		<legend>{% trans "Device Type" %}</legend>
-			<label>{% trans "Device Type" %}<br />
-			<select name="select_device_type">
-				{% for dv in dt %}
-				<option value="{{ dv.id }}"{% ifequal dv.id object.device_type.id %} selected {% endifequal %}>{{ dv }}</option>
+	
+  
+	
+    <!--  durability  --> 
+    
+    <fieldset id="fieldset_durability_type">
+		<legend>{% trans "Durability" %}</legend>
+			<label>{% trans "Type" %}<br />
+			<select name="select_durability_type">
+			
+				<!-- 
+				{% for dur in device_details.durability %}
+				{{ dur }}
+					<option value="{{ dur.id }}"{% ifequal device_details.durability.id dur.id %} selected{% endifequal %}>{{ dur }}</option>
 				{% endfor %}
+				 -->
+				 
+				<option value="1">Consumable</option>
+				<option value="2">Durable</option 
+				
 			</select>
 			</label>	
 	</fieldset>
+	
+	
+    
+    <!--  use  --> 
+    
+    <fieldset id="fieldset_use_type">
+		<legend>{% trans "Restriction" %}</legend>
+			<label>{% trans "Type" %}<br />
+			<select name="select_restriction_type">
+				<option value="1">Not restrict</option>
+				<option value="2">Restrict</option>
+
+			</select>
+			</label>
+			
+			<!--  profission  -->
+			<label>{% trans "Profissional Area" %}<br />
+			<select name="professional_area" class="medium">
+				{% for l in PROFESSIONAL_AREAS %}
+					<option value="{{ l.0 }}">{{ l.1 }}</option>
+				{% endfor %}
+			</select>
+	</fieldset>
+
+    <!--  mobility --> 
+    
+    <fieldset id="fieldset_mobility_type">
+		<legend>{% trans "Mobility" %}</legend>
+			<label>{% trans "Type" %}<br />
+			<select name="select_mobility_type">
+				<option value="1">Fix</option>
+				<option selected value="2">Mobile</option>
+				
+			</select>
+			</label>
+			
+			<!--  place  -->
+			<label>{% trans "Place" %}<br />
+			<select name="place_associated" class="medium">
+				{% for p in  places %}
+				<option value="{{ p.id }}">{{ p.label }}</option>
+				{% endfor %}
+			</select>
+			
+			<!--  room  -->
+			<label>{% trans "Room" %}<br />
+			<select name="room_associated" class="medium">
+				{% for r in  device_details.room %}
+				<option value="{{ r.id }}">{{ r }}</option>
+				{% endfor %}
+			</select>		
+	</fieldset>
+
+
+	
 	<br>
-	
-
-	
-
-
+	</div>
 
 </div>
-	
+
+
 <div id="sidebar">
 	<div class="bg_blue">
-		<input type="hidden" name="place" value="{{ object.device.id }}" />
+		<input type="hidden" name="place" value="{{ device_details.id }}" />
 		{% include "tags/save.html" %}
 	</div>
 </div>
 
 </form>
 
-{% if object.id %}
-</div> <!-- edit_form -->
-{% endif %}
-
+{% include "tags/device_mini.html" %}
 

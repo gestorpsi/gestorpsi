@@ -55,7 +55,6 @@ Esta caixa é mostrada quando há mensagens
 
 
 	<table id="search_results" class="zebra" border="0" cellspacing="0" cellpadding="0">
-	<tbody>
 
         {% for p in persons %}
         	<td><a href="/contact/{{ p.id }}" title="{{ p }}">{{  p.name  }}</a><br />
@@ -72,7 +71,7 @@ Esta caixa é mostrada quando há mensagens
 
         {% for o in places %}
             <td><a href="/contact/{{ o.id }}" title="{{ o }}">{{  o.label  }}</a><br />
-		  	QUE ATRIBUTO É ESTE?<br /></td>
+		  	{{  o.place_type  }}<br /></td>
 				<td>{{ o.get_first_phone }}<br />
 				<a href="mailto:{{ o.get_first_email }}">{{ o.get_first_email }}</a><br />
 				<!-- a href="#">{{ o.get_first_site }}</a></td> -->
@@ -81,8 +80,7 @@ Esta caixa é mostrada quando há mensagens
              
         </tr>
         {% endfor %}
-        
-	</tbody>        
+              
 	</table>
         
 </div>

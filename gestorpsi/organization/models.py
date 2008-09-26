@@ -183,6 +183,47 @@ class Agreement(models.Model):
         """
         return u"%s" % self.description
 
+class AgeGroup(models.Model):
+    """
+    This class was created to represent an interval of ages as follows: for instance,
+    if some client is 6 years old and there is a instance of AgeGroup which represents and labels the
+    interval between 0 and 8 as 'child', then such client will be classified as child since his/her age is contained
+    in the bounded interval [0-8]*.
+    *The interval [0-8] includes every number between 0 and 8 as well as 0 and 8.
+    """
+    minimum_age_endpoint= models.PositiveIntegerField()
+    maximum_age_endpoint= models.PositiveIntegerField()
+    label= models.CharField( max_length= 30, null= False )
+    
+    def __unicode__(self):
+        """
+        Returns a representation of this age group
+        """
+        return u"%s, interval: [ %i, %i ]" % ( self.label, self.minimum_age_endpoint, self.maximum_age_endpoint )
+
+class ProcedureProvider(models.Model):
+    """
+    This class was created to represent entities which provide some kind of health care service.
+    """
+    name= models.CharField( max_length= 20 )
+    
+    def __unicode__(self):
+        return u"name: %s" % self.name
+
+class Procedure(models.Model):
+    """
+    This class represents procedures provided by entities like the Sistema Único de Saúde (SUS).
+    """
+    procedure_code= models.CharField( max_length= 20, null= False )
+    description= models.CharField( max_length= 100, null= False )
+    procedure= models.ForeignKey( ProcedureProvider )
+
+    def __unicode__(self):
+        """
+        Returns a representation of this procedure 
+        """
+        return u"code: %s, description: %s" % (self.procedure_code, self.description)
+
 """
 from gestorpsi.organization.models import PersonType, AdministrationType, Dependency, FacilityType, CareType, Management, OrganizationType, ResearchEducationActivities, Organization
 person_type= PersonType( description= 'person type test' )
@@ -270,7 +311,4 @@ address.save()
 phone.save()
 
 organization.save()
-
-
-
 """

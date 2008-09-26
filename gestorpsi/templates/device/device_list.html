@@ -20,13 +20,11 @@ Esta caixa é mostrada quando há mensagens
 
         {% for o in object %}
         <tr>
-        	<td class="item" display="device_{{ o.device.id }}">{{ o.device.description }} (Total: {{ o.total }}) (Available: {{ o.available }}) </a></td>
-
+        	<td class="item" display="device_{{ o.id }}">{{ o.description }}  </a></td>
         </tr>
-        
-	   {% for list in o.dt %}
-				<tr class="sub_item device_{{ o.device.id }}">
-					<td class="sub_item" ><a href="/device/{{ list.id }}" title="{{ list }}">{{ list }} </a></td>
+	    	{% for dev_det in o.get_all_device_details %}
+				<tr class="sub_item device_{{ o.id }}">
+					<td class="sub_item" ><a href="/device/{{ dev_det.id }}" title="{{ dev_det }}">{{ dev_det.brand }} </a></td>
 				</tr>
    			{% endfor %}
 		

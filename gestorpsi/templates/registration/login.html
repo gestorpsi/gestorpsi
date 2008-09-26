@@ -44,10 +44,11 @@
 		<label>Senha</label><br />
 		<input type="password" name="password" id="password" value="" class="medium" tabindex="20" /></label>
 	</p>
-
+        {% comment %}
 	<p class="forgetmenot">
 		<label>	<input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="90" /> Lembrar senha</label>
-	</p>  
+	</p>
+        {% endcomment %}
 	<input type="submit" name="enter" id="enter" value="Entrar" tabindex="100" class="btn" />
 	<input type="hidden" name="next" value="{{ next|escape }}" />
 	</form>

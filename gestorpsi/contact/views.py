@@ -37,6 +37,10 @@ def index(request):
     return render_to_response('contact/contact_index.html', { 'object': total, 'places': Place.objects.all(), 'persons': Person.objects.all() })
     #return render_to_response('contact/contact_index.html', { 'object': total, 'orgs': Organization.objects.all(), 'persons': Person.objects.all() })
 
+# function needed because was declared in urls.py
+def form(request):
+    pass
+
 """
 from django.shortcuts import render_to_response, get_list_or_404, get_object_or_404
 from gestorpsi.careprofessional.models import CareProfessional

@@ -97,11 +97,7 @@ $(document).ready(function(){
 	/** vertical menu selection */
 	$("#main_menu > ul > li > a.vertical").mouseover(function(){
                var link = $(this);
-                //$('#already_loaded').val('False');
-                
-                // remove active from main_menu
-                $('.main_menu').removeClass('active');
-                // make active on clicked menu item
+
                 link.addClass('active');
                 // show only selected
                 $('#sub_'+link.attr('id')).show();
@@ -118,23 +114,30 @@ $(document).ready(function(){
                 
                 submenu_li.mouseover(function(){
                         submenu.show();
-                })
-                submenu_li.mouseout(function(){
+                        link.addClass('active');
+                });
+                link.parent('li').mouseout(function(){
                         submenu.hide();
-                })
+                        link.removeClass('active');
+                });
                         
                 // hide vertical submenu an item is selected
                 
                 array = submenu.children().children();
-                array.each(function() {
-                        $(this).click(function() {
+                array.click(function() {
+                        link.parent('li').mouseout(function(){
+                                link.addClass('active');
+                        });
+
+                        $('.main_menu').removeClass('active');
+                        link.addClass('active');
                         link.removeClass('main_menu');
                         link.addClass('main_menu_big');
                         $('#main_menu ul li ul').removeClass('main_menu_listing');
                         $('#main_menu ul li ul').addClass('main_menu_listing_big');
                         
                         link.children('span').remove();
-                        link.append('<span>&nbsp;>&nbsp;'+$(this).text()+'</span>');
+                        link.append('<span>&nbsp;-&nbsp;'+$(this).text()+'</span>');
                         // hide Vertical menu
                         submenu.hide();
                         
@@ -144,8 +147,7 @@ $(document).ready(function(){
                         // show assigned div
                         idToShow = $(this).attr('id');
                         $('#sub_menu #sub_'+idToShow).show();
-                        
-                        } );
+
                 });
 	});
 

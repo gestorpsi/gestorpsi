@@ -17,35 +17,48 @@ def save_device(request, object_id= ''):
     new_device= request.POST['description']
     new_device= Organization.objects.get( pk= request.POST['organization'] )
     new_device.save()
-    return HttpResponse(new_device.id)             
+    return HttpResponse(new_device.id)
 
-def form(request, object_id= ''):
-    """
-    This function views creates some I{forms objects} based on the I{object_id} passed, these I{forms} are
-    used to organize and easier the presentation of the information.
-    @param request: this is a request sent by the browser.
-    @type request: an instance of the class C{HttpRequest} created by the framework Django.
-    @param object_id: the id of the C{DeviceDetails} instance which the information will be displayed.
-    @type object_id: an instance of the built-in class c{int}.
-    """
+def form(request, device_id= '', device_details_id= ''):
+    try: 
+        device= get_object_or_404( Device, pk= device_id )
+    except Http404:
+        device= Device() #if there isn't such a device_id, a new device will be created
     
-    try :
-        object= get_object_or_404( DeviceDetails, pk= object_id )
-        device= object.device
-        device_type= object.device_type
-    except ObjectDoesNotExist:
-        object= DeviceDetails()
-        object.device= Device(); device= object.device
-        object.device_type= DeviceType(); device_type= object.device_type
+    try:
+        device_details= get_object_or_404( DeviceDetails, pk= device_details_id )
+    except Http404:
+        device_details= DeviceDetails() #if there isn't such a device_details_id, a new 'device details' will be created
     
+    return render_to_response('device/device_form.html', {'device': device, 'device_details': device_details } )
+                     
 
-    device_categ= Device.objects.all()
-    device_type= DeviceType.objects.all()
-    list_of_dev_details= DeviceDetails.objects.all()
-    
-    return render_to_response('device/device_form.html', {'object': object, 'device': device, 'device_type': device_type, 
-                                                          'dc': device_categ, 'dt': device_type,
-                                                          'list_dvt': list_of_dev_details } )
+#def form(request, object_id= ''):
+#    """
+#    This function views creates some I{forms objects} based on the I{object_id} passed, these I{forms} are
+#    used to organize and easier the presentation of the information.
+#    @param request: this is a request sent by the browser.
+#    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+#    @param object_id: the id of the C{DeviceDetails} instance which the information will be displayed.
+#    @type object_id: an instance of the built-in class c{int}.
+#    """
+#    try :
+#        object= get_object_or_404( DeviceDetails, pk= object_id )
+#        device= object.device
+#        device_type= object.device_type
+#    except ObjectDoesNotExist:
+#        object= DeviceDetails()
+#        object.device= Device(); device= object.device
+#        object.device_type= DeviceType(); device_type= object.device_type
+#    
+#
+#    device_categ= Device.objects.all()
+#    device_type= DeviceType.objects.all()
+#    list_of_dev_details= DeviceDetails.objects.all()
+#    
+#    return render_to_response('device/device_form.html', {'object': object, 'device': device, 'device_type': device_type, 
+#                                                          'dc': device_categ, 'dt': device_type,
+#                                                          'list_dvt': list_of_dev_details } )
 
     
 def save(request, object_id='' ):

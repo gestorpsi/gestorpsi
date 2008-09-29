@@ -199,7 +199,7 @@ class AgeGroup(models.Model):
         """
         Returns a representation of this age group
         """
-        return u"%s, interval: [ %i, %i ]" % ( self.label, self.minimum_age_endpoint, self.maximum_age_endpoint )
+        return u"%s (%i-%i)" % ( self.label, self.minimum_age_endpoint, self.maximum_age_endpoint )
     class Meta:
         ordering = ['minimum_age_endpoint']    
 

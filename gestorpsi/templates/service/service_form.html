@@ -86,10 +86,9 @@
 		
 		<label>{% trans "Age" %}<br />
 		<select name="service_age" multiple="multiple" class="extramedium multiple small_fonts asm">
-			<option value="1">Criança (0 a 12 anos incompletos)</option>
-			<option value="2">Adolescente (12 a 18 anos incompletos)</option>
-			<option value="3">Adulto (18 a 60 anos)</option>
-			<option value="4">3ª Idade (superior a 60 anos)</option>
+			{% for l in AgeGroups %}
+			<option value="{{ l.id }}">{{ l }}</option>
+			{% endfor %}
 		</select>
 		</label>
 		
@@ -115,22 +114,26 @@
 		<legend>{% trans "Service Procedures" %}</legend>
 
 		<!-- itens to choice -->
-		
 		<label>
-			<a class="notajax select_multiple_menu" display="service_procedure_sus">sus</a>
-			<a class="notajax select_multiple_menu" display="service_procedure_gestorpsi">gestorpsi</a>
-			<a class="notajax select_multiple_menu" display="service_procedure_conxinxina">conxinxina</a>
+			{% for l in ProcedureProviders %}
+			<a class="notajax select_multiple_menu" display="service_procedure_{{ l.name }}">{{ l.name }}</a>
+			{% endfor %}
 		<br />
-		<select multiple="multiple" id="service_procedure_sus" class="extramedium multiple itens_available small_fonts first">
-			<option value="1">Abordagem Cognitivo - Comport. do Fumante p/ Atend/Paciente</option>
-			<option value="2">Acomp Crianças e Adolesc c Transt Mentais Semi-Int Máx 12</option>
-			<option value="3">Acomp Crianças e Adolesc c Transt Mentais Intens Máx 22</option>
-			<option value="4">Acomp Crianças e Adolesc c Transt Mentais Não -Int Máx 03</option>
-			<option value="5">Acomp Pac Dep Álcool/Drogas Dem Cuidados Intensivos Máx 22</option>
-			<option value="6">Acomp Pac Dep Álcool/Drogas Dem Cuidados Não Intens Máx 03</option>
-		</select>
+		{% for l in Procedures %}
+			{% ifchanged l.procedure %}
+				{% if not forloop.first %}
+				</select>
+				{% endif %}
+				<select multiple="multiple" id="service_procedure_{{ l.procedure.name }}" class="extramedium multiple itens_available small_fonts{% if forloop.first %} first{% endif %}">
+			{% endifchanged %}
+				<option value="{{ l.id }}">{{ l.description }}</option>
+	
+			{% if forloop.last %}
+				</select>
+			{% endif %}
+		{% endfor %}
 			
-		
+		{% comment %}
 		<select multiple="multiple" id="service_procedure_gestorpsi" class="extramedium multiple itens_available small_fonts">
 			<option value="7">Comport. do Fumante p/ Atend/Paciente</option>
 			<option value="8">Adolesc c Transt Mentais Semi-Int Máx 12</option>
@@ -143,7 +146,7 @@
 			<option value="11">hermy b ueb oeu poe lneur put </option>
 			<option value="12">Transt uo popul humtli</option>
 		</select>
-			
+		{% endcomment %}	
 			
 		</label>
 		

@@ -113,12 +113,13 @@
 	<fieldset id="fieldset_service_procedure">
 		<legend>{% trans "Service Procedures" %}</legend>
 
-		<!-- itens to choice -->
+		<!-- procedures providers to choice -->
 		<label>
-			{% for l in ProcedureProviders %}
+		{% for l in ProcedureProviders %}
 			<a class="notajax select_multiple_menu" display="service_procedure_{{ l.name }}">{{ l.name }}</a>
-			{% endfor %}
+		{% endfor %}
 		<br />
+		<!-- procedures itens -->
 		{% for l in Procedures %}
 			{% ifchanged l.procedure %}
 				{% if not forloop.first %}
@@ -132,22 +133,7 @@
 				</select>
 			{% endif %}
 		{% endfor %}
-			
-		{% comment %}
-		<select multiple="multiple" id="service_procedure_gestorpsi" class="extramedium multiple itens_available small_fonts">
-			<option value="7">Comport. do Fumante p/ Atend/Paciente</option>
-			<option value="8">Adolesc c Transt Mentais Semi-Int Máx 12</option>
-			<option value="9">Transt Mentais Intens Máx 22</option>
-		</select>
 		
-		
-		<select multiple="multiple" id="service_procedure_conxinxina" class="extramedium multiple itens_available small_fonts">
-			<option value="10">hermy judn laoluw lneur put </option>
-			<option value="11">hermy b ueb oeu poe lneur put </option>
-			<option value="12">Transt uo popul humtli</option>
-		</select>
-		{% endcomment %}	
-			
 		</label>
 		
 		<!-- itens choiced -->

@@ -8,7 +8,7 @@ urlpatterns = patterns('',
     # Example:
     # (r'^gestor/', include('gestor.foo.urls')),
     (r'^login/', include('gestorpsi.authentication.urls')),
-    
+        
     # Uncomment this for admin:
     #(r'^demo/', include('django.contrib.admin.urls')),
     (r'^$', 'gestorpsi.frontend.views.index'),    

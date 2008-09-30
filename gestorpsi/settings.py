@@ -81,6 +81,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
+    'gestorpsi.util.usertimeout.UserTimeout',
     #'gestorpsi.util.showqueries.ShowQueries',
 )
 
@@ -100,7 +101,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     #'django.contrib.sites',
     'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth',  
     'gestorpsi.authentication',
     'gestorpsi.util',
     'gestorpsi.sponsor',
@@ -132,7 +133,7 @@ CUSTOM_USER_MODEL = 'authentication.CustomUser'
 
 DEFAULT_EMAIL_MIMETYPE = 'html'
 
-SESSION_COOKIE_AGE = 7200      # 2 hours 
+SESSION_COOKIE_AGE = 7200      # 2 hours
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 #SESSION_ENGINE = 'django.contrib.sessions.backends.file'  # default is django.contrib.sessions.backends.db
 

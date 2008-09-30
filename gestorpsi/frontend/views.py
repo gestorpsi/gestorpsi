@@ -25,7 +25,7 @@ def index(request):
     check_user()
     if(request.user.is_authenticated()):
         return render_to_response('core/main.html')
-    else:
+    else:        
         return render_to_response('registration/login.html')
     
 def check_user():    

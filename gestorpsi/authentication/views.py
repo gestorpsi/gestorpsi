@@ -42,8 +42,7 @@ def user_authentication(request):
                     number_org = []
                     number_org = user.organization.all()
                     user.org_active = number_org[0]
-                    login(request, user)                  
-                                                                                
+                    login(request, user)                                        
                     return HttpResponseRedirect('/')
                            
         else:
@@ -53,7 +52,7 @@ def user_authentication(request):
         return render_to_response('registration/login.html', { 'message': "User blocked" } )
  
 def logout_page(request):
-    logout(request)
+    logout(request)    
     return HttpResponseRedirect('/') 
 
 def user_organization(request):
@@ -61,8 +60,7 @@ def user_organization(request):
     user = request.session['temp_user']
     del request.session['temp_user']        
     user.org_active = organization    
-    login(request, user)    
-    
+    login(request, user)           
     return HttpResponseRedirect('/') 
 
 

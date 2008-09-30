@@ -20,7 +20,7 @@ GNU General Public License for more details.
 emails addresses
 -->
         
-<fieldset id="fieldset_email">
+<fieldset>
         <legend>{% trans "Emails" %}</legend>
                 {% if not emails %}
                         {% include "tags/email.html" %}
@@ -29,7 +29,7 @@ emails addresses
                                 {% include "tags/email.html" %}
                         {% endfor %}
                 {% endif %}
-        <label id="email_more" class="add_to_form"><a class="notajax" title="{% trans "Add Email" %}"><span>{% trans "Add Email" %}</span></a></label>
+        <a class="add_to_form"><span>{% trans "Add Email" %}</span></a>
 </fieldset>
 
 
@@ -39,7 +39,7 @@ emails addresses
 Instant Messengers
 -->
         
-<fieldset id="fieldset_im">
+<fieldset>
         <legend>{% trans "Instant Messengers" %}</legend>
                 {% if not ims %}
                         {% include "tags/im.html" %}
@@ -48,7 +48,7 @@ Instant Messengers
                                 {% include "tags/im.html" %}
                         {% endfor %}
                 {% endif %}
-        <label id="im_more" class="add_to_form"><a class="notajax" title="{% trans "Add IM" %}"><span>{% trans "Add IM" %}</span></a></label>
+        <a class="add_to_form"><span>{% trans "Add IM" %}</span></a>
 </fieldset>
 
 
@@ -56,7 +56,7 @@ Instant Messengers
 WebSites
 -->
         
-<fieldset id="fieldset_website">
+<fieldset>
         <legend>{% trans "Websites" %}</legend>
                 {% if not websites %}
                         {% include "tags/website.html" %}
@@ -65,5 +65,5 @@ WebSites
                                 {% include "tags/website.html" %}
                         {% endfor %}
                 {% endif %}
-        <label id="website_more" class="add_to_form"><a class="notajax" title="{% trans "Add Website" %}"><span>{% trans "Add Website" %}</span></a></label>
+        <a class="add_to_form"><span>{% trans "Add Website" %}</span></a>
 </fieldset>

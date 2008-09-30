@@ -160,7 +160,7 @@ jQuery.extend(jQuery.validator, {
 	defaults: {
 		messages: {},
 		errorClass: "error",
-		errorElement: "label",
+		errorElement: "div",
 		focusInvalid: true,
 		errorContainer: jQuery( [] ),
 		errorLabelContainer: jQuery( [] ),

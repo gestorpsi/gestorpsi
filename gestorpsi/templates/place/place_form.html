@@ -60,37 +60,7 @@ GNU General Public License for more details.
 	place have only one address
 	-->
 		
-	<fieldset id="fieldset_address">
-		<legend>{% trans "Addresses" %}</legend>
-			{% if not addresses %}
-				{% include "tags/address.html" %}
-			{% else %}
-				{% for address in addresses %}
-					{% include "tags/address.html" %}
-				{% endfor %}
-			{% endif %}
-	</fieldset>
-	
-	
-	<!--
-	place have phones
-	-->
-		
-	<fieldset id="fieldset_phone">
-		<legend>{% trans "Phones" %}</legend>
-			{% if not phones %}
-				{% include "tags/phone.html" %}
-			{% else %}
-				{% for phone in phones %}
-					{% include "tags/phone.html" %}
-				{% endfor %}
-			{% endif %}
-		<label id="phone_more" class="add_to_form"><a class="notajax"><span>{% trans "Add Phone" %}</span></a></label>	
-	</fieldset>
-
-	<!-- place doesn't have internet data
-	{% include "meta/internet.html" %} 
-	 -->
+	{% include "meta/addressbook.html" %}
 	
 	<!--
 	Places must to have a status

@@ -900,18 +900,6 @@ hr {
 	cursor: pointer;
 }
 
-fieldset legend {
-	color: #999999;
-	padding: 0px 5px 0px 5px;
-	margin: 0 0 0 8px;
-}
-
-form fieldset {
-	border: 1px solid #CCCCCC;
-	padding: 0px 0 15px 0px;
-	margin: 10px 10px 0 10px;
-}
-
 #photo_form_upload {
 	position: absolute;
 	margin-top: 0px;
@@ -944,36 +932,23 @@ img#img_people {
 	height: 134px;
 }
 
-label.add_to_form {
-	display:block;
-	clear: both;
+fieldset legend {
+	color: #999999;
+	padding: 0px 5px 0px 5px;
+	margin: 0 0 0 8px;
 }
 
-div.form_address_box, div.form_phone_box {
-	clear: both;
-	margin-bottom: 100px;
-	margin-top: 150px;
-	border-bottom: 1px solid #cccccc;
+form fieldset {
+	border: 1px solid #CCCCCC;
+	padding: 0px 0 15px 0px;
+	margin: 10px 10px 0 10px;
 }
 
-div.form_address_box {
-	margin-top: 0px;
-	margin-bottom: 210px;
+.multirow {
+	border-top: 1px solid #CCCCCC;
 }
-
-.form_address_box.first {
-	border-bottom: 0px solid #cccccc;
-	margin-bottom: 210px;
-}
-
-div.form_phone_box {
-	margin-bottom: 0px;
-	margin-top: 0px;
-	border-bottom: 0px solid #cccccc;
-}
-
-#fieldset_phone {
-	margin-bottom: 10px;
+.set_multirow div {
+	margin-bottom: 220px;
 }
 
 fieldset#fieldset_personal_identification {
@@ -998,14 +973,16 @@ select.country {
 	padding-bottom: 65px;
 }
 
-
-label.add_to_form a {
+fieldset a.add_to_form {
+	display:block;
+	clear: both;
 	background: url(../img/22/list-add.png) no-repeat;
 	padding-right: 22px;
 	padding-bottom: 22px;
+margin: 80px 0 0 8px;
 }
 
-label.add_to_form span {
+fieldset a.add_to_form span {
 	display:none;
 }
 
@@ -1127,9 +1104,13 @@ fieldset.collapsed legend {
 	color: #000;
 }
 
-label label.error {
+label div.error {
 	color: red!important;
-	font-weight: bold;
-	font-size: 14px !important;
+	display: block;
+	font-size: 17px;
+}
+
+fieldset div {
+	clear: both;
 }
 

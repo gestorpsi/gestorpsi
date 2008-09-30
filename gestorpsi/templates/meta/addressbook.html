@@ -20,7 +20,7 @@ GNU General Public License for more details.
 people addresses  
 -->
         
-<fieldset id="fieldset_address">
+<fieldset class="set_multirow">
         <legend>{% trans "Addresses" %}</legend>
                 {% if not addresses %}
                         {% include "tags/address.html" %}
@@ -29,7 +29,7 @@ people addresses
                                 {% include "tags/address.html" %}
                         {% endfor %}
                 {% endif %}
-        <label id="address_more" class="add_to_form"><a class="notajax" title="{% trans "Add Address" %}"><span>{% trans "Add Address" %}</span></a></label>	
+        <a class="add_to_form"><span>{% trans "Add Address" %}</span></a>
 </fieldset>
 
 
@@ -46,5 +46,5 @@ people phone numbers
                                 {% include "tags/phone.html" %}
                         {% endfor %}
                 {% endif %}
-        <label id="phone_more" class="add_to_form"><a class="notajax" title="{% trans "Add Phone" %}"><span>{% trans "Add Phone" %}</span></a></label>	
+        <a class="add_to_form"><span>{% trans "Add Phone" %}</span></a>
 </fieldset>

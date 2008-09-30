@@ -15,38 +15,38 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-<div class="form_phone_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="phone_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
-	<div class="form_phone">
-		<input type="hidden" name="phoneId" value="{{ phone.id }}" />
-		
-		<label>{% trans "Area" %}<br />
-		<input type="text" class="extrasmall" name="area" value="{{ phone.area }}" mask="99" />
-		</label>
+
+<div>
+	<input type="hidden" name="phoneId" value="{{ phone.id }}" />
 	
-		<label>{% trans "Number" %}<br />
-		<input type="text" class="medium" name="phoneNumber" value="{{ phone.phoneNumber }}" mask="99999999" />
-		</label>
-		
-		<label>{% trans "Extension" %}<br />
-		<input type="text" class="small" name="ext" value="{{ phone.ext }}" maxlength="4" />
-		</label>
-				
-		<label>{% trans "Type" %}<br />
-		{% if not PhoneTypes %}
-			{% trans "There is no types available to choice" %}
-		{% else %}
-		<select name="phoneType" class="medium">
-		{% for phoneType in PhoneTypes %}
-			<option value="{{ phoneType.id }}"{% ifequal phone.phoneType.id phoneType.id %} selected{% endifequal %}>{{ phoneType }}</option>
-		{% endfor %}
-		</select>
-		{% endif %}
-		</label>
-		
-	</div>
+	<label>{% trans "Area" %}<br />
+	<input type="text" class="extrasmall" name="area" value="{{ phone.area }}" mask="99" />
+	</label>
+
+	<label>{% trans "Number" %}<br />
+	<input type="text" class="medium" name="phoneNumber" value="{{ phone.phoneNumber }}" mask="99999999" />
+	</label>
+	
+	<label>{% trans "Extension" %}<br />
+	<input type="text" class="small" name="ext" value="{{ phone.ext }}" maxlength="4" />
+	</label>
+			
+	<label>{% trans "Type" %}<br />
+	{% if not PhoneTypes %}
+		{% trans "There is no types available to choice" %}
+	{% else %}
+	<select name="phoneType" class="medium">
+	{% for phoneType in PhoneTypes %}
+		<option value="{{ phoneType.id }}"{% ifequal phone.phoneType.id phoneType.id %} selected{% endifequal %}>{{ phoneType }}</option>
+	{% endfor %}
+	</select>
+	{% endif %}
+	</label>
+	<label>
+	<br /><a class="notajax remove_from_form" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a>
+	</label>
 </div>
-{% if object.id %}
-<label><br /><a class="notajax remove_from_form" delete="phone_{{ forloop.counter }}" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a></label>
-{% endif %}
+
+
 
 

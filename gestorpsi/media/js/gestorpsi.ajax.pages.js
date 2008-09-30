@@ -38,6 +38,14 @@ $(document).unbind().ready(function(){
 	$('table.zebra tr:even').addClass('zebra_1');
 	
 	
+	
+	// draw top-border for multirows fieldsets (eg.: address fieldset)
+	$('fieldset.set_multirow').each(function() {
+		$(this).children('div').removeClass('multirow');
+		$(this).children('div').not(':first').addClass('multirow');
+	});
+	
+	
 	/**
 	* 
 	* ajaxlink

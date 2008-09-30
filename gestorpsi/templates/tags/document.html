@@ -15,56 +15,48 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-<div class="form_document_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="document_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
-	<div class="form_document">
-		<input type="hidden" name="documentId" value="{{ document.id }}" />
+
+<div>
+	<input type="hidden" name="documentId" value="{{ document.id }}" />
+	
+	<label>{% trans "Type" %}<br />
+	{% if not TypeDocuments %}
+		{% trans "There is no types available to choice" %}
+	{% else %}
+	<select name="document_typeDocument" class="medium">
+	{% for TypeDocument in TypeDocuments %}
+		<option value="{{ TypeDocument.id }}" mask="{{ TypeDocument.mask}}"{% ifequal document.typeDocument.id TypeDocument.id %} selected{% endifequal %}>{{ TypeDocument }}</option>
+	{% endfor %}
+	</select>
+	{% endif %}
+	</label>
+	
+	
+	<label>{% trans "Document" %}<br />
+	<input type="text" name="document_document" class="medium" value="{{ document.document }}" id="id_document" mask="{{ document.mask }}" />
+	</label>
 		
-		<label>{% trans "Type" %}<br />
-		{% if not TypeDocuments %}
-			{% trans "There is no types available to choice" %}
-		{% else %}
-		<select name="document_typeDocument" class="medium">
-		{% for TypeDocument in TypeDocuments %}
-			<option value="{{ TypeDocument.id }}" mask="{{ TypeDocument.mask}}"{% ifequal document.typeDocument.id TypeDocument.id %} selected{% endifequal %}>{{ TypeDocument }}</option>
+	<label>{% trans "Issuer" %}<br />
+	{% if not Issuers %}
+		{% trans "There is no types available to choice" %}
+	{% else %}
+	<select name="document_issuer" class="medium">
+		<option></option>
+		{% for Issuer in Issuers %}
+			<option value="{{ Issuer.id }}"{% ifequal document.issuer.id Issuer.id %} selected{% endifequal %}>{{ Issuer }}</option>
+		{% endfor %}
+	</select>
+	{% endif %}
+	</label>
+	<label>{% trans "State" %}<br />
+		<select name="document_state" class="state">
+		<option></option>
+		{% for State in States %}
+			<option value="{{ State.id }}"{% ifequal document.state.id State.id %} selected{% endifequal %}>{{ State.shortName }}</option>
 		{% endfor %}
 		</select>
-		{% endif %}
-		</label>
-		
-		
-		<label>{% trans "Document" %}<br />
-		<input type="text" name="document_document" class="medium" value="{{ document.document }}" id="id_document" mask="{{ document.mask }}" />
-		</label>
-			
-		<label>{% trans "Issuer" %}<br />
-		{% if not Issuers %}
-			{% trans "There is no types available to choice" %}
-		{% else %}
-		<select name="document_issuer" class="medium">
-			<option></option>
-			{% for Issuer in Issuers %}
-				<option value="{{ Issuer.id }}"{% ifequal document.issuer.id Issuer.id %} selected{% endifequal %}>{{ Issuer }}</option>
-			{% endfor %}
-		</select>
-		{% endif %}
-		</label>
-	
-		
-		<label>{% trans "State" %}<br />
-			<select name="document_state" class="state">
-			<option></option>
-			{% for State in States %}
-				<option value="{{ State.id }}"{% ifequal document.state.id State.id %} selected{% endifequal %}>{{ State.shortName }}</option>
-			{% endfor %}
-			</select>
-		</label>
-	
-	</div>
-
-	{% if object.id %}
+	</label>
 	<label><br /><a class="notajax remove_from_form" delete="document_{{ forloop.counter }}" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a></label>
-	{% endif %}
-
 </div>
 
 

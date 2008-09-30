@@ -21,7 +21,7 @@ GNU General Public License for more details.
 People Personal Profile Form	
 -->
         
-<fieldset id="fieldset_personal_profile">
+<fieldset class="fieldset_personal_profile">
         <legend>{% trans "Personal Profile" %}</legend>
                 <label>{% trans "Birthdate" %}<br />
                 <input type="text" name="birthDate" class="calendar birthdate" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate }}{% endifnotequal %}" id="id_birthDate" />
@@ -46,16 +46,5 @@ People Personal Profile Form
 						{% endfor %}
 					</select>
                 </label>
-                
-                
-                <!--
-                <label>{% trans "Region" %}<br />
-                <input type="text" name="birthRegion" class="extrasmall" value="{{ object.birthRegion }}" id="id_birthRegion" />
-                </label>
-                -->
-                <!--
-                <label>{% trans "Nationality" %}<br />
-                <input type="text" name="nationality" class="medium" value="{{ object.nationality }}" id="id_nationality" />
-                </label>
-                -->
+
 </fieldset>

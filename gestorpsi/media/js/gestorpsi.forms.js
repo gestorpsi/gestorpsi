@@ -23,6 +23,7 @@ var menuYloc = null;
 
 $(document).unbind().ready(function(){
 
+     // ajax form options
      var form_options = { 
           success: function(response, request, form) {
                var editing = null;
@@ -93,6 +94,41 @@ $(document).unbind().ready(function(){
           }
      }; 
      
+     /**
+      * mini forms to quick add options
+      */
+     
+     var form_mini_options = {
+          success: function(response, message, form) {
+                    // get option label
+                    var text = $(form).parents('fieldset').children('div.form_mini').children('form').children('label').children('input:text').val();
+                    // add <option> to asmselect select box
+                    $(form).parents('fieldset').children('label').children('div').children('select.asmSelect:first').append('<option value='+response+' disabled="disabled">'+text+'</option>');
+                    
+                    // add <option> to real multiselect 
+                    $(form).parents('fieldset').children('label').children('div').children('select.multiple').append('<option value='+response+' selected="selected">'+text+'</option>');
+                    
+                    // append it to list
+                    $(form).parents('fieldset').children('label').children('div').children('ol').append('<li style="display: list-item;" class="asmListItem"><span class="asmListItemLabel">'+text+'</span><a class="asmListItemRemove dyn_added">remove</a></li>');
+                              
+                    $('a.asmListItemRemove.dyn_added').unbind().click(function() {
+                         $(this).parents("li").remove();
+                    }); 
+                    
+                    // clean form
+                    $(form).parents('fieldset').children('div.form_mini').children('form').children('label').children('input:text').val('')
+                    
+               },
+          error: function() {
+               // show error alert
+               $('#msg_area').show();
+               $('#msg_area').removeClass('alert');
+               $('#msg_area').addClass('error');
+               $('#msg_area').text('Error saving register!');
+               $('#sidebar').css('padding-top','234px');
+          }
+     }; 
+
      
      /**
      * sidebar. floating box
@@ -158,7 +194,7 @@ $(document).unbind().ready(function(){
                     }
                },
                messages: {
-                   name: 'This field is required'
+                   name: 'Preenchimento Necessário'
                },
                submitHandler: function(form) {
                     $(form).ajaxSubmit(form_options);
@@ -188,7 +224,7 @@ $(document).unbind().ready(function(){
                      }
                 },
                 messages: {
-                     name: 'This field is required'
+                     name: 'Preenchimento Necessário'
                 },
                 submitHandler: function(form) {
                      $(form).ajaxSubmit(form_options);
@@ -215,7 +251,7 @@ $(document).unbind().ready(function(){
                    }
                },
                messages: {
-                   service_name: 'This field is required'
+                   service_name: 'Preenchimento Necessário'
                },
                submitHandler: function(form) {
                    $(form).ajaxSubmit(form_options);
@@ -242,7 +278,7 @@ $(document).unbind().ready(function(){
                  }
                },
                messages: {
-                 brand: 'This field is required'
+                 brand: 'Preenchimento Necessário'
                },
                submitHandler: function(form) {
                  $(form).ajaxSubmit(form_options);
@@ -292,7 +328,7 @@ $(document).unbind().ready(function(){
       * 
       */
      
-     $('.gender').click(function() {
+     $('.gender').unbind().click(function() {
           if($(this).hasClass('active')) {
                $('.gender').removeClass('active');
                $('#id_gender').val($(this).attr(''));
@@ -346,18 +382,16 @@ $(document).unbind().ready(function(){
       */
      
      // search for input texts when BODY is loaded
-     
+     /*
      $("form input:text").each(function(){
           var field = $(this);
           if(field.attr('mask')) {
                $(field).mask(field.attr('mask'));
           }
      });
-     
-     // we must to 'reload' mask function, when a field text is drawed by some javascript function 
-     // see: address form, phone form
-     
-     function reloadMask(pattern) {
+     */
+ 
+    function bindFieldMask(pattern) {
           $("form "+pattern+" input:text").each(function(){
                var field = $(this);
                if(field.attr('mask')) {
@@ -365,7 +399,6 @@ $(document).unbind().ready(function(){
                }
           });
      }
-     
      
      /**
       *
@@ -376,136 +409,56 @@ $(document).unbind().ready(function(){
       *
       */
      
-     function reloadDelete() {
+     function bindDelete() {
           $('a.remove_from_form').unbind();
           $('a.remove_from_form').click(function() {
-               $('#' + $(this).attr('delete') + ' input:text').val(''); // clean input fields
-               $('#' + $(this).attr('delete')).hide("slow"); // hide it
-               $($(this)).hide(); // so, hide me =)
+               var fieldset = $(this).parents('fieldset');
+               var total = $(fieldset).children('div').size();
+               
+               // remove border top before delete it
+               $(fieldset).children('div').removeClass('multirow');
+
+               var div = $(this).parent('label').parent('div');
+               if(total>1) {
+               $(div).remove();
+               } else {
+                    $(div).children('label').children('input').val('');
+               }
+               
+               // re-draw top borders if exists
+               if($(fieldset).hasClass('set_multirow')) {
+                    $(fieldset).children('div').not(':first').addClass('multirow');
+               }
+
           });
      }
-     reloadDelete();
+     
+     bindDelete();
      
      
      function bindFormActions() {
          
           /** 
            * 
-           * address form
-           * 
-           * _description:
-           * 
-           * append address tag
+           * clone div content and append it to form
            * 
            */
           
-          $('#document_more a').unbind().click(function() {
-               var total = $(".form_document_box").length + 1;
-               $("#document_more").before('<div class="form_document_box" id="document_'+total+'"><div class="form_document">'+$(".form_document").html()+'<label><br /><a class="notajax remove_from_form" delete="document_'+total+'"><span>Delete</span></a></label></div></div>');
-               reloadMask('#document_'+total);
-               reloadDelete();
-               $('#document_'+total+' input').val('');
-                  
+          $('fieldset a.add_to_form').unbind().click(function() {
+               $(this).before('<div>' + $(this).parents('fieldset:first').children('div:first').html() + '</div>');
+               $(this).parents('fieldset').children('div:last').children('input').val('');
+               $(this).parents('fieldset').children('div:last').children('label').children('input').val('');
+               // draw top-border for multirows fieldsets (eg.: address fieldset)
+               if($(this).parents('fieldset').hasClass('set_multirow')) {
+                    $(this).parents('fieldset').children('div').removeClass('multirow');
+                    $(this).parents('fieldset').children('div').not(':first').addClass('multirow');
+               }
+               bindDelete();
+               bindAutoCompleteForm();
+               //bindFieldMask();
           });
           
-                  
-                  
-          /** 
-           * 
-           * address form
-           * 
-           * _description:
-           * 
-           * append address tag
-           * 
-           */
-          
-          $('#address_more a').unbind().click(function() {
-               var total = $(".form_address_box").length + 1;
-               $("#address_more").before('<div class="form_address_box" id="address_'+total+'"><div class="form_address">'+$(".form_address").html()+'<label><br /><a class="notajax remove_from_form" delete="address_'+total+'"><span>Delete</span></a></label></div></div>');
-               reloadMask('#address_'+total);
-               reloadAutoComplete();
-               reloadCountries()
-               reloadDelete();
-               $('#address_'+total+' input').val('');
-          });
-          
-          /** 
-           * 
-           * phone form
-           * 
-           * _description:
-           * 
-           * append phone form
-           * 
-           */
-          
-          $('#phone_more a').unbind().click(function() {
-               var total = $(".form_phone_box").length + 1;
-               $("#phone_more").before('<div class="form_phone_box" id="phone_'+total+'"><div class="form_phone">'+$(".form_phone").html()+'<label><br /><a class="notajax remove_from_form" delete="phone_'+total+'"><span>Delete</span></a></label></div></div>');
-               reloadMask('#phone_'+total);
-               reloadDelete();
-               $('#phone_'+total+' input').val('');
-          });
-          
-                  
-          /** 
-           * 
-           * email form
-           * 
-           * _description:
-           * 
-           * append email form
-           * 
-           */
-          
-          $('#email_more a').unbind().click(function() {
-               var total = $(".form_email_box").length + 1;
-               $("#email_more").before('<div class="form_email_box" id="email_'+total+'"><div class="form_email">'+$(".form_email").html()+'<label><br /><a class="notajax remove_from_form" delete="email_'+total+'"><span>Delete</span></a></label></div></div>');
-               reloadMask('#email_'+total);
-               reloadDelete();
-               $('#email_'+total+' input').val('');
-          });
-          
-                  
-          /** 
-           * 
-           * IM form
-           * 
-           * _description:
-           * 
-           * append IM form
-           * 
-           */
-          
-          $('#im_more a').unbind().click(function() {
-                  var total = $(".form_im_box").length + 1;
-                  $("#im_more").before('<div class="form_im_box" id="im_'+total+'"><div class="form_im">'+$(".form_im").html()+'<label><br /><a class="notajax remove_from_form" delete="im_'+total+'"><span>Delete</span></a></label></div></div>');
-                  reloadMask('#im_'+total);
-                  reloadDelete();
-                  $('#im_'+total+' input').val('');
-          });
-          
-          
-          /** 
-           * 
-           * Website form
-           * 
-           * _description:
-           * 
-           * append Website form
-           * 
-           */
-          
-          $('#website_more a').unbind().click(function() {
-               var total = $(".form_website_box").length + 1;
-               $("#website_more").before('<div class="form_website_box" id="website_'+total+'"><div class="form_website">'+$(".form_website").html()+'<label><br /><a class="notajax remove_from_form" delete="website_'+total+'"><span>Delete</span></a></label></div></div>');
-               reloadMask('#website_'+total);
-               reloadDelete();
-               $('#website_'+total+' input').val('');
-          });
-          
-          
+           
           /** 
            * 
            * Place form
@@ -558,78 +511,57 @@ $(document).unbind().ready(function(){
                   $('div#edit_form #li_room_'+$(this).attr('display')+' a').text($(this).val());
               });
           });
-
+          
+          bindAutoCompleteForm();
+          
+     }
+     
+     function bindAutoCompleteForm() {
+          
           // Reset value if city choices is blank
-          $('.city_search').keyup(function() {
+          $('.city_search').unbind().keyup(function() {
                  if($(this).val() == '') {
                      $(this).parent().next().find("input:hidden").val('');
                  }
             });
      
-     }
-     
-     bindFormActions();     
-        
-          /**
-           * 
-           * autocomplete text field
-           * 
-           */
-          
-          
+          /// autocomplete text field
           // we must to 'reload' auto-complete function, when a field text is drawed by some javascript function 
+          $('.city_search').unbind().autocomplete("/address/search/city/", {
+                  width: 355,
+                  selectFirst: true,
+                  minChars: 3
+          });
+          $(".city_search").result(function(event, data, formatted) {
+                  // set city id to the hidden field
+                  if (data) {
+                          $(this).parent().next().find("input:hidden").val(data[1]);
+                  }
+          });
           
-          function reloadAutoComplete() {
-                  $('.city_search').unbind().autocomplete(); // !!IMPORTANT: necessary for IE6 when you have multiple fields
-                  $('.city_search').autocomplete("/address/search/city/", {
-                          width: 355,
-                          selectFirst: true,
-                          minChars: 3
-                  });
-                  $(".city_search").result(function(event, data, formatted) {
-                          // set city id to the hidden field
-                          if (data) {
-                                  $(this).parent().next().find("input:hidden").val(data[1]);
-                          }
-                  });
-          }
-                  
-          reloadAutoComplete() // load auto-complete for the first tag address
+          //other countries address, not registered in database
+          //if another country is selected, change form fields ..
           
+          $('form select.country').unbind().change(function() {
+                if($(this).val() == 33) { // Brazil
+                    // reset oldvalues
+                    $(this).parents('div').children('label.noautocomplete').children('input').val('');
+                    $(this).parents('div').children('label.noautocomplete').hide();
+                    $(this).parents('div').children('label.autocomplete').show();
+                } else {
+                    // reset oldvalues
+                    $(this).parents('div').children('label.autocomplete').children('input').val('');
+                    $(this).parents('div').children('label.autocomplete').hide();
+                    $(this).parents('div').children('label.noautocomplete').show();
+                }
+          });
 
-     
-     /** 
-      * other countries address, not registered in database
-      * 
-      * if another country is selected, change form fields ..
-      * 
-      */
-      
-     function reloadCountries() {
-               $('form select.country').change(function() {
-                     var selectField = $(this);
-                     var form_address_div_id = selectField.parents("div.form_address_box:first").attr("id");
-                                             
-                     if(selectField.val() == 33) { // Brazil
-                         // reset oldvalues
-                         $(this).parents('div.form_address').children('div.address_noautocomplete').children('label').children('input').val('');
-                         $('#'+form_address_div_id+' div.address_noautocomplete').hide();
-                         $('#'+form_address_div_id+' div.address_autocomplete').show();
-                     } else {
-                         // reset oldvalues
-                         $(this).parents('div.form_address').children('div.address_autocomplete').children('label').children('input').val('');
-                         $('#'+form_address_div_id+' div.address_autocomplete').hide();
-                         $('#'+form_address_div_id+' div.address_noautocomplete').show();
-                     }
-               });
      }
      
-     reloadCountries(); // load countries select for the first tag address 
-     
-
+     bindFormActions();
 
      /**
-      * select itens from an available list options
+      * select itens from an available list options (used in Services)
       * copy itens from an select multiple box to first prev sibling
       */
      
@@ -671,43 +603,9 @@ $(document).unbind().ready(function(){
                    
      });
      
+
      
-     /**
-      * mini forms to quick add
-      */
-     
-     
-      var form_mini_options = {
-          success: function(response, message, form) {
-                    // get option label
-                    var text = $(form).parents('fieldset').children('div.form_mini').children('form').children('label').children('input:text').val();
-                    // add <option> to asmselect select box
-                    $(form).parents('fieldset').children('label').children('div').children('select.asmSelect:first').append('<option value='+response+' disabled="disabled">'+text+'</option>');
-                    
-                    // add <option> to real multiselect 
-                    $(form).parents('fieldset').children('label').children('div').children('select.multiple').append('<option value='+response+' selected="selected">'+text+'</option>');
-                    
-                    // append it to list
-                    $(form).parents('fieldset').children('label').children('div').children('ol').append('<li style="display: list-item;" class="asmListItem"><span class="asmListItemLabel">'+text+'</span><a class="asmListItemRemove dyn_added">remove</a></li>');
-                              
-                    $('a.asmListItemRemove.dyn_added').unbind().click(function() {
-                         $(this).parents("li").remove();
-                    }); 
-                    
-                    // clean form
-                    $(form).parents('fieldset').children('div.form_mini').children('form').children('label').children('input:text').val('')
-                    
-               },
-          error: function() {
-               // show error alert
-               $('#msg_area').show();
-               $('#msg_area').removeClass('alert');
-               $('#msg_area').addClass('error');
-               $('#msg_area').text('Error saving register!');
-               $('#sidebar').css('padding-top','234px');
-          }
-     }; 
-     
+     // quick add     
      $('a.form_mini').click(function() {
           $('div.'+$(this).attr('display')).clone(true).insertAfter(this);
           

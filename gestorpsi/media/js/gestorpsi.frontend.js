@@ -230,23 +230,4 @@ $(document).ready(function(){
 
 
 
-function loadURL(URL, showID) {
-        $.ajax({
-                url: URL,
-                type: 'GET',
-                dataType: 'html',
-                timeout: 5000,
-                
-                success: function(data){
-                        $("#core").html(data);
-                        $('#'+showID).show();
-        
-                },
-                 error: function(data){
-                        alert('Error loading URL ' +URL);
-                }
-                
-        });
-}
-
 

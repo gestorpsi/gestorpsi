@@ -14,30 +14,75 @@ GNU General Public License for more details.
 
 */
 
-$(document).unbind().ready(function(){
 
-	/**
-	 * 
-	 *  rows table switch classes
-	 * 
-	 * _description:
-	 * 
-	 *  change classes rows in a table
-	 * 
-	 * 	tables must to have 'zebra' class
-	 *
-	 *	eg.: 
-	 * 		<table class="zebra">
-	 * 			<tr><td>Hello Baby!</td></tr>
-	 * 			<tr><td>You know what i like!</td></tr>
-	 * 		</table>
-	 * 
-	 */
+/**
+* 
+* apeend edit form
+* 
+* _description:
+* 
+* append form content inside the div "core"
+* 
+*/
+
+function bindList() {
+	$("#search_results.newtab tr td a").unbind().click(function(){
+		var link = $(this);
+		$('#core .fast_menu_content').hide();
+		$('ul.opened_tabs').hide();
+		$("#core div#edit_form").load(link.attr('href'));
+		$.ajax({
+			complete: function(){
+				$('ul.opened_tabs').show();
+				$("#core div#edit_form").show();
+			}
+		});
+		
+		$('#sub_menu ul li a').removeClass('active'); // unselect other tabs
+		$("ul.opened_tabs").show(); // display tab
+		$("ul.opened_tabs li div a:first").text(link.attr('title')); // set newtab title
+		
+		$("ul.opened_tabs li div a:first").unbind().click(function() {
+			$('#core .fast_menu_content').hide();
+			$('#core div#edit_form').show();
+			$('#sub_menu ul li a').removeClass('active');
+		});
+		
+		return false;
+	});
 	
+
+	
+}
+
+
+/**
+ * 
+ *  rows table switch classes
+ * 
+ * _description:
+ * 
+ *  change classes rows in a table
+ * 
+ * 	tables must to have 'zebra' class
+ *
+ *	eg.: 
+ * 		<table class="zebra">
+ * 			<tr><td>Hello Baby!</td></tr>
+ * 			<tr><td>You know what i like!</td></tr>
+ * 		</table>
+ * 
+ */
+
+function bindTableZebra() {
 	$('table.zebra tr:odd').addClass('zebra_0');
 	$('table.zebra tr:even').addClass('zebra_1');
-	
-	
+}
+
+$(document).unbind().ready(function(){
+
+	bindList();
+	bindTableZebra();	
 	
 	// draw top-border for multirows fieldsets (eg.: address fieldset)
 	$('fieldset.set_multirow').each(function() {
@@ -82,30 +127,6 @@ $(document).unbind().ready(function(){
 		return false;
 	});
 
-
-	/**
-	* 
-	* apeend edit form
-	* 
-	* _description:
-	* 
-	* append form content inside the div "core"
-	* 
-	*/
-	
-	$("#core table.zebra tr td a").click(function(){
-		var link = $(this);
-		$('ul.opened_tabs').hide();
-		$("#core div#edit_form").load(link.attr('href'));
-		$.ajax({
-			complete: function(){
-				$('ul.opened_tabs').show();
-				$("#core div#edit_form").show();
-			}
-		});
-		
-		return false;
-	});
 
 
 	/**
@@ -154,15 +175,7 @@ $(document).unbind().ready(function(){
          */
         
         $('#search_results.newtab tr td a').click(function() {
-                $('#sub_menu ul li a').removeClass('active'); // unselect other tabs
-		$("ul.opened_tabs").show(); // display tab
-		$("ul.opened_tabs li div a:first").text($(this).attr('title')); // set newtab title
-		
-		$("ul.opened_tabs li div a:first").unbind().click(function() {
-			$('#core .fast_menu_content').hide();
-			$('#core div#edit_form').show();
-			$('#sub_menu ul li a').removeClass('active');
-		});
+
 	});
         
         /**

@@ -22,9 +22,9 @@ GNU General Public License for more details.
 
 {% if object.id %}
 	<div class="edit_form">
-	<h2 class="title_employee">{{ object.person.name }}</h2>
+	<h2 class="title_employee title">{{ object.person.name }}</h2>
 {% else %}
-	<h2 class="title_employee">{% trans "Adding New Employee" %}</h2>
+	<h2 class="title_employee title">{% trans "Adding New Employee" %}</h2>
 	<p class="description">{% trans "Inform the employee details then click on Save button" %}</p>
 {% endif %}
 
@@ -64,7 +64,7 @@ GNU General Public License for more details.
 <br />	
 </div>
 
-<div id="sidebar">
+<div id="sidebar" class="sidebar">
 	<div class="bg_blue">
 		{% include "tags/save.html" %}
 	</div>

@@ -21,7 +21,7 @@ GNU General Public License for more details.
 People Personal Profile Form	
 -->
         
-<fieldset class="fieldset_personal_profile">
+<fieldset>
         <legend>{% trans "Personal Profile" %}</legend>
                 <label>{% trans "Birthdate" %}<br />
                 <input type="text" name="birthDate" class="calendar birthdate" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate }}{% endifnotequal %}" id="id_birthDate" />

@@ -16,43 +16,40 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-{% if not object %}
+<div class="no_registers_available"{% if object %} style="display:none"{% endif %}>
         <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/place/" class="fastmenu notajax" sub_menu="sub_places" display="form">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
-{% else %}
-
-<div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
-Esta caixa é mostrada quando há mensagens
 </div>
-
-<h2 id="title_contacts">{% trans "All Places" %}</h2>
-<p class="description">{% trans "Displaying" %} <a href="/place/" display="list">{{ object|length }} {% trans "place(s)" %}</a>.</p>
-
-
-<div id="main_area" class="contact">
-
-<table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-
-        {% for o in object %}
-        <tr>
-
-                <!--<td><a href="">{{ l.name }}</a></td>-->
-                <td><a href="/place/{{ o.id }}" title="{{ o }}">{{ o }}</a></td>
-                <!--
-                <strong>[</strong><small><a href="">Delete</a></small><strong>]</strong> <br>
-                <td>(11) 2301 0751</td>
-                -->
-                <td>{{ o.get_first_phone }}
-               <br />
-               {{ o.get_first_email }}
-               </td>
-                <td class="icons">&nbsp;</td>
-               
-        </tr>
-        {% endfor %}
-</table>
+<div class="registers_available"{% if not object %} style="display:none"{% endif %}>
         
+        <div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
+        Esta caixa é mostrada quando há mensagens
+        </div>
+        
+        <h2 id="title_contacts">{% trans "All Places" %}</h2>
+        <p class="description">{% trans "Displaying" %} <a href="/place/" display="list"><span id="object_length">{{ object|length }}</span> {% trans "place(s)" %}</a>.</p>
+       
+        <div id="main_area" class="contact">
+                <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+                
+                        {% for o in object %}
+                        <tr id="{{ o.id }}">
+                
+                                <!--<td><a href="">{{ l.name }}</a></td>-->
+                                <td><a href="/place/{{ o.id }}" title="{{ o }}">{{ o }}</a></td>
+                                <!--
+                                <strong>[</strong><small><a href="">Delete</a></small><strong>]</strong> <br>
+                                <td>(11) 2301 0751</td>
+                                -->
+                                <td><span class="phone">{{ o.get_first_phone }}</span>
+                               <br />
+                               <span class="email">{{ o.get_first_email }}</span>
+                               </td>
+                                <td class="icons">&nbsp;</td>
+                               
+                        </tr>
+                        {% endfor %}
+                </table>
+        </div>
 </div>
-	
-{% endif %}
 
 

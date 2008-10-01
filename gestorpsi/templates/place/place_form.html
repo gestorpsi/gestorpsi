@@ -19,10 +19,10 @@ GNU General Public License for more details.
 
 {% if object.id %}
 	<div class="edit_form">
-	<h2 class="title_places">{{ object.label }}</h2>
+	<h2 class="title_places title">{{ object.label }}</h2>
 	<p class="description"><br />	
 {% else %}
-	<h2 class="title_places">{% trans "Adding New Place" %}</h2>
+	<h2 class="title_places title">{% trans "Adding New Place" %}</h2>
 	<p class="description">{% trans "Inform the place details then click on Save button" %}</p>
 {% endif %}
 
@@ -92,7 +92,7 @@ GNU General Public License for more details.
 <br />	
 </div>
 
-<div id="sidebar">
+<div id="sidebar" class="sidebar">
 	<div class="bg_blue">
 		<input type="hidden" name="place" value="{{ object.id }}" />
 		{% include "tags/save.html" %}

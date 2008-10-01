@@ -16,41 +16,35 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-{% if not object %}
+<div class="no_registers_available"{% if object %} style="display:none"{% endif %}>
         <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/device/" class="fastmenu notajax" sub_menu="sub_devices" display="form">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
-{% else %}
-
-<div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
-Esta caixa é mostrada quando há mensagens
 </div>
+<div class="registers_available"{% if not object %} style="display:none"{% endif %}>
 
-<h2 class="title_device">{% trans "All Devices" %}</h2>
-<p class="description">{% trans "Displaying" %} <a href="/device/" display="list">{{ object|length }} {% trans "device(s)" %}</a>.</p>
-
-
-
-<div id="main_area" class="contact">
-
-<table id="search_results" class="zebra newtab devices" border="0" cellspacing="0" cellpadding="0">
-
-
-        {% for o in object %}
-        <tr>
-        	<td class="item" display="device_{{ o.id }}">{{ o.description }}  </a></td>
-        </tr>
-	    	{% for dev_det in o.get_all_device_details %}
-				<tr class="sub_item device_{{ o.id }}">
-					<td class="sub_item" ><a href="/device/{{ dev_det.id }}" title="{{ dev_det }}">{{ dev_det.brand }} </a></td>
-				</tr>
-   			{% endfor %}
-		
+        <div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
+        Esta caixa é mostrada quando há mensagens
+        </div>
         
-        {% endfor %}
-        
-</table>
-        
+        <h2 class="title_device">{% trans "All Devices" %}</h2>
+        <p class="description">{% trans "Displaying" %} <a href="/device/" display="list"><span id="object_length">{{ object|length }}</span> {% trans "device(s)" %}</a>.</p>
+
+        <div id="main_area" class="contact">
+                <table id="search_results" class="zebra newtab devices" border="0" cellspacing="0" cellpadding="0">
+                
+                
+                        {% for o in object %}
+                        <tr>
+                                <td class="item" display="device_{{ o.id }}">{{ o.description }}  </a></td>
+                        </tr>
+                                {% for dev_det in o.get_all_device_details %}
+                                                <tr class="sub_item device_{{ o.id }}" id="{{ dev_det.id }}">
+                                                        <td class="sub_item" ><a href="/device/{{ dev_det.id }}" title="{{ dev_det }}">{{ dev_det.brand }} </a></td>
+                                                </tr>
+                                        {% endfor %}
+                                
+                        
+                        {% endfor %}
+                </table>
+        </div>
 </div>
-
-	
-{% endif %}
 

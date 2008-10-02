@@ -368,53 +368,49 @@ function bindAjaxForms() {
 */
       
 function bindFieldMask() {
-     $("form input:text").unbind().each(function(){
-          var field = $(this);
-          if(field.attr('mask')) {
-               $(field).mask(field.attr('mask'));
-          }
+     $("form input:text[mask]").unbind().each(function(){
+          $(this).mask($(this).attr('mask'));
      });
  }
 
  
- /**
-  *
-  * delete fields in forms
-  *
-  * used in oneToMany relationships registers
-  * eg. phones, address, emails, IMs ...
-  *
-  */
- 
- function bindDelete() {
-      $('a.remove_from_form').unbind();
-      $('a.remove_from_form').click(function() {
-           var fieldset = $(this).parents('fieldset');
-           var total = $(fieldset).children('div').size();
-           
-           // remove border top before delete it
-           $(fieldset).children('div').removeClass('multirow');
+/**
+ *
+ * delete fields in forms
+ *
+ * used in oneToMany relationships registers
+ * eg. phones, address, emails, IMs ...
+ *
+ */
 
-           var div = $(this).parent('label').parent('div');
-           if(total>1) {
-           $(div).remove();
-           } else {
-                $(div).children('label').children('input').val('');
-           }
-           
-           // re-draw top borders if exists
-           if($(fieldset).hasClass('set_multirow')) {
-                $(fieldset).children('div').not(':first').addClass('multirow');
-           }
+function bindDelete() {
+     $('a.remove_from_form').unbind().click(function() {
+          var fieldset = $(this).parents('fieldset');
+          var total = $(fieldset).children('div').size();
+          
+          // remove border top before delete it
+          $(fieldset).children('div').removeClass('multirow');
 
-      });
- }
+          var div = $(this).parent('label').parent('div');
+          if(total>1) {
+          $(div).remove();
+          } else {
+               $(div).children('label').children('input').val('');
+          }
+          
+          // re-draw top borders if exists
+          if($(fieldset).hasClass('set_multirow')) {
+               $(fieldset).children('div').not(':first').addClass('multirow');
+          }
+
+     });
+}
 
 
 function bindAutoCompleteForm() {
      
      // Reset value if city choices is blank
-     $('.city_search').unbind().keyup(function() {
+     $('input.city_search').unbind().keyup(function() {
             if($(this).val() == '') {
                 $(this).parent().next().find("input:hidden").val('');
             }
@@ -422,13 +418,14 @@ function bindAutoCompleteForm() {
 
      /// autocomplete text field
      // we must to 'reload' auto-complete function, when a field text is drawed by some javascript function 
-     $('.city_search').unbind().autocomplete("/address/search/city/", {
+     $('input.city_search').autocomplete("/address/search/city/", {
              width: 355,
              selectFirst: true,
              minChars: 3
      });
-     $(".city_search").result(function(event, data, formatted) {
-             // set city id to the hidden field
+     
+     // set cityid to the hidden field
+     $("input.city_search").result(function(event, data, formatted) {
              if (data) {
                      $(this).parent().next().find("input:hidden").val(data[1]);
              }
@@ -471,8 +468,9 @@ function bindFormActions() {
                $(this).parents('fieldset').children('div').removeClass('multirow');
                $(this).parents('fieldset').children('div').not(':first').addClass('multirow');
           }
-          bindDelete();
           bindAutoCompleteForm();
+          bindDelete();
+          
           bindFieldMask();
      });
      
@@ -558,15 +556,12 @@ function bindFormActions() {
           if($(this).hasClass('active')) {
                $('.gender').removeClass('active');
                $(this).siblings('input.gender').val($(this).attr(''));
-               //$('#id_gender').val($(this).attr(''));
           } else {
                $('.gender').removeClass('active');
                $(this).addClass('active');
                $(this).siblings('input.gender').val($(this).attr('value'));
-               //$('#id_gender').val($(this).attr('value'));
           }
      });
-
      
      bindAutoCompleteForm();
      

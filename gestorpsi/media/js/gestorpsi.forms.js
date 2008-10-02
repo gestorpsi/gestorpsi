@@ -392,8 +392,10 @@ function bindDelete() {
           $(fieldset).children('div').removeClass('multirow');
 
           var div = $(this).parent('label').parent('div');
+
           if(total>1) {
-          $(div).remove();
+               $(div).children('label').children('input:text').val('');
+               $(div).hide();
           } else {
                $(div).children('label').children('input').val('');
           }

@@ -397,7 +397,7 @@ function bindDelete() {
                $(div).children('label').children('input:text').val('');
                $(div).hide();
           } else {
-               $(div).children('label').children('input').val('');
+               $(div).children('label').children('input:text').val('');
           }
           
           // re-draw top borders if exists

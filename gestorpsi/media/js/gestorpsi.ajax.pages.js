@@ -47,7 +47,7 @@ function bindList() {
 			$('#core div#edit_form').show();
 			$('#sub_menu ul li a').removeClass('active');
 		});
-		
+
 		return false;
 	});
 	
@@ -143,29 +143,6 @@ $(document).unbind().ready(function(){
 			 $('#main_area ul#form_options').toggle();
 		 });
 	});
-	
-	
-	/** 
-	 * jQuery UI DatePicker
-	 * 
-	 * _description:
-	 * 
-	 * load Birthdate's style calendar 
-	 * 
-	 */
-	
-	$('.birthdate').datepicker({ dateFormat: 'yy-mm-dd', changeYear: true, yearRange: '-120:+0', duration: 'fast' });
-	
-	/** 
-	 * jQuery UI DatePicker
-	 * 
-	 * _description:
-	 * 
-	 * load Care Professional
-	 * 
-	 */	
-
-	$('.initialActivities').datepicker({ dateFormat: 'yy-mm', changeYear: true, yearRange: '-100:+0', duration: 'fast' });
 	
 	
 	/**

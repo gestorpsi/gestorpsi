@@ -24,7 +24,7 @@ People Personal Profile Form
 <fieldset>
         <legend>{% trans "Personal Profile" %}</legend>
                 <label>{% trans "Birthdate" %}<br />
-                <input type="text" name="birthDate" class="calendar birthdate" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate }}{% endifnotequal %}" id="id_birthDate" />
+                <input type="text" name="birthDate" class="calendar birthdate" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate }}{% endifnotequal %}" />
                 </label>
                 <label>{% trans "Age" %}<br />
                 <input type="text" name="age" class="extrasmall" value="{{ object.age }}" id="id_age" />

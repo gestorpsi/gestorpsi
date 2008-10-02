@@ -40,7 +40,7 @@ GNU General Public License for more details.
 	Service Identification 
 	-->
 	
-	<fieldset id="fieldset_service_identification">
+	<fieldset>
 		<legend>{% trans "Service Identification" %}</legend>
 			<label>{% trans "Service Name" %}<br />
 			<input type="text" name="service_name" class="extrabig tabtitle" value="{{ object.name }}" id="id_name" />
@@ -48,19 +48,13 @@ GNU General Public License for more details.
 			<label>{% trans "Service Description" %}<br />
 				<textarea name="service_description" class="extrabig">{{ object.description }}</textarea>				
 			</label>
-			<!--
-			</label>
-				<label>{% trans "Keywords" %}<br />
-				<input type="text" name="service_keywords" class="extrabig tabtitle" value="{{ object.keywords }}" id="id_keywords" />
-			</label>
-			-->
 	</fieldset>
 
 	<!--
 	Service Profile 
 	-->
 	
-	<fieldset id="fieldset_service_profile">
+	<fieldset>
 		<legend>{% trans "Service Profile" %}</legend>
 	
 		<label>{% trans "Area" %}<br>
@@ -126,7 +120,7 @@ GNU General Public License for more details.
 
 	</fieldset>
 		
-	<fieldset id="fieldset_service_procedure">
+	<fieldset>
 		<legend>{% trans "Service Procedures" %}</legend>
 
 		<!-- procedures providers to choice -->
@@ -211,7 +205,7 @@ GNU General Public License for more details.
 	Service must to have a status
 	-->
 	
-	<fieldset id="fieldset_service_active">
+	<fieldset>
 		<legend>{% trans "Service Status" %}</legend>
 			<label>{% trans "Active?" %}<br />
 			<select id="id_active" name="service_active" class="small">
@@ -222,21 +216,6 @@ GNU General Public License for more details.
 	</fieldset>
 
 </div>
-	
-	<!--<fieldset id="fieldset_room_identification" style="display:none">-->
-	<!--<legend>{% trans "Room Details" %}</legend>-->
-	<!---->
-	<!--	{% if not rooms %}-->
-	<!--		{% include "tags/room.html" %}-->
-	<!--	{% else %}-->
-	<!--	{% for room in rooms %}-->
-	<!--		{% include "tags/room.html" %}-->
-	<!--	{% endfor %}-->
-	<!--	{% endif %}-->
-	<!---->
-	<!--	<div id="room_more"></div>-->
-	<!---->
-	<!--</fieldset>-->
 <br />	
 </div>
 
@@ -245,26 +224,11 @@ GNU General Public License for more details.
 		<input type="hidden" name="place" value="{{ object.id }}" />
 		{% include "tags/save.html" %}
 	</div>
-		<div id="place_actions" {% if not object.id %}style="display:none"{% endif %}>	
+	<div id="place_actions" {% if not object.id %}style="display:none"{% endif %}>	
 		<h3>{% trans 'Object Actions' %}</h3>
 		<ul>
 			<li id="add_room" class="add_to_form"><a class="notajax" href="#top">{% trans "Add room in this place" %}</a></li>
 		</ul>
-		
-		<!--
-		<div id="div_list_rooms" style="display:{% if not rooms %}none{% endif %}">
-		<h3>{% trans 'Rooms from this place' %}</h3>
-		<ul>
-			<li class="li_rooms" style="display:none">&nbsp;</li>
-			{% for room in rooms %}
-			<li class="li_rooms" id="li_room_{{ room.id }}"><a class="notajax" display="{{ room.id }}" href="#top">{{ room }}</a></li>
-			{% endfor %}
-			
-		</ul>
-		</div>
-		-->
-		
-		
 	</div>
 </div>
 

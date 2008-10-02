@@ -470,7 +470,6 @@ function bindFormActions() {
           }
           bindAutoCompleteForm();
           bindDelete();
-          
           bindFieldMask();
      });
      
@@ -555,13 +554,36 @@ function bindFormActions() {
      $('a.gender').unbind().click(function() {
           if($(this).hasClass('active')) {
                $('.gender').removeClass('active');
-               $(this).siblings('input.gender').val($(this).attr(''));
+               $(this).siblings('input.gender').val('');
           } else {
                $('.gender').removeClass('active');
                $(this).addClass('active');
                $(this).siblings('input.gender').val($(this).attr('value'));
           }
      });
+     
+     /** 
+      * jQuery UI DatePicker
+      * 
+      * _description:
+      * 
+      * load Birthdate's style calendar 
+      * 
+      */
+     
+     $('input.birthdate').datepicker({ dateFormat: 'yy-mm-dd', changeYear: true, yearRange: '-120:+0', duration: 'fast' });
+          
+     /** 
+      * jQuery UI DatePicker
+      * 
+      * _description:
+      * 
+      * load Care Professional
+      * 
+      */	
+
+     $('input.initialActivities').datepicker({ dateFormat: 'yy-mm', changeYear: true, yearRange: '-100:+0', duration: 'fast' });
+
      
      bindAutoCompleteForm();
      

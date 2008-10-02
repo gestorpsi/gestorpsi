@@ -121,7 +121,6 @@ div#main_menu a.active {
 #sub_menu ul {
 	position: relative;
 	top: 15px;
-	left: 10px;
 }
 #sub_menu li {
 	display: inline;
@@ -962,8 +961,8 @@ select.country {
 }
 
 #footer {
-	float: left;
-	width: 100%;
+	clear: both;
+	display: block;
 	padding: 8px;
 	margin-top: 20px;
 	font-size: 10px;

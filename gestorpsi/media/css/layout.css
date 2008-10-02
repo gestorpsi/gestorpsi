@@ -383,14 +383,16 @@ div.photo a span {
 	display: none;
 }
 
-#male {
+.male {
 	background:url(../img/ico_male.gif) no-repeat;
 	width: 16px
 }
-#female {
+
+.female {
 	background:url(../img/ico_female.gif) no-repeat;
 	width: 16px
 }
+
 a.delete {
 	display: block;
 	background: url(../img/ico_edit-delete.png) no-repeat;
@@ -417,10 +419,10 @@ a.prase_edit {
 	padding-right: 20px;
 	padding-top: 5px;
 }
-#photo .clips {
+.photo .clips {
 	margin-left: 10px;
 }
-#photo a:hover, #photo a.active {
+.photo a:hover, .photo a.active {
 	background-position: 0 -18px;
 	color: #005A7D; 
 }

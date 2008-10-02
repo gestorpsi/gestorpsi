@@ -128,9 +128,13 @@ var form_options = {
           // empty add form
           $('#form form').clearForm();
           
-          // reset image
+          // reset image from add form
           $('#form form div.photo img.img_people').attr('src','/media/img/male_generic_photo.gif.png');
           $('#form form div.photo input.photo').val('');
+          
+          // reset gender from add form
+          $('#form form .gender').removeClass('active');
+          $('#form form input.gender').val('');
           
           // empty room add fields
           $('div#edit_form #room_ input:text').val('');
@@ -540,6 +544,30 @@ function bindFormActions() {
          });
      });
      
+     /**
+      * 
+      * gender are choiced by icons ..
+      * 
+      * _description:
+      * listen from an image click, so ajust selected gender in
+      * a hidden input with an attribute id="id_gender"
+      * 
+      */
+     
+     $('a.gender').unbind().click(function() {
+          if($(this).hasClass('active')) {
+               $('.gender').removeClass('active');
+               $(this).siblings('input.gender').val($(this).attr(''));
+               //$('#id_gender').val($(this).attr(''));
+          } else {
+               $('.gender').removeClass('active');
+               $(this).addClass('active');
+               $(this).siblings('input.gender').val($(this).attr('value'));
+               //$('#id_gender').val($(this).attr('value'));
+          }
+     });
+
+     
      bindAutoCompleteForm();
      
 }
@@ -624,28 +652,6 @@ $(document).unbind().ready(function(){
           $('div#list.fast_menu_content').hide();
      });
      
-     	   
-     /**
-      * 
-      * gender are choiced by icons ..
-      * 
-      * _description:
-      * listen from an image click, so ajust selected gender in
-      * a hidden input with an attribute id="id_gender"
-      * 
-      */
-     
-     $('.gender').unbind().click(function() {
-          if($(this).hasClass('active')) {
-               $('.gender').removeClass('active');
-               $('#id_gender').val($(this).attr(''));
-          } else {
-               $('.gender').removeClass('active');
-               $(this).addClass('active');
-               $('#id_gender').val($(this).attr('value'));
-          }
-     });
-
 
      
      /**

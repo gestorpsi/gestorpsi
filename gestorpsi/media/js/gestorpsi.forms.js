@@ -386,7 +386,14 @@ function bindFieldMask() {
 function bindDelete() {
      $('a.remove_from_form').unbind().click(function() {
           var fieldset = $(this).parents('fieldset');
-          var total = $(fieldset).children('div').size();
+          var total = 0;
+          
+          // count only visible div's
+          $(fieldset).children('div').each(function() {
+               if($(this).css('display') != 'none') {
+                    total = total + 1;
+               }
+          });
           
           // remove border top before delete it
           $(fieldset).children('div').removeClass('multirow');

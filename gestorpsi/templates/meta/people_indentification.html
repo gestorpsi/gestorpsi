@@ -16,14 +16,14 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<div id="photo">
-        <img id="img_people" src="{% if object.person.photo %}{{ object.person.photo }}{% else %}/media/img/male_generic_photo.gif.png{% endif %}" />
+<div class="photo">
+        <img class="img_people" src="{% if object.person.photo %}{{ object.person.photo }}{% else %}/media/img/male_generic_photo.gif.png{% endif %}" />
         <a id="male" class="notajax gender{% ifequal object.person.gender '2' %} active{% endifequal %}" value="2"><span>{% trans "Male" %}</span></a>
         <a id="female" class="notajax gender{% ifequal object.person.gender '1' %} active{% endifequal %}" value="1"><span>{% trans "Female" %}</span></a>
 
         <a class="clips notajax">{% trans "Photo" %}</a>
-        <input type="hidden" name="photo" value="{{ object.person.photo }}" id="id_photo" />
-        <a class="notajax delete" title="delete" onclick="$('#id_photo').val(''); $('img#img_people').attr('src', '/media/img/male_generic_photo.gif.png'); "><span>{% trans "Delete" %}</span></a>
+        <input type="hidden" name="photo" value="{{ object.person.photo }}" class="photo" />
+        <a class="notajax delete" title="delete" onclick="$(this).siblings('input.photo').val(''); $(this).siblings('img.img_people').attr('src', '/media/img/male_generic_photo.gif.png');"><span>{% trans "Delete" %}</span></a>
         <input type="hidden" name="gender" value="{{ object.person.gender }}" id="id_gender" />
 
 </div> 

@@ -361,13 +361,15 @@ div#sub_menu .active {
 	margin: 2px;
 	text-decoration: none;
 }
-#photo {
+
+div.photo {
 	float: right;
 	margin-top: 17px;
 	margin-right: 15px;
 	width: 116px;
 }
-#photo a {
+
+div.photo a {
 	display: block;
 	float: left;
 	height: 16px;
@@ -376,7 +378,8 @@ div#sub_menu .active {
 	color: #999999;
 	margin-top: 2px;
 }
-#photo a span {
+
+div.photo a span {
 	display: none;
 }
 
@@ -900,7 +903,7 @@ hr {
 	cursor: pointer;
 }
 
-#photo_form_upload {
+div.photo_form_upload {
 	position: absolute;
 	margin-top: 0px;
 	margin-left: 350px;
@@ -909,13 +912,10 @@ hr {
 	background-color: #fff;
 	border: 1px solid black;
 	padding: 30px 30px 30px 30px;
-	
-}
-
-#photo_form_upload_dragplace {
-	width: 850px;
-	height: 120px;
+	width: 270px;
+	height: 50px;
 	display:none;
+	
 }
 
 #over {
@@ -927,7 +927,7 @@ hr {
 	min-height: 500px;
 }
 
-img#img_people {
+img.img_people {
 	width: 116px;
 	height: 134px;
 }

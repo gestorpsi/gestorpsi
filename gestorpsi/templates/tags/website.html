@@ -15,20 +15,15 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-<div class="form_website_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="website_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
-	<div class="form_website">
-		<input type="hidden" name="site_id" value="{{ website.id }}" />
-		<label>{% trans "URL" %}<br />
-		<input type="text" class="big" name="site_site" value="{{ website.site }}" />
-		</label>
-		<label>{% trans "Description" %}<br />
-		<input type="text" class="medium" name="site_description" value="{{ website.description }}" />
-		</label>
-	
-	</div>
-</div>
-{% if object.id %}
-<label><br /><a class="notajax remove_from_form" delete="website_{{ forloop.counter }}" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a></label>
-{% endif %}
 
+<div>
+	<input type="hidden" name="site_id" value="{{ website.id }}" />
+	<label>{% trans "URL" %}<br />
+	<input type="text" class="big" name="site_site" value="{{ website.site }}" />
+	</label>
+	<label>{% trans "Description" %}<br />
+	<input type="text" class="medium" name="site_description" value="{{ website.description }}" />
+	</label>
+<label><br /><a class="notajax remove_from_form" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a></label>
+</div>
 

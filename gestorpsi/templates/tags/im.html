@@ -15,28 +15,25 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-<div class="form_im_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="im_{% if forloop.counter %}{{ forloop.counter }}{% else %}1{% endif %}">
-	<div class="form_im">
-		<input type="hidden" name="im_id" value="{{ im.id }}" />
-		<label>{% trans "Instant Messengers" %}<br />
-		<input type="text" class="big" name="im_identity" value="{{ im.identity }}" />
-		</label>
-	
-		<label>{% trans "IM Type" %}<br />
-		{% if not IMNetworks %}
-			{% trans "There is no types available to choice" %}
-		{% else %}
-		<select name="im_network" class="medium">
-		{% for IMNetwork in IMNetworks %}
-			<option value="{{ IMNetwork.id }}" {% ifequal im.network.id IMNetwork.id %} selected{% endifequal %}>{{ IMNetwork }}</option>
-		{% endfor %}
-		</select>
-		{% endif %}
-		</label>
-	</div>
+
+<div>
+	<input type="hidden" name="im_id" value="{{ im.id }}" />
+	<label>{% trans "Instant Messengers" %}<br />
+	<input type="text" class="big" name="im_identity" value="{{ im.identity }}" />
+	</label>
+
+	<label>{% trans "IM Type" %}<br />
+	{% if not IMNetworks %}
+		{% trans "There is no types available to choice" %}
+	{% else %}
+	<select name="im_network" class="medium">
+	{% for IMNetwork in IMNetworks %}
+		<option value="{{ IMNetwork.id }}" {% ifequal im.network.id IMNetwork.id %} selected{% endifequal %}>{{ IMNetwork }}</option>
+	{% endfor %}
+	</select>
+	{% endif %}
+	</label>
+	<label><br /><a class="notajax remove_from_form" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a></label>
 </div>
-{% if object.id %}
-<label><br /><a class="notajax remove_from_form" delete="im_{{ forloop.counter }}" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a></label>
-{% endif %}
 
 

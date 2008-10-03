@@ -91,22 +91,23 @@ def save(request, object_id= ''):
         object.organization = user.org_active 
         
     
-    object.name= request.POST['name']
-    object.description= request.POST['description']
-    object.keywords= request.POST['keywords']
-    object.research_project= ResearchProject.objects.get(pk= request.POST['research_project'])
+    object.name= request.POST['service_name']
+    object.description= request.POST['service_description']
+    object.keywords= request.POST['service_keywords']
+    if request.POST['service_research_project']:
+        object.research_project= ResearchProject.objects.get(pk= request.POST['service_research_project'])
     object.save()
     
 #    if ( request.POST['organization'] != '' ):
 #        organization= Organization.objects.get(pk= request.POST['organization'] )
 #        object.organization= organization
     
-    save_agreements( request.POST.getlist('agreements'), object )
-    save_responsibles( request.POST.getlist('responsibles'), object )
+    save_agreements( request.POST.getlist('service_agreements'), object )
+    save_responsibles( request.POST.getlist('service_responsibles'), object )
      
     object.save()
     service_form= ServiceForm( instance= object )
-    return render_to_response('service/service_html.html', {'object': object, 'service_form': service_form } )
+    return HttpResponse(object.id)
 
 def delete(request, object_id= ''):
     """

@@ -43,10 +43,13 @@ GNU General Public License for more details.
 	<fieldset>
 		<legend>{% trans "Service Identification" %}</legend>
 			<label>{% trans "Service Name" %}<br />
-			<input type="text" name="service_name" class="extrabig tabtitle" value="{{ object.name }}" id="id_name" />
+			<input type="text" name="service_name" class="extrabig tabtitle" value="{{ object.name }}" />
 			</label>
 			<label>{% trans "Service Description" %}<br />
 				<textarea name="service_description" class="extrabig">{{ object.description }}</textarea>				
+			</label>
+			<label>{% trans "Keywords" %}<br />
+			<input type="text" name="service_keywords" class="extrabig" value="{{ object.keywords }}" />
 			</label>
 	</fieldset>
 
@@ -170,7 +173,7 @@ GNU General Public License for more details.
 	
 			<label>{% trans "Agreements" %}<br />
 			<span>
-			<select multiple="multiple" name="service_agreement" class="select multiple extrabig asm">
+			<select multiple="multiple" name="service_agreements" class="select multiple extrabig asm">
 				{% for l in Agreements %}
 				<option value="{{ l.id }}">{{ l }}</option>
 				{% endfor %}
@@ -221,14 +224,8 @@ GNU General Public License for more details.
 
 <div id="sidebar" class="sidebar">
 	<div class="bg_blue">
-		<input type="hidden" name="place" value="{{ object.id }}" />
+		<input type="hidden" name="service" value="{{ object.id }}" />
 		{% include "tags/save.html" %}
-	</div>
-	<div id="place_actions" {% if not object.id %}style="display:none"{% endif %}>	
-		<h3>{% trans 'Object Actions' %}</h3>
-		<ul>
-			<li id="add_room" class="add_to_form"><a class="notajax" href="#top">{% trans "Add room in this place" %}</a></li>
-		</ul>
 	</div>
 </div>
 

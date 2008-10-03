@@ -45,8 +45,9 @@ var form_options = {
                $('div#edit_form').show();
                
                // append new list iten
-               if($('div#edit_form input[name=phoneNumber]:first') && $('div#edit_form input[name=phoneNumber]:first').val() != '')
+               if($('div#edit_form input[name=phoneNumber]:first') && $('div#edit_form input[name=phoneNumber]:first').val() != '' && $('div#edit_form input[name=email_email]:first').val() != undefined) {
                     phone_number = '(' + $('div#edit_form input[name=area]:first').val() + ') ' + $('div#edit_form input[name=phoneNumber]:first').val();
+               }
                
                if($('div#edit_form input[name=email_email]:first').val() != undefined && $('div#edit_form input[name=email_email]:first').val() != '') {
                     email_address = $('div#edit_form input[name=email_email]:first').val();

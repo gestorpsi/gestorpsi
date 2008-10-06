@@ -37,12 +37,13 @@ def person_save(request, person):
         person.birthDate = request.POST['birthDate']
     person.gender = request.POST['gender']
     
-    if( request.POST['naturality']):
-        person.naturality= request.POST['naturality']
-    if( request.POST['birthPlaceForForeign'] ):
-        person.birthPlaceForForeign= request.POST['birthPlaceForForeign']
-    if( request.POST['foreignState'] ):
-        person.foreignState= request.POST['foreignState']
+    if( request.POST['birthForeignCity']):
+        person.birthForeignCity= request.POST['birthForeignCity']
+    if( request.POST['birthForeignState'] ):
+        person.birthForeignState= request.POST['birthForeignState']
+    if( request.POST['birthForeignCountry'] ):
+        person.birthForeignCountry= request.POST['birthForeignCountry']
+
     
     # maritalStatus
     try:

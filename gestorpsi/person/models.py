@@ -42,9 +42,9 @@ class Person(models.Model):
     birthPlace = models.ForeignKey(City, null=True)
     
     #the fields below were added in order to deal with foreign ones
-    naturality= models.CharField(max_length= 100)
-    birthPlaceForForeign= models.CharField(max_length= 100)
-    foreignState= models.CharField(max_length= 100)
+    birthForeignCity = models.CharField(max_length= 100)
+    birthForeignState = models.CharField(max_length= 100)
+    birthForeignCountry = models.CharField(max_length= 100)
     ###############################################################
     
     gender = models.CharField(max_length=1, choices=Gender) 

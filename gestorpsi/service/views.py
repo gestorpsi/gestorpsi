@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404
-from gestorpsi.service.models import Service, ServiceForm, ResearchProject
+from gestorpsi.service.models import Service, ResearchProject
 from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.organization.models import Organization
@@ -45,8 +45,8 @@ def form(request, object_id= ''):
         object= get_object_or_404( Service, pk= object_id )
     except (Http404, ObjectDoesNotExist):
         object= Service()
-    service_form= ServiceForm( instance= object )
-    return render_to_response('service/service_form.html', {'object': object, 'service_form': service_form } )
+    
+    return render_to_response('service/service_form.html', {'object': object, 'Agreements': Agreement.objects.all(), 'ResearchProjects': ResearchProject.objects.all(), 'CareProfessionals': CareProfessional.objects.all(), 'AgeGroups': AgeGroup.objects.all(), 'ProcedureProviders': ProcedureProvider.objects.all(), 'Procedures': Procedure.objects.all() } )
 
 def save_agreements( list_of_agreements, object ):
     """
@@ -106,7 +106,7 @@ def save(request, object_id= ''):
     save_responsibles( request.POST.getlist('service_responsibles'), object )
      
     object.save()
-    service_form= ServiceForm( instance= object )
+    
     return HttpResponse(object.id)
 
 def delete(request, object_id= ''):

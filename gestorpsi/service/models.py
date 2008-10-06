@@ -15,11 +15,23 @@ GNU General Public License for more details.
 """
 
 from django.db import models
-from gestorpsi.organization.models import Organization
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
+from gestorpsi.organization.models import Organization, AgeGroup
 from gestorpsi.careprofessional.models import CareProfessional
-from django.forms import ModelForm
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.organization.models import Agreement
+
+class Area(models.Model):
+    title = models.CharField(max_length = 100)
+    modality = models.ManyToManyField('Modality', null=True, blank=True)
+    # Generic Relationship
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.CharField(max_length=36)
+    content_object = generic.GenericForeignKey()
+    
+    def __unicode__(self):
+        return u'%s' % self.title
 
 class ServiceType(models.Model):
     """
@@ -28,19 +40,11 @@ class ServiceType(models.Model):
     @version: 1.0
     """
     name= models.CharField( max_length= 80 )
-    description= models.CharField( max_length= 100 )
+    description= models.CharField( max_length= 100, blank=True )
+    area = models.ForeignKey(Area)
 
-PROCEDURE_LIST= ( ( '1', 'SUS'), ( '2', 'CFP'), ( '3', 'GESTORPSI') )    
-class Procedure(models.Model):
-    """
-    This class represents a procedure.
-    @author: Vinicius H. S. Durelli
-    @version: 1.0
-    """
-    id_proc= models.CharField( max_length= 20, blank= True )
-    name= models.CharField( max_length= 80 )
-    description= models.CharField( max_length= 80, blank= True )
-    type= models.CharField( max_length= 1, choices= PROCEDURE_LIST )
+    def __unicode__(self):
+        return u'%s' % self.name
 
 class Modality(models.Model):
     """
@@ -49,30 +53,31 @@ class Modality(models.Model):
     @version: 1.0
     """
     name= models.CharField( max_length= 80 )
-    description= models.CharField( max_length= 100 )
     
-class GenericArea(models.Model):
-    """
-    C{GenericArea} holds ordinary information on areas. Instances of this class should not be instantiated, this class is used only
-    to provide a general structure that is inherited by its subclasses.
-    @author: Vinicius H. S. Durelli
-    @version: 1.0
-    """
-    services= models.ManyToManyField( ServiceType )
-    modalities= models.ManyToManyField( Modality )
-    procedures= models.ManyToManyField( Procedure )
+    def __unicode__(self):
+        return u'%s' % self.name
 
-class School(GenericArea):
+class Clinic(models.Model):
+    age_group = models.ManyToManyField(AgeGroup, null=True)
+    area = generic.GenericRelation(Area, null=True)
+    
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class School(models.Model):
     education_modality= models.CharField( max_length= 80 )
-
-class Organizational(GenericArea):
+    area = generic.GenericRelation(Area, null=True)
+    
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+    
+class Organizational(models.Model):
     hierarchical_level= models.CharField( max_length= 80 )
-
-class Clinic(GenericArea):
-    #FAIXA ETARIA
-    pass
-
-
+    area = generic.GenericRelation(Area, null=True)
+    
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+    
 class ResearchProject(models.Model):
     """
     This class holds information related to research projects.
@@ -81,6 +86,7 @@ class ResearchProject(models.Model):
     """
     name= models.CharField( max_length= 45 )
     description= models.CharField( max_length= 80 )
+    
     def __unicode__(self):
         return u'%s' % self.name
 
@@ -100,41 +106,7 @@ class Service(models.Model):
     active= models.BooleanField(default=True)
     organization= models.ForeignKey(Organization, null=True)
     responsibles= models.ManyToManyField( CareProfessional )
+    
         
     def __unicode__(self):
         return u"%s" % (self.name)
-
-class ServiceForm(ModelForm):
-    class Meta:
-        model= Service
-
-"""
-
-from gestorpsi.service.models import ResearchProject
-research_project= ResearchProject( name= 'a research project', description= 'research project test' )
-research_project.save()
-
-from gestorpsi.service.models import AgreementType
-agreement_type= AgreementType( description= 'agreement type test' )
-agreement_type.save()
-
-
-from gestorpsi.service.models import Agreement
-agreement= Agreement( name= 'an agreement', description= 'agreement test', agreement_type= agreement_type )
-agreement.save()
-
-from gestorpsi.service.models import Service
-from gestorpsi.organization.models import Organization
-from gestorpsi.careprofessional.models import CareProfessional
-service= Service()
-service.name= 'service test'
-service.description= 'service description'
-service.keywords= 'some keywords: Java, Ruby and Python'
-service.research_project= research_project
-service.organization= Organization.objects.get(pk=1)
-service.save()
-
-service.agreements.add( agreement )
-service.responsibles.add( CareProfessional.objects.get(pk=1) )
-service.save()
-"""

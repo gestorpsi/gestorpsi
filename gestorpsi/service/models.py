@@ -106,6 +106,7 @@ class Service(models.Model):
     active= models.BooleanField(default=True)
     organization= models.ForeignKey(Organization, null=True)
     responsibles= models.ManyToManyField( CareProfessional )
+    area = models.ForeignKey(Area)
     
         
     def __unicode__(self):

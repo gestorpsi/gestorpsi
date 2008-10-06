@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """
 Copyright (C) 2008 GestorPsi
 
@@ -41,6 +40,13 @@ class Person(models.Model):
     photo = models.CharField(max_length=100)
     birthDate = models.DateField(null=True)
     birthPlace = models.ForeignKey(City, null=True)
+    
+    #the fields below were added in order to deal with foreign ones
+    naturality= models.CharField(max_lemgth= 100)
+    birthPlaceForForeign= models.charField(max_length= 100)
+    foreignState= models.charField(max_length= 100)
+    ###############################################################
+    
     gender = models.CharField(max_length=1, choices=Gender) 
     maritalStatus = models.ForeignKey(MaritalStatus, null=True)
     phones = generic.GenericRelation(Phone, null=True)
@@ -89,7 +95,6 @@ class Person(models.Model):
             return self.sites.all()[0]
         else:
             return ''        
-
 
 class PersonForm(ModelForm):
     class Meta:

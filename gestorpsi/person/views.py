@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """
 Copyright (C) 2008 GestorPsi
 
@@ -38,6 +37,12 @@ def person_save(request, person):
         person.birthDate = request.POST['birthDate']
     person.gender = request.POST['gender']
     
+    if( request.POST['naturality']):
+        person.naturality= request.POST['naturality']
+    if( request.POST['birthPlaceForForeign'] ):
+        person.birthPlaceForForeign= request.POST['birthPlaceForForeign']
+    if( request.POST['foreignState'] ):
+        person.foreignState= request.POST['foreignState']
     
     # maritalStatus
     try:

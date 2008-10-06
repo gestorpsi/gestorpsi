@@ -220,10 +220,12 @@ def care_professional_fill(request, object):
     except:
         identification = ProfessionalIdentification()
 
-    if(request.POST['professional_licenceBoard']):         
+    try:
         identification.licenceBoard = LicenceBoard.objects.get(pk=request.POST['professional_licenceBoard'])
-    else:
+    except:
         identification.licenceBoard = None
+        
+        
     
     identification.registerNumber = request.POST['professional_registerNumber']
     identification.save()

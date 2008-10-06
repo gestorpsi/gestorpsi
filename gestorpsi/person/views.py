@@ -58,8 +58,10 @@ def person_save(request, person):
             person.birthForeignCity= request.POST['birthForeignCity']
         if( request.POST['birthForeignState'] ):
             person.birthForeignState= request.POST['birthForeignState']
-        if( request.POST['birthForeignCountry'] ):
+        try:
             person.birthForeignCountry= request.POST['birthForeignCountry']
+        except:
+            person.birthForeignCountry= None
     else:
         person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
         

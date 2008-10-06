@@ -952,7 +952,7 @@ form fieldset {
 	margin-bottom: 210px;
 }
 
-fieldset#fieldset_personal_identification {
+fieldset.fieldset_personal_identification {
 	width: 540px;
 }
 
@@ -979,7 +979,8 @@ fieldset a.add_to_form {
 	background: url(../img/22/list-add.png) no-repeat;
 	padding-right: 22px;
 	padding-bottom: 22px;
-margin: 80px 0 0 8px;
+	margin: 80px 0 0 8px;
+	width: 6px;
 }
 
 fieldset a.add_to_form span {

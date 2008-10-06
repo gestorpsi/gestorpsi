@@ -37,13 +37,6 @@ def person_save(request, person):
         person.birthDate = request.POST['birthDate']
     person.gender = request.POST['gender']
     
-    if( request.POST['birthForeignCity']):
-        person.birthForeignCity= request.POST['birthForeignCity']
-    if( request.POST['birthForeignState'] ):
-        person.birthForeignState= request.POST['birthForeignState']
-    if( request.POST['birthForeignCountry'] ):
-        person.birthForeignCountry= request.POST['birthForeignCountry']
-
     
     # maritalStatus
     try:
@@ -55,10 +48,21 @@ def person_save(request, person):
         person.maritalStatus = None
 
     # birthPlace (Naturality)
+    person.birthForeignCity= ''
+    person.birthForeignState= ''
+    person.birthForeignCountry= None
+    
     if not (request.POST['birthPlace']):
         person.birthPlace = None
+        if( request.POST['birthForeignCity']):
+            person.birthForeignCity= request.POST['birthForeignCity']
+        if( request.POST['birthForeignState'] ):
+            person.birthForeignState= request.POST['birthForeignState']
+        if( request.POST['birthForeignCountry'] ):
+            person.birthForeignCountry= request.POST['birthForeignCountry']
     else:
-        person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])    
+        person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
+        
 
 # ************* USUARIO NA SESSAO 
     user = request.user

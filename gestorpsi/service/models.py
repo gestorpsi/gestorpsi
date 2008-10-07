@@ -58,7 +58,7 @@ class Modality(models.Model):
         return u'%s' % self.name
 
 
-class AreaArts(models.Model):
+class AreaArt(models.Model):
     area = generic.GenericRelation(Area, null=True)
 
     def __unicode__(self):
@@ -102,7 +102,7 @@ class AreaSchool(models.Model):
     def __unicode__(self):
         return u'%s' % self.area.content_type
 
-class AreaSports(models.Model):
+class AreaSport(models.Model):
     area = generic.GenericRelation(Area, null=True)
 
     def __unicode__(self):

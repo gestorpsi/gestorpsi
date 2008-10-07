@@ -22,7 +22,7 @@ GNU General Public License for more details.
 """
 
 from django.contrib import admin
-from gestorpsi.service.models import Service, ResearchProject, Area, Modality, ServiceType, Clinic
+from gestorpsi.service.models import Service, ResearchProject, Area, Modality, ServiceType, AreaClinic
 
 class AreaInline(admin.TabularInline):
     model = ServiceType
@@ -44,4 +44,4 @@ admin.site.register(ResearchProject, ResearchProjectAdmin)
 admin.site.register(Area, AreaAdmin)
 admin.site.register(Modality)
 admin.site.register(ServiceType)
-admin.site.register(Clinic)
+admin.site.register(AreaClinic)

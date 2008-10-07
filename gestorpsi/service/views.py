@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404
-from gestorpsi.service.models import Service, ResearchProject
+from gestorpsi.service.models import Service, ResearchProject, Area, ServiceType, Modality, AreaClinic
 from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.organization.models import Organization
@@ -30,7 +30,19 @@ def index(request):
     """
     user = request.user
     
-    return render_to_response( "service/service_index.html", { 'object':Service.objects.filter(organization = user.org_active ), 'Agreements': Agreement.objects.all(), 'ResearchProjects': ResearchProject.objects.all(), 'CareProfessionals': CareProfessional.objects.all(), 'AgeGroups': AgeGroup.objects.all(), 'ProcedureProviders': ProcedureProvider.objects.all(), 'Procedures': Procedure.objects.all() })
+    return render_to_response( "service/service_index.html", {
+        'object':Service.objects.filter(organization = user.org_active ),
+        'Agreements': Agreement.objects.all(),
+        'ResearchProjects': ResearchProject.objects.all(),
+        'CareProfessionals': CareProfessional.objects.all(),
+        'AgeGroups': AgeGroup.objects.all(),
+        'ProcedureProviders': ProcedureProvider.objects.all(),
+        'Procedures': Procedure.objects.all(),
+        'Areas': Area.objects.all(),
+        'ServiceTypes': ServiceType.objects.all(),
+        'Modalitys': Modality.objects.all(),
+        'AreaClinic': AreaClinic.objects.all(),
+        })
 
 def form(request, object_id= ''):
     """
@@ -46,7 +58,13 @@ def form(request, object_id= ''):
     except (Http404, ObjectDoesNotExist):
         object= Service()
     
-    return render_to_response('service/service_form.html', {'object': object, 'Agreements': Agreement.objects.all(), 'ResearchProjects': ResearchProject.objects.all(), 'CareProfessionals': CareProfessional.objects.all(), 'AgeGroups': AgeGroup.objects.all(), 'ProcedureProviders': ProcedureProvider.objects.all(), 'Procedures': Procedure.objects.all() } )
+    return render_to_response('service/service_form.html', {
+        'object': object, 'Agreements': Agreement.objects.all(),
+        'ResearchProjects': ResearchProject.objects.all(),
+        'CareProfessionals': CareProfessional.objects.all(),
+        'AgeGroups': AgeGroup.objects.all(),
+        'ProcedureProviders': ProcedureProvider.objects.all(),
+        'Procedures': Procedure.objects.all() } )
 
 def save_agreements( list_of_agreements, object ):
     """

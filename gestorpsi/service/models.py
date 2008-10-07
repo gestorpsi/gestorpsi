@@ -57,26 +57,124 @@ class Modality(models.Model):
     def __unicode__(self):
         return u'%s' % self.name
 
-class Clinic(models.Model):
-    age_group = models.ManyToManyField(AgeGroup, null=True)
+
+class AreaArts(models.Model):
     area = generic.GenericRelation(Area, null=True)
-    
+
     def __unicode__(self):
         return u'%s' % self.area.content_type
 
-class School(models.Model):
+class AreaBioPsychology(models.Model):
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class AreaClinic(models.Model):
+    age_group = models.ManyToManyField(AgeGroup, null=True)
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class AreaComparative(models.Model):
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class AreaCommunity(models.Model):
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class AreaEducational(models.Model):
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class AreaSchool(models.Model):
     education_modality= models.CharField( max_length= 80 )
     area = generic.GenericRelation(Area, null=True)
-    
+
     def __unicode__(self):
         return u'%s' % self.area.content_type
-    
-class Organizational(models.Model):
+
+class AreaSports(models.Model):
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class AreaExperimental(models.Model):
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class AreaForensic(models.Model):
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class AreaLegal(models.Model):
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class AreaHospital(models.Model):
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class AreaNeuropsychology(models.Model):
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class AreaOrganizational(models.Model):
     hierarchical_level= models.CharField( max_length= 80 )
     area = generic.GenericRelation(Area, null=True)
-    
+
     def __unicode__(self):
         return u'%s' % self.area.content_type
+
+class AreaPsychoPedagogy(models.Model):
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class AreaSocialPsychology(models.Model):
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class AreaPsychomotricity(models.Model):
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class AreaHealth(models.Model):
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
+class AreaTransit(models.Model):
+    area = generic.GenericRelation(Area, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.area.content_type
+
     
 class ResearchProject(models.Model):
     """

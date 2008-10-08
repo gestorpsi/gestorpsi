@@ -128,7 +128,7 @@ GNU General Public License for more details.
 				{% if not forloop.first %}
 				</select>
 				{% endif %}
-				<select multiple="multiple" id="service_procedure_{{ l.procedure.name }}" class="extramedium multiple itens_available small_fonts{% if forloop.first %} first{% endif %}">
+				<select multiple="multiple" id="service_procedure_{{ l.procedure.name }}" class="extrabig multiple itens_available small_fonts{% if forloop.first %} first{% endif %}">
 			{% endifchanged %}
 				<option value="{{ l.id }}">{{ l.description }}</option>
 	
@@ -143,7 +143,7 @@ GNU General Public License for more details.
 		
 		<label>{% trans "Procedures Choiced" %}<br />
 		
-		<select name="service_type_procedure" multiple="multiple" group="service_procedure" class="extramedium multiple itens_selected small_fonts">
+		<select name="service_type_procedure" multiple="multiple" group="service_procedure" class="extrabig multiple itens_selected small_fonts">
 		</select>
 		
 		</label>

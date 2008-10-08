@@ -594,6 +594,33 @@ function bindFormActions() {
 
      $('input.initialActivities').datepicker({ dateFormat: 'yy-mm', changeYear: true, yearRange: '-100:+0', duration: 'fast' });
 
+     /**
+     * service types and areas
+     */
+     
+     select_area = $('select.service_area').val();
+     // set initial service type     
+     $('select.service_area').parents('fieldset').children('label').children('select.service_type').children('option').hide();
+     $('select.service_area').parents('fieldset').children('label').children('select.service_type').children('option[area=' + select_area + ']').show();
+     $('select.service_area').parents('fieldset').children('label').children('select.service_type').children('option[area=' + select_area + ']:first').attr('selected', 'selected');
+     // set initial private areas
+     $('select.service_area').parents('form').children('div').children('fieldset.service_areas').hide();
+     $('select.service_area').parents('form').children('div').children('fieldset.area_' + select_area).show();
+     
+     
+     $('select.service_area').unbind().change(function() {
+          var select = $(this);
+          // switch service type
+          $(select).parents('fieldset').children('label').children('select.service_type').children('option').hide();
+          $(select).parents('fieldset').children('label').children('select.service_type').children('option[area=' + $(this).val() + ']').show();
+          $(select).parents('fieldset').children('label').children('select.service_type').children('option[area=' + $(this).val() + ']:first').attr('selected', 'selected');
+          // switch service solicitation
+          $(select).parents('fieldset').children('label').children('select.service_solicitation').children('option').hide();
+          $(select).parents('fieldset').children('label').children('select.service_solicitation').children('option.area_'+$(select).val()).show();
+          // show privates areas
+          $(select).parents('form').children('div').children('fieldset.service_areas').hide();
+          $(select).parents('form').children('div').children('fieldset.area_' + $(this).val()).show();
+     });
      
      bindAutoCompleteForm();
      
@@ -724,10 +751,11 @@ $(document).unbind().ready(function(){
      /**
       * select multiple plugin
       */
-     
+     /*
      $("select[multiple].asm").asmSelect({
-          animate: true
+          animate: false
      });
+     */
 
      
 });

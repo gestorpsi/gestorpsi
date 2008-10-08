@@ -34,7 +34,7 @@ class ResearchProjectAdmin(admin.ModelAdmin):
     pass
 
 class AreaAdmin(admin.ModelAdmin):
-    inlines = [AreaInline]
+    #inlines = [AreaInline]
     pass
 
 

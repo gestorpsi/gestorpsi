@@ -194,18 +194,22 @@ class Service(models.Model):
     @author: Vinicius H. S. Durelli
     @version: 1.0
     """
-    id= UuidField(primary_key=True)
-    name= models.CharField( max_length= 80 )
-    description= models.CharField( max_length= 100 )
-    keywords= models.CharField( max_length= 100 )
-    agreements= models.ManyToManyField( Agreement )
+    id = UuidField(primary_key=True)
+    name = models.CharField(max_length=80)
+    description = models.CharField(max_length=100)
+    keywords = models.CharField(max_length=100)
+    area = models.ForeignKey(Area)
+    service_type = models.ForeignKey(ServiceType)
+    
+    agreements= models.ManyToManyField(Agreement)
     research_project= models.ForeignKey( ResearchProject, null=True )    
     organization = models.ForeignKey(Organization, null=True)
     active= models.BooleanField(default=True)
     organization= models.ForeignKey(Organization, null=True)
     responsibles= models.ManyToManyField( CareProfessional )
-    area = models.ForeignKey(Area)
-    
-        
+
     def __unicode__(self):
         return u"%s" % (self.name)
+    
+    class Meta:
+        ordering = ['name']

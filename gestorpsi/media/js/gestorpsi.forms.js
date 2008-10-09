@@ -645,10 +645,12 @@ function bind_select_itens_available() {
 // selected -> available
 function bind_select_itens_selected() {
      $('select.itens_selected option').unbind().click(function() {
+          var select = $(this).parents('select');
           $(this).parents('fieldset').children('label').children('select.itens_available').children('option[value='+$(this).attr('value')+']').show();
           $(this).remove();
           bind_select_itens_available();
-          $(this).parents('fieldset').children('label').children('select.itens_selected').children('option').attr('selected','selected');
+          // select itens again
+          $(select).children('option').attr('selected','selected');
      });
 
 }

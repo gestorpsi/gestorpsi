@@ -29,7 +29,7 @@ class PlaceType( models.Model ):
     @author: Vinicius H. S. Durelli
     @version: 1.0
     """
-    description= models.CharField( max_length= 80 )
+    description= models.CharField( max_length= 100 )
     
     def __unicode__(self):
         """

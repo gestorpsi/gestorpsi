@@ -23,7 +23,7 @@ from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import CryptographicUtils as cryptoUtils
 
 class Issuer(models.Model):
-    description = models.CharField(max_length=30)
+    description = models.CharField(max_length=100)
     def __unicode__(self):
         return u"%s" % self.description
 

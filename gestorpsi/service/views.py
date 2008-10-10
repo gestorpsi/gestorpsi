@@ -96,15 +96,6 @@ def save_responsibles( list_of_responsibles, object ):
         responsible= CareProfessional.objects.get(pk= responsible_id )
         object.responsibles.add( responsible )
 
-def save_clinic_area(request):
-    """ Lista de Faixa Etaria """
-    ages = request.POST.getlist('service_age')
-    if len(ages):
-        for a in ages:
-            print "Faixa Etaria: %s" % AgeGroup.objects.get(pk=a)
-    else:
-        print "Nenhuma faixa etaria selecionada."    
-    pass
 
 def save(request, object_id = ''):
     try:
@@ -123,47 +114,35 @@ def save(request, object_id = ''):
     object.service_type = ServiceType.objects.get(pk=request.POST['service_type'])
 
     object.save()
+
+    """ Modalities """
+    for m in request.POST.getlist('service_solicitation'):
+        object.modalities.add(Modality.objects.get(pk=m))
     
+    """ Procedures """
+    for p in request.POST.getlist('service_type_procedure'):
+        object.procedures.add(Procedure.objects.get(pk=p))
     
-    modalidades = request.POST.getlist('service_solicitation')
-    profissao = request.POST.getlist('service_profession')
-    procedimentos = request.POST.getlist('service_type_procedure')
-    convenios = request.POST.getlist('service_agreements')
-    responsaveis = request.POST.getlist('service_responsibles')
+    """ Agreements """
+    for a in request.POST.getlist('service_agreements'):
+        object.agreements.add(Agreement.objects.get(pk=a))
+    
+    """ Age Group - Clinic Area Only """
+    if request.POST['service_area'] == '3':
+        for age in request.POST.getlist('service_age'):
+            print "Faixa Etaria: %s" % AgeGroup.objects.get(pk=age) 
 
 
-    if request.POST['service_area'] == '3':                        #### AREA CLINICA
-        save_clinic_area(request)
-    
-    """ Lista de Modalidades """
-    if len(modalidades):
-        for m in modalidades:
-            print "Solicitacao: %s" % Modality.objects.get(pk=m)
-    else:
-        print "Nenhuma modalidade selecionada."
-    
     """ Lista de Profissoes """
+    profissao = request.POST.getlist('service_profession')
     if len(profissao):
         for p in profissao:
             print "Profissao (codigo): %s - (Falta Adicionar no Banco)" % p
     else:
         print "Nenhuma profissao selecionada."
-    
-    """ Lista de Procedimentos """
-    if len(procedimentos):
-        for proc in procedimentos:
-            print "Procedimento: %s" % Procedure.objects.get(pk=proc)
-    else:
-        print "Nenhum procedimento selecionado."
-    
-    """ Lista de Convenios """
-    if len(convenios):
-        for conv in convenios:
-            print "Convenio: %s" % Agreement.objects.get(pk=conv)
-    else:
-        print "Nenhum convenio selecionado."
-    
+
     """ Lista de Responsaveis """
+    responsaveis = request.POST.getlist('service_responsibles')
     if len(responsaveis):
         for resp in responsaveis:
             print "Responsavel: %s" % CareProfessional.objects.get(pk=resp)

@@ -17,7 +17,7 @@ GNU General Public License for more details.
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from gestorpsi.organization.models import Organization, AgeGroup
+from gestorpsi.organization.models import Organization, AgeGroup, Procedure
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.organization.models import Agreement
@@ -200,8 +200,10 @@ class Service(models.Model):
     keywords = models.CharField(max_length=100)
     area = models.ForeignKey(Area)
     service_type = models.ForeignKey(ServiceType)
-    
+    modalities = models.ManyToManyField(Modality)
+    procedures = models.ManyToManyField(Procedure)
     agreements= models.ManyToManyField(Agreement)
+    
     research_project= models.ForeignKey( ResearchProject, null=True )    
     organization = models.ForeignKey(Organization, null=True)
     active= models.BooleanField(default=True)

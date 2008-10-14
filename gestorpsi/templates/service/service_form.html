@@ -162,7 +162,7 @@ GNU General Public License for more details.
 			<span>
 			<select multiple="multiple" name="service_agreements" class="select multiple extrabig asm small_fonts">
 				{% for l in Agreements %}
-				<option value="{{ l.id }}">{{ l }}</option>
+				<option value="{{ l.id }}"{% for oa in object.agreements.values_list %}{% ifequal oa.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{{ l }}</option>
 				{% endfor %}
 			</select>
 			</span>
@@ -172,7 +172,7 @@ GNU General Public License for more details.
 			<span>
 			<select multiple="multiple" name="service_responsibles" class="select multiple extrabig asm small_fonts">
 				{% for l in CareProfessionals %}
-				<option value="{{ l.id }}">{{ l }}</option>
+				<option value="{{ l.id }}"{% for or in object.responsibles.values_list %}{% ifequal or.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{{ l }}</option>
 				{% endfor %}
 			</select>
 			</span>

@@ -122,9 +122,10 @@ GNU General Public License for more details.
 				{% if not forloop.first %}
 				</select>
 				{% endif %}
+				
 				<select multiple="multiple" class="service_procedure_{{ l.procedure.name }} extrabig multiple itens_available small_fonts{% if forloop.first %} first{% endif %}">
 			{% endifchanged %}
-				<option value="{{ l.id }}">{{ l.description }}</option>
+				<option value="{{ l.id }}"{% for p in object.procedures.values_list %}{% ifequal p.0 l.id %} style="display:none"{% endifequal %}{% endfor %}>{{ l.description }}</option>
 	
 			{% if forloop.last %}
 				</select>
@@ -136,8 +137,10 @@ GNU General Public License for more details.
 		<!-- itens choiced -->
 		
 		<label>{% trans "Procedures Choiced" %}<br />
-		
 		<select name="service_type_procedure" multiple="multiple" group="service_procedure" class="extrabig multiple itens_selected small_fonts">
+		{% for p in object.procedures.values_list %}
+		<option value="{{ p.0 }}" selected="selected">{{ p.2 }}</option>
+		{% endfor %}
 		</select>
 		
 		</label>

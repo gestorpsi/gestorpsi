@@ -80,7 +80,7 @@ GNU General Public License for more details.
 		<label>{% trans "Solicitation" %}<br />
 		<select name="service_solicitation" class="extramedium service_solicitation small_fonts multiple asm" multiple="multiple">
 			{% for m in Modalitys %}
-			<option value="{{ m.id }}" class="{% for a in Areas %}{% for am in a.modality.values_list %}{% ifequal m.id am.0 %}area_{{ a.id }} {% endifequal %}{% endfor %}{% endfor %}">{{ m }}</option>
+			<option value="{{ m.id }}" class="{% for a in Areas %}{% for am in a.modality.values_list %}{% ifequal m.id am.0 %}area_{{ a.id }} {% endifequal %}{% endfor %}{% endfor %}"{% for om in object.modalities.values_list %}{% ifequal om.0 m.id %} selected="selected"{% endifequal %}{% endfor %}>{{ m }}</option>
 			{% endfor %}
 		</select>
 		</label>

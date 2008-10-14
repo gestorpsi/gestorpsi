@@ -18,7 +18,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404
 from gestorpsi.service.models import Service, ResearchProject, Area, ServiceType, Modality, AreaClinic
 from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure
-from gestorpsi.careprofessional.models import CareProfessional
+from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.organization.models import Organization
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -41,7 +41,7 @@ def index(request):
         'Areas': Area.objects.all(),
         'ServiceTypes': ServiceType.objects.all(),
         'Modalitys': Modality.objects.all(),
-        'AreaClinic': AreaClinic.objects.all(),
+        'Professions': Profession.objects.all(),
         })
 
 def form(request, object_id= ''):
@@ -65,7 +65,12 @@ def form(request, object_id= ''):
         'CareProfessionals': CareProfessional.objects.all(),
         'AgeGroups': AgeGroup.objects.all(),
         'ProcedureProviders': ProcedureProvider.objects.all(),
-        'Procedures': Procedure.objects.all() } )
+        'Procedures': Procedure.objects.all(),
+        'Areas': Area.objects.all(),
+        'ServiceTypes': ServiceType.objects.all(),
+        'Modalitys': Modality.objects.all(),
+        'Professions': Profession.objects.all(),
+        } )
 
 def save_agreements( list_of_agreements, object ):
     """

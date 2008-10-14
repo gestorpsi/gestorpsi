@@ -595,18 +595,21 @@ function bindFormActions() {
      $('input.initialActivities').datepicker({ dateFormat: 'yy-mm', changeYear: true, yearRange: '-100:+0', duration: 'fast' });
 
      /**
-     * service types and areas
+     * service types and service areas
      */
      
-     select_area = $('select.service_area').val();
-     // set initial service type     
-     $('select.service_area').parents('fieldset').children('label').children('select.service_type').children('option').hide();
-     $('select.service_area').parents('fieldset').children('label').children('select.service_type').children('option[area=' + select_area + ']').show();
-     $('select.service_area').parents('fieldset').children('label').children('select.service_type').children('option[area=' + select_area + ']:first').attr('selected', 'selected');
-     // set initial private areas
-     $('select.service_area').parents('form').children('div').children('fieldset.service_areas').hide();
-     $('select.service_area').parents('form').children('div').children('fieldset.area_' + select_area).show();
-     
+     $('select.service_area').each(function() {
+          select_area = $(this).val();
+          // set initial service type     
+          $(this).parents('fieldset').children('label').children('select.service_type').children('option').hide();
+          $(this).parents('fieldset').children('label').children('select.service_type').children('option[area=' + select_area + ']').show();
+          // set initial private areas
+          $(this).parents('form').children('div').children('fieldset.service_areas').hide();
+          $(this).parents('form').children('div').children('fieldset.area_' + select_area).show();
+          // set initial service solicitation with selected area
+          $(this).parents('fieldset').children('label').children('select.service_solicitation').children('option').hide();
+          $(this).parents('fieldset').children('label').children('select.service_solicitation').children('option.' + 'area_'+ select_area ).show();
+     });
      
      $('select.service_area').unbind().change(function() {
           var select = $(this);
@@ -715,15 +718,18 @@ $(document).unbind().ready(function(){
       * hide all itens available select boxes, and show only the first
       */
      
-     $('fieldset select.multiple.itens_available:not(:first)').hide();
-     $('fieldset label a.select_multiple_menu:first').addClass('active');
+     $('fieldset select.multiple.itens_available').parents('fieldset').each(function() {
+          $(this).children('label').children('select.multiple.itens_available:not(:first)').hide();
+     });
+
+     $('fieldset label a.select_multiple_menu').each(function() { $(this).removeClass('active'); });
+     $('fieldset label a.select_multiple_menu').parents('label').each(function() { $(this).children('a.select_multiple_menu').not(':first').addClass('active'); });
      
      $('label a.select_multiple_menu').click(function() {
           $(this).parents('fieldset').children('label').children('select.itens_available').hide();
-          $('#' + $(this).attr('display')).show();
+          $(this).parents('fieldset').children('label').children('select.itens_available.' + $(this).attr('display')).show();
           $('fieldset label a.select_multiple_menu').removeClass('active');
           $(this).addClass('active');
-                   
      });
      
      

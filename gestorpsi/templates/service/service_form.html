@@ -61,7 +61,9 @@ GNU General Public License for more details.
 		<label>{% trans "Area" %}<br>
 		<select name="service_area" class="extramedium service_area">
 			{% for a in Areas %}
-			<option value="{{ a.id }}">{{ a }}</option>
+				{% if a.modality.values_list %}
+				<option value="{{ a.id }}"{% ifequal a.id object.area.id %} selected{% endifequal %}>{{ a }}</option>
+				{% endif %}
 			{% endfor %}
 		</select>
 		</label>
@@ -70,7 +72,7 @@ GNU General Public License for more details.
 		<label>{% trans "Type" %}<br />
 		<select name="service_type" class="extramedium service_type">
 			{% for s in ServiceTypes %}
-			<option value="{{ s.id }}" area="{{ s.area.id }}">{{ s }} </option>
+			<option value="{{ s.id }}" area="{{ s.area.id }}"{% ifequal s.id object.service_type.id %} selected{% endifequal %}>{{ s }} </option>
 			{% endfor %}
 		</select>
 		</label>
@@ -85,17 +87,9 @@ GNU General Public License for more details.
 		
 		<label>{% trans "Profession" %}<br />
 		<select name="service_profession" multiple="multiple" class="extramedium multiple small_fonts asm">
-			<option value="2231-15">Médico (clinico geral)</option>
-			<option value="2231-42">Médico (neurologista)</option>
-			<option value="2231-53">Médico (psiquiatra)</option>
-			<option value="2516-05">Assistente social</option>
-			<option value="2235-05">Enfermeiro</option>
-			<option value="2236-05">Fisioterapeuta</option>
-			<option value="2238-10">Fonoaudiólogo</option>
-			<option value="2237-10">Nutricionista</option>
-			<option value="2394-15">Pedagogo</option>
-			<option value="2515">Psicólogo</option>
-			<option value="2236-20">Terapeuta ocupacional</option>
+			{% for p in Professions %}
+				<option value="{{ p.id }}">{{ p.description }}</option>
+			{% endfor %}			
 		</select>
 		</label>
 
@@ -128,7 +122,7 @@ GNU General Public License for more details.
 				{% if not forloop.first %}
 				</select>
 				{% endif %}
-				<select multiple="multiple" id="service_procedure_{{ l.procedure.name }}" class="extrabig multiple itens_available small_fonts{% if forloop.first %} first{% endif %}">
+				<select multiple="multiple" class="service_procedure_{{ l.procedure.name }} extrabig multiple itens_available small_fonts{% if forloop.first %} first{% endif %}">
 			{% endifchanged %}
 				<option value="{{ l.id }}">{{ l.description }}</option>
 	
@@ -163,7 +157,7 @@ GNU General Public License for more details.
 	
 			<label>{% trans "Agreements" %}<br />
 			<span>
-			<select multiple="multiple" name="service_agreements" class="select multiple extrabig asm">
+			<select multiple="multiple" name="service_agreements" class="select multiple extrabig asm small_fonts">
 				{% for l in Agreements %}
 				<option value="{{ l.id }}">{{ l }}</option>
 				{% endfor %}
@@ -173,7 +167,7 @@ GNU General Public License for more details.
 	
 			<label>{% trans "Professional" %}<br />
 			<span>
-			<select multiple="multiple" name="service_responsibles" class="select multiple extrabig asm">
+			<select multiple="multiple" name="service_responsibles" class="select multiple extrabig asm small_fonts">
 				{% for l in CareProfessionals %}
 				<option value="{{ l.id }}">{{ l }}</option>
 				{% endfor %}

@@ -44,7 +44,7 @@ def index(request):
         'Professions': Profession.objects.all(),
         })
 
-def form(request, object_id= ''):
+def form(request, object_id=''):
     """
     This function view uses I{forms} to show the information related to the
     C{Service} with id equals to I{object_id}
@@ -72,34 +72,9 @@ def form(request, object_id= ''):
         'Professions': Profession.objects.all(),
         } )
 
-def save_agreements( list_of_agreements, object ):
-    """
-    Saves the list of agreements passed as parameter and associate them with the
-    instance of service passed as parameter (I{object}).
-    @param list_of_agreements: list that contains the agreements which will be associated with the service.
-    @type object_id: an instance of the built-in class I{list}.
-    @param object: represents the id code of the service.
-    @type object_id: an instance of the built-in class I{list}.
-    """
-    object.agreements.clear()
-    object.save()
-    for agreement_id in list_of_agreements:
-        agreement= Agreement.objects.get( pk= agreement_id )
-        object.agreements.add( agreement )
-        
-def save_responsibles( list_of_responsibles, object ):
-    """
-    Saves the list of responsibles and associates it with the object passed as parameter.
-    @param list_of_responsibles: list that contains the responsibles which will be associated with the service (I{object}).
-    @type object_id: an instance of the built-in class I{list}.
-    @param object: represents the id code of the service.
-    @type object_id: an instance of the built-in class I{list}.
-    """
-    object.responsibles.clear()
-    object.save()
-    for responsible_id in list_of_responsibles:
-        responsible= CareProfessional.objects.get(pk= responsible_id )
-        object.responsibles.add( responsible )
+def save_clinic(request):
+    print "fdsfds"
+    pass
 
 
 def save(request, object_id = ''):
@@ -132,19 +107,28 @@ def save(request, object_id = ''):
     for a in request.POST.getlist('service_agreements'):
         object.agreements.add(Agreement.objects.get(pk=a))
     
-    """ Age Group - Clinic Area Only """
+    """ Professions """
+    for p in request.POST.getlist('service_profession'):
+        object.professions.add(Profession.objects.get(pk=p))
+
+    """ area clinica """
     if request.POST['service_area'] == '3':
+        ac = AreaClinic()
+        ac.save()
         for age in request.POST.getlist('service_age'):
-            print "Faixa Etaria: %s" % AgeGroup.objects.get(pk=age) 
+            ac.age_group.add(AgeGroup.objects.get(pk=age))
+        object.content_object = ac
+        object.save()
+    
+#    """ Age Group - Clinic Area Only """
+#    if request.POST['service_area'] == '3':
+#        for age in request.POST.getlist('service_age'):
+#            clinic.age_group.add(AgeGroup.objects.get(pk=age))
+#            print "Faixa Etaria: %s" % AgeGroup.objects.get(pk=age) 
 
-
-    """ Lista de Profissoes """
-    profissao = request.POST.getlist('service_profession')
-    if len(profissao):
-        for p in profissao:
-            print "Profissao (codigo): %s - (Falta Adicionar no Banco)" % p
-    else:
-        print "Nenhuma profissao selecionada."
+#    """ Clinic Area add-on """
+#    if request.POST['service_area'] == '3':
+#        save_clinic()
 
     """ Lista de Responsaveis """
     responsaveis = request.POST.getlist('service_responsibles')
@@ -156,37 +140,40 @@ def save(request, object_id = ''):
 
     return HttpResponse(object.id)
 
-def save_old(request, object_id= ''):
-    """
-    This function view searches for the C{Service} with id equals to I{object_id}, if there is such a
-    C{Service} instance, it is loaded and updated with the values of the request object, otherwise a 
-    new C{Service} instance is created, filled with request's values and saved.
-    """
-    try:
-        object= get_object_or_404( Service, pk= object_id )
-    except (Http404, ObjectDoesNotExist):
-        object= Service()
-        user = request.user
-        object.organization = user.org_active 
-        
-    
-    object.name= request.POST['service_name']
-    object.description= request.POST['service_description']
-    object.keywords= request.POST['service_keywords']
-    if request.POST['service_research_project']:
-        object.research_project= ResearchProject.objects.get(pk= request.POST['service_research_project'])
-    object.save()
-    
-#    if ( request.POST['organization'] != '' ):
-#        organization= Organization.objects.get(pk= request.POST['organization'] )
-#        object.organization= organization
-    
-    save_agreements( request.POST.getlist('service_agreements'), object )
-    save_responsibles( request.POST.getlist('service_responsibles'), object )
-     
-    object.save()
-    
-    return HttpResponse(object.id)
+#def save_clinic():   
+#    pass
+
+#def save_old(request, object_id= ''):
+#    """
+#    This function view searches for the C{Service} with id equals to I{object_id}, if there is such a
+#    C{Service} instance, it is loaded and updated with the values of the request object, otherwise a 
+#    new C{Service} instance is created, filled with request's values and saved.
+#    """
+#    try:
+#        object= get_object_or_404( Service, pk= object_id )
+#    except (Http404, ObjectDoesNotExist):
+#        object= Service()
+#        user = request.user
+#        object.organization = user.org_active 
+#        
+#    
+#    object.name= request.POST['service_name']
+#    object.description= request.POST['service_description']
+#    object.keywords= request.POST['service_keywords']
+#    if request.POST['service_research_project']:
+#        object.research_project= ResearchProject.objects.get(pk= request.POST['service_research_project'])
+#    object.save()
+#    
+##    if ( request.POST['organization'] != '' ):
+##        organization= Organization.objects.get(pk= request.POST['organization'] )
+##        object.organization= organization
+#    
+#    save_agreements( request.POST.getlist('service_agreements'), object )
+#    save_responsibles( request.POST.getlist('service_responsibles'), object )
+#     
+#    object.save()
+#    
+#    return HttpResponse(object.id)
 
 #def delete(request, object_id= ''):
 #    """

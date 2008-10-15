@@ -18,7 +18,7 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from gestorpsi.organization.models import Organization, AgeGroup, Procedure
-from gestorpsi.careprofessional.models import CareProfessional
+from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.organization.models import Agreement
 
@@ -73,6 +73,7 @@ class AreaBioPsychology(models.Model):
 class AreaClinic(models.Model):
     age_group = models.ManyToManyField(AgeGroup, null=True)
     area = generic.GenericRelation(Area, null=True)
+    service = generic.GenericRelation('Service', null=True)
 
     def __unicode__(self):
         return u'%s' % self.area.content_type
@@ -198,17 +199,24 @@ class Service(models.Model):
     name = models.CharField(max_length=80)
     description = models.CharField(max_length=100)
     keywords = models.CharField(max_length=100)
+    active= models.BooleanField(default=True)
     area = models.ForeignKey(Area)
     service_type = models.ForeignKey(ServiceType)
     modalities = models.ManyToManyField(Modality)
     procedures = models.ManyToManyField(Procedure)
     agreements= models.ManyToManyField(Agreement)
+    professions = models.ManyToManyField(Profession)
+
+    # Generic Clinic Area Relationship
+    content_type = models.ForeignKey(ContentType, null=True)
+    object_id = models.CharField(max_length=36)
+    content_object = generic.GenericForeignKey()
     
-    research_project= models.ForeignKey( ResearchProject, null=True )    
+    research_project = models.ForeignKey( ResearchProject, null=True )    
     organization = models.ForeignKey(Organization, null=True)
-    active= models.BooleanField(default=True)
-    organization= models.ForeignKey(Organization, null=True)
-    responsibles= models.ManyToManyField( CareProfessional )
+    organization = models.ForeignKey(Organization, null=True)
+    responsibles = models.ManyToManyField( CareProfessional )
+    professionals = models.ManyToManyField( CareProfessional )
 
     def __unicode__(self):
         return u"%s" % (self.name)

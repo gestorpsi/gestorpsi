@@ -96,18 +96,22 @@ def save(request, object_id = ''):
     object.save()
 
     """ Modalities """
+    object.modalities.clear()
     for m in request.POST.getlist('service_solicitation'):
         object.modalities.add(Modality.objects.get(pk=m))
     
     """ Procedures """
+    object.procedures.clear()
     for p in request.POST.getlist('service_type_procedure'):
         object.procedures.add(Procedure.objects.get(pk=p))
     
     """ Agreements """
+    object.agreements.clear()
     for a in request.POST.getlist('service_agreements'):
         object.agreements.add(Agreement.objects.get(pk=a))
     
     """ Professions """
+    object.professions.clear()
     for p in request.POST.getlist('service_profession'):
         object.professions.add(Profession.objects.get(pk=p))
 
@@ -115,6 +119,7 @@ def save(request, object_id = ''):
     if request.POST['service_area'] == '3':
         ac = AreaClinic()
         ac.save()
+        ac.age_group.clear()
         for age in request.POST.getlist('service_age'):
             ac.age_group.add(AgeGroup.objects.get(pk=age))
         object.content_object = ac

@@ -56,7 +56,7 @@ var form_options = {
                var line = '<tr id="' + response + '"><td class="title"><a href="/' + $('input#app_name').val() + '/' + response + '" title="' + $('div#edit_form input.tabtitle').val() + '">' + $('div#edit_form input.tabtitle').val() + '</a>';
                
                if($('div#edit_form label .object_description').val() != undefined)
-                    line += '<br />' + $('div#edit_form label .object_description').val();
+                    line += '<br /><span>' + $('div#edit_form label .object_description').val() + '</span>';
                
                line += '</td><td><span class="phone">' + phone_number + '</span><br><span class="email">' + email_address + '</span></td></tr>';
                $('#list #search_results').append(line);
@@ -97,7 +97,7 @@ var form_options = {
           
           if(editing)  {
                // get phone and mail
-               if($('div#edit_form input[name=phoneNumber]:first') && $('div#edit_form input[name=phoneNumber]:first').val() != '') {
+               if($('div#edit_form input[name=phoneNumber]:first') && $('div#edit_form input[name=phoneNumber]:first').val() != '' && $('div#edit_form input[name=phoneNumber]:first').val() != undefined) {
                     phone_number = '(' + $('div#edit_form input[name=area]:first').val() + ') ' + $('div#edit_form input[name=phoneNumber]:first').val();
                }
                
@@ -107,7 +107,11 @@ var form_options = {
                
                // update it
                $("#list #search_results tr[id="+response+"] td span.phone").text(phone_number); // update phone 
-               $("#list #search_results tr[id="+response+"] td span.email").text(email_address); // update email               
+               $("#list #search_results tr[id="+response+"] td span.email").text(email_address); // update email
+               
+               if($('div#edit_form label .object_description').val() != undefined)
+                    $("#list #search_results tr[id="+response+"] td.title span").text($('div#edit_form label .object_description').val());
+
           }
           
           // hide description

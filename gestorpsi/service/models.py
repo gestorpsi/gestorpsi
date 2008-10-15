@@ -215,8 +215,8 @@ class Service(models.Model):
     research_project = models.ForeignKey( ResearchProject, null=True )    
     organization = models.ForeignKey(Organization, null=True)
     organization = models.ForeignKey(Organization, null=True)
-    responsibles = models.ManyToManyField( CareProfessional )
-    professionals = models.ManyToManyField( CareProfessional )
+    responsibles = models.ManyToManyField( CareProfessional, related_name="responsibles" )
+    professionals = models.ManyToManyField( CareProfessional, related_name="professionals" )
 
     def __unicode__(self):
         return u"%s" % (self.name)

@@ -44,7 +44,7 @@ GNU General Public License for more details.
 			<input type="text" name="service_name" class="extrabig tabtitle" value="{{ object.name }}" />
 			</label>
 			<label>{% trans "Service Description" %}<br />
-				<textarea name="service_description" class="extrabig">{{ object.description }}</textarea>				
+				<textarea name="service_description" class="extrabig object_description">{{ object.description }}</textarea>				
 			</label>
 			<label>{% trans "Keywords" %}<br />
 			<input type="text" name="service_keywords" class="extrabig" value="{{ object.keywords }}" />

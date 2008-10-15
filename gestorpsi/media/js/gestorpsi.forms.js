@@ -53,7 +53,12 @@ var form_options = {
                     email_address = $('div#edit_form input[name=email_email]:first').val();
                }
                
-               var line = '<tr id="' + response + '"><td class="title"><a href="/' + $('input#app_name').val() + '/' + response + '" title="' + $('div#edit_form input.tabtitle').val() + '">' + $('div#edit_form input.tabtitle').val() + '</a></td><td><span class="phone">' + phone_number + '</span><br><span class="email">' + email_address + '</span></td></tr>';
+               var line = '<tr id="' + response + '"><td class="title"><a href="/' + $('input#app_name').val() + '/' + response + '" title="' + $('div#edit_form input.tabtitle').val() + '">' + $('div#edit_form input.tabtitle').val() + '</a>';
+               
+               if($('div#edit_form label .object_description').val() != undefined)
+                    line += '<br />' + $('div#edit_form label .object_description').val();
+               
+               line += '</td><td><span class="phone">' + phone_number + '</span><br><span class="email">' + email_address + '</span></td></tr>';
                $('#list #search_results').append(line);
                
                $('div.no_registers_available').hide();

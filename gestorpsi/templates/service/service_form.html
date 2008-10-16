@@ -198,7 +198,7 @@ GNU General Public License for more details.
 	<fieldset>
 		<legend>{% trans "Service Status" %}</legend>
 			<label>{% trans "Active?" %}<br />
-			<select id="id_active" name="service_active" class="small">
+			<select name="service_active" class="small">
 			<option value="True" {% if object.active %} selected{% endif %}>{% trans "Yes" %}</option>
 			<option value="False" {% if not object.active %} selected{% endif %}>{% trans "No" %}</option>
 			</select>

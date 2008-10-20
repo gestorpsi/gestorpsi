@@ -15,16 +15,6 @@ GNU General Public License for more details.
 */
 
 
-/**
-* 
-* apeend edit form
-* 
-* _description:
-* 
-* append form content inside the div "core"
-* 
-*/
-
 function bindList() {
 	$("#search_results.newtab tr td a").unbind().click(function(){
 		var link = $(this);
@@ -50,9 +40,6 @@ function bindList() {
 
 		return false;
 	});
-	
-
-	
 }
 
 
@@ -79,10 +66,30 @@ function bindTableZebra() {
 	$('table.zebra tr:even').addClass('zebra_1');
 }
 
+function bindAdmission() {
+	$('a.admission').unbind().click(function() {
+		link = $(this);
+		$('div.admission_form').load(link.attr('href'));
+		$.ajax({
+			complete: function(){
+				$('#core .fast_menu_content').hide();
+				$('div#edit_form').show();
+				$('div#edit_form .form_client').hide();
+				$('#edit_form div.admission_form').show();
+			}
+		});
+		$('#msg_area').removeClass();
+                $('#msg_area').hide();
+                $('.sidebar').css('padding-top','165px');
+		return false;	
+	});
+}
+
 $(document).unbind().ready(function(){
 
 	bindList();
-	bindTableZebra();	
+	bindTableZebra();
+	bindAdmission();
 	
 	// draw top-border for multirows fieldsets (eg.: address fieldset)
 	$('fieldset.set_multirow').each(function() {
@@ -108,6 +115,7 @@ $(document).unbind().ready(function(){
 	
 	$("#core :not(table.zebra tr td) a:not(.notajax)").click(function(){
 		var link = $(this);
+		$('#edit_form div.admission_form').hide();
 		$("#core").load(link.attr('href'));
 		$.ajax({
 			complete: function(){

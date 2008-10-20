@@ -60,7 +60,7 @@ $(document).ready(function(){
         $('#menus a, #sub_menu a').click(function() {
                 $('#msg_area').removeClass();
                 $('#msg_area').hide();
-                $('#sidebar').css('padding-top','165px');
+                $('.sidebar').css('padding-top','165px');
                 
         });
         
@@ -68,18 +68,14 @@ $(document).ready(function(){
 	/** ajax_link: load content inside div core */
 	$("#menus a:not(.notajax, .fastmenu)").click(function(){
                 var link = $(this);
-                
-                //if($('#already_loaded').val() != 'True' || $(this).hasClass('main_menu'))  {
                         $("#core").load(link.attr('href'),'',function() {
                                 $.ajax({
                                 success: function() {
                                                 $('#core div.fast_menu_content').hide();
-                                                $('#core #'+link.attr('display')).show()
-        ;
+                                                $('#core #'+link.attr('display')).show();
                                         }
                                 });
                         });
-                //}
                 return false;
 		});
 		
@@ -201,7 +197,7 @@ $(document).ready(function(){
                         display = $(this).attr('display');
 
                 $('#' + display).show();
-                
+
                 $('.sidebar').css('padding-top','167px');
                 return false;
                 

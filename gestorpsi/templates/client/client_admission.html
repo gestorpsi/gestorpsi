@@ -1,0 +1,261 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+{% include "core/ajax_page.html" %}
+
+<form action="cliente.html" method="post">
+
+<div class="main_area">
+        <a href="" id=help>&nbsp;</a>
+        <h3><span onClick="$('form_options').toggle();">Detalhes da Admissão</span></h3>
+        <ul id="form_options" class="float_menu" style="display:none;">
+                <li><label><input name="this" type="radio" value="" /> Informa&ccedil;&otilde;es b&aacute;sicas</label></li>
+                <li><label><input name="this" type="radio" value="" /> Dados completos</label></li>
+
+                <li><label><input name="this" type="radio" value="" /> Prontu&aacute;rio cl&iacute;nico</label></li>
+                <li><label><input name="this" type="radio" value="" /> Dados s&oacute;cio-demogr&aacute;ficos</label></li>
+                <li><label><input name="this" type="radio" value="" /> Dados s&oacute;cio-economcos</label></li>
+
+                
+        </ul>
+        <label>Admitido em<br />
+        <input name="" type="text" class="medium" /></label>
+                
+                <!--este -->
+        <label>Como tomou conhecimento do estabelecimento?<br />
+                <select name="" class="big">
+                        <option>&nbsp;&nbsp;Escolha...</option>
+
+                        <option disabled="disabled">Publicidade</option>
+                        <option>&nbsp;&nbsp;Propagandas (Jornal, Rádio, TV, Revista)</option>
+                        <option>    &nbsp;&nbsp;Folder</option>
+                        <option>    &nbsp;&nbsp;Site</option>
+                        <option>    &nbsp;&nbsp;Passando pela clínica</option>
+
+                        <option>    &nbsp;&nbsp;Lista telefônica</option>
+                        <option disabled="disabled">Indicação</option>
+                        <option>    &nbsp;&nbsp;Familiares, Amigos ou Professores</option>
+                        <option>    &nbsp;&nbsp;de outra Instituição</option>
+                        <option>    &nbsp;&nbsp;de Profissional de Saúde</option>
+
+                </select>
+        </label>
+        <!--ou este  
+        <label>Como tomou conhecimento do estabelecimento? <a href="" class="prase_edit">Alterar como</a><br />
+        <input name="" type="text" class="big" value="Indicação (de um Médico)" /></label>-->
+                
+                
+                
+                
+                
+        <!--este-->
+        <label>Indicação realizada por<br />
+        <input name="" type="text" class="big" /></label>
+        <label><input name="" type="button" class="btn" value="Procurar" /></label>
+        <div class="label">Escolha o profissional da lista abaixo, ou <a href="#">cadastre um Novo Profissional de Saúde</a>.
+        <div class="overflow">
+
+                <table id="indicators" class="zebra" border="0" cellspacing="0" cellpadding="0">
+                                                <tbody>
+                                                <tr>
+                                                        <td><a href="">Andersom Soares</a></td>
+                                                        <td>Assistente social</td>
+                                                        <td>(11) 1507 7895</td>
+                                                </tr>
+
+                                                <tr>
+                                                        <td><a href="">André Bonelli Filho</a></td>
+                                                        <td>Fisioterapeuta</td>
+                                                        <td>(16) 3307 4759</td>
+                                                </tr>
+                                                <tr>
+                                                        <td><a href="">Andrea Miranda Figueiredo</a></td>
+
+                                                        <td>Médico</td>
+                                                        <td>(11) 2004 2755</td>
+                                                </tr>
+                                                <tr>
+                                                        <td><a href="">Kátia Paula Marcolino</a></td>
+                                                        <td>Psicólogo</td>
+                                                        <td>(11) 5857 5254</td>
+
+                                                </tr>
+                                                <tr>
+                                                        <td><a href="">Keyla de Jesus</a></td>
+                                                        <td>Médico</td>
+                                                        <td>(11) 3303 1055</td>
+                                                </tr>
+                                                <tr>
+
+                                                        <td><a href="">Andrea Miranda Figueiredo</a></td>
+                                                        <td>Médico</td>
+                                                        <td>(11) 2004 2755</td>
+                                                </tr>
+                                                <tr>
+                                                        <td><a href="">Kátia Paula Marcolino</a></td>
+                                                        <td>Psicólogo</td>
+
+                                                        <td>(11) 5857 5254</td>
+                                                </tr>
+                                                <tr>
+                                                        <td><a href="">Keyla de Jesus</a></td>
+                                                        <td>Médico</td>
+                                                        <td>(11) 3303 1055</td>
+                                                </tr>
+
+                                                <tr>
+                                                        <td><a href="">Andrea Miranda Figueiredo</a></td>
+                                                        <td>Médico</td>
+                                                        <td>(11) 2004 2755</td>
+                                                </tr>
+                                                <tr>
+                                                        <td><a href="">Kátia Paula Marcolino</a></td>
+
+                                                        <td>Psicólogo</td>
+                                                        <td>(11) 5857 5254</td>
+                                                </tr>
+                                                <tr>
+                                                        <td><a href="">Keyla de Jesus</a></td>
+                                                        <td>Médico</td>
+                                                        <td>(11) 3303 1055</td>
+
+                                                </tr>
+                                                </tbody>
+                        </table>
+        </div>
+        </div>
+        <!--ou este -->
+        <div class="label">Indicação realizada por <a href="" class="prase_edit">Alterar indicação</a><br />
+                <div id="indicator_description">
+
+                        <h3>Mariangela Aparecida da Silveira (Psicólogo)</h3>
+                        <p>Intituto de Pscicologia Comportamental de S&atilde;o Carlos<br />
+                        (11) 2301 0751<br />
+                        marisilveira@superuol.com.br</p>
+                </div>
+        </div>
+
+        
+        
+        
+        <label>Motivo para admissão<br />
+        <textarea name="" cols="" rows="3" class="giant"></textarea></label>
+                
+                
+        <div class="label">Documentos <a href="" class="clips">Anexar documento</a>	
+        <div id="documents">
+                <!-- Aparece quando "Anexar Documento", desaparece após enviar arquivo, podem haver vários-->
+                <div class="documents_form">
+                <label>Arquivo<br />
+
+                <input type="file" class="big" id="send_file" size="33" />
+                </label>
+                <label>Tipo de documento<br />
+                <select name="" class="medium">
+                        <option>Tipo 1 de documento</option>
+                        <option>Tipo 2 de documento</option>
+                        <option>Tipo 3 de documento</option>
+
+                </select></label>
+                <label>Assunto do documento<br />
+                <input name="" type="text" class="big" /></label>
+                <label><input name="" type="button" class="btn" value="Enviar Arquivo" /></label>
+                </div>
+                
+                <div class="documents_form">
+                <p>Enviando documento</p>
+                </div>
+
+                
+                <div class="documents_form">
+                <label>Arquivo<br />
+                <input type="file" class="big" id="send_file" size="33" />
+                </label>
+                <label>Tipo de documento<br />
+                <select name="" class="medium">
+                        <option>Tipo 1 de documento</option>
+
+                        <option>Tipo 2 de documento</option>
+                        <option>Tipo 3 de documento</option>
+                </select></label>
+                <label>Assunto do documento<br />
+                <input name="" type="text" class="big" /></label>
+                <label><input name="" type="button" class="btn" value="Enviar Arquivo" /></label>
+                </div>
+
+                
+                <br class="newline" />
+                <br />
+                
+                
+                <!--este-->
+                <p class="empty">Nenhum documento anexado</p>
+                
+                <!-- ou este -->
+                <table class="nozebra">
+                        <tr>
+                                <td nowrap="nowrap"><span class="date">17/04/2008</span><br /><span class="time">14:31:07</span></td>
+
+                                <td><span class="pdf">Admissão.pdf</span></td>
+                                <td><span>Tipo1 do Documento:</span> Arquivo original enviado por e-mail pela 
+                Dra. Mariangela. Contém informações detalhadas sobre o diagnóstico.</td>
+                                <td><a href="" class="edit" title="editar" ><span>Edit</span></a></td>
+                                <td><a href="" class="delete" title="delete" ><span>Delete</span></a></td>
+                        </tr>
+                        <tr>
+
+                                <td><span class="date">17/04/2008</span><br /><span class="time">14:34:07</span></td>
+                                <td><span class="pdf">Identificação.pdf</span></td>
+                                <td><span>Tipo2 do Documento:</span> docs do Cliente escaneados na clínica: RG e CPF</td>
+                                <td><a href="" class="edit" title="editar" ><span>Edit</span></a></td>
+                                <td><a href="" class="delete" title="delete" ><span>Delete</span></a></td>
+
+                        </tr>
+                        <tr>
+                                <td><span class="date">17/04/2008</span><br /><span class="time">14:36:07</span></td>
+                                <td><span class="pdf">raioXcraneo.pdf</span></td>
+                                <td><span>Tipo3 do Documento:</span> original enviado por e-mail pela Dra. Mariangela.</td>
+                                <td><a href="" class="edit" title="editar" ><span>Edit</span></a></td>
+
+                                <td><a href="" class="delete" title="delete" ><span>Delete</span></a></td>
+                        </tr>
+                </table>
+        </div>
+        </div>
+        
+        <label>Comentários<br />
+        <textarea name="" cols="" rows="8" class="giant"></textarea></label>
+
+        
+        <div class="btn_right">
+                <input name="" type="button" class="btn" value="Concluir Admissão" />
+        </div>
+</div>
+<div id="sidebar" class="sidebar">
+	<div class="bg_blue">
+		{% include "tags/save.html" %}
+	</div>
+	<div id="people_actions" {% if not object.id %}style="display:none"{% endif %}>	
+	<h3>{% trans 'Object Actions' %}</h3>
+	<ul>
+		<li><a class="admission" href="/client/admission/{% if object.id %}{{ object.id }}/{% endif %}">Realizar Admiss&atilde;o</a></li>
+	</ul>
+	</div>
+</div>
+
+<label><input name="" type="button" class="btn2" value="Cancelar" /></label>
+</form>

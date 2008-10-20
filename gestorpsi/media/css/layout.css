@@ -315,7 +315,7 @@ div#sub_menu .active {
 	border: 2px solid #FF0000;
 }
 
-#main_area {
+.main_area {
 	width: 715px;
 	min-height: 270px;
 	background: #ECECEC;
@@ -324,16 +324,16 @@ div#sub_menu .active {
 	float: left;
 	position: relative;
 }
-#main_area.contact {
+.main_area.contact {
 	background: none;
 	border: none;
 }
-#main_area h3 {
+.main_area h3 {
 	font-size: 11px;
 	padding: 4px 5px;
 	border-bottom: 1px solid #CCCCCC;
 }
-#main_area h3 span {
+.main_area h3 span {
 	color: #000000;
 	text-decoration: none;
 	padding-left: 20px;
@@ -341,7 +341,7 @@ div#sub_menu .active {
 	cursor: pointer;
 }
 
-#main_area div.label {
+.main_area div.label {
 	float: left;
 	color: #916F6F;
 	font-size: 11px;
@@ -349,7 +349,7 @@ div#sub_menu .active {
 	line-height: 20px;
 	padding: 0
 }
-#content #main_area div[class=label] {margin-left: 12px}
+#content .main_area div[class=label] {margin-left: 12px}
 
 #help {
 	display: block;
@@ -434,7 +434,7 @@ a.prase_edit {
 #content a.delete span, #content a.edit span {
 	display: none
 }
-#main_area label {
+.main_area label {
 	float: left;
 	margin: 2px;
 	color: #916F6F;
@@ -442,11 +442,11 @@ a.prase_edit {
 	margin: 10px 0 0 12px;
 	line-height: 20px;
 }
-#main_area .clear, #main_area .newline {
+.main_area .clear, .main_area .newline {
 	clear: left;
 }
 
-#main_area input[type=text], input[type=submit].mini, input[type=password], textarea {
+.main_area input[type=text], input[type=submit].mini, input[type=password], textarea {
 	font-size: 16px;
 	padding: 5px;
 	border: 2px solid #F9F9F9;
@@ -460,7 +460,7 @@ input[type=submit].mini {
 	cursor: pointer;
 }
 
-#main_area input[type=text]:focus, input[type=password]:focus, textarea:focus {
+.main_area input[type=text]:focus, input[type=password]:focus, textarea:focus {
 	border: 2px solid #2688ae;
 	background: #fff6d5;
 }
@@ -549,7 +549,7 @@ select:focus {
 textarea {
 }
 
-#sidebar {
+.sidebar {
 	position:absolute;  
 	top:0px;  
 	margin-left:750px;  
@@ -558,7 +558,7 @@ textarea {
 }
 
 
-#sidebar .bg_blue {
+.sidebar .bg_blue {
 	background: #005A7D;
 	border: 1px solid black;
 	color: #FFFFFF;
@@ -566,10 +566,10 @@ textarea {
 	
 }
 
-#sidebar .bg_blue p {
-	color: #FFFFFF;
+.sidebar .bg_blue p, .sidebar .bg_blue p span {
+	color: #FFF;
 }
-#sidebar .bg_blue input {
+.sidebar .bg_blue input {
 	background: #E6E6E6;
 	border: 1px solid #FFFFFF;
 	padding: 10px 15px;
@@ -583,18 +583,18 @@ textarea {
 	font-weight: bold;
 	cursor: pointer;
 }
-#sidebar .bg_blue input:hover {
+.sidebar .bg_blue input:hover {
 	background: #45ACD4;
 	color: #E6E6E6;
 	cursor: pointer;
 }
 
-#sidebar p {
+.sidebar p {
 	margin: 5px;
 	font-size: 10px;
 	padding: 0
 }
-#sidebar h3 {
+.sidebar h3 {
 	border-bottom: 1px solid #000000;
 	margin-top: 10px;
 	font-family: Georgia, "Times New Roman", Times, serif;
@@ -603,23 +603,23 @@ textarea {
 	padding-bottom: 2px;
 	letter-spacing: 0.05em;
 }
-#sidebar ul {
+.sidebar ul {
 	margin: 10px 0;
 }
-#sidebar li {
+.sidebar li {
 	list-style: none;
 	padding-left: 10px;
 }
-#sidebar li a {
+.sidebar li a {
 	line-height: 22px;
 	padding: 5px 0 5px 25px;
 	color: #000000;
 }
-#sidebar li #admit {
+.sidebar li .admit {
 	background: url(../img/ico_reg.png) no-repeat 0 3px;
 }
 
-#sidebar input.save_button {
+.sidebar input.save_button {
 	width: 76px;
 }
 
@@ -750,13 +750,13 @@ hr {
 	background: url(../img/16/filetype_small_pdf.gif) no-repeat 0 2px;
 	padding: 5px 5px 5px 20px;
 }
-#sidebar #status {
+.sidebar #status {
 	font-family: Georgia, "Times New Roman", Times, serif;
 	font-size: 16px;
 	color: #999999;
 	line-height: 20px;
 }
-#sidebar #status span {
+.sidebar #status span {
 	color: #000000;
 
 }
@@ -1007,7 +1007,7 @@ label a.remove_from_form span {
 	display:none;
 }
 
-div#form.fast_menu_content, div#list.fast_menu_content {
+div#form.fast_menu_content, div#list.fast_menu_content, div.admission_form {
         display: none;
 }
 
@@ -1061,7 +1061,7 @@ table.devices td.item {
 
 /***********LOGIN*************/
 
-body #main_area.login {
+body .main_area.login {
 	width: 260px;
 	margin: 50px auto;
 	float: none;

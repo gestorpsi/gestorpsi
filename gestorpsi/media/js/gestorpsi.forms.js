@@ -18,7 +18,7 @@ GNU General Public License for more details.
  * floating save box
  */
 
-var name = "#sidebar"; 
+var name = ".sidebar"; 
 var menuYloc = null;
 
 
@@ -72,7 +72,8 @@ var form_options = {
           
 
           // change action atribute to update it, not insert a new one
-          $('div#edit_form .form_client').attr('action','client/' + response + '/save/');
+          $('div#edit_form .form_client').attr('action','client/' + response + '/save/'); // client form save
+          $('#edit_form a.admission').attr('href','client/admission/' + response); // client admission
           $('div#edit_form .form_employee').attr('action','employee/' + response + '/save/');
           $('div#edit_form .form_place').attr('action','place/' + response + '/save/');
           $('div#edit_form .form_service').attr('action','service/' + response + '/save/');
@@ -126,11 +127,14 @@ var form_options = {
           // reload mask
           bindFieldMask();
           
+          // reload loadLinks
+          bindAdmission();
+          
           // set new tab opened to closeable when clicked
           $('div#form').addClass('edit_form');
          
           // show new options for people
-          $('#people_actions').show();
+          $('#edit_form .people_actions').show();
           
           // show new options for place
           $('#place_actions').show();
@@ -172,7 +176,7 @@ var form_options = {
           $('#msg_area').text('Error saving register!');
           $('#msg_area').fadeTo(0, 1);
           $('#msg_area').show();
-          $('#sidebar').css('padding-top','234px');
+          $('.sidebar').css('padding-top','234px');
      }
 }; 
 
@@ -207,7 +211,7 @@ var form_mini_options = {
           $('#msg_area').removeClass('alert');
           $('#msg_area').addClass('error');
           $('#msg_area').text('Error saving register!');
-          $('#sidebar').css('padding-top','234px');
+          $('.sidebar').css('padding-top','234px');
      }
 }; 
 
@@ -692,7 +696,7 @@ $(document).unbind().ready(function(){
       * scroll to top
       */
      /*
-     $('#sidebar input.save_button, table.newtab tr td a').click(function() {
+     $('.sidebar input.save_button, table.newtab tr td a').click(function() {
           $.scrollTo( $('body'),  {top:'1px', left:'1px'}, 50);
 	  
      });
@@ -705,7 +709,7 @@ $(document).unbind().ready(function(){
      * 
      */
      
-     $('#sidebar input#cancel_button').click(function() {
+     $('.sidebar input#cancel_button').click(function() {
           $('#msg_area').removeClass();
           $('#msg_area').hide();
           $('div#sub_menu ul li a').removeClass('active');

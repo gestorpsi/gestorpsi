@@ -113,9 +113,6 @@ $(document).ready(function(){
                 link.addClass('active');
                 // show only selected
                 $('#sub_'+link.attr('id')).show();
-                // reset submenu to first option
-                $('#sub_menu ul li a').removeClass('active');
-                $('#sub_menu ul li a.first').addClass('active');
                 
                 // show VERTICAL submenu  (used in 'organization') if exists
                 submenu = link.next('ul');
@@ -159,6 +156,10 @@ $(document).ready(function(){
                         // show assigned div
                         idToShow = $(this).attr('id');
                         $('#sub_menu #sub_'+idToShow).show();
+                        
+                        // reset submenu to first option
+                        $('#sub_menu ul li a').removeClass('active');
+                        $('#sub_menu ul li a.first').addClass('active');
 
                 });
 	});

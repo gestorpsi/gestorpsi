@@ -12,7 +12,7 @@ def decrypt_attrib(attrib):
     @param attrib: the value to be deciphered
     @author: Vinicius H. S. Durelli
     """
-    return u'%s' % ( enc_obj.decrypt(binascii.a2b_hex(attrib))).rstrip()
+    return u'%s' % ( enc_obj.decrypt(binascii.a2b_hex(attrib))).rstrip().decode("utf-8")
     
 def encrypt_attrib(attrib):
     """
@@ -22,7 +22,7 @@ def encrypt_attrib(attrib):
     @param attrib: the value to be encrypted
     @author: Vinicius H. S. Durelli
     """
-    repeat= 8 - (len(attrib) % 8)
+    repeat= 8 - (len(attrib.encode("utf-8")) % 8)
     attrib= attrib + " " * repeat
-    attrib= binascii.b2a_hex( enc_obj.encrypt(attrib))
+    attrib= binascii.b2a_hex( enc_obj.encrypt(attrib.encode("utf-8")))
     return attrib

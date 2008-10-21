@@ -413,9 +413,9 @@ a.clips {
 	padding-top: 5px;
 }
 a.prase_edit {
-	background:url(../img/ico_edit.png) no-repeat 98% 0;
+	background:url(../img/ico_edit.png) no-repeat 98% -2px;
 	text-align: right;
-	padding-right: 20px;
+	padding-right: 20px !important;
 	padding-top: 5px;
 }
 .photo .clips {
@@ -426,7 +426,7 @@ a.prase_edit {
 	color: #005A7D; 
 }
 #content a.clips:hover, #content a.prase_edit:hover {
-	background-position: 98% -18px;
+	background-position: 98% -20px;
 }
 #content a.delete:hover, #content a.edit:hover {
 	background-position: 0 -18px;
@@ -434,7 +434,7 @@ a.prase_edit {
 #content a.delete span, #content a.edit span {
 	display: none
 }
-.main_area label {
+.main_area label, .form_mini label {
 	float: left;
 	margin: 2px;
 	color: #916F6F;
@@ -477,7 +477,7 @@ input[type=submit].mini {
     margin-left: 15px;
 }
 
-.giant {width: 670px;}
+.giant {width: 660px;}
 
 .big {
 	width: 344px;
@@ -672,7 +672,7 @@ hr {
 }
 .overflow {
 	clear: both;
-	width: 682px;
+	width: 675px;
 	margin-left: 10px;
 	height: 150px;
 	overflow: auto;
@@ -695,7 +695,7 @@ hr {
 
 #indicator_description {
 	clear: both;
-	width: 682px;
+	width: 675px;
 	margin: auto;
 	height: 80px;
 	background: #F2F2F2;
@@ -719,10 +719,10 @@ hr {
 #documents {
 	clear: both;
 	background: #F2F2F2;
-	width: 662px;
-	margin-left: 10px;
-	padding: 10px
+	width: 650px;
+	margin: 0px;
 }
+
 #content .empty {
 	color: #999999;
 	font-style: italic;
@@ -1030,17 +1030,25 @@ fieldset label a.select_multiple_menu.active {
 }
 
 
-a.form_mini {
-	clear: both;
-	display: block;
-	padding: 10px 0 0 12px;
-	font-size: 10px;
-}
-
 div.form_mini {
 	display:none;
+	position: fixed;
+	width: 580px;
+	margin-left: 60px;
+	background-color: white;
+	padding: 20px 20px 20px 20px;
+	border: 1px solid black;
 }
 
+div.form_mini input[type=submit] {
+	margin: 20px 0 0 0;
+	color: #999999;
+	border: 1px solid #999999;
+}
+
+div.form_mini fieldset {
+
+}
 
 /*** Devices menu ****/
 
@@ -1106,7 +1114,7 @@ fieldset.collapsed legend {
 }
 
 label div.error {
-	color: red!important;
+	color: red !important;
 	display: block;
 	font-size: 17px;
 }
@@ -1115,3 +1123,8 @@ fieldset div {
 	clear: both;
 }
 
+
+.block {
+	clear: both !important;
+	display: block;
+}

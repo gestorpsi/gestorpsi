@@ -186,23 +186,26 @@ var form_options = {
 
 var form_mini_options = {
      success: function(response, message, form) {
+          
                // get option label
-               var text = $(form).parents('fieldset').children('div.form_mini').children('form').children('label').children('input:text').val();
+               var text = $(form).children('fieldset').children('label').children('input:text').val();
+               
                // add <option> to asmselect select box
-               $(form).parents('fieldset').children('label').children('div').children('select.asmSelect:first').append('<option value='+response+' disabled="disabled">'+text+'</option>');
+               $.form_mini_link.parents('fieldset').children('label').children('select.asmSelect:first').append('<option value='+response+' disabled="disabled">'+text+'</option>');
                
                // add <option> to real multiselect 
-               $(form).parents('fieldset').children('label').children('div').children('select.multiple').append('<option value='+response+' selected="selected">'+text+'</option>');
+               $.form_mini_link.parents('fieldset').children('label').children('select.multiple').append('<option value='+response+' selected="selected">'+text+'</option>');
                
                // append it to list
-               $(form).parents('fieldset').children('label').children('div').children('ol').append('<li style="display: list-item;" class="asmListItem"><span class="asmListItemLabel">'+text+'</span><a class="asmListItemRemove dyn_added">remove</a></li>');
+               $.form_mini_link.parents('fieldset').children('label').children('ol').append('<li style="display: list-item;" class="asmListItem"><span class="asmListItemLabel">'+text+'</span><a class="asmListItemRemove dyn_added">remove</a></li>');
                          
                $('a.asmListItemRemove.dyn_added').unbind().click(function() {
                     $(this).parents("li").remove();
                }); 
                
-               // clean form
-               $(form).parents('fieldset').children('div.form_mini').children('form').children('label').children('input:text').val('')
+               // clean form and hide it
+               $(form).children('label').children('input:text').val('');
+               $(form).parents('div.form_mini').hide();
                
           },
      error: function() {
@@ -347,7 +350,7 @@ function bindAjaxForms() {
                       }
                  }; 
                  $(form).ajaxSubmit(form_file_options);
-                 $('div.photo_form_upload').hide();
+                 $(form).parents('div.photo_form_upload').hide();
             }
           });  
      });
@@ -507,7 +510,7 @@ function bindFormActions() {
      */
      
      $('a.clips').unbind().click(function() {
-          $('div.photo_form_upload').show();
+          $(this).parents('form').parents('div').children('div.photo_form_upload').show();
      });
      
       
@@ -638,6 +641,34 @@ function bindFormActions() {
           $(select).parents('form').children('div').children('fieldset.area_' + $(this).val()).show();
      });
      
+      // quick add
+      
+     $('div.form_mini input.cancel').click(function() {
+          $(this).parents('div.form_mini:first').hide();
+          return false;
+     
+     });
+     
+     $('a.form_mini').unbind().click(function() {
+          var form_mini = $(this).parents('form').parents('div').children('div.'+$(this).attr('display')).show();
+          $.form_mini_link = $(this);
+          $(form_mini).children('form').validate({
+               event:"submit",
+               rules: {
+                    label: {
+                            required: true
+                    }
+               },
+               messages: {
+                    name: 'This field is required'
+               },
+               submitHandler: function(form) {
+                    $(form).ajaxSubmit(form_mini_options);
+               }
+          });
+     });
+     
+     
      bindAutoCompleteForm();
      
 }
@@ -745,30 +776,6 @@ $(document).unbind().ready(function(){
           $(this).addClass('active');
      });
      
-     
-     // quick add     
-     $('a.form_mini').click(function() {
-          $('div.'+$(this).attr('display')).clone(true).insertAfter(this);
-          
-          $(this).hide();
-          $(this).parents('fieldset').children('div.form_mini').show();
-          
-          $(this).parents('fieldset').children('div.form_mini').children('form').validate({
-               event:"submit",
-               rules: {
-                    label: {
-                            required: true
-                    }
-               },
-               messages: {
-                    name: 'This field is required'
-               },
-               submitHandler: function(form) {
-                    $(form).ajaxSubmit(form_mini_options);
-               }
-          });
-          
-     });
      
      /**
       * select multiple plugin

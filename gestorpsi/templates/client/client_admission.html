@@ -32,8 +32,10 @@ GNU General Public License for more details.
 
                 
         </ul>
+        <fieldset>
+        <legend>Dados Iniciais</legend>
         <label>Admitido em<br />
-        <input name="" type="text" class="medium" /></label>
+        <input name="" type="text" class="medium" value="{% now "Y-m-d" %}" /></label>
                 
                 <!--este -->
         <label>Como tomou conhecimento do estabelecimento?<br />
@@ -61,83 +63,35 @@ GNU General Public License for more details.
                 
                 
                 
-                
+        
         <!--este-->
         <label>Indicação realizada por<br />
         <input name="" type="text" class="big" /></label>
         <label><input name="" type="button" class="btn" value="Procurar" /></label>
-        <div class="label">Escolha o profissional da lista abaixo, ou <a href="#">cadastre um Novo Profissional de Saúde</a>.
+        
+        </fieldset>
+        
+        <fieldset>
+        <legend>Encaminhamentos</legend>
+        <label>Escolha o profissional da lista abaixo, ou <a class="form_mini" display="careprofessional_mini">{% trans "cadastre um Novo Profissional de Saúde" %}</a></label>
         <div class="overflow">
 
-                <table id="indicators" class="zebra" border="0" cellspacing="0" cellpadding="0">
-                                                <tbody>
-                                                <tr>
-                                                        <td><a href="">Andersom Soares</a></td>
-                                                        <td>Assistente social</td>
-                                                        <td>(11) 1507 7895</td>
-                                                </tr>
-
-                                                <tr>
-                                                        <td><a href="">André Bonelli Filho</a></td>
-                                                        <td>Fisioterapeuta</td>
-                                                        <td>(16) 3307 4759</td>
-                                                </tr>
-                                                <tr>
-                                                        <td><a href="">Andrea Miranda Figueiredo</a></td>
-
-                                                        <td>Médico</td>
-                                                        <td>(11) 2004 2755</td>
-                                                </tr>
-                                                <tr>
-                                                        <td><a href="">Kátia Paula Marcolino</a></td>
-                                                        <td>Psicólogo</td>
-                                                        <td>(11) 5857 5254</td>
-
-                                                </tr>
-                                                <tr>
-                                                        <td><a href="">Keyla de Jesus</a></td>
-                                                        <td>Médico</td>
-                                                        <td>(11) 3303 1055</td>
-                                                </tr>
-                                                <tr>
-
-                                                        <td><a href="">Andrea Miranda Figueiredo</a></td>
-                                                        <td>Médico</td>
-                                                        <td>(11) 2004 2755</td>
-                                                </tr>
-                                                <tr>
-                                                        <td><a href="">Kátia Paula Marcolino</a></td>
-                                                        <td>Psicólogo</td>
-
-                                                        <td>(11) 5857 5254</td>
-                                                </tr>
-                                                <tr>
-                                                        <td><a href="">Keyla de Jesus</a></td>
-                                                        <td>Médico</td>
-                                                        <td>(11) 3303 1055</td>
-                                                </tr>
-
-                                                <tr>
-                                                        <td><a href="">Andrea Miranda Figueiredo</a></td>
-                                                        <td>Médico</td>
-                                                        <td>(11) 2004 2755</td>
-                                                </tr>
-                                                <tr>
-                                                        <td><a href="">Kátia Paula Marcolino</a></td>
-
-                                                        <td>Psicólogo</td>
-                                                        <td>(11) 5857 5254</td>
-                                                </tr>
-                                                <tr>
-                                                        <td><a href="">Keyla de Jesus</a></td>
-                                                        <td>Médico</td>
-                                                        <td>(11) 3303 1055</td>
-
-                                                </tr>
-                                                </tbody>
-                        </table>
+                <table id="indicators" class="zebra">
+                        <thead>  
+                        <tr><th></th><th></th><th></th></tr> 
+                        </thead>
+                        <tbody>
+                        {% for p in CareProfessionals %}
+                        <tr>
+                                <td><a href="">{{ p }}</a></td>
+                                <td>Psicólogo</td>
+                                <td>{{ p.person.get_first_phone }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                </table>
         </div>
-        </div>
+        
         <!--ou este -->
         <div class="label">Indicação realizada por <a href="" class="prase_edit">Alterar indicação</a><br />
                 <div id="indicator_description">
@@ -148,14 +102,15 @@ GNU General Public License for more details.
                         marisilveira@superuol.com.br</p>
                 </div>
         </div>
-
-        
         
         
         <label>Motivo para admissão<br />
         <textarea name="" cols="" rows="3" class="giant"></textarea></label>
                 
-                
+        </fieldset>
+        
+        <fieldset>
+        <legend>Mídias</legend>
         <div class="label">Documentos <a href="" class="clips">Anexar documento</a>	
         <div id="documents">
                 <!-- Aparece quando "Anexar Documento", desaparece após enviar arquivo, podem haver vários-->
@@ -236,7 +191,9 @@ GNU General Public License for more details.
                 </table>
         </div>
         </div>
-        
+        </fieldset>
+                        
+        <fieldset>
         <label>Comentários<br />
         <textarea name="" cols="" rows="8" class="giant"></textarea></label>
 
@@ -244,6 +201,7 @@ GNU General Public License for more details.
         <div class="btn_right">
                 <input name="" type="button" class="btn" value="Concluir Admissão" />
         </div>
+        </fieldset>
 </div>
 <div id="sidebar" class="sidebar">
 	<div class="bg_blue">
@@ -259,3 +217,6 @@ GNU General Public License for more details.
 
 <label><input name="" type="button" class="btn2" value="Cancelar" /></label>
 </form>
+
+
+{% include "tags/careprofessional_mini.html" %}

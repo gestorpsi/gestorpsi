@@ -17,10 +17,11 @@ GNU General Public License for more details.
 {% load i18n %}
 
 <div class="form_mini place_mini">
-<form action="/place/save/" method="post">	
-
+<form action="/place/save/" method="post">
+	<fieldset>
+	<legend>{% trans "Adding new Place" %}</legend>
 	<label>{% trans "Place Identification" %}<br />
-	<input type="text" name="label" class="big tabtitle" value="" id="id_label" />
+	<input type="text" name="label" class="big tabtitle" value="" />
 	</label>
 	<label>{% trans "Place Type" %}<br />
 	<select name="place_type">
@@ -28,9 +29,11 @@ GNU General Public License for more details.
 		<option value="{{ pt.id }}"{% ifequal object.place_type.id pt.id %} selected{% endifequal %}>{{ pt }}</option>
 		{% endfor %}
 	</select>
+	<input type="hidden" name="visible" value="on" />
 	<input type="submit" name="submit" value="{% trans "Add" %}" class="mini" />
-		
+	<input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />	
 	</label>
+	</fieldset>
 </form>
 </div>
 

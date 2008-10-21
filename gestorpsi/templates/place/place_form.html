@@ -69,7 +69,7 @@ GNU General Public License for more details.
 	<fieldset id="fieldset_place_status">
 		<legend>{% trans "Place Status" %}</legend>
 			<label>
-			<input type="checkbox" name="visible" id="id_visible" {% if object.visible %} checked{% endif %} /><label>{% trans "Visible?" %}
+			<input type="checkbox" name="visible" {% if object.visible %} checked{% endif %} /><label>{% trans "Visible?" %}
 			</label>
 	</fieldset>
 

@@ -23,6 +23,8 @@ from gestorpsi.address.models import Country, City, State, Address, AddressType
 from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetwork
 from gestorpsi.document.models import Document, TypeDocument, Issuer
 from gestorpsi.person.views import person_save
+from gestorpsi.careprofessional.models import Profession, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
+from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 
 # list all active clients
 def index(request):
@@ -61,7 +63,11 @@ def form(request, object_id=''):
     return render_to_response('client/client_form.html', {'object': object, 'emails': emails, 'websites': sites, 'ims': instantMessengers, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), 'MaritalStatusTypes': MaritalStatus.objects.all(), 'last_update': last_update })
 
 def form_admission(request, object_id=''):
-    return render_to_response('client/client_admission.html')
+    return render_to_response('client/client_admission.html', {
+        'CareProfessionals': CareProfessional.objects.all(),
+        'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
+        'licenceBoardTypes': LicenceBoard.objects.all(),
+    })
 
 # Save or Update client object
 def save(request, object_id=""):

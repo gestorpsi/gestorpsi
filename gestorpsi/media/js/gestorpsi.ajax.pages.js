@@ -64,7 +64,7 @@ function bindList() {
 function bindTableZebra() {
 	$('table.zebra tr:odd').addClass('zebra_0');
 	$('table.zebra tr:even').addClass('zebra_1');
-	$('table.zebra').tablesorter({sortList: [[0,0], [1,0]]});
+	$('#list #search_results').tablesorter({sortList: [[0,0], [1,0]]});
 }
 
 function bindAdmission() {
@@ -199,6 +199,7 @@ $(document).unbind().ready(function(){
 	
 	
 	$('#core a.fastmenu, #core p.description a').click(function() {
+		
 		// hide all opened content        
 		$('.fast_menu_content').hide();
 		

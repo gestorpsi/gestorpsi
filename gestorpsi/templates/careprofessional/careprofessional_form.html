@@ -103,11 +103,19 @@ GNU General Public License for more details.
 			</label>
 			<br />
 			<label><a class="form_mini" display="place_mini">{% trans "Add New Workplace" %}</a></label>
-			
-			
-			
 	</fieldset>
 
+	<fieldset>
+		<legend>{% trans "Professional Services" %}</legend>
+			
+			<label>{% trans "Services" %}<br />
+			<select name="professional_service" multiple="multiple" class="select multiple extrabig asm">
+				{% for l in ServiceTypes %}
+				<option value="{{ l.id }}"{% for w in services %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+				{% endfor %}
+			</select>
+			</label>
+	</fieldset>
 
 	{% include "meta/people_profile.html" %}
 	{% include "meta/addressbook.html" %}

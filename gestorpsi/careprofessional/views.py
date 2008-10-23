@@ -26,6 +26,7 @@ from gestorpsi.document.models import Document, TypeDocument, Issuer
 from gestorpsi.place.models import Place, PlaceType
 from gestorpsi.organization.models import Organization
 from gestorpsi.person.views import person_save
+from gestorpsi.service.models import Service
 
 PROFESSIONAL_AREAS = (
     ('psycho','Psychologist','CRP'),
@@ -56,6 +57,7 @@ def index(request):
                                     'States': State.objects.all(),
                                     'MaritalStatusTypes': MaritalStatus.objects.all(),
                                     'PlaceTypes': PlaceType.objects.all(),
+                                    'ServiceTypes': Service.objects.all(),
                                     })
   
 
@@ -80,6 +82,7 @@ def form(request, object_id=''):
         instantMessengers = object.person.instantMessengers.all()
         workplaces = object.professionalProfile.workplace.all()
         agreements = object.professionalProfile.agreement.all()
+        #services = object.professionalProfile.services.all()
     except:
         object = CareProfessional() 
 
@@ -106,7 +109,8 @@ def form(request, object_id=''):
                                     'MaritalStatusTypes': MaritalStatus.objects.all(),
                                     'PlaceTypes': PlaceType.objects.all(),
                                     'workplaces': workplaces,
-                                    'agreements': agreements,                                    
+                                    'agreements': agreements,
+                                    'ServiceTypes': Service.objects.all(),
                                     })
 
 def care_professional_fill(request, object):

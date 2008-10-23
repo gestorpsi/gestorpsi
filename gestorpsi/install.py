@@ -14,6 +14,15 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+"""
+INSTALL:
+
+./manage.py syncdb
+export PYTHONPATH=<directory from your project>
+python install.py
+
+"""
+
 from os import environ
 environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
 

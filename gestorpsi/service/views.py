@@ -129,13 +129,16 @@ def save(request, object_id = ''):
     if request.POST['service_area'] == '3':
         object = save_clinic(request, object)
 
+    """ Lista de Profissionais """
+    object.professionals.clear()
+    for p in request.POST.getlist('service_professionals'):
+        object.professionals.add(CareProfessional.objects.get(pk=p))
+
     """ Lista de Responsaveis """
-    responsaveis = request.POST.getlist('service_responsibles')
-    if len(responsaveis):
-        for resp in responsaveis:
-            print "Responsavel: %s" % CareProfessional.objects.get(pk=resp)
-    else:
-        print "Nenhum responsavel selecionado."
+    object.responsibles.clear()
+    for p in request.POST.getlist('service_responsibles'):
+        object.responsibles.add(CareProfessional.objects.get(pk=p))
+
 
     return HttpResponse(object.id)
 

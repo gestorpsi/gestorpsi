@@ -168,7 +168,17 @@ GNU General Public License for more details.
 			</span>
 			</label>
 	
-			<label>{% trans "Professional" %}<br />
+			<label>{% trans "Related Professionals" %}<br />
+			<span>
+			<select multiple="multiple" name="service_professionals" class="select multiple extrabig asm small_fonts">
+				{% for l in CareProfessionals %}
+				<option value="{{ l.id }}"{% for or in object.professionals.values_list %}{% ifequal or.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{{ l }}</option>
+				{% endfor %}
+			</select>
+			</span>
+			</label>
+
+			<label>{% trans "Professionals Responsible" %}<br />
 			<span>
 			<select multiple="multiple" name="service_responsibles" class="select multiple extrabig asm small_fonts">
 				{% for l in CareProfessionals %}

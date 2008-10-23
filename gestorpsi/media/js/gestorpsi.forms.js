@@ -33,12 +33,14 @@ var form_options = {
           var phone_number = '';
           var email_address = '';
           
-          // adding new register! after saved, move the content from the add form, to the edit form
+          // adding new register!
           if(!editing)  {
+               // move the content from the add form, to the edit form
                $('div#form').attr('id','tmp');
                $('div#edit_form').attr('id','form');
                $('div#tmp').attr('id','edit_form');
                $('div#form').html($('div#edit_form').html());
+               
                $('div.fast_menu_content').hide();
                bindAjaxForms();
                bindFormActions();
@@ -140,7 +142,7 @@ var form_options = {
           $('#place_actions').show();
           
           // empty add form
-          $('#form form').clearForm();
+          $('#form form:input').clearForm();
           
           // reset image from add form
           $('#form form div.photo img.img_people').attr('src','/media/img/male_generic_photo.gif.png');
@@ -596,7 +598,7 @@ function bindFormActions() {
       * load Birthdate's style calendar 
       * 
       */
-     
+
      $('input.birthdate').datepicker({ dateFormat: 'yy-mm-dd', changeYear: true, yearRange: '-120:+0', duration: 'fast' });
           
      /** 
@@ -780,11 +782,13 @@ $(document).unbind().ready(function(){
      /**
       * select multiple plugin
       */
+     
      /*
-     $("select[multiple].asm").asmSelect({
+     $("#form select[multiple].asm").asmSelect({
           animate: false
      });
      */
+     
 
      
 });

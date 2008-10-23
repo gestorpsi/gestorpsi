@@ -16,11 +16,10 @@ GNU General Public License for more details.
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404
-from gestorpsi.service.models import Service, ResearchProject, Area, ServiceType, Modality, AreaClinic
-from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure
-from gestorpsi.careprofessional.models import CareProfessional, Profession
-from gestorpsi.organization.models import Organization
 from django.core.exceptions import ObjectDoesNotExist
+from gestorpsi.service.models import Service, ResearchProject, Area, ServiceType, Modality, AreaClinic
+from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure, Organization
+from gestorpsi.careprofessional.models import CareProfessional, Profession 
 
 def index(request):
     """
@@ -31,10 +30,10 @@ def index(request):
     user = request.user
     
     return render_to_response( "service/service_index.html", {
-        'object':Service.objects.filter(organization = user.org_active ),
+        'object':Service.objects.filter( active=True, organization=user.org_active ),
         'Agreements': Agreement.objects.all(),
         'ResearchProjects': ResearchProject.objects.all(),
-        'CareProfessionals': CareProfessional.objects.all(),
+        'CareProfessionals': CareProfessional.objects.filter(person__organization=user.org_active),
         'AgeGroups': AgeGroup.objects.all(),
         'ProcedureProviders': ProcedureProvider.objects.all(),
         'Procedures': Procedure.objects.all(),
@@ -72,12 +71,23 @@ def form(request, object_id=''):
         'Professions': Profession.objects.all(),
         } )
 
-def save_clinic(request):
-    print "fdsfds"
-    pass
-
+def save_clinic(request, object):
+    ac = AreaClinic()
+    ac.save()
+    ac.age_group.clear()
+    for age in request.POST.getlist('service_age'):
+        ac.age_group.add(AgeGroup.objects.get(pk=age))
+    object.content_object = ac
+    object.save()
+    return object
 
 def save(request, object_id = ''):
+    """
+    This function view searches for the C{Service} with id equals to I{object_id}, if there is such a
+    C{Service} instance, it is loaded and updated with the values of the request object, otherwise a 
+    new C{Service} instance is created, filled with request's values and saved.
+    """
+
     try:
         object = get_object_or_404(Service, pk=object_id)
     except:
@@ -99,7 +109,7 @@ def save(request, object_id = ''):
     object.modalities.clear()
     for m in request.POST.getlist('service_solicitation'):
         object.modalities.add(Modality.objects.get(pk=m))
-    
+
     """ Procedures """
     object.procedures.clear()
     for p in request.POST.getlist('service_type_procedure'):
@@ -115,25 +125,9 @@ def save(request, object_id = ''):
     for p in request.POST.getlist('service_profession'):
         object.professions.add(Profession.objects.get(pk=p))
 
-    """ area clinica """
+    """ Clinic Area """
     if request.POST['service_area'] == '3':
-        ac = AreaClinic()
-        ac.save()
-        ac.age_group.clear()
-        for age in request.POST.getlist('service_age'):
-            ac.age_group.add(AgeGroup.objects.get(pk=age))
-        object.content_object = ac
-        object.save()
-    
-#    """ Age Group - Clinic Area Only """
-#    if request.POST['service_area'] == '3':
-#        for age in request.POST.getlist('service_age'):
-#            clinic.age_group.add(AgeGroup.objects.get(pk=age))
-#            print "Faixa Etaria: %s" % AgeGroup.objects.get(pk=age) 
-
-#    """ Clinic Area add-on """
-#    if request.POST['service_area'] == '3':
-#        save_clinic()
+        object = save_clinic(request, object)
 
     """ Lista de Responsaveis """
     responsaveis = request.POST.getlist('service_responsibles')
@@ -145,47 +139,25 @@ def save(request, object_id = ''):
 
     return HttpResponse(object.id)
 
-#def save_clinic():   
-#    pass
-
-#def save_old(request, object_id= ''):
-#    """
-#    This function view searches for the C{Service} with id equals to I{object_id}, if there is such a
-#    C{Service} instance, it is loaded and updated with the values of the request object, otherwise a 
-#    new C{Service} instance is created, filled with request's values and saved.
-#    """
-#    try:
-#        object= get_object_or_404( Service, pk= object_id )
-#    except (Http404, ObjectDoesNotExist):
-#        object= Service()
-#        user = request.user
-#        object.organization = user.org_active 
-#        
-#    
-#    object.name= request.POST['service_name']
-#    object.description= request.POST['service_description']
-#    object.keywords= request.POST['service_keywords']
-#    if request.POST['service_research_project']:
-#        object.research_project= ResearchProject.objects.get(pk= request.POST['service_research_project'])
-#    object.save()
-#    
-##    if ( request.POST['organization'] != '' ):
-##        organization= Organization.objects.get(pk= request.POST['organization'] )
-##        object.organization= organization
-#    
-#    save_agreements( request.POST.getlist('service_agreements'), object )
-#    save_responsibles( request.POST.getlist('service_responsibles'), object )
-#     
-#    object.save()
-#    
-#    return HttpResponse(object.id)
-
-#def delete(request, object_id= ''):
-#    """
-#    This function view searches for a C{Service} object which has the id equals to I{object_id}, if there is
-#    such C{Service} instance it is deleted.
-#    """
-#    object= get_object_or_404( Service, pk= object_id )
-#    object.delete()
-#    list_of_services= Service.objects.all()
-#    return render_to_response( "service/service_index.html", locals() )
+def disable(request, object_id=''):
+    """
+    This function view searches for a C{Service} object which has the id equals to I{object_id}, if there is
+    such C{Service} instance it is disabled.
+    """
+    user = request.user
+    object = get_object_or_404( Service, pk=object_id )
+    object.active = False
+    object.save()
+    return render_to_response( "service/service_index.html", {
+        'object':Service.objects.filter( active=True, organization=user.org_active ),
+        'Agreements': Agreement.objects.all(),
+        'ResearchProjects': ResearchProject.objects.all(),
+        'CareProfessionals': CareProfessional.objects.all(person__organization = user.org_active.id),
+        'AgeGroups': AgeGroup.objects.all(),
+        'ProcedureProviders': ProcedureProvider.objects.all(),
+        'Procedures': Procedure.objects.all(),
+        'Areas': Area.objects.all(),
+        'ServiceTypes': ServiceType.objects.all(),
+        'Modalitys': Modality.objects.all(),
+        'Professions': Profession.objects.all(),
+        })

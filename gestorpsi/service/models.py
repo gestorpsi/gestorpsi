@@ -17,10 +17,9 @@ GNU General Public License for more details.
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from gestorpsi.organization.models import Organization, AgeGroup, Procedure
+from gestorpsi.organization.models import Organization, AgeGroup, Procedure, Agreement
 from gestorpsi.careprofessional.models import CareProfessional, Profession
-from gestorpsi.util.uuid_field import UuidField
-from gestorpsi.organization.models import Agreement
+from gestorpsi.util.uuid_field import UuidField 
 
 class Area(models.Model):
     title = models.CharField(max_length = 100)
@@ -213,7 +212,6 @@ class Service(models.Model):
     content_object = generic.GenericForeignKey()
     
     research_project = models.ForeignKey( ResearchProject, null=True )    
-    organization = models.ForeignKey(Organization, null=True)
     organization = models.ForeignKey(Organization, null=True)
     responsibles = models.ManyToManyField( CareProfessional, related_name="responsibles" )
     professionals = models.ManyToManyField( CareProfessional, related_name="professionals" )

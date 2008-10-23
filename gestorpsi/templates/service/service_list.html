@@ -29,7 +29,7 @@ GNU General Public License for more details.
         <p class="description">{% trans "Displaying" %} <a href="/service"><span id="object_length">{{ object|length }}</span> {% trans "service(s)" %}</a>.</p>
         
         <div class="main_area contact">
-                <table id="search_results" class="zebra newtab">
+                <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
                         {% for o in object %}
                         <tr id="{{ o.id }}">
                 

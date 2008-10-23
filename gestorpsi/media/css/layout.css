@@ -1033,6 +1033,7 @@ fieldset label a.select_multiple_menu.active {
 div.form_mini {
 	display:none;
 	position: fixed;
+	top: 150px;
 	width: 580px;
 	margin-left: 60px;
 	background-color: white;
@@ -1044,6 +1045,12 @@ div.form_mini input[type=submit] {
 	margin: 20px 0 0 0;
 	color: #999999;
 	border: 1px solid #999999;
+}
+
+div.form_mini input[type=text] {
+	font-size: 16px;
+	font-weigth: normal !important;
+	padding: 4px 0 4px 0;
 }
 
 div.form_mini fieldset {

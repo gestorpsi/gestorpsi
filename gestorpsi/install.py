@@ -43,7 +43,7 @@ from gestorpsi.service.models import Area, ServiceType, Modality, AreaClinic
 
 ##Organization
 organization = Organization()
-organization.name = 'Organization_test_1'
+organization.name = 'Demo'
 organization.active = True
 organization.save()
 

@@ -14,11 +14,9 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.http import HttpResponse
-from django.shortcuts import render_to_response
-from gestorpsi.organization.models import Organization
+from django.conf.urls.defaults import *
 
-def form(request):
-    user = request.user
-    return render_to_response('organization/organization_form.html', {'object': Organization.objects.get(pk= user.org_active.id) })
-
+urlpatterns = patterns('gestorpsi.organization.views',
+    (r'^$', 'form'),
+    (r'^save/$', 'save'),  #update object
+)

@@ -292,6 +292,7 @@ div#sub_menu .active {
 #content h2.title_device {background: url(../img/42/stuff.png) no-repeat 20px 15px;}
 #content h2.title_services {background: url(../img/42/services.png) no-repeat 20px 15px;}
 #content h2.title_places {background: url(../img/42/office.png) no-repeat 20px 15px;}
+#content h2.title_organization {background: url(../img/42/go-home.png) no-repeat 20px 15px;}
 
 #content p.description {
 	font-size: 9px;

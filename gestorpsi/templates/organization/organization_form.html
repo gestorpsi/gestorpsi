@@ -1,0 +1,55 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+{% include "core/ajax_page.html" %}
+<h2 id="title_addressbook" style="display:none"></h2>
+
+
+<div class="edit_form">
+<h2 class="title_organization title">{{ object }}</h2>
+<p class="description"> {% trans "Organization Configuration" %}<br />	
+</p>
+
+
+<form action="/organization/save/" method="post" id="form_organization">	
+<div class="main_area">
+
+<fieldset>
+        <legend>{% trans "Basic Infos" %}</legend>
+
+        <label>{% trans "Organization Name" %}<br />
+                <input type="text" value="{{ object }}" name="" class="extrabig" />
+        </label>
+
+</fieldset>
+
+<br />	
+</div>
+
+<div id="sidebar" class="sidebar">
+	<div class="bg_blue">
+		{% include "tags/save.html" %}
+	</div>
+	
+</div>
+
+</form>
+
+{% include "tags/upload.html" %}
+{% if object.id %}
+</div> <!-- edit_form -->
+{% endif %}

@@ -49,6 +49,9 @@ GNU General Public License for more details.
 			<label>{% trans "Keywords" %}<br />
 			<input type="text" name="service_keywords" class="extrabig" value="{{ object.keywords }}" />
 			</label>
+			<label>{% trans "Research Project" %}<br />
+			<input type="text" name="research_project" class="extrabig" value="{{ object.research_project }}" />
+			</label>
 	</fieldset>
 
 	<!--
@@ -187,18 +190,7 @@ GNU General Public License for more details.
 			</select>
 			</span>
 			</label>
-	
-			<label class="service_research_project">{% trans "Research Project" %}<br />
-				<span>
-				<select name="service_research_project" class="extrabig">
-					<option value=""></option>
-					{% for l in ResearchProjects %}
-					<option value="{{ l.id }}">{{ l }}</option>
-					{% endfor %}
-				</select>
-				</span>
-			</label>
-	
+		
 	</fieldset>	
 	
 	<!--

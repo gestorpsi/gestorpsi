@@ -17,7 +17,7 @@ GNU General Public License for more details.
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.core.exceptions import ObjectDoesNotExist
-from gestorpsi.service.models import Service, ResearchProject, Area, ServiceType, Modality, AreaClinic
+from gestorpsi.service.models import Service, Area, ServiceType, Modality, AreaClinic
 from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure, Organization
 from gestorpsi.careprofessional.models import CareProfessional, Profession 
 
@@ -32,7 +32,6 @@ def index(request):
     return render_to_response( "service/service_index.html", {
         'object':Service.objects.filter( active=True, organization=user.org_active ),
         'Agreements': Agreement.objects.all(),
-        'ResearchProjects': ResearchProject.objects.all(),
         'CareProfessionals': CareProfessional.objects.filter(person__organization=user.org_active),
         'AgeGroups': AgeGroup.objects.all(),
         'ProcedureProviders': ProcedureProvider.objects.all(),
@@ -60,7 +59,6 @@ def form(request, object_id=''):
     return render_to_response('service/service_form.html', {
         'object': object,
         'Agreements': Agreement.objects.all(),
-        'ResearchProjects': ResearchProject.objects.all(),
         'CareProfessionals': CareProfessional.objects.all(),
         'AgeGroups': AgeGroup.objects.all(),
         'ProcedureProviders': ProcedureProvider.objects.all(),
@@ -106,7 +104,8 @@ def save(request, object_id = ''):
     object.active = request.POST['service_active']
     object.area = Area.objects.get(pk=request.POST['service_area'])
     object.service_type = ServiceType.objects.get(pk=request.POST['service_type'])
-
+    object.research_project = request.POST['research_project']
+    
     object.save()
 
     """ Modalities """
@@ -158,7 +157,6 @@ def disable(request, object_id=''):
     return render_to_response( "service/service_index.html", {
         'object':Service.objects.filter( active=True, organization=user.org_active ),
         'Agreements': Agreement.objects.all(),
-        'ResearchProjects': ResearchProject.objects.all(),
         'CareProfessionals': CareProfessional.objects.all(person__organization = user.org_active.id),
         'AgeGroups': AgeGroup.objects.all(),
         'ProcedureProviders': ProcedureProvider.objects.all(),

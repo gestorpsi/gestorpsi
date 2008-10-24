@@ -175,19 +175,6 @@ class AreaTransit(models.Model):
     def __unicode__(self):
         return u'%s' % self.area.content_type
 
-    
-class ResearchProject(models.Model):
-    """
-    This class holds information related to research projects.
-    @author: Vinicius H. S. Durelli
-    @version: 1.0
-    """
-    name= models.CharField( max_length= 45 )
-    description= models.CharField( max_length= 80 )
-    
-    def __unicode__(self):
-        return u'%s' % self.name
-
 class Service(models.Model):
     """
     This class is used to maintain information on services.
@@ -205,16 +192,16 @@ class Service(models.Model):
     procedures = models.ManyToManyField(Procedure)
     agreements= models.ManyToManyField(Agreement)
     professions = models.ManyToManyField(Profession)
+    research_project = models.CharField(max_length=255)    
+    organization = models.ForeignKey(Organization, null=True)
+    responsibles = models.ManyToManyField( CareProfessional, related_name="resp_services" )
+    professionals = models.ManyToManyField( CareProfessional, related_name="prof_services" )
 
     # Generic Clinic Area Relationship
     content_type = models.ForeignKey(ContentType, null=True)
     object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
     
-    research_project = models.ForeignKey( ResearchProject, null=True )    
-    organization = models.ForeignKey(Organization, null=True)
-    responsibles = models.ManyToManyField( CareProfessional, related_name="resp_services" )
-    professionals = models.ManyToManyField( CareProfessional, related_name="prof_services" )
 
     def __unicode__(self):
         return u"%s" % (self.name)

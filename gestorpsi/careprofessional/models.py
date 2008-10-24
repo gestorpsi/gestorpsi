@@ -35,9 +35,6 @@ class InstitutionType(models.Model):
     """
     description = models.CharField(max_length=50, null=True)
     def __unicode__(self):
-        """
-        returns a representation of this Institution type as an unicode  C{string}.
-        """
         return u"%s" % self.description
 
 class PostGraduate(models.Model):
@@ -48,9 +45,6 @@ class PostGraduate(models.Model):
     """
     description = models.CharField(max_length=50, null=True)
     def __unicode__(self):
-        """
-        returns a representation of this  PostGraduate as an unicode  C{string}.
-        """
         return u"%s" % self.description
 
 class AcademicResume(models.Model):
@@ -80,23 +74,7 @@ class Profession(models.Model):
     number = models.CharField(max_length=20, null=True)
     description = models.CharField(max_length=50, null=True)
     def __unicode__(self):
-        """
-        returns a representation of this Profession as an unicode  C{string}.
-        """
         return u"%s" % self.description
-
-#class Agreement(models.Model):
-#    """
-#    This class represents an agreement type that the careprofessional works
-#    @author: Danilo S. Sanches
-#    @version: 1.0
-#    """
-#    description = models.CharField(max_length=50, null=True)
-#    def __unicode__(self):
-#        """
-#        returns a representation of this Agreement as an unicode  C{string}.
-#        """
-#        return u"%s" % self.description
 
 class ProfessionalProfile(models.Model):
     """
@@ -114,9 +92,6 @@ class ProfessionalProfile(models.Model):
     workplace = models.ManyToManyField(Place, null=True)
     
     def __unicode__(self):
-        """
-        returns a representation of this professional profile as an unicode  C{string}.
-        """
         return "initial professional activities= %s; agreements= %s" % ( self.initialProfessionalActivities, self.agreement.all() )
 
 class LicenceBoard(models.Model):
@@ -129,9 +104,6 @@ class LicenceBoard(models.Model):
     description = models.CharField(max_length=100, null=True)
     
     def __unicode__(self):
-        """
-        returns a representation of this licence board as an unicode  C{string}.
-        """
         return self.name
 
 class ProfessionalIdentification(models.Model):
@@ -145,9 +117,6 @@ class ProfessionalIdentification(models.Model):
     registerNumber = models.CharField(max_length=50, null=True)    
     
     def __unicode__(self):
-        """
-        returns a representation of this professional identification as an unicode  C{string}.
-        """
         return self.registerNumber
 
 class CareProfessional(models.Model):

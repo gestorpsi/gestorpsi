@@ -133,7 +133,7 @@ CUSTOM_USER_MODEL = 'authentication.CustomUser'
 
 DEFAULT_EMAIL_MIMETYPE = 'html'
 
-SESSION_COOKIE_AGE = 7200      # 2 hours
+#SESSION_COOKIE_AGE = 7200      # 2 hours
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 #SESSION_ENGINE = 'django.contrib.sessions.backends.file'  # default is django.contrib.sessions.backends.db
 

@@ -101,7 +101,10 @@ def save(request, object_id = ''):
     object.name = request.POST['service_name']
     object.description = request.POST['service_description']
     object.keywords = request.POST['service_keywords']
-    object.active = request.POST['service_active']
+    if request.POST['service_active'] == True:
+        object.active = True
+    else:
+        object.active = False
     object.area = Area.objects.get(pk=request.POST['service_area'])
     object.service_type = ServiceType.objects.get(pk=request.POST['service_type'])
     object.research_project = request.POST['research_project']

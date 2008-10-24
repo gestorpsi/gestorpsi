@@ -28,9 +28,6 @@ class Approaches(models.Model):
     """    
     description = models.CharField(max_length=50)
     def __unicode__(self):
-        """
-        returns a representation of these Approaches as an unicode  C{string}.
-        """
         return u"%s" % self.description
 
 class Area(models.Model):
@@ -41,9 +38,6 @@ class Area(models.Model):
     """
     description = models.CharField(max_length=30)
     def __unicode__(self):
-        """
-        returns a representation of this Area as an unicode  C{string}.
-        """
         return u"%s" % self.description
 
 class AgeGroup(models.Model):
@@ -54,9 +48,6 @@ class AgeGroup(models.Model):
     """
     description = models.CharField(max_length=30)
     def __unicode__(self):
-        """
-        returns a representation of this AgeGroup as an unicode  C{string}.
-        """
         return u"%s" % self.description
 
 class Psychologist(CareProfessional):
@@ -69,22 +60,3 @@ class Psychologist(CareProfessional):
      approaches = models.OneToOneField(Approaches, null=True)
      specialistArea = models.ForeignKey(Area, null=True)
      ageGroup = models.OneToOneField(AgeGroup, null=True)
-    
-     #history_psyc = audittrail.AuditTrail()
-     
-
-class AreaForm(ModelForm):
-    class Meta:
-        model= Area
-     
-class PsychologistForm(ModelForm):
-    class Meta:
-        model= Psychologist
-        
-class ApproachesForm(ModelForm):
-    class Meta:
-        model= Approaches
-
-class AgeGroupForm(ModelForm):
-    class Meta:
-        model= AgeGroup

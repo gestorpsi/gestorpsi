@@ -67,33 +67,7 @@ def save(request, object_id=''):
         object = get_object_or_404(Psychologist, pk=object_id)        
     except Http404:
         object = Psychologist()
-    
-    """    
-    #Approaches
-    approaches = Approaches()
-    approaches.description = request.POST['professional_approaches']
-    approaches.save()
-    
-    #Area
-    area = Area()
-    area.description = request.POST['professional_area']
-    area.save()        
-    
-    #AgeGroup
-    ageGroup = AgeGroup()
-    ageGroup.description = request.POST['professional_age']
-    ageGroup.save()     
-     
-    if(request.POST['professional_approaches']):
-        object.approaches = Approaches.objects.get(pk=request.POST['professional_approaches'])    
-        
-    if(request.POST['professional_area']):
-        object.specialistArea = Area.objects.get(pk=request.POST['professional_area'])
-        
-    if(request.POST['professional_age']):
-        object.ageGroup = AgeGroup.objects.get(pk=request.POST['professional_age'])
-    """
-        
+
     object = care_professional_fill(request, object)
     object.save()
 

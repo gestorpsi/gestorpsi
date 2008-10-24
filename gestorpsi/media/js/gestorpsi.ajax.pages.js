@@ -221,8 +221,8 @@ $(document).unbind().ready(function(){
 		return false;
         });
 
-
-	
+	// organization menu
+	$('.main_area fieldset.organization:not(.first)').hide();
 	
 });
 

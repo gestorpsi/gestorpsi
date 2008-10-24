@@ -221,7 +221,13 @@ $(document).ready(function(){
 	});
       
 
-
+        // organization menu
+        $('ul#sub_organization li a.organization').click(function() {
+                $('.main_area fieldset.organization').hide();
+                $('.main_area fieldset.organization.' + $(this).attr('display')).show();
+                
+        });
+	
 
 });
 

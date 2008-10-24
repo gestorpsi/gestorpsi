@@ -28,13 +28,120 @@ GNU General Public License for more details.
 <form action="/organization/save/" method="post" id="form_organization">	
 <div class="main_area">
 
-<fieldset>
-        <legend>{% trans "Basic Infos" %}</legend>
+<fieldset class="identity organization first">
+        <legend>{% trans "Corporate Identity" %}</legend>
 
-        <label>{% trans "Organization Name" %}<br />
-                <input type="text" value="{{ object }}" name="" class="extrabig" />
+        <label>{% trans "Company" %}<br />
+                <input type="text" value="{{ object.business_name }}" name="businessName" class="extrabig" />
+        </label>
+        <label>{% trans "Trade Name" %}<br />
+                <input type="text" value="{{ object.name }}" name="name" class="extrabig" />
+        </label>
+	<label>{% trans "Register Number" %}<br />
+                <input type="text" value="{{ object.cnpj }}" name="cnpj" class="medium" />
+        </label>
+	<label>{% trans "CNES Code" %}<br />
+                <input type="text" value="{{ object.cnes }}" name="cnes" class="medium" />
+        </label>
+	<label>{% trans "State Inscription" %}<br />
+                <input type="text" value="{{ object.state_inscription }}" name="state_inscription" class="medium" />
+        </label>
+	<label>{% trans "Registration Hall" %}<br />
+                <input type="text" value="{{ object.registration_hall }}" name="registration_hall" class="medium" />
+        </label>
+	<label>{% trans "Subscriptions professional Institutional" %}<br />
+                <input type="text" value="{{ object.subscriptions_professional_institutional }}" name="subscriptions_professional_institutional" class="medium" />
+        </label>
+	<label>{% trans "Responsible Technicians" %}<br />
+                <input type="text" value="{{ object.responsible_technicians }}" name="responsible_technicians" class="medium" />
+        </label>
+	<label>{% trans "Comments" %}<br />
+                <textarea name="identity_comments" class="extrabig" />
+		{{ object.identity_comments }}
+		</textarea>
+        </label>
+</fieldset>
+
+<fieldset class="profile organization">
+        <legend>{% trans "Corporate Profile" %}</legend>
+
+        <label>{% trans "Personality" %}<br />
+                <select name="personality" class="medium">
+			<option value="">Pessoa Jurídica</option>
+			<option value="">Pessoa Física</option>
+		</select>
+        </label>
+	
+        <label>{% trans "Unit Type" %}<br />
+                <select name="unit" class="big">
+			<option value="">Posto de Saúde</option>
+		</select>
+        </label>		
+
+	<label>{% trans "Administrative Environment" %}<br />
+                <select name="environment" class="medium">
+			<option value="">Federal</option>
+		</select>
+        </label>
+	
+	<label>{% trans "Management" %}<br />
+                <select name="management" class="medium">
+			<option value="">Municipal</option>
+		</select>
         </label>
 
+	<label>{% trans "Organization Source" %}<br />
+                <select name="source" class="extrabig">
+			<option value="">Administração Indireta/Organização Social</option>
+		</select>
+        </label>	
+	
+	<label>{% trans "Dependence" %}<br />
+                <select name="dependence" class="medium">
+			<option value="">Individual</option>
+		</select>
+        </label>
+	
+        <label>{% trans "Care Provided Type" %}<br />
+	        <select name="care_provided" multiple="multiple" class="medium multiple small_fonts">
+			<option value="">Internação</option>
+			<option value="">Ambulatorial</option>
+		</select>
+        </label>
+		
+	<label>{% trans "Education and Research Activity" %}<br />
+                <select name="activity" class="big">
+			<option value="">Unidade Escola Superior Isolada</option>
+		</select>
+        </label>	
+		
+	<label>{% trans "Comments" %}<br />
+                <textarea name="profile_comments" class="extrabig" />
+		{{ object.profile_comments }}
+		</textarea>
+        </label>
+</fieldset>
+
+<fieldset class="address organization set_multirow">
+	<legend>{% trans "Addresses" %}</legend>
+	{% include "tags/address.html" %}
+	<a class="add_to_form"><span>{% trans "Add Address" %}</span></a>
+</fieldset>
+
+<fieldset class="phone organization">
+	<legend>{% trans "Phones" %}</legend>
+	{% include "tags/phone.html" %}
+	<a class="add_to_form"><span>{% trans "Add Phone" %}</span></a>
+</fieldset>
+
+<fieldset class="internet organization">
+	<legend>{% trans "Internet" %}</legend>
+	{% include "tags/email.html" %}
+	<a class="add_to_form"><span>{% trans "Add Email" %}</span></a>
+	{% include "tags/website.html" %}
+	<a class="add_to_form"><span>{% trans "Add Website" %}</span></a>
+	{% include "tags/im.html" %}
+	<a class="add_to_form"><span>{% trans "Add IM" %}</span></a>
 </fieldset>
 
 <br />	

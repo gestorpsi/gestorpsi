@@ -17,8 +17,17 @@ GNU General Public License for more details.
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from gestorpsi.organization.models import Organization
+from gestorpsi.phone.models import Phone, PhoneType
+from gestorpsi.address.models import Country, City, State, Address, AddressType
+from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetwork
 
 def form(request):
     user = request.user
-    return render_to_response('organization/organization_form.html', {'object': Organization.objects.get(pk= user.org_active.id) })
+    return render_to_response('organization/organization_form.html', {
+        'object': Organization.objects.get(pk= user.org_active.id),
+        'PhoneTypes': PhoneType.objects.all(), 
+        'AddressTypes': AddressType.objects.all(), 
+        'EmailTypes': EmailType.objects.all(), 
+        'IMNetworks': IMNetwork.objects.all() , 
+        })
 

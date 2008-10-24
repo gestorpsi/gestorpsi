@@ -34,19 +34,12 @@ PROFESSIONAL_AREAS = (
 
 def index(request):
     user = request.user
-    #care_professionals = CareProfessional.objects.all()
-    care_professionals = CareProfessional.objects.filter(person__organization = user.org_active.id) 
-          
-#            
-    #org_results = Person.objects.
     return render_to_response('careprofessional/careprofessional_index.html', {
-                                    'object': care_professionals,
+                                    'object': CareProfessional.objects.filter(person__organization = user.org_active.id),
                                     'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
-                                    #'identification_form': identification_form,
                                     'licenceBoardTypes': LicenceBoard.objects.all(),
                                     'AgreementTypes': Agreement.objects.all(),
-                                   # 'WorkPlacesTypes': Place.objects.all(),
-                                    'WorkPlacesTypes': Place.objects.filter(organization = user.org_active.id),  # aqui ta pegando todos os places, e eh preciso filtrar apenas para a organizacao que ta sendo usada. Mas nao consegui fazer isso =) ** ja inclui os imports de place e organization
+                                    'WorkPlacesTypes': Place.objects.filter(organization = user.org_active.id),
                                     'countries': Country.objects.all(),
                                     'PhoneTypes': PhoneType.objects.all(),
                                     'AddressTypes': AddressType.objects.all(),
@@ -137,14 +130,10 @@ def care_professional_fill(request, object):
         for ps_id in request.POST.getlist( 'professional_service' ):
             ps = Service.objects.get(pk=ps_id)
             object.prof_services.add(ps)
-    
-    object.resp_services.clear()
-    
+
     profile.initialProfessionalActivities = request.POST[ 'professional_initialActivitiesDate' ]
     profile.availableTime = request.POST['professional_availableTime']
     profile.save()
-    
-
 
     if ( len( request.POST.getlist( 'professional_agreement' ) ) ):
         profile.agreement.clear()
@@ -160,7 +149,6 @@ def care_professional_fill(request, object):
 
     object.professionalProfile= profile
 
-    #ProfessionalIdentification
     try:
         identification =  ProfessionalIdentification.objects.get(pk = object.professionalIdentification_id )
     except:
@@ -170,14 +158,9 @@ def care_professional_fill(request, object):
         identification.licenceBoard = LicenceBoard.objects.get(pk=request.POST['professional_licenceBoard'])
     except:
         identification.licenceBoard = None
-        
-        
-    
+
     identification.registerNumber = request.POST['professional_registerNumber']
     identification.save()
-
     object.professionalIdentification = identification   
-     
-    #object.comments = request.POST['comments']
 
     return object

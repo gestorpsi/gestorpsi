@@ -1,0 +1,52 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<div class="form_mini careprofessional_mini">
+<form action="/psychologist/save/" method="post">
+	<fieldset>
+	<legend>{% trans "Adding new Professional" %}</legend>
+	<label>{% trans "Name" %}<br />
+	<input type="text" name="name" class="big tabtitle" />
+	</label>
+	<label class="block">{% trans "Area" %}<br />
+	<select name="professional_area" class="medium">
+		{% for l in PROFESSIONAL_AREAS %}
+			<option value="{{ l.0 }}">{{ l.1 }}</option>
+		{% endfor %}
+	</select>
+	</label>
+	<label>{% trans "Licence" %}<br />
+	<select name="professional_licenceBoard" class="small">
+		{% for l in licenceBoardTypes %}
+		<option value="{{ l.id }}">{{ l }}</option>
+		{% endfor %}
+	</select>
+	</label>
+	<label>{% trans "Register Number" %}<br />
+		<input type="text" name="professional_registerNumber" value="{{ object.professionalIdentification.registerNumber }}" />
+	</label>
+	<label class="block">
+	<input type="submit" name="submit" value="{% trans "Add" %}" class="mini" />
+	<input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />	
+	</label>
+	</fieldset>
+</form>
+</div>
+
+
+

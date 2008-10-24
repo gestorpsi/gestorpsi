@@ -106,9 +106,10 @@ GNU General Public License for more details.
 		<legend>{% trans "Professional Services" %}</legend>
 			
 			<label>{% trans "Services" %}<br />
+			{% for sc in object.prof_services.all %} {{ sc.id }} {% endfor %}
 			<select name="professional_service" multiple="multiple" class="select multiple extrabig asm">
 				{% for l in ServiceTypes %}
-				<option value="{{ l.id }}"{% for w in services %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+				<option value="{{ l.id }}"{% for sc in object.prof_services.all %}{% ifequal sc.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
 				{% endfor %}
 			</select>
 			</label>

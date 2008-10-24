@@ -198,7 +198,7 @@ class Service(models.Model):
     name = models.CharField(max_length=80)
     description = models.CharField(max_length=100)
     keywords = models.CharField(max_length=100)
-    active= models.BooleanField(default=True)
+    active = models.BooleanField(default=True)
     area = models.ForeignKey(Area)
     service_type = models.ForeignKey(ServiceType)
     modalities = models.ManyToManyField(Modality)
@@ -213,8 +213,8 @@ class Service(models.Model):
     
     research_project = models.ForeignKey( ResearchProject, null=True )    
     organization = models.ForeignKey(Organization, null=True)
-    responsibles = models.ManyToManyField( CareProfessional, related_name="responsibles" )
-    professionals = models.ManyToManyField( CareProfessional, related_name="professionals" )
+    responsibles = models.ManyToManyField( CareProfessional, related_name="resp_services" )
+    professionals = models.ManyToManyField( CareProfessional, related_name="prof_services" )
 
     def __unicode__(self):
         return u"%s" % (self.name)

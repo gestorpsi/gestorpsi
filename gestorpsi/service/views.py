@@ -81,6 +81,11 @@ def save_clinic(request, object):
     object.save()
     return object
 
+# Follow the model
+#def save_whatever():
+#    do a lot of things here
+#    return the 'object' saved
+
 def save(request, object_id = ''):
     """
     This function view searches for the C{Service} with id equals to I{object_id}, if there is such a
@@ -98,8 +103,7 @@ def save(request, object_id = ''):
     object.name = request.POST['service_name']
     object.description = request.POST['service_description']
     object.keywords = request.POST['service_keywords']
-    object.status = request.POST['service_active']
-    
+    object.active = request.POST['service_active']
     object.area = Area.objects.get(pk=request.POST['service_area'])
     object.service_type = ServiceType.objects.get(pk=request.POST['service_type'])
 
@@ -125,10 +129,6 @@ def save(request, object_id = ''):
     for p in request.POST.getlist('service_profession'):
         object.professions.add(Profession.objects.get(pk=p))
 
-    """ Clinic Area """
-    if request.POST['service_area'] == '3':
-        object = save_clinic(request, object)
-
     """ Lista de Profissionais """
     object.professionals.clear()
     for p in request.POST.getlist('service_professionals'):
@@ -139,6 +139,10 @@ def save(request, object_id = ''):
     for p in request.POST.getlist('service_responsibles'):
         object.responsibles.add(CareProfessional.objects.get(pk=p))
 
+
+    """ Clinic Area """
+    if request.POST['service_area'] == '3':
+        object = save_clinic(request, object)
 
     return HttpResponse(object.id)
 

@@ -125,95 +125,37 @@ def care_professional_fill(request, object):
         person= Person.objects.get(pk=object.person_id)        
     except:        
         person= Person()
-       
     object.person= person_save(request, person)   
-    
-    """
-    #InstitutionType
-    instType = InstitutionType()
-    instType.description = request.POST['description']
-    instType.save()
-    
-    #PostGraduate
-    postGraduate = PostGraduate()
-    postGraduate.description = request.POST['description']
-    postGraduate.save()
-    
-    #AcademicResume
-    resume = AcademicResume()    
-    resume.teachingInstitute = request.POST['teachingInstitute']
-    
-    if(request.POST['institutionType']):
-        resume.institutionType = InstitutionType.objects.get(pk=request.POST['institutionType'])
-    else:
-        resume.institutionType = instType
-        
-    resume.course = request.POST['course']
-    resume.initialDateGraduation = request.POST['initialDateGraduation']
-    resume.finalDateGraduation = request.POST['finalDateGraduation']
-    resume.lattesResume = request.POST['lattesResume']
-    
-    if(request.POST['postGraduate']):
-        resume.postGraduate = PostGraduate.objects.get(pk=request.POST['postGraduate'])
-    else:
-        resume.postGraduate = postGraduate
-        
-    resume.initialDatePostGraduate = request.POST['initialDatePostGraduate']
-    resume.finalDatePostGraduate = request.POST['finalDatePostGraduate']
-    resume.area = request.POST['area']
-    resume.save()    
-    
-    #Profession
-    profession = Profession()
-    profession.number = request.POST['number']
-    profession.description = request.POST['description']
-    profession.save()
-    """ 
-
-    #ProfessionalProfile
+    object.save()
     try:
-        profile= ProfessionalProfile.objects.get(pk= object.professionalProfile_id )
-        print "existe perfil"        
+        profile= ProfessionalProfile.objects.get(pk= object.professionalProfile_id )        
     except:        
-        print "nao existe perfil"
         profile= ProfessionalProfile()
     
-    """
-    #Agreement
-    if(request.POST['professional_agreement']):
-        agreement = Agreement()
-        agreement.description = request.POST['professional_agreement']
-        agreement.save()
-        
-    if(request.POST['academicResume']):
-        profile.academicResume = AcademicResume.objects.get(pk=request.POST['academicResume'])
-    else:
-        profile.academicResume = resume
-        
-    if(request.POST['profession']):        
-        profile.profession = Profession.objects.get(pk=1)
-    else:
-        profile.profession = profession        
-    """
+    if ( len( request.POST.getlist( 'professional_service' ) ) ):
+        object.prof_services.clear()
+        for ps_id in request.POST.getlist( 'professional_service' ):
+            ps = Service.objects.get(pk=ps_id)
+            object.prof_services.add(ps)
+    
+    object.resp_services.clear()
     
     profile.initialProfessionalActivities = request.POST[ 'professional_initialActivitiesDate' ]
     profile.availableTime = request.POST['professional_availableTime']
     profile.save()
     
-    #profile.services = request.POST['professional_services']    
-    
+
+
     if ( len( request.POST.getlist( 'professional_agreement' ) ) ):
+        profile.agreement.clear()
         for agreemt_id in request.POST.getlist( 'professional_agreement' ):
-               #load agreement using the id retrieved from POST
                agreemt= Agreement.objects.get( pk= agreemt_id )
-               #links the recently loaded agreement
                profile.agreement.add( agreemt )
 
     if ( len(request.POST.getlist( 'professional_workplace' ) ) ):
+        profile.workplace.clear()
         for wplace_id in request.POST.getlist( 'professional_workplace' ):
-            #load the workplace
             wplace= Place.objects.get( pk= wplace_id )
-            #associate the place loaded
             profile.workplace.add( wplace )
 
     object.professionalProfile= profile

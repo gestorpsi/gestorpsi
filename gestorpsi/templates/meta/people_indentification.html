@@ -35,7 +35,7 @@ People Personal Identification Form
 <fieldset class="fieldset_personal_identification">
         <legend>{% trans "Personal Identification" %}</legend>
                 <label>{% trans "Name" %}<br />
-                <input type="text" name="name" class="big tabtitle" value="{{ object.person.name }}" id="id_name" />
+                <input type="text" name="name" class="big tabtitle" value="{{ object.person.name }}" />
                 </label>
                 <label>{% trans "Nickname" %}<br />
                 <input type="text" name="nickname" class="big" value="{% ifnotequal object.person.nickname None %}{{ object.person.nickname }}{% endifnotequal %}" id="id_nickname" />

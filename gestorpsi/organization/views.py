@@ -28,6 +28,8 @@ def form(request):
         'PhoneTypes': PhoneType.objects.all(), 
         'AddressTypes': AddressType.objects.all(), 
         'EmailTypes': EmailType.objects.all(), 
-        'IMNetworks': IMNetwork.objects.all() , 
+        'IMNetworks': IMNetwork.objects.all(),
+        'countries': Country.objects.all(),
+        'States': State.objects.all(),
         })
 

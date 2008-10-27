@@ -29,7 +29,7 @@ environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
 # install imports
 from django.contrib.contenttypes.models import ContentType
 from gestorpsi.authentication.models import CustomUser
-from gestorpsi.organization.models import Organization
+from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization, AgreementType, Agreement, AgeGroup, ProcedureProvider, Procedure
 from gestorpsi.address.models import Country, State, City, AddressType
 from gestorpsi.careprofessional.models import InstitutionType, Profession, LicenceBoard
 from gestorpsi.person.models import MaritalStatus
@@ -37,7 +37,6 @@ from gestorpsi.phone.models import PhoneType
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.place.models import RoomType, PlaceType
-from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure
 from gestorpsi.device.models import DeviceType
 from gestorpsi.service.models import Area, ServiceType, Modality, AreaClinic
 
@@ -47,11 +46,110 @@ organization.name = 'Demo'
 organization.active = True
 organization.save()
 
+
 #User
 user = CustomUser.objects.create_user('demo','demo@gestorpsi.com.br','demo')
 user.temp ='demo'
 user.organization.add(organization)
 user.save()
+
+#Organization Person Type
+o = PersonType.objects.all()
+o.delete()
+
+PersonType.objects.create(description='Pessoa Jurídica')
+PersonType.objects.create(description='Pessoa Física')
+
+#Organization UnitType
+o = UnitType.objects.all()
+o.delete()
+
+UnitType.objects.create(description='Posto de Saúde')
+UnitType.objects.create(description='Centro de Saúde/Unidade Básica de Saúde')
+UnitType.objects.create(description='Policlínica')
+UnitType.objects.create(description='Hospital Geral')
+UnitType.objects.create(description='Hospital Especializado')
+UnitType.objects.create(description='Unidade Mista')
+UnitType.objects.create(description='Pronto Socorro Geral')
+UnitType.objects.create(description='Pronto Socorro Especializado')
+UnitType.objects.create(description='Consultório Isolado')
+UnitType.objects.create(description='Unidade Móvel Fluvial')
+UnitType.objects.create(description='Clínica Especializada/Amb. Especializado')
+UnitType.objects.create(description='Unidade de Serviço de Apoio de Diagnose e Terapia')
+UnitType.objects.create(description='Unidade Móvel Terrestre')
+UnitType.objects.create(description='Unidade Móvel de Nível Pré-hospitalar na Área de Urgência e Emergência')
+UnitType.objects.create(description='Farmácia')
+UnitType.objects.create(description='Unidade de Vigilância em Saúde')
+UnitType.objects.create(description='Cooperativa')
+UnitType.objects.create(description='Centro de Parto Normal Isolado')
+UnitType.objects.create(description='Hospital/Dia - Isolado')
+UnitType.objects.create(description='Central de Regulação de Serviços de Saúde')
+UnitType.objects.create(description='Laboratório Central de Saúde Pública - LACEN')
+UnitType.objects.create(description='Secretaria de Saúde')
+
+#Organization ProvidedType
+o = ProvidedType.objects.all()
+o.delete()
+
+ProvidedType.objects.create(description='Internação')
+ProvidedType.objects.create(description='Ambulatorial')
+ProvidedType.objects.create(description='SADT')
+ProvidedType.objects.create(description='Urgência')
+ProvidedType.objects.create(description='Vigilância em Saúde ')
+ProvidedType.objects.create(description='Regulação')
+ProvidedType.objects.create(description='Outros')
+
+#Organization AdministrationEnvironment
+o = AdministrationEnvironment.objects.all()
+o.delete()
+
+AdministrationEnvironment.objects.create(description='Federal')
+AdministrationEnvironment.objects.create(description='Estadual')
+AdministrationEnvironment.objects.create(description='Municipal')
+AdministrationEnvironment.objects.create(description='Privada')
+
+#Organization Management
+o = Management.objects.all()
+o.delete()
+
+Management.objects.create(description='Municipal')
+Management.objects.create(description='Estadual')
+Management.objects.create(description='Mista')
+
+#Organization Source
+o = Source.objects.all()
+o.delete()
+
+Source.objects.create(description='Administração Direta da Saúde')
+Source.objects.create(description='Administração Direta de Outros Órgãos')
+Source.objects.create(description='Administração Indireta/ Autarquia')
+Source.objects.create(description='Administração Indireta/Fundação')
+Source.objects.create(description='Administração Indireta/ Empresa Pública')
+Source.objects.create(description='Administração Indireta/Organização Social')
+Source.objects.create(description='Empresa')
+Source.objects.create(description='Fundação Privada')
+Source.objects.create(description='Cooperativa')
+Source.objects.create(description='Serviço Social Autônomo')
+Source.objects.create(description='Entidade Beneficente sem fins lucrativos')
+Source.objects.create(description='Economia Mista')
+Source.objects.create(description='Sindicato')
+
+#Organization Dependence
+o = Dependence.objects.all()
+o.delete()
+
+Dependence.objects.create(description='Individual')
+Dependence.objects.create(description='Mantida')
+
+#Organization Activitie
+o = Activitie.objects.all()
+o.delete()
+
+Activitie.objects.create(description='Unidade Universitária')
+Activitie.objects.create(description='Unidade Escola Superior Isolada')
+Activitie.objects.create(description='Unidade Auxiliar de Ensino')
+Activitie.objects.create(description='Unidade sem Atividade de Ensino')
+
 
 
 # Countries

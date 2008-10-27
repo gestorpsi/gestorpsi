@@ -21,19 +21,18 @@ GNU General Public License for more details.
    @version: 1.0
 """
 from django.contrib import admin
-from gestorpsi.organization.models import PersonType, AdministrationType, Dependency
-from gestorpsi.organization.models import FacilityType, CareType, Management, OrganizationType
-from gestorpsi.organization.models import ResearchEducationActivities, Organization
-from gestorpsi.organization.models import Agreement, AgreementType, AgeGroup
-from gestorpsi.organization.models import ProcedureProvider, Procedure
+from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization, AgreementType, Agreement, AgeGroup, ProcedureProvider, Procedure
 
 class AgeGroupAdmin(admin.ModelAdmin):
     pass
 
-class ProcedureProviderAdmin(admin.ModelAdmin):
+class PersonTypeAdmin(admin.ModelAdmin):
     pass
 
-class ProcedureAdmin(admin.ModelAdmin):
+class UnitTypeAdmin(admin.ModelAdmin):
+    pass
+
+class AdministrationEnvironmentAdmin(admin.ModelAdmin):
     pass
 
 class AgreementAdmin(admin.ModelAdmin):
@@ -42,28 +41,28 @@ class AgreementAdmin(admin.ModelAdmin):
 class AgreementTypeAdmin(admin.ModelAdmin):
     pass
 
-class PersonTypeAdmin(admin.ModelAdmin):
+class SourceAdmin(admin.ModelAdmin):
     pass
 
-class AdministrationTypeAdmin(admin.ModelAdmin):
-    pass
-
-class DependencyAdmin(admin.ModelAdmin):
-    pass
-
-class FacilityTypeAdmin(admin.ModelAdmin):
-    pass
-
-class CareTypeAdmin(admin.ModelAdmin):
+class ProvidedTypeAdmin(admin.ModelAdmin):
     pass
 
 class ManagementAdmin(admin.ModelAdmin):
     pass
 
-class OrganizationTypeAdmin(admin.ModelAdmin):
+class DependenceAdmin(admin.ModelAdmin):
     pass
 
-class ResearchEducationActivitiesAdmin(admin.ModelAdmin):
+class ActivitieAdmin(admin.ModelAdmin):
+    pass
+
+class ManagementAdmin(admin.ModelAdmin):
+    pass
+
+class ProcedureProviderAdmin(admin.ModelAdmin):
+    pass
+
+class ProcedureAdmin(admin.ModelAdmin):
     pass
 
 class OrganizationAdmin(admin.ModelAdmin):
@@ -72,14 +71,15 @@ class OrganizationAdmin(admin.ModelAdmin):
 admin.site.register(Agreement, AgreementAdmin)
 admin.site.register(AgreementType, AgreementTypeAdmin)
 admin.site.register(PersonType, PersonTypeAdmin)
-admin.site.register(AdministrationType, AdministrationTypeAdmin)
-admin.site.register(Dependency, DependencyAdmin)
-admin.site.register(FacilityType, FacilityTypeAdmin)
-admin.site.register(CareType, CareTypeAdmin)
+admin.site.register(AdministrationEnvironment, AdministrationEnvironmentAdmin)
+admin.site.register(Source, SourceAdmin)
+admin.site.register(ProvidedType, ProvidedTypeAdmin)
 admin.site.register(Management, ManagementAdmin)
-admin.site.register(OrganizationType, OrganizationTypeAdmin)
-admin.site.register(ResearchEducationActivities, ResearchEducationActivitiesAdmin)
+admin.site.register(Dependence, DependenceAdmin)
+admin.site.register(Activitie, ActivitieAdmin)
+admin.site.register(UnitType, UnitTypeAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(AgeGroup, AgeGroupAdmin)
 admin.site.register(ProcedureProvider, ProcedureProviderAdmin)
 admin.site.register(Procedure, ProcedureAdmin)
+

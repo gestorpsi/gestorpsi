@@ -225,6 +225,11 @@ $(document).ready(function(){
         $('ul#sub_organization li a.organization').click(function() {
                 $('.main_area fieldset.organization').hide();
                 $('.main_area fieldset.organization.' + $(this).attr('display')).show();
+                if($('.main_area fieldset.organization.' + $(this).attr('display')).hasClass('comment')) {
+                        $('.main_area fieldset.comment_form').show();
+                } else {
+                        $('.main_area fieldset.comment_form').hide();
+                }
                 
         });
 	

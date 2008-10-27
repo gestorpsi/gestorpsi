@@ -28,41 +28,41 @@ class PersonType(models.Model):
     @author: Danilo S. Sanches
     @version: 1.0 
     """
-    description = models.CharField(max_length=30)
+    description = models.CharField(max_length=50)
     def __unicode__(self):
         return u"%s" % self.description
 
-class AdministrationType(models.Model):
+class UnitType(models.Model):
+    """
+    This class represents unity type  
+    @author: Fabio Martins
+    @version: 1.0 
+    """
+    description = models.CharField(max_length=255)
+    def __unicode__(self):
+        return u"%s" % self.description
+
+class AdministrationEnvironment(models.Model):
     """
     This class represents a administration type of Organization. This administration type can be (municipal, state, federal or private)  
-    @author: Danilo S. Sanches
+    @author: Fabio Martins
     @version: 1.0 
     """
     description = models.CharField(max_length=30)
     def __unicode__(self):
         return u"%s" % self.description
 
-class Dependency(models.Model):
+class Source(models.Model):
     """
     This class represents the organization situation
-    @author: Danilo S. Sanches
+    @author: Fabio Martins
     @version: 1.0 
     """
-    description = models.CharField(max_length=30)
+    description = models.CharField(max_length=255)
     def __unicode__(self):
         return u"%s" % self.description
 
-class FacilityType(models.Model):
-    """
-    This class represents facility type  
-    @author: Danilo S. Sanches
-    @version: 1.0 
-    """
-    description = models.CharField(max_length=100)
-    def __unicode__(self):
-        return u"%s" % self.description
-
-class CareType(models.Model):
+class ProvidedType(models.Model):
     """    
     This class represents a care type provided
     @author: Danilo S. Sanches
@@ -82,24 +82,23 @@ class Management(models.Model):
     def __unicode__(self):
         return u"%s" % self.description
 
-class OrganizationType(models.Model):
+class Dependence(models.Model):
     """    
-    This class represents the organization type
-    @author: Danilo S. Sanches
+    This class represents a Dependence type
+    @author: Fabio Martins
     @version: 1.0 
     """
     description = models.CharField(max_length=50)
     def __unicode__(self):
         return u"%s" % self.description
 
-### it needs more description
-class ResearchEducationActivities(models.Model):
+class Activitie(models.Model):
     """    
     This class represents the research activities from Organization.  
     @author: Danilo S. Sanches
     @version: 1.0 
     """
-    description = models.CharField(max_length=50)
+    description = models.CharField(max_length=255)
     def __unicode__(self):
         return u"%s" % self.description
 
@@ -110,27 +109,31 @@ class Organization(models.Model):
     @version: 1.0 
     """
     id= UuidField(primary_key=True)
-    name = models.CharField(max_length=100)
-    businessName = models.CharField(max_length=100, blank=True)
-    companyID = models.CharField(max_length=100, blank=True)
-    healthCompanyID = models.CharField(max_length=100, blank=True)
-    stateTaxID = models.CharField(max_length=30, blank=True)
-    cityTaxID = models.CharField(max_length=30, blank=True)
-    companyProfessionalLicense = models.CharField(max_length=100, blank=True)
-    accountableProfessional = models.CharField(max_length=100, blank=True) 
     
+    # identity
+    name = models.CharField(max_length=100)
+    trade_name = models.CharField(max_length=100, blank=True)
+    register_number = models.CharField(max_length=100, blank=True)
+    cnes = models.CharField(max_length=100, blank=True)
+    state_inscription = models.CharField(max_length=30, blank=True)
+    city_inscription = models.CharField(max_length=30, blank=True)
+    subscriptions_professional_institutional = models.CharField(max_length=100, blank=True)
+    professional_responsible = models.CharField(max_length=100, blank=True) 
+    
+    # profile
+    person_type = models.OneToOneField(PersonType, null=True, blank=True)
+    unit_type = models.OneToOneField(UnitType, null=True, blank=True)
+    environment = models.OneToOneField(AdministrationEnvironment, null=True, blank=True)
+    management = models.OneToOneField(Management, null=True, blank=True)
+    source = models.OneToOneField(Source, null=True, blank=True)
+    dependence = models.OneToOneField(Dependence, null=True, blank=True)
+    provided_type = models.ManyToManyField(ProvidedType, null=True, blank=True)
+    activity = models.OneToOneField(Activitie, null=True, blank=True)
+    
+    comment = models.CharField(max_length=765, blank=True)
+        
     active = models.BooleanField(default=True)
     icon = models.CharField(max_length=100, blank=True)          
-    
-    #Profile
-    personType = models.OneToOneField(PersonType, null=True, blank=True)
-    administrationType = models.OneToOneField(AdministrationType, null=True, blank=True)
-    dependency = models.OneToOneField(Dependency, null=True, blank=True)
-    facilityType = models.OneToOneField(FacilityType, null=True, blank=True)
-    careType = models.OneToOneField(CareType, null=True, blank=True)
-    management = models.OneToOneField(Management, null=True, blank=True)
-    organizationType = models.OneToOneField(OrganizationType, null=True, blank=True)
-    researchEducationActivities = models.OneToOneField(ResearchEducationActivities, null=True, blank=True)
     
     phones = generic.GenericRelation(Phone, null=True)
     address = generic.GenericRelation(Address, null=True)
@@ -138,12 +141,6 @@ class Organization(models.Model):
     sites = generic.GenericRelation(Site, null=True)
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True) ### it needs more description    
     organization = models.ForeignKey('self', related_name="%(class)s_related", null=True, blank=True)
-    
-    # person = models.ForeignKey(Person, null=True)
-    # sponsor = models.ForeignKey(Sponsor, null=True)    
-    # deviceDetails = models.ForeignKey(DeviceDetails, null=True)
-    # employee = models.ForeignKey(Employee, null=True)
-    # service = models.ForeignKey(Service, null=True)    
                               
     def __unicode__(self):
         return self.name

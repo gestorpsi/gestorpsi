@@ -182,6 +182,38 @@ var form_options = {
      }
 }; 
 
+
+var form_organization_options = { 
+     success: function(response, request, form) {
+          var new_title = $('#form_organization input.tabtitle').val();
+         // new title in tab
+          $(".edit_form h2.title").text(new_title); // update titles page title
+          
+          // show success alert
+          $('#msg_area').removeClass('error');
+          $('#msg_area').addClass('alert');
+          $('#msg_area').text('Register saved successfully!');
+          $('#msg_area').fadeTo(0, 1);
+          $('#msg_area').show();
+          $('#msg_area').fadeTo(2500, 0.40);
+
+          // increment padding-top for blue save box
+          $('.sidebar').css('padding-top','239px');
+      },
+     
+     error: function() {
+          // show error alert
+          $('#msg_area').removeClass('alert');
+          $('#msg_area').addClass('error');
+          $('#msg_area').text('Error saving register!');
+          $('#msg_area').fadeTo(0, 1);
+          $('#msg_area').show();
+          $('.sidebar').css('padding-top','234px');
+     }
+}; 
+
+
+
 /**
  * mini forms to quick add options
  */
@@ -331,6 +363,31 @@ function bindAjaxForms() {
           });
      });
     
+     /**
+     * 
+     * organization config form
+     * 
+     * _description:
+     * validate and post organization form.
+     * 
+     */    
+    
+     $('#form_organization').each(function() {
+          $(this).validate({event:"submit",
+          rules: {
+            name: {
+                    required: true
+            }
+          },
+          messages: {
+            name: 'Preenchimento Necessário'
+          },
+          submitHandler: function(form) {
+            $(form).ajaxSubmit(form_organization_options);
+          
+          }
+          });
+     });
     
     
     /**

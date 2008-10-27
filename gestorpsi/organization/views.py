@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
-from gestorpsi.organization.models import Organization
+from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization, AgreementType, Agreement, AgeGroup, ProcedureProvider, Procedure
 from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.address.models import Country, City, State, Address, AddressType
 from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetwork
@@ -40,21 +40,47 @@ def form(request):
         'emails': object.emails.all(),
         'websites': object.sites.all(),
         'ims': object.instantMessengers.all(),
+        'PersonType': PersonType.objects.all(),
+        'UnitType': UnitType.objects.all(),
+        'AdministrationEnvironment': AdministrationEnvironment.objects.all(),
+        'Source': Source.objects.all(),
+        'ProvidedType': ProvidedType.objects.all(),
+        'Management': Management.objects.all(),
+        'Dependence': Dependence.objects.all(),
+        'Activitie': Activitie.objects.all(),
         })
 
 def save(request):
     user = request.user
     object = get_object_or_404( Organization, pk=user.org_active.id )
     
-    #Identity
-    object.businessName = request.POST["businessName"]
-    object.name = request.POST["name"]
-    object.companyID = request.POST["cnpj"]
-    object.healthCompanyID = request.POST["cnes"]
-    object.stateTaxID = request.POST["state_inscription"]
-    object.cityTaxID = request.POST["registration_hall"]
+    #identity
+    object.name = request.POST['name']
+    object.trade_name = request.POST['trade_name']
+    object.register_number = request.POST['register_number']
+    object.cnes = request.POST['cnes']
+    object.state_inscription = request.POST['state_inscription']
+    object.city_inscription = request.POST['city_inscription']
+    object.subscriptions_professional_institutional = request.POST['subscriptions_professional_institutional']
+    object.professional_responsible = request.POST['professional_responsible']
+        
+    #profile
+    object.person_type = PersonType.objects.get(pk=request.POST['person_type'])
+    object.unit_type = UnitType.objects.get(pk=request.POST['unit_type'])
+    object.environment = AdministrationEnvironment.objects.get(pk=request.POST['environment'])
+    object.management = Management.objects.get(pk=request.POST['management'])
+    object.source = Source.objects.get(pk=request.POST['source'])
+    object.dependence = Dependence.objects.get(pk=request.POST['dependence'])
+    object.activity = Activitie.objects.get(pk=request.POST['activity'])
     
-    #Profile
+    """ provided types """
+    object.provided_type.clear()
+    for p in request.POST.getlist('provided_type'):
+        object.provided_type.add(ProvidedType.objects.get(pk=p))
+        
+    # comment
+    object.comment = request.POST['comment']
+    
     object.save()
 
     phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))

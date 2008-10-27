@@ -28,17 +28,17 @@ GNU General Public License for more details.
 <form action="/organization/save/" method="post" id="form_organization">	
 <div class="main_area">
 
-<fieldset class="identity organization first">
+<fieldset class="identity organization first comment">
         <legend>{% trans "Corporate Identity" %}</legend>
 
         <label>{% trans "Company" %}<br />
-                <input type="text" value="{{ object.businessName }}" name="businessName" class="extrabig" />
+                <input type="text" value="{{ object.name }}" name="name" class="extrabig tabtitle" />
         </label>
         <label>{% trans "Trade Name" %}<br />
-                <input type="text" value="{{ object.name }}" name="name" class="extrabig" />
+                <input type="text" value="{{ object.trade_name }}" name="trade_name" class="extrabig" />
         </label>
 	<label>{% trans "Register Number" %}<br />
-                <input type="text" value="{{ object.cnpj }}" name="cnpj" class="medium" />
+                <input type="text" value="{{ object.register_number }}" name="register_number" class="medium" />
         </label>
 	<label>{% trans "CNES Code" %}<br />
                 <input type="text" value="{{ object.cnes }}" name="cnes" class="medium" />
@@ -46,91 +46,94 @@ GNU General Public License for more details.
 	<label>{% trans "State Inscription" %}<br />
                 <input type="text" value="{{ object.state_inscription }}" name="state_inscription" class="medium" />
         </label>
-	<label>{% trans "Registration Hall" %}<br />
-                <input type="text" value="{{ object.registration_hall }}" name="registration_hall" class="medium" />
+	<label>{% trans "City Inscription" %}<br />
+                <input type="text" value="{{ object.city_inscription }}" name="city_inscription" class="medium" />
         </label>
 	<label>{% trans "Subscriptions professional Institutional" %}<br />
                 <input type="text" value="{{ object.subscriptions_professional_institutional }}" name="subscriptions_professional_institutional" class="medium" />
         </label>
-	<label>{% trans "Responsible Technicians" %}<br />
-                <input type="text" value="{{ object.responsible_technicians }}" name="responsible_technicians" class="medium" />
-        </label>
-	<label>{% trans "Comments" %}<br />
-                <textarea name="identity_comments" class="extrabig" />
-		{{ object.identity_comments }}
-		</textarea>
+	<label>{% trans "Professional Responsible" %}<br />
+                <input type="text" value="{{ object.professional_responsible }}" name="professional_responsible" class="medium" />
         </label>
 </fieldset>
 
-<fieldset class="profile organization">
+<fieldset class="profile organization comment">
         <legend>{% trans "Corporate Profile" %}</legend>
 
-        <label>{% trans "Personality" %}<br />
-                <select name="personality" class="medium">
-			<option value="">Pessoa Jurídica</option>
-			<option value="">Pessoa Física</option>
+        <label>{% trans "Person Type" %}<br />
+                <select name="person_type" class="medium">
+                        {% for o in PersonType %}
+			<option value="{{ o.id }}"{% ifequal object.person_type_id o.id %} selected{% endifequal %}>{{ o }}</option>
+			{% endfor %}
 		</select>
         </label>
 	
         <label>{% trans "Unit Type" %}<br />
-                <select name="unit" class="big">
-			<option value="">Posto de Saúde</option>
+                <select name="unit_type" class="extrabig">
+                        {% for o in UnitType %}
+			<option value="{{ o.id }}"{% ifequal object.unit_type_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                        {% endfor %}
 		</select>
         </label>		
 
 	<label>{% trans "Administrative Environment" %}<br />
                 <select name="environment" class="medium">
-			<option value="">Federal</option>
+			{% for o in AdministrationEnvironment %}
+			<option value="{{ o.id }}"{% ifequal object.environment_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                        {% endfor %}
 		</select>
         </label>
 	
-	<label>{% trans "Management" %}<br />
+	<label>{% trans "Management Type" %}<br />
                 <select name="management" class="medium">
-			<option value="">Municipal</option>
+			{% for o in Management %}
+			<option value="{{ o.id }}"{% ifequal object.management_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                        {% endfor %}
 		</select>
         </label>
 
 	<label>{% trans "Organization Source" %}<br />
                 <select name="source" class="extrabig">
-			<option value="">Administração Indireta/Organização Social</option>
+			{% for o in Source %}
+			<option value="{{ o.id }}"{% ifequal object.source_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                        {% endfor %}
 		</select>
         </label>	
 	
 	<label>{% trans "Dependence" %}<br />
                 <select name="dependence" class="medium">
-			<option value="">Individual</option>
+			{% for o in Dependence %}
+			<option value="{{ o.id }}"{% ifequal object.dependence_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                        {% endfor %}
 		</select>
         </label>
 	
         <label>{% trans "Care Provided Type" %}<br />
-	        <select name="care_provided" multiple="multiple" class="medium multiple small_fonts">
-			<option value="">Internação</option>
-			<option value="">Ambulatorial</option>
+	        <select name="provided_type" multiple="multiple" class="medium multiple small_fonts">
+			{% for o in ProvidedType %}
+			<option value="{{ o.id }}"{% for pc in object.provided_type.values_list %}{% ifequal pc.0 o.id %} selected="selected"{% endifequal %}{% endfor %}>{{ o }}</option>
+                        {% endfor %}
 		</select>
         </label>
 		
 	<label>{% trans "Education and Research Activity" %}<br />
                 <select name="activity" class="big">
-			<option value="">Unidade Escola Superior Isolada</option>
+			{% for o in Activitie %}
+			<option value="{{ o.id }}"{% ifequal object.activity_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                        {% endfor %}
 		</select>
         </label>	
-		
-	<label>{% trans "Comments" %}<br />
-                <textarea name="profile_comments" class="extrabig" />
-		{{ object.profile_comments }}
-		</textarea>
-        </label>
 </fieldset>
 
 <fieldset class="address organization set_multirow">
 	<legend>{% trans "Addresses" %}</legend>
 	{% if not addresses %}
 	    {% include "tags/address.html" %}
-    {% else %}
+	{% else %}
         {% for address in addresses %}
             {% include "tags/address.html" %}
         {% endfor %}
-    {% endif %}	
+	{% endif %}	
 	<a class="add_to_form"><span>{% trans "Add Address" %}</span></a>
 </fieldset>
 
@@ -138,7 +141,7 @@ GNU General Public License for more details.
 	<legend>{% trans "Phones" %}</legend>
 	{% if not phones %}
         {% include "tags/phone.html" %}
-    {% else %}
+	{% else %}
         {% for phone in phones %}
 	        {% include "tags/phone.html" %}
         {% endfor %}
@@ -150,30 +153,38 @@ GNU General Public License for more details.
 	<legend>{% trans "Internet" %}</legend>
 	{% if not emails %}
 	    {% include "tags/email.html" %}
-    {% else %}
+	{% else %}
         {% for email in emails %}
             {% include "tags/email.html" %}
         {% endfor %}
 	{% endif %}
 	<a class="add_to_form"><span>{% trans "Add Email" %}</span></a>
 
-    {% if not websites %}
-        {% include "tags/website.html" %}
-    {% else %}
-        {% for website in websites %}
-            {% include "tags/website.html" %}
-        {% endfor %}
-    {% endif %}	
+	{% if not websites %}
+	    {% include "tags/website.html" %}
+	{% else %}
+	    {% for website in websites %}
+		{% include "tags/website.html" %}
+	    {% endfor %}
+	{% endif %}	
 	<a class="add_to_form"><span>{% trans "Add Website" %}</span></a>
 
-    {% if not ims %}
-        {% include "tags/im.html" %}
-    {% else %}
-        {% for im in ims %}
-            {% include "tags/im.html" %}
-        {% endfor %}
-    {% endif %}
+	{% if not ims %}
+	    {% include "tags/im.html" %}
+	{% else %}
+	    {% for im in ims %}
+		{% include "tags/im.html" %}
+	    {% endfor %}
+	{% endif %}
 	<a class="add_to_form"><span>{% trans "Add IM" %}</span></a>
+</fieldset>
+
+<fieldset class="comment_form">
+	<legend>{% trans "Comments" %}</legend>
+	<label>{% trans "Comments" %}<br />
+                <textarea name="comment" class="extrabig">{{ object.comment }}</textarea>
+        </label>
+	
 </fieldset>
 
 <br />	

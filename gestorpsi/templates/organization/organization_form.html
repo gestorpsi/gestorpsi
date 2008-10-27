@@ -32,7 +32,7 @@ GNU General Public License for more details.
         <legend>{% trans "Corporate Identity" %}</legend>
 
         <label>{% trans "Company" %}<br />
-                <input type="text" value="{{ object.business_name }}" name="businessName" class="extrabig" />
+                <input type="text" value="{{ object.businessName }}" name="businessName" class="extrabig" />
         </label>
         <label>{% trans "Trade Name" %}<br />
                 <input type="text" value="{{ object.name }}" name="name" class="extrabig" />
@@ -124,23 +124,55 @@ GNU General Public License for more details.
 
 <fieldset class="address organization set_multirow">
 	<legend>{% trans "Addresses" %}</legend>
-	{% include "tags/address.html" %}
+	{% if not addresses %}
+	    {% include "tags/address.html" %}
+    {% else %}
+        {% for address in addresses %}
+            {% include "tags/address.html" %}
+        {% endfor %}
+    {% endif %}	
 	<a class="add_to_form"><span>{% trans "Add Address" %}</span></a>
 </fieldset>
 
 <fieldset class="phone organization">
 	<legend>{% trans "Phones" %}</legend>
-	{% include "tags/phone.html" %}
+	{% if not phones %}
+        {% include "tags/phone.html" %}
+    {% else %}
+        {% for phone in phones %}
+	        {% include "tags/phone.html" %}
+        {% endfor %}
+	{% endif %}
 	<a class="add_to_form"><span>{% trans "Add Phone" %}</span></a>
 </fieldset>
 
 <fieldset class="internet organization">
 	<legend>{% trans "Internet" %}</legend>
-	{% include "tags/email.html" %}
+	{% if not emails %}
+	    {% include "tags/email.html" %}
+    {% else %}
+        {% for email in emails %}
+            {% include "tags/email.html" %}
+        {% endfor %}
+	{% endif %}
 	<a class="add_to_form"><span>{% trans "Add Email" %}</span></a>
-	{% include "tags/website.html" %}
+
+    {% if not websites %}
+        {% include "tags/website.html" %}
+    {% else %}
+        {% for website in websites %}
+            {% include "tags/website.html" %}
+        {% endfor %}
+    {% endif %}	
 	<a class="add_to_form"><span>{% trans "Add Website" %}</span></a>
-	{% include "tags/im.html" %}
+
+    {% if not ims %}
+        {% include "tags/im.html" %}
+    {% else %}
+        {% for im in ims %}
+            {% include "tags/im.html" %}
+        {% endfor %}
+    {% endif %}
 	<a class="add_to_form"><span>{% trans "Add IM" %}</span></a>
 </fieldset>
 

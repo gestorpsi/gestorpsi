@@ -50,7 +50,7 @@ def index(request):
                                     'States': State.objects.all(),
                                     'MaritalStatusTypes': MaritalStatus.objects.all(),
                                     'PlaceTypes': PlaceType.objects.all(),
-                                    'ServiceTypes': Service.objects.all(),
+                                    'ServiceTypes': Service.objects.filter( active=True, organization=user.org_active ), #Service.objects.all(),
                                     })
   
 
@@ -103,7 +103,7 @@ def form(request, object_id=''):
                                     'PlaceTypes': PlaceType.objects.all(),
                                     'workplaces': workplaces,
                                     'agreements': agreements,
-                                    'ServiceTypes': Service.objects.all(),
+                                    'ServiceTypes': Service.objects.filter( active=True, organization=user.org_active ), #Service.objects.all(),
                                     })
 
 def care_professional_fill(request, object):

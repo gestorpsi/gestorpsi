@@ -42,9 +42,9 @@ def form(request):
         'ims': object.instantMessengers.all(),
         })
 
-def save(request, object_id):
+def save(request):
     user = request.user
-    object = get_object_or_404( Organization, pk=object_id )
+    object = get_object_or_404( Organization, pk=user.org_active.id )
     
     #Identity
     object.businessName = request.POST["businessName"]
@@ -66,6 +66,5 @@ def save(request, object_id):
                  request.POST.getlist('addressNumber'), request.POST.getlist('neighborhood'),
                  request.POST.getlist('zipCode'), request.POST.getlist('addressType'),
                  request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
-                 request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))    
-
-    return HttpResponse(object_id)
+                 request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))
+    return HttpResponse(object.id)

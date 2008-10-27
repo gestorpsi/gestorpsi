@@ -30,9 +30,6 @@ class PersonType(models.Model):
     """
     description = models.CharField(max_length=30)
     def __unicode__(self):
-        """
-        returns a representation of this person type as an unicode  C{string}.
-        """
         return u"%s" % self.description
 
 class AdministrationType(models.Model):
@@ -43,9 +40,6 @@ class AdministrationType(models.Model):
     """
     description = models.CharField(max_length=30)
     def __unicode__(self):
-        """
-        returns a representation of this administration type as an unicode  C{string}.
-        """
         return u"%s" % self.description
 
 class Dependency(models.Model):
@@ -56,9 +50,6 @@ class Dependency(models.Model):
     """
     description = models.CharField(max_length=30)
     def __unicode__(self):
-        """
-        returns a representation of this dependency as an unicode  C{string}.
-        """
         return u"%s" % self.description
 
 class FacilityType(models.Model):
@@ -69,9 +60,6 @@ class FacilityType(models.Model):
     """
     description = models.CharField(max_length=100)
     def __unicode__(self):
-        """
-        returns a representation of this facility type as an unicode  C{string}.
-        """
         return u"%s" % self.description
 
 class CareType(models.Model):
@@ -82,9 +70,6 @@ class CareType(models.Model):
     """
     description = models.CharField(max_length=50)
     def __unicode__(self):
-        """
-        returns a representation of this care type as an unicode  C{string}.
-        """
         return u"%s" % self.description
 
 class Management(models.Model):
@@ -95,9 +80,6 @@ class Management(models.Model):
     """
     description = models.CharField(max_length=50)
     def __unicode__(self):
-        """
-        returns a representation of this management as an unicode  C{string}.
-        """
         return u"%s" % self.description
 
 class OrganizationType(models.Model):
@@ -108,9 +90,6 @@ class OrganizationType(models.Model):
     """
     description = models.CharField(max_length=50)
     def __unicode__(self):
-        """
-        returns a representation of this  organization type as an unicode  C{string}.
-        """
         return u"%s" % self.description
 
 ### it needs more description
@@ -122,9 +101,6 @@ class ResearchEducationActivities(models.Model):
     """
     description = models.CharField(max_length=50)
     def __unicode__(self):
-        """
-        returns a representation of this research activities as an unicode  C{string}.
-        """
         return u"%s" % self.description
 
 class Organization(models.Model):
@@ -170,9 +146,6 @@ class Organization(models.Model):
     # service = models.ForeignKey(Service, null=True)    
                               
     def __unicode__(self):
-        """
-        returns a representation of this  organization as an unicode  C{string}.
-        """
         return self.name
 
 class AgreementType(models.Model):
@@ -193,9 +166,6 @@ class Agreement(models.Model):
     """
     description = models.CharField(max_length=50, null=True)
     def __unicode__(self):
-        """
-        returns a representation of this Agreement as an unicode  C{string}.
-        """
         return u"%s" % self.description
 
 class AgeGroup(models.Model):
@@ -211,9 +181,6 @@ class AgeGroup(models.Model):
     label= models.CharField( max_length= 30, null= False )
     
     def __unicode__(self):
-        """
-        Returns a representation of this age group
-        """
         return u"%s (%i-%i)" % ( self.label, self.minimum_age_endpoint, self.maximum_age_endpoint )
     class Meta:
         ordering = ['minimum_age_endpoint']    
@@ -236,96 +203,4 @@ class Procedure(models.Model):
     procedure= models.ForeignKey( ProcedureProvider )
 
     def __unicode__(self):
-        """
-        Returns a representation of this procedure 
-        """
         return u"code: %s, description: %s" % (self.procedure_code, self.description)
-
-"""
-from gestorpsi.organization.models import PersonType, AdministrationType, Dependency, FacilityType, CareType, Management, OrganizationType, ResearchEducationActivities, Organization
-person_type= PersonType( description= 'person type test' )
-person_type.save()
-
-##AdministrationType
-
-admin_type= AdministrationType( description= ' administration type test' )
-admin_type.save()
-
-##Dependency
-dependency= Dependency( description= 'dependency test' )
-dependency.save()
-
-##FacilityType
-facility_type= FacilityType( description= 'facility type test')
-facility_type.save()
-
-##CareType
-care_type= CareType( description= 'care type test' )
-care_type.save()
-
-##Management
-management= Management(description= 'management test' )
-management.save()
-
-##OrganizationType
-organization_type= OrganizationType( description= 'organization type test')
-organization_type.save()
-
-##ResearchEducationActivities
-research_education_activities= ResearchEducationActivities( description= 'research education activities test')
-research_education_activities.save()
-
-
-##Organization
-organization= Organization()
-organization.name= 'organization test'
-organization.bussinessName= 'business name test'
-organization.companyID= 9
-organization.healthCompanyID= 9
-organization.stateTaxID= 9
-organization.cityTaxID= 9
-organization.companyProfessionalLicense= 'XsDF'
-organization.accountableProfessional= 'XsDF'
-organization.email= 'organization@test.com.br'
-organization.site= 'www.gestorpsi.com.br'
-organization.active= True
-organization.icon= 'www.google.com.br'
-organization.personType= person_type
-organization.administrationType= admin_type
-organization.dependency= dependency
-organization.facilityType= facility_type
-organization.careType= care_type
-organization.management= management ### it needs more description
-organization.organizationType= organization_type
-organization.researchEducationActivities= research_education_activities
-
-organization.save()
-
-from gestorpsi.address.models import AddressType, Address, City
-from gestorpsi.phone.models import Phone, PhoneType
-
-addressType=AddressType(description='Home')
-addressType.save()
-address = Address()
-address.addressPrefix= 'Rua'
-address.addressLine1= 'Rui Barbosa, 1234'
-address.addressLine2= 'Anexo II - Sala 4'
-address.neighborhood= 'Centro'
-address.zipCode= '12345-123'
-address.addressType= addressType
-address.city= City.objects.get(pk=44085)
-address.content_object= organization
-address.save()
-
-phoneType= PhoneType( description='Home' )
-phoneType.save()
-phone = Phone(area='16', phoneNumber='33643223', ext='ttt', phoneType=phoneType)
-phone.content_object = organization
-phone.save()
-
-
-address.save()
-phone.save()
-
-organization.save()
-"""

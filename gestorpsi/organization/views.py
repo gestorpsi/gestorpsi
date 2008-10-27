@@ -26,19 +26,36 @@ from gestorpsi.internet.views import email_save, site_save, im_save
 
 def form(request):
     user = request.user
+    object = get_object_or_404( Organization, pk=user.org_active.id )
     return render_to_response('organization/organization_form.html', {
-        'object': Organization.objects.get(pk= user.org_active.id),
+        'object': object, #Organization.objects.get(pk= user.org_active.id),
         'PhoneTypes': PhoneType.objects.all(), 
         'AddressTypes': AddressType.objects.all(), 
         'EmailTypes': EmailType.objects.all(), 
         'IMNetworks': IMNetwork.objects.all(),
         'countries': Country.objects.all(),
         'States': State.objects.all(),
+        'phones': object.phones.all(),
+        'addresses': object.address.all(),
+        'emails': object.emails.all(),
+        'websites': object.sites.all(),
+        'ims': object.instantMessengers.all(),
         })
 
 def save(request, object_id):
     user = request.user
     object = get_object_or_404( Organization, pk=object_id )
+    
+    #Identity
+    object.businessName = request.POST["businessName"]
+    object.name = request.POST["name"]
+    object.companyID = request.POST["cnpj"]
+    object.healthCompanyID = request.POST["cnes"]
+    object.stateTaxID = request.POST["state_inscription"]
+    object.cityTaxID = request.POST["registration_hall"]
+    
+    #Profile
+    object.save()
 
     phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
     email_save(object, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
@@ -51,10 +68,4 @@ def save(request, object_id):
                  request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
                  request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))    
 
-    return HttpResponse("Clinica: (%s) %s" % (object_id, object))
-
-
-
-
-
-
+    return HttpResponse(object_id)

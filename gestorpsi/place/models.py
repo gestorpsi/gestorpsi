@@ -26,21 +26,15 @@ from gestorpsi.util import audittrail
 class PlaceType( models.Model ):
     """
     This class represents place types.
-    @author: Vinicius H. S. Durelli
     @version: 1.0
     """
     description= models.CharField( max_length= 100 )
-    
     def __unicode__(self):
-        """
-        Returns a representation of this place type as an unicode C{string}.
-        """
         return "%s" % self.description
 
 class Place( models.Model ):
     """
     This class represents a place.
-    @author: Vinicius H. S. Durelli
     @version: 1.0
     """
     id = UuidField(primary_key=True)
@@ -50,13 +44,9 @@ class Place( models.Model ):
     phones= generic.GenericRelation( Phone )
     place_type= models.ForeignKey( PlaceType )
     organization = models.ForeignKey(Organization, null= True, blank= True)
-    
     history= audittrail.AuditTrail()
-
+    
     def __unicode__(self):
-       """
-       Returns a representation of this place as an unicode C{string}.
-       """
        return "%s" % self.label
    
     def get_first_phone(self):
@@ -67,29 +57,22 @@ class Place( models.Model ):
     
     class Meta:
         ordering = ['label']
-        
 
 class RoomType( models.Model ):
    """
    This class contains information on room types, thus instances of this class can be used to
    handle information related to room types.
-   @author: Vinicius H. S. Durelli
    @version: 1.0
    """
    description= models.CharField( max_length= 45, unique= True )
-   
-   """
-   Returns a representation of this room type as an unicode C{string}.
-   """
+
    def __unicode__(self):
       return "%s" % self.description
-
 
 class Room( models.Model ):
    """
    This class represents a room, it also holds information on the furniture that belongs to
    the underlying room and its dimension.
-   @author: Vinicius H. S. Durelli
    @version: 1.0
    """
    id = UuidField(primary_key=True)
@@ -100,9 +83,7 @@ class Room( models.Model ):
    furniture= models.TextField()
    class Meta:
        ordering = ['description']
-   """
-   Returns a representation of this room as an unicode C{string}.
-   """
+
    def __unicode__(self):
       return "%s" % self.description
   
@@ -114,11 +95,3 @@ class Room( models.Model ):
          return 0
       else:
          return 1
-
-class RoomForm(ModelForm):
-   class Meta:
-      model= Room
-
-class PlaceForm(ModelForm):
-   class Meta:
-       model= Place

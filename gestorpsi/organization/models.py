@@ -133,7 +133,8 @@ class Organization(models.Model):
     comment = models.CharField(max_length=765, blank=True)
         
     active = models.BooleanField(default=True)
-    icon = models.CharField(max_length=100, blank=True)          
+    
+    photo = models.CharField(max_length=200, blank=True)          
     
     phones = generic.GenericRelation(Phone, null=True)
     address = generic.GenericRelation(Address, null=True)

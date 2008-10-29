@@ -28,15 +28,26 @@ GNU General Public License for more details.
 <form action="/organization/save/" method="post" id="form_organization">	
 <div class="main_area">
 
-<fieldset class="identity organization first comment">
+<div class="photo">
+        <img class="img_people" src="{% if object.photo %}/media/img/organization/{{ object.photo }}{% else %}/media/img/male_generic_photo.gif.png{% endif %}" />
+        <a class="clips notajax">{% trans "Logo" %}</a>
+        <input type="hidden" name="photo" value="{{ object.photo }}" class="photo" />
+        <a class="notajax delete" title="delete" onclick="$(this).siblings('input.photo').val(''); $(this).siblings('img.img_people').attr('src', '/media/img/male_generic_photo.gif.png');"><span>{% trans "Delete" %}</span></a>
+</div> 
+
+
+<fieldset class="identity organization first comment fieldset_personal_identification">
         <legend>{% trans "Corporate Identity" %}</legend>
 
         <label>{% trans "Company" %}<br />
-                <input type="text" value="{{ object.name }}" name="name" class="extrabig tabtitle" />
+                <input type="text" value="{{ object.name }}" name="name" class="big tabtitle" />
         </label>
         <label>{% trans "Trade Name" %}<br />
-                <input type="text" value="{{ object.trade_name }}" name="trade_name" class="extrabig" />
+                <input type="text" value="{{ object.trade_name }}" name="trade_name" class="big" />
         </label>
+</fieldset>
+<fieldset class="identity organization first comment">
+	<legend>{% trans "Additional Identities" %}</legend>
 	<label>{% trans "Register Number" %}<br />
                 <input type="text" value="{{ object.register_number }}" name="register_number" class="medium" />
         </label>

@@ -63,6 +63,7 @@ def save(request):
     object.city_inscription = request.POST['city_inscription']
     object.subscriptions_professional_institutional = request.POST['subscriptions_professional_institutional']
     object.professional_responsible = request.POST['professional_responsible']
+    object.photo = request.POST['photo']
         
     #profile
     object.person_type = PersonType.objects.get(pk=request.POST['person_type'])

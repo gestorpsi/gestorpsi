@@ -17,7 +17,7 @@ GNU General Public License for more details.
 {% load i18n %}
 
 <div class="photo">
-        <img class="img_people" src="{% if object.person.photo %}{{ object.person.photo }}{% else %}/media/img/male_generic_photo.gif.png{% endif %}" />
+        <img class="img_people" src="{% if object.person.photo %}/media/img/organization/{{ object.person.photo }}{% else %}/media/img/male_generic_photo.gif.png{% endif %}" />
         <a class="male notajax gender{% ifequal object.person.gender '2' %} active{% endifequal %}" value="2"><span>{% trans "Male" %}</span></a>
         <a class="female notajax gender{% ifequal object.person.gender '1' %} active{% endifequal %}" value="1"><span>{% trans "Female" %}</span></a>
 

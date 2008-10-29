@@ -43,12 +43,18 @@ def email_delete(ids, emails):
         if (not len(emails[i]) and len(ids[i])):
             Email.objects.get(pk=ids[i]).delete()
 
+#def email_save(object, ids, emails, emails_type):
+#    email_delete(ids, emails)
+#    for email in email_list(ids, emails, emails_type):
+#        if not is_equal_email(email):
+#            email.content_object = object
+#            email.save()
+
 def email_save(object, ids, emails, emails_type):
-    email_delete(ids, emails)
+    object.email.all().delete()
     for email in email_list(ids, emails, emails_type):
-        if not is_equal_email(email):
-            email.content_object = object
-            email.save()
+        email.content_object = object
+        email.save()
 
 """ ************** Site section ************** """
 def is_equal_site(site):
@@ -73,13 +79,19 @@ def site_delete(ids, sites):
         if (not len(sites[i]) and len(ids[i])):
             Site.objects.get(pk=ids[i]).delete()
 
-def site_save(object, ids, descriptions, sites):
-    site_delete(ids, sites)
-    for site in site_list(ids, descriptions, sites):
-        if not is_equal_site(site):
-            site.content_object = object
-            site.save()
+#def site_save(object, ids, descriptions, sites):
+#    site_delete(ids, sites)
+#    for site in site_list(ids, descriptions, sites):
+#        if not is_equal_site(site):
+#            site.content_object = object
+#            site.save()
 
+def site_save(object, ids, descriptions, sites):
+    object.site.all().delete()
+    for site in site_list(ids, descriptions, sites):
+        site.content_object = object
+        site.save()
+            
 """ ************** Instant Messenger section ************** """
 def is_equal_im(im):
     try:
@@ -107,9 +119,15 @@ def im_delete(ids, identities):
         if (not len(identities[i]) and len(ids[i])):
             InstantMessenger.objects.get(pk=ids[i]).delete()
 
+#def im_save(object, ids, identities, networks):
+#    im_delete(ids, identities)
+#    for im in im_list(ids, identities, networks):
+#        if not is_equal_im(im):
+#            im.content_object = object
+#            im.save()
+
 def im_save(object, ids, identities, networks):
-    im_delete(ids, identities)
+    object.im.all().delete()
     for im in im_list(ids, identities, networks):
-        if not is_equal_im(im):
-            im.content_object = object
-            im.save()
+        im.content_object = object
+        im.save()

@@ -41,6 +41,7 @@ from gestorpsi.device.models import DeviceType
 from gestorpsi.service.models import Area, ServiceType, Modality, AreaClinic
 
 ##Organization
+print "Installing Organization"
 organization = Organization()
 organization.name = 'Demo'
 organization.active = True
@@ -150,9 +151,8 @@ Activitie.objects.create(description='Unidade Escola Superior Isolada')
 Activitie.objects.create(description='Unidade Auxiliar de Ensino')
 Activitie.objects.create(description='Unidade sem Atividade de Ensino')
 
-
-
 # Countries
+print "Installing Countries"
 o = Country.objects.all()
 o.delete()
 
@@ -433,6 +433,8 @@ Country.objects.create(id=274, name='Zimbabwe', nationality='Zimbabwean')
 Country.objects.create(id=275, name='Palestinian Territory, Occupied', nationality='Palestinian Territory, Occupied')
 
 # States
+print "Installing States"
+
 o = State.objects.all()
 o.delete()
 
@@ -465,6 +467,7 @@ State.objects.create(id=10, name='Amapá', shortName='AP', country=Country.objec
 State.objects.create(id=12, name='Goiás', shortName='GO', country=Country.objects.get(pk=33))
 
 # Cities
+print "Installing Cities"
 o = City.objects.all()
 o.delete()
 
@@ -5976,6 +5979,7 @@ City.objects.create(ibge_code=5215306, name='ORIZONA', state=State.objects.get(p
 
 
 # Address Type
+print "Installing Addresses Types"
 
 o = AddressType.objects.all()
 o.delete()
@@ -5986,7 +5990,7 @@ AddressType.objects.create(description='Mail')
 AddressType.objects.create(description='Temporary')
 
 # CareProfessional Institution Type
-
+print "Installing Care Professional"
 o = InstitutionType.objects.all()
 o.delete()
 
@@ -5997,7 +6001,7 @@ InstitutionType.objects.create(description='Private - With-profit')
 InstitutionType.objects.create(description='Private - Nonprofit')
 
 # Profession
-
+print "Installing Professions"
 o = Profession.objects.all()
 o.delete()
 
@@ -6014,14 +6018,14 @@ Profession.objects.create(number='2515', description='Psychologist')
 Profession.objects.create(number='2236-20', description='Occupational therapist')
 
 # Care Professional Licence Board
-
+print "Installing LicenceBoards"
 o = LicenceBoard.objects.all()
 o.delete()
 
 LicenceBoard.objects.create(name='CRP', description='Conselho Regional de Psicologia')
 
 # Marital Status
-
+print "Installing Marital Status"
 o = MaritalStatus.objects.all()
 o.delete()
 
@@ -6033,7 +6037,7 @@ MaritalStatus.objects.create(description='Widow')
 MaritalStatus.objects.create(description='Union stable')
 
 # Phone Type
-
+print "Installing Phone Types"
 o = PhoneType.objects.all()
 o.delete()
 
@@ -6044,7 +6048,7 @@ PhoneType.objects.create(description='Mobile')
 PhoneType.objects.create(description='Scrap')
 
 # Email Type
-
+print "Installing Email Type"
 o = EmailType.objects.all()
 o.delete()
 
@@ -6052,7 +6056,7 @@ EmailType.objects.create(description='Personal')
 EmailType.objects.create(description='Commercial')
 
 # Instant Messengers Networks
-
+print "Installing Instant Messengers Networks Types"
 o = IMNetwork.objects.all()
 o.delete()
 
@@ -6065,7 +6069,7 @@ IMNetwork.objects.create(description='Jabber')
 IMNetwork.objects.create(description='IRC')
 
 # Document Types
-
+print "Installing Document Types"
 o = TypeDocument.objects.all()
 o.delete()
 
@@ -6074,7 +6078,7 @@ TypeDocument.objects.create(description='CPF')
 TypeDocument.objects.create(description='Passport')
 
 # Issuers
-
+print "Installing Issuers"
 o = Issuer.objects.all()
 o.delete()
 
@@ -6109,7 +6113,7 @@ Issuer.objects.create(id=81, description='Outros Emissores')
 Issuer.objects.create(id=82, description='Documento Estrangeiro')
 
 # Room Types
-
+print "Installing Room Types"
 o = RoomType.objects.all()
 o.delete()
 
@@ -6121,7 +6125,7 @@ RoomType.objects.create(description='Wait')
 RoomType.objects.create(description='Trainees')
 
 # Place Types
-
+print "Installing Place Types"
 o = PlaceType.objects.all()
 o.delete()
 
@@ -6150,7 +6154,7 @@ PlaceType.objects.create(id=68, description='Secretary of Health')
 
 
 # Agreements
-
+print "Installing Agreements"
 o = Agreement.objects.all()
 o.delete()
 
@@ -6162,7 +6166,7 @@ Agreement.objects.create(description='Plano de Saúde Público')
 Agreement.objects.create(description='Plano de Saúde Privado')
 
 # Organization Age Group
-
+print "Installing Age Groups"
 o = AgeGroup.objects.all()
 o.delete()
 
@@ -6173,7 +6177,7 @@ AgeGroup.objects.create(minimum_age_endpoint='60', maximum_age_endpoint='110', l
 
 
 # Service ALL Available Modalities
-
+print "Installing Services"
 o = Modality.objects.all()
 o.delete()
 
@@ -6183,7 +6187,7 @@ Modality.objects.create(name='Family')
 Modality.objects.create(name='Group')
 
 # Service Areas
-
+print "Installing Service Areas"
 o = Area.objects.all()
 o.delete()
 
@@ -6209,7 +6213,7 @@ Area.objects.create(title='Transit', content_type = ContentType.objects.get(mode
 
 
 # Area Clinic Modalities
-
+print "Installing Areas"
 am = Area.objects.get(content_type = ContentType.objects.get(model__startswith='areaclinic'))
 am.modality.add(1, 2, 3, 4) #single, couple, family, group
 
@@ -6251,7 +6255,7 @@ ServiceType.objects.create(name='Diagnosis', area=Area.objects.get(pk=14))
 ServiceType.objects.create(name='Intervention Program', area=Area.objects.get(pk=14))
 
 # Procedures Providers
-
+print "Installing Procedures Providers"
 ProcedureProvider.objects.create(name='SUS')
 ProcedureProvider.objects.create(name='CFP')
 ProcedureProvider.objects.create(name='GestorPsi')

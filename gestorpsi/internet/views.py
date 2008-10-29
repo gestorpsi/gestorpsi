@@ -51,7 +51,7 @@ def email_delete(ids, emails):
 #            email.save()
 
 def email_save(object, ids, emails, emails_type):
-    object.email.all().delete()
+    object.emails.all().delete()
     for email in email_list(ids, emails, emails_type):
         email.content_object = object
         email.save()
@@ -87,7 +87,7 @@ def site_delete(ids, sites):
 #            site.save()
 
 def site_save(object, ids, descriptions, sites):
-    object.site.all().delete()
+    object.sites.all().delete()
     for site in site_list(ids, descriptions, sites):
         site.content_object = object
         site.save()
@@ -127,7 +127,7 @@ def im_delete(ids, identities):
 #            im.save()
 
 def im_save(object, ids, identities, networks):
-    object.im.all().delete()
+    object.instantMessengers.all().delete()
     for im in im_list(ids, identities, networks):
         im.content_object = object
         im.save()

@@ -56,12 +56,18 @@ def address_delete(ids, addressLines1):
             Address.objects.get(pk=ids[i]).delete()
 
 # Save address
+#def address_save(object, ids, addressPrefixs, addressLines1, addressLines2, addressNumbers, neighborhoods, zipCodes, addressTypes, city_ids, country_ids, stateChars, cityChars):
+#    address_delete(ids, addressLines1)
+#    for address in address_list(ids, addressPrefixs, addressLines1, addressLines2, addressNumbers, neighborhoods, zipCodes, addressTypes, city_ids, country_ids, stateChars, cityChars):
+#        if not is_equal(address):
+#            address.content_object = object
+#            address.save()
+
 def address_save(object, ids, addressPrefixs, addressLines1, addressLines2, addressNumbers, neighborhoods, zipCodes, addressTypes, city_ids, country_ids, stateChars, cityChars):
-    address_delete(ids, addressLines1)
+    object.address.all().delete()
     for address in address_list(ids, addressPrefixs, addressLines1, addressLines2, addressNumbers, neighborhoods, zipCodes, addressTypes, city_ids, country_ids, stateChars, cityChars):
-        if not is_equal(address):
-            address.content_object = object
-            address.save()
+        address.content_object = object
+        address.save()
 
 # search a city by name via Ajax
 def search_city(request, city_name):

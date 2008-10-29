@@ -27,6 +27,7 @@ from os import environ
 environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
 
 # install imports
+import os
 from django.contrib.contenttypes.models import ContentType
 from gestorpsi.authentication.models import CustomUser
 from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization, AgreementType, Agreement, AgeGroup, ProcedureProvider, Procedure
@@ -39,6 +40,10 @@ from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.place.models import RoomType, PlaceType
 from gestorpsi.device.models import DeviceType
 from gestorpsi.service.models import Area, ServiceType, Modality, AreaClinic
+
+
+print "Setting Directories Permissions"
+os.chmod('%s/media/img/organization/' % (environ['PWD']), 0777)
 
 ##Organization
 print "Installing Organization"

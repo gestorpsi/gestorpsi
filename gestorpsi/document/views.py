@@ -54,9 +54,15 @@ def document_delete(ids, documents):
         if (not len(documents[i]) and len(ids[i])):
             Document.objects.get(pk=ids[i]).delete()
 
+#def document_save(object, ids, typeDocuments, documents, issuers, states):
+#    document_delete(ids, documents)
+#    for document in document_list(ids, typeDocuments, documents, issuers, states):
+#        if not is_equal(document):
+#            document.content_object = object
+#            document.save()
+
 def document_save(object, ids, typeDocuments, documents, issuers, states):
-    document_delete(ids, documents)
+    object.document.all().delete()
     for document in document_list(ids, typeDocuments, documents, issuers, states):
-        if not is_equal(document):
-            document.content_object = object
-            document.save()
+        document.content_object = object
+        document.save()

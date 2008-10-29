@@ -42,9 +42,15 @@ def phone_delete(ids, numbers):
         if (not len(numbers[i]) and len(ids[i])):
             Phone.objects.get(pk=ids[i]).delete()
 
+#def phone_save(object, ids, areas, numbers, exts, types):
+#    phone_delete(ids, numbers)
+#    for phone in phone_list(ids, areas, numbers, exts, types):
+#        if not is_equal(phone):
+#            phone.content_object = object
+#            phone.save()
+
 def phone_save(object, ids, areas, numbers, exts, types):
-    phone_delete(ids, numbers)
+    object.phones.all().delete()
     for phone in phone_list(ids, areas, numbers, exts, types):
-        if not is_equal(phone):
-            phone.content_object = object
-            phone.save()
+        phone.content_object = object
+        phone.save()

@@ -28,7 +28,7 @@ GNU General Public License for more details.
 {% endif %}
 
 
-<form action="/device/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_device">	
+<form action="/device/{% if device_details.id %}{{ device_details.id }}/{% endif %}save/" method="post" id="form_device">	
 <div class="main_area">
 <a href="" id="help">&nbsp;</a>
 
@@ -42,12 +42,13 @@ GNU General Public License for more details.
 			<label>{% trans "Type" %}<br />
 			<select name="select_device" class="select extrabig asm">
 				{% for l in object %}
-				<option value="{{ l.id }}"{% for w in object %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l.description }}</option>
+				<option value="{{ l.id }}"{% ifequal device_details.device.id l.id %} selected{% endifequal %}>{{ l.description }}</option>
 				{% endfor %}
 			</select>
 			</label>
 			<br />
-			<a class="form_mini" display="place_mini">{% trans "Add New Device" %}</a>
+			<label><a class="form_mini" display="place_mini">{% trans "Add New Device" %}</a></label>
+			
 		</fieldset>	
 	
 
@@ -81,7 +82,7 @@ GNU General Public License for more details.
      <fieldset id="fieldset_lendable_status">
 		<legend>{% trans "Lendable Status" %}</legend>
 			<label>
-			<input type="checkbox" name="visible" id="id_visible" {% if device_details.lendable %} checked{% endif %} /><label>{% trans "Lendable?" %}
+			<input type="checkbox" name="lendable" id="id_lendable" {% if device_details.lendable %} checked{% endif %} /><label>{% trans "Lendable?" %}
 			</label>
 	</fieldset>
 	
@@ -147,7 +148,7 @@ GNU General Public License for more details.
 			<!--  place  -->
 			<label>{% trans "Place" %}<br />
 			<select name="place_associated" class="medium">
-				{% for p in  places %}
+				{% for p in places %}
 				<option value="{{ p.id }}">{{ p.label }}</option>
 				{% endfor %}
 			</select>
@@ -155,8 +156,10 @@ GNU General Public License for more details.
 			<!--  room  -->
 			<label>{% trans "Room" %}<br />
 			<select name="room_associated" class="medium">
-				{% for r in  device_details.room %}
-				<option value="{{ r.id }}">{{ r }}</option>
+				{% for p in places %}
+					{% for r in p.room_set.all %}
+						<option value="{{ r.id }}">{{ r }}</option>
+					{% endfor %}
 				{% endfor %}
 			</select>		
 	</fieldset>

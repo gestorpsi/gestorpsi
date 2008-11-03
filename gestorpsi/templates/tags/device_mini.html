@@ -17,14 +17,16 @@ GNU General Public License for more details.
 {% load i18n %}
 
 <div class="form_mini place_mini">
-<form action="/device/save/" method="post">	
-
+<form action="/device/save_device/" method="post">	
+	<fieldset>
+	<legend>{% trans "Adding new Device" %}</legend>
 	<label>{% trans "Device" %}<br />
-		<input type="text" name="label" class="big tabtitle" value="" id="id_label" />
+		<input type="text" name="label" class="big tabtitle" value="" />
 	</label>
 	<label>{% trans "Save" %}<br />
 		<input type="submit" name="submit" value="{% trans "Add" %}" class="mini" />		
 	</label>
+	</fieldset>
 </form>
 </div>
 

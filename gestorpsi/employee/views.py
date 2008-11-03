@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
 from gestorpsi.employee.models import Employee
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.phone.models import Phone, PhoneType
@@ -32,16 +33,19 @@ def index(request):
     """ 
     user = request.user
     
-    return render_to_response('employee/employee_index.html', {'object': Employee.objects.filter(person__organization = user.org_active.id, active = True), 
-                                                               'countries': Country.objects.all(), 
-                                                               'PhoneTypes': PhoneType.objects.all(), 
-                                                               'AddressTypes': AddressType.objects.all(), 
-                                                               'EmailTypes': EmailType.objects.all(), 
-                                                               'IMNetworks': IMNetwork.objects.all() , 
-                                                               'TypeDocuments': TypeDocument.objects.all(), 
-                                                               'Issuers': Issuer.objects.all(), 
-                                                               'States': State.objects.all(), 
-                                                               'MaritalStatusTypes': MaritalStatus.objects.all(), })
+    return render_to_response('employee/employee_index.html',
+                            {'object': Employee.objects.filter(person__organization = user.org_active.id, active = True), 
+                            'countries': Country.objects.all(), 
+                            'PhoneTypes': PhoneType.objects.all(), 
+                            'AddressTypes': AddressType.objects.all(), 
+                            'EmailTypes': EmailType.objects.all(), 
+                            'IMNetworks': IMNetwork.objects.all() , 
+                            'TypeDocuments': TypeDocument.objects.all(), 
+                            'Issuers': Issuer.objects.all(), 
+                            'States': State.objects.all(), 
+                            'MaritalStatusTypes': MaritalStatus.objects.all(), },
+                              context_instance=RequestContext(request)
+                              )
 
 def form(request, object_id= ''):
     """
@@ -70,7 +74,10 @@ def form(request, object_id= ''):
     except:        
         object= Employee()
         
-    return render_to_response('employee/employee_form.html', {'object': object, 'emails': emails, 'websites': sites, 'ims': instantMessengers, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), 'MaritalStatusTypes': MaritalStatus.objects.all(), 'last_update': last_update })
+    return render_to_response('employee/employee_form.html',
+                              {'object': object, 'emails': emails, 'websites': sites, 'ims': instantMessengers, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), 'MaritalStatusTypes': MaritalStatus.objects.all(), 'last_update': last_update },
+                              context_instance=RequestContext(request)
+                              )
 
 def save(request, object_id= ''):
     """

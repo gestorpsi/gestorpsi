@@ -407,7 +407,8 @@ function bindAjaxForms() {
             submitHandler: function(form) {
                  var form_file_options = { 
                       success:    function(filename) {
-                         $(form).parent('div').siblings('form:first').children('div').children('div.photo').children('img.img_people').attr('src', '/media/img/organization/' + filename);
+                         var img = $(form).parent('div').siblings('form:first').children('div').children('div.photo').children('img.img_people');
+                         $(img).attr('src', '/media/img/organization/'  + $(img).attr('organization') + '/.thumb/' + filename);
                          $(form).parent('div').siblings('form:first').children('div').children('div.photo').children('input.photo').val(filename);
                       }
                  }; 

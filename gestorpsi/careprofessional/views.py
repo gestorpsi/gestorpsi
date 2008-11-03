@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, Profession, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
 from gestorpsi.organization.models import Agreement
@@ -50,8 +51,10 @@ def index(request):
                                     'States': State.objects.all(),
                                     'MaritalStatusTypes': MaritalStatus.objects.all(),
                                     'PlaceTypes': PlaceType.objects.all(),
-                                    'ServiceTypes': Service.objects.filter( active=True, organization=user.org_active ), #Service.objects.all(),
-                                    })
+                                    'ServiceTypes': Service.objects.filter( active=True, organization=user.org_active ),
+                                    },
+                                context_instance=RequestContext(request)
+                              )
   
 
 def form(request, object_id=''):
@@ -103,8 +106,10 @@ def form(request, object_id=''):
                                     'PlaceTypes': PlaceType.objects.all(),
                                     'workplaces': workplaces,
                                     'agreements': agreements,
-                                    'ServiceTypes': Service.objects.filter( active=True, organization=user.org_active ), #Service.objects.all(),
-                                    })
+                                    'ServiceTypes': Service.objects.filter( active=True, organization=user.org_active ),
+                                    },
+                              context_instance=RequestContext(request)
+                              )
 
 def care_professional_fill(request, object):
     """

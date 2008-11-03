@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
 from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization, AgreementType, Agreement, AgeGroup, ProcedureProvider, Procedure
 from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.address.models import Country, City, State, Address, AddressType
@@ -48,7 +49,8 @@ def form(request):
         'Management': Management.objects.all(),
         'Dependence': Dependence.objects.all(),
         'Activitie': Activitie.objects.all(),
-        })
+        },
+        context_instance=RequestContext(request))
 
 def save(request):
     user = request.user

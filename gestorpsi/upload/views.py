@@ -18,6 +18,8 @@ import os
 from django.http import HttpResponse  
 from gestorpsi.settings import MEDIA_ROOT
 import uuid
+import Image
+
 
 def send(request):
     if request.method == 'POST':
@@ -27,10 +29,24 @@ def send(request):
             pathdir = '%simg/organization/%s' % (MEDIA_ROOT, user.org_active.id)
             if not os.path.exists(pathdir):
                 os.mkdir(pathdir)
+                os.mkdir('%s/.thumb' % pathdir)
+                os.chmod(pathdir, 0777)
+                os.chmod('%s/.thumb' % pathdir, 0777)
             file = request.FILES['file']
             print "TIPO DO ARQUIVO: %s" % file.content_type
             filename = str(uuid.uuid4()) + '.jpg'
-            destination = open('%s/%s' % (pathdir,  filename), 'wb+')
+            destination = open('%s/%s' % (pathdir,  filename), 'w+')
             for chunk in file.chunks():
                 destination.write(chunk)
-        return HttpResponse('%s/%s' % (user.org_active.id, filename))
+            destination.close()
+
+        
+        #make thumb
+        size = int(116), int(134)
+        img = Image.open('%s/%s' % (pathdir, filename))
+        img.thumbnail(size)
+        img.save('%s/.thumb/%s' % (pathdir, filename))
+        
+        return HttpResponse('%s' % filename)
+
+

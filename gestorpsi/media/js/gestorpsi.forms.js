@@ -223,9 +223,12 @@ var form_mini_options = {
           
                // get option label
                var text = $(form).children('fieldset').children('label').children('input:text').val();
-               
+
                // add <option> to asmselect select box
                $.form_mini_link.parents('fieldset').children('label').children('select.asmSelect:first').append('<option value='+response+' disabled="disabled">'+text+'</option>');
+               
+               // add <option> to asm select box
+               $.form_mini_link.parents('fieldset').children('label').children('select.asm:first').append('<option value='+response+' selected="selected">'+text+'</option>');
                
                // add <option> to real multiselect 
                $.form_mini_link.parents('fieldset').children('label').children('select.multiple').append('<option value='+response+' selected="selected">'+text+'</option>');
@@ -703,6 +706,7 @@ function bindFormActions() {
       // quick add
       
      $('div.form_mini input.cancel').click(function() {
+          $(this).parent('label').parent('fieldset').children('label').children('input:text').val('');
           $(this).parents('div.form_mini:first').hide();
           return false;
      

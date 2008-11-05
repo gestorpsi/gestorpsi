@@ -930,8 +930,10 @@ div.photo_form_upload {
 }
 
 img.img_people {
+	/*
 	width: 116px;
 	height: 134px;
+	*/
 }
 
 fieldset legend {

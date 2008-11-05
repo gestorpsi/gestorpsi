@@ -40,12 +40,32 @@ def send(request):
                 destination.write(chunk)
             destination.close()
 
-        
-        #make thumb
-        size = int(116), int(134)
+        # thumbnail      
         img = Image.open('%s/%s' % (pathdir, filename))
-        img.thumbnail(size)
-        img.save('%s/.thumb/%s' % (pathdir, filename))
+        size = img.size
+        
+        w = float(size[0])
+        h = float(size[1])
+        
+        if h/w < 1.155172414: # width > height
+            h = float(116) * h/w
+            w = 116
+        else:
+            w = float(134) * h/w
+            h = 134
+        img.thumbnail((w,h), Image.ANTIALIAS)
+        
+        # put background
+        bg = Image.new('RGB',(116,134),(236, 236, 236)) # light bg blue
+        W, H = bg.size
+        w, h = img.size
+        xo, yo = (W-w)/2, (H-h)/2
+        
+        # merge it
+        bg.paste(img, (xo, yo, xo+w, yo+h))
+        
+        # then save it
+        bg.save('%s/.thumb/%s' % (pathdir, filename))
         
         return HttpResponse('%s' % filename)
 

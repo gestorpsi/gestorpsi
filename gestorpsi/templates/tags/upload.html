@@ -20,9 +20,10 @@ GNU General Public License for more details.
 <div class="photo_form_upload">
 	{% trans "Select a picture" %}:
 	<form action="/upload/send/" method="post" name="form_file" enctype="multipart/form-data" class="form_file">
-	<input type="file" class="file" name="file" onchange="$(this).parent('form').submit()"/>
+	<input type="file" class="file" name="file" onchange="$(this).parent('form').submit()" />
 	</form>
 	<small><a class="notajax" onclick="$(this).parents('div.photo_form_upload').hide();">{% trans "Cancel" %}</a></small>
+	<br><br><small>* {% trans "Allowed Formats: JPG, PNG, GIF" %}</small>
 </div>
 
 

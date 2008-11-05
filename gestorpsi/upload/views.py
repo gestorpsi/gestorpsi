@@ -25,6 +25,7 @@ def send(request):
     if request.method == 'POST':
         user = request.user
         print user.org_active.id
+        filename = ''
         if 'file' in request.FILES:
             pathdir = '%simg/organization/%s' % (MEDIA_ROOT, user.org_active.id)
             if not os.path.exists(pathdir):
@@ -33,40 +34,48 @@ def send(request):
                 os.chmod(pathdir, 0777)
                 os.chmod('%s/.thumb' % pathdir, 0777)
             file = request.FILES['file']
-            print "TIPO DO ARQUIVO: %s" % file.content_type
-            filename = str(uuid.uuid4()) + '.jpg'
-            destination = open('%s/%s' % (pathdir,  filename), 'w+')
-            for chunk in file.chunks():
-                destination.write(chunk)
-            destination.close()
+            try:
+                if file.content_type in ['image/jpeg', 'image/png', 'image/gif']:
+                    filename = str(uuid.uuid4()) + '.png'
+                    destination = open('%s/%s' % (pathdir,  filename), 'w+')
+                    for chunk in file.chunks():
+                        destination.write(chunk)
+                    destination.close()
+                    im = Image.open('%s/%s' % (pathdir,  filename))
+                    im.save('%s/%s' % (pathdir,  filename), "PNG")
+    
+                    # thumbnail 
+                    img = Image.open('%s/%s' % (pathdir, filename))
+                    size = img.size
+                    
+                    w = float(size[0])
+                    h = float(size[1])
+                   
+                    if h/w < 1.155172414: # width > height
+                        h = float(116) * h/w
+                        w = 116
+                    else:
+                        w = float(134) * h/w
+                        h = 134
+                    img.thumbnail((w,h), Image.ANTIALIAS)
+                    
+                    # put background
+                    bg = Image.new('RGBA',(116,134), (0,0,0,0)) # light bg blue
+                    W, H = bg.size
+                    w, h = img.size
+                    xo, yo = (W-w)/2, (H-h)/2
+                    
+                    # merge it
+                    bg.paste(img, (xo, yo, xo+w, yo+h))
+                    
+                    # then save it
+                    bg.save('%s/.thumb/%s' % (pathdir, filename), "PNG")
+                    
+            
+            except IOError:
+                print "error sending file"
 
-        # thumbnail      
-        img = Image.open('%s/%s' % (pathdir, filename))
-        size = img.size
-        
-        w = float(size[0])
-        h = float(size[1])
-        
-        if h/w < 1.155172414: # width > height
-            h = float(116) * h/w
-            w = 116
-        else:
-            w = float(134) * h/w
-            h = 134
-        img.thumbnail((w,h), Image.ANTIALIAS)
-        
-        # put background
-        bg = Image.new('RGB',(116,134),(236, 236, 236)) # light bg blue
-        W, H = bg.size
-        w, h = img.size
-        xo, yo = (W-w)/2, (H-h)/2
-        
-        # merge it
-        bg.paste(img, (xo, yo, xo+w, yo+h))
-        
-        # then save it
-        bg.save('%s/.thumb/%s' % (pathdir, filename))
-        
         return HttpResponse('%s' % filename)
+        
 
 

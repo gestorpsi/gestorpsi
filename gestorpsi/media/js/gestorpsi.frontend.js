@@ -224,6 +224,8 @@ $(document).ready(function(){
         // organization menu
         $('ul#sub_organization li a.organization').click(function() {
                 $('.main_area fieldset.organization').hide();
+				$('.main_area div.photo').hide();
+				if($(this).hasClass('first')) $('.main_area div.photo').show();
                 $('.main_area fieldset.organization.' + $(this).attr('display')).show();
                 if($('.main_area fieldset.organization.' + $(this).attr('display')).hasClass('comment')) {
                         $('.main_area fieldset.comment_form').show();

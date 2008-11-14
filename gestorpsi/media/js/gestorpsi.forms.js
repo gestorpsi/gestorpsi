@@ -650,7 +650,53 @@ function bindFormActions() {
                $(this).siblings('input.gender').val($(this).attr('value'));
           }
      });
+
+     /**
+      * 
+      * Device Restriction
+      * 
+      * _description:
+      * listen from an select change, so hide/show professional area select
+      * 
+      */
+      $('form select.device_restriction').unbind().change(function() {
+         if ($(this).val() == 1) {  // not restricted
+            $(this).parents('label').parents('fieldset').children('label.device_restriction').hide();
+         } else {
+            $(this).parents('label').parents('fieldset').children('label.device_restriction').show();
+         }
+      })
+      
+
+
+     /**
+      * 
+      * Device Mobility
+      * 
+      * _description:
+      * listen from an select change, so hide/show selects place/room.
+      * 
+      */     
+
+     $('form select.device_mobility').unbind().change(function() {
+     	if ($(this).val() == 1) { // Fixed Device
+     		//$(this).parents('label').parents('fieldset').children('label.device_place').show();
+     		$(this).parents('label').parents('fieldset').children('label.device_room').show();
+     	} else {
+     		//$(this).parents('label').parents('fieldset').children('label.device_place').hide();
+     		$(this).parents('label').parents('fieldset').children('label.device_room').hide();
+     	}
+     });
      
+     $('form select.device_place').unbind().change(function() {
+         $(this).parents('label').parents('fieldset').children('label.device_room').children('select').children('option').hide();
+         //$(this).parents('label').parents('fieldset').children('label.device_room').children('select').text('');
+         $(this).parents('label').parents('fieldset').children('label.device_room').children('select').children('option.place_'+$(this).val()).show();
+         //$(this).parents('label').parents('fieldset').children('label.device_room').children('select').children('option:first').append('<option value="" selected="selected"></option>');
+         $(this).parents('label').parents('fieldset').children('label.device_room').children('select').children('option:visible:first').attr('selected','selected');
+         //$(this).parents('label').parents('fieldset').children('label.device_room').children('option:not(.place_'+$(this).val()).hide();
+     });
+
      /** 
       * jQuery UI DatePicker
       * 

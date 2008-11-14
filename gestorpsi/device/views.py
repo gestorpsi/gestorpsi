@@ -21,7 +21,7 @@ from gestorpsi.device.models import DeviceDetails, Device, DeviceType
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, Profession, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
 from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
-from gestorpsi.place.models import Place
+from gestorpsi.place.models import Place, Room
 
 def index(request):
     """
@@ -83,7 +83,6 @@ def save_device(request):
     return HttpResponse(device.id)
 
 def save(request, object_id='' ):
-    print "entrando no save!!!!!!!!  [%s]  " % object_id
     """
     This function view creates an instance of the class C{DeviceDetails} with id equals to I{object_id} and
     uses the I{request} object to set the newly created class attributes. If there is some C{DeviceDetails}
@@ -109,12 +108,34 @@ def save(request, object_id='' ):
     except:
         device_details.lendable = False
         
-    device_details.device = get_object_or_404( Device, pk=request.POST['select_device'])
+    device_details.device = get_object_or_404(Device, pk=request.POST['select_device'])
+    
+    """ Device Durability """
+    device_details.durability = request.POST['select_durability_type']
+
+    """ Device Restriction """
+    if request.POST['select_restriction_type'] == '2':
+        device_details.prof_restriction = request.POST['professional_area']
+    else:
+        device_details.prof_restriction = ''
+
+        
+    print "ate aqui ok"
+    
+    """ Device Mobility """
+    mobility = request.POST['select_mobility_type']
+    device_details.mobility = mobility
+    try:
+        device_details.place = get_object_or_404(Place, pk=request.POST['place_associated'])
+    except:
+        device_details.place = None
+        
+    if mobility == '1':    # Fixo
+        device_details.room = get_object_or_404(Room, pk=request.POST['room_associated'])
+    else:
+        device_details.room = None
+
     device_details.save()
-
-#    device_details.room= Room.objects.get( pk= request.POST['room'] )
-#    device_details.durability= request.POST[ 'durability' ]
-
     return HttpResponse(device_details.id)
 
 def get_visible( value ):

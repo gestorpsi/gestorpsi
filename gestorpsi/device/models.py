@@ -17,7 +17,7 @@ GNU General Public License for more details.
 from django.db import models
 from django.forms import ModelForm
 from gestorpsi.organization.models import Organization
-from gestorpsi.place.models import Room
+from gestorpsi.place.models import Place, Room
 from gestorpsi.careprofessional.models import Profession
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import audittrail
@@ -92,12 +92,15 @@ class DeviceDetails(models.Model):
     brand = models.CharField( max_length=80 )
     model = models.CharField( max_length=80 )
     part_number = models.CharField( max_length=45 )
-    durability = models.CharField( max_length=1, choices=DURABILITY_TYPE )
     lendable = models.BooleanField( default=True )
-    restriction = models.ManyToManyField( Profession, null=True, blank=True)
-    room = models.ForeignKey( Room, related_name='room', null=True )
-    device = models.ForeignKey( Device, related_name='device' )
     comments = models.CharField( max_length=200 )
+    
+    durability = models.CharField( max_length=1, choices=DURABILITY_TYPE )
+    prof_restriction = models.CharField( max_length=20, blank=True)
+    mobility = models.CharField( max_length=1, choices=MOBILITY_TYPE )
+    place = models.ForeignKey(Place, null=True)
+    room = models.ForeignKey(Room, null=True)
+    device = models.ForeignKey(Device)
 
     def __unicode__(self):
       return u"%s - %s" % (self.brand, self.model)

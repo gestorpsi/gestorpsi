@@ -113,55 +113,55 @@ GNU General Public License for more details.
 	
     
     <!--  use  --> 
-    
+
     <fieldset id="fieldset_use_type">
 		<legend>{% trans "Restriction" %}</legend>
-			<label>{% trans "Type" %}<br />
-			<select name="select_restriction_type">
+		<label>{% trans "Type" %}<br />
+			<select name="select_restriction_type" class="device_restriction">
 				<option value="1">Not restrict</option>
 				<option value="2">Restrict</option>
-
 			</select>
-			</label>
-			
-			<!--  profission  -->
-			<label>{% trans "Profissional Area" %}<br />
-			<select name="professional_area" class="medium">
-				{% for l in PROFESSIONAL_AREAS %}
-					<option value="{{ l.0 }}">{{ l.1 }}</option>
-				{% endfor %}
-			</select>
+		</label>
+		
+		<!--  profission  -->
+		<label class="device_restriction">{% trans "Profissional Area" %}<br />
+		    <select name="professional_area" class="medium">
+			    {% for l in PROFESSIONAL_AREAS %}
+				    <option value="{{ l.0 }}">{{ l.1 }}</option>
+			    {% endfor %}
+		    </select>
+		</label>
 	</fieldset>
 
     <!--  mobility --> 
     
     <fieldset id="fieldset_mobility_type">
 		<legend>{% trans "Mobility" %}</legend>
-			<label>{% trans "Type" %}<br />
-			<select name="select_mobility_type">
+		<label>{% trans "Type" %}<br />
+			<select name="select_mobility_type" class="device_mobility">
 				<option value="1">Fix</option>
 				<option selected value="2">Mobile</option>
-				
 			</select>
-			</label>
-			
-			<!--  place  -->
-			<label>{% trans "Place" %}<br />
-			<select name="place_associated" class="medium">
+		</label>
+
+		<!--  place  -->
+		<label class="device_place">{% trans "Place" %}<br />
+			<select name="place_associated" class="medium device_place">
 				{% for p in places %}
-				<option value="{{ p.id }}">{{ p.label }}</option>
+					<option value="{{ p.id }}">{{ p.label }}</option>
 				{% endfor %}
 			</select>
-			
-			<!--  room  -->
-			<label>{% trans "Room" %}<br />
-			<select name="room_associated" class="medium">
+
+		<!--  room  -->
+		<label class="device_room">{% trans "Room" %}<br />
+			<select name="room_associated" class="medium device_room">
 				{% for p in places %}
 					{% for r in p.room_set.all %}
-						<option value="{{ r.id }}">{{ r }}</option>
+						<option class="place_{{ p.id }}" value="{{ r.id }}">{{ r }}</option>
 					{% endfor %}
 				{% endfor %}
-			</select>		
+			</select>
+		</label>		
 	</fieldset>
 
 

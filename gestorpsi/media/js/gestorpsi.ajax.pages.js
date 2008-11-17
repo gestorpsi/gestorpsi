@@ -222,7 +222,7 @@ $(document).unbind().ready(function(){
         });
 
 	// organization menu
-	$('.main_area fieldset.organization:not(.first)').hide();
+	$('#form_organization .main_area fieldset.organization:not(.first)').hide();
 	
 });
 

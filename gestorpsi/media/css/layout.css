@@ -287,7 +287,7 @@ div#sub_menu .active {
 #content h2.title_professional {background: url(../img/42/people-professional.png) no-repeat 20px 15px;}
 
 #content h2.title_addressbook {background: url(../img/42/office-calendar.png) no-repeat 20px 15px;}
-#content h2#title_contacts {background: url(../img/42/address-book-new.png) no-repeat 20px 15px;}
+#content h2.title_contacts {background: url(../img/42/address-book-new.png) no-repeat 20px 15px;}
 #content h2.title_myoffice {background: url(../img/42/go-home.png) no-repeat 20px 15px;}
 #content h2.title_device {background: url(../img/42/stuff.png) no-repeat 20px 15px;}
 #content h2.title_services {background: url(../img/42/services.png) no-repeat 20px 15px;}

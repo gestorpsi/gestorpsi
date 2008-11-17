@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
+<input type="hidden" id="app_name" value="contact" />
 
 <div id="list" class="fast_menu_content">
  {% include "contact/contact_list.html" %}
@@ -25,5 +26,6 @@ GNU General Public License for more details.
  {% include "contact/contact_form.html" %} 
 </div>
 
-<input type="hidden" id="already_loaded" value="True" />
+<div id="edit_form" class="fast_menu_content">
+</div>
 

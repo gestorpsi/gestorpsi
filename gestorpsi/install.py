@@ -52,12 +52,33 @@ organization.name = 'Demo'
 organization.active = True
 organization.save()
 
+organization2 = Organization()
+organization2.name = 'Demo2'
+organization2.active = True
+organization2.save()
+
+organization3 = Organization()
+organization3.name = 'Demo3'
+organization3.active = True
+organization3.save()
+
+
 
 #User
 user = CustomUser.objects.create_user('demo','demo@gestorpsi.com.br','demo')
 user.temp ='demo'
 user.organization.add(organization)
 user.save()
+
+user2 = CustomUser.objects.create_user('demo2','demo@gestorpsi.com.br','demo2')
+user2.temp ='demo2'
+user2.organization.add(organization2)
+user2.save()
+
+user3 = CustomUser.objects.create_user('demo3','demo@gestorpsi.com.br','demo3')
+user3.temp ='demo3'
+user3.organization.add(organization3)
+user3.save()
 
 #Organization Person Type
 o = PersonType.objects.all()

@@ -14,4 +14,67 @@ GNU General Public License for more details.
 
 {% endcomment %}
 
-oi
+{% load i18n %}
+{% include "core/ajax_page.html" %}
+<h2 id="title_addressbook" style="display:none"></h2>
+
+<h2 class="title_contacts title">{% trans "Adding New Contact" %}</h2>
+<p class="description">{% trans "Inform the client details then click on Save button" %}</p>
+
+</p>
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
+
+
+<form action="/contact/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="collapsable form_contact">	
+<div class="main_area">
+
+
+	
+<fieldset>
+<legend>{% trans "Contact Type" %}</legend>
+		<label>{% trans "Type" %}<br />
+		<select name="type" class="big">
+			<option value="professional">{% trans "Professional" %}</option>
+			<option value="organization">{% trans "Organization" %}</option>
+		</select>
+		</label>
+</fieldset>
+	
+<fieldset class="professional contact">
+<legend>{% trans "Professional Identification" %}</legend>
+		<label>{% trans "Name" %}<br />
+		<input type="text" name="professional_name" class="big tabtitle" value="{{ object.professional_name }}" />
+		</label>
+</fieldset>
+
+<fieldset class="organization contact" {% if not object.id %}style="display:none"{% endif %}>
+<legend>{% trans "Organization Identification" %}</legend>
+		<label>{% trans "Name" %}<br />
+		<input type="text" name="organization_name" class="big tabtitle" value="{{ object.organization_name }}" />
+		</label>
+</fieldset>
+
+{% include "meta/addressbook.html" %}
+{% include "meta/internet.html" %}
+
+<br />	
+</div>
+
+<div id="sidebar" class="sidebar">
+	<div class="bg_blue">
+		{% include "tags/save.html" %}
+	</div>
+	<div class="people_actions" {% if not object.id %}style="display:none"{% endif %}>	
+	<h3>{% trans 'Object Actions' %}</h3>
+	<ul>
+		<li><a class="admission admit" href="/client/admission/{% if object.id %}{{ object.id }}/{% endif %}">Realizar Admiss&atilde;o</a></li>
+	</ul>
+	</div>
+</div>
+
+</form>
+
+{% if object.id %}
+</div> <!-- edit_form -->
+{% endif %}

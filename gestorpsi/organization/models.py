@@ -129,6 +129,7 @@ class Organization(models.Model):
     dependence = models.OneToOneField(Dependence, null=True, blank=True)
     provided_type = models.ManyToManyField(ProvidedType, null=True, blank=True)
     activity = models.OneToOneField(Activitie, null=True, blank=True)
+    public = models.BooleanField(default=False)
     
     comment = models.CharField(max_length=765, blank=True)
         

@@ -888,6 +888,16 @@ $(document).unbind().ready(function(){
      
      
      /**
+      * contact form
+     */
+     
+     $('form.form_contact select[name=type]').change(function() {
+          $(this).parents('fieldset').siblings('.contact').hide();
+          $(this).parents('fieldset').siblings('.' + $(this).val()).show();
+     });
+     
+     
+     /**
       * select multiple plugin
       */
      

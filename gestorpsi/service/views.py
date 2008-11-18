@@ -101,7 +101,7 @@ def save(request, object_id = ''):
     object.name = request.POST['service_name']
     object.description = request.POST['service_description']
     object.keywords = request.POST['service_keywords']
-    if request.POST['service_active'] == True:
+    if request.POST['service_active'] == 'True':
         object.active = True
     else:
         object.active = False

@@ -697,27 +697,6 @@ function bindFormActions() {
          //$(this).parents('label').parents('fieldset').children('label.device_room').children('option:not(.place_'+$(this).val()).hide();
      });
 
-     /** 
-      * jQuery UI DatePicker
-      * 
-      * _description:
-      * 
-      * load Birthdate's style calendar 
-      * 
-      */
-
-     $('input.birthdate').datepicker({ dateFormat: 'yy-mm-dd', changeYear: true, yearRange: '-120:+0', duration: 'fast' });
-          
-     /** 
-      * jQuery UI DatePicker
-      * 
-      * _description:
-      * 
-      * load Care Professional
-      * 
-      */	
-
-     $('input.initialActivities').datepicker({ dateFormat: 'yy-mm', changeYear: true, yearRange: '-100:+0', duration: 'fast' });
 
      /**
      * service types and service areas

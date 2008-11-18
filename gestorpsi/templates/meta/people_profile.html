@@ -25,7 +25,7 @@ People Personal Profile Form
         <legend>{% trans "Personal Profile" %}</legend>
 
         <label>{% trans "Birthdate" %}<br />
-                <input type="text" name="birthDate" class="calendar birthdate" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate }}{% endifnotequal %}" />
+                <input type="text" class="calendar" name="birthDate" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate|date:"d/m/Y" }}{% endifnotequal %}" mask="99/99/9999" />
         </label>
         <label>{% trans "Age" %}<br />
                 <input type="text" name="age" class="extrasmall" value="{{ object.age }}" id="id_age" />

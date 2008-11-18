@@ -24,19 +24,16 @@ def person_save(request, person):
     # CHECK IF HAS CHANGES BEFORE SAVE
     person.name= request.POST['name']
     person.nickname = request.POST['nickname']
-    
-    
-    print "photo"
+
     if(request.POST['photo']):
         person.photo = request.POST['photo']
     else:
         person.photo = ''
 
-    print "birthdate"
     if(request.POST['birthDate']):
-        person.birthDate = request.POST['birthDate']
+        person.birthDate = '%s-%s-%s' % (request.POST['birthDate'].split('/')[2], request.POST['birthDate'].split('/')[1], request.POST['birthDate'].split('/')[0])
+
     person.gender = request.POST['gender']
-    
     
     # maritalStatus
     try:

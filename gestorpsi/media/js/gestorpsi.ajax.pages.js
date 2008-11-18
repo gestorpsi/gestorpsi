@@ -40,6 +40,14 @@ function bindList() {
 
 		return false;
 	});
+	
+	
+	$("ul.paginator a").unbind().click(function(){
+		var link = $(this);
+		$("div#list").load(link.attr('href'));
+		$('div#list').show();
+		return false;
+	});
 }
 
 

@@ -17,6 +17,8 @@ GNU General Public License for more details.
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from django.core.paginator import Paginator
+from django.conf import settings
 from gestorpsi.client.models import Client
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.phone.models import Phone, PhoneType
@@ -30,8 +32,12 @@ from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 # list all active clients
 def index(request):
     user = request.user
+    object = Client.objects.filter(person__organization = user.org_active.id, clientStatus = '1')
+    paginator = Paginator(object, settings.PAGE_RESULTS)
+    object = paginator.page(1)
     return render_to_response('client/client_index.html',
-                                {'object': Client.objects.filter(person__organization = user.org_active.id, clientStatus = '1'),
+                                {'object': object,
+                                 'paginator': paginator,
                                 'countries': Country.objects.all(),
                                 'PhoneTypes': PhoneType.objects.all(), 
                                 'AddressTypes': AddressType.objects.all(), 
@@ -43,6 +49,19 @@ def index(request):
                                 'MaritalStatusTypes': MaritalStatus.objects.all(), },
                               context_instance=RequestContext(request)            
                               )
+
+def list(request, page = 1):
+    user = request.user
+    object = Client.objects.filter(person__organization = user.org_active.id, clientStatus = '1')
+    paginator = Paginator(object, settings.PAGE_RESULTS)
+    object = paginator.page(page)
+    return render_to_response('client/client_list.html',
+                                {'object': object,
+                                 'paginator': paginator,
+                                },
+                              context_instance=RequestContext(request)            
+                              )
+
 
 # add or edit form
 def form(request, object_id=''):

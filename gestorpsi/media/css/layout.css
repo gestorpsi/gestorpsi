@@ -1138,3 +1138,24 @@ fieldset div {
 	clear: both !important;
 	display: block;
 }
+
+/* list paginator */
+
+ul.paginator {
+	text-align: center;
+	margin-top: 20px;
+}
+
+ul.paginator li {
+	list-style: none;
+	display: inline;
+	color: #e6e6e6;
+}
+
+ul.paginator li.previous {
+	padding-right: 10px;
+}
+
+ul.paginator li.next {
+	padding-left: 10px;
+}

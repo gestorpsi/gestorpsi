@@ -79,6 +79,13 @@ GNU General Public License for more details.
                         
                 </div>
                 <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+                <thead> 
+                        <tr> 
+                        <th></th> 
+                        <th></th> 
+                        </tr> 
+                </thead>
+                <tbody>           
                 {% for l in object.object_list %}
                 <tr id="{{ l.id }}">
         
@@ -96,6 +103,7 @@ GNU General Public License for more details.
                        </td>
                 </tr>
                 {% endfor %}
+                </tbody>
                 </table>
                 <ul class="paginator">
                         <li class="previous">{% if object.has_previous %}<a href="/client/page{{ object.previous_page_number }}"><< Anterior</a>{% endif %}</li>

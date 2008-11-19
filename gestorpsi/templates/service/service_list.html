@@ -30,25 +30,31 @@ GNU General Public License for more details.
         
         <div class="main_area contact">
                 <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-                        {% for o in object %}
-                        <tr id="{{ o.id }}">
-                
-                                <!--<td><a href="">{{ l.name }}</a></td>-->
-                                <td class="title"><a href="/service/{{ o.id }}" title="{{ o }}">{{ o }}</a><br />
-                                        <span>{{ o.description }}</span>
-                                </td>
-                                <!--
-                                <strong>[</strong><small><a href="">Delete</a></small><strong>]</strong> <br>
-                                <td>(11) 2301 0751</td>
-                                -->
-                                <td>
-                               <br> 
-                                <a href="mailto:{{l.email }}">{{l.email }}</a>
-                                </td>
-                                <!--<td class="icons">&nbsp;</td>-->
-                               
-                        </tr>
-                        {% endfor %}
+                <thead> 
+                        <tr> 
+                        <th></th> 
+                        <th></th> 
+                        </tr> 
+                </thead>
+                <tbody>  
+                {% for o in object %}
+                <tr id="{{ o.id }}">
+                        <!--<td><a href="">{{ l.name }}</a></td>-->
+                        <td class="title"><a href="/service/{{ o.id }}" title="{{ o }}">{{ o }}</a><br />
+                                <span>{{ o.description }}</span>
+                        </td>
+                        <!--
+                        <strong>[</strong><small><a href="">Delete</a></small><strong>]</strong> <br>
+                        <td>(11) 2301 0751</td>
+                        -->
+                        <td>
+                       <br> 
+                        <a href="mailto:{{l.email }}">{{l.email }}</a>
+                        </td>
+                        <!--<td class="icons">&nbsp;</td>-->
+                </tr>
+                {% endfor %}
+                </tbody>
                 </table>
         </div>
 </div>

@@ -72,7 +72,6 @@ function bindList() {
 function bindTableZebra() {
 	$('table.zebra tr:odd').addClass('zebra_0');
 	$('table.zebra tr:even').addClass('zebra_1');
-	$('#list #search_results').tablesorter({sortList: [[0,0], [1,0]]});
 }
 
 function bindAdmission() {

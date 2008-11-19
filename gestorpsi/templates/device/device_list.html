@@ -30,20 +30,26 @@ GNU General Public License for more details.
 
         <div class="main_area contact">
                 <table id="search_results" class="zebra newtab devices" border="0" cellspacing="0" cellpadding="0">
-                
-                
-                        {% for o in object %}
+                <thead> 
+                        <tr> 
+                        <th></th> 
+                        <th></th> 
+                        </tr> 
+                </thead>
+                <tbody>               
+                {% for o in object %}
                         <tr>
                                 <td class="item" display="device_{{ o.id }}">{{ o.description }}  </a></td>
+                                <td></td>
                         </tr>
-                                {% for dev_det in o.get_all_device_details %}
-                                                <tr class="sub_item device_{{ o.id }}" id="{{ dev_det.id }}">
-                                                        <td class="sub_item" ><a href="/device/{{ dev_det.id }}" title="{{ dev_det }}">{{ dev_det.brand }} </a></td>
-                                                </tr>
-                                        {% endfor %}
-                                
-                        
+                        {% for dev_det in o.get_all_device_details %}
+                                <tr class="sub_item device_{{ o.id }}" id="{{ dev_det.id }}">
+                                        <td class="sub_item" ><a href="/device/{{ dev_det.id }}" title="{{ dev_det }}">{{ dev_det.brand }} </a></td>
+                                        <td></td>
+                                </tr>
                         {% endfor %}
+                {% endfor %}
+                </tbody>
                 </table>
         </div>
 </div>

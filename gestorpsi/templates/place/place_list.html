@@ -30,7 +30,13 @@ GNU General Public License for more details.
        
         <div class="main_area contact">
                 <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-                
+                        <thead> 
+                                <tr> 
+                                <th></th> 
+                                <th></th> 
+                                </tr> 
+                        </thead>
+                        <tbody> 
                         {% for o in object %}
                         <tr id="{{ o.id }}">
                 
@@ -48,6 +54,7 @@ GNU General Public License for more details.
                                
                         </tr>
                         {% endfor %}
+                        </tbody>
                 </table>
         </div>
 </div>

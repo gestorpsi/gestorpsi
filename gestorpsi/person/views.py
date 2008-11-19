@@ -95,7 +95,7 @@ def person_order(dictionary):
     nl = []
     
     for x in dictionary:
-        lista.append([x.person.name, x])
+        lista.append([x.person.name.lower(), x])
     ordered = sorted(lista, key=operator.itemgetter(0))
     for y in ordered:
         nl.append(y[1])

@@ -161,7 +161,7 @@ GNU General Public License for more details.
 </fieldset>
 
 <fieldset class="internet organization">
-	<legend>{% trans "Internet" %}</legend>
+	<legend>{% trans "Emails" %}</legend>
 	{% if not emails %}
 	    {% include "tags/email.html" %}
 	{% else %}
@@ -170,7 +170,10 @@ GNU General Public License for more details.
         {% endfor %}
 	{% endif %}
 	<a class="add_to_form"><span>{% trans "Add Email" %}</span></a>
+</fieldset>
 
+<fieldset class="internet organization">
+	<legend>{% trans "Websites" %}</legend>
 	{% if not websites %}
 	    {% include "tags/website.html" %}
 	{% else %}
@@ -179,7 +182,10 @@ GNU General Public License for more details.
 	    {% endfor %}
 	{% endif %}	
 	<a class="add_to_form"><span>{% trans "Add Website" %}</span></a>
+</fieldset>
 
+<fieldset class="internet organization">
+	<legend>{% trans "Instant Messengers" %}</legend>
 	{% if not ims %}
 	    {% include "tags/im.html" %}
 	{% else %}

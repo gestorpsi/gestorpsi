@@ -392,6 +392,23 @@ function bindAjaxForms() {
           });
      });
     
+
+     /**
+     * 
+     * address book form
+     * 
+     * _description:
+     * validate and post address book form.
+     * 
+     */    
+    
+     $('.form_contact').each(function() {
+          $(this).validate({event:"submit",
+               submitHandler: function(form) {
+                 $(form).ajaxSubmit(form_options);
+               }
+          });
+     });
     
     /**
      * 

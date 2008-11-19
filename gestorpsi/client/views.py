@@ -25,14 +25,14 @@ from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.address.models import Country, City, State, Address, AddressType
 from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetwork
 from gestorpsi.document.models import Document, TypeDocument, Issuer
-from gestorpsi.person.views import person_save
+from gestorpsi.person.views import person_save, person_order
 from gestorpsi.careprofessional.models import Profession, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
 from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 
 # list all active clients
 def index(request):
     user = request.user
-    object = Client.objects.filter(person__organization = user.org_active.id, clientStatus = '1')
+    object = person_order(Client.objects.filter(person__organization = user.org_active.id, clientStatus = '1'))
     paginator = Paginator(object, settings.PAGE_RESULTS)
     object = paginator.page(1)
     return render_to_response('client/client_index.html',
@@ -52,7 +52,7 @@ def index(request):
 
 def list(request, page = 1):
     user = request.user
-    object = Client.objects.filter(person__organization = user.org_active.id, clientStatus = '1')
+    object = person_order(Client.objects.filter(person__organization = user.org_active.id, clientStatus = '1'))
     paginator = Paginator(object, settings.PAGE_RESULTS)
     object = paginator.page(page)
     return render_to_response('client/client_list.html',

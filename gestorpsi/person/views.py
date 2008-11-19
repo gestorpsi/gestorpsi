@@ -13,6 +13,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import operator
 from gestorpsi.address.models import City
 from gestorpsi.address.views import address_save
 from gestorpsi.document.views import document_save
@@ -88,3 +89,15 @@ def person_save(request, person):
     im_save(person, request.POST.getlist('im_id'), request.POST.getlist('im_identity'), request.POST.getlist('im_network'))
 
     return person
+
+def person_order(dictionary):
+    lista = []
+    nl = []
+    
+    for x in dictionary:
+        lista.append([x.person.name, x])
+    ordered = sorted(lista, key=operator.itemgetter(0))
+    for y in ordered:
+        nl.append(y[1])
+    
+    return nl

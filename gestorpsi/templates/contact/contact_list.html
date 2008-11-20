@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-{% if not object %}
+{% if not objects %}
 <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/contact/add/" display="form" class="fastmenu" sub_menu="sub_contacts">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
 {% else %}
 
@@ -25,7 +25,7 @@ Esta caixa é mostrada quando há mensagens
 </div>
 
 <h2 class="title_contacts">{% trans "All Contacts" %}</h2>
-<p class="description">{% trans "Displaying" %} <a href="/contact/" display="list">{{ object|length }}  {% trans " general contact(s), " %} </a> <a href="/contact/" display="list"> {{ places|length }} {% trans " place(s) and " %} </a> <a href="/contact/" display="list">{{ persons|length }} {% trans " person(s)" %}</a>.</p>
+<p class="description">{% trans "Displaying" %} <a href="/contact/" display="list">{{ objects|length }}  {% trans " general contact(s), " %} </a> <a href="/contact/" display="list"> {{ places|length }} {% trans " place(s) and " %} </a> <a href="/contact/" display="list">{{ persons|length }} {% trans " person(s)" %}</a>.</p>
 
 
 <div class="main_area contact">
@@ -72,35 +72,20 @@ Esta caixa é mostrada quando há mensagens
 
 	<table id="search_results" class="zebra" border="0" cellspacing="0" cellpadding="0">
 
-        {% for p in persons %}
-        	<td><a href="/contact/{{ p.id }}" title="{{ p }}">{{  p.name  }}</a><br />
-				QUE ATRIBUTO É ESTE?<br /></td>
-				<td>{{ p.get_first_phone }}<br />
-				<a href="mailto:{{ p.get_first_email }}">{{ p.get_first_email }}</a><br />
-				<a href="#">{{ p.get_first_site }}</a></td>
-			<!--  I didn't found this attribute in the model -->	
-			<td class="icons"><img src="img/16/proffessional.png" width="16" height="16" /></td>
-
-              
-        </tr>
-        {% endfor %}
-
-        {% for o in places %}
-            <td><a href="/contact/{{ o.id }}" title="{{ o }}">{{  o.label  }}</a><br />
-		  	{{  o.place_type  }}<br /></td>
-				<td>{{ o.get_first_phone }}<br />
-				<a href="mailto:{{ o.get_first_email }}">{{ o.get_first_email }}</a><br />
-				<!-- a href="#">{{ o.get_first_site }}</a></td> -->
-			<!--  I didn't found this attribute in the model -->	
-			<td class="icons"><img src="img/16/office.png" width="16" height="16" /></td>
-             
-        </tr>
+        {% for o in objects %}
+            <tr>
+                <td>
+                    <a href="/contact/{{ o.0 }}" title="{{ o.1 }}">{{ o.1 }}</a><br />
+                </td>
+                <td>
+                    {{ o.3 }}<br />{{ o.2 }}
+                </td>
+                <td><!-- icon goes here --></td>
+            </tr>
         {% endfor %}
               
 	</table>
-        
+	        
 </div>
 
-	
 {% endif %}
-

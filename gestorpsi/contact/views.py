@@ -24,34 +24,43 @@ from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetw
 from gestorpsi.person.models import Person
 from gestorpsi.place.models import Place
 from gestorpsi.careprofessional.models import CareProfessional
+from gestorpsi.careprofessional.views import care_professional_fill
+from gestorpsi.address.views import address_save
+from gestorpsi.phone.views import phone_save
+from gestorpsi.internet.views import email_save, site_save, im_save
+
 
 def index(request):
+    user = request.user
+    org = user.org_active
     
-    total= []
+    lista = [] # ID, Name, Email, Phone, ORG/PROF, GESTORPSI/LOCAL
     
-    #list_of_orgs= []
-    #for orgs in Organization.objects.all():
-     #   orgs= {}
-      #  orgs['organization']= orgs
-       # list_of_orgs.append( orgs )
-        #total.append( orgs )
-    
-    list_of_places= []
-    for places in Place.objects.all():
-        places= {}
-        places['places']= places
-        list_of_places.append( places )
-        total.append( places )
-    
-    list_of_pers= []    
-    for persons in Person.objects.all():
-        persons= {}
-        persons['person']= persons
-        list_of_pers.append( persons )
-        total.append( persons )
+    for x in Organization.objects.filter(organization=None, public=True):
+        phone = x.get_first_phone()
+        email = x.get_first_email()
+        lista.append([x.id, x.name, email, phone, 'ORG', 'GESTORPSI'])
         
-         
-    return render_to_response('contact/contact_index.html', { 'object': total,
+        for y in CareProfessional.objects.filter(person__organization=x):
+            phone = y.person.get_first_phone()
+            email = y.person.get_first_email()
+            lista.append([y.id, y.person.name, email, phone, 'PROF', 'GESTORPSI'])
+    
+    for x in Organization.objects.filter(organization=org):
+        phone = x.get_first_phone()
+        email = x.get_first_email()
+        lista.append([x.id, x.name, email, phone, 'ORG', 'LOCAL'])
+        
+        for y in CareProfessional.objects.filter(person__organization=x):
+            phone = y.person.get_first_phone()
+            email = y.person.get_first_email()
+            lista.append([y.id, y.person.name, email, phone, 'PROF', 'LOCAL'])            
+        
+    for x in lista:
+        print u"%s" % x
+
+    return render_to_response('contact/contact_index.html', { 
+                                    'objects': lista,
                                     'countries': Country.objects.all(),
                                     'PhoneTypes': PhoneType.objects.all(), 
                                     'AddressTypes': AddressType.objects.all(), 
@@ -66,19 +75,75 @@ def form(request):
 
 def save(request, object_id=''):
     user = request.user
+    if request.POST['type'] == 'organization':
+        try:
+            object = get_object_or_404(Organization, pk=object_id)
+        except:
+            object = Organization()
+        object.name = request.POST['organization_name']
+        object.organization = user.org_active
+        
+        object.save()
+        
+        phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
+        email_save(object, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
+        site_save(object, request.POST.getlist('site_id'), request.POST.getlist('site_description'), request.POST.getlist('site_site'))
+        im_save(object, request.POST.getlist('im_id'), request.POST.getlist('im_identity'), request.POST.getlist('im_network'))
+        address_save(object, request.POST.getlist('addressId'), request.POST.getlist('addressPrefix'),
+                 request.POST.getlist('addressLine1'), request.POST.getlist('addressLine2'),
+                 request.POST.getlist('addressNumber'), request.POST.getlist('neighborhood'),
+                 request.POST.getlist('zipCode'), request.POST.getlist('addressType'),
+                 request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
+                 request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))        
+
     if request.POST['type'] == 'professional':
         try:
             object = get_object_or_404(CareProfessional, pk=object_id)
-        except Http404:
-            
-            person = Person()
+            person = object.person
+        except:
             object = CareProfessional()
-            person.organization = user.org_active
-            person.name = request.POST['professional_name']
-            person.nickname = request.POST['professional_name']
-            person.save()
-            object.person = person
-            object.save()
-            
+            person = Person()
         
-    return HttpResponse(request.POST['professional_name'])
+        person.name = request.POST['professional_name']
+        #person.organization = Organization.objects.get(pk=request.POST['organization'])
+        person.organization = Organization.objects.get(pk='29a6b2f3-f0e5-41c3-8870-6a35c23238f1')
+        person.save()
+
+        phone_save(person, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
+        email_save(person, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
+        site_save(person, request.POST.getlist('site_id'), request.POST.getlist('site_description'), request.POST.getlist('site_site'))
+        im_save(person, request.POST.getlist('im_id'), request.POST.getlist('im_identity'), request.POST.getlist('im_network'))
+        address_save(person, request.POST.getlist('addressId'), request.POST.getlist('addressPrefix'),
+                 request.POST.getlist('addressLine1'), request.POST.getlist('addressLine2'),
+                 request.POST.getlist('addressNumber'), request.POST.getlist('neighborhood'),
+                 request.POST.getlist('zipCode'), request.POST.getlist('addressType'),
+                 request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
+                 request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))        
+        
+        object.person = person
+        object.save()
+    
+    return HttpResponse(object.id)
+
+
+#def save(request, object_id=''):
+#    user = request.user
+#
+#    if request.POST['type'] == 'professional':
+#        try:
+#            object = get_object_or_404(CareProfessional, pk=object_id)
+#        except Http404:
+#            
+#            person = Person()
+#            object = CareProfessional()
+#            person.organization = user.org_active
+#            person.name = request.POST['professional_name']
+#            person.nickname = request.POST['professional_name']
+#            person.save()
+#            object.person = person
+#            object.save()
+#            
+#    if request.POST['type'] == 'organization':
+#        print "fdsfds"
+#        
+#    return HttpResponse(request.POST['professional_name'])

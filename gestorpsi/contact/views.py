@@ -73,6 +73,9 @@ def index(request):
 
 
 def form(request, object_type='', object_id=''):
+    user = request.user
+    org = user.org_active
+
     if object_type == '1':   # ORGANIZATION (1)
         object = get_object_or_404(Organization, pk=object_id)
         print u"Organization: %s" % object
@@ -87,7 +90,8 @@ def form(request, object_type='', object_id=''):
                                     'AddressTypes': AddressType.objects.all(),
                                     'PhoneTypes': PhoneType.objects.all(), 
                                     'EmailTypes': EmailType.objects.all(), 
-                                    'IMNetworks': IMNetwork.objects.all(), 
+                                    'IMNetworks': IMNetwork.objects.all(),
+                                    'organizations': Organization.objects.filter(organization=org), 
                                      })
 
 def save(request, object_id=''):

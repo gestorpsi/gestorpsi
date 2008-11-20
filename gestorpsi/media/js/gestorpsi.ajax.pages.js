@@ -77,13 +77,17 @@ function bindTableZebra() {
 function bindAdmission() {
 	$('a.admission').unbind().click(function() {
 		link = $(this);
-		$('div.admission_form').load(link.attr('href'));
+		$('#edit_form').load(link.attr('href'));
 		$.ajax({
 			complete: function(){
 				$('#core .fast_menu_content').hide();
 				$('div#edit_form').show();
 				$('div#edit_form .form_client').hide();
-				$('#edit_form div.admission_form').show();
+				$('#edit_form').show();
+				
+				$('#sub_menu ul li a').removeClass('active'); // unselect other tabs
+				$("ul.opened_tabs").show(); // display tab
+				$("ul.opened_tabs li div a:first").text(link.attr('title')); // set newtab title
 			}
 		});
 		$('#msg_area').removeClass();

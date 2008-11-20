@@ -42,8 +42,10 @@ GNU General Public License for more details.
 <fieldset class="professional contact">
 <legend>{% trans "Professional Organization" %}</legend>
 		<label>{% trans "Organization" %}<br />
-		<select name="organization" class="extrabig">
-			<option value="">Organizacao 1</option>
+		<select name="organization" class="extrabig asm">
+			{% for o in organizations %}
+			<option value="{{ o.id }}">{{ o }}</option>
+			{% endfor %}
 		</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		</label>
 		<br />
@@ -54,7 +56,7 @@ GNU General Public License for more details.
 <fieldset class="professional contact">
 <legend>{% trans "Professional Identification" %}</legend>
 		<label>{% trans "Name" %}<br />
-		<input type="text" name="professional_name" class="big tabtitle" value="{{ object.professional_name }}" />
+		<input type="text" name="name" class="big tabtitle professional_name cleanme" value="{{ object.professional_name }}" />
 		</label>
 </fieldset>
 
@@ -62,7 +64,7 @@ GNU General Public License for more details.
 <fieldset class="organization contact" {% if not object.id %}style="display:none"{% endif %}>
 <legend>{% trans "Organization Identification" %}</legend>
 		<label>{% trans "Name" %}<br />
-		<input type="text" name="organization_name" class="big tabtitle" value="{{ object.organization_name }}" />
+		<input type="text" name="" class="big tabtitle organization_name cleanme" value="{{ object.organization_name }}" />
 		</label>
 </fieldset>
 

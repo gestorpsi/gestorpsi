@@ -60,7 +60,8 @@ def index(request):
         print u"%s" % x
 
     return render_to_response('contact/contact_index.html', { 
-                                    'objects': lista,
+                                    'object': lista,
+                                    'organizations': Organization.objects.filter(organization=org),
                                     'countries': Country.objects.all(),
                                     'PhoneTypes': PhoneType.objects.all(), 
                                     'AddressTypes': AddressType.objects.all(), 
@@ -80,7 +81,12 @@ def save(request, object_id=''):
             object = get_object_or_404(Organization, pk=object_id)
         except:
             object = Organization()
-        object.name = request.POST['organization_name']
+        
+        try:
+            object.name = request.POST['label'] # adding by mini form
+        except:
+            object.name = request.POST['name']
+        
         object.organization = user.org_active
         
         object.save()
@@ -103,10 +109,8 @@ def save(request, object_id=''):
         except:
             object = CareProfessional()
             person = Person()
-        
-        person.name = request.POST['professional_name']
-        #person.organization = Organization.objects.get(pk=request.POST['organization'])
-        person.organization = Organization.objects.get(pk='29a6b2f3-f0e5-41c3-8870-6a35c23238f1')
+        person.name = request.POST['name']
+        person.organization = Organization.objects.get(pk=request.POST['organization'])
         person.save()
 
         phone_save(person, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))

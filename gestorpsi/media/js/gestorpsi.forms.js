@@ -21,6 +21,28 @@ GNU General Public License for more details.
 var name = ".sidebar"; 
 var menuYloc = null;
 
+function formSuccess() {
+     // show success alert
+     $('#msg_area').removeClass('error');
+     $('#msg_area').addClass('alert');
+     $('#msg_area').text('Register saved successfully!');
+     $('#msg_area').fadeTo(0, 1);
+     $('#msg_area').show();
+     $('#msg_area').fadeTo(2500, 0.40);
+     
+     // increment padding-top for blue save box
+     $('.sidebar').css('padding-top','239px');
+}
+
+function formError() {
+     // show error alert
+     $('#msg_area').removeClass('alert');
+     $('#msg_area').addClass('error');
+     $('#msg_area').text('Error saving register!');
+     $('#msg_area').fadeTo(0, 1);
+     $('#msg_area').show();
+     $('.sidebar').css('padding-top','234px');
+}
 
 // ajax form options
 var form_options = { 
@@ -120,7 +142,6 @@ var form_options = {
           // hide description
           $('div#edit_form p.description').hide();
           
-          // re-sort list
           $('#list #search_results').tablesorter({sortList: [[0,0], [1,0]]});
           
           // re-draw zebra
@@ -159,26 +180,11 @@ var form_options = {
           $('div#edit_form span.editing span.last').hide();
           $('div#edit_form span.editing span.now').show();
           
-          // show success alert
-          $('#msg_area').removeClass('error');
-          $('#msg_area').addClass('alert');
-          $('#msg_area').text('Register saved successfully!');
-          $('#msg_area').fadeTo(0, 1);
-          $('#msg_area').show();
-          $('#msg_area').fadeTo(2500, 0.40);
-
-          // increment padding-top for blue save box
-          $('.sidebar').css('padding-top','239px');
+          formSuccess();
       },
      
      error: function() {
-          // show error alert
-          $('#msg_area').removeClass('alert');
-          $('#msg_area').addClass('error');
-          $('#msg_area').text('Error saving register!');
-          $('#msg_area').fadeTo(0, 1);
-          $('#msg_area').show();
-          $('.sidebar').css('padding-top','234px');
+          formError();
      }
 }; 
 
@@ -189,26 +195,11 @@ var form_organization_options = {
          // new title in tab
           $(".edit_form h2.title").text(new_title); // update titles page title
           
-          // show success alert
-          $('#msg_area').removeClass('error');
-          $('#msg_area').addClass('alert');
-          $('#msg_area').text('Register saved successfully!');
-          $('#msg_area').fadeTo(0, 1);
-          $('#msg_area').show();
-          $('#msg_area').fadeTo(2500, 0.40);
-
-          // increment padding-top for blue save box
-          $('.sidebar').css('padding-top','239px');
+          formSuccess();
       },
      
      error: function() {
-          // show error alert
-          $('#msg_area').removeClass('alert');
-          $('#msg_area').addClass('error');
-          $('#msg_area').text('Error saving register!');
-          $('#msg_area').fadeTo(0, 1);
-          $('#msg_area').show();
-          $('.sidebar').css('padding-top','234px');
+          formError();
      }
 }; 
 
@@ -246,12 +237,7 @@ var form_mini_options = {
                
           },
      error: function() {
-          // show error alert
-          $('#msg_area').show();
-          $('#msg_area').removeClass('alert');
-          $('#msg_area').addClass('error');
-          $('#msg_area').text('Error saving register!');
-          $('.sidebar').css('padding-top','234px');
+          formError();
      }
 }; 
 
@@ -404,6 +390,14 @@ function bindAjaxForms() {
     
      $('.form_contact').each(function() {
           $(this).validate({event:"submit",
+               rules: {
+                    name: {
+                            required: true
+                    }
+                    },
+                    messages: {
+                      name: 'Preenchimento Necessário'
+                    },                           
                submitHandler: function(form) {
                  $(form).ajaxSubmit(form_options);
                }
@@ -890,6 +884,12 @@ $(document).unbind().ready(function(){
      $('form.form_contact select[name=type]').change(function() {
           $(this).parents('fieldset').siblings('.contact').hide();
           $(this).parents('fieldset').siblings('.' + $(this).val()).show();
+          
+          // its necessary, because you can have two required fields, organization name OR professional name
+          // reset name attribute, and rewrite it.
+          $(this).parents('form').children('div').children('fieldset').children('label').children('input[type=text].cleanme').attr('name','');
+          $(this).parents('form').children('div').children('fieldset').children('label').children('input[type=text].' + $(this).val() + '_name').attr('name','name');
+                    
      });
      
      

@@ -34,45 +34,61 @@ def index(request):
     user = request.user
     org = user.org_active
     
-    lista = [] # ID, Name, Email, Phone, ORG/PROF, GESTORPSI/LOCAL
+    lista = [] # ID, Name, Email, Phone, 1(ORG)/2(PROF), 1(GESTORPSI)/2(LOCAL)
     
     for x in Organization.objects.filter(organization=None, public=True):
         phone = x.get_first_phone()
         email = x.get_first_email()
-        lista.append([x.id, x.name, email, phone, 'ORG', 'GESTORPSI'])
+        lista.append([x.id, x.name, email, phone, '1', 'GESTORPSI'])
         
         for y in CareProfessional.objects.filter(person__organization=x):
             phone = y.person.get_first_phone()
             email = y.person.get_first_email()
-            lista.append([y.id, y.person.name, email, phone, 'PROF', 'GESTORPSI'])
+            lista.append([y.id, y.person.name, email, phone, '2', 'GESTORPSI'])
     
     for x in Organization.objects.filter(organization=org):
         phone = x.get_first_phone()
         email = x.get_first_email()
-        lista.append([x.id, x.name, email, phone, 'ORG', 'LOCAL'])
+        lista.append([x.id, x.name, email, phone, '1', 'LOCAL'])
         
         for y in CareProfessional.objects.filter(person__organization=x):
             phone = y.person.get_first_phone()
             email = y.person.get_first_email()
-            lista.append([y.id, y.person.name, email, phone, 'PROF', 'LOCAL'])            
+            lista.append([y.id, y.person.name, email, phone, '2', 'LOCAL'])            
         
     for x in lista:
         print u"%s" % x
 
     return render_to_response('contact/contact_index.html', { 
                                     'object': lista,
-                                    'organizations': Organization.objects.filter(organization=org),
                                     'countries': Country.objects.all(),
-                                    'PhoneTypes': PhoneType.objects.all(), 
-                                    'AddressTypes': AddressType.objects.all(), 
-                                    'EmailTypes': EmailType.objects.all(), 
-                                    'IMNetworks': IMNetwork.objects.all() , 
-                                    'States': State.objects.all(), 
+                                    'States': State.objects.all(),
+                                    'AddressTypes': AddressType.objects.all(),
+                                    'PhoneTypes': PhoneType.objects.all(),
+                                    'EmailTypes': EmailType.objects.all(),
+                                    'IMNetworks': IMNetwork.objects.all(),
+                                    'States': State.objects.all(),
+                                    'organizations': Organization.objects.filter(organization=org)
                                     })
 
 
-def form(request):
-    return render_to_response('contact/contact_form.html')
+def form(request, object_type='', object_id=''):
+    if object_type == '1':   # ORGANIZATION (1)
+        object = get_object_or_404(Organization, pk=object_id)
+        print u"Organization: %s" % object
+    else:                    # PROFESSIONAL (2)
+        object = get_object_or_404(CareProfessional, pk=object_id)
+        print u"Professional: %s" % object
+
+    return render_to_response('contact/contact_form.html', {
+                                    'object': object,
+                                    'countries': Country.objects.all(),
+                                    'States': State.objects.all(),
+                                    'AddressTypes': AddressType.objects.all(),
+                                    'PhoneTypes': PhoneType.objects.all(), 
+                                    'EmailTypes': EmailType.objects.all(), 
+                                    'IMNetworks': IMNetwork.objects.all(), 
+                                     })
 
 def save(request, object_id=''):
     user = request.user

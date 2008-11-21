@@ -28,7 +28,19 @@ from gestorpsi.careprofessional.views import care_professional_fill
 from gestorpsi.address.views import address_save
 from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
+import operator
 
+def list_order(dictionary):
+    lista = []
+    nl = []
+    
+    for x in dictionary:
+        lista.append([x[1].lower(), x])
+    ordered = sorted(lista, key=operator.itemgetter(0))
+    for y in ordered:
+        nl.append(y[1])
+    
+    return nl
 
 def index(request):
     user = request.user
@@ -54,13 +66,10 @@ def index(request):
         for y in CareProfessional.objects.filter(person__organization=x):
             phone = y.person.get_first_phone()
             email = y.person.get_first_email()
-            lista.append([y.id, y.person.name, email, phone, '2', 'LOCAL'])            
-        
-    for x in lista:
-        print u"%s" % x
+            lista.append([y.id, y.person.name, email, phone, '2', 'LOCAL'])
 
     return render_to_response('contact/contact_index.html', { 
-                                    'object': lista,
+                                    'object': list_order(lista),
                                     'countries': Country.objects.all(),
                                     'States': State.objects.all(),
                                     'AddressTypes': AddressType.objects.all(),

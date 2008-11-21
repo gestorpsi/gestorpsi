@@ -94,6 +94,7 @@ def form(request, object_type='', object_id=''):
 
     return render_to_response('contact/contact_form.html', {
                                     'object': object,
+                                    'object_type': object_type,
                                     'countries': Country.objects.all(),
                                     'States': State.objects.all(),
                                     'AddressTypes': AddressType.objects.all(),

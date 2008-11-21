@@ -33,18 +33,18 @@ GNU General Public License for more details.
 <legend>{% trans "Contact Type" %}</legend>
 		<label>{% trans "Type" %}<br />
 		<select name="type" class="big">
-			<option value="professional">{% trans "Professional" %}</option>
-			<option value="organization">{% trans "Organization" %}</option>
+			<option value="professional" {% ifequal object_type '2' %}selected{% endifequal %}>{% trans "Professional" %}</option>
+			<option value="organization" {% ifequal object_type '1' %}selected{% endifequal %}>{% trans "Organization" %}</option>
 		</select>
 		</label>
 </fieldset>
-	
-<fieldset class="professional contact">
+
+<fieldset class="professional contact" {% ifequal object_type '1'%} style="display:none"{%endifequal%}>
 <legend>{% trans "Professional Organization" %}</legend>
 		<label>{% trans "Organization" %}<br />
 		<select name="organization" class="extrabig asm">
 			{% for o in organizations %}
-			<option value="{{ o.id }}">{{ o }}</option>
+			<option value="{{ o.id }}"{% ifequal object.person.organization.id o.id %} selected{% endifequal %}>{{ o }}</option>
 			{% endfor %}
 		</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		</label>
@@ -53,18 +53,18 @@ GNU General Public License for more details.
 </fieldset>
 
 
-<fieldset class="professional contact">
+<fieldset class="professional contact" {% ifequal object_type '1' %}style="display:none"{% endifequal %}>
 <legend>{% trans "Professional Identification" %}</legend>
 		<label>{% trans "Name" %}<br />
-		<input type="text" name="name" class="big tabtitle professional_name cleanme" value="{{ object.professional_name }}" />
+		<input type="text" name="{% ifnotequal object_type '1' %}name{% endifnotequal %}" class="big tabtitle professional_name cleanme" value="{{ object.person.name }}" />
 		</label>
 </fieldset>
 
 
-<fieldset class="organization contact" {% if not object.id %}style="display:none"{% endif %}>
+<fieldset class="organization contact"{% if not object.id %} style="display:none"{%else%}{% ifnotequal object_type '1'%} style="display:none"{%endifnotequal%}{% endif %}>
 <legend>{% trans "Organization Identification" %}</legend>
 		<label>{% trans "Name" %}<br />
-		<input type="text" name="" class="big tabtitle organization_name cleanme" value="{{ object.organization_name }}" />
+		<input type="text" name="{% ifequal object_type '1' %}name{% endifequal %}" class="big tabtitle organization_name cleanme" value="{{ object.name }}" />
 		</label>
 </fieldset>
 

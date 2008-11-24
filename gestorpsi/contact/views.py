@@ -56,7 +56,7 @@ def index(request):
         for y in CareProfessional.objects.filter(person__organization=x):
             phone = y.person.get_first_phone()
             email = y.person.get_first_email()
-            lista.append([y.id, y.person.name, email, phone, '2', 'GESTORPSI'])
+            lista.append([y.id, '%s (%s)' % (y.person.name, y.person.organization), email, phone, '2', 'GESTORPSI'])
     
     for x in Organization.objects.filter(organization=org):
         phone = x.get_first_phone()
@@ -66,7 +66,23 @@ def index(request):
         for y in CareProfessional.objects.filter(person__organization=x):
             phone = y.person.get_first_phone()
             email = y.person.get_first_email()
-            lista.append([y.id, y.person.name, email, phone, '2', 'LOCAL'])
+            lista.append([y.id, '%s (%s)' % (y.person.name, y.person.organization), email, phone, '2', 'LOCAL'])
+
+#    for x in (Organization.objects.filter(organization=None, public=True) | Organization.objects.filter(organization=org) ):
+#        phone = x.get_first_phone()
+#        email = x.get_first_email()
+#        if x.organization == None:
+#            lista.append([x.id, x.name, email, phone, '1', 'GESTORPSI'])
+#        else:
+#            lista.append([x.id, x.name, email, phone, '1', 'LOCAL'])
+#        
+#        for y in CareProfessional.objects.filter(person__organization=x):
+#            phone = y.person.get_first_phone()
+#            email = y.person.get_first_email()
+#            if x.organization == None:
+#                lista.append([y.id, y.person.name, email, phone, '2', 'GESTORPSI'])
+#            else:
+#                lista.append([y.id, y.person.name, email, phone, '2', 'LOCAL'])
 
     return render_to_response('contact/contact_index.html', { 
                                     'object': list_order(lista),

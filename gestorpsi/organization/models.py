@@ -121,15 +121,15 @@ class Organization(models.Model):
     professional_responsible = models.CharField(max_length=100, blank=True) 
     
     # profile
-    person_type = models.OneToOneField(PersonType, null=True, blank=True)
-    unit_type = models.OneToOneField(UnitType, null=True, blank=True)
-    environment = models.OneToOneField(AdministrationEnvironment, null=True, blank=True)
-    management = models.OneToOneField(Management, null=True, blank=True)
-    source = models.OneToOneField(Source, null=True, blank=True)
-    dependence = models.OneToOneField(Dependence, null=True, blank=True)
+    person_type = models.ForeignKey(PersonType, null=True, blank=True)
+    unit_type = models.ForeignKey(UnitType, null=True, blank=True)
+    environment = models.ForeignKey(AdministrationEnvironment, null=True, blank=True)
+    management = models.ForeignKey(Management, null=True, blank=True)
+    source = models.ForeignKey(Source, null=True, blank=True)
+    dependence = models.ForeignKey(Dependence, null=True, blank=True)
     provided_type = models.ManyToManyField(ProvidedType, null=True, blank=True)
-    activity = models.OneToOneField(Activitie, null=True, blank=True)
-    public = models.BooleanField(default=False)
+    activity = models.ForeignKey(Activitie, null=True, blank=True)
+    public = models.BooleanField(default=True)
     
     comment = models.CharField(max_length=765, blank=True)
         

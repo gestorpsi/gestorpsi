@@ -23,7 +23,7 @@ from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 
 def form(request, object_id=''):
     object    = get_object_or_404(Client, pk=object_id)  
-    return render_to_response('client/client_admission.html', {
+    return render_to_response('admission/admission_form.html', {
         'object': object,
         'CareProfessionals': CareProfessional.objects.all(),
         'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,

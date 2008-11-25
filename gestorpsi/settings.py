@@ -113,6 +113,7 @@ INSTALLED_APPS = (
     'gestorpsi.device',
     'gestorpsi.service',
     'gestorpsi.client',
+    'gestorpsi.admission',
     'gestorpsi.phone',
     'gestorpsi.address',
     'gestorpsi.person',

@@ -17,6 +17,22 @@ GNU General Public License for more details.
 {% load i18n %}
 {% include "core/ajax_page.html" %}
 
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+{% if object.id %}
+	<div class="edit_form">
+	<h2 class="title_clients title">{{ object.person.name }}</h2>
+	<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a><br />	
+{% else %}
+	<h2 class="title_clients title">{% trans "Adding New Client" %}</h2>
+	<p class="description">{% trans "Inform the client details then click on Save button" %}</p>
+{% endif %}
+
+</p>
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
+
 <form action="cliente.html" method="post">
 
 <div class="main_area">
@@ -60,10 +76,6 @@ GNU General Public License for more details.
         <label>Como tomou conhecimento do estabelecimento? <a href="" class="prase_edit">Alterar como</a><br />
         <input name="" type="text" class="big" value="Indicação (de um Médico)" /></label>-->
                 
-                
-                
-                
-        
         <!--este-->
         <label>Indicação realizada por<br />
         <input name="" type="text" class="big" /></label>
@@ -206,12 +218,6 @@ GNU General Public License for more details.
 <div id="sidebar" class="sidebar">
 	<div class="bg_blue">
 		{% include "tags/save.html" %}
-	</div>
-	<div id="people_actions" {% if not object.id %}style="display:none"{% endif %}>	
-	<h3>{% trans 'Object Actions' %}</h3>
-	<ul>
-		<li><a class="admission" href="/client/admission/{% if object.id %}{{ object.id }}/{% endif %}">Realizar Admiss&atilde;o</a></li>
-	</ul>
 	</div>
 </div>
 

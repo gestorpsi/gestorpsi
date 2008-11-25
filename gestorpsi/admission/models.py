@@ -1,5 +1,6 @@
-{% comment %}
+# -*- coding: utf-8 -*-
 
+"""
 Copyright (C) 2008 GestorPsi
 
 This program is free software; you can redistribute it and/or
@@ -11,24 +12,8 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
+"""
 
-{% endcomment %}
-
-{% load i18n %}
-
-<input type="hidden" id="app_name" value="client" />
-
-<div id="list" class="fast_menu_content">
- {% include "client/client_list.html" %}
-</div>
-
-<div id="form" class="fast_menu_content">
- {% include "client/client_form.html" %} 
-</div>
-
-<div id="edit_form" class="fast_menu_content">
-</div>
-
-
+from django.db import models
 
 

@@ -31,9 +31,6 @@ GNU General Public License for more details.
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
 
-<div class="admission_form">
-</div>
-
 <form action="/client/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_client" class="form_people collapsable form_client">	
 <div class="main_area">
 
@@ -59,7 +56,7 @@ GNU General Public License for more details.
 	<div class="people_actions" {% if not object.id %}style="display:none"{% endif %}>	
 	<h3>{% trans 'Object Actions' %}</h3>
 	<ul>
-		<li><a class="admission admit" href="/client/admission/{% if object.id %}{{ object.id }}/{% endif %}">Realizar Admiss&atilde;o</a></li>
+		<li><a class="admission admit" href="/admission/{% if object.id %}{{ object.id }}/{% endif %}" title="{{ object.person.name }}">Realizar Admiss&atilde;o</a></li>
 	</ul>
 	</div>
 </div>

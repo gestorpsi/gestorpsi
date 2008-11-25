@@ -88,13 +88,6 @@ def form(request, object_id=''):
                               context_instance=RequestContext(request)
                               )
 
-def form_admission(request, object_id=''):
-    return render_to_response('client/client_admission.html', {
-        'CareProfessionals': CareProfessional.objects.all(),
-        'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
-        'licenceBoardTypes': LicenceBoard.objects.all(),
-    })
-
 # Save or Update client object
 def save(request, object_id=""):
 

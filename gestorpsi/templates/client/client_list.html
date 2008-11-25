@@ -82,7 +82,8 @@ GNU General Public License for more details.
                 <thead> 
                         <tr> 
                         <th></th> 
-                        <th></th> 
+                        <th></th>
+                        <th></th>
                         </tr> 
                 </thead>
                 <tbody>           
@@ -101,6 +102,7 @@ GNU General Public License for more details.
                        <br />
                        <span class="email">{{ l.person.get_first_email }}</span>
                        </td>
+                        <td><a class="admission admit" href="/admission/{{ l.id }}" title="{{ l.person.name }}"><img src="/media/img/22/ico_reg.png" alt="{% trans "Admission" %}"></a></td>
                 </tr>
                 {% endfor %}
                 </tbody>

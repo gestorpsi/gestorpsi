@@ -15,5 +15,18 @@ GNU General Public License for more details.
 """
 
 from django.db import models
+from gestorpsi.organization.models import Organization
+from gestorpsi.careprofessional.models import CareProfessional
 
-
+class ReferralType(models.Model):
+    description = models.CharField(max_length=20)
+    def __unicode__(self):
+        return u"%s" % self.description
+ 
+class Referral(models.Model):
+    type = models.ForeignKey(ReferralType)
+    description = models.CharField(max_length=50)
+    referral_organization = models.ForeignKey(Organization, null=True)
+    referral_professional = models.ForeignKey(CareProfessional, null=True)
+    def __unicode__(self):
+        return u"%s" % self.description

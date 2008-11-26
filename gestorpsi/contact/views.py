@@ -103,11 +103,20 @@ def form(request, object_type='', object_id=''):
 
     if object_type == '1':   # ORGANIZATION (1)
         object = get_object_or_404(Organization, pk=object_id)
-        print u"Organization: %s" % object
+        phones    = object.phones.all()
+        addresses = object.address.all()
+        emails    = object.emails.all()
+        sites     = object.sites.all()
+        instantMessengers = object.instantMessengers.all()
     else:                    # PROFESSIONAL (2)
         object = get_object_or_404(CareProfessional, pk=object_id)
-        print u"Professional: %s" % object
-
+        phones    = object.person.phones.all()
+        addresses = object.person.address.all()
+        emails    = object.person.emails.all()
+        sites     = object.person.sites.all()
+        instantMessengers = object.person.instantMessengers.all()
+        last_update = object.history.latest('_audit_timestamp')._audit_timestamp
+        
     return render_to_response('contact/contact_form.html', {
                                     'object': object,
                                     'object_type': object_type,
@@ -117,7 +126,12 @@ def form(request, object_type='', object_id=''):
                                     'PhoneTypes': PhoneType.objects.all(), 
                                     'EmailTypes': EmailType.objects.all(), 
                                     'IMNetworks': IMNetwork.objects.all(),
-                                    'organizations': Organization.objects.filter(organization=org), 
+                                    'organizations': Organization.objects.filter(organization=org),
+                                    'emails': emails,
+                                    'websites': sites,
+                                    'ims': instantMessengers,
+                                    'phones': phones,
+                                    'addresses': addresses,
                                      })
 
 def save(request, object_id=''):

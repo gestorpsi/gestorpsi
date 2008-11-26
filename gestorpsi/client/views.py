@@ -71,6 +71,8 @@ def form(request, object_id=''):
     emails    = []
     sites     = []
     instantMessengers = []
+    last_update = ''
+
     try:
         object    = get_object_or_404(Client, pk=object_id)        
         phones    = object.person.phones.all()
@@ -79,7 +81,7 @@ def form(request, object_id=''):
         emails    = object.person.emails.all()
         sites     = object.person.sites.all()
         instantMessengers = object.person.instantMessengers.all()
-        last_update = object.history.latest('_audit_timestamp')._audit_timestamp
+        #last_update = object.history.latest('_audit_timestamp')._audit_timestamp
     except:
         object = Client()
     

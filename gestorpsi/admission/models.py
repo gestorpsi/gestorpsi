@@ -18,14 +18,26 @@ from django.db import models
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import CareProfessional
 
-class ReferralType(models.Model):
-    description = models.CharField(max_length=20)
+
+class ReferralChoice(models.Model):
+    description = models.CharField(max_length=50)
     def __unicode__(self):
         return u"%s" % self.description
- 
+
 class Referral(models.Model):
-    type = models.ForeignKey(ReferralType)
+    referral_choice = models.ForeignKey(ReferralChoice)
+    referral_organization = models.ForeignKey(Organization, null=True)
+    referral_professional = models.ForeignKey(CareProfessional, null=True)
+    def __unicode__(self):
+        return u"%s" % self.description
+
+class IndicationChoice(models.Model):
     description = models.CharField(max_length=50)
+    def __unicode__(self):
+        return u"%s" % self.description
+
+class Indication(models.Model):
+    indication_choice = models.ForeignKey(IndicationChoice)
     referral_organization = models.ForeignKey(Organization, null=True)
     referral_professional = models.ForeignKey(CareProfessional, null=True)
     def __unicode__(self):

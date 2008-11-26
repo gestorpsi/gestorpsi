@@ -40,6 +40,7 @@ from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.place.models import RoomType, PlaceType
 from gestorpsi.device.models import DeviceType
 from gestorpsi.service.models import Area, ServiceType, Modality, AreaClinic
+from gestorpsi.admission.models import *
 
 
 print "Setting Directories Permissions"
@@ -6417,4 +6418,25 @@ Procedure.objects.create(procedure_code=67, description='Realização de exames 
 Procedure.objects.create(procedure_code=68, description='Realização de pesquisa', procedure=ProcedureProvider.objects.get(pk=3))
 Procedure.objects.create(procedure_code=69, description='Supervisão de atividades psicológica', procedure=ProcedureProvider.objects.get(pk=3))
 Procedure.objects.create(procedure_code=70, description='Visita domiciliar, escolar, comunitária e em outros contextos', procedure=ProcedureProvider.objects.get(pk=3))
+
+
+# Admission Referrals
+print "Installing Admission Referral Types"
+o = ReferralType.objects.all()
+o.delete()
+ReferralType.objects.create(description='Publicidade')
+ReferralType.objects.create(description='Indicação')
+
+print "Installing Admission Referrals"
+Referral.objects.create(description='Propagandas (Jornal, Rádio, TV, Revista)', type=ReferralType.objects.get(pk=1))
+Referral.objects.create(description='Folder', type=ReferralType.objects.get(pk=1))
+Referral.objects.create(description='Site', type=ReferralType.objects.get(pk=1))
+Referral.objects.create(description='Lista telefônica', type=ReferralType.objects.get(pk=1))
+Referral.objects.create(description='No Próprio Local', type=ReferralType.objects.get(pk=1))
+
+Referral.objects.create(description='Familiares, Amigos ou Professores', type=ReferralType.objects.get(pk=2))
+Referral.objects.create(description='de outra Instituição', type=ReferralType.objects.get(pk=2))
+Referral.objects.create(description='de um Profissional de Saúde', type=ReferralType.objects.get(pk=2))
+
+
 

@@ -6421,22 +6421,27 @@ Procedure.objects.create(procedure_code=70, description='Visita domiciliar, esco
 
 
 # Admission Referrals
-print "Installing Admission Referral Types"
-o = ReferralType.objects.all()
+print "Installing Admission Referral Choices"
+o = ReferralChoice.objects.all()
 o.delete()
-ReferralType.objects.create(description='Publicidade')
-ReferralType.objects.create(description='Indicação')
 
-print "Installing Admission Referrals"
-Referral.objects.create(description='Propagandas (Jornal, Rádio, TV, Revista)', type=ReferralType.objects.get(pk=1))
-Referral.objects.create(description='Folder', type=ReferralType.objects.get(pk=1))
-Referral.objects.create(description='Site', type=ReferralType.objects.get(pk=1))
-Referral.objects.create(description='Lista telefônica', type=ReferralType.objects.get(pk=1))
-Referral.objects.create(description='No Próprio Local', type=ReferralType.objects.get(pk=1))
+ReferralChoice.objects.create(description='Propagandas (Jornal, Rádio, TV, Revista)')
+ReferralChoice.objects.create(description='Folder')
+ReferralChoice.objects.create(description='Site')
+ReferralChoice.objects.create(description='Lista telefônica')
+ReferralChoice.objects.create(description='No Próprio Local')
+ReferralChoice.objects.create(description='Familiares, Amigos ou Professores')
+ReferralChoice.objects.create(description='Indicação de outra Instituição')
+ReferralChoice.objects.create(description='Indicação de um Profissional de Saúde')
 
-Referral.objects.create(description='Familiares, Amigos ou Professores', type=ReferralType.objects.get(pk=2))
-Referral.objects.create(description='de outra Instituição', type=ReferralType.objects.get(pk=2))
-Referral.objects.create(description='de um Profissional de Saúde', type=ReferralType.objects.get(pk=2))
 
+print "Installing Admission Indication Choices"
+o = IndicationChoice.objects.all()
+o.delete()
+
+IndicationChoice.objects.create(description='Espontâneo')
+IndicationChoice.objects.create(description='Familiares, Amigos ou Professores')
+IndicationChoice.objects.create(description='Indicação de outro Estabelecimento')
+IndicationChoice.objects.create(description='Profissional de Saúde')
 
 

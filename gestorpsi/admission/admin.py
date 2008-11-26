@@ -24,13 +24,21 @@ GNU General Public License for more details.
 from django.contrib import admin
 from gestorpsi.admission.models import *
 
-class ReferralTypeAdmin(admin.ModelAdmin):
+class ReferralChoiceAdmin(admin.ModelAdmin):
     pass
 
 class ReferralAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(ReferralType, ReferralTypeAdmin)
+class IndicationChoiceAdmin(admin.ModelAdmin):
+    pass
+
+class IndicationAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(ReferralChoice, ReferralChoiceAdmin)
 admin.site.register(Referral, ReferralAdmin)
+admin.site.register(IndicationChoice, IndicationChoiceAdmin)
+admin.site.register(Indication, IndicationAdmin)
 
 

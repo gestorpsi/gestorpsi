@@ -47,26 +47,32 @@ def index(request):
     org = user.org_active
     
     lista = [] # ID, Name, Email, Phone, 1(ORG)/2(PROF), 1(GESTORPSI)/2(LOCAL)
+    organizations_count = 0
+    professionals_count = 0
     
     for x in Organization.objects.filter(organization=None, public=True):
         phone = x.get_first_phone()
         email = x.get_first_email()
         lista.append([x.id, x.name, email, phone, '1', 'GESTORPSI'])
+        organizations_count = organizations_count + 1 
         
         for y in CareProfessional.objects.filter(person__organization=x):
             phone = y.person.get_first_phone()
             email = y.person.get_first_email()
             lista.append([y.id, '%s (%s)' % (y.person.name, y.person.organization), email, phone, '2', 'GESTORPSI'])
+            professionals_count = professionals_count + 1
     
     for x in Organization.objects.filter(organization=org):
         phone = x.get_first_phone()
         email = x.get_first_email()
         lista.append([x.id, x.name, email, phone, '1', 'LOCAL'])
+        organizations_count = organizations_count + 1
         
         for y in CareProfessional.objects.filter(person__organization=x):
             phone = y.person.get_first_phone()
             email = y.person.get_first_email()
             lista.append([y.id, '%s (%s)' % (y.person.name, y.person.organization), email, phone, '2', 'LOCAL'])
+            professionals_count = professionals_count + 1
 
 #    for x in (Organization.objects.filter(organization=None, public=True) | Organization.objects.filter(organization=org) ):
 #        phone = x.get_first_phone()
@@ -86,6 +92,8 @@ def index(request):
 
     return render_to_response('contact/contact_index.html', { 
                                     'object': list_order(lista),
+                                    'organizations_count': organizations_count,
+                                    'professionals_count': professionals_count,
                                     'countries': Country.objects.all(),
                                     'States': State.objects.all(),
                                     'AddressTypes': AddressType.objects.all(),

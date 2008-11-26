@@ -26,7 +26,7 @@ GNU General Public License for more details.
 	</div>
 	
 	<h2 class="title_contacts">{% trans "All Contacts" %}</h2>
-	<p class="description">{% trans "Displaying" %} <a href="/contact/" display="list">{{ objects|length }}  {% trans " general contact(s), " %} </a> <a href="/contact/" display="list"> {{ places|length }} {% trans " place(s) and " %} </a> <a href="/contact/" display="list">{{ persons|length }} {% trans " person(s)" %}</a>.</p>
+	<p class="description">{% trans "Displaying" %} <a href="/contact/" display="list">{{ object|length }}  {% trans " general contact(s), " %} </a> <a href="/contact/" display="list"> {{ organizations_count }} {% trans " organization(s) and " %} </a> <a href="/contact/" display="list">{{ professionals_count }} {% trans " professionals(s)" %}</a>.</p>
 	
 	
 	<div class="main_area contact">

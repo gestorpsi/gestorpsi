@@ -47,33 +47,15 @@ def index(request):
     org = user.org_active
     
     lista = [] # ID, Name, Email, Phone, 1(ORG)/2(PROF), 1(GESTORPSI)/2(LOCAL)
-    organizations_count = 0
-    professionals_count = 0
+    organizations_count = len(address_book_get_organizations(request))
+    professionals_count = len(address_book_get_professionals(request))
     
-    for x in Organization.objects.filter(organization=None, public=True):
-        phone = x.get_first_phone()
-        email = x.get_first_email()
-        lista.append([x.id, x.name, email, phone, '1', 'GESTORPSI'])
-        organizations_count = organizations_count + 1 
-        
-        for y in CareProfessional.objects.filter(person__organization=x):
-            phone = y.person.get_first_phone()
-            email = y.person.get_first_email()
-            lista.append([y.id, '%s (%s)' % (y.person.name, y.person.organization), email, phone, '2', 'GESTORPSI'])
-            professionals_count = professionals_count + 1
+    for i in address_book_get_organizations(request): # append organizations
+        lista.append(i)
+    for i in address_book_get_professionals(request): # append professionals
+        lista.append(i)
     
-    for x in Organization.objects.filter(organization=org):
-        phone = x.get_first_phone()
-        email = x.get_first_email()
-        lista.append([x.id, x.name, email, phone, '1', 'LOCAL'])
-        organizations_count = organizations_count + 1
-        
-        for y in CareProfessional.objects.filter(person__organization=x):
-            phone = y.person.get_first_phone()
-            email = y.person.get_first_email()
-            lista.append([y.id, '%s (%s)' % (y.person.name, y.person.organization), email, phone, '2', 'LOCAL'])
-            professionals_count = professionals_count + 1
-
+    
 #    for x in (Organization.objects.filter(organization=None, public=True) | Organization.objects.filter(organization=org) ):
 #        phone = x.get_first_phone()
 #        email = x.get_first_email()
@@ -197,6 +179,46 @@ def save(request, object_id=''):
     
     return HttpResponse(object.id)
 
+
+def address_book_get_professionals(request):
+    user = request.user
+    org = user.org_active
+    lista = []
+    
+    for x in Organization.objects.filter(organization=None, public=True):
+        phone = x.get_first_phone()
+        email = x.get_first_email()
+        for y in CareProfessional.objects.filter(person__organization=x):
+            phone = y.person.get_first_phone()
+            email = y.person.get_first_email()
+            lista.append([y.id, '%s (%s)' % (y.person.name, y.person.organization), email, phone, '2', 'GESTORPSI'])
+    
+    for x in Organization.objects.filter(organization=org):
+        phone = x.get_first_phone()
+        email = x.get_first_email()
+        for y in CareProfessional.objects.filter(person__organization=x):
+            phone = y.person.get_first_phone()
+            email = y.person.get_first_email()
+            lista.append([y.id, '%s (%s)' % (y.person.name, y.person.organization), email, phone, '2', 'LOCAL'])
+
+    return lista
+
+def address_book_get_organizations(request):
+    user = request.user
+    org = user.org_active
+    lista = []
+    
+    for x in Organization.objects.filter(organization=None, public=True):
+        phone = x.get_first_phone()
+        email = x.get_first_email()
+        lista.append([x.id, x.name, email, phone, '1', 'GESTORPSI'])
+
+    for x in Organization.objects.filter(organization=org):
+        phone = x.get_first_phone()
+        email = x.get_first_email()
+        lista.append([x.id, x.name, email, phone, '1', 'LOCAL'])
+
+    return lista
 
 #def save(request, object_id=''):
 #    user = request.user

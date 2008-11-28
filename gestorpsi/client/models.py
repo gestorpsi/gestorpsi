@@ -31,7 +31,7 @@ class PersonLink(models.Model):
     relation = models.ForeignKey(Relation)
     responsible = models.BooleanField(default=False)
     def __unicode__(self):
-        return u"%s" % self.person.firstName
+        return u"%s" % self.person.name
 
 CLIENT_STATUS = ( ('0','Inativo'),('1','Ativo'))
 class Client(models.Model):

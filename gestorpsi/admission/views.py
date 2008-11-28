@@ -17,6 +17,7 @@ GNU General Public License for more details.
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from gestorpsi.client.models import Client, PersonLink, Relation
+from gestorpsi.careprofessional.models import LicenceBoard
 from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 from gestorpsi.admission.models import *
 from gestorpsi.contact.views import *

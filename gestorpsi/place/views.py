@@ -19,9 +19,9 @@ from django.http import HttpResponse, Http404
 from django.core.exceptions import ObjectDoesNotExist
 from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, Room, RoomType, PlaceType
-from gestorpsi.address.models import Country, City, State, Address, AddressType
+from gestorpsi.address.models import Country, AddressType
 from gestorpsi.address.views import address_save
-from gestorpsi.phone.models import Phone, PhoneType
+from gestorpsi.phone.models import PhoneType
 from gestorpsi.phone.views import phone_save
 
 def index(request):

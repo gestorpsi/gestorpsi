@@ -8,12 +8,10 @@
     Description:	Changes necessary for recognize UUID as primary Key
 """
 
-from django.dispatch import dispatcher
 from django.db import models
 from django.core.exceptions import ImproperlyConfigured
 import copy
 import re
-import types
 from uuid_field import UuidField
 
 try:

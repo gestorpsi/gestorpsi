@@ -15,12 +15,10 @@ GNU General Public License for more details.
 """
 
 from django.db import models
-from django.forms import ModelForm
 from django.contrib.contenttypes import generic
 from gestorpsi.phone.models import Phone
-from gestorpsi.person.models import Person
 from gestorpsi.internet.models import Email, Site, InstantMessenger
-from gestorpsi.address.models import Country, City, Address
+from gestorpsi.address.models import Address
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 

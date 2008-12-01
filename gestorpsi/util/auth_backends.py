@@ -18,8 +18,8 @@ class CustomUserModelBackend(ModelBackend):
         try:            
             user = self.user_class.objects.get(username=username)
             if user.check_password(password):
-                print user.username                
-                print user.organization.all()
+                #print user.username
+                #print user.organization.all()
                 return user
         except self.user_class.DoesNotExist:
             return None

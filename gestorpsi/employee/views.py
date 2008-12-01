@@ -19,10 +19,10 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from gestorpsi.employee.models import Employee
 from gestorpsi.person.models import Person, MaritalStatus
-from gestorpsi.phone.models import Phone, PhoneType
-from gestorpsi.address.models import Country, City, State, Address, AddressType
-from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetwork
-from gestorpsi.document.models import Document, TypeDocument, Issuer
+from gestorpsi.phone.models import PhoneType
+from gestorpsi.address.models import Country, State, AddressType
+from gestorpsi.internet.models import EmailType, IMNetwork
+from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.person.views import person_save
 
 def index(request):

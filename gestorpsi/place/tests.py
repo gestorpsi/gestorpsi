@@ -1,15 +1,24 @@
 # -*- coding: utf-8 -*-
-from django.db import models
-from django.forms import ModelForm
+
+"""
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+"""
+
 from gestorpsi.address.models import Address
 from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.place.models import PlaceType, Place
 from gestorpsi.address.models import City, State, Country, AddressType
-from django.contrib.contenttypes import generic
-from gestorpsi.organization.models import Organization
-from django.contrib import admin
 import unittest
-from django.test.client import Client
 
 class PlaceTest(unittest.TestCase):
     def setUp(self):

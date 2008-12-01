@@ -14,7 +14,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 
 class UserTimeout:

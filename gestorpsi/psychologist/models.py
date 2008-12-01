@@ -15,10 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.db import models
-from django.forms import ModelForm
 from gestorpsi.careprofessional.models import CareProfessional
-from gestorpsi.util.uuid_field import UuidField
-from gestorpsi.util import audittrail
 
 class Approaches(models.Model):
     """

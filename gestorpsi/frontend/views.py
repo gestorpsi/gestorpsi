@@ -14,12 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from django.template import RequestContext, Context
-from django.utils.translation import gettext as _
-from gestorpsi.authentication.models import CustomUser
-from gestorpsi.organization.models import Organization
 
 
 def index(request):

@@ -17,7 +17,7 @@ from django.db import models
 from django.forms import ModelForm
 from django.contrib.contenttypes import generic
 from gestorpsi.phone.models import Phone
-from gestorpsi.address.models import Country, City, Address
+from gestorpsi.address.models import City, Address
 from gestorpsi.document.models import Document
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.organization.models import Organization

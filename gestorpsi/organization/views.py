@@ -17,10 +17,10 @@ GNU General Public License for more details.
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization, AgreementType, Agreement, AgeGroup, ProcedureProvider, Procedure
-from gestorpsi.phone.models import Phone, PhoneType
-from gestorpsi.address.models import Country, City, State, Address, AddressType
-from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetwork
+from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization
+from gestorpsi.phone.models import PhoneType
+from gestorpsi.address.models import Country, State, AddressType
+from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.address.views import address_save
 from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save

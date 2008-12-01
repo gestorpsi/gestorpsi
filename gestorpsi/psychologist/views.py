@@ -16,9 +16,7 @@ GNU General Public License for more details.
 
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
-from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, Profession, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
-from gestorpsi.organization.models import Agreement 
-from gestorpsi.psychologist.models import Approaches, Area, AgeGroup, Psychologist
+from gestorpsi.psychologist.models import Psychologist
 from gestorpsi.careprofessional.views import care_professional_fill
 
 

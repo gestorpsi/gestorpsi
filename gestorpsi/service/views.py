@@ -18,7 +18,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.core.exceptions import ObjectDoesNotExist
 from gestorpsi.service.models import Service, Area, ServiceType, Modality, AreaClinic
-from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure, Organization
+from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure
 from gestorpsi.careprofessional.models import CareProfessional, Profession 
 
 def index(request):

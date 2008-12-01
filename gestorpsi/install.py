@@ -41,6 +41,7 @@ from gestorpsi.place.models import RoomType, PlaceType
 from gestorpsi.device.models import DeviceType
 from gestorpsi.service.models import Area, ServiceType, Modality, AreaClinic
 from gestorpsi.admission.models import *
+from gestorpsi.client.models import Relation
 
 
 print "Setting Directories Permissions"
@@ -6443,5 +6444,18 @@ IndicationChoice.objects.create(description='Espontâneo')
 IndicationChoice.objects.create(description='Familiares, Amigos ou Professores')
 IndicationChoice.objects.create(description='Indicação de outro Estabelecimento', nick='organization')
 IndicationChoice.objects.create(description='Profissional de Saúde', nick='professional')
+
+# Client Relations
+print "Installing Person/Client Relations"
+o = Relation.objects.all()
+o.delete()
+Relation.objects.create(description='Pai')
+Relation.objects.create(description='Mãe')
+Relation.objects.create(description='Filho')
+Relation.objects.create(description='Filha')
+Relation.objects.create(description='Irmão')
+Relation.objects.create(description='Irmã')
+Relation.objects.create(description='Primo')
+Relation.objects.create(description='Prima')
 
 

@@ -24,7 +24,8 @@ from gestorpsi.contact.views import *
 from gestorpsi.util.views import date_form_to_db
 
 def form(request, object_id=''):
-    object    = get_object_or_404(Client, pk=object_id)
+    object = get_object_or_404(Client, pk=object_id)
+
     return render_to_response('admission/admission_form.html', {
         'address_book_professionals': address_book_get_professionals(request),
         'address_book_organizations': address_book_get_organizations(request),
@@ -33,6 +34,7 @@ def form(request, object_id=''):
         'licenceBoardTypes': LicenceBoard.objects.all(),
         'ReferralChoices': ReferralChoice.objects.all(),
         'IndicationsChoices': IndicationChoice.objects.all(),
+        'Relations': Relation.objects.all(),
     })
 
 def is_responsible(value):
@@ -42,10 +44,15 @@ def is_responsible(value):
         return False
 
 def add_relationship(object, name_list, relation_list, responsible_list):
+    responsible = ''
     object.person_link.clear()
     for i in range(0, len(name_list)):
         if (len(name_list[i])):
-            object.person_link.add(PersonLink.objects.create(person=Person.objects.create(name=name_list[i]), relation=Relation.objects.get(pk=relation_list[i]), responsible=is_responsible(responsible_list[i])))
+            try:
+                responsible = is_responsible(responsible_list[i])
+            except:
+                responsible = False
+            object.person_link.add(PersonLink.objects.create(person=Person.objects.create(name=name_list[i]), relation=Relation.objects.get(pk=relation_list[i]), responsible=responsible))
 
     # Deletar
     #for relation in relation_list:

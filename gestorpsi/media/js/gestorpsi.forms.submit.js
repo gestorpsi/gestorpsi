@@ -28,6 +28,23 @@ function bindAjaxForms() {
      });
 
 
+     /**
+      *
+      * generic post form
+      *
+      * _description:
+      * post any form, without validate verification
+      *
+      */
+
+     $('form.ajax').each(function() {
+          $(this).validate({event:"submit",
+          submitHandler: function(form) {
+               $(form).ajaxSubmit(form_options);
+            }
+          });
+     });
+
     /**
      *
      * places post form

@@ -26,8 +26,8 @@ GNU General Public License for more details.
 
 </p>
 
-<form action="/admission/{{ object.id }}/save/" method="post">
-
+<form action="/admission/{{ object.id }}/save/" method="post" class="ajax">
+<input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
 <div class="main_area">
         <a href="" id=help>&nbsp;</a>
         <h3><span onClick="$('form_options').toggle();">{% trans "Admission Details" %}</span></h3>
@@ -48,7 +48,7 @@ GNU General Public License for more details.
         <label>{% trans "Legacy Record" %}<br />
         <input name="legacyRecord" type="text" class="medium" value="{{ object.legacyRecord }}" /></label>
         <label>{% trans "Admission Date" %}<br />
-        <input name="admission_date" type="text" class="medium" value="{% if not object.admission_date %}{% now "d/m/Y" %}{% else %}{{ object.admission_date }}{% endif %}" mask="99/99/9999" /></label>
+        <input name="admission_date" type="text" class="medium" value="{% if not object.admission_date %}{% now "d/m/Y" %}{% else %}{{ object.admission_date|date:"d/m/Y" }}{% endif %}" mask="99/99/9999" /></label>
         <label>{% trans "Health Document" %}<br />
         <input name="healthDocument" type="text" class="big" value="{{ object.healthDocument }}" /></label>
 
@@ -116,10 +116,10 @@ GNU General Public License for more details.
 
         <fieldset>
                 <legend>{% trans "Parents" %}</legend>
-                        {% if not parents %}
+                        {% if not object.person_link.all %}
                                 {% include "tags/people_parent.html" %}
                         {% else %}
-                                {% for parent in parents %}
+                                {% for p in object.person_link.all %}
                                         {% include "tags/people_parent.html" %}
                                 {% endfor %}
                         {% endif %}

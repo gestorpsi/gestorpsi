@@ -20,15 +20,23 @@ GNU General Public License for more details.
 	<input type="hidden" name="parentId" value="{{ parent.id }}" />
 	
 	<label>{% trans "Parent Name" %}<br />
-    <input type="text" name="parent_name" class="big" value="{{ parent.parent_name }}" />
+    <input type="text" name="parent_name" class="big" value="{{ p.person.name }}" />
 	</label>
 
 	<label>{% trans "Parent Relation" %}<br />
-    <input type="text" name="parent_relation" class="medium" value="{{ parent.parent_relation }}" />
-	</label>
+    {% if not Relations %}
+		{% trans "There is no types available to choice" %}
+	{% else %}
+	<select name="parent_relation" class="medium">
+	{% for l in Relations %}
+		<option value="{{ l.id }}"{% ifequal p.relation_id l.id %} selected{% endifequal %}>{{ l }}</option>
+	{% endfor %}
+	</select>
+	{% endif %}
+    </label>
 	
 	<label>{% trans "Responsible?" %}<br />
-    <input type="checkbox" name="parent_responsible"{% if parent.parent_responsible %} checked{% endif %}>
+    <input type="checkbox" name="parent_responsible"{% if p.responsible %} checked{% endif %}>
     </label>
 		
 	<label><br /><a class="notajax remove_from_form" delete="parent_{{ forloop.counter }}" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a></label>

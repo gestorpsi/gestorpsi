@@ -21,14 +21,13 @@ GNU General Public License for more details.
 
 <fieldset class="professional contact">
 <legend>{% trans "Adding new Professional" %}</legend>
-		<label>{% trans "Professional Organization" %}<br />
+		<label>{% trans "Select Organization, or"%} {#<a class="form_mini" display="address_book_organization_mini">#}{% trans "add a new one" %}{#</a>#}<br />
 		<select name="organization" class="extrabig asm">
 				{% for l in address_book_organizations %}
 				<option value="{{ l.0 }}">{{ l.1 }}</option>
 				{% endfor %}
 		</select>
 		</label>
-		<label><a class="form_mini" display="address_book_organization_mini">{% trans "Add New Organization" %}</a></label>
 </fieldset>
 
 <fieldset>
@@ -36,8 +35,6 @@ GNU General Public License for more details.
     <label>{% trans "Name" %}<br />
     <input type="text" name="name" class="big tabtitle" />
     </label>
-
-
     <label class="block">
     <input type="hidden" name="type" value="professional" />
     <input type="submit" name="submit" value="{% trans "Add" %}" class="mini" />

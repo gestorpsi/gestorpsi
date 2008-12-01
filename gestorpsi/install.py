@@ -6431,8 +6431,8 @@ ReferralChoice.objects.create(description='Site')
 ReferralChoice.objects.create(description='Lista telefônica')
 ReferralChoice.objects.create(description='No Próprio Local')
 ReferralChoice.objects.create(description='Familiares, Amigos ou Professores')
-ReferralChoice.objects.create(description='Indicação de outra Instituição')
-ReferralChoice.objects.create(description='Indicação de um Profissional de Saúde')
+ReferralChoice.objects.create(description='Indicação de outra Instituição', nick='organization')
+ReferralChoice.objects.create(description='Indicação de um Profissional de Saúde', nick='professional')
 
 
 print "Installing Admission Indication Choices"
@@ -6441,7 +6441,7 @@ o.delete()
 
 IndicationChoice.objects.create(description='Espontâneo')
 IndicationChoice.objects.create(description='Familiares, Amigos ou Professores')
-IndicationChoice.objects.create(description='Indicação de outro Estabelecimento')
-IndicationChoice.objects.create(description='Profissional de Saúde')
+IndicationChoice.objects.create(description='Indicação de outro Estabelecimento', nick='organization')
+IndicationChoice.objects.create(description='Profissional de Saúde', nick='professional')
 
 

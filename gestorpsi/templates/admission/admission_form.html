@@ -20,24 +20,17 @@ GNU General Public License for more details.
 
 <h2 id="title_addressbook" style="display:none"></h2>
 
-{% if object.id %}
-	<div class="edit_form">
-	<h2 class="title_clients title">{{ object.person.name }}</h2>
-	<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a><br />	
-{% else %}
-	<h2 class="title_clients title">{% trans "Adding New Client" %}</h2>
-	<p class="description">{% trans "Inform the client details then click on Save button" %}</p>
-{% endif %}
+<div class="edit_form">
+<h2 class="title_clients title">{{ object.person.name }}</h2>
+<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a><br />	
 
 </p>
-<h2 id="title_contacts" style="display:none"></h2>
-<h2 id="title_myoffice" style="display:none"></h2>
 
-<form action="cliente.html" method="post">
+<form action="/admission/{{ object.id }}/save/" method="post">
 
 <div class="main_area">
         <a href="" id=help>&nbsp;</a>
-        <h3><span onClick="$('form_options').toggle();">Detalhes da Admissão</span></h3>
+        <h3><span onClick="$('form_options').toggle();">{% trans "Admission Details" %}</span></h3>
         <ul id="form_options" class="float_menu" style="display:none;">
                 <li><label><input name="this" type="radio" value="" /> Informa&ccedil;&otilde;es b&aacute;sicas</label></li>
                 <li><label><input name="this" type="radio" value="" /> Dados completos</label></li>
@@ -49,48 +42,98 @@ GNU General Public License for more details.
                 
         </ul>
         <fieldset>
-        <legend>Dados Iniciais</legend>
-        <label>Admitido em<br />
-        <input name="" type="text" class="medium" value="{% now "d/m/Y" %}" mask="99/99/9999" /></label>
-                
-                <!--este -->
-        <label>Como tomou conhecimento do estabelecimento?<br />
-                <select name="" class="big">
-                        <option>&nbsp;&nbsp;Escolha...</option>
+        <legend>{% trans "Basic Informations" %}</legend>
+        <label>{% trans "ID Record" %}<br />
+        <input name="idRecord" type="text" class="medium" value="{{ object.idRecord }}" /></label>
+        <label>{% trans "Legacy Record" %}<br />
+        <input name="legacyRecord" type="text" class="medium" value="{{ object.legacyRecord }}" /></label>
+        <label>{% trans "Admission Date" %}<br />
+        <input name="admission_date" type="text" class="medium" value="{% if not object.admission_date %}{% now "d/m/Y" %}{% else %}{{ object.admission_date }}{% endif %}" mask="99/99/9999" /></label>
+        <label>{% trans "Health Document" %}<br />
+        <input name="healthDocument" type="text" class="big" value="{{ object.healthDocument }}" /></label>
 
-                        <option disabled="disabled">Publicidade</option>
-                        <option>&nbsp;&nbsp;Propagandas (Jornal, Rádio, TV, Revista)</option>
-                        <option>    &nbsp;&nbsp;Folder</option>
-                        <option>    &nbsp;&nbsp;Site</option>
-                        <option>    &nbsp;&nbsp;Passando pela clínica</option>
+        </fieldset>
 
-                        <option>    &nbsp;&nbsp;Lista telefônica</option>
-                        <option disabled="disabled">Indicação</option>
-                        <option>    &nbsp;&nbsp;Familiares, Amigos ou Professores</option>
-                        <option>    &nbsp;&nbsp;de outra Instituição</option>
-                        <option>    &nbsp;&nbsp;de Profissional de Saúde</option>
 
+		<fieldset>
+		<legend>{% trans "Referrals" %}</legend>
+        <label>{% trans "How the client heard about this organization?" %}<br />
+                <select name="referral" class="big toggle_parent_label">
+                        <option>Escolha...</option>
+                        {% for o in ReferralChoices %}
+                                <option value="{{ o.id }}" label="{{ o.nick }}">&nbsp;&nbsp;{{ o }}</option>
+                        {% endfor %}
                 </select>
         </label>
-        <!--ou este  
-        <label>Como tomou conhecimento do estabelecimento? <a href="" class="prase_edit">Alterar como</a><br />
-        <input name="" type="text" class="big" value="Indicação (de um Médico)" /></label>-->
-                
-        <!--este-->
-        <label>Indicação realizada por<br />
-        <input name="" type="text" class="big" /></label>
-        <label><input name="" type="button" class="btn" value="Procurar" /></label>
+
+		<label class="hidden organization">{% trans "Select Organization, or"%} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
+		<select name="" class="select extrabig asm">
+				{% for l in address_book_organizations %}
+				<option value="{{ l.0 }}">{{ l.1 }}</option>
+				{% endfor %}
+		</select>
+		</label>
         
+		<label class="hidden professional">{% trans "Select Professional, or"%} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
+		<select name="" class="select extrabig asm">
+				{% for l in address_book_professionals %}
+				<option value="{{ l.0 }}">{{ l.1 }}</option>
+				{% endfor %}
+		</select>
+		</label>
+
         </fieldset>
-        
+
+		<fieldset>
+		<legend>{% trans "Indications" %}</legend>
+		<label>{% trans "Indication done by" %}<br />
+				<select name="indication" class="big toggle_parent_label">
+						<option>Escolha...</option>
+                        {% for o in IndicationsChoices %}
+                                <option value="{{ o.id }}" label="{{ o.nick }}">&nbsp;&nbsp;{{ o }}</option>
+                        {% endfor %}
+				</select>
+        </label>
+
+
+		<label class="hidden organization">{% trans "Select Organization, or"%} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
+		<select name="" class="select extrabig asm">
+				{% for l in address_book_organizations %}
+				<option value="{{ l.0 }}">{{ l.1 }}</option>
+				{% endfor %}
+		</select>
+		</label>
+
+		<label class="hidden professional">{% trans "Select Professional, or"%} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
+		<select name="" class="select extrabig asm">
+				{% for l in address_book_professionals %}
+				<option value="{{ l.0 }}">{{ l.1 }}</option>
+				{% endfor %}
+		</select>
+		</label>
+
+        </fieldset>
+
         <fieldset>
-        <legend>Encaminhamentos</legend>
-        <label>Escolha o profissional da lista abaixo, ou <a class="form_mini" display="careprofessional_mini">{% trans "cadastre um Novo Profissional de Saúde" %}</a></label>
+                <legend>{% trans "Parents" %}</legend>
+                        {% if not parents %}
+                                {% include "tags/people_parent.html" %}
+                        {% else %}
+                                {% for parent in parents %}
+                                        {% include "tags/people_parent.html" %}
+                                {% endfor %}
+                        {% endif %}
+                <a class="add_to_form"><span>{% trans "Add Parent" %}</span></a>
+        </fieldset>
+
+        <fieldset style="display:none">
+        <legend>{% trans "Forwards" %}</legend>
+        <label>{% trans "Please, select a professional from the list bellow or" %}, <a class="form_mini" display="careprofessional_mini">{% trans "add a new one" %}</a></label>
         <div class="overflow">
 
                 <table id="indicators" class="zebra">
-                        <thead>  
-                        <tr><th></th><th></th><th></th></tr> 
+                        <thead>
+                        <tr><th></th><th></th><th></th></tr>
                         </thead>
                         <tbody>
                         {% for p in CareProfessionals %}
@@ -103,26 +146,16 @@ GNU General Public License for more details.
                         </tbody>
                 </table>
         </div>
-        
-        <!--ou este -->
-        <div class="label">Indicação realizada por <a href="" class="prase_edit">Alterar indicação</a><br />
-                <div id="indicator_description">
 
-                        <h3>Mariangela Aparecida da Silveira (Psicólogo)</h3>
-                        <p>Intituto de Pscicologia Comportamental de S&atilde;o Carlos<br />
-                        (11) 2301 0751<br />
-                        marisilveira@superuol.com.br</p>
-                </div>
-        </div>
-        
-        
-        <label>Motivo para admissão<br />
+
+        <label>{% trans "Admission reason" %}<br />
         <textarea name="" cols="" rows="3" class="giant"></textarea></label>
-                
+
         </fieldset>
+
         
-        <fieldset>
-        <legend>Mídias</legend>
+        <fieldset style="display: none">
+        <legend>{% trans "Files" %}</legend>
         <div class="label">Documentos <a href="" class="clips">Anexar documento</a>	
         <div id="documents">
                 <!-- Aparece quando "Anexar Documento", desaparece após enviar arquivo, podem haver vários-->
@@ -206,8 +239,8 @@ GNU General Public License for more details.
         </fieldset>
                         
         <fieldset>
-        <label>Comentários<br />
-        <textarea name="" cols="" rows="8" class="giant"></textarea></label>
+        <label>{% trans "Comments" %}<br />
+        <textarea name="comments" cols="" rows="8" class="giant">{{ object.comments }}</textarea></label>
 
         
         <div class="btn_right">
@@ -225,4 +258,5 @@ GNU General Public License for more details.
 </form>
 
 
-{% include "tags/careprofessional_mini.html" %}
+{% include "tags/address_book_professional_mini.html" %}
+{% include "tags/address_book_organization_mini.html" %}

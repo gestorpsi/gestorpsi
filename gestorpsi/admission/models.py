@@ -20,7 +20,8 @@ from gestorpsi.careprofessional.models import CareProfessional
 
 
 class ReferralChoice(models.Model):
-    description = models.CharField(max_length=50)
+    description = models.CharField(max_length=250)
+    nick = models.CharField(max_length=50)
     def __unicode__(self):
         return u"%s" % self.description
 
@@ -32,7 +33,8 @@ class Referral(models.Model):
         return u"%s" % self.description
 
 class IndicationChoice(models.Model):
-    description = models.CharField(max_length=50)
+    description = models.CharField(max_length=250)
+    nick = models.CharField(max_length=50)
     def __unicode__(self):
         return u"%s" % self.description
 

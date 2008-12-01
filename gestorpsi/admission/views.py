@@ -21,6 +21,7 @@ from gestorpsi.careprofessional.models import LicenceBoard
 from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 from gestorpsi.admission.models import *
 from gestorpsi.contact.views import *
+from gestorpsi.util.views import date_form_to_db
 
 def form(request, object_id=''):
     object    = get_object_or_404(Client, pk=object_id)
@@ -43,7 +44,7 @@ def is_responsible(value):
 def add_relationship(object, name_list, relation_list, responsible_list):
     object.person_link.clear()
     for i in range(0, len(name_list)):
-        if (len(numbers[i])):
+        if (len(name_list[i])):
             object.person_link.add(PersonLink.objects.create(person=Person.objects.create(name=name_list[i]), relation=Relation.objects.get(pk=relation_list[i]), responsible=is_responsible(responsible_list[i])))
 
     # Deletar
@@ -55,13 +56,13 @@ def add_relationship(object, name_list, relation_list, responsible_list):
     #    person_link.save()
     #    object.person_link.add(person_link)
 
-def save_admission(request, object_id=''):
+def save(request, object_id=''):
     object = get_object_or_404(Client, pk=object_id)
-    object.admission_date = request.POST['admission_date']
+    object.admission_date = date_form_to_db(request.POST['admission_date'])
     object.idRecord = request.POST['idRecord']
     object.legacyRecord = request.POST['legacyRecord']
     object.healthDocument = request.POST['healthDocument']
     object.comments = request.POST['comments']
     object.save()
     add_relationship(object, request.POST.getlist('parent_name'),request.POST.getlist('parent_relation'), request.POST.getlist('parent_responsible'))
-    return HttpResponse('blabla')
+    return HttpResponse(object.id)

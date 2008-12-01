@@ -14,4 +14,5 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-# Create your views here.
+def date_form_to_db(value):
+    return '%s-%s-%s' % (value.split('/')[2], value.split('/')[1], value.split('/')[0])

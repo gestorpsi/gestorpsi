@@ -21,6 +21,7 @@ from gestorpsi.document.views import document_save
 from gestorpsi.person.models import MaritalStatus
 from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
+from gestorpsi.util.views import date_form_to_db
 
 def person_save(request, person):
     person.name= request.POST['name']
@@ -32,7 +33,7 @@ def person_save(request, person):
         person.photo = ''
 
     if(request.POST['birthDate']):
-        person.birthDate = '%s-%s-%s' % (request.POST['birthDate'].split('/')[2], request.POST['birthDate'].split('/')[1], request.POST['birthDate'].split('/')[0])
+        person.birthDate = date_form_to_db(request.POST['birthDate'])
 
     person.gender = request.POST['gender']
     

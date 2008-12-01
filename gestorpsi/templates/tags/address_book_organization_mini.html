@@ -16,18 +16,24 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<div class="form_mini device_mini">
-<form action="/device/save_device/" method="post">	
-	<fieldset>
-	<legend>{% trans "Adding new Device" %}</legend>
-	<label>{% trans "Device" %}<br />
-		<input type="text" name="label" class="big tabtitle" value="" />
-	</label>
-	<label>
-	<input type="submit" name="submit" value="{% trans "Add" %}" class="mini" />
-	<input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />
-	</label>
-	</fieldset>
+<div class="form_mini address_book_organization_mini">
+<form action="/contact/save/" method="post">
+
+<fieldset>
+<legend>{% trans "Adding new Organization" %}</legend>
+    <label>{% trans "Name" %}<br />
+    <input type="text" name="name" class="big tabtitle" />
+    </label>
+
+
+    <label class="block">
+    <input type="hidden" name="type" value="organization" />
+    <input type="submit" name="submit" value="{% trans "Add" %}" class="mini" />
+    <input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />
+    </label>
+</fieldset>
 </form>
 </div>
+
+
 

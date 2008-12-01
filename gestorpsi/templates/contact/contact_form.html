@@ -41,15 +41,13 @@ GNU General Public License for more details.
 
 <fieldset class="professional contact" {% ifequal object_type '1'%} style="display:none"{%endifequal%}>
 <legend>{% trans "Professional Organization" %}</legend>
-		<label>{% trans "Organization" %}<br />
+		<label>{% trans "Select Organization, or"%} <a class="form_mini" display="organization_mini">{% trans "add a new one" %}</a><br />
 		<select name="organization" class="extrabig asm">
 			{% for o in organizations %}
 			<option value="{{ o.id }}"{% ifequal object.person.organization.id o.id %} selected{% endifequal %}>{{ o }}</option>
 			{% endfor %}
 		</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		</label>
-		<br />
-		<label><a class="form_mini" display="organization_mini">{% trans "Add New Organization" %}</a></label>
 </fieldset>
 
 

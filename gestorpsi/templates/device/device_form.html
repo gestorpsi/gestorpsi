@@ -39,16 +39,13 @@ GNU General Public License for more details.
 		<fieldset id="fieldset_device">
 		<legend>{% trans "Devices" %}</legend>
 			
-			<label>{% trans "Type" %}<br />
+			<label>{% trans "Select Device Type or" %} <a class="form_mini" display="device_mini">{% trans "add a new one" %}</a><br />
 			<select name="select_device" class="select extrabig asm">
 				{% for l in object %}
 				<option value="{{ l.id }}"{% ifequal device_details.device.id l.id %} selected{% endifequal %}>{{ l.description }}</option>
 				{% endfor %}
 			</select>
 			</label>
-			<br />
-			<label><a class="form_mini" display="place_mini">{% trans "Add New Device" %}</a></label>
-			
 		</fieldset>	
 	
 

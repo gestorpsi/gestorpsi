@@ -234,6 +234,11 @@ $(document).unbind().ready(function(){
 
 	// organization menu
 	$('#form_organization .main_area fieldset.organization:not(.first)').hide();
+
+
+    $('a.notajax').click(function() {
+        return false;
+    });
 	
 });
 

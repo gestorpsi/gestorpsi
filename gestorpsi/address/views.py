@@ -14,7 +14,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.http import HttpResponse, Http404 
 from gestorpsi.address.models import Country, Address, City, AddressType
 
 # Check if addresses fields are equals

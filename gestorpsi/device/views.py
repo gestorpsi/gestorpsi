@@ -14,12 +14,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
-from gestorpsi.device.models import DeviceDetails, Device, DeviceType
+from gestorpsi.device.models import DeviceDetails, Device
 from gestorpsi.organization.models import Organization
-from gestorpsi.careprofessional.models import InstitutionType, PostGraduate, AcademicResume, Profession, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
 from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 from gestorpsi.place.models import Place, Room
 

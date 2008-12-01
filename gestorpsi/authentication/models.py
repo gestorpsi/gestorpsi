@@ -17,7 +17,6 @@ GNU General Public License for more details.
 from django.db import models
 from gestorpsi.organization.models import Organization
 from django.contrib.auth.models import User, UserManager
-from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import CryptographicUtils as cryptoUtils
 
 class CustomUser(User):

@@ -15,14 +15,8 @@ GNU General Public License for more details.
 """
 
 from django.db import models
-from django.forms import ModelForm
 from gestorpsi.person.models import Person
-from gestorpsi.organization.models import Organization
-from gestorpsi.phone.models import Phone
 from gestorpsi.place.models import Place
-from gestorpsi.address.models import Country, City, Address
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import audittrail
 from gestorpsi.organization.models import Agreement

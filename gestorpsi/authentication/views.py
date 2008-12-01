@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from gestorpsi.authentication.models import CustomUser

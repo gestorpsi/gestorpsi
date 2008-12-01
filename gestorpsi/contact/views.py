@@ -14,17 +14,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.shortcuts import render_to_response, get_list_or_404, get_object_or_404
-from django.http import HttpResponse, Http404
-from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import render_to_response, get_object_or_404
+from django.http import HttpResponse
 from gestorpsi.organization.models import Organization
-from gestorpsi.phone.models import Phone, PhoneType
-from gestorpsi.address.models import Country, City, State, Address, AddressType
-from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetwork
+from gestorpsi.phone.models import PhoneType
+from gestorpsi.address.models import Country, State, AddressType
+from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.person.models import Person
-from gestorpsi.place.models import Place
 from gestorpsi.careprofessional.models import CareProfessional
-from gestorpsi.careprofessional.views import care_professional_fill
 from gestorpsi.address.views import address_save
 from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save

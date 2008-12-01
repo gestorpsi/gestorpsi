@@ -25,7 +25,6 @@ from gestorpsi.careprofessional.models import PostGraduate, InstitutionType, Aca
 from gestorpsi.careprofessional.models import Profession, ProfessionalProfile
 from gestorpsi.careprofessional.models import LicenceBoard, ProfessionalIdentification
 from gestorpsi.careprofessional.models import CareProfessional
-from gestorpsi.organization.models import Agreement
 
 class InstitutionTypeAdmin(admin.ModelAdmin):
     pass

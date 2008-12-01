@@ -15,10 +15,8 @@ GNU General Public License for more details.
 """
 
 from django.db import models
-from django.forms import ModelForm
 from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, Room
-from gestorpsi.careprofessional.models import Profession
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import audittrail
 

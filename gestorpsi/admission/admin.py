@@ -27,7 +27,7 @@ from gestorpsi.admission.models import *
 class ReferralChoiceAdmin(admin.ModelAdmin):
     pass
 
-class ReferralAdmin(admin.ModelAdmin):
+class AdmissionReferralAdmin(admin.ModelAdmin):
     pass
 
 class IndicationChoiceAdmin(admin.ModelAdmin):
@@ -37,7 +37,7 @@ class IndicationAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(ReferralChoice, ReferralChoiceAdmin)
-admin.site.register(Referral, ReferralAdmin)
+admin.site.register(AdmissionReferral, AdmissionReferralAdmin)
 admin.site.register(IndicationChoice, IndicationChoiceAdmin)
 admin.site.register(Indication, IndicationAdmin)
 

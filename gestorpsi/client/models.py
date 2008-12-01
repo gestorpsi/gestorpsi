@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django.db import models
 from gestorpsi.person.models import Person
-from gestorpsi.admission.models import Referral, Indication
+from gestorpsi.admission.models import AdmissionReferral, Indication
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import CryptographicUtils as cryptoUtils
 from gestorpsi.util import audittrail
@@ -41,7 +41,7 @@ class Client(models.Model):
     crypt_legacyRecord = models.CharField(max_length=250)
     crypt_healthDocument = models.CharField(max_length=250)
     admission_date = models.DateField(null=True)
-    referral_choice = models.ForeignKey(Referral, null=True)
+    referral_choice = models.ForeignKey(AdmissionReferral, null=True)
     indication_choice = models.ForeignKey(Indication, null=True)
     clientStatus = models.CharField(max_length=1, default = '1', choices=CLIENT_STATUS)
     person_link = models.ManyToManyField(PersonLink)

@@ -25,7 +25,7 @@ class ReferralChoice(models.Model):
     def __unicode__(self):
         return u"%s" % self.description
 
-class Referral(models.Model):
+class AdmissionReferral(models.Model):
     referral_choice = models.ForeignKey(ReferralChoice)
     referral_organization = models.ForeignKey(Organization, null=True)
     referral_professional = models.ForeignKey(CareProfessional, null=True)

@@ -21,13 +21,11 @@ from django.core.paginator import Paginator
 from django.conf import settings
 from gestorpsi.client.models import Client
 from gestorpsi.person.models import Person, MaritalStatus
-from gestorpsi.phone.models import Phone, PhoneType
-from gestorpsi.address.models import Country, City, State, Address, AddressType
-from gestorpsi.internet.models import Email, EmailType, InstantMessenger, IMNetwork
-from gestorpsi.document.models import Document, TypeDocument, Issuer
+from gestorpsi.phone.models import PhoneType
+from gestorpsi.address.models import Country, State, AddressType
+from gestorpsi.internet.models import EmailType, IMNetwork
+from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.person.views import person_save, person_order
-from gestorpsi.careprofessional.models import Profession, ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
-from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 
 # list all active clients
 def index(request):

@@ -67,7 +67,7 @@ GNU General Public License for more details.
         </label>
 
 		<label class="hidden organization">{% trans "Select Organization, or"%} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
-		<select name="" class="select extrabig asm">
+		<select name="organization" class="select extrabig asm">
 				{% for l in address_book_organizations %}
 				<option value="{{ l.0 }}">{{ l.1 }}</option>
 				{% endfor %}
@@ -75,7 +75,7 @@ GNU General Public License for more details.
 		</label>
         
 		<label class="hidden professional">{% trans "Select Professional, or"%} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
-		<select name="" class="select extrabig asm">
+		<select name="professional" class="select extrabig asm">
 				{% for l in address_book_professionals %}
 				<option value="{{ l.0 }}">{{ l.1 }}</option>
 				{% endfor %}
@@ -97,7 +97,7 @@ GNU General Public License for more details.
 
 
 		<label class="hidden organization">{% trans "Select Organization, or"%} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
-		<select name="" class="select extrabig asm">
+		<select name="organization" class="select extrabig asm">
 				{% for l in address_book_organizations %}
 				<option value="{{ l.0 }}">{{ l.1 }}</option>
 				{% endfor %}
@@ -105,7 +105,7 @@ GNU General Public License for more details.
 		</label>
 
 		<label class="hidden professional">{% trans "Select Professional, or"%} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
-		<select name="" class="select extrabig asm">
+		<select name="professional" class="select extrabig asm">
 				{% for l in address_book_professionals %}
 				<option value="{{ l.0 }}">{{ l.1 }}</option>
 				{% endfor %}

@@ -17,7 +17,8 @@ GNU General Public License for more details.
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from gestorpsi.client.models import Client, PersonLink, Relation
-from gestorpsi.careprofessional.models import LicenceBoard
+from gestorpsi.organization.models import Organization
+from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
 from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 from gestorpsi.admission.models import *
 from gestorpsi.contact.views import *
@@ -45,7 +46,7 @@ def is_responsible(value):
 
 def add_relationship(object, name_list, relation_list, responsible_list):
     responsible = ''
-    object.person_link.clear()
+    object.person_link.all().delete()
     for i in range(0, len(name_list)):
         if (len(name_list[i])):
             try:
@@ -54,15 +55,6 @@ def add_relationship(object, name_list, relation_list, responsible_list):
                 responsible = False
             object.person_link.add(PersonLink.objects.create(person=Person.objects.create(name=name_list[i]), relation=Relation.objects.get(pk=relation_list[i]), responsible=responsible))
 
-    # Deletar
-    #for relation in relation_list:
-    #    person_link = PersonLink()
-    #    person_link.person = Person.objects.create(name=relation[0])
-    #    person_link.relation = Relation.objects.get(pk=relation[1])
-    #    person_link.responsible = relation[2]
-    #    person_link.save()
-    #    object.person_link.add(person_link)
-
 def save(request, object_id=''):
     object = get_object_or_404(Client, pk=object_id)
     object.admission_date = date_form_to_db(request.POST['admission_date'])
@@ -70,6 +62,35 @@ def save(request, object_id=''):
     object.legacyRecord = request.POST['legacyRecord']
     object.healthDocument = request.POST['healthDocument']
     object.comments = request.POST['comments']
+
+    """ Referral Section """
+    ar = AdmissionReferral()
+    ar.referral_choice = ReferralChoice.objects.get(pk=request.POST['referral'])
+    try:
+        ar.referral_organization = Organization.objects.get(pk=request.POST['organization'])
+    except:
+        pass
+    try:
+        ar.referral_professional = CareProfessional.objects.get(pk=request.POST['professional'])
+    except:
+        pass
+    ar.save()
+    object.referral_choice = ar
+
+    """ Indication  Section """
+    indication = Indication()
+    indication.indication_choice = IndicationChoice.objects.get(pk=request.POST['indication'])
+    try:
+        indication.referral_organization = Organization.objects.get(pk=request.POST['organization'])
+    except:
+        pass
+    try:
+        indication.referral_professional = CareProfessional.objects.get(pk=request.POST['professional'])
+    except:
+        pass
+    indication.save()
+    object.indication_choice = indication
+
     object.save()
     add_relationship(object, request.POST.getlist('parent_name'),request.POST.getlist('parent_relation'), request.POST.getlist('parent_responsible'))
     return HttpResponse(object.id)

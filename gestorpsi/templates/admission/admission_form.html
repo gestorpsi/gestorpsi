@@ -252,6 +252,12 @@ GNU General Public License for more details.
 	<div class="bg_blue">
 		{% include "tags/save.html" %}
 	</div>
+    <div class="people_actions" {% if not object.id %}style="display:none"{% endif %}>
+	<h3>{% trans 'Object Actions' %}</h3>
+	<ul>
+		<li><a class="admission admit" href="/referral/{% if object.id %}{{ object.id }}/{% endif %}" title="{{ object.person.name }}">{% trans "Referral Client" %}</a></li>
+	</ul>
+	</div>
 </div>
 
 <label><input name="" type="button" class="btn2" value="Cancelar" /></label>

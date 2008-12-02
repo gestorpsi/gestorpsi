@@ -497,7 +497,45 @@ $(document).unbind().ready(function(){
                     
      });
      
-     
+
+     /**
+      * referral service/professional select
+      *
+      * when select a service, display only professionals related
+      * when select a professional, display only services related
+      */
+
+     $('select.referral[name=service] option').click(function() {
+        var service = $(this);
+        if($(service).hasClass('all')) {
+            $('select.referral[name=professional] option').show();
+        } else {
+            $('select.referral[name=professional] option').hide();
+            $('select.referral[name=professional] option').each(function() {
+                if($(service).hasClass($(this).val())) {
+                    $(this).show();
+                }
+            });
+        }
+     });
+
+
+     $('select.referral[name=professional] option').click(function() {
+        var professional = $(this);
+        if($(professional).hasClass('all')) {
+            $('select.referral[name=service] option').show();
+        } else {
+            $('select.referral[name=service] option').hide();
+            $('select.referral[name=service] option').each(function() {
+                if($(professional).hasClass($(this).val())) {
+                    $(this).show();
+                }
+            });
+        }
+     });
+
+
+
      /**
       * select multiple plugin
       */

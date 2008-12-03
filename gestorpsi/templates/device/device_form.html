@@ -59,15 +59,15 @@ GNU General Public License for more details.
 			</label>
 			
 			<label>{% trans "Model" %}<br />
-			<input type="text" name="model" class="big tabtitle" value="{{ device_details.model }}" id="model" />
+			<input type="text" name="model" class="big" value="{{ device_details.model }}" id="model" />
 			</label>
 			
 			<label>{% trans "Part number" %}<br />
-			<input type="text" name="part_number" class="big tabtitle" value="{{ device_details.part_number }}" id="part_number" />
+			<input type="text" name="part_number" class="big" value="{{ device_details.part_number }}" id="part_number" />
 			</label>
 			
 			<label>{% trans "Comments" %}<br />
-			<input type="text" name="comments" class="big tabtitle" value="{{ device_details.comments }}" id="comments" />
+			<input type="text" name="comments" class="big" value="{{ device_details.comments }}" id="comments" />
 			</label>
 			
 				
@@ -91,18 +91,9 @@ GNU General Public License for more details.
     <fieldset id="fieldset_durability_type">
 		<legend>{% trans "Durability" %}</legend>
 			<label>{% trans "Type" %}<br />
-			<select name="select_durability_type">
-			
-				<!-- 
-				{% for dur in device_details.durability %}
-				{{ dur }}
-					<option value="{{ dur.id }}"{% ifequal device_details.durability.id dur.id %} selected{% endifequal %}>{{ dur }}</option>
-				{% endfor %}
-				 -->
-				 
-				<option value="1">Consumable</option>
-				<option value="2">Durable</option 
-				
+			<select name="select_durability_type" class="extramedium">
+				<option value="1"{% ifequal device_details.durability '1' %} selected{% endifequal %}>Consumable</option>
+				<option value="2"{% ifequal device_details.durability '2' %} selected{% endifequal %}>Durable</option
 			</select>
 			</label>	
 	</fieldset>
@@ -114,17 +105,17 @@ GNU General Public License for more details.
     <fieldset id="fieldset_use_type">
 		<legend>{% trans "Restriction" %}</legend>
 		<label>{% trans "Type" %}<br />
-			<select name="select_restriction_type" class="device_restriction">
+			<select name="select_restriction_type" class="device_restriction medium">
 				<option value="1">Not restrict</option>
-				<option value="2">Restrict</option>
+				<option value="2"{% if device_details.prof_restriction %} selected{% endif %}>Restrict</option>
 			</select>
 		</label>
 		
 		<!--  profission  -->
 		<label class="device_restriction">{% trans "Profissional Area" %}<br />
-		    <select name="professional_area" class="medium">
+		    <select name="professional_area" class="extramedium">
 			    {% for l in PROFESSIONAL_AREAS %}
-				    <option value="{{ l.0 }}">{{ l.1 }}</option>
+				    <option value="{{ l.0 }}"{% ifequal device_details.prof_restriction l.0 %} selected{% endifequal %}>{{ l.1 }}</option>
 			    {% endfor %}
 		    </select>
 		</label>
@@ -135,39 +126,34 @@ GNU General Public License for more details.
     <fieldset id="fieldset_mobility_type">
 		<legend>{% trans "Mobility" %}</legend>
 		<label>{% trans "Type" %}<br />
-			<select name="select_mobility_type" class="device_mobility">
-				<option value="1">Fix</option>
-				<option selected value="2">Mobile</option>
+			<select name="select_mobility_type" class="device_mobility big">
+				<option value="1"{% ifequal device_details.mobility '1' %} selected{% endifequal %}>Fix</option>
+				<option value="2"{% ifequal device_details.mobility '2' %} selected{% endifequal %}>Mobile</option>
 			</select>
 		</label>
 
 		<!--  place  -->
 		<label class="device_place">{% trans "Place" %}<br />
-			<select name="place_associated" class="medium device_place">
+			<select name="place_associated" class="big device_place">
 				{% for p in places %}
-					<option value="{{ p.id }}">{{ p.label }}</option>
+					<option value="{{ p.id }}"{% ifequal device_details.place_id p.id %} selected{% endifequal %}>{{ p.label }}</option>
 				{% endfor %}
 			</select>
 
 		<!--  room  -->
-		<label class="device_room">{% trans "Room" %}<br />
+		<label class="device_room"{% if not object %} style="display:none;"{% endif %}{% ifequal device_details.mobility '2' %} style="display:none;"{% endifequal %}>{% trans "Room" %}<br />
 			<select name="room_associated" class="medium device_room">
 				{% for p in places %}
 					{% for r in p.room_set.all %}
-						<option class="place_{{ p.id }}" value="{{ r.id }}">{{ r }}</option>
+						<option class="place_{{ p.id }}" value="{{ r.id }}"{% if device_details.place_id %}{% ifnotequal p.id device_details.place_id %} style="display:none;"{% endifnotequal %}{% endif %}{% if not forloop.parentloop.first and not device_details.id %} style="display:none;"{% endif %}{% ifequal device_details.room_id r.id %} selected{% endifequal %}>{{ r }}</option>
 					{% endfor %}
 				{% endfor %}
 			</select>
 		</label>		
 	</fieldset>
-
-
-	
-	<br>
+    <br>
 	</div>
-
 </div>
-
 
 <div id="sidebar" class="sidebar">
 	<div class="bg_blue">
@@ -179,4 +165,3 @@ GNU General Public License for more details.
 </form>
 
 {% include "tags/device_mini.html" %}
-

@@ -67,7 +67,8 @@ GNU General Public License for more details.
         </label>
 
 		<label class="hidden organization">{% trans "Select Organization, or"%} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
-		<select name="organization" class="select extrabig asm">
+		<select name="referral_organization" class="select extrabig asm">
+				<option>Escolha...</option>
 				{% for l in address_book_organizations %}
 				    <option value="{{ l.0 }}" {% ifequal l.0 object.referral_choice.referral_organization.id %} selected {% endifequal %}>{{ l.1 }}</option>
 				{% endfor %}
@@ -75,7 +76,8 @@ GNU General Public License for more details.
 		</label>
         
 		<label class="hidden professional">{% trans "Select Professional, or"%} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
-		<select name="professional" class="select extrabig asm">
+		<select name="referral_professional" class="select extrabig asm">
+				<option>Escolha...</option>
 				{% for l in address_book_professionals %}
 				    <option value="{{ l.0 }}" {% ifequal l.0 object.referral_choice.referral_professional.id %} selected {% endifequal %}>{{ l.1 }}</option>
 				{% endfor %}
@@ -97,7 +99,8 @@ GNU General Public License for more details.
 
 
 		<label class="hidden organization">{% trans "Select Organization, or"%} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
-		<select name="organization" class="select extrabig asm">
+		<select name="indication_organization" class="select extrabig asm">
+				<option>Escolha...</option>
 				{% for l in address_book_organizations %}
 				    <option value="{{ l.0 }}" {% ifequal l.0 object.indication_choice.referral_organization.id %} selected {% endifequal %}>{{ l.1 }}</option>
 				{% endfor %}
@@ -105,7 +108,8 @@ GNU General Public License for more details.
 		</label>
 
 		<label class="hidden professional">{% trans "Select Professional, or"%} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
-		<select name="professional" class="select extrabig asm">
+		<select name="indication_professional" class="select extrabig asm">
+				<option>Escolha...</option>
 				{% for l in address_book_professionals %}
 				    <option value="{{ l.0 }}" {% ifequal l.0 object.indication_choice.referral_professional.id %} selected {% endifequal %}>{{ l.1 }}</option>
 				{% endfor %}

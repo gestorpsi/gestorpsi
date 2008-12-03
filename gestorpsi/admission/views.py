@@ -67,13 +67,13 @@ def save(request, object_id=''):
     ar = AdmissionReferral()
     ar.referral_choice = ReferralChoice.objects.get(pk=request.POST['referral'])
     try:
-        ar.referral_organization = Organization.objects.get(pk=request.POST['organization'])
+        ar.referral_organization = Organization.objects.get(pk=request.POST['referral_organization'])
     except:
-        pass
+        ar.referral_organization = None
     try:
-        ar.referral_professional = CareProfessional.objects.get(pk=request.POST['professional'])
+        ar.referral_professional = CareProfessional.objects.get(pk=request.POST['referral_professional'])
     except:
-        pass
+        ar.referral_professional = None
     ar.save()
     object.referral_choice = ar
 
@@ -81,13 +81,13 @@ def save(request, object_id=''):
     indication = Indication()
     indication.indication_choice = IndicationChoice.objects.get(pk=request.POST['indication'])
     try:
-        indication.referral_organization = Organization.objects.get(pk=request.POST['organization'])
+        indication.referral_organization = Organization.objects.get(pk=request.POST['indication_organization'])
     except:
-        pass
+        indication.referral_organization = None
     try:
-        indication.referral_professional = CareProfessional.objects.get(pk=request.POST['professional'])
+        indication.referral_professional = CareProfessional.objects.get(pk=request.POST['indication_professional'])
     except:
-        pass
+        indication.referral_professional = None
     indication.save()
     object.indication_choice = indication
 

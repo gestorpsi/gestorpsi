@@ -30,7 +30,7 @@ class AdmissionReferral(models.Model):
     referral_organization = models.ForeignKey(Organization, null=True)
     referral_professional = models.ForeignKey(CareProfessional, null=True)
     def __unicode__(self):
-        return u"%s" % self.description
+        return u"%s" % self.referral_choice
 
 class IndicationChoice(models.Model):
     description = models.CharField(max_length=250)
@@ -43,4 +43,4 @@ class Indication(models.Model):
     referral_organization = models.ForeignKey(Organization, null=True)
     referral_professional = models.ForeignKey(CareProfessional, null=True)
     def __unicode__(self):
-        return u"%s" % self.description
+        return u"%s" % self.indication_choice

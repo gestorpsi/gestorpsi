@@ -1154,7 +1154,7 @@ ul.paginator {
 ul.paginator li {
 	list-style: none;
 	display: inline;
-	color: #e6e6e6;
+	color: #808080;
 }
 
 ul.paginator li.previous {

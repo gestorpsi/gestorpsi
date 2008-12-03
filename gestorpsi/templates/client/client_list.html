@@ -27,7 +27,7 @@ GNU General Public License for more details.
         <h2 id="title_clients" style="display: none"></h2>
         
         <h2 class="title_clients">{% trans "All Customers" %}</h2>
-        <p class="description">{% trans "Displaying" %} <a href="/client/" display="list"><span id="object_length">{{ paginator.count }}</span> {% trans "customer(s)" %}</a>. {% trans "Page" %} <b>{{ object.number }}</b> {% trans "of" %} <b>{{ paginator.num_pages }}</b></p>
+        <p class="description">{% trans "Displaying" %} <a href="/client/" display="list"><span id="object_length">{{ paginator.count }}</span> {% trans "customer(s)" %}</a>.{% trans "Page" %} <b>{{ object.number }}</b> {% trans "of" %} <b>{{ paginator.num_pages }}</b></p>
         <h2 id="title_myoffice" style="display: none"></h2>
         
         
@@ -108,9 +108,9 @@ GNU General Public License for more details.
                 </tbody>
                 </table>
                 <ul class="paginator">
-                        <li class="previous">{% if object.has_previous %}<a href="/client/page{{ object.previous_page_number }}"><< Anterior</a>{% endif %}</li>
-                        <li>{% for p in paginator.page_range %}<a href="/client/page{{ p }}">{{ p }}</a>{% if not forloop.last %} | {% endif %}{% endfor %}</li>
-                        <li class="next">{% if object.has_next %}<a href="/client/page{{ object.next_page_number }}">Próximo >></a>{% endif %}</li>
+                        <li class="previous">{% if object.has_previous %}<a href="/client/page{{ object.previous_page_number }}"><< {% trans "Previous" %}</a>{% endif %}</li>
+                        <li>{% for p in paginator.page_range %}{% ifnotequal object.number p %}<a href="/client/page{{ p }}">{% endifnotequal %} {{ p }}{% ifnotequal object.number p %}</a>{% endifnotequal %}{% if not forloop.last %} | {% endif %}{% endfor %}</li>
+                        <li class="next">{% if object.has_next %}<a href="/client/page{{ object.next_page_number }}">{% trans "Next" %} >></a>{% endif %}</li>
                 </ul>
         </div>
 </div>

@@ -165,16 +165,7 @@ $(document).unbind().ready(function(){
 	});
 	
 	
-	/**
-         *
-         * open new tab when item is clicked (opened_tab)
-         * 
-         */
-        
-        $('#search_results.newtab tr td a').click(function() {
 
-	});
-        
         /**
          *
          * hide opened extra tabs when close (or Cancel Button) is clicked
@@ -183,11 +174,11 @@ $(document).unbind().ready(function(){
          */
         
         $("ul.opened_tabs li div a.close, .edit_form input#cancel_button").click(function() {
-		$("ul.opened_tabs").hide();
-		$(".edit_form").hide();
-		$('div#sub_menu li a[display="list"]').addClass('active');
-		$('div#list.fast_menu_content').show();
-	});
+            $("ul.opened_tabs").hide();
+            $(".edit_form").hide();
+            $('div#sub_menu li a[display="list"]').addClass('active');
+            $('div#list.fast_menu_content').show();
+        });
 	
 	/**
 	* sidebar. cancel buttom if is a new register

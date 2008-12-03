@@ -16,23 +16,23 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<div class="no_registers_available"{% if object %} style="display:none"{% endif %}>
+{% include "core/ajax_page.html" %}
+
+<div class="no_registers_available"{% if object.object_list %} style="display:none"{% endif %}>
 	<div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/contact/add/" display="form" class="fastmenu" sub_menu="sub_contacts">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
 </div>
-<div class="registers_available"{% if not object %} style="display:none"{% endif %}>
+<div class="registers_available"{% if not object.object_list %} style="display:none"{% endif %}>
+
 
 	<div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
 	Esta caixa é mostrada quando há mensagens
 	</div>
 	
 	<h2 class="title_contacts">{% trans "All Contacts" %}</h2>
-	<p class="description">{% trans "Displaying" %} <a href="/contact/" display="list">{{ object|length }}  {% trans " general contact(s), " %} </a> <a href="/contact/" display="list"> {{ organizations_count }} {% trans " organization(s) and " %} </a> <a href="/contact/" display="list">{{ professionals_count }} {% trans " professionals(s)" %}</a>.</p>
+	<p class="description">{% trans "Displaying" %} <a href="/contact/" display="list">{{ paginator.count }}  {% trans " general contact(s), " %} </a> <a href="/contact/" display="list"> {{ organizations_count }} {% trans " organization(s) and " %} </a> <a href="/contact/" display="list">{{ professionals_count }} {% trans " professionals(s)" %}</a>.{% trans "Page" %} <b>{{ object.number }}</b> {% trans "of" %} <b>{{ paginator.num_pages }}</b></p>
 	
 	
 	<div class="main_area contact">
-		
-	
-	
 		<table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
 			<thead> 
 			<tr> 
@@ -42,9 +42,9 @@ GNU General Public License for more details.
 			</tr> 
 			</thead>
 			<tbody>
-			{% for o in object %}
+			{% for o in object.object_list %}
 				<tr id="{{ o.0 }}">
-					<td>
+					<td class="title">
 						<a href="/contact/{{ o.4 }}/{{ o.0 }}/" title="{{ o.1 }}">{{ o.1 }}</a><br />
 					</td>
 					<td>
@@ -55,7 +55,11 @@ GNU General Public License for more details.
 			{% endfor %}
 			</tbody>
 		</table>
-				
+        <ul class="paginator">
+                <li class="previous">{% if object.has_previous %}<a href="/contact/page{{ object.previous_page_number }}"><< {% trans "Previous" %}</a>{% endif %}</li>
+                <li>{% for p in paginator.page_range %}{% ifnotequal object.number p %}<a href="/contact/page{{ p }}">{% endifnotequal %} {{ p }}{% ifnotequal object.number p %}</a>{% endifnotequal %}{% if not forloop.last %} | {% endif %}{% endfor %}</li>
+                <li class="next">{% if object.has_next %}<a href="/contact/page{{ object.next_page_number }}">{% trans "Next" %} >></a>{% endif %}</li>
+        </ul>
 	</div>
 
 </div>

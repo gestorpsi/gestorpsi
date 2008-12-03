@@ -16,6 +16,9 @@ GNU General Public License for more details.
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
+from django.template import RequestContext
+from django.core.paginator import Paginator
+from django.conf import settings
 from gestorpsi.organization.models import Organization
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
@@ -51,26 +54,14 @@ def index(request):
         lista.append(i)
     for i in address_book_get_professionals(request): # append professionals
         lista.append(i)
-    
-    
-#    for x in (Organization.objects.filter(organization=None, public=True) | Organization.objects.filter(organization=org) ):
-#        phone = x.get_first_phone()
-#        email = x.get_first_email()
-#        if x.organization == None:
-#            lista.append([x.id, x.name, email, phone, '1', 'GESTORPSI'])
-#        else:
-#            lista.append([x.id, x.name, email, phone, '1', 'LOCAL'])
-#        
-#        for y in CareProfessional.objects.filter(person__organization=x):
-#            phone = y.person.get_first_phone()
-#            email = y.person.get_first_email()
-#            if x.organization == None:
-#                lista.append([y.id, y.person.name, email, phone, '2', 'GESTORPSI'])
-#            else:
-#                lista.append([y.id, y.person.name, email, phone, '2', 'LOCAL'])
+
+    lista = list_order(lista)
+    paginator = Paginator(lista, settings.PAGE_RESULTS)
+    lista = paginator.page(1)
 
     return render_to_response('contact/contact_index.html', { 
-                                    'object': list_order(lista),
+                                    'object': lista,
+                                    'paginator': paginator,
                                     'organizations_count': organizations_count,
                                     'professionals_count': professionals_count,
                                     'countries': Country.objects.all(),
@@ -81,7 +72,36 @@ def index(request):
                                     'IMNetworks': IMNetwork.objects.all(),
                                     'States': State.objects.all(),
                                     'organizations': Organization.objects.filter(organization=org)
-                                    })
+                                    },
+                                    context_instance=RequestContext(request)
+                                    )
+
+
+def list(request, page = 1):
+    user = request.user
+    org = user.org_active
+
+    lista = [] # ID, Name, Email, Phone, 1(ORG)/2(PROF), 1(GESTORPSI)/2(LOCAL)
+    organizations_count = len(address_book_get_organizations(request))
+    professionals_count = len(address_book_get_professionals(request))
+
+    for i in address_book_get_organizations(request): # append organizations
+        lista.append(i)
+    for i in address_book_get_professionals(request): # append professionals
+        lista.append(i)
+
+    lista = list_order(lista)
+    paginator = Paginator(lista, settings.PAGE_RESULTS)
+    lista = paginator.page(page)
+
+    return render_to_response('contact/contact_list.html', {
+                                    'object': lista,
+                                    'paginator': paginator,
+                                    'organizations_count': organizations_count,
+                                    'professionals_count': professionals_count,
+                                    },
+                                    context_instance=RequestContext(request)
+                                    )
 
 
 def form(request, object_type='', object_id=''):

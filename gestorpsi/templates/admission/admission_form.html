@@ -61,7 +61,7 @@ GNU General Public License for more details.
                 <select name="referral" class="big toggle_parent_label">
                         <option>Escolha...</option>
                         {% for o in ReferralChoices %}
-                                <option value="{{ o.id }}" label="{{ o.nick }}">&nbsp;&nbsp;{{ o }}</option>
+                                <option value="{{ o.id }}" label="{{ o.nick }}" {% ifequal o.id object.referral_choice.referral_choice.id %} selected{% endifequal %}>&nbsp;&nbsp;{{ o }}</option>
                         {% endfor %}
                 </select>
         </label>
@@ -69,7 +69,7 @@ GNU General Public License for more details.
 		<label class="hidden organization">{% trans "Select Organization, or"%} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
 		<select name="organization" class="select extrabig asm">
 				{% for l in address_book_organizations %}
-				<option value="{{ l.0 }}">{{ l.1 }}</option>
+				    <option value="{{ l.0 }}" {% ifequal l.0 object.referral_choice.referral_organization.id %} selected {% endifequal %}>{{ l.1 }}</option>
 				{% endfor %}
 		</select>
 		</label>
@@ -77,7 +77,7 @@ GNU General Public License for more details.
 		<label class="hidden professional">{% trans "Select Professional, or"%} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
 		<select name="professional" class="select extrabig asm">
 				{% for l in address_book_professionals %}
-				<option value="{{ l.0 }}">{{ l.1 }}</option>
+				    <option value="{{ l.0 }}" {% ifequal l.0 object.referral_choice.referral_professional.id %} selected {% endifequal %}>{{ l.1 }}</option>
 				{% endfor %}
 		</select>
 		</label>
@@ -90,7 +90,7 @@ GNU General Public License for more details.
 				<select name="indication" class="big toggle_parent_label">
 						<option>Escolha...</option>
                         {% for o in IndicationsChoices %}
-                                <option value="{{ o.id }}" label="{{ o.nick }}">&nbsp;&nbsp;{{ o }}</option>
+                                <option value="{{ o.id }}" label="{{ o.nick }}" {% ifequal o.id object.indication_choice.indication_choice.id %} selected{% endifequal %}>&nbsp;&nbsp;{{ o }}</option>
                         {% endfor %}
 				</select>
         </label>
@@ -99,7 +99,7 @@ GNU General Public License for more details.
 		<label class="hidden organization">{% trans "Select Organization, or"%} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
 		<select name="organization" class="select extrabig asm">
 				{% for l in address_book_organizations %}
-				<option value="{{ l.0 }}">{{ l.1 }}</option>
+				    <option value="{{ l.0 }}" {% ifequal l.0 object.indication_choice.referral_organization.id %} selected {% endifequal %}>{{ l.1 }}</option>
 				{% endfor %}
 		</select>
 		</label>
@@ -107,7 +107,7 @@ GNU General Public License for more details.
 		<label class="hidden professional">{% trans "Select Professional, or"%} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
 		<select name="professional" class="select extrabig asm">
 				{% for l in address_book_professionals %}
-				<option value="{{ l.0 }}">{{ l.1 }}</option>
+				    <option value="{{ l.0 }}" {% ifequal l.0 object.indication_choice.referral_professional.id %} selected {% endifequal %}>{{ l.1 }}</option>
 				{% endfor %}
 		</select>
 		</label>

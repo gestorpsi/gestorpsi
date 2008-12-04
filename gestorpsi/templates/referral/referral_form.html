@@ -82,7 +82,8 @@ GNU General Public License for more details.
     <div class="people_actions" {% if not object.id %}style="display:none"{% endif %}>
 	<h3>{% trans 'Object Actions' %}</h3>
 	<ul>
-		<li><a class="admission admit" href="/referral/{% if object.id %}{{ object.id }}/{% endif %}" title="{{ object.person.name }}">{% trans "Referral Client" %}</a></li>
+		<li><a class="client_form ajax" href="/client/{% if object.id %}{{ object.id }}/{% endif %}" title="{{ object.person.name }}">{% trans "Client Details" %}</a></li>
+		<li><a class="ajax admit" href="/admission/{% if object.id %}{{ object.id }}/{% endif %}" title="{{ object.person.name }}">{% trans "Admission Details" %}</a></li>
 	</ul>
 	</div>
 </div>

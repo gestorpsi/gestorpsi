@@ -56,7 +56,7 @@ GNU General Public License for more details.
 	<div class="people_actions" {% if not object.id %}style="display:none"{% endif %}>	
 	<h3>{% trans 'Object Actions' %}</h3>
 	<ul>
-		<li><a class="admission admit" href="/admission/{% if object.id %}{{ object.id }}/{% endif %}" title="{{ object.person.name }}">{% trans "Admit Client" %}</a></li>
+		<li><a class="ajax admit" href="/admission/{% if object.id %}{{ object.id }}/{% endif %}" title="{{ object.person.name }}">{% trans "Admit Client" %}</a></li>
 	</ul>
 	</div>
 </div>

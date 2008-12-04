@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 
 function bindList() {
-	$("#search_results.newtab tr td a").unbind().click(function(){
+	$("#search_results.newtab tr td a, a.ajax").unbind().click(function(){
 		var link = $(this);
 		$('#core .fast_menu_content').hide();
 		$('ul.opened_tabs').hide();
@@ -37,6 +37,10 @@ function bindList() {
 			$('#core div#edit_form').show();
 			$('#sub_menu ul li a').removeClass('active');
 		});
+
+        $('#msg_area').removeClass();
+        $('#msg_area').hide();
+        $('.sidebar').css('padding-top','165px');
 
 		return false;
 	});
@@ -74,34 +78,10 @@ function bindTableZebra() {
 	$('table.zebra tr:even').addClass('zebra_1');
 }
 
-function bindAdmission() {
-	$('a.admission').unbind().click(function() {
-		link = $(this);
-		$('#edit_form').load(link.attr('href'));
-		$.ajax({
-			complete: function(){
-				$('#core .fast_menu_content').hide();
-				$('div#edit_form').show();
-				$('div#edit_form .form_client').hide();
-				$('#edit_form').show();
-				
-				$('#sub_menu ul li a').removeClass('active'); // unselect other tabs
-				$("ul.opened_tabs").show(); // display tab
-				$("ul.opened_tabs li div a:first").text(link.attr('title')); // set newtab title
-			}
-		});
-		$('#msg_area').removeClass();
-                $('#msg_area').hide();
-                $('.sidebar').css('padding-top','165px');
-		return false;	
-	});
-}
-
 $(document).unbind().ready(function(){
 
 	bindList();
 	bindTableZebra();
-	bindAdmission();
 	
 	// draw top-border for multirows fieldsets (eg.: address fieldset)
 	$('fieldset.set_multirow').each(function() {

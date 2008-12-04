@@ -75,8 +75,8 @@ var form_options = {
 
           // change action atribute to update it, not insert a new one
           $('div#edit_form .form_client').attr('action','client/' + response + '/save/'); // client form save
-          $('#edit_form a.admission').attr('href','admission/' + response); // client admission
-          $('#edit_form a.admission').attr('title', $('#edit_form form input.tabtitle').val()); // client admission
+          $('#edit_form .sidebar ul li a.admit').attr('href','admission/' + response); // client admission
+          $('#edit_form .sidebar ul li a.admit').attr('title', $('#edit_form form input.tabtitle').val()); // client admission
           $('div#edit_form .form_employee').attr('action','employee/' + response + '/save/');
           $('div#edit_form .form_place').attr('action','place/' + response + '/save/');
           $('div#edit_form .form_service').attr('action','service/' + response + '/save/');
@@ -128,9 +128,6 @@ var form_options = {
 
           // reload mask
           bindFieldMask();
-
-          // reload loadLinks
-          bindAdmission();
 
           // set new tab opened to closeable when clicked
           $('div#form').addClass('edit_form');

@@ -625,6 +625,9 @@ textarea {
 	background: url(../img/ico_reg.png) no-repeat 0 3px;
 }
 
+.sidebar li .client_form {
+	background: url(../img/16/people-clients.png) no-repeat 0 3px;
+}
 .sidebar input.save_button {
 	width: 76px;
 }

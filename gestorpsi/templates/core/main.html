@@ -72,7 +72,7 @@ GNU General Public License for more details.
 	<div id="main_menu">
 		<ul>
 			<li><a id="start" class="main_menu active">{% trans "start" %}</a></li>
-			<li><a id="addressbook" class="main_menu" display="list">{% trans "calendar" %}</a></li>
+			<li><a id="schedule" class="main_menu" href="/schedule/" display="daily">{% trans "calendar" %}</a></li>
 			<li><a id="customers" class="main_menu" href="/client/" display="list">{% trans "clients" %}</a></li>
 			<li><a id="contacts" class="main_menu"  href="/contact/" display="list">{% trans "contacts" %}</a></li>
 			<li><a id="myoffice" class="main_menu notajax vertical" display="list">{% trans "organization" %}</a>
@@ -89,6 +89,8 @@ GNU General Public License for more details.
 		</ul>
 	</div>
 	<div id="sub_menu">
+
+        <!-- clients/customers -->
 		<ul id="sub_customers" style="display:none">
 			<li><a display="list" class="active first fastmenu" href="/client/">{% trans "all" %}</a></li>
 			<li><a display="form" class="fastmenu" href="/client/">{% trans "add" %}</a></li>
@@ -97,13 +99,21 @@ GNU General Public License for more details.
 			<li><a>{% trans "actives" %}</a></li>
 			<li><a>{% trans "waiting" %}</a></li>
 		</ul>
-		
+
+         <!-- schedule -->
+		<ul id="sub_schedule" style="display:none">
+			<li><a display="daily" class="first active fastmenu" href="/schedule/">{% trans "daily" %}</a></li>
+			<li><a display="week" class="fastmenu" href="/schedule/">{% trans "week" %}</a></li>
+        </ul>
+
+        <!-- address book -->
 		<ul id="sub_contacts" style="display:none">
 			<li><a display="list" class="first active fastmenu" href="/contact/">{% trans "all" %}</a></li>
 			<li><a display="form" class="fastmenu" href="/contact/">{% trans "add" %}</a></li>
 			<li><a>{% trans "search" %}</a></li>
 		</ul>
 
+        <!-- orgnization config -->
 		<ul id="sub_organization" style="display:none">
 			<li><a display="identity" class="first active organization notajax" href="#">{% trans "Identity" %}</a></li>
 			<li><a display="profile" class="organization notajax" href="#">{% trans "Profile" %}</a></li>
@@ -111,7 +121,8 @@ GNU General Public License for more details.
 			<li><a display="phone" class="organization notajax" href="#">{% trans "Phones" %}</a></li>
 			<li><a display="internet" class="organization notajax" href="#">{% trans "Internet" %}</a></li>
 		</ul>
-		
+
+        <!-- places -->
 		<ul id="sub_places" style="display:none">
 			<li><a display="list" class="first active fastmenu" href="/place/">{% trans "all" %}</a></li>
 			<li><a display="form" class="fastmenu" href="/place/">{% trans "add" %}</a></li>

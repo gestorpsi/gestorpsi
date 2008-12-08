@@ -99,7 +99,7 @@ div#main_menu a.active {
 #start {
 	background-image: url(../img/16/user-desktop.png);
 	}
-#addressbook {
+#schedule {
 	background-image: url(../img/16/office-calendar.png);
 	}
 #contacts {
@@ -286,7 +286,7 @@ div#sub_menu .active {
 #content h2.title_employee {background: url(../img/42/people-employee.png) no-repeat 20px 15px;}
 #content h2.title_professional {background: url(../img/42/people-professional.png) no-repeat 20px 15px;}
 
-#content h2.title_addressbook {background: url(../img/42/office-calendar.png) no-repeat 20px 15px;}
+#content h2.title_schedule {background: url(../img/42/office-calendar.png) no-repeat 20px 15px;}
 #content h2.title_contacts {background: url(../img/42/address-book-new.png) no-repeat 20px 15px;}
 #content h2.title_myoffice {background: url(../img/42/go-home.png) no-repeat 20px 15px;}
 #content h2.title_device {background: url(../img/42/stuff.png) no-repeat 20px 15px;}
@@ -1166,4 +1166,27 @@ ul.paginator li.previous {
 
 ul.paginator li.next {
 	padding-left: 10px;
+}
+
+.schedule {
+	clear: both;
+	width: 675px;
+	margin-left: 10px;
+
+	background-color: #f2f2f2;
+	border: 2px solid #E2E2E2;
+}
+
+.schedule table {
+	width: 660px;
+	font-size: 11px;
+	color: #999999;
+}
+
+.schedule table th {
+	margin-left: 15px;
+}
+.schedule table td {
+	padding: 5px;
+	cursor: pointer;
 }

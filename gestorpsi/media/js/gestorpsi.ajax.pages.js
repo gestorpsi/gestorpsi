@@ -210,7 +210,12 @@ $(document).unbind().ready(function(){
     $('a.notajax').click(function() {
         return false;
     });
-	
+
+
+
+    $("div.schedule_month").datepicker();
+
+
 });
 
 	

@@ -1,0 +1,104 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+{% include "core/ajax_page.html" %}
+
+
+<h2 id="title_schedule" style="display:none"></h2>
+
+<form action="/schedule/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_schedule" class="form_schedule">
+<div class="main_area">
+
+	<fieldset>
+		<legend>{% trans "Calendar" %}</legend>
+
+            <div class="label">{% trans "Daily Calendar" %}</a>.
+			<div class="schedule">
+
+				<table id="indicators" class="zebra" border="0" cellspacing="0" cellpadding="0">
+                                <thead>
+                                    <th>{% trans "Room" %}</th>
+                                    <th>{% trans "Time" %}</th>
+                                    <th>{% trans "Professional" %}</th>
+                                    <th>{% trans "Client" %}</th>
+                                    <th>{% trans "Phone" %}</th>
+                                    <th>{% trans "Email" %}</th>
+                                    <th>{% trans "Action" %}</th>
+                                </thead>
+								<tbody>
+								<tr>
+                                    <td>Sala 1</td>
+                                    <td>8:00</td>
+                                    <td>Buddy Holly</td>
+                                    <td>Elvis Presley</td>
+                                    <td>(15) 8374 7364</td>
+                                    <td>elvis@elvis.com</td>
+                                    <td>editar</td>
+								</tr>
+								<tr>
+                                    <td>Sala 1</td>
+                                    <td>8:00</td>
+                                    <td>Buddy Holly</td>
+                                    <td>Elvis Presley</td>
+                                    <td>(15) 8374 7364</td>
+                                    <td>elvis@elvis.com</td>
+                                    <td>editar</td>
+								</tr>
+								<tr>
+                                    <td>Sala 1</td>
+                                    <td>8:00</td>
+                                    <td>Buddy Holly</td>
+                                    <td>Elvis Presley</td>
+                                    <td>(15) 8374 7364</td>
+                                    <td>elvis@elvis.com</td>
+                                    <td>editar</td>
+								</tr>
+								<tr>
+                                    <td>Sala 1</td>
+                                    <td>8:00</td>
+                                    <td>Buddy Holly</td>
+                                    <td>Elvis Presley</td>
+                                    <td>(15) 8374 7364</td>
+                                    <td>elvis@elvis.com</td>
+                                    <td>editar</td>
+								</tr>
+								<tr>
+                                    <td>Sala 1</td>
+                                    <td>8:00</td>
+                                    <td>Buddy Holly</td>
+                                    <td>Elvis Presley</td>
+                                    <td>(15) 8374 7364</td>
+                                    <td>elvis@elvis.com</td>
+                                    <td>editar</td>
+								</tr>
+								</tbody>
+					</table>
+			</div>
+			</div>
+
+
+
+
+
+	</fieldset>
+
+<br />	
+</div>
+</form>
+
+
+

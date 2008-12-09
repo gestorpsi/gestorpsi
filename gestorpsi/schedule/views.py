@@ -17,11 +17,12 @@ GNU General Public License for more details.
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 import datetime, calendar
-from gestorpsi.place.models import Place
+from gestorpsi.place.models import Place, Room
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.service.models import Service
 from gestorpsi.client.models import Client
 from gestorpsi.person.views import person_order
+from gestorpsi.referral.models import Referral
 
 def index(request):
     user = request.user
@@ -34,3 +35,23 @@ def index(request):
     clients = person_order(Client.objects.filter(person__organization = user.org_active.id, clientStatus = '1'))
 
     return render_to_response('schedule/schedule_index.html', locals())
+
+def save(request):
+    try:
+        referral = Referral.objects.get(pk=request.POST['referral'])
+    except:
+        referral()
+    room = Room.objects.get(pk=request.POST['room'])
+    app_date = request.POST['initial appointment date']
+    initial_hour = request.POST['get begin time']
+    final_hour = request.POST['get finish time']
+    repeat = request.POST['how long will last (in weeks)']
+    for i in range(0, repeat):
+        schedule = Schedule()
+        schedule.referral = referral
+        schedule.room = room
+        schedule.appointment_begin = app_date + initial_hour
+        schedule.appointment_end = app_date + final_hour
+        schedule.save()
+        app_date = app_date + 7 days
+    return HttpResponse('foo bar')

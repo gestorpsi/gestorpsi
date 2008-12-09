@@ -53,5 +53,5 @@ def save(request):
         schedule.appointment_begin = app_date + initial_hour
         schedule.appointment_end = app_date + final_hour
         schedule.save()
-        app_date = app_date + 7 days
+        app_date = app_date + 7 # days
     return HttpResponse('foo bar')

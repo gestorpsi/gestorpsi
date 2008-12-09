@@ -22,9 +22,9 @@ from gestorpsi.place.models import Room
 class Schedule(models.Model):
     id = UuidField(primary_key=True)
     referral = models.ForeignKey(Referral)
+    room = models.ForeignKey(Room, null=True)
     appointment_begin = models.DateTimeField()
     appointment_end = models.DateTimeField()
-    room = models.ForeignKey(Room, null=True)
 
     def __unicode__(self):
         return u"Horario: %s - %s (%s)" % (self.appointment_begin, self.appointment_end, self.room)

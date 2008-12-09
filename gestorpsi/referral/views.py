@@ -17,9 +17,9 @@ GNU General Public License for more details.
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from gestorpsi.client.models import Client
-from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.service.models import Service
-from gestorpsi.util.views import date_form_to_db
+from gestorpsi.careprofessional.models import CareProfessional
+from gestorpsi.referral.models import Referral
 
 def form(request, object_id=''):
     user = request.user
@@ -31,14 +31,23 @@ def form(request, object_id=''):
         'Services': Service.objects.filter( active=True, organization=user.org_active ),
     })
 
-
+""" *** TODO: manage multiples referrals """
 def save(request, object_id=''):
     object = get_object_or_404(Client, pk=object_id)
-    object.admission_date = date_form_to_db(request.POST['admission_date'])
-    object.idRecord = request.POST['idRecord']
-    object.legacyRecord = request.POST['legacyRecord']
-    object.healthDocument = request.POST['healthDocument']
-    object.comments = request.POST['comments']
-    object.save()
-    add_relationship(object, request.POST.getlist('parent_name'),request.POST.getlist('parent_relation'), request.POST.getlist('parent_responsible'))
+
+    referral = Referral()
+    referral.client = object
+
+    try:
+        referral.service = Service.objects.get(pk=request.POST['service'])
+    except:
+        referral.service = None
+
+    try:
+        referral.professional = CareProfessional.objects.get(pk=request.POST['professional'])
+    except:
+        referral.professional = None
+
+    referral.save()
+
     return HttpResponse(object.id)

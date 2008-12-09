@@ -93,7 +93,8 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     #"/home/gestor/demo/gestorpsi/templates"
     #"/home/gestorpsi/Desenvolvimento/Django/gestorpsi/templates"
-    "templates"
+    "templates",
+    "'utils/templatetags"
 )
 
 INSTALLED_APPS = (

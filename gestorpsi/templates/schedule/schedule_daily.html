@@ -16,20 +16,10 @@ GNU General Public License for more details.
 
 {% load i18n %}
 {% include "core/ajax_page.html" %}
-
-
-<h2 id="title_schedule" style="display:none"></h2>
-
-<form action="/schedule/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_schedule" class="form_schedule">
+ 
 <div class="main_area">
-
-	<fieldset>
-		<legend>{% trans "Calendar" %}</legend>
-
-            <div class="label">{% trans "Daily Calendar" %}</a>.
-			<div class="schedule">
-
-				<table id="indicators" class="zebra" border="0" cellspacing="0" cellpadding="0">
+ {% include "tags/schedule_filters.html" %}
+				<table class="zebra schedule" border="0" cellspacing="0" cellpadding="0">
                                 <thead>
                                     <th>{% trans "Room" %}</th>
                                     <th>{% trans "Time" %}</th>
@@ -87,18 +77,8 @@ GNU General Public License for more details.
 								</tr>
 								</tbody>
 					</table>
-			</div>
-			</div>
-
-
-
-
-
-	</fieldset>
-
-<br />	
 </div>
-</form>
+
 
 
 

@@ -1,0 +1,52 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<div class="schedule_filters">
+<select class="schedule_places">
+    <option>{% trans "Places (all)" %}</option>
+    {% for p in places %}
+    <option value="{{ p.id }}">{{ p }}</option>
+    {% endfor %}
+</select>
+<select class="schedule_rooms">
+    <option>{% trans "Rooms (all)" %}</option>
+    {% for p in places %}
+        {% for r in p.room_set.all %}
+            <option value="{{ r.id }}" place="{{ p.id }}">{{ r }}</option>
+        {% endfor %}
+    {% endfor %}
+</select>
+<select class="schedule_professionals">
+    <option>{% trans "Professionals (all)" %}</option>
+    {% for p in professionals %}
+        <option value="{{ p.id }}">{{ p }}</option>
+    {% endfor %}
+</select>
+<select class="schedule_services">
+    <option>{% trans "Services (all)" %}</option>
+    {% for s in services %}
+        <option value="{{ s.id }}">{{ s }}</option>
+    {% endfor %}
+</select>
+<select class="schedule_clients">
+    <option>{% trans "Clients (all)" %}</option>
+    {% for c in clients %}
+        <option value="{{ c.id }}">{{ c }}</option>
+    {% endfor %}
+</select>
+</div>

@@ -18,3 +18,27 @@ GNU General Public License for more details.
 
 <div class="schedule_month"></div>
 
+<form action="/schedule/save/" method="post">
+    <div class="main_area">
+
+	<a href="" id="help">&nbsp;</a>
+	<!-- DataTypes form menu -->
+	<h3><span id="client_add_infotypes">{% trans "Calendar Details" %}</span></h3>
+	<ul id="form_options" class="float_menu" style="display:none;">
+		<li><label><input name="this" type="radio" value="" checked/>{% trans "Demographic" %}</label></li>
+		<li><label><input name="this" type="radio" value="" />{% trans "Socio-Demographic" %}</label></li>
+		<li><label><input name="this" type="radio" value="" />{% trans "Socio-Economic" %}</label></li>
+	</ul>
+
+    <fieldset>
+        <legend>Cliente</legend>
+                <label>Nome<br>
+                <input name="name" class="small tabtitle" value="" type="text">
+                </label>
+</fieldset>
+</div>
+</form>
+
+
+
+

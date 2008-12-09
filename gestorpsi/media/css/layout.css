@@ -318,7 +318,6 @@ div#sub_menu .active {
 
 .main_area {
 	width: 715px;
-	min-height: 270px;
 	background: #ECECEC;
 	border: 1px solid #999999;
 	margin: 0 0 10px 20px;
@@ -1170,23 +1169,46 @@ ul.paginator li.next {
 
 .schedule {
 	clear: both;
-	width: 675px;
-	margin-left: 10px;
-
+	width: 715px;
+	margin-left: 0px;
 	background-color: #f2f2f2;
 	border: 2px solid #E2E2E2;
-}
-
-.schedule table {
-	width: 660px;
 	font-size: 11px;
 	color: #999999;
 }
 
-.schedule table th {
-	margin-left: 15px;
+table.schedule th {
+	text-align: left;
 }
-.schedule table td {
-	padding: 5px;
-	cursor: pointer;
+table.schedule tr td {
+	border: 1px solid white;
+}
+
+div.schedule_filters {
+	padding: 3px;
+}
+div.schedule_filters select {
+	height: 18px;
+	font-size: 11px;
+	width: 130px;
+	color: #999999;
+}
+div.schedule_filters select:focus {
+	border: 0px;
+}
+
+.sidebar form div.main_area h3 {
+	border-bottom: 1px solid #000000;
+	margin-top: 0px;
+	font-size: 11px;
+	padding: 4px 5px;
+	border-bottom: 1px solid #CCCCCC;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+
+.sidebar form div.main_area {
+margin-top: 10px;
+margin-left: 0px;
+width: 260px;
 }

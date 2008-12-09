@@ -213,12 +213,21 @@ $(document).unbind().ready(function(){
 
 
 
-    $("div.schedule_month").datepicker();
+    var schedule_options = {
+       
+        dateFormat: 'dd/mm/yy',
+        'onSelect': function(date) {
+            $('p.description').text(date);
+        }
+        }
+
+
+    $("div.schedule_month").datepicker(schedule_options);
 
 
 });
 
-	
+
 
 
 	

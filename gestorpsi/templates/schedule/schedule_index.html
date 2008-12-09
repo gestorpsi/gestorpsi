@@ -18,7 +18,7 @@ GNU General Public License for more details.
 
 <input type="hidden" id="app_name" value="schedule" />
 <h2 class="title_schedule title">{% trans "Schedule" %}</h2>
-<p class="description">bla bla bal bal bla</p>
+<p class="description">{% now "d/m/Y" %}</p>
 <div id="daily" class="fast_menu_content">
  {% include "schedule/schedule_daily.html" %}
 </div>

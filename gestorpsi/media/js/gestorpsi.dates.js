@@ -1,4 +1,4 @@
-{% comment %}
+/**
 
 Copyright (C) 2008 GestorPsi
 
@@ -12,23 +12,32 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
-{% endcomment %}
+*/
 
-{% load i18n %}
+var schedule_options = {
+    dateFormat: 'dd/mm/yy',
+    'onSelect': function(date) {
+        $('p.description').text(date);
+    }
+}
+
+var calendar_date = {
+    dateFormat: 'dd/mm/yy'
+}
+
+$(document).unbind().ready(function(){
+
+    $("div.schedule_month").datepicker(schedule_options);
+
+    $('input.calendar.date:not([mask])').datepicker(calendar_date);
+
+});
 
 
-<input type="hidden" id="app_name" value="schedule" />
-<h2 class="title_schedule title">{% trans "Schedule" %}</h2>
-<p class="description">{% now "d/m/Y" %}</p>
-<div id="daily" class="fast_menu_content">
- {% include "schedule/schedule_daily.html" %}
-</div>
-
-<div id="week" class="fast_menu_content">
- {% include "schedule/schedule_week.html" %}
-</div>
 
 
-<div class="sidebar">
-    {% include "schedule/schedule_sidebar.html" %}
-</div>
+
+
+
+
+

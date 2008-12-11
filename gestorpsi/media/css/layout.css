@@ -1167,7 +1167,7 @@ ul.paginator li.next {
 	padding-left: 10px;
 }
 
-.schedule {
+table.schedule {
 	clear: both;
 	width: 715px;
 	margin-left: 0px;
@@ -1187,13 +1187,22 @@ table.schedule tr td {
 div.schedule_filters {
 	padding: 3px;
 }
-div.schedule_filters select {
-	height: 18px;
+div.schedule_filters select, .sidebar form select, .sidebar form textarea {
 	font-size: 11px;
-	width: 130px;
 	color: #999999;
 }
-div.schedule_filters select:focus {
+
+div.schedule_filters select, .sidebar form select {
+	height: 18px;
+	width: 130px;
+}
+
+.sidebar form textarea {
+	width: 230px;
+	height: 68px;
+}
+
+div.schedule_filters select:focus, .sidebar form select {
 	border: 0px;
 }
 
@@ -1208,7 +1217,37 @@ div.schedule_filters select:focus {
 }
 
 .sidebar form div.main_area {
-margin-top: 10px;
-margin-left: 0px;
-width: 260px;
+    margin-top: 10px;
+    margin-left: 0px;
+    width: 270px;
+}
+
+.sidebar form input, .sidebar form textarea {
+    font-size: 12px !important;
+}
+
+.sidebar form input {
+    height: 15px;
+    padding: 0px !important;
+}
+
+.sidebar form .small {
+    width: 55px;
+}
+
+.sidebar form input.medium {
+    width: 80px;
+}
+.sidebar form fieldset {
+    margin: 0px;
+    border: 0px;
+    padding: 0 0 10px 0;
+}
+
+.sidebar form select, .sidebar form input {
+    width: 245px;
+}
+
+.sidebar form fieldset label {
+    margin: 5px 0 0 15px;
 }

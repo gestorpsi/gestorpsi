@@ -19,7 +19,7 @@ GNU General Public License for more details.
 
 <div class="schedule_month"></div>
 
-<form action="/schedule/save/" method="post" class="schedule">
+<form action="/schedule/save/" method="post" class="schedule mini">
     <div class="main_area">
 
 	<a href="" id="help">&nbsp;</a>
@@ -61,15 +61,16 @@ GNU General Public License for more details.
     </select>
     </label>
 
-    <label style="display:none" class="repeat weekly">{% trans "Every" %}:
+    <label class="repeat weekly hidden">{% trans "Every" %}:
     </label>
-    <label style="display:none" class="repeat weekly">S<br /><input type="checkbox" name="weekly"></label>
-    <label style="display:none" class="repeat weekly">T<br /><input type="checkbox" name="weekly"></label>
-    <label style="display:none" class="repeat weekly">Q<br /><input type="checkbox" name="weekly"></label>
-    <label style="display:none" class="repeat weekly">Q<br /><input type="checkbox" name="weekly"></label>
-    <label style="display:none" class="repeat weekly">S<br /><input type="checkbox" name="weekly"></label>
-    <label style="display:none" class="repeat weekly">S<br /><input type="checkbox" name="weekly"></label>
-    <label style="display:none" class="repeat weekly">D<br /><input type="checkbox" name="weekly"></label>
+
+    <label class="repeat weekly hidden">{% trans "Mon" %}<br /><input type="checkbox" name="weekly" value="1"></label>
+    <label class="repeat weekly hidden">{% trans "Tue" %}<br /><input type="checkbox" name="weekly" value="2"></label>
+    <label class="repeat weekly hidden">{% trans "Wed" %}<br /><input type="checkbox" name="weekly" value="3"></label>
+    <label class="repeat weekly hidden">{% trans "Thu" %}<br /><input type="checkbox" name="weekly" value="4"></label>
+    <label class="repeat weekly hidden">{% trans "Fri" %}<br /><input type="checkbox" name="weekly" value="5"></label>
+    <label class="repeat weekly hidden">{% trans "Sat" %}<br /><input type="checkbox" name="weekly" value="6"></label>
+    <label class="repeat weekly hidden">{% trans "Sun" %}<br /><input type="checkbox" name="weekly" value="0"></label>
 
 
     <label style="display:none" class="repeat weekly">{% trans "Until" %}:
@@ -106,8 +107,9 @@ GNU General Public License for more details.
     <label>{% trans "Comments" %}<br>
     <textarea name="comments"></textarea>
     </label>
-
-    <input type="submit" value="Enviar" />
+    <label>
+    <input type="submit" value="Agendar" class="submit" />
+    </label>
 </fieldset>
 </div>
 </form>

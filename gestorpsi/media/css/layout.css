@@ -1167,6 +1167,11 @@ ul.paginator li.next {
 	padding-left: 10px;
 }
 
+
+/**
+*   schedule
+*/
+
 table.schedule {
 	clear: both;
 	width: 715px;
@@ -1187,26 +1192,30 @@ table.schedule tr td {
 div.schedule_filters {
 	padding: 3px;
 }
-div.schedule_filters select, .sidebar form select, .sidebar form textarea {
+div.schedule_filters select, .sidebar form.mini select, .sidebar form.mini textarea {
 	font-size: 11px;
 	color: #999999;
 }
 
-div.schedule_filters select, .sidebar form select {
+div.schedule_filters select, .sidebar form.mini select {
 	height: 18px;
 	width: 130px;
 }
 
-.sidebar form textarea {
+.sidebar form.mini input {
+	color: #999999;
+}
+
+.sidebar form.mini textarea {
 	width: 230px;
 	height: 68px;
 }
 
-div.schedule_filters select:focus, .sidebar form select {
+div.schedule_filters select:focus, .sidebar form.mini select {
 	border: 0px;
 }
 
-.sidebar form div.main_area h3 {
+.sidebar form.mini div.main_area h3 {
 	border-bottom: 1px solid #000000;
 	margin-top: 0px;
 	font-size: 11px;
@@ -1216,38 +1225,52 @@ div.schedule_filters select:focus, .sidebar form select {
 	font-weight: bold;
 }
 
-.sidebar form div.main_area {
+.sidebar form.mini div.main_area {
     margin-top: 10px;
     margin-left: 0px;
-    width: 270px;
+    width: 267px;
 }
 
-.sidebar form input, .sidebar form textarea {
+.sidebar form.mini input, .sidebar form textarea {
     font-size: 12px !important;
 }
 
-.sidebar form input {
+.sidebar form.mini input {
     height: 15px;
     padding: 0px !important;
 }
 
-.sidebar form .small {
+.sidebar form.mini input.submit {
+    border: 1px solid #888888;
+    width: 70px;
+    height: 20px;
+}
+
+.sidebar form.mini .small {
     width: 55px;
 }
 
-.sidebar form input.medium {
+.sidebar form.mini input.medium {
     width: 80px;
 }
-.sidebar form fieldset {
+.sidebar form.mini fieldset {
     margin: 0px;
     border: 0px;
     padding: 0 0 10px 0;
 }
 
-.sidebar form select, .sidebar form input {
+.sidebar form.mini select, .sidebar form input {
     width: 245px;
 }
 
-.sidebar form fieldset label {
-    margin: 5px 0 0 15px;
+.sidebar form.mini fieldset label {
+    margin: 5px 0 0 8px;
+}
+
+/**
+*  utils
+*/
+
+.hidden {
+    display:none;
 }

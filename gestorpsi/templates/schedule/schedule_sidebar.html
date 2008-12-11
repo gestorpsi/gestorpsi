@@ -32,7 +32,7 @@ GNU General Public License for more details.
 <fieldset>
 
     <label>{% trans "Client" %}<br>
-    <select class="client">
+    <select name="client">
         <option>{% trans "Escolha" %}...</option>
         {% for c in clients %}
             <option value="{{ c.id }}">{{ c }}</option>
@@ -74,7 +74,7 @@ GNU General Public License for more details.
 
 
     <label style="display:none" class="repeat weekly">{% trans "Until" %}:
-        <input name="time_date" type="text" class="medium calendar date" value="{% if not object.time %}{% now "d/m/Y" %}{% else %}{{ object.time|date:"d/m/Y" }}{% endif %}"  />
+        <input name="repeat_date" type="text" class="medium calendar date" value="{% if not object.time %}{% now "d/m/Y" %}{% else %}{{ object.time|date:"d/m/Y" }}{% endif %}"  />
     </label>
     
     <label>{% trans "Professional" %}<br>

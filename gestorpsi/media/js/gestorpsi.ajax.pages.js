@@ -211,29 +211,6 @@ $(document).unbind().ready(function(){
         return false;
     });
 
-
-
-    var schedule_options = {
-       
-        dateFormat: 'dd/mm/yy',
-        'onSelect': function(date) {
-            $('p.description').text(date);
-        }
-    }
-
-    var calendar_options = {
-
-        dateFormat: 'dd/mm/yy',
-        'onSelect': function(date) {
-            $('p.description').text(date);
-        }
-    }
-
-
-    $("div.schedule_month").datepicker(schedule_options);
-
-    $('input.calendar:not([mask])').datepicker(calendar_options);
-
 });
 
 

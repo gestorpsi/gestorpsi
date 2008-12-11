@@ -15,23 +15,38 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
+{% load num_range %}
 {% include "core/ajax_page.html" %}
 
-
-
-<form action="/schedule/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_schedule" class="form_schedule">
 <div class="main_area">
+    <table class="zebra schedule weekly" border="0" cellspacing="0" cellpadding="0">
+        <thead>
+            <th></th>
+            <th>{% trans "Sunday" %}</th>
+            <th>{% trans "Monday" %}</th>
+            <th>{% trans "Twesday" %}</th>
+            <th>{% trans "Wednesday" %}</th>
+            <th>{% trans "Thursday" %}</th>
+            <th>{% trans "Friday" %}</th>
+            <th>{% trans "Saturday" %}</th>
+        </thead>
+    <tbody>
+        {% num_range 24 as day_range %}
+        {% num_range 7 as week_range %}
 
-	<fieldset>
-		<legend>{% trans "Calendar" %}</legend>
-			EU SOU O CALENDARIO SEMANAL
-	</fieldset>
-
-<br />	
+        {% for h in day_range %}
+        <tr>
+            <td>{{  h  }}:00</td>
+            {% for d in week_range %}
+            <td>
+              Dr. Joao da Silva
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
-
-
-</form>
 
 
 

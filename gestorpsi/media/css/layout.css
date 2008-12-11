@@ -1250,9 +1250,10 @@ div.schedule_filters select:focus, .sidebar form.mini select {
     width: 55px;
 }
 
-.sidebar form.mini input.medium {
+.sidebar form.mini input.medium, .sidebar form.mini select.medium {
     width: 80px;
 }
+
 .sidebar form.mini fieldset {
     margin: 0px;
     border: 0px;

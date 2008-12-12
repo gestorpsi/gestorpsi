@@ -39,24 +39,50 @@ def index(request):
     return render_to_response('schedule/schedule_index.html', locals())
 
 def save(request):
-    try:
-        referral = Referral.objects.get(pk=request.POST['referral'])
-    except:
-        referral()
-    room = Room.objects.get(pk=request.POST['room'])
-    app_date = request.POST['initial appointment date']
-    initial_hour = request.POST['get begin time']
-    final_hour = request.POST['get finish time']
-    repeat = request.POST['how long will last (in weeks)']
-    for i in range(0, repeat):
-        schedule = Schedule()
-        schedule.referral = referral
-        schedule.room = room
-        schedule.appointment_begin = app_date + initial_hour
-        schedule.appointment_end = app_date + final_hour
-        schedule.save()
-        app_date = app_date + 7 # days
-    return HttpResponse('foo bar')
+    client = request.POST['client']
+    time_date = request.POST['time_date']
+    hour = request.POST['hour']
+    duration = request.POST['duration']
+    repeat = request.POST['repeat']
+    professional = request.POST['professional']
+    service = request.POST['service']
+    room = request.POST['room']
+    comments = request.POST['comments']
+
+    print u"%s" % client
+    print u"%s" % time_date
+    print u"%s" % hour
+    print u"%s" % duration
+    print u"%s" % repeat
+    if repeat == '7':
+        lista_semana = request.POST.getlist('weekly')
+        for w in lista_semana:
+            print w
+    print u"%s" % professional
+    print u"%s" % service
+    print u"%s" % room
+    print u"%s" % comments
+
+    return HttpResponse('walaaa')
+
+#    try:
+#        referral = Referral.objects.get(pk=request.POST['referral'])
+#    except:
+#        referral()
+#    room = Room.objects.get(pk=request.POST['room'])
+#    app_date = request.POST['initial appointment date']
+#    initial_hour = request.POST['get begin time']
+#    final_hour = request.POST['get finish time']
+#    repeat = request.POST['how long will last (in weeks)']
+#    for i in range(0, repeat):
+#        schedule = Schedule()
+#        schedule.referral = referral
+#        schedule.room = room
+#        schedule.appointment_begin = app_date + initial_hour
+#        schedule.appointment_end = app_date + final_hour
+#        schedule.save()
+#        app_date = app_date + 7 # days
+#    return HttpResponse('foo bar')=======
 
 def schedule_week_header(today=datetime.datetime.now()):
 	calendar.setfirstweekday(6)

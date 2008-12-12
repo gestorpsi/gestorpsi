@@ -15,67 +15,36 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
+{% load num_range %}
+{% num_range 24 as day_range %}
  
 <div class="main_area">
- {% include "tags/schedule_filters.html" %}
-				<table class="zebra schedule" border="0" cellspacing="0" cellpadding="0">
-                                <thead>
-                                    <th>{% trans "Room" %}</th>
-                                    <th>{% trans "Time" %}</th>
-                                    <th>{% trans "Professional" %}</th>
-                                    <th>{% trans "Client" %}</th>
-                                    <th>{% trans "Phone" %}</th>
-                                    <th>{% trans "Email" %}</th>
-                                    <th>{% trans "Action" %}</th>
-                                </thead>
-								<tbody>
-								<tr>
-                                    <td>Sala 1</td>
-                                    <td>8:00</td>
-                                    <td>Buddy Holly</td>
-                                    <td>Elvis Presley</td>
-                                    <td>(15) 8374 7364</td>
-                                    <td>elvis@elvis.com</td>
-                                    <td>editar</td>
-								</tr>
-								<tr>
-                                    <td>Sala 1</td>
-                                    <td>8:00</td>
-                                    <td>Buddy Holly</td>
-                                    <td>Elvis Presley</td>
-                                    <td>(15) 8374 7364</td>
-                                    <td>elvis@elvis.com</td>
-                                    <td>editar</td>
-								</tr>
-								<tr>
-                                    <td>Sala 1</td>
-                                    <td>8:00</td>
-                                    <td>Buddy Holly</td>
-                                    <td>Elvis Presley</td>
-                                    <td>(15) 8374 7364</td>
-                                    <td>elvis@elvis.com</td>
-                                    <td>editar</td>
-								</tr>
-								<tr>
-                                    <td>Sala 1</td>
-                                    <td>8:00</td>
-                                    <td>Buddy Holly</td>
-                                    <td>Elvis Presley</td>
-                                    <td>(15) 8374 7364</td>
-                                    <td>elvis@elvis.com</td>
-                                    <td>editar</td>
-								</tr>
-								<tr>
-                                    <td>Sala 1</td>
-                                    <td>8:00</td>
-                                    <td>Buddy Holly</td>
-                                    <td>Elvis Presley</td>
-                                    <td>(15) 8374 7364</td>
-                                    <td>elvis@elvis.com</td>
-                                    <td>editar</td>
-								</tr>
-								</tbody>
-					</table>
+	{% include "tags/schedule_filters.html" %}
+	<table class="zebra schedule" border="0" cellspacing="0" cellpadding="0">
+					<thead>
+						<th>{% trans "Time" %}</th>
+						<th>{% trans "Room" %}</th>
+						<th>{% trans "Professional" %}</th>
+						<th>{% trans "Client" %}</th>
+						<th>{% trans "Phone" %}</th>
+						<th>{% trans "Email" %}</th>
+						<th>{% trans "Action" %}</th>
+					</thead>
+					<tbody>
+
+					 {% for h in day_range %}
+					<tr>
+						<td>{{  h  }}:00</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					{% endfor %}
+					</tbody>
+		</table>
 </div>
 
 

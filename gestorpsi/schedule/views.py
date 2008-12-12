@@ -26,14 +26,16 @@ from gestorpsi.referral.models import Referral
 
 def index(request):
     user = request.user
-#    today = datetime.datetime.now()
+    calendar.setfirstweekday(6)
+    today = datetime.datetime.now().strftime('%Y-%m-%d')
 #    cal = calendar.HTMLCalendar(calendar.SUNDAY)
 #    month = calendar.monthcalendar(today.year, today.month)
+# print month[1]
     places = Place.objects.filter(organization=user.org_active.id)
     professionals = CareProfessional.objects.filter(person__organization = user.org_active.id)
     services = Service.objects.filter( active=True, organization=user.org_active )
     clients = person_order(Client.objects.filter(person__organization = user.org_active.id, clientStatus = '1'))
-
+    week_header = schedule_week_header()
     return render_to_response('schedule/schedule_index.html', locals())
 
 def save(request):
@@ -55,3 +57,13 @@ def save(request):
         schedule.save()
         app_date = app_date + 7 # days
     return HttpResponse('foo bar')
+
+def schedule_week_header(today=datetime.datetime.now()):
+	calendar.setfirstweekday(6)
+	month = calendar.monthcalendar(today.year, today.month)
+	week_header = []
+	for w in month:
+		if today.day in w:
+			for d in w:
+				week_header.append(datetime.date(today.year, today.month, d))
+	return week_header

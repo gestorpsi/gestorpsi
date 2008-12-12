@@ -16,24 +16,20 @@ GNU General Public License for more details.
 
 {% load i18n %}
 {% load num_range %}
+{% num_range 24 as day_range %}
+{% num_range 7 as week_range %}
+
 {% include "core/ajax_page.html" %}
 
 <div class="main_area">
     <table class="zebra schedule weekly" border="0" cellspacing="0" cellpadding="0">
         <thead>
             <th></th>
-            <th>{% trans "Sunday" %}</th>
-            <th>{% trans "Monday" %}</th>
-            <th>{% trans "Twesday" %}</th>
-            <th>{% trans "Wednesday" %}</th>
-            <th>{% trans "Thursday" %}</th>
-            <th>{% trans "Friday" %}</th>
-            <th>{% trans "Saturday" %}</th>
+			{% for day in week_header %}
+            <th>{{day|date:"D"}}  {{ day|date:"d/m" }}</th>
+			{% endfor %}
         </thead>
     <tbody>
-        {% num_range 24 as day_range %}
-        {% num_range 7 as week_range %}
-
         {% for h in day_range %}
         <tr>
             <td>{{  h  }}:00</td>

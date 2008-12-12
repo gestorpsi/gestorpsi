@@ -25,8 +25,9 @@ $(document).ready(function() {
     // open form
     $('div.schedule table.schedule  tr').click(function() {
 		// set date
-		var date = $(this).attr(date);
-		var time = $(this).attr(time);
+		var date = $(this).attr('date');
+		var time = $(this).attr('time');
+		$('div.schedule div.form input[name=time_date]').val(date);
 		$('div.schedule div.form').show();
     });
 

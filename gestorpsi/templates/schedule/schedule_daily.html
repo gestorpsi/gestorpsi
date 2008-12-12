@@ -17,34 +17,40 @@ GNU General Public License for more details.
 {% load i18n %}
 {% load num_range %}
 {% num_range 24 as day_range %}
- 
+
 <div class="main_area">
 	{% include "tags/schedule_filters.html" %}
 	<table class="zebra schedule" border="0" cellspacing="0" cellpadding="0">
-					<thead>
-						<th>{% trans "Time" %}</th>
-						<th>{% trans "Room" %}</th>
-						<th>{% trans "Professional" %}</th>
-						<th>{% trans "Client" %}</th>
-						<th>{% trans "Phone" %}</th>
-						<th>{% trans "Email" %}</th>
-						<th>{% trans "Action" %}</th>
-					</thead>
-					<tbody>
+		<thead>
+			<th>{% trans "Time" %}</th>
+			<th>{% trans "Room" %}</th>
+			<th>{% trans "Service" %}</th>
+			<th>{% trans "Professional" %}</th>
+			<th>{% trans "Client" %}</th>
+			 {% for p in places %}
+				{% for r in p.room_set.all %}
+				<th place="{{ p.id }}" room="{{ r.id }}">{{ r }}</th>
+				{% endfor%}
+			 {% endfor%}
+		</thead>
+		<tbody>
 
-					 {% for h in day_range %}
-					<tr date="{% now "d/m/Y" %}" time="{{  h  }}:00">
-						<td>{{  h  }}:00</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					{% endfor %}
-					</tbody>
-		</table>
+		 {% for h in day_range %}
+		<tr date="{% now "d/m/Y" %}" time="{{  h  }}:00">
+			<td>{{  h  }}:00</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			{% for p in places %}
+				{% for r in p.room_set.all %}
+				<td place="{{ p.id }}" room="{{ r.id }}"></td>
+				{% endfor%}
+			 {% endfor%}
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
 </div>
 
 

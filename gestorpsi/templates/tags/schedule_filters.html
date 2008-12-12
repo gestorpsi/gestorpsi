@@ -31,22 +31,16 @@ GNU General Public License for more details.
         {% endfor %}
     {% endfor %}
 </select>
-<select class="schedule_professionals">
-    <option>{% trans "Professionals (all)" %}</option>
-    {% for p in professionals %}
-        <option value="{{ p.id }}">{{ p }}</option>
-    {% endfor %}
-</select>
 <select class="schedule_services">
     <option>{% trans "Services (all)" %}</option>
     {% for s in services %}
         <option value="{{ s.id }}">{{ s }}</option>
     {% endfor %}
 </select>
-<select class="schedule_clients">
-    <option>{% trans "Clients (all)" %}</option>
-    {% for c in clients %}
-        <option value="{{ c.id }}">{{ c }}</option>
+<select class="schedule_professionals">
+    <option>{% trans "Professionals (all)" %}</option>
+    {% for p in professionals %}
+        <option value="{{ p.id }}">{{ p }}</option>
     {% endfor %}
 </select>
 </div>

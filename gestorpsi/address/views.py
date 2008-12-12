@@ -15,6 +15,7 @@ GNU General Public License for more details.
 """
 
 from gestorpsi.address.models import Country, Address, City, AddressType
+from django.http import HttpResponse
 
 # Check if addresses fields are equals
 def is_equal(address):

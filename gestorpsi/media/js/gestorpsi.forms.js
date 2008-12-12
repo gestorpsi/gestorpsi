@@ -333,9 +333,10 @@ function bindFormActions() {
      
       // quick add
       
-     $('div.form_mini input.cancel').click(function() {
+     $('div form input.cancel').click(function() {
           $(this).parent('label').parent('fieldset').children('label').children('input:text').val('');
-          $(this).parents('div.form_mini:first').hide();
+		  $(this).parents('div.form_mini:first').hide();
+		  $(this).parents('div.form:first').hide();
           return false;
      
      });

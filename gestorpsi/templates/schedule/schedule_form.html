@@ -17,11 +17,8 @@ GNU General Public License for more details.
 {% load i18n %}
 {% load num_range %}
 
-<div class="schedule_month"></div>
-
-<form action="/schedule/save/" method="post" class="schedule mini">
+<form action="/schedule/save/" method="post" class="schedule">
     <div class="main_area">
-
 	<a href="" id="help">&nbsp;</a>
 	<!-- DataTypes form menu -->
 	<h3><span id="client_add_infotypes">{% trans "Calendar Details" %}</span></h3>
@@ -124,7 +121,8 @@ GNU General Public License for more details.
     <textarea name="comments"></textarea>
     </label>
     <label>
-    <input type="submit" value="Agendar" class="submit" />
+	<input type="submit" value="Agendar" class="submit" />
+    <input type="submit" value="Cancelar" class="submit cancel" />
     </label>
 </fieldset>
 </div>

@@ -20,15 +20,25 @@ GNU General Public License for more details.
 <input type="hidden" id="app_name" value="schedule" />
 <h2 class="title_schedule title">{% trans "Schedule" %}</h2>
 <p class="description">{% now "d/m/Y" %}</p>
-<div id="daily" class="fast_menu_content">
- {% include "schedule/schedule_daily.html" %}
+<div class="schedule">
+	<div class="top">
+		<span id="monthly">
+			{% include "schedule/schedule_monthly.html" %}
+		</span>
+		<span>
+
+		</span>
+	</div>
+	<div class="middle">
+		<div id="daily" class="fast_menu_content">
+		 {% include "schedule/schedule_daily.html" %}
+		</div>
+		<div id="week" class="fast_menu_content hidden">
+		 {% include "schedule/schedule_week.html" %}
+		</div>
+	</div>
+	<div class="form hidden">
+	{% include "schedule/schedule_form.html" %}
+	</div>
 </div>
 
-<div id="week" class="fast_menu_content hidden">
- {% include "schedule/schedule_week.html" %}
-</div>
-
-
-<div class="sidebar">
-    {% include "schedule/schedule_sidebar.html" %}
-</div>

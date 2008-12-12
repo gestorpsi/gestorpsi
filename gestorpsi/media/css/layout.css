@@ -1172,11 +1172,26 @@ ul.paginator li.next {
 *   schedule
 */
 
+div.schedule div.top {
+	margin: 0 0 0px 20px;
+}
+
+div.schedule div.middle {
+	clear: both;
+	padding: 20px 0 0 0px;
+}
+
+div.schedule div.form {
+	position: absolute;
+	top: 100px;
+	left: 200px;
+}
+
+
 table.schedule {
 	clear: both;
 	width: 715px;
 	margin-left: 0px;
-	background-color: #f2f2f2;
 	border: 2px solid #E2E2E2;
 	font-size: 11px;
 	color: #999999;
@@ -1189,33 +1204,39 @@ table.schedule tr td {
 	border: 1px solid white;
 }
 
+table.schedule tr:hover {
+	cursor: pointer;
+	background-color: #b6c9cf;
+}
+
+
 div.schedule_filters {
 	padding: 3px;
 }
-div.schedule_filters select, .sidebar form.mini select, .sidebar form.mini textarea {
+div.schedule_filters select, div.schedule div.form form select, div.schedule div.form form textarea {
 	font-size: 11px;
 	color: #999999;
 }
 
-div.schedule_filters select, .sidebar form.mini select {
+div.schedule_filters select, div.schedule div.form form select {
 	height: 18px;
 	width: 130px;
 }
 
-.sidebar form.mini input {
+div.schedule div.form form input {
 	color: #999999;
 }
 
-.sidebar form.mini textarea {
+div.schedule div.form form textarea {
 	width: 230px;
 	height: 68px;
 }
 
-div.schedule_filters select:focus, .sidebar form.mini select {
+div.schedule_filters select:focus, div.schedule div.form form select {
 	border: 0px;
 }
 
-.sidebar form.mini div.main_area h3 {
+div.schedule div.form form div.main_area h3 {
 	border-bottom: 1px solid #000000;
 	margin-top: 0px;
 	font-size: 11px;
@@ -1225,46 +1246,46 @@ div.schedule_filters select:focus, .sidebar form.mini select {
 	font-weight: bold;
 }
 
-.sidebar form.mini div.main_area {
+div.schedule div.form form div.main_area {
     margin-top: 10px;
     margin-left: 0px;
     width: 267px;
 }
 
-.sidebar form.mini input, .sidebar form textarea {
+div.schedule div.form form input, div.schedule div.form form textarea {
     font-size: 12px !important;
 }
 
-.sidebar form.mini input {
+div.schedule div.form form input {
     height: 15px;
     padding: 0px !important;
 }
 
-.sidebar form.mini input.submit {
+div.schedule div.form form input.submit {
     border: 1px solid #888888;
     width: 70px;
     height: 20px;
 }
 
-.sidebar form.mini .small {
+div.schedule div.form form .small {
     width: 55px;
 }
 
-.sidebar form.mini input.medium, .sidebar form.mini select.medium {
+div.schedule div.form form input.medium, div.schedule div.form form select.medium {
     width: 80px;
 }
 
-.sidebar form.mini fieldset {
+div.schedule div.form form fieldset {
     margin: 0px;
     border: 0px;
     padding: 0 0 10px 0;
 }
 
-.sidebar form.mini select, .sidebar form input {
+div.schedule div.form form select, div.schedule div.form form input {
     width: 245px;
 }
 
-.sidebar form.mini fieldset label {
+div.schedule div.form form fieldset label {
     margin: 5px 0 0 8px;
 }
 

@@ -1,4 +1,4 @@
-/**
+{% comment %}
 
 Copyright (C) 2008 GestorPsi
 
@@ -12,29 +12,12 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
-*/
+{% endcomment %}
 
-$(document).ready(function() {
+{% load i18n %}
 
-    // switch time range select field
-    $('div.schedule div.form select[name=repeat] option').click(function() {
-        $(this).parents('label').siblings('.repeat').hide();
-        $(this).parents('label').siblings('.' + $(this).attr('repeat')).show();
-    });
-
-    // open form
-    $('div.schedule table.schedule  tr').click(function() {
-		// set date
-		var date = $(this).attr(date);
-		var time = $(this).attr(time);
-		$('div.schedule div.form').show();
-    });
-
-});
-
-
-
-
+{# loaded by JQuery #}
+<div class="schedule_month"></div>
 
 
 

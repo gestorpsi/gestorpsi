@@ -49,19 +49,18 @@ def save(request):
     room = request.POST['room']
     comments = request.POST['comments']
 
-    print u"%s" % client
-    print u"%s" % time_date
-    print u"%s" % hour
-    print u"%s" % duration
-    print u"%s" % repeat
+    import time
+    import datetime
+    duracao = datetime.timedelta(minutes=duration)
+    app_ini = datetime.datetime(*time.strptime((time_date + " " + hour), "%d/%m/%Y %H:%M")[:6])
+    app_end = app_ini + duracao
+    print "Inicio: %s" % app_ini
+    print "Final : %s" % app_end
+
     if repeat == '7':
         lista_semana = request.POST.getlist('weekly')
         for w in lista_semana:
             print w
-    print u"%s" % professional
-    print u"%s" % service
-    print u"%s" % room
-    print u"%s" % comments
 
     return HttpResponse('walaaa')
 

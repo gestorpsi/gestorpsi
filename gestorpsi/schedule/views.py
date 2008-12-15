@@ -14,15 +14,18 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
-import datetime, calendar
 from gestorpsi.place.models import Place, Room
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.service.models import Service
 from gestorpsi.client.models import Client
 from gestorpsi.person.views import person_order
 from gestorpsi.referral.models import Referral
+from gestorpsi.schedule.models import Schedule
+import datetime, calendar, time
+
 
 def index(request):
     user = request.user
@@ -39,8 +42,28 @@ def index(request):
     return render_to_response('schedule/schedule_index.html', locals())
 
 def save(request):
+    client = Client.objects.get(pk=request.POST['client'])
+    professional = CareProfessional.objects.get(pk=request.POST['professional'])
+    service = Service.objects.get(pk=request.POST['service'])
+    try:
+        room = Room.objects.get(pk=request.POST['room'])
+    except:
+        room = Room.objects.all()[0]
+    duration = datetime.timedelta(minutes=int(request.POST['duration']))
+
+    schedule = Schedule()
+    schedule.referral =  Referral.objects.create(client=client, professional=professional, service=service)
+    schedule.room = room
+    schedule.appointment_begin = datetime.datetime(*time.strptime((request.POST['time_date'] + " " + request.POST['hour']), "%d/%m/%Y %H:%M")[:6])
+    schedule.appointment_end = schedule.appointment_begin + duration
+    schedule.save()
+
+    return HttpResponse(schedule.id)
+
+def save_tests(request):
     client = request.POST['client']
     time_date = request.POST['time_date']
+    repeat_date = request.POST['repeat_date']
     hour = request.POST['hour']
     duration = request.POST['duration']
     repeat = request.POST['repeat']
@@ -49,18 +72,24 @@ def save(request):
     room = request.POST['room']
     comments = request.POST['comments']
 
-    import time
-    import datetime
-    duracao = datetime.timedelta(minutes=duration)
-    app_ini = datetime.datetime(*time.strptime((time_date + " " + hour), "%d/%m/%Y %H:%M")[:6])
+    date_begin = datetime.datetime(*time.strptime((time_date + " " + hour), "%d/%m/%Y %H:%M")[:6])
+    date_end = datetime.datetime(*time.strptime((repeat_date + " " + hour), "%d/%m/%Y %H:%M")[:6])
+    duracao = datetime.timedelta(minutes=int(duration))
+
+    app_ini = date_begin #datetime.datetime(*time.strptime((time_date + " " + hour), "%d/%m/%Y %H:%M")[:6])
     app_end = app_ini + duracao
-    print "Inicio: %s" % app_ini
-    print "Final : %s" % app_end
+
+    if repeat == '1':
+        print "agendamento diario"
 
     if repeat == '7':
-        lista_semana = request.POST.getlist('weekly')
-        for w in lista_semana:
-            print w
+        week, days = divmod(time_date - repeat_date)
+        app_ini = app_ini + datetime.timedelta(weeks=1)
+        app_end = app_ini + duracao
+
+    if repeat == '30':
+        print "agendamento mensal"
+
 
     return HttpResponse('walaaa')
 

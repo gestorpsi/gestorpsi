@@ -14,7 +14,9 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-
+import datetime
+import calendar
+import time
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from gestorpsi.place.models import Place, Room
@@ -24,8 +26,16 @@ from gestorpsi.client.models import Client
 from gestorpsi.person.views import person_order
 from gestorpsi.referral.models import Referral
 from gestorpsi.schedule.models import Schedule
-import datetime, calendar, time
+from django.core import serializers
+from django.utils import simplejson
 
+def schedules_in_range(request, date_start = datetime.datetime.now().strftime('%Y-%m-%d %h:%i:%s'), date_end = datetime.datetime.now().strftime('%Y-%m-%d %h:%i:%s')):
+#def schedules(date_start = datetime.datetime.now().strftime('%Y%m%d%h%i%s'), date_end = datetime.datetime.now().strftime('%Y%m%d%h%i%s')):
+	print date_start
+
+#	print Schedule.objects.filter(appointment_begin__startswith=date_start, appointment_end__startswith=date_end)
+	return HttpResponse(Schedule.objects.filter(appointment_begin__startswith=date_start, appointment_end__startswith=date_end))
+#	return HttpResponse('hello')
 
 def index(request):
     user = request.user
@@ -39,6 +49,7 @@ def index(request):
     services = Service.objects.filter( active=True, organization=user.org_active )
     clients = person_order(Client.objects.filter(person__organization = user.org_active.id, clientStatus = '1'))
     week_header = schedule_week_header()
+
     return render_to_response('schedule/schedule_index.html', locals())
 
 def save(request):

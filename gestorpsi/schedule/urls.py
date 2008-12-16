@@ -19,6 +19,8 @@ from django.conf.urls.defaults import *
 urlpatterns = patterns('gestorpsi.schedule.views',
     (r'^$', 'index'), # list objects
     (r'^save/$', 'save'), # save new object
+	(r'^(?P<date_start>[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})/(?P<date_end>[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})$', 'schedules_in_range'), # schedules by date
+
 #    (r'^add/$', 'form'), # new object form
 #    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', 'form'), # edit object form
 #    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', 'save'), # update object

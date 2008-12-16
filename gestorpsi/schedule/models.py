@@ -27,5 +27,5 @@ class Schedule(models.Model):
     appointment_end = models.DateTimeField()
 
     def __unicode__(self):
-        return u"Horario: %s - %s (%s)" % (self.appointment_begin, self.appointment_end, self.room)
-
+        "\nAgendamentosdfdsfdsfdsfdsf"
+        return u"\nClient: %s\nProfessional: %s\nRoom: %s\nService: %s\nBegin: %s\nEnd: %s\n" % (self.referral.client, self.referral.professional, self.room, self.referral.service, self.appointment_begin, self.appointment_end)

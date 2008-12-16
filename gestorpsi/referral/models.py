@@ -29,4 +29,4 @@ class Referral(models.Model):
     user = models.CharField(max_length=10, blank=True)
 
     def __unicode__(self):
-        return u"%s: %s -> %s" % (self.client, self.professional, self.service)
+        return u"\nClient: %s\nProfessional: %s\nService: %s" % (self.client, self.professional, self.service)

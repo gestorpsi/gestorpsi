@@ -13,11 +13,41 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+
+var schedule_form = {
+     success: function(response, request, form) {
+          formSuccess();
+		  $(form).parents('div:first').hide();
+      },
+
+     error: function() {
+          formError();
+     }
+};
+
 var schedule_options = {
-    dateFormat: 'dd/mm/yy',
+    dateFormat: 'yymmdd',
     'onSelect': function(date) {
+		year = date.substr(0,4);
+		month = date.substr(4,2);
+		day = date.substr(6,2);
+		formated_date = new Date(year, month, day);
+
+		// clean table
+		$('table.schedule tr td.clean').text('');
+		$('table.schedule tr').attr('date', day + '/' + month + '/' + year);
+		$.getJSON('/schedule/'+date,
+			function(json) {
+					 jQuery.each(json,  function(i){
+						 $('table.schedule tr[time=' + this.time_start +'] td.room').text(this.room);
+						 $('table.schedule tr[time=' + this.time_start +'] td.service').text(this.service);
+						 $('table.schedule tr[time=' + this.time_start +'] td.client').text(this.client);
+						 $('table.schedule tr[time=' + this.time_start +'] td.professional').text(this.professional);
+					});
+			}
+		);
 		// change title
-        $('p.description').text(date);
+        $('p.description').text(day + '/' + month + '/' + year);
 		// rewrite date attribute in table clickable lines
 		$('table.schedule tr').attr('date', date);
     }
@@ -25,6 +55,23 @@ var schedule_options = {
 }
 
 $(document).ready(function() {
+     $('form.schedule').each(function() {
+          $(this).validate({event:"submit",
+          rules: {
+               time_date: {
+                      required: true
+               }
+          },
+          messages: {
+              name: 'Preenchimento Necessário'
+          },
+          submitHandler: function(form) {
+               $(form).ajaxSubmit(schedule_form);
+
+          }
+          });
+     });
+
 
 	$("div.schedule_month").datepicker(schedule_options);
 

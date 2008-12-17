@@ -17,8 +17,11 @@ GNU General Public License for more details.
 import datetime
 import calendar
 import time
+from datetime import datetime as datetime2
+from time import strftime
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
+from django.db.models import Q
 from gestorpsi.place.models import Place, Room
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.service.models import Service
@@ -29,13 +32,37 @@ from gestorpsi.schedule.models import Schedule
 from django.core import serializers
 from django.utils import simplejson
 
-def schedules_in_range(request, date_start = datetime.datetime.now().strftime('%Y-%m-%d %h:%i:%s'), date_end = datetime.datetime.now().strftime('%Y-%m-%d %h:%i:%s')):
-#def schedules(date_start = datetime.datetime.now().strftime('%Y%m%d%h%i%s'), date_end = datetime.datetime.now().strftime('%Y%m%d%h%i%s')):
+def schedules_in_range(request, date_start = datetime.datetime.now().strftime('%Y%m%d%H%M%S'), date_end = datetime.datetime.now().strftime('%Y%m%d%H%M%S')):
+	date_start = datetime2.strptime(date_start, "%Y%m%d%H%M%S")
+	date_end = datetime2.strptime(date_end, "%Y%m%d%H%M%S")
 	print date_start
+	print date_end
+	schedules = Schedule.objects.filter(Q(appointment_begin__gt=date_start) & Q(appointment_end__lt=date_end))
+	array = {}
+	i = 0
+	for s in schedules:
+		array[i] = {
+			'schedule': s.id,
+			'professional_id':s.referral.professional_id,
+			'professional':s.referral.professional.person.name,
+			'service_id':s.referral.service_id,
+			'service':s.referral.service.description,
+			'client_id':s.referral.client_id,
+			'client':s.referral.client.person.name,
+			'room_id':s.room_id,
+			'room':s.room.description,
+			'date_start': s.appointment_begin.strftime('%Y%m%d'),
+			'time_start': s.appointment_begin.strftime('%H%M%S'),
+			'date_start': s.appointment_end.strftime('%Y%m%d'),
+			'date_end': s.appointment_end.strftime('%H%M%S'),
+			}
+		i = i + 1
 
-#	print Schedule.objects.filter(appointment_begin__startswith=date_start, appointment_end__startswith=date_end)
-	return HttpResponse(Schedule.objects.filter(appointment_begin__startswith=date_start, appointment_end__startswith=date_end))
-#	return HttpResponse('hello')
+	array = simplejson.dumps(array)
+	return HttpResponse(array, mimetype='application/json')
+
+def schedules_daily(request, date_start = datetime.datetime.now().strftime('%Y%m%d')):
+	return schedules_in_range(request, '%s%s' % (date_start, '000000'), '%s%s' % (date_start, '235959'))
 
 def index(request):
     user = request.user

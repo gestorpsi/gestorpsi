@@ -16,13 +16,24 @@ GNU General Public License for more details.
 
 {% load i18n %}
 {% load num_range %}
+{% load custom_filters %}
 {% num_range 24 as day_range %}
+{% for s in schedules %}
+{{ s.appointment_begin|date:"h"  }} -
+{% if s.appointment_begin|date:"h"|equaltest:"04"  %}
+	{{ s.appointment_begin  }} 
+{% endif %}
+<br>
 
+{% endfor %}
 <div class="main_area">
 	{% include "tags/schedule_filters.html" %}
 	<table class="zebra schedule" border="0" cellspacing="0" cellpadding="0">
 		<thead>
 			<th>{% trans "Time" %}</th>
+			 {% for p in places %}
+				<th place="{{ p.id }}">{{ p }}</th>
+			{% endfor%}
 			<th>{% trans "Room" %}</th>
 			<th>{% trans "Service" %}</th>
 			<th>{% trans "Professional" %}</th>
@@ -36,12 +47,15 @@ GNU General Public License for more details.
 		<tbody>
 
 		 {% for h in day_range %}
-		<tr date="{% now "d/m/Y" %}" time="{{  h  }}:00">
-			<td>{{  h  }}:00</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
+		<tr date="{% now "d/m/Y" %}" time="{% if h|make_list|length|equaltest:1 %}0{% endif %}{{  h  }}0000">
+			<td>{% if h|make_list|length|equaltest:1 %}0{% endif %}{{  h  }}:00</td>
+			{% for p in places %}
+				<th place="{{ p.id }}">{{ p }}</th>
+			{% endfor%}
+			<td class="room clean"></td>
+			<td class="service clean"></td>
+			<td class="professional clean"></td>
+			<td class="client clean"></td>
 			{% for p in places %}
 				{% for r in p.room_set.all %}
 				<td place="{{ p.id }}" room="{{ r.id }}"></td>

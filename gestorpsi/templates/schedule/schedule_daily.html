@@ -18,14 +18,7 @@ GNU General Public License for more details.
 {% load num_range %}
 {% load custom_filters %}
 {% num_range 24 as day_range %}
-{% for s in schedules %}
-{{ s.appointment_begin|date:"h"  }} -
-{% if s.appointment_begin|date:"h"|equaltest:"04"  %}
-	{{ s.appointment_begin  }} 
-{% endif %}
-<br>
 
-{% endfor %}
 <div class="main_area">
 	{% include "tags/schedule_filters.html" %}
 	<table class="zebra schedule" border="0" cellspacing="0" cellpadding="0">

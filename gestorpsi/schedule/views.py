@@ -18,8 +18,7 @@ import datetime
 import calendar
 import time
 from datetime import datetime as datetime2
-from time import strftime
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Q
 from gestorpsi.place.models import Place, Room
@@ -29,14 +28,13 @@ from gestorpsi.client.models import Client
 from gestorpsi.person.views import person_order
 from gestorpsi.referral.models import Referral
 from gestorpsi.schedule.models import Schedule
-from django.core import serializers
+#from django.core import serializers
 from django.utils import simplejson
 
 def schedules_in_range(request, date_start = datetime.datetime.now().strftime('%Y%m%d%H%M%S'), date_end = datetime.datetime.now().strftime('%Y%m%d%H%M%S')):
 	date_start = datetime2.strptime(date_start, "%Y%m%d%H%M%S")
 	date_end = datetime2.strptime(date_end, "%Y%m%d%H%M%S")
-	print date_start
-	print date_end
+
 	schedules = Schedule.objects.filter(Q(appointment_begin__gt=date_start) & Q(appointment_end__lt=date_end))
 	array = {}
 	i = 0

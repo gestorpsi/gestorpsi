@@ -75,8 +75,6 @@ $ python install.py
 $ python manage.py runserver
 
 6) Open your browser, and go to http://127.0.0.1:8000/
-For more configuration details run
-$ ./configure --help
 
 If there are any errors during installing, check your build environment
 and try to find the error, otherwise contact one of the authors.

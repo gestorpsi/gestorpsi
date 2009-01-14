@@ -15,11 +15,12 @@ GNU General Public License for more details.
 """
 
 from django.shortcuts import render_to_response
+from django.template.context import RequestContext
 
 
 def index(request):
     if(request.user.is_authenticated()):
-        return render_to_response('core/main.html')
+        return render_to_response('core/main.html', context_instance=RequestContext(request))
     else:        
         return render_to_response('registration/login.html')
     

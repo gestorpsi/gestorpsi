@@ -1,0 +1,43 @@
+div.schedule { padding: 2em; }
+div.schedule a { text-decoration: none; color: #357; }
+div.schedule table { border-collapse: collapse; font-size: 1em; }
+div.schedule td, th { padding: 2px; border: 1px solid #ccc; }
+div.schedule th { background-color: #bba; }
+div.schedule dt { font-weight: bold; }
+div.schedule dt { font-weight: bold; }
+div.schedule dd { margin-bottom: .5em; }
+div.schedule form table { width: 100% }
+div.schedule form table ul { margin: 0; padding: 0;}
+div.schedule form table li { list-style-type: none; }
+div.schedule form table th { text-align: right; width: 10em; }
+div.schedule form tfoot td { text-align: center; background-color: #566; }
+div.schedule .form-indent { margin-left: 2.5em; }
+div.schedule .horizontal { width: 30em; }
+div.schedule .horizontal li { float: left; margin: 0; }
+div.schedule .horizontal li label { width: 4em; display: block; float: left; }
+div.schedule #recurrence-options { float: left; }
+div.schedule #recurrence-options li { margin-bottom: 4px; }
+div.schedule .calendar td,div.schedule .calendar th { min-width: 10em; width: 10em; }
+div.schedule .month-view td { vertical-align: top; height: 10em; min-height: 10em; }
+div.schedule .month-view td, .month-view th { min-width: 10em; width: 10em; }
+div.schedule .month-view .day-ordinal { font-weight: bold; font-size: 1.1em; text-align: right; }
+div.schedule .month-view ul { list-style: none; margin: 1px 2px; padding: 0; }
+div.schedule .month-view .today { background-color: #eed; }
+div.schedule .month-divider th, .month-divider td { border-top: 3px double #888; }
+div.schedule #belts { list-style-type: none; }
+div.schedule #belts a { text-align: center; display: block; padding: 4px; width: 70%;
+        border: 1px solid #ccc; margin-bottom: .5em; font-weight: bold; }
+div.schedule #belts a:hover { font-style: italic; }
+div.schedule #white-belt { background-color: #fff; color: #322; }
+div.schedule #yellow-belt { background-color: #fd0; color: #322; }
+div.schedule #green-belt { background-color: #693; color: #fff; }
+div.schedule #brown-belt { background-color: #655; color: #fff; }
+div.schedule #black-belt { background-color: #322; color: #fff; }
+div.schedule .evt-spc-odd, div.schedule .evt-spc-even  { background-color: #3b5153; color: #fff; }
+div.schedule .evt-spc-odd a, .evt-spc-even a { color: #fff; }
+div.schedule .evt-open-even, .evt-open-odd { background-color: #ccd; }
+div.schedule .evt-adv-odd, .evt-adv-even { background-color: #cdd; }
+div.schedule .evt-bgn-even, .evt-bgn-odd { background-color: #dd8; }
+div.schedule .evt-bbc-odd, .evt-bbc-even { background-color: #aaa; }
+div.schedule .evt-prv-odd { background-color: #8a9; }
+div.schedule .evt-prv-even { background-color: #acb; }

@@ -105,7 +105,7 @@ $(document).unbind().ready(function(){
 	* 
 	*/
 	
-	$("#core :not(table.zebra tr td) a:not(.notajax)").click(function(){
+	$("#core :not(table.zebra tr td) a:not(.notajax), div.schedule table.calendar a, div.schedule a").click(function(){
 		var link = $(this);
 		$('#edit_form div.admission_form').hide();
 		$("#core").load(link.attr('href'));

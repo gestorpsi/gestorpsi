@@ -1,0 +1,98 @@
+GestorPsi - Psychology Services Management System
+----------------------------------
+
+
+About
+-----
+GestorPsi is a system to management one, or many clinic organizations.
+It was developed using Python 2.5 language, Django framework
+(www.djangoproject.com) and JQuery (www.jquery.com)
+
+
+Features
+--------
+The basic features of GestorPsi are:
+- Organization Profile
+- Customers Management
+- Profesionals Management
+- Services Management
+- Places Management
+- Rooms Management
+- Contacts Management
+- Employees Management
+- Devices Management
+- UUid
+- Encrypted Database
+
+
+Todo
+--------
+- Schedule
+- Reports
+
+
+Requirements
+------------
+Before install GestorPsi, you need to get and install the follows
+Python Packages:
+
+- Python (>=2.5)
+  maintainer: http://www.python.org/
+
+- Python Cryptography Toolkit (>= 2.1.0)
+  maintainer: http://www.pycrypto.org
+  debian/ubuntu: sudo apt-get install python-crypto
+
+- Django Swingtime (>= 0.2)
+  maintainer: http://code.google.com/p/django-swingtime/
+
+- Some database server running, and configured:
+  MySQL Server, PostgreSQL, Oracle or SQLite
+
+- Firefox Web Browser (>=3.0.5)
+  maintainer: http://www.mozilla.com/firefox/
+
+
+Installation
+------------
+After downloaded and extracted GestorPsi source files, installing
+GestorPsi is done by the following:
+1) export PYTHONPATH environment variable to your django project
+dir.
+Ex.: if your sources was extracted to /home/foo/gestorpsi
+$ export PYTHONPATH="/home/foo/gestorpsi"
+
+2) Change to project Directory
+$ cd /home/foo/gestorpsi
+
+3) Create database tables
+$ python manage.py syncdb
+
+4) Install initial data
+$ python install.py
+
+5) Run development server
+$ python manage.py runserver
+
+6) Open your browser, and go to http://127.0.0.1:8000/
+For more configuration details run
+$ ./configure --help
+
+If there are any errors during installing, check your build environment
+and try to find the error, otherwise contact one of the authors.
+
+
+License
+-------
+GestorPsi is distributed under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2 of the
+License, or (at your option) any later version.  A copy of this license
+can be found in the file COPYING included with the source code of this
+program.
+
+Ideas, questions, patches and bug reports
+suport@gestopsi.com.br
+
+--
+2007-2009 by GestorPsi
+www.gestorpsi.com.br

@@ -35,6 +35,7 @@ GNU General Public License for more details.
 
 <style type="text/css" media="all">
 @import "/media/css/layout.css";
+@import "/media/css/schedule.css";
 @import "/media/css/jquery.autocomplete.css";
 @import "/media/css/datePicker.css";
 @import "/media/css/jquery.asmselect.css";
@@ -102,8 +103,11 @@ GNU General Public License for more details.
 
          <!-- schedule -->
 		<ul id="sub_schedule" style="display:none">
-			<li><a display="daily" class="first active fastmenu" href="/schedule/">{% trans "daily" %}</a></li>
-			<li><a display="week" class="fastmenu" href="/schedule/">{% trans "week" %}</a></li>
+			<li><a display="daily" class="first active" href="{% url swingtime-today %}">{% trans "daily" %}</a></li>
+			<!-- <li><a display="week" class="fastmenu" href="/schedule/">{% trans "week" %}</a></li> -->
+			<li><a display="monthly" href="{% url swingtime-monthly-view current_datetime.year current_datetime.month %}">{% trans "monthly" %}</a></li>
+			<li><a display="yearly" href="{% url swingtime-yearly-view current_datetime.year %}">{% trans "yearly" %}</a></li>
+			<li><a display="event" href="{% url swingtime-events %}">{% trans "events" %}</a></li>
         </ul>
 
         <!-- address book -->

@@ -45,6 +45,31 @@ function bindAjaxForms() {
           });
      });
 
+     /**
+      *
+      * schedule post form
+      *
+      * _description:
+      * post any form, without validate verification
+      *
+      */
+
+     $('form.schedule').each(function() {
+          $(this).validate({event:"submit",
+          rules: {
+               event_type: {
+                      required: true
+               }
+          },
+          messages: {
+              name: 'Preenchimento Necessário'
+          },
+          submitHandler: function(form) {
+               $(form).ajaxSubmit(form_options);
+            }
+          });
+     });
+
     /**
      *
      * places post form

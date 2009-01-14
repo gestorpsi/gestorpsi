@@ -75,6 +75,13 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.load_template_source',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.media',
+    'swingtime.context_processors.current_datetime',
+)
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -123,6 +130,7 @@ INSTALLED_APPS = (
     'gestorpsi.document',
     'gestorpsi.internet',
     'gestorpsi.upload',
+	'swingtime',
     'gestorpsi.schedule',
     'gestorpsi.frontend', #load at last
 )
@@ -151,3 +159,4 @@ PASSWORD_RETIRES = 3
 
 PAGE_RESULTS = 8
 
+WINGTIME_SETTINGS_MODULE = 'gestorpsi.schedule.settings'

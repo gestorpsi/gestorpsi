@@ -18,7 +18,10 @@ $(document).ready(function(){
 	
 	/** global ajax events */
 	
-        $.ajaxSetup( { timeout: 5000 } );
+        $.ajaxSetup( {
+			timeout: 10000,
+			async:false,
+		} );
         	
         $("#loading p").bind("ajaxSend", function(){
                 $(this).show();

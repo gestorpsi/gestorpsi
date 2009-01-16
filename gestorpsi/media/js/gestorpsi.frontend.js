@@ -18,22 +18,21 @@ $(document).ready(function(){
 	
 	/** global ajax events */
 	
-        $.ajaxSetup( {
+        $.ajaxSetup({
 			timeout: 10000,
-			async:false,
-		} );
+			async:false
+		});
         	
         $("#loading p").bind("ajaxSend", function(){
+				$('#disable_menu').show();
                 $(this).show();
         }).bind("ajaxComplete", function(){
                 $(this).hide();
+				$('#disable_menu').hide();
         });
-        
 
 
-        
-        
-        /**
+		/**
          * msg_area get global events
          */
         

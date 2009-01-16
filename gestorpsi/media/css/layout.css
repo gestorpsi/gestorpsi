@@ -936,6 +936,14 @@ div.photo_form_upload {
 	min-height: 500px;
 }
 
+#disable_menu {
+	width: 110%;
+	position: fixed;
+	margin: -55px 0 75px -22px;
+	z-index: 6;
+	min-height: 160px;
+}
+
 img.img_people {
 	/*
 	width: 116px;

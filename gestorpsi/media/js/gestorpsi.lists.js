@@ -148,7 +148,8 @@ function bindList() {
         
         $("ul.opened_tabs li div a.close, .edit_form input#cancel_button").click(function() {
             $("ul.opened_tabs").hide();
-            $(".edit_form").hide();
+            $("#edit_form").hide();
+			$("#form").hide();
             $('div#sub_menu li a[display="list"]').addClass('active');
             $('div#list.fast_menu_content').show();
         });

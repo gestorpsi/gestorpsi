@@ -16,8 +16,6 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-{% include "core/ajax_page.html" %}
-
 <div class="no_registers_available"{% if object.object_list %} style="display:none"{% endif %}>
 	<div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/contact/add/" display="form" class="fastmenu" sub_menu="sub_contacts">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
 </div>

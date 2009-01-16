@@ -123,9 +123,6 @@ var form_options = {
 
           $('#list #search_results').tablesorter({sortList: [[0,0], [1,0]]});
 
-          // re-draw zebra
-          bindTableZebra();
-
           // reload mask
           bindFieldMask();
 

@@ -52,7 +52,7 @@ function bindList() {
 		$('div#list').show();
 		return false;
 	});
-}
+
 
 
 /**
@@ -73,15 +73,8 @@ function bindList() {
  * 
  */
 
-function bindTableZebra() {
 	$('table.zebra tr:odd').addClass('zebra_0');
 	$('table.zebra tr:even').addClass('zebra_1');
-}
-
-$(document).unbind().ready(function(){
-
-	bindList();
-	bindTableZebra();
 	
 	// draw top-border for multirows fieldsets (eg.: address fieldset)
 	$('fieldset.set_multirow').each(function() {
@@ -211,7 +204,7 @@ $(document).unbind().ready(function(){
         return false;
     });
 
-});
+}
 
 
 

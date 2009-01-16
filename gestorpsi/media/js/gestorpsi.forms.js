@@ -409,15 +409,8 @@ function bind_select_itens_selected() {
 }
 
 
-$(document).unbind().ready(function(){
-     
-     bindAjaxForms();
-     bindDelete();
-     bindFormActions();
-     bind_select_itens_selected();
-     bind_select_itens_available();
-     bindFieldMask();
-     
+function bindFormMisc() {
+
      /**
      * sidebar. floating box
      */
@@ -547,6 +540,4 @@ $(document).unbind().ready(function(){
      });
      */
      
-
-     
-});
+}

@@ -14,20 +14,15 @@ GNU General Public License for more details.
 
 */
 
-var calendar_date = {
-    dateFormat: 'dd/mm/yy'
-//    , firstDay: 1
-}
-
-function bindDates() {
-    $('input.calendar.date:not([mask])').datepicker(calendar_date);
-}
-
-
-
-
-
-
-
-
-
+$(document).unbind().ready(function(){
+	bindList();
+	bindAjaxForms();
+	bindDelete();
+	bindFormActions();
+	bind_select_itens_selected();
+	bind_select_itens_available();
+	bindFieldMask();
+	bindFormMisc();
+	bindDates();
+	bindSchedule();
+});

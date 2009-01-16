@@ -54,7 +54,7 @@ var schedule_options = {
     //    ,firstDay: 1,
 }
 
-$(document).ready(function() {
+function bindSchedule() {
      $('form.schedule').each(function() {
           $(this).validate({event:"submit",
           rules: {
@@ -93,7 +93,7 @@ $(document).ready(function() {
 		//display form
 		$('div.schedule div.form').show();
     });
-});
+}
 
 
 

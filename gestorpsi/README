@@ -71,10 +71,13 @@ $ python manage.py syncdb
 4) Install initial data
 $ python install.py
 
-5) Run development server
+5) Compile language messages
+$ django-admin compilemessages
+
+6) Run development server
 $ python manage.py runserver
 
-6) Open your browser, and go to http://127.0.0.1:8000/
+7) Open your browser, and go to http://127.0.0.1:8000/
 
 If there are any errors during installing, check your build environment
 and try to find the error, otherwise contact one of the authors.

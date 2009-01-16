@@ -152,6 +152,7 @@ function bindList() {
 			$("#form").hide();
             $('div#sub_menu li a[display="list"]').addClass('active');
             $('div#list.fast_menu_content').show();
+			$('div#msg_area').hide();
         });
 	
 	/**
@@ -164,6 +165,9 @@ function bindList() {
 	    $('div#sub_menu ul li a').removeClass('active');
 	    $('div#sub_menu ul li a:first').addClass('active');
 	    $('div#list.fast_menu_content').show();
+		$("ul.opened_tabs").hide();
+		$("#edit_form").hide();
+		$("#form").hide();
 	});
 	
 	

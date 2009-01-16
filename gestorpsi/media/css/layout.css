@@ -1289,6 +1289,10 @@ div.schedule div.form form fieldset label {
     margin: 5px 0 0 8px;
 }
 
+table.zebra tr th {
+	display: none;
+}
+
 /**
 *  utils
 */

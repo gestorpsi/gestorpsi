@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-22 16:17-0300\n"
+"POT-Creation-Date: 2009-01-19 14:50-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,669 +24,1218 @@ msgstr ""
 msgid "English"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:10
-msgid "Adding New Profesional"
+#: templates/404.html:3
+msgid "Page not found"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:11
-msgid "Inform the professional details then click on Save button"
+#: templates/404.html:5
+msgid "We're sorry, but the requested page could not be found."
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:34
-msgid "Professional Identification"
+#: templates/500.html:3
+msgid "Server Error <em>(500)</em>"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:35
-#: templates/service/service_form.html:50 templates/tags/phone.html:6
-msgid "Area"
+#: templates/500.html:4
+msgid ""
+"There's been an error. It's been reported to the site administrators via e-"
+"mail and should be fixed shortly. Thanks for your patience."
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:42
-msgid "Licence"
+#: templates/admission/admission_form.html:24
+msgid "Admission of"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:49
-msgid "Register Number"
+#: templates/admission/admission_form.html:33
+#: templates/referral/referral_form.html:86
+msgid "Admission Details"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:55
-msgid "Professional Profile"
+#: templates/admission/admission_form.html:45
+msgid "Basic Informations"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:56
-msgid "Inital Activities Date"
+#: templates/admission/admission_form.html:46
+msgid "ID Record"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:59
-#: templates/core/main.html:67
-msgid "Services"
+#: templates/admission/admission_form.html:48
+msgid "Legacy Record"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:62
-msgid "Available Time"
+#: templates/admission/admission_form.html:50
+msgid "Admission Date"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:68
-msgid "Professional Agreements"
+#: templates/admission/admission_form.html:52
+msgid "Health Document"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:69
-#: templates/service/service_form.html:172
-msgid "Agreements"
+#: templates/admission/admission_form.html:59
+msgid "Referrals"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:79
-msgid "Professional Workplaces"
+#: templates/admission/admission_form.html:60
+msgid "How the client heard about this organization?"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:81
-msgid "Workplaces"
+#: templates/admission/admission_form.html:69
+#: templates/admission/admission_form.html:101
+#: templates/contact/contact_form.html:44
+#: templates/tags/address_book_professional_mini.html:24
+msgid "Select Organization, or"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:89
-msgid "Add New Workplace"
+#: templates/admission/admission_form.html:69
+#: templates/admission/admission_form.html:78
+#: templates/admission/admission_form.html:101
+#: templates/admission/admission_form.html:110
+#: templates/admission/admission_form.html:135
+#: templates/contact/contact_form.html:44 templates/device/device_form.html:42
+#: templates/tags/address_book_professional_mini.html:24
+msgid "add a new one"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:102
-msgid "Professional Status"
+#: templates/admission/admission_form.html:78
+#: templates/admission/admission_form.html:110
+msgid "Select Professional, or"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:103
-#: templates/service/service_form.html:211
-msgid "Active?"
+#: templates/admission/admission_form.html:90
+msgid "Indications"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:105
-#: templates/service/service_form.html:213
-msgid "Yes"
+#: templates/admission/admission_form.html:91
+msgid "Indication done by"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:106
-#: templates/service/service_form.html:214
-msgid "No"
+#: templates/admission/admission_form.html:122
+msgid "Parents"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_list.html:4
-#: templates/client/client_list.html:4 templates/device/device_list.html:4
-#: templates/employee/employee_list.html:4 templates/place/place_list.html:4
-#: templates/service/service_list.html:4
-msgid "There is no registers available."
+#: templates/admission/admission_form.html:130
+msgid "Add Parent"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_list.html:4
-#: templates/client/client_list.html:4 templates/device/device_list.html:4
-#: templates/employee/employee_list.html:4 templates/place/place_list.html:4
-#: templates/service/service_list.html:4
-msgid "Click"
+#: templates/admission/admission_form.html:134
+msgid "Forwards"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_list.html:4
-#: templates/client/client_list.html:4 templates/device/device_list.html:4
-#: templates/employee/employee_list.html:4 templates/place/place_list.html:4
-#: templates/service/service_list.html:4
-msgid "here"
+#: templates/admission/admission_form.html:135
+msgid "Please, select a professional from the list bellow or"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_list.html:4
-#: templates/client/client_list.html:4 templates/device/device_list.html:4
-#: templates/employee/employee_list.html:4 templates/place/place_list.html:4
-#: templates/service/service_list.html:4
-msgid "if you want to add a new one."
+#: templates/admission/admission_form.html:155
+msgid "Admission reason"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_list.html:14
-msgid "All Professionals"
+#: templates/admission/admission_form.html:162
+msgid "Files"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_list.html:15
-#: templates/client/client_list.html:11 templates/device/device_list.html:12
-#: templates/employee/employee_list.html:15 templates/place/place_list.html:12
-#: templates/service/service_list.html:12
-msgid "Displaying"
-msgstr ""
-
-#: templates/careprofessional/careprofessional_list.html:15
-msgid "professional(s)"
-msgstr ""
-
-#: templates/client/client_form.html:10
-msgid "Adding New Client"
-msgstr ""
-
-#: templates/client/client_form.html:11
-msgid "Inform the client details then click on Save button"
-msgstr ""
-
-#: templates/client/client_form.html:24 templates/client/client_form.html:26
-msgid "Demographic"
-msgstr ""
-
-#: templates/client/client_form.html:27
-msgid "Socio-Demographic"
-msgstr ""
-
-#: templates/client/client_form.html:28
-msgid "Socio-Economic"
-msgstr ""
-
-#: templates/client/client_form.html:42 templates/place/place_form.html:115
-#: templates/service/service_form.html:244
-msgid "Object Actions"
-msgstr ""
-
-#: templates/client/client_list.html:10
-msgid "All Customers"
-msgstr ""
-
-#: templates/client/client_list.html:11
-msgid "customer(s)"
-msgstr ""
-
-#: templates/core/main.html:6 templates/registration/login.html:6
-#: templates/registration/select_organization.html:6
-msgid "Sistema de Gestão de Serviços em Psicologia"
-msgstr ""
-
-#: templates/core/main.html:51
-msgid "email"
-msgstr ""
-
-#: templates/core/main.html:51
-msgid "preferences"
-msgstr ""
-
-#: templates/core/main.html:51
-msgid "quit"
-msgstr ""
-
-#: templates/core/main.html:57
-msgid "start"
-msgstr ""
-
-#: templates/core/main.html:58
-msgid "calendar"
-msgstr ""
-
-#: templates/core/main.html:59
-msgid "clients"
-msgstr ""
-
-#: templates/core/main.html:60
-msgid "contacts"
-msgstr ""
-
-#: templates/core/main.html:61
-msgid "organization"
-msgstr ""
-
-#: templates/core/main.html:63
-msgid "My Organization"
-msgstr ""
-
-#: templates/core/main.html:64
-msgid "Places"
-msgstr ""
-
-#: templates/core/main.html:65
-msgid "Employees"
-msgstr ""
-
-#: templates/core/main.html:66
-msgid "Professionals"
-msgstr ""
-
-#: templates/core/main.html:68
-msgid "Rooms"
-msgstr ""
-
-#: templates/core/main.html:69
-msgid "Equipments"
-msgstr ""
-
-#: templates/core/main.html:77 templates/core/main.html.py:86
-#: templates/core/main.html:92 templates/core/main.html.py:99
-#: templates/core/main.html:106 templates/core/main.html.py:113
-#: templates/core/main.html:120
-msgid "all"
-msgstr ""
-
-#: templates/core/main.html:78 templates/core/main.html.py:87
-#: templates/core/main.html:93 templates/core/main.html.py:100
-#: templates/core/main.html:107 templates/core/main.html.py:114
-#: templates/core/main.html:121
-msgid "add"
-msgstr ""
-
-#: templates/core/main.html:79 templates/core/main.html.py:88
-#: templates/core/main.html:94 templates/core/main.html.py:101
-#: templates/core/main.html:108 templates/core/main.html.py:115
-#: templates/core/main.html:122
-msgid "search"
-msgstr ""
-
-#: templates/core/main.html:80
-msgid "booked"
-msgstr ""
-
-#: templates/core/main.html:81
-msgid "actives"
-msgstr ""
-
-#: templates/core/main.html:82
-msgid "waiting"
-msgstr ""
-
-#: templates/core/main.html:147
-msgid "Loading"
-msgstr ""
-
-#: templates/device/device_form.html:10
-msgid "Adding Equipments"
-msgstr ""
-
-#: templates/device/device_form.html:11
-msgid "Inform the equipment details then click on Save button"
-msgstr ""
-
-#: templates/device/device_form.html:29
-msgid "Adding equipment details"
-msgstr ""
-
-#: templates/device/device_form.html:31
-msgid "Brand"
-msgstr ""
-
-#: templates/device/device_form.html:35
-msgid "Model"
-msgstr ""
-
-#: templates/device/device_form.html:39
-msgid "Part number"
-msgstr ""
-
-#: templates/device/device_form.html:43
+#: templates/admission/admission_form.html:246
+#: templates/device/device_form.html:69
+#: templates/organization/organization_form.html:200
+#: templates/organization/organization_form.html:201
+#: templates/referral/referral_form.html:70
 msgid "Comments"
 msgstr ""
 
-#: templates/device/device_form.html:56 templates/device/device_form.html:57
-msgid "Device"
+#: templates/admission/admission_form.html:260
+#: templates/client/client_form.html:57 templates/place/place_form.html:101
+#: templates/referral/referral_form.html:83
+msgid "Object Actions"
 msgstr ""
 
-#: templates/device/device_form.html:72 templates/device/device_form.html:73
-msgid "Device Type"
+#: templates/admission/admission_form.html:262
+#: templates/referral/referral_form.html:85
+msgid "Client Details"
 msgstr ""
 
-#: templates/device/device_list.html:11
-msgid "All Devices"
+#: templates/admission/admission_form.html:263
+msgid "Referral Client"
 msgstr ""
 
-#: templates/device/device_list.html:12
-msgid "device(s)"
+#: templates/careprofessional/careprofessional_form.html:26
+msgid "Adding New Profesional"
 msgstr ""
 
-#: templates/employee/employee_form.html:11
-msgid "Adding New Employee"
+#: templates/careprofessional/careprofessional_form.html:27
+msgid "Inform the professional details then click on Save button"
 msgstr ""
 
-#: templates/employee/employee_form.html:12
-msgid "Inform the employee details then click on Save button"
+#: templates/careprofessional/careprofessional_form.html:50
+#: templates/contact/contact_form.html:55
+msgid "Professional Identification"
 msgstr ""
 
-#: templates/employee/employee_form.html:35
-#: templates/meta/people_indentification.html:20
-msgid "Personal Identification"
+#: templates/careprofessional/careprofessional_form.html:51
+#: templates/service/service_form.html:64
+#: templates/tags/careprofessional_mini.html:26 templates/tags/phone.html:22
+msgid "Area"
 msgstr ""
 
-#: templates/employee/employee_form.html:36
-msgid "Job"
+#: templates/careprofessional/careprofessional_form.html:58
+#: templates/tags/careprofessional_mini.html:33
+msgid "Licence"
 msgstr ""
 
-#: templates/employee/employee_form.html:39
-msgid "Hiredate"
+#: templates/careprofessional/careprofessional_form.html:65
+#: templates/organization/organization_form.html:51
+#: templates/tags/careprofessional_mini.html:40
+msgid "Register Number"
 msgstr ""
 
-#: templates/employee/employee_list.html:14
-msgid "All Employees"
+#: templates/careprofessional/careprofessional_form.html:71
+msgid "Professional Profile"
 msgstr ""
 
-#: templates/employee/employee_list.html:15
-msgid "employees(s)"
+#: templates/careprofessional/careprofessional_form.html:72
+msgid "Inital Activities Date"
 msgstr ""
 
-#: templates/meta/addressbook.html:8 templates/place/place_form.html:48
-msgid "Addresses"
+#: templates/careprofessional/careprofessional_form.html:75
+msgid "Available Time"
 msgstr ""
 
-#: templates/meta/addressbook.html:16
-msgid "Add Address"
+#: templates/careprofessional/careprofessional_form.html:81
+msgid "Professional Agreements"
 msgstr ""
 
-#: templates/meta/addressbook.html:25 templates/place/place_form.html:64
-msgid "Phones"
+#: templates/careprofessional/careprofessional_form.html:82
+#: templates/service/service_form.html:164
+msgid "Agreements"
 msgstr ""
 
-#: templates/meta/addressbook.html:33 templates/place/place_form.html:72
-msgid "Add Phone"
+#: templates/careprofessional/careprofessional_form.html:92
+msgid "Professional Workplaces"
 msgstr ""
 
-#: templates/meta/internet.html:8
-msgid "Emails"
+#: templates/careprofessional/careprofessional_form.html:94
+msgid "Workplaces"
 msgstr ""
 
-#: templates/meta/internet.html:16
-msgid "Add Email"
+#: templates/careprofessional/careprofessional_form.html:102
+msgid "Add New Workplace"
 msgstr ""
 
-#: templates/meta/internet.html:27 templates/tags/im.html:5
-msgid "Instant Messengers"
+#: templates/careprofessional/careprofessional_form.html:106
+msgid "Professional Services"
 msgstr ""
 
-#: templates/meta/internet.html:35
-msgid "Add IM"
+#: templates/careprofessional/careprofessional_form.html:108
+#: templates/core/main.html:97
+msgid "Services"
 msgstr ""
 
-#: templates/meta/internet.html:44
-msgid "Websites"
+#: templates/careprofessional/careprofessional_form.html:123
+msgid "Professional Status"
 msgstr ""
 
-#: templates/meta/internet.html:52
-msgid "Add Website"
+#: templates/careprofessional/careprofessional_form.html:124
+#: templates/service/service_form.html:202
+msgid "Active?"
 msgstr ""
 
-#: templates/meta/people_indentification.html:5
-msgid "Male"
+#: templates/careprofessional/careprofessional_form.html:126
+#: templates/service/service_form.html:204
+msgid "Yes"
 msgstr ""
 
-#: templates/meta/people_indentification.html:6
-msgid "Female"
+#: templates/careprofessional/careprofessional_form.html:127
+#: templates/service/service_form.html:205
+msgid "No"
 msgstr ""
 
-#: templates/meta/people_indentification.html:8
-msgid "Photo"
+#: templates/careprofessional/careprofessional_list.html:20
+#: templates/client/client_list.html:21 templates/contact/contact_list.html:20
+#: templates/device/device_list.html:20
+#: templates/employee/employee_list.html:20 templates/place/place_list.html:20
+#: templates/service/service_list.html:20
+msgid "There is no registers available."
 msgstr ""
 
-#: templates/meta/people_indentification.html:10
-#: templates/tags/address.html:82 templates/tags/document.html:49
-#: templates/tags/email.html:23 templates/tags/im.html:23
-#: templates/tags/phone.html:33 templates/tags/room.html:34
-#: templates/tags/website.html:15
-msgid "Delete"
+#: templates/careprofessional/careprofessional_list.html:20
+#: templates/client/client_list.html:21 templates/contact/contact_list.html:20
+#: templates/device/device_list.html:20
+#: templates/employee/employee_list.html:20 templates/place/place_list.html:20
+#: templates/service/service_list.html:20
+msgid "Click"
 msgstr ""
 
-#: templates/meta/people_indentification.html:21
-msgid "Name"
+#: templates/careprofessional/careprofessional_list.html:20
+#: templates/client/client_list.html:21 templates/contact/contact_list.html:20
+#: templates/device/device_list.html:20
+#: templates/employee/employee_list.html:20 templates/place/place_list.html:20
+#: templates/service/service_list.html:20
+msgid "here"
 msgstr ""
 
-#: templates/meta/people_indentification.html:24
-msgid "Nickname"
+#: templates/careprofessional/careprofessional_list.html:20
+#: templates/client/client_list.html:21 templates/contact/contact_list.html:20
+#: templates/device/device_list.html:20
+#: templates/employee/employee_list.html:20 templates/place/place_list.html:20
+#: templates/service/service_list.html:20
+msgid "if you want to add a new one."
 msgstr ""
 
-#: templates/meta/people_indentification.html:34
-msgid "Documents"
+#: templates/careprofessional/careprofessional_list.html:31
+#: templates/referral/referral_form.html:61
+msgid "All Professionals"
 msgstr ""
 
-#: templates/meta/people_indentification.html:42
-msgid "Add Document"
+#: templates/careprofessional/careprofessional_list.html:32
+#: templates/client/client_list.html:29 templates/contact/contact_list.html:30
+#: templates/device/device_list.html:29
+#: templates/employee/employee_list.html:32 templates/place/place_list.html:29
+#: templates/service/service_list.html:29
+msgid "Displaying"
 msgstr ""
 
-#: templates/meta/people_profile.html:9
-msgid "Personal Profile"
+#: templates/careprofessional/careprofessional_list.html:32
+msgid "professional(s)"
 msgstr ""
 
-#: templates/meta/people_profile.html:10
-msgid "Birthdate"
+#: templates/client/client_form.html:26
+msgid "Adding New Client"
 msgstr ""
 
-#: templates/meta/people_profile.html:13
-#: templates/service/service_form.html:87
-msgid "Age"
+#: templates/client/client_form.html:27 templates/contact/contact_form.html:22
+msgid "Inform the client details then click on Save button"
 msgstr ""
 
-#: templates/meta/people_profile.html:16
-msgid "Naturality"
+#: templates/client/client_form.html:39 templates/client/client_form.html:41
+msgid "Demographic"
 msgstr ""
 
-#: templates/meta/people_profile.html:26
-msgid "Marital Status"
+#: templates/client/client_form.html:42
+msgid "Socio-Demographic"
 msgstr ""
 
-#: templates/meta/people_profile.html:36
-msgid "Region"
+#: templates/client/client_form.html:43
+msgid "Socio-Economic"
 msgstr ""
 
-#: templates/meta/people_profile.html:41
-msgid "Nationality"
+#: templates/client/client_form.html:59
+msgid "Admit Client"
 msgstr ""
 
-#: templates/place/place_form.html:9
-msgid "Adding New Place"
+#: templates/client/client_list.html:28
+msgid "All Customers"
 msgstr ""
 
-#: templates/place/place_form.html:10
-msgid "Inform the place details then click on Save button"
+#: templates/client/client_list.html:29
+msgid "customer(s)"
 msgstr ""
 
-#: templates/place/place_form.html:28 templates/tags/place_mini.html:6
-msgid "Place Identification"
+#: templates/client/client_list.html:29 templates/contact/contact_list.html:30
+msgid "Page"
 msgstr ""
 
-#: templates/place/place_form.html:29
-msgid "Identification"
+#: templates/client/client_list.html:29 templates/contact/contact_list.html:30
+msgid "of"
 msgstr ""
 
-#: templates/place/place_form.html:32 templates/tags/place_mini.html:9
-msgid "Place Type"
+#: templates/client/client_list.html:104
+msgid "Admission"
 msgstr ""
 
-#: templates/place/place_form.html:84
-msgid "Place Status"
+#: templates/client/client_list.html:110
+#: templates/contact/contact_list.html:57
+msgid "Previous"
 msgstr ""
 
-#: templates/place/place_form.html:86
-msgid "Visible?"
+#: templates/client/client_list.html:112
+#: templates/contact/contact_list.html:59
+msgid "Next"
 msgstr ""
 
-#: templates/place/place_form.html:93 templates/service/service_form.html:222
-msgid "Room Details"
+#: templates/contact/contact_form.html:21
+msgid "Adding New Contact"
 msgstr ""
 
-#: templates/place/place_form.html:117 templates/service/service_form.html:246
-msgid "Add room in this place"
+#: templates/contact/contact_form.html:33
+msgid "Contact Type"
 msgstr ""
 
-#: templates/place/place_form.html:122 templates/service/service_form.html:251
-msgid "Rooms from this place"
-msgstr ""
-
-#: templates/place/place_list.html:11
-msgid "All Places"
-msgstr ""
-
-#: templates/place/place_list.html:12
-msgid "place(s)"
-msgstr ""
-
-#: templates/service/service_form.html:9
-msgid "Adding New Service"
-msgstr ""
-
-#: templates/service/service_form.html:10
-msgid "Inform the service details then click on Save button"
-msgstr ""
-
-#: templates/service/service_form.html:28
-msgid "Service Identification"
-msgstr ""
-
-#: templates/service/service_form.html:29
-msgid "Service Name"
-msgstr ""
-
-#: templates/service/service_form.html:32
-msgid "Service Description"
-msgstr ""
-
-#: templates/service/service_form.html:37
-msgid "Keywords"
-msgstr ""
-
-#: templates/service/service_form.html:48
-msgid "Service Profile"
-msgstr ""
-
-#: templates/service/service_form.html:67 templates/tags/address.html:66
-#: templates/tags/document.html:6 templates/tags/email.html:9
-#: templates/tags/phone.html:18 templates/tags/room.html:15
+#: templates/contact/contact_form.html:34 templates/device/device_form.html:93
+#: templates/device/device_form.html:107 templates/device/device_form.html:128
+#: templates/service/service_form.html:75 templates/tags/address.html:74
+#: templates/tags/document.html:22 templates/tags/email.html:25
+#: templates/tags/phone.html:34 templates/tags/room.html:31
 msgid "Type"
 msgstr ""
 
-#: templates/service/service_form.html:78
-msgid "Solicitation"
-msgstr ""
-
-#: templates/service/service_form.html:96
-msgid "Profession"
-msgstr ""
-
-#: templates/service/service_form.html:115
-msgid "Service Procedures"
-msgstr ""
-
-#: templates/service/service_form.html:152
-msgid "Procedures Choiced"
-msgstr ""
-
-#: templates/service/service_form.html:170
-msgid "Service Relations"
-msgstr ""
-
-#: templates/service/service_form.html:182
+#: templates/contact/contact_form.html:36
 msgid "Professional"
 msgstr ""
 
-#: templates/service/service_form.html:192
-msgid "Research Project"
+#: templates/contact/contact_form.html:37
+msgid "Organization"
 msgstr ""
 
-#: templates/service/service_form.html:210
-msgid "Service Status"
+#: templates/contact/contact_form.html:43
+msgid "Professional Organization"
 msgstr ""
 
-#: templates/service/service_list.html:11
-msgid "All Services"
+#: templates/contact/contact_form.html:56
+#: templates/contact/contact_form.html:64
+#: templates/meta/people_indentification.html:37
+#: templates/tags/address_book_organization_mini.html:24
+#: templates/tags/address_book_professional_mini.html:35
+#: templates/tags/careprofessional_mini.html:23
+msgid "Name"
 msgstr ""
 
-#: templates/service/service_list.html:12
-msgid "service(s)"
+#: templates/contact/contact_form.html:63
+#: templates/tags/organization_mini.html:23
+msgid "Organization Identification"
 msgstr ""
 
-#: templates/tags/address.html:5
-msgid "Prefix"
+#: templates/contact/contact_list.html:29
+msgid "All Contacts"
 msgstr ""
 
-#: templates/tags/address.html:9
-msgid "Street"
+#: templates/contact/contact_list.html:30
+msgid " general contact(s), "
 msgstr ""
 
-#: templates/tags/address.html:13 templates/tags/phone.html:10
-msgid "Number"
+#: templates/contact/contact_list.html:30
+msgid " organization(s) and "
 msgstr ""
 
-#: templates/tags/address.html:17
-msgid "Aditional"
+#: templates/contact/contact_list.html:30
+msgid " professionals(s)"
 msgstr ""
 
-#: templates/tags/address.html:21
-msgid "Neighborhood"
+#: templates/core/main.html:22
+#: templates/registration/select_organization.html:22
+msgid "Sistema de Gestão de Serviços em Psicologia"
 msgstr ""
 
-#: templates/tags/address.html:25
-msgid "ZIP Code"
+#: templates/core/main.html:81
+msgid "email"
 msgstr ""
 
-#: templates/tags/address.html:29
+#: templates/core/main.html:81
+msgid "preferences"
+msgstr ""
+
+#: templates/core/main.html:81
+msgid "quit"
+msgstr ""
+
+#: templates/core/main.html:87
+msgid "start"
+msgstr ""
+
+#: templates/core/main.html:88
+msgid "calendar"
+msgstr ""
+
+#: templates/core/main.html:89
+msgid "clients"
+msgstr ""
+
+#: templates/core/main.html:90
+msgid "contacts"
+msgstr ""
+
+#: templates/core/main.html:91
+msgid "organization"
+msgstr ""
+
+#: templates/core/main.html:93
+msgid "My Organization"
+msgstr ""
+
+#: templates/core/main.html:94
+msgid "Places"
+msgstr ""
+
+#: templates/core/main.html:95
+msgid "Employees"
+msgstr ""
+
+#: templates/core/main.html:96
+msgid "Professionals"
+msgstr ""
+
+#: templates/core/main.html:98
+msgid "Equipments"
+msgstr ""
+
+#: templates/core/main.html:108 templates/core/main.html.py:127
+#: templates/core/main.html:143 templates/core/main.html.py:150
+#: templates/core/main.html:157 templates/core/main.html.py:164
+#: templates/core/main.html:171
+msgid "all"
+msgstr ""
+
+#: templates/core/main.html:109 templates/core/main.html.py:128
+#: templates/core/main.html:144 templates/core/main.html.py:151
+#: templates/core/main.html:158 templates/core/main.html.py:165
+#: templates/core/main.html:172
+msgid "add"
+msgstr ""
+
+#: templates/core/main.html:110 templates/core/main.html.py:129
+#: templates/core/main.html:145 templates/core/main.html.py:152
+#: templates/core/main.html:159 templates/core/main.html.py:166
+#: templates/core/main.html:173
+msgid "search"
+msgstr ""
+
+#: templates/core/main.html:111
+msgid "booked"
+msgstr ""
+
+#: templates/core/main.html:112
+msgid "actives"
+msgstr ""
+
+#: templates/core/main.html:113
+msgid "waiting"
+msgstr ""
+
+#: templates/core/main.html:118
+msgid "daily"
+msgstr ""
+
+#: templates/core/main.html:119
+msgid "week"
+msgstr ""
+
+#: templates/core/main.html:120
+msgid "monthly"
+msgstr ""
+
+#: templates/core/main.html:121
+msgid "yearly"
+msgstr ""
+
+#: templates/core/main.html:122
+msgid "events"
+msgstr ""
+
+#: templates/core/main.html:134
+msgid "Identity"
+msgstr ""
+
+#: templates/core/main.html:135
+msgid "Profile"
+msgstr ""
+
+#: templates/core/main.html:136
+msgid "Address"
+msgstr ""
+
+#: templates/core/main.html:137 templates/meta/addressbook.html:41
+#: templates/organization/organization_form.html:152
+msgid "Phones"
+msgstr ""
+
+#: templates/core/main.html:138
+msgid "Internet"
+msgstr ""
+
+#: templates/core/main.html:200
+msgid "Loading"
+msgstr ""
+
+#: templates/device/device_form.html:26
+msgid "Adding Equipments"
+msgstr ""
+
+#: templates/device/device_form.html:27
+msgid "Inform the equipment details then click on Save button"
+msgstr ""
+
+#: templates/device/device_form.html:40
+msgid "Devices"
+msgstr ""
+
+#: templates/device/device_form.html:42
+msgid "Select Device Type or"
+msgstr ""
+
+#: templates/device/device_form.html:55
+msgid "Adding equipment details"
+msgstr ""
+
+#: templates/device/device_form.html:57
+msgid "Brand"
+msgstr ""
+
+#: templates/device/device_form.html:61
+msgid "Model"
+msgstr ""
+
+#: templates/device/device_form.html:65
+msgid "Part number"
+msgstr ""
+
+#: templates/device/device_form.html:80
+msgid "Lendable Status"
+msgstr ""
+
+#: templates/device/device_form.html:82
+msgid "Lendable?"
+msgstr ""
+
+#: templates/device/device_form.html:92
+msgid "Durability"
+msgstr ""
+
+#: templates/device/device_form.html:106
+msgid "Restriction"
+msgstr ""
+
+#: templates/device/device_form.html:115
+msgid "Profissional Area"
+msgstr ""
+
+#: templates/device/device_form.html:127
+msgid "Mobility"
+msgstr ""
+
+#: templates/device/device_form.html:136
+msgid "Place"
+msgstr ""
+
+#: templates/device/device_form.html:144
+msgid "Room"
+msgstr ""
+
+#: templates/device/device_list.html:28
+msgid "All Devices"
+msgstr ""
+
+#: templates/device/device_list.html:29
+msgid "device(s)"
+msgstr ""
+
+#: templates/employee/employee_form.html:27
+msgid "Adding New Employee"
+msgstr ""
+
+#: templates/employee/employee_form.html:28
+msgid "Inform the employee details then click on Save button"
+msgstr ""
+
+#: templates/employee/employee_form.html:51
+#: templates/meta/people_indentification.html:36
+msgid "Personal Identification"
+msgstr ""
+
+#: templates/employee/employee_form.html:52
+msgid "Job"
+msgstr ""
+
+#: templates/employee/employee_form.html:55
+msgid "Hiredate"
+msgstr ""
+
+#: templates/employee/employee_list.html:31
+msgid "All Employees"
+msgstr ""
+
+#: templates/employee/employee_list.html:32
+msgid "employees(s)"
+msgstr ""
+
+#: templates/meta/addressbook.html:24
+#: templates/organization/organization_form.html:140
+msgid "Addresses"
+msgstr ""
+
+#: templates/meta/addressbook.html:32
+#: templates/organization/organization_form.html:148
+msgid "Add Address"
+msgstr ""
+
+#: templates/meta/addressbook.html:49
+#: templates/organization/organization_form.html:160
+msgid "Add Phone"
+msgstr ""
+
+#: templates/meta/internet.html:24
+#: templates/organization/organization_form.html:164
+msgid "Emails"
+msgstr ""
+
+#: templates/meta/internet.html:32
+#: templates/organization/organization_form.html:172
+msgid "Add Email"
+msgstr ""
+
+#: templates/meta/internet.html:43
+#: templates/organization/organization_form.html:188 templates/tags/im.html:21
+msgid "Instant Messengers"
+msgstr ""
+
+#: templates/meta/internet.html:51
+#: templates/organization/organization_form.html:196
+msgid "Add IM"
+msgstr ""
+
+#: templates/meta/internet.html:60
+#: templates/organization/organization_form.html:176
+msgid "Websites"
+msgstr ""
+
+#: templates/meta/internet.html:68
+#: templates/organization/organization_form.html:184
+msgid "Add Website"
+msgstr ""
+
+#: templates/meta/people_indentification.html:21
+msgid "Male"
+msgstr ""
+
+#: templates/meta/people_indentification.html:22
+msgid "Female"
+msgstr ""
+
+#: templates/meta/people_indentification.html:24
+msgid "Photo"
+msgstr ""
+
+#: templates/meta/people_indentification.html:26
+#: templates/organization/organization_form.html:35
+#: templates/tags/address.html:85 templates/tags/document.html:59
+#: templates/tags/email.html:36 templates/tags/im.html:36
+#: templates/tags/people_parent.html:42 templates/tags/phone.html:46
+#: templates/tags/room.html:50 templates/tags/website.html:27
+msgid "Delete"
+msgstr ""
+
+#: templates/meta/people_indentification.html:40
+msgid "Nickname"
+msgstr ""
+
+#: templates/meta/people_indentification.html:50
+msgid "Documents"
+msgstr ""
+
+#: templates/meta/people_indentification.html:58
+msgid "Add Document"
+msgstr ""
+
+#: templates/meta/people_profile.html:25
+msgid "Personal Profile"
+msgstr ""
+
+#: templates/meta/people_profile.html:27
+msgid "Birthdate"
+msgstr ""
+
+#: templates/meta/people_profile.html:30
+#: templates/service/service_form.html:104
+msgid "Age"
+msgstr ""
+
+#: templates/meta/people_profile.html:33
+msgid "Marital Status"
+msgstr ""
+
+#: templates/meta/people_profile.html:46
+msgid "Naturality"
+msgstr ""
+
+#: templates/meta/people_profile.html:48 templates/tags/address.html:45
 msgid "Country"
 msgstr ""
 
-#: templates/tags/address.html:39
-msgid "City (Region)"
-msgstr ""
-
-#: templates/tags/address.html:55
+#: templates/meta/people_profile.html:57 templates/meta/people_profile.html:71
+#: templates/tags/address.html:64
 msgid "City"
 msgstr ""
 
-#: templates/tags/address.html:59 templates/tags/document.html:37
+#: templates/meta/people_profile.html:75 templates/tags/address.html:68
+#: templates/tags/document.html:51
 msgid "State"
 msgstr ""
 
-#: templates/tags/address.html:68 templates/tags/document.html:8
-#: templates/tags/document.html.py:25 templates/tags/email.html:11
-#: templates/tags/im.html:11 templates/tags/phone.html:20
-#: templates/tags/room.html:17
+#: templates/organization/organization_form.html:24
+msgid "Organization Configuration"
+msgstr ""
+
+#: templates/organization/organization_form.html:33
+msgid "Logo"
+msgstr ""
+
+#: templates/organization/organization_form.html:40
+msgid "Corporate Identity"
+msgstr ""
+
+#: templates/organization/organization_form.html:42
+msgid "Company"
+msgstr ""
+
+#: templates/organization/organization_form.html:45
+msgid "Trade Name"
+msgstr ""
+
+#: templates/organization/organization_form.html:50
+msgid "Additional Identities"
+msgstr ""
+
+#: templates/organization/organization_form.html:54
+msgid "CNES Code"
+msgstr ""
+
+#: templates/organization/organization_form.html:57
+msgid "State Inscription"
+msgstr ""
+
+#: templates/organization/organization_form.html:60
+msgid "City Inscription"
+msgstr ""
+
+#: templates/organization/organization_form.html:63
+msgid "Subscriptions professional Institutional"
+msgstr ""
+
+#: templates/organization/organization_form.html:66
+msgid "Professional Responsible"
+msgstr ""
+
+#: templates/organization/organization_form.html:72
+msgid "Corporate Profile"
+msgstr ""
+
+#: templates/organization/organization_form.html:74
+msgid "Person Type"
+msgstr ""
+
+#: templates/organization/organization_form.html:82
+msgid "Unit Type"
+msgstr ""
+
+#: templates/organization/organization_form.html:90
+msgid "Administrative Environment"
+msgstr ""
+
+#: templates/organization/organization_form.html:98
+msgid "Management Type"
+msgstr ""
+
+#: templates/organization/organization_form.html:106
+msgid "Organization Source"
+msgstr ""
+
+#: templates/organization/organization_form.html:114
+msgid "Dependence"
+msgstr ""
+
+#: templates/organization/organization_form.html:122
+msgid "Care Provided Type"
+msgstr ""
+
+#: templates/organization/organization_form.html:130
+msgid "Education and Research Activity"
+msgstr ""
+
+#: templates/place/place_form.html:25
+msgid "Adding New Place"
+msgstr ""
+
+#: templates/place/place_form.html:26
+msgid "Inform the place details then click on Save button"
+msgstr ""
+
+#: templates/place/place_form.html:44 templates/tags/place_mini.html:23
+msgid "Place Identification"
+msgstr ""
+
+#: templates/place/place_form.html:45
+msgid "Identification"
+msgstr ""
+
+#: templates/place/place_form.html:48 templates/tags/place_mini.html:26
+msgid "Place Type"
+msgstr ""
+
+#: templates/place/place_form.html:70
+msgid "Place Status"
+msgstr ""
+
+#: templates/place/place_form.html:72
+msgid "Visible?"
+msgstr ""
+
+#: templates/place/place_form.html:79
+msgid "Room Details"
+msgstr ""
+
+#: templates/place/place_form.html:103
+msgid "Add room in this place"
+msgstr ""
+
+#: templates/place/place_form.html:108
+msgid "Rooms from this place"
+msgstr ""
+
+#: templates/place/place_list.html:28
+msgid "All Places"
+msgstr ""
+
+#: templates/place/place_list.html:29
+msgid "place(s)"
+msgstr ""
+
+#: templates/referral/referral_form.html:24
+msgid "Referral of"
+msgstr ""
+
+#: templates/referral/referral_form.html:33
+msgid "Referral Details"
+msgstr ""
+
+#: templates/referral/referral_form.html:46
+msgid "Referral Services"
+msgstr ""
+
+#: templates/referral/referral_form.html:47
+msgid "Please, select a service from the list bellow"
+msgstr ""
+
+#: templates/referral/referral_form.html:49
+#: templates/service/service_list.html:28
+msgid "All Services"
+msgstr ""
+
+#: templates/referral/referral_form.html:58
+msgid "Referral Professionals"
+msgstr ""
+
+#: templates/referral/referral_form.html:59
+msgid "Please, select a professional from the list bellow"
+msgstr ""
+
+#: templates/registration/login.html:9
+#: templates/registration/registration_form.html:7
+msgid "Please correct the errors below"
+msgstr ""
+
+#: templates/registration/login.html:14
+#: templates/registration/registration_form.html:14
+msgid "Username"
+msgstr ""
+
+#: templates/registration/login.html:16
+#: templates/registration/registration_form.html:35
+msgid "Password"
+msgstr ""
+
+#: templates/registration/login.html:18
+msgid "Log in"
+msgstr ""
+
+#: templates/registration/login.html:23
+msgid "If you don't have an account, you can"
+msgstr ""
+
+#: templates/registration/login.html:23
+msgid "sign up"
+msgstr ""
+
+#: templates/registration/login.html:23
+msgid "for one"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:2
+msgid "You're receiving this e-mail because you requested a password reset"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:3
+#, python-format
+msgid "for your user account at %(site_name)s"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:5
+msgid "Please go to the following page and choose a new password:"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:9
+msgid "Your username, in case you've forgotten:"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:11
+msgid "Thanks for using our site!"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:13
+#, python-format
+msgid "The %(site_name)s team"
+msgstr ""
+
+#: templates/registration/registration_form.html:10
+msgid "New account"
+msgstr ""
+
+#: templates/registration/registration_form.html:21
+msgid "Nome do estabelecimento"
+msgstr ""
+
+#: templates/registration/registration_form.html:28
+msgid "Email address"
+msgstr ""
+
+#: templates/registration/registration_form.html:42
+msgid "Password (type again to catch typos)"
+msgstr ""
+
+#: templates/registration/registration_form.html:48
+msgid "Register"
+msgstr ""
+
+#: templates/registration/registration_form.html:51
+msgid ""
+"Fill out the form to the left (all fields are required), and your account "
+"will be created; you'll be sent an email with instructions on how to finish "
+"your registration"
+msgstr ""
+
+#: templates/registration/registration_form.html:53
+msgid "Already have an account?"
+msgstr ""
+
+#: templates/service/service_form.html:25
+msgid "Adding New Service"
+msgstr ""
+
+#: templates/service/service_form.html:26
+msgid "Inform the service details then click on Save button"
+msgstr ""
+
+#: templates/service/service_form.html:42
+msgid "Service Identification"
+msgstr ""
+
+#: templates/service/service_form.html:43
+msgid "Service Name"
+msgstr ""
+
+#: templates/service/service_form.html:46
+msgid "Service Description"
+msgstr ""
+
+#: templates/service/service_form.html:49
+msgid "Keywords"
+msgstr ""
+
+#: templates/service/service_form.html:52
+msgid "Research Project"
+msgstr ""
+
+#: templates/service/service_form.html:62
+msgid "Service Profile"
+msgstr ""
+
+#: templates/service/service_form.html:83
+msgid "Solicitation"
+msgstr ""
+
+#: templates/service/service_form.html:91
+msgid "Profession"
+msgstr ""
+
+#: templates/service/service_form.html:102
+msgid "Clinica Area"
+msgstr ""
+
+#: templates/service/service_form.html:114
+msgid "Service Procedures"
+msgstr ""
+
+#: templates/service/service_form.html:142
+msgid "Procedures Choiced"
+msgstr ""
+
+#: templates/service/service_form.html:162
+msgid "Service Relations"
+msgstr ""
+
+#: templates/service/service_form.html:174
+msgid "Related Professionals"
+msgstr ""
+
+#: templates/service/service_form.html:184
+msgid "Professionals Responsible"
+msgstr ""
+
+#: templates/service/service_form.html:201
+msgid "Service Status"
+msgstr ""
+
+#: templates/service/service_list.html:29
+msgid "service(s)"
+msgstr ""
+
+#: templates/tags/address.html:21
+msgid "Prefix"
+msgstr ""
+
+#: templates/tags/address.html:25
+msgid "Street"
+msgstr ""
+
+#: templates/tags/address.html:29 templates/tags/phone.html:26
+msgid "Number"
+msgstr ""
+
+#: templates/tags/address.html:33
+msgid "Aditional"
+msgstr ""
+
+#: templates/tags/address.html:37
+msgid "Neighborhood"
+msgstr ""
+
+#: templates/tags/address.html:41
+msgid "ZIP Code"
+msgstr ""
+
+#: templates/tags/address.html:55
+msgid "City (Region)"
+msgstr ""
+
+#: templates/tags/address.html:76 templates/tags/document.html:24
+#: templates/tags/document.html.py:41 templates/tags/email.html:27
+#: templates/tags/im.html:27 templates/tags/people_parent.html:28
+#: templates/tags/phone.html:36 templates/tags/room.html:33
 msgid "There is no types available to choice"
 msgstr ""
 
-#: templates/tags/document.html:19
-msgid "Document"
+#: templates/tags/address_book_organization_mini.html:23
+#: templates/tags/organization_mini.html:22
+msgid "Adding new Organization"
 msgstr ""
 
-#: templates/tags/document.html:23
-msgid "Issuer"
-msgstr ""
-
-#: templates/tags/email.html:5
-msgid "Email"
-msgstr ""
-
-#: templates/tags/im.html:9
-msgid "IM Type"
-msgstr ""
-
-#: templates/tags/phone.html:14
-msgid "Extension"
-msgstr ""
-
-#: templates/tags/place_mini.html:15
+#: templates/tags/address_book_organization_mini.html:31
+#: templates/tags/address_book_professional_mini.html:40
+#: templates/tags/careprofessional_mini.html:44
+#: templates/tags/device_mini.html:27 templates/tags/organization_mini.html:29
+#: templates/tags/place_mini.html:33
 msgid "Add"
 msgstr ""
 
-#: templates/tags/room.html:6 templates/tags/website.html:8
-msgid "Description"
-msgstr ""
-
-#: templates/tags/room.html:10
-msgid "Dimension"
-msgstr ""
-
-#: templates/tags/room.html:27
-msgid "Furniture"
-msgstr ""
-
-#: templates/tags/save.html:2
-msgid "Save"
-msgstr ""
-
-#: templates/tags/save.html:3 templates/tags/upload.html:10
+#: templates/tags/address_book_organization_mini.html:32
+#: templates/tags/address_book_professional_mini.html:41
+#: templates/tags/careprofessional_mini.html:45
+#: templates/tags/device_mini.html:28 templates/tags/organization_mini.html:30
+#: templates/tags/place_mini.html:34 templates/tags/save.html:19
+#: templates/tags/upload.html:25
 msgid "Cancel"
 msgstr ""
 
-#: templates/tags/save.html:6
-msgid "Delete Object"
+#: templates/tags/address_book_professional_mini.html:23
+#: templates/tags/careprofessional_mini.html:22
+msgid "Adding new Professional"
 msgstr ""
 
-#: templates/tags/save.html:7
+#: templates/tags/address_book_professional_mini.html:34
+msgid "Professional Details"
+msgstr ""
+
+#: templates/tags/device_mini.html:22
+msgid "Adding new Device"
+msgstr ""
+
+#: templates/tags/device_mini.html:23
+msgid "Device"
+msgstr ""
+
+#: templates/tags/document.html:35
+msgid "Document"
+msgstr ""
+
+#: templates/tags/document.html:39
+msgid "Issuer"
+msgstr ""
+
+#: templates/tags/email.html:21
+msgid "Email"
+msgstr ""
+
+#: templates/tags/im.html:25
+msgid "IM Type"
+msgstr ""
+
+#: templates/tags/people_parent.html:22
+msgid "Parent Name"
+msgstr ""
+
+#: templates/tags/people_parent.html:26
+msgid "Parent Relation"
+msgstr ""
+
+#: templates/tags/people_parent.html:38
+msgid "Responsible?"
+msgstr ""
+
+#: templates/tags/phone.html:30
+msgid "Extension"
+msgstr ""
+
+#: templates/tags/place_mini.html:22
+msgid "Adding new Place"
+msgstr ""
+
+#: templates/tags/room.html:22 templates/tags/website.html:24
+msgid "Description"
+msgstr ""
+
+#: templates/tags/room.html:26
+msgid "Dimension"
+msgstr ""
+
+#: templates/tags/room.html:43
+msgid "Furniture"
+msgstr ""
+
+#: templates/tags/save.html:18
+msgid "Save"
+msgstr ""
+
+#: templates/tags/save.html:24
+msgid "This register are not saved yet. Click Save to register it."
+msgstr ""
+
+#: templates/tags/save.html:27
 msgid "Last revision by"
 msgstr ""
 
-#: templates/tags/save.html:7
-msgid "in"
+#: templates/tags/save.html:32
+msgid "less than one minute"
 msgstr ""
 
-#: templates/tags/upload.html:6
+#: templates/tags/schedule_filters.html:21
+msgid "Places (all)"
+msgstr ""
+
+#: templates/tags/schedule_filters.html:27
+msgid "Rooms (all)"
+msgstr ""
+
+#: templates/tags/schedule_filters.html:35
+msgid "Services (all)"
+msgstr ""
+
+#: templates/tags/schedule_filters.html:41
+msgid "Professionals (all)"
+msgstr ""
+
+#: templates/tags/upload.html:21
 msgid "Select a picture"
 msgstr ""
 
-#: templates/tags/website.html:5
+#: templates/tags/upload.html:26
+msgid "Allowed Formats: JPG, PNG, GIF"
+msgstr ""
+
+#: templates/tags/website.html:21
 msgid "URL"
 msgstr ""

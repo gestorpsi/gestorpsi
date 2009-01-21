@@ -64,4 +64,10 @@ class Document(models.Model):
             return 1
 
     def __unicode__(self):
-        return u"%s: %s / %s - %s" % (self.typeDocument, self.document, self.issuer, self.state)
+        text = u"%s: %s" % (self.typeDocument, self.document)
+        if self.issuer != None:
+            text += u" %s" % self.issuer
+        if self.state != None:
+            text += u" %s" % self.state.shortName
+        #return u"%s: %s / %s - %s" % (self.typeDocument, self.document, self.issuer, self.state)
+        return text

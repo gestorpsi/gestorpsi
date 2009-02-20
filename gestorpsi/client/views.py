@@ -109,3 +109,30 @@ def delete(request, object_id=""):
     client.clientStatus = '0'
     client.save()
     return render_to_response('client/client_index.html', {'clientList': Client.objects.all().filter(clientStatus = '1') })
+
+from geraldo.generators import PDFGenerator
+from gestorpsi.client.reports import ClientRecord, ClientList, header_gen, footer_gen
+
+def print_list(request):
+    user = request.user
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=clients.pdf'
+    object = person_order(Client.objects.filter(person__organization = user.org_active.id, clientStatus = '1'))
+    report = ClientList(queryset=object)
+    report.title = "Client List"
+    report.band_page_header = header_gen(user.org_active)
+    report.band_page_footer = footer_gen(user.org_active)
+    report.generate_by(PDFGenerator, filename=response)
+    return response
+
+def print_record(request, object_id):
+    user = request.user
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=client.pdf'
+    client = Client.objects.filter(pk=object_id)
+    report = ClientRecord(queryset=client)
+    report.title = "Client Record"
+    report.band_page_header = header_gen(organization=user.org_active, header_line=False, clinic_info=True)
+    report.band_page_footer = footer_gen(organization=user.org_active)
+    report.generate_by(PDFGenerator, filename=response)
+    return response

@@ -24,6 +24,7 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import audittrail
 from gestorpsi.util import CryptographicUtils as cryptoUtils
+from gestorpsi.util.first_capitalized import first_capitalized
    
 Gender = ( ('0','No Information'),('1','Female'), ('2','Male'))    
 
@@ -74,7 +75,77 @@ class Person(models.Model):
     
     name= property( _get_name, _set_name )
     nickname= property( _get_nickname, _set_nickname )
-    
+
+    """ function used only in reports.py waiting a fix in Geraldo SubReport"""
+    def get_documents(self):
+        if self.document.all().count() > 1:
+            text = "%s " % self.document.all()[0]
+            text += " | %s" % self.document.all()[1]
+        elif self.document.all().count() == 1:
+            text = "%s" % self.document.all()[0]
+        else:
+            text = ""
+        return text
+
+    """ function used only in reports.py waiting a fix in Geraldo SubReport"""
+    def get_phones(self):
+        if self.phones.all().count() > 1:
+            text = "%s " % self.phones.all()[0]
+            text += " | %s" % self.phones.all()[1]
+        elif self.phones.all().count() == 1:
+            text = "%s" % self.phones.all()[0]
+        else:
+            text = ""
+        return text
+
+    """ function used only in reports.py waiting a fix in Geraldo SubReport"""
+    def get_internet(self):
+        text = ""
+        if self.emails.all().count():
+            text = "e-mail: %s" % self.emails.all()[0]
+        if self.sites.all().count():
+            if len(text):
+                text += " | Web Page: %s" % self.sites.all()[0]
+            else:
+                text += "Web Page: %s" % self.sites.all()[0]
+        if self.instantMessengers.all().count():
+            if len(text):
+                text += " | IM: %s" % self.instantMessengers.all()[0]
+            else:
+                text += "IM: %s" % self.instantMessengers.all()[0]
+        return text
+
+    """ function used only in reports.py waiting a fix in Geraldo SubReport"""
+    def get_address(self):
+        text = ""
+        if self.address.all().count():
+            addr = self.address.all()[0]
+            text = "%s %s, %s" % (addr.addressPrefix, addr.addressLine1, addr.addressNumber)
+            if len(addr.addressLine2): text += " - %s" % addr.addressLine2
+            if len(addr.neighborhood): text += " - %s" % addr.neighborhood
+            text += "<br />%s - %s - %s" % (first_capitalized(addr.city.name), addr.city.state.shortName, addr.city.state.country.name)
+            if len(addr.zipCode): text += " - CEP: %s" % addr.zipCode
+        return text
+
+    def get_photo(self):
+        from gestorpsi.settings import MEDIA_ROOT, PROJECT_ROOT_PATH
+        if len(self.photo):
+            return "%s/%simg/organization/%s/.thumb/%s" % (PROJECT_ROOT_PATH, MEDIA_ROOT, self.organization.id, self.photo)
+        else:
+            return "%s/%simg/%s" % (PROJECT_ROOT_PATH, MEDIA_ROOT, 'male_generic_photo.png')
+
+    def get_birth_place(self):
+        if self.birthPlace == None:
+            return u"%s - %s" % (self.birthForeignCity, self.birthForeignState)
+        else:
+            return u"%s - %s" % (first_capitalized(self.birthPlace.name), self.birthPlace.state.shortName)
+
+    def get_birth_country(self):
+        if self.birthPlace == None:
+            return u"%s" % self.birthForeignCountry
+        else:
+            return self.birthPlace.state.country
+
     def __unicode__(self):
         return u"%s" % self.name
     

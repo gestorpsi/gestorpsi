@@ -1095,16 +1095,15 @@ table.devices td.item {
 /***********LOGIN*************/
 
 body .main_area.login {
-	width: 260px;
+	width: 360px;
 	margin: 50px auto;
 	float: none;
-	height: 300px;
 	border: none;
 	background: none;
 	text-align: center;
 }
 
-body #loginform {
+body .main_area.login form {
 	background:#ECECEC;
 	padding: 25px;
 	-moz-border-radius-topleft: 8px;
@@ -1115,8 +1114,8 @@ body #loginform {
 
 }
 
-body #loginform  label {
-	text-align: left;
+body .main_area.login form  span.error {
+	font-size: 11px;
 }
 
 .forgetmenot label{
@@ -1138,11 +1137,21 @@ fieldset.collapsed legend {
 	color: #000;
 }
 
-label div.error {
+label div.error, .login span.error, .login form p.errors {
 	color: red !important;
+}
+
+label div.error {
 	display: block;
 	font-size: 17px;
 }
+
+.login span.error, .login form p.errors {
+	clear: both;
+	margin: 0 0 0 0 !important;
+	padding: 0 0 0 0 !important;
+}
+
 
 fieldset div {
 	clear: both;

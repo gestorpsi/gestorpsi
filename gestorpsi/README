@@ -43,8 +43,14 @@ Python Packages:
   maintainer: http://www.pycrypto.org
   debian/ubuntu: sudo apt-get install python-crypto
 
+- Python Dateutil (>= 1.3-1)
+  debian/ubuntu: sudo apt-get install python-dateutil
+
 - Django Swingtime (>= 0.2)
   maintainer: http://code.google.com/p/django-swingtime/
+
+- GetText (>= 0.17-2)
+  debian/ubuntu: sudo apt-get install gettext
 
 - Some database server running, and configured:
   MySQL Server, PostgreSQL, Oracle or SQLite
@@ -69,10 +75,21 @@ $ cd /home/foo/gestorpsi
 $ python manage.py syncdb
 
 4) Install initial data
-$ python install.py
+** MOVED TO syncdb (fixture)
+You only need to create age_groups in service.areaclinic
+
+{"pk": 1, "model": "service.areaclinic", "fields": {"age_group": [1, 2, 3, 4]}}
+
+OR 
+
+from gestorpsi.service.models import AreaClinic
+ac = AreaClinic()
+ac.save()
+ac.age_group.add(1, 2, 3, 4)
+
 
 5) Compile language messages
-$ django-admin compilemessages
+$ django-admin.py compilemessages
 
 6) Run development server
 $ python manage.py runserver

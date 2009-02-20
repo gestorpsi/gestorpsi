@@ -1,75 +1,26 @@
-{% comment %}
-
-Copyright (C) 2008 GestorPsi
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-{% endcomment %}
-
-<!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+{% extends "registration/base.html" %}
 {% load i18n %}
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
-<title>GestorPsi - {% trans "Sistema de Gestão de Serviços em Psicologia" %}{% block title %}{% endblock %}</title>
-<script type="text/javascript" src="/media/js/jquery-latest.pack.js"></script> <!-- JQuery Core Library -->
-<script type="text/javascript" src="/media/js/jquery.form.js"></script> <!-- jQuery Form Plugin -->
-<script type="text/javascript" src="/media/js/jquery.validate.pack.js"></script> <!-- jQuery validation plug-in -->
-<script type="text/javascript" src="/media/js/autocomplete/jquery.autocomplete.js"></script>
-<script type="text/javascript" src="/media/js/jquery-ui-personalized-1.5.2.min.js"></script> <!-- JQuery UI with Draggable -->
-<script type="text/javascript" src="/media/js/jquery.dimensions.js"></script> <!-- Fixed Save Menu (sidebar right) -->
-<script type="text/javascript" src="/media/js/jquery.maskedinput-1.1.3.pack.js"></script> <!-- JQuery Masked Input Plugin -->
-<script type="text/javascript" src="/media/js/jquery.scrollTo-min.js"></script> <!-- JQuery Scroll on Page Plugin -->
+{% block title %}{% trans "Log in" %}{% endblock %}
 
-<script type="text/javascript" src="/media/js/gestorpsi.frontend.js"></script> <!-- gestorpsi interface (ajax links and other stuffs) -->
-
-<style type="text/css" media="all">
-@import "/media/css/layout.css";
-@import "/media/css/jquery.autocomplete.css";
-@import "/media/css/datePicker.css";
-</style>
+{% block content %}
 
 
-</head>
+{% if form.errors %}
+<p class="error">{% trans "Please correct the errors below" %}:</p>
+{% endif %}
 
-<body>
-    <div id="bar"><h1>[GestorPSI]</h1></div>
-    
-    <div class="main_area login">
-    
+{# <form method="post" action="?next={{ next|default:"/" }}"> #}
+<form method="post" action="/login/authentication/">
+<dl>
+<dt><label for="id_username">{% trans "Username" %}</label>{% if form.username.errors %} <span class="error">{{ form.username.errors|join:", " }}</span>{% endif %}</dt>
+<dd>{{ form.username }}</dd>
+<dt><label for="id_password">{% trans "Password" %}&nbsp;</label>{% if form.password.errors %} <span class="error">{{ form.password.errors|join:", " }}</span>{% endif %}</dt>
+<dd>{{ form.password }}</dd>
+<dt><input type="submit" value="{% trans "Log in" %}" class="btn" /></dt>
+</dl>
+</form>
 
-        <h1>{{ message }}</h1>
 
+<p>{% trans "If you don't have an account, you can" %} <a href="/registration/register/">{% trans "sign up" %}</a> {% trans "for one" %}.
 
-<form name="loginform" id="loginform" action="/login/authentication" method="post">
-
-	<p>
-		<label>Nome de Usuário</label><br />
-		<input type="text" name="username" id="username" value="demo" class="medium" tabindex="10" /></label>
-	</p>
-	
-	<p>
-		<label>Senha</label><br />
-		<input type="password" name="password" id="password" value="demo" class="medium" tabindex="20" /></label>
-	</p>
-        {% comment %}
-	<p class="forgetmenot">
-		<label>	<input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="90" /> Lembrar senha</label>
-	</p>
-        {% endcomment %}
-	<input type="submit" name="enter" id="enter" value="Entrar" tabindex="100" class="btn" />
-	<input type="hidden" name="next" value="{{ next|escape }}" />
-	</form>
-	
-
-</div>
-</body>
-</html>
+{% endblock %}

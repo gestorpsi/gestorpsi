@@ -1,0 +1,65 @@
+{% extends "registration/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Registration" %}{% endblock %}
+{% block content %}
+
+  {% if form.errors %}
+  <p class="errors">{% trans "Please correct the errors below" %}: {{ form.non_field_errors }}</p>
+  {% endif %}
+
+  <h1>{% trans "New account" %} </h1>
+
+
+
+
+  <form method="post" action="" class="wide">
+	    {{ form.as_p }}
+		{% comment %}
+    <p>
+      <label for="id_username">{% trans "Username" %}</label>
+      {% if form.username.errors %}
+        <p class="errors">{{ form.username.errors.as_text }}</p>
+      {% endif %}
+      {{ form.username }}
+    </p>
+	<p>
+      <label for="id_organization">{% trans "Nome do estabelecimento" %}:</label>
+      {% if form.email.errors %}
+        <p class="errors">{{ form.email.errors.as_text }}</p>
+      {% endif %}
+      <input id="id_organization" type="text" class="required" name="organization" maxlength="75" />
+
+    </p>
+    <p>
+      <label for="id_email">{% trans "Email address" %}:</label>
+      {% if form.email.errors %}
+        <p class="errors">{{ form.email.errors.as_text }}</p>
+      {% endif %}
+      {{ form.email }}
+    </p>
+    <p>
+      <label for="id_password1">{% trans "Password" %}&nbsp;</label>
+      {% if form.password1.errors %}
+        <p class="errors">{{ form.password1.errors.as_text }}</p>
+      {% endif %}
+      {{ form.password1 }}
+    </p>
+    <p>
+      <label for="id_password2">{% trans "Password (type again to catch typos)" %}:</label>
+      {% if form.password2.errors %}
+        <p class="errors">{{ form.password2.errors.as_text }}</p>
+      {% endif %}
+      {{ form.password2 }}
+    </p>
+	{% endcomment %}
+    <p class="submit"><input type="submit" value="{% trans "Register" %}" class="btn" /></p>
+  </form>
+
+ <p>{% trans "Fill out the form to the left (all fields are required), and your account will be created; you'll be sent an email with instructions on how to finish your registration" %}.</p>
+
+<p><a href="/registration/login/">{% trans "Already have an account?" %}</a></p>
+
+{% endblock %}
+
+
+

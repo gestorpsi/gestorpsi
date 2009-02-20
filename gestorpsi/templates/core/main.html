@@ -19,33 +19,35 @@ GNU General Public License for more details.
 <head>
 {% load i18n %}
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<title>GestorPsi - {% trans "Sistema de Gestão de Serviços em Psicologia" %}{% block title %}{% endblock %}</title>
-
-<script type="text/javascript" src="/media/js/jquery-latest.pack.js"></script> <!-- JQuery Core Library -->
-<script type="text/javascript" src="/media/js/jquery.form.js"></script> <!-- jQuery Form Plugin -->
-<script type="text/javascript" src="/media/js/jquery.validate.pack.js"></script> <!-- jQuery validation plug-in -->
-<script type="text/javascript" src="/media/js/autocomplete/jquery.autocomplete.js"></script>
-<script type="text/javascript" src="/media/js/jquery-ui-personalized-1.6rc2.min.js"></script> <!-- JQuery UI with Draggable -->
-<script type="text/javascript" src="/media/js/jquery.dimensions.js"></script> <!-- Fixed Save Menu (sidebar right) -->
-<script type="text/javascript" src="/media/js/jquery.maskedinput-1.1.3.pack.js"></script> <!-- JQuery Masked Input Plugin -->
-<script type="text/javascript" src="/media/js/jquery.scrollTo-min.js"></script> <!-- JQuery Scroll on Page Plugin -->
-<script type="text/javascript" src="/media/js/jquery.asmselect.js"></script> <!-- JQuery SelectMultiple plugin-->
-<script type="text/javascript" src="/media/js/jquery.tablesorter.min.js"></script> <!-- JQuery Table Sorter -->
-<script type="text/javascript" src="/media/js/gestorpsi.frontend.js"></script> <!-- gestorpsi interface (ajax links and other stuffs) -->
-<script type="text/javascript" src="/media/js/gestorpsi.lists.js"></script>
-<script type="text/javascript" src="/media/js/gestorpsi.forms.options.js"></script>
-<script type="text/javascript" src="/media/js/gestorpsi.forms.submit.js"></script>
-<script type="text/javascript" src="/media/js/gestorpsi.forms.js"></script>
-<script type="text/javascript" src="/media/js/gestorpsi.dates.js"></script>
-<script type="text/javascript" src="/media/js/gestorpsi.schedule.js"></script>
-
+<title>GestorPsi - {% trans "Sistema de Gestão de Serviços em Psicologia" %} {% block title %}{% endblock %}</title>
+{% if user.is_authenticated %}
+	<script type="text/javascript" src="/media/js/jquery-latest.pack.js"></script> <!-- JQuery Core Library -->
+	<script type="text/javascript" src="/media/js/jquery.form.js"></script> <!-- jQuery Form Plugin -->
+	<script type="text/javascript" src="/media/js/jquery.validate.pack.js"></script> <!-- jQuery validation plug-in -->
+	<script type="text/javascript" src="/media/js/autocomplete/jquery.autocomplete.js"></script>
+	<script type="text/javascript" src="/media/js/jquery-ui-personalized-1.6rc2.min.js"></script> <!-- JQuery UI with Draggable -->
+	<script type="text/javascript" src="/media/js/jquery.dimensions.js"></script> <!-- Fixed Save Menu (sidebar right) -->
+	<script type="text/javascript" src="/media/js/jquery.maskedinput-1.1.3.pack.js"></script> <!-- JQuery Masked Input Plugin -->
+	<script type="text/javascript" src="/media/js/jquery.scrollTo-min.js"></script> <!-- JQuery Scroll on Page Plugin -->
+	<script type="text/javascript" src="/media/js/jquery.asmselect.js"></script> <!-- JQuery SelectMultiple plugin-->
+	<script type="text/javascript" src="/media/js/jquery.tablesorter.min.js"></script> <!-- JQuery Table Sorter -->
+	<script type="text/javascript" src="/media/js/gestorpsi.frontend.js"></script> <!-- gestorpsi interface (ajax links and other stuffs) -->
+	<script type="text/javascript" src="/media/js/gestorpsi.lists.js"></script>
+	<script type="text/javascript" src="/media/js/gestorpsi.forms.options.js"></script>
+	<script type="text/javascript" src="/media/js/gestorpsi.forms.submit.js"></script>
+	<script type="text/javascript" src="/media/js/gestorpsi.forms.js"></script>
+	<script type="text/javascript" src="/media/js/gestorpsi.dates.js"></script>
+	<script type="text/javascript" src="/media/js/gestorpsi.schedule.js"></script>
+{% endif %}
 
 <style type="text/css" media="all">
 @import "/media/css/layout.css";
-@import "/media/css/schedule.css";
-@import "/media/css/jquery.autocomplete.css";
-@import "/media/css/datePicker.css";
-@import "/media/css/jquery.asmselect.css";
+{% if user.is_authenticated %}
+	@import "/media/css/schedule.css";
+	@import "/media/css/jquery.autocomplete.css";
+	@import "/media/css/datePicker.css";
+	@import "/media/css/jquery.asmselect.css";
+{% endif %}
 </style>
 <link href="/media/img/gestorpsi.ico" rel="SHORTCUT ICON" />
 
@@ -73,9 +75,10 @@ GNU General Public License for more details.
 
 <div id="bar"><h1>[GestorPsi]</h1>
 </div>
+{% if user.is_authenticated %}
 	<div id="menu_log">
 		<ul>
-			<li><a href="#email">{% trans "email" %}</a></li>|<li><a href="preferencias">{% trans "preferences" %}</a></li>|<li><a href="/login/logout">{% trans "quit" %}</a></li>
+			<li><a href="#email">{% trans "email" %}</a></li>|<li><a href="preferencias">{% trans "preferences" %}</a></li>|<li><a href="/registration/logout">{% trans "quit" %}</a></li>
 		</ul>
 	</div>
 	<div id="menus">
@@ -182,10 +185,12 @@ GNU General Public License for more details.
 		</ul>
 	</div>
 	</div>
+{% endif %}
+
+	{% block registration %}{% endblock %}
 	<div id="content">
                 <div id="msg_area" style="display:none">
-			
-		</div>
+	</div>
                 
 		<div id="core">
 			<!--  page core -->

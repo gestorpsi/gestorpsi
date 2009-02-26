@@ -63,6 +63,7 @@ Installation
 ------------
 After downloaded and extracted GestorPsi source files, installing
 GestorPsi is done by the following:
+
 1) export PYTHONPATH environment variable to your django project
 dir.
 Ex.: if your sources was extracted to /home/foo/gestorpsi

@@ -39,6 +39,10 @@ Python Packages:
 - Python (>=2.5)
   maintainer: http://www.python.org/
 
+- Python Imaging Library (PIL)
+  maintainer: http://www.pythonware.com/products/pil/
+  debian/ubuntu: sudo apt-get install python-imaging
+
 - Python Cryptography Toolkit (>= 2.1.0)
   maintainer: http://www.pycrypto.org
   debian/ubuntu: sudo apt-get install python-crypto
@@ -51,6 +55,13 @@ Python Packages:
 
 - GetText (>= 0.17-2)
   debian/ubuntu: sudo apt-get install gettext
+
+- Reportlab (>= 2.1)
+  maintainer: http://www.reportlab.org
+  debian/ubuntu: sudo apt-get install python-reportlab
+
+- Geraldo Reports Engine (>= 0.2.2)
+  maintainer: http://geraldo.sourceforge.net
 
 - Some database server running, and configured:
   MySQL Server, PostgreSQL, Oracle or SQLite

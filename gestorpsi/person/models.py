@@ -17,7 +17,7 @@ from django.db import models
 from django.forms import ModelForm
 from django.contrib.contenttypes import generic
 from gestorpsi.phone.models import Phone
-from gestorpsi.address.models import City, Address
+from gestorpsi.address.models import City, Address, Country
 from gestorpsi.document.models import Document
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.organization.models import Organization
@@ -26,7 +26,7 @@ from gestorpsi.util import audittrail
 from gestorpsi.util import CryptographicUtils as cryptoUtils
 from gestorpsi.util.first_capitalized import first_capitalized
    
-Gender = ( ('0','No Information'),('1','Female'), ('2','Male'))    
+Gender = ( ('0','No Information'),('1','Female'), ('2','Male'))
 
 class MaritalStatus(models.Model):
     description = models.CharField(max_length=20)
@@ -134,6 +134,18 @@ class Person(models.Model):
         else:
             return "%s/%simg/%s" % (PROJECT_ROOT_PATH, MEDIA_ROOT, 'male_generic_photo.png')
 
+    def get_birthdate(self):
+        if self.birthDate == None:
+            return ""
+        else:
+            return self.birthDate.strftime('%d/%m/%Y')
+
+    def get_first_phone(self):
+        if self.phones.count:
+            return self.phones.all()[0]
+        else:
+            return ""
+
     def get_birth_place(self):
         if self.birthPlace == None:
             return u"%s - %s" % (self.birthForeignCity, self.birthForeignState)
@@ -142,7 +154,7 @@ class Person(models.Model):
 
     def get_birth_country(self):
         if self.birthPlace == None:
-            return u"%s" % self.birthForeignCountry
+            return u"%s" % Country.objects.get(pk=self.birthForeignCountry)
         else:
             return self.birthPlace.state.country
 

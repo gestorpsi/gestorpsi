@@ -13,55 +13,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-import os
 import Image as PILImage
-from gestorpsi.settings import MEDIA_ROOT, PROJECT_ROOT_PATH
-from gestorpsi.util.first_capitalized import first_capitalized
 from reportlab.lib.units import cm
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.enums import TA_CENTER, TA_RIGHT, TA_LEFT
-from geraldo import Report, SubReport, ReportBand, BAND_WIDTH
-from geraldo import Image, Line, Label, SystemField, ObjectValue
-
-def header_gen(organization, header_line=True, clinic_info=True):
-    # Cannot use image thumbnail because it's too large (PROJECT_ROOT_PATH,pathdir,'.thumb',organization.photo)
-    pathdir = '%simg/organization/%s' % (MEDIA_ROOT, organization.id)
-    imagefile = os.path.join(PROJECT_ROOT_PATH,pathdir,organization.photo)
-    class Header(ReportBand):
-        height = 2.3*cm
-        borders = {'bottom': False}
-        elements = [
-            SystemField(expression='%(report_title)s', top=1*cm, left=0, width=BAND_WIDTH, style={'fontName': 'Helvetica', 'fontSize': 12, 'alignment': TA_CENTER}),
-            SystemField(expression='Printed in %(now:%d/%m/%Y %H:%M)s ', top=1.74*cm, left=0, width=BAND_WIDTH, style={'fontName': 'Helvetica', 'fontSize': 8, 'alignment': TA_LEFT}),
-            SystemField(expression='Page %(page_number)d of %(page_count)d', top=1.74*cm, width=BAND_WIDTH, style={'fontName': 'Helvetica', 'fontSize': 8, 'alignment': TA_RIGHT}),
-        ]
-
-        if clinic_info:
-            elements.append(Label(text="%s" % organization, top=0.1*cm, left=0, width=BAND_WIDTH, style={'fontName': 'Helvetica-Bold', 'fontSize': 14, 'alignment': TA_CENTER}))
-            try:
-                elements.append(Image(left=0.1*cm, top=0.1*cm, filename=imagefile))
-            except:
-                pass # clinic has no image
-
-        if header_line:
-            elements.append(Line(left=0.0*cm, right=19*cm, top=2*cm, bottom=2*cm))
-
-    return Header()
-
-def footer_gen(organization):
-    end = organization.address.all()[0]
-    line1 = "%s %s, %s - %s - %s - %s - %s" % (end.addressPrefix, end.addressLine1, end.addressNumber, end.addressLine2, end.neighborhood, first_capitalized(end.city.name), end.city.state.shortName)
-    line2 = "%s | %s | %s" % (organization.phones.all()[0], organization.sites.all()[0], organization.emails.all()[0])
-    line3 = "CNPJ: %s | CNES: %s" % (organization.register_number, organization.cnes)
-    class Footer(ReportBand):
-        height = 0.5*cm
-        borders = {'top': True}
-        default_style = {'fontName': 'Helvetica', 'fontSize': 8, 'alignment': TA_CENTER}
-        elements = [
-            SystemField(expression=u'%s' % line1, top=0.1*cm, width=BAND_WIDTH),
-            SystemField(expression=u'%s' % line2, top=0.4*cm, width=BAND_WIDTH),
-            SystemField(expression=u'%s' % line3, top=0.7*cm, width=BAND_WIDTH), ]
-    return Footer()
+from geraldo import Report, ReportBand
+from geraldo import Image, Line, Label, ObjectValue
 
 class ClientListBandBegin(ReportBand):
     height = 0.5*cm
@@ -76,8 +32,8 @@ class ClientListBandDetail(ReportBand):
     default_style = {'fontName': 'Helvetica', 'fontSize': 10}
     elements = [
         ObjectValue(attribute_name='person', top=0, left=0*cm, width=10*cm),
-        ObjectValue(top=0, left=11*cm, get_value=lambda instance: instance.person.birthDate.strftime('%d/%m/%Y')),
-        ObjectValue(top=0, left=15*cm, get_value=lambda instance: instance.person.phones.all()[0]), ]
+        ObjectValue(top=0, left=11*cm, get_value=lambda instance: instance.person.get_birthdate()),
+        ObjectValue(top=0, left=15*cm, get_value=lambda instance: instance.person.get_first_phone()), ]
 
 class ClientList(Report):
     page_size = A4
@@ -150,7 +106,7 @@ def client_record_gen(blocks):
         c.elements.append(Label(text="Personal Profile", top=c.print_section(), left=0*cm, style=c.label_style))
         c.elements.append(Line(left=0*cm, top=c.topo, right=19.0*cm, bottom=c.print_line()))
         c.elements.append(Label(text="Birthdate", top=c.print_label(), left=0, style=c.label_style))
-        c.elements.append(ObjectValue(top=c.print_content(), left=0*cm, get_value=lambda instance: instance.person.birthDate.strftime('%d/%m/%Y'), style=c.content_style))
+        c.elements.append(ObjectValue(top=c.print_content(), left=0*cm, get_value=lambda instance: instance.person.get_birthdate(), style=c.content_style))
         c.elements.append(Label(text="Marital Status", top=c.print_label(), left=0, style=c.label_style))
         c.elements.append(ObjectValue(top=c.print_content(), left=0*cm, get_value=lambda instance: instance.person.maritalStatus, style=c.content_style))
 

@@ -19,6 +19,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.conf import settings
+from geraldo.generators import PDFGenerator
 from gestorpsi.client.models import Client
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.phone.models import PhoneType
@@ -26,6 +27,9 @@ from gestorpsi.address.models import Country, State, AddressType
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.person.views import person_save, person_order
+from gestorpsi.client.reports import ClientRecord, ClientList
+from gestorpsi.reports.header import header_gen
+from gestorpsi.reports.footer import footer_gen
 
 # list all active clients
 def index(request):
@@ -109,9 +113,6 @@ def delete(request, object_id=""):
     client.clientStatus = '0'
     client.save()
     return render_to_response('client/client_index.html', {'clientList': Client.objects.all().filter(clientStatus = '1') })
-
-from geraldo.generators import PDFGenerator
-from gestorpsi.client.reports import ClientRecord, ClientList, header_gen, footer_gen
 
 def print_list(request):
     user = request.user

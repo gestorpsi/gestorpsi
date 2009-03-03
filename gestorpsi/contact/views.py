@@ -144,6 +144,7 @@ def form(request, object_type='', object_id=''):
 def save(request, object_id=''):
     user = request.user
     if request.POST['type'] == 'organization':
+	type = "1"
         try:
             object = get_object_or_404(Organization, pk=object_id)
         except:
@@ -170,6 +171,7 @@ def save(request, object_id=''):
                  request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))        
 
     if request.POST['type'] == 'professional':
+	type = "2"
         try:
             object = get_object_or_404(CareProfessional, pk=object_id)
             person = object.person
@@ -194,8 +196,10 @@ def save(request, object_id=''):
         object.person = person
         object.save()
     
-    return HttpResponse(object.id)
 
+    # TYPE IS: 1=PERSONAL OR 2=ORGANIZATION	
+    # THE RETURN OF THE TEMPLATE WILL BE A JUST VARIABLES, FOR THIS IS NECESSARY THE CONCATENATION OF THE TWO ATTRIBUTES, object_id AND type
+    return HttpResponse("%s/%s" % (type, object.id))
 
 def address_book_get_professionals(request):
     user = request.user

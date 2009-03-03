@@ -1,5 +1,7 @@
-Someone, hopefully you, signed up for a new account at djangoproject.com using this email address. If it was you, and you'd like to activate and use your account, click the link below or copy and paste it into your web browser's address bar:
+{% load i18n %}
 
-http://192.168.0.111:8000/registration/activate/{{ activation_key }}/
+{% trans "Someone, hopefully you, signed up for a new account at djangoproject.com using this email address. If it was you, and you'd like to activate and use your account, click the link below or copy and paste it into your web browser's address bar:" %}
 
-If you didn't request this, you don't need to do anything; you won't receive any more email from us, and the account will expire automatically in {{ expiration_days }} days.
+http://www.gestorpsi.com.br/accounts/activate/{{ activation_key }}/
+
+{% trans "If you didn't request this, you don't need to do anything; you won't receive any more email from us, and the account will expire automatically in"%} {{ expiration_days }} {% trans "days" %}.

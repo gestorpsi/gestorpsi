@@ -34,11 +34,11 @@ PROFESSIONAL_AREAS = (
 def index(request):
     user = request.user
     return render_to_response('careprofessional/careprofessional_index.html', {
-                                    'object': CareProfessional.objects.filter(person__organization = user.org_active.id),
+                                    'object': CareProfessional.objects.filter(person__organization = user.get_profile().org_active.id),
                                     'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
                                     'licenceBoardTypes': LicenceBoard.objects.all(),
                                     'AgreementTypes': Agreement.objects.all(),
-                                    'WorkPlacesTypes': Place.objects.filter(organization = user.org_active.id),
+                                    'WorkPlacesTypes': Place.objects.filter(organization = user.get_profile().org_active.id),
                                     'countries': Country.objects.all(),
                                     'PhoneTypes': PhoneType.objects.all(),
                                     'AddressTypes': AddressType.objects.all(),
@@ -49,7 +49,7 @@ def index(request):
                                     'States': State.objects.all(),
                                     'MaritalStatusTypes': MaritalStatus.objects.all(),
                                     'PlaceTypes': PlaceType.objects.all(),
-                                    'ServiceTypes': Service.objects.filter( active=True, organization=user.org_active ),
+                                    'ServiceTypes': Service.objects.filter( active=True, organization=user.get_profile().org_active ),
                                     },
                                 context_instance=RequestContext(request)
                               )
@@ -91,7 +91,7 @@ def form(request, object_id=''):
                                     'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,                                    
                                     'licenceBoardTypes': LicenceBoard.objects.all(),
                                     'AgreementTypes': Agreement.objects.all(),
-                                    'WorkPlacesTypes': Place.objects.filter(organization = user.org_active.id),
+                                    'WorkPlacesTypes': Place.objects.filter(organization = user.get_profile().org_active.id),
                                     'countries': Country.objects.all(),
                                     'PhoneTypes': PhoneType.objects.all(),
                                     'AddressTypes': AddressType.objects.all(),
@@ -104,7 +104,7 @@ def form(request, object_id=''):
                                     'PlaceTypes': PlaceType.objects.all(),
                                     'workplaces': workplaces,
                                     'agreements': agreements,
-                                    'ServiceTypes': Service.objects.filter( active=True, organization=user.org_active ),
+                                    'ServiceTypes': Service.objects.filter( active=True, organization=user.get_profile().org_active ),
                                     },
                               context_instance=RequestContext(request)
                               )

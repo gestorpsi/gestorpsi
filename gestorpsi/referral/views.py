@@ -27,8 +27,8 @@ def form(request, object_id=''):
 
     return render_to_response('referral/referral_form.html', {
         'object': object,
-        'Professionals': CareProfessional.objects.filter(person__organization = user.org_active.id),
-        'Services': Service.objects.filter( active=True, organization=user.org_active ),
+        'Professionals': CareProfessional.objects.filter(person__organization = user.get_profile().org_active.id),
+        'Services': Service.objects.filter( active=True, organization=user.get_profile().org_active ),
     })
 
 """ *** TODO: manage multiples referrals """

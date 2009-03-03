@@ -4,59 +4,11 @@
 
 {% block content %}
 
+<form method="post" action="/accounts/authentication/">
+{{ form.as_p }}
+<input type="submit" value="{% trans "Log in" %}" class="btn"/>
+</form>
 
-	{% if form.errors %}
-		<p class="error">{% trans "Please correct the errors below" %}:</p>
-	{% endif %}
-
-	{# <form method="post" action="?next={{ next|default:"/" }}"> #}
-	<form method="post" action="login/authentication/">
-
-	 <dl>
-	  <dt>
-
-           <label for="id_username">
-	     {% trans "Username" %}
-	   </label>
-
-	   <dd>
-	    <input type="text" id="username" name="username" value="demo">
-	   </dd>
-	
-	   {% if form.username.errors %} 
-		<span class="error">
-		 {{ form.username.errors|join:", " }}
-		</span>
-	   {% endif %}
-	  </dt>
-
-	   <dd>
-		{{ form.username }}
-	   </dd>
-
-	   <dt>
-	    <label for="id_password">
-	     {% trans "Password" %}&nbsp;
-            </label>
-	  
-	     <input type="password" id="password" name="password" value="demo">
-
-	     {% if form.password.errors %} 
-		<span class="error">
-			{{ form.password.errors|join:", " }}
-		</span>
-	     {% endif %}
-	    </dt>
-
-	    <dd>
-             {{ form.password }}
-	    </dd>
-	    <dt>
-		<input type="submit" value="{% trans "Log in" %}" class="btn"/>
-	    </dt>
-	   </dl>
-	</form>
-
-	<p>{% trans "If you don't have an account, you can" %} <a href="/registration/register/">{% trans "sign up" %}</a> {% trans "for one" %}.
+<p>{% trans "If you don't have an account, you can" %} <a href="/accounts/register/">{% trans "sign up" %}</a> {% trans "for one" %}.
 
 {% endblock %}

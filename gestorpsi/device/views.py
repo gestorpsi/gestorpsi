@@ -30,7 +30,7 @@ def index(request):
     user = request.user
     return render_to_response( "device/device_index.html", {'object': Device.objects.all(),
                                                             'organizations': Organization.objects.all(),
-                                                            'places': Place.objects.filter(organization=user.org_active.id), 
+                                                            'places': Place.objects.filter(organization=user.get_profile().org_active.id), 
                                                             'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS } )
 
 def form(request, object_id= ''):
@@ -42,7 +42,7 @@ def form(request, object_id= ''):
     return render_to_response('device/device_form.html', {'object': Device.objects.all(), 
                                                           'device_details': device_details,
                                                           'organizations': Organization.objects.all(), 
-                                                          'places': Place.objects.filter(organization=user.org_active.id),                                                          
+                                                          'places': Place.objects.filter(organization=user.get_profile().org_active.id),                                                          
                                                           'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS } )
 
 #def form(request, object_id= ''):
@@ -76,7 +76,7 @@ def save_device(request):
     user = request.user
     device = Device()
     device.description = request.POST['label']
-    device.organization = user.org_active
+    device.organization = user.get_profile().org_active
     device.save()
     return HttpResponse(device.id)
 

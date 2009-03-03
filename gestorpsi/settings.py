@@ -91,7 +91,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
-    'gestorpsi.util.usertimeout.UserTimeout',
+    #'gestorpsi.util.usertimeout.UserTimeout',
     #'gestorpsi.util.showqueries.ShowQueries',
 )
 
@@ -110,7 +110,7 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.contenttypes',
-    #'django.contrib.sites',
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',  
     'gestorpsi.authentication',
@@ -134,17 +134,20 @@ INSTALLED_APPS = (
     'gestorpsi.internet',
     'gestorpsi.upload',
 	'swingtime',
+	'registration',
     'gestorpsi.schedule',
     'gestorpsi.frontend', #load at last
 )
 
 AUTHENTICATION_BACKENDS = (
-    'gestorpsi.util.auth_backends.CustomUserModelBackend',
+    #'gestorpsi.util.auth_backends.CustomUserModelBackend',
     'django.contrib.auth.backends.ModelBackend',
     
 )
 
-CUSTOM_USER_MODEL = 'authentication.CustomUser'
+#CUSTOM_USER_MODEL = 'authentication.CustomUser'
+AUTH_PROFILE_MODULE = 'authentication.profile'
+
 
 DEFAULT_EMAIL_MIMETYPE = 'html'
 
@@ -163,3 +166,11 @@ PASSWORD_RETIRES = 3
 PAGE_RESULTS = 8
 
 WINGTIME_SETTINGS_MODULE = 'gestorpsi.schedule.settings'
+
+
+# registration
+ACCOUNT_ACTIVATION_DAYS=7
+EMAIL_HOST='gestorpsi.com.br'
+EMAIL_PORT=25
+EMAIL_HOST_USER='noreply@gestorpsi.com.br'
+EMAIL_HOST_PASSWORD='YrA|e-Q.tnsJ'

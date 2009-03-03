@@ -15,9 +15,13 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
+from django.contrib.auth import views as auth_views
+
 
 urlpatterns = patterns('gestorpsi.authentication.views',
-    (r'^$', 'login_page'),    
+    #(r'^login/$', 'login_page'),    
+   url(r'^login/$', auth_views.login, {'template_name': 'registration/login.html'}, name='auth_login'),
+
     (r'^authentication', 'user_authentication'),
     (r'^select_user_organization', 'user_organization'),
     (r'^logout', 'logout_page'),    

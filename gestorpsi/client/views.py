@@ -34,7 +34,7 @@ from gestorpsi.reports.footer import footer_gen
 # list all active clients
 def index(request):
     user = request.user
-    object = person_order(Client.objects.filter(person__organization = user.org_active.id, clientStatus = '1'))
+    object = person_order(Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1'))
     paginator = Paginator(object, settings.PAGE_RESULTS)
     object = paginator.page(1)
     return render_to_response('client/client_index.html',
@@ -54,7 +54,7 @@ def index(request):
 
 def list(request, page = 1):
     user = request.user
-    object = person_order(Client.objects.filter(person__organization = user.org_active.id, clientStatus = '1'))
+    object = person_order(Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1'))
     paginator = Paginator(object, settings.PAGE_RESULTS)
     object = paginator.page(page)
     return render_to_response('client/client_list.html',
@@ -118,11 +118,11 @@ def print_list(request):
     user = request.user
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=clients.pdf'
-    object = person_order(Client.objects.filter(person__organization = user.org_active.id, clientStatus = '1'))
+    object = person_order(Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1'))
     report = ClientList(queryset=object)
     report.title = "Client List"
-    report.band_page_header = header_gen(user.org_active)
-    report.band_page_footer = footer_gen(user.org_active)
+    report.band_page_header = header_gen(user.get_profile().org_active)
+    report.band_page_footer = footer_gen(user.get_profile().org_active)
     report.generate_by(PDFGenerator, filename=response)
     return response
 
@@ -133,7 +133,7 @@ def print_record(request, object_id):
     client = Client.objects.filter(pk=object_id)
     report = ClientRecord(queryset=client)
     report.title = "Client Record"
-    report.band_page_header = header_gen(organization=user.org_active, header_line=False, clinic_info=True)
-    report.band_page_footer = footer_gen(organization=user.org_active)
+    report.band_page_header = header_gen(organization=user.get_profile().org_active, header_line=False, clinic_info=True)
+    report.band_page_footer = footer_gen(organization=user.get_profile().org_active)
     report.generate_by(PDFGenerator, filename=response)
     return response

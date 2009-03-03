@@ -26,7 +26,7 @@ from gestorpsi.phone.views import phone_save
 
 def index(request):
     user = request.user
-    return render_to_response( "place/place_index.html", {'object': Place.objects.filter(organization=user.org_active.id),
+    return render_to_response( "place/place_index.html", {'object': Place.objects.filter(organization=user.get_profile().org_active.id),
                                                           'PlaceTypes': PlaceType.objects.all(),
                                                           'countries': Country.objects.all(),
                                                           'RoomTypes': RoomType.objects.all(),
@@ -59,7 +59,7 @@ def form(request, object_id=''):
         addresses= object.address.all()
         phones= object.phones.all()
         rooms= object.room_set.all()
-        organization= Organization.objects.get(pk= user.org_active.id)
+        organization= Organization.objects.get(pk= user.get_profile().org_active.id)
         last_update = object.history.latest('_audit_timestamp')._audit_timestamp
     except (Http404, ObjectDoesNotExist):
         object= Place()
@@ -89,7 +89,7 @@ def save(request, object_id=''):
         object.visible = False
     object.label = request.POST['label']
     object.place_type= PlaceType.objects.get( pk= request.POST[ 'place_type' ] )
-    object.organization = user.org_active    
+    object.organization = user.get_profile().org_active    
     object.save() 
 
     save_rooms( object, request.POST.getlist( 'room_id' ), request.POST.getlist('description'), request.POST.getlist('dimension'), request.POST.getlist('room_type'), request.POST.getlist('furniture') )

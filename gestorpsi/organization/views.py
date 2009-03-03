@@ -27,9 +27,9 @@ from gestorpsi.internet.views import email_save, site_save, im_save
 
 def form(request):
     user = request.user
-    object = get_object_or_404( Organization, pk=user.org_active.id )
+    object = get_object_or_404( Organization, pk=user.get_profile().org_active.id )
     return render_to_response('organization/organization_form.html', {
-        'object': object, #Organization.objects.get(pk= user.org_active.id),
+        'object': object, #Organization.objects.get(pk= user.get_profile().org_active.id),
         'PhoneTypes': PhoneType.objects.all(), 
         'AddressTypes': AddressType.objects.all(), 
         'EmailTypes': EmailType.objects.all(), 
@@ -54,7 +54,7 @@ def form(request):
 
 def save(request):
     user = request.user
-    object = get_object_or_404( Organization, pk=user.org_active.id )
+    object = get_object_or_404( Organization, pk=user.get_profile().org_active.id )
     
     #identity
     object.name = request.POST['name']

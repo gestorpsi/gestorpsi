@@ -28,7 +28,7 @@ def index(request):
     """
     user = request.user
     
-    return render_to_response('psychologist/psychologist_index.html', {'object': Psychologist.objects.filter(person__organization = user.org_active.id, active = True)})
+    return render_to_response('psychologist/psychologist_index.html', {'object': Psychologist.objects.filter(person__organization = user.get_profile().org_active.id, active = True)})
     
 
 def form(request, object_id=''):

@@ -18,38 +18,45 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.conf import settings
-from gestorpsi.authentication.models import CustomUser
+from django.contrib.auth.models import User
+from gestorpsi.authentication.models import Profile
 from gestorpsi.organization.models import Organization
+
+
+from django.contrib.auth.forms import AuthenticationForm
+from django.template import RequestContext
+
 
 def login_page(request):   
     return render_to_response('registration/login.html')
 
 def user_authentication(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    if(unblocked_user(username)):
-        user = authenticate(username=username, password=password)   
-        if user is not None:
-            if user.is_active:
-                #login(request, user)
-                request.session['temp_user'] = user                
-                clear_login(user)               
-                if len(user.organization.all()) > 1:                                                           
-                    return render_to_response('registration/select_organization.html', { 'objects': user.organization.all()}) 
-                    #print user , " - Organizacoes: " , user.organization
-                    #return render_to_response('core/main.html', {'user': user })
-                else:
-                    number_org = []
-                    number_org = user.organization.all()
-                    user.org_active = number_org[0]
-                    login(request, user)                                        
-                    return HttpResponseRedirect('/')
-                           
-        else:
-                set_trylogin(username)
-                return render_to_response('registration/login.html', { 'message': "Invalid login" } )
+    if request.method == "POST":
+        form = AuthenticationForm(data=request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
+        if(unblocked_user(username)):
+            user = authenticate(username=username, password=password)   
+            if user is not None:
+                if user.is_active:
+                    profile = user.get_profile()
+                    request.session['temp_user'] = user                
+                    clear_login(user)
+                    if len(profile.organization.all()) > 1:                                                           
+                        return render_to_response('registration/select_organization.html', { 'objects': user.organization.all()}) 
+                    else:
+                        number_org = []
+                        number_org = profile.organization.all()
+                        profile.org_active = number_org[0]
+                        login(request, user)                                        
+                        return HttpResponseRedirect('/')
+                               
+            else:
+                    set_trylogin(username)
+                    return render_to_response('registration/login.html', {'form':form })
     else:
-        return render_to_response('registration/login.html', { 'message': "User blocked" } )
+        form = AuthenticationForm()
+        return render_to_response('registration/login.html', { 'form':form } )
  
 def logout_page(request):
     logout(request)    
@@ -59,13 +66,13 @@ def user_organization(request):
     organization = Organization.objects.get(pk=request.POST['organization'])
     user = request.session['temp_user']
     del request.session['temp_user']        
-    user.org_active = organization    
+    user.get_profile().org_active = organization    
     login(request, user)           
     return HttpResponseRedirect('/') 
 
 
 def set_trylogin(user):     
-    filtered_user = CustomUser.objects.filter(username=user)
+    filtered_user = User.objects.filter(username=user)
     if(len(filtered_user)):        
         found_user = filtered_user[0]    
         old_number = found_user.try_login
@@ -82,16 +89,17 @@ def clear_login(user):
 def change_password(user,current_password, new_password):    
     if check_password(current_password):   
         user.set_password(new_password)
-        org = user.org_active
-        user.org_active = None
+        org = user.get_profile().org_active
+        user.get_profile().org_active = None
         user.save()
-        user.org_active = org       
+        user.get_profile().org_active = org       
     
 def unblocked_user(user):
-    filtered_user = CustomUser.objects.filter(username=user)
+    filtered_user = User.objects.filter(username=user)
     if(len(filtered_user)):
-        found_user = filtered_user[0]        
-        value = found_user.try_login
+        found_user = filtered_user[0]
+        profile = found_user.get_profile()
+        value = profile.try_login
         if (value >= settings.PASSWORD_RETIRES):            
             return False
         else:            

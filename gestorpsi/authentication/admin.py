@@ -22,9 +22,9 @@ GNU General Public License for more details.
 """
 
 from django.contrib import admin
-from gestorpsi.authentication.models import CustomUser
+from gestorpsi.authentication.models import Profile
 
-class CustomUserAdmin(admin.ModelAdmin):
+class ProfileAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(CustomUser, CustomUserAdmin)    
+admin.site.register(Profile, ProfileAdmin)    

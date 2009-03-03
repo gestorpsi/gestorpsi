@@ -65,7 +65,7 @@ def person_save(request, person):
         person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
 
     user = request.user
-    person.organization = user.org_active    
+    person.organization = user.get_profile().org_active    
     person.save()
 
     # save phone numbers (using Phone APP)

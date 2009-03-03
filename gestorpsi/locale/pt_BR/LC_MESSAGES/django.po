@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-19 14:50-0200\n"
+"POT-Creation-Date: 2009-03-03 12:29-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,13 +16,57 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: settings.py:35
+#: settings.py:38
 msgid "Brazilian Portuguese"
 msgstr "Português Brasileiro"
 
-#: settings.py:36
+#: settings.py:39
 msgid "English"
 msgstr "Inglês"
+
+#: authentication/forms.py:28 templates/tags/email.html:21
+msgid "Email"
+msgstr "E-mail"
+
+#: authentication/forms.py:28
+#, fuzzy
+msgid "Your email address"
+msgstr "Endereço de e-mail"
+
+#: authentication/forms.py:29
+msgid "Password"
+msgstr "Senha"
+
+#: authentication/forms.py:29
+msgid "Choice one password"
+msgstr ""
+
+#: authentication/forms.py:30
+#, fuzzy
+msgid "Password (again)"
+msgstr "Senha"
+
+#: authentication/forms.py:30
+msgid "Type password again"
+msgstr ""
+
+#: authentication/forms.py:31
+msgid "Username"
+msgstr "Nome de Usuário"
+
+#: authentication/forms.py:31
+msgid "Choice one unique identifier"
+msgstr ""
+
+#: authentication/forms.py:32 templates/contact/contact_form.html:37
+#, fuzzy
+msgid "Organization"
+msgstr "Estabelecimento"
+
+#: authentication/forms.py:32
+#, fuzzy
+msgid "Name of your organization"
+msgstr "Meu Estabelecimento"
 
 #: templates/404.html:3
 msgid "Page not found"
@@ -40,7 +84,9 @@ msgstr "Erro do servidor <em>(500)</em>"
 msgid ""
 "There's been an error. It's been reported to the site administrators via e-"
 "mail and should be fixed shortly. Thanks for your patience."
-msgstr "Ocorreu um erro. Está sendo reportado para o administrador do site via e-mail e deverá ser corrigido em breve. Obrigado pela paciência."
+msgstr ""
+"Ocorreu um erro. Está sendo reportado para o administrador do site via e-"
+"mail e deverá ser corrigido em breve. Obrigado pela paciência."
 
 #: templates/admission/admission_form.html:24
 msgid "Admission of"
@@ -259,7 +305,7 @@ msgid "No"
 msgstr "Não"
 
 #: templates/careprofessional/careprofessional_list.html:20
-#: templates/client/client_list.html:21 templates/contact/contact_list.html:20
+#: templates/client/client_list.html:21 templates/contact/contact_list.html:21
 #: templates/device/device_list.html:20
 #: templates/employee/employee_list.html:20 templates/place/place_list.html:20
 #: templates/service/service_list.html:20
@@ -267,7 +313,7 @@ msgid "There is no registers available."
 msgstr "Não existem registros disponíveis"
 
 #: templates/careprofessional/careprofessional_list.html:20
-#: templates/client/client_list.html:21 templates/contact/contact_list.html:20
+#: templates/client/client_list.html:21 templates/contact/contact_list.html:21
 #: templates/device/device_list.html:20
 #: templates/employee/employee_list.html:20 templates/place/place_list.html:20
 #: templates/service/service_list.html:20
@@ -275,7 +321,7 @@ msgid "Click"
 msgstr "Clique"
 
 #: templates/careprofessional/careprofessional_list.html:20
-#: templates/client/client_list.html:21 templates/contact/contact_list.html:20
+#: templates/client/client_list.html:21 templates/contact/contact_list.html:21
 #: templates/device/device_list.html:20
 #: templates/employee/employee_list.html:20 templates/place/place_list.html:20
 #: templates/service/service_list.html:20
@@ -283,7 +329,7 @@ msgid "here"
 msgstr "aqui"
 
 #: templates/careprofessional/careprofessional_list.html:20
-#: templates/client/client_list.html:21 templates/contact/contact_list.html:20
+#: templates/client/client_list.html:21 templates/contact/contact_list.html:21
 #: templates/device/device_list.html:20
 #: templates/employee/employee_list.html:20 templates/place/place_list.html:20
 #: templates/service/service_list.html:20
@@ -296,7 +342,7 @@ msgid "All Professionals"
 msgstr "Todos os Profissionais"
 
 #: templates/careprofessional/careprofessional_list.html:32
-#: templates/client/client_list.html:29 templates/contact/contact_list.html:30
+#: templates/client/client_list.html:29 templates/contact/contact_list.html:31
 #: templates/device/device_list.html:29
 #: templates/employee/employee_list.html:32 templates/place/place_list.html:29
 #: templates/service/service_list.html:29
@@ -332,6 +378,11 @@ msgstr "Socioeconômico"
 msgid "Admit Client"
 msgstr "Admitir cliente"
 
+#: templates/client/client_form.html:60
+#, fuzzy
+msgid "Print Record"
+msgstr "Registro Identificador"
+
 #: templates/client/client_list.html:28
 msgid "All Customers"
 msgstr "Todos os Clientes"
@@ -340,12 +391,12 @@ msgstr "Todos os Clientes"
 msgid "customer(s)"
 msgstr "Cliente(s)"
 
-#: templates/client/client_list.html:29 templates/contact/contact_list.html:30
+#: templates/client/client_list.html:29 templates/contact/contact_list.html:31
 #, fuzzy
 msgid "Page"
 msgstr "Locais"
 
-#: templates/client/client_list.html:29 templates/contact/contact_list.html:30
+#: templates/client/client_list.html:29 templates/contact/contact_list.html:31
 msgid "of"
 msgstr "de"
 
@@ -355,12 +406,12 @@ msgid "Admission"
 msgstr "Admissão"
 
 #: templates/client/client_list.html:110
-#: templates/contact/contact_list.html:57
+#: templates/contact/contact_list.html:58
 msgid "Previous"
 msgstr "Anterior"
 
 #: templates/client/client_list.html:112
-#: templates/contact/contact_list.html:59
+#: templates/contact/contact_list.html:60
 msgid "Next"
 msgstr "Próximo"
 
@@ -386,11 +437,6 @@ msgstr "Tipo"
 msgid "Professional"
 msgstr "Profissional"
 
-#: templates/contact/contact_form.html:37
-#, fuzzy
-msgid "Organization"
-msgstr "Estabelecimento"
-
 #: templates/contact/contact_form.html:43
 #, fuzzy
 msgid "Professional Organization"
@@ -411,21 +457,21 @@ msgstr "Nome"
 msgid "Organization Identification"
 msgstr "Identificação do Estabelecimento"
 
-#: templates/contact/contact_list.html:29
+#: templates/contact/contact_list.html:30
 #, fuzzy
 msgid "All Contacts"
 msgstr "Todos os Contatos"
 
-#: templates/contact/contact_list.html:30
+#: templates/contact/contact_list.html:31
 msgid " general contact(s), "
 msgstr "Contatos gerais"
 
-#: templates/contact/contact_list.html:30
+#: templates/contact/contact_list.html:31
 #, fuzzy
 msgid " organization(s) and "
 msgstr "Estabelecimento(s) e"
 
-#: templates/contact/contact_list.html:30
+#: templates/contact/contact_list.html:31
 #, fuzzy
 msgid " professionals(s)"
 msgstr "profissional(is)"
@@ -962,35 +1008,46 @@ msgstr "Encaminhado de/para Profissional"
 msgid "Please, select a professional from the list bellow"
 msgstr "Por favor, selecione um Profissional da lista abaixo"
 
-#: templates/registration/login.html:9
-#: templates/registration/registration_form.html:7
-msgid "Please correct the errors below"
-msgstr "Por favor, corrija os erros abaixo"
+#: templates/registration/activate.html:3
+#: templates/registration/activate.html:6
+msgid "Account activated"
+msgstr ""
 
-#: templates/registration/login.html:14
-#: templates/registration/registration_form.html:14
-msgid "Username"
-msgstr "Nome de Usuário"
+#: templates/registration/activate.html:8
+#, fuzzy
+msgid "Thanks for signing up! Now you can"
+msgstr "Obrigado por utilizar nosso site!"
 
-#: templates/registration/login.html:16
-#: templates/registration/registration_form.html:35
-msgid "Password"
-msgstr "Senha"
+#: templates/registration/activate.html:8
+#, fuzzy
+msgid "log in"
+msgstr "Entrar"
 
-#: templates/registration/login.html:18
+#: templates/registration/activate.html:10
+msgid ""
+"Sorry, it didn't work. Either your activation link was incorrect, or the "
+"activation key for your account has expired; activation keys are only valid "
+"for"
+msgstr ""
+
+#: templates/registration/activate.html:10
+msgid "days after registration"
+msgstr ""
+
+#: templates/registration/login.html:3 templates/registration/login.html:9
 #, fuzzy
 msgid "Log in"
 msgstr "Entrar"
 
-#: templates/registration/login.html:23
+#: templates/registration/login.html:12
 msgid "If you don't have an account, you can"
 msgstr "Se você não possui uma conta, você pode"
 
-#: templates/registration/login.html:23
+#: templates/registration/login.html:12
 msgid "sign up"
 msgstr "registrar-se"
 
-#: templates/registration/login.html:23
+#: templates/registration/login.html:12
 msgid "for one"
 msgstr "para uma"
 
@@ -1020,36 +1077,45 @@ msgstr "Obrigado por utilizar nosso site!"
 msgid "The %(site_name)s team"
 msgstr "A equipe do %(site_name)s"
 
-#: templates/registration/registration_form.html:10
+#: templates/registration/registration_complete.html:3
+msgid "Registration complete"
+msgstr ""
+
+#: templates/registration/registration_complete.html:6
+msgid "Check your email"
+msgstr ""
+
+#: templates/registration/registration_complete.html:7
+msgid ""
+"An activation link has been sent to the email address you supplied, along "
+"with instructions for activating your account."
+msgstr ""
+
+#: templates/registration/registration_form.html:3
+#, fuzzy
+msgid "Registration"
+msgstr "Restrição"
+
+#: templates/registration/registration_form.html:6
 msgid "New account"
 msgstr "Nova conta"
 
-#: templates/registration/registration_form.html:21
-msgid "Nome do estabelecimento"
-msgstr "Nome do Estabelecimento"
-
-#: templates/registration/registration_form.html:28
-#, fuzzy
-msgid "Email address"
-msgstr "Endereço de e-mail"
-
-#: templates/registration/registration_form.html:42
-msgid "Password (type again to catch typos)"
-msgstr "Senha (digite novamente para a captura de erros ortográficos)"
-
-#: templates/registration/registration_form.html:48
+#: templates/registration/registration_form.html:13
 #, fuzzy
 msgid "Register"
 msgstr "Número de Registro"
 
-#: templates/registration/registration_form.html:51
+#: templates/registration/registration_form.html:16
 msgid ""
 "Fill out the form to the left (all fields are required), and your account "
 "will be created; you'll be sent an email with instructions on how to finish "
 "your registration"
-msgstr "Preencha o formulário à esquerda (todos os campos são obrigatórios) e sua conta será criada. Será enviado um e-mail com instruções sobre como concluir o seu registro."
+msgstr ""
+"Preencha o formulário à esquerda (todos os campos são obrigatórios) e sua "
+"conta será criada. Será enviado um e-mail com instruções sobre como concluir "
+"o seu registro."
 
-#: templates/registration/registration_form.html:53
+#: templates/registration/registration_form.html:18
 msgid "Already have an account?"
 msgstr "Já possui uma conta?"
 
@@ -1213,10 +1279,6 @@ msgstr "Documento"
 msgid "Issuer"
 msgstr "Emitente"
 
-#: templates/tags/email.html:21
-msgid "Email"
-msgstr "E-mail"
-
 #: templates/tags/im.html:25
 msgid "IM Type"
 msgstr "Tipo de Mensagens Instantâneas"
@@ -1304,6 +1366,15 @@ msgstr "Formatos Permitidos: JPG, PNG, GIF"
 #: templates/tags/website.html:21
 msgid "URL"
 msgstr "URL"
+
+#~ msgid "Please correct the errors below"
+#~ msgstr "Por favor, corrija os erros abaixo"
+
+#~ msgid "Nome do estabelecimento"
+#~ msgstr "Nome do Estabelecimento"
+
+#~ msgid "Password (type again to catch typos)"
+#~ msgstr "Senha (digite novamente para a captura de erros ortográficos)"
 
 #~ msgid "Portuguese"
 #~ msgstr "Português"

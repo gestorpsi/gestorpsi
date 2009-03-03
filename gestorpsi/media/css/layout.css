@@ -1095,7 +1095,7 @@ table.devices td.item {
 /***********LOGIN*************/
 
 body .main_area.login {
-	width: 360px;
+	width: 320px;
 	margin: 50px auto;
 	float: none;
 	border: none;
@@ -1112,6 +1112,11 @@ body .main_area.login form {
 	-moz-border-radius-bottomright: 8px;
 	border: 1px solid #838383;
 
+}
+
+form p {
+    font-size: 10px;
+    color: #999999;
 }
 
 body .main_area.login form  span.error {
@@ -1308,6 +1313,18 @@ div.schedule div.form form fieldset label {
 
 table.zebra tr th {
 	display: none;
+}
+
+/**
+ django forms 
+*/
+
+ul.errorlist li {
+    color: red;
+    list-style: none;
+    padding: 0px;
+    margin-top: 15px;
+    background-color: #FFCCCC;
 }
 
 /**

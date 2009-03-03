@@ -63,6 +63,9 @@ Python Packages:
 - Geraldo Reports Engine (>= 0.2.2)
   maintainer: http://geraldo.sourceforge.net
 
+- Django Registration (>= r170)
+  maintainer: http://code.google.com/p/django-registration/
+
 - Some database server running, and configured:
   MySQL Server, PostgreSQL, Oracle or SQLite
 

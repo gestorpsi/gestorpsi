@@ -44,7 +44,7 @@ def list_order(dictionary):
 
 def index(request):
     user = request.user
-    org = user.org_active
+    org = user.get_profile().org_active
     
     lista = [] # ID, Name, Email, Phone, 1(ORG)/2(PROF), 1(GESTORPSI)/2(LOCAL)
     organizations_count = len(address_book_get_organizations(request))
@@ -79,7 +79,7 @@ def index(request):
 
 def list(request, page = 1):
     user = request.user
-    org = user.org_active
+    org = user.get_profile().org_active
 
     lista = [] # ID, Name, Email, Phone, 1(ORG)/2(PROF), 1(GESTORPSI)/2(LOCAL)
     organizations_count = len(address_book_get_organizations(request))
@@ -106,7 +106,7 @@ def list(request, page = 1):
 
 def form(request, object_type='', object_id=''):
     user = request.user
-    org = user.org_active
+    org = user.get_profile().org_active
 
     if object_type == '1':   # ORGANIZATION (1)
         object = get_object_or_404(Organization, pk=object_id)
@@ -155,7 +155,7 @@ def save(request, object_id=''):
         except:
             object.name = request.POST['name']
         
-        object.organization = user.org_active
+        object.organization = user.get_profile().org_active
         
         object.save()
         
@@ -203,7 +203,7 @@ def save(request, object_id=''):
 
 def address_book_get_professionals(request):
     user = request.user
-    org = user.org_active
+    org = user.get_profile().org_active
     lista = []
     
     for x in Organization.objects.filter(organization=None, public=True):
@@ -226,7 +226,7 @@ def address_book_get_professionals(request):
 
 def address_book_get_organizations(request):
     user = request.user
-    org = user.org_active
+    org = user.get_profile().org_active
     lista = []
     
     for x in Organization.objects.filter(organization=None, public=True):
@@ -251,7 +251,7 @@ def address_book_get_organizations(request):
 #            
 #            person = Person()
 #            object = CareProfessional()
-#            person.organization = user.org_active
+#            person.organization = user.get_profile().org_active
 #            person.name = request.POST['professional_name']
 #            person.nickname = request.POST['professional_name']
 #            person.save()

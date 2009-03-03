@@ -24,10 +24,10 @@ import Image
 def send(request):
     if request.method == 'POST':
         user = request.user
-        print user.org_active.id
         filename = ''
         if 'file' in request.FILES:
-            pathdir = '%simg/organization/%s' % (MEDIA_ROOT, user.org_active.id)
+            pathdir = '%simg/organization/%s' % (MEDIA_ROOT, user.get_profile().org_active.id)
+            print "PATHDIR %s" % pathdir
             if not os.path.exists(pathdir):
                 os.mkdir(pathdir)
                 os.mkdir('%s/.thumb' % pathdir)

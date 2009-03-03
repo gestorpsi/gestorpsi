@@ -30,9 +30,9 @@ def index(request):
     user = request.user
     
     return render_to_response( "service/service_index.html", {
-        'object':Service.objects.filter( active=True, organization=user.org_active ),
+        'object':Service.objects.filter( active=True, organization=user.get_profile().org_active ),
         'Agreements': Agreement.objects.all(),
-        'CareProfessionals': CareProfessional.objects.filter(person__organization=user.org_active),
+        'CareProfessionals': CareProfessional.objects.filter(person__organization=user.get_profile().org_active),
         'AgeGroups': AgeGroup.objects.all(),
         'ProcedureProviders': ProcedureProvider.objects.all(),
         'Procedures': Procedure.objects.all(),
@@ -96,7 +96,7 @@ def save(request, object_id = ''):
     except:
         user = request.user
         object = Service()
-        object.organization = user.org_active
+        object.organization = user.get_profile().org_active
     
     object.name = request.POST['service_name']
     object.description = request.POST['service_description']
@@ -158,9 +158,9 @@ def disable(request, object_id=''):
     object.active = False
     object.save()
     return render_to_response( "service/service_index.html", {
-        'object':Service.objects.filter( active=True, organization=user.org_active ),
+        'object':Service.objects.filter( active=True, organization=user.get_profile().org_active ),
         'Agreements': Agreement.objects.all(),
-        'CareProfessionals': CareProfessional.objects.all(person__organization = user.org_active.id),
+        'CareProfessionals': CareProfessional.objects.all(person__organization = user.get_profile().org_active.id),
         'AgeGroups': AgeGroup.objects.all(),
         'ProcedureProviders': ProcedureProvider.objects.all(),
         'Procedures': Procedure.objects.all(),

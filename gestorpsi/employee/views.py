@@ -34,7 +34,7 @@ def index(request):
     user = request.user
     
     return render_to_response('employee/employee_index.html',
-                            {'object': Employee.objects.filter(person__organization = user.org_active.id, active = True), 
+                            {'object': Employee.objects.filter(person__organization = user.get_profile().org_active.id, active = True), 
                             'countries': Country.objects.all(), 
                             'PhoneTypes': PhoneType.objects.all(), 
                             'AddressTypes': AddressType.objects.all(), 

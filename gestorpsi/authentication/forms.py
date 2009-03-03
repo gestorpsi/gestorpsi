@@ -20,6 +20,7 @@ from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 from gestorpsi.organization.models import Organization
+from gestorpsi.place.models import Place, PlaceType
 from gestorpsi.authentication.models import Profile
 
 attrs_dict = { 'class': 'required' }
@@ -36,6 +37,11 @@ class RegistrationForm(RegistrationForm):
         profile = user.get_profile()
         organization = Organization.objects.create( #create organization
             name = self.cleaned_data['organization'],
+        )
+	default_place = Place.objects.create(         #create default place
+            label = organization.name,                # use same name as label
+            place_type = PlaceType.objects.get(pk=1), # mandatory field, so, get first place type
+            organization = organization, # link place to this organization
         )
         profile.organization.add(organization) #link organization to profile
         profile.org_active = organization #set org as active

@@ -14,21 +14,32 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.conf import settings
 from django.contrib.auth.models import User
 from gestorpsi.authentication.models import Profile
 from gestorpsi.organization.models import Organization
-
-
+from gestorpsi.settings import LOGIN_URL, DEBUG
 from django.contrib.auth.forms import AuthenticationForm
 from django.template import RequestContext
 
+# login_check decorator
+# code from http://code.activestate.com/recipes/498217/
+# changed by czd@gestorpsi.com.br
 
-def login_page(request):   
-    return render_to_response('registration/login.html')
+def login_check(f):
+    @login_required
+    def wrap(request, *args, **kwargs):
+        if not DEBUG:
+            if not request.is_ajax():
+                raise Http404
+        return f(request, *args, **kwargs)
+    wrap.__doc__=f.__doc__
+    wrap.__name__=f.__name__
+    return wrap
 
 def user_authentication(request):
     if request.method == "POST":
@@ -57,10 +68,6 @@ def user_authentication(request):
     else:
         form = AuthenticationForm()
         return render_to_response('registration/login.html', { 'form':form } )
- 
-def logout_page(request):
-    logout(request)    
-    return HttpResponseRedirect('/') 
 
 def user_organization(request):
     organization = Organization.objects.get(pk=request.POST['organization'])

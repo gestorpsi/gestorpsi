@@ -91,7 +91,7 @@ GNU General Public License for more details.
                 {% for l in object %}
                 <tr id="{{ l.id }}">
                         <!--<td><a href="">{{ l.name }}</a></td>-->
-                        <td><a href="/careprofessional/{{ l.id }}" title="{{ l.person.name }}">{{ l.person.name }}</a></td>
+                        <td><a href="/careprofessional/{{ l.id }}/" title="{{ l.person.name }}">{{ l.person.name }}</a></td>
                         
                         <td><span class="phone">{{ l.person.get_first_phone }}</span>
                         <br />

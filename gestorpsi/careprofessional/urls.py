@@ -15,9 +15,11 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
+from gestorpsi.careprofessional.views import index, form
+from gestorpsi.authentication.views import login_check
 
-urlpatterns = patterns('gestorpsi.careprofessional.views',
-    (r'^$', 'index'),
-    (r'^add/$', 'form'),
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', 'form'),    
+urlpatterns = patterns('',
+    (r'^$', login_check(index)),
+    (r'^add/$', login_check(form)),
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form)),    
 )

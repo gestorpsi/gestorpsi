@@ -148,6 +148,9 @@ AUTHENTICATION_BACKENDS = (
 #CUSTOM_USER_MODEL = 'authentication.CustomUser'
 AUTH_PROFILE_MODULE = 'authentication.profile'
 
+#login
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/accounts/login'
 
 DEFAULT_EMAIL_MIMETYPE = 'html'
 

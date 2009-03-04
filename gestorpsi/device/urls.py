@@ -15,20 +15,17 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
+from gestorpsi.device.views import index, form, save, delete, save_device
+from gestorpsi.authentication.views import login_check
 
-urlpatterns = patterns('gestorpsi.device.views',
-    (r'^$', 'index'), # list objects
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', 'form'), # edit object form
-    
-    
-    (r'^add/$', 'form'), # new object form
-    #(r'^add/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', 'form'), # edit object form
-    
-   
-    (r'^save/$', 'save'), # save new object
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', 'save'), # update object
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/delete/$', 'delete'), # delete object
-    
-    (r'^save_device/$', 'save_device'), # save device from device_mini form
+urlpatterns = patterns('',
+    (r'^$', login_check(index)), # list objects
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form)), # edit object form
+    (r'^add/$', login_check(form)), # new object form
+    #(r'^add/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form)), # edit object form
+    (r'^save/$', login_check(save)), # save new object
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save)), # update object
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/delete/$', login_check(delete)), # delete object
+    (r'^save_device/$', login_check(save_device)), # save device from device_mini form
 )
 

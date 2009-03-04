@@ -15,14 +15,16 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
+from gestorpsi.contact.views import index, list, form, save
+from gestorpsi.authentication.views import login_check
 
-urlpatterns = patterns('gestorpsi.contact.views',
-    (r'^$', 'index'),
-    (r'^page(?P<page>(\d)+)$', 'list'), #list objects
-    (r'^add$', 'form'),
-    (r'^(?P<object_type>\d+)/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', 'form'),
-    (r'^save/$', 'save'), #save new object
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', 'save'),  #update object
-    #(r'^(?P<object_id>\d+)/delete/$', 'delete'), # delete object
-    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/delete/$', 'delete'),  #delete object
+urlpatterns = patterns('',
+    (r'^$', login_check(index)),
+    (r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
+    (r'^add$', login_check(form)),
+    (r'^(?P<object_type>\d+)/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form)),
+    (r'^save/$', login_check(save)), #save new object
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save)),  #update object
+    #(r'^(?P<object_id>\d+)/delete/$', login_check(delete)), # delete object
+    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/delete/$', login_check(delete)),  #delete object
 )

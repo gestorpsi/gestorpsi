@@ -122,7 +122,7 @@ def form(request, object_type='', object_id=''):
         emails    = object.person.emails.all()
         sites     = object.person.sites.all()
         instantMessengers = object.person.instantMessengers.all()
-        last_update = object.history.latest('_audit_timestamp')._audit_timestamp
+        #last_update = object.history.latest('_audit_timestamp')._audit_timestamp
         
     return render_to_response('contact/contact_form.html', {
                                     'object': object,

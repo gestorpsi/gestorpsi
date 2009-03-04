@@ -15,7 +15,9 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
+from gestorpsi.upload.views import send
+from django.contrib.auth.decorators import login_required
 
-urlpatterns = patterns('gestorpsi.upload.views',
-    (r'^send/$', 'send'), 
+urlpatterns = patterns('',
+    (r'^send/$', login_required(send)), 
 )

@@ -64,7 +64,8 @@ Python Packages:
   maintainer: http://geraldo.sourceforge.net
 
 - Django Registration (>= r170)
-  maintainer: http://code.google.com/p/django-registration/
+  maintainer: http://bitbucket.org/ubernostrum/django-registration/wiki/Home
+  http://code.google.com/p/django-registration/ (moved to bitbucket)
 
 - Some database server running, and configured:
   MySQL Server, PostgreSQL, Oracle or SQLite

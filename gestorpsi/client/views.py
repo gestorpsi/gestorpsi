@@ -67,7 +67,6 @@ def list(request, page = 1):
 
 # add or edit form
 def form(request, object_id=''):
-    print "AEEEEEEEEEEEEEEEEEEEEE"
     phones    = []
     addresses = []
     documents = []

@@ -32,18 +32,19 @@ class RegistrationForm(RegistrationForm):
     username = forms.CharField(label=_('Username'), help_text=_('Choice one unique identifier'))
     organization = forms.CharField(label=_('Organization'), help_text=_('Name of your organization'))
 
-    def save(self, profile_callback=None):
-        user = super(RegistrationForm, self).save(profile_callback=profile_callback) #create user
-        profile = user.get_profile()
-        organization = Organization.objects.create( #create organization
-            name = self.cleaned_data['organization'],
-        )
-	default_place = Place.objects.create(         #create default place
-            label = organization.name,                # use same name as label
-            place_type = PlaceType.objects.get(pk=1), # mandatory field, so, get first place type
-            organization = organization, # link place to this organization
-        )
-        profile.organization.add(organization) #link organization to profile
-        profile.org_active = organization #set org as active
-        profile.save() #save it
+    def save(self):
+		user = super(RegistrationForm, self).save() #create user
+		profile = Profile(user=user)
+		profile.save()
+		organization = Organization.objects.create( #create organization
+			name = self.cleaned_data['organization'],
+		)
+		default_place = Place.objects.create(         #create default place
+			label = organization.name,                # use same name as label
+			place_type = PlaceType.objects.get(pk=1), # mandatory field, so, get first place type
+			organization = organization, # link place to this organization
+		)
+		profile.organization.add(organization) #link organization to profile
+		profile.org_active = organization #set org as active
+		profile.save() #save it
         

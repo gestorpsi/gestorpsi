@@ -55,7 +55,7 @@ var form_options = {
                     email_address = $('div#edit_form input[name=email_email]:first').val();
                }
 
-               var line = '<tr id="' + response + '"><td class="title"><a href="/' + $('input#app_name').val() + '/' + response + '" title="' + $('div#edit_form input.tabtitle').val() + '">' + $('div#edit_form input.tabtitle').val() + '</a>';
+               var line = '<tr id="' + response + '"><td class="title"><a href="/' + $('input#app_name').val() + '/' + response + '/" title="' + $('div#edit_form input.tabtitle').val() + '">' + $('div#edit_form input.tabtitle').val() + '</a>';
 
                if($('div#edit_form label .object_description').val() != undefined)
                     line += '<br /><span>' + $('div#edit_form label .object_description').val() + '</span>';

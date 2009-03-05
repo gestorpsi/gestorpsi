@@ -57,7 +57,8 @@ def send(request):
                     else:
                         w = float(134) * h/w
                         h = 134
-                    img.thumbnail((w,h), Image.ANTIALIAS)
+
+                    img.thumbnail((int(w),int(h)), Image.ANTIALIAS)
                     
                     # put background
                     bg = Image.new('RGBA',(116,134), (0,0,0,0)) # light bg blue

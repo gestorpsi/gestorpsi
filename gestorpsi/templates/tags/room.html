@@ -34,7 +34,7 @@ GNU General Public License for more details.
 			{% else %}
 			<select name="room_type" class="big">
 			{% for RoomType in RoomTypes %}
-				<option value="{{ RoomType.id }}"{% ifequal room.RoomType.id RoomType.id %} selected{% endifequal %}>{{ RoomType }}</option>
+				<option value="{{ RoomType.id }}" {% ifequal room.room_type_id RoomType.id %} selected {% endifequal %}>{{ RoomType }}</option>
 			{% endfor %}
 			</select>
 			{% endif %}
@@ -50,8 +50,3 @@ GNU General Public License for more details.
 <label><br /><a class="notajax remove_from_form" delete="room_{{ forloop.counter }}" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a></label>
 {% endif %}
 </div>
-
-
-
-
-

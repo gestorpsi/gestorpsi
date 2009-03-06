@@ -27,12 +27,14 @@ def send(request):
         filename = ''
         if 'file' in request.FILES:
             pathdir = '%simg/organization/%s' % (MEDIA_ROOT, user.get_profile().org_active.id)
-            print "PATHDIR %s" % pathdir
+            print pathdir
             if not os.path.exists(pathdir):
                 os.mkdir(pathdir)
                 os.mkdir('%s/.thumb' % pathdir)
+                os.mkdir('%s/.thumb-whitebg' % pathdir)
                 os.chmod(pathdir, 0777)
                 os.chmod('%s/.thumb' % pathdir, 0777)
+                os.chmod('%s/.thumb-whitebg' % pathdir, 0777)
             file = request.FILES['file']
             try:
                 if file.content_type in ['image/jpeg', 'image/png', 'image/gif']:
@@ -61,16 +63,19 @@ def send(request):
                     img.thumbnail((int(w),int(h)), Image.ANTIALIAS)
                     
                     # put background
-                    bg = Image.new('RGBA',(116,134), (0,0,0,0)) # light bg blue
+                    bg = Image.new('RGBA',(116,134), (0,0,0,0)) # transparent
+                    bg_white = Image.new('RGBA',(116,134), (255,255,255,255)) # white
                     W, H = bg.size
                     w, h = img.size
                     xo, yo = (W-w)/2, (H-h)/2
                     
                     # merge it
                     bg.paste(img, (xo, yo, xo+w, yo+h))
+                    bg_white.paste(img, (xo, yo, xo+w, yo+h))
                     
                     # then save it
                     bg.save('%s/.thumb/%s' % (pathdir, filename), "PNG")
+                    bg_white.save('%s/.thumb-whitebg/%s' % (pathdir, filename), "PNG")
                     
             
             except IOError:

@@ -130,7 +130,7 @@ class Person(models.Model):
     def get_photo(self):
         from gestorpsi.settings import MEDIA_ROOT, PROJECT_ROOT_PATH
         if len(self.photo):
-            return "%s/%simg/organization/%s/.thumb/%s" % (PROJECT_ROOT_PATH, MEDIA_ROOT, self.organization.id, self.photo)
+            return "%s/%simg/organization/%s/.thumb-whitebg/%s" % (PROJECT_ROOT_PATH, MEDIA_ROOT, self.organization.id, self.photo)
         else:
             return "%s/%simg/%s" % (PROJECT_ROOT_PATH, MEDIA_ROOT, 'male_generic_photo.png')
 

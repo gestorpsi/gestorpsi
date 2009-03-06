@@ -23,7 +23,7 @@ from geraldo import Image, Line, Label, SystemField
 def header_gen(organization, header_line=True, clinic_info=True):
     # Cannot use image thumbnail because it's too large (PROJECT_ROOT_PATH,pathdir,'.thumb',organization.photo)
     pathdir = '%simg/organization/%s' % (MEDIA_ROOT, organization.id)
-    imagefile = os.path.join(PROJECT_ROOT_PATH,pathdir,'.thumb',organization.photo)
+    imagefile = os.path.join(PROJECT_ROOT_PATH,pathdir,'.thumb-whitebg',organization.photo)
     class Header(ReportBand):
         height = 2.3*cm
         borders = {'bottom': False}

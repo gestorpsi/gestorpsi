@@ -1025,10 +1025,9 @@ label a.remove_from_form span {
 	display:none;
 }
 
-div#form.fast_menu_content, div#list.fast_menu_content, div.admission_form {
+div.fast_menu_content, div.admission_form {
         display: none;
 }
-
 
 fieldset label a.select_multiple_menu {
 	padding: 0 5px 0 5px;
@@ -1044,7 +1043,6 @@ fieldset label a.select_multiple_menu.active {
 	border-top: 1px solid #999999;
 	border-left: 1px solid #999999;
 	border-right: 1px solid #999999;
-
 }
 
 

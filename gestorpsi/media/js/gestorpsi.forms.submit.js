@@ -123,6 +123,32 @@ function bindAjaxForms() {
           }
           });
      });
+     
+     /**
+     *
+     * device type  post form
+     *
+     * _description:
+     * validate and post device type form.
+     *
+     */
+
+     $('.form_type_device').each(function() {
+          $(this).validate({event:"submit",
+          rules: {
+            label: {
+                    required: true
+            }
+          },
+          messages: {
+            label: 'Preenchimento Necessário'
+          },
+          submitHandler: function(form) {
+            $(form).ajaxSubmit(form_options);
+
+          }
+          });
+     });
 
 
      /**

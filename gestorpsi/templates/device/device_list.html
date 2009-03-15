@@ -38,15 +38,11 @@ GNU General Public License for more details.
                 </thead>
                 <tbody>               
                 {% for o in object %}
-                        <tr>
-                                <td class="item" display="device_{{ o.id }}">{{ o.description }}  </a></td>
-                                <td></td>
-                        </tr>
                         {% for dev_det in o.get_all_device_details %}
-                                <tr class="sub_item device_{{ o.id }}" id="{{ dev_det.id }}">
-                                        <td class="sub_item" ><a href="/device/{{ dev_det.id }}" title="{{ dev_det }}">{{ dev_det.brand }} </a></td>
-                                        <td></td>
-                                </tr>
+				<tr>
+				 <td display="device_{{ o.id }}">{{ o.description }}</td>
+                                 <td class="sub_item" ><a href="/device/{{ dev_det.id }}" title="{{ dev_det }}">{{ dev_det.brand }} </a></td>
+ 				</tr>
                         {% endfor %}
                 {% endfor %}
                 </tbody>

@@ -72,9 +72,19 @@ def form(request, object_id= ''):
 #                                                          'dc': device_categ, 'dt': device_type,
 #                                                          'list_dvt': list_of_dev_details } )
 
-def save_device(request):
+def index_type(request):
+    return render_to_response( "device/device_type_list.html", {'object': Device.objects.all() })   
+
+def form_type(request, object_id= ''):
+    return render_to_response('device/device_type_form.html', {'object': get_object_or_404( Device, pk=object_id) } )
+
+def save_device(request, object_id= ''):
+    try:
+        device= get_object_or_404( Device, pk=object_id)
+    except Http404:
+        device = Device()
+
     user = request.user
-    device = Device()
     device.description = request.POST['label']
     device.organization = user.get_profile().org_active
     device.save()

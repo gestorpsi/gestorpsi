@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 
 function bindList() {
-	$("#search_results.newtab tr td a, a.ajax").unbind().click(function(){
+	$("table.newtab tr td a, a.ajax").unbind().click(function(){
 		var link = $(this);
 		$('#core .fast_menu_content').hide();
 		$('ul.opened_tabs').hide();
@@ -172,7 +172,7 @@ function bindList() {
 	
 	
 
-	$("table.devices td.item").click(function(){
+	$("table.devices td.item").unbind().click(function(){
 		var class_name_to_display = $(this).attr('display');
 		$('.' + class_name_to_display).toggle();
 	});

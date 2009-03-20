@@ -17,7 +17,6 @@ GNU General Public License for more details.
 from django.db import models
 from gestorpsi.organization.models import Organization
 from django.contrib.auth.models import User, UserManager
-from gestorpsi.util import CryptographicUtils as cryptoUtils
 
 class Profile(models.Model):
     user = models.ForeignKey(User, unique=True)

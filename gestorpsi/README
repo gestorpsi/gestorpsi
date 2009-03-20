@@ -22,7 +22,7 @@ The basic features of GestorPsi are:
 - Employees Management
 - Devices Management
 - UUid
-- Encrypted Database
+- Encrypted Database (see: crypt_howto.txt)
 
 
 Todo
@@ -124,7 +124,7 @@ can be found in the file COPYING included with the source code of this
 program.
 
 Ideas, questions, patches and bug reports
-suport@gestopsi.com.br
+support@gestopsi.com.br
 
 --
 2007-2009 by GestorPsi

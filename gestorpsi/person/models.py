@@ -14,7 +14,6 @@ GNU General Public License for more details.
 """
 
 from django.db import models
-from django.forms import ModelForm
 from django.contrib.contenttypes import generic
 from gestorpsi.phone.models import Phone
 from gestorpsi.address.models import City, Address, Country
@@ -23,7 +22,6 @@ from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import audittrail
-from gestorpsi.util import CryptographicUtils as cryptoUtils
 from gestorpsi.util.first_capitalized import first_capitalized
    
 Gender = ( ('0','No Information'),('1','Female'), ('2','Male'))
@@ -34,9 +32,9 @@ class MaritalStatus(models.Model):
         return u"%s" % self.description
 
 class Person(models.Model):
-    id= UuidField( primary_key= True )
-    crypt_name = models.CharField(max_length= 256 )
-    crypt_nickname = models.CharField(max_length=250, null=True, blank=True)
+    id = UuidField(primary_key=True)
+    name = models.CharField(max_length=50)
+    nickname = models.CharField(max_length=20, null=True, blank=True)
 
     photo = models.CharField(max_length=100)
     birthDate = models.DateField(null=True)
@@ -61,21 +59,6 @@ class Person(models.Model):
     
     history= audittrail.AuditTrail()
     
-    def _get_name(self):
-        return cryptoUtils.decrypt_attrib( self.crypt_name )
-    
-    def _set_name(self, value):
-        self.crypt_name= cryptoUtils.encrypt_attrib( value )
-        
-    def _get_nickname(self):
-        return cryptoUtils.decrypt_attrib( self.crypt_nickname )
-    
-    def _set_nickname(self, value):
-        self.crypt_nickname= cryptoUtils.encrypt_attrib( value )
-    
-    name= property( _get_name, _set_name )
-    nickname= property( _get_nickname, _set_nickname )
-
     """ function used only in reports.py waiting a fix in Geraldo SubReport"""
     def get_documents(self):
         if self.document.all().count() > 1:
@@ -179,10 +162,6 @@ class Person(models.Model):
         else:
             return ''        
 
-class PersonForm(ModelForm):
-    class Meta:
-        model= Person
-        
 """
 Teste do Models no shell de Pessoa e suas ligacoes
 

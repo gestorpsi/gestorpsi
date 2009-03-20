@@ -18,7 +18,6 @@ from django.db import models
 from gestorpsi.person.models import Person
 from gestorpsi.admission.models import AdmissionReferral, Indication
 from gestorpsi.util.uuid_field import UuidField
-from gestorpsi.util import CryptographicUtils as cryptoUtils
 from gestorpsi.util import audittrail
 
 class Relation(models.Model):
@@ -35,41 +34,19 @@ class PersonLink(models.Model):
 
 CLIENT_STATUS = ( ('0','Inativo'),('1','Ativo'))
 class Client(models.Model):
-    id= UuidField( primary_key= True )
+    id = UuidField(primary_key=True)
     person = models.OneToOneField(Person)
-    crypt_idRecord = models.CharField(max_length=250)
-    crypt_legacyRecord = models.CharField(max_length=250)
-    crypt_healthDocument = models.CharField(max_length=250)
+    idRecord = models.CharField(max_length=15)
+    legacyRecord = models.CharField(max_length=15)
+    healthDocument = models.CharField(max_length=15)
     admission_date = models.DateField(null=True)
     referral_choice = models.ForeignKey(AdmissionReferral, null=True)
     indication_choice = models.ForeignKey(Indication, null=True)
-    clientStatus = models.CharField(max_length=1, default = '1', choices=CLIENT_STATUS)
+    clientStatus = models.CharField(max_length=1, default='1', choices=CLIENT_STATUS)
     person_link = models.ManyToManyField(PersonLink)
     comments = models.TextField(blank=True)
-    history= audittrail.AuditTrail()
+    #history= audittrail.AuditTrail()
 
-    def _get_idRecord(self):
-        return cryptoUtils.decrypt_attrib( self.crypt_idRecord )
-    
-    def _set_idRecord(self, value):
-        self.crypt_idRecord= cryptoUtils.encrypt_attrib( value )
-    
-    def _get_legacyRecord(self):
-        return cryptoUtils.decrypt_attrib( self.crypt_legacyRecord )
-    
-    def _set_legacyRecord(self, value):
-        self.crypt_legacyRecord= cryptoUtils.encrypt_attrib( value )
-    
-    def _get_healthDocument(self):
-        return cryptoUtils.decrypt_attrib( self.crypt_healthDocument )
-    
-    def _set_healthDocument(self, value):
-        self.crypt_healthDocument= cryptoUtils.encrypt_attrib( value )
-    
-    idRecord= property( _get_idRecord, _set_idRecord )
-    legacyRecord= property( _get_legacyRecord, _set_legacyRecord )
-    healthDocument= property( _get_healthDocument, _set_healthDocument )
-    
     def __unicode__(self):
         return u"%s" % self.person.name
     

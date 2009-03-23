@@ -26,7 +26,7 @@ from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.document.models import TypeDocument, Issuer
-from gestorpsi.person.views import person_save, person_order
+from gestorpsi.person.views import person_save
 from gestorpsi.client.reports import ClientRecord, ClientList
 from gestorpsi.reports.header import header_gen
 from gestorpsi.reports.footer import footer_gen
@@ -34,7 +34,7 @@ from gestorpsi.reports.footer import footer_gen
 # list all active clients
 def index(request):
     user = request.user
-    object = person_order(Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1'))
+    object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
     paginator = Paginator(object, settings.PAGE_RESULTS)
     object = paginator.page(1)
     return render_to_response('client/client_index.html',
@@ -54,7 +54,7 @@ def index(request):
 
 def list(request, page = 1):
     user = request.user
-    object = person_order(Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1'))
+    object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
     paginator = Paginator(object, settings.PAGE_RESULTS)
     object = paginator.page(page)
     return render_to_response('client/client_list.html',
@@ -118,7 +118,7 @@ def print_list(request):
     user = request.user
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=clients.pdf'
-    object = person_order(Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1'))
+    object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
     report = ClientList(queryset=object)
     report.title = "Client List"
     report.band_page_header = header_gen(user.get_profile().org_active)

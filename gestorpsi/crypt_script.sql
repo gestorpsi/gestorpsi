@@ -4,7 +4,7 @@
 CREATE OR REPLACE FUNCTION gestorpsi_get_key () RETURNS VARCHAR
 AS $$
   try:
-    return open('/home/gestorpsi/dev/gestorpsi/chave.key','r').readline().strip()
+    return open('/secure/place/to/store/your/key.txt','r').readline().strip()
   except:
     raise Exception("Security Cryptography Error")
 $$ LANGUAGE plpythonu;

@@ -89,14 +89,3 @@ def person_save(request, person):
 
     return person
 
-#def person_order(dictionary):
-#    lista = []
-#    nl = []
-#    
-#    for x in dictionary:
-#        lista.append([x.person.name.lower(), x])
-#    ordered = sorted(lista, key=operator.itemgetter(0))
-#    for y in ordered:
-#        nl.append(y[1])
-#    
-#    return nl

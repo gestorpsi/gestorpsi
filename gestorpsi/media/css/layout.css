@@ -1144,6 +1144,12 @@ label div.error, .login span.error, .login form p.errors {
 	color: red !important;
 }
 
+div.error {
+	display: block;
+	font-size: 17px;
+	color: red !important;
+}
+
 label div.error {
 	display: block;
 	font-size: 17px;

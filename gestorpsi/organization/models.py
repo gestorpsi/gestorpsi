@@ -112,6 +112,7 @@ class Organization(models.Model):
     # identity
     name = models.CharField(max_length=100)
     trade_name = models.CharField(max_length=100, blank=True)
+    short_name = models.CharField(max_length=20, blank=True, unique=True)
     register_number = models.CharField(max_length=100, blank=True)
     cnes = models.CharField(max_length=100, blank=True)
     state_inscription = models.CharField(max_length=30, blank=True)
@@ -142,6 +143,9 @@ class Organization(models.Model):
     sites = generic.GenericRelation(Site, null=True)
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True) ### it needs more description    
     organization = models.ForeignKey('self', related_name="%(class)s_related", null=True, blank=True)
+    
+    def __unicode__(self):
+        return self.short_name
                               
     def __unicode__(self):
         return self.name

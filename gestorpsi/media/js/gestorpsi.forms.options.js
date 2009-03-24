@@ -164,11 +164,17 @@ var form_options = {
 
 var form_organization_options = {
      success: function(response, request, form) {
-          var new_title = $('#form_organization input.tabtitle').val();
-         // new title in tab
-          $(".edit_form h2.title").text(new_title); // update titles page title
 
-          formSuccess();
+	if ( response == "false" ){
+	  	alert("Short name not available!");
+	  	return false;
+	} else {
+	  	//alert(response + " / " + request + " / " + form );
+      	var new_title = $('#form_organization input.tabtitle').val();
+      	// new title in tab
+     	 $(".edit_form h2.title").text(new_title); // update titles page title
+      	formSuccess();
+	}
       },
 
      error: function() {

@@ -15,10 +15,11 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.organization.views import form, save
+from gestorpsi.organization.views import form, save, shortname_is_available
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
     (r'^$', login_check(form)),
     (r'^save/$', login_check(save)),
+    (r'^check/(?P<short>.*)/$', (shortname_is_available)),  #check short name
 )

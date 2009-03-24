@@ -139,6 +139,21 @@ function bindAutoCompleteForm() {
            }
      });
 
+     // VALID IF EXIST A SHORT NAME IN FORM ORGANIZATION
+     $('input.short_search').unbind().keyup(function() {
+	     $.ajax({
+		   type: "GET",
+		   url: "/organization/check/"+ $(this).val()+"/",
+		   success: function(msg){
+			if (msg == '1'){
+			   $("div.check_available").hide();
+			} else {
+			   $("div.check_available").show();
+			}
+		   }
+	     });
+     });
+
 }
 
 

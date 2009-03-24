@@ -36,15 +36,30 @@ GNU General Public License for more details.
 </div> 
 
 
+
+
 <fieldset class="identity organization first comment fieldset_personal_identification">
         <legend>{% trans "Corporate Identity" %}</legend>
 
         <label>{% trans "Company" %}<br />
                 <input type="text" value="{{ object.name }}" name="name" class="big tabtitle" />
         </label>
+
         <label>{% trans "Trade Name" %}<br />
                 <input type="text" value="{{ object.trade_name }}" name="trade_name" class="big" />
         </label>
+	
+	<label>{% trans "Short Name" %}<br />
+         	   <input class="short_search big tabtitle" type="text" value="{{ object.short_name }}" name="short_name" />
+        </label>
+
+	<label>
+		 <div name="msg_error" class="error check_available organization" style="display: none;">
+		   &nbsp; &nbsp; {% trans "Not available" %}
+		 </div>
+	</label>
+	
+         <label> {{ html }}</label>
 </fieldset>
 <fieldset class="identity organization first comment">
 	<legend>{% trans "Additional Identities" %}</legend>

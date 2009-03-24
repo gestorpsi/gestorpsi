@@ -13,7 +13,7 @@ Requirements
 ============
 - PostgreSQL v8.3
 - pgcrypto (apt-get install postgresql-contrib-8.3)
-- PL/Python
+- PL/Python (apt-get install postgresql-plpython-8.3)
 
 Enabling Cryptographic
 ======================
@@ -32,6 +32,8 @@ $ python manage.py syncdb
    *****************************************************************
 
    This is only an example. CREATE YOUR OWN STRONG-KEY.
+                            Put your key in a secure directory.
+                            Change 'dbuser' to the user that runs postgresql
 
 $ echo "sy*l3vy@3id873e2ey9hw_2" > /secure/place/to/store/your/key.txt
 $ chown dbuser.dbuser /secure/place/to/store/your/key.txt

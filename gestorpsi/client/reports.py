@@ -43,25 +43,25 @@ class ClientList(Report):
 
 def client_record_gen(blocks):
     class ClientRecordBandDetail(ReportBand):
-        topo = 0.0*cm
+        top = 0.0*cm
         def print_section(self):
-            retorno = self.topo
-            self.topo += 0.3*cm
+            retorno = self.top
+            self.top += 0.3*cm
             return retorno
 
         def print_line(self):
-            retorno = self.topo
-            self.topo += 0.2*cm
+            retorno = self.top
+            self.top += 0.2*cm
             return retorno
 
         def print_label(self):
-            retorno = self.topo
-            self.topo += 0.3*cm
+            retorno = self.top
+            self.top += 0.3*cm
             return retorno
 
         def print_content(self):
-            retorno = self.topo
-            self.topo += 0.7*cm
+            retorno = self.top
+            self.top += 0.7*cm
             return retorno
 
         height = 8.5*cm
@@ -92,8 +92,8 @@ def client_record_gen(blocks):
     """ Personal Indetification Block """
     def block1():
         c.elements.append(Label(text="Personal Identification", top=c.print_section(), left=0*cm, style=c.label_style))
-        c.elements.append(Line(left=0*cm, top=c.topo, right=19*cm, bottom=c.print_line()))
-        c.elements.append(Image(left=14*cm, top=c.topo, get_image=lambda graphic: PILImage.open('%s' % graphic.instance.person.get_photo())))
+        c.elements.append(Line(left=0*cm, top=c.top, right=19*cm, bottom=c.print_line()))
+        c.elements.append(Image(left=14*cm, top=c.top, get_image=lambda graphic: PILImage.open('%s' % graphic.instance.person.get_photo())))
         c.elements.append(Label(text="Name", top=c.print_label(), left=0, style=c.label_style))
         c.elements.append(ObjectValue(top=c.print_content(), left=0*cm, get_value=lambda instance: instance.person.name, style=c.content_style))
         c.elements.append(Label(text="Nickname", top=c.print_label(), left=0, style=c.label_style))
@@ -104,7 +104,7 @@ def client_record_gen(blocks):
     """ Personal Profile BLock """
     def block2():
         c.elements.append(Label(text="Personal Profile", top=c.print_section(), left=0*cm, style=c.label_style))
-        c.elements.append(Line(left=0*cm, top=c.topo, right=19.0*cm, bottom=c.print_line()))
+        c.elements.append(Line(left=0*cm, top=c.top, right=19.0*cm, bottom=c.print_line()))
         c.elements.append(Label(text="Birthdate", top=c.print_label(), left=0, style=c.label_style))
         c.elements.append(ObjectValue(top=c.print_content(), left=0*cm, get_value=lambda instance: instance.person.get_birthdate(), style=c.content_style))
         c.elements.append(Label(text="Marital Status", top=c.print_label(), left=0, style=c.label_style))
@@ -113,7 +113,7 @@ def client_record_gen(blocks):
     """ Naturality Block """
     def block3():
         c.elements.append(Label(text="Naturality", top=c.print_section(), left=0*cm, style=c.label_style))
-        c.elements.append(Line(left=0*cm, top=c.topo, right=19*cm, bottom=c.print_line()))
+        c.elements.append(Line(left=0*cm, top=c.top, right=19*cm, bottom=c.print_line()))
         c.elements.append(Label(text="Country", top=c.print_label(), left=0, style=c.label_style))
         c.elements.append(ObjectValue(top=c.print_content(), left=0*cm, get_value=lambda instance: instance.person.get_birth_country(), style=c.content_style))
         c.elements.append(Label(text="City", top=c.print_label(), left=0, style=c.label_style))
@@ -122,26 +122,26 @@ def client_record_gen(blocks):
     """ Documents Block (waiting a fix in Geraldo SubReport) """
     def block4():
         c.elements.append(Label(text="Documents", top=c.print_section(), left=0*cm, style=c.label_style))
-        c.elements.append(Line(left=0*cm, top=c.topo, right=19*cm, bottom=c.print_line()))
+        c.elements.append(Line(left=0*cm, top=c.top, right=19*cm, bottom=c.print_line()))
         c.elements.append(ObjectValue(top=c.print_content(), width=10*cm, left=0*cm, get_value=lambda instance: instance.person.get_documents(), style=c.content_style))
 
     """ Phones Block (waiting a fix in Geraldo SubReport) """
     def block5():
         c.elements.append(Label(text="Phones", top=c.print_section(), left=0*cm, style=c.label_style))
-        c.elements.append(Line(left=0*cm, top=c.topo, right=19*cm, bottom=c.print_line()))
+        c.elements.append(Line(left=0*cm, top=c.top, right=19*cm, bottom=c.print_line()))
         c.elements.append(ObjectValue(top=c.print_content(), width=10*cm, left=0*cm, get_value=lambda instance: instance.person.get_phones(), style=c.content_style))
 
     """ Internet Block (waiting a fix in Geraldo SubReport) """
     def block6():
         pass
         c.elements.append(Label(text="Internet Data", top=c.print_section(), left=0*cm, style=c.label_style))
-        c.elements.append(Line(left=0*cm, top=c.topo, right=19*cm, bottom=c.print_line()))
+        c.elements.append(Line(left=0*cm, top=c.top, right=19*cm, bottom=c.print_line()))
         c.elements.append(ObjectValue(top=c.print_content(), width=18*cm, left=0*cm, get_value=lambda instance: instance.person.get_internet(), style=c.content_style))
 
     """ Addresses Block (waiting a fix in Geraldo SubReport) """
     def block7():
         c.elements.append(Label(text="Addresses", top=c.print_section(), left=0*cm, style=c.label_style))
-        c.elements.append(Line(left=0*cm, top=c.topo, right=19*cm, bottom=c.print_line()))
+        c.elements.append(Line(left=0*cm, top=c.top, right=19*cm, bottom=c.print_line()))
         c.elements.append(ObjectValue(top=c.print_content(), width=18*cm, left=0*cm, get_value=lambda instance: instance.person.get_address(), style=c.content_style))
 
     # Print selected blocks

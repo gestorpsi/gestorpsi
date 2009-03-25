@@ -15,16 +15,14 @@ GNU General Public License for more details.
 """
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, Http404
 from django.conf import settings
 from django.contrib.auth.models import User
-from gestorpsi.authentication.models import Profile
 from gestorpsi.organization.models import Organization
-from gestorpsi.settings import LOGIN_URL, DEBUG
+from gestorpsi.settings import DEBUG
 from django.contrib.auth.forms import AuthenticationForm
-from django.template import RequestContext
 
 # login_check decorator
 # code from http://code.activestate.com/recipes/498217/
@@ -113,4 +111,3 @@ def unblocked_user(user):
             return True
     else:
         return True
-

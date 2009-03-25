@@ -1,8 +1,7 @@
-{% extends "schedule/schedule_index.html" %}
+{% include "core/ajax_page_list.html" %}
+{% include "core/ajax_page_schedule.html" %}
 
-
-{% block main_content %}
-
+{% load i18n %}
 
 <div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
 		Esta caixa é mostrada quando há mensagens
@@ -11,13 +10,13 @@
         <!-- esse span deve ficar aqui dentro para funcionar -->
 
         <span style="position: relative">
-        <a href="#" class="option" onclick="$('.filter_professional').toggle();">profissionais</a>
+        <a href="#" class="option" onclick="$('div.filter_professional').toggle(); return false;">profissionais</a>
             <!-- esse popup deve ficar dentro do span para funcionar, pois tem posicao relativa -->
         <div class="filter professional" style="display:none">
                 <table>
                 	<tr>
                     	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk.png" />  Dr Douglas Azevedo</a></td>
-                        <td><span class="color12" onclick="$('colors').toggle();">a
+                        <td><span class="color12" onclick="$('#colors').toggle();">a
                         <!-- esse popup deve ficar dentro do span para funcionar, pois tem posicao relativa -->
 
                         <div id="colors">
@@ -139,23 +138,22 @@
         </span>
         <!-- fim do outro -->
         </h2>
-        <a id="calendar_link" href="#" onclick="$('calendar').toggle();"></a>
-
-        <div id="calendar">        </div>
+        <a id="calendar_link" href="#"></a>
+        <div id="mini_calendar" style="display:none;"></div>
+        
 		<p class="description">O dia de hoje possui <a href="#">05 consultas</a>, <a href="#">02 retornos</a>, <a href="#">01 reunião</a> e <a href="#">01 treinamento</a>.</p>
 
 
 		<div class="schedule">
 			<div id="search_header">
-				<h2><a href="{% url swingtime-daily-view prev_day.year prev_day.month prev_day.day %}" id="nav_back"></a>
-				{{ day|date:"l, N jS Y" }}
-                <a href="{% url swingtime-daily-view next_day.year next_day.month next_day.day %}" id="nav_fwd"></a>
+				<h2><a class="json_ocorrences prev_day" href="{% url schedule-daily-occurrences prev_day.year prev_day.month prev_day.day %}" id="nav_back"></a>
+				<span class="date_selected"></span>
+                <a class="json_ocorrences next_day" href="{% url schedule-daily-occurrences next_day.year next_day.month next_day.day %}" id="nav_fwd"></a>
 				</h2>	
 		    </div>
         <!-- este popup pode ir fora, pois tem posicao absoluta -->
         <div class="filter room" style="display:none">
-
-            	<table>
+                <table>
                 	<tr>
                     	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk.png" />  Sala 1</a></td>
                     </tr>
@@ -182,200 +180,26 @@
                     </tr>
                 </table>
             </div>
-        
-        
-			<table class="schedule_results zebra" border="0" cellspacing="0" cellpadding="0">
+            
+            <table class="schedule_results daily zebra" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<th class="schedule"><a href="#" onclick="$('rooms').toggle();">salas</a></th>
-					<th>sala 01</th>
-					<th>sala 03</th>
-
-				    <th>Reuni&atilde;o</th>
-				    <th>&Aacute;udio e V&iacute;deo</th>
+					{% for place in places %}{% for room in place.room_set.all %}
+					    <th>{{ room }}</th>
+					{% endfor %}{% endfor %}
 				</tr>
-				
-
-				
 				{% for tm,cells in timeslots %}
-				<tr>
-				    <td class="hour"><a href="{% url swingtime-add-event %}?dtstart={{ tm.isoformat }}">{{ tm|date:"H:i" }}</a></td>
-				    {% for cell in cells %}
-					<td{% if cell.event_class %} class="{{cell.event_class}}"{% endif %} class="color15">Maria de Lourdes dos Santos Silva<br />
-                    {% endfor %}
+				<tr hour="{{ tm|date:"H:i:s" }}">
+				    <td class="hour">{{ tm|date:"H:i" }}</td>
+				    {% for place in places %}{% for room in place.room_set.all %}
+                        <td class="clean" room="{{ room.id }}"><a href="{% url swingtime-add-event %}?dtstart={{ tm.isoformat }}&room={{ room.id }}" class="book ajax">{% trans "Free" %}</a></td>
+                    {% endfor %}{% endfor %}
 				</tr>
 				{% endfor %}
-                
-                
-				<tr>
-				    <td class="hour">08:30</td>
-					<td>&nbsp;</td>
-				    <td>&nbsp;</td>
-			    </tr>
-				<tr>
-				    <td class="hour">09:00</td>
-					<td rowspan="2" class="color12">Joseane Eneida Marquete<br />
-
-					    &gt;&gt; consulta<br />
-				    (Dr Douglas Azevedo)</td>
-					<td>&nbsp;</td>
-				    <td>&nbsp;</td>
-			    </tr>
-				<tr>
-				    <td class="hour">09:30</td>
-
-				    <td rowspan="2" class="color22">Amilton e Seus Estados<br />
-				        &gt;&gt; consulta<br />
-			        (Dra Silvia Priscila Pedra)</td>
-				    <td>&nbsp;</td>
-			    </tr>
-				<tr>
-				    <td class="hour">10:00</td>
-
-				    <td>
-                    
-                                        <!-- Este link deve aparecer quando mouse over em qualquer celula da tabela que nao tiver horario marcado -->
-                    <a href="#" class="book">agendar</a>
-                    
-                    </td>
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-			    </tr>
-				<tr>
-
-				    <td class="hour">10:30</td>
-				    <td>&nbsp;</td>
-				    <td rowspan="2"  class="color22">Genov&eacute;sio Cantareira<br />
-				        &gt;&gt; consulta<br />
-			        (Dra Silvia Priscila Pedra)</td>
-				    <td>&nbsp;</td>
-
-				    <td>&nbsp;</td>
-			    </tr>
-				<tr>
-				    <td class="hour">11:00</td>
-				    <td rowspan="2" class="color15">Adailton Botta<br />
-				        &gt;&gt; retorno<br />
-			        (Dr Ant&ocirc;nio Almeida da Silva)</td>
-
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-			    </tr>
-				<tr>
-				    <td class="hour">11:30</td>
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-
-			    </tr>
-				<tr>
-				    <td class="hour">14:00</td>
-				    <td>&nbsp;</td>
-				    <td rowspan="2"  class="color15">Adailton Botta<br />
-				        &gt;&gt; retorno<br />
-			        (Dr Ant&ocirc;nio Almeida da Silva)</td>
-
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-			    </tr>
-				<tr>
-				    <td class="hour">14:30</td>
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-
-			    </tr>
-				<tr>
-				    <td class="hour">15:00</td>
-				    <td>&nbsp;</td>
-				    <td rowspan="2" class="color10">Florentino Ariza<br />
-				        &gt;&gt; consulta<br />
-			        (Dra Patr&iacute;cia Gon&ccedil;alves Dias)</td>
-
-				    <td rowspan="2" class="occup">em uso</td>
-				    <td>&nbsp;</td>
-			    </tr>
-				<tr>
-				    <td class="hour">15:30</td>
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-			    </tr>
-
-				<tr>
-				    <td class="hour">16:00</td>
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-			    </tr>
-				<tr>
-
-				    <td class="hour">16:30</td>
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-				    <td rowspan="2" class="occup">em uso</td>
-				    <td>&nbsp;</td>
-			    </tr>
-				<tr>
-				    <td class="hour">17:00</td>
-
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-			    </tr>
-				<tr>
-				    <td class="hour">17:30</td>
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-			    </tr>
-				<tr>
-				    <td class="hour">18:00</td>
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-
-				    <td>&nbsp;</td>
-			    </tr>
-			    
-			</table>
-			
+            </table>
 		</div>
 
 
-
-{% endblock %}
-
-
-
-    <h3>Daily View</h3>
-    <h4>
-        <a href="{% url swingtime-daily-view prev_day.year prev_day.month prev_day.day %}">&larr;</a>
-        {{ day|date:"l, N jS Y" }}
-        <a href="{% url swingtime-daily-view next_day.year next_day.month next_day.day %}">&rarr;</a>
-    </h4>
-    <table class="calendar">
-        <thead>
-            <tr>
-                <th>Time</th>
-                <th>Main Room</th>
-                <th>Private 2</th>
-                <th>Private 3</th>
-                <th colspan="4">Private 4</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for tm,cells in timeslots %}
-            <tr>
-                <th><a href="{% url swingtime-add-event %}?dtstart={{ tm.isoformat }}">{{ tm|date:"P" }}</a></th>
-                {% for cell in cells %}
-                <td{% if cell.event_class %} class="{{cell.event_class}}"{% endif %}>{{ cell }}</td>    
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
     
     
 

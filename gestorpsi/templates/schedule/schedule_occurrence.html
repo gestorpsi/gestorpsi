@@ -1,0 +1,23 @@
+     <h3>Event Occurrence</h3>
+     <h4>
+         <a href="{{ occurrence.event.get_absolute_url }}">{{ occurrence.title }}</a>
+         &ndash;
+     <dl>
+        
+         <dt>Event Room:</dt>
+         <dd>{{ occurrence.scheduleoccurrence.room }}</dd>
+         
+     </dl>
+     
+     <form action="" method="post">
+     <table>
+         <tfoot>
+             <tr>
+                 <td colspan="2"><input type="submit" value="Update" /></td>
+             </tr>
+         </tfoot>
+         <tbody>
+             {{ form }}
+         </tbody>
+     </table>
+     </form>

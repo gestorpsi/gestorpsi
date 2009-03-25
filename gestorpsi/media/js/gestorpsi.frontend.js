@@ -205,7 +205,7 @@ $(document).ready(function(){
                 else
                         display = $(this).attr('display');
 
-                $('#' + display).show();
+                $('div#' + display).show();
 
                 $('.sidebar').css('padding-top','167px');
                 return false;

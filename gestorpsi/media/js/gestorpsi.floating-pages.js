@@ -14,15 +14,4 @@ GNU General Public License for more details.
 
 */
 
-$(document).unbind().ready(function(){
-	bindList();
-	bindAjaxForms();
-	bindDelete();
-	bindFormActions();
-	bind_select_itens_selected();
-	bind_select_itens_available();
-	bindFieldMask();
-	bindFormMisc();
-	bindDates();
-	bindSchedule();
-});
+

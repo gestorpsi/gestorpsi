@@ -121,6 +121,7 @@ div#main_menu a.active {
 #sub_menu ul {
 	position: relative;
 	top: 15px;
+	margin-left: 10px;
 }
 #sub_menu li {
 	display: inline;
@@ -1045,6 +1046,14 @@ fieldset label a.select_multiple_menu.active {
 	border-right: 1px solid #999999;
 }
 
+form div.main_area fieldset ul {
+clear: both;
+    display: block;
+}
+
+form div.main_area fieldset ul li  {
+    list-style: none;
+}
 
 div.form_mini {
 	display:none;
@@ -1193,131 +1202,6 @@ ul.paginator li.next {
 	padding-left: 10px;
 }
 
-
-/**
-*   schedule
-*/
-
-div.schedule div.top {
-	margin: 0 0 0px 20px;
-}
-
-div.schedule div.middle {
-	clear: both;
-	padding: 20px 0 0 0px;
-}
-
-div.schedule div.form {
-	position: absolute;
-	top: 100px;
-	left: 200px;
-}
-
-
-table.schedule {
-	clear: both;
-	width: 715px;
-	margin-left: 0px;
-	border: 2px solid #E2E2E2;
-	font-size: 11px;
-	color: #999999;
-}
-
-table.schedule th {
-	text-align: left;
-}
-table.schedule tr td {
-	border: 1px solid white;
-}
-
-table.schedule tr:hover {
-	cursor: pointer;
-	background-color: #b6c9cf;
-}
-
-
-div.schedule_filters {
-	padding: 3px;
-}
-div.schedule_filters select, div.schedule div.form form select, div.schedule div.form form textarea {
-	font-size: 11px;
-	color: #999999;
-}
-
-div.schedule_filters select, div.schedule div.form form select {
-	height: 18px;
-	width: 130px;
-}
-
-div.schedule div.form form input {
-	color: #999999;
-}
-
-div.schedule div.form form textarea {
-	width: 230px;
-	height: 68px;
-}
-
-div.schedule_filters select:focus, div.schedule div.form form select {
-	border: 0px;
-}
-
-div.schedule div.form form div.main_area h3 {
-	border-bottom: 1px solid #000000;
-	margin-top: 0px;
-	font-size: 11px;
-	padding: 4px 5px;
-	border-bottom: 1px solid #CCCCCC;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-weight: bold;
-}
-
-div.schedule div.form form div.main_area {
-    margin-top: 10px;
-    margin-left: 0px;
-    width: 267px;
-}
-
-div.schedule div.form form input, div.schedule div.form form textarea {
-    font-size: 12px !important;
-}
-
-div.schedule div.form form input {
-    height: 15px;
-    padding: 0px !important;
-}
-
-div.schedule div.form form input.submit {
-    border: 1px solid #888888;
-    width: 70px;
-    height: 20px;
-}
-
-div.schedule div.form form .small {
-    width: 55px;
-}
-
-div.schedule div.form form input.medium, div.schedule div.form form select.medium {
-    width: 80px;
-}
-
-div.schedule div.form form fieldset {
-    margin: 0px;
-    border: 0px;
-    padding: 0 0 10px 0;
-}
-
-div.schedule div.form form select, div.schedule div.form form input {
-    width: 245px;
-}
-
-div.schedule div.form form fieldset label {
-    margin: 5px 0 0 8px;
-}
-
-table.zebra tr th {
-	display: none;
-}
 
 /**
  django forms 

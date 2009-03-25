@@ -1,0 +1,9 @@
+{% block title %}All Events{% endblock %}
+{% block main_content %}
+    <h3>All Events</h3>
+    <ul>
+        {% for o in occurrences %}
+            <li><a href="{% url swingtime-event o.event.id %}">{{ o.start_time|date:"d/m/Y h:i" }}</a> {{ o.event.schedule.room }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

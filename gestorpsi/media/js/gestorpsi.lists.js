@@ -98,7 +98,7 @@ function bindList() {
 	* 
 	*/
 	
-	$("#core :not(table.zebra tr td) a:not(.notajax), div.schedule table.calendar a, div.schedule a").click(function(){
+	$("#core :not(table.zebra tr td) a:not(.notajax)").click(function(){
 		var link = $(this);
 		$('#edit_form div.admission_form').hide();
 		$("#core").load(link.attr('href'));
@@ -148,28 +148,13 @@ function bindList() {
         
         $("ul.opened_tabs li div a.close, .edit_form input#cancel_button").click(function() {
             $("ul.opened_tabs").hide();
-            $("#edit_form").hide();
-			$("#form").hide();
-            $('div#sub_menu li a[display="list"]').addClass('active');
-            $('div#list.fast_menu_content').show();
-			$('div#msg_area').hide();
+            $('div.fast_menu_content').hide();
+            $('div#sub_menu li a.fastmenu.first').addClass('active');
+            $('div.fast_menu_content:first').show();
+            $('div#msg_area').hide();
         });
 	
-	/**
-	* sidebar. cancel buttom if is a new register
-	*/
-	
-	$('#sidebar input#cancel_button').click(function() {
-	    $('div#form.fast_menu_content input:text').val('');
-	    $('div#form.fast_menu_content').hide();
-	    $('div#sub_menu ul li a').removeClass('active');
-	    $('div#sub_menu ul li a:first').addClass('active');
-	    $('div#list.fast_menu_content').show();
-		$("ul.opened_tabs").hide();
-		$("#edit_form").hide();
-		$("#form").hide();
-	});
-	
+
 	
 
 	$("table.devices td.item").unbind().click(function(){

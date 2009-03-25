@@ -107,7 +107,7 @@ GNU General Public License for more details.
 		<ul id="sub_customers" style="display:none">
 			<li><a display="list" class="active first fastmenu" href="/client/">{% trans "all" %}</a></li>
 			<li><a display="form" class="fastmenu" href="/client/">{% trans "add" %}</a></li>
-			<li><a>{% trans "search" %}</a></li>
+			<li><a display="search" class="fastmenu" href="/client/">{% trans "search" %}</a></li>
 			<li><a>{% trans "booked" %}</a></li>
 			<li><a>{% trans "actives" %}</a></li>
 			<li><a>{% trans "waiting" %}</a></li>
@@ -115,11 +115,8 @@ GNU General Public License for more details.
 
          <!-- schedule -->
 		<ul id="sub_schedule" style="display:none">
-			<li><a display="daily" class="first active" href="{% url swingtime-today %}">{% trans "daily" %}</a></li>
-			<!-- <li><a display="week" class="fastmenu" href="/schedule/">{% trans "week" %}</a></li> -->
-			<li><a display="monthly" href="{% url swingtime-monthly-view current_datetime.year current_datetime.month %}">{% trans "monthly" %}</a></li>
-			<li><a display="yearly" href="{% url swingtime-yearly-view current_datetime.year %}">{% trans "yearly" %}</a></li>
-			<li><a display="event" href="{% url swingtime-events %}">{% trans "events" %}</a></li>
+			<li><a display="daily" class="first active fastmenu" href="/schedule/">{% trans "daily" %}</a></li>
+			<li><a display="events" class="fastmenu" href="/schedule/">{% trans "events" %}</a></li>
         </ul>
 
         <!-- address book -->

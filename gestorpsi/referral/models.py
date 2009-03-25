@@ -14,19 +14,41 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from dateutil import rrule
 from django.db import models
+from swingtime.models import Event, EventType
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.util.uuid_field import UuidField
+from gestorpsi.schedule.models import ScheduleOccurrence
 
-class Referral(models.Model):
-    id = UuidField(primary_key=True)
-    client = models.ForeignKey(Client)
-    professional = models.ForeignKey(CareProfessional, null=True)
+class Referral(Event):
+    #id = UuidField(primary_key=True)
+    client = models.ManyToManyField(Client)
+    professional = models.ManyToManyField(CareProfessional, null=True)
     service = models.ForeignKey(Service, null=True)
-    creation_datetime = models.DateTimeField(auto_now_add=True)
-    user = models.CharField(max_length=10, blank=True)
+
+    def __init__(self, *args, **kwargs):
+        super(Referral, self).__init__(*args, **kwargs)
+        try: self.event_type = EventType.objects.all()[0]
+        except: self.event_type = EventType.objects.create(abbr='')
+
+    def add_occurrences(self, start_time, end_time, room, **rrule_params):
+        rrule_params.setdefault('freq', rrule.DAILY)
+
+        if 'count' not in rrule_params and 'until' not in rrule_params:
+            ScheduleOccurrence.objects.create(event=self, start_time=start_time, end_time=end_time, room_id=room)
+        else:
+            delta = end_time - start_time
+            for ev in rrule.rrule(dtstart=start_time, **rrule_params):
+                ScheduleOccurrence.objects.create(event=self, start_time=ev, end_time=ev + delta, room_id=room)
+                
+    class Meta:
+        ordering = ('title', )
+
+    def __unicode__(self):
+        return u'%s' % self.title
 
     def __unicode__(self):
         return u"\nClient: %s\nProfessional: %s\nService: %s" % (self.client, self.professional, self.service)

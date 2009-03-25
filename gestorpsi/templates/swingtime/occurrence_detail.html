@@ -5,11 +5,13 @@
      <h4>
          <a href="{{ occurrence.event.get_absolute_url }}">{{ occurrence.title }}</a>
          &ndash;
+         {% comment %}
          {% with occurrence.start_time as st  %}
          <a href="{% url swingtime-daily-view st.year st.month st.day %}">
             {{ st|date:"l, F jS P" }}</a>
         </h4>
         {% endwith %}
+        {% endcomment %}
      <dl>
          <dt>Event type:</dt>
          <dd>{{ occurrence.event.event_type }}</dd>

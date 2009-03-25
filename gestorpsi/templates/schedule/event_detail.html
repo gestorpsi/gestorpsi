@@ -1,22 +1,10 @@
-{% extends "schedule/schedule_index.html" %}
-
 {% block title %}Event: {{ event }}{% endblock %}
 {% block main_content %}
     <h3>Swingtime Event</h3>
     <h4>Event Details</h4>
     <form action="" method="post">
-    <table>
-        <tfoot>
-            <tr>
-                <td colspan="2">
-                    <input type="submit" name="_update" value="Update" />
-                </td>
-            </tr>
-        </tfoot>
-        <tbody>asd
-        {% include "swingtime/event_form_part.html" %}
-        </tbody>
-    </table>
+    {{ event_form }}
+    <input type="submit" name="_update" value="Update" />
     </form>
     
     <h4>Notes</h4>
@@ -55,7 +43,7 @@
             </tr>
         </tfoot>
         <tbody>
-        {% include "swingtime/recurring_form_part.html" %}
+        {% include "schedule/recurring_form_part.html" %}
         </tbody>
     </table>
     </form>

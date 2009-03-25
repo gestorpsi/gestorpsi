@@ -182,7 +182,15 @@ var form_organization_options = {
      }
 };
 
+var form_schedule_options = {
+     success: function(response, request, form) {
+          formSuccess();
+      },
 
+     error: function() {
+          formError();
+     }
+};
 
 /**
  * mini forms to quick add options

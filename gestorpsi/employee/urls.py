@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.client.views import index, form, save, delete
+from gestorpsi.employee.views import index, form, save, delete
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',

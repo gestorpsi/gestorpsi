@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-03 12:29-0300\n"
+"POT-Creation-Date: 2009-03-25 17:10-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,49 +24,55 @@ msgstr "Português Brasileiro"
 msgid "English"
 msgstr "Inglês"
 
-#: authentication/forms.py:28 templates/tags/email.html:21
+#: authentication/forms.py:29 templates/tags/email.html:21
 msgid "Email"
 msgstr "E-mail"
 
-#: authentication/forms.py:28
+#: authentication/forms.py:29
 #, fuzzy
 msgid "Your email address"
 msgstr "Endereço de e-mail"
 
-#: authentication/forms.py:29
+#: authentication/forms.py:30
 msgid "Password"
 msgstr "Senha"
 
-#: authentication/forms.py:29
+#: authentication/forms.py:30
 msgid "Choice one password"
 msgstr ""
 
-#: authentication/forms.py:30
+#: authentication/forms.py:31
 #, fuzzy
 msgid "Password (again)"
 msgstr "Senha"
 
-#: authentication/forms.py:30
+#: authentication/forms.py:31
 msgid "Type password again"
 msgstr ""
 
-#: authentication/forms.py:31
+#: authentication/forms.py:32
 msgid "Username"
 msgstr "Nome de Usuário"
 
-#: authentication/forms.py:31
+#: authentication/forms.py:32
 msgid "Choice one unique identifier"
 msgstr ""
 
-#: authentication/forms.py:32 templates/contact/contact_form.html:37
+#: authentication/forms.py:33 templates/contact/contact_form.html:37
 #, fuzzy
 msgid "Organization"
 msgstr "Estabelecimento"
 
-#: authentication/forms.py:32
+#: authentication/forms.py:33
 #, fuzzy
 msgid "Name of your organization"
 msgstr "Meu Estabelecimento"
+
+#: schedule/views.py:193 templates/client/client_list.html:29
+#: templates/client/client_search.html:29
+#: templates/contact/contact_list.html:31
+msgid "of"
+msgstr "de"
 
 #: templates/404.html:3
 msgid "Page not found"
@@ -141,7 +147,7 @@ msgstr "Selecione Estabelecimento ou"
 #: templates/admission/admission_form.html:101
 #: templates/admission/admission_form.html:110
 #: templates/admission/admission_form.html:135
-#: templates/contact/contact_form.html:44 templates/device/device_form.html:42
+#: templates/contact/contact_form.html:44 templates/device/device_form.html:41
 #: templates/tags/address_book_professional_mini.html:24
 #, fuzzy
 msgid "add a new one"
@@ -184,33 +190,33 @@ msgstr "Por favor, selecione um profissional da lista abaixo ou"
 msgid "Admission reason"
 msgstr "Razão da Admissão"
 
-#: templates/admission/admission_form.html:162
+#: templates/admission/admission_form.html:163
 msgid "Files"
 msgstr "Arquivos"
 
-#: templates/admission/admission_form.html:246
-#: templates/device/device_form.html:69
-#: templates/organization/organization_form.html:200
+#: templates/admission/admission_form.html:249
+#: templates/device/device_form.html:68
 #: templates/organization/organization_form.html:201
+#: templates/organization/organization_form.html:202
 #: templates/referral/referral_form.html:70
 msgid "Comments"
 msgstr "Comentários"
 
-#: templates/admission/admission_form.html:260
-#: templates/client/client_form.html:57 templates/place/place_form.html:101
+#: templates/admission/admission_form.html:263
+#: templates/client/client_form.html:58 templates/place/place_form.html:101
 #: templates/referral/referral_form.html:83
 msgid "Object Actions"
 msgstr "Ações"
 
-#: templates/admission/admission_form.html:262
+#: templates/admission/admission_form.html:265
 #: templates/referral/referral_form.html:85
 #, fuzzy
 msgid "Client Details"
 msgstr "Detalhes do Cliente"
 
-#: templates/admission/admission_form.html:263
+#: templates/admission/admission_form.html:266
 msgid "Referral Client"
-msgstr "Cliente encaminhado"
+msgstr "Encaminhar Cliente"
 
 #: templates/careprofessional/careprofessional_form.html:26
 msgid "Adding New Profesional"
@@ -237,7 +243,7 @@ msgid "Licence"
 msgstr "Licença"
 
 #: templates/careprofessional/careprofessional_form.html:65
-#: templates/organization/organization_form.html:51
+#: templates/organization/organization_form.html:52
 #: templates/tags/careprofessional_mini.html:40
 msgid "Register Number"
 msgstr "Número de Registro"
@@ -304,101 +310,98 @@ msgstr "Sim"
 msgid "No"
 msgstr "Não"
 
-#: templates/careprofessional/careprofessional_list.html:20
-#: templates/client/client_list.html:21 templates/contact/contact_list.html:21
-#: templates/device/device_list.html:20
-#: templates/employee/employee_list.html:20 templates/place/place_list.html:20
+#: templates/careprofessional/careprofessional_list.html:21
+#: templates/client/client_list.html:21 templates/client/client_search.html:21
+#: templates/contact/contact_list.html:21 templates/device/device_list.html:21
+#: templates/employee/employee_list.html:20 templates/place/place_list.html:21
 #: templates/service/service_list.html:20
 msgid "There is no registers available."
 msgstr "Não existem registros disponíveis"
 
-#: templates/careprofessional/careprofessional_list.html:20
-#: templates/client/client_list.html:21 templates/contact/contact_list.html:21
-#: templates/device/device_list.html:20
-#: templates/employee/employee_list.html:20 templates/place/place_list.html:20
+#: templates/careprofessional/careprofessional_list.html:21
+#: templates/client/client_list.html:21 templates/client/client_search.html:21
+#: templates/contact/contact_list.html:21 templates/device/device_list.html:21
+#: templates/employee/employee_list.html:20 templates/place/place_list.html:21
 #: templates/service/service_list.html:20
 msgid "Click"
 msgstr "Clique"
 
-#: templates/careprofessional/careprofessional_list.html:20
-#: templates/client/client_list.html:21 templates/contact/contact_list.html:21
-#: templates/device/device_list.html:20
-#: templates/employee/employee_list.html:20 templates/place/place_list.html:20
+#: templates/careprofessional/careprofessional_list.html:21
+#: templates/client/client_list.html:21 templates/client/client_search.html:21
+#: templates/contact/contact_list.html:21 templates/device/device_list.html:21
+#: templates/employee/employee_list.html:20 templates/place/place_list.html:21
 #: templates/service/service_list.html:20
 msgid "here"
 msgstr "aqui"
 
-#: templates/careprofessional/careprofessional_list.html:20
-#: templates/client/client_list.html:21 templates/contact/contact_list.html:21
-#: templates/device/device_list.html:20
-#: templates/employee/employee_list.html:20 templates/place/place_list.html:20
+#: templates/careprofessional/careprofessional_list.html:21
+#: templates/client/client_list.html:21 templates/client/client_search.html:21
+#: templates/contact/contact_list.html:21 templates/device/device_list.html:21
+#: templates/employee/employee_list.html:20 templates/place/place_list.html:21
 #: templates/service/service_list.html:20
 msgid "if you want to add a new one."
 msgstr "para adicionar um novo"
 
-#: templates/careprofessional/careprofessional_list.html:31
+#: templates/careprofessional/careprofessional_list.html:32
 #: templates/referral/referral_form.html:61
 msgid "All Professionals"
 msgstr "Todos os Profissionais"
 
-#: templates/careprofessional/careprofessional_list.html:32
-#: templates/client/client_list.html:29 templates/contact/contact_list.html:31
-#: templates/device/device_list.html:29
-#: templates/employee/employee_list.html:32 templates/place/place_list.html:29
+#: templates/careprofessional/careprofessional_list.html:33
+#: templates/client/client_list.html:29 templates/client/client_search.html:29
+#: templates/contact/contact_list.html:31 templates/device/device_list.html:30
+#: templates/employee/employee_list.html:32 templates/place/place_list.html:30
 #: templates/service/service_list.html:29
 msgid "Displaying"
 msgstr "Mostrar"
 
-#: templates/careprofessional/careprofessional_list.html:32
+#: templates/careprofessional/careprofessional_list.html:33
 msgid "professional(s)"
 msgstr "profissional(is)"
 
-#: templates/client/client_form.html:26
+#: templates/client/client_form.html:27
 msgid "Adding New Client"
 msgstr "Adicionar novo cliente"
 
-#: templates/client/client_form.html:27 templates/contact/contact_form.html:22
+#: templates/client/client_form.html:28 templates/contact/contact_form.html:22
 msgid "Inform the client details then click on Save button"
 msgstr "Informe os detalhes do cliente e clique em salvar"
 
-#: templates/client/client_form.html:39 templates/client/client_form.html:41
+#: templates/client/client_form.html:40 templates/client/client_form.html:42
 msgid "Demographic"
 msgstr "Demográficos"
 
-#: templates/client/client_form.html:42
+#: templates/client/client_form.html:43
 msgid "Socio-Demographic"
 msgstr "Sócio-demográfico"
 
-#: templates/client/client_form.html:43
+#: templates/client/client_form.html:44
 msgid "Socio-Economic"
 msgstr "Socioeconômico"
 
-#: templates/client/client_form.html:59
+#: templates/client/client_form.html:60
 #, fuzzy
 msgid "Admit Client"
 msgstr "Admitir cliente"
 
-#: templates/client/client_form.html:60
+#: templates/client/client_form.html:61
 #, fuzzy
 msgid "Print Record"
 msgstr "Registro Identificador"
 
-#: templates/client/client_list.html:28
+#: templates/client/client_list.html:28 templates/client/client_search.html:28
 msgid "All Customers"
 msgstr "Todos os Clientes"
 
-#: templates/client/client_list.html:29
+#: templates/client/client_list.html:29 templates/client/client_search.html:29
 msgid "customer(s)"
 msgstr "Cliente(s)"
 
-#: templates/client/client_list.html:29 templates/contact/contact_list.html:31
+#: templates/client/client_list.html:29 templates/client/client_search.html:29
+#: templates/contact/contact_list.html:31
 #, fuzzy
 msgid "Page"
 msgstr "Locais"
-
-#: templates/client/client_list.html:29 templates/contact/contact_list.html:31
-msgid "of"
-msgstr "de"
 
 #: templates/client/client_list.html:104
 #, fuzzy
@@ -406,11 +409,13 @@ msgid "Admission"
 msgstr "Admissão"
 
 #: templates/client/client_list.html:110
+#: templates/client/client_search.html:82
 #: templates/contact/contact_list.html:58
 msgid "Previous"
 msgstr "Anterior"
 
 #: templates/client/client_list.html:112
+#: templates/client/client_search.html:84
 #: templates/contact/contact_list.html:60
 msgid "Next"
 msgstr "Próximo"
@@ -425,8 +430,8 @@ msgstr "Adicionar novo contato"
 msgid "Contact Type"
 msgstr "Tipo de contato"
 
-#: templates/contact/contact_form.html:34 templates/device/device_form.html:93
-#: templates/device/device_form.html:107 templates/device/device_form.html:128
+#: templates/contact/contact_form.html:34 templates/device/device_form.html:92
+#: templates/device/device_form.html:106 templates/device/device_form.html:127
 #: templates/service/service_form.html:75 templates/tags/address.html:74
 #: templates/tags/document.html:22 templates/tags/email.html:25
 #: templates/tags/phone.html:34 templates/tags/room.html:31
@@ -515,7 +520,7 @@ msgstr "Estabelecimento"
 
 #: templates/core/main.html:93
 msgid "My Organization"
-msgstr "Meu Estabelecimento"
+msgstr "Configurações"
 
 #: templates/core/main.html:94
 msgid "Places"
@@ -525,7 +530,7 @@ msgstr "Locais"
 msgid "Employees"
 msgstr "Funcionários"
 
-#: templates/core/main.html:96
+#: templates/core/main.html:96 templates/schedule/schedule_form.html:35
 msgid "Professionals"
 msgstr "Profissionais"
 
@@ -533,24 +538,24 @@ msgstr "Profissionais"
 msgid "Equipments"
 msgstr "Equipamentos"
 
-#: templates/core/main.html:108 templates/core/main.html.py:127
-#: templates/core/main.html:143 templates/core/main.html.py:150
-#: templates/core/main.html:157 templates/core/main.html.py:164
-#: templates/core/main.html:171
+#: templates/core/main.html:108 templates/core/main.html.py:124
+#: templates/core/main.html:140 templates/core/main.html.py:147
+#: templates/core/main.html:154 templates/core/main.html.py:161
+#: templates/core/main.html:168
 msgid "all"
 msgstr "Todos"
 
-#: templates/core/main.html:109 templates/core/main.html.py:128
-#: templates/core/main.html:144 templates/core/main.html.py:151
-#: templates/core/main.html:158 templates/core/main.html.py:165
-#: templates/core/main.html:172
+#: templates/core/main.html:109 templates/core/main.html.py:125
+#: templates/core/main.html:141 templates/core/main.html.py:148
+#: templates/core/main.html:155 templates/core/main.html.py:162
+#: templates/core/main.html:169
 msgid "add"
 msgstr "Adicionar"
 
-#: templates/core/main.html:110 templates/core/main.html.py:129
-#: templates/core/main.html:145 templates/core/main.html.py:152
-#: templates/core/main.html:159 templates/core/main.html.py:166
-#: templates/core/main.html:173
+#: templates/core/main.html:110 templates/core/main.html.py:126
+#: templates/core/main.html:142 templates/core/main.html.py:149
+#: templates/core/main.html:156 templates/core/main.html.py:163
+#: templates/core/main.html:171
 msgid "search"
 msgstr "Busca"
 
@@ -569,151 +574,145 @@ msgstr "Esperando"
 #: templates/core/main.html:118
 #, fuzzy
 msgid "daily"
-msgstr "Diariamente"
+msgstr "Diária"
 
 #: templates/core/main.html:119
-msgid "week"
-msgstr "Semanalmente"
-
-#: templates/core/main.html:120
-msgid "monthly"
-msgstr "Mensalmente"
-
-#: templates/core/main.html:121
-msgid "yearly"
-msgstr "Anualmente"
-
-#: templates/core/main.html:122
 #, fuzzy
 msgid "events"
 msgstr "Eventos"
 
-#: templates/core/main.html:134
+#: templates/core/main.html:131
 #, fuzzy
 msgid "Identity"
 msgstr "Identificação"
 
-#: templates/core/main.html:135
+#: templates/core/main.html:132
 #, fuzzy
 msgid "Profile"
 msgstr "Perfil"
 
-#: templates/core/main.html:136
+#: templates/core/main.html:133
 #, fuzzy
 msgid "Address"
 msgstr "Endereços"
 
-#: templates/core/main.html:137 templates/meta/addressbook.html:41
-#: templates/organization/organization_form.html:152
+#: templates/core/main.html:134 templates/meta/addressbook.html:41
+#: templates/organization/organization_form.html:153
 msgid "Phones"
 msgstr "Telefones"
 
-#: templates/core/main.html:138
+#: templates/core/main.html:135
 msgid "Internet"
 msgstr "Internet"
 
-#: templates/core/main.html:200
+#: templates/core/main.html:170
+#, fuzzy
+msgid "type"
+msgstr "Tipo"
+
+#: templates/core/main.html:198
 msgid "Loading"
 msgstr "Carregando"
 
-#: templates/device/device_form.html:26
+#: templates/device/device_form.html:25
 msgid "Adding Equipments"
 msgstr "Adicionar equipamento"
 
-#: templates/device/device_form.html:27
+#: templates/device/device_form.html:26
 msgid "Inform the equipment details then click on Save button"
 msgstr "Informe os detalhes do equipamento e clique em salvar"
 
-#: templates/device/device_form.html:40
+#: templates/device/device_form.html:39
 #, fuzzy
 msgid "Devices"
 msgstr "Dispositivo"
 
-#: templates/device/device_form.html:42
+#: templates/device/device_form.html:41
 #, fuzzy
 msgid "Select Device Type or"
 msgstr "Selecione o tipo de Dispositivo ou"
 
-#: templates/device/device_form.html:55
+#: templates/device/device_form.html:54
 msgid "Adding equipment details"
 msgstr "Adicionar detalhes do equipamento"
 
-#: templates/device/device_form.html:57
+#: templates/device/device_form.html:56
 msgid "Brand"
 msgstr "Marca"
 
-#: templates/device/device_form.html:61
+#: templates/device/device_form.html:60
 msgid "Model"
 msgstr "Modelo"
 
-#: templates/device/device_form.html:65
+#: templates/device/device_form.html:64
 msgid "Part number"
 msgstr "Número de série"
 
-#: templates/device/device_form.html:80
+#: templates/device/device_form.html:79
 #, fuzzy
 msgid "Lendable Status"
 msgstr "Status do equipamento"
 
-#: templates/device/device_form.html:82
+#: templates/device/device_form.html:81
 msgid "Lendable?"
 msgstr "Emprestável?"
 
-#: templates/device/device_form.html:92
+#: templates/device/device_form.html:91
 #, fuzzy
 msgid "Durability"
 msgstr "Durabilidade"
 
-#: templates/device/device_form.html:106
+#: templates/device/device_form.html:105
 #, fuzzy
 msgid "Restriction"
 msgstr "Restrição"
 
-#: templates/device/device_form.html:115
+#: templates/device/device_form.html:114
 #, fuzzy
 msgid "Profissional Area"
 msgstr "Área do Profissional"
 
-#: templates/device/device_form.html:127
+#: templates/device/device_form.html:126
 msgid "Mobility"
 msgstr "Mobilidade"
 
-#: templates/device/device_form.html:136
+#: templates/device/device_form.html:135
 #, fuzzy
 msgid "Place"
 msgstr "Locais"
 
-#: templates/device/device_form.html:144
+#: templates/device/device_form.html:143
+#: templates/schedule/schedule_form.html:52
 #, fuzzy
 msgid "Room"
 msgstr "Salas"
 
-#: templates/device/device_list.html:28
+#: templates/device/device_list.html:29
 msgid "All Devices"
 msgstr "Todos os Dispositivos"
 
-#: templates/device/device_list.html:29
+#: templates/device/device_list.html:30
 msgid "device(s)"
 msgstr "Dispositivo(s)"
 
-#: templates/employee/employee_form.html:27
+#: templates/employee/employee_form.html:26
 msgid "Adding New Employee"
 msgstr "Adicionar Novo Funcionário"
 
-#: templates/employee/employee_form.html:28
+#: templates/employee/employee_form.html:27
 msgid "Inform the employee details then click on Save button"
 msgstr "Informe os detalhes do funcionário e clique em salvar"
 
-#: templates/employee/employee_form.html:51
+#: templates/employee/employee_form.html:50
 #: templates/meta/people_indentification.html:36
 msgid "Personal Identification"
 msgstr "Identificação Pessoal"
 
-#: templates/employee/employee_form.html:52
+#: templates/employee/employee_form.html:51
 msgid "Job"
 msgstr "Função"
 
-#: templates/employee/employee_form.html:55
+#: templates/employee/employee_form.html:54
 msgid "Hiredate"
 msgstr "Data da Contratação"
 
@@ -726,47 +725,47 @@ msgid "employees(s)"
 msgstr "Funcionários"
 
 #: templates/meta/addressbook.html:24
-#: templates/organization/organization_form.html:140
+#: templates/organization/organization_form.html:141
 msgid "Addresses"
 msgstr "Endereços"
 
 #: templates/meta/addressbook.html:32
-#: templates/organization/organization_form.html:148
+#: templates/organization/organization_form.html:149
 msgid "Add Address"
 msgstr "Adicionar Endereço"
 
 #: templates/meta/addressbook.html:49
-#: templates/organization/organization_form.html:160
+#: templates/organization/organization_form.html:161
 msgid "Add Phone"
 msgstr "Adicionar Telefone"
 
 #: templates/meta/internet.html:24
-#: templates/organization/organization_form.html:164
+#: templates/organization/organization_form.html:165
 msgid "Emails"
 msgstr "e-mails"
 
 #: templates/meta/internet.html:32
-#: templates/organization/organization_form.html:172
+#: templates/organization/organization_form.html:173
 msgid "Add Email"
 msgstr "Adicionar e-mail"
 
 #: templates/meta/internet.html:43
-#: templates/organization/organization_form.html:188 templates/tags/im.html:21
+#: templates/organization/organization_form.html:189 templates/tags/im.html:21
 msgid "Instant Messengers"
 msgstr "Mensagens Instantâneas"
 
 #: templates/meta/internet.html:51
-#: templates/organization/organization_form.html:196
+#: templates/organization/organization_form.html:197
 msgid "Add IM"
 msgstr "Adicionar Mensagens Instantâneas"
 
 #: templates/meta/internet.html:60
-#: templates/organization/organization_form.html:176
+#: templates/organization/organization_form.html:177
 msgid "Websites"
 msgstr "Páginas da Internet"
 
 #: templates/meta/internet.html:68
-#: templates/organization/organization_form.html:184
+#: templates/organization/organization_form.html:185
 msgid "Add Website"
 msgstr "Adicionar Página da Internet"
 
@@ -783,7 +782,7 @@ msgid "Photo"
 msgstr "Foto"
 
 #: templates/meta/people_indentification.html:26
-#: templates/organization/organization_form.html:35
+#: templates/organization/organization_form.html:36
 #: templates/tags/address.html:85 templates/tags/document.html:59
 #: templates/tags/email.html:36 templates/tags/im.html:36
 #: templates/tags/people_parent.html:42 templates/tags/phone.html:46
@@ -838,93 +837,93 @@ msgstr "Cidade"
 msgid "State"
 msgstr "Estado"
 
-#: templates/organization/organization_form.html:24
+#: templates/organization/organization_form.html:25
 msgid "Organization Configuration"
 msgstr "Configuração de Estabelecimento"
 
-#: templates/organization/organization_form.html:33
+#: templates/organization/organization_form.html:34
 msgid "Logo"
 msgstr "Logotipo"
 
-#: templates/organization/organization_form.html:40
+#: templates/organization/organization_form.html:41
 msgid "Corporate Identity"
 msgstr "Identificação Institucional"
 
-#: templates/organization/organization_form.html:42
+#: templates/organization/organization_form.html:43
 msgid "Company"
 msgstr "Razão Social"
 
-#: templates/organization/organization_form.html:45
+#: templates/organization/organization_form.html:46
 #, fuzzy
 msgid "Trade Name"
 msgstr "Nome Fantasia"
 
-#: templates/organization/organization_form.html:50
+#: templates/organization/organization_form.html:51
 #, fuzzy
 msgid "Additional Identities"
 msgstr "Identidades Complementares"
 
-#: templates/organization/organization_form.html:54
+#: templates/organization/organization_form.html:55
 msgid "CNES Code"
 msgstr "Código CNES"
 
-#: templates/organization/organization_form.html:57
+#: templates/organization/organization_form.html:58
 #, fuzzy
 msgid "State Inscription"
 msgstr "Inscrição Estadual"
 
-#: templates/organization/organization_form.html:60
+#: templates/organization/organization_form.html:61
 #, fuzzy
 msgid "City Inscription"
 msgstr "Inscrição Municipal"
 
-#: templates/organization/organization_form.html:63
+#: templates/organization/organization_form.html:64
 msgid "Subscriptions professional Institutional"
 msgstr "Inscrição Profissional Institucional"
 
-#: templates/organization/organization_form.html:66
+#: templates/organization/organization_form.html:67
 #, fuzzy
 msgid "Professional Responsible"
 msgstr "Técnico Responsável"
 
-#: templates/organization/organization_form.html:72
+#: templates/organization/organization_form.html:73
 #, fuzzy
 msgid "Corporate Profile"
 msgstr "Perfil da Instituição"
 
-#: templates/organization/organization_form.html:74
+#: templates/organization/organization_form.html:75
 #, fuzzy
 msgid "Person Type"
 msgstr "Personalidade"
 
-#: templates/organization/organization_form.html:82
+#: templates/organization/organization_form.html:83
 #, fuzzy
 msgid "Unit Type"
 msgstr "Tipo Unidade"
 
-#: templates/organization/organization_form.html:90
+#: templates/organization/organization_form.html:91
 msgid "Administrative Environment"
 msgstr "Esfera Administrativa"
 
-#: templates/organization/organization_form.html:98
+#: templates/organization/organization_form.html:99
 msgid "Management Type"
 msgstr "Gestão"
 
-#: templates/organization/organization_form.html:106
+#: templates/organization/organization_form.html:107
 #, fuzzy
 msgid "Organization Source"
 msgstr "Natureza da organização"
 
-#: templates/organization/organization_form.html:114
+#: templates/organization/organization_form.html:115
 msgid "Dependence"
 msgstr "Dependência"
 
-#: templates/organization/organization_form.html:122
+#: templates/organization/organization_form.html:123
 #, fuzzy
 msgid "Care Provided Type"
 msgstr "Tipo de Cuidado Prestado"
 
-#: templates/organization/organization_form.html:130
+#: templates/organization/organization_form.html:131
 msgid "Education and Research Activity"
 msgstr "Atividades de Ensino e Pesquisa"
 
@@ -968,11 +967,11 @@ msgstr "Adicionar sala neste local"
 msgid "Rooms from this place"
 msgstr "Salas deste local"
 
-#: templates/place/place_list.html:28
+#: templates/place/place_list.html:29
 msgid "All Places"
 msgstr "Todos os locais"
 
-#: templates/place/place_list.html:29
+#: templates/place/place_list.html:30
 msgid "place(s)"
 msgstr "Local(is)"
 
@@ -981,6 +980,7 @@ msgid "Referral of"
 msgstr "Encaminhado de"
 
 #: templates/referral/referral_form.html:33
+#: templates/schedule/schedule_form.html:28
 #, fuzzy
 msgid "Referral Details"
 msgstr "Detalhes do Encaminhamento"
@@ -1119,6 +1119,148 @@ msgstr ""
 msgid "Already have an account?"
 msgstr "Já possui uma conta?"
 
+#: templates/schedule/schedule_daily.html:195
+#, fuzzy
+msgid "Free"
+msgstr "Feminino"
+
+#: templates/schedule/schedule_form.html:20
+#, fuzzy
+msgid "Adding New Event"
+msgstr "Adicionar novo cliente"
+
+#: templates/schedule/schedule_form.html:21
+#, fuzzy
+msgid "Inform the schedule details then click on Save button"
+msgstr "Informe os detalhes do cliente e clique em salvar"
+
+#: templates/schedule/schedule_form.html:29
+#, fuzzy
+msgid "Service"
+msgstr "Serviços"
+
+#: templates/schedule/schedule_form.html:32
+#, fuzzy
+msgid "Clients"
+msgstr "Clientes"
+
+#: templates/schedule/schedule_form.html:41
+#, fuzzy
+msgid "Schedule Details"
+msgstr "Detalhes do Cliente"
+
+#: templates/schedule/schedule_form.html:42
+#, fuzzy
+msgid "Date"
+msgstr "Estado"
+
+#: templates/schedule/schedule_form.html:46
+#, fuzzy
+msgid "Start Time"
+msgstr "Estado"
+
+#: templates/schedule/schedule_form.html:49
+#: templates/schedule/schedule_form.html:67
+msgid "End Time"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:58
+#, fuzzy
+msgid "Occurrence Details"
+msgstr "Detalhes do Cliente"
+
+#: templates/schedule/schedule_form.html:59
+msgid "Occurrence Format"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:64
+msgid "Total Occurrences"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:73
+msgid "Occurrence Frequency"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:74
+msgid "Frequency Period"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:79
+#, fuzzy
+msgid "Interval"
+msgstr "Internet"
+
+#: templates/schedule/schedule_form.html:85
+msgid "Weekly Options"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:86
+msgid "Days of the week"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:92
+msgid "Monthly options"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:93
+msgid "Repetição"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:97
+msgid "Month ordinal"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:100
+msgid "Month ordinal day"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:104
+msgid "Event repeat on these days of the month"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:113
+msgid "Yearly options"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:114
+msgid "Event repeat on these months of year"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:118
+msgid "Is year month ordinal"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:121
+msgid "Year month ordinal"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:124
+msgid "Year month ordinal day"
+msgstr ""
+
+#: templates/schedule/schedule_form.html:137 templates/tags/save.html:18
+msgid "Save"
+msgstr "Salvar"
+
+#: templates/schedule/schedule_form.html:138
+#: templates/tags/address_book_organization_mini.html:32
+#: templates/tags/address_book_professional_mini.html:41
+#: templates/tags/careprofessional_mini.html:45
+#: templates/tags/device_mini.html:28 templates/tags/organization_mini.html:30
+#: templates/tags/place_mini.html:34 templates/tags/save.html:19
+#: templates/tags/upload.html:25
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: templates/schedule/schedule_form.html:169
+#: templates/tags/address_book_organization_mini.html:31
+#: templates/tags/address_book_professional_mini.html:40
+#: templates/tags/careprofessional_mini.html:44
+#: templates/tags/device_mini.html:27 templates/tags/organization_mini.html:29
+#: templates/tags/place_mini.html:33
+msgid "Add"
+msgstr "Adicionar"
+
 #: templates/service/service_form.html:25
 msgid "Adding New Service"
 msgstr "Adicionar novo serviço"
@@ -1234,23 +1376,6 @@ msgstr "Não existem tipos disponíveis para escolha"
 msgid "Adding new Organization"
 msgstr "Adicione novo Estabelecimento"
 
-#: templates/tags/address_book_organization_mini.html:31
-#: templates/tags/address_book_professional_mini.html:40
-#: templates/tags/careprofessional_mini.html:44
-#: templates/tags/device_mini.html:27 templates/tags/organization_mini.html:29
-#: templates/tags/place_mini.html:33
-msgid "Add"
-msgstr "Adicionar"
-
-#: templates/tags/address_book_organization_mini.html:32
-#: templates/tags/address_book_professional_mini.html:41
-#: templates/tags/careprofessional_mini.html:45
-#: templates/tags/device_mini.html:28 templates/tags/organization_mini.html:30
-#: templates/tags/place_mini.html:34 templates/tags/save.html:19
-#: templates/tags/upload.html:25
-msgid "Cancel"
-msgstr "Cancelar"
-
 #: templates/tags/address_book_professional_mini.html:23
 #: templates/tags/careprofessional_mini.html:22
 #, fuzzy
@@ -1319,10 +1444,6 @@ msgstr "Dimensão"
 msgid "Furniture"
 msgstr "Mobília"
 
-#: templates/tags/save.html:18
-msgid "Save"
-msgstr "Salvar"
-
 #: templates/tags/save.html:24
 msgid "This register are not saved yet. Click Save to register it."
 msgstr "Este registro ainda não está salvo. Clique em salvar para registrar."
@@ -1366,6 +1487,15 @@ msgstr "Formatos Permitidos: JPG, PNG, GIF"
 #: templates/tags/website.html:21
 msgid "URL"
 msgstr "URL"
+
+#~ msgid "week"
+#~ msgstr "Semanal"
+
+#~ msgid "monthly"
+#~ msgstr "Mensal"
+
+#~ msgid "yearly"
+#~ msgstr "Anual"
 
 #~ msgid "Please correct the errors below"
 #~ msgstr "Por favor, corrija os erros abaixo"

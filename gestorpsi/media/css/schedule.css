@@ -1,43 +1,199 @@
-div.schedule { padding: 2em; }
-div.schedule a { text-decoration: none; color: #357; }
-div.schedule table { border-collapse: collapse; font-size: 1em; }
-div.schedule td, th { padding: 2px; border: 1px solid #ccc; }
-div.schedule th { background-color: #bba; }
-div.schedule dt { font-weight: bold; }
-div.schedule dt { font-weight: bold; }
-div.schedule dd { margin-bottom: .5em; }
-div.schedule form table { width: 100% }
-div.schedule form table ul { margin: 0; padding: 0;}
-div.schedule form table li { list-style-type: none; }
-div.schedule form table th { text-align: right; width: 10em; }
-div.schedule form tfoot td { text-align: center; background-color: #566; }
-div.schedule .form-indent { margin-left: 2.5em; }
-div.schedule .horizontal { width: 30em; }
-div.schedule .horizontal li { float: left; margin: 0; }
-div.schedule .horizontal li label { width: 4em; display: block; float: left; }
-div.schedule #recurrence-options { float: left; }
-div.schedule #recurrence-options li { margin-bottom: 4px; }
-div.schedule .calendar td,div.schedule .calendar th { min-width: 10em; width: 10em; }
-div.schedule .month-view td { vertical-align: top; height: 10em; min-height: 10em; }
-div.schedule .month-view td, .month-view th { min-width: 10em; width: 10em; }
-div.schedule .month-view .day-ordinal { font-weight: bold; font-size: 1.1em; text-align: right; }
-div.schedule .month-view ul { list-style: none; margin: 1px 2px; padding: 0; }
-div.schedule .month-view .today { background-color: #eed; }
-div.schedule .month-divider th, .month-divider td { border-top: 3px double #888; }
-div.schedule #belts { list-style-type: none; }
-div.schedule #belts a { text-align: center; display: block; padding: 4px; width: 70%;
-        border: 1px solid #ccc; margin-bottom: .5em; font-weight: bold; }
-div.schedule #belts a:hover { font-style: italic; }
-div.schedule #white-belt { background-color: #fff; color: #322; }
-div.schedule #yellow-belt { background-color: #fd0; color: #322; }
-div.schedule #green-belt { background-color: #693; color: #fff; }
-div.schedule #brown-belt { background-color: #655; color: #fff; }
-div.schedule #black-belt { background-color: #322; color: #fff; }
-div.schedule .evt-spc-odd, div.schedule .evt-spc-even  { background-color: #3b5153; color: #fff; }
-div.schedule .evt-spc-odd a, .evt-spc-even a { color: #fff; }
-div.schedule .evt-open-even, .evt-open-odd { background-color: #ccd; }
-div.schedule .evt-adv-odd, .evt-adv-even { background-color: #cdd; }
-div.schedule .evt-bgn-even, .evt-bgn-odd { background-color: #dd8; }
-div.schedule .evt-bbc-odd, .evt-bbc-even { background-color: #aaa; }
-div.schedule .evt-prv-odd { background-color: #8a9; }
-div.schedule .evt-prv-even { background-color: #acb; }
+/**
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
+#nav_back, #nav_fwd, #nav_back:visited, #nav_fwd:visited {
+	display: inline;
+	font-size: 11px;
+	font-weight: bold;
+	color: #CCCCCC;
+    vertical-align: text-bottom;
+}
+#nav_back {
+	padding: 32px 40px 12px 8px;
+    margin-bottom: -20px;
+	background: url(../img/arrow_back.png) no-repeat 0 16px;
+}
+#nav_back.disable {background: url(../img/arrow_back_disable.png)}
+#nav_back:hover { 
+	background: url(../img/arrow_back_on.png) no-repeat 0 16px; 
+	text-decoration: none; 
+}
+#nav_fwd {
+	padding: 32px 36px 12px 6px;
+	background: url(../img/arrow_fwd.png) no-repeat 0 16px; 
+}
+#nav_fwd.disable {background: url(../img/arrow_fwd_disable.png) no-repeat;}
+#nav_fwd:hover {
+	background: url(../img/arrow_fwd_on.png) no-repeat 0 16px;
+	text-decoration: none; 
+}
+
+table.schedule_results th {
+	width: 190px;
+    padding: 2px 4px;
+    border-bottom: 2px solid #FFFFFF;
+    border-left: 1px solid #FFFFFF;
+
+}
+table.schedule_results th.schedule {
+	width: 40px;
+}
+table.schedule_results td {
+	border-left: 1px solid #FFFFFF;
+    border-bottom: 1px solid #FFFFFF;
+}
+th.schedule a {
+	color: #999999;
+	padding: 0 20px 0 0; 
+    font-size: 10px; 
+    background: url(../img/bg_options.gif) no-repeat right top; 
+    font-family: Verdana, Geneva, Kalimati, sans-serif;
+    	
+}
+td.hour {
+	font-size: 12px;
+    color: #333333;
+    text-align: right;
+    padding: 3px 12px;
+}
+.color01, .color02, .color03, .color04, .color05, .color06, .color07, .color08, .color09, .color10, .color11, .color12, .color13, .color14, .color15, .color16, .color17, .color18, .color19, .color20, .color21, .color22, .color23, .color24, .occup {
+	font-size: 10px;
+    padding: 3px;
+    vertical-align:top;
+}
+.color01 {background: #8d91d0;    color: #FFFFFF;}
+.color02 {background: #a51d1e;    color: #FFFFFF;}
+.color03 {background: #efbb2e;    color: #FFFFFF;}
+.color04 {background: #488b24;    color: #FFFFFF;}
+.color05 {background: #f44800;    color: #FFFFFF;}
+.color06 {background: #816647;    color: #FFFFFF;}
+.color07 {background: #003366;    color: #FFFFFF;}
+.color08 {background: #6600cc;    color: #FFFFFF;}
+.color09 {background: #ebebf6;    color: #8d91d0;}
+.color10 {background: #f4cece;    color: #a51d1e;}
+.color11 {background: #fdf198;    color: #aa8800;}
+.color12 {background: #d2e5cc;    color: #488b24;}
+.color13 {background: #fbedc4;    color: #f44800;}
+.color14 {background: #fdd99b;    color: #816647;}
+.color15 {background: #aaccee;    color: #003366;}
+.color16 {background: #ffb2ff;    color: #6600cc;}
+.color17 {background: #d2d2eb;    color: #000000;}
+.color18 {background: #eeb0b0;    color: #000000;}
+.color19 {background: #fdec6e;    color: #000000;}
+.color20 {background: #b4d4aa;    color: #000000;}
+.color21 {background: #f6d672;    color: #000000;}
+.color22 {background: #d9bb7a;    color: #000000;}
+.color23 {background: #6699cc;    color: #000000;}
+.color24 {background: #ff72ff;    color: #000000;}
+.occup {
+	background: #B3B3B3;
+    color: #808080;
+}
+a.book, a.book:visited, a.book:hover {
+	color: #b3b3b3;
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    text-decoration: none;
+}
+
+div.filter {
+    background: #FFFFFF;
+    padding: 5px;
+    border: 1px solid #000000;
+    position: absolute;
+    top: 21px;
+    left: 11px;
+    z-index: 10;
+    font-size: 12px;
+    font-family:Verdana, Geneva, Kalimati, sans-serif;
+}
+div.filter.room {
+	top: 65px;
+    left: 5px;
+    line-height: 20px;
+}
+div.filter.professional td, div.filter.service td {
+	vertical-align: middle;
+    white-space: nowrap;
+}
+div.filter table img {
+	vertical-align: text-bottom;
+    border: none;
+}
+div.filter a, div.filter a:visited, div.filter a:hover {
+	text-decoration: none;
+    color: #666666;
+    padding-right: 5px;
+}
+
+div.filter.professional td span {	cursor: pointer; position: relative; padding-left:5px; padding-right: 5px; line-height: 10px;}
+
+#colors {
+	position: absolute;
+    top: 17px;
+    z-index: 10;
+    background: #FFFFFF;
+    padding: 5px;
+    border: 1px solid #000000;
+}
+#colors td {
+    padding: 0;
+    height: 18px;
+}
+#calendar_link {
+    position: absolute;
+    top: 116px;
+    left: 24px;
+    display: block;
+    height: 40px;
+    width: 40px;
+}
+#calendar {
+    background: #FFFFFF;
+    padding: 5px;
+    border: 1px solid #000000;
+    position: absolute;
+    top: 153px;
+    left: 24px;
+}
+
+h2.title_schedule span a.option {
+	color: #999999;
+	padding: 0 20px 0 10px; 
+    font-size: 10px; 
+    background: url(../img/bg_options.gif) no-repeat right top; 
+    vertical-align: text-top; 
+    font-family: Verdana, Geneva, Kalimati, sans-serif;
+}
+
+div.schedule div#search_header h2 {
+    padding: 15px 0 7px 20px;
+}
+
+div.schedule table.schedule_results {
+    margin-left: 20px;
+}
+
+div.schedule h2.title_schedule {
+    margin-left: 8px;
+}
+
+div#mini_calendar {
+    position: absolute;
+    margin: 0 0 0 20px;
+}

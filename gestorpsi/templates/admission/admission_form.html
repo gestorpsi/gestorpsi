@@ -157,8 +157,9 @@ GNU General Public License for more details.
 
         </fieldset>
 
+        {% comment %}
         
-        <fieldset style="display: none">
+        <fieldset>
         <legend>{% trans "Files" %}</legend>
         <div class="label">Documentos <a href="" class="clips">Anexar documento</a>	
         <div id="documents">
@@ -241,14 +242,16 @@ GNU General Public License for more details.
         </div>
         </div>
         </fieldset>
-                        
+        
+        {% endcomment %}
+        
         <fieldset>
         <label>{% trans "Comments" %}<br />
         <textarea name="comments" cols="" rows="8" class="giant">{{ object.comments }}</textarea></label>
 
         
         <div class="btn_right">
-                <input name="" type="button" class="btn" value="Concluir Admissão" />
+                <input name="" type="submit" class="btn" value="Concluir Admissão" />
         </div>
         </fieldset>
 </div>

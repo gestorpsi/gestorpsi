@@ -168,8 +168,7 @@ PASSWORD_RETIRES = 3
 
 PAGE_RESULTS = 8
 
-WINGTIME_SETTINGS_MODULE = 'gestorpsi.schedule.settings'
-
+SWINGTIME_SETTINGS_MODULE = 'gestorpsi.schedule.settings'
 
 # registration
 ACCOUNT_ACTIVATION_DAYS=7

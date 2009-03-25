@@ -15,6 +15,7 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
+{% include "core/ajax_page_list.html" %}
 
 <div class="no_registers_available"{% if object %} style="display:none"{% endif %}>
         <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a display="form" class="fastmenu notajax" sub_menu="sub_careprofessional" href="/careprofessional/">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>

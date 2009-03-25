@@ -37,9 +37,11 @@ img.ui-datepicker-trigger {
 	background: #E0F4D7;
 	color: #000;
 }
+/*
 *html .ui-datepicker-prompt {
 	width: 185px;
 }
+*/
 .ui-datepicker-control, .ui-datepicker-links, .ui-datepicker-header, .ui-datepicker {
 	clear: both;
 	float: left;
@@ -211,7 +213,9 @@ font-size: 12px;
 	display/**/: block;
 	position: absolute;
 	z-index: -1;
+/*
 	filter: mask();
+*/
 	top: -4px;
 	left: -4px;
 	width: 193px;

@@ -375,7 +375,20 @@ function bindFormActions() {
           });
      });
      
-
+    /**
+	* sidebar. cancel buttom if is a new register
+	*/
+	
+	$('#sidebar input#cancel_button').click(function() {
+	    $('div#form.fast_menu_content input:text').val('');
+	    $('div#form.fast_menu_content').hide();
+	    $('div#sub_menu ul li a').removeClass('active');
+	    $('div#sub_menu ul li a:first').addClass('active');
+	    $('div#list.fast_menu_content').show();
+		$("ul.opened_tabs").hide();
+		$("#edit_form").hide();
+		$("#form").hide();
+	});
 
      $('select.toggle_parent_label').change(function() {
          var select = $(this);
@@ -388,30 +401,26 @@ function bindFormActions() {
                  }
              }
          });
-     })
+     });
 
      bindAutoCompleteForm();
-     
+   
 }
 
+function bindFormMisc() {
 
-/**
- * select itens from an available list options (used in Services)
- * copy itens from an select multiple box to first prev sibling
- */
+    /**
+    * bind select itensselected
+    * select itens from an available list options (used in Services)
+    * copy itens from an select multiple box to first prev sibling
+    */
 
-// available -> selected
-function bind_select_itens_available() {
-     $('select.itens_available option').unbind().click(function() {
+    $('select.itens_available option').unbind().click(function() {
           $(this).parents('fieldset').children('label').children('select.itens_selected').append('<option value="'+$(this).attr('value')+'" selected="selected">'+$(this).text()+'</option>');
           $(this).hide();
           bind_select_itens_selected();
      });
-     
-}
 
-// selected -> available
-function bind_select_itens_selected() {
      $('select.itens_selected option').unbind().click(function() {
           var select = $(this).parents('select');
           $(this).parents('fieldset').children('label').children('select.itens_available').children('option[value='+$(this).attr('value')+']').show();
@@ -420,11 +429,6 @@ function bind_select_itens_selected() {
           // select itens again
           $(select).children('option').attr('selected','selected');
      });
-
-}
-
-
-function bindFormMisc() {
 
      /**
      * sidebar. floating box
@@ -543,7 +547,17 @@ function bindFormMisc() {
         }
      });
 
-
+    /**
+     * hide and show weekly, monthly and yearly extra option in schedule form
+     */
+    
+    $('form.schedule div.switch input[type=radio]').click(function() {
+        var div = $(this).parents('label').parents('div');
+        var tag_to_toogle = $(div).attr('tag');
+        var elements_to_show = tag_to_toogle + '.' +$(div).attr('clean')+'_'+$(this).val();
+        $(tag_to_toogle + '.' +$(div).attr('clean')).hide();
+        $(elements_to_show).show();
+    });
 
      /**
       * select multiple plugin

@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
+{% comment %}
 
-"""
 Copyright (C) 2008 GestorPsi
 
 This program is free software; you can redistribute it and/or
@@ -12,17 +11,14 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-"""
 
-from django.db import models
-from swingtime.models import Event, EventType, Occurrence
-from gestorpsi.service.models import Service
-from gestorpsi.careprofessional.models import CareProfessional
-from gestorpsi.client.models import Client
-from gestorpsi.place.models import Place, Room
+{% endcomment %}
 
-
-class ScheduleOccurrence(Occurrence):
-    room = models.ForeignKey(Room, null=True, blank=True)
-
+<script type="text/javascript">
+    bindDelete();
+    bindFieldMask();
+    bindAjaxForms();
+    bindFormActions();
+    bindFormMisc();
+</script>
 

@@ -14,5 +14,15 @@ GNU General Public License for more details.
 
 {% endcomment %}
 
-<script type="text/javascript" src="/media/js/gestorpsi.floating-pages.js"></script>
+<script type="text/javascript">
+$(document).unbind().ready(function(){
+	bindList();
+	bindDelete();
+	bindFieldMask();
+	bindAjaxForms();
+	bindFormActions();
+	bindFormMisc();
+	bindDates();
+});
+</script>
 

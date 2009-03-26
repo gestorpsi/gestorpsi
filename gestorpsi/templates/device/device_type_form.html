@@ -1,0 +1,55 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+{% include "core/ajax_page.html" %}
+
+
+{% if object.id %}
+	<div class="edit_form">
+	<h2 class="title_device title">{{ object.description }}</h2>
+	<p class="description"><br />	
+{% else %}
+	<h2 class="title_device title">{% trans "Adding Equipments" %}</h2>
+	<p class="description">{% trans "Inform the equipment details then click on Save button" %}</p>
+{% endif %}
+
+<form action="/device/type/{{ object.id }}/save/" method="post" class="form_type_device">
+<div class="main_area">
+ <a href="" id="help">&nbsp;</a>
+
+	<div id="device_form">
+
+		<!-- device type -->
+	
+		<fieldset id="fieldset_device">
+		<legend>{% trans "Name" %}</legend>
+			<label>{% trans "Select Device Type or" %} <a class="form_mini" display="device_mini">{% trans "add a new one" %}</a><br />
+			  <input class="big tabtitle" type="text" value="{{ object.description }}" id="label" name="label" >
+			</label>
+		</fieldset>	
+        </div>	
+</div>
+
+<div id="sidebar" class="sidebar">
+	<div class="bg_blue">
+		<input type="hidden" name="place" value="{{ device_details.id }}" />
+		{% include "tags/save.html" %}
+	</div>
+</div>
+</form>
+
+{% include "tags/device_mini.html" %}

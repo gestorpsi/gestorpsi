@@ -1,0 +1,52 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<div class="no_registers_available"{% if object %} style="display:none"{% endif %}>
+        <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/device/" class="fastmenu notajax" sub_menu="sub_devices" display="form">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
+</div>
+<div class="registers_available"{% if not object %} style="display:none"{% endif %}>
+
+        <div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
+        Esta caixa é mostrada quando há mensagens
+        </div>
+        
+        <h2 class="title_device">{% trans "All types" %}</h2>
+        <p class="description">{% trans "Displaying" %} <a href="/device/type/" display="list"><span id="object_length">{{ object|length }}</span> {% trans "device(s)" %}</a>.</p>
+
+        <div class="main_area contact">
+                <table id="search_results" class="zebra newtab devices" border="0" cellspacing="0" cellpadding="0">
+                <thead> 
+                        <tr> 
+                        <th></th> 
+                        <th></th> 
+                        </tr> 
+                </thead>
+                <tbody>               
+                {% for o in object %}
+                        <tr>
+                                <td class="item" display="device_{{ o.id }}">
+				  <a href="/device/type/{{ o.id }}/" title="{{ o.description }}">{{ o.description }} </a>
+ 				</td>
+                                <td></td>
+                        </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+        </div>
+</div>
+

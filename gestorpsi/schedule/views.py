@@ -177,7 +177,8 @@ def today_occurrences(request):
 
 def daily_occurrences(request, year = 1, month = 1, day = None):
     #print request.LANGUAGE_CODE
-    locale.setlocale(locale.LC_ALL,'pt_BR.ISO-8859-1')
+    #locale.setlocale(locale.LC_ALL,'pt_BR.ISO-8859-1')
+    locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
     #locale.setlocale(locale.LC_ALL,'pt_BR')
     
     from django.utils import simplejson

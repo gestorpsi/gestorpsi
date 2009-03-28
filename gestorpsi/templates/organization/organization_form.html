@@ -76,12 +76,18 @@ GNU General Public License for more details.
 	<label>{% trans "City Inscription" %}<br />
                 <input type="text" value="{{ object.city_inscription }}" name="city_inscription" class="medium" />
         </label>
-	<label>{% trans "Subscriptions professional Institutional" %}<br />
-                <input type="text" value="{{ object.subscriptions_professional_institutional }}" name="subscriptions_professional_institutional" class="medium" />
-        </label>
-	<label>{% trans "Professional Responsible" %}<br />
-                <input type="text" value="{{ object.professional_responsible }}" name="professional_responsible" class="medium" />
-        </label>
+</fieldset>
+
+<fieldset class="professional organization">
+	<legend>{% trans "Professional Responsible" %}</legend>
+	{% if not professional_responsible %}
+        {% include "tags/professional.html" %}
+	{% else %}
+        {% for professional in professional_responsible %}
+	        {% include "tags/professional.html" %}
+        {% endfor %}
+	{% endif %}
+	<a class="add_to_form"><span>{% trans "Add Professional" %}</span></a>
 </fieldset>
 
 <fieldset class="profile organization comment">

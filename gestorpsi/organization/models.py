@@ -21,6 +21,21 @@ from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Address
 from gestorpsi.util.uuid_field import UuidField
 
+class ProfessionalResponsible(models.Model):
+    """    
+    This class represents the professional and Subscription of the Organization
+    @author: Tiago de Souza Moraes
+    @version: 1.0 
+    """
+    name = models.CharField(max_length=50)
+    subscription = models.CharField(max_length=50)
+    org = models.ForeignKey('Organization', null=True, blank=True)
+
+    def __unicode__(self):
+        return u"%s" % self.name
+    def __unicode__(self):
+        return u"%s" % self.subscription
+
 class PersonType(models.Model):
     """
     This class represents a person type for organization profile. The person type can be (physical or juridical)  
@@ -117,8 +132,9 @@ class Organization(models.Model):
     cnes = models.CharField(max_length=100, blank=True)
     state_inscription = models.CharField(max_length=30, blank=True)
     city_inscription = models.CharField(max_length=30, blank=True)
-    subscriptions_professional_institutional = models.CharField(max_length=100, blank=True)
-    professional_responsible = models.CharField(max_length=100, blank=True) 
+    professionalResponsible = models.ForeignKey(ProfessionalResponsible, null=True, blank=True)
+            # subscriptions_professional_institutional = models.CharField(max_length=100, blank=True)
+            # professional_responsible = models.CharField(max_length=100, blank=True) 
     
     # profile
     person_type = models.ForeignKey(PersonType, null=True, blank=True)
@@ -218,3 +234,4 @@ class Procedure(models.Model):
 
     def __unicode__(self):
         return u"code: %s, description: %s" % (self.procedure_code, self.description)
+

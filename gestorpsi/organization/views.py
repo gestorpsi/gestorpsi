@@ -17,13 +17,22 @@ GNU General Public License for more details.
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization
+from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization, ProfessionalResponsible
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.address.views import address_save
 from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
+
+def professional_responsible_save(object, ids, names, subscriptions):
+    ProfessionalResponsible.objects.all().delete()
+    for x in range(len(names)):
+        #print ids[x], names[x], subscriptions[x]
+        obj = []
+        obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], org=object))
+        if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):
+            obj.save()
 
 def form(request):
     user = request.user
@@ -49,6 +58,7 @@ def form(request):
         'Management': Management.objects.all(),
         'Dependence': Dependence.objects.all(),
         'Activitie': Activitie.objects.all(),
+        'professional_responsible': ProfessionalResponsible.objects.all(),
         },
         context_instance=RequestContext(request))
 
@@ -72,8 +82,6 @@ def save(request):
     object.cnes = request.POST['cnes']
     object.state_inscription = request.POST['state_inscription']
     object.city_inscription = request.POST['city_inscription']
-    object.subscriptions_professional_institutional = request.POST['subscriptions_professional_institutional']
-    object.professional_responsible = request.POST['professional_responsible']
     object.photo = request.POST['photo']
     #profile
     object.person_type = PersonType.objects.get(pk=request.POST['person_type'])
@@ -90,6 +98,10 @@ def save(request):
     # comment
     object.comment = request.POST['comment']
     object.save()
+   
+    professional_responsible_save(object, request.POST.getlist('professionalId'), request.POST.getlist('professional_name'), request.POST.getlist('professional_subscription'))
+            #object.subscriptions_professional_institutional = request.POST['subscriptions_professional_institutional']
+            #object.professional_responsible = request.POST['professional_responsible']
 
     phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
     email_save(object, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))

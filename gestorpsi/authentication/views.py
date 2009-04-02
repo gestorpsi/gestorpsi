@@ -80,16 +80,14 @@ def set_trylogin(user):
     filtered_user = User.objects.filter(username=user)
     if(len(filtered_user)):        
         found_user = filtered_user[0]    
-        old_number = found_user.try_login
+        old_number = found_user.get_profile().try_login
         old_number += 1
-        found_user.try_login = old_number        
+        found_user.get_profile().try_login = old_number
         found_user.save()
-        print found_user," - tentativas: ", found_user.try_login   
-       
+
 def clear_login(user):
-    user.try_login = 0
+    user.user.get_profile().try_login = 0
     user.save()
-    print user," - tentativas: ", user.try_login
     
 def change_password(user,current_password, new_password):    
     if check_password(current_password):   

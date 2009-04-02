@@ -185,6 +185,11 @@ var form_organization_options = {
 var form_schedule_options = {
      success: function(response, request, form) {
           formSuccess();
+          
+          // update list
+          var day_clicked = $(form).children('.sidebar').children('.bg_blue').children('.day_clicked').val();
+          updateGrid('/schedule/occurrences/' + day_clicked);
+          
       },
 
      error: function() {

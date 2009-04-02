@@ -41,6 +41,7 @@ function bindList() {
         $('#msg_area').removeClass();
         $('#msg_area').hide();
         $('.sidebar').css('padding-top','165px');
+        
 
 		return false;
 	});
@@ -139,20 +140,20 @@ function bindList() {
 	
 	
 
-        /**
-         *
-         * hide opened extra tabs when close (or Cancel Button) is clicked
-         * !! only for editing registers
-         *
-         */
-        
-        $("ul.opened_tabs li div a.close, .edit_form input#cancel_button").click(function() {
-            $("ul.opened_tabs").hide();
-            $('div.fast_menu_content').hide();
-            $('div#sub_menu li a.fastmenu.first').addClass('active');
-            $('div.fast_menu_content:first').show();
-            $('div#msg_area').hide();
-        });
+    /**
+     *
+     * hide opened extra tabs when close (or Cancel Button) is clicked
+     * !! only for editing registers
+     *
+     */
+    
+    $("ul.opened_tabs li div a.close, .edit_form input#cancel_button").click(function() {
+        $("ul.opened_tabs").hide();
+        $('div.fast_menu_content').hide();
+        $('div#sub_menu li a.fastmenu.first').addClass('active');
+        $('div.fast_menu_content:first').show();
+        $('div#msg_area').hide();
+    });
 	
 
 	

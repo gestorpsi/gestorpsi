@@ -19,7 +19,7 @@ from django.views.generic.simple import direct_to_template
 from swingtime.views import occurrence_view
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm
-from gestorpsi.schedule.views import add_event, schedule_index, schedule_occurrence_listing, schedule_occurrence_listing_today, event_view, daily_occurrences, today_occurrences
+from gestorpsi.schedule.views import occurrence_abstract, add_event, schedule_index, schedule_occurrence_listing, schedule_occurrence_listing_today, event_view, daily_occurrences, today_occurrences
 #from gestorpsi.schedule.views import calendar_view
 
 urlpatterns = patterns('',
@@ -61,15 +61,20 @@ urlpatterns = patterns('',
         name='schedule-events-today'
     ),
     url(
-        r'^events/(\d{4})/(0?[1-9]|1[012])/([0-3]?\d)/$',
-        schedule_occurrence_listing,
-        name='schedule-listing-daily'
+        r'^occurrence/abstract/(\d+)/$', 
+        occurrence_abstract,
+        name='occurrence-abstract'
     ),
-    url(
-        r'^events/(\d{4})/(0?[1-9]|1[012])/$',
-        schedule_occurrence_listing,
-        name='schedule-listing-monthly'
-    ),
+    #url(
+        #r'^events/(\d{4})/(0?[1-9]|1[012])/([0-3]?\d)/$',
+        #schedule_occurrence_listing,
+        #name='schedule-listing-daily'
+    #),
+    #url(
+        #r'^events/(\d{4})/(0?[1-9]|1[012])/$',
+        #schedule_occurrence_listing,
+        #name='schedule-listing-monthly'
+    #),
     url(
         r'^events/add/$', 
         add_event, 

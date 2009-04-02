@@ -25,7 +25,9 @@ class ReferralForm(forms.ModelForm):
     service = forms.ModelChoiceField(queryset=Service.objects.all(), widget=forms.Select(attrs={'class':'extrabig asm', }))
     professional = forms.ModelMultipleChoiceField(queryset=CareProfessional.objects.all(),  widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
     client = forms.ModelMultipleChoiceField(queryset=Client.objects.all(),  widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
+    annotation = forms.CharField(widget=forms.Textarea(), required = False)
+    
     class Meta:
-        fields = ('client', 'service', 'professional',)
+        fields = ('client', 'service', 'professional', 'annotation')
         model = Referral
 

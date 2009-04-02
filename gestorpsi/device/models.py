@@ -32,6 +32,13 @@ Similarly, devices are also classified by their mobility, thus this variable rep
 the two kinds of mobility type that are used to classify them.
 """
 
+class DeviceDetailsManager(models.Manager):
+    def mobile(self):
+        return super(DeviceDetailsManager, self).get_query_set().filter(mobility__exact='2')
+    
+    def fix(self):
+        return super(DeviceDetailsManager, self).get_query_set().filter(mobility__exact='1')
+
 class DeviceType(models.Model):
     """
     This class represents device types.
@@ -100,5 +107,10 @@ class DeviceDetails(models.Model):
     room = models.ForeignKey(Room, null=True)
     device = models.ForeignKey(Device)
 
+    objects = DeviceDetailsManager()
+
+    class Meta:
+        ordering = ['brand']
+
     def __unicode__(self):
-      return u"%s - %s" % (self.brand, self.model)
+      return u"%s - %s" % (self.device.description, self.brand)

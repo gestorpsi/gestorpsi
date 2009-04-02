@@ -72,17 +72,52 @@ function updateGrid(url) {
 
                 $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+']').attr('class', 'clean color' + this.start_time.substr(0,2)); // colorize table cell
                 $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').hide(); // hide free slot 
-                $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" href="/schedule/events/' + this.event_id + '/' + this.id + '/" class="booked ajax">'+label_td+'</a>'); // show booked event
+                $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" occurrence="' + this.id + '" class="booked">'+label_td+'</a>'); // show booked event
+                //$('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" href="/schedule/events/' + this.event_id + '/' + this.id + '/" class="booked ajax">'+label_td+'</a>'); // show booked event
                 }
             });
         }
     );
-    bindList();
+    
+    // bind dialog box
+    $('table.schedule_results a.booked').unbind().click(function() {
+        $.getJSON('/schedule/occurrence/abstract/'+ $(this).attr('occurrence') +'/', function(json) {
+            
+            var str_client = ''; var str_professional = '';
+            //append client list
+            jQuery.each(json.client,  function(){
+            str_client = str_client + this.name + ' ' +this.phone+ '<br />' ;
+            });
+
+            //append professional list
+            jQuery.each(json.professional,  function(){
+                str_professional = str_professional + this.name + ' ' +this.phone+ '<br />' ;
+            });
+            
+            $('div#dialog h1[key=date]').text(json['date']);
+            $('div#dialog div[key=room]').text(json['room']);
+            $('div#dialog div[key=service]').text(json['service']);
+            $('div#dialog div[key=client]').html(str_client);
+            $('div#dialog div[key=professional]').html(str_professional);
+            $('div#dialog a[key=edit_link]').attr('href','/schedule/events/' + json['event_id'] + '/' + json['id'] + '/');
+            $('div#dialog a[key=edit_link]').attr('title', json['date']);
+        });
+        $('div#dialog').dialog('open');
+        // hide dialog box in all click    
+        $('div#dialog a').click(function() {
+                $('div#dialog').dialog('close');
+        });
+    });
+    
+    //bindList();
+
     return false;
 }
 
-
 function bindSchedule() {
+    // dialog box
+    $('div#dialog').dialog({ autoOpen: false, minWidth: 400, minHeight: 300 });
+    
     $('div.schedule table.schedule_results').unbind().ready(function() {
         $("div#mini_calendar").datepicker(schedule_options);
         // load today daily occurrences

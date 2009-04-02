@@ -21,11 +21,11 @@ GNU General Public License for more details.
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>GestorPsi - {% trans "Sistema de Gestão de Serviços em Psicologia" %} {% block title %}{% endblock %}</title>
 {% if user.is_authenticated %}
-	<script type="text/javascript" src="/media/js/jquery-latest.pack.js"></script> <!-- JQuery Core Library -->
+	<script type="text/javascript" src="/media/js/jquery-1.2.6.min.js"></script> <!-- JQuery Core Library -->
 	<script type="text/javascript" src="/media/js/jquery.form.js"></script> <!-- jQuery Form Plugin -->
 	<script type="text/javascript" src="/media/js/jquery.validate.pack.js"></script> <!-- jQuery validation plug-in -->
 	<script type="text/javascript" src="/media/js/autocomplete/jquery.autocomplete.js"></script>
-	<script type="text/javascript" src="/media/js/jquery-ui-personalized-1.6rc2.min.js"></script> <!-- JQuery UI with Draggable -->
+	<script type="text/javascript" src="/media/js/jquery-ui-1.5.3.custom.min.js"></script> <!-- JQuery UI with Draggable -->
 	<script type="text/javascript" src="/media/js/jquery.dimensions.js"></script> <!-- Fixed Save Menu (sidebar right) -->
 	<script type="text/javascript" src="/media/js/jquery.maskedinput-1.1.3.pack.js"></script> <!-- JQuery Masked Input Plugin -->
 	<script type="text/javascript" src="/media/js/jquery.scrollTo-min.js"></script> <!-- JQuery Scroll on Page Plugin -->
@@ -44,8 +44,8 @@ GNU General Public License for more details.
 @import "/media/css/layout.css";
 {% if user.is_authenticated %}
 	@import "/media/css/schedule.css";
+	@import "/media/css/jquery-ui/smoothness/ui.all.css";
 	@import "/media/css/jquery.autocomplete.css";
-	@import "/media/css/datePicker.css";
 	@import "/media/css/jquery.asmselect.css";
 {% endif %}
 </style>

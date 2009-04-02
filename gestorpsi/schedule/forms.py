@@ -18,9 +18,13 @@ from django import forms
 from swingtime.forms import MultipleOccurrenceForm
 from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.place.models import Room
+from gestorpsi.device.models import DeviceDetails
 
 class ScheduleOccurrenceForm(MultipleOccurrenceForm):
     room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=forms.Select(attrs={'class':'extramedium asm', }))
+    device = forms.ModelMultipleChoiceField(required = False, queryset=DeviceDetails.objects.mobile(), widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
+    annotation = forms.CharField(required = False, widget=forms.Textarea())
+    
     class Meta:
         model = ScheduleOccurrence
 

@@ -69,20 +69,20 @@ td.hour {
     text-align: right;
     padding: 3px 12px;
 }
-.color01, .color02, .color03, .color04, .color05, .color06, .color07, .color08, .color09, .color10, .color11, .color12, .color13, .color14, .color15, .color16, .color17, .color18, .color19, .color20, .color21, .color22, .color23, .color24, .occup {
+.color1, .color2, .color3, .color4, .color5, .color6, .color7, .color8, .color9, .color10, .color11, .color12, .color13, .color14, .color15, .color16, .color17, .color18, .color19, .color20, .color21, .color22, .color23, .color24, .occup {
 	font-size: 10px;
     padding: 3px;
     vertical-align:top;
 }
-.color01 {background: #8d91d0;    color: #FFFFFF;}
-.color02 {background: #a51d1e;    color: #FFFFFF;}
-.color03 {background: #efbb2e;    color: #FFFFFF;}
-.color04 {background: #488b24;    color: #FFFFFF;}
-.color05 {background: #f44800;    color: #FFFFFF;}
-.color06 {background: #816647;    color: #FFFFFF;}
-.color07 {background: #003366;    color: #FFFFFF;}
-.color08 {background: #6600cc;    color: #FFFFFF;}
-.color09 {background: #ebebf6;    color: #8d91d0;}
+.color1 {background: #8d91d0;    color: #FFFFFF;}
+.color2 {background: #a51d1e;    color: #FFFFFF;}
+.color3 {background: #efbb2e;    color: #FFFFFF;}
+.color4 {background: #488b24;    color: #FFFFFF;}
+.color5 {background: #f44800;    color: #FFFFFF;}
+.color6 {background: #816647;    color: #FFFFFF;}
+.color7 {background: #003366;    color: #FFFFFF;}
+.color8 {background: #6600cc;    color: #FFFFFF;}
+.color9 {background: #ebebf6;    color: #8d91d0;}
 .color10 {background: #f4cece;    color: #a51d1e;}
 .color11 {background: #fdf198;    color: #aa8800;}
 .color12 {background: #d2e5cc;    color: #488b24;}
@@ -196,4 +196,8 @@ div.schedule h2.title_schedule {
 div#mini_calendar {
     position: absolute;
     margin: 0 0 0 20px;
+}
+
+.schedule fieldset div {
+    margin-left: 12px;
 }

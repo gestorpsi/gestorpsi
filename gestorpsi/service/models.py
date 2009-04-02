@@ -196,6 +196,8 @@ class Service(models.Model):
     organization = models.ForeignKey(Organization, null=True)
     responsibles = models.ManyToManyField( CareProfessional, related_name="resp_services" )
     professionals = models.ManyToManyField( CareProfessional, related_name="prof_services" )
+    css_color_class = models.IntegerField(max_length=2, blank=True, null=True, default=1)
+    date = models.DateTimeField(auto_now_add=True)
 
     # Generic Clinic Area Relationship
     content_type = models.ForeignKey(ContentType, null=True)
@@ -208,3 +210,4 @@ class Service(models.Model):
     
     class Meta:
         ordering = ['name']
+        get_latest_by = ['date']

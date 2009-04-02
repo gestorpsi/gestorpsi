@@ -24,11 +24,11 @@ $(document).ready(function(){
 		});
         	
         $("#loading p").bind("ajaxSend", function(){
-				$('#disable_menu').show();
+				//$('#disable_menu').show();
                 $(this).show();
         }).bind("ajaxComplete", function(){
                 $(this).hide();
-				$('#disable_menu').hide();
+				//$('#disable_menu').hide();
         });
 
 
@@ -61,7 +61,7 @@ $(document).ready(function(){
          *
          * Message Area (#msg_area)
          *
-         * hide msg area in ever click
+         * hide msg area and dialog in ever click
          * 
          */
         
@@ -69,7 +69,8 @@ $(document).ready(function(){
                 $('#msg_area').removeClass();
                 $('#msg_area').hide();
                 $('.sidebar').css('padding-top','165px');
-                
+                // hide dialog box even schedule click    
+                $('div#dialog').dialog('close');
         });
         
         

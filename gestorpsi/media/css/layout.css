@@ -1155,8 +1155,6 @@ label div.error, .login span.error, .login form p.errors {
 
 div.error {
 	display: block;
-	font-size: 17px;
-	color: red !important;
 }
 
 label div.error {
@@ -1221,4 +1219,18 @@ ul.errorlist li {
 
 .hidden {
     display:none;
+}
+
+
+/**
+* jquery dialog
+*/
+
+div#dialog h1 {
+    font-size: 16px;
+}
+
+div#dialog h2 {
+    font-size: 14px;
+    padding-top: 10px;
 }

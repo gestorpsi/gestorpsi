@@ -551,12 +551,20 @@ function bindFormMisc() {
      * hide and show weekly, monthly and yearly extra option in schedule form
      */
     
-    $('form.schedule div.switch input[type=radio]').click(function() {
+    $('.schedule div.switch input[type=radio]').unbind().click(function() {
         var div = $(this).parents('label').parents('div');
-        var tag_to_toogle = $(div).attr('tag');
-        var elements_to_show = tag_to_toogle + '.' +$(div).attr('clean')+'_'+$(this).val();
-        $(tag_to_toogle + '.' +$(div).attr('clean')).hide();
+        var elements_to_show = '.' +$(div).attr('clean')+'_'+$(this).val();
+        $('.' +$(div).attr('clean')).hide();
         $(elements_to_show).show();
+    });
+
+    $('.schedule div.switch input[type=checkbox]').unbind().click(function() {
+        var div = $(this).parents('div');
+        if(!$(this).attr('checked')) {
+            $('.' +$(div).attr('clean')).hide();
+        } else {
+            $('.' +$(div).attr('clean')).show();
+        }
     });
 
      /**

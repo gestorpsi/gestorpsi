@@ -29,7 +29,7 @@ from gestorpsi.referral.models import Referral
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.place.models import Place
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm
-
+from django.utils import simplejson
 
 def schedule_occurrences(year = 1, month = 1, day = None):
     if day:
@@ -83,7 +83,6 @@ def add_event(
             except:
                 # TODO A badly formatted date is passed to add_event
                 dtstart = datetime.now()
-        print dtstart
         if 'room' in request.GET:
             room = request.GET['room']
         else:
@@ -176,12 +175,9 @@ def today_occurrences(request):
     return daily_occurrences(request, datetime.now().strftime("%Y"), datetime.now().strftime("%m"), datetime.now().strftime("%d"))
 
 def daily_occurrences(request, year = 1, month = 1, day = None):
-    #print request.LANGUAGE_CODE
-    #locale.setlocale(locale.LC_ALL,'pt_BR.ISO-8859-1')
-    locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
-    #locale.setlocale(locale.LC_ALL,'pt_BR')
-    
-    from django.utils import simplejson
+    locale.setlocale(locale.LC_ALL,'pt_BR.ISO-8859-1')
+    #locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
+
     occurrences = schedule_occurrences(year, month, day)
     array = {} #json
     i = 0
@@ -228,5 +224,46 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
     array = simplejson.dumps(array, encoding = 'iso8859-1')
     
     return HttpResponse(array, mimetype='application/json')
+    
+	
+def occurrence_abstract(request, object_id = None):
+    try:
+        o = ScheduleOccurrence.objects.get(pk=object_id)
+    except:
+        raise Http404
+
+    array = {} #json
+
+    array['id'] = o.id
+    array['event_id'] = o.event.id
+    array['date'] = o.start_time.strftime('%d/%m/%Y %H:%M')
+    array['room'] = o.room.description
+    array['service'] = o.event.referral.service.name
+    
+    array['professional'] = {}
+    count = 0
+    for p in o.event.referral.professional.all():
+        array['professional'][count] = ({
+            'id':p.id, 
+            'name':p.person.name,
+            'phone':p.person.get_phones(),
+            })
+        count = count + 1
+
+    count = 0
+    array['client'] = {}
+    for c in o.event.referral.client.all():
+        array['client'][count] = ({
+            'id':c.id, 
+            'name':c.person.name,
+            'phone':c.person.get_phones(),
+            })
+        count = count + 1
+
+    #array = simplejson.dumps(array, encoding = 'iso8859-1')
+    array = simplejson.dumps(array)
+    
+    #return HttpResponse(array, mimetype='application/json')
+    return HttpResponse(array)
     
 	

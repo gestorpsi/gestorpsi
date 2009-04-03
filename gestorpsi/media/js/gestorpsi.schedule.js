@@ -22,6 +22,17 @@ var schedule_options = {
     }
 }
 
+var dialog_options = {
+    modal: true,
+    overlay: {
+        background: "url(/media/img/transp75.png) repeat"
+    },
+    autoOpen: false,
+    height: "350px",
+    width: "500px"
+    
+}
+
 function updateGrid(url) {
     /** 
     * take data from json view output and put on the schedule daily grid
@@ -103,20 +114,19 @@ function updateGrid(url) {
             $('div#dialog a[key=edit_link]').attr('title', json['date']);
         });
         $('div#dialog').dialog('open');
-        // hide dialog box in all click    
-        $('div#dialog a').click(function() {
-                $('div#dialog').dialog('close');
-        });
     });
     
-    //bindList();
-
     return false;
 }
 
 function bindSchedule() {
     // dialog box
-    $('div#dialog').dialog({ autoOpen: false, minWidth: 400, minHeight: 300 });
+    $('div#dialog').dialog(dialog_options);
+    
+    // hide dialog box in all click    
+    $('div#dialog a').click(function() {
+            $('div#dialog').dialog('close');
+    });
     
     $('div.schedule table.schedule_results').unbind().ready(function() {
         $("div#mini_calendar").datepicker(schedule_options);

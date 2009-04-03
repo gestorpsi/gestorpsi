@@ -20,12 +20,12 @@ from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client
 from gestorpsi.place.models import Place, Room
-from gestorpsi.device.models import Device
+from gestorpsi.device.models import DeviceDetails
 
 
 class ScheduleOccurrence(Occurrence):
     room = models.ForeignKey(Room, null=True, blank=True)
-    device = models.ManyToManyField(Device, null=True, blank=True)
+    device = models.ManyToManyField(DeviceDetails, null=True, blank=True)
     annotation = models.CharField(max_length=765, null=True, blank=True)
 
 

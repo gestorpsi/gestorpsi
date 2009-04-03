@@ -15,10 +15,16 @@ GNU General Public License for more details.
 """
 
 from django import forms
-from swingtime.forms import MultipleOccurrenceForm
+from swingtime.forms import MultipleOccurrenceForm, SingleOccurrenceForm
 from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.place.models import Room
 from gestorpsi.device.models import DeviceDetails
+
+class ScheduleSingleOccurrenceForm(SingleOccurrenceForm):
+    room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=forms.Select(attrs={'class':'extramedium asm', }))
+    device = forms.ModelMultipleChoiceField(required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
+    annotation = forms.CharField(required = False, widget=forms.Textarea())
+    
 
 class ScheduleOccurrenceForm(MultipleOccurrenceForm):
     room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=forms.Select(attrs={'class':'extramedium asm', }))
@@ -38,6 +44,7 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
             self.cleaned_data['start_time'], 
             self.cleaned_data['end_time'],
             self.cleaned_data['room'].id,
+            self.cleaned_data['device'],
             **params
         )
 

@@ -1,0 +1,78 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+{% include "core/ajax_page_form.html" %}
+
+<h2 class="title_schedule title">{{ occurrence.start_time|date }}</h2>
+<p class="description">{{ occurrence.event.referral.service }} - {{ occurrence.event.referral.professional.all.0 }}</p>
+
+<form method="post" action="/schedule/events/{{ occurrence.event.id }}/{{ occurrence.id }}/" class="schedule refresh">
+<div class="main_area">
+{{ event_form.errors }}
+{{ recurrence_form.errors }}
+	<a href="" id="help">&nbsp;</a>
+	<h3><span>{% trans "Occurrence Details" %}</span></h3>
+        <fieldset>
+        <legend>{% trans "Referral Details" %}</legend>
+            <label><b>{% trans "Service" %}</b><br />
+            {{ occurrence.event.referral.service }}
+            </label>
+            <label><b>{% trans "Clients" %}</b><br />
+            {% for i in occurrence.event.referral.client.all %}
+                {{ i }} {{ i.person.get_phones }}<br />
+            {% endfor %}
+            </label>
+            <label><b>{% trans "Professionals" %}</b><br />
+            {% for i in occurrence.event.referral.professional.all %}
+                {{ i }} {{ i.person.get_phones }}<br />
+            {% endfor %}
+            </label>
+        </fieldset>
+        
+        <fieldset>
+        <legend>{% trans "Due Details" %}</legend>
+            <label>{% trans "Start Time" %}<br />
+            {{ form.start_time }}
+            </label>
+            <label>{% trans "End Time" %}<br />
+            {{ form.end_time }}
+            </label>
+            <label>{% trans "Room" %}<br />
+            {{ form.room }}
+            </label>
+            <label>{% trans "Notes" %}<br />
+            {{ form.annotation }}
+            </label>
+            <label>{% trans "Devices" %}<br />
+            {{ form.device }}
+            </label>            
+        </fieldset>
+ 
+<div style="clear:both;"></div>
+<br />
+  </div>      
+
+<div id="sidebar" class="sidebar">
+    <div class="bg_blue">
+        <input type="hidden" name="day_clicked" class="day_clicked" value="{{ occurrence.start_time|date:"Y/m/d" }}" />
+        <input class="save_button" name="_add" type="submit" value="{% trans 'Save' %}" />
+        <input class="save_button" name="cancel" id="cancel_button" type="button" value="{% trans 'Cancel' %}" />
+    </div>
+</div>
+
+</form>
+

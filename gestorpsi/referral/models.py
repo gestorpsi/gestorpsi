@@ -35,16 +35,20 @@ class Referral(Event):
         try: self.event_type = EventType.objects.all()[0]
         except: self.event_type = EventType.objects.create(abbr='')
 
-    def add_occurrences(self, start_time, end_time, room, **rrule_params):
+    def add_occurrences(self, start_time, end_time, room, device, **rrule_params):
         rrule_params.setdefault('freq', rrule.DAILY)
-
+        print device
         if 'count' not in rrule_params and 'until' not in rrule_params:
-            ScheduleOccurrence.objects.create(event=self, start_time=start_time, end_time=end_time, room_id=room)
+            o = ScheduleOccurrence.objects.create(event=self, start_time=start_time, end_time=end_time, room_id=room)
+            o.device = device
+            o.save()
         else:
             delta = end_time - start_time
             for ev in rrule.rrule(dtstart=start_time, **rrule_params):
-                ScheduleOccurrence.objects.create(event=self, start_time=ev, end_time=ev + delta, room_id=room)
-                
+                o = ScheduleOccurrence.objects.create(event=self, start_time=ev, end_time=ev + delta, room_id=room)
+                o.device = device
+                o.save()
+
     class Meta:
         ordering = ('title', )
 

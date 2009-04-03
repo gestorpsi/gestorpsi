@@ -28,7 +28,7 @@ from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.referral.models import Referral
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.place.models import Place
-from gestorpsi.schedule.forms import ScheduleOccurrenceForm
+from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm
 from django.utils import simplejson
 
 def schedule_occurrences(year = 1, month = 1, day = None):
@@ -135,6 +135,28 @@ def event_view(
     return render_to_response(
         template, 
         dict(event=event, event_form=event_form, recurrence_form=recurrence_form),
+        context_instance=RequestContext(request)
+    )
+
+def occurrence_view(
+    request, 
+    event_pk, 
+    pk, 
+    template='schedule/schedule_occurrence_form.html',
+    form_class=ScheduleSingleOccurrenceForm
+):
+    occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__pk=event_pk)
+    if request.method == 'POST':
+        form = form_class(request.POST, instance=occurrence)
+        if form.is_valid():
+            form.save()
+            return http.HttpResponseRedirect(request.path)
+    else:
+        form = form_class(instance=occurrence)
+        
+    return render_to_response(
+        template,
+        dict(occurrence=occurrence, form=form),
         context_instance=RequestContext(request)
     )
 

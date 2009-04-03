@@ -86,7 +86,7 @@ def set_trylogin(user):
         found_user.save()
 
 def clear_login(user):
-    user.user.get_profile().try_login = 0
+    user.get_profile().try_login = 0
     user.save()
     
 def change_password(user,current_password, new_password):    

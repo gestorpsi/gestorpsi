@@ -28,6 +28,9 @@ from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.referral.models import Referral
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.place.models import Place
+from gestorpsi.service.models import Service
+from gestorpsi.careprofessional.models import CareProfessional
+from gestorpsi.device.models import DeviceDetails
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm
 from django.utils import simplejson
 
@@ -176,7 +179,10 @@ def _datetime_view(
         next_day=dt + timedelta(days=+1),
         prev_day=dt + timedelta(days=-1),
         timeslots=timeslot_factory(dt, items, **params),
-        places = Place.objects.filter(organization=request.user.get_profile().org_active.id)
+        places = Place.objects.filter(organization=request.user.get_profile().org_active.id),
+        services = Service.objects.filter(organization=request.user.get_profile().org_active.id),
+        professionals = CareProfessional.objects.filter(person__organization=request.user.get_profile().org_active.id),
+        devices = DeviceDetails.objects.all(),
     )
     
     return render_to_response(
@@ -224,6 +230,7 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
             'room': o.room_id,
             'service_id':o.event.referral.service.id,
             'service':o.event.referral.service.name,
+            'css_color_class':o.event.referral.service.css_color_class,
             'start_time': o.start_time.strftime('%H:%M:%S'),
             'end_time': o.end_time.strftime('%H:%M:%S'),
             'rowspan': rowspan,

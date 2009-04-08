@@ -33,6 +33,8 @@ var dialog_options = {
     
 }
 
+var occupied_css_class = 'occup';
+
 function updateGrid(url) {
     /** 
     * take data from json view output and put on the schedule daily grid
@@ -57,21 +59,28 @@ function updateGrid(url) {
         jQuery.each(json,  function(){
             if(this.start_time) {
                 var str_client = ''; var str_professional = ''; var str_service = '';
-
+                var col = $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+']');
+                
+                col.addClass('clean'); // required
+                col.addClass('color' + this.css_color_class); // service color
+                
                 //append client list
                 jQuery.each(this.client,  function(){
-                str_client = str_client + this.name + "<br />";
+                    str_client = str_client + this.name + "<br />";
                 });
 
                 //append professional list
                 jQuery.each(this.professional,  function(){
-                str_professional = str_professional + this.name + "<br />" ;
+                    str_professional = str_professional + this.name + "<br />" ;
+                    col.addClass('professional_' + this.id); // professionals in cell
                 });
 
                 //append service
                 str_service = '>>' + this.service + '<br />';
+                
+                col.addClass('service_' + this.service_id); // service from cell
 
-                label_td = str_client + str_service + str_professional
+                label = str_client + str_service + str_professional
 
                 // for occurrences greater than half-hour, change table rowspan
                 if (this.rowspan > 1) {
@@ -81,12 +90,26 @@ function updateGrid(url) {
                     $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+']').attr('rowspan', this.rowspan);
                 }
 
-                $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+']').attr('class', 'clean color' + this.start_time.substr(0,2)); // colorize table cell
+
+                
+                //$('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+']').attr('class', 'clean color' + this.css_color_class + ); // colorize table cell
                 $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').hide(); // hide free slot 
-                $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" occurrence="' + this.id + '" class="booked">'+label_td+'</a>'); // show booked event
-                //$('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" href="/schedule/events/' + this.event_id + '/' + this.id + '/" class="booked ajax">'+label_td+'</a>'); // show booked event
+                $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" occurrence="' + this.id + '" class="booked">' + label + '</a>'); // show booked event
                 }
             });
+            // hide elements if some filter is activated
+            var count = 0;
+            var class_name = '';
+            $('div.filter a.filter_by').each(function() {
+                var el = $(this);
+                if(el.attr('status') == 'off' && el.attr('type')) {
+                    class_name = el.attr('type') + '_' + el.attr('uuid');
+                    $('table.schedule_results.daily tr td.'+class_name + ' a.booked').hide();
+                    $('table.schedule_results.daily tr td.'+class_name).addClass(occupied_css_class);
+                    //$('table.schedule_results.daily tr td.'+class_name).attr('style','background-color: ' + filter_background);
+                }
+            });
+
         }
     );
     
@@ -142,13 +165,91 @@ function bindSchedule() {
     $('div.schedule a.json_ocorrences').unbind().click(function() {
         return updateGrid($(this).attr('href'));
     });
+    
+    // filters menu. toggle menu list options
+    $('div.schedule a.option.toggle').unbind().click(function() {
+        var filter = $($(this).attr('display'));
+        $('div.schedule div.filter').not(filter).hide();
+        $(filter).toggle();
+    });
+    
+    // re-draw the filter menu when clicked
+    $('div.schedule a.filter_by').unbind().click(function() {
+        var all_selected = $(this).parents('table').children('tbody').children('tr').children('td.all').children('a');
+        var all = $(this).parents('table').children('tbody').children('tr').children('td').children('a');
+        //var col = 'div.schedule table.schedule_results tr td.' + $(this).attr('type') + '_' + $(this).attr('uuid');
+        var img = $(this).parents('table').children('tbody').children('tr').children('td').children('a').children('img');
+        
+        // first click. 'all itens' button still selected yet. let's hide all, and show only clicked
+        if (!$(this).hasClass('all')) {
+            if ( all_selected.attr('status') == 'on' ) {
+                img.attr('src','/media/img/chk_off.png');
+                $(this).children('img').attr('src','/media/img/chk.png');
+                all.attr('status','off');
+                $(this).attr('status','on');
+            } else {
+                if($(this).attr('status') == 'on') {
+                    $(this).attr('status','off');
+                    $(this).children('img').attr('src','/media/img/chk_off.png');
+                } else {
+                    $(this).attr('status','on');
+                    $(this).children('img').attr('src','/media/img/chk.png');
+                }
+            }
+        } else {
+            // show all
+            if(all_selected.attr('status') == 'off') {
+                all.children('img').attr('src','/media/img/chk.png');
+                all.attr('status','on');
+            } else {
+                all.children('img').attr('src','/media/img/chk_off.png');
+                all.attr('status','off');
+            }
+            
+        }
+        
+        // read the filter menu, and rebuild the data grid
+
+        var count = 0;
+        var class_name = '';
+        $('table.schedule_results.daily tr td').attr('norewrite','false');
+
+        $(this).parents('div').children('table').children('tbody').children('tr').children('td').children('a').each(function() {
+            var el = $(this);
+            if(el.attr('status') && el.attr('type') && el.attr('uuid')) {
+                class_name = el.attr('type') + '_' + el.attr('uuid');
+                if(el.attr('status') == 'off') { // switch off
+                    if(el.attr('type') == 'service') {
+                        $('table.schedule_results.daily tr td.' + class_name + ' a.booked').hide();
+                        $('table.schedule_results.daily tr td.' + class_name).addClass(occupied_css_class);
+                        $('table.schedule_results.daily tr td.' + class_name).attr('locked', 'on');
+                    } else {
+                        $('table.schedule_results.daily tr td.' + class_name).each(function() {
+                                if($(this).attr('locked') != 'on' && $(this).attr('norewrite') != 'true') {
+                                    $(this).children('a.booked').hide();
+                                    $(this).addClass(occupied_css_class);
+                                }
+                            });
+                    }
+                } else { // switch on
+                    if(el.attr('type') == 'service') {
+                        $('table.schedule_results.daily tr td.' + class_name + ' a.booked').show();
+                        $('table.schedule_results.daily tr td.' + class_name).removeClass(occupied_css_class);
+                        $('table.schedule_results.daily tr td.' + class_name).attr('locked', 'off');
+                    } else {
+                        $('table.schedule_results.daily tr td.' + class_name).each(function() {
+                            if($(this).attr('locked') != 'on') {
+                                $(this).children('a.booked').show();
+                                $(this).removeClass(occupied_css_class);
+                                $(this).attr('norewrite','true');
+                            }
+                        });
+                    }
+                }
+            }
+        });
+        
+        
+        
+    });
 }
-
-
-
-
-
-
-
-
-

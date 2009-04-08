@@ -109,6 +109,17 @@ def save(request, object_id = ''):
     object.service_type = ServiceType.objects.get(pk=request.POST['service_type'])
     object.research_project = request.POST['research_project']
     
+    """ chose one css color to this service """
+    try:
+        latest_css = Service.objects.filter(organization=user.get_profile().org_active).latest('date')
+        next_css = latest_css.css_color_class + 1
+        if next_css <= 24:
+            object.css_color_class = next_css
+        else:
+            object.css_color_class = 1
+    except:
+        object.css_color_class = 1
+            
     object.save()
 
     """ Modalities """

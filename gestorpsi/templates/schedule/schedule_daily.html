@@ -13,132 +13,88 @@
         <!-- esse span deve ficar aqui dentro para funcionar -->
 
         <span style="position: relative">
-        <a href="#" class="option" onclick="$('div.filter_professional').toggle(); return false;">profissionais</a>
-            <!-- esse popup deve ficar dentro do span para funcionar, pois tem posicao relativa -->
-        <div class="filter professional" style="display:none">
-                <table>
+        <a href="#" class="option toggle" display="div.filter.places">{% trans "places" %}</a>
+        	<div class="filter incols places" style="display:none">
+            	<table>
+            	    {% for o in places %}
                 	<tr>
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk.png" />  Dr Douglas Azevedo</a></td>
-                        <td><span class="color12" onclick="$('#colors').toggle();">a
-                        <!-- esse popup deve ficar dentro do span para funcionar, pois tem posicao relativa -->
-
-                        <div id="colors">
-                        <table cellspacing="5">
-                        	<tr>
-                            	<td><span class="color01">a</span></td>
-                               	<td><span class="color09">a</span></td>
-                                <td><span class="color17">a</span></td>
-                            </tr>
-
-                        	<tr>
-                            	<td><span class="color02">a</span></td>
-                               	<td><span class="color10">a</span></td>
-                                <td><span class="color18">a</span></td>
-                            </tr>
-                        	<tr>
-                            	<td><span class="color03">a</span></td>
-
-                               	<td><span class="color11">a</span></td>
-                                <td><span class="color19">a</span></td>
-                            </tr>
-                        	<tr>
-                            	<td><span class="color04">a</span></td>
-                               	<td><span class="color12">X</span></td>
-                                <td><span class="color20">a</span></td>
-
-                            </tr>
-                        	<tr>
-                            	<td><span class="color05">a</span></td>
-                               	<td><span class="color13">a</span></td>
-                                <td><span class="color21">a</span></td>
-                            </tr>
-                        	<tr>
-
-                            	<td><span class="color06">a</span></td>
-                               	<td><span class="color14">a</span></td>
-                                <td><span class="color22">a</span></td>
-                            </tr>
-                        	<tr>
-                            	<td><span class="color07">a</span></td>
-                               	<td><span class="color15">a</span></td>
-
-                                <td><span class="color23">a</span></td>
-                            </tr>
-                        	<tr>
-                            	<td><span class="color08">a</span></td>
-                               	<td><span class="color16">a</span></td>
-                                <td><span class="color24">a</span></td>
-                            </tr>
-
-                            
-                            
-                        </table>    	    
-                        </div>	
-                        
-                        
-                        </span>
-                        </td>
-                    </tr>	
+                    	<td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="places" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
+                    	<td><span class="color{{ o.css_color_class }}">&nbsp;&nbsp;</span></td>
+                    </tr>
+                    {% endfor %}
                     <tr>
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk_off.png" /> Dr Anterson Turci</a></td>
-                        <td><span class="color19">a</span></td>
-                    </tr>
-
-                     <tr>
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk.png" /> Dr Antônio Almeida da Silva</a></td>
-                        <td><span class="color15">a</span> </td>
-                    </tr> <tr>
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk.png" /> Dra Silvia Priscila Pedra</a></td>
-
-                        <td><span class="color22">a</span></td>
-                    </tr> <tr>
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk.png" /> Dra Patrícia Gonçalves Dias</a></td>
-                        <td> <span class="color10">a</span></td>
-                    </tr>
-                    
-                     <tr>
-
                     	<td colspan="2"><hr /></td>
                     </tr>
-                     <tr>
-                         <td nowrap="nowrap"><a href="#"><img src="/media/img/chk_off.png" /> Todos os profissionais</a></td>
-                         <td></td>
-                     </tr> 
-               	</table> 
-               </div>
-        </span> 
-        <!-- fim do popup -->
-
-        <span style="position: relative"><a href="#" class="option" onclick="$('services').toggle();">serviços</a>
-        	<div class="filter service" style="display:none">
-            	<table>
-                	<tr>
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk.png" />  Serviço 1</a></td>
-                    </tr>
                     <tr>
-
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk_off.png" />  Serviço 2</a></td>
-                    </tr>
-                    <tr>
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk.png" />  Serviço 3</a></td>
-                    </tr>
-                    <tr>
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk.png" />  Serviço 4</a></td>
-
-                    </tr>
-                    <tr>
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk.png" />  Serviço 5</a></td>
-                    </tr>
-                    <tr>
-                    	<td><hr /></td>
-                    </tr>
-                    <tr>
-
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk_off.png" />  Todos os serviços</a></td>
+                        <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all"><img src="/media/img/chk.png" />{% trans "All Places" %}</a></td>
                     </tr>
                 </table>
             </div>
         </span>
+        
+        <span style="position: relative">
+        <a href="#" class="option toggle" display="div.filter.rooms">{% trans "rooms" %}</a>
+        	<div class="filter incols rooms" style="display:none">
+            	<table>
+            	    {% for place in places %}{% for o in place.room_set.all %}
+                	<tr>
+                    	<td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="rooms" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
+                    	<td><span class="color{{ o.css_color_class }}">&nbsp;&nbsp;</span></td>
+                    </tr>
+                    {% endfor %}{% endfor %}
+                    <tr>
+                    	<td colspan="2"><hr /></td>
+                    </tr>
+                    <tr>
+                        <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all"><img src="/media/img/chk.png" />{% trans "All Rooms" %}</a></td>
+                    </tr>
+                </table>
+            </div>
+        </span>
+
+
+        <span style="position: relative">
+        <a href="#" class="option toggle" display="div.filter.service">{% trans "services" %}</a>
+        	<div class="filter service" style="display:none">
+            	<table>
+            	    {% for o in services %}
+                	<tr>
+                    	<td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="service" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
+                    	<td><span class="color{{ o.css_color_class }}">&nbsp;&nbsp;</span></td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                    	<td colspan="2"><hr /></td>
+                    </tr>
+                    <tr>
+                        <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all"><img src="/media/img/chk.png" />{% trans "All Services" %}</a></td>
+                    </tr>
+                </table>
+            </div>
+        </span>
+
+
+        <span style="position: relative">
+        <a href="#" class="option toggle" display="div.filter.professional">profissionais</a>
+            <div class="filter professional" style="display:none">
+                    <table>
+                        {% for o in professionals %}
+                        <tr>
+                            <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="professional" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
+                        </tr>
+                        {% endfor %}
+                         <tr>
+                            <td><hr /></td>
+                        </tr>
+                         <tr>
+                             <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all"><img src="/media/img/chk.png" />{% trans "All Professionals" %}</a></td>
+                         </tr> 
+                    </table> 
+               </div>
+        </span> 
+        <!-- fim do popup -->
+
+
         <!-- fim do outro -->
         </h2>
         <a id="calendar_link" href="#"></a>
@@ -157,23 +113,11 @@
         <!-- este popup pode ir fora, pois tem posicao absoluta -->
         <div class="filter room" style="display:none">
                 <table>
-                	<tr>
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk.png" />  Sala 1</a></td>
+                    {% for place in places %}{% for room in place.room_set.all %}
+					<tr>
+                    	<td nowrap="nowrap"><a href="#" class="filter_by" type="room" uuid="{{ room.id }}"><img src="/media/img/chk.png" />  {{ room }}</a></td>
                     </tr>
-                    <tr>
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk_off.png" />  Sala 2</a></td>
-                    </tr>
-
-                    <tr>
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk.png" />  Sala 3</a></td>
-                    </tr>
-                    <tr>
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk.png" />  Sala 4</a></td>
-                    </tr>
-                    <tr>
-
-                    	<td nowrap="nowrap"><a href="#"><img src="/media/img/chk.png" />  &Aacute;udio e V&iacute;deo</a></td>
-                    </tr>
+                    {% endfor %}{% endfor %}
                     <tr>
                     	<td><hr /></td>
                     </tr>
@@ -186,16 +130,16 @@
             
             <table class="schedule_results daily zebra" border="0" cellspacing="0" cellpadding="0">
 				<tr>
-					<th class="schedule"><a href="#" onclick="$('rooms').toggle();">salas</a></th>
+					<th class="schedule"></th>
 					{% for place in places %}{% for room in place.room_set.all %}
-					    <th>{{ room }}</th>
+					    <th room="{{ room.id }}" place="{{ place.id }}">{{ room }}</th>
 					{% endfor %}{% endfor %}
 				</tr>
 				{% for tm,cells in timeslots %}
 				<tr hour="{{ tm|date:"H:i:s" }}">
 				    <td class="hour">{{ tm|date:"H:i" }}</td>
 				    {% for place in places %}{% for room in place.room_set.all %}
-                        <td class="clean" room="{{ room.id }}"><a href="{% url swingtime-add-event %}?dtstart={{ tm.isoformat }}&room={{ room.id }}" class="book ajax">{% trans "Free" %}</a></td>
+                        <td class="clean" room="{{ room.id }}" place="{{ place.id }}"><a href="{% url swingtime-add-event %}?dtstart={{ tm.isoformat }}&room={{ room.id }}" class="book ajax">{% trans "Free" %}</a></td>
                     {% endfor %}{% endfor %}
 				</tr>
 				{% endfor %}

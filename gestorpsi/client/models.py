@@ -32,6 +32,13 @@ class PersonLink(models.Model):
     def __unicode__(self):
         return u"%s" % self.person.name
 
+class IdRecordSeq(models.Model):
+    uid = models.CharField(max_length=100)
+
+# CREATE SEQUENCE id_Record_Seq;
+# ALTER TABLE client_client ALTER COLUMN idrecord TYPE integer DEFAULT nextval('id_record_seq') NOT NULL;
+# ALTER TABLE client_client ALTER COLUMN idRecord TYPE integer USING nextval('id_Record_Seq'); ???
+
 CLIENT_STATUS = ( ('0','Inativo'),('1','Ativo'))
 class Client(models.Model):
     id = UuidField(primary_key=True)

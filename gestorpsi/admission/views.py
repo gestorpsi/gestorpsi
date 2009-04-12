@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
-from gestorpsi.client.models import Client, PersonLink, Relation
+from gestorpsi.client.models import Client, PersonLink, Relation, IdRecordSeq
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
 from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
@@ -36,6 +36,7 @@ def form(request, object_id=''):
         'ReferralChoices': ReferralChoice.objects.all(),
         'IndicationsChoices': IndicationChoice.objects.all(),
         'Relations': Relation.objects.all(),
+        'IdRecord': get_object_or_404(IdRecordSeq, uid=object_id),
     })
 
 def is_responsible(value):
@@ -58,11 +59,10 @@ def add_relationship(object, name_list, relation_list, responsible_list):
 def save(request, object_id=''):
     object = get_object_or_404(Client, pk=object_id)
     object.admission_date = date_form_to_db(request.POST['admission_date'])
-    object.idRecord = request.POST['idRecord']
     object.legacyRecord = request.POST['legacyRecord']
     object.healthDocument = request.POST['healthDocument']
     object.comments = request.POST['comments']
-
+    
     """ Referral Section """
     ar = AdmissionReferral()
     ar.referral_choice = ReferralChoice.objects.get(pk=request.POST['referral'])
@@ -92,5 +92,6 @@ def save(request, object_id=''):
     object.indication_choice = indication
 
     object.save()
+    
     add_relationship(object, request.POST.getlist('parent_name'),request.POST.getlist('parent_relation'), request.POST.getlist('parent_responsible'))
     return HttpResponse(object.id)

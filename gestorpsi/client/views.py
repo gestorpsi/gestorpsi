@@ -20,7 +20,7 @@ from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.conf import settings
 from geraldo.generators import PDFGenerator
-from gestorpsi.client.models import Client
+from gestorpsi.client.models import Client, IdRecordSeq
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
@@ -104,6 +104,11 @@ def save(request, object_id=""):
 
     object.person = person_save(request, person)
     object.save()
+
+    """ Id Record """
+    idr = IdRecordSeq()
+    idr.uid = object.id
+    idr.save()
 
     return HttpResponse(object.id)
 

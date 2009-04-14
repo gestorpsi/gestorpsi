@@ -37,13 +37,22 @@ var occupied_css_class = 'occup';
 
 function updateGrid(url) {
     /** 
-    * take data from json view output and put on the schedule daily grid
+    * get data from json vand put on the schedule daily grid
     */
 
     $('table.schedule_results.daily tr td.clean').attr('class','clean'); // remove class from lastest event
     $('table.schedule_results.daily tr td.clean a.booked').remove(); // remove booked events
     $('table.schedule_results.daily tr td.clean').attr('rowspan', '1'); // reset rowspans
-    $('table.schedule_results.daily tr td.clean').show(); // display hided td's by rowspans
+    
+    // hide elements if some filter is activated BEFORE data loaded
+    // places and rooms (cols)
+    $('div.filter.incols a.filter_by').each(function() {
+        var el = $(this);
+        if(el.attr('status') == 'on' && el.attr('type')) {
+            $('table.schedule_results.daily tr [room=' + el.attr('uuid') + ']').show(); // display hided td's by rowspans
+        }
+    });
+    
     $('table.schedule_results.daily tr td.clean a.book').show(); // reset grid to free slots on all
 
     $.getJSON(url, function(json) {
@@ -84,31 +93,35 @@ function updateGrid(url) {
 
                 // for occurrences greater than half-hour, change table rowspan
                 if (this.rowspan > 1) {
-                    // is needed to remove next TD's if last rowspan is greater than 1
-                    $('table.schedule_results.daily tr[hour=' + this.start_time +']').nextAll().find('td[room='+this.room+']').slice(0, (parseInt(this.rowspan)-1)).hide(); //css('background-color', 'red');
+                    // we need to remove next TD's if last rowspan is greater than 1
+                    next_tds = $('table.schedule_results.daily tr[hour=' + this.start_time +']').nextAll().find('td[room='+this.room+']').slice(0, (parseInt(this.rowspan)-1));
+                    next_tds.hide();
+                    next_tds.addClass('already_hided');
                     // increase rowspan size 
                     $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+']').attr('rowspan', this.rowspan);
                 }
 
-
-                
-                //$('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+']').attr('class', 'clean color' + this.css_color_class + ); // colorize table cell
                 $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').hide(); // hide free slot 
                 $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" occurrence="' + this.id + '" class="booked">' + label + '</a>'); // show booked event
                 }
             });
-            // hide elements if some filter is activated
+            
+            
+            // hide elements if some filter is activated AFTER data loaded
             var count = 0;
             var class_name = '';
-            $('div.filter a.filter_by').each(function() {
+            
+            // service and professional
+            $('div.filter:not(.incols) a.filter_by').each(function() {
                 var el = $(this);
                 if(el.attr('status') == 'off' && el.attr('type')) {
                     class_name = el.attr('type') + '_' + el.attr('uuid');
                     $('table.schedule_results.daily tr td.'+class_name + ' a.booked').hide();
                     $('table.schedule_results.daily tr td.'+class_name).addClass(occupied_css_class);
-                    //$('table.schedule_results.daily tr td.'+class_name).attr('style','background-color: ' + filter_background);
                 }
             });
+            
+
 
         }
     );
@@ -173,31 +186,18 @@ function bindSchedule() {
         $(filter).toggle();
     });
     
-    // re-draw the filter menu when clicked
+    // filter menu. Re-draw the filter menu if item clicked
     $('div.schedule a.filter_by').unbind().click(function() {
         var all_selected = $(this).parents('table').children('tbody').children('tr').children('td.all').children('a');
         var all = $(this).parents('table').children('tbody').children('tr').children('td').children('a');
+        var all_visible = $(this).parents('table').children('tbody').children('tr:visible').children('td').not('.all').children('a');
+        var visible_turned_on = $(this).parents('table').children('tbody').children('tr:visible').children('td').not('.all').children('a[status=on]');
+        
         //var col = 'div.schedule table.schedule_results tr td.' + $(this).attr('type') + '_' + $(this).attr('uuid');
         var img = $(this).parents('table').children('tbody').children('tr').children('td').children('a').children('img');
         
-        // first click. 'all itens' button still selected yet. let's hide all, and show only clicked
-        if (!$(this).hasClass('all')) {
-            if ( all_selected.attr('status') == 'on' ) {
-                img.attr('src','/media/img/chk_off.png');
-                $(this).children('img').attr('src','/media/img/chk.png');
-                all.attr('status','off');
-                $(this).attr('status','on');
-            } else {
-                if($(this).attr('status') == 'on') {
-                    $(this).attr('status','off');
-                    $(this).children('img').attr('src','/media/img/chk_off.png');
-                } else {
-                    $(this).attr('status','on');
-                    $(this).children('img').attr('src','/media/img/chk.png');
-                }
-            }
-        } else {
-            // show all
+        if ($(this).hasClass('all')) {
+            // buttom all
             if(all_selected.attr('status') == 'off') {
                 all.children('img').attr('src','/media/img/chk.png');
                 all.attr('status','on');
@@ -205,16 +205,62 @@ function bindSchedule() {
                 all.children('img').attr('src','/media/img/chk_off.png');
                 all.attr('status','off');
             }
+        } else {
+            // show and hide
             
+            // it's the first click. 'all itens' button still selected yet. let's hide all, and show only clicked
+            if (all_selected.attr('status') == 'on') {
+                img.attr('src','/media/img/chk_off.png');
+                $(this).children('img').attr('src','/media/img/chk.png');
+                all.attr('status','off');
+                $(this).attr('status','on');
+            } else {
+                // single toggle
+                if($(this).attr('status') == 'on') {
+                    $(this).attr('status','off');
+                    $(this).children('img').attr('src','/media/img/chk_off.png');
+                } else {
+                    $(this).attr('status','on');
+                    $(this).children('img').attr('src','/media/img/chk.png');
+                    if(($(all_visible).size() == (parseInt($(visible_turned_on).size()) + 1))) {
+                        // turn on all buttom if all itens are selected
+                        all_selected.attr('status','on');
+                        all_selected.children('img').attr('src','/media/img/chk.png');
+                    }
+                }
+            }
         }
         
-        // read the filter menu, and rebuild the data grid
-
+        // filter rooms when if select place in filter menu
+        if($(this).attr('type') == 'place') {
+            $('div.schedule div.place a.filter_by').each(function() {
+                if($(this).hasClass('all') && $(this).attr('status') == 'on') {
+                    // turn on ALL rooms
+                    $('div.schedule div.room tr.room_itens').show();
+                    $('div.schedule div.room tr td.all a.filter_by').attr('status','on');
+                    $('div.schedule div.room tr td.all a.filter_by').children('img').attr('src','/media/img/chk.png');
+                 } else {
+                    if($(this).attr('status') == 'on') {
+                        // turn on rooms from this place
+                        $('div.schedule div.room tr.room_itens[place='+$(this).attr('uuid')+'] a.filter_by').attr('status','on');
+                        $('div.schedule div.room tr.room_itens[place='+$(this).attr('uuid')+'] a.filter_by img').attr('src','/media/img/chk.png');
+                        $('div.schedule div.room tr.room_itens[place='+$(this).attr('uuid')+']').show();
+                    } else {
+                        // turn off rooms from this place
+                        $('div.schedule div.room tr.room_itens[place='+$(this).attr('uuid')+'] a.filter_by').attr('status','off');
+                        $('div.schedule div.room tr.room_itens[place='+$(this).attr('uuid')+'] a.filter_by img').attr('src','/media/img/chk_off.png');
+                        $('div.schedule div.room tr.room_itens[place='+$(this).attr('uuid')+']').hide();
+                    }
+                }
+            });
+        }
+        
+        // read the filter menu status, and rebuild the data grid (service and professional)
         var count = 0;
         var class_name = '';
         $('table.schedule_results.daily tr td').attr('norewrite','false');
 
-        $(this).parents('div').children('table').children('tbody').children('tr').children('td').children('a').each(function() {
+        $(this).parents('div').not('.incols').children('table').children('tbody').children('tr').children('td').children('a').each(function() {
             var el = $(this);
             if(el.attr('status') && el.attr('type') && el.attr('uuid')) {
                 class_name = el.attr('type') + '_' + el.attr('uuid');
@@ -250,6 +296,22 @@ function bindSchedule() {
         });
         
         
+        // read rooms and places filter menu, and hide (or show) cols
+        $('div.room tr.room_itens a.filter_by').each(function() {
+            var el = $(this);
+            if(el.attr('status') && el.attr('type') && el.attr('uuid')) {
+                if(el.attr('status') == 'off') { // switch off
+                    $('table.schedule_results.daily tr ['+el.attr('type')+'=' + el.attr('uuid') + ']').hide();
+                } else { 
+                    $('table.schedule_results.daily tr ['+el.attr('type')+'=' + el.attr('uuid') + ']').not('.already_hided').show();
+                }
+            }
+        });
+        
+
         
     });
+    
+
+    
 }

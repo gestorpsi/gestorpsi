@@ -1,0 +1,34 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% include "core/ajax_page_list.html" %}
+{% load i18n %}
+
+<script type="text/javascript">
+    bindSchedule();
+</script>
+
+<h2 class="title_schedule">{% trans "Daily view for" %} <a href="#">{% trans "Many Professionals" %}</a> 
+    {% include "schedule/schedule_filter.html" %}
+</h2>
+
+<p class="description">O dia de hoje possui <a href="#">05 consultas</a>, <a href="#">02 retornos</a>, <a href="#">01 reunião</a> e <a href="#">01 treinamento</a>.</p>
+
+
+
+    
+    
+

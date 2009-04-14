@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+from django.template.defaultfilters import slugify
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 from gestorpsi.organization.models import Organization
@@ -38,6 +39,7 @@ class RegistrationForm(RegistrationForm):
 		profile.save()
 		organization = Organization.objects.create( #create organization
 			name = self.cleaned_data['organization'],
+            short_name = slugify(self.cleaned_data['organization']),
 		)
 		default_place = Place.objects.create(         #create default place
 			label = organization.name,                # use same name as label

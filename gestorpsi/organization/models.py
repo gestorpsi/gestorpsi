@@ -127,7 +127,7 @@ class Organization(models.Model):
     # identity
     name = models.CharField(max_length=100)
     trade_name = models.CharField(max_length=100, blank=True)
-    short_name = models.CharField(max_length=20, blank=True, unique=True)
+    short_name = models.CharField(max_length=100, blank=True, unique=True)
     register_number = models.CharField(max_length=100, blank=True)
     cnes = models.CharField(max_length=100, blank=True)
     state_inscription = models.CharField(max_length=30, blank=True)

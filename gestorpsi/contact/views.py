@@ -19,6 +19,7 @@ from django.http import HttpResponse
 from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.conf import settings
+from django.template.defaultfilters import slugify
 from gestorpsi.organization.models import Organization
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
@@ -154,6 +155,7 @@ def save(request, object_id=''):
             object.name = request.POST['label'] # adding by mini form
         except:
             object.name = request.POST['name']
+            object.short_name = slugify(request.POST['name'])
         
         object.organization = user.get_profile().org_active
         

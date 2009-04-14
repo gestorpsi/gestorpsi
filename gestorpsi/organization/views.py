@@ -17,6 +17,7 @@ GNU General Public License for more details.
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from django.template.defaultfilters import slugify
 from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization, ProfessionalResponsible
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
@@ -69,15 +70,16 @@ def save(request):
 		object = Organization.objects.get(pk= user.get_profile().org_active.id)
     except:
         object = Organization()
+        object.short_name = slugify(request.POST['name'])
        
     if (object.short_name != request.POST['short_name']):
         if (Organization.objects.filter(short_name__iexact = request.POST['short_name']).count()):
 	    return HttpResponse("false")
-  
+         
     #identity
     object.name = request.POST['name']
     object.trade_name = request.POST['trade_name']
-    object.short_name = request.POST['short_name']
+    #object.short_name = request.POST['short_name']
     object.register_number = request.POST['register_number']
     object.cnes = request.POST['cnes']
     object.state_inscription = request.POST['state_inscription']

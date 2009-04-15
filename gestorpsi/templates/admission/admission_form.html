@@ -59,7 +59,6 @@ GNU General Public License for more details.
 		<legend>{% trans "Referrals" %}</legend>
         <label>{% trans "How the client heard about this organization?" %}<br />
                 <select name="referral" class="big toggle_parent_label">
-                        <option>Escolha...</option>
                         {% for o in ReferralChoices %}
                                 <option value="{{ o.id }}" label="{{ o.nick }}" {% ifequal o.id object.referral_choice.referral_choice.id %} selected{% endifequal %}>&nbsp;&nbsp;{{ o }}</option>
                         {% endfor %}
@@ -90,7 +89,6 @@ GNU General Public License for more details.
 		<legend>{% trans "Indications" %}</legend>
 		<label>{% trans "Indication done by" %}<br />
 				<select name="indication" class="big toggle_parent_label">
-						<option>Escolha...</option>
                         {% for o in IndicationsChoices %}
                                 <option value="{{ o.id }}" label="{{ o.nick }}" {% ifequal o.id object.indication_choice.indication_choice.id %} selected{% endifequal %}>&nbsp;&nbsp;{{ o }}</option>
                         {% endfor %}

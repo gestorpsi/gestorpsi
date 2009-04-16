@@ -18,6 +18,7 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import permission_required
 from django.conf import settings
 from geraldo.generators import PDFGenerator
 from gestorpsi.client.models import Client, IdRecordSeq
@@ -32,6 +33,7 @@ from gestorpsi.reports.header import header_gen
 from gestorpsi.reports.footer import footer_gen
 
 # list all active clients
+@permission_required('client.client_list', '/')
 def index(request):
     user = request.user
     object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
@@ -49,9 +51,10 @@ def index(request):
                                 'Issuers': Issuer.objects.all(), 
                                 'States': State.objects.all(), 
                                 'MaritalStatusTypes': MaritalStatus.objects.all(), },
-                              context_instance=RequestContext(request)            
+                                context_instance=RequestContext(request)
                               )
 
+@permission_required('client.client_list', '/')
 def list(request, page = 1):
     user = request.user
     object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
@@ -66,6 +69,7 @@ def list(request, page = 1):
 
 
 # add or edit form
+@permission_required('client.client_read', '/')
 def form(request, object_id=''):
     phones    = []
     addresses = []
@@ -93,6 +97,7 @@ def form(request, object_id=''):
                               )
 
 # Save or Update client object
+@permission_required('client.client_write', '/')
 def save(request, object_id=""):
 
     try:
@@ -119,6 +124,7 @@ def delete(request, object_id=""):
     client.save()
     return render_to_response('client/client_index.html', {'clientList': Client.objects.all().filter(clientStatus = '1') })
 
+@permission_required('client.client_list', '/')
 def print_list(request):
     user = request.user
     response = HttpResponse(mimetype='application/pdf')
@@ -131,6 +137,7 @@ def print_list(request):
     report.generate_by(PDFGenerator, filename=response)
     return response
 
+@permission_required('client.client_read', '/')
 def print_record(request, object_id):
     user = request.user
     response = HttpResponse(mimetype='application/pdf')

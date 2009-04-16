@@ -20,6 +20,7 @@ from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.conf import settings
 from django.template.defaultfilters import slugify
+from django.contrib.auth.decorators import permission_required
 from gestorpsi.organization.models import Organization
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
@@ -43,6 +44,7 @@ def list_order(dictionary):
     
     return nl
 
+@permission_required('contacts.contacts_list', '/')
 def index(request):
     user = request.user
     org = user.get_profile().org_active
@@ -78,6 +80,7 @@ def index(request):
                                     )
 
 
+@permission_required('contacts.contacts_list', '/')
 def list(request, page = 1):
     user = request.user
     org = user.get_profile().org_active
@@ -105,6 +108,7 @@ def list(request, page = 1):
                                     )
 
 
+@permission_required('contacts.contacts_read', '/')
 def form(request, object_type='', object_id=''):
     user = request.user
     org = user.get_profile().org_active
@@ -140,8 +144,11 @@ def form(request, object_type='', object_id=''):
                                     'ims': instantMessengers,
                                     'phones': phones,
                                     'addresses': addresses,
-                                     })
+                                     },
+                                     context_instance=RequestContext(request)
+                                     )
 
+@permission_required('contacts.contacts_write', '/')
 def save(request, object_id=''):
     user = request.user
     if request.POST['type'] == 'organization':

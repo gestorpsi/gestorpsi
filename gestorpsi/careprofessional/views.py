@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from django.contrib.auth.decorators import permission_required
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.careprofessional.models import ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
 from gestorpsi.organization.models import Agreement
@@ -31,10 +32,11 @@ PROFESSIONAL_AREAS = (
     ('psycho','Psychologist','CRP'),
     )  
 
+@permission_required('professional.professional_list', '/')
 def index(request):
     user = request.user
     return render_to_response('careprofessional/careprofessional_index.html', {
-                                    'object': CareProfessional.objects.filter(person__organization = user.get_profile().org_active.id),
+                                    'object': CareProfessional.objects.filter(person__organization = user.get_profile().org_active.id).order_by('person__name'),
                                     'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
                                     'licenceBoardTypes': LicenceBoard.objects.all(),
                                     'AgreementTypes': Agreement.objects.all(),
@@ -55,6 +57,7 @@ def index(request):
                               )
   
 
+@permission_required('professional.professional_read', '/')
 def form(request, object_id=''):
     user = request.user
     phones = []

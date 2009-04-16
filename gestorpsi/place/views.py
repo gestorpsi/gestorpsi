@@ -17,6 +17,8 @@ GNU General Public License for more details.
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.core.exceptions import ObjectDoesNotExist
+from django.template import RequestContext
+from django.contrib.auth.decorators import permission_required
 from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, Room, RoomType, PlaceType
 from gestorpsi.address.models import Country, AddressType
@@ -24,6 +26,7 @@ from gestorpsi.address.views import address_save
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.phone.views import phone_save
 
+@permission_required('place.place_list', '/')
 def index(request):
     user = request.user
     return render_to_response( "place/place_index.html", {'object': Place.objects.filter(organization=user.get_profile().org_active.id),
@@ -31,8 +34,8 @@ def index(request):
                                                           'countries': Country.objects.all(),
                                                           'RoomTypes': RoomType.objects.all(),
                                                           'PhoneTypes': PhoneType.objects.all(),
-                                                          'AddressTypes': AddressType.objects.all(), } )
-
+                                                          'AddressTypes': AddressType.objects.all(), },
+                                                          context_instance=RequestContext(request))
 
 def room_list( ids, descriptions, dimensions, room_types, furniture_descriptions ):
     rooms= []
@@ -48,7 +51,7 @@ def room_list( ids, descriptions, dimensions, room_types, furniture_descriptions
                                furniture = furniture_descriptions[i]) )
     return rooms
 
-
+@permission_required('place.place_read', '/')
 def form(request, object_id=''):
     try:
         user = request.user
@@ -74,8 +77,10 @@ def form(request, object_id=''):
                                                         'countries': Country.objects.all(),
                                                         'RoomTypes': RoomType.objects.all(),
                                                         'rooms': rooms,
-                                                        'last_update': last_update, } )
+                                                        'last_update': last_update, },
+                                                        context_instance=RequestContext(request))
 
+@permission_required('place.place_write', '/')
 def save(request, object_id=''):
     user = request.user
     try:

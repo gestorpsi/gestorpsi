@@ -16,11 +16,14 @@ GNU General Public License for more details.
 
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
+from django.contrib.auth.decorators import permission_required
+from django.template import RequestContext
 from gestorpsi.device.models import DeviceDetails, Device
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 from gestorpsi.place.models import Place, Room
 
+@permission_required('device.device_list', '/')
 def index(request):
     """
     Returns details about all currently existing devices.
@@ -31,8 +34,10 @@ def index(request):
     return render_to_response( "device/device_index.html", {'object': Device.objects.all(),
                                                             'organizations': Organization.objects.all(),
                                                             'places': Place.objects.filter(organization=user.get_profile().org_active.id), 
-                                                            'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS } )
+                                                            'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS },
+                                                            context_instance=RequestContext(request))
 
+@permission_required('device.device_read', '/')
 def form(request, object_id= ''):
     user = request.user
     try:
@@ -43,7 +48,8 @@ def form(request, object_id= ''):
                                                           'device_details': device_details,
                                                           'organizations': Organization.objects.all(), 
                                                           'places': Place.objects.filter(organization=user.get_profile().org_active.id),                                                          
-                                                          'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS } )
+                                                          'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS },
+                                                          context_instance=RequestContext(request))
 
 #def form(request, object_id= ''):
 #    """
@@ -72,12 +78,15 @@ def form(request, object_id= ''):
 #                                                          'dc': device_categ, 'dt': device_type,
 #                                                          'list_dvt': list_of_dev_details } )
 
+@permission_required('device.device_list', '/')
 def index_type(request):
-    return render_to_response( "device/device_type_list.html", {'object': Device.objects.all() })   
+    return render_to_response( "device/device_type_list.html", {'object': Device.objects.all() }, context_instance=RequestContext(request))
 
+@permission_required('device.device_read', '/')
 def form_type(request, object_id= ''):
-    return render_to_response('device/device_type_form.html', {'object': get_object_or_404( Device, pk=object_id) } )
+    return render_to_response('device/device_type_form.html', {'object': get_object_or_404( Device, pk=object_id) }, context_instance=RequestContext(request) )
 
+@permission_required('device.device_write', '/')
 def save_device(request, object_id= ''):
     try:
         device= get_object_or_404( Device, pk=object_id)
@@ -90,6 +99,7 @@ def save_device(request, object_id= ''):
     device.save()
     return HttpResponse(device.id)
 
+@permission_required('device.device_write', '/')
 def save(request, object_id='' ):
     """
     This function view creates an instance of the class C{DeviceDetails} with id equals to I{object_id} and
@@ -127,9 +137,6 @@ def save(request, object_id='' ):
     else:
         device_details.prof_restriction = ''
 
-        
-    print "ate aqui ok"
-    
     """ Device Mobility """
     mobility = request.POST['select_mobility_type']
     device_details.mobility = mobility
@@ -153,16 +160,17 @@ def get_visible( value ):
         return False
      
 def delete(request, object_id= ''):
-    """
-    This function view deletes the C{DeviceDetails} which has the id equals to I{object_id}.
-    @param request: this is a request sent by the browser.
-    @type request: an instance of the class C{HttpRequest} created by the framework Django.
-    @param object_id: the id of the C{DeviceDetails} instance to be deleted.
-    @type object_id: an instance of the built-in class c{int}.
-    """
-    try:
-        device_details= get_object_or_404( DeviceDetails, pk=object_id)
-        device_details.delete()
-    except Http404:
-        pass
-    return render_to_response('device/device_form.html', {'list_of_device_details': DeviceDetails.objects.all() })   
+    pass
+#    """
+#    This function view deletes the C{DeviceDetails} which has the id equals to I{object_id}.
+#    @param request: this is a request sent by the browser.
+#    @type request: an instance of the class C{HttpRequest} created by the framework Django.
+#    @param object_id: the id of the C{DeviceDetails} instance to be deleted.
+#    @type object_id: an instance of the built-in class c{int}.
+#    """
+#    try:
+#        device_details= get_object_or_404( DeviceDetails, pk=object_id)
+#        device_details.delete()
+#    except Http404:
+#        pass
+#    return render_to_response('device/device_form.html', {'list_of_device_details': DeviceDetails.objects.all() })

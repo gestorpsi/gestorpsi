@@ -109,3 +109,35 @@ def unblocked_user(user):
             return True
     else:
         return True
+
+"""
++def get_object_or_new(klass, *args, **kwargs):
++    # bitbucket.org/offline/django-annoying/src/tip/annoying/functions.py
++    from django.shortcuts import _get_queryset
++    queryset = _get_queryset(klass)
++    try:
++        return queryset.get(*args, **kwargs)
++    except queryset.model.DoesNotExist:
++        return klass()
++
++def get_object_or_None(klass, *args, **kwargs):
++    from django.shortcuts import _get_queryset
++    queryset = _get_queryset(klass)
++    try:
++        return queryset.get(*args, **kwargs)
++    except queryset.model.DoesNotExist:
++        return None
++
++def unblocked_user(username):
++    user = get_object_or_None(User, username=username)
++    if user == None:
++        return False
++    else:
++        if user.get_profile().try_login >= settings.PASSWORD_RETIRES:
+             return False
+-        else:
++        else:
+             return True
+-    else:
+-        return True
+"""

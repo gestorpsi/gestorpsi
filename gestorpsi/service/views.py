@@ -17,10 +17,13 @@ GNU General Public License for more details.
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import permission_required
+from django.template import RequestContext
 from gestorpsi.service.models import Service, Area, ServiceType, Modality, AreaClinic
 from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure
 from gestorpsi.careprofessional.models import CareProfessional, Profession 
 
+@permission_required('service.service_list', '/')
 def index(request):
     """
     Returns a list that contains all the currently existing services.
@@ -39,9 +42,10 @@ def index(request):
         'Areas': Area.objects.all(),
         'ServiceTypes': ServiceType.objects.all(),
         'Modalitys': Modality.objects.all(),
-        'Professions': Profession.objects.all(),
-        })
+        'Professions': Profession.objects.all(),},
+        context_instance=RequestContext(request))
 
+@permission_required('service.service_read', '/')
 def form(request, object_id=''):
     """
     This function view uses I{forms} to show the information related to the
@@ -66,8 +70,8 @@ def form(request, object_id=''):
         'Areas': Area.objects.all(),
         'ServiceTypes': ServiceType.objects.all(),
         'Modalitys': Modality.objects.all(),
-        'Professions': Profession.objects.all(),
-        } )
+        'Professions': Profession.objects.all(),},
+        context_instance=RequestContext(request) )
 
 def save_clinic(request, object):
     ac = AreaClinic()
@@ -84,6 +88,7 @@ def save_clinic(request, object):
 #    do a lot of things here
 #    return the 'object' saved
 
+@permission_required('service.service_write', '/')
 def save(request, object_id = ''):
     """
     This function view searches for the C{Service} with id equals to I{object_id}, if there is such a
@@ -179,4 +184,4 @@ def disable(request, object_id=''):
         'ServiceTypes': ServiceType.objects.all(),
         'Modalitys': Modality.objects.all(),
         'Professions': Profession.objects.all(),
-        })
+        }, context_instance=RequestContext(request))

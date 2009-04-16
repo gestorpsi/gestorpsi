@@ -17,6 +17,7 @@ GNU General Public License for more details.
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from django.contrib.auth.decorators import permission_required
 from gestorpsi.employee.models import Employee
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.phone.models import PhoneType
@@ -25,6 +26,7 @@ from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.person.views import person_save
 
+@permission_required('employee.employee_list', '/')
 def index(request):
     """
     This view function returns a list that contains all employees currently in the system.
@@ -34,7 +36,7 @@ def index(request):
     user = request.user
     
     return render_to_response('employee/employee_index.html',
-                            {'object': Employee.objects.filter(person__organization = user.get_profile().org_active.id, active = True), 
+                            {'object': Employee.objects.filter(person__organization = user.get_profile().org_active.id, active=True).order_by('person__name'),
                             'countries': Country.objects.all(), 
                             'PhoneTypes': PhoneType.objects.all(), 
                             'AddressTypes': AddressType.objects.all(), 
@@ -47,6 +49,7 @@ def index(request):
                               context_instance=RequestContext(request)
                               )
 
+@permission_required('employee.employee_read', '/')
 def form(request, object_id= ''):
     """
     This function view creates an employee form. If the object_id has a value, this form will be fill with employee information.
@@ -79,6 +82,7 @@ def form(request, object_id= ''):
                               context_instance=RequestContext(request)
                               )
 
+@permission_required('employee.employee_write', '/')
 def save(request, object_id= ''):
     """
     This function view saves an employees, its address and phones.

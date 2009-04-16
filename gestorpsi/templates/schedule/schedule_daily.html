@@ -16,13 +16,6 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<div id="search_header">
-    <h2><a class="json_ocorrences prev_day" href="{% url schedule-daily-occurrences prev_day.year prev_day.month prev_day.day %}" id="nav_back"></a>
-    <span class="date_selected"></span>
-    <a class="json_ocorrences next_day" href="{% url schedule-daily-occurrences next_day.year next_day.month next_day.day %}" id="nav_fwd"></a>
-    </h2>	
-</div>
-
 <table class="schedule_results daily zebra" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <th class="schedule"></th>

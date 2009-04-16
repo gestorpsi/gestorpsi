@@ -14,59 +14,12 @@ GNU General Public License for more details.
 
 {% endcomment %}
 
-<div class="adressbook_events">
-    <div id="search_header">
-        <h2><a class="json_ocorrences prev_day" href="{% url schedule-daily-occurrences prev_day.year prev_day.month prev_day.day %}" id="nav_back"></a>
-        <span class="date_selected"></span>
-        <a class="json_ocorrences next_day" href="{% url schedule-daily-occurrences next_day.year next_day.month next_day.day %}" id="nav_fwd"></a>
-        </h2>	
-    </div>
-
-    <table class="zebra schedule_results" >
+<div class="schedule_events">
+    <table class="zebra schedule_results events" >
     <tr>
         <th class="tiny">Sala</th>
         <th class="small">hora</th>
         <th>detalhe dos eventos</th>
-        </tr>
-    <tr>
-        <td>Sala 1</td>
-
-        <td><span class="time">8:00 8:30 </span>      </td>
-        <td><div class="color15">
-			Maria de Lourdes dos Santos Silva &gt;&gt; primeira consulta 
-(Dr Ant&ocirc;nio Almeida da Silva)</div>
-            
-			
-			
-		        </td>
-        </tr>
-    <tr>
-
-        <td>Sala 1</td>
-        <td><span class="time">16:00 16:45</span></td>
-        <td><div class="color10">Florentino Ariza &gt;&gt; consulta 
-(Dra Patr&iacute;cia Gon&ccedil;alves Dias)</div></td>
-    </tr>
-    <tr>
-
-        <td>Sala 2</td>
-        <td><span class="time">10:30 11:00</span></td>
-        <td><div class="color22">Genovésio Cantareira &gt;&gt; consulta
-(Dra Silvia Priscila Pedra)</div></td>
-    </tr>
-    <tr>
-        <td>Sala 2</td>
-
-        <td><span class="time">14:00 15:00</span></td>
-        <td><div class="color15">Adailton Botta &gt;&gt; consulta 
-(Dr Ant&ocirc;nio Almeida da Silva)</div></td>
-    </tr>
-    <tr>
-        <td>Sala 2</td>
-        <td><span class="time">16:00 16:30</span></td>
-
-        <td><div class="color10">Gilberto Morrone  &gt;&gt; consulta 
-(Dra Patr&iacute;cia Gon&ccedil;alves Dias)</div></td>
     </tr>
     </table>
 </div>

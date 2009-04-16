@@ -228,6 +228,8 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
             'id': o.id,
             'event_id': o.event.id,
             'room': o.room_id,
+            'place': o.room.place_id,
+            'room_name': ("%s" % o.room),
             'service_id':o.event.referral.service.id,
             'service':o.event.referral.service.name,
             'css_color_class':o.event.referral.service.css_color_class,

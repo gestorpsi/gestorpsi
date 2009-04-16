@@ -35,10 +35,12 @@ var dialog_options = {
 
 var occupied_css_class = 'occup';
 
+/** 
+* daily and events
+* get data from json vand put on the schedule daily grid
+*/
+
 function updateGrid(url) {
-    /** 
-    * get data from json vand put on the schedule daily grid
-    */
 
     $('table.schedule_results.daily tr td.clean').attr('class','clean'); // remove class from lastest event
     $('table.schedule_results.daily tr td.clean a.booked').remove(); // remove booked events
@@ -54,6 +56,7 @@ function updateGrid(url) {
     });
     
     $('table.schedule_results.daily tr td.clean a.book').show(); // reset grid to free slots on all
+    $('div.schedule_events table.events tr:not(:first)').remove(); // clean events
 
     $.getJSON(url, function(json) {
         $('div.schedule span.date_selected').text(json['util']['str_date']); // switch selected date
@@ -67,30 +70,57 @@ function updateGrid(url) {
         $('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/');
         jQuery.each(json,  function(){
             if(this.start_time) {
-                var str_client = ''; var str_professional = ''; var str_service = '';
+                
+                var str_client = '';
+                var str_client_inline = ''; 
+                var str_professional = ''; 
+                var str_professional_inline = ''; 
+                var str_service = '';
+                var str_service_inline = '';
+                
+                /** 
+                 * start daily occurrence
+                 */
+                
                 var col = $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+']');
                 
-                col.addClass('clean'); // required
-                col.addClass('color' + this.css_color_class); // service color
+                /** 
+                 * start occurrence event
+                 */
+                
+                event_line = '<tr><td>'+this.room_name+'</td><td><span class="time">'+this.start_time+'</span></td><td><div></div></td></tr>';
+                $('div.schedule_events table.events tr:last').after(event_line);
+                event = $('div.schedule_events table.events tr:last');
                 
                 //append client list
                 jQuery.each(this.client,  function(){
                     str_client = str_client + this.name + "<br />";
+                    str_client_inline = str_client_inline + this.name + ' ';
                 });
 
                 //append professional list
                 jQuery.each(this.professional,  function(){
                     str_professional = str_professional + this.name + "<br />" ;
+                    str_professional_inline = str_professional_inline + this.name + " " ;
                     col.addClass('professional_' + this.id); // professionals in cell
+                    event.addClass('professional_' + this.id); // professionals in events
                 });
 
                 //append service
                 str_service = '>>' + this.service + '<br />';
+                str_service_inline = ' >> ' + this.service;
                 
+                label = str_client + str_service + str_professional;
+                label_inline = str_client_inline + str_service_inline + '(' + str_professional_inline + ')';
+
+                /**
+                 * populate daily view
+                 */
+                
+                col.addClass('clean'); // required
+                col.addClass('color' + this.css_color_class); // service color
                 col.addClass('service_' + this.service_id); // service from cell
-
-                label = str_client + str_service + str_professional
-
+                
                 // for occurrences greater than half-hour, change table rowspan
                 if (this.rowspan > 1) {
                     // we need to remove next TD's if last rowspan is greater than 1
@@ -103,6 +133,18 @@ function updateGrid(url) {
 
                 $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').hide(); // hide free slot 
                 $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" occurrence="' + this.id + '" class="booked">' + label + '</a>'); // show booked event
+                
+
+                /**
+                 * populate events view
+                 */
+                
+                event.children('td').children('div').addClass('color' + this.css_color_class); // service color
+                event.addClass('room_' + this.room); // service color
+                event.addClass('place_' + this.place); // service color
+                event.addClass('service_' + this.service_id); // service from cell
+                $(event).children('td').children('div').html('<a title="'+json['util']['str_date']+'" occurrence="' + this.id + '" class="booked">' + label_inline + '</a>');
+                
                 }
             });
             
@@ -112,12 +154,14 @@ function updateGrid(url) {
             var class_name = '';
             
             // service and professional
-            $('div.filter:not(.incols) a.filter_by').each(function() {
+            //$('div.filter:not(.incols) a.filter_by').each(function() {
+            $('div.filter a.filter_by').each(function() {
                 var el = $(this);
                 if(el.attr('status') == 'off' && el.attr('type')) {
                     class_name = el.attr('type') + '_' + el.attr('uuid');
                     $('table.schedule_results.daily tr td.'+class_name + ' a.booked').hide();
                     $('table.schedule_results.daily tr td.'+class_name).addClass(occupied_css_class);
+                    $('table.schedule_results.events tr.'+class_name).hide();
                 }
             });
             
@@ -155,6 +199,11 @@ function updateGrid(url) {
     return false;
 }
 
+/**
+ * schedule:
+ * bind all schedule functions
+ */
+
 function bindSchedule() {
     // dialog box
     $('div#dialog').dialog(dialog_options);
@@ -186,7 +235,12 @@ function bindSchedule() {
         $(filter).toggle();
     });
     
-    // filter menu. Re-draw the filter menu if item clicked
+    
+    /**
+     * filter links:
+     * Re-draw the filter menu if item clicked
+     */
+
     $('div.schedule a.filter_by').unbind().click(function() {
         var all_selected = $(this).parents('table').children('tbody').children('tr').children('td.all').children('a');
         var all = $(this).parents('table').children('tbody').children('tr').children('td').children('a');
@@ -231,7 +285,12 @@ function bindSchedule() {
             }
         }
         
-        // filter rooms when if select place in filter menu
+        
+        /**
+         * filter links:
+         * filter rooms when if select place in filter menu
+         */
+        
         if($(this).attr('type') == 'place') {
             $('div.schedule div.place a.filter_by').each(function() {
                 if($(this).hasClass('all') && $(this).attr('status') == 'on') {
@@ -255,38 +314,67 @@ function bindSchedule() {
             });
         }
         
-        // read the filter menu status, and rebuild the data grid (service and professional)
+        
+        /**
+         * daily and events view:
+         * read the filter menu status, and rebuild the data grid (service and professional)
+         */
+        
         var count = 0;
         var class_name = '';
         $('table.schedule_results.daily tr td').attr('norewrite','false');
+        $('table.schedule_results.events tr').attr('norewrite','false');
 
-        $(this).parents('div').not('.incols').children('table').children('tbody').children('tr').children('td').children('a').each(function() {
+        $(this).parents('div').children('table').children('tbody').children('tr').children('td').children('a').each(function() {
             var el = $(this);
             if(el.attr('status') && el.attr('type') && el.attr('uuid')) {
                 class_name = el.attr('type') + '_' + el.attr('uuid');
                 if(el.attr('status') == 'off') { // switch off
-                    if(el.attr('type') == 'service') {
+                    if(el.attr('type') == 'service') { // service can overwrite other filters ..
+                        // daily
                         $('table.schedule_results.daily tr td.' + class_name + ' a.booked').hide();
                         $('table.schedule_results.daily tr td.' + class_name).addClass(occupied_css_class);
                         $('table.schedule_results.daily tr td.' + class_name).attr('locked', 'on');
+                        // events
+                        $('table.schedule_results.events tr.' + el.attr('type') + '_' + el.attr('uuid')).hide();
+                        $('table.schedule_results.events tr.' + el.attr('type') + '_' + el.attr('uuid')).attr('locked', 'on');
                     } else {
+                        // daily
                         $('table.schedule_results.daily tr td.' + class_name).each(function() {
                                 if($(this).attr('locked') != 'on' && $(this).attr('norewrite') != 'true') {
                                     $(this).children('a.booked').hide();
                                     $(this).addClass(occupied_css_class);
                                 }
                             });
+                        // events
+                        $('table.schedule_results.events tr.' + el.attr('type') + '_' + el.attr('uuid')).each(function() {
+                                if($(this).attr('locked') != 'on' && $(this).attr('norewrite') != 'true') {
+                                    $(this).hide();
+                                }
+                            });
                     }
                 } else { // switch on
-                    if(el.attr('type') == 'service') {
+                    if(el.attr('type') == 'service') { // service can overwrite other filters ..
+                        // daily
                         $('table.schedule_results.daily tr td.' + class_name + ' a.booked').show();
                         $('table.schedule_results.daily tr td.' + class_name).removeClass(occupied_css_class);
                         $('table.schedule_results.daily tr td.' + class_name).attr('locked', 'off');
+                        // events
+                        $('table.schedule_results.events tr.' + el.attr('type') + '_' + el.attr('uuid')).show();
+                        $('table.schedule_results.events tr.' + el.attr('type') + '_' + el.attr('uuid')).attr('locked', 'off');
                     } else {
+                        // daily
                         $('table.schedule_results.daily tr td.' + class_name).each(function() {
                             if($(this).attr('locked') != 'on') {
                                 $(this).children('a.booked').show();
                                 $(this).removeClass(occupied_css_class);
+                                $(this).attr('norewrite','true');
+                            }
+                        });
+                        // events
+                        $('table.schedule_results.events tr.' + el.attr('type') + '_' + el.attr('uuid')).each(function() {
+                            if($(this).attr('locked') != 'on') {
+                                $(this).show();
                                 $(this).attr('norewrite','true');
                             }
                         });
@@ -296,13 +384,21 @@ function bindSchedule() {
         });
         
         
-        // read rooms and places filter menu, and hide (or show) cols
+        /**
+         *  daily view: 
+         *  read rooms and places filter menu, and hide (or show) cols
+         */
+     
         $('div.room tr.room_itens a.filter_by').each(function() {
             var el = $(this);
             if(el.attr('status') && el.attr('type') && el.attr('uuid')) {
                 if(el.attr('status') == 'off') { // switch off
+                    // daily
                     $('table.schedule_results.daily tr ['+el.attr('type')+'=' + el.attr('uuid') + ']').hide();
-                } else { 
+                    // events
+                    $('table.schedule_results.events tr.'+el.attr('type')+'_' + el.attr('uuid')).hide();
+                } else {
+                    // daily
                     $('table.schedule_results.daily tr ['+el.attr('type')+'=' + el.attr('uuid') + ']').not('.already_hided').show();
                 }
             }

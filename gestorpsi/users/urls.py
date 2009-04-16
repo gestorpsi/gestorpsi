@@ -15,9 +15,8 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from django.contrib.auth.decorators import login_required
-from gestorpsi.users.views import index, print_record, form
-    #, list, form, save, delete, print_list, print_record
+#from django.contrib.auth.decorators import login_required
+from gestorpsi.users.views import index, form
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
@@ -31,5 +30,5 @@ urlpatterns = patterns('',
     #(r'^(?P<object_id>\d+)/delete/$', login_check(delete)), # delete object
     #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/delete/$', login_check(delete)),  #delete object
     #(r'^print/$', login_required(print_list)), # print client list
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/print/$', login_required(print_record)),  # print record
+    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/print/$', login_required(print_record)),  # print record
 )

@@ -98,8 +98,9 @@ GNU General Public License for more details.
                         -->
                         
                        <td>
+                            {% trans "Is Active" %}: {{ l.user.is_active }}
                         <br />
-                        <span class="email">{{ l.email }}</span>
+                        <span class="email">{% trans "Last Login" %}: {{ l.user.last_login|date:"d/m/Y H:i" }}</span>
                        </td>
                 </tr>
                 {% endfor %}

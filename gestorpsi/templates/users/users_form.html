@@ -1,0 +1,113 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+{% include "core/ajax_page_form.html" %}
+{% include "core/ajax_page_list.html" %}
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+{% if object.id %}
+	<div class="edit_form">
+	<h2 class="title_clients title">{{ object.person.name }}</h2>
+	<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a><br />	
+{% else %}
+	<h2 class="title_clients title">{% trans "Adding New Client" %}</h2>
+	<p class="description">{% trans "Inform the client details then click on Save button" %}</p>
+{% endif %}
+
+</p>
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
+
+<form action="/client/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_client" class="form_people collapsable form_client">	
+<div class="main_area">
+
+	<a href="" id="help">&nbsp;</a>
+	<!-- DataTypes form menu -->
+	<h3><span id="client_add_infotypes">{% trans "User registration" %}</span></h3>
+	<ul id="form_options" class="float_menu" style="display:none;">
+		<li><label><input name="this" type="radio" value="" checked/>{% trans "User registration" %}</label></li>
+	</ul>
+
+<fieldset>
+        <legend>{% trans "Personal Identification" %}</legend>
+                <label>{% trans "Name" %}<br />
+                    <input type="text" name="name" class="big tabtitle" value="{{ object }}" readonly="1"/>
+                </label>
+
+                <label>{% trans "Login" %}<br />
+                    <input type="text" name="login" class="big" value="{{ login }}" id="id_nickname"readonly="1"/>
+                </label>
+</fieldset>
+
+<fieldset>
+        <legend>{% trans "Emails" %}</legend>
+         <label>{% trans "Select one e-mails address for receive the invete" %}<br />
+                {% if not emails %}
+                        <input type="text" value="Don't have a e-mail address in register">
+                {% else %}
+                      <select name="address_email" id="address_email">
+                        {% for email in emails %}
+                                <option value="{{ email }}">&nbsp;{{ email }}&nbsp;</option>
+                        {% endfor %}
+                      </select>
+                {% endif %}
+</fieldset>
+
+<fieldset>
+        <legend>{% trans "Validade" %}</legend>
+        <label>{% trans "Validade" %}<br />
+        <input type="text" class="calendar" name="validade" value="{{ object.person.birthDate|date:"d/m/Y" }}" mask="99/99/9999" />
+</fieldset>
+
+<fieldset>
+        <legend>{% trans "Access" %}</legend>
+	    <h2 class="title_clients title">Access</h2>
+        <p> 
+            <input type="checkbox" id="1" value="administrator">Administrator
+        </p>
+        <p>
+            <input type="checkbox" id="2" value="manager">Manager
+        </p>
+        <p>
+            <input type="checkbox" id="3" value="supervisor">Supervisor
+        </p>
+        <p>
+            <input type="checkbox" id="4" value="secretary">Secretary
+        </p>
+</fieldset>
+	
+	<!-- {% include "meta/people.html" %}
+    {% include "meta/people_indentification.html" %}
+    {% include "meta/internet.html" %} -->
+
+<br />	
+</div>
+
+<div id="sidebar" class="sidebar">
+	<div class="bg_blue">
+		{% include "tags/save.html" %}
+	</div>
+</div>
+
+
+</form>
+
+{% include "tags/upload.html" %}
+{% if object.id %}
+</div> <!-- edit_form -->
+{% endif %}

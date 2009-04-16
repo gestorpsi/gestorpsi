@@ -14,7 +14,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
@@ -34,19 +33,18 @@ class RegistrationForm(RegistrationForm):
     organization = forms.CharField(label=_('Organization'), help_text=_('Name of your organization'))
 
     def save(self):
-		user = super(RegistrationForm, self).save() #create user
-		profile = Profile(user=user)
-		profile.save()
-		organization = Organization.objects.create( #create organization
-			name = self.cleaned_data['organization'],
+        user = super(RegistrationForm, self).save() #create user
+        profile = Profile(user=user)
+        profile.save()
+        organization = Organization.objects.create( #create organization
+            name = self.cleaned_data['organization'],
             short_name = slugify(self.cleaned_data['organization']),
-		)
-		default_place = Place.objects.create(         #create default place
-			label = organization.name,                # use same name as label
-			place_type = PlaceType.objects.get(pk=1), # mandatory field, so, get first place type
-			organization = organization, # link place to this organization
-		)
-		profile.organization.add(organization) #link organization to profile
-		profile.org_active = organization #set org as active
-		profile.save() #save it
-        
+        )
+        default_place = Place.objects.create(         #create default place
+            label = organization.name,                # use same name as label
+            place_type = PlaceType.objects.get(pk=1), # mandatory field, so, get first place type
+            organization = organization, # link place to this organization
+        )
+        profile.organization.add(organization) #link organization to profile
+        profile.org_active = organization #set org as active
+        profile.save() #save it

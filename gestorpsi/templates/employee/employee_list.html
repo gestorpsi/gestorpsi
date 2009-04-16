@@ -93,7 +93,7 @@ GNU General Public License for more details.
                 <tr id="{{ l.id }}">
         
                         <!--<td><a href="">{{ l.name }}</a></td>-->
-                        <td class="title"><a href="/employee/{{ l.id }}/" title="{{ l.person.name }}">{{ l.person.name }}</a></td>
+                        <td class="title">{% if perms.employee.employee_read %}<a href="/employee/{{ l.id }}/" title="{{ l.person.name }}">{{ l.person.name }}</a>{% else %}{{ l.person.name }}{% endif %}</td>
                         <!--
                         <strong>[</strong><small><a href="">Delete</a></small><strong>]</strong> <br>
                         <td>(11) 2301 0751</td>

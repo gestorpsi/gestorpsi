@@ -40,9 +40,8 @@ GNU General Public License for more details.
                         <tbody> 
                         {% for o in object %}
                         <tr id="{{ o.id }}">
-                
                                 <!--<td><a href="">{{ l.name }}</a></td>-->
-                                <td><a href="/place/{{ o.id }}/" title="{{ o }}">{{ o }}</a></td>
+                                <td>{% if perms.place.place_read %}<a href="/place/{{ o.id }}/" title="{{ o }}">{{ o }}</a>{% else %}{{ o }}{% endif %}</td>
                                 <!--
                                 <strong>[</strong><small><a href="">Delete</a></small><strong>]</strong> <br>
                                 <td>(11) 2301 0751</td>
@@ -52,7 +51,6 @@ GNU General Public License for more details.
                                <span class="email">{{ o.get_first_email }}</span>
                                </td>
                                 <td class="icons">&nbsp;</td>
-                               
                         </tr>
                         {% endfor %}
                         </tbody>

@@ -155,10 +155,12 @@ GNU General Public License for more details.
 </div>
 
 <div id="sidebar" class="sidebar">
-	<div class="bg_blue">
-		<input type="hidden" name="place" value="{{ device_details.id }}" />
-		{% include "tags/save.html" %}
-	</div>
+    {% if perms.device.device_write %}
+    	<div class="bg_blue">
+        	<input type="hidden" name="place" value="{{ device_details.id }}" />
+            {% include "tags/save.html" %}
+        </div>
+    {% endif %}
 </div>
 
 </form>

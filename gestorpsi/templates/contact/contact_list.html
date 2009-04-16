@@ -44,7 +44,7 @@ GNU General Public License for more details.
 			{% for o in object.object_list %}
 				<tr id="{{ o.0 }}">
 					<td class="title">
-						<a href="/contact/{{ o.4 }}/{{ o.0 }}/" title="{{ o.1 }}">{{ o.1 }}</a><br />
+						{% if perms.contacts.contacts_read %}<a href="/contact/{{ o.4 }}/{{ o.0 }}/" title="{{ o.1 }}">{{ o.1 }}</a>{% else %}{{ o.1 }}{% endif %}<br />
 					</td>
 					<td>
 						{{ o.3 }}<br />{{ o.2 }}

@@ -42,7 +42,7 @@ GNU General Public License for more details.
                         {% for dev_det in o.get_all_device_details %}
 				<tr>
 				 <td display="device_{{ o.id }}">{{ o.description }}</td>
-                                 <td class="sub_item" ><a href="/device/{{ dev_det.id }}" title="{{ dev_det }}">{{ dev_det.brand }} </a></td>
+                                 <td class="sub_item" >{% if perms.device.device_read %}<a href="/device/{{ dev_det.id }}" title="{{ dev_det }}">{{ dev_det.brand }}</a>{% else %}{{ dev_det.brand }}{% endif %}</td>
  				</tr>
                         {% endfor %}
                 {% endfor %}

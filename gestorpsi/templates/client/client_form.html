@@ -44,17 +44,18 @@ GNU General Public License for more details.
 		<li><label><input name="this" type="radio" value="" />{% trans "Socio-Demographic" %}</label></li>
 		<li><label><input name="this" type="radio" value="" />{% trans "Socio-Economic" %}</label></li>
 	</ul>
-	
-	
-	{% include "meta/people.html" %}
+
+    {% include "meta/people.html" %}
 
 <br />	
 </div>
 
 <div id="sidebar" class="sidebar">
-	<div class="bg_blue">
-		{% include "tags/save.html" %}
-	</div>
+    {% if perms.client.client_write %}
+        <div class="bg_blue">
+            {% include "tags/save.html" %}
+        </div>
+    {% endif %}
 	<div class="people_actions" {% if not object.id %}style="display:none"{% endif %}>	
 	<h3>{% trans 'Object Actions' %}</h3>
 	<ul>

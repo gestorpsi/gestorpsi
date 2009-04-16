@@ -88,9 +88,8 @@ GNU General Public License for more details.
                 <tbody>           
                 {% for l in object.object_list %}
                 <tr id="{{ l.id }}">
-        
                         <!--<td><a href="">{{ l.name }}</a></td>-->
-                        <td class="title"><a href="/client/{{ l.id }}/" title="{{ l.person.name }}">{{ l.person.name }}</a></td>
+                        <td class="title">{% if perms.client.client_read %}<a href="/client/{{ l.id }}/" title="{{ l.person.name }}">{{ l.person.name }}</a>{% else %}{{ l.person.name }}{% endif %}</td>
                         
                         <!--
                         <strong>[</strong><small><a href="">Delete</a></small><strong>]</strong> <br>
@@ -101,7 +100,7 @@ GNU General Public License for more details.
                        <br />
                        <span class="email">{{ l.person.get_first_email }}</span>
                        </td>
-                        <td><a class="admission admit" href="/admission/{{ l.id }}/" title="{{ l.person.name }}"><img src="/media/img/22/ico_reg.png" alt="{% trans "Admission" %}"></a></td>
+                        <td>{% if perms.client.client_read %}<a class="admission admit" href="/admission/{{ l.id }}/" title="{{ l.person.name }}"><img src="/media/img/22/ico_reg.png" alt='{% trans "Admission" %}'></a>{% endif %}</td>
                 </tr>
                 {% endfor %}
                 </tbody>

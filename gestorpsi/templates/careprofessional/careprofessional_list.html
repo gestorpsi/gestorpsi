@@ -92,7 +92,7 @@ GNU General Public License for more details.
                 {% for l in object %}
                 <tr id="{{ l.id }}">
                         <!--<td><a href="">{{ l.name }}</a></td>-->
-                        <td><a href="/careprofessional/{{ l.id }}/" title="{{ l.person.name }}">{{ l.person.name }}</a></td>
+                        <td>{% if perms.professional.professional_read %}<a href="/careprofessional/{{ l.id }}/" title="{{ l.person.name }}">{{ l.person.name }}</a>{% else %}{{ l.person.name }}{% endif %}</td>
                         
                         <td><span class="phone">{{ l.person.get_first_phone }}</span>
                         <br />

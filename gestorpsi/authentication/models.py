@@ -26,4 +26,7 @@ class Profile(models.Model):
     
     objects = UserManager()
 
+    def __unicode__(self):
+        return u"%s" % self.user.username
+
 

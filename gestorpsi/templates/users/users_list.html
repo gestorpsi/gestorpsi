@@ -98,7 +98,8 @@ GNU General Public License for more details.
                         -->
                         
                        <td>
-                            {% trans "Is Active" %}: {{ l.user.is_active }}
+                            <!-- {% trans "Is Active" %}: {{ l.user.is_active }} -->
+                            {{ l.user.is_active|yesno:"Usuário Ativo, Usuário Inativo" }}
                         <br />
                         <span class="email">{% trans "Last Login" %}: {{ l.user.last_login|date:"d/m/Y H:i" }}</span>
                        </td>

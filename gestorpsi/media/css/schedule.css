@@ -225,22 +225,22 @@ div#mini_calendar {
     margin-left: 12px;
 }
 
-#main_area.adressbook_montly, #main_area.adressbook_events {
+#main_area.adressbook_montly, #main_area.schedule_events {
 	border: none;
     background: #FFFFFF;
     width: 930px;
 }
-.adressbook_montly table, .adressbook_events table {
+.adressbook_montly table, .schedule_events table {
 	width: 100%;
 }
 .adressbook_montly td {
     height: 100px;
     vertical-align: top;
 }
-.adressbook_events td {
+.schedule_events td {
 	min-width: 50px;
 }
-.adressbook_montly th, .adressbook_events th {
+.adressbook_montly th, .schedule_events th {
 	border-bottom: 2px solid #FFFFFF;
     height: 20px;
     vertical-align: top;

@@ -154,8 +154,7 @@ function updateGrid(url) {
             var class_name = '';
             
             // service and professional
-            //$('div.filter:not(.incols) a.filter_by').each(function() {
-            $('div.filter a.filter_by').each(function() {
+            $('div.filter:not(.incols) a.filter_by').each(function() {
                 var el = $(this);
                 if(el.attr('status') == 'off' && el.attr('type')) {
                     class_name = el.attr('type') + '_' + el.attr('uuid');

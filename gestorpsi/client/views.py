@@ -22,6 +22,7 @@ from django.contrib.auth.decorators import permission_required
 from django.conf import settings
 from geraldo.generators import PDFGenerator
 from gestorpsi.organization.models import Organization
+from gestorpsi.client.models import Client
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType

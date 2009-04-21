@@ -366,7 +366,7 @@ DROP TABLE client_client CASCADE;
 CREATE TABLE "client_client_crypt" (
     "id" varchar(36) NOT NULL PRIMARY KEY,
     "person_id" varchar(36) NOT NULL UNIQUE REFERENCES "person_person_crypt" ("id") DEFERRABLE INITIALLY DEFERRED,
-    "idRecord" varchar(250) NOT NULL,
+    "idRecord" integer() NOT NULL,
     "legacyRecord" varchar(250) NOT NULL,
     "healthDocument" varchar(250) NOT NULL,
     "admission_date" date,

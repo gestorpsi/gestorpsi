@@ -133,6 +133,7 @@ class Organization(models.Model):
     state_inscription = models.CharField(max_length=30, blank=True)
     city_inscription = models.CharField(max_length=30, blank=True)
     professionalResponsible = models.ForeignKey(ProfessionalResponsible, null=True, blank=True)
+    last_id_record = models.PositiveIntegerField(default=0)
             # subscriptions_professional_institutional = models.CharField(max_length=100, blank=True)
             # professional_responsible = models.CharField(max_length=100, blank=True) 
     

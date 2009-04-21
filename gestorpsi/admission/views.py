@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
-from gestorpsi.client.models import Client, PersonLink, Relation, IdRecordSeq
+from gestorpsi.client.models import Client, PersonLink, Relation
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
 from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
@@ -36,7 +36,6 @@ def form(request, object_id=''):
         'ReferralChoices': ReferralChoice.objects.all(),
         'IndicationsChoices': IndicationChoice.objects.all(),
         'Relations': Relation.objects.all(),
-        'IdRecord': get_object_or_404(IdRecordSeq, uid=object_id),
     })
 
 def is_responsible(value):

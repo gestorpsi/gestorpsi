@@ -61,9 +61,4 @@ def save(request, object_id=0):
     object.person = person_save(request, person)
     object.save()
 
-    """ Id Record """
-    idr = IdRecordSeq()
-    idr.uid = object.id
-    idr.save()
-
     return HttpResponse(object.id)

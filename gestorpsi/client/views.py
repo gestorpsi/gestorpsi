@@ -21,7 +21,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import permission_required
 from django.conf import settings
 from geraldo.generators import PDFGenerator
-from gestorpsi.client.models import Client, IdRecordSeq
+from gestorpsi.organization.models import Organization
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
@@ -99,6 +99,7 @@ def form(request, object_id=''):
 # Save or Update client object
 @permission_required('client.client_write', '/')
 def save(request, object_id=""):
+    user = request.user
 
     try:
         object = get_object_or_404(Client, pk=object_id)
@@ -107,13 +108,14 @@ def save(request, object_id=""):
         object = Client()
         person = Person()
 
+    ''' Id Record '''
+    org = get_object_or_404( Organization, pk=user.get_profile().org_active.id )
+    object.idRecord = org.last_id_record + 1
+    org.last_id_record = org.last_id_record + 1
+
+    org.save()
     object.person = person_save(request, person)
     object.save()
-
-    """ Id Record """
-    idr = IdRecordSeq()
-    idr.uid = object.id
-    idr.save()
 
     return HttpResponse(object.id)
 

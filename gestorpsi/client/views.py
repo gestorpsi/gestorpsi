@@ -108,13 +108,12 @@ def save(request, object_id=""):
     except Http404:
         object = Client()
         person = Person()
+        ''' Id Record '''
+        org = get_object_or_404( Organization, pk=user.get_profile().org_active.id )
+        object.idRecord = org.last_id_record + 1
+        org.last_id_record = org.last_id_record + 1
+        org.save()
 
-    ''' Id Record '''
-    org = get_object_or_404( Organization, pk=user.get_profile().org_active.id )
-    object.idRecord = org.last_id_record + 1
-    org.last_id_record = org.last_id_record + 1
-
-    org.save()
     object.person = person_save(request, person)
     object.save()
 

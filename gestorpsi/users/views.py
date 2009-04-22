@@ -19,7 +19,11 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.conf import settings
+from django.template.defaultfilters import slugify
+from django.contrib.auth.models import User, Group
+from registration.models import RegistrationProfile
 from gestorpsi.authentication.models import Profile
+from gestorpsi.person.models import Person
 
 def index(request):
     user = request.user
@@ -43,11 +47,47 @@ def list(request, page=1):
 
 def form(request, object_id=0):
     object = get_object_or_404(Profile, pk=object_id)
-
     return render_to_response('users/users_form.html', {
                                 'object': object,
-                                'emails': ['fdsfd@fsdfds.com','cxvxcvxcvcxvcxvvxc@fsdfds.com'], },
+                                'emails': object.person.emails.all(), },
                                 context_instance=RequestContext(request))
+
+def form_new_user(request, object_id=''):
+    object = Profile()
+    object.person = get_object_or_404(Person, pk=object_id)
+    object.user = User(username=slugify(object.person.name))
+    return render_to_response('users/users_form.html', {
+                                'object': object,
+                                'emails': object.person.emails.all(), },
+                                context_instance=RequestContext(request))
+
+def create_user(request, object_id):
+    person = get_object_or_404(Person, pk=object_id)
+    organization = request.user.get_profile().org_active
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    pwd_conf = request.POST.get('pwd_conf')
+    email = request.POST.get('email')
+    permissions = request.POST.getlist('perms')
+
+    if password == pwd_conf:
+        user = RegistrationProfile.objects.create_inactive_user(username, password, email)
+        profile = Profile(user=user)
+        profile.org_active = organization
+        profile.person = person
+        profile.save()
+        profile.organization.add(organization)
+
+        if permissions.count('administrator'):
+            profile.user.groups.add(Group.objects.get(name='administrator'))
+        if permissions.count('psychologist'):
+            profile.user.groups.add(Group.objects.get(name='psychologist'))
+        if permissions.count('secretary'):
+            profile.user.groups.add(Group.objects.get(name='secretary'))
+        if permissions.count('client'):
+            profile.user.groups.add(Group.objects.get(name='client'))
+
+    return HttpResponse("/")
 
 def save(request, object_id=0):
 

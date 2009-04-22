@@ -16,13 +16,15 @@ GNU General Public License for more details.
 
 from django.db import models
 from gestorpsi.organization.models import Organization
+from gestorpsi.person.models import Person
 from django.contrib.auth.models import User, UserManager
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, unique=True)
+    user = models.OneToOneField(User, unique=True)
     organization = models.ManyToManyField(Organization, null=True)
     try_login = models.IntegerField(default = 0, null=True)
-    org_active = models.OneToOneField(Organization, related_name="org_active", null=True)
+    org_active = models.ForeignKey(Organization, related_name="org_active", null=True)
+    person = models.OneToOneField(Person, null=True)
     
     objects = UserManager()
 

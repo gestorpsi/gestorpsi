@@ -33,7 +33,7 @@ GNU General Public License for more details.
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
 
-<form action="/client/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_client" class="form_people collapsable form_client">	
+<form action="/users/{% if object.person %}{{ object.person.id }}/{% endif %}save/" method="post" id="form_client" class="form_people collapsable form_client">	
 <div class="main_area">
 
 	<a href="" id="help">&nbsp;</a>
@@ -46,12 +46,20 @@ GNU General Public License for more details.
 <fieldset>
         <legend>{% trans "Personal Identification" %}</legend>
                 <label>{% trans "Name" %}<br />
-                    <input type="text" name="name" class="big tabtitle" value="{{ object }}" readonly="1" />
+                    <input type="text" name="name" class="big tabtitle" value="{{ object.person.name }}" readonly="1" />
                 </label>
 
                 <label>{% trans "Username" %}<br />
-                    <input type="text" name="username" class="big" value="{{ object.username }}" id="id_username" readonly="1" />
+                    <input type="text" name="username" class="big" value="{{ object.user.username }}" id="id_username" />
                 </label>
+
+                <label>{% trans "Password" %}<br />
+                    <input type="password" name="password" class="big" value="" id="id_password" />
+                </label>
+                <label>{% trans "Password" %} <small>({% trans "Again" %})</small><br />
+                    <input type="password" name="pwd_conf" class="big" value="" id="id_pwd_conf" />
+                </label>
+
 </fieldset>
 
 <fieldset>
@@ -73,19 +81,21 @@ GNU General Public License for more details.
         {% endif %}
 </fieldset>
 
+<!-- TO BE IMPLEMENTED!
 <fieldset>
         <legend>{% trans "Expiration Date" %}</legend>
         <label>{% trans "Expiration Date" %}<br />
         <input type="text" class="calendar" name="expiration_date" value="{{ object.person.birthDate|date:"d/m/Y" }}" mask="99/99/9999" />
 </fieldset>
+-->
 
 <fieldset>
         <legend>{% trans "Role" %}</legend>
-	    <h2 class="title_clients title">Role</h2>
-        <p><input type="checkbox" id="1" value="administrator">Administrator</p>
-        <p><input type="checkbox" id="2" value="manager">Manager</p>
-        <p><input type="checkbox" id="3" value="supervisor">Supervisor</p>
-        <p><input type="checkbox" id="4" value="secretary">Secretary</p>
+	    <h2 class="title_clients title">Permissions</h2>
+        <p><input type="checkbox" id="1" name="perms" value="administrator">Administrator</p>
+        <p><input type="checkbox" id="2" name="perms" value="psychologist">Psychologist</p>
+        <p><input type="checkbox" id="3" name="perms" value="secretary">Secretary</p>
+        <p><input type="checkbox" id="4" name="perms" value="client">Client</p>
 </fieldset>
 	
 <br />	

@@ -20,12 +20,12 @@ INSTALL:
 
 1) ./manage.py syncdb
 
-2) Create a user with SIGN UP option in Login Page
-
-3) execute install2.py
+2) execute install2.py
 
 export PYTHONPATH=<directory from your project>
 python install2.py
+
+) Sign up a new user in login page
 
 """
 
@@ -34,14 +34,12 @@ environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Group, Permission, User
 
-user = User.objects.get(pk=2)
 appnames = ['client', 'contacts', 'place', 'schedule', 'employee', 'professional', 'service', 'device', 'organization']
 for appname in appnames:
     ct, created = ContentType.objects.get_or_create(model='', app_label=appname, defaults={'name': appname})
-    user.user_permissions.add(Permission.objects.create(codename='%s_list' % appname, name='%s List' % appname.capitalize(), content_type=ct))
-    user.user_permissions.add(Permission.objects.create(codename='%s_read' % appname, name='%s Read' % appname.capitalize(), content_type=ct))
-    user.user_permissions.add(Permission.objects.create(codename='%s_write' % appname, name='%s Write' % appname.capitalize(), content_type=ct))
-
+    Permission.objects.create(codename='%s_list' % appname, name='%s List' % appname.capitalize(), content_type=ct)
+    Permission.objects.create(codename='%s_read' % appname, name='%s Read' % appname.capitalize(), content_type=ct)
+    Permission.objects.create(codename='%s_write' % appname, name='%s Write' % appname.capitalize(), content_type=ct)
 
 # Administrator
 grp_administrator = Group.objects.create(name='administrator')

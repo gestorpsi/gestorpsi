@@ -17,11 +17,13 @@ GNU General Public License for more details.
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
+from django.contrib.auth.models import Group
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, PlaceType
 from gestorpsi.authentication.models import Profile
+from gestorpsi.person.models import Person
 
 attrs_dict = { 'class': 'required' }
 
@@ -47,4 +49,6 @@ class RegistrationForm(RegistrationForm):
         )
         profile.organization.add(organization) #link organization to profile
         profile.org_active = organization #set org as active
+        profile.person = Person.objects.create(name="Admin Person")
+        profile.user.groups.add(Group.objects.get(name='administrator'))
         profile.save() #save it

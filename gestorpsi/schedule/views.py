@@ -203,8 +203,8 @@ def today_occurrences(request):
     return daily_occurrences(request, datetime.now().strftime("%Y"), datetime.now().strftime("%m"), datetime.now().strftime("%d"))
 
 def daily_occurrences(request, year = 1, month = 1, day = None):
-    locale.setlocale(locale.LC_ALL,'pt_BR.ISO-8859-1')
-    #locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
+    #locale.setlocale(locale.LC_ALL,'pt_BR.ISO-8859-1')
+    locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
 
     occurrences = schedule_occurrences(year, month, day)
     array = {} #json

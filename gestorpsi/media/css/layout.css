@@ -186,6 +186,7 @@ div#sub_menu .active {
 #main_menu a#rooms {background: url(../img/16/rooms.png) no-repeat 25px 4px;}
 #main_menu a#devices {background: url(../img/16/stuff.png) no-repeat 25px 4px;}
 #main_menu a#careprofessional {background: url(../img/16/people-professional.png) no-repeat 25px 4px;}
+#main_menu a#users {background: url(../img/16/system-users.png) no-repeat 25px 4px;}
 
 #main_menu ul li ul {
 	display: block;
@@ -294,6 +295,7 @@ div#sub_menu .active {
 #content h2.title_services {background: url(../img/42/services.png) no-repeat 20px 15px;}
 #content h2.title_places {background: url(../img/42/office.png) no-repeat 20px 15px;}
 #content h2.title_organization {background: url(../img/42/go-home.png) no-repeat 20px 15px;}
+#content h2.title_fronted {background: url(../img/42/user-desktop.png) no-repeat 20px 15px;}
 
 #content p.description {
 	font-size: 9px;
@@ -301,6 +303,16 @@ div#sub_menu .active {
 }
 #content p.description a {
 	font-weight: bold;
+}
+
+#content div.fronted {
+	font-size: 20px;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	line-height: 24px;
+	color: #808080;
+	font-weight: normal;
+	padding: 15px 0 7px 70px;
+	height: 45px;
 }
 #msg_area {
 	padding: 15px 20px;

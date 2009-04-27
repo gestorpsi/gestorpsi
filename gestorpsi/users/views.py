@@ -49,7 +49,8 @@ def form(request, object_id=0):
     object = get_object_or_404(Profile, pk=object_id)
     return render_to_response('users/users_form.html', {
                                 'object': object,
-                                'emails': object.person.emails.all(), },
+                                #'emails': object.person.emails.all(), },
+                                },
                                 context_instance=RequestContext(request))
 
 def form_new_user(request, object_id=''):

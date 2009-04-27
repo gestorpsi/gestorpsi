@@ -84,7 +84,7 @@ GNU General Public License for more details.
 	<div id="menus">
 	<div id="main_menu">
 		<ul>
-			<li><a id="start" class="main_menu active">{% trans "start" %}</a></li>
+			<li><a id="start" class="main_menu active" href="/frontend/">{% trans "start" %}</a></li>
 			<li><a id="schedule" class="main_menu" href="/schedule/" display="daily">{% trans "calendar" %}</a></li>
 			<li><a id="customers" class="main_menu" href="/client/" display="list">{% trans "clients" %}</a></li>
 			<li><a id="contacts" class="main_menu"  href="/contact/" display="list">{% trans "contacts" %}</a></li>
@@ -193,6 +193,9 @@ GNU General Public License for more details.
                 
 		<div id="core">
 			<!--  page core -->
+            {% if object %}
+                {% include "frontend/frontend_start.html" %}
+            {% endif %}
 		</div>
 		
 		<div id="loading">

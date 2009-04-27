@@ -24,15 +24,19 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, PlaceType
 from gestorpsi.authentication.models import Profile
 from gestorpsi.person.models import Person
+from gestorpsi.psychologist.models import Psychologist
+from gestorpsi.careprofessional.models import CareProfessional, ProfessionalProfile, ProfessionalIdentification
 
 attrs_dict = { 'class': 'required' }
 
 class RegistrationForm(RegistrationForm):
+    name = forms.CharField(label=_('Name'), help_text=_('Responsible professional name'))
     email = forms.EmailField(label=_('Email'), help_text=_('Your email address'))
     password1 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=_('Password'), help_text=_('Choice one password'))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=_('Password (again)'), help_text=_('Type password again'))
     username = forms.CharField(label=_('Username'), help_text=_('Choice one unique identifier'))
     organization = forms.CharField(label=_('Organization'), help_text=_('Name of your organization'))
+
 
     def save(self):
         user = super(RegistrationForm, self).save() #create user
@@ -47,8 +51,16 @@ class RegistrationForm(RegistrationForm):
             place_type = PlaceType.objects.get(pk=1), # mandatory field, so, get first place type
             organization = organization, # link place to this organization
         )
+        
+        person = Person.objects.create(name=self.cleaned_data['name'], organization=organization)
         profile.organization.add(organization) #link organization to profile
         profile.org_active = organization #set org as active
-        profile.person = Person.objects.create(name="Admin Person")
+        profile.person = person
         profile.user.groups.add(Group.objects.get(name='administrator'))
         profile.save() #save it
+        
+        psycho = Psychologist()
+        psycho.person = person
+        psycho.professionalProfile = ProfessionalProfile.objects.create()
+        psycho.professionalIdentification = ProfessionalIdentification.objects.create(registerNumber='')
+        psycho.save()

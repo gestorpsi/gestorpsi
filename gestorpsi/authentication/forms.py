@@ -21,7 +21,7 @@ from django.contrib.auth.models import Group
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 from gestorpsi.organization.models import Organization
-from gestorpsi.place.models import Place, PlaceType
+from gestorpsi.place.models import Place, PlaceType, Room, RoomType
 from gestorpsi.authentication.models import Profile
 from gestorpsi.person.models import Person
 from gestorpsi.psychologist.models import Psychologist
@@ -50,6 +50,11 @@ class RegistrationForm(RegistrationForm):
             label = organization.name,                # use same name as label
             place_type = PlaceType.objects.get(pk=1), # mandatory field, so, get first place type
             organization = organization, # link place to this organization
+        )
+        default_room = Room.objects.create(
+            description = 'Room 1',
+            place = default_place,
+            room_type=RoomType.objects.all()[0],
         )
         
         person = Person.objects.create(name=self.cleaned_data['name'], organization=organization)

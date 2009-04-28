@@ -87,3 +87,22 @@ def person_save(request, person):
 
     return person
 
+def person_type_url(person):
+    """ Return an URL linking to a Client, Care Professional or an Employee form """
+    try:
+        x = person.client
+        return "/client/%s/" % x.id
+    except:
+        pass
+        
+    try:
+        x = person.careprofessional
+        return "/careprofessional/%s/" % x.id
+    except:
+        pass
+        
+    try:
+        x = person.employee
+        return "/employee/%s/" % x.id
+    except:
+        pass

@@ -22,6 +22,7 @@ from gestorpsi.service.models import Service
 
 
 class ReferralForm(forms.ModelForm):
+    referral = forms.ModelChoiceField(queryset=Referral.objects.all(), required = False, widget=forms.Select(attrs={'class':'extrabig asm', }))
     service = forms.ModelChoiceField(queryset=Service.objects.all(), widget=forms.Select(attrs={'class':'extrabig asm', }))
     professional = forms.ModelMultipleChoiceField(queryset=CareProfessional.objects.all(),  widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
     client = forms.ModelMultipleChoiceField(queryset=Client.objects.all(),  widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))

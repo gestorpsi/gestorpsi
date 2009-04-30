@@ -1,0 +1,37 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<div id="sidebar" class="sidebar">
+    {% if perms.client.client_write %}
+        <div class="bg_blue">
+            {% include "tags/save.html" %}
+        </div>
+    {% endif %}
+	<div class="people_actions" {% if not object.id %}style="display:none"{% endif %}>	
+	<h3>{% trans 'Object Actions' %}</h3>
+	<ul>
+	    
+		<li><a class="fast_content client_form" display="client_form" title="{{ object.person.name }}">{% trans "Client Details" %}</a></li>
+		<li><a class="fast_content client_admit_form" display="client_admission" title="{{ object.person.name }}">{% trans "Admit Client" %}</a></li>
+		<li><a class="fast_content client_referral_form" display="client_referral_form" title="{{ object.person.name }}">{% trans "New Referral" %}</a></li>
+		<li><a class="fast_content client_referral_list" display="client_referral_list" title="{{ object.person.name }}">{% trans "Referrals" %}</a></li>
+        <li><a class="print" href="/client/{{ object.id }}/print/" title="{{ object.person.name }}">{% trans "Print Record" %}</a></li>
+        
+	</ul>
+	</div>
+</div>

@@ -21,10 +21,28 @@ GNU General Public License for more details.
 <p class="description">{% trans "Inform the schedule details then click on Save button" %}</p>
 
 <form method="post" action="/schedule/events/add/" class="schedule refresh">
+<input type="hidden" name="tabtitle" class="tabtitle" />
 <div class="main_area">
 {{ event_form.errors }}
 {{ recurrence_form.errors }}
 	<a href="" id="help">&nbsp;</a>
+        <fieldset>
+        <legend>{% trans "Schedule Due" %}</legend>
+            <label>{% trans "Date" %}</label>
+            <div>
+            {{ recurrence_form.day }}
+            </div>
+            <label>{% trans "Start Time" %}<br />
+            {{ recurrence_form.start_time_delta }}
+            </label>
+            <label>{% trans "End Time" %}<br />
+            {{ recurrence_form.end_time_delta }}
+            </label>
+            <label>{% trans "Room" %}<br />
+            {{ recurrence_form.room }}
+            </label>
+        </fieldset>
+
         <fieldset>
         <legend>{% trans "Referral Details" %}</legend>
             <label>{% trans "Service" %}<br />
@@ -40,19 +58,6 @@ GNU General Public License for more details.
         
         <fieldset>
         <legend>{% trans "Schedule Details" %}</legend>
-            <label>{% trans "Date" %}</label>
-            <div>
-            {{ recurrence_form.day }}
-            </div>
-            <label>{% trans "Start Time" %}<br />
-            {{ recurrence_form.start_time_delta }}
-            </label>
-            <label>{% trans "End Time" %}<br />
-            {{ recurrence_form.end_time_delta }}
-            </label>
-            <label>{% trans "Room" %}<br />
-            {{ recurrence_form.room }}
-            </label>
             <label>{% trans "Notes" %}<br />
             {{ event_form.annotation }}
             </label>

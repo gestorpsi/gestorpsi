@@ -21,8 +21,8 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import permission_required
 from django.conf import settings
 from geraldo.generators import PDFGenerator
+from gestorpsi.client.models import Client, PersonLink, Relation
 from gestorpsi.organization.models import Organization
-from gestorpsi.client.models import Client
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
@@ -32,6 +32,13 @@ from gestorpsi.person.views import person_save
 from gestorpsi.client.reports import ClientRecord, ClientList
 from gestorpsi.reports.header import header_gen
 from gestorpsi.reports.footer import footer_gen
+from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
+from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
+from gestorpsi.admission.models import *
+from gestorpsi.contact.views import *
+from gestorpsi.util.views import date_form_to_db
+from gestorpsi.referral.models import Referral
+from gestorpsi.referral.forms import ReferralForm
 
 # list all active clients
 @permission_required('client.client_list', '/')
@@ -40,6 +47,9 @@ def index(request):
     object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
     paginator = Paginator(object, settings.PAGE_RESULTS)
     object = paginator.page(1)
+    
+    referral_form = ReferralForm()
+        
     return render_to_response('client/client_index.html',
                                 {'object': object,
                                  'paginator': paginator,
@@ -51,7 +61,17 @@ def index(request):
                                 'TypeDocuments': TypeDocument.objects.all(), 
                                 'Issuers': Issuer.objects.all(), 
                                 'States': State.objects.all(), 
-                                'MaritalStatusTypes': MaritalStatus.objects.all(), },
+                                'MaritalStatusTypes': MaritalStatus.objects.all(),
+                                
+                                'address_book_professionals': address_book_get_professionals(request),
+                                'address_book_organizations': address_book_get_organizations(request),
+                                'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
+                                'licenceBoardTypes': LicenceBoard.objects.all(),
+                                'ReferralChoices': ReferralChoice.objects.all(),
+                                'IndicationsChoices': IndicationChoice.objects.all(),
+                                'Relations': Relation.objects.all(),
+                                'referral_form': referral_form,
+                                 },
                                 context_instance=RequestContext(request)
                               )
 
@@ -91,9 +111,39 @@ def form(request, object_id=''):
         #last_update = object.history.latest('_audit_timestamp')._audit_timestamp
     except:
         object = Client()
-    
+
+    # client referral
+    data = {'client': [object.id]}
+    referral_form = ReferralForm(data)
+
     return render_to_response('client/client_form.html',
-                              {'object': object, 'emails': emails, 'websites': sites, 'ims': instantMessengers, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), 'MaritalStatusTypes': MaritalStatus.objects.all(), 'last_update': last_update },
+                              {'object': object, 
+                                'emails': emails, 
+                                'websites': sites, 
+                                'ims': instantMessengers, 
+                                'phones': phones, 
+                                'addresses': addresses, 
+                                'countries': Country.objects.all(), 
+                                'PhoneTypes': PhoneType.objects.all(), 
+                                'AddressTypes': AddressType.objects.all(), 
+                                'EmailTypes': EmailType.objects.all(), 
+                                'IMNetworks': IMNetwork.objects.all(), 
+                                'documents': documents, 
+                                'TypeDocuments': TypeDocument.objects.all(), 
+                                'Issuers': Issuer.objects.all(), 
+                                'States': State.objects.all(), 
+                                'MaritalStatusTypes': MaritalStatus.objects.all(), 
+                                'last_update': last_update,
+                                'address_book_professionals': address_book_get_professionals(request),
+                                'address_book_organizations': address_book_get_organizations(request),
+                                'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
+                                'licenceBoardTypes': LicenceBoard.objects.all(),
+                                'ReferralChoices': ReferralChoice.objects.all(),
+                                'IndicationsChoices': IndicationChoice.objects.all(),
+                                'Relations': Relation.objects.all(),
+                                'referral_form': referral_form,
+                                'referrals': Referral.objects.filter(client = object),
+                               },
                               context_instance=RequestContext(request)
                               )
 
@@ -117,6 +167,10 @@ def save(request, object_id=""):
     object.person = person_save(request, person)
     object.save()
 
+    """ Id Record """
+    #idr = IdRecordSeq()
+    #idr.uid = object.id
+    #idr.save()
     return HttpResponse(object.id)
 
 # delete (disable) a client

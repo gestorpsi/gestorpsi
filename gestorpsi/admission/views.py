@@ -24,19 +24,21 @@ from gestorpsi.admission.models import *
 from gestorpsi.contact.views import *
 from gestorpsi.util.views import date_form_to_db
 
-def form(request, object_id=''):
-    object = get_object_or_404(Client, pk=object_id)
+## !! moved to client views
+#def form(request, object_id=''):
+    #object = get_object_or_404(Client, pk=object_id)
 
-    return render_to_response('admission/admission_form.html', {
-        'address_book_professionals': address_book_get_professionals(request),
-        'address_book_organizations': address_book_get_organizations(request),
-        'object': object,
-        'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
-        'licenceBoardTypes': LicenceBoard.objects.all(),
-        'ReferralChoices': ReferralChoice.objects.all(),
-        'IndicationsChoices': IndicationChoice.objects.all(),
-        'Relations': Relation.objects.all(),
-    })
+    #return render_to_response('admission/admission_form.html', {
+        #'address_book_professionals': address_book_get_professionals(request),
+        #'address_book_organizations': address_book_get_organizations(request),
+        #'object': object,
+        #'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
+        #'licenceBoardTypes': LicenceBoard.objects.all(),
+        #'ReferralChoices': ReferralChoice.objects.all(),
+        #'IndicationsChoices': IndicationChoice.objects.all(),
+        #'Relations': Relation.objects.all(),
+        ##'IdRecord': get_object_or_404(IdRecordSeq, uid=object_id),
+    #})
 
 def is_responsible(value):
     if (value == 'on'):

@@ -18,6 +18,8 @@ GNU General Public License for more details.
 {% include "core/ajax_page_form.html" %}
 {% include "core/ajax_page_list.html" %}
 
+<input type="hidden" name="object_id" value="{{ object.id }}" />
+
 <h2 id="title_addressbook" style="display:none"></h2>
 
 {% if object.id %}
@@ -33,6 +35,7 @@ GNU General Public License for more details.
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
 
+<div class="fast_content" id="client_form" style="display:block;">
 <form action="/client/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_client" class="form_people collapsable form_client">	
 <div class="main_area">
 
@@ -50,25 +53,27 @@ GNU General Public License for more details.
 <br />	
 </div>
 
-<div id="sidebar" class="sidebar">
-    {% if perms.client.client_write %}
-        <div class="bg_blue">
-            {% include "tags/save.html" %}
-        </div>
-    {% endif %}
-	<div class="people_actions" {% if not object.id %}style="display:none"{% endif %}>	
-	<h3>{% trans 'Object Actions' %}</h3>
-	<ul>
-		<li><a class="ajax admit" href="/admission/{% if object.id %}{{ object.id }}/{% endif %}" title="{{ object.person.name }}">{% trans "Admit Client" %}</a></li>
-        {% if object.id %}<li><a class="print" href="/client/{{ object.id }}/print/" title="{{ object.person.name }}">{% trans "Print Record" %}</a></li>{% endif %}
-        {% if object.id %}<li><a class="ajax user" href="/users/{{ object.person.id }}/" title="{{ object.person.name }}">{% trans "Create User" %}</a></li>{% endif %}
-	</ul>
-	</div>
-</div>
+{% include "tags/client_sidebar.html" %}
 
 </form>
-
 {% include "tags/upload.html" %}
+
+</div> <!-- fast_content -->
+
+<div class="fast_content" id="client_admission">
+{% include "admission/admission_form.html" %}
+</div>
+
+<div class="fast_content" id="client_referral_form">
+{% include "referral/referral_form.html" %}
+</div>
+
+<div class="fast_content" id="client_referral_list">
+{% include "referral/referral_list.html" %}
+</div>
+
 {% if object.id %}
 </div> <!-- edit_form -->
 {% endif %}
+
+

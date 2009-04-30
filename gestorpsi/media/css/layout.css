@@ -633,13 +633,27 @@ textarea {
 	padding: 5px 0 5px 25px;
 	color: #000000;
 }
-.sidebar li .admit {
-	background: url(../img/ico_reg.png) no-repeat 0 3px;
-}
 
 .sidebar li .client_form {
 	background: url(../img/16/people-clients.png) no-repeat 0 3px;
 }
+
+.sidebar li .client_admit_form {
+	background: url(../img/ico_reg.png) no-repeat 0 3px;
+}
+
+.sidebar li .client_referral_list {
+	background: url(../img/16/referral.png) no-repeat 0 3px;
+}
+
+.sidebar li .client_referral_form {
+	background: url(../img/16/list-add.png) no-repeat 0 3px;
+}
+
+.sidebar li .print {
+	background: url(../img/16/print.png) no-repeat 0 3px;
+}
+
 .sidebar input.save_button {
 	width: 76px;
 }
@@ -1233,6 +1247,9 @@ ul.errorlist li {
     display:none;
 }
 
+div.fast_content {
+    display: none;
+}
 
 /**
 * jquery dialog

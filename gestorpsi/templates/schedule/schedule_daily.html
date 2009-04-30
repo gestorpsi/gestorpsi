@@ -27,7 +27,12 @@ GNU General Public License for more details.
     <tr hour="{{ tm|date:"H:i:s" }}">
         <td class="hour">{{ tm|date:"H:i" }}</td>
         {% for place in places %}{% for room in place.room_set.all %}
-            <td class="clean" room="{{ room.id }}" place="{{ place.id }}"><a href="{% url swingtime-add-event %}?dtstart={{ tm.isoformat }}&room={{ room.id }}" class="book ajax">{% trans "Free" %}</a></td>
+            <td class="clean" room="{{ room.id }}" place="{{ place.id }}">
+            {% comment %}
+            <a href="{% url swingtime-add-event %}?dtstart={{ tm.isoformat }}&room={{ room.id }}" class="book ajax">{% trans "Free" %}</a>
+            {% endcomment %}
+            <a href="#" dtstart="{{ tm.isoformat }}" room_id="{{ room.id }}" display="form" sub_menu="sub_schedule" hide="div#schedule_header" class="book fastmenu">{% trans "Free" %}</a>
+            </td>
         {% endfor %}{% endfor %}
     </tr>
     {% endfor %}

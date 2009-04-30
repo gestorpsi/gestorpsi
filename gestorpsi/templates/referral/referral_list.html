@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
+{% comment %}
 
-"""
 Copyright (C) 2008 GestorPsi
 
 This program is free software; you can redistribute it and/or
@@ -12,14 +11,21 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-"""
 
-from django.conf.urls.defaults import *
-from gestorpsi.admission.views import save
-from gestorpsi.authentication.views import login_check
+{% endcomment %}
 
-urlpatterns = patterns('gestorpsi.admission.views',
-    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form)),
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save)),  #update object
-    
-)
+{% load i18n %}
+
+<div class="main_area contact client_referral_list">
+    <table id="search_results" class="zebra newtab" border="0" cellpadding="0" cellspacing="0">
+    <tbody>           
+<!--
+    <tr class="zebra_0" id="45438a26-e709-46d1-99f6-66c0af44cd7a">
+        <td class="title">Psico Terapia<br>Oliver Zancul</td>
+    </tr>
+-->
+    </tbody>
+    </table>
+</div>
+
+{% include "tags/client_sidebar.html" %}

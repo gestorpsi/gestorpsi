@@ -75,13 +75,13 @@ var form_options = {
 
           // change action atribute to update it, not insert a new one
           $('div#edit_form .form_client').attr('action','client/' + response + '/save/'); // client form save
-          $('#edit_form .sidebar ul li a.admit').attr('href','admission/' + response); // client admission
-          $('#edit_form .sidebar ul li a.admit').attr('title', $('#edit_form form input.tabtitle').val()); // client admission
+          $('div#edit_form .form_admission').attr('action','admission/' + response + '/save/'); // client admission form save
+          $('#edit_form .sidebar ul li a.print').attr('href','/client/' + response + '/print/'); // client print link
           $('div#edit_form .form_employee').attr('action','employee/' + response + '/save/');
           $('div#edit_form .form_place').attr('action','place/' + response + '/save/');
           $('div#edit_form .form_service').attr('action','service/' + response + '/save/');
           $('div#edit_form .form_device').attr('action','device/' + response + '/save/');
-
+          
           // open new tab
           $('#sub_menu ul li a').removeClass('active'); // unselect other tabs
           $("ul.opened_tabs").show(); // display tab
@@ -153,6 +153,14 @@ var form_options = {
           $('div#edit_form span.editing span.last').hide();
           $('div#edit_form span.editing span.now').show();
 
+          // update schedule table
+          if($('form.schedule').attr('action')) { // is schedule
+                var day_clicked = $('form.schedule').children('.sidebar').children('.bg_blue').children('.day_clicked').val();
+                updateGrid('/schedule/occurrences/' + day_clicked);
+                bindScheduleForm();
+                $('ul.opened_tabs li a').attr('hide','div#schedule_header');
+          }
+
           formSuccess();
       },
 
@@ -161,6 +169,9 @@ var form_options = {
      }
 };
 
+/**
+ * organization submit form options
+ */
 
 var form_organization_options = {
      success: function(response, request, form) {
@@ -182,19 +193,20 @@ var form_organization_options = {
      }
 };
 
-var form_schedule_options = {
-     success: function(response, request, form) {
-          formSuccess();
-          
-          // update list
-          var day_clicked = $(form).children('.sidebar').children('.bg_blue').children('.day_clicked').val();
-          updateGrid('/schedule/occurrences/' + day_clicked);
-          
-      },
+/**
+ * client referral submit form options
+ */
 
-     error: function() {
-          formError();
-     }
+var form_client_referral_options = {
+    success: function(response, request, form) {
+        formSuccess();
+        // update list
+        updateReferral('/referral/client/' + $('div#edit_form input[name=object_id]').val() + '/');
+    },
+
+    error: function() {
+        formError();
+    }
 };
 
 /**

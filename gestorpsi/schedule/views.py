@@ -66,7 +66,7 @@ def schedule_occurrence_listing_today(request, template='schedule/schedule_event
 
 def add_event(
     request, 
-    template='swingtime/add_event.html',
+    template='schedule/schedule_form.html',
     event_form_class=ReferralForm,
     recurrence_form_class=ScheduleOccurrenceForm
 ):
@@ -183,6 +183,8 @@ def _datetime_view(
         services = Service.objects.filter(organization=request.user.get_profile().org_active.id),
         professionals = CareProfessional.objects.filter(person__organization=request.user.get_profile().org_active.id),
         devices = DeviceDetails.objects.all(),
+        event_form = ReferralForm(),
+        recurrence_form = ScheduleOccurrenceForm(),
     )
     
     return render_to_response(
@@ -197,6 +199,7 @@ def schedule_index(request,
     day = datetime.now().strftime("%d"), 
     template='schedule/schedule_index.html',
      **params):
+    
     return _datetime_view(request, template, datetime(int(year), int(month), int(day)), **params)
 
 def today_occurrences(request):
@@ -265,11 +268,12 @@ def occurrence_abstract(request, object_id = None):
 
     array = {} #json
 
-    array['id'] = o.id
-    array['event_id'] = o.event.id
-    array['date'] = o.start_time.strftime('%d/%m/%Y %H:%M')
-    array['room'] = o.room.description
-    array['service'] = o.event.referral.service.name
+    array['id'] = o.id;
+    array['event_id'] = o.event.id;
+    array['date'] = o.start_time.strftime('%d/%m/%Y %H:%M');
+    array['day'] = o.start_time.strftime('%Y/%m/%d');
+    array['room'] = o.room.description;
+    array['service'] = o.event.referral.service.name;
     
     array['professional'] = {}
     count = 0
@@ -294,7 +298,5 @@ def occurrence_abstract(request, object_id = None):
     #array = simplejson.dumps(array, encoding = 'iso8859-1')
     array = simplejson.dumps(array)
     
-    #return HttpResponse(array, mimetype='application/json')
-    return HttpResponse(array)
-    
+    return HttpResponse(array, mimetype='application/json')
 	

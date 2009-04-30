@@ -16,38 +16,44 @@ GNU General Public License for more details.
 
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
+from django.utils import simplejson
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.referral.models import Referral
+from gestorpsi.referral.forms import ReferralForm
 
-def form(request, object_id=''):
-    user = request.user
+def client_referrals(request, object_id = None):
     object = get_object_or_404(Client, pk=object_id)
-
-    return render_to_response('referral/referral_form.html', {
-        'object': object,
-        'Professionals': CareProfessional.objects.filter(person__organization = user.get_profile().org_active.id),
-        'Services': Service.objects.filter( active=True, organization=user.get_profile().org_active ),
-    })
+    referral = Referral.objects.filter(client=object)
+    array = {} #json
+    i = 0
+    
+    for o in referral:
+        array[i] = {
+            'id': o.id,
+            'service': o.service.name,
+        }
+        sub_count = 0
+        array[i]['professional'] = {}
+        for p in o.professional.all():
+            array[i]['professional'][sub_count] = ({'id':p.id, 'name':p.person.name})
+            sub_count = sub_count + 1
+        
+        i = i + 1
+    
+    array = simplejson.dumps(array, encoding = 'iso8859-1')
+    
+    #return HttpResponse(array, mimetype='application/json')
+    return HttpResponse(array)
+    
 
 """ *** TODO: manage multiples referrals """
-def save(request, object_id=''):
-    object = get_object_or_404(Client, pk=object_id)
-
-    referral = Referral()
-    referral.client = object
-
-    try:
-        referral.service = Service.objects.get(pk=request.POST['service'])
-    except:
-        referral.service = None
-
-    try:
-        referral.professional = CareProfessional.objects.get(pk=request.POST['professional'])
-    except:
-        referral.professional = None
-
-    referral.save()
+def save(request, object_id = None):
+    if request.method == 'POST':
+        form = ReferralForm(request.POST)
+        #form = ReferralForm(request.POST, instance=object)
+        if form.is_valid():
+            object = form.save()
 
     return HttpResponse(object.id)

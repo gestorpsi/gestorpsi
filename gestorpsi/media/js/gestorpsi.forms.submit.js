@@ -46,12 +46,7 @@ function bindAjaxForms() {
      });
 
      /**
-      *
       * schedule post form
-      *
-      * _description:
-      * post any form, without validate verification
-      *
       */
 
      $('form.schedule').each(function() {
@@ -62,7 +57,22 @@ function bindAjaxForms() {
                professional: { required: true }
           },
           submitHandler: function(form) {
-               $(form).ajaxSubmit(form_schedule_options);
+               $(form).ajaxSubmit(form_options);
+            }
+          });
+     });
+
+     /**
+      * referral post form
+      */
+
+     $('form.client_referral').each(function() {
+          $(this).validate({event:"submit",
+          rules: {
+               service: { required: true },
+          },
+          submitHandler: function(form) {
+               $(form).ajaxSubmit(form_client_referral_options);
             }
           });
      });

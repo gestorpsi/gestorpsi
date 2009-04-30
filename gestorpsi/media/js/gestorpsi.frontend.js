@@ -197,17 +197,29 @@ $(document).ready(function(){
         
         
         $('#sub_menu a.fastmenu').click(function() {
+                var link = $(this);
                 // hide all opened content
                 $('#core .fast_menu_content').hide();
 
                 // display choiced item and set it to already loaded
-                if(!$(this).attr('display'))
+                if(!link.attr('display'))
                         display = 'list';
                 else
-                        display = $(this).attr('display');
-
+                        display = link.attr('display');
+                
                 $('div#' + display).show();
 
+                if(link.attr('hide')) {
+	                $(link.attr('hide')).hide();    
+                }
+                if(link.attr('show')) {
+	                $(link.attr('show')).show();
+                }
+                // if element have multiple forms childrens, show only first element
+                if($('div#' + display + ' div.fast_content').size()) {
+                    $('div#' + display + ' div.fast_content').hide();
+                    $('div#' + display + ' div.fast_content:first').show();
+                }
                 $('.sidebar').css('padding-top','167px');
                 return false;
                 

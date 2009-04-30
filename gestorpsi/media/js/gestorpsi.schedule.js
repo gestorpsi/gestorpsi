@@ -35,6 +35,8 @@ var dialog_options = {
 
 var occupied_css_class = 'occup';
 
+var increment_end_time = '3600'; // in seconds
+
 /** 
 * daily and events
 * get data from json vand put on the schedule daily grid
@@ -63,7 +65,11 @@ function updateGrid(url) {
         $('table.schedule_results.daily tr td.clean a.book').each(function() { // update date ins url
             hour = $(this).parent('td').parent('tr').attr('hour');
             room = $(this).parent('td').attr('room');
-            $(this).attr('href', '/schedule/events/add/?dtstart=' + json['util']['date'] + 'T' + hour + '&room='+ room);
+            $(this).attr('href', '#');
+            $(this).attr('date', json['util']['date']);
+            $(this).attr('hour', hour);
+            $(this).attr('room_id', room);
+            //$(this).attr('href', '/schedule/events/add/?dtstart=' + json['util']['date'] + 'T' + hour + '&room='+ room);
             $(this).attr('title', json['util']['str_date']);
         });
         $('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/');
@@ -95,17 +101,19 @@ function updateGrid(url) {
                 //append client list
                 jQuery.each(this.client,  function(){
                     str_client = str_client + this.name + "<br />";
-                    str_client_inline = str_client_inline + this.name + ' ';
+                    str_client_inline = str_client_inline + this.name + ", ";
                 });
-
+                str_client_inline = str_client_inline.substr(0, (str_client_inline.length-2))
+                
                 //append professional list
                 jQuery.each(this.professional,  function(){
                     str_professional = str_professional + this.name + "<br />" ;
-                    str_professional_inline = str_professional_inline + this.name + " " ;
+                    str_professional_inline = str_professional_inline + this.name + ", " ;
                     col.addClass('professional_' + this.id); // professionals in cell
                     event.addClass('professional_' + this.id); // professionals in events
                 });
-
+                str_professional_inline = str_professional_inline.substr(0, (str_professional_inline.length-2))
+                
                 //append service
                 str_service = '>>' + this.service + '<br />';
                 str_service_inline = ' >> ' + this.service;
@@ -191,11 +199,56 @@ function updateGrid(url) {
             $('div#dialog div[key=professional]').html(str_professional);
             $('div#dialog a[key=edit_link]').attr('href','/schedule/events/' + json['event_id'] + '/' + json['id'] + '/');
             $('div#dialog a[key=edit_link]').attr('title', json['date']);
+            $('form.schedule').children('.sidebar').children('.bg_blue').children('.day_clicked').val(json['day']);
         });
         $('div#dialog').dialog('open');
     });
     
     return false;
+}
+
+/** 
+ * schedule form
+ * bind form functions
+ */
+
+function bindScheduleForm() {
+    // bind links in table
+    $('div.schedule table.schedule_results a.book').click(function() {
+        var link = $(this);
+
+        year = link.attr('date').substring(0,4);
+        month = link.attr('date').substring(5,7);
+        day = link.attr('date').substring(8,10);
+        hour = link.attr('hour').substring(0,2);
+        minutes = link.attr('hour').substring(3,5);
+        
+        var zero_hour = new Date(year, month, day, 0, 0, 0);
+        var due = new Date(year, month, day, hour, minutes);
+        
+        var start_time_delta = (due - zero_hour) / 1000;
+        var end_time_delta = (parseInt(start_time_delta) + parseInt(increment_end_time));
+
+        // set initial data in add form
+        $('div.schedule #form select[name=day_month] option[value=' + parseInt(month) + ']').attr('selected', 'selected');
+        $('div.schedule #form select[name=day_day] option[value=' + parseInt(day) + ']').attr('selected', 'selected');
+        $('div.schedule #form select[name=day_year] option[value=' + parseInt(day) + ']').attr('selected', 'selected');
+        $('div.schedule #form select[name=start_time_delta] option[value=' + start_time_delta + ']').attr('selected', 'selected');
+        $('div.schedule #form select[name=end_time_delta] option[value=' + end_time_delta + ']').attr('selected', 'selected');
+        $('div.schedule #form select[name=room] option[value=' + link.attr('room_id') + ']').attr('selected', 'selected');
+        $('div.schedule #form input[name=tabtitle]').val(link.attr('title'));
+        $('form.schedule').children('.sidebar').children('.bg_blue').children('.day_clicked').val(year + '/' + month + '/' + day);
+    });
+
+    // if start time is changed, increment 'increment_end_time' value to end time
+    $('div.schedule select[name=start_time_delta] option').click(function() {
+        var option = $(this);
+        var end_time = (parseInt(increment_end_time) + parseInt(option.attr('value')));
+
+        $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option').attr('selected','');
+        $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option[value=' + end_time + ']').attr('selected','selected');
+    });
+
 }
 
 /**
@@ -212,11 +265,13 @@ function bindSchedule() {
             $('div#dialog').dialog('close');
     });
     
+    // load today daily occurrences and mini-calendar
     $('div.schedule table.schedule_results').unbind().ready(function() {
         $("div#mini_calendar").datepicker(schedule_options);
-        // load today daily occurrences
         updateGrid('/schedule/occurrences/');
     });
+    
+   
     // open mini-calendar
     $('a#calendar_link').unbind().click(function() {
         $("div#mini_calendar").toggle();
@@ -407,6 +462,7 @@ function bindSchedule() {
         
     });
     
+    bindScheduleForm();
 
     
 }

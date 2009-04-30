@@ -38,6 +38,7 @@ GNU General Public License for more details.
 	<script type="text/javascript" src="/media/js/gestorpsi.forms.js"></script>
 	<script type="text/javascript" src="/media/js/gestorpsi.dates.js"></script>
 	<script type="text/javascript" src="/media/js/gestorpsi.schedule.js"></script>
+	<script type="text/javascript" src="/media/js/gestorpsi.client.js"></script>
 {% endif %}
 
 <style type="text/css" media="all">
@@ -116,8 +117,9 @@ GNU General Public License for more details.
 
          <!-- schedule -->
 		<ul id="sub_schedule" style="display:none">
-			<li><a display="daily" class="first active fastmenu" href="/schedule/">{% trans "daily" %}</a></li>
-			<li><a display="events" class="fastmenu" href="/schedule/">{% trans "events" %}</a></li>
+			<li><a display="daily" show="div#schedule_header" class="first active fastmenu" href="/schedule/">{% trans "daily" %}</a></li>
+			<li><a display="events" show="div#schedule_header" class="fastmenu" href="/schedule/">{% trans "events" %}</a></li>
+			<li><a display="form" hide="div#schedule_header" class="fastmenu" href="/schedule/">{% trans "add" %}</a></li>
         </ul>
 
         <!-- address book -->

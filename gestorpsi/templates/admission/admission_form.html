@@ -15,18 +15,8 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-{% include "core/ajax_page.html" %}
 
-
-<h2 id="title_addressbook" style="display:none"></h2>
-
-<div class="edit_form">
-<h2 class="title_clients title">{% trans "Admission of" %} {{ object.person.name }}</h2>
-<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a><br />	
-
-</p>
-
-<form action="/admission/{{ object.id }}/save/" method="post" class="ajax">
+<form action="/admission/{{ object.id }}/save/" method="post" id="client_admission_form" class="ajax form_admission">
 <input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
 <div class="main_area">
         <a href="" id=help>&nbsp;</a>
@@ -253,18 +243,8 @@ GNU General Public License for more details.
         </div>
         </fieldset>
 </div>
-<div id="sidebar" class="sidebar">
-	<div class="bg_blue">
-		{% include "tags/save.html" %}
-	</div>
-    <div class="people_actions" {% if not object.id %}style="display:none"{% endif %}>
-	<h3>{% trans 'Object Actions' %}</h3>
-	<ul>
-        <li><a class="client_form ajax" href="/client/{% if object.id %}{{ object.id }}/{% endif %}" title="{{ object.person.name }}">{% trans "Client Details" %}</a></li>
-		<li><a class="ajax admit" href="/referral/{% if object.id %}{{ object.id }}/{% endif %}" title="{{ object.person.name }}">{% trans "Referral Client" %}</a></li>
-	</ul>
-	</div>
-</div>
+
+{% include "tags/client_sidebar.html" %}
 
 <label><input name="" type="button" class="btn2" value="Cancelar" /></label>
 </form>
@@ -272,3 +252,4 @@ GNU General Public License for more details.
 
 {% include "tags/address_book_professional_mini.html" %}
 {% include "tags/address_book_organization_mini.html" %}
+

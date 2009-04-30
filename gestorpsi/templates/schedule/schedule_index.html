@@ -22,8 +22,10 @@ GNU General Public License for more details.
 <a id="calendar_link" href="#"></a>
 <div id="mini_calendar" style="display:none;"></div>
     
-    {% include "schedule/schedule_header.html" %}
-
+    <div id="schedule_header">
+        {% include "schedule/schedule_header.html" %}
+    </div>
+    
     <div id="daily" class="fast_menu_content schedule">
         {% include "schedule/schedule_daily.html" %} 
     </div>
@@ -33,6 +35,7 @@ GNU General Public License for more details.
     </div>
 
     <div id="form" class="fast_menu_content">
+        {% include "schedule/schedule_form.html" %}
     </div>
 
     <div id="edit_form" class="fast_menu_content">

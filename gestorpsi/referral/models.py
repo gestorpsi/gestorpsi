@@ -28,6 +28,7 @@ class Referral(Event):
     client = models.ManyToManyField(Client)
     professional = models.ManyToManyField(CareProfessional, null=True)
     service = models.ForeignKey(Service, null=True)
+    referral = models.ForeignKey('Referral', null=True, blank=True, related_name='referral_parent')
     annotation = models.CharField(max_length=765, null=True, blank=True)
 
     def __init__(self, *args, **kwargs):
@@ -53,4 +54,4 @@ class Referral(Event):
         ordering = ('title', )
 
     def __unicode__(self):
-        return u"\nClient: %s\nProfessional: %s\nService: %s" % (self.client, self.professional, self.service)
+        return u"%s" % (self.service)

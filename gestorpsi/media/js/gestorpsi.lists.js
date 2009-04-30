@@ -16,15 +16,44 @@ GNU General Public License for more details.
 
 
 function bindList() {
-	$("table.newtab tr td a, a.ajax").unbind().click(function(){
+    
+    /**
+     *
+     * Message Area (#msg_area)
+     *
+     * hide msg area and dialog in ever click
+     * 
+     */
+    
+    $('table.newtab tr td a, a.ajax, a.fast_content').unbind().click(function() {
+        $('#msg_area').removeClass();
+        $('#msg_area').hide();
+        $('.sidebar').css('padding-top','165px');
+    });
+    
+    
+    /**
+     * load content inside in a div
+     * ex: <a href="/schedule/" div="client_schedule">
+     * if div attribute is not defined, insert into div#edit_form by default
+     */
+
+	$("table.newtab tr td a, a.ajax").click(function(){
+	    
 		var link = $(this);
+		var div = '';
+		if(!link.attr('div')) {
+		    div = '#edit_form';
+        } else {
+            div = link.attr('div');
+        }
 		$('#core .fast_menu_content').hide();
 		$('ul.opened_tabs').hide();
-		$("#core div#edit_form").load(link.attr('href'));
+		$("#core div" + div).load(link.attr('href'));
 		$.ajax({
 			complete: function(){
 				$('ul.opened_tabs').show();
-				$("#core div#edit_form").show();
+				$("#core div" + div).show();
 			}
 		});
 		
@@ -34,7 +63,7 @@ function bindList() {
 		
 		$("ul.opened_tabs li div a:first").unbind().click(function() {
 			$('#core .fast_menu_content').hide();
-			$('#core div#edit_form').show();
+			$('#core div' + div).show();
 			$('#sub_menu ul li a').removeClass('active');
 		});
 
@@ -164,6 +193,11 @@ function bindList() {
 	});
 	
 	
+	/**
+	 * tabs:
+	 * only switch opened tabs, without request
+	 */
+    
 	$('#core a.fastmenu, #core p.description a').click(function() {
 		
 		// hide all opened content        
@@ -174,16 +208,31 @@ function bindList() {
 			display = 'list';
 		else
 			display = $(this).attr('display');
-		
+
 		$('#' + display).show();
 	
 		link = $(this);
 		if(link.attr('sub_menu')) {
 			$('#sub_menu ul li a').removeClass('active');
 			// select option in submenu
-			$('div#sub_menu ul#'+link.attr('sub_menu')+' li a[display="'+link.attr('display')+'"]').addClass('active');
+			$('div#sub_menu ul#' + link.attr('sub_menu')+' li a[display="'+link.attr('display')+'"]').addClass('active');
 		}
 	
+	    if(link.attr('hide')) {
+	        $(link.attr('hide')).hide();    
+        }
+		return false;
+        });
+
+    /**
+     * switch already loaded forms
+     */
+    
+	$('a.fast_content').click(function() {
+		// hide all opened content        
+		$('div.fast_content').hide();
+		// display choiced item
+		$('div.fast_content#'+$(this).attr('display')).show();
 		return false;
         });
 

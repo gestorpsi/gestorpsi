@@ -32,7 +32,7 @@ def index(request):
     object = paginator.page(1)
     return render_to_response('users/users_index.html', {
                                  'object': object,
-                                 'paginator': paginator, } ,
+                                 'paginator': paginator, },
                                  context_instance=RequestContext(request))
 
 def list(request, page=1):
@@ -42,18 +42,24 @@ def list(request, page=1):
     object = paginator.page(page)
     return render_to_response('users/users_index.html', {
                                  'object': object,
-                                 'paginator': paginator, } ,
+                                 'paginator': paginator, },
                                  context_instance=RequestContext(request))
 
-def form(request, object_id=0):
-    object = get_object_or_404(Profile, pk=object_id)
+def form(request, object_id):
+    object = get_object_or_404(Profile, person=object_id)
+    groups = [False, False, False, False]   # Template Permission Order: Admin, Psycho, Secretary and Client
+    for g in object.user.groups.all():
+        if g.name == "administrator": groups[0] = True
+        if g.name == "psychologist":  groups[1] = True
+        if g.name == "secretary":     groups[2] = True
+        if g.name == "client":        groups[3] = True
     return render_to_response('users/users_form.html', {
                                 'object': object,
-                                #'emails': object.person.emails.all(), },
-                                },
+                                'emails': object.person.emails.all(),
+                                'groups': groups, },
                                 context_instance=RequestContext(request))
 
-def form_new_user(request, object_id=''):
+def form_new_user(request, object_id):
     object = Profile()
     object.person = get_object_or_404(Person, pk=object_id)
     object.user = User(username=slugify(object.person.name))
@@ -88,7 +94,12 @@ def create_user(request, object_id):
         if permissions.count('client'):
             profile.user.groups.add(Group.objects.get(name='client'))
 
-    return HttpResponse("/")
+    return HttpResponse(profile.person.id)
+
+def update_user(request, object_id):
+    """ To be implemented """
+    person = get_object_or_404(Person, pk=object_id)
+    return HttpResponse(person.id)
 
 def save(request, object_id=0):
 

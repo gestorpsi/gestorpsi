@@ -261,5 +261,25 @@ function bindAjaxForms() {
           });
      });
 
+     /**
+      *
+      * user post form
+      *
+      * _description:
+      * post user form, with validate verification
+      *
+      */
 
+     $('form.user').each(function() {
+          $(this).validate({event:"submit",
+          rules: {
+               username: { required: true },
+               password: { required: true },
+               pwd_conf: { required: true }
+          },
+          submitHandler: function(form) {
+               $(form).ajaxSubmit(form_schedule_options);
+            }
+          });
+     });
 }

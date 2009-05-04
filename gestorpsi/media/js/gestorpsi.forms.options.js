@@ -81,7 +81,8 @@ var form_options = {
           $('div#edit_form .form_place').attr('action','place/' + response + '/save/');
           $('div#edit_form .form_service').attr('action','service/' + response + '/save/');
           $('div#edit_form .form_device').attr('action','device/' + response + '/save/');
-          
+          $('div#edit_form .form_user').attr('action','user/' + response + '/save/');
+
           // open new tab
           $('#sub_menu ul li a').removeClass('active'); // unselect other tabs
           $("ul.opened_tabs").show(); // display tab

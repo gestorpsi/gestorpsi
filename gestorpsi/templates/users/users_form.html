@@ -20,21 +20,31 @@ GNU General Public License for more details.
 
 <h2 id="title_addressbook" style="display:none"></h2>
 
-{% if object.id %}
+{% comment %}
+
+{% if profile.id %}
 	<div class="edit_form">
-	<h2 class="title_clients title">{{ object.person.name }}</h2>
+	<h2 class="title_clients title">{{ profile.person.name }}</h2>
 {% else %}
 	<h2 class="title_clients title">{% trans "Adding New User" %}</h2>
 	<p class="description">{% trans "Inform the user details then click on Save button" %}</p>
 {% endif %}
 
+{% endcomment %}
+
+{% if not object %}
+	<h2 class="title_clients title">{{ profile.person.name }}</h2>
+{% endif %}
+
+
+
 </p>
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
-{% if object.id %}
-    <form action="/user/{{ object.person.id }}/save/" method="post" id="form_user" class="form_people collapsable form_user">
+{% if profile.id %}
+    <form action="/user/{{ profile.person.id }}/save/" method="post" id="form_user" class="form_people collapsable form_user">
 {% else %}
-    <form action="/user/{{ object.person.id }}/create/" method="post" id="form_user" class="form_people collapsable form_user">
+    <form action="/user/{{ profile.person.id }}/create/" method="post" id="form_user" class="form_people collapsable form_user">
 {% endif %}
 
 <div class="main_area">
@@ -49,11 +59,11 @@ GNU General Public License for more details.
 <fieldset>
         <legend>{% trans "Personal Identification" %}</legend>
                 <label>{% trans "Name" %}<br />
-                    <input type="text" name="name" class="big tabtitle" value="{{ object.person.name }}" readonly="1" />
+                    <input type="text" name="name" class="big tabtitle" value="{{ profile.person.name }}" readonly="1" />
                 </label>
 
                 <label>{% trans "Username" %}<br />
-                    <input type="text" name="username" class="big" value="{{ object.user.username }}" id="id_username" />
+                    <input type="text" name="username" class="big" value="{{ profile.user.username }}" id="id_username" />
                 </label>
 
                 <label>{% trans "Password" %}<br />
@@ -67,10 +77,10 @@ GNU General Public License for more details.
 <fieldset>
         <legend>{% trans "Email" %}</legend>
 		
-		{% if object.user.email %}
+		{% if profile.user.email %}
 			<label>
 				{% trans "Registered user e-mail" %}<br />
-				<input type="text" name="email" value="{{ object.user.email }}" readonly>
+				<input type="text" name="email" value="{{ profile.user.email }}" readonly>
 			</label>
 		{% else %}
 			{% if emails %}
@@ -97,7 +107,7 @@ GNU General Public License for more details.
 <fieldset>
         <legend>{% trans "Expiration Date" %}</legend>
         <label>{% trans "Expiration Date" %}<br />
-        <input type="text" class="calendar" name="expiration_date" value="{{ object.person.birthDate|date:"d/m/Y" }}" mask="99/99/9999" />
+        <input type="text" class="calendar" name="expiration_date" value="{{ profile.person.birthDate|date:"d/m/Y" }}" mask="99/99/9999" />
 </fieldset>
 -->
 
@@ -113,14 +123,19 @@ GNU General Public License for more details.
 <br />	
 </div>
 
+{% if profile.person.client %}{% include "tags/client_sidebar.html" %}{% endif %}
+{% if profile.person.employee %}{% include "tags/employee_sidebar.html" %}{% endif %}
+{% if profile.person.careprofessional %}{% include "tags/careprofessional_sidebar.html" %}{% endif %}
+
+<!--
 <div id="sidebar" class="sidebar">
 	<div class="bg_blue">
 		{% include "tags/save.html" %}
 	</div>
 </div>
-
+-->
 </form>
 
-{% if object.id %}
+{% if profile.id %}
 </div> <!-- edit_form -->
 {% endif %}

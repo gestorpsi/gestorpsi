@@ -25,37 +25,27 @@ from registration.models import RegistrationProfile
 from gestorpsi.authentication.models import Profile
 from gestorpsi.person.models import Person
 
-def index(request):
-    user = request.user
-    object = Profile.objects.filter(org_active = user.get_profile().org_active).order_by('user__username')
-    paginator = Paginator(object, settings.PAGE_RESULTS)
-    object = paginator.page(1)
-    return render_to_response('users/users_index.html', {
-                                 'object': object,
-                                 'paginator': paginator, },
-                                 context_instance=RequestContext(request))
-
 def list(request, page=1):
     user = request.user
-    object = Profile.objects.filter(org_active = user.get_profile().org_active).order_by('user__username')
-    paginator = Paginator(object, settings.PAGE_RESULTS)
-    object = paginator.page(page)
+    profiles = Profile.objects.filter(org_active = user.get_profile().org_active).order_by('user__username')
+    paginator = Paginator(profiles, settings.PAGE_RESULTS)
+    profiles = paginator.page(page)
     return render_to_response('users/users_index.html', {
-                                 'object': object,
+                                 'profiles': profiles,
                                  'paginator': paginator, },
                                  context_instance=RequestContext(request))
 
 def form(request, object_id):
-    object = get_object_or_404(Profile, person=object_id)
+    profile = get_object_or_404(Profile, person=object_id)
     groups = [False, False, False, False]   # Template Permission Order: Admin, Psycho, Secretary and Client
-    for g in object.user.groups.all():
+    for g in profile.user.groups.all():
         if g.name == "administrator": groups[0] = True
         if g.name == "psychologist":  groups[1] = True
         if g.name == "secretary":     groups[2] = True
         if g.name == "client":        groups[3] = True
     return render_to_response('users/users_form.html', {
-                                'object': object,
-                                'emails': object.person.emails.all(),
+                                'profile': profile,
+                                'emails': profile.person.emails.all(),
                                 'groups': groups, },
                                 context_instance=RequestContext(request))
 

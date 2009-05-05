@@ -30,13 +30,16 @@ GNU General Public License for more details.
 		<li><a class="fast_content client_admit_form" display="client_admission" title="{{ object.person.name }}">{% trans "Admit Client" %}</a></li>
 		<li><a class="fast_content client_referral_form" display="client_referral_form" title="{{ object.person.name }}">{% trans "New Referral" %}</a></li>
 		<li><a class="fast_content client_referral_list" display="client_referral_list" title="{{ object.person.name }}">{% trans "Referrals" %}</a></li>
-		<li><a class="print" href="/client/{{ object.id }}/print/" title="{{ object.person.name }}">{% trans "Print Record" %}</a></li>
+		<li><a class="fast_content client_user_form" display="client_user_form" title="{{ object.person.name }}">{% trans "Manage User" %}</a></li>
+        <li><a class="print" href="/client/{{ object.id }}/print/" title="{{ object.person.name }}">{% trans "Print Record" %}</a></li>
+{% comment %}
         {% if object.person.profile %}
               <li><a class="ajax user" href="/user/{{ object.person.id }}/" title="{{ object.person.name }}">{% trans "Manage User" %}</a></li>
         {% else %}
               {% if object.id %}<li><a class="ajax user" href="/user/{{ object.person.id }}/add/" title="{{ object.person.name }}">{% trans "Create User" %}</a></li>{% endif %}
         {% endif %}
-        
+{% endcomment %}
+
 	</ul>
 	</div>
 </div>

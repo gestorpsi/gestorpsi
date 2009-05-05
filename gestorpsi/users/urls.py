@@ -16,11 +16,11 @@ GNU General Public License for more details.
 
 from django.conf.urls.defaults import *
 #from django.contrib.auth.decorators import login_required
-from gestorpsi.users.views import index, list, form, form_new_user, create_user, update_user
+from gestorpsi.users.views import list, form, form_new_user, create_user, update_user
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
-    (r'^$', login_check(index)), #list objects
+    (r'^$', login_check(list)), #list objects
     #(r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
     #(r'^add/$', login_check(form)), #new object form
     (r'^page(?P<page>(\d)+)$', login_check(list)), #list objects  

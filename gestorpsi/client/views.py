@@ -19,26 +19,28 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.models import User
 from django.conf import settings
 from geraldo.generators import PDFGenerator
-from gestorpsi.client.models import Client, PersonLink, Relation
-from gestorpsi.organization.models import Organization
-from gestorpsi.person.models import Person, MaritalStatus
-from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
-from gestorpsi.internet.models import EmailType, IMNetwork
-from gestorpsi.document.models import TypeDocument, Issuer
-from gestorpsi.person.views import person_save
-from gestorpsi.client.reports import ClientRecord, ClientList
-from gestorpsi.reports.header import header_gen
-from gestorpsi.reports.footer import footer_gen
+from gestorpsi.admission.models import *
+from gestorpsi.authentication.models import Profile
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
 from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
-from gestorpsi.admission.models import *
+from gestorpsi.client.models import Client, PersonLink, Relation
+from gestorpsi.client.reports import ClientRecord, ClientList
 from gestorpsi.contact.views import *
-from gestorpsi.util.views import date_form_to_db
+from gestorpsi.document.models import TypeDocument, Issuer
+from gestorpsi.internet.models import EmailType, IMNetwork
+from gestorpsi.organization.models import Organization
+from gestorpsi.person.models import Person, MaritalStatus
+from gestorpsi.person.views import person_save
+from gestorpsi.phone.models import PhoneType
 from gestorpsi.referral.models import Referral
 from gestorpsi.referral.forms import ReferralForm
+from gestorpsi.reports.header import header_gen
+from gestorpsi.reports.footer import footer_gen
+from gestorpsi.util.views import date_form_to_db
 
 # list all active clients
 @permission_required('client.client_list', '/')
@@ -101,7 +103,7 @@ def form(request, object_id=''):
     last_update = ''
 
     try:
-        object    = get_object_or_404(Client, pk=object_id)        
+        object    = get_object_or_404(Client, pk=object_id)
         phones    = object.person.phones.all()
         addresses = object.person.address.all()
         documents = object.person.document.all()
@@ -111,6 +113,20 @@ def form(request, object_id=''):
         #last_update = object.history.latest('_audit_timestamp')._audit_timestamp
     except:
         object = Client()
+        
+    # User Registration Code
+    groups = [False, False, False, False]
+    try:
+        profile = get_object_or_404(Profile, person=object.person.id)
+        for g in profile.user.groups.all():
+            if g.name == "administrator": groups[0] = True
+            if g.name == "psychologist":  groups[1] = True
+            if g.name == "secretary":     groups[2] = True
+            if g.name == "client":        groups[3] = True
+    except:
+        profile = Profile()
+        profile.person = get_object_or_404(Person, pk=object.person.id)
+        profile.user = User(username=slugify(profile.person.name))
 
     # client referral
     data = {'client': [object.id]}
@@ -143,6 +159,8 @@ def form(request, object_id=''):
                                 'Relations': Relation.objects.all(),
                                 'referral_form': referral_form,
                                 'referrals': Referral.objects.filter(client = object),
+                                'profile': profile,
+                                'groups': groups,
                                },
                               context_instance=RequestContext(request)
                               )

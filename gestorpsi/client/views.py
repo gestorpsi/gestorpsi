@@ -19,6 +19,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import permission_required
+from django.utils import simplejson
 from django.contrib.auth.models import User
 from django.conf import settings
 from geraldo.generators import PDFGenerator
@@ -223,3 +224,28 @@ def print_record(request, object_id):
     report.band_page_footer = footer_gen(organization=user.get_profile().org_active)
     report.generate_by(PDFGenerator, filename=response)
     return response
+
+'''
+' organization_clients: return json with all clients from logged organization
+'''
+
+@permission_required('client.client_read', '/')
+def organization_clients(request):
+    user = request.user
+    clients = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
+    print user.get_profile().org_active.id
+    dict = {}
+    array = [] #json
+    i = 0
+
+    for o in clients:
+        c = {
+            'id': o.id,
+            'name': o.person.name,
+        }
+        array.append(c)
+
+    dict['results'] = array
+    array = simplejson.dumps(dict, encoding = 'iso8859-1')
+
+    return HttpResponse(array, mimetype='application/json')

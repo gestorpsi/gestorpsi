@@ -51,13 +51,13 @@ function bindAjaxForms() {
 
      $('form.schedule').each(function() {
           $(this).validate({event:"submit",
-          rules: {
-               service: { required: true },
-               client: { required: true },
-               professional: { required: true }
-          },
+          //rules: {
+               //service: { required: true },
+               //client: { required: true },
+               //professional: { required: true }
+          //},
           submitHandler: function(form) {
-               $(form).ajaxSubmit(form_options);
+               $(form).ajaxSubmit(form_schedule_options);
             }
           });
      });

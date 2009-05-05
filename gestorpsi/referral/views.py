@@ -44,9 +44,8 @@ def client_referrals(request, object_id = None):
     
     array = simplejson.dumps(array, encoding = 'iso8859-1')
     
-    #return HttpResponse(array, mimetype='application/json')
-    return HttpResponse(array)
-    
+    return HttpResponse(array, mimetype='application/json')
+
 
 """ *** TODO: manage multiples referrals """
 def save(request, object_id = None):

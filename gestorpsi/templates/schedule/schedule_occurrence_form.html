@@ -17,15 +17,16 @@ GNU General Public License for more details.
 {% load i18n %}
 {% include "core/ajax_page_form.html" %}
 
-<h2 class="title_schedule title">{{ occurrence.start_time|date }}</h2>
+<h2 class="title_schedule title">{{ occurrence.event.referral.client.all.0 }}</h2>
 <p class="description">{{ occurrence.event.referral.service }} - {{ occurrence.event.referral.professional.all.0 }}</p>
 
 <form method="post" action="/schedule/events/{{ occurrence.event.id }}/{{ occurrence.id }}/" class="schedule refresh">
 <div class="main_area">
 {{ event_form.errors }}
 {{ recurrence_form.errors }}
-	<!-- <a href="" id="help">&nbsp;</a> -->
+	
 	<h3><span>{% trans "Occurrence Details" %}</span></h3>
+        {% comment %}
         <fieldset>
         <legend>{% trans "Referral Details" %}</legend>
             <label><b>{% trans "Service" %}</b><br />
@@ -42,7 +43,7 @@ GNU General Public License for more details.
             {% endfor %}
             </label>
         </fieldset>
-        
+        {% endcomment %}
         <fieldset>
         <legend>{% trans "Due Details" %}</legend>
             <label>{% trans "Start Time" %}<br />

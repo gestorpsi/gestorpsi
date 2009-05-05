@@ -44,7 +44,32 @@ GNU General Public License for more details.
         </fieldset>
 
         <fieldset>
-        <legend>{% trans "Referral Details" %}</legend>
+        <legend>{% trans "Referral" %}</legend>
+            <label>
+            <input class="generic_switch" show="fieldset#existing_referral_true" hide="fieldset.existing_referral" type="radio" name="existing_referral" value="true" checked>&nbsp;{% trans "Existing Referral" %}<br />
+            </label>
+            <label>
+            <input class="generic_switch" show="fieldset#existing_referral_false" hide="fieldset.existing_referral" type="radio" name="existing_referral" value="false">&nbsp;{% trans "New Referral" %}
+            </label>
+        </fieldset>
+
+        <fieldset class="existing_referral" id="existing_referral_true">
+        <legend>{% trans "Existing Referral" %}</legend>
+            <div>
+            <label style="margin-left: 0px !important;">{% trans "Clients" %}<br />
+            <div id="fb_client"></div> <!-- clients from organization -->
+            </label>
+            </div>
+            <div class="hidden client_referrals" style="margin-left: 0px !important;">
+            <label>{% trans "Referrals" %}<br />
+            <select name="referral" class="big">
+            </select>
+            </label>
+            </div>
+        </fieldset>
+
+        <fieldset class="existing_referral hidden" id="existing_referral_false">
+        <legend>{% trans "New referral" %}</legend>
             <label>{% trans "Service" %}<br />
             {{ event_form.service }}
             </label>

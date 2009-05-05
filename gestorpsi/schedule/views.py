@@ -22,6 +22,7 @@ from django import http
 from django.template.context import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response, HttpResponse
 from django.utils.translation import gettext as _
+from django.utils import simplejson
 from swingtime.forms import MultipleOccurrenceForm
 from swingtime.utils import create_timeslot_table
 from gestorpsi.schedule.models import ScheduleOccurrence
@@ -32,21 +33,7 @@ from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.device.models import DeviceDetails
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm
-from django.utils import simplejson
 
-def schedule_occurrences(year = 1, month = 1, day = None):
-    if day:
-        date_start = datetime.strptime("%s%s%s" % (year, month, day),"%Y%m%d")
-        date_end = date_start+timedelta(days=+1)
-    else:
-        date_start = datetime.strptime("%s%s" % (year, month),"%Y%m")
-        date_end = date_start+timedelta( days=calendar.monthrange(int(year), int(month))[1] + 0)
-
-    return ScheduleOccurrence.objects.filter(
-        start_time__gte=date_start,
-        start_time__lt=date_end
-    )
-    
 def schedule_occurrence_listing(request, year = 1, month = 1, day = None, 
     template='schedule/schedule_events.html',
     **extra_context):
@@ -77,7 +64,7 @@ def add_event(
         if event_form.is_valid() and recurrence_form.is_valid():
             event = event_form.save()
             recurrence_form.save(event)
-            return http.HttpResponseRedirect(event.get_absolute_url())
+            return HttpResponse(event.id)
             
     else:
         if 'dtstart' in request.GET:
@@ -186,7 +173,7 @@ def _datetime_view(
         event_form = ReferralForm(),
         recurrence_form = ScheduleOccurrenceForm(),
     )
-    
+
     return render_to_response(
         template,
         data,
@@ -204,6 +191,19 @@ def schedule_index(request,
 
 def today_occurrences(request):
     return daily_occurrences(request, datetime.now().strftime("%Y"), datetime.now().strftime("%m"), datetime.now().strftime("%d"))
+
+def schedule_occurrences(year = 1, month = 1, day = None):
+    if day:
+        date_start = datetime.strptime("%s%s%s" % (year, month, day),"%Y%m%d")
+        date_end = date_start+timedelta(days=+1)
+    else:
+        date_start = datetime.strptime("%s%s" % (year, month),"%Y%m")
+        date_end = date_start+timedelta( days=calendar.monthrange(int(year), int(month))[1] + 0)
+
+    return ScheduleOccurrence.objects.filter(
+        start_time__gte=date_start,
+        start_time__lt=date_end
+    )
 
 def daily_occurrences(request, year = 1, month = 1, day = None):
     #locale.setlocale(locale.LC_ALL,'pt_BR.ISO-8859-1')
@@ -264,7 +264,7 @@ def occurrence_abstract(request, object_id = None):
     try:
         o = ScheduleOccurrence.objects.get(pk=object_id)
     except:
-        raise Http404
+        raise http.Http404
 
     array = {} #json
 
@@ -299,4 +299,55 @@ def occurrence_abstract(request, object_id = None):
     array = simplejson.dumps(array)
     
     return HttpResponse(array, mimetype='application/json')
-	
+
+
+def referral_occurrences(request, object_id = None):
+    try:
+        o = Referral.objects.get(pk=object_id)
+    except:
+        raise http.Http404
+
+    array = {} #json
+
+    array['id'] = o.id;
+    array['service'] = o.service.name;
+    array['annotation'] = o.annotation;
+    
+    array['professional'] = {}
+    count = 0
+    for p in o.professional.all():
+        array['professional'][count] = ({
+            'id':p.id, 
+            'name':p.person.name,
+            'phone':p.person.get_phones(),
+            })
+        count = count + 1
+
+    count = 0
+    array['client'] = {}
+    for c in o.client.all():
+        array['client'][count] = ({
+            'id':c.id, 
+            'name':c.person.name,
+            'phone':c.person.get_phones(),
+            })
+        count = count + 1
+    
+    count = 0
+    array['occurrences'] = {}
+    for i in o.occurrence_set.all():
+        array['occurrences'][count] = ({
+            'id':i.id,
+            'date':i.start_time.strftime('%d/%m/%Y'),
+            'start_time':i.start_time.strftime('%H:%M'),
+            'end_time':i.end_time.strftime('%H:%M'),
+            'room':i.scheduleoccurrence.room.description,
+            'place':i.scheduleoccurrence.room.place.label,
+            })
+        count = count + 1
+
+    #array = simplejson.dumps(array, encoding = 'iso8859-1')
+    array = simplejson.dumps(array)
+    
+    #return HttpResponse(array, mimetype='application/json')
+    return HttpResponse(array)

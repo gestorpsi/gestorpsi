@@ -198,11 +198,55 @@ function updateGrid(url) {
             $('div#dialog div[key=client]').html(str_client);
             $('div#dialog div[key=professional]').html(str_professional);
             $('div#dialog a[key=edit_link]').attr('href','/schedule/events/' + json['event_id'] + '/' + json['id'] + '/');
-            $('div#dialog a[key=edit_link]').attr('title', json['date']);
+            $('div#dialog a[key=edit_link]').attr('title', json['client'][0].name);
             $('form.schedule').children('.sidebar').children('.bg_blue').children('.day_clicked').val(json['day']);
         });
         $('div#dialog').dialog('open');
     });
+    
+    return false;
+}
+
+/**
+ * load data from inserted event (referral) with occurrences
+ */
+
+function updateScheduleReferralDetails(url) {
+    
+    $('.schedule #edit_form .clean').html(''); // clean old data
+    
+    $.getJSON(url, function(json) {
+        
+        var str_professional_inline = ''; 
+        var str_client_inline = ''; 
+        var description = ''; 
+        var tableTR = '';
+        var zebra = 0;
+
+        /**
+         * Referral infos
+         */
+
+        str_client_inline = personInLine(json['client']);
+        str_professional_inline = personInLine(json['professional']);
+        
+        $('.schedule #edit_form h2.title_schedule, ul.opened_tabs li div a:first').text(str_client_inline); // set title (h2 and opened tab)
+        $('.schedule #edit_form p.description').text(json['service'] + ' - ' + str_professional_inline); // set description
+        
+        /**
+         * Occurrences list
+         */
+                
+        jQuery.each(json['occurrences'],  function(){
+            tableTR = tableTR + '<tr class="zebra_' + zebra + '"><td class="title">' + this.date + ' ' + this.start_time + ' - ' + this.end_time + '<br>' + this.place + ' - ' + this.room + '</td></tr>';
+            if(zebra==0) zebra = 1; else zebra = 0;
+        });
+
+        $('.schedule #edit_form div.occurrence_list table tbody').html(tableTR);
+
+        }
+    );
+  
     
     return false;
 }
@@ -248,7 +292,6 @@ function bindScheduleForm() {
         $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option').attr('selected','');
         $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option[value=' + end_time + ']').attr('selected','selected');
     });
-
 }
 
 /**
@@ -262,6 +305,7 @@ function bindSchedule() {
     
     // hide dialog box in all click    
     $('div#dialog a').click(function() {
+            $('div#schedule_header').hide();
             $('div#dialog').dialog('close');
     });
     
@@ -289,6 +333,34 @@ function bindSchedule() {
         $(filter).toggle();
     });
     
+    
+    // get clients json list and draw flexbox
+    $('div.schedule div#form div#fb_client').flexbox('/client/organization_clients/',{
+         allowInput: true,  
+         paging: true,  
+         maxVisibleRows: 12,
+         width: 385,
+         autoCompleteFirstMatch: true,
+         onSelect: function() {  
+            $.getJSON('/referral/client/' + this.getAttribute('hiddenValue') + '/', function(json) {
+                $('#form select[name=referral]').html('');
+                var line = '';
+                var str_professional_inline = '';
+                jQuery.each(json,  function(){
+                    str_professional_inline = '';
+                    //append professional list
+                    jQuery.each(this.professional,  function(){
+                        str_professional_inline = str_professional_inline + this.name + ", " ;
+                    });
+                    str_professional_inline = str_professional_inline.substr(0, (str_professional_inline.length-2))
+                
+                    line = line + '<option value="' + this.id + '">' + this.service + ' (' + str_professional_inline + ')</option>';
+                }); 
+                $('#form select[name=referral]').html(line);
+            });
+            $('#form div.client_referrals').show();
+        }
+    });
     
     /**
      * filter links:
@@ -458,7 +530,7 @@ function bindSchedule() {
             }
         });
         
-
+    
         
     });
     

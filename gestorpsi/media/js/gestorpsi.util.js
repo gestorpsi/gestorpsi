@@ -1,4 +1,4 @@
-{% comment %}
+/**
 
 Copyright (C) 2008 GestorPsi
 
@@ -12,16 +12,23 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
-{% endcomment %}
+*/
 
-{% load i18n %}
+/**
+ * array to string util function
+ */
 
-<div class="main_area contact client_referral_list">
-    <table id="search_results" class="zebra newtab" border="0" cellpadding="0" cellspacing="0">
-    <tbody>           
-        {# Json goes here! #}
-    </tbody>
-    </table>
-</div>
-
-{% include "tags/client_sidebar.html" %}
+function personInLine(list) {
+    
+    var str = ''
+    
+    //append person list
+    if(list) {
+    jQuery.each(list,  function(){
+        str = str + this.name + ", " ;
+    });
+    str = str.substr(0, (str.length-2))
+    }
+    return str
+    
+}

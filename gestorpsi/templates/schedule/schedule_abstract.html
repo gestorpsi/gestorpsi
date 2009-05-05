@@ -13,15 +13,17 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 {% endcomment %}
-
 {% load i18n %}
 
-<div class="main_area contact client_referral_list">
-    <table id="search_results" class="zebra newtab" border="0" cellpadding="0" cellspacing="0">
-    <tbody>           
-        {# Json goes here! #}
-    </tbody>
-    </table>
-</div>
-
-{% include "tags/client_sidebar.html" %}
+<h1 key="date"></h1>
+<h2>{% trans "Room" %}</h2>
+<div key="room"></div>
+<h2>{% trans "Service" %}</h2>
+<div key="service"></div>
+<h2>{% trans "Professional(s)" %}</h2>
+<div key="professional"></div>
+<h2>{% trans "Client(s)" %}</h2>
+<div key="client"></div>
+<br />
+{# <a onclick="$('div#dialog').dialog('close');">{% trans "Fechar" %}</a> #}
+<a key="edit_link" class="ajax">{% trans "Editar" %}</a>

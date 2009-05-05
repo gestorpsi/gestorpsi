@@ -22,6 +22,27 @@ function formError() {
      $('.sidebar').css('padding-top','234px');
 }
 
+function openTab() {
+    // open new tab
+    $('#sub_menu ul li a').removeClass('active'); // unselect other tabs
+    $("ul.opened_tabs").show(); // display tab
+
+    // get title
+    var title = $('div#edit_form input.tabtitle').val();
+
+    // set title 
+    $("ul.opened_tabs li div a:first, div#edit_form h2.title").text(title); // update titles in TAB and page title
+    
+    // set new tab opened to closeable when clicked
+    $('div#form').addClass('edit_form');
+    
+    // display edit form
+    $('div.fast_menu_content').hide();
+    $('div#edit_form').show();
+    
+    return title
+}
+
 // ajax form options
 var form_options = {
      success: function(response, request, form) {
@@ -41,12 +62,11 @@ var form_options = {
                $('div#tmp').attr('id','edit_form');
                $('div#form').html($('div#edit_form').html());
 
-               $('div.fast_menu_content').hide();
+               // reload form binds
                bindAjaxForms();
                bindFormActions();
-               $('div#edit_form').show();
-
-               // append new list iten
+               
+               // append new list item
                if($('div#edit_form input[name=phoneNumber]:first') && $('div#edit_form input[name=phoneNumber]:first').val() != '' && $('div#edit_form input[name=email_email]:first').val() != undefined) {
                     phone_number = '(' + $('div#edit_form input[name=area]:first').val() + ') ' + $('div#edit_form input[name=phoneNumber]:first').val();
                }
@@ -72,6 +92,8 @@ var form_options = {
 
           }
 
+          // open edit TAB
+          var new_title = openTab();
 
           // change action atribute to update it, not insert a new one
           $('div#edit_form .form_client').attr('action','client/' + response + '/save/'); // client form save
@@ -82,19 +104,6 @@ var form_options = {
           $('div#edit_form .form_service').attr('action','service/' + response + '/save/');
           $('div#edit_form .form_device').attr('action','device/' + response + '/save/');
           $('div#edit_form .form_user').attr('action','user/' + response + '/save/');
-
-          // open new tab
-          $('#sub_menu ul li a').removeClass('active'); // unselect other tabs
-          $("ul.opened_tabs").show(); // display tab
-
-
-          // update infos in tab and listing
-
-          // get new title
-          var new_title = $('div#edit_form input.tabtitle').val();
-
-          // new title in tab
-          $("ul.opened_tabs li div a:first, div#edit_form h2.title").text(new_title); // update titles in TAB and page title
 
           // update infos in listing
           $("#list #search_results tr[id="+response+"] td.title a").text(new_title); // update title in listing
@@ -127,9 +136,6 @@ var form_options = {
           // reload mask
           bindFieldMask();
 
-          // set new tab opened to closeable when clicked
-          $('div#form').addClass('edit_form');
-
           // show new options for people
           $('#edit_form .people_actions').show();
 
@@ -154,14 +160,7 @@ var form_options = {
           $('div#edit_form span.editing span.last').hide();
           $('div#edit_form span.editing span.now').show();
 
-          // update schedule table
-          if($('form.schedule').attr('action')) { // is schedule
-                var day_clicked = $('form.schedule').children('.sidebar').children('.bg_blue').children('.day_clicked').val();
-                updateGrid('/schedule/occurrences/' + day_clicked);
-                bindScheduleForm();
-                $('ul.opened_tabs li a').attr('hide','div#schedule_header');
-          }
-
+          // display success message
           formSuccess();
       },
 
@@ -181,7 +180,6 @@ var form_organization_options = {
 	  	alert("Short name not available!");
 	  	return false;
 	} else {
-	  	//alert(response + " / " + request + " / " + form );
       	var new_title = $('#form_organization input.tabtitle').val();
       	// new title in tab
      	 $(".edit_form h2.title").text(new_title); // update titles page title
@@ -196,6 +194,7 @@ var form_organization_options = {
 
 /**
  * client referral submit form options
+ * submit client referral form and update referral list
  */
 
 var form_client_referral_options = {
@@ -203,6 +202,29 @@ var form_client_referral_options = {
         formSuccess();
         // update list
         updateReferral('/referral/client/' + $('div#edit_form input[name=object_id]').val() + '/');
+    },
+
+    error: function() {
+        formError();
+    }
+};
+
+/**
+ * schedule form submit
+  */
+
+var form_schedule_options = {
+    success: function(response, request, form) {
+        // update list
+        var day_clicked = $('form.schedule').children('.sidebar').children('.bg_blue').children('.day_clicked').val();
+        updateGrid('/schedule/occurrences/' + day_clicked);
+        bindScheduleForm();
+        $('ul.opened_tabs li a').attr('hide','div#schedule_header');
+        // load inserted data
+        updateScheduleReferralDetails('/schedule/events/' + response + '/');
+        // display success message
+        formSuccess();
+        openTab();
     },
 
     error: function() {

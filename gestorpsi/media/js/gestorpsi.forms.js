@@ -567,6 +567,16 @@ function bindFormMisc() {
         }
     });
 
+    /**
+     * generic switch to display and hide form elements
+     */
+    
+    $('.generic_switch').unbind().click(function() {
+        var el = $(this);
+        $(el.attr('hide')).hide();
+        $(el.attr('show')).show();
+    });
+    
      /**
       * select multiple plugin
       */

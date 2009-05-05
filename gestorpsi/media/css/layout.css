@@ -650,6 +650,10 @@ textarea {
 	background: url(../img/16/list-add.png) no-repeat 0 3px;
 }
 
+.sidebar li .client_user_form {
+        background: url(../img/16/system-users.png) no-repeat 0 3px;
+}
+
 .sidebar li .print {
 	background: url(../img/16/print.png) no-repeat 0 3px;
 }

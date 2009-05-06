@@ -50,12 +50,12 @@ def form(request, object_id):
                                 context_instance=RequestContext(request))
 
 def form_new_user(request, object_id):
-    object = Profile()
-    object.person = get_object_or_404(Person, pk=object_id)
-    object.user = User(username=slugify(object.person.name))
+    profile = Profile()
+    profile.person = get_object_or_404(Person, pk=object_id)
+    profile.user = User(username=slugify(profile.person.name))
     return render_to_response('users/users_form.html', {
-                                'object': object,
-                                'emails': object.person.emails.all(), },
+                                'profile': profile,
+                                'emails': profile.person.emails.all(), },
                                 context_instance=RequestContext(request))
 
 def create_user(request, object_id):

@@ -64,10 +64,10 @@ function bindReferral() {
     });
     $('form input[name=referral_type]').unbind().click(function() {
         if($(this).val() == 'subscription') {
-            $('label.referral_type_referral').hide();
+            $('.referral_type_referral').hide();
         }
         if($(this).val() == 'referral') {
-            $('label.referral_type_referral').show();
+            $('.referral_type_referral').show();
         }
         
     });

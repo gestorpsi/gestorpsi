@@ -43,16 +43,6 @@ GNU General Public License for more details.
             </label>
         </fieldset>
 
-        <fieldset>
-        <legend>{% trans "Referral" %}</legend>
-            <label>
-            <input class="generic_switch" show="fieldset#existing_referral_true" hide="fieldset.existing_referral" type="radio" name="existing_referral" value="true" checked>&nbsp;{% trans "Existing Referral" %}<br />
-            </label>
-            <label>
-            <input class="generic_switch" show="fieldset#existing_referral_false" hide="fieldset.existing_referral" type="radio" name="existing_referral" value="false">&nbsp;{% trans "New Referral" %}
-            </label>
-        </fieldset>
-
         <fieldset class="existing_referral" id="existing_referral_true">
         <legend>{% trans "Existing Referral" %}</legend>
             <div>
@@ -68,19 +58,6 @@ GNU General Public License for more details.
             </div>
         </fieldset>
 
-        <fieldset class="existing_referral hidden" id="existing_referral_false">
-        <legend>{% trans "New referral" %}</legend>
-            <label>{% trans "Service" %}<br />
-            {{ event_form.service }}
-            </label>
-            <label>{% trans "Clients" %}<br />
-            {{ event_form.client }}
-            </label>
-            <label>{% trans "Professionals" %}<br />
-            {{ event_form.professional }}
-            </label>
-        </fieldset>
-        
         <fieldset>
         <legend>{% trans "Schedule Details" %}</legend>
             <label>{% trans "Notes" %}<br />

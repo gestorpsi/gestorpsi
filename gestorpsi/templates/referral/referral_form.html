@@ -28,7 +28,7 @@ GNU General Public License for more details.
     <a href="" id=help>&nbsp;</a>
     <h3><span>{% trans "Referral Details" %}</span></h3>
     <fieldset>
-    <legend>{% trans "New Referral" %}</legend>
+    <legend>{% trans "Referral Details" %}</legend>
         <label><input type="radio" name="referral_type" value="subscription" checked>&nbsp; {% trans "Subscription" %}</label>
         <label><input type="radio" name="referral_type" value="referral">&nbsp; {% trans "From existing referral" %}</label>
         </label>
@@ -43,6 +43,25 @@ GNU General Public License for more details.
         </label>        
         <label>{% trans "Clients" %}<br />
         {{ referral_form.client }}
+        </label>
+    </fieldset>
+
+    <fieldset class="referral_type_referral hidden">
+    <legend>{% trans "Referral Additional Infos" %}</legend>
+        <label>{% trans "Referral Reason" %}<br />
+        {{ referral_form.referral_reason }}
+        </label>
+        <label>{% trans "Priority" %}<br />
+        {{ referral_form.priority }}
+        </label>
+        <label>{% trans "Impact" %}<br />
+        {{ referral_form.impact }}
+        </label>        
+        <label>{% trans "Available Time" %}<br />
+        {{ referral_form.available_time }}
+        </label>
+        <label>{% trans "Comments" %}<br />
+        {{ referral_form.annotation }}
         </label>
     </fieldset>
     

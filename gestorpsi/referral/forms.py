@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django import forms
-from gestorpsi.referral.models import Referral
+from gestorpsi.referral.models import Referral, ReferralPriority, ReferralImpact
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
@@ -27,8 +27,13 @@ class ReferralForm(forms.ModelForm):
     professional = forms.ModelMultipleChoiceField(queryset=CareProfessional.objects.all(),  widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
     client = forms.ModelMultipleChoiceField(queryset=Client.objects.all(),  widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
     annotation = forms.CharField(widget=forms.Textarea(), required = False)
+    referral_reason = forms.CharField(widget=forms.Textarea(), required = False)
+    available_time = forms.CharField(widget=forms.Textarea(), required = False)
+    priority = forms.ModelChoiceField(queryset=ReferralPriority.objects.all(), required = False, widget=forms.Select(attrs={'class':'big asm', }))
+    impact = forms.ModelChoiceField(queryset=ReferralImpact.objects.all(), required = False, widget=forms.Select(attrs={'class':'big asm', }))
+    
     
     class Meta:
-        fields = ('client', 'service', 'professional', 'annotation')
+        fields = ('client', 'service', 'professional', 'annotation', 'referral', 'annotation', 'referral_reason', 'available_time', 'priority', 'impact')
         model = Referral
 

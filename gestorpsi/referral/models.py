@@ -23,13 +23,31 @@ from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.schedule.models import ScheduleOccurrence
 
+class ReferralPriority(models.Model):
+    title = models.CharField(max_length=20)
+    
+    def __unicode__(self):
+        return u'%s' % self.title
+
+class ReferralImpact(models.Model):
+    title = models.CharField(max_length=20)
+    description = models.CharField(max_length=765, null=True, blank=True)
+    
+    def __unicode__(self):
+        return u'%s (%s)' % (self.title, self.description)
+
 class Referral(Event):
     #id = UuidField(primary_key=True)
     client = models.ManyToManyField(Client)
     professional = models.ManyToManyField(CareProfessional, null=True)
     service = models.ForeignKey(Service, null=True)
     referral = models.ForeignKey('Referral', null=True, blank=True, related_name='referral_parent')
+    date = models.DateTimeField(auto_now_add=True)
+    referral_reason = models.CharField(max_length=765, null=True, blank=True)
     annotation = models.CharField(max_length=765, null=True, blank=True)
+    available_time = models.CharField(max_length=765, null=True, blank=True)
+    priority = models.ForeignKey(ReferralPriority, null=True)
+    impact = models.ForeignKey(ReferralImpact, null=True)
 
     def __init__(self, *args, **kwargs):
         super(Referral, self).__init__(*args, **kwargs)

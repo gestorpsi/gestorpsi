@@ -109,7 +109,7 @@ def save(request, object_id=''):
     return HttpResponse(object.id)
 
 def save_rooms(place, ids, descriptions, dimensions, room_types, furnitures):
-    place.room_set.all().delete()
+ #  place.room_set.all().delete() # If uncomment this line, all event of scheduled will be deleted when add a new room or modifi one of it.
     for room in room_list( ids, descriptions, dimensions, room_types, furnitures ):
         room.place = place
         room.save()

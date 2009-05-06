@@ -89,27 +89,8 @@ var form_options = {
 
                // increment count
                $('span#object_length').text(parseInt($('span#object_length').text())+1);
-
-          }
-
-          // open edit TAB
-          var new_title = openTab();
-
-          // change action atribute to update it, not insert a new one
-          $('div#edit_form .form_client').attr('action','client/' + response + '/save/'); // client form save
-          $('div#edit_form .form_admission').attr('action','admission/' + response + '/save/'); // client admission form save
-          $('#edit_form .sidebar ul li a.print').attr('href','/client/' + response + '/print/'); // client print link
-          $('div#edit_form .form_employee').attr('action','employee/' + response + '/save/');
-          $('div#edit_form .form_place').attr('action','place/' + response + '/save/');
-          $('div#edit_form .form_service').attr('action','service/' + response + '/save/');
-          $('div#edit_form .form_device').attr('action','device/' + response + '/save/');
-          $('div#edit_form .form_user').attr('action','user/' + response + '/save/');
-
-          // update infos in listing
-          $("#list #search_results tr[id="+response+"] td.title a").text(new_title); // update title in listing
-          $("#list #search_results tr[id="+response+"] td.title a").attr('title', new_title); // update title in listing title attribute
-
-          if(editing)  {
+               
+          } else { // editing
                // get phone and mail
                if($('div#edit_form input[name=phoneNumber]:first') && $('div#edit_form input[name=phoneNumber]:first').val() != '' && $('div#edit_form input[name=phoneNumber]:first').val() != undefined) {
                     phone_number = '(' + $('div#edit_form input[name=area]:first').val() + ') ' + $('div#edit_form input[name=phoneNumber]:first').val();
@@ -128,9 +109,28 @@ var form_options = {
 
           }
 
+
+          // open TAB
+          var new_title = openTab();
+
+          // change action atribute to update it, not insert a new one
+          $('div#edit_form .form_client').attr('action','client/' + response + '/save/'); // client form save
+          $('div#edit_form .form_admission').attr('action','admission/' + response + '/save/'); // client admission form save
+          $('#edit_form .sidebar ul li a.print').attr('href','/client/' + response + '/print/'); // client print link
+          $('div#edit_form .form_employee').attr('action','employee/' + response + '/save/');
+          $('div#edit_form .form_place').attr('action','place/' + response + '/save/');
+          $('div#edit_form .form_service').attr('action','service/' + response + '/save/');
+          $('div#edit_form .form_device').attr('action','device/' + response + '/save/');
+          $('div#edit_form .form_user').attr('action','user/' + response + '/save/');
+          
+          // update infos in listing
+          $("#list #search_results tr[id="+response+"] td.title a").text(new_title); // update title in listing
+          $("#list #search_results tr[id="+response+"] td.title a").attr('title', new_title); // update title in listing title attribute
+
           // hide description
           $('div#edit_form p.description').hide();
 
+          // try to sort new table
           $('#list #search_results').tablesorter({sortList: [[0,0], [1,0]]});
 
           // reload mask
@@ -159,6 +159,14 @@ var form_options = {
           // show last update info
           $('div#edit_form span.editing span.last').hide();
           $('div#edit_form span.editing span.now').show();
+
+          // on adding ..
+          if(!editing) {
+             // add new client in new referral form and selected it
+             $('div#edit_form form select[id=id_client] option:first').before('<option value="' + response + '" selected>' + new_title + '</option>');
+             // set client id in a hidden field
+             $('div#edit_form input[name=object_id]').val(response)
+         }
 
           // display success message
           formSuccess();
@@ -224,6 +232,7 @@ var form_schedule_options = {
         updateScheduleReferralDetails('/schedule/events/' + response + '/');
         // display success message
         formSuccess();
+        // open right tab
         openTab();
     },
 

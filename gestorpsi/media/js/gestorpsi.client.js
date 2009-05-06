@@ -23,30 +23,31 @@ function updateReferral(url) {
         // flush list
         $('div#client_referral_list div.client_referral_list table tbody').html('');
         var tableTR = '';
-        var zebra = 0;
+
         jQuery.each(json,  function(){
-                var str_professional = ''; 
-                var str_professional_inline = ''; 
-                var str_service = '';
+            var str_professional = ''; 
+            var str_professional_inline = ''; 
+            var str_service = '';
 
-                str_professional_inline = personInLine(this.professional);
+            str_professional_inline = personInLine(this.professional);
 
-                /**
-                 * populate events view
-                 */
-                
-                tableTR = tableTR + '<tr class="zebra_' + zebra + '"><td class="title">' + this.service + '<br>' + str_professional_inline + '</td></tr>';
-                
-                if(zebra==0) zebra = 1; else zebra = 0;
-             });
+            /**
+            * populate events view
+            */
 
-             if(tableTR == '') {
-                 tableTR = '<div id="msg_area" class="alert">Este cliente ainda não foi encaminhado.</div>';
-             }
-             $('div.client_referral_list table tbody').html(tableTR);
-             
+            tableTR = tableTR + '<tr><td class="title">' + this.service + '<br>' + str_professional_inline + '</td></tr>';
+        });
+
+        if(tableTR == '') {
+            tableTR = '<div id="msg_area" class="alert">Este cliente ainda não foi encaminhado.</div>';
+        }
+        $('div.client_referral_list table tbody').html(tableTR);
+        
+        $('table.zebra tr:odd').addClass('zebra_0');
+        $('table.zebra tr:even').addClass('zebra_1');
+
     });  
-               
+
     return false;
 }
 

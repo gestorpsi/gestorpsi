@@ -59,13 +59,18 @@ def add_event(
 ):
     dtstart = None
     if request.method == 'POST':
-        event_form = event_form_class(request.POST)
         recurrence_form = recurrence_form_class(request.POST)
-        if event_form.is_valid() and recurrence_form.is_valid():
-            event = event_form.save()
-            recurrence_form.save(event)
-            return HttpResponse(event.id)
-            
+        try: # existing referral
+            event = Referral.objects.get(pk=request.POST['referral'])
+            if recurrence_form.is_valid():
+                recurrence_form.save(event)
+                return HttpResponse(event.id)
+        except: # new referral
+            event_form = event_form_class(request.POST)
+            if event_form.is_valid() and recurrence_form.is_valid():
+                event = event_form.save()
+                recurrence_form.save(event)
+                return HttpResponse(event.id)
     else:
         if 'dtstart' in request.GET:
             try:

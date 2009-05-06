@@ -94,7 +94,7 @@ function updateGrid(url) {
                  * start occurrence event
                  */
                 
-                event_line = '<tr><td>'+this.room_name+'</td><td><span class="time">'+this.start_time+'</span></td><td><div></div></td></tr>';
+                event_line = '<tr><td>'+this.room_name+'</td><td><span class="time">' + this.start_time.substr(0, (this.start_time.length-3)) + '</span></td><td><div></div></td></tr>';
                 $('div.schedule_events table.events tr:last').after(event_line);
                 event = $('div.schedule_events table.events tr:last');
                 
@@ -153,6 +153,8 @@ function updateGrid(url) {
                 event.addClass('service_' + this.service_id); // service from cell
                 $(event).children('td').children('div').html('<a title="'+json['util']['str_date']+'" occurrence="' + this.id + '" class="booked">' + label_inline + '</a>');
                 
+                $('table.zebra tr:odd').addClass('zebra_0');
+                $('table.zebra tr:even').addClass('zebra_1');
                 }
             });
             
@@ -221,8 +223,7 @@ function updateScheduleReferralDetails(url) {
         var str_client_inline = ''; 
         var description = ''; 
         var tableTR = '';
-        var zebra = 0;
-
+    
         /**
          * Referral infos
          */
@@ -238,11 +239,13 @@ function updateScheduleReferralDetails(url) {
          */
                 
         jQuery.each(json['occurrences'],  function(){
-            tableTR = tableTR + '<tr class="zebra_' + zebra + '"><td class="title">' + this.date + ' ' + this.start_time + ' - ' + this.end_time + '<br>' + this.place + ' - ' + this.room + '</td></tr>';
-            if(zebra==0) zebra = 1; else zebra = 0;
+            tableTR = tableTR + '<tr><td class="title">' + this.date + ' ' + this.start_time + ' - ' + this.end_time + '<br>' + this.place + ' - ' + this.room + '</td></tr>';
         });
 
         $('.schedule #edit_form div.occurrence_list table tbody').html(tableTR);
+        
+        $('table.zebra tr:odd').addClass('zebra_0');
+        $('table.zebra tr:even').addClass('zebra_1');
 
         }
     );

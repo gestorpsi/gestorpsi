@@ -20,14 +20,14 @@ INSTALL:
 
 1) ./manage.py syncdb
 
-2) execute install2.py
+2) python install2.py
 
-export PYTHONPATH=<directory from your project>
-python install2.py
-
-) Sign up a new user in login page
+3) Sign up a new user in login page
 
 """
+
+import sys
+sys.path.append('..')
 
 from os import environ
 environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'

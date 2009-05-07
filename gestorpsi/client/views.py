@@ -27,6 +27,7 @@ from gestorpsi.address.models import Country, State, AddressType
 from gestorpsi.admission.models import *
 from gestorpsi.authentication.models import Profile
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
+from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 from gestorpsi.client.models import Client, PersonLink, Relation
 from gestorpsi.client.reports import ClientRecord, ClientList
@@ -52,7 +53,7 @@ def index(request):
     object = paginator.page(1)
     
     referral_form = ReferralForm()
-        
+    
     return render_to_response('client/client_index.html',
                                 {'object': object,
                                  'paginator': paginator,
@@ -132,7 +133,11 @@ def form(request, object_id=''):
     # client referral
     data = {'client': [object.id]}
     referral_form = ReferralForm(data)
-
+    referral_form.fields['referral'].queryset = Referral.objects.filter(client=object)
+    referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
+    referral_form.fields['professional'].queryset = CareProfessional.objects.filter(person__organization = request.user.get_profile().org_active.id)
+    referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
+    
     return render_to_response('client/client_form.html',
                               {'object': object, 
                                 'emails': emails, 

@@ -22,7 +22,7 @@ from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
 from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 from gestorpsi.admission.models import *
 from gestorpsi.contact.views import *
-from gestorpsi.util.views import date_form_to_db
+from gestorpsi.util.views import get_object_or_None, date_form_to_db
 
 ## !! moved to client views
 #def form(request, object_id=''):
@@ -59,38 +59,26 @@ def add_relationship(object, name_list, relation_list, responsible_list):
 
 def save(request, object_id=''):
     object = get_object_or_404(Client, pk=object_id)
-    object.admission_date = date_form_to_db(request.POST['admission_date'])
-    object.legacyRecord = request.POST['legacyRecord']
-    object.healthDocument = request.POST['healthDocument']
-    object.comments = request.POST['comments']
-    
+    object.admission_date = date_form_to_db(request.POST.get('admission_date'))
+    object.legacyRecord = request.POST.get('legacyRecord')
+    object.healthDocument = request.POST.get('healthDocument')
+    object.comments = request.POST.get('comments')
+
     """ Referral Section """
     ar = AdmissionReferral()
-    ar.referral_choice = ReferralChoice.objects.get(pk=request.POST['referral'])
-    try:
-        ar.referral_organization = Organization.objects.get(pk=request.POST['referral_organization'])
-    except:
-        ar.referral_organization = None
-    try:
-        ar.referral_professional = CareProfessional.objects.get(pk=request.POST['referral_professional'])
-    except:
-        ar.referral_professional = None
+    ar.referral_choice = ReferralChoice.objects.get(pk=request.POST.get('referral'))
+    ar.referral_organization = get_object_or_None(Organization, id=request.POST.get('referral_organization'))
+    ar.referral_professional = get_object_or_None(CareProfessional, id=request.POST.get('referral_professional'))
+    ar.client = object
     ar.save()
-    object.referral_choice = ar
 
     """ Indication  Section """
     indication = Indication()
-    indication.indication_choice = IndicationChoice.objects.get(pk=request.POST['indication'])
-    try:
-        indication.referral_organization = Organization.objects.get(pk=request.POST['indication_organization'])
-    except:
-        indication.referral_organization = None
-    try:
-        indication.referral_professional = CareProfessional.objects.get(pk=request.POST['indication_professional'])
-    except:
-        indication.referral_professional = None
+    indication.indication_choice = IndicationChoice.objects.get(pk=request.POST.get('indication'))
+    indication.referral_organization = get_object_or_None(Organization, id=request.POST.get('indication_organization'))
+    indication.referral_professional = get_object_or_None(CareProfessional, id=request.POST.get('indication_professional'))
+    indication.client = object
     indication.save()
-    object.indication_choice = indication
 
     object.save()
     

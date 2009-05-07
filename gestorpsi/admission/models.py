@@ -17,7 +17,7 @@ GNU General Public License for more details.
 from django.db import models
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import CareProfessional
-
+from gestorpsi.client.models import Client
 
 class ReferralChoice(models.Model):
     description = models.CharField(max_length=250)
@@ -29,6 +29,7 @@ class AdmissionReferral(models.Model):
     referral_choice = models.ForeignKey(ReferralChoice)
     referral_organization = models.ForeignKey(Organization, null=True)
     referral_professional = models.ForeignKey(CareProfessional, null=True)
+    client = models.ForeignKey(Client)
     def __unicode__(self):
         return u"%s" % self.referral_choice
 
@@ -42,5 +43,6 @@ class Indication(models.Model):
     indication_choice = models.ForeignKey(IndicationChoice)
     referral_organization = models.ForeignKey(Organization, null=True)
     referral_professional = models.ForeignKey(CareProfessional, null=True)
+    client = models.ForeignKey(Client)
     def __unicode__(self):
         return u"%s" % self.indication_choice

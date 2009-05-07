@@ -27,14 +27,13 @@ class ProfessionalResponsible(models.Model):
     @author: Tiago de Souza Moraes
     @version: 1.0 
     """
+    id = UuidField(primary_key=True)
     name = models.CharField(max_length=50)
     subscription = models.CharField(max_length=50)
     org = models.ForeignKey('Organization', null=True, blank=True)
 
     def __unicode__(self):
         return u"%s" % self.name
-    def __unicode__(self):
-        return u"%s" % self.subscription
 
 class PersonType(models.Model):
     """

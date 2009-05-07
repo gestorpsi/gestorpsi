@@ -25,6 +25,7 @@ class Relation(models.Model):
         return u"%s" % self.description
 
 class PersonLink(models.Model):
+    id = UuidField(primary_key=True)
     person = models.OneToOneField(Person)
     relation = models.ForeignKey(Relation)
     responsible = models.BooleanField(default=False)

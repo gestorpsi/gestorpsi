@@ -29,7 +29,6 @@ from gestorpsi.internet.views import email_save, site_save, im_save
 def professional_responsible_save(object, ids, names, subscriptions):
     ProfessionalResponsible.objects.all().delete()
     for x in range(len(names)):
-        #print ids[x], names[x], subscriptions[x]
         obj = []
         obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], org=object))
         if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):

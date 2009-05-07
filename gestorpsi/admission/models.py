@@ -18,6 +18,7 @@ from django.db import models
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client
+from gestorpsi.util.uuid_field import UuidField
 
 class ReferralChoice(models.Model):
     description = models.CharField(max_length=250)
@@ -26,6 +27,7 @@ class ReferralChoice(models.Model):
         return u"%s" % self.description
 
 class AdmissionReferral(models.Model):
+    id = UuidField(primary_key=True)
     referral_choice = models.ForeignKey(ReferralChoice)
     referral_organization = models.ForeignKey(Organization, null=True)
     referral_professional = models.ForeignKey(CareProfessional, null=True)
@@ -40,6 +42,7 @@ class IndicationChoice(models.Model):
         return u"%s" % self.description
 
 class Indication(models.Model):
+    id = UuidField(primary_key=True)
     indication_choice = models.ForeignKey(IndicationChoice)
     referral_organization = models.ForeignKey(Organization, null=True)
     referral_professional = models.ForeignKey(CareProfessional, null=True)

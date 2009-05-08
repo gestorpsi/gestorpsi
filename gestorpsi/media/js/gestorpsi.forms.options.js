@@ -249,6 +249,7 @@ var form_client_referral_options = {
         formSuccess();
         // update list
         updateReferral('/referral/client/' + $('div#edit_form input[name=object_id]').val() + '/');
+        $('div#edit_form div#client_referral_list table div.msg_area').hide();
     },
 
     error: function() {

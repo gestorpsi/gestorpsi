@@ -71,8 +71,8 @@ grp_administrator.permissions.add(Permission.objects.get(codename='service_write
 grp_administrator.permissions.add(Permission.objects.get(codename='service_read'))
 grp_administrator.permissions.add(Permission.objects.get(codename='service_list'))
 
-# Psychologist
-grp_psychologist = Group.objects.create(name='psychologist')
+# Professional
+grp_psychologist = Group.objects.create(name='professional')
 grp_psychologist.permissions.add(Permission.objects.get(codename='client_read'))
 grp_psychologist.permissions.add(Permission.objects.get(codename='client_list'))
 grp_psychologist.permissions.add(Permission.objects.get(codename='schedule_write'))

@@ -40,7 +40,7 @@ def form(request, object_id):
     groups = [False, False, False, False]   # Template Permission Order: Admin, Psycho, Secretary and Client
     for g in profile.user.groups.all():
         if g.name == "administrator": groups[0] = True
-        if g.name == "psychologist":  groups[1] = True
+        if g.name == "professional":  groups[1] = True
         if g.name == "secretary":     groups[2] = True
         if g.name == "client":        groups[3] = True
     return render_to_response('users/users_form.html', {
@@ -77,14 +77,16 @@ def create_user(request, object_id):
 
         if permissions.count('administrator'):
             profile.user.groups.add(Group.objects.get(name='administrator'))
-        if permissions.count('psychologist'):
-            profile.user.groups.add(Group.objects.get(name='psychologist'))
+        if permissions.count('professional'):
+            profile.user.groups.add(Group.objects.get(name='professional'))
         if permissions.count('secretary'):
             profile.user.groups.add(Group.objects.get(name='secretary'))
         if permissions.count('client'):
             profile.user.groups.add(Group.objects.get(name='client'))
-
-    return HttpResponse(profile.person.id)
+        
+        return HttpResponse(profile.person.id)
+        
+    return HttpResponse('')
 
 def update_user(request, object_id):
     """ To be implemented """

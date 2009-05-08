@@ -14,12 +14,15 @@ GNU General Public License for more details.
 
 {% endcomment %}
 
+{% load i18n %}
+
 <div class="schedule_events">
     <table class="zebra schedule_results events" >
+    <div class="msg_area alert" style="display:none">{% trans "There is no events for this day." %}</div>
     <tr>
-        <th class="tiny">Sala</th>
-        <th class="small">hora</th>
-        <th>detalhe dos eventos</th>
+        <th class="tiny">{% trans "Room" %}</th>
+        <th class="small">{% trans "Hour" %}</th>
+        <th>{% trans "Event Details" %}</th>
     </tr>
     </table>
 </div>

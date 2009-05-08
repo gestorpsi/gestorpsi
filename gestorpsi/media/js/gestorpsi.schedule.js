@@ -158,6 +158,13 @@ function updateGrid(url) {
                 }
             });
             
+            if($('div.schedule_events table.events tr td:first').size() < 1) {
+                $('div.schedule_events table.events div.msg_area').show();
+                $('div.schedule_events table.events tr').hide();
+            } else {
+                $('div.schedule_events table.events div.msg_area').hide();
+                $('div.schedule_events table.events tr').show();
+            }
             
             // hide elements if some filter is activated AFTER data loaded
             var count = 0;
@@ -173,9 +180,6 @@ function updateGrid(url) {
                     $('table.schedule_results.events tr.'+class_name).hide();
                 }
             });
-            
-
-
         }
     );
     
@@ -207,20 +211,6 @@ function updateGrid(url) {
             $('div#edit_form form.schedule .sidebar .bg_blue input[name=day_clicked]').val(json['day']);
         });
         $('div#dialog').dialog('open');
-        
-        /**
-         * hide dialog box on click
-         */
-
-        //$('div#dialog a').click(function() {
-                //$('div#schedule_header').hide();
-                //$('div#dialog').dialog('close');
-                //// hide schedule when tab is clicked
-                //$('ul.opened_tabs li a').click(function() {
-                    //$('div#schedule_header').hide();
-                //});
-        //});
-        
     });
     
     return false;

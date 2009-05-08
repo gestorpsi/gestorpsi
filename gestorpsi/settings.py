@@ -104,7 +104,7 @@ TEMPLATE_DIRS = (
     #"/home/gestor/demo/gestorpsi/templates"
     #"/home/gestorpsi/Desenvolvimento/Django/gestorpsi/templates"
     "templates",
-    "'utils/templatetags"
+    "'util/templatetags"
 )
 
 INSTALLED_APPS = (

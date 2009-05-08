@@ -525,7 +525,7 @@ input[type=submit].mini {
 }
 
 select {
-	height: 26px;
+	height: 32px;
 	font-size:16px;
 }
 select.small {

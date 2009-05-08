@@ -22,25 +22,24 @@ function formError() {
      $('.sidebar').css('padding-top','234px');
 }
 
-function openTab() {
+function openTab(title) {
     // open new tab
     $('#sub_menu ul li a').removeClass('active'); // unselect other tabs
     $("ul.opened_tabs").show(); // display tab
-
-    // get title
-    var title = $('div#edit_form input.tabtitle').val();
 
     // set title 
     $("ul.opened_tabs li div a:first, div#edit_form h2.title").text(title); // update titles in TAB and page title
     
     // set new tab opened to closeable when clicked
     $('div#form').addClass('edit_form');
-    
-    // display edit form
-    $('div.fast_menu_content').hide();
-    $('div#edit_form').show();
-    
+
     return title
+}
+
+function displayContent(selector) {
+    $('div.fast_menu_content').hide();
+    $(selector).show();
+    //$('div#edit_form').show();
 }
 
 // ajax form options
@@ -111,7 +110,9 @@ var form_options = {
 
 
           // open TAB
-          var new_title = openTab();
+          var new_title = openTab($('div#edit_form input.tabtitle').val());
+          // display content
+          displayContent('div#edit_form');
 
           // change action atribute to update it, not insert a new one
           $('div#edit_form .form_client').attr('action','client/' + response + '/save/'); // client form save
@@ -160,18 +161,47 @@ var form_options = {
           $('div#edit_form span.editing span.last').hide();
           $('div#edit_form span.editing span.now').show();
 
-          // on adding ..
-          if(!editing) {
-             // add new client in new referral form and selected it
-             if($('div#edit_form form select[id=id_client] option:first').val() != undefined) {
-                $('div#edit_form form select[id=id_client] option:first').before('<option value="' + response + '" selected>' + new_title + '</option>');
-            }
-             else {
-                $('div#edit_form form select[id=id_client]').html('<option value="' + response + '" selected>' + new_title + '</option>');
-            }
-             // set client id in a hidden field
-             $('div#edit_form input[name=object_id]').val(response)
-         }
+          /**
+           * client referral options
+           */
+           
+          if($(form).hasClass('client_referral')) {
+              if(!editing) {
+                 // add new client in new referral form and selected it
+                 if($('div#edit_form form select[id=id_client] option:first').val() != undefined) {
+                    $('div#edit_form form select[id=id_client] option:first').before('<option value="' + response + '" selected>' + new_title + '</option>');
+                } else {
+                    $('div#edit_form form select[id=id_client]').html('<option value="' + response + '" selected>' + new_title + '</option>');
+                }
+                 // set client id in a hidden field
+                 $('div#edit_form input[name=object_id]').val(response)
+             }
+           }
+
+
+        /** 
+         * schedule options 
+         */
+        
+        if($(form).hasClass('schedule')) {
+                var day_clicked = $('form.schedule').children('.sidebar').children('.bg_blue').children('.day_clicked').val();
+                updateGrid('/schedule/occurrences/' + day_clicked);
+                
+                bindScheduleForm();
+                
+                //$('ul.opened_tabs li a').attr('hide','div#schedule_header');
+                // load inserted data
+                updateScheduleReferralDetails('/schedule/events/' + response + '/');
+                // display success message
+                formSuccess();
+                // open right tab
+                openTab($('div#edit_form input.tabtitle').val());
+                // display content
+                $('.schedule #edit_form div.fast_content').hide();
+                $('.schedule #edit_form div#schedule_occurrence_list').show();
+                // show description
+                $('.schedule #edit_form p.description').show();
+        }
 
           // display success message
           formSuccess();
@@ -226,19 +256,18 @@ var form_client_referral_options = {
  * schedule form submit
   */
 
-var form_schedule_options = {
+var form_schedule_occurrence_options = {
     success: function(response, request, form) {
         // update list
         var day_clicked = $('form.schedule').children('.sidebar').children('.bg_blue').children('.day_clicked').val();
+        alert('updating to ' + day_clicked);
         updateGrid('/schedule/occurrences/' + day_clicked);
         bindScheduleForm();
-        $('ul.opened_tabs li a').attr('hide','div#schedule_header');
+        //$('ul.opened_tabs li a').attr('hide','div#schedule_header');
         // load inserted data
-        updateScheduleReferralDetails('/schedule/events/' + response + '/');
+        //updateScheduleReferralDetails('/schedule/events/' + response + '/');
         // display success message
         formSuccess();
-        // open right tab
-        openTab();
     },
 
     error: function() {

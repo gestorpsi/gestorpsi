@@ -62,16 +62,18 @@ function bindList() {
 		$("ul.opened_tabs li div a:first").text(link.attr('title')); // set newtab title
 		
 		$("ul.opened_tabs li div a:first").unbind().click(function() {
-			$('#core .fast_menu_content').hide();
+            $('#core .fast_menu_content').hide();
 			$('#core div' + div).show();
-			$('#sub_menu ul li a').removeClass('active');
+            $('#sub_menu ul li a').removeClass('active');
+            if(link.attr('hide')) {
+                $(link.attr('hide')).hide();    
+            }
 		});
 
         $('#msg_area').removeClass();
         $('#msg_area').hide();
         $('.sidebar').css('padding-top','165px');
         
-
 		return false;
 	});
 	
@@ -219,8 +221,8 @@ function bindList() {
 		}
 	
 	    if(link.attr('hide')) {
-	        $(link.attr('hide')).hide();    
-        }
+	        $(link.attr('hide')).hide();  
+         }
 		return false;
         });
 

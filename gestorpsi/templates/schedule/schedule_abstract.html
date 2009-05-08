@@ -25,5 +25,5 @@ GNU General Public License for more details.
 <h2>{% trans "Client(s)" %}</h2>
 <div key="client"></div>
 <br />
-{# <a onclick="$('div#dialog').dialog('close');">{% trans "Fechar" %}</a> #}
-<a key="edit_link" class="ajax">{% trans "Editar" %}</a>
+<a onclick="$('div#dialog').dialog('close');">{% trans "Fechar" %}</a>
+<a key="edit_link" class="ajax" hide="div#schedule_header" onclick="$('div#schedule_header').hide(); $('div#dialog').dialog('close');">{% trans "Editar" %}</a>

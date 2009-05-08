@@ -179,7 +179,10 @@ function updateGrid(url) {
         }
     );
     
-    // bind dialog box
+    /**
+     * bind dialog box
+     */
+
     $('table.schedule_results a.booked').unbind().click(function() {
         $.getJSON('/schedule/occurrence/abstract/'+ $(this).attr('occurrence') +'/', function(json) {
             
@@ -201,9 +204,23 @@ function updateGrid(url) {
             $('div#dialog div[key=professional]').html(str_professional);
             $('div#dialog a[key=edit_link]').attr('href','/schedule/events/' + json['event_id'] + '/' + json['id'] + '/');
             $('div#dialog a[key=edit_link]').attr('title', json['client'][0].name);
-            $('form.schedule').children('.sidebar').children('.bg_blue').children('.day_clicked').val(json['day']);
+            $('div#edit_form form.schedule .sidebar .bg_blue input[name=day_clicked]').val(json['day']);
         });
         $('div#dialog').dialog('open');
+        
+        /**
+         * hide dialog box on click
+         */
+
+        //$('div#dialog a').click(function() {
+                //$('div#schedule_header').hide();
+                //$('div#dialog').dialog('close');
+                //// hide schedule when tab is clicked
+                //$('ul.opened_tabs li a').click(function() {
+                    //$('div#schedule_header').hide();
+                //});
+        //});
+        
     });
     
     return false;
@@ -215,7 +232,7 @@ function updateGrid(url) {
 
 function updateScheduleReferralDetails(url) {
     
-    $('.schedule #edit_form .clean').html(''); // clean old data
+    $('.schedule #edit_form div#schedule_occurrence_list table .clean').html(''); // clean old data
     
     $.getJSON(url, function(json) {
         
@@ -242,7 +259,7 @@ function updateScheduleReferralDetails(url) {
             tableTR = tableTR + '<tr><td class="title">' + this.date + ' ' + this.start_time + ' - ' + this.end_time + '<br>' + this.place + ' - ' + this.room + '</td></tr>';
         });
 
-        $('.schedule #edit_form div.occurrence_list table tbody').html(tableTR);
+        $('.schedule #edit_form div#schedule_occurrence_list div.occurrence_list table tbody').html(tableTR);
         
         $('table.zebra tr:odd').addClass('zebra_0');
         $('table.zebra tr:even').addClass('zebra_1');
@@ -266,25 +283,25 @@ function bindScheduleForm() {
 
         year = link.attr('date').substring(0,4);
         month = link.attr('date').substring(5,7);
-        day = link.attr('date').substring(8,10);
+        day = link.attr('date').substring(8,11);
         hour = link.attr('hour').substring(0,2);
         minutes = link.attr('hour').substring(3,5);
-        
+
         var zero_hour = new Date(year, month, day, 0, 0, 0);
         var due = new Date(year, month, day, hour, minutes);
-        
         var start_time_delta = (due - zero_hour) / 1000;
         var end_time_delta = (parseInt(start_time_delta) + parseInt(increment_end_time));
 
         // set initial data in add form
-        $('div.schedule #form select[name=day_month] option[value=' + parseInt(month) + ']').attr('selected', 'selected');
-        $('div.schedule #form select[name=day_day] option[value=' + parseInt(day) + ']').attr('selected', 'selected');
-        $('div.schedule #form select[name=day_year] option[value=' + parseInt(day) + ']').attr('selected', 'selected');
+        $('div.schedule #form select[name=day_month] option[value=' + parseFloat(month) + ']').attr('selected', 'selected');
+        $('div.schedule #form select[name=day_day] option[value=' + parseFloat(day) + ']').attr('selected', 'selected');
+        $('div.schedule #form select[name=day_year] option[value=' + parseInt(year) + ']').attr('selected', 'selected');
         $('div.schedule #form select[name=start_time_delta] option[value=' + start_time_delta + ']').attr('selected', 'selected');
         $('div.schedule #form select[name=end_time_delta] option[value=' + end_time_delta + ']').attr('selected', 'selected');
         $('div.schedule #form select[name=room] option[value=' + link.attr('room_id') + ']').attr('selected', 'selected');
         $('div.schedule #form input[name=tabtitle]').val(link.attr('title'));
-        $('form.schedule').children('.sidebar').children('.bg_blue').children('.day_clicked').val(year + '/' + month + '/' + day);
+        $('div#form form.schedule .sidebar input[name=day_clicked]').val(year + '/' + month + '/' + day);
+    
     });
 
     // if start time is changed, increment 'increment_end_time' value to end time
@@ -295,6 +312,9 @@ function bindScheduleForm() {
         $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option').attr('selected','');
         $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option[value=' + end_time + ']').attr('selected','selected');
     });
+
+
+
 }
 
 /**
@@ -306,18 +326,11 @@ function bindSchedule() {
     // dialog box
     $('div#dialog').dialog(dialog_options);
     
-    // hide dialog box in all click    
-    $('div#dialog a').click(function() {
-            $('div#schedule_header').hide();
-            $('div#dialog').dialog('close');
-    });
-    
     // load today daily occurrences and mini-calendar
     $('div.schedule table.schedule_results').unbind().ready(function() {
         $("div#mini_calendar").datepicker(schedule_options);
         updateGrid('/schedule/occurrences/');
     });
-    
    
     // open mini-calendar
     $('a#calendar_link').unbind().click(function() {
@@ -359,9 +372,10 @@ function bindSchedule() {
                 
                     line = line + '<option value="' + this.id + '">' + this.service + ' (' + str_professional_inline + ')</option>';
                 }); 
-                $('#form select[name=referral]').html(line);
+                $('#form select[name=referral]').html(line); // rebuild referral select
             });
             $('#form div.client_referrals').show();
+            $('#form input[name=tabtitle]').val(this.value); // set title, to use in TAB
         }
     });
     

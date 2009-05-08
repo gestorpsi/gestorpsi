@@ -314,17 +314,17 @@ div#sub_menu .active {
 	padding: 15px 0 7px 70px;
 	height: 45px;
 }
-#msg_area {
+#msg_area, .msg_area {
 	padding: 15px 20px;
 	margin: 10px 20px;
 	background: #CCCCCC;
 	border: 2px solid #999999;
 }
-#msg_area.alert, #helping {
+#msg_area.alert, #helping, .msg_area.alert {
 	background:#FFFFCC;
 	border: 2px solid #FFFF00;
 }
-#msg_area.error {
+#msg_area.error, .msg_area.error {
 	background:#FFCCCC;
 	border: 2px solid #FF0000;
 }

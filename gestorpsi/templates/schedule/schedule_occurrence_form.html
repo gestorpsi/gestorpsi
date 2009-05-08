@@ -20,41 +20,26 @@ GNU General Public License for more details.
 <h2 class="title_schedule title">{{ occurrence.event.referral.client.all.0 }}</h2>
 <p class="description">{{ occurrence.event.referral.service }} - {{ occurrence.event.referral.professional.all.0 }}</p>
 
-<form method="post" action="/schedule/events/{{ occurrence.event.id }}/{{ occurrence.id }}/" class="schedule refresh">
+<form method="post" action="/schedule/events/{{ occurrence.event.id }}/{{ occurrence.id }}/" class="schedule_occurrence">
 <div class="main_area">
 {{ event_form.errors }}
 {{ recurrence_form.errors }}
 	
 	<h3><span>{% trans "Occurrence Details" %}</span></h3>
-        {% comment %}
-        <fieldset>
-        <legend>{% trans "Referral Details" %}</legend>
-            <label><b>{% trans "Service" %}</b><br />
-            {{ occurrence.event.referral.service }}
-            </label>
-            <label><b>{% trans "Clients" %}</b><br />
-            {% for i in occurrence.event.referral.client.all %}
-                {{ i }} {{ i.person.get_phones }}<br />
-            {% endfor %}
-            </label>
-            <label><b>{% trans "Professionals" %}</b><br />
-            {% for i in occurrence.event.referral.professional.all %}
-                {{ i }} {{ i.person.get_phones }}<br />
-            {% endfor %}
-            </label>
-        </fieldset>
-        {% endcomment %}
         <fieldset>
         <legend>{% trans "Due Details" %}</legend>
-            <label>{% trans "Start Time" %}<br />
+            <label>{% trans "Start Time" %}</label>
+            <div>
             {{ form.start_time }}
-            </label>
-            <label>{% trans "End Time" %}<br />
+            </div>
+            <label>{% trans "End Time" %}</label>
+            <div>
             {{ form.end_time }}
-            </label>
-            <label>{% trans "Room" %}<br />
+            </div>
+            <label>{% trans "Room" %}</label>
+            <div>
             {{ form.room }}
-            </label>
+            </div>
             <label>{% trans "Notes" %}<br />
             {{ form.annotation }}
             </label>

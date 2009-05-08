@@ -209,6 +209,7 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
     locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
 
     occurrences = schedule_occurrences(year, month, day)
+
     array = {} #json
     i = 0
     
@@ -267,12 +268,12 @@ def occurrence_abstract(request, object_id = None):
 
     array = {} #json
 
-    array['id'] = o.id;
-    array['event_id'] = o.event.id;
-    array['date'] = o.start_time.strftime('%d/%m/%Y %H:%M');
-    array['day'] = o.start_time.strftime('%Y/%m/%d');
-    array['room'] = o.room.description;
-    array['service'] = o.event.referral.service.name;
+    array['id'] = o.id
+    array['event_id'] = o.event.id
+    array['date'] = o.start_time.strftime('%d/%m/%Y %H:%M')
+    array['day'] = o.start_time.strftime('%Y/%m/%d')
+    array['room'] = o.room.description
+    array['service'] = o.event.referral.service.name
     
     array['professional'] = {}
     count = 0

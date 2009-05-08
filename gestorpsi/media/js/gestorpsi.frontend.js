@@ -175,19 +175,19 @@ $(document).ready(function(){
 
 
 		
-	/** sub menu selection */
-	
-	$("#sub_menu ul li a:not(.close)").click(function(){
-	        var link = $(this);
+        /** sub menu selection */
+        
+        $("#sub_menu ul li a:not(.close)").click(function(){
+                var link = $(this);
 
-                // remove active classes from sub_menu itens 
-                $('#sub_menu ul li a').removeClass('active');
-                // make active on clicked menu item
-                link.addClass('active');
-	});
+                    // remove active classes from sub_menu itens 
+                    $('#sub_menu ul li a').removeClass('active');
+                    // make active on clicked menu item
+                    link.addClass('active');
+        });
 
 	
-	/**
+        /**
          *
          * fast menu itens
          *
@@ -215,8 +215,8 @@ $(document).ready(function(){
                 if(link.attr('show')) {
 	                $(link.attr('show')).show();
                 }
-                // if element have multiple forms childrens, show only first element
-                if($('div#' + display + ' div.fast_content').size()) {
+                // if element have multiple forms childrens, show only first element on add form
+                if($('div#' + display + ' div.fast_content').size() && display == 'form') {
                     $('div#' + display + ' div.fast_content').hide();
                     $('div#' + display + ' div.fast_content:first').show();
                 }
@@ -227,19 +227,19 @@ $(document).ready(function(){
         
         
         /**
-	 * ajaxable
-	 *
-	 * function used to re-bind an URL (used in opened tabs, when a new link is added by JavaScript)
-	 *
-	 */
-	
-	
-	$(".ajaxable").click(function(){
-		$.get($(this).attr('href'),
-			function(data) {
-				$("#core").html(data);
-		});
-	});
+         * ajaxable
+         *
+         * function used to re-bind an URL (used in opened tabs, when a new link is added by JavaScript)
+         *
+         */
+        
+        
+        $(".ajaxable").click(function(){
+            $.get($(this).attr('href'),
+                function(data) {
+                    $("#core").html(data);
+            });
+        });
       
 
         // organization menu

@@ -16,13 +16,10 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<div class="main_area contact client_referral_list">
+<div class="main_area contact occurrence_list">
     <table id="search_results" class="zebra newtab" border="0" cellpadding="0" cellspacing="0">
-    <div class="msg_area alert" style="display:none">{% trans "This customer has not yet been sent." %}<br />{% trans "Want to" %} <a class="fast_content client_referral_form" display="client_referral_form" title="{{ object.person.name }}">{% trans "forward it now?" %}</a></div>
-    <tbody>           
+    <tbody class="clean">
         {# Json goes here! #}
     </tbody>
     </table>
 </div>
-
-{% include "tags/client_sidebar.html" %}

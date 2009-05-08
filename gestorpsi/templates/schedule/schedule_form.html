@@ -20,6 +20,8 @@ GNU General Public License for more details.
 <h2 class="title_schedule title">{% trans "Adding New Event" %}</h2>
 <p class="description">{% trans "Inform the schedule details then click on Save button" %}</p>
 
+<div class="fast_content" id="schedule_form" style="display:block;">
+
 <form method="post" action="/schedule/events/add/" class="schedule refresh">
 <input type="hidden" name="tabtitle" class="tabtitle" />
 <div class="main_area">
@@ -155,4 +157,9 @@ GNU General Public License for more details.
 
 </form>
 
+</div> <!-- fast content -->
+
+<div class="fast_content" id="schedule_occurrence_list">
+    {% include "schedule/schedule_occurrence_list.html" %}
+</div>
 

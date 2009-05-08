@@ -39,7 +39,7 @@ function updateReferral(url) {
         });
 
         if(tableTR == '') {
-            tableTR = '<div id="msg_area" class="alert">Este cliente ainda não foi encaminhado.</div>';
+            $('div#edit_form .client_referral_list div.msg_area').show();
         }
         $('div.client_referral_list table tbody').html(tableTR);
         

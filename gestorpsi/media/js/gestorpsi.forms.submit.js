@@ -57,7 +57,23 @@ function bindAjaxForms() {
                //professional: { required: true }
           //},
           submitHandler: function(form) {
-               $(form).ajaxSubmit(form_schedule_options);
+               //$(form).ajaxSubmit(form_schedule_options);
+               $(form).ajaxSubmit(form_options);
+            }
+          });
+     });
+
+     /**
+      * schedule occurrence form
+      */
+
+     $('form.schedule_occurrence').each(function() {
+          $(this).validate({event:"submit",
+          rules: {
+               room: { required: true }
+          },
+          submitHandler: function(form) {
+               $(form).ajaxSubmit(form_schedule_occurrence_options);
             }
           });
      });

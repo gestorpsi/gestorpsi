@@ -38,7 +38,7 @@ msgstr "Nome"
 #: authentication/forms.py:33
 #, fuzzy
 msgid "Responsible professional name"
-msgstr "Profissionais Relacionados"
+msgstr "Profissional Responsável"
 
 #: authentication/forms.py:34 templates/tags/email.html:21
 #: templates/users/users_form.html:78
@@ -57,16 +57,16 @@ msgstr "Senha"
 
 #: authentication/forms.py:35
 msgid "Choice one password"
-msgstr ""
+msgstr "Escolha uma senha"
 
 #: authentication/forms.py:36
 #, fuzzy
 msgid "Password (again)"
-msgstr "Senha"
+msgstr "Senha (confirmação)"
 
 #: authentication/forms.py:36
 msgid "Type password again"
-msgstr ""
+msgstr "Digite novamente sua senha"
 
 #: authentication/forms.py:37 templates/users/users_form.html:65
 msgid "Username"
@@ -74,7 +74,7 @@ msgstr "Nome de Usuário"
 
 #: authentication/forms.py:37
 msgid "Choice one unique identifier"
-msgstr ""
+msgstr "Escolha um identificador único"
 
 #: authentication/forms.py:38 templates/contact/contact_form.html:37
 #, fuzzy
@@ -124,11 +124,11 @@ msgstr "Informações Básicas"
 
 #: templates/admission/admission_form.html:36
 msgid "ID Record"
-msgstr "Registro Identificador"
+msgstr "Número de Prontuário"
 
 #: templates/admission/admission_form.html:38
 msgid "Legacy Record"
-msgstr "Registro de Legado"
+msgstr "Prontuário Existente"
 
 #: templates/admission/admission_form.html:40
 #, fuzzy
@@ -174,7 +174,7 @@ msgstr "adicione um novo"
 #: templates/admission/admission_form.html:98
 #, fuzzy
 msgid "Select Professional, or"
-msgstr "selecione Profissional ou"
+msgstr "Selecione Profissional ou"
 
 #: templates/admission/admission_form.html:79
 #, fuzzy
@@ -188,7 +188,7 @@ msgstr "Forma de indicação"
 #: templates/admission/admission_form.html:110
 #, fuzzy
 msgid "Parents"
-msgstr "Parentes"
+msgstr "Familiar"
 
 #: templates/admission/admission_form.html:118
 #, fuzzy
@@ -262,7 +262,7 @@ msgstr "Horários disponíveis"
 
 #: templates/careprofessional/careprofessional_form.html:82
 msgid "Professional Agreements"
-msgstr "Convênios"
+msgstr "Convênios Profissionais"
 
 #: templates/careprofessional/careprofessional_form.html:83
 #: templates/service/service_form.html:164
@@ -393,7 +393,7 @@ msgstr "Socioeconômico"
 #: templates/schedule/schedule_index.html:45
 #, fuzzy
 msgid "Event Details"
-msgstr "Detalhes do Cliente"
+msgstr "Detalhes do Evento"
 
 #: templates/client/client_index.html:57 templates/device/device_form.html:144
 #: templates/schedule/schedule_abstract.html:19
@@ -416,7 +416,7 @@ msgstr "Serviços"
 #: templates/schedule/schedule_abstract.html:23
 #, fuzzy
 msgid "Professional(s)"
-msgstr "profissional(is)"
+msgstr "Profissional(is)"
 
 #: templates/client/client_index.html:63
 #: templates/schedule/schedule_abstract.html:25
@@ -427,7 +427,7 @@ msgstr "Clientes"
 #: templates/client/client_index.html:67
 #: templates/schedule/schedule_abstract.html:29
 msgid "Editar"
-msgstr ""
+msgstr "Editar"
 
 #: templates/client/client_list.html:28 templates/client/client_search.html:28
 #: templates/users/users_list.html:28 templates/users/users_search.html:28
@@ -556,7 +556,7 @@ msgstr "Estabelecimento"
 
 #: templates/core/main.html:97
 msgid "My Organization"
-msgstr "Configurações"
+msgstr "Meu Estabelecimento"
 
 #: templates/core/main.html:98
 msgid "Places"
@@ -612,7 +612,7 @@ msgstr "Ativos"
 
 #: templates/core/main.html:118
 msgid "waiting"
-msgstr "Esperando"
+msgstr "Fila de espera"
 
 #: templates/core/main.html:123
 #, fuzzy
@@ -703,7 +703,7 @@ msgstr "Status do equipamento"
 
 #: templates/device/device_form.html:82
 msgid "Lendable?"
-msgstr "Emprestável?"
+msgstr "Empréstimo permitido?"
 
 #: templates/device/device_form.html:92
 #, fuzzy
@@ -741,7 +741,7 @@ msgstr "Dispositivo(s)"
 #: templates/device/device_type_list.html:28
 #, fuzzy
 msgid "All types"
-msgstr "Todos os Clientes"
+msgstr "Todos os tipos"
 
 #: templates/employee/employee_form.html:27
 msgid "Adding New Employee"
@@ -775,17 +775,17 @@ msgstr "Funcionários"
 
 #: templates/frontend/frontend_start.html:21
 msgid "Welcome"
-msgstr ""
+msgstr "Bem Vindo ao GestorPsi!"
 
 #: templates/frontend/frontend_start.html:30
 msgid "Information about you"
-msgstr ""
+msgstr "Seus dados"
 
 #: templates/frontend/frontend_start.html:33
 #: templates/users/users_list.html:108
 #, fuzzy
 msgid "Last Login"
-msgstr "Entrar"
+msgstr "Último acesso"
 
 #: templates/meta/addressbook.html:24
 #: templates/organization/organization_form.html:162
@@ -925,11 +925,11 @@ msgstr "Nome Fantasia"
 #: templates/organization/organization_form.html:53
 #, fuzzy
 msgid "Short Name"
-msgstr "Nome do familiar"
+msgstr "Nome abreviado"
 
 #: templates/organization/organization_form.html:59
 msgid "Not available"
-msgstr ""
+msgstr "Indisponível"
 
 #: templates/organization/organization_form.html:66
 #, fuzzy
@@ -953,12 +953,12 @@ msgstr "Inscrição Municipal"
 #: templates/organization/organization_form.html:82
 #, fuzzy
 msgid "Professional Responsible"
-msgstr "Técnico Responsável"
+msgstr "Profissional Responsável"
 
 #: templates/organization/organization_form.html:90
 #, fuzzy
 msgid "Add Professional"
-msgstr "Profissional"
+msgstr " Adicionar Profissional"
 
 #: templates/organization/organization_form.html:94
 #, fuzzy
@@ -1073,11 +1073,11 @@ msgstr "Encaminhamentos"
 #: templates/referral/referral_form.html:32
 #, fuzzy
 msgid "Subscription"
-msgstr "Descrição"
+msgstr "Inscrição"
 
 #: templates/referral/referral_form.html:33
 msgid "From existing referral"
-msgstr ""
+msgstr "Encaminhamento interno"
 
 #: templates/referral/referral_form.html:35
 #: templates/schedule/schedule_form.html:47
@@ -1096,12 +1096,12 @@ msgstr "Clientes"
 #: templates/registration/activate.html:3
 #: templates/registration/activate.html:6
 msgid "Account activated"
-msgstr ""
+msgstr "Conta ativada"
 
 #: templates/registration/activate.html:8
 #, fuzzy
 msgid "Thanks for signing up! Now you can"
-msgstr "Obrigado por utilizar nosso site!"
+msgstr "Obrigado por utilizar nosso site! Agora você pode"
 
 #: templates/registration/activate.html:8
 #, fuzzy
@@ -1113,11 +1113,11 @@ msgid ""
 "Sorry, it didn't work. Either your activation link was incorrect, or the "
 "activation key for your account has expired; activation keys are only valid "
 "for"
-msgstr ""
+msgstr "Desculpe, não deu certo. Ou seu link de ativação está incorreto ou a chave de ativação para sua conta expirou; chave de ativação é válida por"
 
 #: templates/registration/activate.html:10
 msgid "days after registration"
-msgstr ""
+msgstr "dias depois do registro"
 
 #: templates/registration/login.html:3 templates/registration/login.html:9
 #, fuzzy
@@ -1126,19 +1126,19 @@ msgstr "Entrar"
 
 #: templates/registration/login.html:12
 msgid "If you don't have an account, you can"
-msgstr "Se você não possui uma conta, você pode"
+msgstr "Se você ainda não possui uma conta,"
 
 #: templates/registration/login.html:12
 msgid "sign up"
-msgstr "registrar-se"
+msgstr "registre-se"
 
 #: templates/registration/login.html:12
 msgid "for one"
-msgstr "para uma"
+msgstr "aqui"
 
 #: templates/registration/password_reset_email.html:2
 msgid "You're receiving this e-mail because you requested a password reset"
-msgstr "Você está recebendo este e-mail porque solicitou uma nova senha"
+msgstr "Você está recebendo este e-mail por ter solicitado uma nova senha"
 
 #: templates/registration/password_reset_email.html:3
 #, python-format
@@ -1164,22 +1164,22 @@ msgstr "A equipe do %(site_name)s"
 
 #: templates/registration/registration_complete.html:3
 msgid "Registration complete"
-msgstr ""
+msgstr "Registro completo"
 
 #: templates/registration/registration_complete.html:6
 msgid "Check your email"
-msgstr ""
+msgstr "Verifique seu e-mail"
 
 #: templates/registration/registration_complete.html:7
 msgid ""
 "An activation link has been sent to the email address you supplied, along "
 "with instructions for activating your account."
-msgstr ""
+msgstr "Um link de ativação foi enviado ao endereço de e-mail fornecido, juntamente às instruções para ativação da sua conta"
 
 #: templates/registration/registration_form.html:3
 #, fuzzy
 msgid "Registration"
-msgstr "Restrição"
+msgstr "Registro"
 
 #: templates/registration/registration_form.html:6
 msgid "New account"
@@ -1196,8 +1196,8 @@ msgid ""
 "will be created; you'll be sent an email with instructions on how to finish "
 "your registration"
 msgstr ""
-"Preencha o formulário à esquerda (todos os campos são obrigatórios) e sua "
-"conta será criada. Será enviado um e-mail com instruções sobre como concluir "
+"Por favor, preencha o formulário para a criação da sua conta (todos os campos são obrigatórios)."
+"Um e-mail será enviado com instruções sobre como concluir "
 "o seu registro."
 
 #: templates/registration/registration_form.html:18
@@ -1208,7 +1208,7 @@ msgstr "Já possui uma conta?"
 #: templates/schedule/schedule_daily.html:34
 #, fuzzy
 msgid "Free"
-msgstr "Feminino"
+msgstr "Livre"
 
 #: templates/schedule/schedule_filter.html:19
 #, fuzzy
@@ -1248,120 +1248,120 @@ msgstr "Informe os detalhes do cliente e clique em salvar"
 #: templates/schedule/schedule_form.html:30
 #, fuzzy
 msgid "Schedule Due"
-msgstr "Detalhes do Cliente"
+msgstr "Agenda"
 
 #: templates/schedule/schedule_form.html:31
 #, fuzzy
 msgid "Date"
-msgstr "Estado"
+msgstr "Data"
 
 #: templates/schedule/schedule_form.html:35
 #: templates/schedule/schedule_occurrence_form.html:49
 #, fuzzy
 msgid "Start Time"
-msgstr "Estado"
+msgstr "Hora de início"
 
 #: templates/schedule/schedule_form.html:38
 #: templates/schedule/schedule_form.html:104
 #: templates/schedule/schedule_occurrence_form.html:52
 msgid "End Time"
-msgstr ""
+msgstr "Hora de término"
 
 #: templates/schedule/schedule_form.html:49
 #: templates/schedule/schedule_form.html:57
 #, fuzzy
 msgid "Existing Referral"
-msgstr "Encaminhamentos"
+msgstr "Encaminhamentos Interno"
 
 #: templates/schedule/schedule_form.html:72
 #, fuzzy
 msgid "New referral"
-msgstr "Encaminhamentos"
+msgstr "Novo Encaminhamento"
 
 #: templates/schedule/schedule_form.html:85
 #, fuzzy
 msgid "Schedule Details"
-msgstr "Detalhes do Cliente"
+msgstr "Detalhes da Agenda"
 
 #: templates/schedule/schedule_form.html:86
 #: templates/schedule/schedule_occurrence_form.html:58
 msgid "Notes"
-msgstr ""
+msgstr "Notas"
 
 #: templates/schedule/schedule_form.html:95
 #: templates/schedule/schedule_occurrence_form.html:28
 #, fuzzy
 msgid "Occurrence Details"
-msgstr "Detalhes do Cliente"
+msgstr "Detalhes da ocorrência"
 
 #: templates/schedule/schedule_form.html:96
 msgid "Occurrence Format"
-msgstr ""
+msgstr "Forma de ocorrência"
 
 #: templates/schedule/schedule_form.html:101
 msgid "Total Occurrences"
-msgstr ""
+msgstr "Total de ocorrências"
 
 #: templates/schedule/schedule_form.html:111
 msgid "Occurrence Frequency"
-msgstr ""
+msgstr "Frequencia da ocorrência"
 
 #: templates/schedule/schedule_form.html:112
 msgid "Frequency Period"
-msgstr ""
+msgstr "Período da ocorrência"
 
 #: templates/schedule/schedule_form.html:117
 #, fuzzy
 msgid "Interval"
-msgstr "Internet"
+msgstr "Intervalo"
 
 #: templates/schedule/schedule_form.html:123
 msgid "Weekly Options"
-msgstr ""
+msgstr "Opção semanal"
 
 #: templates/schedule/schedule_form.html:124
 msgid "Days of the week"
-msgstr ""
+msgstr "Dias da semana"
 
 #: templates/schedule/schedule_form.html:130
 msgid "Monthly options"
-msgstr ""
+msgstr "Opção mensal"
 
 #: templates/schedule/schedule_form.html:131
 msgid "Repeat"
-msgstr ""
+msgstr "Repete"
 
 #: templates/schedule/schedule_form.html:136
 msgid "Month ordinal"
-msgstr ""
+msgstr "Especifique"
 
 #: templates/schedule/schedule_form.html:139
 msgid "Month ordinal day"
-msgstr ""
+msgstr "Dia da semana"
 
 #: templates/schedule/schedule_form.html:143
 msgid "Event repeat on these days of the month"
-msgstr ""
+msgstr "Evento se repete nesses dias do mês"
 
 #: templates/schedule/schedule_form.html:152
 msgid "Yearly options"
-msgstr ""
+msgstr "Opção anual"
 
 #: templates/schedule/schedule_form.html:153
 msgid "Event repeat on these months of year"
-msgstr ""
+msgstr "Evento se repete nos meses abaixo"
 
 #: templates/schedule/schedule_form.html:156
 msgid "Is year month ordinal"
-msgstr ""
+msgstr "Evento ocorre em dia específico"
 
 #: templates/schedule/schedule_form.html:160
 msgid "Year month ordinal"
-msgstr ""
+msgstr "Especifique"
 
 #: templates/schedule/schedule_form.html:163
 msgid "Year month ordinal day"
-msgstr ""
+msgstr "Dia da semana"
 
 #: templates/schedule/schedule_form.html:174
 #: templates/schedule/schedule_occurrence_form.html:73
@@ -1382,7 +1382,7 @@ msgstr "Cancelar"
 
 #: templates/schedule/schedule_header.html:24
 msgid "Daily view for"
-msgstr ""
+msgstr "Visualização diária"
 
 #: templates/schedule/schedule_header.html:24
 #, fuzzy
@@ -1539,7 +1539,7 @@ msgstr "Gestão"
 #: templates/tags/client_sidebar.html:39
 #: templates/tags/employee_sidebar.html:31
 msgid "Create User"
-msgstr ""
+msgstr "Criar usuário"
 
 #: templates/tags/client_sidebar.html:29
 #, fuzzy
@@ -1549,12 +1549,12 @@ msgstr "Detalhes do Cliente"
 #: templates/tags/client_sidebar.html:30
 #, fuzzy
 msgid "Admit Client"
-msgstr "Admitir cliente"
+msgstr "Admissão de cliente"
 
 #: templates/tags/client_sidebar.html:34
 #, fuzzy
 msgid "Print Record"
-msgstr "Registro Identificador"
+msgstr "Imprimir Registro"
 
 #: templates/tags/device_mini.html:22
 #, fuzzy
@@ -1638,22 +1638,22 @@ msgstr "menos de um minuto"
 #: templates/tags/schedule_filters.html:21
 #, fuzzy
 msgid "Places (all)"
-msgstr "Locais"
+msgstr "Locais (todos)"
 
 #: templates/tags/schedule_filters.html:27
 #, fuzzy
 msgid "Rooms (all)"
-msgstr "Salas"
+msgstr "Salas (todos)"
 
 #: templates/tags/schedule_filters.html:35
 #, fuzzy
 msgid "Services (all)"
-msgstr "Serviços"
+msgstr "Serviços (todos)"
 
 #: templates/tags/schedule_filters.html:41
 #, fuzzy
 msgid "Professionals (all)"
-msgstr "Profissionais"
+msgstr "Profissionais (todos)"
 
 #: templates/tags/upload.html:21
 msgid "Select a picture"
@@ -1680,24 +1680,24 @@ msgstr "Informe os detalhes do serviço e clique em salvar"
 #: templates/users/users_form.html:54 templates/users/users_form.html.py:56
 #, fuzzy
 msgid "User registration"
-msgstr "Restrição"
+msgstr "Registro de usuário"
 
 #: templates/users/users_form.html:72
 msgid "Again"
-msgstr ""
+msgstr "Novamente"
 
 #: templates/users/users_form.html:82
 #, fuzzy
 msgid "Registered user e-mail"
-msgstr "Número de Registro"
+msgstr "E-mail de usuário registrado"
 
 #: templates/users/users_form.html:88
 msgid "Select one e-mail to procede with your registration"
-msgstr ""
+msgstr "Selecione um e-mail para seu registro"
 
 #: templates/users/users_form.html:97
 msgid "Type an e-mail to procede with your registration"
-msgstr ""
+msgstr "Digite um e-mail para seu registro"
 
 #: templates/users/users_form.html:108 templates/users/users_form.html:109
 #, fuzzy
@@ -1706,7 +1706,7 @@ msgstr "Data de Admissão"
 
 #: templates/users/users_form.html:115
 msgid "Role"
-msgstr ""
+msgstr "Papel"
 
 #: templates/users/users_list.html:105
 #, fuzzy

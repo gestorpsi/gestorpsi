@@ -31,8 +31,6 @@ GNU General Public License for more details.
 	<script type="text/javascript" src="/media/js/jquery.scrollTo-min.js"></script> <!-- JQuery Scroll on Page Plugin -->
 	<script type="text/javascript" src="/media/js/jquery.asmselect.js"></script> <!-- JQuery SelectMultiple plugin-->
 	<script type="text/javascript" src="/media/js/jquery.tablesorter.min.js"></script> <!-- JQuery Table Sorter -->
-	<script type="text/javascript" src="/media/js/jquery.flexbox.js"></script> <!-- JQuery flexbox -->
-	<script type="text/javascript" src="/media/js/gestorpsi.util.js"></script> <!-- gestorpsi util functions -->
 	<script type="text/javascript" src="/media/js/gestorpsi.frontend.js"></script> <!-- gestorpsi interface (ajax links and other stuffs) -->
 	<script type="text/javascript" src="/media/js/gestorpsi.lists.js"></script>
 	<script type="text/javascript" src="/media/js/gestorpsi.forms.options.js"></script>
@@ -50,7 +48,6 @@ GNU General Public License for more details.
 	@import "/media/css/jquery-ui/smoothness/ui.all.css";
 	@import "/media/css/jquery.autocomplete.css";
 	@import "/media/css/jquery.asmselect.css";
-	@import "/media/css/jquery.flexbox.css";
 {% endif %}
 </style>
 <link href="/media/img/gestorpsi.ico" rel="SHORTCUT ICON" />
@@ -82,7 +79,10 @@ GNU General Public License for more details.
 {% if user.is_authenticated %}
 	<div id="menu_log">
 		<ul>
-			<li><a href="#email">{% trans "email" %}</a></li>|<li><a href="preferencias">{% trans "preferences" %}</a></li>|<li><a href="/accounts/logout">{% trans "quit" %}</a></li>
+
+    <!-- <li><a href="#email">{% trans "email" %}</a></li>| -->
+            <li><a href="/profile/" id="profile" class="main_menu" display="form" title="{{ profile.person.name }}">{% trans "preferences" %}</a></li>|<li><a href="/accounts/logout" class="logout">{% trans "quit" %}</a></li>
+
 		</ul>
 	</div>
 	<div id="menus">
@@ -124,6 +124,12 @@ GNU General Public License for more details.
 			<li><a display="events" show="div#schedule_header" class="fastmenu" href="/schedule/">{% trans "events" %}</a></li>
 			<li><a display="form" hide="div#schedule_header" class="fastmenu" href="/schedule/">{% trans "add" %}</a></li>
         </ul>
+        
+        <!-- PROFILE -->
+		<ul id="sub_profile" style="display:none">
+			<li><a display="form" class="fastmenu" href="/profile/">{% trans "Profile" %}</a></li>
+			<!-- <li><a>{% trans "search" %}</a></li> -->
+		</ul>
 
         <!-- address book -->
 		<ul id="sub_contacts" style="display:none">
@@ -199,7 +205,7 @@ GNU General Public License for more details.
 		<div id="core">
 			<!--  page core -->
             {% if object %}
-                {% include "frontend/frontend_start.html" %}
+                {% include "frontend/frontend_index.html" %}
             {% endif %}
 		</div>
 		

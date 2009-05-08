@@ -34,4 +34,5 @@ urlpatterns = patterns('',
     (r'^schedule/', include('gestorpsi.schedule.urls')),
     (r'^frontend/', include('gestorpsi.frontend.urls')),
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'media/', 'show_indexes': False}),
+    (r'^profile/', include('gestorpsi.profile.urls')),
 )

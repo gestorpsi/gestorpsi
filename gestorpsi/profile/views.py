@@ -36,12 +36,13 @@ PROFESSIONAL_AREAS = (
     )
 
 
-def index(request):
+def form(request):
     #if(request.user.is_authenticated()):
     # COMMON FOR ALL PERSON
     user = request.user
     profile = user.get_profile()
     preferences = person_type_url(user.get_profile().person)
+    print preferences
     date = datetime.datetime.now()
     phones = profile.person.phones.all()
     addresses= profile.person.address.all()
@@ -56,7 +57,7 @@ def index(request):
         agreements = profile.person.careprofessional.professionalProfile.agreement.all()
 
         identification =  profile.person.careprofessional
-        return render_to_response('core/main.html', { 
+        return render_to_response('profile/profile_index.html', { 
                                         'object': profile,
                                         'profile': profile,
                                         'preferences': preferences,
@@ -94,7 +95,7 @@ def index(request):
 ################################## EMPLOYEE
     try:
         identification =  profile.person.employee
-        return render_to_response('core/main.html', { 
+        return render_to_response('profile/profile_index.html', { 
                                         'object': profile,
                                         'profile': profile,
                                         'preferences': preferences,
@@ -124,7 +125,7 @@ def index(request):
 ################################## CLIENT
     try:
         identification =  profile.person.client
-        return render_to_response('core/main.html', { 
+        return render_to_response('profile/profile_index.html', { 
                                         'object': profile,
                                         'profile': profile,
                                         'preferences': preferences,
@@ -150,15 +151,3 @@ def index(request):
                                     )
     except:
         pass
-
-
-def start(request):
-    user = request.user
-    profile = user.get_profile()
-    date = datetime.datetime.now()
-    return render_to_response('frontend/frontend_start.html', {
-                                 'profile': profile, 
-                                 'date': date,
-                                 },   
-                            context_instance=RequestContext(request)
-                            )

@@ -75,7 +75,7 @@ $(document).ready(function(){
         
         
 	/** ajax_link: load content inside div core */
-	$("#menus a:not(.notajax, .fastmenu)").click(function(){
+	$("#menus a:not(.notajax, .fastmenu), div#menu_log a:not(.logout)").click(function(){
                 var link = $(this);
                         $("#core").load(link.attr('href'),'',function() {
                                 $.ajax({
@@ -89,7 +89,7 @@ $(document).ready(function(){
 		});
 		
 	/** horizontal menu selection */
-	$("#main_menu > ul > li > a:not(.vertical)").click(function(){
+	$("#main_menu > ul > li > a:not(.vertical), div#menu_log a:not(.logout)").click(function(){
                 
                 // reset vertical menu to original size
                 var vertical_menu = $('#main_menu > ul > li > a.vertical');

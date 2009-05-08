@@ -62,6 +62,7 @@ function updateGrid(url) {
 
     $.getJSON(url, function(json) {
         $('div.schedule span.date_selected').text(json['util']['str_date']); // switch selected date
+        $('div.schedule div#schedule_header p.description span#occurrences_total').text(json['util']['occurrences_total']); // total of occurrences
         $('table.schedule_results.daily tr td.clean a.book').each(function() { // update date ins url
             hour = $(this).parent('td').parent('tr').attr('hour');
             room = $(this).parent('td').attr('room');

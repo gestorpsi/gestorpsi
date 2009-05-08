@@ -256,6 +256,7 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
 
         i = i + 1
 
+    array['util']['occurrences_total'] = i
     array = simplejson.dumps(array, encoding = 'iso8859-1')
     
     return HttpResponse(array, mimetype='application/json')

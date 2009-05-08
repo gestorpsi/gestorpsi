@@ -1,5 +1,5 @@
 /*
- * Alternate Select Multiple (asmSelect) 1.0.2 beta - jQuery Plugin
+ * Alternate Select Multiple (asmSelect) 1.0.4 beta - jQuery Plugin
  * http://www.ryancramer.com/projects/asmselect/
  * 
  * Copyright (c) 2008 by Ryan Cramer - http://www.ryancramer.com
@@ -49,13 +49,18 @@
 			var $ol; 						// the list that we are manipulating
 			var buildingSelect = false; 				// is the new select being constructed right now?
 			var ieClick = false;					// in IE, has a click event occurred? ignore if not
+			var ignoreOriginalChangeEvent = false;			// originalChangeEvent bypassed when this is true
 
 			function init() {
 
 				// initialize the alternate select multiple
 
+				// this loop ensures uniqueness, in case of existing asmSelects placed by ajax (1.0.3)
+				while($("#" + options.containerClass + index).size() > 0) index++; 
+
 				$select = $("<select></select>")
 					.addClass(options.selectClass)
+					.attr('name', options.selectClass + index)
 					.attr('id', options.selectClass + index); 
 
 				$selectRemoved = $("<select></select>"); 
@@ -90,17 +95,29 @@
 					items: 'li.' + options.listItemClass,
 					handle: '.' + options.listItemLabelClass,
 					axis: 'y',
-					update: function() {
+					update: function(e, data) {
+
+						var updatedOptionId;
+
 						$(this).children("li").each(function(n) {
-							if($(this).is(".ui-sortable-helper")) return;
+
 							$option = $('#' + $(this).attr('rel')); 
+
+							if($(this).is(".ui-sortable-helper")) {
+								updatedOptionId = $option.attr('id'); 
+								return;
+							}
+
 							$original.append($option); 
 						}); 
+
+						if(updatedOptionId) triggerOriginalChange(updatedOptionId, 'sort'); 
 					}
+
 				}).addClass(options.listSortableClass); 
 			}
 
-			function selectChangeEvent() {
+			function selectChangeEvent(e) {
 				
 				// an item has been selected on the regular select we created
 				// check to make sure it's not an IE screwup, and add it to the list
@@ -109,6 +126,7 @@
 				var id = $(this).children("option:selected").slice(0,1).attr('rel'); 
 				addListItem(id); 	
 				ieClick = false; 
+				triggerOriginalChange(id, 'add'); // for use by user-defined callbacks
 			}
 
 			function selectClickEvent() {
@@ -120,14 +138,23 @@
 				ieClick = true; 
 			}
 
-			function originalChangeEvent() {
+			function originalChangeEvent(e) {
 
 				// select or option change event manually triggered
 				// on the original <select multiple>, so rebuild ours
 
+				if(ignoreOriginalChangeEvent) {
+					ignoreOriginalChangeEvent = false; 
+					return; 
+				}
+
 				$select.empty();
 				$ol.empty();
 				buildSelect();
+
+				// opera has an issue where it needs a force redraw, otherwise
+				// the items won't appear until something else forces a redraw
+				if($.browser.opera) $ol.hide().fadeIn("fast");
 			}
 
 			function buildSelect() {
@@ -144,7 +171,6 @@
 
 					var $t = $(this); 
 					var id; 
-
 
 					if(!$t.attr('id')) $t.attr('id', 'asm' + index + 'option' + n); 
 					id = $t.attr('id'); 
@@ -299,10 +325,10 @@
 
 				dropListItemHide($item); 
 				enableSelectOption($("[rel=" + optionId + "]", options.removeWhenAdded ? $selectRemoved : $select));
-				//alert('removing '+'option#' + optionId);
-				//alert($('option#' + optionId).attr('selected'));
-				//$('option#' + optionId).remove();
+
 				if(highlightItem) setHighlight($item, options.highlightRemovedLabel); 
+
+				triggerOriginalChange(optionId, 'drop'); 
 				
 			}
 
@@ -355,6 +381,23 @@
 				$highlight.fadeIn("fast", function() {
 					setTimeout(function() { $highlight.fadeOut("slow"); }, 50); 
 				}); 
+			}
+
+			function triggerOriginalChange(optionId, type) {
+
+				// trigger a change event on the original select multiple
+				// so that other scripts can pick them up
+
+				ignoreOriginalChangeEvent = true; 
+				$option = $("#" + optionId); 
+
+				$original.trigger('change', [{
+					'option': $option,
+					'value': $option.val(),
+					'id': optionId,
+					'item': $ol.children("[rel=" + optionId + "]"),
+					'type': type
+				}]); 
 			}
 
 			init();

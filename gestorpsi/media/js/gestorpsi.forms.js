@@ -416,19 +416,18 @@ function bindFormMisc() {
     */
 
     $('select.itens_available option').unbind().click(function() {
-          $(this).parents('fieldset').children('label').children('select.itens_selected').append('<option value="'+$(this).attr('value')+'" selected="selected">'+$(this).text()+'</option>');
-          $(this).hide();
-          bind_select_itens_selected();
+        $(this).parents('fieldset').children('label').children('select.itens_selected').append('<option value="'+$(this).attr('value')+'" selected="selected">'+$(this).text()+'</option>');
+        $(this).hide();
+        $('select.itens_selected option').unbind().click(function() {
+            var select = $(this).parents('select');
+            $(this).parents('fieldset').children('label').children('select.itens_available').children('option[value='+$(this).attr('value')+']').show();
+            $(this).remove();
+            // select itens again
+            $(select).children('option').attr('selected','selected');
+        });
      });
 
-     $('select.itens_selected option').unbind().click(function() {
-          var select = $(this).parents('select');
-          $(this).parents('fieldset').children('label').children('select.itens_available').children('option[value='+$(this).attr('value')+']').show();
-          $(this).remove();
-          bind_select_itens_available();
-          // select itens again
-          $(select).children('option').attr('selected','selected');
-     });
+
 
      /**
      * sidebar. floating box

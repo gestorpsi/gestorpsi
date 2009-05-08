@@ -1203,7 +1203,7 @@ msgstr "Novo agendamento"
 
 #: templates/schedule/schedule_form.html:21
 msgid "Inform the schedule details then click on Save button"
-msgstr "Informe os detalhes do cliente e clique em salvar"
+msgstr "Informe os detalhes do agendamento e clique em salvar"
 
 #: templates/schedule/schedule_form.html:32
 msgid "Schedule Due"

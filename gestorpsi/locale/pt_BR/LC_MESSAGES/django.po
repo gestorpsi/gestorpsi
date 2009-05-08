@@ -1166,7 +1166,7 @@ msgstr "Fechar"
 #: templates/schedule/schedule_daily.html:32
 #: templates/schedule/schedule_daily.html:34
 msgid "Free"
-msgstr "Livre"
+msgstr "Agendar"
 
 #: templates/schedule/schedule_events.html:21
 msgid "There is no events for this day."

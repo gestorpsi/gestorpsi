@@ -260,7 +260,7 @@ var form_schedule_occurrence_options = {
     success: function(response, request, form) {
         // update list
         var day_clicked = $('form.schedule').children('.sidebar').children('.bg_blue').children('.day_clicked').val();
-        alert('updating to ' + day_clicked);
+
         updateGrid('/schedule/occurrences/' + day_clicked);
         bindScheduleForm();
         //$('ul.opened_tabs li a').attr('hide','div#schedule_header');

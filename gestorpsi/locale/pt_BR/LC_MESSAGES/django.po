@@ -528,7 +528,7 @@ msgstr "Estabelecimento"
 
 #: templates/core/main.html:97
 msgid "My Organization"
-msgstr "Meu Estabelecimento"
+msgstr "Cadastro"
 
 #: templates/core/main.html:98
 msgid "Places"

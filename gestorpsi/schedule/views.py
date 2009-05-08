@@ -221,6 +221,7 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
         'str_date': '%s, %s %s %s %s %s' % (date.strftime("%A"), date.strftime("%d"), _('of'), date.strftime("%B"), _('of'), date.strftime("%Y")),
         'next_day': (date + timedelta(days=+1)).strftime("%Y/%m/%d"),
         'prev_day': (date + timedelta(days=-1)).strftime("%Y/%m/%d"),
+        'weekday': date.weekday(),
     }
     
     for o in occurrences:

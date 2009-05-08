@@ -71,6 +71,7 @@ function updateGrid(url) {
             $(this).attr('room_id', room);
             //$(this).attr('href', '/schedule/events/add/?dtstart=' + json['util']['date'] + 'T' + hour + '&room='+ room);
             $(this).attr('title', json['util']['str_date']);
+            $(this).attr('weekday', json['util']['weekday']);
         });
         $('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/');
         $('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/');
@@ -289,6 +290,8 @@ function bindScheduleForm() {
         $('div.schedule #form select[name=start_time_delta] option[value=' + start_time_delta + ']').attr('selected', 'selected');
         $('div.schedule #form select[name=end_time_delta] option[value=' + end_time_delta + ']').attr('selected', 'selected');
         $('div.schedule #form select[name=room] option[value=' + link.attr('room_id') + ']').attr('selected', 'selected');
+        $('div.schedule #form input[name=week_days]').attr('checked', '');
+        $('div.schedule #form input[name=week_days][value=' + (parseInt(link.attr('weekday')) + 1) + ']').attr('checked', 'checked');
         $('div.schedule #form input[name=tabtitle]').val(link.attr('title'));
         $('div#form form.schedule .sidebar input[name=day_clicked]').val(year + '/' + month + '/' + day);
     

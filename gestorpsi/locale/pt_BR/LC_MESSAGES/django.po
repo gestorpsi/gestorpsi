@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-06 14:41-0300\n"
+"POT-Creation-Date: 2009-05-08 10:57-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,7 +86,7 @@ msgstr "Estabelecimento"
 msgid "Name of your organization"
 msgstr "Meu Estabelecimento"
 
-#: schedule/views.py:230 templates/client/client_list.html:29
+#: schedule/views.py:221 templates/client/client_list.html:29
 #: templates/client/client_search.html:29
 #: templates/contact/contact_list.html:31 templates/users/users_list.html:29
 #: templates/users/users_search.html:29
@@ -141,7 +141,7 @@ msgid "Health Document"
 msgstr "Tipo de Documento"
 
 #: templates/admission/admission_form.html:49
-#: templates/schedule/schedule_form.html:64
+#: templates/schedule/schedule_form.html:56
 #: templates/tags/client_sidebar.html:32
 msgid "Referrals"
 msgstr "Encaminhamentos"
@@ -215,6 +215,7 @@ msgstr "Arquivos"
 #: templates/device/device_form.html:69
 #: templates/organization/organization_form.html:222
 #: templates/organization/organization_form.html:223
+#: templates/referral/referral_form.html:63
 msgid "Comments"
 msgstr "Comentários"
 
@@ -257,6 +258,7 @@ msgid "Inital Activities Date"
 msgstr "Data do Início das Atividades"
 
 #: templates/careprofessional/careprofessional_form.html:76
+#: templates/referral/referral_form.html:60
 msgid "Available Time"
 msgstr "Horários disponíveis"
 
@@ -390,15 +392,17 @@ msgid "Socio-Economic"
 msgstr "Socioeconômico"
 
 #: templates/client/client_index.html:55
-#: templates/schedule/schedule_index.html:45
+#: templates/schedule/schedule_events.html:25
+#: templates/schedule/schedule_index.html:44
 #, fuzzy
 msgid "Event Details"
 msgstr "Detalhes do Evento"
 
 #: templates/client/client_index.html:57 templates/device/device_form.html:144
 #: templates/schedule/schedule_abstract.html:19
-#: templates/schedule/schedule_form.html:41
-#: templates/schedule/schedule_occurrence_form.html:55
+#: templates/schedule/schedule_events.html:23
+#: templates/schedule/schedule_form.html:43
+#: templates/schedule/schedule_occurrence_form.html:39
 #, fuzzy
 msgid "Room"
 msgstr "Salas"
@@ -406,8 +410,6 @@ msgstr "Salas"
 #: templates/client/client_index.html:59
 #: templates/referral/referral_form.html:38
 #: templates/schedule/schedule_abstract.html:21
-#: templates/schedule/schedule_form.html:73
-#: templates/schedule/schedule_occurrence_form.html:32
 #, fuzzy
 msgid "Service"
 msgstr "Serviços"
@@ -567,8 +569,6 @@ msgid "Employees"
 msgstr "Funcionários"
 
 #: templates/core/main.html:100 templates/referral/referral_form.html:41
-#: templates/schedule/schedule_form.html:79
-#: templates/schedule/schedule_occurrence_form.html:40
 msgid "Professionals"
 msgstr "Profissionais"
 
@@ -668,8 +668,8 @@ msgid "Inform the equipment details then click on Save button"
 msgstr "Informe os detalhes do equipamento e clique em salvar"
 
 #: templates/device/device_form.html:40
-#: templates/schedule/schedule_form.html:89
-#: templates/schedule/schedule_occurrence_form.html:61
+#: templates/schedule/schedule_form.html:68
+#: templates/schedule/schedule_occurrence_form.html:46
 #, fuzzy
 msgid "Devices"
 msgstr "Dispositivo"
@@ -779,7 +779,7 @@ msgstr "Bem Vindo ao GestorPsi!"
 
 #: templates/frontend/frontend_start.html:30
 msgid "Information about you"
-msgstr "Seus dados"
+msgstr "Informe seus dados"
 
 #: templates/frontend/frontend_start.html:33
 #: templates/users/users_list.html:108
@@ -958,7 +958,7 @@ msgstr "Profissional Responsável"
 #: templates/organization/organization_form.html:90
 #, fuzzy
 msgid "Add Professional"
-msgstr " Adicionar Profissional"
+msgstr "Adicionar Profissional"
 
 #: templates/organization/organization_form.html:94
 #, fuzzy
@@ -1058,17 +1058,10 @@ msgid "place(s)"
 msgstr "Local(is)"
 
 #: templates/referral/referral_form.html:29
-#: templates/schedule/schedule_occurrence_form.html:31
+#: templates/referral/referral_form.html:31
 #, fuzzy
 msgid "Referral Details"
 msgstr "Detalhes do Encaminhamento"
-
-#: templates/referral/referral_form.html:31
-#: templates/schedule/schedule_form.html:52
-#: templates/tags/client_sidebar.html:31
-#, fuzzy
-msgid "New Referral"
-msgstr "Encaminhamentos"
 
 #: templates/referral/referral_form.html:32
 #, fuzzy
@@ -1080,18 +1073,45 @@ msgid "From existing referral"
 msgstr "Encaminhamento interno"
 
 #: templates/referral/referral_form.html:35
-#: templates/schedule/schedule_form.html:47
 #, fuzzy
-msgid "Referral"
+msgid "Last Referral"
 msgstr "Encaminhamentos"
 
 #: templates/referral/referral_form.html:44
-#: templates/schedule/schedule_form.html:59
-#: templates/schedule/schedule_form.html:76
-#: templates/schedule/schedule_occurrence_form.html:35
+#: templates/schedule/schedule_form.html:51
 #, fuzzy
 msgid "Clients"
 msgstr "Clientes"
+
+#: templates/referral/referral_form.html:50
+#, fuzzy
+msgid "Referral Additional Infos"
+msgstr "Encaminhado de/para Profissional"
+
+#: templates/referral/referral_form.html:51
+#, fuzzy
+msgid "Referral Reason"
+msgstr "Detalhes do Encaminhamento"
+
+#: templates/referral/referral_form.html:54
+msgid "Priority"
+msgstr "Prioridade"
+
+#: templates/referral/referral_form.html:57
+msgid "Impact"
+msgstr "Impacto"
+
+#: templates/referral/referral_list.html:21
+msgid "This customer has not yet been sent."
+msgstr "Este cliente ainda não foi encaminhado"
+
+#: templates/referral/referral_list.html:21
+msgid "Want to"
+msgstr "Deseja"
+
+#: templates/referral/referral_list.html:21
+msgid "forward it now?"
+msgstr "encaminhar agora?"
 
 #: templates/registration/activate.html:3
 #: templates/registration/activate.html:6
@@ -1113,7 +1133,9 @@ msgid ""
 "Sorry, it didn't work. Either your activation link was incorrect, or the "
 "activation key for your account has expired; activation keys are only valid "
 "for"
-msgstr "Desculpe, não deu certo. Ou seu link de ativação está incorreto ou a chave de ativação para sua conta expirou; chave de ativação é válida por"
+msgstr ""
+"Desculpe, não deu certo. Ou seu link de ativação está incorreto ou a chave "
+"de ativação para sua conta expirou; chave de ativação é válida por"
 
 #: templates/registration/activate.html:10
 msgid "days after registration"
@@ -1174,7 +1196,9 @@ msgstr "Verifique seu e-mail"
 msgid ""
 "An activation link has been sent to the email address you supplied, along "
 "with instructions for activating your account."
-msgstr "Um link de ativação foi enviado ao endereço de e-mail fornecido, juntamente às instruções para ativação da sua conta"
+msgstr ""
+"Um link de ativação foi enviado ao endereço de e-mail fornecido, juntamente "
+"às instruções para ativação da sua conta"
 
 #: templates/registration/registration_form.html:3
 #, fuzzy
@@ -1196,19 +1220,31 @@ msgid ""
 "will be created; you'll be sent an email with instructions on how to finish "
 "your registration"
 msgstr ""
-"Por favor, preencha o formulário para a criação da sua conta (todos os campos são obrigatórios)."
-"Um e-mail será enviado com instruções sobre como concluir "
-"o seu registro."
+"Por favor, preencha o formulário para a criação da sua conta (todos os "
+"campos são obrigatórios).Um e-mail será enviado com instruções sobre como "
+"concluir o seu registro."
 
 #: templates/registration/registration_form.html:18
 msgid "Already have an account?"
 msgstr "Já possui uma conta?"
+
+#: templates/schedule/schedule_abstract.html:28
+msgid "Fechar"
+msgstr "Fechar"
 
 #: templates/schedule/schedule_daily.html:32
 #: templates/schedule/schedule_daily.html:34
 #, fuzzy
 msgid "Free"
 msgstr "Livre"
+
+#: templates/schedule/schedule_events.html:21
+msgid "There is no events for this day."
+msgstr "não há eventos para este dia"
+
+#: templates/schedule/schedule_events.html:24
+msgid "Hour"
+msgstr "Hora"
 
 #: templates/schedule/schedule_filter.html:19
 #, fuzzy
@@ -1245,132 +1281,126 @@ msgstr "Adicionar novo cliente"
 msgid "Inform the schedule details then click on Save button"
 msgstr "Informe os detalhes do cliente e clique em salvar"
 
-#: templates/schedule/schedule_form.html:30
+#: templates/schedule/schedule_form.html:32
 #, fuzzy
 msgid "Schedule Due"
 msgstr "Agenda"
 
-#: templates/schedule/schedule_form.html:31
+#: templates/schedule/schedule_form.html:33
 #, fuzzy
 msgid "Date"
 msgstr "Data"
 
-#: templates/schedule/schedule_form.html:35
-#: templates/schedule/schedule_occurrence_form.html:49
+#: templates/schedule/schedule_form.html:37
+#: templates/schedule/schedule_occurrence_form.html:31
 #, fuzzy
 msgid "Start Time"
 msgstr "Hora de início"
 
-#: templates/schedule/schedule_form.html:38
-#: templates/schedule/schedule_form.html:104
-#: templates/schedule/schedule_occurrence_form.html:52
+#: templates/schedule/schedule_form.html:40
+#: templates/schedule/schedule_form.html:83
+#: templates/schedule/schedule_occurrence_form.html:35
 msgid "End Time"
 msgstr "Hora de término"
 
 #: templates/schedule/schedule_form.html:49
-#: templates/schedule/schedule_form.html:57
 #, fuzzy
 msgid "Existing Referral"
 msgstr "Encaminhamentos Interno"
 
-#: templates/schedule/schedule_form.html:72
-#, fuzzy
-msgid "New referral"
-msgstr "Novo Encaminhamento"
-
-#: templates/schedule/schedule_form.html:85
+#: templates/schedule/schedule_form.html:64
 #, fuzzy
 msgid "Schedule Details"
 msgstr "Detalhes da Agenda"
 
-#: templates/schedule/schedule_form.html:86
-#: templates/schedule/schedule_occurrence_form.html:58
+#: templates/schedule/schedule_form.html:65
+#: templates/schedule/schedule_occurrence_form.html:43
 msgid "Notes"
 msgstr "Notas"
 
-#: templates/schedule/schedule_form.html:95
+#: templates/schedule/schedule_form.html:74
 #: templates/schedule/schedule_occurrence_form.html:28
 #, fuzzy
 msgid "Occurrence Details"
 msgstr "Detalhes da ocorrência"
 
-#: templates/schedule/schedule_form.html:96
+#: templates/schedule/schedule_form.html:75
 msgid "Occurrence Format"
 msgstr "Forma de ocorrência"
 
-#: templates/schedule/schedule_form.html:101
+#: templates/schedule/schedule_form.html:80
 msgid "Total Occurrences"
 msgstr "Total de ocorrências"
 
-#: templates/schedule/schedule_form.html:111
+#: templates/schedule/schedule_form.html:90
 msgid "Occurrence Frequency"
 msgstr "Frequencia da ocorrência"
 
-#: templates/schedule/schedule_form.html:112
+#: templates/schedule/schedule_form.html:91
 msgid "Frequency Period"
 msgstr "Período da ocorrência"
 
-#: templates/schedule/schedule_form.html:117
+#: templates/schedule/schedule_form.html:96
 #, fuzzy
 msgid "Interval"
 msgstr "Intervalo"
 
-#: templates/schedule/schedule_form.html:123
+#: templates/schedule/schedule_form.html:102
 msgid "Weekly Options"
 msgstr "Opção semanal"
 
-#: templates/schedule/schedule_form.html:124
+#: templates/schedule/schedule_form.html:103
 msgid "Days of the week"
 msgstr "Dias da semana"
 
-#: templates/schedule/schedule_form.html:130
+#: templates/schedule/schedule_form.html:109
 msgid "Monthly options"
 msgstr "Opção mensal"
 
-#: templates/schedule/schedule_form.html:131
+#: templates/schedule/schedule_form.html:110
 msgid "Repeat"
 msgstr "Repete"
 
-#: templates/schedule/schedule_form.html:136
+#: templates/schedule/schedule_form.html:115
 msgid "Month ordinal"
 msgstr "Especifique"
 
-#: templates/schedule/schedule_form.html:139
+#: templates/schedule/schedule_form.html:118
 msgid "Month ordinal day"
 msgstr "Dia da semana"
 
-#: templates/schedule/schedule_form.html:143
+#: templates/schedule/schedule_form.html:122
 msgid "Event repeat on these days of the month"
 msgstr "Evento se repete nesses dias do mês"
 
-#: templates/schedule/schedule_form.html:152
+#: templates/schedule/schedule_form.html:131
 msgid "Yearly options"
 msgstr "Opção anual"
 
-#: templates/schedule/schedule_form.html:153
+#: templates/schedule/schedule_form.html:132
 msgid "Event repeat on these months of year"
 msgstr "Evento se repete nos meses abaixo"
 
-#: templates/schedule/schedule_form.html:156
+#: templates/schedule/schedule_form.html:135
 msgid "Is year month ordinal"
 msgstr "Evento ocorre em dia específico"
 
-#: templates/schedule/schedule_form.html:160
+#: templates/schedule/schedule_form.html:139
 msgid "Year month ordinal"
 msgstr "Especifique"
 
-#: templates/schedule/schedule_form.html:163
+#: templates/schedule/schedule_form.html:142
 msgid "Year month ordinal day"
 msgstr "Dia da semana"
 
-#: templates/schedule/schedule_form.html:174
-#: templates/schedule/schedule_occurrence_form.html:73
+#: templates/schedule/schedule_form.html:153
+#: templates/schedule/schedule_occurrence_form.html:58
 #: templates/tags/save.html:18
 msgid "Save"
 msgstr "Salvar"
 
-#: templates/schedule/schedule_form.html:175
-#: templates/schedule/schedule_occurrence_form.html:74
+#: templates/schedule/schedule_form.html:154
+#: templates/schedule/schedule_occurrence_form.html:59
 #: templates/tags/address_book_organization_mini.html:32
 #: templates/tags/address_book_professional_mini.html:41
 #: templates/tags/careprofessional_mini.html:45
@@ -1389,7 +1419,7 @@ msgstr "Visualização diária"
 msgid "Many Professionals"
 msgstr "Profissionais"
 
-#: templates/schedule/schedule_occurrence_form.html:48
+#: templates/schedule/schedule_occurrence_form.html:30
 #, fuzzy
 msgid "Due Details"
 msgstr "Detalhes do Cliente"
@@ -1550,6 +1580,11 @@ msgstr "Detalhes do Cliente"
 #, fuzzy
 msgid "Admit Client"
 msgstr "Admissão de cliente"
+
+#: templates/tags/client_sidebar.html:31
+#, fuzzy
+msgid "New Referral"
+msgstr "Encaminhamentos"
 
 #: templates/tags/client_sidebar.html:34
 #, fuzzy
@@ -1713,6 +1748,10 @@ msgstr "Papel"
 msgid "Is Active"
 msgstr "Ativo?"
 
+#, fuzzy
+#~ msgid "New referral"
+#~ msgstr "Novo Encaminhamento"
+
 #~ msgid "Admission of"
 #~ msgstr "Admissão de"
 
@@ -1728,10 +1767,6 @@ msgstr "Ativo?"
 
 #~ msgid "Please, select a service from the list bellow"
 #~ msgstr "Por favor, selecione um serviço da lista abaixo"
-
-#, fuzzy
-#~ msgid "Referral Professionals"
-#~ msgstr "Encaminhado de/para Profissional"
 
 #~ msgid "Please, select a professional from the list bellow"
 #~ msgstr "Por favor, selecione um Profissional da lista abaixo"

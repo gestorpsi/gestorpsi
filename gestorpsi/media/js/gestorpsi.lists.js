@@ -56,7 +56,7 @@ function bindList() {
 				$("#core div" + div).show();
 			}
 		});
-		
+
 		$('#sub_menu ul li a').removeClass('active'); // unselect other tabs
 		$("ul.opened_tabs").show(); // display tab
 		$("ul.opened_tabs li div a:first").text(link.attr('title')); // set newtab title
@@ -70,6 +70,10 @@ function bindList() {
             }
 		});
 
+        if(link.attr('fast_content')) {
+		    $('div.fast_content').hide();
+		    $('div.fast_content#' + link.attr('fast_content')).show();
+        } 
         $('#msg_area').removeClass();
         $('#msg_area').hide();
         $('.sidebar').css('padding-top','165px');

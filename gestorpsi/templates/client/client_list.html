@@ -102,7 +102,7 @@ GNU General Public License for more details.
                        <br />
                        <span class="email">{{ l.person.get_first_email }}</span>
                        </td>
-                        <td>{% if perms.client.client_read %}<a class="admission admit" href="/admission/{{ l.id }}/" title="{{ l.person.name }}"><img src="/media/img/22/ico_reg.png" alt='{% trans "Admission" %}'></a>{% endif %}</td>
+                        <td>{% if perms.client.client_read %}<a fast_content="client_admission" class="admit" href="/client/{{ l.id }}/" title="{% trans "Admission of" %} {{ l.person.name }}"><img src="/media/img/22/ico_reg.png" alt='{% trans "Admission" %}'></a>{% endif %}</td>
                 </tr>
                 {% endfor %}
                 </tbody>

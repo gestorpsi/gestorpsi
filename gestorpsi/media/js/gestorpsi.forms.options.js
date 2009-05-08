@@ -165,13 +165,13 @@ var form_options = {
            * client referral options
            */
            
-          if($(form).hasClass('client_referral')) {
+          if($(form).hasClass('form_client')) {
               if(!editing) {
                  // add new client in new referral form and selected it
-                 if($('div#edit_form form select[id=id_client] option:first').val() != undefined) {
-                    $('div#edit_form form select[id=id_client] option:first').before('<option value="' + response + '" selected>' + new_title + '</option>');
+                 if($('div#edit_form form.client_referral select[id=id_client] option:first').val() != undefined) {
+                    $('div#edit_form form.client_referral select[id=id_client] option:first').before('<option value="' + response + '" selected>' + new_title + '</option>');
                 } else {
-                    $('div#edit_form form select[id=id_client]').html('<option value="' + response + '" selected>' + new_title + '</option>');
+                    $('div#edit_form form.client_referral select[id=id_client]').html('<option value="' + response + '" selected>' + new_title + '</option>');
                 }
                  // set client id in a hidden field
                  $('div#edit_form input[name=object_id]').val(response)

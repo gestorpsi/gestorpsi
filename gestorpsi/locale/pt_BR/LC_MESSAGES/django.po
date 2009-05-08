@@ -1199,7 +1199,7 @@ msgstr "Todos os Serviços"
 
 #: templates/schedule/schedule_form.html:20
 msgid "Adding New Event"
-msgstr "Adicionar novo cliente"
+msgstr "Novo agendamento"
 
 #: templates/schedule/schedule_form.html:21
 msgid "Inform the schedule details then click on Save button"

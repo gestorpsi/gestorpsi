@@ -111,11 +111,11 @@ class Person(models.Model):
         return text
 
     def get_photo(self):
-        from gestorpsi.settings import MEDIA_ROOT, PROJECT_ROOT_PATH
+        from gestorpsi.settings import MEDIA_ROOT #, PROJECT_ROOT_PATH
         if len(self.photo):
-            return "%s/%simg/organization/%s/.thumb-whitebg/%s" % (PROJECT_ROOT_PATH, MEDIA_ROOT, self.organization.id, self.photo)
+            return "%simg/organization/%s/.thumb-whitebg/%s" % (MEDIA_ROOT, self.organization.id, self.photo)
         else:
-            return "%s/%simg/%s" % (PROJECT_ROOT_PATH, MEDIA_ROOT, 'male_generic_photo.png')
+            return "%simg/%s" % (MEDIA_ROOT, 'male_generic_photo.png')
 
     def get_birthdate(self):
         if self.birthDate == None:

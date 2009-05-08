@@ -303,7 +303,34 @@ function bindScheduleForm() {
         $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option[value=' + end_time + ']').attr('selected','selected');
     });
 
-
+    // get clients json list and draw flexbox
+    $('div.schedule div#form div#fb_client').flexbox('/client/organization_clients/',{
+         allowInput: true,  
+         paging: true,  
+         maxVisibleRows: 12,
+         width: 385,
+         autoCompleteFirstMatch: true,
+         onSelect: function() {  
+            $.getJSON('/referral/client/' + this.getAttribute('hiddenValue') + '/', function(json) {
+                $('#form select[name=referral]').html('');
+                var line = '';
+                var str_professional_inline = '';
+                jQuery.each(json,  function(){
+                    str_professional_inline = '';
+                    //append professional list
+                    jQuery.each(this.professional,  function(){
+                        str_professional_inline = str_professional_inline + this.name + ", " ;
+                    });
+                    str_professional_inline = str_professional_inline.substr(0, (str_professional_inline.length-2))
+                
+                    line = line + '<option value="' + this.id + '">' + this.service + ' (' + str_professional_inline + ')</option>';
+                }); 
+                $('#form select[name=referral]').html(line); // rebuild referral select
+            });
+            $('#form div.client_referrals').show();
+            $('#form input[name=tabtitle]').val(this.value); // set title, to use in TAB
+        }
+    });
 
 }
 
@@ -339,35 +366,6 @@ function bindSchedule() {
         $(filter).toggle();
     });
     
-    
-    // get clients json list and draw flexbox
-    $('div.schedule div#form div#fb_client').flexbox('/client/organization_clients/',{
-         allowInput: true,  
-         paging: true,  
-         maxVisibleRows: 12,
-         width: 385,
-         autoCompleteFirstMatch: true,
-         onSelect: function() {  
-            $.getJSON('/referral/client/' + this.getAttribute('hiddenValue') + '/', function(json) {
-                $('#form select[name=referral]').html('');
-                var line = '';
-                var str_professional_inline = '';
-                jQuery.each(json,  function(){
-                    str_professional_inline = '';
-                    //append professional list
-                    jQuery.each(this.professional,  function(){
-                        str_professional_inline = str_professional_inline + this.name + ", " ;
-                    });
-                    str_professional_inline = str_professional_inline.substr(0, (str_professional_inline.length-2))
-                
-                    line = line + '<option value="' + this.id + '">' + this.service + ' (' + str_professional_inline + ')</option>';
-                }); 
-                $('#form select[name=referral]').html(line); // rebuild referral select
-            });
-            $('#form div.client_referrals').show();
-            $('#form input[name=tabtitle]').val(this.value); // set title, to use in TAB
-        }
-    });
     
     /**
      * filter links:

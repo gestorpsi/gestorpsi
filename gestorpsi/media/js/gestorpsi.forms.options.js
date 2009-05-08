@@ -187,9 +187,13 @@ var form_options = {
                 var day_clicked = $('form.schedule').children('.sidebar').children('.bg_blue').children('.day_clicked').val();
                 updateGrid('/schedule/occurrences/' + day_clicked);
                 
+                /** removed flexbox to addit again */
+                $('div#form form.schedule div#fb_client input[id=fb_client_hidden]:first').remove();
+                $('div#form form.schedule div#fb_client input[id=fb_client_input]:first').remove();
+                $('div#form form.schedule div#fb_client span[id=fb_client_arrow]:first').remove();
+                $('div#form form.schedule fieldset.existing_referral div.client_referrals').hide();
                 bindScheduleForm();
-                
-                //$('ul.opened_tabs li a').attr('hide','div#schedule_header');
+
                 // load inserted data
                 updateScheduleReferralDetails('/schedule/events/' + response + '/');
                 // display success message

@@ -192,9 +192,8 @@ div#sub_menu .active {
 	display: block;
 	position: absolute;
 	top: 49px;
-	left: 373px;
+	left: 348px;
 	width: 177px;
-
 	background: #FCFCFC;
 	z-index: 5;
 	border-bottom: 1px solid #838383;

@@ -38,7 +38,7 @@ def schedule_occurrence_listing(request, year = 1, month = 1, day = None,
     template='schedule/schedule_events.html',
     **extra_context):
 
-    occurrences = schedule_occurrences(year, month, day)
+    occurrences = schedule_occurrences(request, year, month, day)
 
     return render_to_response(
         template, 
@@ -191,7 +191,7 @@ def schedule_index(request,
 def today_occurrences(request):
     return daily_occurrences(request, datetime.now().strftime("%Y"), datetime.now().strftime("%m"), datetime.now().strftime("%d"))
 
-def schedule_occurrences(year = 1, month = 1, day = None):
+def schedule_occurrences(request, year = 1, month = 1, day = None):
     if day:
         date_start = datetime.strptime("%s%s%s" % (year, month, day),"%Y%m%d")
         date_end = date_start+timedelta(days=+1)
@@ -201,14 +201,15 @@ def schedule_occurrences(year = 1, month = 1, day = None):
 
     return ScheduleOccurrence.objects.filter(
         start_time__gte=date_start,
-        start_time__lt=date_end
+        start_time__lt=date_end,
+        event__referral__service__organization=request.user.get_profile().org_active.id,
     )
 
 def daily_occurrences(request, year = 1, month = 1, day = None):
     #locale.setlocale(locale.LC_ALL,'pt_BR.ISO-8859-1')
     locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
 
-    occurrences = schedule_occurrences(year, month, day)
+    occurrences = schedule_occurrences(request, year, month, day)
 
     array = {} #json
     i = 0

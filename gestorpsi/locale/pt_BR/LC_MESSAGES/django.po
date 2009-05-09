@@ -1143,7 +1143,7 @@ msgstr "Nova conta"
 
 #: templates/registration/registration_form.html:13
 msgid "Register"
-msgstr "Número de Registro"
+msgstr "Continuar"
 
 #: templates/registration/registration_form.html:16
 msgid ""

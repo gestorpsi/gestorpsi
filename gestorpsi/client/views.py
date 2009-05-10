@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.http import HttpResponse, Http404
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import permission_required
@@ -48,36 +48,114 @@ from gestorpsi.util.views import date_form_to_db
 @permission_required('client.client_list', '/')
 def index(request):
     user = request.user
-    object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
-    paginator = Paginator(object, settings.PAGE_RESULTS)
-    object = paginator.page(1)
+
+    #print user.profile.person.careprofessional.id
+    #object = Referral.objects.filter(professional = user.profile.person.careprofessional).values()
+    #my_objects = get_list_or_404(Referral, professional=user.profile.person.careprofessional)
+    #object = Referral.objects.values('client').get(pk=1)
+    #print Referral.objects.values('id').filter(professional = user.profile.person.careprofessional).order_by('id').order_by('client__person.name')
+    #for e in Client.objects.all():
+    #    print e.id
+   
+########################################### CLIENT
+    try:
+        #print user.profile.person.client.id
+        #print 1
+        #print "-----------------------"
+
+        return render_to_response('client/client_message.html',
+                                    {'object': "Oops! You don't have access for this service!",
+                                                 },
+                                     context_instance=RequestContext(request)
+                                 )
+    except:
+        pass
+
+
+########################################### PROFESSIONAL
+    try:
+
+        p = user.profile.person.careprofessional.id
+        #print 2
+        #print "-----------------------"
+
+        for l in (Client.objects.filter(referral__professional=p)):
+                print l.id
+
+                object = Client.objects.filter(id = l.id, person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
+
+                paginator = Paginator(object, settings.PAGE_RESULTS)
+                object = paginator.page(1)
+            
+                referral_form = ReferralForm()
+            
+                return render_to_response('client/client_index.html',
+                                                {'object': object,
+                                                 'paginator': paginator,
+                                                'countries': Country.objects.all(),
+                                                'PhoneTypes': PhoneType.objects.all(), 
+                                                'AddressTypes': AddressType.objects.all(), 
+                                                'EmailTypes': EmailType.objects.all(), 
+                                                'IMNetworks': IMNetwork.objects.all() , 
+                                                'TypeDocuments': TypeDocument.objects.all(), 
+                                                'Issuers': Issuer.objects.all(), 
+                                                'States': State.objects.all(), 
+                                                'MaritalStatusTypes': MaritalStatus.objects.all(),
+                                                
+                                                'address_book_professionals': address_book_get_professionals(request),
+                                                'address_book_organizations': address_book_get_organizations(request),
+                                                'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
+                                                'licenceBoardTypes': LicenceBoard.objects.all(),
+                                                'ReferralChoices': ReferralChoice.objects.all(),
+                                                'IndicationsChoices': IndicationChoice.objects.all(),
+                                                'Relations': Relation.objects.all(),
+                                                'referral_form': referral_form,
+                                                 },
+                                                context_instance=RequestContext(request)
+                                              )
+    except:
+        pass
+
+########################################### EMPLOYEE
+    try:
+        p = user.profile.person.employee.id
+        object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
+
+        #print 3
+        #print "-----------------------"
+
+        paginator = Paginator(object, settings.PAGE_RESULTS)
+        object = paginator.page(1)
     
-    referral_form = ReferralForm()
+        referral_form = ReferralForm()
     
-    return render_to_response('client/client_index.html',
-                                {'object': object,
-                                 'paginator': paginator,
-                                'countries': Country.objects.all(),
-                                'PhoneTypes': PhoneType.objects.all(), 
-                                'AddressTypes': AddressType.objects.all(), 
-                                'EmailTypes': EmailType.objects.all(), 
-                                'IMNetworks': IMNetwork.objects.all() , 
-                                'TypeDocuments': TypeDocument.objects.all(), 
-                                'Issuers': Issuer.objects.all(), 
-                                'States': State.objects.all(), 
-                                'MaritalStatusTypes': MaritalStatus.objects.all(),
-                                
-                                'address_book_professionals': address_book_get_professionals(request),
-                                'address_book_organizations': address_book_get_organizations(request),
-                                'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
-                                'licenceBoardTypes': LicenceBoard.objects.all(),
-                                'ReferralChoices': ReferralChoice.objects.all(),
-                                'IndicationsChoices': IndicationChoice.objects.all(),
-                                'Relations': Relation.objects.all(),
-                                'referral_form': referral_form,
-                                 },
-                                context_instance=RequestContext(request)
-                              )
+        return render_to_response('client/client_index.html',
+                                        {'object': object,
+                                         'paginator': paginator,
+                                        'countries': Country.objects.all(),
+                                        'PhoneTypes': PhoneType.objects.all(), 
+                                        'AddressTypes': AddressType.objects.all(), 
+                                        'EmailTypes': EmailType.objects.all(), 
+                                        'IMNetworks': IMNetwork.objects.all() , 
+                                        'TypeDocuments': TypeDocument.objects.all(), 
+                                        'Issuers': Issuer.objects.all(), 
+                                        'States': State.objects.all(), 
+                                        'MaritalStatusTypes': MaritalStatus.objects.all(),
+                                        
+                                        'address_book_professionals': address_book_get_professionals(request),
+                                        'address_book_organizations': address_book_get_organizations(request),
+                                        'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
+                                        'licenceBoardTypes': LicenceBoard.objects.all(),
+                                        'ReferralChoices': ReferralChoice.objects.all(),
+                                        'IndicationsChoices': IndicationChoice.objects.all(),
+                                        'Relations': Relation.objects.all(),
+                                        'referral_form': referral_form,
+                                         },
+                                        context_instance=RequestContext(request)
+                                      )
+    except:
+        pass
+
 
 @permission_required('client.client_list', '/')
 def list(request, page = 1):

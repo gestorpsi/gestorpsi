@@ -59,7 +59,7 @@ def index(request):
    
 ########################################### CLIENT
     try:
-        #print user.profile.person.client.id
+        p = user.profile.person.client.id
         #print 1
         #print "-----------------------"
 
@@ -74,7 +74,6 @@ def index(request):
 
 ########################################### PROFESSIONAL
     try:
-
         p = user.profile.person.careprofessional.id
         #print 2
         #print "-----------------------"

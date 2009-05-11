@@ -22,7 +22,9 @@ from django.contrib.auth.decorators import permission_required
 from django.utils import simplejson
 from django.contrib.auth.models import User
 from django.conf import settings
+
 from geraldo.generators import PDFGenerator
+
 from gestorpsi.address.models import Country, State, AddressType
 from gestorpsi.admission.models import *
 from gestorpsi.authentication.models import Profile
@@ -43,92 +45,33 @@ from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.reports.header import header_gen
 from gestorpsi.reports.footer import footer_gen
 from gestorpsi.util.views import date_form_to_db
+from gestorpsi.util.decorators import permission_required_with_403
 
 # list all active clients
-@permission_required('client.client_list', '/')
+@permission_required_with_403('client.client_list')
 def index(request):
     user = request.user
 
-    #print user.profile.person.careprofessional.id
-    #object = Referral.objects.filter(professional = user.profile.person.careprofessional).values()
-    #my_objects = get_list_or_404(Referral, professional=user.profile.person.careprofessional)
-    #object = Referral.objects.values('client').get(pk=1)
-    #print Referral.objects.values('id').filter(professional = user.profile.person.careprofessional).order_by('id').order_by('client__person.name')
-    #for e in Client.objects.all():
-    #    print e.id
-   
-########################################### CLIENT
-    try:
-        p = user.profile.person.client.id
-        #print 1
-        #print "-----------------------"
-
-        return render_to_response('client/client_message.html',
-                                    {'object': "Oops! You don't have access for this service!",
-                                                 },
-                                     context_instance=RequestContext(request)
-                                 )
-    except:
-        pass
+#for l in (Client.objects.filter(referral__professional=p)):
+#                print l.id
+#
+#                object = Client.objects.filter(id = l.id, person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
 
 
-########################################### PROFESSIONAL
-    try:
-        p = user.profile.person.careprofessional.id
-        #print 2
-        #print "-----------------------"
 
-        for l in (Client.objects.filter(referral__professional=p)):
-                print l.id
-
-                object = Client.objects.filter(id = l.id, person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
-
-                paginator = Paginator(object, settings.PAGE_RESULTS)
-                object = paginator.page(1)
+    if user.groups.filter(name='administrator').count() == 1:
+        object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
+    else:
+        for client in Client.objects.filter(referral_professional=p):
             
-                referral_form = ReferralForm()
-            
-                return render_to_response('client/client_index.html',
-                                                {'object': object,
-                                                 'paginator': paginator,
-                                                'countries': Country.objects.all(),
-                                                'PhoneTypes': PhoneType.objects.all(), 
-                                                'AddressTypes': AddressType.objects.all(), 
-                                                'EmailTypes': EmailType.objects.all(), 
-                                                'IMNetworks': IMNetwork.objects.all() , 
-                                                'TypeDocuments': TypeDocument.objects.all(), 
-                                                'Issuers': Issuer.objects.all(), 
-                                                'States': State.objects.all(), 
-                                                'MaritalStatusTypes': MaritalStatus.objects.all(),
-                                                
-                                                'address_book_professionals': address_book_get_professionals(request),
-                                                'address_book_organizations': address_book_get_organizations(request),
-                                                'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
-                                                'licenceBoardTypes': LicenceBoard.objects.all(),
-                                                'ReferralChoices': ReferralChoice.objects.all(),
-                                                'IndicationsChoices': IndicationChoice.objects.all(),
-                                                'Relations': Relation.objects.all(),
-                                                'referral_form': referral_form,
-                                                 },
-                                                context_instance=RequestContext(request)
-                                              )
-    except:
-        pass
-
-########################################### EMPLOYEE
-    try:
-        p = user.profile.person.employee.id
         object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
 
-        #print 3
-        #print "-----------------------"
-
-        paginator = Paginator(object, settings.PAGE_RESULTS)
-        object = paginator.page(1)
+    paginator = Paginator(object, settings.PAGE_RESULTS)
+    object = paginator.page(1)
     
-        referral_form = ReferralForm()
+    referral_form = ReferralForm()
     
-        return render_to_response('client/client_index.html',
+    return render_to_response('client/client_index.html',
                                         {'object': object,
                                          'paginator': paginator,
                                         'countries': Country.objects.all(),
@@ -140,7 +83,6 @@ def index(request):
                                         'Issuers': Issuer.objects.all(), 
                                         'States': State.objects.all(), 
                                         'MaritalStatusTypes': MaritalStatus.objects.all(),
-                                        
                                         'address_book_professionals': address_book_get_professionals(request),
                                         'address_book_organizations': address_book_get_organizations(request),
                                         'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
@@ -152,11 +94,9 @@ def index(request):
                                          },
                                         context_instance=RequestContext(request)
                                       )
-    except:
-        pass
 
 
-@permission_required('client.client_list', '/')
+@permission_required_with_403('client.client_list')
 def list(request, page = 1):
     user = request.user
     object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
@@ -171,7 +111,7 @@ def list(request, page = 1):
 
 
 # add or edit form
-@permission_required('client.client_read', '/')
+@permission_required_with_403('client.client_read')
 def form(request, object_id=''):
     phones    = []
     addresses = []
@@ -248,9 +188,11 @@ def form(request, object_id=''):
                               context_instance=RequestContext(request)
                               )
 
-# Save or Update client object
-@permission_required('client.client_write', '/')
+@permission_required_with_403('client.client_write')
 def save(request, object_id=""):
+    """
+       Save or Update a client record
+    """
     user = request.user
 
     try:
@@ -259,7 +201,8 @@ def save(request, object_id=""):
     except Http404:
         object = Client()
         person = Person()
-        ''' Id Record '''
+        
+        # Id Record
         org = get_object_or_404( Organization, pk=user.get_profile().org_active.id )
         object.idRecord = org.last_id_record + 1
         org.last_id_record = org.last_id_record + 1
@@ -268,20 +211,16 @@ def save(request, object_id=""):
     object.person = person_save(request, person)
     object.save()
 
-    """ Id Record """
-    #idr = IdRecordSeq()
-    #idr.uid = object.id
-    #idr.save()
     return HttpResponse(object.id)
 
-# delete (disable) a client
+@permission_required_with_403('client.client_write')
 def delete(request, object_id=""):
     client = get_object_or_404(Client, pk=object_id)
     client.clientStatus = '0'
     client.save()
     return render_to_response('client/client_index.html', {'clientList': Client.objects.all().filter(clientStatus = '1') })
 
-@permission_required('client.client_list', '/')
+@permission_required_with_403('client.client_list')
 def print_list(request):
     user = request.user
     response = HttpResponse(mimetype='application/pdf')
@@ -294,7 +233,7 @@ def print_list(request):
     report.generate_by(PDFGenerator, filename=response)
     return response
 
-@permission_required('client.client_read', '/')
+@permission_required_with_403('client.client_read')
 def print_record(request, object_id):
     user = request.user
     response = HttpResponse(mimetype='application/pdf')
@@ -307,12 +246,11 @@ def print_record(request, object_id):
     report.generate_by(PDFGenerator, filename=response)
     return response
 
-'''
-' organization_clients: return json with all clients from logged organization
-'''
-
-@permission_required('client.client_read', '/')
+@permission_required_with_403('client.client_read')
 def organization_clients(request):
+    """
+       organization_clients: return json with all clients from logged organization
+    """
     user = request.user
     clients = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
     print user.get_profile().org_active.id

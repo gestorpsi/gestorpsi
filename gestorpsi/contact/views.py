@@ -74,7 +74,7 @@ def index(request):
                                     'EmailTypes': EmailType.objects.all(),
                                     'IMNetworks': IMNetwork.objects.all(),
                                     'States': State.objects.all(),
-                                    'organizations': Organization.objects.filter(organization=org)
+                                    'organizations': Organization.objects.filter(organization=org, visible=True)
                                     },
                                     context_instance=RequestContext(request)
                                     )
@@ -215,7 +215,7 @@ def address_book_get_professionals(request):
     org = user.get_profile().org_active
     lista = []
     
-    for x in Organization.objects.filter(organization=None, public=True):
+    for x in Organization.objects.filter(organization=None, public=True, visible=True):
         phone = x.get_first_phone()
         email = x.get_first_email()
         for y in CareProfessional.objects.filter(person__organization=x):
@@ -238,7 +238,7 @@ def address_book_get_organizations(request):
     org = user.get_profile().org_active
     lista = []
     
-    for x in Organization.objects.filter(organization=None, public=True):
+    for x in Organization.objects.filter(organization=None, public=True, visible=True):
         phone = x.get_first_phone()
         email = x.get_first_email()
         lista.append([x.id, x.name, email, phone, '1', 'GESTORPSI'])

@@ -59,12 +59,12 @@ def index(request):
 
 
 
-    if user.groups.filter(name='administrator').count() == 1:
-        object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
-    else:
-        for client in Client.objects.filter(referral_professional=p):
+    #if user.groups.filter(name='administrator').count() == 1:
+    #    object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
+    #else:
+    #    for client in Client.objects.filter(referral_professional=p):
             
-        object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
+    object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
 
     paginator = Paginator(object, settings.PAGE_RESULTS)
     object = paginator.page(1)

@@ -25,13 +25,23 @@ from registration.models import RegistrationProfile
 from gestorpsi.authentication.models import Profile
 from gestorpsi.person.models import Person
 
+def index(request):
+    user = request.user
+    profiles = Profile.objects.filter(org_active = user.get_profile().org_active).order_by('user__username')
+    paginator = Paginator(profiles, settings.PAGE_RESULTS)
+    profiles = paginator.page(1)
+    return render_to_response('users/users_index.html', {
+                                 'object': profiles,
+                                 'paginator': paginator, },
+                                 context_instance=RequestContext(request))    
+
 def list(request, page=1):
     user = request.user
     profiles = Profile.objects.filter(org_active = user.get_profile().org_active).order_by('user__username')
     paginator = Paginator(profiles, settings.PAGE_RESULTS)
     profiles = paginator.page(page)
-    return render_to_response('users/users_index.html', {
-                                 'profiles': profiles,
+    return render_to_response('users/users_list.html', {
+                                 'object': profiles,
                                  'paginator': paginator, },
                                  context_instance=RequestContext(request))
 

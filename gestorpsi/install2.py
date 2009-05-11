@@ -107,9 +107,5 @@ grp_secretary.permissions.add(Permission.objects.get(codename='professional_list
 # Client
 grp_client = Group.objects.create(name='client')
 grp_client.permissions.add(Permission.objects.get(codename='client_read'))
-grp_client.permissions.add(Permission.objects.get(codename='client_list'))
-grp_client.permissions.add(Permission.objects.get(codename='schedule_read'))
-grp_client.permissions.add(Permission.objects.get(codename='schedule_list'))
-
 
 print "Done!"

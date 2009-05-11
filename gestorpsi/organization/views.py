@@ -73,12 +73,13 @@ def save(request):
        
     if (object.short_name != request.POST['short_name']):
         if (Organization.objects.filter(short_name__iexact = request.POST['short_name']).count()):
-	    return HttpResponse("false")
+	        return HttpResponse("false")
+        else:
+            object.short_name = request.POST['short_name']
          
     #identity
     object.name = request.POST['name']
     object.trade_name = request.POST['trade_name']
-    #object.short_name = request.POST['short_name']
     object.register_number = request.POST['register_number']
     object.cnes = request.POST['cnes']
     object.state_inscription = request.POST['state_inscription']
@@ -121,6 +122,6 @@ def save(request):
 # 1 = YES
 def shortname_is_available(request, short):
     if Organization.objects.filter(short_name__iexact = short).count():
-	return HttpResponse("0")
+	    return HttpResponse("0")
     else:
-	return HttpResponse("1")
+	    return HttpResponse("1")

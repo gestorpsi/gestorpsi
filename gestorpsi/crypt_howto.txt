@@ -359,19 +359,16 @@ CREATE OR REPLACE RULE rule_delete_document_document AS ON DELETE
 
 
 
-
 ------------------------------------ Client App ------------------------------------
 DROP TABLE client_client CASCADE;
 
 CREATE TABLE "client_client_crypt" (
     "id" varchar(36) NOT NULL PRIMARY KEY,
     "person_id" varchar(36) NOT NULL UNIQUE REFERENCES "person_person_crypt" ("id") DEFERRABLE INITIALLY DEFERRED,
-    "idRecord" integer() NOT NULL,
+    "idRecord" integer NOT NULL,
     "legacyRecord" varchar(250) NOT NULL,
     "healthDocument" varchar(250) NOT NULL,
     "admission_date" date,
-    "referral_choice_id" integer REFERENCES "admission_admissionreferral" ("id") DEFERRABLE INITIALLY DEFERRED,
-    "indication_choice_id" integer REFERENCES "admission_indication" ("id") DEFERRABLE INITIALLY DEFERRED,
     "clientStatus" varchar(1) NOT NULL,
     "comments" text NOT NULL
 );
@@ -379,12 +376,10 @@ CREATE TABLE "client_client_crypt" (
 CREATE OR REPLACE VIEW client_client
   AS SELECT "id",
             "person_id",
-            gestorpsi_decrypt("idRecord") as "idRecord",
+            "idRecord",
             gestorpsi_decrypt("legacyRecord") as "legacyRecord",
             gestorpsi_decrypt("healthDocument") as "healthDocument",
             "admission_date",
-            "referral_choice_id",
-            "indication_choice_id",
             "clientStatus",
             "comments"
   FROM client_client_crypt;
@@ -395,12 +390,10 @@ CREATE OR REPLACE RULE rule_insert_client_client AS ON INSERT
     INSERT INTO client_client_crypt VALUES
             (NEW."id",
              NEW."person_id",
-             gestorpsi_encrypt(NEW."idRecord"),
+             NEW."idRecord",
              gestorpsi_encrypt(NEW."legacyRecord"),
              gestorpsi_encrypt(NEW."healthDocument"),
              NEW."admission_date",
-             NEW."referral_choice_id",
-             NEW."indication_choice_id",
              NEW."clientStatus",
              NEW."comments");
 
@@ -409,12 +402,10 @@ CREATE OR REPLACE RULE rule_update_client_client AS ON UPDATE
     DO INSTEAD
     UPDATE client_client_crypt SET
              "person_id" = NEW."person_id",
-             "idRecord" = gestorpsi_encrypt(NEW."idRecord"),
+             "idRecord" = NEW."idRecord",
              "legacyRecord" = gestorpsi_encrypt(NEW."legacyRecord"),
              "healthDocument" = gestorpsi_encrypt(NEW."healthDocument"),
              "admission_date" = NEW."admission_date",
-             "referral_choice_id" = NEW."referral_choice_id",
-             "indication_choice_id" = NEW."indication_choice_id",
              "clientStatus" = NEW."clientStatus",
              "comments" = NEW."comments"
     WHERE "id" = OLD."id";
@@ -423,7 +414,6 @@ CREATE OR REPLACE RULE rule_delete_client_client AS ON DELETE
    TO client_client
    DO INSTEAD
    DELETE FROM client_client_crypt WHERE "id" = OLD."id";
-
 
 
 ------------------------------------ Internet App: email ------------------------------------

@@ -85,6 +85,7 @@ def save(request):
     object.state_inscription = request.POST['state_inscription']
     object.city_inscription = request.POST['city_inscription']
     object.photo = request.POST['photo']
+    object.visible = get_visible( request.POST.get('visible') )
     #profile
     object.person_type = PersonType.objects.get(pk=request.POST['person_type'])
     object.unit_type = UnitType.objects.get(pk=request.POST['unit_type'])
@@ -125,3 +126,9 @@ def shortname_is_available(request, short):
 	    return HttpResponse("0")
     else:
 	    return HttpResponse("1")
+
+def get_visible( value ):
+    if ( value == 'on' ):
+        return True
+    else:
+        return False 

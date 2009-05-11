@@ -151,6 +151,8 @@ class Organization(models.Model):
         
     active = models.BooleanField(default=True)
     
+    visible = models.BooleanField(default=True)
+    
     photo = models.CharField(max_length=200, blank=True)          
     
     phones = generic.GenericRelation(Phone, null=True)

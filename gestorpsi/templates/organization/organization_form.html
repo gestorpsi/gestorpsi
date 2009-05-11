@@ -53,6 +53,7 @@ GNU General Public License for more details.
 	<label>{% trans "Short Name" %}<br />
          	   <input class="short_search big tabtitle" type="text" value="{{ object.short_name }}" name="short_name" />
         </label>
+	
 
 	<label>
 		 <div name="msg_error" class="error check_available organization" style="display: none;">
@@ -62,6 +63,14 @@ GNU General Public License for more details.
 	
          <label> {{ html }}</label>
 </fieldset>
+    
+<fieldset id="fieldset_place_status">
+   <legend>{% trans "Visible for others" %}</legend>
+	<label>
+        <input type="checkbox" name="visible" {% if object.visible %} checked {% endif %} /><label>{% trans "Visible?" %}
+    </label>
+</fieldset>
+
 <fieldset class="identity organization first comment">
 	<legend>{% trans "Additional Identities" %}</legend>
 	<label>{% trans "Register Number" %}<br />

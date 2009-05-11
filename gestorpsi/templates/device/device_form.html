@@ -92,8 +92,8 @@ GNU General Public License for more details.
 		<legend>{% trans "Durability" %}</legend>
 			<label>{% trans "Type" %}<br />
 			<select name="select_durability_type" class="extramedium">
-				<option value="1"{% ifequal device_details.durability '1' %} selected{% endifequal %}>Consumable</option>
-				<option value="2"{% ifequal device_details.durability '2' %} selected{% endifequal %}>Durable</option
+				<option value="1"{% ifequal device_details.durability '1' %} selected{% endifequal %}>{% trans "Consumable" %}</option>
+				<option value="2"{% ifequal device_details.durability '2' %} selected{% endifequal %}>{% trans "Durable" %}</option
 			</select>
 			</label>	
 	</fieldset>
@@ -106,8 +106,8 @@ GNU General Public License for more details.
 		<legend>{% trans "Restriction" %}</legend>
 		<label>{% trans "Type" %}<br />
 			<select name="select_restriction_type" class="device_restriction medium">
-				<option value="1">Not restrict</option>
-				<option value="2"{% if device_details.prof_restriction %} selected{% endif %}>Restrict</option>
+				<option value="1">{% trans "Not restrict" %}</option>
+				<option value="2"{% if device_details.prof_restriction %} selected{% endif %}>{% trans "Restrict" %}</option>
 			</select>
 		</label>
 		
@@ -127,8 +127,8 @@ GNU General Public License for more details.
 		<legend>{% trans "Mobility" %}</legend>
 		<label>{% trans "Type" %}<br />
 			<select name="select_mobility_type" class="device_mobility big">
-				<option value="1"{% ifequal device_details.mobility '1' %} selected{% endifequal %}>Fix</option>
-				<option value="2"{% ifequal device_details.mobility '2' %} selected{% endifequal %}>Mobile</option>
+				<option value="1"{% ifequal device_details.mobility '1' %} selected{% endifequal %}>{% trans "Fix" %}</option>
+				<option value="2"{% ifequal device_details.mobility '2' %} selected{% endifequal %}>{% trans "Mobile" %}</option>
 			</select>
 		</label>
 

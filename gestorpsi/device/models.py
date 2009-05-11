@@ -15,18 +15,19 @@ GNU General Public License for more details.
 """
 
 from django.db import models
+from django.utils.translation import ugettext as _
 from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, Room
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import audittrail
 
-DURABILITY_TYPE= ( ('1','CONSUMABLE'), ('2', 'DURABLE') )
+DURABILITY_TYPE= ( ('1',_('CONSUMABLE')), ('2', _('DURABLE')) )
 """
 Devices are classified by their durability, thus this variable represents
 the two kinds of durability type that are used to classify them.
 """
 
-MOBILITY_TYPE= ( ( '1', 'FIX' ), ( '2', 'MOBILE' ) )
+MOBILITY_TYPE= ( ( '1', _('FIX') ), ( '2', _('MOBILE') ) )
 """
 Similarly, devices are also classified by their mobility, thus this variable represents
 the two kinds of mobility type that are used to classify them.

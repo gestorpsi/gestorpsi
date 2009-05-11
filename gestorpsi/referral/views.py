@@ -25,11 +25,13 @@ from gestorpsi.referral.forms import ReferralForm
 
 def client_referrals(request, object_id = None):
     object = get_object_or_404(Client, pk=object_id)
+    print object.id
     referral = Referral.objects.filter(client=object)
     array = {} #json
     i = 0
     
     for o in referral:
+        print "AEEEEEEEEE"
         array[i] = {
             'id': o.id,
             'service': o.service.name,
@@ -44,7 +46,8 @@ def client_referrals(request, object_id = None):
     
     array = simplejson.dumps(array, encoding = 'iso8859-1')
     
-    return HttpResponse(array, mimetype='application/json')
+    return HttpResponse(array)
+    #return HttpResponse(array, mimetype='application/json')
 
 
 """ *** TODO: manage multiples referrals """
@@ -53,6 +56,9 @@ def save(request, object_id = None):
         form = ReferralForm(request.POST)
         #form = ReferralForm(request.POST, instance=object)
         if form.is_valid():
-            object = form.save()
+            object = form.save(commit=False)
+            object.organization = request.user.get_profile().org_active
+            object.save()
+            form.save_m2m()
 
     return HttpResponse(object.id)

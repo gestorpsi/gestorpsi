@@ -202,7 +202,7 @@ def schedule_occurrences(request, year = 1, month = 1, day = None):
     return ScheduleOccurrence.objects.filter(
         start_time__gte=date_start,
         start_time__lt=date_end,
-        event__referral__service__organization=request.user.get_profile().org_active.id,
+        event__referral__organization=request.user.get_profile().org_active.id,
     )
 
 def daily_occurrences(request, year = 1, month = 1, day = None):

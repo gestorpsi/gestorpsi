@@ -22,6 +22,7 @@ from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.schedule.models import ScheduleOccurrence
+from gestorpsi.organization.models import Organization
 
 class ReferralPriority(models.Model):
     title = models.CharField(max_length=20)
@@ -48,6 +49,7 @@ class Referral(Event):
     available_time = models.CharField(max_length=765, null=True, blank=True)
     priority = models.ForeignKey(ReferralPriority, null=True)
     impact = models.ForeignKey(ReferralImpact, null=True)
+    organization = models.ForeignKey(Organization, null= True, blank= True)
 
     def __init__(self, *args, **kwargs):
         super(Referral, self).__init__(*args, **kwargs)

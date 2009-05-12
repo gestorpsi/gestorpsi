@@ -53,21 +53,27 @@ People Personal Profile Form
                 </select>
                 </label>
                 
-                
-                <label class="autocomplete"{% if object.person.birthForeignCity %} style="display:none"{% endif %}>{% trans "City" %}<br />
-                <input type="text" class="extramedium city_search" value="{% ifnotequal object.person.birthPlace None %}{{ object.person.birthPlace }}{% endifnotequal %}" />
+                <!--auto complete city-->
+                <label class="autocomplete state"{% if object.person.birthForeignCity %} style="display:none"{% endif %}>
+                {% trans "State/Region" %}<br />
+                <select class="city_search extrasmall" city="{{ object.person.birthPlace.id }}">
+                    <option></option>
+                    {% for s in States %}
+                    <option value="{{ s.id }}"{% ifequal object.person.birthPlace.state.id s.id %} selected{% endifequal %}>{{ s.shortName }}</option>
+                    {% endfor %}
+                </select>
                 </label>
-                <!-- 
-                       don't remove and dont change the position of this label !!!!
-                       this receive the id of the city when selected
-                -->
-                <label class="autocomplete" style="display:none"><br />
-                <input type="hidden" class="small" name="birthPlace" value="{% if object.person.birthPlace_id %}{{ object.person.birthPlace_id }}{% endif %}" id="id_birthPlace" />
+
+                <label class="autocomplete city"{% if object.person.birthForeignCity %} style="display:none"{% endif %}>
+                {% trans "City" %}<br />
+                <select name="birthPlace" class="extramedium">
+                    {% if not object.person.birthPlace.id %}
+                        <option disabled>{% trans "Select state first" %}</option>
+                    {% endif %}
+                </select>
                 </label>
-                
-        
+
                 <!--not autocomplete-->
-        
                 <label class="noautocomplete"{% if not object.person.birthForeignCity %} style="display:none"{% endif %}>{% trans "City" %}<br />
                         <input type="text" name="birthForeignCity" class="extramedium" value="{{ object.person.birthForeignCity }}"  />
                 </label>

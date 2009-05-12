@@ -102,15 +102,15 @@ function updateGrid(url) {
                 
                 //append client list
                 jQuery.each(this.client,  function(){
-                    str_client = str_client + this.name + "<br />";
-                    str_client_inline = str_client_inline + this.name + ", ";
+                    str_client += this.name + "<br />";
+                    str_client_inline += this.name + ", ";
                 });
                 str_client_inline = str_client_inline.substr(0, (str_client_inline.length-2))
                 
                 //append professional list
                 jQuery.each(this.professional,  function(){
-                    str_professional = str_professional + this.name + "<br />" ;
-                    str_professional_inline = str_professional_inline + this.name + ", " ;
+                    str_professional += this.name + "<br />" ;
+                    str_professional_inline += this.name + ", " ;
                     col.addClass('professional_' + this.id); // professionals in cell
                     event.addClass('professional_' + this.id); // professionals in events
                 });
@@ -195,12 +195,12 @@ function updateGrid(url) {
             var str_client = ''; var str_professional = '';
             //append client list
             jQuery.each(json.client,  function(){
-            str_client = str_client + this.name + ' ' +this.phone+ '<br />' ;
+            str_client += this.name + ' ' +this.phone+ '<br />' ;
             });
 
             //append professional list
             jQuery.each(json.professional,  function(){
-                str_professional = str_professional + this.name + ' ' +this.phone+ '<br />' ;
+                str_professional += this.name + ' ' +this.phone+ '<br />' ;
             });
             
             $('div#dialog h1[key=date]').text(json['date']);
@@ -323,7 +323,7 @@ function bindScheduleForm() {
                     str_professional_inline = '';
                     //append professional list
                     jQuery.each(this.professional,  function(){
-                        str_professional_inline = str_professional_inline + this.name + ", " ;
+                        str_professional_inline += this.name + ", " ;
                     });
                     str_professional_inline = str_professional_inline.substr(0, (str_professional_inline.length-2))
                 

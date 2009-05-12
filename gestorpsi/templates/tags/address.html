@@ -50,17 +50,27 @@ GNU General Public License for more details.
 	</select>
 	</label>
 	
-	<!--auto complete city-->
-	
-	<label class="autocomplete"{% if address.foreignCity %} style="display:none"{% endif %}>{% trans "City (Region)" %}<br />
-		<input type="text" class="city_search extramedium" value="{% ifnotequal address.city None %}{{ address.city }}{% endifnotequal %}"  />
-	</label>
-	<label class="autocomplete" style="display:none;"><br />
-		<input type="hidden" class="small" name="city" value="{% ifnotequal address.city_id None %}{{ address.city_id }}{% endifnotequal %}" id="id_city" />
-	</label>
+    <!--auto complete city-->
+    <label class="autocomplete state"{% if address.foreignCity %} style="display:none"{% endif %}>
+    {% trans "State/Region" %}<br />
+    <select class="city_search extrasmall" city="{{ address.city.id }}">
+        <option></option>
+        {% for s in States %}
+        <option value="{{ s.id }}"{% ifequal address.city.state.id s.id %} selected{% endifequal %}>{{ s.shortName }}</option>
+        {% endfor %}
+    </select>
+    </label>
 
+    <label class="autocomplete city"{% if address.foreignCity %} style="display:none"{% endif %}>
+    {% trans "City" %}<br />
+    <select name="city" class="extramedium">
+        {% if not address.city.id %}
+            <option disabled>{% trans "Select state first" %}</option>
+        {% endif %}
+    </select>
+    </label>
+    
 	<!--not autocomplete-->
-
 	<label class="noautocomplete"{% if not address.foreignCity %} style="display:none"{% endif %}>{% trans "City" %}<br />
 		<input type="text" name="foreignCity" class="extramedium address_foreignCity" value="{{ address.foreignCity }}"  />
 	</label>
@@ -68,8 +78,6 @@ GNU General Public License for more details.
 	<label class="noautocomplete"{% if not address.foreignCity %} style="display:none"{% endif %}>{% trans "State" %}<br />
 		<input type="text" name="foreignState" id="id_state" class="extrasmall address_foreignState" value="{{ address.foreignState }}" />
 	</label>
-	
-
 
 	<label>{% trans "Type" %}<br />
 	{% if not AddressTypes %}

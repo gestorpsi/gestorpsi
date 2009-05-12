@@ -15,10 +15,9 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
+from gestorpsi.authentication.views import login_check
+from gestorpsi.address.views import get_cities
 
-urlpatterns = patterns('gestorpsi.address.views',
-    (r'^search/city/(?P<city_name>[^/]+)/$', 'search_city'),
-    #(r'^select/city/(?P<city_id>\d+)/$', 'select_city'),
-    #(r'^select/state/(?P<city_id>\d+)/$', 'select_state'),
-    #(r'^select/country/(?P<city_id>\d+)/$', 'select_country'),
+urlpatterns = patterns('',
+    (r'^search/cities/state/(?P<state_id>[0-9]+)/$', login_check(get_cities)),
 )

@@ -14,8 +14,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from gestorpsi.address.models import Country, Address, City, AddressType
+import locale
 from django.http import HttpResponse
+from django.utils import simplejson
+from gestorpsi.address.models import Country, Address, City, AddressType
 
 # Check if addresses fields are equals
 def is_equal(address):
@@ -33,19 +35,19 @@ def address_list(ids, addressPrefixs, addressLines1, addressLines2, addressNumbe
     objects = []
     for i in range(0, len(addressLines1)):
         if (len(addressLines1[i])):
-            if(len(city_ids[i])):          
+            try:
+                city = city_ids[i]
                 objects.append(Address(id=ids[i], addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
                                    addressNumber=addressNumbers[i], neighborhood=neighborhoods[i], zipCode=zipCodes[i],
                                    addressType=AddressType.objects.get(pk=addressTypes[i]),
-                                   city = City.objects.get(pk=city_ids[i])))
-            else:
+                                   city = City.objects.get(pk=city)))
+            except:
                 objects.append(Address(id=ids[i], addressPrefix=addressPrefixs[i], addressLine1=addressLines1[i], addressLine2=addressLines2[i], 
                                    addressNumber=addressNumbers[i], neighborhood=neighborhoods[i], zipCode=zipCodes[i],
                                    addressType=AddressType.objects.get(pk=addressTypes[i]),
                                    foreignCountry=Country.objects.get(pk=country_ids[i]),
                                    foreignState=stateChars[i],
                                    foreignCity=cityChars[i]))
-            
     return objects
 
 # 'address' field blank means that it was deleted by an user
@@ -69,11 +71,22 @@ def address_save(object, ids, addressPrefixs, addressLines1, addressLines2, addr
         address.content_object = object
         address.save()
 
-# search a city by name via Ajax
-def search_city(request, city_name):
-    result = ""
-    if len(city_name) >= 3:
-        cities = City.objects.filter(name__istartswith = city_name)
-        for city in cities:
-            result += "%s (%s)|%s|\n" % (city.name, city.state.shortName, city.id)
-    return HttpResponse("%s" % result)
+# return JSON with cities from selected state
+def get_cities(request, state_id):
+    #locale.setlocale(locale.LC_ALL,'pt_BR.ISO-8859-1')
+    locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
+
+    array = {} #json
+    i = 0
+
+    for c in City.objects.filter(state = state_id):
+        array[i] = {
+            'id': c.id,
+            'name': c.name,
+        }
+        i = i + 1
+
+    array = simplejson.dumps(array, encoding = 'iso8859-1')
+    
+    #return HttpResponse(array, mimetype='application/json')
+    return HttpResponse(array)

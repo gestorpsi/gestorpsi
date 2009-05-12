@@ -97,33 +97,39 @@ function bindDelete() {
      });
 }
 
+function reloadCities(el) {
+        var line = '<option value=""></option>';
+        $.getJSON('/address/search/cities/state/' + el.val() + '/', function(json) {
+                jQuery.each(json,  function(){
+                    line = line + '<option value="' + this.id + '">' + this.name + '</option>';
+                }); 
+            });
+            el.parent('label').parent('div').children('label.city').children('select').html(line); // rebuild city combo 
+            el.parent('label').parent('div').children('label.city').children('select').children('option[value=' + el.attr('city') + ']').attr('selected', 'selected'); // select city
+}
 
-function bindAutoCompleteForm() {
-     
-     // Reset value if city choices is blank
-     $('input.city_search').unbind().keyup(function() {
-            if($(this).val() == '') {
-                $(this).parent().next().find("input:hidden").val('');
+function bindAutoCompleteForm(reload_cities) {
+
+    /**
+     * reload city combo
+     */
+
+    if(reload_cities == true) {
+        $('form#form_organization label.state select.city_search, div#edit_form label.state select.city_search').each(function() {
+            if($(this).attr('city') > 0) {
+                reloadCities($(this));
             }
-       });
+        });
+    }
 
-     /// autocomplete text field
-     // we must to 'reload' auto-complete function, when a field text is drawed by some javascript function 
-     $('input.city_search').autocomplete("/address/search/city/", {
-             width: 355,
-             selectFirst: true,
-             minChars: 3
-     });
+    $('label.state select.city_search').change(function() {
+        reloadCities($(this));
+    });
      
-     // set cityid to the hidden field
-     $("input.city_search").result(function(event, data, formatted) {
-             if (data) {
-                     $(this).parent().next().find("input:hidden").val(data[1]);
-             }
-     });
-     
-     //other countries address, not registered in database
-     //if another country is selected, change form fields ..
+     /**
+      * other countries address, not registered in database
+      * if another country is selected, change form fields ..
+      */
      
      $('form select.country').unbind().change(function() {
            if($(this).val() == 33) { // Brazil
@@ -133,13 +139,16 @@ function bindAutoCompleteForm() {
                $(this).parents('div').children('label.autocomplete').show();
            } else {
                // reset oldvalues
-               $(this).parents('div').children('label.autocomplete').children('input').val('');
+               $(this).parents('div').children('label.autocomplete.city').children('select').children('option').attr('selected','');
                $(this).parents('div').children('label.autocomplete').hide();
                $(this).parents('div').children('label.noautocomplete').show();
            }
      });
 
-     // VALID IF EXIST A SHORT NAME IN FORM ORGANIZATION
+     /**
+      * VALID IF EXIST A SHORT NAME IN FORM ORGANIZATION
+      */
+      
      $('input.short_search').unbind().keyup(function() {
 	     $.ajax({
 		   type: "GET",
@@ -174,7 +183,7 @@ function bindFormActions() {
                $(this).parents('fieldset').children('div').removeClass('multirow');
                $(this).parents('fieldset').children('div').not(':first').addClass('multirow');
           }
-          bindAutoCompleteForm();
+          bindAutoCompleteForm(false);
           bindDelete();
           bindFieldMask();
      });
@@ -403,7 +412,7 @@ function bindFormActions() {
          });
      });
 
-     bindAutoCompleteForm();
+     bindAutoCompleteForm(true);
    
 }
 

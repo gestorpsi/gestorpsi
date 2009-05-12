@@ -21,7 +21,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import permission_required
 from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, Room, RoomType, PlaceType
-from gestorpsi.address.models import Country, AddressType
+from gestorpsi.address.models import Country, AddressType, State
 from gestorpsi.address.views import address_save
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.phone.views import phone_save
@@ -34,7 +34,9 @@ def index(request):
                                                           'countries': Country.objects.all(),
                                                           'RoomTypes': RoomType.objects.all(),
                                                           'PhoneTypes': PhoneType.objects.all(),
-                                                          'AddressTypes': AddressType.objects.all(), },
+                                                          'AddressTypes': AddressType.objects.all(),
+                                                          'States': State.objects.all(),
+                                                          },
                                                           context_instance=RequestContext(request))
 
 def room_list( ids, descriptions, dimensions, room_types, furniture_descriptions ):
@@ -77,7 +79,9 @@ def form(request, object_id=''):
                                                         'countries': Country.objects.all(),
                                                         'RoomTypes': RoomType.objects.all(),
                                                         'rooms': rooms,
-                                                        'last_update': last_update, },
+                                                        'last_update': last_update,
+                                                        'States': State.objects.all(),
+                                                        },
                                                         context_instance=RequestContext(request))
 
 @permission_required('place.place_write', '/')

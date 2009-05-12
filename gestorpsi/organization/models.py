@@ -30,6 +30,7 @@ class ProfessionalResponsible(models.Model):
     id = UuidField(primary_key=True)
     name = models.CharField(max_length=50)
     subscription = models.CharField(max_length=50)
+    organization_subscription = models.CharField(max_length=50)
     org = models.ForeignKey('Organization', null=True, blank=True)
 
     def __unicode__(self):

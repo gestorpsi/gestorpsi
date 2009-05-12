@@ -43,15 +43,15 @@ GNU General Public License for more details.
         <legend>{% trans "Corporate Identity" %}</legend>
 
         <label>{% trans "Company" %}<br />
-                <input type="text" value="{{ object.name }}" name="name" class="big tabtitle" />
+                <input type="text" value="{{ object.name }}" name="name" class="extrabig tabtitle" />
         </label>
 
         <label>{% trans "Trade Name" %}<br />
-                <input type="text" value="{{ object.trade_name }}" name="trade_name" class="big" />
+                <input type="text" value="{{ object.trade_name }}" name="trade_name" class="extrabig" />
         </label>
 	
 	<label>{% trans "Short Name" %}<br />
-         	   <input class="short_search big tabtitle" type="text" value="{{ object.short_name }}" name="short_name" />
+         	   <input class="short_search small tabtitle" type="text" value="{{ object.short_name }}" name="short_name" />
         </label>
 	
 
@@ -87,7 +87,7 @@ GNU General Public License for more details.
         </label>
 </fieldset>
 
-<fieldset class="professional organization hidden">
+<fieldset class="identity professional organization first">
 	<legend>{% trans "Professional Responsible" %}</legend>
 	{% if not professional_responsible %}
         {% include "tags/professional.html" %}

@@ -26,11 +26,11 @@ from gestorpsi.address.views import address_save
 from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
 
-def professional_responsible_save(object, ids, names, subscriptions):
+def professional_responsible_save(object, ids, names, subscriptions, organization_subscriptions):
     ProfessionalResponsible.objects.all().delete()
     for x in range(len(names)):
         obj = []
-        obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], org=object))
+        obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], org=object, organization_subscription=organization_subscriptions[x]))
         if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):
             obj.save()
 
@@ -102,7 +102,7 @@ def save(request):
     object.comment = request.POST['comment']
     object.save()
    
-    professional_responsible_save(object, request.POST.getlist('professionalId'), request.POST.getlist('professional_name'), request.POST.getlist('professional_subscription'))
+    professional_responsible_save(object, request.POST.getlist('professionalId'), request.POST.getlist('professional_name'), request.POST.getlist('professional_subscription'), request.POST.getlist('professional_organization_subscription'))
             #object.subscriptions_professional_institutional = request.POST['subscriptions_professional_institutional']
             #object.professional_responsible = request.POST['professional_responsible']
 

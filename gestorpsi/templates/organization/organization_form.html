@@ -64,7 +64,7 @@ GNU General Public License for more details.
          <label> {{ html }}</label>
 </fieldset>
     
-<fieldset id="fieldset_place_status">
+<fieldset id="fieldset_place_status" class="profile organization hidden">
    <legend>{% trans "Visible for others" %}</legend>
 	<label>
         <input type="checkbox" name="visible" {% if object.visible %} checked {% endif %} /><label>{% trans "Visible?" %}
@@ -87,7 +87,7 @@ GNU General Public License for more details.
         </label>
 </fieldset>
 
-<fieldset class="professional organization">
+<fieldset class="professional organization hidden">
 	<legend>{% trans "Professional Responsible" %}</legend>
 	{% if not professional_responsible %}
         {% include "tags/professional.html" %}
@@ -99,7 +99,7 @@ GNU General Public License for more details.
 	<a class="add_to_form"><span>{% trans "Add Professional" %}</span></a>
 </fieldset>
 
-<fieldset class="profile organization comment">
+<fieldset class="profile organization comment hidden">
         <legend>{% trans "Corporate Profile" %}</legend>
 
         <label>{% trans "Person Type" %}<br />
@@ -167,7 +167,7 @@ GNU General Public License for more details.
         </label>	
 </fieldset>
 
-<fieldset class="address organization set_multirow">
+<fieldset class="address organization set_multirow hidden">
 	<legend>{% trans "Addresses" %}</legend>
 	{% if not addresses %}
 	    {% include "tags/address.html" %}
@@ -179,7 +179,7 @@ GNU General Public License for more details.
 	<a class="add_to_form"><span>{% trans "Add Address" %}</span></a>
 </fieldset>
 
-<fieldset class="phone organization">
+<fieldset class="phone organization hidden">
 	<legend>{% trans "Phones" %}</legend>
 	{% if not phones %}
         {% include "tags/phone.html" %}
@@ -191,7 +191,7 @@ GNU General Public License for more details.
 	<a class="add_to_form"><span>{% trans "Add Phone" %}</span></a>
 </fieldset>
 
-<fieldset class="internet organization">
+<fieldset class="internet organization hidden">
 	<legend>{% trans "Emails" %}</legend>
 	{% if not emails %}
 	    {% include "tags/email.html" %}
@@ -203,7 +203,7 @@ GNU General Public License for more details.
 	<a class="add_to_form"><span>{% trans "Add Email" %}</span></a>
 </fieldset>
 
-<fieldset class="internet organization">
+<fieldset class="internet organization hidden">
 	<legend>{% trans "Websites" %}</legend>
 	{% if not websites %}
 	    {% include "tags/website.html" %}
@@ -215,7 +215,7 @@ GNU General Public License for more details.
 	<a class="add_to_form"><span>{% trans "Add Website" %}</span></a>
 </fieldset>
 
-<fieldset class="internet organization">
+<fieldset class="internet organization hidden">
 	<legend>{% trans "Instant Messengers" %}</legend>
 	{% if not ims %}
 	    {% include "tags/im.html" %}

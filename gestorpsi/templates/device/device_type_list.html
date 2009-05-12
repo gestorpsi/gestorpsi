@@ -36,16 +36,26 @@ GNU General Public License for more details.
                         <th></th> 
                         </tr> 
                 </thead>
+
                 <tbody>               
                 {% for o in object %}
-                        <tr>
-                                <td class="item" display="device_{{ o.id }}">
-				  <td class="sub_item" >{% if perms.device.device_read %}<a href="/device/{{ dev_det.id }}" title="{{ dev_det }}">{{ dev_det.brand }}</a>{% else %}{{ dev_det.brand }}{% endif %}</td>
-                  {% if perms.device.device_read %}<a href="/device/type/{{ o.id }}/" title="{{ o.description }}">{{ o.description }} </a>{% else %}{{ o.description }}{% endif %}
- 				</td>
-                                <td></td>
-                        </tr>
-                {% endfor %}
+                <tr>
+				  <td>
+                    {% if perms.device.device_read %}
+                        <a href="/device/{{ dev_det.id }}" title="{{ dev_det }}">{{ dev_det.brand }}</a>
+                    {% else %}
+                        {{ dev_det.brand }}
+                    {% endif %}
+
+                    {% if perms.device.device_read %}
+                        <a href="/device/type/{{ o.id }}/" title="{{ o.description }}">{{ o.description }} </a>
+                    {% else %}
+                        {{ o.description }}
+                    {% endif %}
+ 				  </td>
+               </tr>
+               {% endfor %}
+
                 </tbody>
                 </table>
         </div>

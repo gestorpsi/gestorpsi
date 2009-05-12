@@ -17,6 +17,7 @@ GNU General Public License for more details.
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth.decorators import permission_required
+from django.utils.translation import ugettext as _
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.careprofessional.models import ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
 from gestorpsi.organization.models import Agreement
@@ -29,7 +30,7 @@ from gestorpsi.person.views import person_save
 from gestorpsi.service.models import Service
 
 PROFESSIONAL_AREAS = (
-    ('psycho','Psychologist','CRP'),
+    ('psycho', _('Psychologist') ,'CRP'),
     )  
 
 @permission_required('professional.professional_list', '/')

@@ -74,7 +74,7 @@ def index(request):
                                     'EmailTypes': EmailType.objects.all(),
                                     'IMNetworks': IMNetwork.objects.all(),
                                     'States': State.objects.all(),
-                                    'organizations': Organization.objects.filter(organization=org, visible=True)
+                                    'organizations': Organization.objects.filter(organization=org, active=True, visible=True)
                                     },
                                     context_instance=RequestContext(request)
                                     )
@@ -138,7 +138,7 @@ def form(request, object_type='', object_id=''):
                                     'PhoneTypes': PhoneType.objects.all(), 
                                     'EmailTypes': EmailType.objects.all(), 
                                     'IMNetworks': IMNetwork.objects.all(),
-                                    'organizations': Organization.objects.filter(organization=org),
+                                    'organizations': Organization.objects.all(active=True, visible=True),#Organization.objects.filter(organization=org),
                                     'emails': emails,
                                     'websites': sites,
                                     'ims': instantMessengers,
@@ -215,7 +215,7 @@ def address_book_get_professionals(request):
     org = user.get_profile().org_active
     lista = []
     
-    for x in Organization.objects.filter(organization=None, public=True, visible=True):
+    for x in Organization.objects.filter(organization=None, active=True, visible=True):
         phone = x.get_first_phone()
         email = x.get_first_email()
         for y in CareProfessional.objects.filter(person__organization=x):
@@ -238,7 +238,7 @@ def address_book_get_organizations(request):
     org = user.get_profile().org_active
     lista = []
     
-    for x in Organization.objects.filter(organization=None, public=True, visible=True):
+    for x in Organization.objects.filter(organization=None, active=True, visible=True):
         phone = x.get_first_phone()
         email = x.get_first_email()
         lista.append([x.id, x.name, email, phone, '1', 'GESTORPSI'])

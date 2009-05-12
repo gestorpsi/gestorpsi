@@ -88,5 +88,4 @@ def get_cities(request, state_id):
 
     array = simplejson.dumps(array, encoding = 'iso8859-1')
     
-    #return HttpResponse(array, mimetype='application/json')
-    return HttpResponse(array)
+    return HttpResponse(array, mimetype='application/json')

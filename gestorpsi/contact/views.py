@@ -138,7 +138,7 @@ def form(request, object_type='', object_id=''):
                                     'PhoneTypes': PhoneType.objects.all(), 
                                     'EmailTypes': EmailType.objects.all(), 
                                     'IMNetworks': IMNetwork.objects.all(),
-                                    'organizations': Organization.objects.all(active=True, visible=True),#Organization.objects.filter(organization=org),
+                                    'organizations': Organization.objects.filter(active=True, visible=True),#Organization.objects.filter(organization=org),
                                     'emails': emails,
                                     'websites': sites,
                                     'ims': instantMessengers,

@@ -28,19 +28,21 @@ from django.utils import simplejson
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.person.views import person_json_list
 
+@permission_required_with_403('users.users_list')
 def index(request):
     return render_to_response('users/users_index.html',
                                  context_instance=RequestContext(request))    
 
-#@permission_required_with_403('user.user_list')
+@permission_required_with_403('users.users_list')
 def list(request, page = 1):
     user = request.user
     object = Profile.objects.filter(org_active = user.get_profile().org_active).order_by('user__username')
     
-    #return HttpResponse(simplejson.dumps(person_json_list(request, object, 'user.user_read', page)),
-                            #mimetype='application/json')
-    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'user.user_read', page)))
+    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'users.users_read', page)),
+                            mimetype='application/json')
 
+
+@permission_required_with_403('users.users_write')
 def form(request, object_id):
     profile = get_object_or_404(Profile, person=object_id)
     groups = [False, False, False, False]   # Template Permission Order: Admin, Psycho, Secretary and Client
@@ -55,6 +57,7 @@ def form(request, object_id):
                                 'groups': groups, },
                                 context_instance=RequestContext(request))
 
+@permission_required_with_403('users.users_read')
 def form_new_user(request, object_id):
     profile = Profile()
     profile.person = get_object_or_404(Person, pk=object_id)
@@ -64,6 +67,7 @@ def form_new_user(request, object_id):
                                 'emails': profile.person.emails.all(), },
                                 context_instance=RequestContext(request))
 
+@permission_required_with_403('users.users_write')
 def create_user(request, object_id):
     person = get_object_or_404(Person, pk=object_id)
     organization = request.user.get_profile().org_active
@@ -94,6 +98,7 @@ def create_user(request, object_id):
         
     return HttpResponse('')
 
+@permission_required_with_403('users.users_write')
 def update_user(request, object_id):
     """ To be implemented """
     person = get_object_or_404(Person, pk=object_id)

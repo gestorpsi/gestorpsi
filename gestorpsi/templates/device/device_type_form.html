@@ -38,11 +38,12 @@ GNU General Public License for more details.
 	
 		<fieldset id="fieldset_device">
 		<legend>{% trans "Name" %}</legend>
-			<label>{% trans "Select Device Type or" %} <a class="form_mini" display="device_mini">{% trans "add a new one" %}</a><br />
+			<label>{% trans "Editing Device Type" %}<br />
 			  <input class="big tabtitle" type="text" value="{{ object.description }}" id="label" name="label" >
 			</label>
 		</fieldset>	
         </div>	
+        <br />
 </div>
 
 <div id="sidebar" class="sidebar">
@@ -55,4 +56,4 @@ GNU General Public License for more details.
 </div>
 </form>
 
-{% include "tags/device_mini.html" %}
+

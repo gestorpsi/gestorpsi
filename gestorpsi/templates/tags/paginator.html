@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
+{% comment %}
 
-"""
 Copyright (C) 2008 GestorPsi
 
 This program is free software; you can redistribute it and/or
@@ -12,15 +11,16 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-"""
 
-from django.conf.urls.defaults import *
-from gestorpsi.careprofessional.views import index, form, list
-from gestorpsi.authentication.views import login_check
+{% endcomment %}
 
-urlpatterns = patterns('',
-    (r'^$', login_check(index)),
-    (r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
-    (r'^add/$', login_check(form)),
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form)),    
-)
+{% load i18n %}
+
+<ul class="paginator" actual_page="1">
+        <li class="previous"><a class="hidden"><< {% trans "Previous" %}</a></li>
+        <li class="page_range"></li>
+        <li class="next"><a class="hidden">{% trans "Next" %} >></a></li>
+</ul>
+
+
+

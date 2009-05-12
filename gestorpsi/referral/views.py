@@ -22,16 +22,16 @@ from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.referral.models import Referral
 from gestorpsi.referral.forms import ReferralForm
+from gestorpsi.util.decorators import permission_required_with_403
 
+@permission_required_with_403('referral.referral_list')
 def client_referrals(request, object_id = None):
     object = get_object_or_404(Client, pk=object_id)
-    print object.id
     referral = Referral.objects.filter(client=object)
     array = {} #json
     i = 0
     
     for o in referral:
-        print "AEEEEEEEEE"
         array[i] = {
             'id': o.id,
             'service': o.service.name,
@@ -51,6 +51,7 @@ def client_referrals(request, object_id = None):
 
 
 """ *** TODO: manage multiples referrals """
+@permission_required_with_403('referral.referral_write')
 def save(request, object_id = None):
     if request.method == 'POST':
         form = ReferralForm(request.POST)

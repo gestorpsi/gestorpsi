@@ -14,13 +14,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import operator
+from django.utils import simplejson
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.conf import settings
 from django.template.defaultfilters import slugify
-from django.contrib.auth.decorators import permission_required
 from gestorpsi.organization.models import Organization
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
@@ -30,9 +31,10 @@ from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.address.views import address_save
 from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
-import operator
+from gestorpsi.util.decorators import permission_required_with_403
 
-def list_order(dictionary):
+@permission_required_with_403('contact.contact_list')
+def list_order(request, dictionary):
     lista = []
     nl = []
     
@@ -44,29 +46,12 @@ def list_order(dictionary):
     
     return nl
 
-@permission_required('contacts.contacts_list', '/')
+@permission_required_with_403('contact.contact_list')
 def index(request):
     user = request.user
     org = user.get_profile().org_active
     
-    lista = [] # ID, Name, Email, Phone, 1(ORG)/2(PROF), 1(GESTORPSI)/2(LOCAL)
-    organizations_count = len(address_book_get_organizations(request))
-    professionals_count = len(address_book_get_professionals(request))
-    
-    for i in address_book_get_organizations(request): # append organizations
-        lista.append(i)
-    for i in address_book_get_professionals(request): # append professionals
-        lista.append(i)
-
-    lista = list_order(lista)
-    paginator = Paginator(lista, settings.PAGE_RESULTS)
-    lista = paginator.page(1)
-
     return render_to_response('contact/contact_index.html', { 
-                                    'object': lista,
-                                    'paginator': paginator,
-                                    'organizations_count': organizations_count,
-                                    'professionals_count': professionals_count,
                                     'countries': Country.objects.all(),
                                     'States': State.objects.all(),
                                     'AddressTypes': AddressType.objects.all(),
@@ -80,7 +65,7 @@ def index(request):
                                     )
 
 
-@permission_required('contacts.contacts_list', '/')
+@permission_required_with_403('contact.contact_list')
 def list(request, page = 1):
     user = request.user
     org = user.get_profile().org_active
@@ -94,21 +79,48 @@ def list(request, page = 1):
     for i in address_book_get_professionals(request): # append professionals
         lista.append(i)
 
-    lista = list_order(lista)
+    lista = list_order(request, lista)
+    print lista
+    object_length = len(lista)
     paginator = Paginator(lista, settings.PAGE_RESULTS)
-    lista = paginator.page(page)
-
-    return render_to_response('contact/contact_list.html', {
-                                    'object': lista,
-                                    'paginator': paginator,
-                                    'organizations_count': organizations_count,
-                                    'professionals_count': professionals_count,
-                                    },
-                                    context_instance=RequestContext(request)
-                                    )
+    object = paginator.page(page)
 
 
-@permission_required('contacts.contacts_read', '/')
+    array = {} #json
+    i = 0
+
+    array['util'] = {
+        'has_perm_read': user.has_perm('contact.contact_read'),
+        'paginator_has_previous': object.has_previous().real,
+        'paginator_has_next': object.has_next().real,
+        'paginator_previous_page_number': object.previous_page_number().real,
+        'paginator_next_page_number': object.next_page_number().real,
+        'paginator_actual_page': object.number,
+        'paginator_num_pages': paginator.num_pages,
+        'object_length': object_length,
+        'professionals_length': professionals_count,
+        'organizations_length': organizations_count,
+    }
+
+    
+    array['paginator'] = {}
+    for p in paginator.page_range:
+        array['paginator'][p] = p
+    
+    for o in object.object_list:
+        array[i] = {
+            'id': o[0],
+            'name': o[1],
+            'type': o[4],
+        }
+        i = i + 1
+
+    #return HttpResponse(simplejson.dumps(array), mimetype='application/json')
+    return HttpResponse(simplejson.dumps(array))
+
+
+
+@permission_required_with_403('contact.contact_read')
 def form(request, object_type='', object_id=''):
     user = request.user
     org = user.get_profile().org_active
@@ -151,7 +163,7 @@ def form(request, object_type='', object_id=''):
                                      context_instance=RequestContext(request)
                                      )
 
-@permission_required('contacts.contacts_write', '/')
+@permission_required_with_403('contact.contact_write')
 def save(request, object_id=''):
     user = request.user
     if request.POST['type'] == 'organization':
@@ -207,12 +219,10 @@ def save(request, object_id=''):
         
         object.person = person
         object.save()
-    
 
-    # TYPE IS: 1=PERSONAL OR 2=ORGANIZATION	
-    # THE RETURN OF THE TEMPLATE WILL BE A JUST VARIABLES, FOR THIS IS NECESSARY THE CONCATENATION OF THE TWO ATTRIBUTES, object_id AND type
-    return HttpResponse("%s/%s" % (type, object.id))
+    return HttpResponse("%s" % (object.id))
 
+@permission_required_with_403('contact.contact_list')
 def address_book_get_professionals(request):
     user = request.user
     org = user.get_profile().org_active
@@ -236,6 +246,7 @@ def address_book_get_professionals(request):
 
     return lista
 
+@permission_required_with_403('contact.contact_list')
 def address_book_get_organizations(request):
     user = request.user
     org = user.get_profile().org_active
@@ -253,24 +264,3 @@ def address_book_get_organizations(request):
 
     return lista
 
-#def save(request, object_id=''):
-#    user = request.user
-#
-#    if request.POST['type'] == 'professional':
-#        try:
-#            object = get_object_or_404(CareProfessional, pk=object_id)
-#        except Http404:
-#            
-#            person = Person()
-#            object = CareProfessional()
-#            person.organization = user.get_profile().org_active
-#            person.name = request.POST['professional_name']
-#            person.nickname = request.POST['professional_name']
-#            person.save()
-#            object.person = person
-#            object.save()
-#            
-#    if request.POST['type'] == 'organization':
-#        print "fdsfds"
-#        
-#    return HttpResponse(request.POST['professional_name'])

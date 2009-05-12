@@ -20,48 +20,8 @@ from django.contrib.auth.decorators import permission_required
 from gestorpsi.psychologist.models import Psychologist
 from gestorpsi.careprofessional.views import care_professional_fill
 
-# *********************** THIS FUNCTION IS NECESSARY ???????
-def index(request):
-    """
-    This view function returns a list that contains all psychologists currently in the system.
-    @param request: this is a request sent by the browser.
-    @type request: a instance of the class C{HttpRequest} created by the framework Django
-    """
-    user = request.user
-    
-    return render_to_response('psychologist/psychologist_index.html', {'object': Psychologist.objects.filter(person__organization = user.get_profile().org_active.id, active = True)})
-    
-
-# *********************** THIS FUNCTION IS NECESSARY ???????
-def form(request, object_id=''):
-    """
-    This function view creates a psychologist form. If the object_id has a value, this form will be fill with psychologist information.
-    otherwise, a new form will be create
-    @param request: this is a request sent by the browser.
-    @type request: an instance of the class C{HttpRequest} created by the framework Django.
-    @param object_id: it is the I{id} of the psychologist that must be saved.
-    @type object_id: an instance of the built-in type C{int}. 
-    """
-    try:
-        phones = []
-        addresses = []
-        object = get_object_or_404(Psychologist, pk=object_id)
-        phones= object.person.phones.all()
-        addresses= object.person.address.all()               
-        person = Person.objects.filter(id=object.person_id)
-    except:
-        object = Psychologist()
-
-    return render_to_response('psychologist/psychologist_form.html', {
-                                    'object': object,
-                                    'phones': phones, 
-                                    'countries': Country.objects.all(), 
-                                    'PhoneTypes': PhoneType.objects.all(), 
-                                    'AddressTypes': AddressType.objects.all(), 
-                                    'States': State.objects.all(), })
-
 # Save or Update psychpsychologistologist object
-@permission_required('professional.professional_write', '/')
+@permission_required('careprofessional.careprofessional_write', '/')
 def save(request, object_id=''):    
 
     try:
@@ -74,7 +34,9 @@ def save(request, object_id=''):
 
     return HttpResponse(object.id)
 
-# delete (disable) a psychologist
+
+# disable a psychologist
+@permission_required('careprofessional.careprofessional_write', '/')
 def delete(request, object_id):
     """
     This function view search for a psychologist which has the id equals to the C{int} (I{psychologist_id})
@@ -87,4 +49,4 @@ def delete(request, object_id):
     object = get_object_or_404(Psychologist, pk=object_id)
     object.active = False
     object.save()    
-    return render_to_response('psychologist/psychologist_index.html', {'object': Psychologist.objects.all().filter(active = True)})
+    return HttpResponse()

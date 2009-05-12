@@ -16,17 +16,17 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<div class="no_registers_available"{% if object %} style="display:none"{% endif %}>
+<div class="no_registers_available" style="display:none">
         <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/device/" class="fastmenu notajax" sub_menu="sub_devices" display="form">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
 </div>
-<div class="registers_available"{% if not object %} style="display:none"{% endif %}>
+<div class="registers_available">
 
         <div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
         Esta caixa é mostrada quando há mensagens
         </div>
         
         <h2 class="title_device">{% trans "All types" %}</h2>
-        <p class="description">{% trans "Displaying" %} <a href="/device/type/" display="list"><span id="object_length">{{ object|length }}</span> {% trans "device(s)" %}</a>.</p>
+        <p class="description">{% trans "Displaying" %} <a href="/device/type/" display="list"><span id="object_length"></span> {% trans "device(s)" %}</a>. {% trans "Page" %} <b></b> {% trans "of" %} <b></b></p>
 
         <div class="main_area contact">
                 <table id="search_results" class="zebra newtab devices" border="0" cellspacing="0" cellpadding="0">
@@ -38,26 +38,12 @@ GNU General Public License for more details.
                 </thead>
 
                 <tbody>               
-                {% for o in object %}
-                <tr>
-				  <td>
-                    {% if perms.device.device_read %}
-                        <a href="/device/{{ dev_det.id }}" title="{{ dev_det }}">{{ dev_det.brand }}</a>
-                    {% else %}
-                        {{ dev_det.brand }}
-                    {% endif %}
-
-                    {% if perms.device.device_read %}
-                        <a href="/device/type/{{ o.id }}/" title="{{ o.description }}">{{ o.description }} </a>
-                    {% else %}
-                        {{ o.description }}
-                    {% endif %}
- 				  </td>
-               </tr>
-               {% endfor %}
-
+                <script>
+                    updateDeviceType('/device/type/page1');
+                </script>
                 </tbody>
                 </table>
+                {% include "tags/paginator.html" %}
         </div>
 </div>
 

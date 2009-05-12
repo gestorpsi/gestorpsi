@@ -40,6 +40,7 @@ GNU General Public License for more details.
 	<script type="text/javascript" src="/media/js/gestorpsi.dates.js"></script>
 	<script type="text/javascript" src="/media/js/gestorpsi.schedule.js"></script>
 	<script type="text/javascript" src="/media/js/gestorpsi.client.js"></script>
+	<script type="text/javascript" src="/media/js/gestorpsi.json.js"></script>
 {% endif %}
 
 <style type="text/css" media="all">
@@ -183,6 +184,12 @@ GNU General Public License for more details.
 			<li><a display="form" class="fastmenu" href="/device/">{% trans "add" %}</a></li>
 			<li><a display="list_type" class="fastmenu" href="/device/type/">{% trans "type" %}</a></li>
             <!-- <li><a>{% trans "search" %}</a></li> -->
+		</ul>
+
+		<!--users-->		
+		<ul id="sub_users" style="display:none">
+			<li><a display="list" class="first active fastmenu" href="/users/">{% trans "all" %}</a></li>
+            <!-- <li><a display="form" class="fastmenu" href="/users/">{% trans "add" %}</a></li> -->
 		</ul>
 		
 		<ul class="opened_tabs" style="display:none;">

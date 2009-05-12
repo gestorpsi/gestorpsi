@@ -14,43 +14,6 @@ GNU General Public License for more details.
 
 */
 
-/** 
-* client referral list
-*/
-
-function updateReferral(url) {
-    $.getJSON(url, function(json) {
-        // flush list
-        $('div#client_referral_list div.client_referral_list table tbody').html('');
-        var tableTR = '';
-
-        jQuery.each(json,  function(){
-            var str_professional = ''; 
-            var str_professional_inline = ''; 
-            var str_service = '';
-
-            str_professional_inline = personInLine(this.professional);
-
-            /**
-            * populate events view
-            */
-
-            tableTR = tableTR + '<tr><td class="title">' + this.service + '<br>' + str_professional_inline + '</td></tr>';
-        });
-
-        if(tableTR == '') {
-            $('div#edit_form .client_referral_list div.msg_area').show();
-        }
-        $('div.client_referral_list table tbody').html(tableTR);
-        
-        $('table.zebra tr:odd').addClass('zebra_0');
-        $('table.zebra tr:even').addClass('zebra_1');
-
-    });  
-
-    return false;
-}
-
 /**
  * referral:
  * bind referral 

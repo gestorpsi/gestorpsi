@@ -13,6 +13,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from django.core.paginator import Paginator
+from django.conf import settings
 from gestorpsi.address.models import City
 from gestorpsi.address.views import address_save
 from gestorpsi.document.views import document_save
@@ -107,3 +109,44 @@ def person_type_url(person):
         return "/employee/%s/" % x.id
     except:
         pass
+
+def person_json_list(request, object, perm, page):
+    object_length = len(object)
+    paginator = Paginator(object, settings.PAGE_RESULTS)
+    object = paginator.page(page)
+
+    array = {} #json
+    i = 0
+
+    array['util'] = {
+        'has_perm_read': request.user.has_perm(perm),
+        'paginator_has_previous': object.has_previous().real,
+        'paginator_has_next': object.has_next().real,
+        'paginator_previous_page_number': object.previous_page_number().real,
+        'paginator_next_page_number': object.next_page_number().real,
+        'paginator_actual_page': object.number,
+        'paginator_num_pages': paginator.num_pages,
+        'object_length': object_length,
+    }
+
+    
+    array['paginator'] = {}
+    for p in paginator.page_range:
+        array['paginator'][p] = p
+    
+    for c in object.object_list:
+        try:
+            username = c.user.username
+        except:
+            username = ''
+        array[i] = {
+            'id': c.id,
+            'person_id': c.person.id,
+            'name': c.person.name,
+            'phone': u'%s' % c.person.get_first_phone(),
+            'email': u'%s' % c.person.get_first_email(),
+            'username': username,
+        }
+        i = i + 1
+
+    return array

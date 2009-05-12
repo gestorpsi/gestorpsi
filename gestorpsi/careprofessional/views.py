@@ -28,16 +28,19 @@ from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.place.models import Place, PlaceType
 from gestorpsi.person.views import person_save
 from gestorpsi.service.models import Service
+from gestorpsi.util.decorators import permission_required_with_403
+from django.http import HttpResponse
+from django.utils import simplejson
+from gestorpsi.person.views import person_json_list
 
 PROFESSIONAL_AREAS = (
     ('psycho', _('Psychologist') ,'CRP'),
     )  
 
-@permission_required('professional.professional_list', '/')
+@permission_required('careprofessional.careprofessional_list', '/')
 def index(request):
     user = request.user
     return render_to_response('careprofessional/careprofessional_index.html', {
-                                    'object': CareProfessional.objects.filter(person__organization = user.get_profile().org_active.id).order_by('person__name'),
                                     'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
                                     'licenceBoardTypes': LicenceBoard.objects.all(),
                                     'AgreementTypes': Agreement.objects.all(),
@@ -58,7 +61,15 @@ def index(request):
                               )
   
 
-@permission_required('professional.professional_read', '/')
+@permission_required_with_403('careprofessional.careprofessional_list')
+def list(request, page = 1):
+    user = request.user
+    object = CareProfessional.objects.filter(person__organization = user.get_profile().org_active.id).order_by('person__name')
+    
+    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'professional.professional_list', page)),
+                            mimetype='application/json')
+
+@permission_required('careprofessional.careprofessional_read', '/')
 def form(request, object_id=''):
     user = request.user
     phones = []
@@ -113,6 +124,8 @@ def form(request, object_id=''):
                               context_instance=RequestContext(request)
                               )
 
+
+@permission_required('careprofessional.careprofessional_read', '/')
 def care_professional_fill(request, object):
     """
     This view function returns the informations about CareProfessional 
@@ -139,7 +152,7 @@ def care_professional_fill(request, object):
             object.prof_services.add(ps)
 
     profile.initialProfessionalActivities = request.POST[ 'professional_initialActivitiesDate' ]
-    profile.availableTime = request.POST['professional_availableTime']
+    #profile.availableTime = request.POST['professional_availableTime']
     profile.save()
 
     if ( len( request.POST.getlist( 'professional_agreement' ) ) ):

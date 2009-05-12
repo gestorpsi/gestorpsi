@@ -14,16 +14,19 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.decorators import permission_required
 from django.template import RequestContext
 from gestorpsi.service.models import Service, Area, ServiceType, Modality, AreaClinic
 from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure
-from gestorpsi.careprofessional.models import CareProfessional, Profession 
+from gestorpsi.careprofessional.models import CareProfessional, Profession
+from django.utils import simplejson
+from gestorpsi.util.decorators import permission_required_with_403
+from django.core.paginator import Paginator
 
-@permission_required('service.service_list', '/')
+@permission_required_with_403('service.service_list')
 def index(request):
     """
     Returns a list that contains all the currently existing services.
@@ -33,7 +36,6 @@ def index(request):
     user = request.user
     
     return render_to_response( "service/service_index.html", {
-        'object':Service.objects.filter( active=True, organization=user.get_profile().org_active ),
         'Agreements': Agreement.objects.all(),
         'CareProfessionals': CareProfessional.objects.filter(person__organization=user.get_profile().org_active),
         'AgeGroups': AgeGroup.objects.all(),
@@ -45,7 +47,45 @@ def index(request):
         'Professions': Profession.objects.all(),},
         context_instance=RequestContext(request))
 
-@permission_required('service.service_read', '/')
+@permission_required_with_403('service.service_list')
+def list(request, page = 1):
+    user = request.user
+    object = Service.objects.filter( active=True, organization=user.get_profile().org_active )
+    
+    object_length = len(object)
+    paginator = Paginator(object, settings.PAGE_RESULTS)
+    object = paginator.page(page)
+
+    array = {} #json
+    i = 0
+
+    array['util'] = {
+        'has_perm_read': user.has_perm('service.service_read'),
+        'paginator_has_previous': object.has_previous().real,
+        'paginator_has_next': object.has_next().real,
+        'paginator_previous_page_number': object.previous_page_number().real,
+        'paginator_next_page_number': object.next_page_number().real,
+        'paginator_actual_page': object.number,
+        'paginator_num_pages': paginator.num_pages,
+        'object_length': object_length,
+    }
+
+    array['paginator'] = {}
+    for p in paginator.page_range:
+        array['paginator'][p] = p
+    
+    for o in object.object_list:
+        array[i] = {
+            'id': o.id,
+            'name': u'%s' % o.name,
+            'description': u'%s' % o.description,
+            'email': '',
+        }
+        i = i + 1
+
+    return HttpResponse(simplejson.dumps(array), mimetype='application/json')
+
+@permission_required_with_403('service.service_read')
 def form(request, object_id=''):
     """
     This function view uses I{forms} to show the information related to the
@@ -73,6 +113,7 @@ def form(request, object_id=''):
         'Professions': Profession.objects.all(),},
         context_instance=RequestContext(request) )
 
+@permission_required_with_403('service.service_write')
 def save_clinic(request, object):
     ac = AreaClinic()
     ac.save()
@@ -88,7 +129,7 @@ def save_clinic(request, object):
 #    do a lot of things here
 #    return the 'object' saved
 
-@permission_required('service.service_write', '/')
+@permission_required_with_403('service.service_write')
 def save(request, object_id = ''):
     """
     This function view searches for the C{Service} with id equals to I{object_id}, if there is such a
@@ -164,6 +205,7 @@ def save(request, object_id = ''):
 
     return HttpResponse(object.id)
 
+@permission_required_with_403('service.service_write')
 def disable(request, object_id=''):
     """
     This function view searches for a C{Service} object which has the id equals to I{object_id}, if there is

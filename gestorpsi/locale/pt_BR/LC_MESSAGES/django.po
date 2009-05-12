@@ -383,7 +383,7 @@ msgstr "Profissional(is)"
 #: templates/service/service_list.html:29 templates/users/users_list.html:29
 #: templates/users/users_search.html:29
 msgid "Page"
-msgstr "Locais"
+msgstr "Página"
 
 #: templates/client/client_form.html:30
 msgid "Adding New Client"

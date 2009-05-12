@@ -80,15 +80,6 @@ function bindList() {
         
 		return false;
 	});
-	
-	
-	$("ul.paginator a").unbind().click(function(){
-		var link = $(this);
-		$("div#list").load(link.attr('href'));
-		$('div#list').show();
-		return false;
-	});
-
 
 
 /**
@@ -248,10 +239,94 @@ function bindList() {
 
 }
 
+/**
+ * build paginator from JSON data
+ */
+
+function buildPaginator(app, json_paginator, json_util, selector) { 
+    
+        if(!selector)
+            selector = 'div#list';
+
+        var page_range = '';
+
+        jQuery.each(json_paginator,  function(){
+            if(this != json_util['paginator_actual_page']) 
+                page_range += '<a href="/' + app + '/page'+ this +'">';
+            page_range += this;
+            if(this != json_util['paginator_actual_page']) 
+                page_range += '</a>';
+            page_range += ' | ';
+        });
+
+        $(selector + ' ul.paginator li.page_range').html(page_range.substr(0, (page_range.length-2)));
+
+        $(selector + ' ul.paginator').attr('actual_page', json_util['paginator_actual_page']);
+
+        $(selector + ' ul.paginator li.previous a').hide();
+        $(selector + ' ul.paginator li.next a').hide();
+        
+        if(json_util['paginator_has_previous']) {
+            $(selector + ' ul.paginator li.previous a').attr('href','/' + app + '/page' + json_util['paginator_previous_page_number']);
+            $(selector + ' ul.paginator li.previous a').show();
+        }
+
+        if(json_util['paginator_has_next']) {
+            $(selector + ' ul.paginator li.next a').attr('href','/' + app + '/page' + json_util['paginator_next_page_number']);
+            $(selector + ' ul.paginator li.next a').show();
+        }
+        
+        $(selector + ' div.registers_available p.description b:first').text(json_util['paginator_actual_page']);
+        $(selector + ' div.registers_available p.description b:last').text(json_util['paginator_num_pages']);
+        $(selector + ' div.registers_available p.description span#object_length').text(json_util['object_length']);
+        
+}
 
 
+/**
+ * build itens list from JSON data
+ */
 
-	
+function buildTableList(tableTR, selector, has_perm_read) {
+    
+    if(!selector)
+        selector = 'div#list';
+
+    /**
+     * flush old list
+     */
+    
+    $(selector + ' table#search_results tbody').html('');
+
+    /**
+     * display table if results or show 'no register available' dialog box
+     */
+
+    if(tableTR == '') {
+        $(selector + ' div.no_registers_available').show();
+        $(selector + ' div.registers_available').hide();
+    } else {
+        $(selector + ' div.no_registers_available').hide();
+        $(selector + ' div.registers_available').show();
+    }
+
+    /**
+     * populate table
+     */
+    $(selector + ' table#search_results tbody').html(tableTR);
+    
+    /**
+     * remove links if dont have perms
+     */
+
+    if(has_perm_read != true) {
+        $(selector + ' table#search_results tbody a').each(function() {
+            $(this).parent('td').text($(this).text());
+            $(this).remove();
+        }); 
+    }   
+
+}
 
 
 

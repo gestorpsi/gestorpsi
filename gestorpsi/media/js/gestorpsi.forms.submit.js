@@ -3,27 +3,118 @@ function bindAjaxForms() {
 
      /**
       *
-      * people post form
+      * client post form
       *
       * _description:
-      * validate and post people (person) form.
+      * validate and post client form.
       *
       */
 
-     $('.form_people').each(function() {
+     $('form.form_client').each(function() {
           $(this).validate({event:"submit",
-          rules: {
-               name: {
-                      required: true
-               }
-          },
-          messages: {
-              name: 'Preenchimento Necessário'
-          },
-          submitHandler: function(form) {
-               $(form).ajaxSubmit(form_options);
+              rules: {
+                   name: {
+                          required: true
+                   }
+              },
+              messages: {
+                  name: 'Preenchimento Necessário'
+              },
+              submitHandler: function(form) {
+                   $(form).ajaxSubmit(form_client_options);
 
-          }
+              }
+          });
+     });
+
+     /**
+      *
+      * user post form
+      *
+      * _description:
+      * validate and post user form.
+      *
+      */
+
+     $('form.form_user').each(function() {
+          $(this).validate({event:"submit",
+              rules: {
+                   name: {
+                          required: true
+                   }
+              },
+              messages: {
+                  name: 'Preenchimento Necessário'
+              },
+              submitHandler: function(form) {
+                    $(form).ajaxSubmit(form_user_options);
+              }
+          });
+     });
+     
+     /**
+      *
+      * professional post form
+      */
+
+     $('form.form_careprofessional').each(function() {
+          $(this).validate({event:"submit",
+              rules: {
+                   name: {
+                          required: true
+                   }
+              },
+              messages: {
+                  name: 'Preenchimento Necessário'
+              },
+              submitHandler: function(form) {
+                   $(form).ajaxSubmit(form_professional_options);
+
+              }
+          });
+     });
+     
+     /**
+      *
+      * employee post form
+      */
+
+     $('form.form_employee').each(function() {
+          $(this).validate({event:"submit",
+              rules: {
+                   name: {
+                          required: true
+                   }
+              },
+              messages: {
+                  name: 'Preenchimento Necessário'
+              },
+              submitHandler: function(form) {
+                   $(form).ajaxSubmit(form_employee_options);
+
+              }
+          });
+     });
+     
+     /**
+      *
+      * contact post form
+      */
+
+     $('form.form_contact').each(function() {
+          $(this).validate({event:"submit",
+              rules: {
+                   name: {
+                          required: true
+                   }
+              },
+              messages: {
+                  name: 'Preenchimento Necessário'
+              },
+              submitHandler: function(form) {
+                   $(form).ajaxSubmit(form_contact_options);
+
+              }
           });
      });
 
@@ -58,7 +149,7 @@ function bindAjaxForms() {
           //},
           submitHandler: function(form) {
                //$(form).ajaxSubmit(form_schedule_options);
-               $(form).ajaxSubmit(form_options);
+               $(form).ajaxSubmit(form_schedule_options);
             }
           });
      });
@@ -69,12 +160,12 @@ function bindAjaxForms() {
 
      $('form.schedule_occurrence').each(function() {
           $(this).validate({event:"submit",
-          rules: {
-               room: { required: true }
-          },
-          submitHandler: function(form) {
-               $(form).ajaxSubmit(form_schedule_occurrence_options);
-            }
+              rules: {
+                   room: { required: true }
+              },
+              submitHandler: function(form) {
+                   $(form).ajaxSubmit(form_schedule_occurrence_options);
+                }
           });
      });
 
@@ -84,12 +175,12 @@ function bindAjaxForms() {
 
      $('form.client_referral').each(function() {
           $(this).validate({event:"submit",
-          rules: {
-               service: { required: true },
-          },
-          submitHandler: function(form) {
-               $(form).ajaxSubmit(form_client_referral_options);
-            }
+              rules: {
+                   service: { required: true },
+              },
+              submitHandler: function(form) {
+                   $(form).ajaxSubmit(form_client_referral_options);
+                }
           });
      });
 
@@ -105,18 +196,18 @@ function bindAjaxForms() {
 
      $('.form_place').each(function() {
           $(this).validate({event:"submit",
-           rules: {
-                label: {
-                        required: true
-                }
-           },
-           messages: {
-                name: 'Preenchimento Necessário'
-           },
-           submitHandler: function(form) {
-                $(form).ajaxSubmit(form_options);
-
-           }
+               rules: {
+                    label: {
+                            required: true
+                    }
+               },
+               messages: {
+                    name: 'Preenchimento Necessário'
+               },
+               submitHandler: function(form) {
+                    $(form).ajaxSubmit(form_place_options);
+                    
+               }
           });
       });
 
@@ -132,18 +223,18 @@ function bindAjaxForms() {
 
      $('.form_service').each(function() {
           $(this).validate({event:"submit",
-          rules: {
-              service_name: {
-                      required: true
-              }
-          },
-          messages: {
-              service_name: 'Preenchimento Necessário'
-          },
-          submitHandler: function(form) {
-              $(form).ajaxSubmit(form_options);
+              rules: {
+                  service_name: {
+                          required: true
+                  }
+              },
+              messages: {
+                  service_name: 'Preenchimento Necessário'
+              },
+              submitHandler: function(form) {
+                  $(form).ajaxSubmit(form_service_options);
 
-          }
+              }
           });
      });
      
@@ -158,18 +249,18 @@ function bindAjaxForms() {
 
      $('.form_type_device').each(function() {
           $(this).validate({event:"submit",
-          rules: {
-            label: {
-                    required: true
-            }
-          },
-          messages: {
-            label: 'Preenchimento Necessário'
-          },
-          submitHandler: function(form) {
-            $(form).ajaxSubmit(form_options);
+              rules: {
+                label: {
+                        required: true
+                }
+              },
+              messages: {
+                label: 'Preenchimento Necessário'
+              },
+              submitHandler: function(form) {
+                $(form).ajaxSubmit(form_device_type_options);
 
-          }
+              }
           });
      });
 
@@ -185,18 +276,18 @@ function bindAjaxForms() {
 
      $('.form_device').each(function() {
           $(this).validate({event:"submit",
-          rules: {
-            brand: {
-                    required: true
-            }
-          },
-          messages: {
-            brand: 'Preenchimento Necessário'
-          },
-          submitHandler: function(form) {
-            $(form).ajaxSubmit(form_options);
+              rules: {
+                brand: {
+                        required: true
+                }
+              },
+              messages: {
+                brand: 'Preenchimento Necessário'
+              },
+              submitHandler: function(form) {
+                $(form).ajaxSubmit(form_device_options);
 
-          }
+              }
           });
      });
 
@@ -210,19 +301,19 @@ function bindAjaxForms() {
      */
 
      $('#form_organization').each(function() {
-          $(this).validate({event:"submit",
-          rules: {
-            name: {
-                    required: true
-            }
-          },
-          messages: {
-            name: 'Preenchimento Necessário'
-          },
-          submitHandler: function(form) {
-            $(form).ajaxSubmit(form_organization_options);
+              $(this).validate({event:"submit",
+              rules: {
+                name: {
+                        required: true
+                }
+              },
+              messages: {
+                name: 'Preenchimento Necessário'
+              },
+              submitHandler: function(form) {
+                $(form).ajaxSubmit(form_organization_options);
 
-          }
+              }
           });
      });
 
@@ -288,14 +379,14 @@ function bindAjaxForms() {
 
      $('form.user').each(function() {
           $(this).validate({event:"submit",
-          rules: {
-               username: { required: true },
-               password: { required: true },
-               pwd_conf: { required: true }
-          },
-          submitHandler: function(form) {
-               $(form).ajaxSubmit(form_schedule_options);
-            }
+              rules: {
+                   username: { required: true },
+                   password: { required: true },
+                   pwd_conf: { required: true }
+              },
+              submitHandler: function(form) {
+                   $(form).ajaxSubmit(form_schedule_options);
+                }
           });
      });
 }

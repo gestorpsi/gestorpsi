@@ -17,7 +17,6 @@ GNU General Public License for more details.
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.contrib.auth.decorators import permission_required
 from gestorpsi.employee.models import Employee
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.phone.models import PhoneType
@@ -25,8 +24,11 @@ from gestorpsi.address.models import Country, State, AddressType
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.person.views import person_save
+from django.utils import simplejson
+from gestorpsi.util.decorators import permission_required_with_403
+from gestorpsi.person.views import person_json_list
 
-@permission_required('employee.employee_list', '/')
+@permission_required_with_403('employee.employee_list')
 def index(request):
     """
     This view function returns a list that contains all employees currently in the system.
@@ -49,7 +51,15 @@ def index(request):
                               context_instance=RequestContext(request)
                               )
 
-@permission_required('employee.employee_read', '/')
+@permission_required_with_403('employee.employee_list')
+def list(request, page = 1):
+    user = request.user
+    object = Employee.objects.filter(person__organization = user.get_profile().org_active.id, active=True).order_by('person__name')
+    
+    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'employee.employee_read', page)),
+                            mimetype='application/json')
+
+@permission_required_with_403('employee.employee_read')
 def form(request, object_id= ''):
     """
     This function view creates an employee form. If the object_id has a value, this form will be fill with employee information.
@@ -82,7 +92,7 @@ def form(request, object_id= ''):
                               context_instance=RequestContext(request)
                               )
 
-@permission_required('employee.employee_write', '/')
+@permission_required_with_403('employee.employee_write')
 def save(request, object_id= ''):
     """
     This function view saves an employees, its address and phones.
@@ -106,6 +116,7 @@ def save(request, object_id= ''):
 
     return HttpResponse(object.id)
 
+@permission_required_with_403('employee.employee_write')
 def delete(request, object_id):
     """
     This function view search for an employee which has the id equals to the C{int} (I{employee_id})

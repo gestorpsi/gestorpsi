@@ -23,6 +23,7 @@ from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 from gestorpsi.admission.models import *
 from gestorpsi.contact.views import *
 from gestorpsi.util.views import get_object_or_None, date_form_to_db
+from gestorpsi.util.decorators import permission_required_with_403
 
 ## !! moved to client views
 #def form(request, object_id=''):
@@ -40,12 +41,14 @@ from gestorpsi.util.views import get_object_or_None, date_form_to_db
         ##'IdRecord': get_object_or_404(IdRecordSeq, uid=object_id),
     #})
 
+@permission_required_with_403('admission.admission_read')
 def is_responsible(value):
     if (value == 'on'):
         return True
     else:
         return False
 
+@permission_required_with_403('admission.admission_write')
 def add_relationship(object, name_list, relation_list, responsible_list):
     responsible = ''
     object.person_link.all().delete()
@@ -57,6 +60,7 @@ def add_relationship(object, name_list, relation_list, responsible_list):
                 responsible = False
             object.person_link.add(PersonLink.objects.create(person=Person.objects.create(name=name_list[i]), relation=Relation.objects.get(pk=relation_list[i]), responsible=responsible))
 
+@permission_required_with_403('admission.admission_write')
 def save(request, object_id=''):
     object = get_object_or_404(Client, pk=object_id)
     object.admission_date = date_form_to_db(request.POST.get('admission_date'))

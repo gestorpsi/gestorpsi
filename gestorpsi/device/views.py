@@ -14,16 +14,19 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from django.conf import settings
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
-from django.contrib.auth.decorators import permission_required
 from django.template import RequestContext
+from django.core.paginator import Paginator
+from django.utils import simplejson
 from gestorpsi.device.models import DeviceDetails, Device
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 from gestorpsi.place.models import Place, Room
+from gestorpsi.util.decorators import permission_required_with_403
 
-@permission_required('device.device_list', '/')
+@permission_required_with_403('device.device_list')
 def index(request):
     """
     Returns details about all currently existing devices.
@@ -31,12 +34,91 @@ def index(request):
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
     """
     user = request.user
-    return render_to_response( "device/device_index.html", {'object': Device.objects.filter(organization=user.get_profile().org_active),
+    return render_to_response( "device/device_index.html", {
+                                                            'object': Device.objects.filter(organization=request.user.get_profile().org_active),
                                                             'places': Place.objects.filter(organization=user.get_profile().org_active), 
                                                             'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS },
                                                             context_instance=RequestContext(request))
 
-@permission_required('device.device_read', '/')
+
+@permission_required_with_403('device.device_list')
+def list(request, page = 1):
+    user = request.user
+    object = DeviceDetails.objects.filter(device__organization=request.user.get_profile().org_active)
+    
+    object_length = len(object)
+    paginator = Paginator(object, settings.PAGE_RESULTS)
+    object = paginator.page(page)
+
+    array = {} #json
+    i = 0
+
+    array['util'] = {
+        'has_perm_read': user.has_perm('device.device_read'),
+        'paginator_has_previous': object.has_previous().real,
+        'paginator_has_next': object.has_next().real,
+        'paginator_previous_page_number': object.previous_page_number().real,
+        'paginator_next_page_number': object.next_page_number().real,
+        'paginator_actual_page': object.number,
+        'paginator_num_pages': paginator.num_pages,
+        'object_length': object_length,
+    }
+
+    
+    array['paginator'] = {}
+    for p in paginator.page_range:
+        array['paginator'][p] = p
+    
+    for o in object.object_list:
+        array[i] = {
+            'id': o.id,
+            'name': o.brand,
+            'model': o.model,
+            'type': o.device.description,
+        }
+        i = i + 1
+
+    return HttpResponse(simplejson.dumps(array), mimetype='application/json')
+
+@permission_required_with_403('device.device_list')
+def list_types(request, page = 1):
+    user = request.user
+    object = Device.objects.filter(organization=user.get_profile().org_active)
+    
+    object_length = len(object)
+    paginator = Paginator(object, settings.PAGE_RESULTS)
+    object = paginator.page(page)
+
+    array = {} #json
+    i = 0
+
+    array['util'] = {
+        'has_perm_read': user.has_perm('device.device_read'),
+        'paginator_has_previous': object.has_previous().real,
+        'paginator_has_next': object.has_next().real,
+        'paginator_previous_page_number': object.previous_page_number().real,
+        'paginator_next_page_number': object.next_page_number().real,
+        'paginator_actual_page': object.number,
+        'paginator_num_pages': paginator.num_pages,
+        'object_length': object_length,
+    }
+
+    
+    array['paginator'] = {}
+    for p in paginator.page_range:
+        array['paginator'][p] = p
+    
+    for o in object.object_list:
+        array[i] = {
+            'id': o.id,
+            'name': o.description,
+        }
+        i = i + 1
+
+    return HttpResponse(simplejson.dumps(array), mimetype='application/json')
+
+
+@permission_required_with_403('device.device_read')
 def form(request, object_id= ''):
     user = request.user
     try:
@@ -49,42 +131,18 @@ def form(request, object_id= ''):
                                                           'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS },
                                                           context_instance=RequestContext(request))
 
-#def form(request, object_id= ''):
-#    """
-#    This function views creates some I{forms objects} based on the I{object_id} passed, these I{forms} are
-#    used to organize and easier the presentation of the information.
-#    @param request: this is a request sent by the browser.
-#    @type request: an instance of the class C{HttpRequest} created by the framework Django.
-#    @param object_id: the id of the C{DeviceDetails} instance which the information will be displayed.
-#    @type object_id: an instance of the built-in class c{int}.
-#    """
-#    try :
-#        object= get_object_or_404( DeviceDetails, pk= object_id )
-#        device= object.device
-#        device_type= object.device_type
-#    except ObjectDoesNotExist:
-#        object= DeviceDetails()
-#        object.device= Device(); device= object.device
-#        object.device_type= DeviceType(); device_type= object.device_type
-#    
-#
-#    device_categ= Device.objects.all()
-#    device_type= DeviceType.objects.all()
-#    list_of_dev_details= DeviceDetails.objects.all()
-#    
-#    return render_to_response('device/device_form.html', {'object': object, 'device': device, 'device_type': device_type, 
-#                                                          'dc': device_categ, 'dt': device_type,
-#                                                          'list_dvt': list_of_dev_details } )
 
-@permission_required('device.device_list', '/')
+@permission_required_with_403('device.device_list')
 def index_type(request):
-    return render_to_response( "device/device_type_list.html", {'object': Device.objects.filter(organization=user.get_profile().org_active), }, context_instance=RequestContext(request))
+    return render_to_response( "device/device_type_list.html", 
+        #{'object': Device.objects.filter(organization=user.get_profile().org_active), }, 
+        context_instance=RequestContext(request))
 
-@permission_required('device.device_read', '/')
+@permission_required_with_403('device.device_read')
 def form_type(request, object_id= ''):
     return render_to_response('device/device_type_form.html', {'object': get_object_or_404( Device, pk=object_id) }, context_instance=RequestContext(request) )
 
-@permission_required('device.device_write', '/')
+@permission_required_with_403('device.device_write')
 def save_device(request, object_id= ''):
     try:
         device= get_object_or_404( Device, pk=object_id)
@@ -97,7 +155,7 @@ def save_device(request, object_id= ''):
     device.save()
     return HttpResponse(device.id)
 
-@permission_required('device.device_write', '/')
+@permission_required_with_403('device.device_write')
 def save(request, object_id='' ):
     """
     This function view creates an instance of the class C{DeviceDetails} with id equals to I{object_id} and
@@ -119,7 +177,7 @@ def save(request, object_id='' ):
     device_details.model = request.POST.get('model')
     device_details.part_number = request.POST.get('part_number')
     device_details.comments = request.POST.get('comments')
-    device_details.lendable = get_visible(request.POST.get('lendable'))
+    device_details.lendable = get_visible(request, request.POST.get('lendable'))
     device_details.device = get_object_or_404(Device, pk=request.POST.get('select_device'))
     
     """ Device Durability """
@@ -139,24 +197,13 @@ def save(request, object_id='' ):
     device_details.save()
     return HttpResponse(device_details.id)
 
-def get_visible(value):
+@permission_required_with_403('device.device_read')
+def get_visible(request, value):
     if (value == 'on'):
         return True
     else:
         return False
      
+@permission_required_with_403('device.device_write')
 def delete(request, object_id= ''):
     pass
-#    """
-#    This function view deletes the C{DeviceDetails} which has the id equals to I{object_id}.
-#    @param request: this is a request sent by the browser.
-#    @type request: an instance of the class C{HttpRequest} created by the framework Django.
-#    @param object_id: the id of the C{DeviceDetails} instance to be deleted.
-#    @type object_id: an instance of the built-in class c{int}.
-#    """
-#    try:
-#        device_details= get_object_or_404( DeviceDetails, pk=object_id)
-#        device_details.delete()
-#    except Http404:
-#        pass
-#    return render_to_response('device/device_form.html', {'list_of_device_details': DeviceDetails.objects.all() })

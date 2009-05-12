@@ -14,22 +14,25 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext
-from django.contrib.auth.decorators import permission_required
+from django.core.paginator import Paginator
+from django.utils import simplejson
 from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, Room, RoomType, PlaceType
 from gestorpsi.address.models import Country, AddressType, State
 from gestorpsi.address.views import address_save
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.phone.views import phone_save
+from gestorpsi.util.decorators import permission_required_with_403
 
-@permission_required('place.place_list', '/')
+@permission_required_with_403('place.place_list')
 def index(request):
     user = request.user
-    return render_to_response( "place/place_index.html", {'object': Place.objects.filter(organization=user.get_profile().org_active.id),
+    return render_to_response( "place/place_index.html", {
                                                           'PlaceTypes': PlaceType.objects.all(),
                                                           'countries': Country.objects.all(),
                                                           'RoomTypes': RoomType.objects.all(),
@@ -39,7 +42,46 @@ def index(request):
                                                           },
                                                           context_instance=RequestContext(request))
 
-def room_list( ids, descriptions, dimensions, room_types, furniture_descriptions ):
+@permission_required_with_403('place.place_list')
+def list(request, page = 1):
+    user = request.user
+    object = Place.objects.filter(organization=user.get_profile().org_active.id)
+    
+    object_length = len(object)
+    paginator = Paginator(object, settings.PAGE_RESULTS)
+    object = paginator.page(page)
+
+    array = {} #json
+    i = 0
+
+    array['util'] = {
+        'has_perm_read': user.has_perm('place.place_read'),
+        'paginator_has_previous': object.has_previous().real,
+        'paginator_has_next': object.has_next().real,
+        'paginator_previous_page_number': object.previous_page_number().real,
+        'paginator_next_page_number': object.next_page_number().real,
+        'paginator_actual_page': object.number,
+        'paginator_num_pages': paginator.num_pages,
+        'object_length': object_length,
+    }
+
+    
+    array['paginator'] = {}
+    for p in paginator.page_range:
+        array['paginator'][p] = p
+    
+    for o in object.object_list:
+        array[i] = {
+            'id': o.id,
+            'name': o.label,
+            'phone': u'%s' % o.get_first_phone(),
+        }
+        i = i + 1
+
+    return HttpResponse(simplejson.dumps(array), mimetype='application/json')
+
+@permission_required_with_403('place.place_list')
+def room_list( request, ids, descriptions, dimensions, room_types, furniture_descriptions ):
     rooms= []
     for i in range(0, len(descriptions)):
         if ( len( descriptions[i]) ):
@@ -53,7 +95,7 @@ def room_list( ids, descriptions, dimensions, room_types, furniture_descriptions
                                furniture = furniture_descriptions[i]) )
     return rooms
 
-@permission_required('place.place_read', '/')
+@permission_required_with_403('place.place_read')
 def form(request, object_id=''):
     try:
         user = request.user
@@ -84,7 +126,7 @@ def form(request, object_id=''):
                                                         },
                                                         context_instance=RequestContext(request))
 
-@permission_required('place.place_write', '/')
+@permission_required_with_403('place.place_write')
 def save(request, object_id=''):
     user = request.user
     try:
@@ -93,7 +135,7 @@ def save(request, object_id=''):
         object = Place()
 
     try:
-        object.visible= get_visible( request.POST['visible'] )
+        object.visible= get_visible( request, request.POST['visible'] )
     except:
         object.visible = False
     object.label = request.POST['label']
@@ -101,7 +143,7 @@ def save(request, object_id=''):
     object.organization = user.get_profile().org_active    
     object.save() 
 
-    save_rooms( object, request.POST.getlist( 'room_id' ), request.POST.getlist('description'), request.POST.getlist('dimension'), request.POST.getlist('room_type'), request.POST.getlist('furniture') )
+    save_rooms( request, object, request.POST.getlist( 'room_id' ), request.POST.getlist('description'), request.POST.getlist('dimension'), request.POST.getlist('room_type'), request.POST.getlist('furniture') )
     phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
     address_save(object, request.POST.getlist('addressId'), request.POST.getlist('addressPrefix'),
                  request.POST.getlist('addressLine1'), request.POST.getlist('addressLine2'),
@@ -112,15 +154,16 @@ def save(request, object_id=''):
 
     return HttpResponse(object.id)
 
-def save_rooms(place, ids, descriptions, dimensions, room_types, furnitures):
+@permission_required_with_403('place.place_write')
+def save_rooms(request, place, ids, descriptions, dimensions, room_types, furnitures):
  #  place.room_set.all().delete() # If uncomment this line, all event of scheduled will be deleted when add a new room or modifi one of it.
-    for room in room_list( ids, descriptions, dimensions, room_types, furnitures ):
+    for room in room_list( request, ids, descriptions, dimensions, room_types, furnitures ):
         room.place = place
         room.save()
 
-#def save_rooms( place, ids, descriptions, dimensions, room_types, furnitures ):
+#def save_rooms( request, place, ids, descriptions, dimensions, room_types, furnitures ):
 #    for room in room_list( ids, descriptions, dimensions, room_types, furnitures ):
-#        result = is_equal( room )
+#        result = is_equal( request, room )
 #        if result == -1:
 #            room.place = place
 #            room.save()
@@ -132,7 +175,8 @@ def save_rooms(place, ids, descriptions, dimensions, room_types, furnitures):
 #            room_from_db.furnitures = room.furniture
 #            room_from_db.save() 
 
-def is_equal(a_room):
+@permission_required_with_403('place.place_read')
+def is_equal(request, a_room):
     try:
         room_loaded_from_db = Room.objects.get( pk= a_room.id )
     except:
@@ -143,7 +187,8 @@ def is_equal(a_room):
     else:
         return 1
 
-def get_visible( value ):
+@permission_required_with_403('place.place_read')
+def get_visible( request, value ):
     if ( value == 'on' ):
         return True
     else:

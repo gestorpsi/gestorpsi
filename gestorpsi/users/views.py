@@ -24,26 +24,22 @@ from django.contrib.auth.models import User, Group
 from registration.models import RegistrationProfile
 from gestorpsi.authentication.models import Profile
 from gestorpsi.person.models import Person
+from django.utils import simplejson
+from gestorpsi.util.decorators import permission_required_with_403
+from gestorpsi.person.views import person_json_list
 
 def index(request):
-    user = request.user
-    profiles = Profile.objects.filter(org_active = user.get_profile().org_active).order_by('user__username')
-    paginator = Paginator(profiles, settings.PAGE_RESULTS)
-    profiles = paginator.page(1)
-    return render_to_response('users/users_index.html', {
-                                 'object': profiles,
-                                 'paginator': paginator, },
+    return render_to_response('users/users_index.html',
                                  context_instance=RequestContext(request))    
 
-def list(request, page=1):
+#@permission_required_with_403('user.user_list')
+def list(request, page = 1):
     user = request.user
-    profiles = Profile.objects.filter(org_active = user.get_profile().org_active).order_by('user__username')
-    paginator = Paginator(profiles, settings.PAGE_RESULTS)
-    profiles = paginator.page(page)
-    return render_to_response('users/users_list.html', {
-                                 'object': profiles,
-                                 'paginator': paginator, },
-                                 context_instance=RequestContext(request))
+    object = Profile.objects.filter(org_active = user.get_profile().org_active).order_by('user__username')
+    
+    #return HttpResponse(simplejson.dumps(person_json_list(request, object, 'user.user_read', page)),
+                            #mimetype='application/json')
+    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'user.user_read', page)))
 
 def form(request, object_id):
     profile = get_object_or_404(Profile, person=object_id)

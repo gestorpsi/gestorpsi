@@ -15,11 +15,12 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.employee.views import index, form, save, delete
+from gestorpsi.employee.views import index, form, save, delete, list
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
     (r'^$', login_check(index)), # list objects
+    (r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
     (r'^add/$', login_check(form)), # new object form
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form)), # edit object form
     (r'^save/$', login_check(save)), # save new object

@@ -25,8 +25,10 @@ from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.address.views import address_save
 from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
+from gestorpsi.util.decorators import permission_required_with_403
 
-def professional_responsible_save(object, ids, names, subscriptions, organization_subscriptions):
+@permission_required_with_403('organization.organization_write')
+def professional_responsible_save(request, object, ids, names, subscriptions, organization_subscriptions):
     ProfessionalResponsible.objects.all().delete()
     for x in range(len(names)):
         obj = []
@@ -34,6 +36,7 @@ def professional_responsible_save(object, ids, names, subscriptions, organizatio
         if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):
             obj.save()
 
+@permission_required_with_403('organization.organization_read')
 def form(request):
     user = request.user
     object = get_object_or_404( Organization, pk=user.get_profile().org_active.id )
@@ -62,6 +65,7 @@ def form(request):
         },
         context_instance=RequestContext(request))
 
+@permission_required_with_403('organization.organization_write')
 def save(request):
     user = request.user
     try:
@@ -84,7 +88,7 @@ def save(request):
     object.state_inscription = request.POST['state_inscription']
     object.city_inscription = request.POST['city_inscription']
     object.photo = request.POST['photo']
-    object.visible = get_visible( request.POST.get('visible') )
+    object.visible = get_visible( request, request.POST.get('visible') )
     #profile
     object.person_type = PersonType.objects.get(pk=request.POST['person_type'])
     object.unit_type = UnitType.objects.get(pk=request.POST['unit_type'])
@@ -101,7 +105,7 @@ def save(request):
     object.comment = request.POST['comment']
     object.save()
    
-    professional_responsible_save(object, request.POST.getlist('professionalId'), request.POST.getlist('professional_name'), request.POST.getlist('professional_subscription'), request.POST.getlist('professional_organization_subscription'))
+    professional_responsible_save(request, object, request.POST.getlist('professionalId'), request.POST.getlist('professional_name'), request.POST.getlist('professional_subscription'), request.POST.getlist('professional_organization_subscription'))
             #object.subscriptions_professional_institutional = request.POST['subscriptions_professional_institutional']
             #object.professional_responsible = request.POST['professional_responsible']
 
@@ -120,13 +124,15 @@ def save(request):
 # The question is, is available the short name?
 # 0 = NO
 # 1 = YES
+@permission_required_with_403('organization.organization_read')
 def shortname_is_available(request, short):
     if Organization.objects.filter(short_name__iexact = short).count():
 	    return HttpResponse("0")
     else:
 	    return HttpResponse("1")
 
-def get_visible( value ):
+@permission_required_with_403('organization.organization_read')
+def get_visible( request, value ):
     if ( value == 'on' ):
         return True
     else:

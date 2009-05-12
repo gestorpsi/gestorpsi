@@ -14,14 +14,12 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import locale
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.template import RequestContext
-from django.core.paginator import Paginator
 from django.contrib.auth.decorators import permission_required
-from django.utils import simplejson
 from django.contrib.auth.models import User
-from django.conf import settings
 
 from geraldo.generators import PDFGenerator
 
@@ -45,22 +43,16 @@ from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.reports.header import header_gen
 from gestorpsi.reports.footer import footer_gen
 from gestorpsi.util.views import date_form_to_db
+from django.utils import simplejson
 from gestorpsi.util.decorators import permission_required_with_403
+from gestorpsi.person.views import person_json_list
 
 # list all active clients
 @permission_required_with_403('client.client_list')
 def index(request):
-    user = request.user
-    if user.groups.filter(name='administrator').count() == 1 or user.groups.filter(name='secretary').count() == 1:
-        object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
-    else:
-        object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1', referral__professional = user.profile.person.careprofessional.id).order_by('person__name')
-    paginator = Paginator(object, settings.PAGE_RESULTS)
-    object = paginator.page(1)
     referral_form = ReferralForm()
     return render_to_response('client/client_index.html',
-                                        {'object': object,
-                                         'paginator': paginator,
+                                        {
                                         'countries': Country.objects.all(),
                                         'PhoneTypes': PhoneType.objects.all(), 
                                         'AddressTypes': AddressType.objects.all(), 
@@ -82,19 +74,15 @@ def index(request):
                                         context_instance=RequestContext(request))
 
 @permission_required_with_403('client.client_list')
-def list(request, page=1):
+def list(request, page = 1):
     user = request.user
     if user.groups.filter(name='administrator').count() == 1 or user.groups.filter(name='secretary').count() == 1:
         object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
     else:
         object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1', referral__professional = user.profile.person.careprofessional.id).order_by('person__name')
-    paginator = Paginator(object, settings.PAGE_RESULTS)
-    object = paginator.page(page)
-    return render_to_response('client/client_list.html',
-                                {'object': object,
-                                 'paginator': paginator,
-                                },
-                                context_instance=RequestContext(request))
+    
+    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'client.client_read', page)),
+                            mimetype='application/json')
 
 # add or edit form
 @permission_required_with_403('client.client_read')

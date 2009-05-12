@@ -19,14 +19,12 @@ GNU General Public License for more details.
 
 {% if object.id %}
 	<div class="edit_form">
-	<h2 class="title_services title">{{ object.label }}</h2>
+	<h2 class="title_services title">{{ object.name }}</h2>
 	<p class="description"><br />	
 {% else %}
 	<h2 class="title_services title">{% trans "Adding New Service" %}</h2>
 	<p class="description">{% trans "Inform the service details then click on Save button" %}</p>
 {% endif %}
-
-
 </p>
 
 <form action="/service/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_service" class="form_service">	

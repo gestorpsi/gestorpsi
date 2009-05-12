@@ -33,7 +33,9 @@ from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.device.models import DeviceDetails
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm
+from gestorpsi.util.decorators import permission_required_with_403
 
+@permission_required_with_403('schedule.schedule_list')
 def schedule_occurrence_listing(request, year = 1, month = 1, day = None, 
     template='schedule/schedule_events.html',
     **extra_context):
@@ -47,10 +49,11 @@ def schedule_occurrence_listing(request, year = 1, month = 1, day = None,
     )
 
 
+@permission_required_with_403('schedule.schedule_list')
 def schedule_occurrence_listing_today(request, template='schedule/schedule_events.html'):
     return schedule_occurrence_listing(request, datetime.now().strftime('%Y'), datetime.now().strftime('%m'), datetime.now().strftime('%d'))
 
-
+@permission_required_with_403('schedule.schedule_write')
 def add_event(
     request, 
     template='schedule/schedule_form.html',
@@ -91,6 +94,7 @@ def add_event(
     )
 
 
+@permission_required_with_403('schedule.schedule_read')
 def event_view(
     request, 
     pk, 
@@ -127,6 +131,7 @@ def event_view(
         context_instance=RequestContext(request)
     )
 
+@permission_required_with_403('schedule.schedule_read')
 def occurrence_view(
     request, 
     event_pk, 
@@ -149,6 +154,7 @@ def occurrence_view(
         context_instance=RequestContext(request)
     )
 
+@permission_required_with_403('schedule.schedule_list')
 def _datetime_view(
     request, 
     template, 
@@ -179,6 +185,7 @@ def _datetime_view(
         context_instance=RequestContext(request)
     )
 
+@permission_required_with_403('schedule.schedule_list')
 def schedule_index(request, 
     year = datetime.now().strftime("%Y"), 
     month = datetime.now().strftime("%m"), 
@@ -188,9 +195,11 @@ def schedule_index(request,
     
     return _datetime_view(request, template, datetime(int(year), int(month), int(day)), **params)
 
+@permission_required_with_403('schedule.schedule_list')
 def today_occurrences(request):
     return daily_occurrences(request, datetime.now().strftime("%Y"), datetime.now().strftime("%m"), datetime.now().strftime("%d"))
 
+@permission_required_with_403('schedule.schedule_list')
 def schedule_occurrences(request, year = 1, month = 1, day = None):
     if day:
         date_start = datetime.strptime("%s%s%s" % (year, month, day),"%Y%m%d")
@@ -205,6 +214,7 @@ def schedule_occurrences(request, year = 1, month = 1, day = None):
         event__referral__organization=request.user.get_profile().org_active.id,
     )
 
+@permission_required_with_403('schedule.schedule_list')
 def daily_occurrences(request, year = 1, month = 1, day = None):
     #locale.setlocale(locale.LC_ALL,'pt_BR.ISO-8859-1')
     locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
@@ -262,7 +272,8 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
     
     return HttpResponse(array, mimetype='application/json')
     
-	
+
+@permission_required_with_403('schedule.schedule_read')
 def occurrence_abstract(request, object_id = None):
     try:
         o = ScheduleOccurrence.objects.get(pk=object_id)
@@ -298,12 +309,11 @@ def occurrence_abstract(request, object_id = None):
             })
         count = count + 1
 
-    #array = simplejson.dumps(array, encoding = 'iso8859-1')
-    array = simplejson.dumps(array)
+    array = simplejson.dumps(array, encoding = 'iso8859-1')
     
     return HttpResponse(array, mimetype='application/json')
 
-
+@permission_required_with_403('schedule.schedule_read')
 def referral_occurrences(request, object_id = None):
     try:
         o = Referral.objects.get(pk=object_id)
@@ -349,8 +359,6 @@ def referral_occurrences(request, object_id = None):
             })
         count = count + 1
 
-    #array = simplejson.dumps(array, encoding = 'iso8859-1')
     array = simplejson.dumps(array)
     
-    #return HttpResponse(array, mimetype='application/json')
-    return HttpResponse(array)
+    return HttpResponse(array, mimetype='application/json')

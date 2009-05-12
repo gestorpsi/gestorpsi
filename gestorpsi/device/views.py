@@ -31,9 +31,8 @@ def index(request):
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
     """
     user = request.user
-    return render_to_response( "device/device_index.html", {'object': Device.objects.all(),
-                                                            'organizations': Organization.objects.all(),
-                                                            'places': Place.objects.filter(organization=user.get_profile().org_active.id), 
+    return render_to_response( "device/device_index.html", {'object': Device.objects.filter(organization=user.get_profile().org_active),
+                                                            'places': Place.objects.filter(organization=user.get_profile().org_active), 
                                                             'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS },
                                                             context_instance=RequestContext(request))
 
@@ -44,9 +43,8 @@ def form(request, object_id= ''):
         device_details = get_object_or_404( DeviceDetails, pk= object_id )
     except Http404:
         device_details= DeviceDetails()
-    return render_to_response('device/device_form.html', {'object': Device.objects.all(), 
+    return render_to_response('device/device_form.html', {'object': Device.objects.filter(organization=user.get_profile().org_active),
                                                           'device_details': device_details,
-                                                          'organizations': Organization.objects.all(), 
                                                           'places': Place.objects.filter(organization=user.get_profile().org_active.id),                                                          
                                                           'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS },
                                                           context_instance=RequestContext(request))
@@ -80,7 +78,7 @@ def form(request, object_id= ''):
 
 @permission_required('device.device_list', '/')
 def index_type(request):
-    return render_to_response( "device/device_type_list.html", {'object': Device.objects.all() }, context_instance=RequestContext(request))
+    return render_to_response( "device/device_type_list.html", {'object': Device.objects.filter(organization=user.get_profile().org_active), }, context_instance=RequestContext(request))
 
 @permission_required('device.device_read', '/')
 def form_type(request, object_id= ''):
@@ -94,7 +92,7 @@ def save_device(request, object_id= ''):
         device = Device()
 
     user = request.user
-    device.description = request.POST['label']
+    device.description = request.POST.get('label')
     device.organization = user.get_profile().org_active
     device.save()
     return HttpResponse(device.id)
@@ -116,45 +114,33 @@ def save(request, object_id='' ):
     except Http404:
         device_details = DeviceDetails()
 
-    device_details.device = get_object_or_404(Device, pk=request.POST['select_device'])
-    device_details.brand = request.POST[ 'brand' ]
-    device_details.model = request.POST[ 'model' ] 
-    device_details.part_number = request.POST[ 'part_number' ]
-    device_details.comments = request.POST[ 'comments' ]
-    try:
-        device_details.lendable = get_visible( request.POST['lendable'] )
-    except:
-        device_details.lendable = False
-        
-    device_details.device = get_object_or_404(Device, pk=request.POST['select_device'])
+    device_details.device = get_object_or_404(Device, pk=request.POST.get('select_device'))
+    device_details.brand = request.POST.get('brand')
+    device_details.model = request.POST.get('model')
+    device_details.part_number = request.POST.get('part_number')
+    device_details.comments = request.POST.get('comments')
+    device_details.lendable = get_visible(request.POST.get('lendable'))
+    device_details.device = get_object_or_404(Device, pk=request.POST.get('select_device'))
     
     """ Device Durability """
-    device_details.durability = request.POST['select_durability_type']
+    device_details.durability = request.POST.get('select_durability_type')
 
     """ Device Restriction """
     if request.POST['select_restriction_type'] == '2':
-        device_details.prof_restriction = request.POST['professional_area']
+        device_details.prof_restriction = request.POST.get('professional_area')
     else:
         device_details.prof_restriction = ''
 
     """ Device Mobility """
-    mobility = request.POST['select_mobility_type']
+    mobility = request.POST.get('select_mobility_type')
     device_details.mobility = mobility
-    try:
-        device_details.place = get_object_or_404(Place, pk=request.POST['place_associated'])
-    except:
-        device_details.place = None
-        
-    if mobility == '1':    # Fixo
-        device_details.room = get_object_or_404(Room, pk=request.POST['room_associated'])
-    else:
-        device_details.room = None
-
+    device_details.place = get_object_or_404(Place, pk=request.POST.get('place_associated'))
+    device_details.room = get_object_or_404(Room, pk=request.POST.get('room_associated'))
     device_details.save()
     return HttpResponse(device_details.id)
 
-def get_visible( value ):
-    if ( value == 'on' ):
+def get_visible(value):
+    if (value == 'on'):
         return True
     else:
         return False

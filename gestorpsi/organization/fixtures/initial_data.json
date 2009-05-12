@@ -66,7 +66,6 @@
 {"pk": 3, "model": "organization.agegroup", "fields": {"minimum_age_endpoint": 18, "maximum_age_endpoint": 59, "label": "Adult"}},
 {"pk": 4, "model": "organization.agegroup", "fields": {"minimum_age_endpoint": 60, "maximum_age_endpoint": 110, "label": "Elderly"}},
 {"pk": 1, "model": "organization.procedureprovider", "fields": {"name": "SUS"}},
-{"pk": 2, "model": "organization.procedureprovider", "fields": {"name": "CFP"}},
 {"pk": 3, "model": "organization.procedureprovider", "fields": {"name": "GestorPsi"}},
 {"pk": 1, "model": "organization.procedure", "fields": {"description": "Abordagem Cognitivo - Comport.  do Fumante p/ Atend/Paciente", "procedure": 1, "procedure_code": "1916101"}},
 {"pk": 2, "model": "organization.procedure", "fields": {"description": "Acomp  Crian\u00e7as e Adolesc  c Transt Mentais  Semi-Int M\u00e1x 12", "procedure": 1, "procedure_code": "3804205"}},

@@ -66,7 +66,7 @@ def list(request, page = 1):
     user = request.user
     object = CareProfessional.objects.filter(person__organization = user.get_profile().org_active.id).order_by('person__name')
     
-    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'professional.professional_list', page)),
+    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'careprofessional.careprofessional_read', page)),
                             mimetype='application/json')
 
 @permission_required('careprofessional.careprofessional_read', '/')

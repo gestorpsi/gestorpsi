@@ -27,9 +27,11 @@ People Personal Profile Form
         <label>{% trans "Birthdate" %}<br />
                 <input type="text" class="calendar" name="birthDate" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate|date:"d/m/Y" }}{% endifnotequal %}" mask="99/99/9999" />
         </label>
+        {% comment %}
         <label>{% trans "Age" %}<br />
                 <input type="text" name="age" class="extrasmall" value="{{ object.age }}" id="id_age" />
         </label>
+        {% endcomment %}
         <label>{% trans "Marital Status" %}<br />
                 <select name="maritalStatus" class="select extramedium">
                         {% for m in MaritalStatusTypes %}

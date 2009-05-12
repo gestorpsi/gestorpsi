@@ -49,7 +49,9 @@ def person_save(request, person):
     person.birthForeignState= ''
     person.birthForeignCountry= None
     
-    if not (request.POST['birthPlace']):
+    try:
+        person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
+    except:
         person.birthPlace = None
         if( request.POST['birthForeignCity']):
             person.birthForeignCity= request.POST['birthForeignCity']
@@ -59,8 +61,7 @@ def person_save(request, person):
             person.birthForeignCountry= request.POST['birthForeignCountry']
         except:
             person.birthForeignCountry= None
-    else:
-        person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
+
 
     user = request.user
     person.organization = user.get_profile().org_active    

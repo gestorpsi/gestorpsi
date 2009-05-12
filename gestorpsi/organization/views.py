@@ -64,13 +64,14 @@ def form(request):
 
 def save(request):
     user = request.user
-
+    print "vai gravarrrrrrrrr"
     try:
 		object = Organization.objects.get(pk= user.get_profile().org_active.id)
     except:
         object = Organization()
         object.short_name = slugify(request.POST['name'])
-       
+    
+    print "vai gravarrrrrrrrr: %s"   % object.short_name
     if (object.short_name != request.POST['short_name']):
         if (Organization.objects.filter(short_name__iexact = request.POST['short_name']).count()):
 	        return HttpResponse("false")

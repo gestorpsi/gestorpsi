@@ -112,7 +112,8 @@ def list(request, page = 1):
 def form(request, object_type='', object_id=''):
     user = request.user
     org = user.get_profile().org_active
-
+    organizations = Organization.objects.filter(active=True, visible=True)
+    
     if object_type == '1':   # ORGANIZATION (1)
         object = get_object_or_404(Organization, pk=object_id)
         phones    = object.phones.all()
@@ -122,6 +123,8 @@ def form(request, object_type='', object_id=''):
         instantMessengers = object.instantMessengers.all()
     else:                    # PROFESSIONAL (2)
         object = get_object_or_404(CareProfessional, pk=object_id)
+        if object.person.organization.organization:
+            organizations = organizations.filter(organization=org)
         phones    = object.person.phones.all()
         addresses = object.person.address.all()
         emails    = object.person.emails.all()
@@ -138,7 +141,7 @@ def form(request, object_type='', object_id=''):
                                     'PhoneTypes': PhoneType.objects.all(), 
                                     'EmailTypes': EmailType.objects.all(), 
                                     'IMNetworks': IMNetwork.objects.all(),
-                                    'organizations': Organization.objects.filter(active=True, visible=True),#Organization.objects.filter(organization=org),
+                                    'organizations': organizations,
                                     'emails': emails,
                                     'websites': sites,
                                     'ims': instantMessengers,

@@ -177,8 +177,8 @@ def save(request, object_id=''):
             object.name = request.POST['label'] # adding by mini form
         except:
             object.name = request.POST['name']
-            object.short_name = slugify(request.POST['name'])
-        
+            
+        object.short_name = slugify(object.name)
         object.organization = user.get_profile().org_active
         
         object.save()

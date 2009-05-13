@@ -17,7 +17,7 @@ GNU General Public License for more details.
 {% load i18n %}
 
 <div class="form_mini device_mini">
-<form action="/device/save_device/" method="post">	
+<form action="/device/save_device/" method="post" update_device_list="true">	
 	<fieldset>
 	<legend>{% trans "Adding new Device" %}</legend>
 	<label>{% trans "Device" %}<br />

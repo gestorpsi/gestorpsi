@@ -39,7 +39,6 @@ function openTab(title) {
 function displayContent(selector) {
     $('div.fast_menu_content').hide();
     $(selector).show();
-    //$('div#edit_form').show();
 }
 
 /**
@@ -392,6 +391,11 @@ var form_mini_options = {
                // clean form and hide it
                $(form).children('fieldset').children('label').children('input:text').val('');
                $(form).parents('div.form_mini').hide();
+               
+               // reload itens list
+               if($(form).attr('update_device_list')) {
+                   updateDeviceType('/device/type/page' + $('div#list_type ul.paginator').attr('actual_page'));
+               }
 
           },
      error: function() {

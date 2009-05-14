@@ -35,7 +35,7 @@ def index(request):
     """
     user = request.user
     return render_to_response( "device/device_index.html", {
-                                                            'object': Device.objects.filter(organization=request.user.get_profile().org_active),
+                                                            'device_type': Device.objects.filter(organization=request.user.get_profile().org_active),
                                                             'places': Place.objects.filter(organization=user.get_profile().org_active), 
                                                             'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS },
                                                             context_instance=RequestContext(request))

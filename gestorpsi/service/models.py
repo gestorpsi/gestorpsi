@@ -193,7 +193,7 @@ class Service(models.Model):
     procedures = models.ManyToManyField(Procedure)
     agreements= models.ManyToManyField(Agreement)
     professions = models.ManyToManyField(Profession)
-    research_project = models.CharField(max_length=255)    
+    research_project = models.BooleanField(default=False) 
     organization = models.ForeignKey(Organization, null=True)
     responsibles = models.ManyToManyField( CareProfessional, related_name="resp_services" )
     professionals = models.ManyToManyField( CareProfessional, related_name="prof_services" )

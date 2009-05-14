@@ -39,16 +39,17 @@ GNU General Public License for more details.
 	<fieldset>
 		<legend>{% trans "Service Identification" %}</legend>
 			<label>{% trans "Service Name" %}<br />
-			<input type="text" maxlength="80"  name="service_name" class="extrabig tabtitle" value="{{ object.name }}" />
+			<input type="text" maxlength="80"  name="service_name" class="giant tabtitle" value="{{ object.name }}" />
 			</label>
 			<label>{% trans "Service Description" %}<br />
-				<textarea name="service_description" maxlength="100" class="extrabig object_description">{{ object.description }}</textarea>				
+				<textarea name="service_description" maxlength="100" class="giant object_description">{{ object.description }}</textarea>				
 			</label>
-			<label>{% trans "Keywords" %}<br />
-			<input type="text" maxlength="100" name="service_keywords" class="extrabig" value="{{ object.keywords }}" />
+			<label>{% trans "Keywords (separated by ;)" %}<br />
+			<input type="text" maxlength="100" name="service_keywords" class="giant" value="{{ object.keywords }}" />
 			</label>
-			<label>{% trans "Research Project" %}<br />
-			<input type="text" maxlength="255" name="research_project" class="extrabig" value="{{ object.research_project }}" />
+			<label>
+            <input type="checkbox" name="research_project"{% if object.research_project %} checked{% endif %} />&nbsp;
+            {% trans "Research Project" %}
 			</label>
 	</fieldset>
 

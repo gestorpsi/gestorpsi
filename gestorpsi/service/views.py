@@ -153,7 +153,10 @@ def save(request, object_id = ''):
         object.active = False
     object.area = Area.objects.get(pk=request.POST['service_area'])
     object.service_type = ServiceType.objects.get(pk=request.POST['service_type'])
-    object.research_project = request.POST['research_project']
+    try:
+        object.research_project = request.POST['research_project']
+    except:
+        object.research_project = False
     
     """ chose one css color to this service """
     try:

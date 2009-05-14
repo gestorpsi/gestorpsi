@@ -202,6 +202,48 @@ function bindFormActions() {
           $(this).parents('form').parents('div').children('div.photo_form_upload').show();
      });
      
+    /** 
+      * 
+      * Room form
+      * 
+      * _description:
+      * 
+      * append Room add form
+      * 
+      */
+     
+     $('div#edit_form li#add_room a').unbind().click(function() {
+          $('div#edit_form #room_form').hide();
+          $('div#edit_form .form_room_box').hide();
+          $('div#edit_form #fieldset_room_identification').show();
+          var total = $("div#edit_form .form_room_box").length + 1;
+          
+          // add form
+          $("div#edit_form #room_more").before('<div class="form_room_box" id="room_'+total+'"><div class="form_room">'+$(".form_room").html()+'</div></div>');
+          // clean fields
+          $('div#edit_form #room_'+total+' input').val('');
+          $('div#edit_form #room_'+total+' textarea').text('');
+          
+     
+          // auto insert new typing item, in the room list
+          
+          // first we need to clean item with empty names
+          $('div#edit_form li.li_rooms').each(function() {
+               li = $(this);
+               if($(li).text()=='') {
+                    li.remove();     
+               }
+          });
+          // create new item in room list
+          $('div#edit_form li.li_rooms:last').after('<li class="li_rooms"><a class="notajax" onclick="$(\'#room_form\').hide(); $(\'.form_room_box\').hide(); $(\'#fieldset_room_identification\').show(); $(\'#room_'+total+'\').show();"></a></li>');
+          // update room name, in room list when new name is typing 
+          $('div#edit_form #room_'+total+' input.update_name').unbind().keyup(function() {
+              $('div#edit_form #div_list_rooms').show();
+              $('div#edit_form li.li_rooms:last a').text($(this).val());
+           });
+             
+     });
+     
       
      /** 
       * 

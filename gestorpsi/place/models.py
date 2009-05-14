@@ -84,6 +84,7 @@ class Room( models.Model ):
    place= models.ForeignKey( Place )
    room_type= models.ForeignKey( RoomType, related_name= 'room_type' )
    furniture= models.TextField()
+   active = models.BooleanField(default=True)
 
    class Meta:
        ordering = ['description']
@@ -98,6 +99,7 @@ class Room( models.Model ):
       if (self.description == other.description ) and \
          (self.dimension == other.dimension ) and \
          (self.room_type.id == other.room_type.id ) and \
+         (self.active == other.active) and \
          (self.furniture == other.furniture ):
          return 0
       else:

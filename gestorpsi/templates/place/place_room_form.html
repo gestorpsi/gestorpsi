@@ -16,7 +16,8 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<div class="form_room_box {% if forloop.first or not forloop.counter %}first{% endif %}" id="room_{{ room.id }}">
+<form action="/place/room/{% if room.id %}{{ room.id }}/{% endif %}save/" method="post" class="collapsable form_place" id="form_place">
+ <div class="form_room_box" id="room_{{ room.id }}">
 	<div class="form_room">
 			<input type="hidden" name="room_id" value="{{ room.id }}" />
 			<label>{% trans "Description" %}<br />
@@ -65,3 +66,33 @@ GNU General Public License for more details.
 	</div>
 
 </div>
+
+<div id="sidebar" class="sidebar">
+    {% if perms.place.place_write %}
+        <div class="bg_blue">
+            <input type="hidden" name="place" value="{{ object.id }}" />
+            {% include "tags/save.html" %}
+        </div>
+        <div id="place_actions" {% if not object.id %}style="display:none"{% endif %}>
+        <h3>{% trans 'Object Actions' %}</h3>
+        <ul>
+            <li id="add_room" class="add_to_form"><a class="notajax" href="#top">{% trans "Add room in this place" %}</a></li>
+        </ul>
+
+    {% endif %}
+        <div id="div_list_rooms" style="display:{% if not rooms %}none{% endif %}">
+        <h3>{% trans 'Rooms from this place' %}</h3>
+        <ul>
+            <li class="li_rooms" style="display:none">&nbsp;</li>
+            {% for room in rooms %}
+            <li class="li_rooms" id="li_room_{{ room.id }}"><a class="notajax" display="{{ room.id }}" href="#top">{{ room }}</a></li>
+            {% endfor %}
+
+        </ul>
+        </div>
+
+
+    </div>
+</div>
+
+</form>

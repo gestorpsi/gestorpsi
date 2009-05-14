@@ -169,6 +169,41 @@ function updateContact(url) {
 }
 
 /** 
+* room list
+*/
+
+
+function updateRoom(url) {
+
+    $.getJSON(url, function(json) {
+        var tableTR = '';
+        
+        jQuery.each(json,  function(){
+            if(this.id) {
+                tableTR += '<tr id="' + this.id + '"><td class="title">';
+                tableTR += '<a href="/place/room/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
+                tableTR += '</td>';
+                tableTR += '<td><span class="phone">' + '</span><br />'; 
+                tableTR += '</td>';
+                tableTR += '</tr>';
+            }
+        });
+
+        buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
+        buildPaginator('room', json['paginator'], json['util'], 'div#list');
+        $("div#list ul.paginator a").unbind().click(function(){
+            updateRoom($(this).attr('href'))
+            return false;
+        });
+        bindList();
+        
+    });  
+
+    return false;
+
+}
+
+/** 
 * place list
 */
 

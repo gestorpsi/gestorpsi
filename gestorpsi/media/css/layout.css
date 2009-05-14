@@ -181,6 +181,7 @@ div#sub_menu .active {
 
 #main_menu a#organization {background: url(../img/16/go-home.png) no-repeat 25px 4px;}
 #main_menu a#places {background: url(../img/16/office.png) no-repeat 25px 4px;}
+#main_menu a#rooms{background: url(../img/16/room.png) no-repeat 25px 4px;}
 #main_menu a#employees {background: url(../img/16/people-employee.png) no-repeat 25px 4px;}
 #main_menu a#services {background: url(../img/16/services.png) no-repeat 25px 4px;}
 #main_menu a#rooms {background: url(../img/16/rooms.png) no-repeat 25px 4px;}
@@ -293,6 +294,7 @@ div#sub_menu .active {
 #content h2.title_device {background: url(../img/42/stuff.png) no-repeat 20px 15px;}
 #content h2.title_services {background: url(../img/42/services.png) no-repeat 20px 15px;}
 #content h2.title_places {background: url(../img/42/office.png) no-repeat 20px 15px;}
+#content h2.title_rooms{background: url(../img/42/room.png) no-repeat 20px 15px;}
 #content h2.title_organization {background: url(../img/42/go-home.png) no-repeat 20px 15px;}
 #content h2.title_fronted {background: url(../img/42/user-desktop.png) no-repeat 20px 15px;}
 

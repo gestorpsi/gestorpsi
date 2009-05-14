@@ -185,6 +185,33 @@ function bindAjaxForms() {
                 }
           });
      });
+    
+    /**
+     *
+     * rooms post form
+     *
+     * _description:
+     * validate and post room form.
+     *
+     */
+
+
+     $('.form_room').each(function() {
+          $(this).validate({event:"submit",
+               rules: {
+                    description: {
+                            required: true
+                    }
+               },
+               messages: {
+                    name: 'Preenchimento Necessário'
+               },
+               submitHandler: function(form) {
+                    $(form).ajaxSubmit(form_room_options);
+                    
+               }
+          });
+      });
 
     /**
      *

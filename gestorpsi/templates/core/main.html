@@ -100,6 +100,7 @@ GNU General Public License for more details.
 				<ul style="display:none" class="myoffice">
 					<li><a id="organization" href="/organization/">{% trans "My Organization" %}</a></li>
 					<li><a id="places" href="/place/" display="list">{% trans "Places" %}</a></li>
+                    <li><a id="rooms" href="/place/room/" display="list">{% trans "Rooms" %}</a></li>
 					<li><a id="employees" href="/employee/" display="list">{% trans "Employees" %}</a></li>
 					<li><a id="careprofessional" href="/careprofessional/" display="list">{% trans "Professionals" %}</a></li>
 					<li><a id="services" href="/service/" display="list">{% trans "Services" %}</a></li>
@@ -157,6 +158,13 @@ GNU General Public License for more details.
 			<li><a display="form" class="fastmenu" href="/place/">{% trans "add" %}</a></li>
 			<!-- <li><a>{% trans "search" %}</a></li> -->
 		</ul>
+
+        <!-- rooms -->
+        <ul id="sub_rooms" style="display:none">
+           <li><a display="list" class="first active fastmenu" href="/place/room/">{% trans "all" %}</a></li>
+           <li><a display="form" class="fastmenu" href="/place/room/">{% trans "add" %}</a></li>
+           <!-- <li><a>{% trans "search" %}</a></li> -->
+        </ul>
 		
 		<!--care employees-->
 		<ul id="sub_employees" style="display:none">

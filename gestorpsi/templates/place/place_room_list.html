@@ -1,0 +1,50 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+{% include "core/ajax_page_list.html" %}
+
+<div class="no_registers_available" style="display:none">
+        <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/place/" class="fastmenu notajax" sub_menu="sub_rooms" display="form">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
+</div>
+<div class="registers_available">
+        
+        <div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
+        Esta caixa é mostrada quando há mensagens
+        </div>
+        
+        <h2 class="title_rooms">{% trans "All Rooms" %}</h2>
+        <p class="description">{% trans "Displaying" %} <a href="/place/room/" display="list"><span id="object_length"></span> {% trans "room(s)" %}</a>. {% trans "Page" %} <b></b> {% trans "of" %} <b></b></p>
+       
+        <div class="main_area contact">
+            <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+                <thead> 
+                    <tr> 
+                    <th></th> 
+                    <th></th> 
+                    </tr> 
+                </thead>
+                <tbody> 
+                    <script>
+                    updateRoom('/place/room/page1');
+                    </script>
+                </tbody>
+            </table>
+            {% include "tags/paginator.html" %}
+        </div>
+</div>
+
+

@@ -30,6 +30,12 @@ from gestorpsi.phone.views import phone_save
 from gestorpsi.util.decorators import permission_required_with_403
 
 @permission_required_with_403('place.place_list')
+def room_index(request):
+    user = request.user
+    return render_to_response( "place/place_room_index.html", 
+                                                          context_instance=RequestContext(request))
+
+@permission_required_with_403('place.place_list')
 def index(request):
     user = request.user
     return render_to_response( "place/place_index.html", {
@@ -80,20 +86,20 @@ def list(request, page = 1):
 
     return HttpResponse(simplejson.dumps(array), mimetype='application/json')
 
-@permission_required_with_403('place.place_list')
-def room_list( request, ids, descriptions, dimensions, room_types, furniture_descriptions ):
-    rooms= []
-    for i in range(0, len(descriptions)):
-        if ( len( descriptions[i]) ):
-            if not (dimensions[i]):
-                dimensions[i] = None
-            rooms.append( Room(id = ids[i],
-                               description = descriptions[i],
-                               dimension = dimensions[i],
-                               place = Place(),
-                               room_type = RoomType.objects.get(pk=room_types[i]),
-                               furniture = furniture_descriptions[i]) )
-    return rooms
+#@permission_required_with_403('place.place_list')
+#def room_list( request, ids, descriptions, dimensions, room_types, furniture_descriptions ):
+#    rooms= []
+#    for i in range(0, len(descriptions)):
+#        if ( len( descriptions[i]) ):
+#            if not (dimensions[i]):
+##                dimensions[i] = None
+#            rooms.append( Room(id = ids[i],
+#                               description = descriptions[i],
+#                               dimension = dimensions[i],
+#                               place = Place(),
+#                               room_type = RoomType.objects.get(pk=room_types[i]),
+#                               furniture = furniture_descriptions[i]) )
+#    return rooms
 
 @permission_required_with_403('place.place_read')
 def form(request, object_id=''):
@@ -101,11 +107,11 @@ def form(request, object_id=''):
         user = request.user
         phones = []
         addresses = []
-        rooms = []
+        #rooms = []
         object= get_object_or_404(Place, pk=object_id)
         addresses= object.address.all()
         phones= object.phones.all()
-        rooms= object.room_set.all()
+        #rooms= object.room_set.all()
         organization= Organization.objects.get(pk= user.get_profile().org_active.id)
 
     except (Http404, ObjectDoesNotExist):
@@ -120,7 +126,7 @@ def form(request, object_id=''):
                                                         'AddressTypes': AddressType.objects.all(),
                                                         'countries': Country.objects.all(),
                                                         'RoomTypes': RoomType.objects.all(),
-                                                        'rooms': rooms,
+                                                        #'rooms': rooms,
                                                         'States': State.objects.all(),
                                                         },
                                                         context_instance=RequestContext(request))
@@ -142,7 +148,7 @@ def save(request, object_id=''):
     object.organization = user.get_profile().org_active    
     object.save() 
 
-    save_rooms( request, object, request.POST.getlist( 'room_id' ), request.POST.getlist('description'), request.POST.getlist('dimension'), request.POST.getlist('room_type'), request.POST.getlist('furniture') )
+    #save_rooms( request, object, request.POST.getlist( 'room_id' ), request.POST.getlist('description'), request.POST.getlist('dimension'), request.POST.getlist('room_type'), request.POST.getlist('furniture') )
     phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
     address_save(object, request.POST.getlist('addressId'), request.POST.getlist('addressPrefix'),
                  request.POST.getlist('addressLine1'), request.POST.getlist('addressLine2'),
@@ -153,12 +159,109 @@ def save(request, object_id=''):
 
     return HttpResponse(object.id)
 
-@permission_required_with_403('place.place_write')
-def save_rooms(request, place, ids, descriptions, dimensions, room_types, furnitures):
+#@permission_required_with_403('place.place_write')
+#def save_rooms(request, place, ids, descriptions, dimensions, room_types, furnitures):
  #  place.room_set.all().delete() # If uncomment this line, all event of scheduled will be deleted when add a new room or modifi one of it.
-    for room in room_list( request, ids, descriptions, dimensions, room_types, furnitures ):
-        room.place = place
-        room.save()
+#    for room in room_list( request, ids, descriptions, dimensions, room_types, furnitures ):
+#        room.place = place
+#        room.save()
+
+def room_save(request, object_id = ''):
+    try:
+        object = Room.object.get(pk = object_id)
+
+    except:
+        object = Room()
+
+    print RoomType.objects.get(id, pk=request.POST.get('room_type'))
+
+    object.id = request.POST.get( 'room_id' )
+    object.description = request.POST.get( 'description' )
+    object.dimension = request.POST.get('dimension')
+    #object.room_type = request.POST.get('room_type')
+    object.room_type = RoomType.objects.get(pk=request.POST.get('room_type'))
+    object.furniture = request.POST.get('furniture')
+    object.active = request.POST.get('active')
+
+        # place.room_set.all().delete() 
+        # If uncomment this line, all event of scheduled will be deleted when add a new room or modifi one of it.
+    #for room in room_list( ids, descriptions, dimensions, room_types, furnitures, actives ):
+    #    room.place = place
+
+    if object.id:
+        object.save(force_update=True)
+    else:
+        object.save()
+    
+    return HttpResponse(object.id)
+
+def room_list(request, page = 1):
+    user = request.user
+    object = Room.objects.filter(place__organization = user.get_profile().org_active)
+    
+    object_length = len(object)
+    paginator = Paginator(object, settings.PAGE_RESULTS)
+    object = paginator.page(page)
+
+    array = {} #json
+    i = 0
+
+    array['util'] = {
+        'has_perm_read': user.has_perm('place.place_read'),
+        'paginator_has_previous': object.has_previous().real,
+        'paginator_has_next': object.has_next().real,
+        'paginator_previous_page_number': object.previous_page_number().real,
+        'paginator_next_page_number': object.next_page_number().real,
+        'paginator_actual_page': object.number,
+        'paginator_num_pages': paginator.num_pages,
+        'object_length': object_length,
+    }
+
+    
+    array['paginator'] = {}
+    for p in paginator.page_range:
+        array['paginator'][p] = p
+    
+    for o in object.object_list:
+        array[i] = {
+            'id': o.id,
+            'name': o.description,
+        }
+        i = i + 1
+
+    return HttpResponse(simplejson.dumps(array), mimetype='application/json')
+
+
+def room_listaaa(request, page = 1):
+    user = request.user
+
+    #object = Room.objects.filter(place = user.profile.org_active.id )
+    object = Room.objects.all().values()[0]
+    print object.id
+    print len(object.id)
+    
+    #object_length = len(object)
+    #paginator = Paginator(object, settings.PAGE_RESULTS)
+    #object = paginator.page(page)
+
+    return render_to_response('place/place_room_index.html', {
+                                                        'PlaceTypes': PlaceType.objects.all(), 
+                                                        'RoomTypes': RoomType.objects.all(),
+                                                        'room': object
+                                                        },
+                                                        context_instance=RequestContext(request))
+
+
+def room_form(request, object_id = ' '):
+    user = request.user
+    object = Room.objects.get(pk = object_id)
+
+    return render_to_response('place/place_room_form.html', {
+                                                        'room': object,
+                                                        'RoomTypes': RoomType.objects.all(),
+                                                        },
+                                                        context_instance=RequestContext(request))
+
 
 #def save_rooms( request, place, ids, descriptions, dimensions, room_types, furnitures ):
 #    for room in room_list( ids, descriptions, dimensions, room_types, furnitures ):

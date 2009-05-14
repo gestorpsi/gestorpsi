@@ -30,7 +30,7 @@ class ScheduleOccurrence(Occurrence):
     annotation = models.CharField(max_length=765, null=True, blank=True)
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(Occurrence)
 reversion.register(ScheduleOccurrence, follow=['occurrence_ptr'])

@@ -38,7 +38,7 @@ class AdmissionReferral(models.Model):
         return u"%s" % self.referral_choice
     
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(AdmissionReferral, follow=['client'])
 
@@ -60,6 +60,6 @@ class Indication(models.Model):
         return u"%s" % self.indication_choice
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(Indication, follow=['client'])

@@ -92,6 +92,6 @@ class Address(models.Model):
         return u"%s %s\n%s" % (self.addressPrefix, self.addressLine1, self.addressLine2)
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(Address)

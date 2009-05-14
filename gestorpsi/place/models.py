@@ -57,7 +57,7 @@ class Place( models.Model ):
         ordering = ['label']
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(Place, follow=['address', 'phones'])
 
@@ -92,7 +92,7 @@ class Room( models.Model ):
       return "%s" % self.description
 
    def revision(self):
-      return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+      return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
   
    def __cmp__(self, other):
       if (self.description == other.description ) and \

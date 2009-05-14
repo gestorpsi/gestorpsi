@@ -38,7 +38,7 @@ class ProfessionalResponsible(models.Model):
         return u"%s" % self.name
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(ProfessionalResponsible)
 
@@ -176,7 +176,7 @@ class Organization(models.Model):
         return self.name
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
     def get_first_phone(self):
         if ( len( self.phones.all() ) != 0 ):

@@ -33,6 +33,6 @@ class Employee(models.Model):
         ordering = ['person']    
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(Employee, follow=['person'])

@@ -18,7 +18,7 @@ GNU General Public License for more details.
 
 {% load i18n %}
 {% block content %}
-{{ browser }} ae
+
 <h2>{% trans "New account" %} </h2>
 <br />
 <p>{% trans "Fill out the form to the left (all fields are required), and your account will be created; you'll be sent an email with instructions on how to finish your registration" %}.</p>
@@ -26,7 +26,13 @@ GNU General Public License for more details.
 
 <form method="post" action="">
 {{ form.as_p }}
-<p class="submit"><input type="submit" value="{% trans "Register" %}" class="btn" /></p>
+<p><label for="id_terms_of_service">{% trans "terms of service" %}</label>
+<textarea class="small_fonts terms_of_service">
+{% trans "terms of service description" %}
+</textarea>
+</p>
+
+<p class="submit"><input type="submit" value="{% trans "Accept terms and register" %}" class="btn" /></p>
 </form>
 <p><a href="/accounts/login/">{% trans "Already have an account?" %}</a></p>
 

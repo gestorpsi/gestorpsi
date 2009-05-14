@@ -551,7 +551,7 @@ select.multiple {
 	height: 80px;
 }
 
-select.multiple.small_fonts {
+.small_fonts {
 	font-size: 10px;
 }
 
@@ -1215,6 +1215,11 @@ fieldset div {
 
 div.login div.ff_not_ok img {
     float: left;
+}
+
+textarea.terms_of_service {
+    width: 253px !important;
+    height: 100px !important;
 }
 
 /* list paginator */

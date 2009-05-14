@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-14 03:48-0300\n"
+"POT-Creation-Date: 2009-05-14 13:09-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1231,10 +1231,19 @@ msgstr ""
 "será enviado com as instruções sobre como concluir o seu cadastro"
 
 #: templates/registration/registration_form.html:29
-msgid "Register"
-msgstr "Continuar"
+msgid "terms of service"
+msgstr ""
 
 #: templates/registration/registration_form.html:31
+#, fuzzy
+msgid "terms of service description"
+msgstr "Descrição do Serviço"
+
+#: templates/registration/registration_form.html:35
+msgid "Accept terms and register"
+msgstr ""
+
+#: templates/registration/registration_form.html:37
 msgid "Already have an account?"
 msgstr "Já possui uma conta?"
 
@@ -1735,6 +1744,9 @@ msgstr "Todos os Usuários"
 #: templates/users/users_list.html:29
 msgid "user(s)"
 msgstr "Usuário(s)"
+
+#~ msgid "Register"
+#~ msgstr "Continuar"
 
 #~ msgid "Registration"
 #~ msgstr "Registro"

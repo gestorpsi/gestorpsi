@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import reversion
 from django.db import models
 from swingtime.models import Event, EventType, Occurrence
 from gestorpsi.service.models import Service
@@ -28,4 +29,6 @@ class ScheduleOccurrence(Occurrence):
     device = models.ManyToManyField(DeviceDetails, null=True, blank=True)
     annotation = models.CharField(max_length=765, null=True, blank=True)
 
+reversion.register(Occurrence)
+reversion.register(ScheduleOccurrence, follow=['occurrence_ptr'])
 

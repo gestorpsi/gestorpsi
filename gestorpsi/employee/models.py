@@ -14,10 +14,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import reversion
 from django.db import models
 from gestorpsi.person.models import Person
 from gestorpsi.util.uuid_field import UuidField
-from gestorpsi.util import audittrail
 
 class Employee(models.Model):
     id= UuidField(primary_key=True)
@@ -26,9 +26,9 @@ class Employee(models.Model):
     job = models.CharField(max_length=30, blank=True)
     active = models.BooleanField(default=True)
     
-    history= audittrail.AuditTrail()
-    
     def __unicode__(self):
         return u"%s" % self.person.name
     class Meta:
         ordering = ['person']    
+
+reversion.register(Employee, follow=['person'])

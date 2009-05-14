@@ -91,6 +91,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
+    'reversion.middleware.RevisionMiddleware',
     #'gestorpsi.util.usertimeout.UserTimeout',
     #'gestorpsi.util.showqueries.ShowQueries',
 )
@@ -136,6 +137,7 @@ INSTALLED_APPS = (
 	'swingtime',
 	'registration',
     'gestorpsi.schedule',
+    'reversion',
     'gestorpsi.frontend', #load at last
 )
 

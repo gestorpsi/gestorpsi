@@ -13,6 +13,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import reversion
 from django.db import models
 from django.contrib.contenttypes import generic
 from gestorpsi.phone.models import Phone
@@ -21,7 +22,7 @@ from gestorpsi.document.models import Document
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
-from gestorpsi.util import audittrail
+#from gestorpsi.util import audittrail
 from gestorpsi.util.first_capitalized import first_capitalized
    
 Gender = ( ('0','No Information'),('1','Female'), ('2','Male'))
@@ -57,7 +58,7 @@ class Person(models.Model):
         
     organization = models.ForeignKey(Organization, null=True)
     
-    history= audittrail.AuditTrail()
+    #history= audittrail.AuditTrail()
     
     """ function used only in reports.py waiting a fix in Geraldo SubReport"""
     def get_documents(self):
@@ -161,6 +162,9 @@ class Person(models.Model):
             return self.sites.all()[0]
         else:
             return ''        
+
+reversion.register(Person, follow=['phones','address', 'emails', 'sites', 'instantMessengers'])
+
 
 """
 Teste do Models no shell de Pessoa e suas ligacoes

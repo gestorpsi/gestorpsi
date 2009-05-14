@@ -14,9 +14,9 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from datetime import datetime
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.contrib.auth.decorators import permission_required
 from django.utils.translation import ugettext as _
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.careprofessional.models import ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
@@ -37,7 +37,7 @@ PROFESSIONAL_AREAS = (
     ('psycho', _('Psychologist') ,'CRP'),
     )  
 
-@permission_required('careprofessional.careprofessional_list', '/')
+@permission_required_with_403('careprofessional.careprofessional_list')
 def index(request):
     user = request.user
     return render_to_response('careprofessional/careprofessional_index.html', {
@@ -69,7 +69,7 @@ def list(request, page = 1):
     return HttpResponse(simplejson.dumps(person_json_list(request, object, 'careprofessional.careprofessional_read', page)),
                             mimetype='application/json')
 
-@permission_required('careprofessional.careprofessional_read', '/')
+@permission_required_with_403('careprofessional.careprofessional_read')
 def form(request, object_id=''):
     user = request.user
     phones = []
@@ -125,7 +125,7 @@ def form(request, object_id=''):
                               )
 
 
-@permission_required('careprofessional.careprofessional_read', '/')
+@permission_required_with_403('careprofessional.careprofessional_read')
 def care_professional_fill(request, object):
     """
     This view function returns the informations about CareProfessional 
@@ -151,7 +151,7 @@ def care_professional_fill(request, object):
             ps = Service.objects.get(pk=ps_id)
             object.prof_services.add(ps)
 
-    profile.initialProfessionalActivities = request.POST[ 'professional_initialActivitiesDate' ]
+    profile.initialProfessionalActivities = datetime.strptime(request.POST[ 'professional_initialActivitiesDate' ],'%d/%m/%Y')
     #profile.availableTime = request.POST['professional_availableTime']
     profile.save()
 

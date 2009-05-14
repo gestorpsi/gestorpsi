@@ -14,13 +14,13 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import reversion
 from django.db import models
 from gestorpsi.address.models import Address
 from gestorpsi.phone.models import Phone
 from django.contrib.contenttypes import generic
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
-from gestorpsi.util import audittrail
 
 class PlaceType( models.Model ):
     """
@@ -43,7 +43,6 @@ class Place( models.Model ):
     phones= generic.GenericRelation( Phone )
     place_type= models.ForeignKey( PlaceType )
     organization = models.ForeignKey(Organization, null= True, blank= True)
-    history= audittrail.AuditTrail()
     
     def __unicode__(self):
        return "%s" % self.label
@@ -56,6 +55,8 @@ class Place( models.Model ):
     
     class Meta:
         ordering = ['label']
+
+reversion.register(Place, follow=['address', 'phones'])
 
 class RoomType( models.Model ):
    """
@@ -80,6 +81,7 @@ class Room( models.Model ):
    place= models.ForeignKey( Place )
    room_type= models.ForeignKey( RoomType, related_name= 'room_type' )
    furniture= models.TextField()
+
    class Meta:
        ordering = ['description']
 
@@ -94,3 +96,5 @@ class Room( models.Model ):
          return 0
       else:
          return 1
+
+reversion.register(Room)

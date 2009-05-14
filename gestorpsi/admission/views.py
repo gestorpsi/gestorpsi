@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from gestorpsi.client.models import Client, PersonLink, Relation
@@ -22,7 +23,7 @@ from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
 from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 from gestorpsi.admission.models import *
 from gestorpsi.contact.views import *
-from gestorpsi.util.views import get_object_or_None, date_form_to_db
+from gestorpsi.util.views import get_object_or_None
 from gestorpsi.util.decorators import permission_required_with_403
 
 ## !! moved to client views
@@ -49,7 +50,7 @@ def is_responsible(value):
         return False
 
 @permission_required_with_403('admission.admission_write')
-def add_relationship(object, name_list, relation_list, responsible_list):
+def add_relationship(request, object, name_list, relation_list, responsible_list):
     responsible = ''
     object.person_link.all().delete()
     for i in range(0, len(name_list)):
@@ -63,7 +64,7 @@ def add_relationship(object, name_list, relation_list, responsible_list):
 @permission_required_with_403('admission.admission_write')
 def save(request, object_id=''):
     object = get_object_or_404(Client, pk=object_id)
-    object.admission_date = date_form_to_db(request.POST.get('admission_date'))
+    object.admission_date = datetime.strptime(request.POST.get('admission_date'), '%d/%m/%Y')
     object.legacyRecord = request.POST.get('legacyRecord')
     object.healthDocument = request.POST.get('healthDocument')
     object.comments = request.POST.get('comments')
@@ -86,5 +87,5 @@ def save(request, object_id=''):
 
     object.save()
     
-    add_relationship(object, request.POST.getlist('parent_name'),request.POST.getlist('parent_relation'), request.POST.getlist('parent_responsible'))
+    add_relationship(request, object, request.POST.getlist('parent_name'),request.POST.getlist('parent_relation'), request.POST.getlist('parent_responsible'))
     return HttpResponse(object.id)

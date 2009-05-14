@@ -66,6 +66,9 @@ Python Packages:
 - Django Registration (>= r220)
   maintainer: http://bitbucket.org/ubernostrum/django-registration/wiki/Home
 
+- Django Reversion (>= r197)
+  maintainer: http://code.google.com/p/django-reversion/
+
 - Some database server running, and configured:
   MySQL Server, PostgreSQL, Oracle or SQLite
 

@@ -14,10 +14,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-def date_form_to_db(value):
-    return '%s-%s-%s' % (value.split('/')[2], value.split('/')[1], value.split('/')[0])
-
-
 def get_object_or_new(klass, *args, **kwargs):
     # bitbucket.org/offline/django-annoying/src/tip/annoying/functions.py
     from django.shortcuts import _get_queryset

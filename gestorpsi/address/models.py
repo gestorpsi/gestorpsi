@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import reversion
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
@@ -91,3 +92,5 @@ class Address(models.Model):
     
     def __unicode__(self):
         return u"%s %s\n%s" % (self.addressPrefix, self.addressLine1, self.addressLine2)
+
+reversion.register(Address)

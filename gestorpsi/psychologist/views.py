@@ -19,9 +19,10 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from gestorpsi.psychologist.models import Psychologist
 from gestorpsi.careprofessional.views import care_professional_fill
+from gestorpsi.util.decorators import permission_required_with_403
 
 # Save or Update psychpsychologistologist object
-@permission_required('careprofessional.careprofessional_write', '/')
+@permission_required_with_403('careprofessional.careprofessional_write')
 def save(request, object_id=''):    
 
     try:
@@ -36,7 +37,7 @@ def save(request, object_id=''):
 
 
 # disable a psychologist
-@permission_required('careprofessional.careprofessional_write', '/')
+@permission_required_with_403('careprofessional.careprofessional_write')
 def delete(request, object_id):
     """
     This function view search for a psychologist which has the id equals to the C{int} (I{psychologist_id})

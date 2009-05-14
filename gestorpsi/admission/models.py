@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import reversion
 from django.db import models
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import CareProfessional
@@ -35,6 +36,8 @@ class AdmissionReferral(models.Model):
     def __unicode__(self):
         return u"%s" % self.referral_choice
 
+reversion.register(AdmissionReferral, follow=['client'])
+
 class IndicationChoice(models.Model):
     description = models.CharField(max_length=250)
     nick = models.CharField(max_length=50)
@@ -49,3 +52,5 @@ class Indication(models.Model):
     client = models.ForeignKey(Client)
     def __unicode__(self):
         return u"%s" % self.indication_choice
+
+reversion.register(Indication, follow=['client'])

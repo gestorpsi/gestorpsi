@@ -42,7 +42,6 @@ from gestorpsi.referral.models import Referral
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.reports.header import header_gen
 from gestorpsi.reports.footer import footer_gen
-from gestorpsi.util.views import date_form_to_db
 from django.utils import simplejson
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.person.views import person_json_list

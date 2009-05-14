@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import reversion
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
@@ -211,3 +212,9 @@ class Service(models.Model):
     class Meta:
         ordering = ['name']
         get_latest_by = ['date']
+
+reversion.register(Service, follow=['modalities', 'procedures', 'agreements', 'professions', 'responsibles', 'professionals' ])
+reversion.register(Modality)
+reversion.register(Procedure)
+reversion.register(Agreement)
+

@@ -107,7 +107,7 @@ def form(request, object_id=''):
         phones= object.phones.all()
         rooms= object.room_set.all()
         organization= Organization.objects.get(pk= user.get_profile().org_active.id)
-        last_update = object.history.latest('_audit_timestamp')._audit_timestamp
+
     except (Http404, ObjectDoesNotExist):
         object= Place()
         place_type= PlaceType()
@@ -121,7 +121,6 @@ def form(request, object_id=''):
                                                         'countries': Country.objects.all(),
                                                         'RoomTypes': RoomType.objects.all(),
                                                         'rooms': rooms,
-                                                        'last_update': last_update,
                                                         'States': State.objects.all(),
                                                         },
                                                         context_instance=RequestContext(request))

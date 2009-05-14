@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import reversion
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
@@ -48,6 +49,8 @@ class Email(models.Model):
     def __unicode__(self):
         return self.email
 
+reversion.register(Email)
+
 class Site(models.Model):
     id = UuidField(primary_key=True)
     description = models.CharField(max_length=100, blank=True)
@@ -69,6 +72,8 @@ class Site(models.Model):
     
     def __unicode__(self):
         return self.site
+
+reversion.register(Site)
 
 class IMNetwork(models.Model):
     description = models.CharField(max_length=30)
@@ -96,3 +101,5 @@ class InstantMessenger(models.Model):
 
     def __unicode__(self):
         return "%s (%s)" % (self.identity, self.network)
+
+reversion.register(InstantMessenger)

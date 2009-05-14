@@ -14,12 +14,12 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import reversion
 from django.db import models
 from django.utils.translation import ugettext as _
 from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, Room
 from gestorpsi.util.uuid_field import UuidField
-from gestorpsi.util import audittrail
 
 DURABILITY_TYPE= ( ('1',_('CONSUMABLE')), ('2', _('DURABLE')) )
 """
@@ -75,7 +75,6 @@ class Device(models.Model):
     id = UuidField(primary_key=True)
     description = models.CharField( max_length = 80 )
     organization = models.ForeignKey(Organization, null=True)
-    history = audittrail.AuditTrail()
 
     def get_all_device_details(self):
         return DeviceDetails.objects.filter( device__id= self.id )
@@ -115,3 +114,6 @@ class DeviceDetails(models.Model):
 
     def __unicode__(self):
       return u"%s - %s" % (self.device.description, self.brand)
+
+reversion.register(DeviceDetails, follow=['device'])
+reversion.register(Device)

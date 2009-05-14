@@ -14,12 +14,15 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import reversion
 from django.db import models
 from gestorpsi.person.models import Person
 from gestorpsi.place.models import Place
 from gestorpsi.util.uuid_field import UuidField
-from gestorpsi.util import audittrail
 from gestorpsi.organization.models import Agreement
+from gestorpsi.phone.models import Phone
+from gestorpsi.address.models import Address
+from gestorpsi.internet.models import Email, Site, InstantMessenger
 
 class InstitutionType(models.Model):
     """    
@@ -30,6 +33,8 @@ class InstitutionType(models.Model):
     description = models.CharField(max_length=50, null=True)
     def __unicode__(self):
         return u"%s" % self.description
+
+reversion.register(InstitutionType)
 
 class PostGraduate(models.Model):
     """    
@@ -59,6 +64,8 @@ class AcademicResume(models.Model):
     finalDatePostGraduate = models.DateField(null=True)
     area = models.CharField(max_length=100, null=True)    
 
+reversion.register(AcademicResume, follow='institutionType')
+
 class Profession(models.Model):
     """    
     This class represents the careprofessional's profession       
@@ -70,6 +77,8 @@ class Profession(models.Model):
     def __unicode__(self):
         return u"%s" % self.description
 
+reversion.register(Profession)
+
 class ProfessionalProfile(models.Model):
     """
     This class represents the professional profile
@@ -78,7 +87,7 @@ class ProfessionalProfile(models.Model):
     """
     id= UuidField( primary_key= True )
     academicResume = models.OneToOneField(AcademicResume, null=True)
-    initialProfessionalActivities = models.CharField(max_length=10, null=True)
+    initialProfessionalActivities = models.DateField(null=True)
     agreement = models.ManyToManyField(Agreement, null=True)
     profession = models.OneToOneField(Profession, null=True)
     services = models.CharField(max_length=100, null=True)
@@ -86,7 +95,9 @@ class ProfessionalProfile(models.Model):
     workplace = models.ManyToManyField(Place, null=True)
     
     def __unicode__(self):
-        return "initial professional activities= %s; agreements= %s" % ( self.initialProfessionalActivities, self.agreement.all() )
+        return '%s' % ( self.initialProfessionalActivities )
+
+reversion.register(ProfessionalProfile, follow=['academicResume', 'agreement', 'profession', 'workplace'])
 
 class LicenceBoard(models.Model):
     """
@@ -113,6 +124,8 @@ class ProfessionalIdentification(models.Model):
     def __unicode__(self):
         return self.registerNumber
 
+reversion.register(ProfessionalIdentification)
+
 class CareProfessional(models.Model):
     """
     This class represents a careprofessional 
@@ -125,8 +138,10 @@ class CareProfessional(models.Model):
     person = models.OneToOneField(Person)
     comments = models.CharField(max_length=200, null=True)
     active = models.BooleanField(default=True)
-    
-    history= audittrail.AuditTrail()
-    
+
     def __unicode__(self):
         return u"%s" % self.person
+
+reversion.register(CareProfessional, follow=['person', 'professionalIdentification', 'professionalProfile'])
+
+

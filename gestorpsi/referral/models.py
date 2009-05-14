@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import reversion
 from dateutil import rrule
 from django.db import models
 from swingtime.models import Event, EventType
@@ -75,3 +76,7 @@ class Referral(Event):
 
     def __unicode__(self):
         return u"%s" % (self.service)
+
+reversion.register(Event)
+reversion.register(Referral, follow=['event_ptr'])
+

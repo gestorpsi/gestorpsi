@@ -37,6 +37,8 @@ class ProfessionalResponsible(models.Model):
     def __unicode__(self):
         return u"%s" % self.name
 
+reversion.register(ProfessionalResponsible)
+
 class PersonType(models.Model):
     """
     This class represents a person type for organization profile. The person type can be (physical or juridical)  
@@ -86,6 +88,8 @@ class ProvidedType(models.Model):
     description = models.CharField(max_length=50)
     def __unicode__(self):
         return u"%s" % self.description
+
+reversion.register(ProvidedType)
 
 class Management(models.Model):
     """    
@@ -181,6 +185,8 @@ class Organization(models.Model):
             return self.emails.all()[0]
         else:
             return ''
+
+reversion.register(Organization, follow=['provided_type', 'phones', 'address', 'emails', 'sites', 'instantMessengers'])
 
 class AgreementType(models.Model):
     """

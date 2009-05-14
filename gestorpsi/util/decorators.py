@@ -21,6 +21,7 @@ GNU General Public License for more details.
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.http import HttpResponseRedirect
 
 def user_passes_test_with_403(test_func, login_url=None):
     """
@@ -37,7 +38,7 @@ def user_passes_test_with_403(test_func, login_url=None):
             if test_func(request.user):
                 return view_func(request, *args, **kwargs)
             elif not request.user.is_authenticated():
-                return HttpResponseRedirect('%s?%s=%s' % (login_url, REDIRECT_FIELD_NAME, quote(request.get_full_path())))
+                return HttpResponseRedirect(login_url)
             else:
                 resp = render_to_response('403.html', {'object': "Oops! You don't have access for this service!", }, context_instance=RequestContext(request))
                 return resp

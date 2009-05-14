@@ -18,7 +18,6 @@ import reversion
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from gestorpsi.util import audittrail
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util import CryptographicUtils as cryptoUtils
 
@@ -36,8 +35,6 @@ class Email(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
-    
-    #history = audittrail.AuditTrail()
 
     def __cmp__(self, other):
         if (self.email == other.email) and \
@@ -60,8 +57,6 @@ class Site(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
-    
-    #history = audittrail.AuditTrail()
 
     def __cmp__(self, other):
         if (self.description == other.description) and \
@@ -89,8 +84,6 @@ class InstantMessenger(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
-    
-    #history = audittrail.AuditTrail()
 
     def __cmp__(self, other):
         if (self.identity == other.identity) and \

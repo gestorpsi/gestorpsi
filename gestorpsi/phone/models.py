@@ -18,7 +18,6 @@ import reversion
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from gestorpsi.util import audittrail
 from gestorpsi.util.uuid_field import UuidField
 
 class PhoneType(models.Model):
@@ -49,9 +48,7 @@ class Phone(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
-    
-    #history= audittrail.AuditTrail()
-    
+
     def __cmp__(self, other):
         if (self.area == other.area) and \
            (self.phoneNumber == other.phoneNumber) and \

@@ -72,8 +72,6 @@ class Address(models.Model):
     object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
     
-    #history= audittrail.AuditTrail()
-        
     def __cmp__(self, other):
         if (self.addressPrefix == other.addressPrefix) and \
            (self.addressLine1 == other.addressLine1) and \

@@ -22,7 +22,6 @@ from gestorpsi.document.models import Document
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
-#from gestorpsi.util import audittrail
 from gestorpsi.util.first_capitalized import first_capitalized
    
 Gender = ( ('0','No Information'),('1','Female'), ('2','Male'))
@@ -57,9 +56,7 @@ class Person(models.Model):
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True)
         
     organization = models.ForeignKey(Organization, null=True)
-    
-    #history= audittrail.AuditTrail()
-    
+
     """ function used only in reports.py waiting a fix in Geraldo SubReport"""
     def get_documents(self):
         if self.document.all().count() > 1:

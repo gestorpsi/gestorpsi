@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from datetime import datetime
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -111,7 +112,8 @@ def save(request, object_id= ''):
     object.person = person_save(request, person)
     object.job = request.POST['job']
     if(request.POST['hiredate']):
-        object.hiredate = request.POST['hiredate']
+        object.hiredate = datetime.strptime(request.POST['hiredate'],'%d/%m/%Y')
+
     object.save()
 
     return HttpResponse(object.id)

@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import reversion
 from django.db import models
 from django.contrib.contenttypes import generic
 from gestorpsi.phone.models import Phone
@@ -31,7 +32,7 @@ class ProfessionalResponsible(models.Model):
     name = models.CharField(max_length=50)
     subscription = models.CharField(max_length=50)
     organization_subscription = models.CharField(max_length=50)
-    org = models.ForeignKey('Organization', null=True, blank=True)
+    organization = models.ForeignKey('Organization', null=True, blank=True)
 
     def __unicode__(self):
         return u"%s" % self.name
@@ -123,7 +124,7 @@ class Organization(models.Model):
     @version: 1.0 
     """
     id= UuidField(primary_key=True)
-    
+
     # identity
     name = models.CharField(max_length=100)
     trade_name = models.CharField(max_length=100, blank=True)
@@ -132,7 +133,7 @@ class Organization(models.Model):
     cnes = models.CharField(max_length=100, blank=True)
     state_inscription = models.CharField(max_length=30, blank=True)
     city_inscription = models.CharField(max_length=30, blank=True)
-    professionalResponsible = models.ForeignKey(ProfessionalResponsible, null=True, blank=True)
+
     last_id_record = models.PositiveIntegerField(default=0)
             # subscriptions_professional_institutional = models.CharField(max_length=100, blank=True)
             # professional_responsible = models.CharField(max_length=100, blank=True) 
@@ -147,7 +148,7 @@ class Organization(models.Model):
     provided_type = models.ManyToManyField(ProvidedType, null=True, blank=True)
     activity = models.ForeignKey(Activitie, null=True, blank=True)
     public = models.BooleanField(default=True)
-    
+
     comment = models.CharField(max_length=765, blank=True)
         
     active = models.BooleanField(default=True)

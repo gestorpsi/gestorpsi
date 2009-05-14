@@ -32,7 +32,7 @@ def professional_responsible_save(request, object, ids, names, subscriptions, or
     ProfessionalResponsible.objects.all().delete()
     for x in range(len(names)):
         obj = []
-        obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], org=object, organization_subscription=organization_subscriptions[x]))
+        obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x]))
         if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):
             obj.save()
 
@@ -61,7 +61,7 @@ def form(request):
         'Management': Management.objects.all(),
         'Dependence': Dependence.objects.all(),
         'Activitie': Activitie.objects.all(),
-        'professional_responsible': ProfessionalResponsible.objects.all(),
+        'professional_responsible': ProfessionalResponsible.objects.filter(organization = user.get_profile().org_active),
         },
         context_instance=RequestContext(request))
 

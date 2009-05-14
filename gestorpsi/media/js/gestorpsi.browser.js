@@ -26,7 +26,7 @@ $(document).ready(function(){
       $('div.login div.ff_not_ok').show();
   }
   
-  $('body').fadeIn(1200);
+  $('body').fadeIn(1000);
  
   $('div.login div.ff_not_ok a.login_unlock').click(function() {
       $('div.login div.ff_not_ok').hide();

@@ -30,10 +30,10 @@ GNU General Public License for more details.
 <div class="main_area">
 
 <div class="photo">
-        <img class="img_people" organization="{{ user.get_profile.org_active.id }}" src="{% if object.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.photo }}{% else %}/media/img/male_generic_photo.gif.png{% endif %}" />
+        <img class="img_people" organization="{{ user.get_profile.org_active.id }}" src="{% if object.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
         <a class="clips notajax">{% trans "Logo" %}</a>
         <input type="hidden" name="photo" value="{{ object.photo }}" class="photo" />
-        <a class="notajax delete" title="delete" onclick="$(this).siblings('input.photo').val(''); $(this).siblings('img.img_people').attr('src', '/media/img/male_generic_photo.gif.png');"><span>{% trans "Delete" %}</span></a>
+        <a class="notajax delete" title="delete" onclick="$(this).siblings('input.photo').val(''); $(this).siblings('img.img_people').attr('src', '/media/img/generic_photo.gif');"><span>{% trans "Delete" %}</span></a>
 </div> 
 
 

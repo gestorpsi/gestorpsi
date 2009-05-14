@@ -36,11 +36,11 @@ GNU General Public License for more details.
         <label>{% trans "ID Record" %}<br />
         <input name="idRecord" type="text" class="medium" value="{{ object.idRecord }}" readonly="1" /></label>
         <label>{% trans "Legacy Record" %}<br />
-        <input name="legacyRecord" type="text" class="medium" value="{{ object.legacyRecord }}" /></label>
+        <input name="legacyRecord" maxlength="15" type="text" class="medium" value="{{ object.legacyRecord }}" /></label>
         <label>{% trans "Admission Date" %}<br />
         <input name="admission_date" type="text" class="medium" value="{% if not object.admission_date %}{% now "d/m/Y" %}{% else %}{{ object.admission_date|date:"d/m/Y" }}{% endif %}" mask="99/99/9999" /></label>
         <label>{% trans "Health Document" %}<br />
-        <input name="healthDocument" type="text" class="big" value="{{ object.healthDocument }}" /></label>
+        <input name="healthDocument" maxlength="15" type="text" class="big" value="{{ object.healthDocument }}" /></label>
 
         </fieldset>
 
@@ -237,10 +237,11 @@ GNU General Public License for more details.
         <label>{% trans "Comments" %}<br />
         <textarea name="comments" cols="" rows="8" class="giant">{{ object.comments }}</textarea></label>
 
-        
+        <!-- not used        
         <div class="btn_right">
                 <input name="" type="submit" class="btn" value="Concluir Admissão" />
         </div>
+         -->
         </fieldset>
 </div>
 

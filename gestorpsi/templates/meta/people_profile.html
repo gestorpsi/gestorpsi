@@ -77,11 +77,11 @@ People Personal Profile Form
 
                 <!--not autocomplete-->
                 <label class="noautocomplete"{% if not object.person.birthForeignCity %} style="display:none"{% endif %}>{% trans "City" %}<br />
-                        <input type="text" name="birthForeignCity" class="extramedium" value="{{ object.person.birthForeignCity }}"  />
+                        <input type="text" maxlength="100" name="birthForeignCity" class="extramedium" value="{{ object.person.birthForeignCity }}"  />
                 </label>
                 
                 <label class="noautocomplete"{% if not object.person.birthForeignState %} style="display:none"{% endif %}>{% trans "State" %}<br />
-                        <input type="text" name="birthForeignState" class="extrasmall" value="{{ object.person.birthForeignState }}" />
+                        <input type="text" maxlength="100" name="birthForeignState" class="extrasmall" value="{{ object.person.birthForeignState }}" />
                 </label>
         </div>
 </fieldset>

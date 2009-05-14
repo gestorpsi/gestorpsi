@@ -64,7 +64,7 @@ GNU General Public License for more details.
 			</select>
 			</label>
 			<label>{% trans "Organization Register Number" %}<br />
-				<input type="text" name="professional_registerNumber" value="{{ object.professionalIdentification.registerNumber }}" />
+				<input type="text" name="professional_registerNumber" maxlength="50" value="{{ object.professionalIdentification.registerNumber }}" />
 			</label>
 	</fieldset>
 

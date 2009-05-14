@@ -20,15 +20,15 @@ GNU General Public License for more details.
 	<input type="hidden" name="professionalId" value="{{ professional.id }}" />
 	
     <label>{% trans "Professional name" %}<br />
-	    <input type="text" class="extrabig" name="professional_name" value="{{ professional.name }}" />
+	    <input type="text" maxlength="50" class="extrabig" name="professional_name" value="{{ professional.name }}" />
 	</label>
 
 	<label>{% trans "Professional Subscription" %}<br />
-	    <input type="text" class="medium" name="professional_subscription" value="{{ professional.subscription }}" />
+	    <input type="text" maxlength="50" class="medium" name="professional_subscription" value="{{ professional.subscription }}" />
 	</label>
 
 	<label>{% trans "Professional Organization Subscription" %}<br />
-	    <input type="text" class="medium" name="professional_organization_subscription" value="{{ professional.organization_subscription }}" />
+	    <input type="text" maxlength="50" class="medium" name="professional_organization_subscription" value="{{ professional.organization_subscription }}" />
 	</label>
 	
 	<label>

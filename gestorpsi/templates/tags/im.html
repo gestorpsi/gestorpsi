@@ -19,7 +19,7 @@ GNU General Public License for more details.
 <div>
 	<input type="hidden" name="im_id" value="{{ im.id }}" />
 	<label>{% trans "Instant Messengers" %}<br />
-	<input type="text" class="big" name="im_identity" value="{{ im.identity }}" />
+	<input type="text" maxlength="100" class="big" name="im_identity" value="{{ im.identity }}" />
 	</label>
 
 	<label>{% trans "IM Type" %}<br />

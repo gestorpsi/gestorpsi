@@ -20,7 +20,7 @@ GNU General Public License for more details.
 	<input type="hidden" name="parentId" value="{{ parent.id }}" />
 	
 	<label>{% trans "Parent Name" %}<br />
-    <input type="text" name="parent_name" class="big" value="{{ p.person.name }}" />
+    <input type="text" maxlength="50" name="parent_name" class="big" value="{{ p.person.name }}" />
 	</label>
 
 	<label>{% trans "Parent Relation" %}<br />

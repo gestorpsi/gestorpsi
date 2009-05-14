@@ -54,7 +54,7 @@ GNU General Public License for more details.
 <fieldset class="professional contact" {% ifequal object_type '1' %}style="display:none"{% endifequal %}>
 <legend>{% trans "Professional Identification" %}</legend>
 		<label>{% trans "Name" %}<br />
-		<input type="text" name="{% ifnotequal object_type '1' %}name{% endifnotequal %}" class="big tabtitle professional_name cleanme" value="{{ object.person.name }}" />
+		<input type="text" maxlength="50" name="{% ifnotequal object_type '1' %}name{% endifnotequal %}" class="big tabtitle professional_name cleanme" value="{{ object.person.name }}" />
 		</label>
 </fieldset>
 
@@ -62,7 +62,7 @@ GNU General Public License for more details.
 <fieldset class="organization contact"{% if not object.id %} style="display:none"{%else%}{% ifnotequal object_type '1'%} style="display:none"{%endifnotequal%}{% endif %}>
 <legend>{% trans "Organization Identification" %}</legend>
 		<label>{% trans "Name" %}<br />
-		<input type="text" name="{% ifequal object_type '1' %}name{% endifequal %}" class="big tabtitle organization_name cleanme" value="{{ object.name }}" />
+		<input type="text" maxlength="50" name="{% ifequal object_type '1' %}name{% endifequal %}" class="big tabtitle organization_name cleanme" value="{{ object.name }}" />
 		</label>
 </fieldset>
 

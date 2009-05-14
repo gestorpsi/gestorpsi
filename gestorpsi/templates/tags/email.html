@@ -19,7 +19,7 @@ GNU General Public License for more details.
 <div>
 	<input type="hidden" name="email_id" value="{{ email.id }}" />
 	<label>{% trans "Email" %}<br />
-	<input type="text" class="big" name="email_email" value="{{ email.email }}" />
+	<input type="text" maxlength="100" class="big" name="email_email" value="{{ email.email }}" />
 	</label>
 
 	<label>{% trans "Type" %}<br />

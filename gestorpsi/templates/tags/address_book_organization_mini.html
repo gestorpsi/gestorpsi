@@ -22,9 +22,8 @@ GNU General Public License for more details.
 <fieldset>
 <legend>{% trans "Adding new Organization" %}</legend>
     <label>{% trans "Name" %}<br />
-    <input type="text" name="name" class="big tabtitle" />
+    <input type="text" maxlength="100"  name="name" class="big tabtitle" />
     </label>
-
 
     <label class="block">
     <input type="hidden" name="type" value="organization" />
@@ -34,6 +33,4 @@ GNU General Public License for more details.
 </fieldset>
 </form>
 </div>
-
-
 

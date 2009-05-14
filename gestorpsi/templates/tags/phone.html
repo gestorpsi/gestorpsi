@@ -20,11 +20,11 @@ GNU General Public License for more details.
 	<input type="hidden" name="phoneId" value="{{ phone.id }}" />
 	
 	<label>{% trans "Area" %}<br />
-	<input type="text" class="extrasmall" name="area" value="{{ phone.area }}" mask="99" />
+	<input type="text" maxlength="2" class="extrasmall" name="area" value="{{ phone.area }}" mask="99" />
 	</label>
 
 	<label>{% trans "Number" %}<br />
-	<input type="text" class="medium" name="phoneNumber" value="{{ phone.phoneNumber }}" mask="99999999" />
+	<input type="text" maxlength="8"  class="medium" name="phoneNumber" value="{{ phone.phoneNumber }}" mask="99999999" />
 	</label>
 	
 	<label>{% trans "Extension" %}<br />

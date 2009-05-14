@@ -50,10 +50,10 @@ GNU General Public License for more details.
 	<fieldset id="fieldset_employee_details">
 		<legend>{% trans "Personal Identification" %}</legend>
 			<label>{% trans "Job" %}<br />
-			<input type="text" name="job" class="big" value="{{ object.job }}" id="id_job" />
+			<input type="text" maxlength="30" name="job" class="big" value="{{ object.job }}" id="id_job" />
 			</label>
 			<label>{% trans "Hiredate" %}<br />
-			<input type="text" name="hiredate" class="calendar birthdate" value="{% ifnotequal object.hiredate None %}{{ object.hiredate }}{% endifnotequal %}" id="id_hiredate" />
+			<input type="text" name="hiredate" class="calendar birthdate" value="{% ifnotequal object.hiredate None %}{{ object.hiredate|date:"d/m/Y" }}{% endifnotequal %}" id="id_hiredate" mask="99/99/9999" />
 			</label>
 	</fieldset>
 

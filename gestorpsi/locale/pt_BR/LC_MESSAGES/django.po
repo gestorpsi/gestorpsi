@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-14 03:33-0300\n"
+"POT-Creation-Date: 2009-05-14 03:48-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1117,7 +1117,7 @@ msgstr ""
 "href=/accounts/login/>Fazer Log in</a><br><a href=/accounts/register/"
 ">Realizar novo cadastro</a>"
 
-#: templates/registration/login.html:21 templates/registration/login.html:38
+#: templates/registration/login.html:21 templates/registration/login.html:39
 msgid "Log in"
 msgstr "Entrar"
 
@@ -1125,40 +1125,40 @@ msgstr "Entrar"
 msgid "Welcome to GestorPsi"
 msgstr "Bem vindo ao GestorPsi"
 
-#: templates/registration/login.html:28
+#: templates/registration/login.html:29
 msgid ""
 "Your browser is not compatible with and some functions can not work well"
-msgstr "Seu navegador de internet não é totalmente compatível e algumas operações poderão não funcionar corretamente."
+msgstr "Seu navegador não é totalmente compatível"
 
-#: templates/registration/login.html:30
+#: templates/registration/login.html:31
 msgid "Please, get the latest version of"
 msgstr "Por favor, obtenha grátis a última versão do navegador"
 
-#: templates/registration/login.html:30
+#: templates/registration/login.html:31
 msgid "Firefox"
 msgstr ""
 
-#: templates/registration/login.html:30
-msgid "to get all features running"
-msgstr "para utilizar todas as funcionalidades do GestorPsi"
-
 #: templates/registration/login.html:31
+msgid "to get all features running"
+msgstr "para utilizar todas os recursos do GestorPsi"
+
+#: templates/registration/login.html:32
 msgid "or"
 msgstr "ou"
 
-#: templates/registration/login.html:31
+#: templates/registration/login.html:32
 msgid "continue with restricted features"
 msgstr "continue com restrições"
 
-#: templates/registration/login.html:42
+#: templates/registration/login.html:43
 msgid "If you don't have an account, you can"
 msgstr "Se você ainda não possui uma conta,"
 
-#: templates/registration/login.html:42
+#: templates/registration/login.html:43
 msgid "sign up"
 msgstr "registre-se"
 
-#: templates/registration/login.html:42
+#: templates/registration/login.html:43
 msgid "for one"
 msgstr "aqui"
 

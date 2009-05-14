@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-14 03:33-0300\n"
+"POT-Creation-Date: 2009-05-14 03:48-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1111,7 +1111,7 @@ msgid ""
 "for"
 msgstr ""
 
-#: templates/registration/login.html:21 templates/registration/login.html:38
+#: templates/registration/login.html:21 templates/registration/login.html:39
 msgid "Log in"
 msgstr ""
 
@@ -1119,40 +1119,40 @@ msgstr ""
 msgid "Welcome to GestorPsi"
 msgstr ""
 
-#: templates/registration/login.html:28
+#: templates/registration/login.html:29
 msgid ""
 "Your browser is not compatible with and some functions can not work well"
 msgstr ""
 
-#: templates/registration/login.html:30
+#: templates/registration/login.html:31
 msgid "Please, get the latest version of"
 msgstr ""
 
-#: templates/registration/login.html:30
+#: templates/registration/login.html:31
 msgid "Firefox"
 msgstr ""
 
-#: templates/registration/login.html:30
+#: templates/registration/login.html:31
 msgid "to get all features running"
 msgstr ""
 
-#: templates/registration/login.html:31
+#: templates/registration/login.html:32
 msgid "or"
 msgstr ""
 
-#: templates/registration/login.html:31
+#: templates/registration/login.html:32
 msgid "continue with restricted features"
 msgstr ""
 
-#: templates/registration/login.html:42
+#: templates/registration/login.html:43
 msgid "If you don't have an account, you can"
 msgstr ""
 
-#: templates/registration/login.html:42
+#: templates/registration/login.html:43
 msgid "sign up"
 msgstr ""
 
-#: templates/registration/login.html:42
+#: templates/registration/login.html:43
 msgid "for one"
 msgstr ""
 

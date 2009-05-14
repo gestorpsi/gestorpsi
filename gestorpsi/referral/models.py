@@ -77,6 +77,9 @@ class Referral(Event):
     def __unicode__(self):
         return u"%s" % (self.service)
 
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+
 reversion.register(Event)
 reversion.register(Referral, follow=['event_ptr'])
 

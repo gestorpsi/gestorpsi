@@ -28,7 +28,11 @@ class Employee(models.Model):
     
     def __unicode__(self):
         return u"%s" % self.person.name
+
     class Meta:
         ordering = ['person']    
+
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
 
 reversion.register(Employee, follow=['person'])

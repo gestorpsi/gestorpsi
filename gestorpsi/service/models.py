@@ -213,6 +213,9 @@ class Service(models.Model):
         ordering = ['name']
         get_latest_by = ['date']
 
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+
 reversion.register(Service, follow=['modalities', 'procedures', 'agreements', 'professions', 'responsibles', 'professionals' ])
 reversion.register(Modality)
 reversion.register(Procedure)

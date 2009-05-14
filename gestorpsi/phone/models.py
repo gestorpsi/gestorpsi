@@ -29,6 +29,7 @@ class PhoneType(models.Model):
     @see: Phone
     """
     description = models.CharField(max_length=20)
+    
     def __unicode__(self):
         return self.description
 
@@ -60,5 +61,8 @@ class Phone(models.Model):
     
     def __unicode__(self):
         return "(%s) %s" % (self.area, self.phoneNumber)
+
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
 
 reversion.register(Phone)

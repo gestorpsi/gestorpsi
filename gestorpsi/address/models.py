@@ -91,4 +91,7 @@ class Address(models.Model):
     def __unicode__(self):
         return u"%s %s\n%s" % (self.addressPrefix, self.addressLine1, self.addressLine2)
 
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+
 reversion.register(Address)

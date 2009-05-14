@@ -85,6 +85,11 @@ function commomForm(response, request, form) {
     // reload form binds
     bindAjaxForms();
     bindFormActions();
+
+    // display revision update message
+    $('div#edit_form span.editing span.last').hide();
+    $('div#edit_form span.editing span.now').show();
+    
 }
 
 /**
@@ -101,6 +106,9 @@ var form_organization_options = {
       	var new_title = $('#form_organization input.tabtitle').val();
       	// new title in tab
      	 $(".edit_form h2.title").text(new_title); // update titles page title
+        // display revision update message
+        $('div#edit_form span.editing span.last').hide();
+        $('div#edit_form span.editing span.now').show();
       	formSuccess();
 	}
       },

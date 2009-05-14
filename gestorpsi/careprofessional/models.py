@@ -64,6 +64,9 @@ class AcademicResume(models.Model):
     finalDatePostGraduate = models.DateField(null=True)
     area = models.CharField(max_length=100, null=True)    
 
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+
 reversion.register(AcademicResume, follow='institutionType')
 
 class Profession(models.Model):
@@ -96,6 +99,9 @@ class ProfessionalProfile(models.Model):
     
     def __unicode__(self):
         return '%s' % ( self.initialProfessionalActivities )
+
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
 
 reversion.register(ProfessionalProfile, follow=['academicResume', 'agreement', 'profession', 'workplace'])
 
@@ -141,6 +147,9 @@ class CareProfessional(models.Model):
 
     def __unicode__(self):
         return u"%s" % self.person
+
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
 
 reversion.register(CareProfessional, follow=['person', 'professionalIdentification', 'professionalProfile'])
 

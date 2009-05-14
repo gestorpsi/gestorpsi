@@ -33,14 +33,19 @@ class AdmissionReferral(models.Model):
     referral_organization = models.ForeignKey(Organization, null=True)
     referral_professional = models.ForeignKey(CareProfessional, null=True)
     client = models.ForeignKey(Client)
+    
     def __unicode__(self):
         return u"%s" % self.referral_choice
+    
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
 
 reversion.register(AdmissionReferral, follow=['client'])
 
 class IndicationChoice(models.Model):
     description = models.CharField(max_length=250)
     nick = models.CharField(max_length=50)
+    
     def __unicode__(self):
         return u"%s" % self.description
 
@@ -50,7 +55,11 @@ class Indication(models.Model):
     referral_organization = models.ForeignKey(Organization, null=True)
     referral_professional = models.ForeignKey(CareProfessional, null=True)
     client = models.ForeignKey(Client)
+
     def __unicode__(self):
         return u"%s" % self.indication_choice
+
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
 
 reversion.register(Indication, follow=['client'])

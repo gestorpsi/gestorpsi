@@ -37,6 +37,9 @@ class ProfessionalResponsible(models.Model):
     def __unicode__(self):
         return u"%s" % self.name
 
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+
 reversion.register(ProfessionalResponsible)
 
 class PersonType(models.Model):
@@ -169,11 +172,11 @@ class Organization(models.Model):
     organization = models.ForeignKey('self', related_name="%(class)s_related", null=True, blank=True)
     
     def __unicode__(self):
-        return self.short_name
-                              
-    def __unicode__(self):
         return self.name
-    
+
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+
     def get_first_phone(self):
         if ( len( self.phones.all() ) != 0 ):
             return self.phones.all()[0]

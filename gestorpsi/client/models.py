@@ -50,7 +50,8 @@ class Client(models.Model):
     class Meta:
         ordering = ['person']
 
-import reversion
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
 
 reversion.register(Client, follow=['person', 'person_link','indication'])
 reversion.register(PersonLink)

@@ -23,6 +23,7 @@ from gestorpsi.util import CryptographicUtils as cryptoUtils
 
 class EmailType(models.Model):
     description= models.CharField(max_length=45)
+
     def __unicode__(self):
         return self.description
 
@@ -46,6 +47,9 @@ class Email(models.Model):
     def __unicode__(self):
         return self.email
 
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+
 reversion.register(Email)
 
 class Site(models.Model):
@@ -67,6 +71,9 @@ class Site(models.Model):
     
     def __unicode__(self):
         return self.site
+
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
 
 reversion.register(Site)
 
@@ -94,5 +101,8 @@ class InstantMessenger(models.Model):
 
     def __unicode__(self):
         return "%s (%s)" % (self.identity, self.network)
+
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
 
 reversion.register(InstantMessenger)

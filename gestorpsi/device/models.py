@@ -81,6 +81,9 @@ class Device(models.Model):
 
     def __unicode__(self):
        return u"%s" % ( self.description )
+
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
    
     class Meta:
         ordering = ['description']
@@ -114,6 +117,9 @@ class DeviceDetails(models.Model):
 
     def __unicode__(self):
       return u"%s - %s" % (self.device.description, self.brand)
+
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
 
 reversion.register(DeviceDetails, follow=['device'])
 reversion.register(Device)

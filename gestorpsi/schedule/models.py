@@ -29,6 +29,9 @@ class ScheduleOccurrence(Occurrence):
     device = models.ManyToManyField(DeviceDetails, null=True, blank=True)
     annotation = models.CharField(max_length=765, null=True, blank=True)
 
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+
 reversion.register(Occurrence)
 reversion.register(ScheduleOccurrence, follow=['occurrence_ptr'])
 

@@ -57,6 +57,9 @@ class Person(models.Model):
         
     organization = models.ForeignKey(Organization, null=True)
 
+    def __unicode__(self):
+        return u"%s" % self.name
+
     """ function used only in reports.py waiting a fix in Geraldo SubReport"""
     def get_documents(self):
         if self.document.all().count() > 1:
@@ -139,9 +142,6 @@ class Person(models.Model):
         else:
             return self.birthPlace.state.country
 
-    def __unicode__(self):
-        return u"%s" % self.name
-    
     def get_first_phone(self):
         if ( len( self.phones.all() ) != 0 ):
             return self.phones.all()[0]
@@ -160,54 +160,7 @@ class Person(models.Model):
         else:
             return ''        
 
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).latest('revision__date_created').revision
+
 reversion.register(Person, follow=['phones','address', 'emails', 'sites', 'instantMessengers'])
-
-
-"""
-Teste do Models no shell de Pessoa e suas ligacoes
-
-from gestorpsi.person.models import Person, MaritalStatus, Gender
-from gestorpsi.phone.models import PhoneType, Phone
-from gestorpsi.address.models import Address, AddressType, City, Country, State
-from gestorpsi.document.models import Document, Issuer
-from gestorpsi.internet.models import Email, Site, InstantMessenger, IMNetwork
-
-p = Person()
-#p.firstName = "Fulano"
-#p.lastName = "da Silva"
-p.firstName = "Fulano da Silva"
-p.nickname = "Fulaninho"
-p.birthPlace = City.objects.get(pk=44085)
-p.gender = Gender.objects.get(pk=1)
-p.maritalStatus = MaritalStatus.objects.get(pk=1)
-p.nationality = Country.objects.get(pk=33)
-p.save()
-
-p.phones.create(area='11',phoneNumber='33442211',ext='123',phoneType=PhoneType.objects.get(pk=1))
-p.phones.create(area='11',phoneNumber='98761234',ext='',phoneType=PhoneType.objects.get(pk=2))
-
-address = Address()
-address.addressPrefix = "Rua"
-address.addressLine1 = "Rui Barbosa, 1234"
-address.addressLine2 = "Anexo II - Sala 4"
-address.neighborhood = "Centro"
-address.zipCode = "12345-123"
-address.addressType = AddressType.objects.get(pk=1)
-address.city = City.objects.get(pk=44085)
-address.content_object = p
-address.save()
-
-p.document.create(identityCard='23.232.232-2',issuer=Issuer.objects.get(pk=1),state=State.objects.get(pk=24),cpf='434.343.343-34')
-
-p.emails.create(email='bla@uol.com.br')
-p.emails.create(email='ble@uol.com.br')
-p.emails.create(email='bli@uol.com.br')
-p.emails.create(email='blo@uol.com.br')
-p.emails.create(email='blu@uol.com.br')
-
-p.sites.create(description='Meu site',site='http://www.uol.com.br')
-p.sites.create(description='Meu blog',site='http://bla.blog.uol.com.br')
-p.sites.create(description='Meu orkut',site='http://www.orkut.com/747463636')
-
-p.instantMessengers.create(identity='7373234',network=IMNetwork.objects.get(pk=1))
-"""

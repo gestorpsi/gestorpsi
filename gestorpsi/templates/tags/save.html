@@ -24,9 +24,9 @@ GNU General Public License for more details.
 		{% trans "This register are not saved yet. Click Save to register it." %}
 		</span>
 		<span class="editing">
-			{% trans 'Last revision by' %} {#{% trans 'in' %}#}
+			{% trans 'Last revision' %} {#{% trans 'in' %}#}
 			<span class="last">
-			{{ last_update|date:"r"|slice:":-9"}}&nbsp;hs
+			{{ object.revision.date_created|date:"r"|slice:":-9"}}&nbsp;hs
 			</span>
 			<span class="now" style="display:none;">
 			{% trans "less than one minute" %}

@@ -122,11 +122,12 @@ def list_types(request, page = 1):
 def form(request, object_id= ''):
     user = request.user
     try:
-        device_details = get_object_or_404( DeviceDetails, pk= object_id )
+        object = get_object_or_404( DeviceDetails, pk= object_id )
     except Http404:
-        device_details= DeviceDetails()
-    return render_to_response('device/device_form.html', {'object': Device.objects.filter(organization=user.get_profile().org_active),
-                                                          'device_details': device_details,
+        object= DeviceDetails()
+    return render_to_response('device/device_form.html', {
+                                                          'object': object,  
+                                                          'device_type': Device.objects.filter(organization=user.get_profile().org_active),
                                                           'places': Place.objects.filter(organization=user.get_profile().org_active.id),                                                          
                                                           'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS },
                                                           context_instance=RequestContext(request))

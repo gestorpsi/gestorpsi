@@ -132,6 +132,8 @@ def form(request, object_type='', object_id=''):
         emails    = object.emails.all()
         sites     = object.sites.all()
         instantMessengers = object.instantMessengers.all()
+        if object.organization:
+            organizations = Organization.objects.filter(contact_owner=user.get_profile().person, active=True, visible=True)
     else:                    # PROFESSIONAL (2)
         object = get_object_or_404(CareProfessional, pk=object_id)
         if object.person.organization.organization:

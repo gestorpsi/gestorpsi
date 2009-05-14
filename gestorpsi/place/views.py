@@ -166,22 +166,20 @@ def save(request, object_id=''):
 #        room.place = place
 #        room.save()
 
-def room_save(request, object_id = ''):
+def room_save(request, object_id=''):
     try:
-        object = Room.object.get(pk = object_id)
-
+        object = Room.objects.get(pk=object_id)
     except:
         object = Room()
-
-    print RoomType.objects.get(id, pk=request.POST.get('room_type'))
 
     object.id = request.POST.get( 'room_id' )
     object.description = request.POST.get( 'description' )
     object.dimension = request.POST.get('dimension')
-    #object.room_type = request.POST.get('room_type')
     object.room_type = RoomType.objects.get(pk=request.POST.get('room_type'))
     object.furniture = request.POST.get('furniture')
-    object.active = request.POST.get('active')
+
+    # ******** Need call the function that return True or False ********
+    object.active = request.POST.get('active') 
 
         # place.room_set.all().delete() 
         # If uncomment this line, all event of scheduled will be deleted when add a new room or modifi one of it.

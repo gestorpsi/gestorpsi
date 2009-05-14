@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-14 13:09-0300\n"
+"POT-Creation-Date: 2009-05-14 17:43-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,6 +80,12 @@ msgstr "Estabelecimento"
 msgid "Name of your organization"
 msgstr "Sigla ou nome do seu estabelecimento"
 
+#: authentication/views.py:132
+msgid ""
+"Informed organization is already registered. Please choice another name here "
+"or login with an existing account"
+msgstr ""
+
 #: careprofessional/views.py:37
 msgid "Psychologist"
 msgstr "Psicólogo"
@@ -106,6 +112,7 @@ msgstr "Móvel"
 #: templates/contact/contact_list.html:31 templates/device/device_list.html:30
 #: templates/device/device_type_list.html:29
 #: templates/employee/employee_list.html:33 templates/place/place_list.html:30
+#: templates/place/place_room_list.html:30
 #: templates/service/service_list.html:29 templates/users/users_list.html:29
 #: templates/users/users_search.html:29
 msgid "of"
@@ -241,7 +248,7 @@ msgid "Professional Identification"
 msgstr "Identificação Profissional"
 
 #: templates/careprofessional/careprofessional_form.html:52
-#: templates/service/service_form.html:62
+#: templates/service/service_form.html:63
 #: templates/tags/careprofessional_mini.html:26 templates/tags/phone.html:22
 msgid "Area"
 msgstr "Área"
@@ -273,17 +280,17 @@ msgid "Professional Agreements"
 msgstr "Convênios Profissionais"
 
 #: templates/careprofessional/careprofessional_form.html:85
-#: templates/service/service_form.html:162
+#: templates/service/service_form.html:163
 msgid "Agreements"
 msgstr "Convênios"
 
 #: templates/careprofessional/careprofessional_form.html:95
 msgid "Professional Workplaces"
-msgstr "Locais de trabalho"
+msgstr "Locais"
 
 #: templates/careprofessional/careprofessional_form.html:97
 msgid "Workplaces"
-msgstr "Local de trabalho"
+msgstr "Selecione um ou mais locais da lista abaixo"
 
 #: templates/careprofessional/careprofessional_form.html:105
 msgid "Add New Workplace"
@@ -294,7 +301,7 @@ msgid "Professional Services"
 msgstr "Serviços do Profissional"
 
 #: templates/careprofessional/careprofessional_form.html:111
-#: templates/core/main.html:105
+#: templates/core/main.html:111
 msgid "Services"
 msgstr "Serviços"
 
@@ -303,17 +310,17 @@ msgid "Professional Status"
 msgstr "Status do profissional"
 
 #: templates/careprofessional/careprofessional_form.html:127
-#: templates/service/service_form.html:200
+#: templates/service/service_form.html:201
 msgid "Active?"
 msgstr "Ativo?"
 
 #: templates/careprofessional/careprofessional_form.html:129
-#: templates/service/service_form.html:202
+#: templates/service/service_form.html:203
 msgid "Yes"
 msgstr "Sim"
 
 #: templates/careprofessional/careprofessional_form.html:130
-#: templates/service/service_form.html:203
+#: templates/service/service_form.html:204
 msgid "No"
 msgstr "Não"
 
@@ -322,6 +329,7 @@ msgstr "Não"
 #: templates/contact/contact_list.html:21 templates/device/device_list.html:21
 #: templates/device/device_type_list.html:20
 #: templates/employee/employee_list.html:21 templates/place/place_list.html:21
+#: templates/place/place_room_list.html:21
 #: templates/service/service_list.html:20 templates/users/users_list.html:21
 #: templates/users/users_search.html:21
 msgid "There is no registers available."
@@ -332,6 +340,7 @@ msgstr "Não existem registros disponíveis"
 #: templates/contact/contact_list.html:21 templates/device/device_list.html:21
 #: templates/device/device_type_list.html:20
 #: templates/employee/employee_list.html:21 templates/place/place_list.html:21
+#: templates/place/place_room_list.html:21
 #: templates/service/service_list.html:20 templates/users/users_list.html:21
 #: templates/users/users_search.html:21
 msgid "Click"
@@ -342,6 +351,7 @@ msgstr "Clique"
 #: templates/contact/contact_list.html:21 templates/device/device_list.html:21
 #: templates/device/device_type_list.html:20
 #: templates/employee/employee_list.html:21 templates/place/place_list.html:21
+#: templates/place/place_room_list.html:21
 #: templates/service/service_list.html:20 templates/users/users_list.html:21
 #: templates/users/users_search.html:21
 msgid "here"
@@ -352,6 +362,7 @@ msgstr "aqui"
 #: templates/contact/contact_list.html:21 templates/device/device_list.html:21
 #: templates/device/device_type_list.html:20
 #: templates/employee/employee_list.html:21 templates/place/place_list.html:21
+#: templates/place/place_room_list.html:21
 #: templates/service/service_list.html:20 templates/users/users_list.html:21
 #: templates/users/users_search.html:21
 msgid "if you want to add a new one."
@@ -367,6 +378,7 @@ msgstr "Todos os Profissionais"
 #: templates/contact/contact_list.html:31 templates/device/device_list.html:30
 #: templates/device/device_type_list.html:29
 #: templates/employee/employee_list.html:33 templates/place/place_list.html:30
+#: templates/place/place_room_list.html:30
 #: templates/service/service_list.html:29 templates/users/users_list.html:29
 #: templates/users/users_search.html:29
 msgid "Displaying"
@@ -381,6 +393,7 @@ msgstr "Profissional(is)"
 #: templates/contact/contact_list.html:31 templates/device/device_list.html:30
 #: templates/device/device_type_list.html:29
 #: templates/employee/employee_list.html:33 templates/place/place_list.html:30
+#: templates/place/place_room_list.html:30
 #: templates/service/service_list.html:29 templates/users/users_list.html:29
 #: templates/users/users_search.html:29
 msgid "Page"
@@ -436,7 +449,8 @@ msgstr "Tipo de contato"
 
 #: templates/contact/contact_form.html:34 templates/device/device_form.html:93
 #: templates/device/device_form.html:107 templates/device/device_form.html:128
-#: templates/service/service_form.html:73 templates/tags/address.html:82
+#: templates/place/place_room_form.html:32
+#: templates/service/service_form.html:74 templates/tags/address.html:82
 #: templates/tags/document.html:22 templates/tags/email.html:25
 #: templates/tags/phone.html:34 templates/tags/room.html:31
 msgid "Type"
@@ -480,126 +494,137 @@ msgstr "Sistema de Gestão de Serviços em Psicologia"
 msgid "email"
 msgstr "e-mail"
 
-#: templates/core/main.html:88
-msgid "preferences"
-msgstr "Preferências"
+#: templates/core/main.html:89
+msgid "Logged as"
+msgstr ""
 
-#: templates/core/main.html:88
+#: templates/core/main.html:91
+msgid "Meu cadastro"
+msgstr ""
+
+#: templates/core/main.html:93
 msgid "quit"
 msgstr "Sair"
 
-#: templates/core/main.html:95
+#: templates/core/main.html:100
 msgid "start"
 msgstr "Iniciar"
 
-#: templates/core/main.html:96
+#: templates/core/main.html:101
 msgid "calendar"
 msgstr "Agenda"
 
-#: templates/core/main.html:97
+#: templates/core/main.html:102
 msgid "clients"
 msgstr "Clientes"
 
-#: templates/core/main.html:98
+#: templates/core/main.html:103
 msgid "contacts"
 msgstr "Contatos"
 
-#: templates/core/main.html:99
+#: templates/core/main.html:104
 msgid "organization"
 msgstr "Estabelecimento"
 
-#: templates/core/main.html:101
+#: templates/core/main.html:106
 msgid "My Organization"
-msgstr "Cadastro"
+msgstr "Meu Estabelecimento"
 
-#: templates/core/main.html:102
+#: templates/core/main.html:107
 msgid "Places"
 msgstr "Locais"
 
-#: templates/core/main.html:103
+#: templates/core/main.html:108
+#, fuzzy
+msgid "Rooms"
+msgstr "Salas"
+
+#: templates/core/main.html:109
 msgid "Employees"
 msgstr "Funcionários"
 
-#: templates/core/main.html:104 templates/referral/referral_form.html:41
+#: templates/core/main.html:110 templates/referral/referral_form.html:41
 msgid "Professionals"
 msgstr "Profissionais"
 
-#: templates/core/main.html:106
+#: templates/core/main.html:112
 msgid "Equipments"
 msgstr "Equipamentos"
 
-#: templates/core/main.html:107
+#: templates/core/main.html:113
 msgid "Users"
 msgstr "Usuários"
 
-#: templates/core/main.html:117 templates/core/main.html.py:140
-#: templates/core/main.html:156 templates/core/main.html.py:163
-#: templates/core/main.html:170 templates/core/main.html.py:177
-#: templates/core/main.html:184 templates/core/main.html.py:192
+#: templates/core/main.html:123 templates/core/main.html.py:146
+#: templates/core/main.html:162 templates/core/main.html.py:169
+#: templates/core/main.html:176 templates/core/main.html.py:183
+#: templates/core/main.html:190 templates/core/main.html.py:197
+#: templates/core/main.html:205
 msgid "all"
 msgstr "Todos"
 
-#: templates/core/main.html:118 templates/core/main.html.py:129
-#: templates/core/main.html:141 templates/core/main.html.py:157
-#: templates/core/main.html:164 templates/core/main.html.py:171
-#: templates/core/main.html:178 templates/core/main.html.py:185
-#: templates/core/main.html:193
+#: templates/core/main.html:124 templates/core/main.html.py:135
+#: templates/core/main.html:147 templates/core/main.html.py:163
+#: templates/core/main.html:170 templates/core/main.html.py:177
+#: templates/core/main.html:184 templates/core/main.html.py:191
+#: templates/core/main.html:198 templates/core/main.html.py:206
 msgid "add"
 msgstr "Adicionar"
 
-#: templates/core/main.html:119 templates/core/main.html.py:135
-#: templates/core/main.html:142 templates/core/main.html.py:158
-#: templates/core/main.html:165 templates/core/main.html.py:172
-#: templates/core/main.html:179 templates/core/main.html.py:187
+#: templates/core/main.html:125 templates/core/main.html.py:141
+#: templates/core/main.html:148 templates/core/main.html.py:164
+#: templates/core/main.html:171 templates/core/main.html.py:178
+#: templates/core/main.html:185 templates/core/main.html.py:192
+#: templates/core/main.html:200
 msgid "search"
 msgstr "Busca"
 
-#: templates/core/main.html:120
+#: templates/core/main.html:126
 msgid "booked"
 msgstr "Reservado"
 
-#: templates/core/main.html:121
+#: templates/core/main.html:127
 msgid "actives"
 msgstr "Ativos"
 
-#: templates/core/main.html:122
+#: templates/core/main.html:128
 msgid "waiting"
 msgstr "Fila de espera"
 
-#: templates/core/main.html:127
+#: templates/core/main.html:133
 msgid "daily"
 msgstr "Diária"
 
-#: templates/core/main.html:128
+#: templates/core/main.html:134
 msgid "events"
 msgstr "Eventos"
 
-#: templates/core/main.html:134 templates/core/main.html.py:148
+#: templates/core/main.html:140 templates/core/main.html.py:154
 msgid "Profile"
 msgstr "Perfil"
 
-#: templates/core/main.html:147
+#: templates/core/main.html:153
 msgid "Identity"
 msgstr "Identificação"
 
-#: templates/core/main.html:149
+#: templates/core/main.html:155
 msgid "Address"
 msgstr "Endereços"
 
-#: templates/core/main.html:150 templates/meta/addressbook.html:41
+#: templates/core/main.html:156 templates/meta/addressbook.html:41
 #: templates/organization/organization_form.html:183
 msgid "Phones"
 msgstr "Telefones"
 
-#: templates/core/main.html:151
+#: templates/core/main.html:157
 msgid "Internet"
 msgstr "Internet"
 
-#: templates/core/main.html:186
+#: templates/core/main.html:199
 msgid "type"
 msgstr "Tipo"
 
-#: templates/core/main.html:223
+#: templates/core/main.html:236
 msgid "Loading"
 msgstr "Carregando"
 
@@ -615,13 +640,12 @@ msgstr "Informe os detalhes do equipamento e clique em salvar"
 
 #: templates/device/device_form.html:40
 #: templates/schedule/schedule_form.html:68
-#: templates/schedule/schedule_occurrence_form.html:46
 msgid "Devices"
-msgstr "Dispositivo"
+msgstr "Equipamentos"
 
 #: templates/device/device_form.html:42
 msgid "Select Device Type or"
-msgstr "Selecione o tipo de Dispositivo ou"
+msgstr "Selecione o tipo de equipamento ou"
 
 #: templates/device/device_form.html:55
 msgid "Adding equipment details"
@@ -645,7 +669,7 @@ msgstr "Status do equipamento"
 
 #: templates/device/device_form.html:82
 msgid "Lendable?"
-msgstr "Empréstimo permitido?"
+msgstr "Disponível para empréstimo?"
 
 #: templates/device/device_form.html:92
 msgid "Durability"
@@ -701,16 +725,16 @@ msgstr "Salas"
 
 #: templates/device/device_list.html:29
 msgid "All Devices"
-msgstr "Todos os Dispositivos"
+msgstr "Todos os Equipamentos"
 
 #: templates/device/device_list.html:30
 #: templates/device/device_type_list.html:29
 msgid "device(s)"
-msgstr "Dispositivo(s)"
+msgstr "Equipamento(s)"
 
 #: templates/device/device_type_form.html:41
 msgid "Editing Device Type"
-msgstr "Selecione o tipo de Dispositivo ou"
+msgstr "Selecione o tipo de equipamento ou"
 
 #: templates/device/device_type_list.html:28
 msgid "All types"
@@ -824,8 +848,7 @@ msgstr "Foto"
 #: templates/tags/address.html:93 templates/tags/document.html:59
 #: templates/tags/email.html:36 templates/tags/im.html:36
 #: templates/tags/people_parent.html:42 templates/tags/phone.html:46
-#: templates/tags/professional.html:35 templates/tags/room.html:50
-#: templates/tags/website.html:27
+#: templates/tags/professional.html:35 templates/tags/website.html:27
 msgid "Delete"
 msgstr "Excluir"
 
@@ -850,9 +873,9 @@ msgid "Birthdate"
 msgstr "Data de nascimento"
 
 #: templates/meta/people_profile.html:31
-#: templates/service/service_form.html:102
+#: templates/service/service_form.html:103
 msgid "Age"
-msgstr "Idade"
+msgstr "Faixa etária"
 
 #: templates/meta/people_profile.html:35
 msgid "Marital Status"
@@ -877,7 +900,7 @@ msgstr "Cidade"
 
 #: templates/meta/people_profile.html:73 templates/tags/address.html:68
 msgid "Select state first"
-msgstr "Selecione um estado primeiro"
+msgstr "Selecione um estado"
 
 #: templates/meta/people_profile.html:83 templates/tags/address.html:78
 #: templates/tags/document.html:51
@@ -886,7 +909,7 @@ msgstr "Estado"
 
 #: templates/organization/organization_form.html:25
 msgid "Organization Configuration"
-msgstr "Configuração de Estabelecimento"
+msgstr "Configuração"
 
 #: templates/organization/organization_form.html:34
 msgid "Logo"
@@ -914,7 +937,7 @@ msgstr "Indisponível"
 
 #: templates/organization/organization_form.html:68
 msgid "Visible for others"
-msgstr "Visível para terceiros?"
+msgstr "Visível para terceiros"
 
 #: templates/organization/organization_form.html:70
 msgid "Visible?"
@@ -979,7 +1002,7 @@ msgstr "Dependência"
 
 #: templates/organization/organization_form.html:153
 msgid "Care Provided Type"
-msgstr "Tipo de Cuidado Prestado"
+msgstr "Tipo de Serviço Prestado"
 
 #: templates/organization/organization_form.html:161
 msgid "Education and Research Activity"
@@ -1009,18 +1032,18 @@ msgstr "Tipo de Local"
 msgid "Room Details"
 msgstr "Detalhes da Sala"
 
-#: templates/place/place_form.html:95
+#: templates/place/place_form.html:95 templates/place/place_room_form.html:77
 #: templates/tags/careprofessional_sidebar.html:26
 #: templates/tags/client_sidebar.html:26
 #: templates/tags/employee_sidebar.html:26
 msgid "Object Actions"
 msgstr "Ações"
 
-#: templates/place/place_form.html:97
+#: templates/place/place_form.html:97 templates/place/place_room_form.html:79
 msgid "Add room in this place"
 msgstr "Adicionar sala neste local"
 
-#: templates/place/place_form.html:102
+#: templates/place/place_form.html:102 templates/place/place_room_form.html:84
 msgid "Rooms from this place"
 msgstr "Salas deste local"
 
@@ -1032,6 +1055,42 @@ msgstr "Todos os locais"
 #: templates/place/place_list.html:30
 msgid "place(s)"
 msgstr "Local(is)"
+
+#: templates/place/place_room_form.html:23 templates/tags/room.html:22
+#: templates/tags/website.html:24
+msgid "Description"
+msgstr "Descrição"
+
+#: templates/place/place_room_form.html:27 templates/tags/room.html:26
+msgid "Dimension"
+msgstr "Dimensão"
+
+#: templates/place/place_room_form.html:34 templates/tags/address.html:84
+#: templates/tags/document.html:24 templates/tags/document.html.py:41
+#: templates/tags/email.html:27 templates/tags/im.html:27
+#: templates/tags/people_parent.html:28 templates/tags/phone.html:36
+#: templates/tags/room.html:33
+msgid "There is no types available to choice"
+msgstr "Não existem tipos disponíveis para escolha"
+
+#: templates/place/place_room_form.html:44 templates/tags/room.html:43
+msgid "Furniture"
+msgstr "Mobília"
+
+#: templates/place/place_room_form.html:49 templates/tags/room.html:48
+#, fuzzy
+msgid "Active for work?"
+msgstr "Ativo?"
+
+#: templates/place/place_room_list.html:29
+#: templates/schedule/schedule_filter.html:52
+msgid "All Rooms"
+msgstr "Todos os Clientes"
+
+#: templates/place/place_room_list.html:30
+#, fuzzy
+msgid "room(s)"
+msgstr "Salas"
 
 #: templates/referral/referral_form.html:29
 #: templates/referral/referral_form.html:31
@@ -1086,7 +1145,7 @@ msgstr "Deseja"
 
 #: templates/referral/referral_list.html:21
 msgid "forward it now?"
-msgstr "encaminhar agora?"
+msgstr "encaminhá-lo agora?"
 
 #: templates/registration/activate.html:3
 #: templates/registration/activate.html:8
@@ -1156,7 +1215,7 @@ msgstr "Se você ainda não possui uma conta,"
 
 #: templates/registration/login.html:43
 msgid "sign up"
-msgstr "registre-se"
+msgstr "cadastre-se"
 
 #: templates/registration/login.html:43
 msgid "for one"
@@ -1176,7 +1235,7 @@ msgstr "Acessar novamente"
 
 #: templates/registration/password_reset_email.html:2
 msgid "You're receiving this e-mail because you requested a password reset"
-msgstr "Você está recebendo este e-mail por ter solicitado uma nova senha"
+msgstr "Você solicitou uma redefinição de senha"
 
 #: templates/registration/password_reset_email.html:3
 #, python-format
@@ -1202,7 +1261,7 @@ msgstr "A equipe do %(site_name)s"
 
 #: templates/registration/registration_complete.html:3
 msgid "Registration complete"
-msgstr "Registro completo"
+msgstr "Cadastro completo"
 
 #: templates/registration/registration_complete.html:6
 msgid "Check your email"
@@ -1220,28 +1279,33 @@ msgstr ""
 msgid "New account"
 msgstr "Registre seu estabelecimento"
 
-#: templates/registration/registration_form.html:24
+#: templates/registration/registration_form.html:23
 msgid ""
 "Fill out the form to the left (all fields are required), and your account "
 "will be created; you'll be sent an email with instructions on how to finish "
 "your registration"
 msgstr ""
-"Preencha o formulário para a criação da conta para seu estabelecimento. <b>O "
+"Preencha o formulário de criação da conta de seu estabelecimento. <b>O "
 "usuário cadastrado será o administrador do estabelecimento.</b> Um e-mail "
-"será enviado com as instruções sobre como concluir o seu cadastro"
+"será enviado com as instruções sobre como concluir o cadastro."
+
+#: templates/registration/registration_form.html:25
+#, fuzzy
+msgid "Form errors! Please correct errors below and try again"
+msgstr "Por favor, corrija os erros abaixo"
 
 #: templates/registration/registration_form.html:29
 msgid "terms of service"
-msgstr ""
+msgstr "Termos de serviço"
 
 #: templates/registration/registration_form.html:31
 #, fuzzy
 msgid "terms of service description"
-msgstr "Descrição do Serviço"
+msgstr "Descrição dos termos de serviço"
 
 #: templates/registration/registration_form.html:35
 msgid "Accept terms and register"
-msgstr ""
+msgstr "Aceite os termos e "
 
 #: templates/registration/registration_form.html:37
 msgid "Already have an account?"
@@ -1289,10 +1353,6 @@ msgstr "Local(is)"
 msgid "rooms"
 msgstr "Salas"
 
-#: templates/schedule/schedule_filter.html:52
-msgid "All Rooms"
-msgstr "Todos os Clientes"
-
 #: templates/schedule/schedule_filter.html:60
 msgid "services"
 msgstr "Serviços"
@@ -1321,13 +1381,13 @@ msgstr "Data"
 #: templates/schedule/schedule_form.html:37
 #: templates/schedule/schedule_occurrence_form.html:31
 msgid "Start Time"
-msgstr "Hora de início"
+msgstr "Início"
 
 #: templates/schedule/schedule_form.html:40
 #: templates/schedule/schedule_form.html:83
 #: templates/schedule/schedule_occurrence_form.html:35
 msgid "End Time"
-msgstr "Data de término"
+msgstr "Término"
 
 #: templates/schedule/schedule_form.html:49
 msgid "Existing Referral"
@@ -1357,11 +1417,11 @@ msgstr "Número de eventos"
 
 #: templates/schedule/schedule_form.html:90
 msgid "Occurrence Frequency"
-msgstr "Frequencia"
+msgstr "Frequência"
 
 #: templates/schedule/schedule_form.html:91
 msgid "Frequency Period"
-msgstr "Este evento se repete"
+msgstr "Este evento se repete:"
 
 #: templates/schedule/schedule_form.html:96
 msgid "Interval"
@@ -1423,7 +1483,7 @@ msgstr "Salvar"
 
 #: templates/schedule/schedule_form.html:154
 #: templates/schedule/schedule_occurrence_form.html:59
-#: templates/tags/address_book_organization_mini.html:32
+#: templates/tags/address_book_organization_mini.html:31
 #: templates/tags/address_book_professional_mini.html:41
 #: templates/tags/careprofessional_mini.html:45
 #: templates/tags/device_mini.html:28 templates/tags/organization_mini.html:30
@@ -1443,6 +1503,11 @@ msgstr "Profissionais"
 #: templates/schedule/schedule_occurrence_form.html:30
 msgid "Due Details"
 msgstr "Detalhes do Cliente"
+
+#: templates/schedule/schedule_occurrence_form.html:46
+#, fuzzy
+msgid "Devices Available"
+msgstr "Serviços (todos)"
 
 #: templates/service/service_form.html:25
 msgid "Adding New Service"
@@ -1465,50 +1530,50 @@ msgid "Service Description"
 msgstr "Descrição do Serviço"
 
 #: templates/service/service_form.html:47
-msgid "Keywords"
-msgstr "Palavras-chave"
+msgid "Keywords (separated by ;)"
+msgstr ""
 
-#: templates/service/service_form.html:50
+#: templates/service/service_form.html:52
 msgid "Research Project"
 msgstr "Projeto de Pesquisa"
 
-#: templates/service/service_form.html:60
+#: templates/service/service_form.html:61
 msgid "Service Profile"
 msgstr "Perfil do Serviço"
 
-#: templates/service/service_form.html:81
+#: templates/service/service_form.html:82
 msgid "Solicitation"
 msgstr "Solicitação"
 
-#: templates/service/service_form.html:89
+#: templates/service/service_form.html:90
 msgid "Profession"
 msgstr "Profissão"
 
-#: templates/service/service_form.html:100
+#: templates/service/service_form.html:101
 msgid "Clinica Area"
 msgstr "Área Clínica"
 
-#: templates/service/service_form.html:112
+#: templates/service/service_form.html:113
 msgid "Service Procedures"
 msgstr "Serviços e Procedimentos"
 
-#: templates/service/service_form.html:140
+#: templates/service/service_form.html:141
 msgid "Procedures Choiced"
 msgstr "Procedimentos Escolhidos"
 
-#: templates/service/service_form.html:160
+#: templates/service/service_form.html:161
 msgid "Service Relations"
 msgstr "Relação de Serviços"
 
-#: templates/service/service_form.html:172
+#: templates/service/service_form.html:173
 msgid "Related Professionals"
 msgstr "Profissionais Relacionados"
 
-#: templates/service/service_form.html:182
+#: templates/service/service_form.html:183
 msgid "Professionals Responsible"
 msgstr "Profissional Responsável"
 
-#: templates/service/service_form.html:199
+#: templates/service/service_form.html:200
 msgid "Service Status"
 msgstr "Status de Serviço"
 
@@ -1540,19 +1605,12 @@ msgstr "Bairro"
 msgid "ZIP Code"
 msgstr "CEP"
 
-#: templates/tags/address.html:84 templates/tags/document.html:24
-#: templates/tags/document.html.py:41 templates/tags/email.html:27
-#: templates/tags/im.html:27 templates/tags/people_parent.html:28
-#: templates/tags/phone.html:36 templates/tags/room.html:33
-msgid "There is no types available to choice"
-msgstr "Não existem tipos disponíveis para escolha"
-
 #: templates/tags/address_book_organization_mini.html:23
 #: templates/tags/organization_mini.html:22
 msgid "Adding new Organization"
 msgstr "Adicione novo Estabelecimento"
 
-#: templates/tags/address_book_organization_mini.html:31
+#: templates/tags/address_book_organization_mini.html:30
 #: templates/tags/address_book_professional_mini.html:40
 #: templates/tags/careprofessional_mini.html:44
 #: templates/tags/device_mini.html:27 templates/tags/organization_mini.html:29
@@ -1599,11 +1657,11 @@ msgstr "Imprimir Registro"
 
 #: templates/tags/device_mini.html:22
 msgid "Adding new Device"
-msgstr "Adicionar novo dispositivo"
+msgstr "Adicionar novo equipamento"
 
 #: templates/tags/device_mini.html:23
 msgid "Device"
-msgstr "Dispositivo"
+msgstr "Equipamento"
 
 #: templates/tags/document.html:35
 msgid "Document"
@@ -1643,23 +1701,11 @@ msgstr "Profissional"
 
 #: templates/tags/professional.html:26
 msgid "Professional Subscription"
-msgstr "Estabelecimento"
+msgstr "Inscrição profissional"
 
 #: templates/tags/professional.html:30
 msgid "Professional Organization Subscription"
-msgstr "Estabelecimento"
-
-#: templates/tags/room.html:22 templates/tags/website.html:24
-msgid "Description"
-msgstr "Descrição"
-
-#: templates/tags/room.html:26
-msgid "Dimension"
-msgstr "Dimensão"
-
-#: templates/tags/room.html:43
-msgid "Furniture"
-msgstr "Mobília"
+msgstr "Inscrição do Estabelecimento"
 
 #: templates/tags/save.html:24
 msgid "This register are not saved yet. Click Save to register it."
@@ -1745,6 +1791,12 @@ msgstr "Todos os Usuários"
 msgid "user(s)"
 msgstr "Usuário(s)"
 
+#~ msgid "preferences"
+#~ msgstr "Preferências"
+
+#~ msgid "Keywords"
+#~ msgstr "Palavras-chave"
+
 #~ msgid "Register"
 #~ msgstr "Continuar"
 
@@ -1799,9 +1851,6 @@ msgstr "Usuário(s)"
 
 #~ msgid "yearly"
 #~ msgstr "Anual"
-
-#~ msgid "Please correct the errors below"
-#~ msgstr "Por favor, corrija os erros abaixo"
 
 #~ msgid "Nome do estabelecimento"
 #~ msgstr "Nome do Estabelecimento"

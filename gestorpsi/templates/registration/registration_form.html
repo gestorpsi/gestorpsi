@@ -20,10 +20,10 @@ GNU General Public License for more details.
 {% block content %}
 
 <h2>{% trans "New account" %} </h2>
-<br />
 <p>{% trans "Fill out the form to the left (all fields are required), and your account will be created; you'll be sent an email with instructions on how to finish your registration" %}.</p>
-<br />
 
+{% if form.errors %}<ul class="errorlist"><li>{% trans "Form errors! Please correct errors below and try again" %}</li></ul>{% endif %}
+<br />
 <form method="post" action="">
 {{ form.as_p }}
 <p><label for="id_terms_of_service">{% trans "terms of service" %}</label>

@@ -20,9 +20,16 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, Http404
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.template import RequestContext
+from django.contrib.auth.forms import AuthenticationForm
+from django.template.defaultfilters import slugify
+from django.core.urlresolvers import reverse
+from django.forms.util import ErrorList
+from django.utils.translation import ugettext as _
+
 from gestorpsi.organization.models import Organization
 from gestorpsi.settings import DEBUG
-from django.contrib.auth.forms import AuthenticationForm
+from gestorpsi.authentication.forms import RegistrationForm
 
 # login_check decorator
 # code from http://code.activestate.com/recipes/498217/
@@ -110,34 +117,32 @@ def unblocked_user(user):
     else:
         return True
 
-"""
-+def get_object_or_new(klass, *args, **kwargs):
-+    # bitbucket.org/offline/django-annoying/src/tip/annoying/functions.py
-+    from django.shortcuts import _get_queryset
-+    queryset = _get_queryset(klass)
-+    try:
-+        return queryset.get(*args, **kwargs)
-+    except queryset.model.DoesNotExist:
-+        return klass()
-+
-+def get_object_or_None(klass, *args, **kwargs):
-+    from django.shortcuts import _get_queryset
-+    queryset = _get_queryset(klass)
-+    try:
-+        return queryset.get(*args, **kwargs)
-+    except queryset.model.DoesNotExist:
-+        return None
-+
-+def unblocked_user(username):
-+    user = get_object_or_None(User, username=username)
-+    if user == None:
-+        return False
-+    else:
-+        if user.get_profile().try_login >= settings.PASSWORD_RETIRES:
-             return False
--        else:
-+        else:
-             return True
--    else:
--        return True
-"""
+'''
+from django-registration
+'''
+def register(request, success_url=None,
+             form_class=RegistrationForm,
+             template_name='registration/registration_form.html',
+             extra_context=None):
+    if request.method == 'POST':
+        form = form_class(data=request.POST)
+
+        if Organization.objects.filter(short_name__iexact = slugify(request.POST['organization'])):
+            form = form_class(data=request.POST) # organization already exists, escaping .. 
+            error_msg = _(u"Informed organization is already registered. Please choice another name here or login with an existing account")
+            form.errors["organization"] = ErrorList([error_msg])
+        else:
+            if form.is_valid():
+                new_user = form.save()
+                return HttpResponseRedirect(success_url or reverse('registration_complete'))
+    else:
+        form = form_class()
+    
+    if extra_context is None:
+        extra_context = {}
+    context = RequestContext(request)
+    for key, value in extra_context.items():
+        context[key] = callable(value) and value() or value
+    return render_to_response(template_name,
+                              { 'form': form },
+                              context_instance=context)

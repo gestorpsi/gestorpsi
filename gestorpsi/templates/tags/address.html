@@ -83,7 +83,7 @@ GNU General Public License for more details.
 	{% if not AddressTypes %}
 		{% trans "There is no types available to choice" %}
 	{% else %}
-	<select name="addressType" >
+	<select name="addressType" class="normal">
 		{% for AddressType in AddressTypes %}
 			<option value="{{ AddressType.id }}"{% ifequal address.addressType.id AddressType.id %} selected{% endifequal %}>{{ AddressType }}</option>
 		{% endfor %}

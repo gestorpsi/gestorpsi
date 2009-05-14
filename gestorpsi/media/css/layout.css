@@ -512,6 +512,11 @@ input[type=submit].mini {
 	width: 310px;
 }
 
+
+.normal {
+	width: 120px;
+}
+
 .small {
 	width: 76px;
 }

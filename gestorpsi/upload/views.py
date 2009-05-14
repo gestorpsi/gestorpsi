@@ -28,7 +28,6 @@ def send(request):
         filename = ''
         if 'file' in request.FILES:
             pathdir = '%simg/organization/%s' % (MEDIA_ROOT, user.get_profile().org_active.id)
-            print pathdir
             if not os.path.exists(pathdir):
                 os.mkdir(pathdir)
                 os.mkdir('%s/.thumb' % pathdir)

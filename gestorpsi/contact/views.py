@@ -80,7 +80,6 @@ def list(request, page = 1):
         lista.append(i)
 
     lista = list_order(request, lista)
-    print lista
     object_length = len(lista)
     paginator = Paginator(lista, settings.PAGE_RESULTS)
     object = paginator.page(page)

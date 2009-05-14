@@ -59,7 +59,6 @@ class Referral(Event):
 
     def add_occurrences(self, start_time, end_time, room, device, **rrule_params):
         rrule_params.setdefault('freq', rrule.DAILY)
-        print device
         if 'count' not in rrule_params and 'until' not in rrule_params:
             o = ScheduleOccurrence.objects.create(event=self, start_time=start_time, end_time=end_time, room_id=room)
             o.device = device

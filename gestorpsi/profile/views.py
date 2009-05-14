@@ -42,7 +42,6 @@ def form(request):
     user = request.user
     profile = user.get_profile()
     preferences = person_type_url(user.get_profile().person)
-    print preferences
     date = datetime.datetime.now()
     phones = profile.person.phones.all()
     addresses= profile.person.address.all()

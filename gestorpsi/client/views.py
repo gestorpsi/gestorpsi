@@ -226,7 +226,6 @@ def organization_clients(request):
     """
     user = request.user
     clients = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
-    print user.get_profile().org_active.id
     dict = {}
     array = [] #json
     i = 0

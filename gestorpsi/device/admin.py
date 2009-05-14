@@ -22,10 +22,8 @@ GNU General Public License for more details.
 """
 
 from django.contrib import admin
-from gestorpsi.device.models import DeviceType, Device, DeviceDetails
+from gestorpsi.device.models import Device, DeviceDetails
 
-class DeviceTypeAdmin(admin.ModelAdmin):
-    pass
 
 class DeviceAdmin(admin.ModelAdmin):
     pass
@@ -33,6 +31,5 @@ class DeviceAdmin(admin.ModelAdmin):
 class DeviceDetailsAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(DeviceType, DeviceTypeAdmin)
 admin.site.register(Device, DeviceAdmin)
 admin.site.register(DeviceDetails, DeviceDetailsAdmin)    

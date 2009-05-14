@@ -40,31 +40,6 @@ class DeviceDetailsManager(models.Manager):
     def fix(self):
         return super(DeviceDetailsManager, self).get_query_set().filter(mobility__exact='1')
 
-class DeviceType(models.Model):
-    """
-    This class represents device types.
-    @version: 1.0
-    """
-    id= UuidField(primary_key=True)
-    durability= models.CharField( max_length=1, choices=DURABILITY_TYPE )
-    mobility= models.CharField( max_length=1, choices=MOBILITY_TYPE )
-    restriction= models.CharField( max_length=100 )
-    
-    def __unicode__(self):
-      return "durability: %s, mobility: %s, restriction: %s" % (self.print_durability(), self.print_mobility(), self.restriction)
-  
-    def print_durability(self):
-       if self.durability == '1':
-           return 'consumable'
-       else:
-           return 'durable'
-   
-    def print_mobility(self):
-       if self.mobility == '1':
-           return 'fix'
-       else:
-           return 'mobile'
-
 class Device(models.Model):
     """
     The class C{Device} is used to represent devices in the context of the GestorPsi project. Using this class,
@@ -94,7 +69,6 @@ class DeviceDetails(models.Model):
     Instances of this class holds details about devices. For example, brand, comments, and so forth.
     @version: 1.0
     @see: Device
-    @see: DeviceType
     """
     id = UuidField(primary_key=True)
     brand = models.CharField( max_length=80 )

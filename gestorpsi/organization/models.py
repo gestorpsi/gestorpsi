@@ -170,6 +170,7 @@ class Organization(models.Model):
     sites = generic.GenericRelation(Site, null=True)
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True) ### it needs more description    
     organization = models.ForeignKey('self', related_name="%(class)s_related", null=True, blank=True)
+    contact_owner = models.ForeignKey('person.Person', related_name="contact_owner", null=True, blank=True)
     
     def __unicode__(self):
         return self.name

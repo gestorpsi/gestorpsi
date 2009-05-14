@@ -59,7 +59,7 @@ def index(request):
                                     'EmailTypes': EmailType.objects.all(),
                                     'IMNetworks': IMNetwork.objects.all(),
                                     'States': State.objects.all(),
-                                    'organizations': Organization.objects.filter(organization=org, active=True, visible=True)
+                                    'organizations': Organization.objects.filter(contact_owner=user.get_profile().person, active=True, visible=True), #Organization.objects.filter(organization=org, active=True, visible=True)
                                     },
                                     context_instance=RequestContext(request)
                                     )
@@ -124,7 +124,7 @@ def list(request, page = 1):
 def form(request, object_type='', object_id=''):
     user = request.user
     org = user.get_profile().org_active
-    organizations = Organization.objects.filter(active=True, visible=True)
+    organizations = Organization.objects.filter(organization=None, active=True, visible=True)
     
     if object_type == '1':   # ORGANIZATION (1)
         object = get_object_or_404(Organization, pk=object_id)
@@ -136,7 +136,8 @@ def form(request, object_type='', object_id=''):
     else:                    # PROFESSIONAL (2)
         object = get_object_or_404(CareProfessional, pk=object_id)
         if object.person.organization.organization:
-            organizations = organizations.filter(organization=org)
+            organizations = Organization.objects.filter(contact_owner=user.get_profile().person, active=True, visible=True)
+            #organizations = organizations.filter(organization=org)
         phones    = object.person.phones.all()
         addresses = object.person.address.all()
         emails    = object.person.emails.all()
@@ -180,6 +181,7 @@ def save(request, object_id=''):
             
         object.short_name = slugify(object.name)
         object.organization = user.get_profile().org_active
+        object.contact_owner = user.get_profile().person
         
         object.save()
         
@@ -236,7 +238,7 @@ def address_book_get_professionals(request):
             email = y.person.get_first_email()
             lista.append([y.id, '%s (%s)' % (y.person.name, y.person.organization), email, phone, '2', 'GESTORPSI'])
     
-    for x in Organization.objects.filter(organization=org):
+    for x in Organization.objects.filter(contact_owner=user.get_profile().person):
         phone = x.get_first_phone()
         email = x.get_first_email()
         for y in CareProfessional.objects.filter(person__organization=x):
@@ -257,7 +259,7 @@ def address_book_get_organizations(request):
         email = x.get_first_email()
         lista.append([x.id, x.name, email, phone, '1', 'GESTORPSI'])
 
-    for x in Organization.objects.filter(organization=org):
+    for x in Organization.objects.filter(contact_owner=user.get_profile().person):
         phone = x.get_first_phone()
         email = x.get_first_email()
         lista.append([x.id, x.name, email, phone, '1', 'LOCAL'])

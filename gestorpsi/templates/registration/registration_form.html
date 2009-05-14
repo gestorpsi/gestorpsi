@@ -1,21 +1,35 @@
 {% extends "registration/base.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
 {% load i18n %}
-{% block title %}{% trans "Registration" %}{% endblock %}
 {% block content %}
+{{ browser }} ae
+<h2>{% trans "New account" %} </h2>
+<br />
+<p>{% trans "Fill out the form to the left (all fields are required), and your account will be created; you'll be sent an email with instructions on how to finish your registration" %}.</p>
+<br />
 
-  <h1>{% trans "New account" %} </h1>
-
-
-
-
-  <form method="post" action="">
-	    {{ form.as_p }}
-    <p class="submit"><input type="submit" value="{% trans "Register" %}" class="btn" /></p>
-  </form>
-
- <p>{% trans "Fill out the form to the left (all fields are required), and your account will be created; you'll be sent an email with instructions on how to finish your registration" %}.</p>
-
+<form method="post" action="">
+{{ form.as_p }}
+<p class="submit"><input type="submit" value="{% trans "Register" %}" class="btn" /></p>
+</form>
 <p><a href="/accounts/login/">{% trans "Already have an account?" %}</a></p>
+
 
 {% endblock %}
 

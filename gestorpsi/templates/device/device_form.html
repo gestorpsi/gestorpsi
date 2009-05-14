@@ -141,7 +141,7 @@ GNU General Public License for more details.
 			</select>
 
 		<!--  room  -->
-		<label class="device_room"{% if not object %} style="display:none;"{% endif %}{% ifequal object.mobility '2' %} style="display:none;"{% endifequal %}>{% trans "Room" %}<br />
+		<label class="device_room"{% ifequal object.mobility '2' %} style="display:none;"{% endifequal %}>{% trans "Room" %}<br />
 			<select name="room_associated" class="medium device_room">
 				{% for p in places %}
 					{% for r in p.room_set.all %}

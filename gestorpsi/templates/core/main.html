@@ -20,8 +20,8 @@ GNU General Public License for more details.
 {% load i18n %}
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>GestorPsi - {% trans "Sistema de Gestão de Serviços em Psicologia" %} {% block title %}{% endblock %}</title>
+<script type="text/javascript" src="/media/js/jquery-1.2.6.min.js"></script> <!-- JQuery Core Library -->
 {% if user.is_authenticated %}
-	<script type="text/javascript" src="/media/js/jquery-1.2.6.min.js"></script> <!-- JQuery Core Library -->
 	<script type="text/javascript" src="/media/js/jquery.form.js"></script> <!-- jQuery Form Plugin -->
 	<script type="text/javascript" src="/media/js/jquery.validate.pack.js"></script> <!-- jQuery validation plug-in -->
 	<script type="text/javascript" src="/media/js/jquery-ui-1.5.3.custom.min.js"></script> <!-- JQuery UI with Draggable -->
@@ -40,6 +40,8 @@ GNU General Public License for more details.
 	<script type="text/javascript" src="/media/js/gestorpsi.schedule.js"></script>
 	<script type="text/javascript" src="/media/js/gestorpsi.client.js"></script>
 	<script type="text/javascript" src="/media/js/gestorpsi.json.js"></script>
+{% else %}
+    <script type="text/javascript" src="/media/js/gestorpsi.browser.js"></script>
 {% endif %}
 
 <style type="text/css" media="all">

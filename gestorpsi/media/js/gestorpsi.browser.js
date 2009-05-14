@@ -1,6 +1,4 @@
-{% extends "registration/base.html" %}
-
-{% comment %}
+/**
 
 Copyright (C) 2008 GestorPsi
 
@@ -14,13 +12,27 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
-{% endcomment %}
+*/
 
-{% load i18n %}
+/**
+ * verify mozilla user
+ */
 
-{% block content %}
-<h1>{% trans "You've been logged out." %}</h1>
-<p>{% trans "Thanks for use GestorPsi!" %}</p>
-<br />
-<p><a href="/accounts/login/">{% trans "log in again" %}</a></p>
-{% endblock %}
+$(document).ready(function(){
+  $('body').hide();
+  
+  if(!$.browser.mozilla) {
+      $('div.login .ff_ok').hide();
+      $('div.login div.ff_not_ok').show();
+  }
+  
+  $('body').fadeIn(1200);
+ 
+  $('div.login div.ff_not_ok a.login_unlock').click(function() {
+      $('div.login div.ff_not_ok').hide();
+      $('div.login .ff_ok').fadeIn(1000);
+  });
+});
+
+
+

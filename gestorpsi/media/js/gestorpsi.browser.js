@@ -26,11 +26,11 @@ $(document).ready(function(){
       $('div.login div.ff_not_ok').show();
   }
   
-  $('body').fadeIn(1000);
+  $('body').fadeIn(800);
  
   $('div.login div.ff_not_ok a.login_unlock').click(function() {
       $('div.login div.ff_not_ok').hide();
-      $('div.login .ff_ok').fadeIn(1000);
+      $('div.login .ff_ok').fadeIn(800);
   });
 });
 

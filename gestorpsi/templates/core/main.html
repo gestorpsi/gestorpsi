@@ -85,8 +85,13 @@ GNU General Public License for more details.
 		<ul>
 
     <!-- <li><a href="#email">{% trans "email" %}</a></li>| -->
-            <li><a href="/profile/" id="profile" class="main_menu" display="form" title="{{ profile.person.name }}">{% trans "preferences" %}</a></li>|<li><a href="/accounts/logout" class="logout">{% trans "quit" %}</a></li>
-
+            <li>
+            <small>{% trans "Logged as" %} <b>{{ profile.user.username }}</small></b>
+            </li>&nbsp;<li>
+                <a href="/profile/" id="profile" class="main_menu" display="form" title="{{ profile.person.name }}">{% trans "Meu cadastro" %}</a>
+            </li>|<li>
+            <a href="/accounts/logout" class="logout">{% trans "quit" %}</a>
+            </li>
 		</ul>
 	</div>
 	<div id="menus">

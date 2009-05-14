@@ -151,7 +151,10 @@ def care_professional_fill(request, object):
             ps = Service.objects.get(pk=ps_id)
             object.prof_services.add(ps)
 
-    profile.initialProfessionalActivities = datetime.strptime(request.POST[ 'professional_initialActivitiesDate' ],'%d/%m/%Y')
+    try:
+        profile.initialProfessionalActivities = datetime.strptime(request.POST[ 'professional_initialActivitiesDate' ],'%d/%m/%Y')
+    except:
+        profile.initialProfessionalActivities = None
     #profile.availableTime = request.POST['professional_availableTime']
     profile.save()
 

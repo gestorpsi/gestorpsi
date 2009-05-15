@@ -178,13 +178,12 @@ def room_save(request, object_id=''):
         object = Room()
         object.place = Place.objects.get(pk = request.POST.get('place_id'))
 
-    object.id = request.POST.get( 'room_id' )
+    #object.id = request.POST.get( 'room_id' ) # *** there's no need to set room id
     object.description = request.POST.get( 'description' )
     object.dimension = request.POST.get('dimension')
     object.room_type = RoomType.objects.get(pk=request.POST.get('room_type'))
     object.furniture = request.POST.get('furniture')
 
-    print request.POST.get('active')
     object.active = get_visible(request.POST.get('active'))
 
     if object.id:
@@ -286,10 +285,8 @@ def is_equal(request, a_room):
     else:
         return 1
 
-#@permission_required_with_403('place.place_read')
-#def get_visible( request, value ):
-def get_visible( value ):
-    if ( value == 'on' ):
+def get_visible(value):
+    if value == 'on':
         return True
     else:
         return False 

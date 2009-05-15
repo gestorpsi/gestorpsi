@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^accounts/register/$', 'authentication.views.register', {'form_class': RegistrationForm }, name='registration_register'),
+    url(r'^accounts/register/$', 'gestorpsi.authentication.views.register', {'form_class': RegistrationForm }, name='registration_register'),
     (r'^accounts/', include('gestorpsi.authentication.urls')),
     (r'^accounts/', include('registration.urls')),
     (r'^$', login_required(frontend_index)),    

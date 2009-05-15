@@ -80,7 +80,8 @@ class Room( models.Model ):
    """
    id = UuidField(primary_key=True)
    description= models.CharField( max_length= 80, blank=True )
-   dimension= models.CharField(max_length= 80, null=True, blank=True)
+   #dimension= models.IntegerField(null=True, blank=True)
+   dimension = models.CharField(max_length=10, blank=True)
    place= models.ForeignKey( Place )
    room_type= models.ForeignKey( RoomType, related_name= 'room_type' )
    furniture= models.TextField()

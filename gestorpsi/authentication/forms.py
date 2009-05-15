@@ -52,7 +52,7 @@ class RegistrationForm(RegistrationForm):
             organization = organization, # link place to this organization
         )
         default_room = Room.objects.create(
-            description = 'Room 1',
+            description = 'Sala 1',
             place = default_place,
             room_type=RoomType.objects.all()[0],
         )

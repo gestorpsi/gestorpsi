@@ -32,7 +32,10 @@ from gestorpsi.util.decorators import permission_required_with_403
 @permission_required_with_403('place.place_list')
 def room_index(request):
     user = request.user
-    return render_to_response( "place/place_room_index.html", 
+    return render_to_response( "place/place_room_index.html",{
+                                                            'RoomTypes': RoomType.objects.all(),
+                                                            'Places': Place.objects.all(),
+                                                            },
                                                           context_instance=RequestContext(request))
 
 @permission_required_with_403('place.place_list')
@@ -167,10 +170,13 @@ def save(request, object_id=''):
 #        room.save()
 
 def room_save(request, object_id=''):
+    user = request.user
+
     try:
         object = Room.objects.get(pk=object_id)
     except:
         object = Room()
+        object.place = Place.objects.get(pk = request.POST.get('place_id'))
 
     object.id = request.POST.get( 'room_id' )
     object.description = request.POST.get( 'description' )
@@ -178,13 +184,8 @@ def room_save(request, object_id=''):
     object.room_type = RoomType.objects.get(pk=request.POST.get('room_type'))
     object.furniture = request.POST.get('furniture')
 
-    # ******** Need call the function that return True or False ********
-    object.active = request.POST.get('active') 
-
-        # place.room_set.all().delete() 
-        # If uncomment this line, all event of scheduled will be deleted when add a new room or modifi one of it.
-    #for room in room_list( ids, descriptions, dimensions, room_types, furnitures, actives ):
-    #    room.place = place
+    print request.POST.get('active')
+    object.active = get_visible(request.POST.get('active'))
 
     if object.id:
         object.save(force_update=True)
@@ -235,8 +236,6 @@ def room_listaaa(request, page = 1):
 
     #object = Room.objects.filter(place = user.profile.org_active.id )
     object = Room.objects.all().values()[0]
-    print object.id
-    print len(object.id)
     
     #object_length = len(object)
     #paginator = Paginator(object, settings.PAGE_RESULTS)
@@ -287,8 +286,9 @@ def is_equal(request, a_room):
     else:
         return 1
 
-@permission_required_with_403('place.place_read')
-def get_visible( request, value ):
+#@permission_required_with_403('place.place_read')
+#def get_visible( request, value ):
+def get_visible( value ):
     if ( value == 'on' ):
         return True
     else:

@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<form action="/place/room/{% if room.id %}{{ room.id }}/{% endif %}save/" method="post" class="collapsable form_place" id="form_place">
+<form action="/place/room/{% if room.id %}{{ room.id }}/{% endif %}save/" method="post" class="collapsable form_room" id="form_room">
  <div class="form_room_box" id="room_{{ room.id }}">
 	<div class="form_room">
 			<input type="hidden" name="room_id" value="{{ room.id }}" />
@@ -45,6 +45,16 @@ GNU General Public License for more details.
 			<textarea name="furniture" class="big">{{ room.furniture }}</textarea>
 			
 			</label>
+           
+            {% if Places %} 
+            <label>{% trans "Select a Place" %}<br />
+	            Place &nbsp; <select name="place_id"> 
+                            {% for place in Places %}
+                                    <option value="{{ place.id }}" > {{ place }} &nbsp; </option>
+                            {% endfor %}
+                            </select>
+			</label>
+            {% endif %}
 			
             <label>{% trans "Active for work?" %}<br />
 	    Active &nbsp; <select name="active"> 
@@ -70,10 +80,10 @@ GNU General Public License for more details.
 <div id="sidebar" class="sidebar">
     {% if perms.place.place_write %}
         <div class="bg_blue">
-            <input type="hidden" name="place" value="{{ object.id }}" />
+            <input type="hidden" name="room" value="{{ object.id }}" />
             {% include "tags/save.html" %}
         </div>
-        <div id="place_actions" {% if not object.id %}style="display:none"{% endif %}>
+        <div id="room_actions" {% if not object.id %}style="display:none"{% endif %}>
         <h3>{% trans 'Object Actions' %}</h3>
         <ul>
             <li id="add_room" class="add_to_form"><a class="notajax" href="#top">{% trans "Add room in this place" %}</a></li>

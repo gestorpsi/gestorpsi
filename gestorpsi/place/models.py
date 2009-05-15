@@ -95,14 +95,13 @@ class Room( models.Model ):
    def revision(self):
       return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
   
-   def __cmp__(self, other):
-      if (self.description == other.description ) and \
-         (self.dimension == other.dimension ) and \
-         (self.room_type.id == other.room_type.id ) and \
-         (self.active == other.active) and \
-         (self.furniture == other.furniture ):
-         return 0
-      else:
-         return 1
+#   def __cmp__(self, other):
+#      if (self.description == other.description ) and \
+#         (self.dimension == other.dimension ) and \
+#         (self.room_type.id == other.room_type.id ) and \
+#         (self.furniture == other.furniture ):
+#         return 0
+#      else:
+#         return 1
 
 reversion.register(Room)

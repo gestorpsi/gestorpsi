@@ -29,17 +29,26 @@ GNU General Public License for more details.
 
 </p>
 
-<form action="/place/room/{% if room.id %}{{ room.id }}/{% endif %}save/" method="post" class="collapsable form_room" id="form_room">
+<form action="/place/room/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="collapsable form_room" id="form_room">
 <div class="main_area">
 	<fieldset id="fieldset_place_identification">
 		<legend>{% trans "Room Identification" %}</legend>
-			<input type="hidden" name="room_id" value="{{ room.id }}" />
+			<input type="hidden" name="room_id" value="{{ object.id }}" />
+            
+            <label>{% trans "Select a Place" %}<br />
+            <select name="place_id" class="giant"> 
+                {% for place in Places %}
+                    <option value="{{ place.id }}"{% ifequal place.id object.place.id %} selected{% endifequal %}> {{ place }} &nbsp; </option>
+                {% endfor %}
+                </select>
+            </label>
+            
 			<label>{% trans "Description" %}<br />
-			<input type="text" maxlength="80" class="big update_name" name="description" value="{{ room.description }}" display="{{ room.id }}" />
+			<input type="text" maxlength="80" class="big update_name" name="description" value="{{ object.description }}" />
 			</label>
 			
 			<label>{% trans "Dimension" %}<br />
-			<input type="text" maxlength="10" class="medium" name="dimension" value="{% ifnotequal room.dimension None %}{{ room.dimension }}{% endifnotequal %}" />
+			<input type="text" maxlength="10" class="medium" name="dimension" value="{% ifnotequal object.dimension 'None' %}{{ object.dimension }}{% endifnotequal %}" />
 			</label>
 				
 					
@@ -49,43 +58,23 @@ GNU General Public License for more details.
 			{% else %}
 			<select name="room_type" class="big">
 			{% for RoomType in RoomTypes %}
-				<option value="{{ RoomType.id }}" {% ifequal room.room_type_id RoomType.id %} selected {% endifequal %}>{{ RoomType }}</option>
+				<option value="{{ RoomType.id }}" {% ifequal object.room_type_id RoomType.id %} selected {% endifequal %}>{{ RoomType }}</option>
 			{% endfor %}
 			</select>
 			{% endif %}
 			</label>
-			<br />
-			<label>{% trans "Furniture" %}<br />
-			<textarea name="furniture" class="big">{{ room.furniture }}</textarea>
-			
-			</label>
-           
-            {% if Places %} 
-            <label>{% trans "Select a Place" %}<br />
-	            Place &nbsp; <select name="place_id"> 
-                            {% for place in Places %}
-                                    <option value="{{ place.id }}" > {{ place }} &nbsp; </option>
-                            {% endfor %}
-                            </select>
-			</label>
-            {% endif %}
-			
+
             <label>{% trans "Active for work?" %}<br />
-	    Active &nbsp; <select name="active"> 
-                   {% if room.id %} 
-                            {% if room.active %}
-                                    <option value="on" selected >On &nbsp; </option>
-                                    <option value="off" >Off &nbsp; </option>
-                            {% else %}
-                                    <option value="on" >On &nbsp; </option>
-                                    <option value="off" selected >Off &nbsp; </option>
-                            {% endif %}
-                   {% else %}
-                           <option value="on" selected >On &nbsp; </option>
-                           <option value="off" >Off &nbsp; </option>
-                   {% endif %}
-                        </select>
+            <select name="active"> 
+                   <option value="on"{% if object.active %} selected{% endif %}>{% trans "Yes" %}</option>
+                   <option value="off"{% if not object.active %} selected{% endif %}>{% trans "No" %}</option>
+            </select>
                             
+			</label>
+
+			<label>{% trans "Furniture" %}<br />
+			<textarea name="furniture" class="giant">{{ object.furniture }}</textarea>
+			
 			</label>
         </fieldset>
         <br />
@@ -96,26 +85,7 @@ GNU General Public License for more details.
                 <input type="hidden" name="room" value="{{ object.id }}" />
                 {% include "tags/save.html" %}
             </div>
-            <div id="room_actions" {% if not object.id %}style="display:none"{% endif %}>
-            <h3>{% trans 'Object Actions' %}</h3>
-            <ul>
-                <li id="add_room" class="add_to_form"><a class="notajax" href="#top">{% trans "Add room in this place" %}</a></li>
-            </ul>
-
         {% endif %}
-            <div id="div_list_rooms" style="display:{% if not rooms %}none{% endif %}">
-            <h3>{% trans 'Rooms from this place' %}</h3>
-            <ul>
-                <li class="li_rooms" style="display:none">&nbsp;</li>
-                {% for room in rooms %}
-                <li class="li_rooms" id="li_room_{{ room.id }}"><a class="notajax" display="{{ room.id }}" href="#top">{{ room }}</a></li>
-                {% endfor %}
-
-            </ul>
-            </div>
-
-
-    </div>
 </div>
 
 </form>

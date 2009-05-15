@@ -34,7 +34,7 @@ def room_index(request):
     user = request.user
     return render_to_response( "place/place_room_index.html",{
                                                             'RoomTypes': RoomType.objects.all(),
-                                                            'Places': Place.objects.all(),
+                                                            'Places': Place.objects.filter(organization=user.get_profile().org_active.id),
                                                             },
                                                           context_instance=RequestContext(request))
 
@@ -88,21 +88,6 @@ def list(request, page = 1):
         i = i + 1
 
     return HttpResponse(simplejson.dumps(array), mimetype='application/json')
-
-#@permission_required_with_403('place.place_list')
-#def room_list( request, ids, descriptions, dimensions, room_types, furniture_descriptions ):
-#    rooms= []
-#    for i in range(0, len(descriptions)):
-#        if ( len( descriptions[i]) ):
-#            if not (dimensions[i]):
-##                dimensions[i] = None
-#            rooms.append( Room(id = ids[i],
-#                               description = descriptions[i],
-#                               dimension = dimensions[i],
-#                               place = Place(),
-#                               room_type = RoomType.objects.get(pk=room_types[i]),
-#                               furniture = furniture_descriptions[i]) )
-#    return rooms
 
 @permission_required_with_403('place.place_read')
 def form(request, object_id=''):
@@ -162,13 +147,6 @@ def save(request, object_id=''):
 
     return HttpResponse(object.id)
 
-#@permission_required_with_403('place.place_write')
-#def save_rooms(request, place, ids, descriptions, dimensions, room_types, furnitures):
- #  place.room_set.all().delete() # If uncomment this line, all event of scheduled will be deleted when add a new room or modifi one of it.
-#    for room in room_list( request, ids, descriptions, dimensions, room_types, furnitures ):
-#        room.place = place
-#        room.save()
-
 def room_save(request, object_id=''):
     user = request.user
 
@@ -179,7 +157,6 @@ def room_save(request, object_id=''):
         print request.POST.get('place_id')
         object.place = Place.objects.get(pk = request.POST.get('place_id'))
 
-    #object.id = request.POST.get( 'room_id' ) # *** there's no need to set room id
     object.description = request.POST.get( 'description' )
     object.dimension = request.POST.get('dimension')
     object.room_type = RoomType.objects.get(pk=request.POST.get('room_type'))
@@ -230,49 +207,17 @@ def room_list(request, page = 1):
 
     return HttpResponse(simplejson.dumps(array), mimetype='application/json')
 
-
-def room_listaaa(request, page = 1):
-    user = request.user
-
-    #object = Room.objects.filter(place = user.profile.org_active.id )
-    object = Room.objects.all().values()[0]
-    
-    #object_length = len(object)
-    #paginator = Paginator(object, settings.PAGE_RESULTS)
-    #object = paginator.page(page)
-
-    return render_to_response('place/place_room_index.html', {
-                                                        'PlaceTypes': PlaceType.objects.all(), 
-                                                        'RoomTypes': RoomType.objects.all(),
-                                                        'room': object
-                                                        },
-                                                        context_instance=RequestContext(request))
-
-
 def room_form(request, object_id = ' '):
     user = request.user
     object = Room.objects.get(pk = object_id)
 
     return render_to_response('place/place_room_form.html', {
-                                                        'room': object,
+                                                        'object': object,
                                                         'RoomTypes': RoomType.objects.all(),
+                                                        'Places': Place.objects.filter(organization=user.get_profile().org_active.id),
                                                         },
                                                         context_instance=RequestContext(request))
 
-
-#def save_rooms( request, place, ids, descriptions, dimensions, room_types, furnitures ):
-#    for room in room_list( ids, descriptions, dimensions, room_types, furnitures ):
-#        result = is_equal( request, room )
-#        if result == -1:
-#            room.place = place
-#            room.save()
-#        elif result == 1:
-#            room_from_db = Room.objects.get(pk= room.id)
-#            room_from_db.description = room.description
-#            room_from_db.dimension = room.dimension
-#            room_from_db.room_type = room.room_type
-#            room_from_db.furnitures = room.furniture
-#            room_from_db.save() 
 
 @permission_required_with_403('place.place_read')
 def is_equal(request, a_room):

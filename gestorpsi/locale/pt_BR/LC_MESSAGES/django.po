@@ -1525,7 +1525,7 @@ msgstr "Descrição do Serviço"
 
 #: templates/service/service_form.html:47
 msgid "Keywords (separated by ;)"
-msgstr ""
+msgstr "Palavras-Chave separadas por vírgulas (;)"
 
 #: templates/service/service_form.html:52
 msgid "Research Project"

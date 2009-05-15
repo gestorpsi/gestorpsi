@@ -20,6 +20,7 @@ from django.shortcuts import render_to_response, get_object_or_404, get_list_or_
 from django.template import RequestContext
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 
 from geraldo.generators import PDFGenerator
 
@@ -31,7 +32,7 @@ from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
 from gestorpsi.client.models import Client, PersonLink, Relation
 from gestorpsi.client.reports import ClientRecord, ClientList
-from gestorpsi.contact.views import *
+#from gestorpsi.contact.views import *
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.organization.models import Organization
@@ -50,6 +51,11 @@ from gestorpsi.person.views import person_json_list
 @permission_required_with_403('client.client_list')
 def index(request):
     referral_form = ReferralForm()
+    referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
+    referral_form.fields['professional'].queryset = CareProfessional.objects.filter(person__organization = request.user.get_profile().org_active.id)
+    referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
+
+
     return render_to_response('client/client_index.html',
                                         {
                                         'countries': Country.objects.all(),
@@ -61,8 +67,8 @@ def index(request):
                                         'Issuers': Issuer.objects.all(), 
                                         'States': State.objects.all(), 
                                         'MaritalStatusTypes': MaritalStatus.objects.all(),
-                                        'address_book_professionals': address_book_get_professionals(request),
-                                        'address_book_organizations': address_book_get_organizations(request),
+                                        #'address_book_professionals': address_book_get_professionals(request),
+                                        #'address_book_organizations': address_book_get_organizations(request),
                                         'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
                                         'licenceBoardTypes': LicenceBoard.objects.all(),
                                         'ReferralChoices': ReferralChoice.objects.all(),
@@ -146,8 +152,8 @@ def form(request, object_id=''):
                                 'States': State.objects.all(), 
                                 'MaritalStatusTypes': MaritalStatus.objects.all(), 
                                 'last_update': last_update,
-                                'address_book_professionals': address_book_get_professionals(request),
-                                'address_book_organizations': address_book_get_organizations(request),
+                                #'address_book_professionals': address_book_get_professionals(request),
+                                #'address_book_organizations': address_book_get_organizations(request),
                                 'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
                                 'licenceBoardTypes': LicenceBoard.objects.all(),
                                 'ReferralChoices': ReferralChoice.objects.all(),

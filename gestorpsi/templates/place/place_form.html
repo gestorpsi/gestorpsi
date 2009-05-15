@@ -43,7 +43,7 @@ GNU General Public License for more details.
 	<fieldset id="fieldset_place_identification">
 		<legend>{% trans "Place Identification" %}</legend>
 			<label>{% trans "Identification" %}<br />
-			<input type="text" name="label" class="big tabtitle" value="{{ object.label }}" id="id_label" />
+			<input type="text" maxlength="80" name="label" class="big tabtitle" value="{{ object.label }}" id="id_label" />
 			</label>
 			<label>{% trans "Place Type" %}<br />
 			<select name="place_type" class="medium">

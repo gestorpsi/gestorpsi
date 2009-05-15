@@ -21,11 +21,11 @@ GNU General Public License for more details.
 	<div class="form_room">
 			<input type="hidden" name="room_id" value="{{ room.id }}" />
 			<label>{% trans "Description" %}<br />
-			<input type="text" class="big update_name" name="description" value="{{ room.description }}" display="{{ room.id }}" />
+			<input type="text" maxlength="80" class="big update_name" name="description" value="{{ room.description }}" display="{{ room.id }}" />
 			</label>
 			
 			<label>{% trans "Dimension" %}<br />
-			<input type="text" class="medium" name="dimension" value="{% ifnotequal room.dimension None %}{{ room.dimension }}{% endifnotequal %}" />
+			<input type="text" maxlength="4" class="medium" name="dimension" value="{% ifnotequal room.dimension None %}{{ room.dimension }}{% endifnotequal %}" />
 			</label>
 				
 					

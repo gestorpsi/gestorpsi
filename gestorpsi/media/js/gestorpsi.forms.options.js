@@ -195,6 +195,23 @@ var form_place_options = {
 };
 
 /**
+ * room form options
+ */
+
+var form_room_options = {
+    success: function(response, request, form) {
+        commomForm(response, request, form);
+        $('div#edit_form .form_room').attr('action','place/room/' + response + '/save/');
+        updateRoom('/place/room/page' + $('div#list ul.paginator').attr('actual_page'));
+        formSuccess();
+    },
+
+    error: function() {
+        formError();
+    }
+};
+
+/**
  * service form options
  */
 

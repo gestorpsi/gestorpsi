@@ -176,6 +176,7 @@ def room_save(request, object_id=''):
         object = Room.objects.get(pk=object_id)
     except:
         object = Room()
+        print request.POST.get('place_id')
         object.place = Place.objects.get(pk = request.POST.get('place_id'))
 
     #object.id = request.POST.get( 'room_id' ) # *** there's no need to set room id
@@ -183,7 +184,7 @@ def room_save(request, object_id=''):
     object.dimension = request.POST.get('dimension')
     object.room_type = RoomType.objects.get(pk=request.POST.get('room_type'))
     object.furniture = request.POST.get('furniture')
-
+    
     object.active = get_visible(request.POST.get('active'))
 
     if object.id:

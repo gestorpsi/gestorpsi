@@ -496,7 +496,7 @@ msgstr "e-mail"
 
 #: templates/core/main.html:89
 msgid "Logged as"
-msgstr ""
+msgstr "Autenticado como"
 
 #: templates/core/main.html:91
 msgid "Meu cadastro"
@@ -528,14 +528,13 @@ msgstr "Estabelecimento"
 
 #: templates/core/main.html:106
 msgid "My Organization"
-msgstr "Meu Estabelecimento"
+msgstr "Cadastro"
 
 #: templates/core/main.html:107
 msgid "Places"
 msgstr "Locais"
 
 #: templates/core/main.html:108
-#, fuzzy
 msgid "Rooms"
 msgstr "Salas"
 
@@ -1078,7 +1077,6 @@ msgid "Furniture"
 msgstr "Mobília"
 
 #: templates/place/place_room_form.html:49 templates/tags/room.html:48
-#, fuzzy
 msgid "Active for work?"
 msgstr "Ativo?"
 
@@ -1088,7 +1086,6 @@ msgid "All Rooms"
 msgstr "Todos os Clientes"
 
 #: templates/place/place_room_list.html:30
-#, fuzzy
 msgid "room(s)"
 msgstr "Salas"
 
@@ -1290,7 +1287,6 @@ msgstr ""
 "será enviado com as instruções sobre como concluir o cadastro."
 
 #: templates/registration/registration_form.html:25
-#, fuzzy
 msgid "Form errors! Please correct errors below and try again"
 msgstr "Por favor, corrija os erros abaixo"
 
@@ -1299,7 +1295,6 @@ msgid "terms of service"
 msgstr "Termos de serviço"
 
 #: templates/registration/registration_form.html:31
-#, fuzzy
 msgid "terms of service description"
 msgstr "Descrição dos termos de serviço"
 
@@ -1505,7 +1500,6 @@ msgid "Due Details"
 msgstr "Detalhes do Cliente"
 
 #: templates/schedule/schedule_occurrence_form.html:46
-#, fuzzy
 msgid "Devices Available"
 msgstr "Serviços (todos)"
 

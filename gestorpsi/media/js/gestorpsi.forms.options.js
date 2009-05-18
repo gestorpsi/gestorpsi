@@ -301,6 +301,7 @@ var form_client_options = {
             $('div#edit_form form.client_referral select[id=id_client]').html('<option value="' + response + '" selected>' + $('div#edit_form input.tabtitle').val() + '</option>');
         }
 
+        $('div#edit_form input[name=object_id]').val(response);
         updateClient('/client/page' + $('div#list ul.paginator').attr('actual_page'));
         formSuccess();
     },

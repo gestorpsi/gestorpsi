@@ -59,6 +59,7 @@ def save(request, object_id = None):
         if form.is_valid():
             object = form.save(commit=False)
             object.organization = request.user.get_profile().org_active
+            object.status = '01'
             object.save()
             form.save_m2m()
 

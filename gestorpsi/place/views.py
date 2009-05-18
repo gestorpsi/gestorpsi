@@ -203,6 +203,7 @@ def room_list(request, page = 1):
         array[i] = {
             'id': o.id,
             'name': o.description,
+            'place': o.place.label,
         }
         i = i + 1
 

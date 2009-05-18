@@ -16,25 +16,8 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<input type="hidden" id="app_name" value="client" />
-
-<div id="list" class="fast_menu_content">
-    {% include "client/client_list.html" %}
-</div>
-
-<div id="form" class="fast_menu_content">
-    {% include "client/client_form.html" %} 
-</div>
-
-<!-- <div id="search" class="fast_menu_content">
-    {% include "client/client_search.html" %} 
-</div> -->
-
-<div id="edit_form" class="fast_menu_content">
-</div>
+<h2 class="title_services">{{ object }} <br /></h2>
 
 <script>
-    $("ul#sub_customers li").show();
+    $("ul#sub_customers li").hide();
 </script>
-
-

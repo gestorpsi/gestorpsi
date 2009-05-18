@@ -181,9 +181,9 @@ function updateRoom(url) {
         jQuery.each(json,  function(){
             if(this.id) {
                 tableTR += '<tr id="' + this.id + '"><td class="title">';
-                tableTR += '<a href="/place/room/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
+                tableTR += '<a href="/place/room/' + this.id + '/" title="' + this.name + '">' + this.name + '</a> <br />' + this.place ;
                 tableTR += '</td>';
-                tableTR += '<td><span class="phone">' + '</span><br />'; 
+                tableTR += '<td>' ;
                 tableTR += '</td>';
                 tableTR += '</tr>';
             }

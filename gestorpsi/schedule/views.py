@@ -42,6 +42,8 @@ def schedule_occurrence_listing(request, year = 1, month = 1, day = None,
 
     occurrences = schedule_occurrences(request, year, month, day)
 
+    
+    
     return render_to_response(
         template, 
         dict(extra_context, occurrences=occurrences),
@@ -193,6 +195,10 @@ def schedule_index(request,
     template='schedule/schedule_index.html',
      **params):
     
+    # Test if clinic administrator has registered referrals before access schedule page.
+    if not Referral.objects.filter(status='01', organization=request.user.get_profile().org_active).count():
+        return render_to_response('schedule/schedule_referral_alert.html', {'object': _("There's no Referral created yet. Please, create one before access Schedule."), }, context_instance=RequestContext(request))    
+
     return _datetime_view(request, template, datetime(int(year), int(month), int(day)), **params)
 
 @permission_required_with_403('schedule.schedule_list')

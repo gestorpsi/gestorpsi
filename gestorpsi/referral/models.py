@@ -38,6 +38,12 @@ class ReferralImpact(models.Model):
     def __unicode__(self):
         return u'%s (%s)' % (self.title, self.description)
 
+REFERRAL_STATUS = (
+    ('01', 'Active'),
+    ('02', 'Inactive'),
+    ('03', 'Unknown'),
+)
+
 class Referral(Event):
     #id = UuidField(primary_key=True)
     client = models.ManyToManyField(Client)
@@ -51,6 +57,7 @@ class Referral(Event):
     priority = models.ForeignKey(ReferralPriority, null=True)
     impact = models.ForeignKey(ReferralImpact, null=True)
     organization = models.ForeignKey(Organization, null= True, blank= True)
+    status = models.CharField(max_length=2, blank=True, null=True, choices=REFERRAL_STATUS)
 
     def __init__(self, *args, **kwargs):
         super(Referral, self).__init__(*args, **kwargs)

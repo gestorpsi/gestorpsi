@@ -48,6 +48,7 @@ def index(request):
                                                           'PhoneTypes': PhoneType.objects.all(),
                                                           'AddressTypes': AddressType.objects.all(),
                                                           'States': State.objects.all(),
+                                                          'Places': Place.objects.filter(organization=user.get_profile().org_active.id),
                                                           },
                                                           context_instance=RequestContext(request))
 

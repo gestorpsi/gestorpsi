@@ -22,6 +22,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
+from django.utils.translation import gettext as _
 
 def user_passes_test_with_403(test_func, login_url=None):
     """
@@ -40,7 +41,7 @@ def user_passes_test_with_403(test_func, login_url=None):
             elif not request.user.is_authenticated():
                 return HttpResponseRedirect(login_url)
             else:
-                resp = render_to_response('403.html', {'object': "Oops! You don't have access for this service!", }, context_instance=RequestContext(request))
+                resp = render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
                 return resp
         _checklogin.__doc__ = view_func.__doc__
         _checklogin.__dict__ = view_func.__dict__

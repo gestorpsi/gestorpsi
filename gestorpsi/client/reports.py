@@ -13,7 +13,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-import Image as PILImage
+from PIL import Image as PILImage
 from reportlab.lib.units import cm
 from reportlab.lib.pagesizes import A4
 from geraldo import Report, ReportBand

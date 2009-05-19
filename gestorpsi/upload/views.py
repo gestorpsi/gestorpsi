@@ -18,7 +18,7 @@ import os
 from django.http import HttpResponse  
 from gestorpsi.settings import MEDIA_ROOT
 import uuid
-import Image
+from PIL import Image
 from gestorpsi.util.decorators import permission_required_with_403
 
 @permission_required_with_403('upload.upload_write')

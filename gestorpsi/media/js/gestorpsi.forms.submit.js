@@ -219,7 +219,7 @@ function bindAjaxForms() {
      */
 
 
-     $('.form_room').each(function() {
+     $('form.form_room').each(function() {
           $(this).validate({event:"submit",
                rules: {
                     description: {
@@ -246,7 +246,7 @@ function bindAjaxForms() {
      */
 
 
-     $('.form_place').each(function() {
+     $('form.form_place').each(function() {
           $(this).validate({event:"submit",
                rules: {
                     label: {
@@ -273,7 +273,7 @@ function bindAjaxForms() {
      *
      */
 
-     $('.form_service').each(function() {
+     $('form.form_service').each(function() {
           $(this).validate({event:"submit",
               rules: {
                   service_name: {
@@ -299,7 +299,7 @@ function bindAjaxForms() {
      *
      */
 
-     $('.form_type_device').each(function() {
+     $('form.form_type_device').each(function() {
           $(this).validate({event:"submit",
               rules: {
                 label: {
@@ -326,7 +326,7 @@ function bindAjaxForms() {
      *
      */
 
-     $('.form_device').each(function() {
+     $('form.form_device').each(function() {
           $(this).validate({event:"submit",
               rules: {
                 brand: {
@@ -352,7 +352,7 @@ function bindAjaxForms() {
      *
      */
 
-     $('#form_organization').each(function() {
+     $('form#form_organization').each(function() {
               $(this).validate({event:"submit",
               rules: {
                 name: {
@@ -379,7 +379,7 @@ function bindAjaxForms() {
      *
      */
 
-     $('.form_contact').each(function() {
+     $('form.form_contact').each(function() {
           $(this).validate({event:"submit",
                rules: {
                     name: {
@@ -395,6 +395,45 @@ function bindAjaxForms() {
           });
      });
 
+     /**
+     *
+     * support form
+     *
+     * _description:
+     * validate and post support form.
+     *
+     */
+
+     $('form.form_support_ticket').each(function() {
+          $(this).validate({event:"submit",
+               rules: {
+                    contact_name: {
+                            required: true
+                    },
+                    contact_email: {
+                            required: true
+                    },
+                    contact_phone: {
+                            required: true
+                    },
+                    question: {
+                            required: true
+                    },
+                    
+                    },
+                    messages: {
+                      contact_name: 'Preenchimento Necessário',
+                      contact_email: 'Preenchimento Necessário',
+                      contact_phone: 'Preenchimento Necessário',
+                      question: 'Preenchimento Necessário',
+                      
+                    },
+               submitHandler: function(form) {
+                 $(form).ajaxSubmit(form_support_ticket_options);
+               }
+          });
+     });
+
     /**
      *
      * fileupload
@@ -404,7 +443,7 @@ function bindAjaxForms() {
      *
      */
 
-     $('.form_file').each(function() {
+     $('form.form_file').each(function() {
           $(this).validate({event:"submit",
             submitHandler: function(form) {
                  var form_file_options = {

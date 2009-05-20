@@ -235,10 +235,12 @@ $(document).ready(function(){
         
         
         $(".ajaxable").click(function(){
+            $('div#msg_area').hide();
             $.get($(this).attr('href'),
                 function(data) {
                     $("#core").html(data);
             });
+            
         });
       
 

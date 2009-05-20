@@ -137,6 +137,7 @@ INSTALLED_APPS = (
 	'swingtime',
 	'registration',
     'gestorpsi.schedule',
+    'gestorpsi.support',
     'reversion',
     'gestorpsi.frontend', #load at last
 )

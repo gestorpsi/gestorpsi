@@ -1,9 +1,11 @@
 
-function formSuccess() {
+function formSuccess(text) {
+     if(!text)
+        text = 'Registro salvo com sucesso'
      // show success alert
      $('#msg_area').removeClass('error');
      $('#msg_area').addClass('alert');
-     $('#msg_area').text('Register saved successfully!');
+     $('#msg_area').text(text);
      $('#msg_area').fadeTo(0, 1);
      $('#msg_area').show();
      $('#msg_area').fadeTo(2500, 0.40);
@@ -358,6 +360,21 @@ var form_professional_options = {
         $('div#edit_form .form_careprofessional').attr('action','psychologist/' + response + '/save/'); // client form save
         updateProfessional('/careprofessional/page' + $('div#list ul.paginator').attr('actual_page'));
         formSuccess();
+    },
+
+    error: function() {
+        formError();
+    }
+};
+
+/**
+ * support ticket form options
+ */
+
+var form_support_ticket_options = {
+    success: function(response, request, form) {
+        formSuccess($(form).children('input[name=msg_area]').val());
+        $('div.ticket_form').hide();
     },
 
     error: function() {

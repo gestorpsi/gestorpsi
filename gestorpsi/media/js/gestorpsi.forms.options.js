@@ -1,7 +1,7 @@
 
 function formSuccess(text) {
      if(!text)
-        text = 'Registro salvo com sucesso'
+        text = 'Registro salvo com sucesso';
      // show success alert
      $('#msg_area').removeClass('error');
      $('#msg_area').addClass('alert');
@@ -14,11 +14,13 @@ function formSuccess(text) {
      $('.sidebar').css('padding-top','239px');
 }
 
-function formError() {
+function formError(text) {
+    if (!text)
+        text = 'Erro ao salvar o registro';
      // show error alert
      $('#msg_area').removeClass('alert');
      $('#msg_area').addClass('error');
-     $('#msg_area').text('Error saving register!');
+     $('#msg_area').text(text);
      $('#msg_area').fadeTo(0, 1);
      $('#msg_area').show();
      $('.sidebar').css('padding-top','234px');
@@ -346,6 +348,14 @@ var form_user_options = {
 
     error: function() {
         formError();
+    },
+
+    beforeSubmit: function() {
+        if ($('input.group[type=checkbox]:checked').size() == '0')
+            {
+                formError("É necessário escolher pelo menos um grupo");
+                return false;
+            }
     }
 };
 

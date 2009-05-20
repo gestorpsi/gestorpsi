@@ -464,6 +464,7 @@ a.prase_edit {
 	clear: left;
 }
 
+
 .main_area input[type=text], input[type=submit].mini, input[type=password], textarea {
 	font-size: 16px;
 	padding: 5px;
@@ -1107,7 +1108,7 @@ div.form_mini input[type=submit] {
 	border: 1px solid #999999;
 }
 
-div.form_mini select, div.form_mini input[type=text] {
+div.form_mini select, div.form_mini input[type=text], div.form_mini input[type=password] {
 	border: 1px solid #999999;
 }
 

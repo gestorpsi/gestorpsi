@@ -30,8 +30,7 @@ from gestorpsi.person.views import person_json_list
 
 @permission_required_with_403('users.users_list')
 def index(request):
-    # JUST PEOPLE THAT NOT HAVE REGISTER?
-    person_list = Person.objects.filter(organization = request.user.get_profile().org_active)
+    person_list = Person.objects.filter(organization = request.user.get_profile().org_active, profile = None)
 
     return render_to_response('users/users_index.html', {
                                  'person_list': person_list, },
@@ -106,40 +105,38 @@ def create_user(request):
 @permission_required_with_403('users.users_write')
 def update_user(request, object_id):
 
-    object = Profile.objects.get(person = object_id)
-    profile = object.user
+    user = Profile.objects.get(person = object_id).user
 
     permissions = request.POST.getlist('perms')
 
     # DON'T CHANGE PASSWORD IF FIELD IS EMPTY
     if request.POST.get('password') != "":
-        profile.set_password(request.POST.get('password'))
+        user.set_password(request.POST.get('password'))
 
     # GROUPS
     if permissions.count('administrator'):
-        profile.groups.add(Group.objects.get(name='administrator'))
+        user.groups.add(Group.objects.get(name='administrator'))
     else:
-        profile.groups.remove(Group.objects.get(name='administrator'))
+        user.groups.remove(Group.objects.get(name='administrator'))
         
     if permissions.count('professional'):
-        profile.groups.add(Group.objects.get(name='professional'))
+        user.groups.add(Group.objects.get(name='professional'))
     else:
-        profile.groups.remove(Group.objects.get(name='professional'))
+        user.groups.remove(Group.objects.get(name='professional'))
 
     if permissions.count('secretary'):
-        profile.groups.add(Group.objects.get(name='secretary'))
+        user.groups.add(Group.objects.get(name='secretary'))
     else:
-        profile.groups.remove(Group.objects.get(name='secretary'))
+        user.groups.remove(Group.objects.get(name='secretary'))
 
     if permissions.count('client'):
-        profile.groups.add(Group.objects.get(name='client'))
+        user.groups.add(Group.objects.get(name='client'))
     else:
-        profile.groups.remove(Group.objects.get(name='client'))
+        user.groups.remove(Group.objects.get(name='client'))
 
+    user.save(force_update = True)
 
-    profile.save(force_update = True)
-
-    return HttpResponse(object.person.id)
+    return HttpResponse(user.profile.id)
 
 def save(request, object_id=0):
 

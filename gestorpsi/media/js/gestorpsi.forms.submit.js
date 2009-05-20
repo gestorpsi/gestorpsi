@@ -36,13 +36,6 @@ function bindAjaxForms() {
       *
       */
 
-
-     $(document).ready(function() {  
-            $('input[type=checkbox]').click(function(){
-                alert('Voce clicou no checkbox' + this.name);
-            }); 
-        });
-
      $('form.form_user').each(function() {
           $(this).validate({event:"submit",
               rules: {

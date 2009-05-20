@@ -61,15 +61,21 @@ GNU General Public License for more details.
                 </label>
 
                 <label>{% trans "Username" %}<br />
-                    <input type="text" name="username" class="big " value="{{ profile.user.username }}" id="id_username" {% if profile.user.username %} readonly="1" {% endif %} />
+                    <input type="text" name="username" class="giant" value="{{ profile.user.username }}" id="id_username" {% if profile.user.username %} readonly="1" {% endif %} />
                 </label>
 
-                <label>{% trans "Password" %}<br />
-                    <input type="password" name="password" class="big" value="" id="id_password" />
-                </label>
-                <label>{% trans "Password" %} <small>({% trans "Again" %})</small><br />
-                    <input type="password" name="pwd_conf" class="big" value="" id="id_pwd_conf" />
-                </label>
+                {% if profile.id %}
+                    <label>{% trans "Change Password" %}<br />
+                        <a class="form_mini" display="pwd_mini">{% trans "Change" %}</a>
+                    </label>
+                {% else %}
+                    <label>{% trans "Password" %}<br />
+                        <input type="password" name="password" class="big" value="" id="id_password" />
+                    </label>
+                    <label>{% trans "Password" %} <small>({% trans "Again" %})</small><br />
+                         <input type="password" name="pwd_conf" class="big" value="" id="id_pwd_conf" />
+                     </label>
+                {% endif %}
 </fieldset>
 
 <fieldset>
@@ -112,10 +118,10 @@ GNU General Public License for more details.
 <fieldset>
         <legend>{% trans "Role" %}</legend>
 	    <h2 class="title_clients title">Permissions</h2>
-        <p><input type="checkbox" id="1" name="perms" value="administrator" {% if groups.0 %}checked{% endif %}>Administrator</p>
-        <p><input type="checkbox" id="2" name="perms" value="professional" {% if groups.1 %}checked{% endif %}>Professional</p>
-        <p><input type="checkbox" id="3" name="perms" value="secretary" {% if groups.2 %}checked{% endif %}>Secretary</p>
-        <p><input type="checkbox" id="4" name="perms" value="client" {% if groups.3 %}checked{% endif %}>Client</p>
+        <p><input class="group" type="checkbox" id="1" name="perms" value="administrator" {% if groups.0 %}checked{% endif %}>Administrator</p>
+        <p><input class="group" type="checkbox" id="2" name="perms" value="professional" {% if groups.1 %}checked{% endif %}>Professional</p>
+        <p><input class="group" type="checkbox" id="3" name="perms" value="secretary" {% if groups.2 %}checked{% endif %}>Secretary</p>
+        <p><input class="group" type="checkbox" id="4" name="perms" value="client" {% if groups.3 %}checked{% endif %}>Client</p>
 </fieldset>
 	
 <br />	
@@ -128,6 +134,25 @@ GNU General Public License for more details.
 </div>
 
 </form>
+
+<div class="form_mini pwd_mini">
+    <form action="/user/save_pwd/" method="post" class="form_user">
+        <fieldset>
+            <legend>{% trans "Change password" %}</legend>
+            <label>{% trans "Password" %}<br />
+                <input type="password" name="password" class="big" value="" id="id_password" />
+            </label>
+            <label>{% trans "Password" %} <small>({% trans "Again" %})</small><br />
+                <input type="password" name="pwd_conf" class="big tabtitle" value="" id="id_pwd_conf" />
+            </label>
+            <label>
+                 <input type="submit" name="submit" value="{% trans "Change" %}" class="mini" />
+                 <input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />
+            </label>
+        </fieldset>
+    </form>
+</div>
+
 
 {% if profile.id %}
 </div> <!-- edit_form -->

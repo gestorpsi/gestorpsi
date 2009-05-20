@@ -22,15 +22,19 @@ GNU General Public License for more details.
             {% include "tags/save.html" %}
         </div>
     {% endif %}
+
+{% comment %}
+
     <div class="people_actions" {% if not object.id %}style="display:none"{% endif %}>
         <h3>{% trans 'Object Actions' %}</h3>
         <ul>
+
         {% if object.person.profile %}
               <li><a class="ajax user" href="/user/{{ object.person.id }}/" title="{{ object.person.name }}">{% trans "Manage User" %}</a></li>
         {% else %}
               {% if object.id %}<li><a class="ajax user" href="/user/{{ object.person.id }}/add/" title="{{ object.person.name }}">{% trans "Create User" %}</a></li>{% endif %}
         {% endif %}
-        
 	</ul>
 	</div>
+{% endcomment %}
 </div>

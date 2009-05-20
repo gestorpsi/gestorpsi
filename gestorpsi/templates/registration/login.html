@@ -35,7 +35,8 @@ GNU General Public License for more details.
 <form method="post" action="/accounts/authentication/" id="form_login" class="ff_ok">
 
 <div class="ie_block">
-{{ form.as_p }}
+<label>{% trans "Username" %}<br />{{ form.username }}</label>
+<label>{% trans "Password" %}<br />{{ form.password }}</label>
 <input type="submit" value="{% trans "Log in" %}" class="btn"/>
 </div>
 </form>

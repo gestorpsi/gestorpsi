@@ -1174,7 +1174,11 @@ body .main_area.login form  span.error {
 	text-align: left;
 }
 
-
+div.ie_block label {
+	text-align: left;
+	display: block;
+	margin-left: 30px;
+}
 fieldset.collapsed {
 	border: 0px;
 	height: 1px;

@@ -30,13 +30,18 @@ from gestorpsi.person.views import person_json_list
 
 @permission_required_with_403('users.users_list')
 def index(request):
-    return render_to_response('users/users_index.html',
-                                 context_instance=RequestContext(request))    
+    # JUST PEOPLE THAT NOT HAVE REGISTER?
+    person_list = Person.objects.filter(organization = request.user.get_profile().org_active)
+
+    return render_to_response('users/users_index.html', {
+                                 'person_list': person_list, },
+                               context_instance=RequestContext(request))    
 
 @permission_required_with_403('users.users_list')
 def list(request, page = 1):
     user = request.user
     object = Profile.objects.filter(org_active = user.get_profile().org_active).order_by('user__username')
+
     
     return HttpResponse(simplejson.dumps(person_json_list(request, object, 'users.users_read', page)),
                             mimetype='application/json')
@@ -68,8 +73,8 @@ def form_new_user(request, object_id):
                                 context_instance=RequestContext(request))
 
 @permission_required_with_403('users.users_write')
-def create_user(request, object_id):
-    person = get_object_or_404(Person, pk=object_id)
+def create_user(request):
+    person = get_object_or_404(Person, pk=request.POST.get('id_person'))
     organization = request.user.get_profile().org_active
     username = request.POST.get('username')
     password = request.POST.get('password')
@@ -100,9 +105,41 @@ def create_user(request, object_id):
 
 @permission_required_with_403('users.users_write')
 def update_user(request, object_id):
-    """ To be implemented """
-    person = get_object_or_404(Person, pk=object_id)
-    return HttpResponse(person.id)
+
+    object = Profile.objects.get(person = object_id)
+    profile = object.user
+
+    permissions = request.POST.getlist('perms')
+
+    # DON'T CHANGE PASSWORD IF FIELD IS EMPTY
+    if request.POST.get('password') != "":
+        profile.set_password(request.POST.get('password'))
+
+    # GROUPS
+    if permissions.count('administrator'):
+        profile.groups.add(Group.objects.get(name='administrator'))
+    else:
+        profile.groups.remove(Group.objects.get(name='administrator'))
+        
+    if permissions.count('professional'):
+        profile.groups.add(Group.objects.get(name='professional'))
+    else:
+        profile.groups.remove(Group.objects.get(name='professional'))
+
+    if permissions.count('secretary'):
+        profile.groups.add(Group.objects.get(name='secretary'))
+    else:
+        profile.groups.remove(Group.objects.get(name='secretary'))
+
+    if permissions.count('client'):
+        profile.groups.add(Group.objects.get(name='client'))
+    else:
+        profile.groups.remove(Group.objects.get(name='client'))
+
+
+    profile.save(force_update = True)
+
+    return HttpResponse(object.person.id)
 
 def save(request, object_id=0):
 

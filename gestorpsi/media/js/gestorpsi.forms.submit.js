@@ -36,15 +36,38 @@ function bindAjaxForms() {
       *
       */
 
+
+     $(document).ready(function() {  
+            $('input[type=checkbox]').click(function(){
+                alert('Voce clicou no checkbox' + this.name);
+            }); 
+        });
+
      $('form.form_user').each(function() {
           $(this).validate({event:"submit",
               rules: {
-                   name: {
+                   email: {
                           required: true
-                   }
+                   },
+
+                   username: {
+                          required: true
+                   },
+
+                   pwd_conf: {
+                          required: true
+                   },
+
+                    password: {
+                          required: true
+                    }
+                    
               },
               messages: {
-                  name: 'Preenchimento Necessário'
+                  username: 'Preenchimento Necessário',
+                  password: 'Preenchimento Necessário',
+                  pwd_conf: 'Necessário confirmar senha',
+                     email: 'Preenchimento Necessário',
               },
               submitHandler: function(form) {
                     $(form).ajaxSubmit(form_user_options);

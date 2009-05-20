@@ -19,8 +19,6 @@ GNU General Public License for more details.
 
 <h2 id="title_addressbook" style="display:none"></h2>
 
-{% comment %}
-
 {% if profile.id %}
 	<div class="edit_form">
 	<h2 class="title_clients title">{{ profile.person.name }}</h2>
@@ -29,21 +27,14 @@ GNU General Public License for more details.
 	<p class="description">{% trans "Inform the user details then click on Save button" %}</p>
 {% endif %}
 
-{% endcomment %}
 
-{% if not object %}
-	<h2 class="title_clients title">{{ profile.person.name }}</h2>
-{% endif %}
-
-
-
-</p>
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
+
 {% if profile.id %}
     <form action="/user/{{ profile.person.id }}/save/" method="post" id="form_user" class="form_people collapsable form_user">
 {% else %}
-    <form action="/user/{{ profile.person.id }}/create/" method="post" id="form_user" class="form_people collapsable form_user">
+    <form action="/user/save/" method="post" id="form_user" class="form_people collapsable form_user">
 {% endif %}
 
 <div class="main_area">
@@ -58,11 +49,19 @@ GNU General Public License for more details.
 <fieldset>
         <legend>{% trans "Personal Identification" %}</legend>
                 <label>{% trans "Name" %}<br />
-                    <input type="text" name="name" class="big tabtitle" value="{{ profile.person.name }}" readonly="1" />
+                        {% if person_list %} 
+                                    <select name="id_person" class="giant">
+                                        {% for o in person_list %}
+                                            <option value="{{ o.id }}"> {{ o.name }} </option>
+                                        {% endfor %}
+                                    </select>
+                            {% else %}
+                            <input type="text" class="giant" readonly="1" value="{{ profile.person.name }}">
+                        {% endif %}
                 </label>
 
                 <label>{% trans "Username" %}<br />
-                    <input type="text" name="username" class="big" value="{{ profile.user.username }}" id="id_username" />
+                    <input type="text" name="username" class="big " value="{{ profile.user.username }}" id="id_username" {% if profile.user.username %} readonly="1" {% endif %} />
                 </label>
 
                 <label>{% trans "Password" %}<br />
@@ -122,17 +121,12 @@ GNU General Public License for more details.
 <br />	
 </div>
 
-{% if profile.person.client %}{% include "tags/client_sidebar.html" %}{% endif %}
-{% if profile.person.employee %}{% include "tags/employee_sidebar.html" %}{% endif %}
-{% if profile.person.careprofessional %}{% include "tags/careprofessional_sidebar.html" %}{% endif %}
-
-<!--
 <div id="sidebar" class="sidebar">
 	<div class="bg_blue">
 		{% include "tags/save.html" %}
 	</div>
 </div>
--->
+
 </form>
 
 {% if profile.id %}

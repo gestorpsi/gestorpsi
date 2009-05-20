@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-20 01:39-0300\n"
+"POT-Creation-Date: 2009-05-20 10:45-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 #: templates/tags/address_book_organization_mini.html:24
 #: templates/tags/address_book_professional_mini.html:35
 #: templates/tags/careprofessional_mini.html:23
-#: templates/users/users_form.html:60
+#: templates/users/users_form.html:51
 msgid "Name"
 msgstr ""
 
@@ -40,7 +40,7 @@ msgid "Responsible professional name"
 msgstr ""
 
 #: authentication/forms.py:34 templates/tags/email.html:21
-#: templates/users/users_form.html:77
+#: templates/users/users_form.html:76
 msgid "Email"
 msgstr ""
 
@@ -48,8 +48,8 @@ msgstr ""
 msgid "Your email address"
 msgstr ""
 
-#: authentication/forms.py:35 templates/users/users_form.html:68
-#: templates/users/users_form.html.py:71
+#: authentication/forms.py:35 templates/users/users_form.html:67
+#: templates/users/users_form.html.py:70
 msgid "Password"
 msgstr ""
 
@@ -65,7 +65,7 @@ msgstr ""
 msgid "Type password again"
 msgstr ""
 
-#: authentication/forms.py:37 templates/users/users_form.html:64
+#: authentication/forms.py:37 templates/users/users_form.html:63
 msgid "Username"
 msgstr ""
 
@@ -127,6 +127,18 @@ msgstr ""
 #: templates/service/service_list.html:29 templates/users/users_list.html:29
 #: templates/users/users_search.html:29
 msgid "of"
+msgstr ""
+
+#: support/models.py:24
+msgid "Open"
+msgstr ""
+
+#: support/models.py:25
+msgid "Processing"
+msgstr ""
+
+#: support/models.py:26
+msgid "Closed"
 msgstr ""
 
 #: support/views.py:31
@@ -768,7 +780,7 @@ msgstr ""
 
 #: templates/employee/employee_form.html:51
 #: templates/meta/people_indentification.html:36
-#: templates/users/users_form.html:59
+#: templates/users/users_form.html:50
 msgid "Personal Identification"
 msgstr ""
 
@@ -1803,39 +1815,39 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: templates/users/users_form.html:28
+#: templates/users/users_form.html:26
 msgid "Adding New User"
 msgstr ""
 
-#: templates/users/users_form.html:29
+#: templates/users/users_form.html:27
 msgid "Inform the user details then click on Save button"
 msgstr ""
 
-#: templates/users/users_form.html:53 templates/users/users_form.html.py:55
+#: templates/users/users_form.html:44 templates/users/users_form.html.py:46
 msgid "User registration"
 msgstr ""
 
-#: templates/users/users_form.html:71
+#: templates/users/users_form.html:70
 msgid "Again"
 msgstr ""
 
-#: templates/users/users_form.html:81
+#: templates/users/users_form.html:80
 msgid "Registered user e-mail"
 msgstr ""
 
-#: templates/users/users_form.html:87
+#: templates/users/users_form.html:86
 msgid "Select one e-mail to procede with your registration"
 msgstr ""
 
-#: templates/users/users_form.html:96
+#: templates/users/users_form.html:95
 msgid "Type an e-mail to procede with your registration"
 msgstr ""
 
-#: templates/users/users_form.html:107 templates/users/users_form.html:108
+#: templates/users/users_form.html:106 templates/users/users_form.html:107
 msgid "Expiration Date"
 msgstr ""
 
-#: templates/users/users_form.html:114
+#: templates/users/users_form.html:113
 msgid "Role"
 msgstr ""
 

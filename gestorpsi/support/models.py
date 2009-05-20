@@ -16,8 +16,15 @@ GNU General Public License for more details.
 
 import reversion
 from django.db import models
+from django.utils.translation import ugettext as _
 from gestorpsi.person.models import Person
 from gestorpsi.util.uuid_field import UuidField
+
+STATUS= ( 
+    ('1',_('Open')), 
+    ('2', _('Processing')),
+    ('2', _('Closed')),
+    )
 
 class Ticket(models.Model):
     """
@@ -32,6 +39,7 @@ class Ticket(models.Model):
     contact_phone = models.CharField(max_length=20)
     ticket_id = models.IntegerField(max_length=8)
     question = models.TextField()
+    status = models.IntegerField( max_length=1, choices=STATUS, default = 1)
     date = models.DateTimeField(auto_now=True)
     
     def __unicode__(self):

@@ -18,11 +18,13 @@ from django.db import models
 from gestorpsi.organization.models import Organization
 from gestorpsi.person.models import Person
 from django.contrib.auth.models import User, UserManager
+from gestorpsi.util import CryptographicUtils as cryptoUtils
 
 class Profile(models.Model):
     user = models.OneToOneField(User, unique=True)
     organization = models.ManyToManyField(Organization, null=True)
     try_login = models.IntegerField(default = 0, null=True)
+    crypt_temp = models.CharField(max_length=256, blank=True, null=True)
     org_active = models.ForeignKey(Organization, related_name="org_active", null=True)
     person = models.OneToOneField(Person, null=True)
     
@@ -31,4 +33,10 @@ class Profile(models.Model):
     def __unicode__(self):
         return u"%s" % self.user.username
 
+    def _set_temp(self, value):
+        self.crypt_temp = cryptoUtils.encrypt_attrib(value)
 
+    def _get_temp(self):
+        return cryptoUtils.decrypt_attrib(self.crypt_temp)
+
+    temp = property(_get_temp, _set_temp)

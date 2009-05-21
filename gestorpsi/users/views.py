@@ -95,6 +95,7 @@ def create_user(request):
         user = RegistrationProfile.objects.create_inactive_user(username, password, email)
         profile = Profile(user=user)
         profile.org_active = organization
+        profile.temp = password    # temporary field (LDAP)
         profile.person = person
         profile.save()
         profile.organization.add(organization)
@@ -164,11 +165,13 @@ def save(request, object_id=0):
 
 
 def update_pwd(request, object_id=0):
-   
-    user = Profile.objects.get(person = object_id).user
-    user.set_password(request.POST.get('password_mini'))
-
-    user.save(force_update = True )
+    password = request.POST.get('password_mini')
+    passconf = request.POST.get('password_mini_conf')
+    if password == passconf:
+        user = Profile.objects.get(person = object_id).user
+        user.set_password(request.POST.get('password_mini'))
+        user.profile.temp = password    # temporary field (LDAP)
+        user.save(force_update = True )
 
     return HttpResponse(user.profile.id)
 

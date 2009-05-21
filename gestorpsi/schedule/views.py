@@ -224,7 +224,7 @@ def schedule_occurrences(request, year = 1, month = 1, day = None):
 def daily_occurrences(request, year = 1, month = 1, day = None):
     #locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
     #locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
-    locale.setlocale(locale.LC_ALL,'pt_BR.ISO-8859-1')
+    locale.setlocale(locale.LC_ALL,'pt_BR.ISO8859-1')
     occurrences = schedule_occurrences(request, year, month, day)
 
     array = {} #json

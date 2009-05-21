@@ -73,7 +73,7 @@ function updateUser(url) {
                 tableTR += '<br />' + this.username;
                 tableTR += '</td>';
                 tableTR += '<td><span class="phone"></span><br />';
-                tableTR += '<span class="email"></span></td>';
+                tableTR += '<span class="lixao"></span></td>';
                 tableTR += '<td>';
                 tableTR += '</td>';
                 tableTR += '</tr>';

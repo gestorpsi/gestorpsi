@@ -50,7 +50,8 @@ GNU General Public License for more details.
         <legend>{% trans "Personal Identification" %}</legend>
                 <label>{% trans "Name" %}<br />
                         {% if person_list %} 
-                                    <select name="id_person" class="giant">
+                                    <select name="id_person" class="giant get_user_json">
+                                    <option value=""></option>
                                         {% for o in person_list %}
                                             <option value="{{ o.id }}"> {{ o.name }} </option>
                                         {% endfor %}

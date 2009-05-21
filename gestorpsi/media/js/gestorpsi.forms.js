@@ -637,4 +637,22 @@ function bindFormMisc() {
      });
      */
      
+
+
+     /**
+      * USER - Return unsername slugify and firts email
+      */
+
+    $('#form select.get_user_json option').unbind().click(function() {
+        if ($(this).attr("value")) {
+                $.getJSON("/user/" + $(this).attr("value") + "/setformuser/", function(json) {
+                    $("#form input[name=username]").val(json[0]);
+                    $("#form input[name=email]").val(json[1]);
+                    });
+       } else {
+                    $("#form input[name=username]").val("");
+                    $("#form input[name=email]").val("");
+                }
+     });
+     
 }

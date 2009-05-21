@@ -116,7 +116,7 @@ GNU General Public License for more details.
 -->
 
 <fieldset>
-        {% ifequal list_adm True %}
+        {% ifequal show "True" %}
             <legend>{% trans "Role" %} {{ list_adm }}</legend>
                 <h4 align="center">{% trans "You are the only Administrator of System. You don't can change of the group in this time!" %} </h4>
         {% else %}

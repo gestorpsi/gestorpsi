@@ -32,16 +32,8 @@ from gestorpsi.person.views import person_json_list
 def index(request):
     person_list = Person.objects.filter(organization = request.user.get_profile().org_active, profile = None)
 
-    # HAVE JUST ONE ADMINISTRATOR?
-    if ( (Group.objects.get(name='administrator').user_set.all().count()) == 1 ):
-        list_adm = True
-    else:
-        list_adm = None
-
-    print list_adm
     return render_to_response('users/users_index.html', {
                                  'person_list': person_list,
-                                 'list_adm': list_adm
                                 },
                                context_instance=RequestContext(request))    
 
@@ -58,6 +50,18 @@ def list(request, page = 1):
 @permission_required_with_403('users.users_write')
 def form(request, object_id):
     profile = get_object_or_404(Profile, person=object_id)
+
+    # HAVE JUST ONE ADMINISTRATOR?
+    show = "False"
+    if ( (Group.objects.get(name='administrator').user_set.all().count()) == 1 ):
+        # IS HIM?
+        if (Person.objects.get(pk = object_id)):
+            # SHOW MESSAGEM : "ONLY ADM"
+            show = "True"
+
+    print show
+    print Group.objects.get(name='administrator').user_set.all()
+
     groups = [False, False, False, False]   # Template Permission Order: Admin, Psycho, Secretary and Client
     for g in profile.user.groups.all():
         if g.name == "administrator": groups[0] = True
@@ -65,6 +69,7 @@ def form(request, object_id):
         if g.name == "secretary":     groups[2] = True
         if g.name == "client":        groups[3] = True
     return render_to_response('users/users_form.html', {
+                                'show': show,
                                 'profile': profile,
                                 'emails': profile.person.emails.all(),
                                 'groups': groups, },

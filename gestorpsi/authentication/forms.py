@@ -60,6 +60,7 @@ class RegistrationForm(RegistrationForm):
         person = Person.objects.create(name=self.cleaned_data['name'], organization=organization)
         profile.organization.add(organization) #link organization to profile
         profile.org_active = organization #set org as active
+        profile.temp = self.cleaned_data['password1']      # temporary field (LDAP)
         profile.person = person
         profile.user.groups.add(Group.objects.get(name='administrator'))
         profile.save() #save it

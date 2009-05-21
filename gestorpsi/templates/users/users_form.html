@@ -116,12 +116,17 @@ GNU General Public License for more details.
 -->
 
 <fieldset>
-        <legend>{% trans "Role" %}</legend>
-	    <h2 class="title_clients title">Permissions</h2>
-        <p><input class="group" type="checkbox" id="1" name="perms" value="administrator" {% if groups.0 %}checked{% endif %}>Administrator</p>
-        <p><input class="group" type="checkbox" id="2" name="perms" value="professional" {% if groups.1 %}checked{% endif %}>Professional</p>
-        <p><input class="group" type="checkbox" id="3" name="perms" value="secretary" {% if groups.2 %}checked{% endif %}>Secretary</p>
-        <p><input class="group" type="checkbox" id="4" name="perms" value="client" {% if groups.3 %}checked{% endif %}>Client</p>
+        {% ifequal list_adm True %}
+            <legend>{% trans "Role" %} {{ list_adm }}</legend>
+                <h4 align="center">{% trans "You are the only Administrator of System. You don't can change of the group in this time!" %} </h4>
+        {% else %}
+                <legend>{% trans "Role" %}</legend>
+                <h2 class="title_clients title">Permissions</h2>
+                <p><input class="group" type="checkbox" id="1" name="perms" value="administrator" {% if groups.0 %}checked{% endif %}>Administrator</p>
+                <p><input class="group" type="checkbox" id="2" name="perms" value="professional" {% if groups.1 %}checked{% endif %}>Professional</p>
+                <p><input class="group" type="checkbox" id="3" name="perms" value="secretary" {% if groups.2 %}checked{% endif %}>Secretary</p>
+                <p><input class="group" type="checkbox" id="4" name="perms" value="client" {% if groups.3 %}checked{% endif %}>Client</p>
+         {% endifequal %}
 </fieldset>
 	
 <br />	
@@ -136,14 +141,14 @@ GNU General Public License for more details.
 </form>
 
 <div class="form_mini pwd_mini">
-    <form action="/user/save_pwd/" method="post" class="form_user">
+    <form action="/user/{{ profile.person.id }}/savepwd/" method="post" class="pwd">
         <fieldset>
             <legend>{% trans "Change password" %}</legend>
             <label>{% trans "Password" %}<br />
-                <input type="password" name="password" class="big" value="" id="id_password" />
+                <input type="password" name="password_mini" class="big" value=""     />
             </label>
             <label>{% trans "Password" %} <small>({% trans "Again" %})</small><br />
-                <input type="password" name="pwd_conf" class="big tabtitle" value="" id="id_pwd_conf" />
+                <input type="password" name="password_mini_conf" class="big tabtitle" value=""    />
             </label>
             <label>
                  <input type="submit" name="submit" value="{% trans "Change" %}" class="mini" />

@@ -35,7 +35,29 @@ function bindAjaxForms() {
       * validate and post user form.
       *
       */
+     $('form.pwd').each(function() {
+          $(this).validate({event:"submit",
+              rules: {
+                   password_mini: {
+                          required: true
+                   },
 
+                    password_mini_conf: {
+                          required: true
+                   }
+              },
+
+              messages: {
+                  password_mini: 'Preenchimento Necessário',
+                  password_mini_conf: 'Necessário confirmar senha',
+              },
+
+              submitHandler: function(form) {
+                    $(form).ajaxSubmit(form_user_options_mini);
+              }
+          });
+     });
+     
      $('form.form_user').each(function() {
           $(this).validate({event:"submit",
               rules: {

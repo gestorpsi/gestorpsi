@@ -336,6 +336,23 @@ var form_employee_options = {
 /**
  * user form options
  */
+var form_user_options_mini = {
+    beforeSubmit: function() {
+        if($("#edit_form div.pwd_mini form input[name=password_mini]").val() != $("#edit_form div.pwd_mini form input[name=password_mini_conf]").val()) {
+            alert('As duas senhas tem que ser iguais');
+            return false;
+        }
+    },
+
+    success: function(response, request, form) {
+        $(form).parent('div').hide();
+        formSuccess('Senha alterada com sucesso');
+    },
+
+    error: function() {
+        formError();
+    }
+};
 
 var form_user_options = {
     success: function(response, request, form) {

@@ -32,8 +32,18 @@ from gestorpsi.person.views import person_json_list
 def index(request):
     person_list = Person.objects.filter(organization = request.user.get_profile().org_active, profile = None)
 
+    # HAVE JUST ONE ADMINISTRATOR?
+    if ( (Group.objects.get(name='administrator').user_set.all().count()) == 1 ):
+        print Group.objects.get(name='administrator').user_set.all().profile_id
+        list_adm = True
+    else:
+        list_adm = None
+
+    print list_adm
     return render_to_response('users/users_index.html', {
-                                 'person_list': person_list, },
+                                 'person_list': person_list,
+                                 'list_adm': list_adm
+                                },
                                context_instance=RequestContext(request))    
 
 @permission_required_with_403('users.users_list')
@@ -151,3 +161,15 @@ def save(request, object_id=0):
     object.save()
 
     return HttpResponse(object.id)
+
+
+def update_pwd(request, object_id=0):
+   
+    user = Profile.objects.get(person = object_id).user
+    user.set_password(request.POST.get('password_mini'))
+
+    user.save(force_update = True )
+
+    return HttpResponse(user.profile.id)
+
+    

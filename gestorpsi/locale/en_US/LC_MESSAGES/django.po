@@ -1554,6 +1554,10 @@ msgstr ""
 msgid "continue with restricted features"
 msgstr ""
 
+#: templates/registration/login.html:32
+msgid "Read more"
+msgstr ""
+
 #: templates/registration/login.html:43
 msgid "If you don't have an account, you can"
 msgstr ""

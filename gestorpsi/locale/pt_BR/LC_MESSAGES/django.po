@@ -1568,6 +1568,10 @@ msgstr "ou"
 msgid "continue with restricted features"
 msgstr "continue com restrições"
 
+#: templates/registration/login.html:32
+msgid "Read more"
+msgstr "Saiba mais"
+
 #: templates/registration/login.html:43
 msgid "If you don't have an account, you can"
 msgstr "Se o seu estabelecimento ainda não possui uma conta,"

@@ -16,6 +16,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: templates/core/main.html:93
+msgid "support"
+msgstr ""
+
 #: settings.py:38
 msgid "Brazilian Portuguese"
 msgstr ""
@@ -879,6 +883,7 @@ msgid "Employees"
 msgstr ""
 
 #: templates/core/main.html:110 templates/referral/referral_form.html:41
+#: templates/schedule/schedule_filter.html:81
 msgid "Professionals"
 msgstr ""
 

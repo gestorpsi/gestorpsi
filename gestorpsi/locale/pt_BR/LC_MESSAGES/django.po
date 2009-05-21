@@ -15,6 +15,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: templates/core/main.html:93
+msgid "support"
+msgstr "Suporte"
+
+#: templates/schedule/schedule_filter.html:81
+
 #: settings.py:38
 msgid "Brazilian Portuguese"
 msgstr "Português Brasileiro"
@@ -886,6 +892,7 @@ msgid "Employees"
 msgstr "Funcionários"
 
 #: templates/core/main.html:110 templates/referral/referral_form.html:41
+#: templates/schedule/schedule_filter.html:81
 msgid "Professionals"
 msgstr "Profissionais"
 
@@ -1639,7 +1646,7 @@ msgid ""
 msgstr ""
 "Preencha o formulário de criação da conta de seu estabelecimento. <b>O "
 "usuário cadastrado será o administrador do estabelecimento.</b> Um e-mail "
-"será enviado com as instruções sobre como concluir o cadastro."
+"será enviado com as instruções sobre como concluir o cadastro"
 
 #: templates/registration/registration_form.html:25
 msgid "Form errors! Please correct errors below and try again"
@@ -1706,7 +1713,7 @@ msgstr "Detalhes do Evento"
 
 #: templates/schedule/schedule_filter.html:19
 msgid "places"
-msgstr "Local(is)"
+msgstr "Locais"
 
 #: templates/schedule/schedule_filter.html:39
 msgid "rooms"

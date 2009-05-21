@@ -25,7 +25,12 @@ GNU General Public License for more details.
 {% if form.errors %}<ul class="errorlist"><li>{% trans "Form errors! Please correct errors below and try again" %}</li></ul>{% endif %}
 <br />
 <form method="post" action="">
-{{ form.as_p }}
+{{ form.username.errors }}<label>{{ form.username.label }}<br />{{ form.username }}</label><p>{{ form.username.help_text }}</p>
+{{ form.email.errors }}<label>{% trans "Your email address" %}<br />{{ form.email }}</label><p>{{ form.email.help_text }}</p>
+{{ form.password1.errors }}<label>{{ form.password1.label }}<br />{{ form.password1 }}</label><p>{{ form.password1.help_text }}</p>
+{{ form.password2.errors }}<label>{{ form.password2.label }}<br />{{ form.password2 }}</label><p>{{ form.password2.help_text }}</p>
+{{ form.name.errors }}<label>{{ form.name.label }}<br />{{ form.name }}</label><p>{{ form.name.help_text }}</p>
+{{ form.organization.errors }}<label>{{ form.organization.label }}<br />{{ form.organization }}</label><p>{{ form.organization.help_text }}</p>
 <p><label for="id_terms_of_service">{% trans "terms of service" %}</label>
 <textarea class="small_fonts terms_of_service" readonly>
 Termos de Serviço

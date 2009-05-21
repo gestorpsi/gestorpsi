@@ -1174,13 +1174,22 @@ body .main_area.login form  span.error {
 	text-align: left;
 }
 
-div.ie_block label {
+div.ie_block label, div.main_area.login label {
 	text-align: left;
 	display: block;
-	margin-left: 30px;
+	margin-left: 0;
 }
-div.ie_block label input {
-	width: 190px;
+div.ie_block label p,
+div.main_area.login label p {
+	padding: 0;
+	margin: 0;
+	height: inherit;
+}
+
+div.ie_block label input,
+div.main_area.login label input
+ {
+	width: 250px;
 }
 fieldset.collapsed {
 	border: 0px;

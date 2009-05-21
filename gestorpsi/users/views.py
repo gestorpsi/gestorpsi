@@ -34,7 +34,6 @@ def index(request):
 
     # HAVE JUST ONE ADMINISTRATOR?
     if ( (Group.objects.get(name='administrator').user_set.all().count()) == 1 ):
-        print Group.objects.get(name='administrator').user_set.all().profile_id
         list_adm = True
     else:
         list_adm = None

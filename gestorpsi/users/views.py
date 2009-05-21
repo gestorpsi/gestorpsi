@@ -53,14 +53,10 @@ def form(request, object_id):
 
     # HAVE JUST ONE ADMINISTRATOR?
     show = "False"
-    if ( (Group.objects.get(name='administrator').user_set.all().count()) == 1 ):
-        # IS HIM?
-        if (Person.objects.get(pk = object_id)):
-            # SHOW MESSAGEM : "ONLY ADM"
+    user = request.user
+    if ( (Group.objects.get(name='administrator').user_set.all().filter(profile__organization=user.get_profile().org_active).count()) == 1 ):
+        if (profile.user.groups.filter(name='administrator').count() == 1 ):
             show = "True"
-
-    print show
-    print Group.objects.get(name='administrator').user_set.all()
 
     groups = [False, False, False, False]   # Template Permission Order: Admin, Psycho, Secretary and Client
     for g in profile.user.groups.all():

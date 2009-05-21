@@ -28,10 +28,23 @@ GNU General Public License for more details.
 {{ form.as_p }}
 <p><label for="id_terms_of_service">{% trans "terms of service" %}</label>
 <textarea class="small_fonts terms_of_service" readonly>
-{% trans "terms of service description" %}
+Termos de Serviço
+
+Este contrato (o 'Contrato') é celebrado por e entre você ('você') e Instituto de Psicologia Comportamental de São Carlos S/S., ('GestorPsi') em relação ao uso de todos os aspectos do GestorPsi (o 'Serviço'). Ao usar o Serviço, você concorda em cumprir estes termos e condições.
+
+1. Direitos associados ao Serviço. O Serviço destina-se a ajudar você a gerenciar seu estabelecimento de psicologia ou de saúde. O serviço é oferecido sem custos durante e a faze BETA sendo que todas as informações inseridas por você são de sua propriedade e responsabilidade. O serviço é destinado exclusivamente a essa finalidade e durante a fase BETA o GestorPsi não garante o funcionamento nem estabilidade do serviço, mas fará tudo a seu alcance para que o serviço funcione com estabilidade e sem nenhum tipo de interrupção.
+
+2. Utilização do Serviço. Você pode utilizar o serviço para fins comerciais e detém todos os direitos e responsabilidades sobre os dados inseridos no GestorPsi. O GestorPsi se reserva no direito de suspender ou encerrar o Serviço ou seu acesso a ele a qualquer momento, mas irá sempre que possível disponibilizar formas para que você possa recuperar as suas informações inseridas.
+
+3. Modificações dos Termos. O GestorPsi tem o direito de modificar os termos desse contrato a qualquer momento sendo que essas modificações entrarão em vigor imediatamente após a publicação. Dessa forma, sugerimos que você verifique esta página regularmente.
+
+4. Política de Privacidade: O GestorPsi segue as regulamentações legais da área de Psicologia, e as normas éticas relacionadas a informática e saúde. As informações sobre seus serviços, seu estabelecimento e seus profissionais poderão ser tornadas públicas caso você concorde. As informações sobre seus clientes não será revelada a terceiros, salvo informações estatísticas e que não identifiquem de forma alguma nem você nem seus clientes.
 </textarea>
 </p>
-
+<br />
+<p>
+{% trans "By clicking the Signup button below, you agree that you have read and agree to the" %} <a href="http://www.gestorpsi.com.br/trac/wiki/GestorPsi/TermosdeUso" target="_blank">{% trans "terms of service" %}</a>
+</p>
 <p class="submit"><input type="submit" value="{% trans "Accept terms and register" %}" class="btn" /></p>
 </form>
 <p><a href="/accounts/login/">{% trans "Already have an account?" %}</a></p>

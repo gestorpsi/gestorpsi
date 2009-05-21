@@ -1646,8 +1646,17 @@ msgid "Form errors! Please correct errors below and try again"
 msgstr "Por favor, corrija os erros abaixo"
 
 #: templates/registration/registration_form.html:29
+#: templates/registration/registration_form.html:48
 msgid "terms of service"
-msgstr "Termos de serviço"
+msgstr "Termos de Serviço"
+
+#: templates/registration/registration_form.html:48
+msgid ""
+"By clicking the Signup button below, you agree that you have read and agree "
+"to the"
+msgstr ""
+"Clicando no botão abaixo, você estará concordando que leu e aceitou "
+"os"
 
 #: templates/registration/registration_form.html:31
 msgid "terms of service description"
@@ -1655,7 +1664,7 @@ msgstr "Descrição dos termos de serviço"
 
 #: templates/registration/registration_form.html:35
 msgid "Accept terms and register"
-msgstr "Aceite os termos e "
+msgstr "Aceitar os termos e continuar"
 
 #: templates/registration/registration_form.html:37
 msgid "Already have an account?"

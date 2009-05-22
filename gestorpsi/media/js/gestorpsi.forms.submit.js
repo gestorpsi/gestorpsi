@@ -61,8 +61,9 @@ function bindAjaxForms() {
      $('form.form_user').each(function() {
           $(this).validate({event:"submit",
               rules: {
-                   email: {
-                          required: true
+                   email_send_user: {
+                          required: true,
+                          email: true
                    },
 
                    username: {
@@ -82,7 +83,7 @@ function bindAjaxForms() {
                   username: 'Preenchimento Necessário',
                   password: 'Preenchimento Necessário',
                   pwd_conf: 'Necessário confirmar senha',
-                     email: 'Preenchimento Necessário',
+                  email_send_user: 'Preenchimento Necessário',
               },
               submitHandler: function(form) {
                     $(form).ajaxSubmit(form_user_options);

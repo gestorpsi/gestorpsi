@@ -9,8 +9,9 @@
 }
 #ui-datepicker-div {
 	display: none;
+	position: relative;
 	border: 1px solid #666;
-	z-index: 10;
+	z-index: 12;
 }
 .ui-datepicker-inline {
 	float: left;

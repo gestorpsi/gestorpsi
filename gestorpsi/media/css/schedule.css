@@ -23,21 +23,21 @@ GNU General Public License for more details.
 }
 #nav_back {
 	padding: 32px 40px 12px 8px;
-    margin-bottom: -20px;
-	background: url(../img/arrow_back.png) no-repeat 0 16px;
+    /*margin-bottom: -20px;*/
+	background: url(../img/arrow_back.png) no-repeat 0 0;
 }
 #nav_back.disable {background: url(../img/arrow_back_disable.png)}
 #nav_back:hover { 
-	background: url(../img/arrow_back_on.png) no-repeat 0 16px; 
+	background: url(../img/arrow_back_on.png) no-repeat 0 0; 
 	text-decoration: none; 
 }
 #nav_fwd {
 	padding: 32px 36px 12px 6px;
-	background: url(../img/arrow_fwd.png) no-repeat 0 16px; 
+	background: url(../img/arrow_fwd.png) no-repeat 0 0; 
 }
 #nav_fwd.disable {background: url(../img/arrow_fwd_disable.png) no-repeat;}
 #nav_fwd:hover {
-	background: url(../img/arrow_fwd_on.png) no-repeat 0 16px;
+	background: url(../img/arrow_fwd_on.png) no-repeat 0 0;
 	text-decoration: none; 
 }
 
@@ -206,6 +206,10 @@ h2.title_schedule span a.option {
 
 div.schedule div#search_header h2 {
     padding: 15px 0 7px 20px;
+	position: relative;
+	top: 0;
+	left: 0;
+	z-index: -1;
 }
 
 div.schedule table.schedule_results {

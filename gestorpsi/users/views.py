@@ -89,7 +89,7 @@ def create_user(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
     pwd_conf = request.POST.get('pwd_conf')
-    email = request.POST.get('email')
+    email = request.POST.get('email_send_user')
     permissions = request.POST.getlist('perms')
 
     if password == pwd_conf:

@@ -53,7 +53,7 @@ GNU General Public License for more details.
                                     <select name="id_person" class="giant get_user_json">
                                     <option value=""></option>
                                         {% for o in person_list %}
-                                            <option value="{{ o.id }}"> {{ o.name }} </option>
+                                            <option id="" value="{{ o.id }}"> {{ o.name }} </option>
                                         {% endfor %}
                                     </select>
                             {% else %}
@@ -93,14 +93,14 @@ GNU General Public License for more details.
 					{% trans "Select one e-mail to procede with your registration" %}<br />
 					<select name="email" id="email">
 						{% for email in emails %}
-							<option value="{{ email }}">&nbsp;{{ email }}&nbsp;</option>
+							<option class="email_send_user" name="email_send_user" value="{{ email }}">&nbsp;{{ email }}&nbsp;</option>
 						{% endfor %}
 					</select>
 				</label>
 			{% else %}
 				<label>
 					{% trans "Type an e-mail to procede with your registration" %}<br />
-					<input type="text" name="email" value="">
+					<input class="email_send_user" type="text" name="email_send_user" value="">
 				</label>
 			{% endif %}		    
 		{% endif %}
@@ -145,6 +145,9 @@ GNU General Public License for more details.
     <form action="/user/{{ profile.person.id }}/savepwd/" method="post" class="pwd">
         <fieldset>
             <legend>{% trans "Change password" %}</legend>
+
+            <div id="msg_area" class="error" style="opacity: 1; display: none;">{% trans "Password not match. Try again "%}</div>
+
             <label>{% trans "Password" %}<br />
                 <input type="password" name="password_mini" class="big" value=""     />
             </label>

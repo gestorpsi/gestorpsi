@@ -637,8 +637,6 @@ function bindFormMisc() {
      });
      */
      
-
-
      /**
       * USER - Return unsername slugify and firts email
       */
@@ -647,11 +645,11 @@ function bindFormMisc() {
         if ($(this).attr("value")) {
                 $.getJSON("/user/" + $(this).attr("value") + "/setformuser/", function(json) {
                     $("#form input[name=username]").val(json[0]);
-                    $("#form input[name=email]").val(json[1]);
+                    $("#form input[name=email_send_user]").val(json[1]);
                     });
        } else {
                     $("#form input[name=username]").val("");
-                    $("#form input[name=email]").val("");
+                    $("#form input[name=email_send_user]").val("");
                 }
      });
      

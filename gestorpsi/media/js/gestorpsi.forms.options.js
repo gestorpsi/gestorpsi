@@ -339,7 +339,7 @@ var form_employee_options = {
 var form_user_options_mini = {
     beforeSubmit: function() {
         if($("#edit_form div.pwd_mini form input[name=password_mini]").val() != $("#edit_form div.pwd_mini form input[name=password_mini_conf]").val()) {
-            alert('As duas senhas tem que ser iguais');
+            $("#edit_form div.pwd_mini div#msg_area").show();
             return false;
         }
     },
@@ -358,7 +358,14 @@ var form_user_options = {
     success: function(response, request, form) {
         commomForm(response, request, form);
         commomPeople();
-        $('div#edit_form .form_user').attr('action','user/' + response + '/save/');
+        $('div#edit_form .form_user').unbind().attr('action','user/' + response + '/save/');
+        // REMOVE USER FROM FORM, SELECT , INPUTS
+        $('form select.get_user_json option[value=' + response + ']').remove();
+        $('form div.main_area input#id_username').val("");
+        $('form div.main_area input[name=password]').val("");
+        $('form div.main_area input#id_pwd_conf').val("");
+        $("form input.email_send_user").val("");
+
         updateUser('/user/page' + $('div#list ul.paginator').attr('actual_page'));
         formSuccess();
     },

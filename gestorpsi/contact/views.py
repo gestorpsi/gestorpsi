@@ -111,6 +111,7 @@ def list(request, page = 1):
             'id': o[0],
             'name': o[1],
             'type': o[4],
+            'type_org': o[5],
         }
         i = i + 1
 

@@ -833,15 +833,16 @@ hr {
 	height: 50px;
 	width: 715px;
 	position:relative;
+	padding-left: 90px;
 }
 #nav_back, #nav_fwd {
 	position: absolute; 
-	left: 580px;
-	top: 5px;
+	left: 10px;
+	top: 170px;
 	z-index: 3;
 }
 #nav_fwd {
-	left: 630px;
+	left: 60px;
 }
 
 .capital_letter {

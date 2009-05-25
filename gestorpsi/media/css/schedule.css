@@ -203,6 +203,8 @@ h2.title_schedule span a.option {
     vertical-align: text-top; 
     font-family: Verdana, Geneva, Kalimati, sans-serif;
 }
+div.schedule {
+}
 
 div.schedule div#search_header h2 {
     padding: 15px 0 7px 20px;
@@ -222,7 +224,9 @@ div.schedule h2.title_schedule {
 
 div#mini_calendar {
     position: absolute;
+	top: 150px;
     margin: 0 0 0 20px;
+	z-index: 5;
 }
 
 .schedule fieldset div {

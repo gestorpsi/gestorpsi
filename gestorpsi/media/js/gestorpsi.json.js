@@ -144,7 +144,21 @@ function updateContact(url) {
         jQuery.each(json,  function(){
             if(this.id) {
                 tableTR += '<tr id="' + this.id + '"><td class="title">';
-                tableTR += '<a href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
+
+                if (this.type == '1'){ 
+                    if (this.type_org = 'LOCAL'){
+                        tableTR += '<a class="clinic local" localhref="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + this.type + this.type_org +  '</a>';
+                    } else {
+                        tableTR += '<a class="clinic gestorpsi" localhref="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + this.type + this.type_org +  '</a>';
+                    }
+                } else {
+                    if (this.type_org = 'LOCAL'){
+                        tableTR += '<a class="person local" localhref="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + this.type + this.type_org +  '</a>';
+                    } else {
+                        tableTR += '<a class="person gestorpsi" localhref="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + this.type + this.type_org +  '</a>';
+                    }
+                }
+
                 tableTR += '</td>';
                 tableTR += '<td><span class="phone"></span><br />';
                 tableTR += '<span class="email"></span></td>';

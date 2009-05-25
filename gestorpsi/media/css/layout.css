@@ -1311,4 +1311,21 @@ div#dialog h2 {
     font-size: 14px;
     padding-top: 10px;
 }
-
+ul.developingList {
+	margin: 10px 60px;
+	width: 170px;
+	float: left;
+	font-size: 11px;
+}
+ul.developingList li {
+	line-height: 20px;
+	list-style: circle;
+}
+h3.developingList {
+	color: #666666;
+	border-bottom: none;
+	padding: 20px 10px 10px 50px;
+	font-size: 12px;
+	text-decoration: underline;
+	
+}

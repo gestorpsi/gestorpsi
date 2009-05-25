@@ -48,6 +48,10 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
+#: templates/users/users_form.html:69
+msgid "Change Password"
+msgstr ""
+
 #: authentication/forms.py:34
 msgid "Your email address"
 msgstr ""

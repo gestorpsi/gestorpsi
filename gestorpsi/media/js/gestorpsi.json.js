@@ -147,15 +147,15 @@ function updateContact(url) {
 
                 if (this.type == '1'){ 
                     if (this.type_org = 'LOCAL'){
-                        tableTR += '<a class="clinic local" localhref="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + this.type + this.type_org +  '</a>';
+                        tableTR += '<a class="clinic local" localhref="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
                     } else {
-                        tableTR += '<a class="clinic gestorpsi" localhref="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + this.type + this.type_org +  '</a>';
+                        tableTR += '<a class="clinic gestorpsi" localhref="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
                     }
                 } else {
                     if (this.type_org = 'LOCAL'){
-                        tableTR += '<a class="person local" localhref="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + this.type + this.type_org +  '</a>';
+                        tableTR += '<a class="person local" localhref="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
                     } else {
-                        tableTR += '<a class="person gestorpsi" localhref="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + this.type + this.type_org +  '</a>';
+                        tableTR += '<a class="person gestorpsi" localhref="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
                     }
                 }
 

@@ -96,6 +96,7 @@ def create_user(request):
         user = RegistrationProfile.objects.create_inactive_user(username, password, email)
         profile = Profile(user=user)
         profile.org_active = organization
+        profile.temp = password    # temporary field (LDAP)
         profile.person = person
         profile.save()
         profile.organization.add(organization)
@@ -115,9 +116,7 @@ def create_user(request):
 
 @permission_required_with_403('users.users_write')
 def update_user(request, object_id):
-
     user = Profile.objects.get(person = object_id).user
-
     permissions = request.POST.getlist('perms')
 
     # DON'T CHANGE PASSWORD IF FIELD IS EMPTY
@@ -150,7 +149,6 @@ def update_user(request, object_id):
     return HttpResponse(user.profile.id)
 
 def save(request, object_id=0):
-
     try:
         object = get_object_or_404(Client, pk=object_id)
         person = object.person
@@ -165,22 +163,20 @@ def save(request, object_id=0):
 
 
 def update_pwd(request, object_id=0):
-   
     user = Profile.objects.get(person = object_id).user
     user.set_password(request.POST.get('password_mini'))
-
-    user.save(force_update = True )
+    user.profile.temp = request.POST.get('password_mini')    # temporary field (LDAP)
+    user.profile.save()
+    user.save(force_update=True)
 
     return HttpResponse(user.profile.id)
 
 def set_form_user(request, object_id=0):
     array = {} #json
-   
     try: 
         person = Person.objects.get(pk = object_id)
         array[0] = slugify(person.name)
         array[1] = u'%s' % person.get_first_email()
-
     except:
         pass
     

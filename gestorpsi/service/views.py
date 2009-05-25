@@ -103,7 +103,7 @@ def form(request, object_id=''):
     return render_to_response('service/service_form.html', {
         'object': object,
         'Agreements': Agreement.objects.all(),
-        'CareProfessionals': CareProfessional.objects.all(),
+        'CareProfessionals': CareProfessional.objects.filter(person__organization= request.user.get_profile().org_active),
         'AgeGroups': AgeGroup.objects.all(),
         'ProcedureProviders': ProcedureProvider.objects.all(),
         'Procedures': Procedure.objects.all(),

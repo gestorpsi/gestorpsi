@@ -44,6 +44,8 @@ a:hover {
 	float: right;
 	font-size: 10px;
 	margin: 10px 5px;
+	position: relative;
+	z-index: 10;
 }
 #menu_log ul li{
 	display: inline;

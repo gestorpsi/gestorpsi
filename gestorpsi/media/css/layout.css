@@ -60,6 +60,7 @@ a:hover {
 #main_menu  {
 	margin: 2px 0 0 10px;
 	height: 30px;
+	position: relative;
 }
 #main_menu li {
 	display: inline;
@@ -163,15 +164,15 @@ div#sub_menu .active {
 }
 
 #myoffice.main_menu_big, .main_menu_big {
-	width: 230px !important;
+	width: 230px 
 }
 
-.main_menu_listing_big {
-	width: 268px !important;
+#main_menu .main_menu_listing_big {
+	width: 268px 
 }
 
-.main_menu_listing {
-	width: 177px !important;
+#menus .main_menu_listing_big.main_menu_listing {
+	width: 177px 
 }
 
 #myoffice span {
@@ -188,11 +189,15 @@ div#sub_menu .active {
 #main_menu a#careprofessional {background: url(../img/16/people-professional.png) no-repeat 25px 4px;}
 #main_menu a#users {background: url(../img/16/system-users.png) no-repeat 25px 4px;}
 
+#main_menu ul li {
+	position: relative;
+}
+
 #main_menu ul li ul {
 	display: block;
 	position: absolute;
-	top: 49px;
-	left: 356px;
+	top: 30px;
+	left: -179px;
 	width: 177px;
 	background: #FCFCFC;
 	z-index: 5;
@@ -201,6 +206,12 @@ div#sub_menu .active {
 	border-right: 1px solid #838383;
 	padding-top: 10px;
         padding-bottom: 10px;
+}
+#main_menu ul li ul.main_menu_listing_big {
+	left: -270px;
+}
+#main_menu ul li ul.main_menu_listing_big.main_menu_listing {
+	left: -179px;
 }
 #main_menu ul li ul li a{
 	float: none;

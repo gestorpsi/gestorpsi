@@ -586,10 +586,10 @@ msgstr ""
 
 #: templates/careprofessional/careprofessional_form.html:51
 #: templates/contact/contact_form.html:55
+#: templates/employee/employee_form.html:51
 msgid "Professional Identification"
 msgstr ""
 
-#: templates/careprofessional/careprofessional_form.html:52
 #: templates/service/service_form.html:63
 #: templates/tags/careprofessional_mini.html:26 templates/tags/phone.html:22
 msgid "Area"
@@ -598,10 +598,6 @@ msgstr ""
 #: templates/careprofessional/careprofessional_form.html:59
 #: templates/tags/careprofessional_mini.html:33
 msgid "Licence"
-msgstr ""
-
-#: templates/careprofessional/careprofessional_form.html:66
-msgid "Organization Register Number"
 msgstr ""
 
 #: templates/careprofessional/careprofessional_form.html:72
@@ -801,7 +797,34 @@ msgid "Type"
 msgstr ""
 
 #: templates/contact/contact_form.html:36
+#: templates/users/users_form.html:127
 msgid "Professional"
+msgstr ""
+
+#: templates/users/users_form.html:126
+msgid "Administrator"
+msgstr ""
+
+#: templates/users/users_form.html:128
+msgid "Secretary"
+msgstr ""
+
+#: templates/users/users_form.html:129
+msgid "Client"
+msgstr ""
+
+#: templates/users/users_form.html:125
+msgid "Permissions"
+msgstr ""
+
+#: templates/users/users_form.html:149
+msgid "Password not match. Try again."
+msgstr ""
+
+#: templates/users/users_form.html:122
+msgid ""
+"You are the only Administrator on organization. "
+"You can't change your permission at this time."
 msgstr ""
 
 #: templates/contact/contact_form.html:43
@@ -1876,6 +1899,7 @@ msgid "Solicitation"
 msgstr ""
 
 #: templates/service/service_form.html:90
+#: templates/careprofessional/careprofessional_form.html:52
 msgid "Profession"
 msgstr ""
 
@@ -2066,6 +2090,7 @@ msgid "Professional name"
 msgstr ""
 
 #: templates/tags/professional.html:26
+#: templates/careprofessional/careprofessional_form.html:66
 msgid "Professional Subscription"
 msgstr ""
 

@@ -330,19 +330,19 @@ msgstr "Última(o)"
 
 #: swingtime/forms.py:76
 msgid "Day(s)"
-msgstr "Dia(s)"
+msgstr "Diariamente"
 
 #: swingtime/forms.py:77
 msgid "Week(s)"
-msgstr "Semana(s)"
+msgstr "Semanalmente"
 
 #: swingtime/forms.py:78
 msgid "Month(s)"
-msgstr "Mês(Meses)"
+msgstr "Mensalmente"
 
 #: swingtime/forms.py:79
 msgid "Year(s)"
-msgstr "Ano(s)"
+msgstr "Anualmente"
 
 #: swingtime/forms.py:83
 msgid "By count"
@@ -595,10 +595,10 @@ msgstr "Informe detalhes do profissional e clique em salvar"
 
 #: templates/careprofessional/careprofessional_form.html:51
 #: templates/contact/contact_form.html:55
+#: templates/employee/employee_form.html:51
 msgid "Professional Identification"
 msgstr "Identificação Profissional"
 
-#: templates/careprofessional/careprofessional_form.html:52
 #: templates/service/service_form.html:63
 #: templates/tags/careprofessional_mini.html:26 templates/tags/phone.html:22
 msgid "Area"
@@ -607,11 +607,7 @@ msgstr "Área"
 #: templates/careprofessional/careprofessional_form.html:59
 #: templates/tags/careprofessional_mini.html:33
 msgid "Licence"
-msgstr "Licença"
-
-#: templates/careprofessional/careprofessional_form.html:66
-msgid "Organization Register Number"
-msgstr "CPF/CNPJ"
+msgstr "Órgão Emissor"
 
 #: templates/careprofessional/careprofessional_form.html:72
 msgid "Professional Profile"
@@ -810,8 +806,37 @@ msgid "Type"
 msgstr "Tipo"
 
 #: templates/contact/contact_form.html:36
+#: templates/users/users_form.html:127
 msgid "Professional"
 msgstr "Profissional"
+
+#: templates/users/users_form.html:126
+msgid "Administrator"
+msgstr "Administrador"
+
+#: templates/users/users_form.html:128
+msgid "Secretary"
+msgstr "Secretária"
+
+#: templates/users/users_form.html:129
+msgid "Client"
+msgstr "Cliente"
+
+#: templates/users/users_form.html:125
+msgid "Permissions"
+msgstr "Permissões"
+
+#: templates/users/users_form.html:149
+msgid "Password not match. Try again."
+msgstr "As senhas não conferem. Tente novamente."
+
+#: templates/users/users_form.html:122
+msgid ""
+"You are the only Administrator on organization. "
+"You can't change your permission at this time."
+msgstr ""
+"Você é o único administrador do estabelecimento. "
+"Você não pode alterar sua permissão neste momento"
 
 #: templates/contact/contact_form.html:43
 msgid "Professional Organization"
@@ -1278,7 +1303,7 @@ msgstr "Nome Fantasia"
 
 #: templates/organization/organization_form.html:53
 msgid "Short Name"
-msgstr "Nome abreviado"
+msgstr "Nome abreviado / Sigla"
 
 #: templates/organization/organization_form.html:60
 msgid "Not available"
@@ -1286,11 +1311,14 @@ msgstr "Indisponível"
 
 #: templates/organization/organization_form.html:68
 msgid "Visible for others"
-msgstr "Visível para terceiros"
+msgstr "Visível na Rede do GestoPsi"
 
 #: templates/organization/organization_form.html:70
 msgid "Visible?"
-msgstr "Visível?"
+msgstr ""
+"  Deixar o cadastro do meu estabelecimento e lista dos profissionais "
+"cadastrados visíveis na área de contatos dos outros estabelecimentos da "
+"rede do GestorPsi."
 
 #: templates/organization/organization_form.html:75
 msgid "Additional Identities"
@@ -1901,9 +1929,10 @@ msgstr "Perfil do Serviço"
 
 #: templates/service/service_form.html:82
 msgid "Solicitation"
-msgstr "Solicitação"
+msgstr "Modalidade"
 
 #: templates/service/service_form.html:90
+#: templates/careprofessional/careprofessional_form.html:52
 msgid "Profession"
 msgstr "Profissão"
 
@@ -1977,11 +2006,11 @@ msgstr "Formulário de suporte enviado com sucesso."
 
 #: templates/tags/address.html:21
 msgid "Prefix"
-msgstr "Tipo de Logradouro"
+msgstr "Tipo"
 
 #: templates/tags/address.html:25
 msgid "Street"
-msgstr "Nome da Rua"
+msgstr "Logradouro"
 
 #: templates/tags/address.html:29 templates/tags/phone.html:26
 msgid "Number"
@@ -2063,7 +2092,7 @@ msgstr "Documento"
 
 #: templates/tags/document.html:39
 msgid "Issuer"
-msgstr "Emissor"
+msgstr "Órgão Emissor"
 
 #: templates/tags/im.html:25
 msgid "IM Type"
@@ -2094,12 +2123,13 @@ msgid "Professional name"
 msgstr "Profissional"
 
 #: templates/tags/professional.html:26
+#: templates/careprofessional/careprofessional_form.html:66
 msgid "Professional Subscription"
-msgstr "Inscrição profissional"
+msgstr "Registro Profissional"
 
 #: templates/tags/professional.html:30
 msgid "Professional Organization Subscription"
-msgstr "Inscrição do Estabelecimento"
+msgstr "Registro Profissional do Estabelecimento"
 
 #: templates/tags/save.html:24
 msgid "This register are not saved yet. Click Save to register it."

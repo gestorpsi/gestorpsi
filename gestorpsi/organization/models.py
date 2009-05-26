@@ -33,6 +33,7 @@ class ProfessionalResponsible(models.Model):
     subscription = models.CharField(max_length=50)
     organization_subscription = models.CharField(max_length=50)
     organization = models.ForeignKey('Organization', null=True, blank=True)
+    profession = models.ForeignKey('careprofessional.Profession', null=False, blank=False)
 
     def __unicode__(self):
         return u"%s" % self.name

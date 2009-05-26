@@ -23,6 +23,15 @@ GNU General Public License for more details.
 	    <input type="text" maxlength="50" class="extrabig" name="professional_name" value="{{ professional.name }}" />
 	</label>
 
+    <label>{% trans "Profession" %}<br />
+        <select name="service_profession" class="medium asm">
+            {% for p in Professions %}
+                <option value="{{ p.id }}"{% ifequal p professional.profession %} selected="selected
+"{% endifequal %} >{{ p.description }}</option>
+            {% endfor %}            
+        </select>
+    </label>
+
 	<label>{% trans "Professional Subscription" %}<br />
 	    <input type="text" maxlength="50" class="medium" name="professional_subscription" value="{{ professional.subscription }}" />
 	</label>

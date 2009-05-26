@@ -26,13 +26,14 @@ from gestorpsi.address.views import address_save
 from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
 from gestorpsi.util.decorators import permission_required_with_403
+from gestorpsi.careprofessional.models import Profession
 
 @permission_required_with_403('organization.organization_write')
-def professional_responsible_save(request, object, ids, names, subscriptions, organization_subscriptions):
+def professional_responsible_save(request, object, ids, names, subscriptions, organization_subscriptions, professions):
     ProfessionalResponsible.objects.all().delete()
     for x in range(len(names)):
         obj = []
-        obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x]))
+        obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x], profession=Profession.objects.get(pk = professions[x])) )
         if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):
             obj.save()
 
@@ -62,6 +63,7 @@ def form(request):
         'Dependence': Dependence.objects.all(),
         'Activitie': Activitie.objects.all(),
         'professional_responsible': ProfessionalResponsible.objects.filter(organization = user.get_profile().org_active),
+        'Professions': Profession.objects.all(),
         },
         context_instance=RequestContext(request))
 
@@ -105,7 +107,7 @@ def save(request):
     object.comment = request.POST['comment']
     object.save()
    
-    professional_responsible_save(request, object, request.POST.getlist('professionalId'), request.POST.getlist('professional_name'), request.POST.getlist('professional_subscription'), request.POST.getlist('professional_organization_subscription'))
+    professional_responsible_save(request, object, request.POST.getlist('professionalId'), request.POST.getlist('professional_name'), request.POST.getlist('professional_subscription'), request.POST.getlist('professional_organization_subscription'), request.POST.getlist('service_profession'))
             #object.subscriptions_professional_institutional = request.POST['subscriptions_professional_institutional']
             #object.professional_responsible = request.POST['professional_responsible']
 

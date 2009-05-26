@@ -122,11 +122,11 @@ GNU General Public License for more details.
                 <h4 align="center">{% trans "You are the only Administrator on organization. You can't change your permission at this time." %} </h4>
         {% else %}
                 <legend>{% trans "Role" %}</legend>
-                <h2 class="title_clients title">Permissions</h2>
-                <p><input class="group" type="checkbox" id="1" name="perms" value="administrator" {% if groups.0 %}checked{% endif %}>Administrator</p>
-                <p><input class="group" type="checkbox" id="2" name="perms" value="professional" {% if groups.1 %}checked{% endif %}>Professional</p>
-                <p><input class="group" type="checkbox" id="3" name="perms" value="secretary" {% if groups.2 %}checked{% endif %}>Secretary</p>
-                <p><input class="group" type="checkbox" id="4" name="perms" value="client" {% if groups.3 %}checked{% endif %}>Client</p>
+                <h2 class="title_clients title">{% trans "Permissions" %}</h2>
+                <p><input class="group" type="checkbox" id="1" name="perms" value="administrator" {% if groups.0 %}checked{% endif %}>{% trans "Administrator" %}</p>
+                <p><input class="group" type="checkbox" id="2" name="perms" value="professional" {% if groups.1 %}checked{% endif %}>{% trans "Professional" %}</p>
+                <p><input class="group" type="checkbox" id="3" name="perms" value="secretary" {% if groups.2 %}checked{% endif %}>{% trans "Secretary" %}</p>
+                <p><input class="group" type="checkbox" id="4" name="perms" value="client" {% if groups.3 %}checked{% endif %}>{% trans "Client" %}</p>
          {% endifequal %}
 </fieldset>
 	
@@ -146,7 +146,7 @@ GNU General Public License for more details.
         <fieldset>
             <legend>{% trans "Change password" %}</legend>
 
-            <div id="msg_area" class="error" style="opacity: 1; display: none;">{% trans "Password not match. Try again "%}</div>
+            <div id="msg_area" class="error" style="opacity: 1; display: none;">{% trans "Password not match. Try again."%}</div>
 
             <label>{% trans "Password" %}<br />
                 <input type="password" name="password_mini" class="big" value=""     />

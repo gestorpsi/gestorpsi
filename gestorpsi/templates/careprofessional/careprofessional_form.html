@@ -49,7 +49,7 @@ GNU General Public License for more details.
 	
 	<fieldset id="fieldset_professional_identification">
 		<legend>{% trans "Professional Identification" %}</legend>
-			<label>{% trans "Area" %}<br />
+			<label>{% trans "Profession" %}<br />
 			<select name="professional_area" class="medium">
 				{% for l in PROFESSIONAL_AREAS %}
 					<option value="{{ l.0 }}">{{ l.1 }}</option>
@@ -63,7 +63,7 @@ GNU General Public License for more details.
 				{% endfor %}
 			</select>
 			</label>
-			<label>{% trans "Organization Register Number" %}<br />
+			<label>{% trans "Professional Subscription" %}<br />
 				<input type="text" name="professional_registerNumber" maxlength="50" value="{{ object.professionalIdentification.registerNumber }}" />
 			</label>
 	</fieldset>

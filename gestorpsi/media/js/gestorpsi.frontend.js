@@ -96,7 +96,8 @@ $(document).ready(function(){
                 vertical_menu.removeClass('main_menu_big');
                 vertical_menu.addClass('main_menu');
                 vertical_menu.children('span').remove();
-                $('#main_menu ul li ul').addClass('main_menu_listing'); 
+               // $('#main_menu ul li ul').addClass('main_menu_listing'); 
+				$('#main_menu ul li ul').removeClass('main_menu_listing_big'); 
                 
 	        var link = $(this);
                 $('#already_loaded').val('False');
@@ -119,7 +120,7 @@ $(document).ready(function(){
 	$("#main_menu > ul > li > a.vertical").mouseover(function(){
                var link = $(this);
 
-                link.addClass('active');
+                //link.addClass('active');
                 // show only selected
                 $('#sub_'+link.attr('id')).show();
                 
@@ -132,11 +133,12 @@ $(document).ready(function(){
                 
                 submenu_li.mouseover(function(){
                         submenu.show();
-                        link.addClass('active');
+                        link.addClass('hover');
                 });
                 link.parent('li').mouseout(function(){
                         submenu.hide();
-                        link.removeClass('active');
+                        //link.removeClass('active');
+						link.removeClass('hover');
                 });
                         
                 // hide vertical submenu an item is selected
@@ -144,7 +146,7 @@ $(document).ready(function(){
                 array = submenu.children().children();
                 array.click(function() {
                         link.parent('li').mouseout(function(){
-                                link.addClass('active');
+                                //link.addClass('active');
                         });
 
                         $('.main_menu').removeClass('active');

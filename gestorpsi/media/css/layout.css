@@ -78,7 +78,7 @@ a:hover {
 	background-repeat: no-repeat;
 }
 
-#main_menu a:hover, #main_menu a.active  {
+#main_menu a:hover, #main_menu a.active, #main_menu a.hover  {
 	background-color: #FCFCFC;
 	background-position: 6px 6px;
 	background-repeat: no-repeat;
@@ -96,6 +96,7 @@ div#main_menu a.active {
 	background-color: #ECECEC;
 	height: 16px;
 }
+ 
 
 #start {
 	background-image: url(../img/16/user-desktop.png);
@@ -168,7 +169,8 @@ div#sub_menu .active {
 }
 
 #main_menu .main_menu_listing_big {
-	width: 268px 
+	width: 268px;
+	background: #ECECEC;
 }
 
 #menus .main_menu_listing_big.main_menu_listing {

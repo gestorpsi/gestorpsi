@@ -96,6 +96,36 @@ function commomForm(response, request, form) {
     
 }
 
+
+/* USERS PROBLENS WITHC SELECT AND CLONE OF THE FORM*/ 
+function commomFormUser(response, request, form) {
+    var editing = null;
+    if($(form).parents('#edit_form').html()) {
+        editing = true;
+    }
+
+//    if(!editing)  {
+ //       cloneForms();
+  //  }
+
+    // open TAB
+    //var new_title = openTab($('div#edit_form input.tabtitle').val());
+    // display content
+    displayContent('div#edit_form');
+    // empty add form
+    $('#form form:input').clearForm();
+    // reload mask
+    bindFieldMask();
+    // reload form binds
+    bindAjaxForms();
+    bindFormActions();
+
+    // display revision update message
+    $('div#edit_form span.editing span.last').hide();
+    $('div#edit_form span.editing span.now').show();
+    
+}
+
 /**
  * organization submit form options
  */
@@ -356,15 +386,17 @@ var form_user_options_mini = {
 
 var form_user_options = {
     success: function(response, request, form) {
-        commomForm(response, request, form);
+        commomFormUser(response, request, form);
         commomPeople();
         $('div#edit_form .form_user').unbind().attr('action','user/' + response + '/save/');
         // REMOVE USER FROM FORM, SELECT , INPUTS
-        $('form select.get_user_json option[value=' + response + ']').remove();
+        $('div#form form#form_user select.get_user_json option[value=' + response + ']').remove();
         $('form div.main_area input#id_username').val("");
         $('form div.main_area input[name=password]').val("");
         $('form div.main_area input#id_pwd_conf').val("");
         $("form input.email_send_user").val("");
+        $('div#core div#edit_form').hide();
+        //$('ul.opened_tabs').remove();
 
         updateUser('/user/page' + $('div#list ul.paginator').attr('actual_page'));
         formSuccess();

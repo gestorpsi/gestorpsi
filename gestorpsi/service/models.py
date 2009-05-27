@@ -46,6 +46,9 @@ class ServiceType(models.Model):
     def __unicode__(self):
         return u'%s' % self.name
 
+    class Meta:
+        ordering = ['name']
+
 class Modality(models.Model):
     """
     Instances of this class are created to represent modalities. Modalities have a name and a description.

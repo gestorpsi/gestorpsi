@@ -179,3 +179,4 @@ EMAIL_HOST='gestorpsi.com.br'
 EMAIL_PORT=25
 EMAIL_HOST_USER='noreply@gestorpsi.com.br'
 EMAIL_HOST_PASSWORD='YrA|e-Q.tnsJ'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER    # used by django registration

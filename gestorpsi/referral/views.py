@@ -25,16 +25,29 @@ from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.util.decorators import permission_required_with_403
 
 @permission_required_with_403('referral.referral_list')
+def referral_off(request, object_id=""):
+    try:
+        referral = Referral.objects.get(pk = object_id)
+
+    except:
+        pass
+    
+    referral.status = '02'
+    referral.save(force_update = True)
+
+    return HttpResponse(referral.id)
+
+@permission_required_with_403('referral.referral_list')
 def client_referrals(request, object_id = None):
     object = get_object_or_404(Client, pk=object_id)
-    referral = Referral.objects.filter(client=object)
+    referral = Referral.objects.filter(client=object, status='01')
     array = {} #json
     i = 0
     
     for o in referral:
         array[i] = {
             'id': o.id,
-            'service': o.service.name,
+            'service': o.service.name
         }
         sub_count = 0
         array[i]['professional'] = {}

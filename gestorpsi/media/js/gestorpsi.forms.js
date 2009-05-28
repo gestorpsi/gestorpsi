@@ -653,4 +653,12 @@ function bindFormMisc() {
                 }
      });
      
+    /**
+      * referral - disable client
+      */
+
+    $('#user_off').click(function() {
+         alert("LNX");
+     });
+     
 }

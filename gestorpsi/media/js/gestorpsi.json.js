@@ -385,7 +385,8 @@ function updateReferral(url) {
             * populate table
             */
 
-            tableTR += '<tr><td class="title">' + this.service + '<br>' + str_professional_inline + '</td></tr>';
+            tableTR += '<tr><td class="title">' + this.service + '<br>' + str_professional_inline + '</td>';
+            tableTR += '<td class="title"><a id="user_off" href="/referral/' + this.id + '/off/"> Desligar </a> </td> </tr>';
         });
 
         if(tableTR == '') {

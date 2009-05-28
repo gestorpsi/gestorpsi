@@ -653,12 +653,25 @@ function bindFormMisc() {
                 }
      });
      
-    /**
+     /**
       * referral - disable client
       */
 
-    $('#user_off').click(function() {
-         alert("LNX");
-     });
+    $('div#edit_form div.edit_form div.client_referral_list a.user_off').click(function() {
+
+        if (confirm("Confirma desligamento?")){
+            $.getJSON("/referral/" + $(this).attr("id") + "/off/", function(json) {
+                //alert( $("div#edit_form div.edit_form div.client_referral_list a.user_off").attr("id") );
+                id_client = $("div#edit_form div.edit_form div.client_referral_list a.user_off").attr("id");
+                //alert(id_client);
+                //$("div#edit_form div.edit_form div.client_referral_list a[id=" + id_client + "]").remove();
+                $("div#edit_form div.edit_form div.client_referral_list tr[id=" + id_client + "]").remove();
+                formSuccess("Cliente desligado com sucesso!");
+            }); 
+
+        }
+
+     }); 
+    
      
 }

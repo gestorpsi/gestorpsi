@@ -21,6 +21,7 @@ GNU General Public License for more details.
 body {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 12px;
+	min-width: 1000px;
 }
 a, a:visited {
 	text-decoration: none;

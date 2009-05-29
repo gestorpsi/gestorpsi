@@ -135,7 +135,8 @@ def form(request, object_id=''):
     referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
     referral_form.fields['professional'].queryset = CareProfessional.objects.filter(person__organization = request.user.get_profile().org_active.id)
     referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
-    
+    total_service = Referral.objects.filter(client=object).count()
+   
     return render_to_response('client/client_form.html',
                               {'object': object, 
                                 'emails': emails, 
@@ -163,6 +164,7 @@ def form(request, object_id=''):
                                 'referrals': Referral.objects.filter(client = object),
                                 'profile': profile,
                                 'groups': groups,
+                                'total_service': total_service,
                                },
                               context_instance=RequestContext(request)
                               )

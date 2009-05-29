@@ -40,15 +40,17 @@ def referral_off(request, object_id=""):
 @permission_required_with_403('referral.referral_list')
 def client_referrals(request, object_id = None):
     object = get_object_or_404(Client, pk=object_id)
-    referral = Referral.objects.filter(client=object, status='01')
+    referral = Referral.objects.filter(client=object)
     array = {} #json
     i = 0
     
     for o in referral:
         array[i] = {
             'id': o.id,
+            'status': o.status,
             'service': o.service.name
         }
+
         sub_count = 0
         array[i]['professional'] = {}
         for p in o.professional.all():

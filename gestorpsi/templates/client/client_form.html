@@ -25,7 +25,7 @@ GNU General Public License for more details.
 {% if object.id %}
 	<div class="edit_form">
 	<h2 class="title_clients title">{{ object.person.name }}</h2>
-	<p class="description">Cliente cadastrado em <a href="#">0 Servi&ccedil;os</a><br />	
+	<p class="description">Cliente cadastrado em {{ total_service }} Servi&ccedil;os <br />	
 {% else %}
 	<h2 class="title_clients title">{% trans "Adding New Client" %}</h2>
 	<p class="description">{% trans "Inform the client details then click on Save button" %}</p>

@@ -385,8 +385,16 @@ function updateReferral(url) {
             * populate table
             */
 
-            tableTR += '<tr id='+ this.id + '><td class="title" id="' + this.id + '">' + this.service + '<br>' + str_professional_inline + '</td>';
-            tableTR += '<td class="title"><a class="user_off" id="' + this.id + '"href="#top"> Desligar </a> </td> </tr>';
+            tableTR += '<tr id="' + this.id + '" class="referral_off">';
+            tableTR += '<td align="left" id="' + this.id + '" class="title">' + this.service + '<br>' + str_professional_inline + '</td>';
+            if ( (this.status) == '01'){
+                    tableTR += '<td align="center" id="' + this.id + '" class="title button_disable"  style="display:block;"> <a class="referral_off" id="' + this.id + '"href="#top' + this.id + '"> Desligar </a> </td>';
+                    tableTR += '<td align="center" id="' + this.id + '" class="title confirm_disable" style="display:none;"> <h3>Confirma desligamento?</h3> <a href="#teste" class="confirm_yes" id="' + this.id + '"> Sim </a> &nbsp;&nbsp;|&nbsp;&nbsp;<a class="confirm_not" id="' + this.id + '"> Nao </a> </td>';
+            } else { 
+                    tableTR += '<td align="center" bgcolor="red"> <h3> Desligado </h3> </td>';
+            }
+
+            tableTR += '</tr>';
         });
 
         if(tableTR == '') {

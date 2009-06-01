@@ -1175,7 +1175,7 @@ body .main_area.login {
 	text-align: center;
 }
 
-body .main_area.login form {
+body .main_area.login form fieldset {
 	background:#ECECEC;
 	padding: 25px;
 	-moz-border-radius-topleft: 8px;
@@ -1183,9 +1183,13 @@ body .main_area.login form {
 	-moz-border-radius-bottomleft: 8px;
 	-moz-border-radius-bottomright: 8px;
 	border: 1px solid #838383;
-
 }
-
+body .main_area.login form fieldset.orgField {
+	background: #D3E7E7 url(../img/22/go-home.png) no-repeat 5px 5px;
+}
+body .main_area.login form fieldset.userField {
+	background:#ECECEC url(../img/22/people-professional.png) no-repeat 5px 5px;
+}
 form p {
     font-size: 10px;
     color: #999999;
@@ -1344,4 +1348,7 @@ h3.developingList {
 	font-size: 12px;
 	text-decoration: underline;
 	
+}
+.inlineImage {
+	vertical-align: text-bottom;
 }

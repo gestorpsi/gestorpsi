@@ -24,13 +24,18 @@ GNU General Public License for more details.
 
 {% if form.errors %}<ul class="errorlist"><li>{% trans "Form errors! Please correct errors below and try again" %}</li></ul>{% endif %}
 <br />
+
 <form method="post" action="">
+
+<fieldset class="orgField">
+{{ form.organization.errors }}<label>{{ form.organization.label }}<br />{{ form.organization }}</label><p>{{ form.organization.help_text }}</p>
+</fieldset>
+<fieldset class="userField">
+{{ form.name.errors }}<label>{{ form.name.label }}<br />{{ form.name }}</label><p>{{ form.name.help_text }}</p>
 {{ form.username.errors }}<label>{{ form.username.label }}<br />{{ form.username }}</label><p>{{ form.username.help_text }}</p>
 {{ form.email.errors }}<label>{% trans "Your email address" %}<br />{{ form.email }}</label><p>{{ form.email.help_text }}</p>
 {{ form.password1.errors }}<label>{{ form.password1.label }}<br />{{ form.password1 }}</label><p>{{ form.password1.help_text }}</p>
 {{ form.password2.errors }}<label>{{ form.password2.label }}<br />{{ form.password2 }}</label><p>{{ form.password2.help_text }}</p>
-{{ form.name.errors }}<label>{{ form.name.label }}<br />{{ form.name }}</label><p>{{ form.name.help_text }}</p>
-{{ form.organization.errors }}<label>{{ form.organization.label }}<br />{{ form.organization }}</label><p>{{ form.organization.help_text }}</p>
 <p><label for="id_terms_of_service">{% trans "terms of service" %}</label>
 <textarea class="small_fonts terms_of_service" readonly>
 Termos de Serviço
@@ -51,6 +56,7 @@ Este contrato (o 'Contrato') é celebrado por e entre você ('você') e Institut
 {% trans "By clicking the Signup button below, you agree that you have read and agree to the" %} <a href="http://www.gestorpsi.com.br/trac/wiki/GestorPsi/TermosdeUso" target="_blank">{% trans "terms of service" %}</a>
 </p>
 <p class="submit"><input type="submit" value="{% trans "Accept terms and register" %}" class="btn" /></p>
+</fieldset>
 </form>
 <p><a href="/accounts/login/">{% trans "Already have an account?" %}</a></p>
 

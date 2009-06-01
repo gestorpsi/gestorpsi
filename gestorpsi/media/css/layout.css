@@ -15,7 +15,7 @@ GNU General Public License for more details.
 */
 
 * {
-	margin: 0; padding: 0; border: 0;
+	margin: 0; padding: 0; border: 0; letter-spacing: inherit;
 }
 
 body {

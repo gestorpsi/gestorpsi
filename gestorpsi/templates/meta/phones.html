@@ -16,9 +16,19 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-{% include "meta/people_indentification.html" %}
-{% include "meta/people_profile.html" %}
-{% include "meta/phones.html" %}
-{% include "meta/internet.html" %}
-{% include "meta/addressbook.html" %}
-{% include "meta/people_documents.html" %}
+
+<!--
+people phone numbers
+-->
+        
+<fieldset>
+        <legend>{% trans "Phones" %}</legend>
+                {% if not phones %}
+                        {% include "tags/phone.html" %}
+                {% else %}
+                        {% for phone in phones %}
+                                {% include "tags/phone.html" %}
+                        {% endfor %}
+                {% endif %}
+        <a class="add_to_form"><span>{% trans "Add Phone" %}</span></a>
+</fieldset>

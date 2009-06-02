@@ -16,6 +16,24 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
+
+<!--
+WebSites
+-->
+        
+<fieldset>
+        <legend>{% trans "Websites" %}</legend>
+                {% if not websites %}
+                        {% include "tags/website.html" %}
+                {% else %}
+                        {% for website in websites %}
+                                {% include "tags/website.html" %}
+                        {% endfor %}
+                {% endif %}
+        <a class="add_to_form"><span>{% trans "Add Website" %}</span></a>
+</fieldset>
+
+
 <!--
 emails addresses
 -->
@@ -49,21 +67,4 @@ Instant Messengers
                         {% endfor %}
                 {% endif %}
         <a class="add_to_form"><span>{% trans "Add IM" %}</span></a>
-</fieldset>
-
-
-<!--
-WebSites
--->
-        
-<fieldset>
-        <legend>{% trans "Websites" %}</legend>
-                {% if not websites %}
-                        {% include "tags/website.html" %}
-                {% else %}
-                        {% for website in websites %}
-                                {% include "tags/website.html" %}
-                        {% endfor %}
-                {% endif %}
-        <a class="add_to_form"><span>{% trans "Add Website" %}</span></a>
 </fieldset>

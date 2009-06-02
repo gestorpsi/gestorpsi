@@ -146,13 +146,13 @@ function updateContact(url) {
                 tableTR += '<tr id="' + this.id + '"><td class="title">';
 
                 if (this.type == '1'){ 
-                    if (this.type_org = 'LOCAL'){
+                    if (this.type_org == 'LOCAL'){
                         tableTR += '<a class="clinic local" href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
                     } else {
                         tableTR += '<a class="clinic gestorpsi" href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
                     }
                 } else {
-                    if (this.type_org = 'LOCAL'){
+                    if (this.type_org == 'LOCAL'){
                         tableTR += '<a class="person local" href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
                     } else {
                         tableTR += '<a class="person gestorpsi" href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';

@@ -143,19 +143,23 @@ function updateContact(url) {
 
         jQuery.each(json,  function(){
             if(this.id) {
-                tableTR += '<tr id="' + this.id + '"><td class="title">';
+                //tableTR += '<tr id="' + this.id + '"><td class="title">';
 
                 if (this.type == '1'){ 
                     if (this.type_org == 'LOCAL'){
-                        tableTR += '<a class="clinic local" href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
+                        tableTR += '<tr class="clinic local" id="' + this.id + '"><td class="title">';
+                        tableTR += '<a href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
                     } else {
-                        tableTR += '<a class="clinic gestorpsi" href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
+                        tableTR += '<tr class="clinic gestorpsi" id="' + this.id + '"><td class="title">';
+                        tableTR += '<a  href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
                     }
                 } else {
                     if (this.type_org == 'LOCAL'){
-                        tableTR += '<a class="person local" href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
+                        tableTR += '<tr class="person local" id="' + this.id + '"><td class="title">';
+                        tableTR += '<a  href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
                     } else {
-                        tableTR += '<a class="person gestorpsi" href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
+                        tableTR += '<tr class="person gestorpsi" id="' + this.id + '"><td class="title">';
+                        tableTR += '<a  href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
                     }
                 }
 

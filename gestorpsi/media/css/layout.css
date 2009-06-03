@@ -964,6 +964,15 @@ hr {
 	font-weight: inherit;
 	color: inherit;
 }
+
+#search_results tr.person, #search_results tr.person:hover { background-image: url(../img/16/proffessional.png); background-repeat: no-repeat; background-position: 98% 10px; }
+#search_results tr.clinic,  #search_results tr.clinic:hover {background-image: url(../img/16/go-home.png); background-repeat: no-repeat; background-position: 98% 10px;}
+#search_results tr.person.gestorpsi,  #search_results tr.person.gestorpsi:hover { background-image: url(../img/16/proffessional_gestor.png); background-repeat: no-repeat; background-position: 98% 10px; }
+#search_results tr.clinic.gestorpsi,  #search_results tr.clinic.gestorpsi:hover {background-image: url(../img/16/go-home_gestor.png); background-repeat: no-repeat; background-position: 98% 10px;}
+
+
+
+
 #legend div {
 	float: left;
 	padding: 10px 10px;

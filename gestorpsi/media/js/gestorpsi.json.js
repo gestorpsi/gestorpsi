@@ -208,7 +208,7 @@ function updateRoom(url) {
         });
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
-        buildPaginator('room', json['paginator'], json['util'], 'div#list');
+        buildPaginator('place/room', json['paginator'], json['util'], 'div#list');
         $("div#list ul.paginator a").unbind().click(function(){
             updateRoom($(this).attr('href'))
             return false;

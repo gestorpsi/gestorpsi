@@ -4,7 +4,7 @@
 CREATE OR REPLACE FUNCTION gestorpsi_get_key () RETURNS VARCHAR
 AS $$
   try:
-    return open('/home/gestorpsi/dev/gestorpsi/chave.key','r').readline().strip()
+    return open('/secure/place/to/store/your/key.txt','r').readline().strip()
   except:
     raise Exception("Security Cryptography Error")
 $$ LANGUAGE plpythonu;
@@ -111,6 +111,10 @@ CREATE OR REPLACE RULE rule_update_person_person AS ON UPDATE
 	"organization_id" = NEW."organization_id"
     WHERE "id" = OLD."id";
 
+CREATE OR REPLACE RULE rule_delete_person_person AS ON DELETE
+   TO person_person
+   DO INSTEAD
+   DELETE FROM person_person_crypt WHERE "id" = OLD."id";
 
 ------------------------------------ Phone App ------------------------------------
 DROP TABLE phone_phone CASCADE;

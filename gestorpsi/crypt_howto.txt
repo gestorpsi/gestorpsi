@@ -21,7 +21,6 @@ Enabling Cryptographic
 
 $ python manage.py syncdb
 
-
 2) Create a plain-text file in secure directory to keep you key. Change file owner
    to the user that runs PostgreSQL and give it a read-only permission.
 
@@ -172,6 +171,10 @@ CREATE OR REPLACE RULE rule_update_person_person AS ON UPDATE
 	"organization_id" = NEW."organization_id"
     WHERE "id" = OLD."id";
 
+CREATE OR REPLACE RULE rule_delete_person_person AS ON DELETE
+   TO person_person
+   DO INSTEAD
+   DELETE FROM person_person_crypt WHERE "id" = OLD."id";
 
 ------------------------------------ Phone App ------------------------------------
 DROP TABLE phone_phone CASCADE;

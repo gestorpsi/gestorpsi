@@ -39,6 +39,10 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
+#: templates/contact/contact_list.html:53
+msgid "GestorPsi Network"
+msgstr ""
+
 #: authentication/forms.py:33
 msgid "Responsible professional name"
 msgstr ""

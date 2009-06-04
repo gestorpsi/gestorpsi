@@ -40,6 +40,10 @@ msgstr "Inglês"
 msgid "Name"
 msgstr "Nome"
 
+#: templates/contact/contact_list.html:53
+msgid "GestorPsi Network"
+msgstr "Rede GestorPsi"
+
 #: authentication/forms.py:33
 msgid "Responsible professional name"
 msgstr "Seu nome completo"

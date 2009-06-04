@@ -347,10 +347,14 @@ function bindAjaxForms() {
               rules: {
                 brand: {
                         required: true
+                },
+                model: {
+                        required: true
                 }
               },
               messages: {
-                brand: 'Preenchimento Necessário'
+                brand: 'Preenchimento Necessário',
+                model: 'Preenchimento Necessário',
               },
               submitHandler: function(form) {
                 $(form).ajaxSubmit(form_device_options);

@@ -238,7 +238,7 @@ def address_book_get_professionals(request):
         for y in CareProfessional.objects.filter(person__organization=x):
             phone = y.person.get_first_phone()
             email = y.person.get_first_email()
-            lista.append([y.id, '%s (%s)' % (y.person.name, y.person.organization), email, phone, '2', 'GESTORPSI'])
+            lista.append([y.id, '%s<br />%s' % (y.person.name, y.person.organization), email, phone, '2', 'GESTORPSI'])
     
     for x in Organization.objects.filter(contact_owner=user.get_profile().person):
         phone = x.get_first_phone()
@@ -246,7 +246,7 @@ def address_book_get_professionals(request):
         for y in CareProfessional.objects.filter(person__organization=x):
             phone = y.person.get_first_phone()
             email = y.person.get_first_email()
-            lista.append([y.id, '%s (%s)' % (y.person.name, y.person.organization), email, phone, '2', 'LOCAL'])
+            lista.append([y.id, '%s<br />%s' % (y.person.name, y.person.organization), email, phone, '2', 'LOCAL'])
 
     return lista
 

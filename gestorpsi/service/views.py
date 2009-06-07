@@ -159,16 +159,19 @@ def save(request, object_id = ''):
         object.research_project = False
     
     """ chose one css color to this service """
-    try:
-        latest_css = Service.objects.filter(organization=user.get_profile().org_active).latest('date')
-        next_css = latest_css.css_color_class + 1
-        if next_css <= 24:
-            object.css_color_class = next_css
-        else:
-            object.css_color_class = 1
-    except:
-        object.css_color_class = 1
-            
+    if not (object.css_color_class):
+        try:
+            user = request.user
+            latest_css = Service.objects.filter(organization=user.get_profile().org_active).latest('date')
+            next_css = latest_css.css_color_class + 1
+            if next_css <= 24:
+                object.css_color_class = next_css
+            else:
+                object.css_color_class = 1
+    
+        except:
+            pass
+
     object.save()
 
     """ Modalities """

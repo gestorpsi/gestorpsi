@@ -64,12 +64,7 @@ GNU General Public License for more details.
          <label> {{ html }}</label>
 </fieldset>
     
-<fieldset id="fieldset_place_status" class="identity organization">
-   <legend>{% trans "Visible for others" %}</legend>
-	<label>
-            <input type="checkbox" name="visible" {% if object.visible %} checked {% endif %} /> {% trans "Visible?" %}
-        </label>
-</fieldset>
+
 
 <fieldset class="identity organization first comment">
 	<legend>{% trans "Additional Identities" %}</legend>
@@ -227,6 +222,12 @@ GNU General Public License for more details.
 	<a class="add_to_form"><span>{% trans "Add IM" %}</span></a>
 </fieldset>
 
+<fieldset id="fieldset_place_status" class="identity organization">
+   <legend>{% trans "Visible for others" %}</legend>
+	<label>
+            <input type="checkbox" name="visible" {% if object.visible %} checked {% endif %} /> {% trans "Visible?" %}
+        </label>
+</fieldset>
 <fieldset class="comment_form">
 	<legend>{% trans "Comments" %}</legend>
 	<label>{% trans "Comments" %}<br />

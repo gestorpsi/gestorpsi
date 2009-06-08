@@ -391,11 +391,20 @@ function updateReferral(url) {
 
             tableTR += '<tr id="' + this.id + '" class="referral_off">';
             tableTR += '<td align="left" id="' + this.id + '" class="title">' + this.service + '<br>' + str_professional_inline + '</td>';
+            // LIGADO
             if ( (this.status) == '01'){
-                    tableTR += '<td align="center" id="' + this.id + '" class="title button_disable"  style="display:block;"> <a class="referral_off" id="' + this.id + '"href="#top' + this.id + '"> Desligar </a> </td>';
-                    tableTR += '<td align="center" id="' + this.id + '" class="title confirm_disable" style="display:none;"> <h3>Confirma desligamento?</h3> <a href="#teste" class="confirm_yes" id="' + this.id + '"> Sim </a> &nbsp;&nbsp;|&nbsp;&nbsp;<a class="confirm_not" id="' + this.id + '"> Nao </a> </td>';
+
+                tableTR += '<td align="center" id="' + this.id + '">';
+                tableTR += '<div class="title button_disable" style="display:block;"> <a class="referral_off" id="' + this.id + '"href="#top' + this.id + '"> Desligar </a> </div> </td>';
+                tableTR += '<td align="center">';
+                tableTR += '<div class="confirm_disable" style="display:none;" id="' + this.id + '">';
+                tableTR += '<b>Confirma desligamento?</b> <br /> <a href="#teste" class="confirm_yes" id="' + this.id + '"> Sim </a> &nbsp;&nbsp; | &nbsp;&nbsp; <a class="confirm_not" id="' + this.id + '"> Nao </a> </div> </td>';
+
             } else { 
-                    tableTR += '<td align="center" bgcolor="red"> <h3> Desligado </h3> </td>';
+
+            // DESLIGADO
+                    tableTR += '<td align="center" class="c_referral_off"> Desligado </td>';
+
             }
 
             tableTR += '</tr>';

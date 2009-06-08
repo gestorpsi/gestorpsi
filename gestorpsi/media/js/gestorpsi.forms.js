@@ -658,31 +658,32 @@ function bindFormMisc() {
       */
 
     //Disable button
-    $('div#edit_form div.edit_form div.client_referral_list a.referral_off').click(function() {
-        $("div#edit_form div.edit_form div.client_referral_list .button_disable[id=" + this.id + "]").hide();
-        $("div#edit_form div.edit_form div.client_referral_list .confirm_disable[id=" + this.id + "]").show();
-
+    $('div#edit_form div.edit_form div.client_referral_list table.newtab tr.referral_off div.button_disable a.referral_off').click(function() {
+        $("div#edit_form div.edit_form div.client_referral_list table.newtab tr.referral_off div.button_disable a[id=" + this.id + "]").hide();
+        $("div#edit_form div.edit_form div.client_referral_list table.newtab tr.referral_off div[id=" + this.id + "]").show();
      }); 
     
 
     // Confirm_not
     $('div#edit_form div.edit_form div.client_referral_list a.confirm_not').click(function() {
-        $("div#edit_form div.edit_form div.client_referral_list .button_disable[id=" + this.id + "]").show();
-        $("div#edit_form div.edit_form div.client_referral_list .confirm_disable[id=" + this.id + "]").hide();
+        $("div#edit_form div.edit_form div.client_referral_list tr.referral_off div.button_disable a[id=" + this.id + "]").show();
+        $("div#edit_form div.edit_form div.client_referral_list tr.referral_off div[id=" + this.id + "]").hide();
     }); 
             
 
     // Confirm_yes
     $('div#edit_form div.edit_form div.client_referral_list a.confirm_yes').click(function() {
         // REMOVE ID SELECTED
-        $('div#edit_form div.edit_form div.client_referral_list tr[id='+ this.id +']').remove();
+        //$('div#edit_form div.edit_form div.client_referral_list tr[id='+ this.id +']').remove();
+        $('div#edit_form div.edit_form div.client_referral_list tr[id='+ this.id +'] td').addClass('c_referral_off');
+        $('div#edit_form div.edit_form div.client_referral_list tr[id='+ this.id +'] td div').remove();
         // REMOVE FROM DB
         $.getJSON("/referral/" + $(this).attr("id") + "/off/", function(json) {
                 // REMOVE ID SELECTED
                 //$('div#edit_form div.edit_form div.client_referral_list tr[id='+ $(this).attr("id") +']').remove();
                 // RETURN ALL HREF THE NORMAL STATUS
-                $("div#edit_form div.edit_form div.client_referral_list .button_disable").show();
-                $("div#edit_form div.edit_form div.client_referral_list .confirm_disable").hide();
+                $("div#edit_form div.edit_form div.client_referral_list div.button_disable a").show();
+                $("div#edit_form div.edit_form div.client_referral_list div.confirm_disable").hide();
                 formSuccess("Cliente desligado com sucesso!");
         }); 
     });

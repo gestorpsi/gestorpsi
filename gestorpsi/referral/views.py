@@ -26,15 +26,9 @@ from gestorpsi.util.decorators import permission_required_with_403
 
 @permission_required_with_403('referral.referral_list')
 def referral_off(request, object_id=""):
-    try:
-        referral = Referral.objects.get(pk = object_id)
-
-    except:
-        pass
-    
+    referral = Referral.objects.get(pk = object_id)
     referral.status = '02'
     referral.save(force_update = True)
-
     return HttpResponse(referral.id)
 
 @permission_required_with_403('referral.referral_list')

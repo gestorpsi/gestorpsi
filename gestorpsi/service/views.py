@@ -153,6 +153,7 @@ def save(request, object_id = ''):
         object.active = False
     object.area = Area.objects.get(pk=request.POST['service_area'])
     object.service_type = ServiceType.objects.get(pk=request.POST['service_type'])
+    object.research_project_name = request.POST.get('research_project_name')
     try:
         object.research_project = request.POST['research_project']
     except:

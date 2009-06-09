@@ -50,7 +50,11 @@ GNU General Public License for more details.
 			<label>
             <input type="checkbox" name="research_project"{% if object.research_project %} checked{% endif %} />&nbsp;
             {% trans "Research Project" %}
+            <div class="research_project_name" style="display:block;">
+			    <input type="text" maxlength="100" name="research_project_name" class="giant" value="{{ object.research_project_name }}" />
+            </div>
 			</label>
+            
 	</fieldset>
 
 	<!--

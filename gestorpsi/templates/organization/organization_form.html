@@ -99,65 +99,72 @@ GNU General Public License for more details.
 
         <label>{% trans "Person Type" %}<br />
                 <select name="person_type" class="medium">
+                    <option value="0"></option>   
                         {% for o in PersonType %}
-			<option value="{{ o.id }}"{% ifequal object.person_type_id o.id %} selected{% endifequal %}>{{ o }}</option>
-			{% endfor %}
-		</select>
+			                <option value="{{ o.id }}"{% ifequal object.person_type_id o.id %} selected{% endifequal %}>{{ o }}</option>
+			            {% endfor %}
+		        </select>
         </label>
 	
         <label>{% trans "Unit Type" %}<br />
                 <select name="unit_type" class="extrabig">
+                    <option value="0"></option>   
                         {% for o in UnitType %}
-			<option value="{{ o.id }}"{% ifequal object.unit_type_id o.id %} selected{% endifequal %}>{{ o }}</option>
+			        <option value="{{ o.id }}"{% ifequal object.unit_type_id o.id %} selected{% endifequal %}>{{ o }}</option>
                         {% endfor %}
-		</select>
+		        </select>
         </label>		
 
 	<label>{% trans "Administrative Environment" %}<br />
                 <select name="environment" class="medium">
-			{% for o in AdministrationEnvironment %}
-			<option value="{{ o.id }}"{% ifequal object.environment_id o.id %} selected{% endifequal %}>{{ o }}</option>
-                        {% endfor %}
-		</select>
+                    <option value="0"></option>   
+			        {% for o in AdministrationEnvironment %}
+			            <option value="{{ o.id }}"{% ifequal object.environment_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                    {% endfor %}
+		        </select>
         </label>
 	
 	<label>{% trans "Management Type" %}<br />
                 <select name="management" class="medium">
-			{% for o in Management %}
-			<option value="{{ o.id }}"{% ifequal object.management_id o.id %} selected{% endifequal %}>{{ o }}</option>
-                        {% endfor %}
-		</select>
+                    <option value="0"></option>   
+			        {% for o in Management %}
+			            <option value="{{ o.id }}"{% ifequal object.management_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                    {% endfor %}
+		        </select>
         </label>
 
 	<label>{% trans "Organization Source" %}<br />
                 <select name="source" class="extrabig">
-			{% for o in Source %}
-			<option value="{{ o.id }}"{% ifequal object.source_id o.id %} selected{% endifequal %}>{{ o }}</option>
-                        {% endfor %}
-		</select>
+                    <option value="0"></option>   
+			    {% for o in Source %}
+			        <option value="{{ o.id }}"{% ifequal object.source_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                {% endfor %}
+		        </select>
         </label>	
 	
 	<label>{% trans "Dependence" %}<br />
                 <select name="dependence" class="medium">
-			{% for o in Dependence %}
-			<option value="{{ o.id }}"{% ifequal object.dependence_id o.id %} selected{% endifequal %}>{{ o }}</option>
-                        {% endfor %}
-		</select>
+                    <option value="0"></option>   
+			    {% for o in Dependence %}
+			        <option value="{{ o.id }}"{% ifequal object.dependence_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                {% endfor %}
+		        </select>
         </label>
 	
         <label>{% trans "Care Provided Type" %}<br />
 	        <select name="provided_type" multiple="multiple" class="medium multiple small_fonts">
-			{% for o in ProvidedType %}
-			<option value="{{ o.id }}"{% for pc in object.provided_type.values_list %}{% ifequal pc.0 o.id %} selected="selected"{% endifequal %}{% endfor %}>{{ o }}</option>
+			        {% for o in ProvidedType %}
+			        <option value="{{ o.id }}"{% for pc in object.provided_type.values_list %}{% ifequal pc.0 o.id %} selected="selected"{% endifequal %}{% endfor %}>{{ o }}</option>
                         {% endfor %}
-		</select>
+		    </select>
         </label>
 		
 	<label>{% trans "Education and Research Activity" %}<br />
-                <select name="activity" class="big">
+        <select name="activity" class="big">
+            <option value="0"></option>   
 			{% for o in Activitie %}
-			<option value="{{ o.id }}"{% ifequal object.activity_id o.id %} selected{% endifequal %}>{{ o }}</option>
-                        {% endfor %}
+			    <option value="{{ o.id }}"{% ifequal object.activity_id o.id %} selected{% endifequal %}>{{ o }}</option>
+            {% endfor %}
 		</select>
         </label>	
 </fieldset>

@@ -27,6 +27,7 @@ from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.careprofessional.models import Profession
+from gestorpsi.util.views import get_object_or_None
 
 @permission_required_with_403('organization.organization_write')
 def professional_responsible_save(request, object, ids, names, subscriptions, organization_subscriptions, professions):
@@ -92,13 +93,14 @@ def save(request):
     object.photo = request.POST['photo']
     object.visible = get_visible( request, request.POST.get('visible') )
     #profile
-    object.person_type = PersonType.objects.get(pk=request.POST['person_type'])
-    object.unit_type = UnitType.objects.get(pk=request.POST['unit_type'])
-    object.environment = AdministrationEnvironment.objects.get(pk=request.POST['environment'])
-    object.management = Management.objects.get(pk=request.POST['management'])
-    object.source = Source.objects.get(pk=request.POST['source'])
-    object.dependence = Dependence.objects.get(pk=request.POST['dependence'])
-    object.activity = Activitie.objects.get(pk=request.POST['activity'])
+    #object.person_type = PersonType.objects.get(pk=request.POST.get('person_type'))
+    object.person_type = get_object_or_None(PersonType, pk=request.POST.get('person_type'))
+    object.unit_type = get_object_or_None(UnitType, pk=request.POST.get('unit_type'))
+    object.environment = get_object_or_None(AdministrationEnvironment, pk=request.POST.get('environment'))
+    object.management = get_object_or_None(Management, pk=request.POST.get('management'))
+    object.source = get_object_or_None(Source, pk=request.POST.get('source'))
+    object.dependence = get_object_or_None(Dependence, pk=request.POST.get('dependence'))
+    object.activity = get_object_or_None(Activitie, pk=request.POST.get('activity'))
     """ provided types """
     object.provided_type.clear()
     for p in request.POST.getlist('provided_type'):

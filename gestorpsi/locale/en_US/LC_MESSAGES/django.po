@@ -514,8 +514,11 @@ msgstr ""
 
 #: templates/admission/admission_form.html:49
 #: templates/schedule/schedule_form.html:56
-#: templates/tags/client_sidebar.html:32
 msgid "Referrals"
+msgstr ""
+
+#: templates/tags/client_sidebar.html:32
+msgid "Subscribed Services"
 msgstr ""
 
 #: templates/admission/admission_form.html:50
@@ -1443,9 +1446,13 @@ msgstr ""
 msgid "Select a Place"
 msgstr ""
 
-#: templates/place/place_room_form.html:46 templates/tags/room.html:22
+#: templates/tags/room.html:22
 #: templates/tags/website.html:24
 msgid "Description"
+msgstr ""
+
+#: templates/place/place_room_form.html:46
+msgid "Room Name"
 msgstr ""
 
 #: templates/place/place_room_form.html:50 templates/tags/room.html:26
@@ -1495,6 +1502,9 @@ msgid "Last Referral"
 msgstr ""
 
 #: templates/referral/referral_form.html:38
+msgid "To Service"
+msgstr ""
+
 #: templates/schedule/schedule_abstract.html:21
 msgid "Service"
 msgstr ""

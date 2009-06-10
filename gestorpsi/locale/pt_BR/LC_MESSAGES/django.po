@@ -511,7 +511,7 @@ msgstr "Número de Prontuário"
 
 #: templates/admission/admission_form.html:38
 msgid "Legacy Record"
-msgstr "Prontuário Existente"
+msgstr "Prontuário Legado"
 
 #: templates/admission/admission_form.html:40
 msgid "Admission Date"
@@ -523,9 +523,12 @@ msgstr "Tipo de Documento"
 
 #: templates/admission/admission_form.html:49
 #: templates/schedule/schedule_form.html:56
-#: templates/tags/client_sidebar.html:32
 msgid "Referrals"
 msgstr "Encaminhamentos"
+
+#: templates/tags/client_sidebar.html:32
+msgid "Subscribed Services"
+msgstr "Serviços Inscritos"
 
 #: templates/admission/admission_form.html:50
 msgid "How the client heard about this organization?"
@@ -632,7 +635,7 @@ msgstr "Horários disponíveis"
 
 #: templates/careprofessional/careprofessional_form.html:84
 msgid "Professional Agreements"
-msgstr "Convênios Profissionais"
+msgstr "Convênios atendidos por este profissional"
 
 #: templates/careprofessional/careprofessional_form.html:85
 #: templates/service/service_form.html:163
@@ -653,7 +656,7 @@ msgstr "Adicionar novo local"
 
 #: templates/careprofessional/careprofessional_form.html:109
 msgid "Professional Services"
-msgstr "Serviços do Profissional"
+msgstr "Serviços prestados por este profissional"
 
 #: templates/careprofessional/careprofessional_form.html:111
 #: templates/core/main.html:111
@@ -1035,11 +1038,11 @@ msgstr "Adicionar detalhes do equipamento"
 
 #: templates/device/device_form.html:57
 msgid "Brand"
-msgstr "Marca"
+msgstr "Marca / Editora"
 
 #: templates/device/device_form.html:61
 msgid "Model"
-msgstr "Modelo"
+msgstr "Modelo / Título"
 
 #: templates/device/device_form.html:65
 msgid "Part number"
@@ -1351,7 +1354,7 @@ msgstr "Inscrição Municipal"
 
 #: templates/organization/organization_form.html:91
 msgid "Professional Responsible"
-msgstr "Profissional Responsável"
+msgstr "Responsáveis Técnicos"
 
 #: templates/organization/organization_form.html:99
 msgid "Add Professional"
@@ -1457,14 +1460,18 @@ msgstr "Identificação da Sala"
 msgid "Select a Place"
 msgstr "Selecione um local"
 
-#: templates/place/place_room_form.html:46 templates/tags/room.html:22
+#: templates/tags/room.html:22
 #: templates/tags/website.html:24
 msgid "Description"
 msgstr "Descrição"
 
+#: templates/place/place_room_form.html:46
+msgid "Room Name"
+msgstr "Nome da Sala"
+
 #: templates/place/place_room_form.html:50 templates/tags/room.html:26
 msgid "Dimension"
-msgstr "Dimensão"
+msgstr "Dimensão (valor em m²)"
 
 #: templates/place/place_room_form.html:57 templates/tags/address.html:84
 #: templates/tags/document.html:24 templates/tags/document.html.py:41
@@ -1506,9 +1513,12 @@ msgstr "Encaminhamento interno"
 
 #: templates/referral/referral_form.html:35
 msgid "Last Referral"
-msgstr "Encaminhamentos"
+msgstr "Encaminhar do serviço:"
 
 #: templates/referral/referral_form.html:38
+msgid "To Service"
+msgstr "Para o serviço:"
+
 #: templates/schedule/schedule_abstract.html:21
 msgid "Service"
 msgstr "Serviços"
@@ -1901,7 +1911,7 @@ msgstr "Detalhes do Cliente"
 
 #: templates/schedule/schedule_occurrence_form.html:46
 msgid "Devices Available"
-msgstr "Serviços (todos)"
+msgstr "Equipamentos"
 
 #: templates/service/service_form.html:25
 msgid "Adding New Service"
@@ -1962,11 +1972,11 @@ msgstr "Relação de Serviços"
 
 #: templates/service/service_form.html:173
 msgid "Related Professionals"
-msgstr "Profissionais Relacionados"
+msgstr "Profissionais que prestam este serviço"
 
 #: templates/service/service_form.html:183
 msgid "Professionals Responsible"
-msgstr "Profissional Responsável"
+msgstr "Profissionais responsáveis por este serviço"
 
 #: templates/service/service_form.html:200
 msgid "Service Status"
@@ -2080,7 +2090,7 @@ msgstr "Admissão de cliente"
 
 #: templates/tags/client_sidebar.html:31
 msgid "New Referral"
-msgstr "Novo Encaminhamento"
+msgstr "Nova Inscrição / Encaminhamento"
 
 #: templates/tags/client_sidebar.html:34
 msgid "Print Record"

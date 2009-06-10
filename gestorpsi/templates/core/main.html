@@ -17,7 +17,9 @@ GNU General Public License for more details.
 <!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+
 {% load i18n %}
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>GestorPsi - {% trans "Sistema de Gestão de Serviços em Psicologia" %} {% block title %}{% endblock %}</title>
 <script type="text/javascript" src="/media/js/jquery-1.2.6.min.js"></script> <!-- JQuery Core Library -->
@@ -104,7 +106,7 @@ GNU General Public License for more details.
 			<li><a id="schedule" class="main_menu" href="/schedule/" display="daily">{% trans "calendar" %}</a></li>
 			<li><a id="customers" class="main_menu" href="/client/" display="list">{% trans "clients" %}</a></li>
 			<li><a id="contacts" class="main_menu"  href="/contact/" display="list">{% trans "contacts" %}</a></li>
-			<li><a id="myoffice" class="main_menu notajax vertical" display="list">{% trans "organization" %}</a>
+			<li><a id="myoffice" class="main_menu notajax vertical" display="list">{{ profile.org_active.short_name }}</a>
 				<ul style="display:none" class="myoffice">
 					<li><a id="organization" href="/organization/">{% trans "My Organization" %}</a></li>
 					<li><a id="places" href="/place/" display="list">{% trans "Places" %}</a></li>

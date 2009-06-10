@@ -514,7 +514,7 @@ input[type=submit].mini {
 }
 
 .giant {width: 660px;}
-
+input.giant {width: 645px;}
 .big {
 	width: 344px;
 }

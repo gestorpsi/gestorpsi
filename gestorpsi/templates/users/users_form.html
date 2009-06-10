@@ -66,26 +66,22 @@ GNU General Public License for more details.
                 </label>
 
                 {% if profile.id %}
-                    <label>{% trans "Change Password" %}<br />
-                        <a class="form_mini" display="pwd_mini">{% trans "Change" %}</a>
+                    <label><a class="form_mini" display="pwd_mini">{% trans "Change Password" %}</a>
                     </label>
                 {% else %}
                     <label>{% trans "Password" %}<br />
-                        <input type="password" name="password" class="big" value="" id="id_password" />
+                        <input type="password" name="password" class="extramedium" value="" id="id_password" />
                     </label>
                     <label>{% trans "Password" %} <small>({% trans "Again" %})</small><br />
-                         <input type="password" name="pwd_conf" class="big" value="" id="id_pwd_conf" />
+                         <input type="password" name="pwd_conf" class="extramedium" value="" id="id_pwd_conf" />
                      </label>
                 {% endif %}
-</fieldset>
 
-<fieldset>
-        <legend>{% trans "Email" %}</legend>
-		
+
 		{% if profile.user.email %}
-			<label>
+			<label style="clear: both;">
 				{% trans "Registered user e-mail" %}<br />
-				<input type="text" name="email" value="{{ profile.user.email }}" readonly>
+				<input type="text" name="email" value="{{ profile.user.email }}" class="extramedium"  readonly>
 			</label>
 		{% else %}
 			{% if emails %}
@@ -100,7 +96,7 @@ GNU General Public License for more details.
 			{% else %}
 				<label>
 					{% trans "Type an e-mail to procede with your registration" %}<br />
-					<input class="email_send_user" type="text" name="email_send_user" value="">
+					<input class="extramedium email_send_user" type="text" name="email_send_user" value="">
 				</label>
 			{% endif %}		    
 		{% endif %}

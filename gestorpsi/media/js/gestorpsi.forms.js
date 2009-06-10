@@ -365,6 +365,20 @@ function bindFormActions() {
          //$(this).parents('label').parents('fieldset').children('label.device_room').children('option:not(.place_'+$(this).val()).hide();
      });
 
+     /** 
+     * service form - Research project name
+     */
+
+    $("input.research_project_name[type=checkbox]").click(function(){
+    //$(('input.research_project_name[type=checkbox]:checked').size() == '0'){
+        //var SHOW = $('input.research_project_name[type=checkbox]:checked').size();
+        if ( $('input.research_project_name[type=checkbox]:checked').size() == "1"){
+            $("div.research_project_name").show();
+        } else {
+            $("div.research_project_name").hide();
+            $("input[name=research_project_name]").val("");
+        }
+    });
 
      /**
      * service types and service areas

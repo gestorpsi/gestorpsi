@@ -1530,11 +1530,11 @@ msgstr "Clientes"
 
 #: templates/referral/referral_form.html:50
 msgid "Referral Additional Infos"
-msgstr "Encaminhado de/para Profissional"
+msgstr "Detalhes do Encaminhamento"
 
 #: templates/referral/referral_form.html:51
 msgid "Referral Reason"
-msgstr "Detalhes do Encaminhamento"
+msgstr "Detalhes"
 
 #: templates/referral/referral_form.html:54
 msgid "Priority"

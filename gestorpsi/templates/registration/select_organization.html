@@ -42,14 +42,15 @@ GNU General Public License for more details.
 
 <body>
     <div id="bar"><h1>[GestorPSI]</h1></div>
-    
-    <div id="main_area" class="login">
-    
 
-		<form name="loginform" id="loginform" action="/login/select_user_organization" method="post">
-		<p><label>Selecione uma organização</label><br /></p>
+<br><br><br><br><br><br>    
+
+    <div align="center" id="main_area" class="login">
+    
+		<form name="loginform" id="loginform" action="/accounts/select_user_organization" method="post">
+		<p><h3>Selecione qual estabelecimento voc&ecirc; quer acessar</h3><br /></p>
 		<p>
-		<select name="organization" class="medium" id="organization" >
+		<select name="organization" class="large" id="organization" >
 	
 			{% for object in objects %}
 				<option value="{{ object.id }}"> {{ object.name }} </option>

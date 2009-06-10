@@ -59,14 +59,13 @@ def user_authentication(request):
                     request.session['temp_user'] = user                
                     clear_login(user)
                     if len(profile.organization.all()) > 1:                                                           
-                        return render_to_response('registration/select_organization.html', { 'objects': user.organization.all()}) 
+                        return render_to_response('registration/select_organization.html', { 'objects': profile.organization.all()}) 
                     else:
                         number_org = []
                         number_org = profile.organization.all()
                         profile.org_active = number_org[0]
                         login(request, user)                                        
                         return HttpResponseRedirect('/')
-                               
             else:
                     set_trylogin(username)
                     return render_to_response('registration/login.html', {'form':form })
@@ -75,10 +74,11 @@ def user_authentication(request):
         return render_to_response('registration/login.html', { 'form':form } )
 
 def user_organization(request):
-    organization = Organization.objects.get(pk=request.POST['organization'])
+    organization = Organization.objects.get(pk=request.POST.get('organization'))
     user = request.session['temp_user']
     del request.session['temp_user']        
-    user.get_profile().org_active = organization    
+    user.get_profile().org_active = organization
+    user.get_profile().save()
     login(request, user)           
     return HttpResponseRedirect('/') 
 

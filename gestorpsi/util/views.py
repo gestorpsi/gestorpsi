@@ -24,6 +24,11 @@ def get_object_or_new(klass, *args, **kwargs):
         return klass()
 
 def get_object_or_None(klass, *args, **kwargs):
+    """ Usage:
+        from gestorpsi.util.views import get_object_or_None
+        ...
+        object = get_object_or_None(Class, pk=id)
+    """
     from django.shortcuts import _get_queryset
     queryset = _get_queryset(klass)
     try:

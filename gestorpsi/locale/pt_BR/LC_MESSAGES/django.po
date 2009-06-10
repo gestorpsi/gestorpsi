@@ -1941,6 +1941,10 @@ msgstr "Palavras-chave separadas por vírgulas (;)"
 msgid "Research Project"
 msgstr "Projeto de Pesquisa"
 
+#: templates/service/service_form.html:55
+msgid "This service is linked with a research project"
+msgstr "Este serviço está vinculado a um projeto de pesquisa."
+
 #: templates/service/service_form.html:61
 msgid "Service Profile"
 msgstr "Perfil do Serviço"

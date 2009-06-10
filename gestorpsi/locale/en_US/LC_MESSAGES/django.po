@@ -1908,6 +1908,10 @@ msgstr ""
 msgid "Research Project"
 msgstr ""
 
+#: templates/service/service_form.html:55
+msgid "This service is linked with a research project"
+msgstr ""
+
 #: templates/service/service_form.html:61
 msgid "Service Profile"
 msgstr ""

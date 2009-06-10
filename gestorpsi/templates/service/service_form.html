@@ -54,12 +54,12 @@ GNU General Public License for more details.
                 <input class="research_project_name" type="checkbox" name="research_project"{% if object.research_project %} checked{% endif %} />&nbsp;
                 {% trans "This service is linked with a research project" %} 
             </label>
-            <label> 
-                {% trans "Name" %}
                 <div class="research_project_name" {% if object.research_project_name %} style="display:block;" {% else %} style="display:none;" {% endif %}>
-			        <input type="text" maxlength="100" name="research_project_name" class="giant" value="{{ object.research_project_name }}" />
+                    <label> 
+                        {% trans "Name" %}
+			            <input type="text" maxlength="100" name="research_project_name" class="giant" value="{{ object.research_project_name }}" />
+                    </label>
                 </div>
-			</label>
             
 	</fieldset>
 

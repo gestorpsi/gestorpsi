@@ -216,7 +216,6 @@ function bindAjaxForms() {
           $(this).validate({event:"submit",
               rules: {
                    service: { required: true },
-                   professional: { required: true },
                    client: { required: true },
               },
               submitHandler: function(form) {

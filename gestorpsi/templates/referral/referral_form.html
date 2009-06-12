@@ -39,7 +39,8 @@ GNU General Public License for more details.
         {{ referral_form.service }}
         </label>
         <label>{% trans "Professionals" %}<br />
-        {{ referral_form.professional }}
+            <select name="professional" class="extrabig multiple asm" id="id_professional" multiple="multiple">
+            </select>
         </label>        
         <label>{% trans "Clients" %}<br />
         {{ referral_form.client }}

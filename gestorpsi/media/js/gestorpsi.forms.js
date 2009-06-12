@@ -609,7 +609,7 @@ function bindFormMisc() {
                 }
             });
         }
-     });
+     }); 
 
     /**
      * hide and show weekly, monthly and yearly extra option in schedule form
@@ -693,13 +693,28 @@ function bindFormMisc() {
         $('div#edit_form div.edit_form div.client_referral_list tr[id='+ this.id +'] td div').remove();
         // REMOVE FROM DB
         $.getJSON("/referral/" + $(this).attr("id") + "/off/", function(json) {
-                // REMOVE ID SELECTED
                 //$('div#edit_form div.edit_form div.client_referral_list tr[id='+ $(this).attr("id") +']').remove();
                 // RETURN ALL HREF THE NORMAL STATUS
                 $("div#edit_form div.edit_form div.client_referral_list div.button_disable a").show();
                 $("div#edit_form div.edit_form div.client_referral_list div.confirm_disable").hide();
                 formSuccess("Cliente desligado com sucesso!");
         }); 
+    });
+     
+    /**
+     * referral new. Show professional subscription when change service.
+     **/
+
+    $('select[name=service]').unbind().change(function(){
+        // REMOVE ALL PROFESSIONAL FROM SELECT
+        $('select[name=professional] option').remove();
+        if (this.value != ''){
+            $.getJSON("/service/" + $(this).attr("value") + "/listprofessional/", function(json) {
+                jQuery.each(json,  function(){
+                    $('select[name=professional]').append(new Option(this.name, this.id));
+                });
+            });
+        }
     });
      
 }

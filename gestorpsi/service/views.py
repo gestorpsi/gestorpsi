@@ -234,3 +234,24 @@ def disable(request, object_id=''):
         'Modalitys': Modality.objects.all(),
         'Professions': Profession.objects.all(),
         }, context_instance=RequestContext(request))
+
+
+""" Referral - List of professional of the service """
+def list_professional(request, object_id):
+    try:
+        list_prof = CareProfessional.objects.filter(prof_services = object_id)
+        
+        i = 0
+        array = {} #JSON
+
+        for o in list_prof:
+            array[i] = {
+                    'name': '%s' % o,
+                    'id': o.id,
+            }
+            i = i + 1
+        
+        return HttpResponse(simplejson.dumps(array), mimetype='application/json')
+
+    except:
+        pass

@@ -33,7 +33,24 @@ GNU General Public License for more details.
         <label><input type="radio" name="referral_type" value="referral">&nbsp; {% trans "From existing referral" %}</label>
         </label>
         <label class="referral_type_referral hidden">{% trans "Last Referral" %}<br />
-        {{ referral_form.referral }}
+            <select name="referral" class="extrabig asm" id="id_referral">
+                <option selected="selected" value="">---------</option>
+                {% for p in referral_list %}
+                    <option> {{ p }} 
+                        {% if p.professional.all.0 %}
+                            ( {{ p.professional.all.0 }} )
+                        {% endif %}
+
+                        {% if p.professional.all.0 %}
+                            ( {{ p.professional.all.1 }})
+                        {% endif %}
+
+                        {% if p.professional.all.0 %}
+                            ({{ p.professional.all.2 }} )
+                        {% endif %}
+                    </option>
+                {% endfor %}
+            </select>
         </label>
         <label>{% trans "To Service" %}<br />
         {{ referral_form.service }}
@@ -47,7 +64,7 @@ GNU General Public License for more details.
         </label>
     </fieldset>
 
-    <fieldset class="referral_type_referral hidden">
+    <fieldset>
     <legend>{% trans "Referral Additional Infos" %}</legend>
         <label>{% trans "Referral Reason" %}<br />
         {{ referral_form.referral_reason }}

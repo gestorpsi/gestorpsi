@@ -64,7 +64,6 @@ def client_referrals(request, object_id = None):
 def save(request, object_id = None):
     if request.method == 'POST':
         form = ReferralForm(request.POST)
-        #form = ReferralForm(request.POST, instance=object)
         if form.is_valid():
             object = form.save(commit=False)
             object.organization = request.user.get_profile().org_active

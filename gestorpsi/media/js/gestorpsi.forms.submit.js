@@ -215,6 +215,7 @@ function bindAjaxForms() {
      $('form.client_referral').each(function() {
           $(this).validate({event:"submit",
               rules: {
+                   referral: { required: true },
                    service: { required: true },
                    client: { required: true },
               },

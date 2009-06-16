@@ -99,7 +99,15 @@ div#main_menu a.active {
 	background-color: #ECECEC;
 	height: 16px;
 }
- 
+div#logotype {
+	float: left;
+    border-bottom: 1px solid #999999;
+    border-right: 1px solid #999999;
+    width: 62px;
+    height: 82px;
+    background: #CCCCCC;
+    margin-right: 10px;
+} 
 
 #start {
 	background-image: url(../img/16/user-desktop.png);

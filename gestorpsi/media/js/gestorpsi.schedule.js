@@ -326,8 +326,15 @@ function bindScheduleForm() {
                         str_professional_inline += this.name + ", " ;
                     });
                     str_professional_inline = str_professional_inline.substr(0, (str_professional_inline.length-2))
-                
-                    line = line + '<option value="' + this.id + '">' + this.service + ' (' + str_professional_inline + ')</option>';
+             
+                    // if service is on 
+                    if (this.status == "01"){ 
+                            if ( str_professional_inline != ''){ 
+                                line = line + '<option value="' + this.id + '">' + this.service + ' (' + str_professional_inline + ')</option>';
+                            } else {
+                                line = line + '<option value="' + this.id + '">' + this.service + '</option>';
+                            }
+                    } 
                 }); 
                 $('#form select[name=referral]').html(line); // rebuild referral select
             });

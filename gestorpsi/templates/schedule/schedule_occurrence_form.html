@@ -38,7 +38,12 @@ GNU General Public License for more details.
             </div>
             <label>{% trans "Room" %}</label>
             <div>
-            {{ form.room }}
+             <select name="room" class="extramedium asm" id="id_room">
+              <option value="" selected="selected">---------</option>
+               {% for room in rooms %}
+                <option value="{{ room.id }}">{{ room.description }}</option>
+               {% endfor %}
+             </select>
             </div>
             <label>{% trans "Notes" %}<br />
             {{ form.annotation }}

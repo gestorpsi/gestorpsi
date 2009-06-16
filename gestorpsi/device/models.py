@@ -90,7 +90,7 @@ class DeviceDetails(models.Model):
         ordering = ['brand']
 
     def __unicode__(self):
-      return u"%s - %s" % (self.device.description, self.brand)
+      return u"%s - %s - %s" % (self.device.description, self.brand, self.model,)
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

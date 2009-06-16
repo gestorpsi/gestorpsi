@@ -181,11 +181,15 @@ function bindAjaxForms() {
 
      $('form.schedule').each(function() {
           $(this).validate({event:"submit",
-          //rules: {
-               //service: { required: true },
-               //client: { required: true },
-               //professional: { required: true }
-          //},
+          rules: {
+               service: { required: true },
+               client: { required: true },
+               professional: { required: true },
+               room: { required: true },
+               referral: { required: true },
+               client: { required: true },
+               fb_client_input: { required: true },
+          },
           submitHandler: function(form) {
                //$(form).ajaxSubmit(form_schedule_options);
                $(form).ajaxSubmit(form_schedule_options);

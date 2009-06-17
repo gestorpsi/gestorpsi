@@ -28,7 +28,7 @@ class ScheduleSingleOccurrenceForm(SingleOccurrenceForm):
 
 class ScheduleOccurrenceForm(MultipleOccurrenceForm):
     room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=forms.Select(attrs={'class':'extramedium asm', }))
-    device = forms.ModelMultipleChoiceField(required = False, queryset=DeviceDetails.objects.mobile(), widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
+    device = forms.ModelMultipleChoiceField(required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
     annotation = forms.CharField(required = False, widget=forms.Textarea())
     
     class Meta:

@@ -30,7 +30,7 @@ from swingtime.utils import create_timeslot_table
 from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.referral.models import Referral
 from gestorpsi.referral.forms import ReferralForm
-from gestorpsi.place.models import Place
+from gestorpsi.place.models import Place, Room
 from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.device.models import DeviceDetails
@@ -143,6 +143,8 @@ def occurrence_view(
     template='schedule/schedule_occurrence_form.html',
     form_class=ScheduleSingleOccurrenceForm
 ):
+    user = request.user
+    rooms = Room.objects.filter(place__organization = user.profile.org_active)
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__pk=event_pk)
     if request.method == 'POST':
         form = form_class(request.POST, instance=occurrence)
@@ -154,7 +156,7 @@ def occurrence_view(
         
     return render_to_response(
         template,
-        dict(occurrence=occurrence, form=form),
+        dict(occurrence=occurrence, form=form, rooms=rooms),
         context_instance=RequestContext(request)
     )
 
@@ -168,6 +170,7 @@ def _datetime_view(
     params=None
 ):
 
+    user = request.user
     timeslot_factory = timeslot_factory or create_timeslot_table
     params = params or {}
     data = dict(
@@ -181,6 +184,7 @@ def _datetime_view(
         devices = DeviceDetails.objects.all(),
         event_form = ReferralForm(),
         recurrence_form = ScheduleOccurrenceForm(),
+        rooms = Room.objects.filter(place__organization = user.profile.org_active)
     )
 
     return render_to_response(

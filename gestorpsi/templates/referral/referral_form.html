@@ -36,7 +36,7 @@ GNU General Public License for more details.
             <select name="referral" class="extrabig asm" id="id_referral">
                 <option selected="selected" value="">---------</option>
                 {% for p in referral_list %}
-                    <option> {{ p }} 
+                    <option value="{{ p.id }}"> {{ p }} 
                         {% if p.professional.all.0 %}
                             ( {{ p.professional.all.0 }} )
                         {% endif %}

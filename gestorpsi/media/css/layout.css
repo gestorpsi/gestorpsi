@@ -108,7 +108,9 @@ div#logotype {
     background: #CCCCCC;
     margin-right: 10px;
 } 
-
+div#logotype span{
+	display: none;
+}
 #start {
 	background-image: url(../img/16/user-desktop.png);
 	}
@@ -1069,7 +1071,9 @@ select.country {
 	font-size: 10px;
 	color: #cccccc;
 }
-
+#footer span {
+	display: none;
+}
 .form_document_box {
 	padding-bottom: 65px;
 }

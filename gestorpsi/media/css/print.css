@@ -35,6 +35,7 @@ a:hover {
 	color: #2688AE;
 	text-decoration: underline;
 }
+table td, th { border: 1px solid #858585;} 
 
 #bar {
 	background: #005A7D url(../img/logo_gestorpsi_peq.gif) no-repeat;
@@ -405,6 +406,7 @@ select:focus {
 	border: 2px solid #2688ae;
 }
 textarea {
+	min-height: 400px;
 }
 
 .sidebar {
@@ -547,15 +549,15 @@ hr {
 }
 .overflow {
 	clear: both;
-	width: 675px;
+	width: 80%;
 	margin-left: 10px;
 	height: 150px;
-	overflow: auto;
+	overflow: visible;
 	background-color: #f2f2f2;
 	border: 2px solid #E2E2E2;
 }
 .overflow table {
-	width: 660px;
+	width: 100%;
 	font-size: 11px;
 	color: #999999;
 }

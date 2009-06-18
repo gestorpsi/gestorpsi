@@ -88,7 +88,7 @@ GNU General Public License for more details.
 		<ul>
 
     <!-- <li><a href="#email">{% trans "email" %}</a></li>| -->
-            <li>
+            <li id="logged">
             <small>{% trans "Logged as" %} <b>{{ profile.user.username }}</small></b>
             </li>&nbsp;<li>
                 <a href="/profile/" id="profile" class="main_menu" display="form" title="{{ profile.person.name }}">{% trans "Meu cadastro" %}</a>
@@ -100,7 +100,9 @@ GNU General Public License for more details.
 		</ul>
 	</div>
     <div id="logotype">
-    <img src="../../media/img/generic_photo.gif" width="71" height="83" />
+    <img src="../../media/img/generic_photo.gif" width="71" height="83" /><span>Teste de texto. Este endereço não quer dizetr nadadasdad<br />
+CEP 32000 000 Cidade Estado País<br />
+telefone</span>
     </div>
 	<div id="menus">
 	<div id="main_menu">

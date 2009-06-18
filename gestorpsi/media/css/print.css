@@ -22,9 +22,26 @@ body {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 12px;
     margin: 0;
-    page: A4;
-    
+    width: 660px;
+    border: 1px solid white;
+    min-width: inherit;
 }
+
+div#logotype {
+width: 450px;
+border: none;
+background: none;
+}
+div#logotype img {
+
+float: left;
+margin-right: 10px
+}
+
+div#logotype span {
+	display: inline;
+} 
+
 a, a:visited {
 	text-decoration: none;
 	color: #2688AE;
@@ -38,16 +55,19 @@ a:hover {
 table td, th { border: 1px solid #858585;} 
 
 #bar {
-	background: #005A7D url(../img/logo_gestorpsi_peq.gif) no-repeat;
-	height: 18px;
-}
+display: none;}
 #bar h1 {
-	display: block;
-}
-#menu_log {
 	display: none;
 }
-
+#menu_log {
+	display: block;
+}
+#menu_log ul li {
+	display: none;
+}
+#menu_log li#logged {
+	display: block;
+}
 #main_menu  {
 	display: none;
 }
@@ -97,7 +117,7 @@ table td, th { border: 1px solid #858585;}
 
 body #content {
 	width: 100%;
-    margin: 0;
+    margin: 100px 0;
 }
 #content h2 {
 	font-size: 22px;
@@ -107,6 +127,7 @@ body #content {
 	font-weight: normal;
 	padding: 15px 0 7px 70px;
 	height: 45px;
+    clear: both;
 }
 #content p {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -168,9 +189,10 @@ h2.title_schedule span  {
 }
 
 body .main_area {
-	width: 60%;
+	width: 95%;
 	background: #ECECEC;
-	border: 1px solid #999999;
+	border: none;
+    margin: auto;
 }
 .main_area.contact {
 	background: none;
@@ -857,12 +879,14 @@ select.country {
 }
 
 #footer {
-	clear: both;
 	display: block;
 	padding: 8px;
 	margin-top: 20px;
 	font-size: 10px;
 	color: #cccccc;
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }
 
 .form_document_box {

@@ -716,5 +716,46 @@ function bindFormMisc() {
             });
         }
     });
+
+
+    /**
+     * ADMISSION - SHOW OR HIDE SELECT OPTION / Referral and Indication
+     **/
+      
+    // IN THE TIME THAT FORM IS MONTED, CHECK IF SHOW ORG OR PROF
+    // REFERRAL
+    $("div.admission_referral select[name=referral]").unbind().change(function(){
+
+        if (this.value == '7' || this.value == '8' ){
+            if (this.value == '7' ){
+                    $("div.admission_ref_prof").hide()
+                    $("div.admission_ref_org").show()
+            } else {
+                    $("div.admission_ref_prof").show()
+                    $("div.admission_ref_org").hide()
+            }
+        } else {
+            // NEVER  7 AND 8 
+            $("div.admission_ref_prof").hide()
+            $("div.admission_ref_org").hide()
+        }
+    });
+
+    // INDICATION
+    $("div.admission_indication select[name=indication]").unbind().change(function(){
+        if (this.value == '3' || this.value == '4' ){
+            if (this.value == '3'){
+                $("div.admission_ind_prof").hide()
+                $("div.admission_ind_org").show()
+            } else {
+                $("div.admission_ind_prof").show()
+                $("div.admission_ind_org").hide()
+            }
+        } else {
+            // NEVER  3 AND 4 
+            $("div.admission_ind_prof").hide()
+            $("div.admission_ind_org").hide()
+        }
+    });
      
 }

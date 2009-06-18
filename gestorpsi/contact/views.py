@@ -169,18 +169,19 @@ def form(request, object_type='', object_id=''):
 @permission_required_with_403('contact.contact_write')
 def save(request, object_id=''):
     user = request.user
-    if request.POST['type'] == 'organization':
-	type = "1"
+    if (request.POST.get('type') == 'organization'):
+        type = "1"
+
         try:
             object = get_object_or_404(Organization, pk=object_id)
         except:
             object = Organization()
-        
-        try:
-            object.name = request.POST['label'] # adding by mini form
-        except:
-            object.name = request.POST['name']
-            
+                
+            # PORQUE LABEL? 
+            object.name = request.POST.get('label') # adding by mini form
+            if (object.name == None):
+                object.name = request.POST.get('name')
+       
         object.short_name = slugify(object.name)
         object.organization = user.get_profile().org_active
         object.contact_owner = user.get_profile().person
@@ -198,7 +199,7 @@ def save(request, object_id=''):
                  request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
                  request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))        
 
-    if request.POST['type'] == 'professional':
+    if request.POST.get('type') == 'professional':
 	type = "2"
         try:
             object = get_object_or_404(CareProfessional, pk=object_id)
@@ -206,8 +207,8 @@ def save(request, object_id=''):
         except:
             object = CareProfessional()
             person = Person()
-        person.name = request.POST['name']
-        person.organization = Organization.objects.get(pk=request.POST['organization'])
+        person.name = request.POST.get('name')
+        person.organization = Organization.objects.get(pk=request.POST.get('organization'))
         person.save()
 
         phone_save(person, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))

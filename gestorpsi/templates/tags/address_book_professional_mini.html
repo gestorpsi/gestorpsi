@@ -23,8 +23,8 @@ GNU General Public License for more details.
 <legend>{% trans "Adding new Professional" %}</legend>
 		<label>{% trans "Select Organization, or"%} {#<a class="form_mini" display="address_book_organization_mini">#}{% trans "add a new one" %}{#</a>#}<br />
 		<select name="organization" class="extrabig asm">
-				{% for l in address_book_organizations %}
-				<option value="{{ l.0 }}">{{ l.1 }}</option>
+				{% for org in list_org %}
+				    <option value="{{ org.id }}">{{ org }}</option>
 				{% endfor %}
 		</select>
 		</label>

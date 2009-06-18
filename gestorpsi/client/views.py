@@ -59,7 +59,6 @@ def index(request):
     #referral_form.fields['professional'].queryset = CareProfessional.objects.filter(person__organization = request.user.get_profile().org_active.id)
     referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
 
-
     return render_to_response('client/client_index.html',
                                         {
                                         'countries': Country.objects.all(),
@@ -76,7 +75,7 @@ def index(request):
                                         'ReferralChoices': ReferralChoice.objects.all(),
                                         'IndicationsChoices': IndicationChoice.objects.all(),
                                         'Relations': Relation.objects.all(),
-                                        'referral_form': referral_form,
+                                        'referral_form': referral_form
                                          },
                                         context_instance=RequestContext(request))
 
@@ -167,6 +166,8 @@ def form(request, object_id=''):
                                 'profile': profile,
                                 'groups': groups,
                                 'total_service': total_service,
+                                'list_org': Organization.objects.filter(active=True, visible=True),
+                                'list_prof': CareProfessional.objects.all(),
                                },
                               context_instance=RequestContext(request)
                               )
@@ -186,7 +187,7 @@ def save(request, object_id=""):
         person = Person()
         
         # Id Record
-        org = get_object_or_404( Organization, pk=user.get_profile().org_active.id )
+        org = get_object_or_404(Organization, pk=user.get_profile().org_active.id )
         object.idRecord = org.last_id_record + 1
         org.last_id_record = org.last_id_record + 1
         org.save()

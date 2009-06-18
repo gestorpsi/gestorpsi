@@ -101,12 +101,14 @@ div#main_menu a.active {
 }
 div#logotype {
 	float: left;
-    border-bottom: 1px solid #999999;
-    border-right: 1px solid #999999;
-    width: 71px;
-    height: 82px;
-    background: #CCCCCC;
+    border: 1px solid #444444;
+    width: 77px;
+    height: 83px;
+    background: #E6E6E6;
+    margin: 2px;
     margin-right: 10px;
+	-moz-border-radius: 8px;
+    padding-left: 5px;
 } 
 div#logotype span{
 	display: none;

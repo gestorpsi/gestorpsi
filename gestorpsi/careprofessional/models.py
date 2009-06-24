@@ -82,10 +82,10 @@ class Profession(models.Model):
     @author: Tiago de Souza Moraes
     @version: 1.0 
     """
-    type = models.CharField(max_length=50)
-    number = models.CharField(max_length=10)
-    symbol = models.CharField(max_length=20)
-    symbolDesc = models.CharField(max_length=100)
+    type = models.CharField(max_length=50, null=True)
+    number = models.CharField(max_length=10, null=True)
+    symbol = models.CharField(max_length=20, null=True)
+    symbolDesc = models.CharField(max_length=100, null=True)
     
     def __unicode__(self):
         return u"%s" % self.type

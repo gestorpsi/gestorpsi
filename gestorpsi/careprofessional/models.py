@@ -79,7 +79,7 @@ class Profession(models.Model):
     symbol  :   Symbol of the class of the professional (CRM, CRP, ...)
     symbolDesc : Description of the symbol
     
-    @author: Tiago de Souza Moraes
+    @author:Tiago de Souza Moraes
     @version: 1.0 
     """
     type = models.CharField(max_length=50, null=True)

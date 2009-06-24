@@ -24,12 +24,16 @@ GNU General Public License for more details.
 	</label>
 
     <label>{% trans "Profession" %}<br />
-        <select name="service_profession" class="medium asm">
+        <select id="{{forloop.counter0}}" name="service_profession" class="medium asm profession_type">
+                <option value="" selected="selected" >------</option>
             {% for p in Professions %}
-                <option value="{{ p.id }}"{% ifequal p professional.profession %} selected="selected
-"{% endifequal %} >{{ p.description }}</option>
+                <option value="{{ p.symbol }}"{% ifequal p professional.profession %} selected="selected"{% endifequal %} >{{ p.type }}</option>
             {% endfor %}            
         </select>
+    </label>
+    
+    <label>{% trans "Symbol" %}<br />
+            <input id="{{forloop.counter0}}" type="text" name="symbol" class="profession_symbol small" readonly="1" {% ifnotequal professional.profession.symbol "" %} value="{{ professional.profession.symbol }}" {% endifnotequal %}>
     </label>
 
 	<label>{% trans "Professional Subscription" %}<br />
@@ -44,7 +48,3 @@ GNU General Public License for more details.
 	    <br /><a class="notajax remove_from_form" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a>
 	</label>
 </div>
-
-
-
-

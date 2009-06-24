@@ -175,9 +175,13 @@ function bindFormActions() {
       */
      
      $('fieldset a.add_to_form').unbind().click(function() {
+          var next = ($("input.profession_symbol:last").attr("id") + 1 );
           $(this).before('<div>' + $(this).parents('fieldset:first').children('div:first').html() + '</div>');
           $(this).parents('fieldset').children('div:last').children('input').val('');
           $(this).parents('fieldset').children('div:last').children('label').children('input').val('');
+          // ADD value in id of the SELECT and INPUT SYMBOL. CHANGE ONLY THE CORRENT INPUT SYMBOL
+          $(this).parents('fieldset').children('div:last').children('label').children('input.profession_symbol').attr("id", next);
+          $(this).parents('fieldset').children('div:last').children('label').children('select.profession_type').attr("id", next);
           // draw top-border for multirows fieldsets (eg.: address fieldset)
           if($(this).parents('fieldset').hasClass('set_multirow')) {
                $(this).parents('fieldset').children('div').removeClass('multirow');
@@ -722,7 +726,6 @@ function bindFormMisc() {
      * ADMISSION - SHOW OR HIDE SELECT OPTION / Referral and Indication
      **/
       
-    // IN THE TIME THAT FORM IS MONTED, CHECK IF SHOW ORG OR PROF
     // REFERRAL
     $("div.admission_referral select[name=referral]").unbind().change(function(){
 
@@ -735,7 +738,7 @@ function bindFormMisc() {
                     $("div.admission_ref_org").hide()
             }
         } else {
-            // NEVER  7 AND 8 
+            // NEVER  7 OR 8 
             $("div.admission_ref_prof").hide()
             $("div.admission_ref_org").hide()
         }
@@ -752,10 +755,19 @@ function bindFormMisc() {
                 $("div.admission_ind_org").hide()
             }
         } else {
-            // NEVER  3 AND 4 
+            // NEVER 3 OR 4 
             $("div.admission_ind_prof").hide()
             $("div.admission_ind_org").hide()
         }
     });
-     
+
+    /**
+     * PROFESSION - SYMBOL - PROFESSION DESCRIPTION
+     **/
+    $("select.profession_type").change(function(){
+        //alert(this.id);
+        //$("input.profession_symbol").attr(this.value);
+        //$("input.profession_symbol").val(this.value);
+        $("input.profession_symbol[id="+this.id+"]").val(this.value);
+    });
 }

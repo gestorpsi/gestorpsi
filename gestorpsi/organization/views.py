@@ -34,7 +34,7 @@ def professional_responsible_save(request, object, ids, names, subscriptions, or
     ProfessionalResponsible.objects.all().delete()
     for x in range(len(names)):
         obj = []
-        obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x], profession=Profession.objects.get(pk = professions[x])) )
+        obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x], profession=Profession.objects.get(symbol = professions[x])) )
         if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):
             obj.save()
 

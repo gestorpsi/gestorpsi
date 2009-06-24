@@ -72,13 +72,23 @@ reversion.register(AcademicResume, follow='institutionType')
 class Profession(models.Model):
     """    
     This class represents the careprofessional's profession       
-    @author: Danilo S. Sanches
+        and other information about the class.
+
+    type    :   The class name of the professional(Doctor, psychologist, ...)
+    number  :   Is CBO(Pt_BR) (Classificação Brasileira de Ocupações)
+    symbol  :   Symbol of the class of the professional (CRM, CRP, ...)
+    symbolDesc : Description of the symbol
+    
+    @author: Tiago de Souza Moraes
     @version: 1.0 
     """
-    number = models.CharField(max_length=20, null=True)
-    description = models.CharField(max_length=50, null=True)
+    type = models.CharField(max_length=50)
+    number = models.CharField(max_length=10)
+    symbol = models.CharField(max_length=20)
+    symbolDesc = models.CharField(max_length=100)
+    
     def __unicode__(self):
-        return u"%s" % self.description
+        return u"%s" % self.type
 
 reversion.register(Profession)
 

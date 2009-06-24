@@ -35,6 +35,7 @@ from gestorpsi.person.views import person_json_list
 
 PROFESSIONAL_AREAS = (
     ('psycho', _('Psychologist') ,'CRP'),
+    ('fisio', _('Fisioterapeuta') ,'CRR'),
     )  
 
 @permission_required_with_403('careprofessional.careprofessional_list')

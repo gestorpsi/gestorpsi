@@ -380,10 +380,14 @@ function bindAjaxForms() {
               rules: {
                 name: {
                         required: true
+                },
+                professional_name: {
+                        required: true
                 }
               },
               messages: {
-                name: 'Preenchimento Necessário'
+                name: 'Preenchimento Necessário',
+                professional_name: 'Preenchimento Necessário'
               },
               submitHandler: function(form) {
                 $(form).ajaxSubmit(form_organization_options);

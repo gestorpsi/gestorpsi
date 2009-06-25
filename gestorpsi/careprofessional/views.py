@@ -19,7 +19,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from gestorpsi.person.models import Person, MaritalStatus
-from gestorpsi.careprofessional.models import ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional
+from gestorpsi.careprofessional.models import ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional, Profession
 from gestorpsi.organization.models import Agreement
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
@@ -33,17 +33,12 @@ from django.http import HttpResponse
 from django.utils import simplejson
 from gestorpsi.person.views import person_json_list
 
-PROFESSIONAL_AREAS = (
-    ('psycho', _('Psychologist') ,'CRP'),
-    ('fisio', _('Fisioterapeuta') ,'CRR'),
-    )  
 
 @permission_required_with_403('careprofessional.careprofessional_list')
 def index(request):
     user = request.user
     return render_to_response('careprofessional/careprofessional_index.html', {
-                                    'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
-                                    'licenceBoardTypes': LicenceBoard.objects.all(),
+                                    'PROFESSIONAL_AREAS': Profession.objects.all(),
                                     'AgreementTypes': Agreement.objects.all(),
                                     'WorkPlacesTypes': Place.objects.filter(organization = user.get_profile().org_active.id),
                                     'countries': Country.objects.all(),
@@ -104,8 +99,7 @@ def form(request, object_id=''):
                                     'addresses': addresses,
                                     'phones': phones,
                                     'documents': documents,
-                                    'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,                                    
-                                    'licenceBoardTypes': LicenceBoard.objects.all(),
+                                    'PROFESSIONAL_AREAS': Profession.objects.all(),
                                     'AgreementTypes': Agreement.objects.all(),
                                     'WorkPlacesTypes': Place.objects.filter(organization = user.get_profile().org_active.id),
                                     'countries': Country.objects.all(),
@@ -179,9 +173,9 @@ def care_professional_fill(request, object):
         identification = ProfessionalIdentification()
 
     try:
-        identification.licenceBoard = LicenceBoard.objects.get(pk=request.POST['professional_licenceBoard'])
+        identification.profession = Profession.objects.get(symbol=request.POST.get('professional_area'))
     except:
-        identification.licenceBoard = None
+        identification.profession = None
 
     identification.registerNumber = request.POST['professional_registerNumber']
     identification.save()

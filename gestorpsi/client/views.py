@@ -30,7 +30,7 @@ from gestorpsi.admission.models import *
 from gestorpsi.authentication.models import Profile
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
 from gestorpsi.service.models import Service
-from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
+from gestorpsi.careprofessional.views import Profession
 from gestorpsi.client.models import Client, PersonLink, Relation
 from gestorpsi.client.reports import ClientRecord, ClientList
 from gestorpsi.document.models import TypeDocument, Issuer
@@ -70,7 +70,7 @@ def index(request):
                                         'Issuers': Issuer.objects.all(), 
                                         'States': State.objects.all(), 
                                         'MaritalStatusTypes': MaritalStatus.objects.all(),
-                                        'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
+                                        'PROFESSIONAL_AREAS': Profession.objects.all(),
                                         'licenceBoardTypes': LicenceBoard.objects.all(),
                                         'ReferralChoices': ReferralChoice.objects.all(),
                                         'IndicationsChoices': IndicationChoice.objects.all(),

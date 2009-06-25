@@ -20,7 +20,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from gestorpsi.client.models import Client, PersonLink, Relation
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
-from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
+from gestorpsi.careprofessional.views import Profession
 from gestorpsi.admission.models import *
 from gestorpsi.contact.views import *
 from gestorpsi.util.views import get_object_or_None

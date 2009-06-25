@@ -22,7 +22,7 @@ from django.core.paginator import Paginator
 from django.utils import simplejson
 from gestorpsi.device.models import DeviceDetails, Device
 from gestorpsi.organization.models import Organization
-from gestorpsi.careprofessional.views import PROFESSIONAL_AREAS
+from gestorpsi.careprofessional.views import Profession
 from gestorpsi.place.models import Place, Room
 from gestorpsi.util.decorators import permission_required_with_403
 

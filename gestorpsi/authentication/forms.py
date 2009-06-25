@@ -40,6 +40,8 @@ class RegistrationForm(RegistrationForm):
 
     def save(self):
         user = super(RegistrationForm, self).save() #create user
+        user.username = user.username.strip().lower()
+        user.save()         # remove spaces from username and change all to lowercase
         profile = Profile(user=user)
         profile.save()
         organization = Organization.objects.create( #create organization

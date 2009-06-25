@@ -86,7 +86,7 @@ def form_new_user(request, object_id):
 def create_user(request):
     person = get_object_or_404(Person, pk=request.POST.get('id_person'))
     organization = request.user.get_profile().org_active
-    username = request.POST.get('username')
+    username = request.POST.get('username').strip().lower()
     password = request.POST.get('password')
     pwd_conf = request.POST.get('pwd_conf')
     email = request.POST.get('email_send_user')

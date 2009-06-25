@@ -49,8 +49,8 @@ def login_check(f):
 def user_authentication(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username').strip().lower()
+        password = request.POST.get('password')
         if(unblocked_user(username)):
             user = authenticate(username=username, password=password)   
             if user is not None:

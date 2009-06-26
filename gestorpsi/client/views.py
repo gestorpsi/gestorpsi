@@ -155,7 +155,7 @@ def form(request, object_id=''):
                                 'States': State.objects.all(), 
                                 'MaritalStatusTypes': MaritalStatus.objects.all(), 
                                 'last_update': last_update,
-                                'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
+                                'PROFESSIONAL_AREAS': Profession.objects.all(),
                                 'licenceBoardTypes': LicenceBoard.objects.all(),
                                 'ReferralChoices': ReferralChoice.objects.all(),
                                 'IndicationsChoices': IndicationChoice.objects.all(),

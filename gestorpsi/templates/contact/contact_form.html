@@ -56,6 +56,27 @@ GNU General Public License for more details.
 		<label>{% trans "Name" %}<br />
 		<input type="text" maxlength="50" name="{% ifnotequal object_type '1' %}name{% endifnotequal %}" class="big tabtitle professional_name cleanme" value="{{ object.person.name }}" />
 		</label>
+
+    <label>{% trans "Profession" %}<br />
+        <select id="{{forloop.counter0}}" name="service_profession" class="medium asm profession_type">
+                <option value="" selected="selected" >------</option>
+            {% for p in professions %}
+                <option value="{{ p.symbol }}"{% ifequal p object.professionalIdentification.profession %} selected="selected"{% endifequal %} >{{ p.type }}</option>
+            {% endfor %}            
+        </select>
+    </label>
+    
+    <label>{% trans "Symbol" %}<br />
+            <input id="{{forloop.counter0}}" type="text" name="symbol" class="profession_symbol small" readonly="1" {% ifnotequal object.professionalIdentification.profession.symbol "" %} value="{{ object.professionalIdentification.profession.symbol }}" {% endifnotequal %}>
+    </label>
+
+        <label>{% trans "Professional Subscription" %}<br />
+            <input type="text" maxlength="50" class="medium" name="professional_subscription" value="{{ object.professionalIdentification.registerNumber }}" />
+        </label>
+
+        <label>{% trans "Professional Organization Subscription" %}<br />
+            <input type="text" maxlength="50" class="medium" name="professional_organization_subscription" value="{{ professional.organization_subscription }}" />
+        </label>
 </fieldset>
 
 
@@ -84,11 +105,9 @@ GNU General Public License for more details.
       {% endifequal %}
 
       {% ifequal object_type '2' %}
-        {% if object.person.organization.organization %}
           <div class="bg_blue">
             {% include "tags/save.html" %}
           </div>
-        {% endif %}
       {% endifequal %}
 
       {% if not object_type %}

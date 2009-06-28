@@ -27,7 +27,7 @@ from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.person.models import Person
-from gestorpsi.careprofessional.models import CareProfessional
+from gestorpsi.careprofessional.models import CareProfessional, Profession, ProfessionalIdentification
 from gestorpsi.address.views import address_save
 from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
@@ -60,6 +60,8 @@ def index(request):
                                     'IMNetworks': IMNetwork.objects.all(),
                                     'States': State.objects.all(),
                                     'organizations': Organization.objects.filter(contact_owner=user.get_profile().person, active=True, visible=True), 
+                                    #'organizations': Organization.objects.filter(organization=None, active=True, visible=True),
+                                    'professions': Profession.objects.all(),
                                     },
                                     context_instance=RequestContext(request)
                                     )
@@ -70,7 +72,7 @@ def list(request, page = 1):
     user = request.user
     org = user.get_profile().org_active
 
-    lista = [] # ID, Name, Email, Phone, 1(ORG)/2(PROF), 1(GESTORPSI)/2(LOCAL), Organization
+    lista = [] # ID, Name, Email, Phone, 1(ORG)/2(PROF), 1(GESTORPSI)/2(LOCAL), Organization, Profession
     organizations_count = len(address_book_get_organizations(request))
     professionals_count = len(address_book_get_professionals(request))
 
@@ -112,6 +114,7 @@ def list(request, page = 1):
             'type': o[4],
             'type_org': o[5],
             'organization': o[6],
+            'profession': o[7],
         }
         i = i + 1
 
@@ -162,6 +165,7 @@ def form(request, object_type='', object_id=''):
                                     'ims': instantMessengers,
                                     'phones': phones,
                                     'addresses': addresses,
+                                    'professions': Profession.objects.all()
                                      },
                                      context_instance=RequestContext(request)
                                      )
@@ -204,12 +208,19 @@ def save(request, object_id=''):
         try:
             object = get_object_or_404(CareProfessional, pk=object_id)
             person = object.person
+            identification = object.professionalIdentification
         except:
             object = CareProfessional()
             person = Person()
+            identification = ProfessionalIdentification()
+
         person.name = request.POST.get('name')
         person.organization = Organization.objects.get(pk=request.POST.get('organization'))
         person.save()
+
+        identification.registerNumber = request.POST.get('professional_subscription')
+        identification.profession = Profession.objects.get(symbol=request.POST.get('symbol'))
+        identification.save()
 
         phone_save(person, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
         email_save(person, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
@@ -223,6 +234,7 @@ def save(request, object_id=''):
                  request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))        
         
         object.person = person
+        object.professionalIdentification = identification
         object.save()
 
     return HttpResponse("%s" % (object.id))
@@ -240,7 +252,7 @@ def address_book_get_professionals(request):
             for y in CareProfessional.objects.filter(person__organization=x):
                 phone = y.person.get_first_phone()
                 email = y.person.get_first_email()
-                lista.append([y.id, y.person.name, email, phone, '2', 'GESTORPSI', '%s' % y.person.organization])
+                lista.append([y.id, y.person.name, email, phone, '2', 'GESTORPSI', '%s' % y.person.organization, '%s' % y.professionalIdentification.profession])
 
     for x in Organization.objects.filter(contact_owner=user.get_profile().person):
         phone = x.get_first_phone()
@@ -248,7 +260,7 @@ def address_book_get_professionals(request):
         for y in CareProfessional.objects.filter(person__organization=x):
             phone = y.person.get_first_phone()
             email = y.person.get_first_email()
-            lista.append([y.id, y.person.name, email, phone, '2', 'LOCAL', '%s' % y.person.organization])
+            lista.append([y.id, y.person.name, email, phone, '2', 'LOCAL', '%s' % y.person.organization, '%s' % y.professionalIdentification.profession])
 
     return lista
 
@@ -262,11 +274,11 @@ def address_book_get_organizations(request):
         if ( x.person_set.filter(profile__user__is_active=True).count() ):
             phone = x.get_first_phone()
             email = x.get_first_email()
-            lista.append([x.id, x.name, email, phone, '1', 'GESTORPSI', x.name])
+            lista.append([x.id, x.name, email, phone, '1', 'GESTORPSI', x.name, "none"])
 
     for x in Organization.objects.filter(contact_owner=user.get_profile().person):
         phone = x.get_first_phone()
         email = x.get_first_email()
-        lista.append([x.id, x.name, email, phone, '1', 'LOCAL', x.name])
+        lista.append([x.id, x.name, email, phone, '1', 'LOCAL', x.name, "none"])
 
     return lista

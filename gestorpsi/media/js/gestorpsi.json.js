@@ -159,7 +159,7 @@ function updateContact(url) {
                         tableTR += '<a  href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a><br />' + this.organization;
                     } else {
                         tableTR += '<tr class="person gestorpsi" id="' + this.id + '"><td class="title">';
-                        tableTR += '<a  href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a><br />' + this.organization;
+                        tableTR += '<a  href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + "  ( " + this.profession + " ) " + '</a><br />' + this.organization;
                     }
                 }
 

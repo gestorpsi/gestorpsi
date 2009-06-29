@@ -54,7 +54,7 @@ GNU General Public License for more details.
 <fieldset class="professional contact" {% ifequal object_type '1' %}style="display:none"{% endifequal %}>
 <legend>{% trans "Professional Identification" %}</legend>
 		<label>{% trans "Name" %}<br />
-		<input type="text" maxlength="50" name="{% ifnotequal object_type '1' %}name{% endifnotequal %}" class="big tabtitle professional_name cleanme" value="{{ object.person.name }}" />
+		<input type="text" maxlength="50" {% ifequal object_type '2' %}name="name" class="big tabtitle professional_name cleanme" {% endifequal %} value="{{ object.person.name }}" />
 		</label>
 
     <label>{% trans "Profession" %}<br />
@@ -74,16 +74,13 @@ GNU General Public License for more details.
             <input type="text" maxlength="50" class="medium" name="professional_subscription" value="{{ object.professionalIdentification.registerNumber }}" />
         </label>
 
-        <label>{% trans "Professional Organization Subscription" %}<br />
-            <input type="text" maxlength="50" class="medium" name="professional_organization_subscription" value="{{ professional.organization_subscription }}" />
-        </label>
 </fieldset>
 
 
-<fieldset class="organization contact"{% if not object.id %} style="display:none"{%else%}{% ifnotequal object_type '1'%} style="display:none"{%endifnotequal%}{% endif %}>
+<fieldset class="organization contact"{% if not object.id %} style="display:none"{%else%}{% ifequal object_type '2'%} style="display:none"{%endifequal%}{% endif %}>
 <legend>{% trans "Organization Identification" %}</legend>
 		<label>{% trans "Name" %}<br />
-		<input type="text" maxlength="50" name="{% ifequal object_type '1' %}name{% endifequal %}" class="big tabtitle organization_name cleanme" value="{{ object.name }}" />
+		<input type="text" maxlength="50" {% ifequal object_type '1' %}name="name"{% endifequal %} class="big tabtitle organization_name cleanme" value="{{ object.name }}" />
 		</label>
 </fieldset>
 
@@ -96,25 +93,9 @@ GNU General Public License for more details.
 <div id="sidebar" class="sidebar">
     {% if perms.contact.contact_write %}
       
-      {% ifequal object_type '1' %}
-        {% if object.organization %}
           <div class="bg_blue">
             {% include "tags/save.html" %}
           </div>
-        {% endif %}
-      {% endifequal %}
-
-      {% ifequal object_type '2' %}
-          <div class="bg_blue">
-            {% include "tags/save.html" %}
-          </div>
-      {% endifequal %}
-
-      {% if not object_type %}
-          <div class="bg_blue">
-            {% include "tags/save.html" %}
-          </div>
-      {% endif %}
 
     {% endif %}
 </div>

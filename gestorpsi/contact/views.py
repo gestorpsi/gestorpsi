@@ -182,10 +182,10 @@ def save(request, object_id=''):
             object = Organization()
                 
             # PORQUE LABEL? 
-            object.name = request.POST.get('label') # adding by mini form
-            if (object.name == None):
-                object.name = request.POST.get('name')
-       
+            # object.name = request.POST.get('label') # adding by mini form
+            # if (object.name == None):
+
+        object.name = request.POST.get('name')
         object.short_name = slugify(object.name)
         object.organization = user.get_profile().org_active
         object.contact_owner = user.get_profile().person

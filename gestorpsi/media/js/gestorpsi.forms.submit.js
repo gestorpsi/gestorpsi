@@ -217,15 +217,35 @@ function bindAjaxForms() {
       */
 
      $('form.client_referral').each(function() {
-          $(this).validate({event:"submit",
-              rules: {
-                   service: { required: true },
-                   client: { required: true },
-              },
-              submitHandler: function(form) {
-                   $(form).ajaxSubmit(form_client_referral_options);
-                }
-          });
+                  $(this).validate({event:"submit",
+                      rules: {
+                           service: { required: true },
+                           client: { required: true },
+                      },
+                      submitHandler: function(form) {
+                            var radio = $('form.client_referral input[@type=radio]:checked').val();
+                            var referral = $('form.client_referral select#id_referral').val();
+
+                            // VALID REFERRAL ON THE HAND! 
+                            // REFERRAL HAVE HIDE FIELDS AND DJANGO VALIDATE JUST ONE
+                            if (radio == undefined){
+                                    $('div.error_radio').show();
+                                } else {
+                                    $('div.error_radio').hide();
+                                    if (radio == "referral"){
+                                            if (referral == ""){
+                                                $('div.error_select').show();
+                                            } else {
+                                                $('div.error_select').hide();
+                                                $(form).ajaxSubmit(form_client_referral_options);
+                                            }
+                                        } else {
+                                            $(form).ajaxSubmit(form_client_referral_options);
+                                        }
+                                }
+
+                        }
+                  });
      });
     
     /**

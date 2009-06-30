@@ -115,7 +115,7 @@ GNU General Public License for more details.
 		<label class="device_restriction" {% if object.prof_restriction %} style="display: block;" {% else %} style="display: none;" {% endif %} >{% trans "Profissional Area" %}<br />
 		    <select name="professional_area" class="extramedium">
 			    {% for l in PROFESSIONAL_AREAS %}
-				    <option value="{{ l.0 }}"{% ifequal object.prof_restriction l.0 %} selected{% endifequal %}>{{ l.1 }}</option>
+				    <option value="{{ l.id }}"{% ifequal object.prof_restriction.id l.id %} selected{% endifequal %}>{{ l }}</option>
 			    {% endfor %}
 		    </select>
 		</label>

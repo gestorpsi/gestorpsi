@@ -19,6 +19,7 @@ from django.db import models
 from django.utils.translation import ugettext as _
 from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, Room
+from gestorpsi.careprofessional.models import Profession
 from gestorpsi.util.uuid_field import UuidField
 
 DURABILITY_TYPE= ( ('1',_('CONSUMABLE')), ('2', _('DURABLE')) )
@@ -78,7 +79,7 @@ class DeviceDetails(models.Model):
     comments = models.CharField( max_length=200 )
     
     durability = models.CharField( max_length=1, choices=DURABILITY_TYPE )
-    prof_restriction = models.CharField( max_length=20, blank=True)
+    prof_restriction = models.ForeignKey(Profession, null=True)
     mobility = models.CharField( max_length=1, choices=MOBILITY_TYPE )
     place = models.ForeignKey(Place, null=True)
     room = models.ForeignKey(Room, null=True)

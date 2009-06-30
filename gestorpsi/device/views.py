@@ -129,7 +129,7 @@ def form(request, object_id= ''):
                                                           'object': object,  
                                                           'device_type': Device.objects.filter(organization=user.get_profile().org_active),
                                                           'places': Place.objects.filter(organization=user.get_profile().org_active.id),                                                          
-                                                          'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS },
+                                                          'PROFESSIONAL_AREAS': Profession.objects.all(), },
                                                           context_instance=RequestContext(request))
 
 
@@ -186,7 +186,7 @@ def save(request, object_id='' ):
 
     """ Device Restriction """
     if request.POST['select_restriction_type'] == '2':
-        device_details.prof_restriction = request.POST.get('professional_area')
+        device_details.prof_restriction = Profession.objects.get(pk = request.POST.get('professional_area'))
     else:
         device_details.prof_restriction = ''
 

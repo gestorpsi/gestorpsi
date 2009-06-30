@@ -48,7 +48,6 @@ function displayContent(selector) {
 /**
  * move the content from the add form, to the edit form
  */
-
 function cloneForms() {
     $('div#form').attr('id','tmp');
     $('div#edit_form').attr('id','form');
@@ -158,17 +157,16 @@ var form_organization_options = {
  */
 
 var form_client_referral_options = {
-    success: function(response, request, form) {
-        formSuccess();
-        // update list
-        updateReferral('/referral/client/' + $('div#edit_form input[name=object_id]').val() + '/');
-        $('div#edit_form div#client_referral_list table div.msg_area').hide();
+            success: function(response, request, form) {
+                        formSuccess();
+                        // update list
+                        updateReferral('/referral/client/' + $('div#edit_form input[name=object_id]').val() + '/');
+                        $('div#edit_form div#client_referral_list table div.msg_area').hide();
+            },
 
-    },
-
-    error: function() {
-        formError();
-    }
+            error: function() {
+                formError();
+            }
 };
 
 /**
@@ -328,7 +326,7 @@ var form_client_options = {
         /**
          * select client in referral form
          */
-        
+
         if($('div#edit_form form.client_referral select[id=id_client] option:first').val() != undefined) {
             $('div#edit_form form.client_referral select[id=id_client] option:first').before('<option value="' + response + '" selected>' + $('div#edit_form input.tabtitle').val() + '</option>');
         } else {

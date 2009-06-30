@@ -29,12 +29,12 @@ GNU General Public License for more details.
     <h3><span>{% trans "Referral Details" %}</span></h3>
     <fieldset>
     <legend>{% trans "Referral Details" %}</legend>
-        <label><input type="radio" name="referral_type" value="subscription" checked>&nbsp; {% trans "Subscription" %}</label>
+        <label><input type="radio" name="referral_type" value="subscription">&nbsp; {% trans "Subscription" %}</label>
         <label><input type="radio" name="referral_type" value="referral">&nbsp; {% trans "From existing referral" %}</label>
-        </label>
+        <label><div class="error_radio" style="display:none;"><h3><font color="red">{% trans "Choose one option." %}</font></h3></div></label>
         <label class="referral_type_referral hidden">{% trans "Last Referral" %}<br />
-            <select name="referral" class="extrabig asm" id="id_referral">
-                <option selected="selected" value="">---------</option>
+            <select name="referral" class="extrabig asm referral_list" {% if object.id %} id="id_referral" {% endif %} >
+                <option value="">---------</option>
                 {% for p in referral_list %}
                     <option value="{{ p.id }}"> {{ p }} 
                         {% if p.professional.all.0 %}
@@ -51,7 +51,9 @@ GNU General Public License for more details.
                     </option>
                 {% endfor %}
             </select>
+            <label><div class="error_select" style="display:none;"><h3><font color="red">{% trans "This fields is required." %}</font></div></label>
         </label>
+
         <label>{% trans "To Service" %}<br />
         {{ referral_form.service }}
         </label>

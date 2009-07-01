@@ -320,6 +320,7 @@ function bindScheduleForm() {
     });
 
     // get clients json list and draw flexbox
+    $('div.schedule div#form div#fb_client').html('')
     $('div.schedule div#form div#fb_client').flexbox('/client/organization_clients/',{
          allowInput: true,  
          paging: true,  

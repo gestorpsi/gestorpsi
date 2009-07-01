@@ -271,6 +271,8 @@ function updateScheduleReferralDetails(url) {
 function bindScheduleForm() {
     // bind links in table
     $('div.schedule table.schedule_results a.book').click(function() {
+
+
         var link = $(this);
 
         year = link.attr('date').substring(0,4);
@@ -295,6 +297,16 @@ function bindScheduleForm() {
         $('div.schedule #form input[name=week_days][value=' + (parseInt(link.attr('weekday')) + 1) + ']').attr('checked', 'checked');
         $('div.schedule #form input[name=tabtitle]').val(link.attr('title'));
         $('div#form form.schedule .sidebar input[name=day_clicked]').val(year + '/' + month + '/' + day);
+        
+        // REFRESH THE SELECT DEVICE WHEN DATA AND HOUR IS SELECTED IN THE CALENDAR
+        var room =  $("form.schedule div.main_area select#id_room").val();
+        if (room != ''){
+            $.getJSON("/device/" + room + "/listdevice/", function(json) {
+                jQuery.each(json,  function(){
+                    $('select[name=device]').append(new Option(this.name, this.id));
+                });
+            });
+        }
     
     });
 
@@ -340,6 +352,21 @@ function bindScheduleForm() {
             });
             $('#form div.client_referrals').show();
             $('#form input[name=tabtitle]').val(this.value); // set title, to use in TAB
+        }
+    });
+
+        /**
+         *  SHOW DEVICES OF THE ROOM WHEN SELECTED OR CHANGE THE SELECT ROOM
+         */
+
+        $("form.schedule div.main_area select#id_room").change(function(){ 
+        $('select[name=device] option').remove();
+        if (this.value != ''){
+            $.getJSON("/device/" + $(this).attr("value") + "/listdevice/", function(json) {
+                jQuery.each(json,  function(){
+                    $('select[name=device]').append(new Option(this.name, this.id));
+                });
+            });
         }
     });
 
@@ -545,9 +572,7 @@ function bindSchedule() {
                 }
             }
         });
-        
-    
-        
+
     });
     
     bindScheduleForm();

@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.device.views import index, form, save, delete, save_device, index_type, form_type, list, list_types
+from gestorpsi.device.views import index, form, save, delete, save_device, index_type, form_type, list, list_types, list_device
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
@@ -32,5 +32,6 @@ urlpatterns = patterns('',
     (r'^type/page(?P<page>(\d)+)$', login_check(list_types)), #list type objects
     (r'^type/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form_type)), # edit type form
     (r'^type/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save_device)), # save type
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/listdevice/$', login_check(list_device)), # list device of the room
 )
 

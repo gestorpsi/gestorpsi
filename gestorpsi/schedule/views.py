@@ -182,7 +182,7 @@ def _datetime_view(
         devices = DeviceDetails.objects.all(),
         event_form = ReferralForm(),
         recurrence_form = ScheduleOccurrenceForm(),
-        rooms = Room.objects.filter(place__organization = user.profile.org_active)
+        rooms = Room.objects.filter(place__organization = user.profile.org_active, active=True)
     )
 
     return render_to_response(

@@ -206,3 +206,39 @@ def get_visible(request, value):
 @permission_required_with_403('device.device_write')
 def delete(request, object_id= ''):
     pass
+
+def list_device(request, object_id):
+
+    array = {} # JSON
+    devices_from_room = DeviceDetails.objects.filter(room = object_id)  # ALL FIXED DEVICES FROM THE ROOM
+    devices_lendables = DeviceDetails.objects.filter(lendable = True)   # ALL LENDABLE DEVICES
+    devices_mobiles = DeviceDetails.objects.filter(mobility = "2" )     # ALL MOBILE DEVICES
+
+    # FIXED FROM THE ROOM
+    c = 0
+    for device in devices_from_room:
+        array[c] = {
+            'id': device.id,
+            'name': '%s' % device,
+        }
+        c = c + 1
+
+    # MOBILE
+    for device in devices_mobiles:
+        array[c] = {
+            'id': device.id,
+            'name': '%s' % device,
+        }
+        c = c + 1
+
+    return HttpResponse(simplejson.dumps(array), mimetype='application/json')
+    
+    # LENDABLE
+    for device in devices_lendables:
+        array[c] = {
+            'id': device.id,
+            'name': '%s' % device,
+        }
+        c = c + 1
+
+    return HttpResponse(simplejson.dumps(array), mimetype='application/json')

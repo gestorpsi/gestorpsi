@@ -71,7 +71,8 @@ GNU General Public License for more details.
             {{ event_form.annotation }}
             </label>
             <label>{% trans "Devices" %}<br />
-            {{ recurrence_form.device }}
+               <select name="device" class="extrabig multiple asm" id="id_device" multiple="multiple">
+               </select>
             </label>            
         </fieldset>
         

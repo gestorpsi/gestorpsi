@@ -187,8 +187,6 @@ def save(request, object_id='' ):
     """ Device Restriction """
     if request.POST['select_restriction_type'] == '2':
         device_details.prof_restriction = Profession.objects.get(pk = request.POST.get('professional_area'))
-    else:
-        device_details.prof_restriction = ''
 
     """ Device Mobility """
     mobility = request.POST.get('select_mobility_type')

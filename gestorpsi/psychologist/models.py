@@ -47,14 +47,13 @@ class AgeGroup(models.Model):
     def __unicode__(self):
         return u"%s" % self.description
 
-class Psychologist(models.Model):
+class Psychologist(CareProfessional):
      """
      This class represents a psychologist model. This  model needs some fields from CareProfessional and for this, an inherit from CareProfessional was used.        
      @author: Danilo S. Sanches
      @version: 1.0
      @see: CareProfessional
      """
-     careprofessional = models.OneToOneField(CareProfessional, null=True)
      approaches = models.OneToOneField(Approaches, null=True)
      specialistArea = models.ForeignKey(Area, null=True)
      ageGroup = models.OneToOneField(AgeGroup, null=True)

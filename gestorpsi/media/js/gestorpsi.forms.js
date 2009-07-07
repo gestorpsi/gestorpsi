@@ -567,14 +567,16 @@ function bindFormMisc() {
       * contact form
      */
      
-     $('form.form_contact select[name=type]').change(function() {
+     $('form.form_contact select[name=type]').unbind().change(function() {
           $(this).parents('fieldset').siblings('.contact').hide();
           $(this).parents('fieldset').siblings('.' + $(this).val()).show();
           
           // its necessary, because you can have two required fields, organization name OR professional name
           // reset name attribute, and rewrite it.
           $(this).parents('form').children('div').children('fieldset').children('label').children('input[type=text].cleanme').attr('name','');
+          $(this).parents('form').children('div').children('fieldset').children('label').children('input[type=text].cleanme').removeClass('tabtitle');
           $(this).parents('form').children('div').children('fieldset').children('label').children('input[type=text].' + $(this).val() + '_name').attr('name','name');
+          $(this).parents('form').children('div').children('fieldset').children('label').children('input[type=text].' + $(this).val() + '_name').addClass('tabtitle');
                     
      });
      
@@ -770,4 +772,5 @@ function bindFormMisc() {
         //$("input.profession_symbol").val(this.value);
         $("input.profession_symbol[id="+this.id+"]").val(this.value);
     });
+
 }

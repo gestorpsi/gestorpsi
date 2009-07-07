@@ -46,7 +46,7 @@ GNU General Public License for more details.
 			{% for o in organizations %}
                <option value="{{ o.id }}"{% ifequal object.person.organization.id o.id %} selected{% endifequal %}>{{ o }}</option>
 			{% endfor %}
-		</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</select>
 		</label>
 </fieldset>
 
@@ -54,7 +54,7 @@ GNU General Public License for more details.
 <fieldset class="professional contact" {% ifequal object_type '1' %}style="display:none"{% endifequal %}>
 <legend>{% trans "Professional Identification" %}</legend>
 		<label>{% trans "Name" %}<br />
-		<input type="text" maxlength="50" {% ifequal object_type '2' %}name="name" class="big tabtitle professional_name cleanme" {% endifequal %} value="{{ object.person.name }}" />
+		<input type="text" maxlength="50" name="name" class="giant tabtitle professional_name cleanme"  value="{{ object.person.name }}" />
 		</label>
 
     <label>{% trans "Profession" %}<br />
@@ -80,7 +80,7 @@ GNU General Public License for more details.
 <fieldset class="organization contact"{% if not object.id %} style="display:none"{%else%}{% ifequal object_type '2'%} style="display:none"{%endifequal%}{% endif %}>
 <legend>{% trans "Organization Identification" %}</legend>
 		<label>{% trans "Name" %}<br />
-		<input type="text" maxlength="50" {% ifequal object_type '1' %}name="name"{% endifequal %} class="big tabtitle organization_name cleanme" value="{{ object.name }}" />
+		<input type="text" maxlength="50" {% ifequal object_type '1' %} name="name" {% endifequal %} class="big tabtitle organization_name cleanme" value="{{ object.name }}" />
 		</label>
 </fieldset>
 

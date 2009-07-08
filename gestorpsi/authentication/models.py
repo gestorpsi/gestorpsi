@@ -15,14 +15,15 @@ GNU General Public License for more details.
 """
 
 from django.db import models
+from django.contrib.auth.models import User, UserManager, Group
 from gestorpsi.organization.models import Organization
 from gestorpsi.person.models import Person
-from django.contrib.auth.models import User, UserManager
 from gestorpsi.util import CryptographicUtils as cryptoUtils
 
 class Profile(models.Model):
     user = models.OneToOneField(User, unique=True)
-    organization = models.ManyToManyField(Organization, null=True)
+    #organization = models.ManyToManyField(Organization, null=True)
+    organization = models.ManyToManyField(Organization, through='Role', null=True)
     try_login = models.IntegerField(default = 0, null=True)
     crypt_temp = models.CharField(max_length=256, blank=True, null=True)
     org_active = models.ForeignKey(Organization, related_name="org_active", null=True)
@@ -40,3 +41,11 @@ class Profile(models.Model):
         return cryptoUtils.decrypt_attrib(self.crypt_temp)
 
     temp = property(_get_temp, _set_temp)
+
+class Role(models.Model):
+    profile = models.ForeignKey(Profile)
+    organization = models.ForeignKey(Organization)
+    group = models.ForeignKey(Group)
+    
+    def __unicode__(self):
+        return u"%s | %s | %s" % (self.profile, self.organization, self.group)

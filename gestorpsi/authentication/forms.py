@@ -22,7 +22,7 @@ from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, PlaceType, Room, RoomType
-from gestorpsi.authentication.models import Profile
+from gestorpsi.authentication.models import Profile, Role
 from gestorpsi.person.models import Person
 from gestorpsi.psychologist.models import Psychologist
 from gestorpsi.careprofessional.models import CareProfessional, ProfessionalProfile, ProfessionalIdentification
@@ -37,7 +37,6 @@ class RegistrationForm(RegistrationForm):
     username = forms.CharField(label=_('Username'), help_text=_('Choice one unique identifier'))
     organization = forms.CharField(label=_('Organization'), help_text=_('Name of your organization'))
 
-
     def save(self):
         user = super(RegistrationForm, self).save() #create user
         user.username = user.username.strip().lower()
@@ -51,22 +50,24 @@ class RegistrationForm(RegistrationForm):
         default_place = Place.objects.create(         #create default place
             label = organization.name,                # use same name as label
             place_type = PlaceType.objects.get(pk=1), # mandatory field, so, get first place type
-            organization = organization, # link place to this organization
+            organization = organization,              # link place to this organization
         )
         default_room = Room.objects.create(
             description = 'Sala 1',
             place = default_place,
             room_type=RoomType.objects.all()[0],
         )
-        
+
         person = Person.objects.create(name=self.cleaned_data['name'], organization=organization)
-        profile.organization.add(organization) #link organization to profile
-        profile.org_active = organization #set org as active
+        profile.org_active = organization                  #set org as active
         profile.temp = self.cleaned_data['password1']      # temporary field (LDAP)
         profile.person = person
-        profile.user.groups.add(Group.objects.get(name='administrator'))
-        profile.save() #save it
-        
+        profile.save()
+                
+        admin_role = Group.objects.get(name='administrator')
+        Role.objects.create(profile=profile, organization=organization, group=admin_role)
+        profile.user.groups.add(admin_role)
+
         psycho = Psychologist()
         psycho.person = person
         psycho.professionalProfile = ProfessionalProfile.objects.create()

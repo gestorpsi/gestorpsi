@@ -46,7 +46,43 @@ def login_check(f):
     wrap.__name__=f.__name__
     return wrap
 
+
 def user_authentication(request):
+    if request.method != "POST":
+        return render_to_response('registration/login.html', {'form': AuthenticationForm() })
+    form = AuthenticationForm(data=request.POST)
+    username = request.POST.get('username').strip().lower()
+    password = request.POST.get('password')
+    if (unblocked_user(username)):
+        user = authenticate(username=username, password=password)
+        if user is None:
+            set_trylogin(username)
+            return render_to_response('registration/login.html', {'form':form })
+        if user.is_active:
+            clear_login(user)
+            profile = user.get_profile()
+            if profile.organization.distinct().count() > 1:
+                request.session['temp_user'] = user
+                return render_to_response('registration/select_organization.html', { 'objects': profile.organization.distinct() })
+            login(request, user)
+            return HttpResponseRedirect('/')
+
+def user_organization(request):
+    organization = Organization.objects.get(pk=request.POST.get('organization'))
+    user = request.session['temp_user']
+    del request.session['temp_user']        
+    user.get_profile().org_active = organization
+    user.get_profile().save()
+
+    """ Update roles according to selected organization """
+    user.groups.clear()
+    for role in user.get_profile().role_set.filter(organization=organization):
+        user.groups.add(role.group)
+
+    login(request, user)           
+    return HttpResponseRedirect('/')
+
+def old_user_authentication(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
         username = request.POST.get('username').strip().lower()
@@ -73,7 +109,7 @@ def user_authentication(request):
         form = AuthenticationForm()
         return render_to_response('registration/login.html', { 'form':form } )
 
-def user_organization(request):
+def old_user_organization(request):
     organization = Organization.objects.get(pk=request.POST.get('organization'))
     user = request.session['temp_user']
     del request.session['temp_user']        

@@ -22,7 +22,7 @@ from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User, Group
 from registration.models import RegistrationProfile
-from gestorpsi.authentication.models import Profile
+from gestorpsi.authentication.models import Profile, Role
 from gestorpsi.person.models import Person
 from django.utils import simplejson
 from gestorpsi.util.decorators import permission_required_with_403
@@ -43,10 +43,8 @@ def list(request, page = 1):
     user = request.user
     object = Profile.objects.filter(org_active = user.get_profile().org_active).order_by('user__username')
 
-    
     return HttpResponse(simplejson.dumps(person_json_list(request, object, 'users.users_read', page)),
                             mimetype='application/json')
-
 
 @permission_required_with_403('users.users_write')
 def form(request, object_id):
@@ -99,15 +97,22 @@ def create_user(request):
         profile.temp = password    # temporary field (LDAP)
         profile.person = person
         profile.save()
-        profile.organization.add(organization)
+        #profile.organization.add(organization)
 
         if permissions.count('administrator'):
+            Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='administrator'))
             profile.user.groups.add(Group.objects.get(name='administrator'))
+            
         if permissions.count('professional'):
+            Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='professional'))
             profile.user.groups.add(Group.objects.get(name='professional'))
+                        
         if permissions.count('secretary'):
+            Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='secretary'))
             profile.user.groups.add(Group.objects.get(name='secretary'))
+                        
         if permissions.count('client'):
+            Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='client'))
             profile.user.groups.add(Group.objects.get(name='client'))
         
         return HttpResponse(profile.person.id)
@@ -116,37 +121,33 @@ def create_user(request):
 
 @permission_required_with_403('users.users_write')
 def update_user(request, object_id):
-    user = Profile.objects.get(person = object_id).user
+    organization = request.user.get_profile().org_active
+    profile = Profile.objects.get(person = object_id)
     permissions = request.POST.getlist('perms')
 
-    # DON'T CHANGE PASSWORD IF FIELD IS EMPTY
-    if request.POST.get('password') != "":
-        user.set_password(request.POST.get('password'))
+    # GROUPS - clear all permissions and re-create them
+    profile.user.groups.clear()
+    Role.objects.filter(organization=organization, profile=profile).delete()
 
-    # GROUPS
     if permissions.count('administrator'):
-        user.groups.add(Group.objects.get(name='administrator'))
-    else:
-        user.groups.remove(Group.objects.get(name='administrator'))
-        
+        Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='administrator'))
+        profile.user.groups.add(Group.objects.get(name='administrator'))
+
     if permissions.count('professional'):
-        user.groups.add(Group.objects.get(name='professional'))
-    else:
-        user.groups.remove(Group.objects.get(name='professional'))
+        Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='professional'))
+        profile.user.groups.add(Group.objects.get(name='professional'))
 
     if permissions.count('secretary'):
-        user.groups.add(Group.objects.get(name='secretary'))
-    else:
-        user.groups.remove(Group.objects.get(name='secretary'))
+        Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='secretary'))
+        profile.user.groups.add(Group.objects.get(name='secretary'))
 
     if permissions.count('client'):
-        user.groups.add(Group.objects.get(name='client'))
-    else:
-        user.groups.remove(Group.objects.get(name='client'))
+        Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='client'))
+        profile.user.groups.add(Group.objects.get(name='client'))
 
-    user.save(force_update = True)
+    profile.user.save(force_update = True)
 
-    return HttpResponse(user.profile.id)
+    return HttpResponse(profile.user.profile.id)
 
 def save(request, object_id=0):
     try:

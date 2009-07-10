@@ -54,12 +54,12 @@ GNU General Public License for more details.
 	<fieldset id="fieldset_device_identification">
 		<legend>{% trans "Adding equipment details" %}</legend>
 		
+                        <label>{% trans "Model" %}<br />
+                        <input type="text" maxlength="80" name="model" class="giant" value="{{ object.model }}" id="model" />
+                        </label>
+
 			<label>{% trans "Brand" %}<br />
 			<input type="text" maxlength="80" name="brand" class="giant tabtitle" value="{{ object.brand }}" id="brand" />
-			</label>
-			
-			<label>{% trans "Model" %}<br />
-			<input type="text" maxlength="80" name="model" class="giant" value="{{ object.model }}" id="model" />
 			</label>
 			
 			<label>{% trans "Part number" %}<br />

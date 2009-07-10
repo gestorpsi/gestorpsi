@@ -100,7 +100,7 @@ msgstr "Nome do seu estabelecimento"
 
 #: authentication/forms.py:39
 msgid "Shortname of your organization"
-msgstr "Nome abreviado ou Sigla do seu estabelecimento"
+msgstr "Sigla do seu estabelecimento"
 
 
 #: authentication/views.py:132
@@ -1319,7 +1319,7 @@ msgstr "Nome Fantasia"
 
 #: templates/organization/organization_form.html:53
 msgid "Short Name"
-msgstr "Nome abreviado / Sigla"
+msgstr "Sigla"
 
 #: templates/organization/organization_form.html:60
 msgid "Not available"

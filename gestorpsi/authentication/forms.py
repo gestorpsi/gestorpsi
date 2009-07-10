@@ -36,6 +36,7 @@ class RegistrationForm(RegistrationForm):
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=_('Password (again)'), help_text=_('Type password again'))
     username = forms.CharField(label=_('Username'), help_text=_('Choice one unique identifier'))
     organization = forms.CharField(label=_('Organization'), help_text=_('Name of your organization'))
+    shortname = forms.CharField(label=_('Short Name'), help_text=_('Shortname of your organization'))
 
     def save(self):
         user = super(RegistrationForm, self).save() #create user
@@ -45,7 +46,7 @@ class RegistrationForm(RegistrationForm):
         profile.save()
         organization = Organization.objects.create( #create organization
             name = self.cleaned_data['organization'],
-            short_name = slugify(self.cleaned_data['organization']),
+            short_name = slugify(self.cleaned_data['shortname']),
         )
         default_place = Place.objects.create(         #create default place
             label = organization.name,                # use same name as label

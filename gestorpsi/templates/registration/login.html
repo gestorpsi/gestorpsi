@@ -33,7 +33,12 @@ GNU General Public License for more details.
 </div>
 
 <form method="post" action="/accounts/authentication/" id="form_login" class="ff_ok">
-<fieldset>
+
+<fieldset class="orgField">
+<label>{% trans "Short Name" %}<br /><input type="text" name="shortname" /></label>
+</fieldset>
+
+<fieldset class="userField">
 <div class="ie_block">
 <label>{% trans "Username" %}<br />{{ form.username }}</label>
 <label>{% trans "Password" %}<br />{{ form.password }}</label>

@@ -96,7 +96,12 @@ msgstr "Estabelecimento"
 
 #: authentication/forms.py:38
 msgid "Name of your organization"
-msgstr "Sigla ou nome do seu estabelecimento"
+msgstr "Nome do seu estabelecimento"
+
+#: authentication/forms.py:39
+msgid "Shortname of your organization"
+msgstr "Nome abreviado ou Sigla do seu estabelecimento"
+
 
 #: authentication/views.py:132
 msgid ""

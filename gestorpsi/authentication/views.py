@@ -62,8 +62,18 @@ def user_authentication(request):
             clear_login(user)
             profile = user.get_profile()
             if profile.organization.distinct().count() > 1:
-                request.session['temp_user'] = user
-                return render_to_response('registration/select_organization.html', { 'objects': profile.organization.distinct() })
+                try:
+                    organization = profile.organization.get(short_name__iexact = request.POST.get('shortname'))
+                    profile.org_active = organization
+                    profile.save()
+                    user.groups.clear()
+                    for role in user.get_profile().role_set.filter(organization=organization):
+                        user.groups.add(role.group)
+                    login(request, user)
+                    return HttpResponseRedirect('/')
+                except Organization.DoesNotExist:
+                    request.session['temp_user'] = user
+                    return render_to_response('registration/select_organization.html', { 'objects': profile.organization.distinct() })
             login(request, user)
             return HttpResponseRedirect('/')
 

@@ -97,6 +97,10 @@ msgstr ""
 msgid "Name of your organization"
 msgstr ""
 
+#: authentication/forms.py:39
+msgid "Shortname of your organization"
+msgstr ""
+
 #: authentication/views.py:132
 msgid ""
 "Informed organization is already registered. Please choice another name here "

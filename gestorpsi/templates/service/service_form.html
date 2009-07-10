@@ -42,7 +42,7 @@ GNU General Public License for more details.
 			<input type="text" maxlength="80"  name="service_name" class="giant tabtitle" value="{{ object.name }}" />
 			</label>
 			<label>{% trans "Service Description" %}<br />
-				<textarea name="service_description" maxlength="100" class="giant object_description">{{ object.description }}</textarea>				
+				<textarea name="service_description" maxlength="999" class="giant object_description">{{ object.description }}</textarea>				
 			</label>
 			<label>{% trans "Keywords (separated by ;)" %}<br />
 			<input type="text" maxlength="100" name="service_keywords" class="giant" value="{{ object.keywords }}" />

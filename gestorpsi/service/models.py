@@ -187,7 +187,7 @@ class Service(models.Model):
     """
     id = UuidField(primary_key=True)
     name = models.CharField(max_length=80)
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=999)
     keywords = models.CharField(max_length=100)
     active = models.BooleanField(default=True)
     area = models.ForeignKey(Area)

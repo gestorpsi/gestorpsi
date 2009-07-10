@@ -30,6 +30,7 @@ GNU General Public License for more details.
 <div class="main_area">
 	
 <fieldset>
+
 <legend>{% trans "Contact Type" %}</legend>
 		<label>{% trans "Type" %}<br />
 		<select name="type" class="big">
@@ -54,7 +55,7 @@ GNU General Public License for more details.
 <fieldset class="professional contact" {% ifequal object_type '1' %}style="display:none"{% endifequal %}>
 <legend>{% trans "Professional Identification" %}</legend>
 		<label>{% trans "Name" %}<br />
-		<input type="text" maxlength="50" name="name" class="giant tabtitle professional_name cleanme"  value="{{ object.person.name }}" />
+		<input type="text" maxlength="50" {% ifnotequal object_type '1' %} name="name" class="giant professional_name cleanme tabtitle" {% else %} name="" class="giant professional_name cleanme" {% endifnotequal %} value="{{ object.person.name }}" />
 		</label>
 
     <label>{% trans "Profession" %}<br />

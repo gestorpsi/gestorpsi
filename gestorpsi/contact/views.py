@@ -180,10 +180,11 @@ def save(request, object_id=''):
             object = get_object_or_404(Organization, pk=object_id)
         except:
             object = Organization()
-                
-            object.name = request.POST.get('label') # adding by mini form
-            if (object.name == None):
-                object.name = request.POST.get('name')
+        
+        object.name = request.POST.get('label') # adding by mini form
+
+        if (object.name == None):   # input of mini form
+            object.name = request.POST.get('name')
 
         object.short_name = slugify(object.name)
         object.organization = user.get_profile().org_active

@@ -23,9 +23,10 @@ from gestorpsi.util import CryptographicUtils as cryptoUtils
 
 class EmailType(models.Model):
     description= models.CharField(max_length=45)
-
     def __unicode__(self):
         return self.description
+    class Meta:
+        ordering = ['description']
 
 class Email(models.Model):
     id = UuidField(primary_key= True)
@@ -81,6 +82,8 @@ class IMNetwork(models.Model):
     description = models.CharField(max_length=30)
     def __unicode__(self):
         return self.description
+    class Meta:
+        ordering = ['description']
 
 class InstantMessenger(models.Model):
     id = UuidField(primary_key=True)

@@ -35,6 +35,9 @@ class ProfessionalResponsible(models.Model):
     organization = models.ForeignKey('Organization', null=True, blank=True)
     profession = models.ForeignKey('careprofessional.Profession', null=False, blank=False)
 
+    class Meta:
+        ordering = ['name']
+
     def __unicode__(self):
         return u"%s" % self.name
 
@@ -52,6 +55,8 @@ class PersonType(models.Model):
     description = models.CharField(max_length=50)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class UnitType(models.Model):
     """
@@ -62,6 +67,8 @@ class UnitType(models.Model):
     description = models.CharField(max_length=255)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class AdministrationEnvironment(models.Model):
     """
@@ -72,6 +79,8 @@ class AdministrationEnvironment(models.Model):
     description = models.CharField(max_length=30)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class Source(models.Model):
     """
@@ -82,6 +91,8 @@ class Source(models.Model):
     description = models.CharField(max_length=255)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class ProvidedType(models.Model):
     """    
@@ -92,6 +103,8 @@ class ProvidedType(models.Model):
     description = models.CharField(max_length=50)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 reversion.register(ProvidedType)
 
@@ -104,6 +117,8 @@ class Management(models.Model):
     description = models.CharField(max_length=50)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class Dependence(models.Model):
     """    
@@ -114,6 +129,8 @@ class Dependence(models.Model):
     description = models.CharField(max_length=50)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class Activitie(models.Model):
     """    
@@ -124,6 +141,8 @@ class Activitie(models.Model):
     description = models.CharField(max_length=255)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class Organization(models.Model):
     """    
@@ -191,6 +210,9 @@ class Organization(models.Model):
         else:
             return ''
 
+    class Meta:
+        ordering = ['name']
+
 reversion.register(Organization, follow=['provided_type', 'phones', 'address', 'emails', 'sites', 'instantMessengers'])
 
 class AgreementType(models.Model):
@@ -202,6 +224,8 @@ class AgreementType(models.Model):
     description= models.CharField( max_length= 80 )
     def __unicode__(self):
         return u'%s' % self.description
+    class Meta:
+        ordering = ['description']
 
 class Agreement(models.Model):
     """
@@ -212,6 +236,8 @@ class Agreement(models.Model):
     description = models.CharField(max_length=50, null=True)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class AgeGroup(models.Model):
     """
@@ -235,9 +261,10 @@ class ProcedureProvider(models.Model):
     This class was created to represent entities which provide some kind of health care service.
     """
     name= models.CharField( max_length= 20 )
-    
     def __unicode__(self):
         return u"name: %s" % self.name
+    class Meta:
+        ordering = ['name']
 
 class Procedure(models.Model):
     """
@@ -249,4 +276,5 @@ class Procedure(models.Model):
 
     def __unicode__(self):
         return u"code: %s, description: %s" % (self.procedure_code, self.description)
-
+    class Meta:
+        ordering = ['description']

@@ -30,6 +30,8 @@ class MaritalStatus(models.Model):
     description = models.CharField(max_length=20)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class Person(models.Model):
     id = UuidField(primary_key=True)
@@ -162,5 +164,8 @@ class Person(models.Model):
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+
+    class Meta:
+        ordering = ['name']
 
 reversion.register(Person, follow=['phones','address', 'emails', 'sites', 'instantMessengers'])

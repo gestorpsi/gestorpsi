@@ -52,6 +52,9 @@ class AddressType(models.Model):
     def __unicode__(self):
         return u"%s" % self.description
 
+    class Meta:
+        ordering = ['description']
+
 class Address(models.Model):
     # Brazil Address
     id= UuidField( primary_key= True )

@@ -25,11 +25,15 @@ class Issuer(models.Model):
     description = models.CharField(max_length=100)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class TypeDocument(models.Model):
     description = models.CharField(max_length=30)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class Document(models.Model):
     id = UuidField(primary_key=True)

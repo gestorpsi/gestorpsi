@@ -23,6 +23,8 @@ class Relation(models.Model):
     description = models.CharField(max_length=30)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class PersonLink(models.Model):
     id = UuidField(primary_key=True)

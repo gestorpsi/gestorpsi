@@ -34,6 +34,9 @@ class InstitutionType(models.Model):
     def __unicode__(self):
         return u"%s" % self.description
 
+    class Meta:
+        ordering = ['description']
+
 reversion.register(InstitutionType)
 
 class PostGraduate(models.Model):
@@ -45,6 +48,9 @@ class PostGraduate(models.Model):
     description = models.CharField(max_length=50, null=True)
     def __unicode__(self):
         return u"%s" % self.description
+
+    class Meta:
+        ordering = ['description']
 
 class AcademicResume(models.Model):
     """    
@@ -89,6 +95,9 @@ class Profession(models.Model):
     
     def __unicode__(self):
         return u"%s" % self.type
+
+    class Meta:
+        ordering = ['type']
 
 reversion.register(Profession)
 
@@ -157,6 +166,9 @@ class CareProfessional(models.Model):
 
     def __unicode__(self):
         return u"%s" % self.person
+
+    class Meta:
+        ordering = ['person']
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

@@ -30,6 +30,8 @@ class PlaceType( models.Model ):
     description= models.CharField( max_length= 100 )
     def __unicode__(self):
         return "%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class Place( models.Model ):
     """
@@ -52,7 +54,7 @@ class Place( models.Model ):
          return self.phones.all()[0]
        else:
          return ''
-    
+
     class Meta:
         ordering = ['label']
 
@@ -71,6 +73,8 @@ class RoomType( models.Model ):
 
    def __unicode__(self):
       return "%s" % self.description
+   class Meta:
+       ordering = ['description']
 
 class Room( models.Model ):
    """

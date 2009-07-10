@@ -34,6 +34,8 @@ class TaxWithHold(models.Model):
         returns a representation of this TaxWithHold as an unicode  C{string}.
         """
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class Sponsor(models.Model):
     """    
@@ -64,3 +66,6 @@ class Sponsor(models.Model):
         returns a representation of this sponsor as an unicode  C{string}.
         """
         return self.name
+    class Meta:
+        ordering = ['name']
+

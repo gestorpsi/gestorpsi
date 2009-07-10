@@ -32,6 +32,8 @@ class Area(models.Model):
     
     def __unicode__(self):
         return u'%s' % self.title
+    class Meta:
+        ordering = ['title']
 
 class ServiceType(models.Model):
     """
@@ -59,6 +61,9 @@ class Modality(models.Model):
     
     def __unicode__(self):
         return u'%s' % self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 class AreaArt(models.Model):

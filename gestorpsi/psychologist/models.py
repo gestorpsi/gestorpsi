@@ -26,6 +26,8 @@ class Approaches(models.Model):
     description = models.CharField(max_length=50)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class Area(models.Model):
     """
@@ -36,6 +38,8 @@ class Area(models.Model):
     description = models.CharField(max_length=30)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class AgeGroup(models.Model):
     """
@@ -46,6 +50,8 @@ class AgeGroup(models.Model):
     description = models.CharField(max_length=30)
     def __unicode__(self):
         return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class Psychologist(CareProfessional):
      """

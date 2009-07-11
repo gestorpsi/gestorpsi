@@ -20,6 +20,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.utils import simplejson
+from django.db.models import Q
 from gestorpsi.device.models import DeviceDetails, Device
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.views import Profession
@@ -211,30 +212,10 @@ def list_device(request, object_id):
 
     array = {} # JSON
     devices_from_room = DeviceDetails.objects.filter(room = object_id)  # ALL FIXED DEVICES FROM THE ROOM
-    devices_lendables = DeviceDetails.objects.filter(lendable = True)   # ALL LENDABLE DEVICES
-    devices_mobiles = DeviceDetails.objects.filter(mobility = "2" )     # ALL MOBILE DEVICES
+    list = DeviceDetails.objects.filter(Q(room = object_id) | Q(lendable=True) | Q(mobility="2"))
 
-    # FIXED FROM THE ROOM
     c = 0
-    for device in devices_from_room:
-        array[c] = {
-            'id': device.id,
-            'name': '%s' % device,
-        }
-        c = c + 1
-
-    # MOBILE
-    for device in devices_mobiles:
-        array[c] = {
-            'id': device.id,
-            'name': '%s' % device,
-        }
-        c = c + 1
-
-    return HttpResponse(simplejson.dumps(array), mimetype='application/json')
-    
-    # LENDABLE
-    for device in devices_lendables:
+    for device in list:
         array[c] = {
             'id': device.id,
             'name': '%s' % device,

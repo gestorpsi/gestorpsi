@@ -410,6 +410,7 @@ function updateReferral(url) {
 
             // TABLE WITCH DETAILS OF REFERRAL OF THE CLIENT
             tableTR += '<div style="display:none;" class="referral_details' + this.id + '">';
+            tableTR += '<label> Data </label><textarea class="giant" type="text" readonly="1">' + this.data + '</textarea>';
             tableTR += '<label> Reason </label><textarea class="giant" type="text" readonly="1">' + this.reason + '</textarea>';
             tableTR += '<label> Annotation </label><textarea class="giant" type="text" readonly="1">' + this.annotation + '</textarea>';
             tableTR += '<label> Available time </label><textarea class="giant" type="text" readonly="1">' + this.available_time+ '</textarea>';

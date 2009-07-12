@@ -60,6 +60,7 @@ def client_referrals(request, object_id = None):
             'available_time': o.available_time,
             'priority': priority,
             'impact': impact,
+            'data': "%s" % o.date,
         }
 
         sub_count = 0

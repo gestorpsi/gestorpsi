@@ -20,7 +20,7 @@ from django.utils import simplejson
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.models import CareProfessional
-from gestorpsi.referral.models import Referral
+from gestorpsi.referral.models import Referral,  ReferralPriority,  ReferralImpact
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.util.decorators import permission_required_with_403
 
@@ -39,10 +39,27 @@ def client_referrals(request, object_id = None):
     i = 0
     
     for o in referral:
+
+        if o.priority == None:
+            priority = ""
+        else:
+            priority = "%s" % o.priority
+
+        if o.impact == None:
+            impact = ""
+        else:
+            impact = "%s" % o.impact
+
         array[i] = {
             'id': o.id,
             'status': o.status,
-            'service': o.service.name
+            'service': o.service.name,
+            'professional': o.professional,
+            'reason': o.referral_reason,
+            'annotation': o.annotation,
+            'available_time': o.available_time,
+            'priority': priority,
+            'impact': impact,
         }
 
         sub_count = 0

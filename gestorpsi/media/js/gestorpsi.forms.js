@@ -773,4 +773,12 @@ function bindFormMisc() {
         $("input.profession_symbol[id="+this.id+"]").val(this.value);
     });
 
+    /**
+     * REFERRAL - SHOW DETAILS OF CLIENT
+     **/
+
+    $("a.referral_details").click( function() {
+        $('div.referral_details'+this.id).toggle();
+    });
+
 }

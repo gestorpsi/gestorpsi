@@ -390,7 +390,8 @@ function updateReferral(url) {
             */
 
             tableTR += '<tr id="' + this.id + '" class="referral_off">';
-            tableTR += '<td align="left" id="' + this.id + '" class="title">' + this.service + '<br>' + str_professional_inline + '</td>';
+            tableTR += '<td align="left" id="' + this.id + '" class="title"><a id="'+ this.id +'" class="referral_details">' + this.service + '</a><br>' + str_professional_inline + '</td>';
+
             // LIGADO
             if ( (this.status) == '01'){
 
@@ -405,8 +406,16 @@ function updateReferral(url) {
                     tableTR += '<td class="c_referral_off "><div class="referralKeyDisable"> Desligado </div></td>';
 
             }
-
             tableTR += '</tr>';
+
+            // TABLE WITCH DETAILS OF REFERRAL OF THE CLIENT
+            tableTR += '<div style="display:none;" class="referral_details' + this.id + '">';
+            tableTR += '<label> Reason </label><textarea class="giant" type="text" readonly="1">' + this.reason + '</textarea>';
+            tableTR += '<label> Annotation </label><textarea class="giant" type="text" readonly="1">' + this.annotation + '</textarea>';
+            tableTR += '<label> Available time </label><textarea class="giant" type="text" readonly="1">' + this.available_time+ '</textarea>';
+            tableTR += '<label> Priority </label><textarea class="giant" type="text" readonly="1">' + this.priority + '</textarea>';
+            tableTR += '<label> Impact </label><textarea class="giant" type="text" readonly="1">' + this.impact + '</textarea>';
+            tableTR += '</div>';
         });
 
         if(tableTR == '') {

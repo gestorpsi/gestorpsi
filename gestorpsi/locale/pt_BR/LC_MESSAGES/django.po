@@ -2099,7 +2099,7 @@ msgstr "Admissão de cliente"
 
 #: templates/tags/client_sidebar.html:31
 msgid "New Referral"
-msgstr "Nova Inscrição / Encaminhamento"
+msgstr "Inscrição / Encaminhamento"
 
 #: templates/tags/client_sidebar.html:34
 msgid "Print Record"

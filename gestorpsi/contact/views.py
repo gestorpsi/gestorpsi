@@ -207,20 +207,24 @@ def save(request, object_id=''):
 	type = "2"
         try:
             object = get_object_or_404(CareProfessional, pk=object_id)
-            person = object.person
             identification = object.professionalIdentification
+            person = object.person
         except:
             object = CareProfessional()
             person = Person()
+
+        if request.POST.get('symbol'): 
+            print request.POST.get('symbol')
+            print request.POST.get('professional_subscription')
             identification = ProfessionalIdentification()
+            identification.profession = Profession.objects.get(symbol=request.POST.get('symbol'))
+            identification.registerNumber = request.POST.get('professional_subscription')
+            identification.save()
+            object.professionalIdentification = identification
 
         person.name = request.POST.get('name')
         person.organization = Organization.objects.get(pk=request.POST.get('organization'))
         person.save()
-
-        identification.registerNumber = request.POST.get('professional_subscription')
-        identification.profession = Profession.objects.get(symbol=request.POST.get('symbol'))
-        identification.save()
 
         phone_save(person, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
         email_save(person, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
@@ -234,7 +238,6 @@ def save(request, object_id=''):
                  request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))        
         
         object.person = person
-        object.professionalIdentification = identification
         object.save()
 
     return HttpResponse("%s" % (object.id))
@@ -260,7 +263,11 @@ def address_book_get_professionals(request):
         for y in CareProfessional.objects.filter(person__organization=x):
             phone = y.person.get_first_phone()
             email = y.person.get_first_email()
-            lista.append([y.id, y.person.name, email, phone, '2', 'LOCAL', '%s' % y.person.organization, '%s' % y.professionalIdentification.profession])
+            # Profession of the professional not is required
+            if y.professionalIdentification:
+                lista.append([y.id, y.person.name, email, phone, '2', 'LOCAL', '%s' % y.person.organization, '%s' % y.professionalIdentification.profession])
+            else:
+                lista.append([y.id, y.person.name, email, phone, '2', 'LOCAL', '%s' % y.person.organization, ""])
 
     return lista
 

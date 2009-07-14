@@ -50,7 +50,7 @@ class RegistrationForm(RegistrationForm):
         )
         default_place = Place.objects.create(         #create default place
             label = organization.name,                # use same name as label
-            place_type = PlaceType.objects.get(pk=1), # mandatory field, so, get first place type
+            place_type = PlaceType.objects.get(description='Matriz'), # mandatory field
             organization = organization,              # link place to this organization
         )
         default_room = Room.objects.create(

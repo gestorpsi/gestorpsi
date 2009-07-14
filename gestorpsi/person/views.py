@@ -26,6 +26,7 @@ from datetime import datetime
 def person_save(request, person):
     person.name= request.POST['name']
     person.nickname = request.POST['nickname']
+    person.comments = request.POST.get('comments')
 
     if(request.POST['photo']):
         person.photo = request.POST['photo']

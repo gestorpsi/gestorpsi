@@ -37,17 +37,9 @@ class Person(models.Model):
     id = UuidField(primary_key=True)
     name = models.CharField(max_length=50)
     nickname = models.CharField(max_length=20, null=True, blank=True)
-
     photo = models.CharField(max_length=100)
     birthDate = models.DateField(null=True)
     birthPlace = models.ForeignKey(City, null=True)
-    
-    #the fields below were added in order to deal with foreign ones
-    birthForeignCity = models.CharField(max_length=100, null=True)
-    birthForeignState = models.CharField(max_length=100, null=True)
-    birthForeignCountry = models.IntegerField(max_length=4, null=True)
-    ###############################################################
-    
     gender = models.CharField(max_length=1, choices=Gender) 
     maritalStatus = models.ForeignKey(MaritalStatus, null=True)
     phones = generic.GenericRelation(Phone, null=True)
@@ -57,9 +49,13 @@ class Person(models.Model):
     sites = generic.GenericRelation(Site, null=True)
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True)
     comments = models.TextField(blank=True, null=True)
-        
     organization = models.ForeignKey(Organization, null=True)
 
+    # the fields below were added in order to deal with foreign ones
+    birthForeignCity = models.CharField(max_length=100, null=True)
+    birthForeignState = models.CharField(max_length=100, null=True)
+    birthForeignCountry = models.IntegerField(max_length=4, null=True)
+        
     def __unicode__(self):
         return u"%s" % self.name
 

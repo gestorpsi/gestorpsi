@@ -45,6 +45,7 @@ class Place( models.Model ):
     phones= generic.GenericRelation( Phone )
     place_type= models.ForeignKey( PlaceType )
     organization = models.ForeignKey(Organization, null= True, blank= True)
+    comments = models.TextField(blank=True, null=True)
     
     def __unicode__(self):
        return "%s" % self.label
@@ -84,12 +85,12 @@ class Room( models.Model ):
    """
    id = UuidField(primary_key=True)
    description= models.CharField( max_length= 80, blank=True )
-   #dimension= models.IntegerField(null=True, blank=True)
    dimension = models.CharField(max_length=10, blank=True)
    place= models.ForeignKey( Place )
    room_type= models.ForeignKey( RoomType, related_name= 'room_type' )
    furniture= models.TextField()
    active = models.BooleanField(default=True)
+   comments = models.TextField(blank=True, null=True)
 
    class Meta:
        ordering = ['description']

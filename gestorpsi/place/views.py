@@ -133,6 +133,7 @@ def save(request, object_id=''):
     except:
         object.visible = False
     object.label = request.POST['label']
+    object.comments = request.POST.get('comments')
     object.place_type= PlaceType.objects.get( pk= request.POST[ 'place_type' ] )
     object.organization = user.get_profile().org_active    
     object.save() 
@@ -162,7 +163,7 @@ def room_save(request, object_id=''):
     object.dimension = request.POST.get('dimension')
     object.room_type = RoomType.objects.get(pk=request.POST.get('room_type'))
     object.furniture = request.POST.get('furniture')
-    
+    object.comments = request.POST.get('comments') 
     object.active = get_visible(request.POST.get('active'))
 
     if object.id:

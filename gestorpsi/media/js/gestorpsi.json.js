@@ -410,12 +410,12 @@ function updateReferral(url) {
 
             // TABLE WITCH DETAILS OF REFERRAL OF THE CLIENT
             tableTR += '<div style="display:none;" class="referral_details' + this.id + '">';
-            tableTR += '<label> Data </label><textarea class="giant" type="text" readonly="1">' + this.data + '</textarea>';
-            tableTR += '<label> Reason </label><textarea class="giant" type="text" readonly="1">' + this.reason + '</textarea>';
-            tableTR += '<label> Annotation </label><textarea class="giant" type="text" readonly="1">' + this.annotation + '</textarea>';
-            tableTR += '<label> Available time </label><textarea class="giant" type="text" readonly="1">' + this.available_time+ '</textarea>';
-            tableTR += '<label> Priority </label><textarea class="giant" type="text" readonly="1">' + this.priority + '</textarea>';
-            tableTR += '<label> Impact </label><textarea class="giant" type="text" readonly="1">' + this.impact + '</textarea>';
+            tableTR += '<label><p><strong> Data: </strong> ' + this.data + '</p></label>';
+            tableTR += '<label><p><strong> Reason: </strong> ' + this.reason + '</p></label>';
+            tableTR += '<label><p><strong> Annotation: </strong> ' + this.annotation + '</p></label>';
+            tableTR += '<label><p><strong> Available time: </strong> ' + this.available_time+ '</p></label>';
+            tableTR += '<label><p><strong> Priority: </strong> ' + this.priority + '</p></label>';
+            tableTR += '<label><p><strong> Impact: </strong> ' + this.impact + '</p></label>';
             tableTR += '</div>';
         });
 

@@ -23,6 +23,7 @@ from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.referral.models import Referral,  ReferralPriority,  ReferralImpact
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.util.decorators import permission_required_with_403
+import codecs
 
 @permission_required_with_403('referral.referral_list')
 def referral_off(request, object_id=""):
@@ -43,12 +44,12 @@ def client_referrals(request, object_id = None):
         if o.priority == None:
             priority = ""
         else:
-            priority = "%s" % o.priority
+            priority = ("%s" % o.priority).decode('utf-8')
 
         if o.impact == None:
             impact = ""
         else:
-            impact = "%s" % o.impact
+            impact = ("%s" % o.impact).decode('utf-8')
 
         array[i] = {
             'id': o.id,
@@ -60,7 +61,7 @@ def client_referrals(request, object_id = None):
             'available_time': o.available_time,
             'priority': priority,
             'impact': impact,
-            'data': "%s" % o.date,
+            'data': o.date.strftime("%d/%m/%Y %H:%M:%S")
         }
 
         sub_count = 0

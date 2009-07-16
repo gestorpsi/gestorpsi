@@ -32,9 +32,18 @@ from gestorpsi.util.views import get_object_or_None
 @permission_required_with_403('organization.organization_write')
 def professional_responsible_save(request, object, ids, names, subscriptions, organization_subscriptions, professions):
     ProfessionalResponsible.objects.all().delete()
+
     for x in range(len(names)):
         obj = []
-        obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x], profession=Profession.objects.get(symbol = professions[x])) )
+        print professions[x]
+
+        # Whitout Profession of the Professional
+        if not professions[x]:
+            obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x] ))
+        else:
+            # Whit Profession of the Professional
+            obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x], profession=Profession.objects.get(symbol = professions[x]) ))
+
         if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):
             obj.save()
 

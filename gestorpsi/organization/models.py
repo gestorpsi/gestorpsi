@@ -33,7 +33,7 @@ class ProfessionalResponsible(models.Model):
     subscription = models.CharField(max_length=50)
     organization_subscription = models.CharField(max_length=50)
     organization = models.ForeignKey('Organization', null=True, blank=True)
-    profession = models.ForeignKey('careprofessional.Profession', null=False, blank=False)
+    profession = models.ForeignKey('careprofessional.Profession', null=True, blank=False)
 
     class Meta:
         ordering = ['name']

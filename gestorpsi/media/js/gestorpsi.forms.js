@@ -783,7 +783,6 @@ function bindFormMisc() {
     **/
         //  CHECK BOX 
     $('input[id=id_lendable]').click(function(){
-        alert(this.checked);
         if (this.checked == true ){
             if ($('div#edit_form select[name=select_mobility_type]').val() == "1"){
                 $('div#edit_form select[name=select_mobility_type]').val("2");
@@ -794,7 +793,6 @@ function bindFormMisc() {
         // SELECT TYPE
     $('div#edit_form select[name=select_mobility_type]').change(function(){
         if (this.value == "1"){
-            alert(this.value);
             $('input[id=id_lendable]').removeAttr("checked");
         }
     });

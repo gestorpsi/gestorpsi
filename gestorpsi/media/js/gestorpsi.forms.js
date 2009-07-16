@@ -767,9 +767,6 @@ function bindFormMisc() {
      * PROFESSION - SYMBOL - PROFESSION DESCRIPTION
      **/
     $("select.profession_type").change(function(){
-        //alert(this.id);
-        //$("input.profession_symbol").attr(this.value);
-        //$("input.profession_symbol").val(this.value);
         $("input.profession_symbol[id="+this.id+"]").val(this.value);
     });
 
@@ -781,4 +778,24 @@ function bindFormMisc() {
         $('div.referral_details'+this.id).toggle();
     });
 
+    /**
+    * DEVICES - CHANGE SELECT TO FIXED WHEN LANDABLE CHEKBOX IS CHECKED, VICE-VERSA
+    **/
+        //  CHECK BOX 
+    $('input[id=id_lendable]').click(function(){
+        alert(this.checked);
+        if (this.checked == true ){
+            if ($('div#edit_form select[name=select_mobility_type]').val() == "1"){
+                $('div#edit_form select[name=select_mobility_type]').val("2");
+            }
+        }
+    });
+
+        // SELECT TYPE
+    $('div#edit_form select[name=select_mobility_type]').change(function(){
+        if (this.value == "1"){
+            alert(this.value);
+            $('input[id=id_lendable]').removeAttr("checked");
+        }
+    });
 }

@@ -212,7 +212,7 @@ def list_device(request, object_id):
 
     array = {} # JSON
     devices_from_room = DeviceDetails.objects.filter(room = object_id)  # ALL FIXED DEVICES FROM THE ROOM
-    list = DeviceDetails.objects.filter(Q(room = object_id) | Q(lendable=True) | Q(mobility="2"))
+    list = DeviceDetails.objects.filter(Q(room = object_id) | Q(lendable=True) | Q(room = object_id, mobility="2"))
 
     c = 0
     for device in list:

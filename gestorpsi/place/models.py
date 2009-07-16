@@ -39,11 +39,11 @@ class Place( models.Model ):
     @version: 1.0
     """
     id = UuidField(primary_key=True)
-    label= models.CharField( max_length= 80 )
-    visible= models.BooleanField(blank=True)
-    address= generic.GenericRelation( Address )
-    phones= generic.GenericRelation( Phone )
-    place_type= models.ForeignKey( PlaceType )
+    label = models.CharField(max_length=80)
+    active = models.BooleanField(blank=True)
+    address = generic.GenericRelation(Address)
+    phones = generic.GenericRelation(Phone)
+    place_type = models.ForeignKey(PlaceType)
     organization = models.ForeignKey(Organization, null= True, blank= True)
     comments = models.TextField(blank=True, null=True)
     

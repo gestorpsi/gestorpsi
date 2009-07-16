@@ -160,7 +160,6 @@ class Organization(models.Model):
     cnes = models.CharField(max_length=100, blank=True)
     state_inscription = models.CharField(max_length=30, blank=True)
     city_inscription = models.CharField(max_length=30, blank=True)
-
     last_id_record = models.PositiveIntegerField(default=0)
             # subscriptions_professional_institutional = models.CharField(max_length=100, blank=True)
             # professional_responsible = models.CharField(max_length=100, blank=True) 
@@ -175,20 +174,15 @@ class Organization(models.Model):
     provided_type = models.ManyToManyField(ProvidedType, null=True, blank=True)
     activity = models.ForeignKey(Activitie, null=True, blank=True)
     public = models.BooleanField(default=True)
-
     comment = models.CharField(max_length=765, blank=True)
-        
     active = models.BooleanField(default=True)
-    
     visible = models.BooleanField(default=True)
-    
     photo = models.CharField(max_length=200, blank=True)          
-    
     phones = generic.GenericRelation(Phone, null=True)
     address = generic.GenericRelation(Address, null=True)
     emails  = generic.GenericRelation(Email, null=True)
     sites = generic.GenericRelation(Site, null=True)
-    instantMessengers =generic.GenericRelation(InstantMessenger, null=True) ### it needs more description    
+    instantMessengers =generic.GenericRelation(InstantMessenger, null=True) 
     organization = models.ForeignKey('self', related_name="%(class)s_related", null=True, blank=True)
     contact_owner = models.ForeignKey('person.Person', related_name="contact_owner", null=True, blank=True)
     

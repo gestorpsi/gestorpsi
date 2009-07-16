@@ -77,13 +77,13 @@ class DeviceDetails(models.Model):
     part_number = models.CharField( max_length=45 )
     lendable = models.BooleanField( default=True )
     comments = models.CharField( max_length=200 )
-    
     durability = models.CharField( max_length=1, choices=DURABILITY_TYPE )
     prof_restriction = models.ForeignKey(Profession, null=True)
     mobility = models.CharField( max_length=1, choices=MOBILITY_TYPE )
     place = models.ForeignKey(Place, null=True)
     room = models.ForeignKey(Room, null=True)
     device = models.ForeignKey(Device)
+    active = models.BooleanField(default=True)
 
     objects = DeviceDetailsManager()
 

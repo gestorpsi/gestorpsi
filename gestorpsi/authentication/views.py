@@ -170,7 +170,7 @@ def register(request, success_url=None,
     if request.method == 'POST':
         form = form_class(data=request.POST)
 
-        if Organization.objects.filter(short_name__iexact = slugify(request.POST['organization'])):
+        if Organization.objects.filter(short_name__iexact = slugify(request.POST.get('shortname'))):
             form = form_class(data=request.POST) # organization already exists, escaping .. 
             error_msg = _(u"Informed organization is already registered. Please choice another name here or login with an existing account")
             form.errors["organization"] = ErrorList([error_msg])

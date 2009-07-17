@@ -60,6 +60,7 @@ CREATE TABLE "person_person_crypt" (
     "gender" varchar(1) NOT NULL,
     "maritalStatus_id" integer REFERENCES "person_maritalstatus" ("id") DEFERRABLE INITIALLY DEFERRED,
     "comments" text,
+    "active" boolean NOT NULL,
     "organization_id" varchar(36) REFERENCES "organization_organization" ("id") DEFERRABLE INITIALLY DEFERRED
 );
 
@@ -76,6 +77,7 @@ CREATE OR REPLACE VIEW person_person
             "gender",
             "maritalStatus_id",
             "comments",
+            "active",
             "organization_id"
   FROM person_person_crypt;
 
@@ -95,6 +97,7 @@ CREATE OR REPLACE RULE rule_insert_person_person AS ON INSERT
               NEW."gender",
               NEW."maritalStatus_id",
               NEW."comments",
+              NEW."active",
               NEW."organization_id");
 
 CREATE OR REPLACE RULE rule_update_person_person AS ON UPDATE
@@ -112,6 +115,7 @@ CREATE OR REPLACE RULE rule_update_person_person AS ON UPDATE
 	"gender" = NEW."gender", 
 	"maritalStatus_id" = NEW."maritalStatus_id",
         "comments" = NEW."comments",
+        "active" = NEW."active",
 	"organization_id" = NEW."organization_id"
     WHERE "id" = OLD."id";
 

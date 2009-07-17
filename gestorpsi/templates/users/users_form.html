@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -15,13 +17,28 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-{% include "core/ajax_page_form.html" %}
+
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Users" %}{% endblock %}
+
+{% block submenu %}
+    <ul>
+        <li><a class="first" href="/user/">{% trans "all" %}</a></li>
+        <li><a class="{% if not profile %}active{% endif %}" href="/user/add/">{% trans "add" %}</a></li>
+        {% if profile %}<li><a class="active">{{ profile.person.name }}</a></li>{% endif %}
+        
+    </ul>
+{% endblock %}
+
+
+{% block core %}
 
 <h2 id="title_addressbook" style="display:none"></h2>
 
 {% if profile.id %}
-	<div class="edit_form">
 	<h2 class="title_clients title">{{ profile.person.name }}</h2>
+    <p class="description">{{ profile.user.username }} {{ profile.user.email }}<br />
 {% else %}
 	<h2 class="title_clients title">{% trans "Adding New User" %}</h2>
 	<p class="description">{% trans "Inform the user details then click on Save button" %}</p>
@@ -32,9 +49,9 @@ GNU General Public License for more details.
 <h2 id="title_myoffice" style="display:none"></h2>
 
 {% if profile.id %}
-    <form action="/user/{{ profile.person.id }}/save/" method="post" id="form_user" class="form_people collapsable form_user">
+    <form action="/user/{{ profile.person.id }}/save/" method="post" id="form_user" class="form_user">
 {% else %}
-    <form action="/user/save/" method="post" id="form_user" class="form_people collapsable form_user">
+    <form action="/user/save/" method="post" id="form_user" class="form_user">
 {% endif %}
 
 <div class="main_area">
@@ -158,7 +175,4 @@ GNU General Public License for more details.
     </form>
 </div>
 
-
-{% if profile.id %}
-</div> <!-- edit_form -->
-{% endif %}
+{% endblock %}

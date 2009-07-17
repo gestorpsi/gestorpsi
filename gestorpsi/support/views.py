@@ -14,9 +14,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.core.mail import EmailMessage, BadHeaderError
 from django.utils.translation import gettext as _
+from django.template.context import RequestContext
 from gestorpsi.support.forms import TicketForm
 from gestorpsi.settings import EMAIL_HOST_USER, EMAIL_FROM as EMAIL_ADMIN
 
@@ -34,8 +36,9 @@ def ticket_form(request):
 
             try:
                 email.send()
+                return HttpResponseRedirect('/support/ticket/sent/')
             except BadHeaderError:
-                return HttpResponse('Invalid header found')
+                return HttpResponse('Error on sending mail')
     else:
         initial = {
             'contact_name' : request.user.profile.person.name,
@@ -43,4 +46,4 @@ def ticket_form(request):
             'contact_email' : request.user.profile.person.get_first_email(),
             }
         form = TicketForm(initial)
-    return render_to_response('support/ticket_form.html', locals())
+    return render_to_response('support/ticket_form.html', locals(), context_instance=RequestContext(request))

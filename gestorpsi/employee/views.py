@@ -15,9 +15,10 @@ GNU General Public License for more details.
 """
 
 from datetime import datetime
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from django.utils.translation import ugettext as _
 from gestorpsi.employee.models import Employee
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.phone.models import PhoneType
@@ -36,21 +37,8 @@ def index(request):
     @param request: this is a request sent by the browser.
     @type request: a instance of the class C{HttpRequest} created by the framework Django
     """ 
-    user = request.user
-    
-    return render_to_response('employee/employee_index.html',
-                            {'object': Employee.objects.filter(person__organization = user.get_profile().org_active.id, active=True).order_by('person__name'),
-                            'countries': Country.objects.all(), 
-                            'PhoneTypes': PhoneType.objects.all(), 
-                            'AddressTypes': AddressType.objects.all(), 
-                            'EmailTypes': EmailType.objects.all(), 
-                            'IMNetworks': IMNetwork.objects.all() , 
-                            'TypeDocuments': TypeDocument.objects.all(), 
-                            'Issuers': Issuer.objects.all(), 
-                            'States': State.objects.all(), 
-                            'MaritalStatusTypes': MaritalStatus.objects.all(), },
-                              context_instance=RequestContext(request)
-                              )
+
+    return render_to_response('employee/employee_list.html', context_instance=RequestContext(request))
 
 @permission_required_with_403('employee.employee_list')
 def list(request, page = 1):
@@ -116,7 +104,9 @@ def save(request, object_id= ''):
 
     object.save()
 
-    return HttpResponse(object.id)
+    request.user.message_set.create(message=_('Employee saved successfully'))
+
+    return HttpResponseRedirect('/employee/%s/' % object.id)
 
 @permission_required_with_403('employee.employee_write')
 def delete(request, object_id):

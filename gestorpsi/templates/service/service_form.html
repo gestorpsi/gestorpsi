@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -15,12 +17,26 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-{% include "core/ajax_page.html" %}
+
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Services" %}{% endblock %}
+
+{% block submenu %}
+    <ul>
+        <li><a class="first" href="/service/">{% trans "all" %}</a></li>
+        <li><a class="{% if not object.id %}active{% endif %}" href="/service/add/">{% trans "add" %}</a></li>
+        {% if object.id %}<li><a class="active">{{ object.name }}</a></li>{% endif %}
+        
+    </ul>
+{% endblock %}
+
+
+{% block core %}
 
 {% if object.id %}
-	<div class="edit_form">
 	<h2 class="title_services title">{{ object.name }}</h2>
-	<p class="description"><br />	
+	<p class="description">{{ object.description }}<br />	
 {% else %}
 	<h2 class="title_services title">{% trans "Adding New Service" %}</h2>
 	<p class="description">{% trans "Inform the service details then click on Save button" %}</p>
@@ -242,8 +258,6 @@ GNU General Public License for more details.
 
 </form>
 
-{% if object.id %}
-</div> <!-- edit_form -->
-{% endif %}
+{% endblock %}
 
 

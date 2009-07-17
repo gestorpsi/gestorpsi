@@ -16,9 +16,10 @@ GNU General Public License for more details.
 
 from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext
+from django.utils.translation import ugettext as _
 from gestorpsi.service.models import Service, Area, ServiceType, Modality, AreaClinic
 from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure
 from gestorpsi.careprofessional.models import CareProfessional, Profession
@@ -33,19 +34,7 @@ def index(request):
     @param request: this is a request sent by the browser.
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
     """
-    user = request.user
-    
-    return render_to_response( "service/service_index.html", {
-        'Agreements': Agreement.objects.all(),
-        'CareProfessionals': CareProfessional.objects.filter(person__organization=user.get_profile().org_active),
-        'AgeGroups': AgeGroup.objects.all(),
-        'ProcedureProviders': ProcedureProvider.objects.all(),
-        'Procedures': Procedure.objects.all(),
-        'Areas': Area.objects.all(),
-        'ServiceTypes': ServiceType.objects.all(),
-        'Modalitys': Modality.objects.all(),
-        'Professions': Profession.objects.all(),},
-        context_instance=RequestContext(request))
+    return render_to_response( "service/service_list.html", context_instance=RequestContext(request))
 
 @permission_required_with_403('service.service_list')
 def list(request, page = 1):
@@ -211,7 +200,9 @@ def save(request, object_id = ''):
     if request.POST['service_area'] == '3':
         object = save_clinic(request, object)
 
-    return HttpResponse(object.id)
+    request.user.message_set.create(message=_('Service saved successfully'))
+
+    return HttpResponseRedirect('/service/%s/' % object.id)
 
 @permission_required_with_403('service.service_write')
 def disable(request, object_id=''):

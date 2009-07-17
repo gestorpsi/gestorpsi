@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -14,10 +16,11 @@ GNU General Public License for more details.
 
 {% endcomment %}
 
-{% load i18n %}
-{% include "core/ajax_page_form.html" %}
-{% include "core/ajax_page_list.html" %}
+{% block menu_start %}active{% endblock %}
 
+{% load i18n %}
+
+{% block core %}
 <h2 class="title_fronted">{% trans "Welcome" %} <b>{{ profile.person.name }} </b>  <br /></h2>
 
 <form class="">	
@@ -61,3 +64,5 @@ GNU General Public License for more details.
  
  </div>
 </form>
+
+{% endblock %}

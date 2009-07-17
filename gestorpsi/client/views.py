@@ -15,13 +15,14 @@ GNU General Public License for more details.
 """
 
 import locale
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.template import RequestContext
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
-from django.utils.translation import gettext as _
+from django.utils.translation import ugettext as _
+from django.http import Http404
 
 from geraldo.generators import PDFGenerator
 
@@ -52,14 +53,54 @@ from gestorpsi.person.views import person_json_list
 def index(request):
     # Test if clinic administrator has registered services before access client page.
     if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
+        return render_to_response('client/client_service_alert.html', context_instance=RequestContext(request))
+
+    #referral_form = ReferralForm()
+    #referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
+    ##referral_form.fields['professional'].queryset = CareProfessional.objects.filter(person__organization = request.user.get_profile().org_active.id)
+    #referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
+
+    return render_to_response('client/client_list.html',
+                                        {
+                                        #'countries': Country.objects.all(),
+                                        #'PhoneTypes': PhoneType.objects.all(), 
+                                        #'AddressTypes': AddressType.objects.all(), 
+                                        #'EmailTypes': EmailType.objects.all(), 
+                                        #'IMNetworks': IMNetwork.objects.all() , 
+                                        #'TypeDocuments': TypeDocument.objects.all(), 
+                                        #'Issuers': Issuer.objects.all(), 
+                                        #'States': State.objects.all(), 
+                                        #'MaritalStatusTypes': MaritalStatus.objects.all(),
+                                        #'PROFESSIONAL_AREAS': Profession.objects.all(),
+                                        #'licenceBoardTypes': LicenceBoard.objects.all(),
+                                        #'ReferralChoices': ReferralChoice.objects.all(),
+                                        #'IndicationsChoices': IndicationChoice.objects.all(),
+                                        #'Relations': Relation.objects.all(),
+                                        #'referral_form': referral_form
+                                         },
+                                        context_instance=RequestContext(request))
+
+# client home
+@permission_required_with_403('client.client_read')
+def home(request, object_id=None):
+    try:
+        object    = get_object_or_404(Client, pk=object_id)
+    except:
+        raise Http404
+    return render_to_response('client/client_home.html',
+                                        {
+                                        'object': object,
+                                        'total_service': Referral.objects.filter(client=object).count()
+                                        },
+                                        context_instance=RequestContext(request))
+
+    
+def add(request):
+     #Test if clinic administrator has registered services before access client page.
+    if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
         return render_to_response('client/client_service_alert.html', {'object': _("There's no Service created yet. Please, create one before access Client."), }, context_instance=RequestContext(request))
-
-    referral_form = ReferralForm()
-    referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
-    #referral_form.fields['professional'].queryset = CareProfessional.objects.filter(person__organization = request.user.get_profile().org_active.id)
-    referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
-
-    return render_to_response('client/client_index.html',
+    else:
+        return render_to_response('client/client_form.html',
                                         {
                                         'countries': Country.objects.all(),
                                         'PhoneTypes': PhoneType.objects.all(), 
@@ -75,9 +116,9 @@ def index(request):
                                         'ReferralChoices': ReferralChoice.objects.all(),
                                         'IndicationsChoices': IndicationChoice.objects.all(),
                                         'Relations': Relation.objects.all(),
-                                        'referral_form': referral_form
                                          },
                                         context_instance=RequestContext(request))
+
 
 @permission_required_with_403('client.client_list')
 def list(request, page = 1):
@@ -86,7 +127,7 @@ def list(request, page = 1):
         object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
     else:
         object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1', referral__professional = user.profile.person.careprofessional.id).order_by('person__name')
-    
+
     return HttpResponse(simplejson.dumps(person_json_list(request, object, 'client.client_read', page)),
                             mimetype='application/json')
 
@@ -195,7 +236,9 @@ def save(request, object_id=""):
     object.person = person_save(request, person)
     object.save()
 
-    return HttpResponse(object.id)
+    request.user.message_set.create(message=_('Client saved successfully'))
+
+    return HttpResponseRedirect('/client/%s/home' % object.id)
 
 @permission_required_with_403('client.client_write')
 def delete(request, object_id=""):

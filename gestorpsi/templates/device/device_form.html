@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -15,10 +17,25 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-{% include "core/ajax_page_form.html" %}
+
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Equipments" %}{% endblock %}
+
+{% block submenu %}
+    <ul>
+        <li><a class="first" href="/device/">{% trans "all" %}</a></li>
+        <li><a class="{% if not object.id %}active{% endif %}" href="/device/add/">{% trans "add" %}</a></li>
+        <li><a href="/device/type/">{% trans "type" %}</a></li>
+        {% if object.id %}<li><a class="active">{{ object.brand }} {{ object.model }}</a></li>{% endif %}
+        
+    </ul>
+{% endblock %}
+
+
+{% block core %}
 
 {% if object.id %}
-	<div class="edit_form">
 	<h2 class="title_device title">{{ object.brand }} {{ object.model }}</h2>
 	<p class="description">{{ object.device.description }}<br></p>
 {% else %}
@@ -67,7 +84,7 @@ GNU General Public License for more details.
 			</label>
 			
 			<label>{% trans "Comments" %}<br />
-			<textarea name="comments" class="giant" value="{{ object.comments }}" id="comments"></textarea>
+			<textarea name="comments" class="giant" value="{{ object.comments }}" id="comments">{{ object.comments }}</textarea>
 			</label>
 			
 				
@@ -167,3 +184,5 @@ GNU General Public License for more details.
 </form>
 
 {% include "tags/device_mini.html" %}
+
+{% endblock %}

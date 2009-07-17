@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -15,10 +17,23 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-{% include "core/ajax_page_list.html" %}
+
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Equipments" %}{% endblock %}
+
+{% block submenu %}
+    <ul>
+        <li><a class="first active" href="/device/">{% trans "all" %}</a></li>
+        <li><a href="/device/add/">{% trans "add" %}</a></li>
+        <li><a href="/device/type/">{% trans "type" %}</a></li>
+    </ul>
+{% endblock %}
+
+{% block core %}
 
 <div class="no_registers_available" style="display:none">
-        <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/device/" class="fastmenu notajax" sub_menu="sub_devices" display="form">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
+        <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/device/add/" class="fastmenu notajax" sub_menu="sub_devices" display="form">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
 </div>
 <div class="registers_available">
 
@@ -46,4 +61,4 @@ GNU General Public License for more details.
                 {% include "tags/paginator.html" %}
         </div>
 </div>
-
+{% endblock %}

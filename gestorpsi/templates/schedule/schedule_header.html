@@ -14,20 +14,20 @@ GNU General Public License for more details.
 
 {% endcomment %}
 
-{% include "core/ajax_page_list.html" %}
 {% load i18n %}
 
-<script type="text/javascript">
-    bindSchedule();
-</script>
 
 <h2 class="title_schedule">{% trans "Daily view for" %} <a href="#">{% trans "Many Professionals" %}</a> 
     {% include "schedule/schedule_filter.html" %}
 </h2>
 
 <p class="description">O dia de hoje possui <span id="occurrences_total"></span> consulta(s).</p>
+{% comment %}
 <a class="json_ocorrences prev_day" href="{% url schedule-daily-occurrences prev_day.year prev_day.month prev_day.day %}" id="nav_back"></a>
     <a class="json_ocorrences next_day" href="{% url schedule-daily-occurrences next_day.year next_day.month next_day.day %}" id="nav_fwd"></a>
+{% endcomment %}
+<a class="json_ocorrences prev_day" id="nav_back"></a>
+<a class="json_ocorrences next_day" id="nav_fwd"></a>
 <div id="search_header">
     <h2><span class="date_selected"></span></h2>	
     

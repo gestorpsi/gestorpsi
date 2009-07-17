@@ -14,9 +14,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import permission_required
+from django.utils.translation import ugettext as _
 from gestorpsi.psychologist.models import Psychologist
 from gestorpsi.careprofessional.views import care_professional_fill
 from gestorpsi.util.decorators import permission_required_with_403
@@ -33,7 +34,9 @@ def save(request, object_id=''):
     object = care_professional_fill(request, object)
     object.save()
 
-    return HttpResponse(object.id)
+    request.user.message_set.create(message=_('Professional saved successfully'))
+
+    return HttpResponseRedirect('/careprofessional/%s/' % object.id)
 
 
 # disable a psychologist

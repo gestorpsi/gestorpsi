@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -16,11 +18,27 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
+{% block menu_client %}active{% endblock %}
 
-<script type="text/javascript">
-   bindReferral();
-   
-</script>
+{% block submenu %}
+    {% include "client/client_menu.html" %}
+{% endblock %}
+
+{% block core %}
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+{% if object.id %}
+	<h2 class="title_clients title">{{ object.person.name }}</h2>
+	<p class="description">{% trans "Referral Details" %}<br />	
+{% else %}
+	<h2 class="title_clients title">{% trans "New Admission" %}</h2>
+	<p class="description">{% trans "Inform the referral details then click on Save button" %}</p>
+{% endif %}
+
+</p>
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
 
 <form action="/referral/save/" method="post" id="client_referral_form" class="client_referral">
 <input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
@@ -29,7 +47,7 @@ GNU General Public License for more details.
     <h3><span>{% trans "Referral Details" %}</span></h3>
     <fieldset>
     <legend>{% trans "Referral Details" %}</legend>
-        <label><input type="radio" name="referral_type" value="subscription">&nbsp; {% trans "Subscription" %}</label>
+        <label><input type="radio" name="referral_type" value="subscription" checked>&nbsp; {% trans "Subscription" %}</label>
         <label><input type="radio" name="referral_type" value="referral">&nbsp; {% trans "From existing referral" %}</label>
         <label><div class="error_radio" style="display:none;"><h3><font color="red">{% trans "Choose one option." %}</font></h3></div></label>
         <label class="referral_type_referral hidden">{% trans "Last Referral" %}<br />
@@ -89,8 +107,18 @@ GNU General Public License for more details.
     
 </div>
 
-{% include "tags/client_sidebar.html" %}
-
-<label><input name="" type="button" class="btn2" value="Cancelar" /></label>
+<div id="sidebar" class="sidebar">
+    {% if perms.client.client_write %}
+        <div class="bg_blue">
+            {% include "tags/save.html" %}
+        </div>
+    {% endif %}
+    {% if object.id %}
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
+</div>
+<input type="hidden" name="client_id" value="{{ object.id }}" />
 </form>
+
+{% endblock %}
 

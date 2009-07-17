@@ -16,15 +16,12 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<input type="hidden" id="app_name" value="device_type" />
-
-<div id="list" class="fast_menu_content">
- {% include "device/device_type_list.html" %}
-</div>
-
-<div id="form" class="fast_menu_content">
- {% include "device/device_type_form.html" %} 
-</div>
-
-<div id="edit_form" class="fast_menu_content">
-</div>
+<ul id="sub_customers">
+    <li><a href="/client/">{% trans "all" %}</a></li>
+    <li><a class="{% if not object.id %}active{% endif %}" href="/client/add">{% trans "add" %}</a></li>
+    {% if object.id %}<li><a class="active">{{ object.person.name }}</a></li>{% endif %}
+<!-- <li><a display="search" class="fastmenu" href="/client/">{% trans "search" %}</a></li>
+     <li><a>{% trans "booked" %}</a></li>
+     <li><a>{% trans "actives" %}</a></li>
+     <li><a>{% trans "waiting" %}</a></li> -->
+</ul>

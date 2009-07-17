@@ -29,8 +29,8 @@ class ReferralForm(forms.ModelForm):
     annotation = forms.CharField(widget=forms.Textarea(), required = False)
     referral_reason = forms.CharField(widget=forms.Textarea(), required = False)
     available_time = forms.CharField(widget=forms.Textarea(), required = False)
-    priority = forms.ModelChoiceField(queryset=ReferralPriority.objects.all(), required = False, widget=forms.Select(attrs={'class':'big asm', }))
-    impact = forms.ModelChoiceField(queryset=ReferralImpact.objects.all(), required = False, widget=forms.Select(attrs={'class':'big asm', }))
+    priority = forms.ModelChoiceField(queryset=ReferralPriority.objects.all(), required = False, widget=forms.Select(attrs={'class':'extramedium', }))
+    impact = forms.ModelChoiceField(queryset=ReferralImpact.objects.all(), required = False, widget=forms.Select(attrs={'class':'giant', }))
     
     
     class Meta:

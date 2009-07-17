@@ -17,7 +17,6 @@ GNU General Public License for more details.
 from datetime import datetime
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.utils.translation import ugettext as _
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.careprofessional.models import ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional, Profession
 from gestorpsi.organization.models import Agreement
@@ -36,25 +35,7 @@ from gestorpsi.person.views import person_json_list
 
 @permission_required_with_403('careprofessional.careprofessional_list')
 def index(request):
-    user = request.user
-    return render_to_response('careprofessional/careprofessional_index.html', {
-                                    'PROFESSIONAL_AREAS': Profession.objects.all(),
-                                    'AgreementTypes': Agreement.objects.all(),
-                                    'WorkPlacesTypes': Place.objects.filter(organization = user.get_profile().org_active.id),
-                                    'countries': Country.objects.all(),
-                                    'PhoneTypes': PhoneType.objects.all(),
-                                    'AddressTypes': AddressType.objects.all(),
-                                    'EmailTypes': EmailType.objects.all(),
-                                    'IMNetworks': IMNetwork.objects.all(),
-                                    'TypeDocuments': TypeDocument.objects.all(),
-                                    'Issuers': Issuer.objects.all(),
-                                    'States': State.objects.all(),
-                                    'MaritalStatusTypes': MaritalStatus.objects.all(),
-                                    'PlaceTypes': PlaceType.objects.all(),
-                                    'ServiceTypes': Service.objects.filter( active=True, organization=user.get_profile().org_active ),
-                                    },
-                                context_instance=RequestContext(request)
-                              )
+    return render_to_response('careprofessional/careprofessional_list.html', context_instance=RequestContext(request))
   
 
 @permission_required_with_403('careprofessional.careprofessional_list')
@@ -121,7 +102,7 @@ def form(request, object_id=''):
 
 
 @permission_required_with_403('careprofessional.careprofessional_read')
-def care_professional_fill(request, object):
+def care_professional_fill(request, object, save_person = True):
     """
     This view function returns the informations about CareProfessional 
     @param request: this is a request sent by the browser.
@@ -133,8 +114,11 @@ def care_professional_fill(request, object):
         person= Person.objects.get(pk=object.person_id)        
     except:        
         person= Person()
-    object.person= person_save(request, person)   
-    object.save()
+    
+    if save_person:
+        object.person= person_save(request, person)
+        object.save()
+
     try:
         profile= ProfessionalProfile.objects.get(pk= object.professionalProfile_id )        
     except:        

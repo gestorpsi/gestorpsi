@@ -17,11 +17,12 @@ GNU General Public License for more details.
 import operator
 from django.utils import simplejson
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.conf import settings
 from django.template.defaultfilters import slugify
+from django.utils.translation import gettext as _
 from gestorpsi.organization.models import Organization
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
@@ -48,23 +49,7 @@ def list_order(request, dictionary):
 
 @permission_required_with_403('contact.contact_list')
 def index(request):
-    user = request.user
-    org = user.get_profile().org_active
-    
-    return render_to_response('contact/contact_index.html', { 
-                                    'countries': Country.objects.all(),
-                                    'States': State.objects.all(),
-                                    'AddressTypes': AddressType.objects.all(),
-                                    'PhoneTypes': PhoneType.objects.all(),
-                                    'EmailTypes': EmailType.objects.all(),
-                                    'IMNetworks': IMNetwork.objects.all(),
-                                    'States': State.objects.all(),
-                                    'organizations': Organization.objects.filter(contact_owner=user.get_profile().person, active=True, visible=True), 
-                                    #'organizations': Organization.objects.filter(organization=None, active=True, visible=True),
-                                    'professions': Profession.objects.all(),
-                                    },
-                                    context_instance=RequestContext(request)
-                                    )
+    return render_to_response('contact/contact_list.html', context_instance=RequestContext(request))
 
 
 @permission_required_with_403('contact.contact_list')
@@ -118,9 +103,24 @@ def list(request, page = 1):
         }
         i = i + 1
 
-    #return HttpResponse(simplejson.dumps(array), mimetype='application/json')
-    return HttpResponse(simplejson.dumps(array))
+    return HttpResponse(simplejson.dumps(array), mimetype='application/json')
 
+@permission_required_with_403('contact.contact_read')
+def add(request):
+    organizations = Organization.objects.filter(contact_owner=request.user.get_profile().person, active=True, visible=True)
+    return render_to_response('contact/contact_form.html', {
+                                    'object': object,
+                                    'countries': Country.objects.all(),
+                                    'States': State.objects.all(),
+                                    'AddressTypes': AddressType.objects.all(),
+                                    'PhoneTypes': PhoneType.objects.all(), 
+                                    'EmailTypes': EmailType.objects.all(), 
+                                    'IMNetworks': IMNetwork.objects.all(),
+                                    'organizations': organizations,
+                                    'professions': Profession.objects.all()
+                                     },
+                                     context_instance=RequestContext(request)
+                                     )
 
 
 @permission_required_with_403('contact.contact_read')
@@ -204,7 +204,7 @@ def save(request, object_id=''):
                  request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))        
 
     if request.POST.get('type') == 'professional':
-	type = "2"
+        type = "2"
         try:
             object = get_object_or_404(CareProfessional, pk=object_id)
             identification = object.professionalIdentification
@@ -214,8 +214,6 @@ def save(request, object_id=''):
             person = Person()
 
         if request.POST.get('symbol'): 
-            print request.POST.get('symbol')
-            print request.POST.get('professional_subscription')
             identification = ProfessionalIdentification()
             identification.profession = Profession.objects.get(symbol=request.POST.get('symbol'))
             identification.registerNumber = request.POST.get('professional_subscription')
@@ -239,6 +237,16 @@ def save(request, object_id=''):
         
         object.person = person
         object.save()
+
+    request.user.message_set.create(message=_('Contact saved successfully'))
+    return HttpResponseRedirect('/contact/%s/%s' % (type, object.id))
+
+@permission_required_with_403('contact.contact_write')
+def save_mini(request, object_id=''):
+    object = Organization()
+    object.name = request.POST.get('label') # adding by mini form
+    object.short_name = slugify(object.name)
+    object.save()
 
     return HttpResponse("%s" % (object.id))
 

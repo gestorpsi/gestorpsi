@@ -160,6 +160,27 @@ class Person(models.Model):
         else:
             return ''        
 
+    def is_client(self):
+        try:
+            o = self.client
+            return True
+        except:
+            return False
+
+    def is_careprofessional(self):
+        try:
+            o = self.careprofessional
+            return True
+        except:
+            return False
+
+    def is_employee(self):
+        try:
+            o = self.employee
+            return True
+        except:
+            return False
+
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 

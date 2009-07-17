@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -16,15 +18,14 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<input type="hidden" id="app_name" value="room" />
+{% block core %}
+<h2 class="title_employee title">{% trans "Support Request Sent" %}</h2>
+<p class="description">&nbsp;</p>
 
-<div id="list" class="fast_menu_content">
- {% include "place/place_room_list.html" %}
+<div id="msg_area" class="alert">
+{% trans "Thank you! Your ticket support has been sent successfully!!" %}<br />
+<a href="/frontend/">{% trans "Continue" %}<br /></a>
 </div>
 
-<div id="form" class="fast_menu_content">
- {% include "place/place_room_form.html" %} 
-</div>
+{% endblock %}
 
-<div id="edit_form" class="fast_menu_content">
-</div>

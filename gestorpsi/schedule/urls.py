@@ -27,7 +27,7 @@ from gestorpsi.schedule.views import schedule_occurrence_listing_today
 from gestorpsi.schedule.views import event_view
 from gestorpsi.schedule.views import daily_occurrences 
 from gestorpsi.schedule.views import today_occurrences
-from gestorpsi.schedule.views import referral_occurrences
+#from gestorpsi.schedule.views import referral_occurrences
 
 #from gestorpsi.schedule.views import calendar_view
 
@@ -95,21 +95,21 @@ urlpatterns = patterns('',
         name='swingtime-add-event',
         
     ),
-    #url(
-        #r'^events/(\d+)/$', 
-        #event_view,
-        #{
-            #'event_form_class': ReferralForm ,
-            #'recurrence_form_class': ScheduleOccurrenceForm ,
-            #'template': 'schedule/event_detail.html',
-        #},       
-        #name='swingtime-event'
-    #),
     url(
         r'^events/(\d+)/$', 
-        referral_occurrences,
-        name='referral_occurrences'
+        event_view,
+        {
+            'event_form_class': ReferralForm ,
+            'recurrence_form_class': ScheduleOccurrenceForm ,
+            'template': 'schedule/event_detail.html',
+        },       
+        name='swingtime-event'
     ),
+    #url(
+        #r'^events/(\d+)/$', 
+        #referral_occurrences,
+        #name='referral_occurrences'
+    #),
     
     url(
         r'^events/(\d+)/(\d+)/$', 

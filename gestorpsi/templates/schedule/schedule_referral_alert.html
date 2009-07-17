@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -16,8 +18,13 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<h2 class="title_services">{{ object }} <br /></h2>
+{% block menu_schedule %}active{% endblock %}
 
-<script>
-    $("ul#sub_schedule li").hide();
-</script>
+{% block core %}
+
+<div class="msg_area">
+{% trans "There is no client referral created yet. Please <a href='/client/'>create</a> at least one before start Schedule." %}
+</div>
+
+{% endblock %}
+

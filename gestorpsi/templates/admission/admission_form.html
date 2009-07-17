@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -15,6 +17,28 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
+
+{% block menu_client %}active{% endblock %}
+
+{% block submenu %}
+    {% include "client/client_menu.html" %}
+{% endblock %}
+
+{% block core %}
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+{% if object.id %}
+	<h2 class="title_clients title">{{ object.person.name }}</h2>
+	<p class="description">{% trans "Admission Details" %}<br />	
+{% else %}
+	<h2 class="title_clients title">{% trans "New Admission" %}</h2>
+	<p class="description">{% trans "Inform the client details then click on Save button" %}</p>
+{% endif %}
+
+</p>
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
 
 <form action="/admission/{{ object.id }}/save/" method="post" id="client_admission_form" class="ajax form_admission form_client">
 <input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
@@ -162,112 +186,28 @@ GNU General Public License for more details.
 
         </fieldset>
 
-        {% comment %}
-        
-        <fieldset>
-        <legend>{% trans "Files" %}</legend>
-        <div class="label">Documentos <a href="" class="clips">Anexar documento</a>	
-        <div id="documents">
-                <!-- Aparece quando "Anexar Documento", desaparece após enviar arquivo, podem haver vários-->
-                <div class="documents_form">
-                <label>Arquivo<br />
-
-                <input type="file" class="big" id="send_file" size="33" />
-                </label>
-                <label>Tipo de documento<br />
-                <select name="" class="medium">
-                        <option>Tipo 1 de documento</option>
-                        <option>Tipo 2 de documento</option>
-                        <option>Tipo 3 de documento</option>
-
-                </select></label>
-                <label>Assunto do documento<br />
-                <input name="" type="text" class="big" /></label>
-                <label><input name="" type="button" class="btn" value="Enviar Arquivo" /></label>
-                </div>
-                
-                <div class="documents_form">
-                <p>Enviando documento</p>
-                </div>
-
-                
-                <div class="documents_form">
-                <label>Arquivo<br />
-                <input type="file" class="big" id="send_file" size="33" />
-                </label>
-                <label>Tipo de documento<br />
-                <select name="" class="medium">
-                        <option>Tipo 1 de documento</option>
-
-                        <option>Tipo 2 de documento</option>
-                        <option>Tipo 3 de documento</option>
-                </select></label>
-                <label>Assunto do documento<br />
-                <input name="" type="text" class="big" /></label>
-                <label><input name="" type="button" class="btn" value="Enviar Arquivo" /></label>
-                </div>
-
-                
-                <br class="newline" />
-                <br />
-                
-                
-                <!--este-->
-                <p class="empty">Nenhum documento anexado</p>
-                
-                <!-- ou este -->
-                <table class="nozebra">
-                        <tr>
-                                <td nowrap="nowrap"><span class="date">17/04/2008</span><br /><span class="time">14:31:07</span></td>
-
-                                <td><span class="pdf">Admissão.pdf</span></td>
-                                <td><span>Tipo1 do Documento:</span> Arquivo original enviado por e-mail pela 
-                Dra. Mariangela. Contém informações detalhadas sobre o diagnóstico.</td>
-                                <td><a href="" class="edit" title="editar" ><span>Edit</span></a></td>
-                                <td><a href="" class="delete" title="delete" ><span>Delete</span></a></td>
-                        </tr>
-                        <tr>
-
-                                <td><span class="date">17/04/2008</span><br /><span class="time">14:34:07</span></td>
-                                <td><span class="pdf">Identificação.pdf</span></td>
-                                <td><span>Tipo2 do Documento:</span> docs do Cliente escaneados na clínica: RG e CPF</td>
-                                <td><a href="" class="edit" title="editar" ><span>Edit</span></a></td>
-                                <td><a href="" class="delete" title="delete" ><span>Delete</span></a></td>
-
-                        </tr>
-                        <tr>
-                                <td><span class="date">17/04/2008</span><br /><span class="time">14:36:07</span></td>
-                                <td><span class="pdf">raioXcraneo.pdf</span></td>
-                                <td><span>Tipo3 do Documento:</span> original enviado por e-mail pela Dra. Mariangela.</td>
-                                <td><a href="" class="edit" title="editar" ><span>Edit</span></a></td>
-
-                                <td><a href="" class="delete" title="delete" ><span>Delete</span></a></td>
-                        </tr>
-                </table>
-        </div>
-        </div>
-        </fieldset>
-        
-        {% endcomment %}
-        
         <fieldset>
         <label>{% trans "Comments" %}<br />
         <textarea name="comments" cols="" rows="8" class="giant">{{ object.comments }}</textarea></label>
 
-        <!-- not used        
-        <div class="btn_right">
-                <input name="" type="submit" class="btn" value="Concluir Admissão" />
-        </div>
-         -->
         </fieldset>
 </div>
 
-{% include "tags/client_sidebar.html" %}
-
-<label><input name="" type="button" class="btn2" value="Cancelar" /></label>
+<div id="sidebar" class="sidebar">
+    {% if perms.client.client_write %}
+        <div class="bg_blue">
+            {% include "tags/save.html" %}
+        </div>
+    {% endif %}
+    {% if object.id %}
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
+</div>
 </form>
 
 
 {% include "tags/address_book_professional_mini.html" %}
 {% include "tags/address_book_organization_mini.html" %}
+
+{% endblock %}
 

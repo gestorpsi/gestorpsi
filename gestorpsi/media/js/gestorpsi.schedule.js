@@ -66,13 +66,13 @@ function updateGrid(url) {
         $('table.schedule_results.daily tr td.clean a.book').each(function() { // update date ins url
             hour = $(this).parent('td').parent('tr').attr('hour');
             room = $(this).parent('td').attr('room');
-            $(this).attr('href', '#');
-            $(this).attr('date', json['util']['date']);
-            $(this).attr('hour', hour);
-            $(this).attr('room_id', room);
-            //$(this).attr('href', '/schedule/events/add/?dtstart=' + json['util']['date'] + 'T' + hour + '&room='+ room);
-            $(this).attr('title', json['util']['str_date']);
-            $(this).attr('weekday', json['util']['weekday']);
+            //$(this).attr('href', '#');
+            //$(this).attr('date', json['util']['date']);
+            //$(this).attr('hour', hour);
+            //$(this).attr('room_id', room);
+            $(this).attr('href', '/schedule/events/add/?dtstart=' + json['util']['date'] + 'T' + hour + '&room='+ room);
+            //$(this).attr('title', json['util']['str_date']);
+            //$(this).attr('weekday', json['util']['weekday']);
         });
         $('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/');
         $('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/');
@@ -99,6 +99,10 @@ function updateGrid(url) {
                 event_line = '<tr><td>'+this.room_name+'</td><td><span class="time">' + this.start_time.substr(0, (this.start_time.length-3)) + '</span></td><td><div></div></td></tr>';
                 $('div.schedule_events table.events tr:last').after(event_line);
                 event = $('div.schedule_events table.events tr:last');
+                
+                /**
+                 * append rows titles
+                 */
                 
                 //append client list
                 jQuery.each(this.client,  function(){
@@ -142,7 +146,7 @@ function updateGrid(url) {
                 }
 
                 $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').hide(); // hide free slot 
-                $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" occurrence="' + this.id + '" class="booked">' + label + '</a>'); // show booked event
+                $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" href="/schedule/events/' + this.event_id + '/' + this.id + '/" class="booked">' + label + '</a>'); // show booked event
                 
 
                 /**
@@ -153,8 +157,8 @@ function updateGrid(url) {
                 event.addClass('room_' + this.room); // service color
                 event.addClass('place_' + this.place); // service color
                 event.addClass('service_' + this.service_id); // service from cell
-                $(event).children('td').children('div').html('<a title="'+json['util']['str_date']+'" occurrence="' + this.id + '" class="booked">' + label_inline + '</a>');
-                
+                $(event).children('td').children('div').html('<a title="'+json['util']['str_date']+'" href="/schedule/events/' + this.event_id + '/' + this.id + '/" class="booked">' + label_inline + '</a>');
+                //$('div.schedule_events').html('<a title="'+json['util']['str_date']+'" occurrence="' + this.id + '" class="booked">' + label_inline + '</a>');
                 $('table.zebra tr:odd').addClass('zebra_0');
                 $('table.zebra tr:even').addClass('zebra_1');
                 }
@@ -189,31 +193,31 @@ function updateGrid(url) {
      * bind dialog box
      */
 
-    $('table.schedule_results a.booked').unbind().click(function() {
-        $.getJSON('/schedule/occurrence/abstract/'+ $(this).attr('occurrence') +'/', function(json) {
+    //$('table.schedule_results a.booked').unbind().click(function() {
+        //$.getJSON('/schedule/occurrence/abstract/'+ $(this).attr('occurrence') +'/', function(json) {
             
-            var str_client = ''; var str_professional = '';
-            //append client list
-            jQuery.each(json.client,  function(){
-            str_client += this.name + ' ' +this.phone+ '<br />' ;
-            });
+            //var str_client = ''; var str_professional = '';
+            ////append client list
+            //jQuery.each(json.client,  function(){
+            //str_client += this.name + ' ' +this.phone+ '<br />' ;
+            //});
 
-            //append professional list
-            jQuery.each(json.professional,  function(){
-                str_professional += this.name + ' ' +this.phone+ '<br />' ;
-            });
+            ////append professional list
+            //jQuery.each(json.professional,  function(){
+                //str_professional += this.name + ' ' +this.phone+ '<br />' ;
+            //});
             
-            $('div#dialog h1[key=date]').text(json['date']);
-            $('div#dialog div[key=room]').text(json['room']);
-            $('div#dialog div[key=service]').text(json['service']);
-            $('div#dialog div[key=client]').html(str_client);
-            $('div#dialog div[key=professional]').html(str_professional);
-            $('div#dialog a[key=edit_link]').attr('href','/schedule/events/' + json['event_id'] + '/' + json['id'] + '/');
-            $('div#dialog a[key=edit_link]').attr('title', json['client'][0].name);
-            $('div#edit_form form.schedule .sidebar .bg_blue input[name=day_clicked]').val(json['day']);
-        });
-        $('div#dialog').dialog('open');
-    });
+            //$('div#dialog h1[key=date]').text(json['date']);
+            //$('div#dialog div[key=room]').text(json['room']);
+            //$('div#dialog div[key=service]').text(json['service']);
+            //$('div#dialog div[key=client]').html(str_client);
+            //$('div#dialog div[key=professional]').html(str_professional);
+            //$('div#dialog a[key=edit_link]').attr('href','/schedule/events/' + json['event_id'] + '/' + json['id'] + '/');
+            //$('div#dialog a[key=edit_link]').attr('title', json['client'][0].name);
+            //$('div#edit_form form.schedule .sidebar .bg_blue input[name=day_clicked]').val(json['day']);
+        //});
+        //$('div#dialog').dialog('open');
+    //});
     
     return false;
 }
@@ -222,82 +226,49 @@ function updateGrid(url) {
  * load data from inserted event (referral) with occurrences
  */
 
-function updateScheduleReferralDetails(url) {
+//function updateScheduleReferralDetails(url) {
     
-    $('.schedule #edit_form div#schedule_occurrence_list table .clean').html(''); // clean old data
+    //$('.schedule #edit_form div#schedule_occurrence_list table .clean').html(''); // clean old data
     
-    $.getJSON(url, function(json) {
+    //$.getJSON(url, function(json) {
         
-        var str_professional_inline = ''; 
-        var str_client_inline = ''; 
-        var description = ''; 
-        var tableTR = '';
+        //var str_professional_inline = ''; 
+        //var str_client_inline = ''; 
+        //var description = ''; 
+        //var tableTR = '';
     
-        /**
-         * Referral infos
-         */
-
-        str_client_inline = personInLine(json['client']);
-        str_professional_inline = personInLine(json['professional']);
         
-        $('.schedule #edit_form h2.title_schedule, ul.opened_tabs li div a:first').text(str_client_inline); // set title (h2 and opened tab)
-        $('.schedule #edit_form p.description').text(json['service'] + ' - ' + str_professional_inline); // set description
+        //str_client_inline = personInLine(json['client']);
+        //str_professional_inline = personInLine(json['professional']);
         
-        /**
-         * Occurrences list
-         */
+        //$('.schedule #edit_form h2.title_schedule, ul.opened_tabs li div a:first').text(str_client_inline); // set title (h2 and opened tab)
+        //$('.schedule #edit_form p.description').text(json['service'] + ' - ' + str_professional_inline); // set description
+        
                 
-        jQuery.each(json['occurrences'],  function(){
-            tableTR = tableTR + '<tr><td class="title">' + this.date + ' ' + this.start_time + ' - ' + this.end_time + '<br>' + this.place + ' - ' + this.room + '</td></tr>';
-        });
+        //jQuery.each(json['occurrences'],  function(){
+            //tableTR = tableTR + '<tr><td class="title">' + this.date + ' ' + this.start_time + ' - ' + this.end_time + '<br>' + this.place + ' - ' + this.room + '</td></tr>';
+        //});
 
-        $('.schedule #edit_form div#schedule_occurrence_list div.occurrence_list table tbody').html(tableTR);
+        //$('.schedule #edit_form div#schedule_occurrence_list div.occurrence_list table tbody').html(tableTR);
         
-        $('table.zebra tr:odd').addClass('zebra_0');
-        $('table.zebra tr:even').addClass('zebra_1');
+        //$('table.zebra tr:odd').addClass('zebra_0');
+        //$('table.zebra tr:even').addClass('zebra_1');
 
-        }
-    );
+        //}
+    //);
   
     
-    return false;
-}
+    //return false;
+//}
 
 /** 
  * schedule form
  * bind form functions
  */
 
-function bindScheduleForm() {
+$(function() {
     // bind links in table
     $('div.schedule table.schedule_results a.book').click(function() {
-
-
-        var link = $(this);
-
-        year = link.attr('date').substring(0,4);
-        month = link.attr('date').substring(5,7);
-        day = link.attr('date').substring(8,11);
-        hour = link.attr('hour').substring(0,2);
-        minutes = link.attr('hour').substring(3,5);
-
-        var zero_hour = new Date(year, month, day, 0, 0, 0);
-        var due = new Date(year, month, day, hour, minutes);
-        var start_time_delta = (due - zero_hour) / 1000;
-        var end_time_delta = (parseInt(start_time_delta) + parseInt(increment_end_time));
-
-        // set initial data in add form
-        $('div.schedule #form select[name=day_month] option[value=' + parseFloat(month) + ']').attr('selected', 'selected');
-        $('div.schedule #form select[name=day_day] option[value=' + parseFloat(day) + ']').attr('selected', 'selected');
-        $('div.schedule #form select[name=day_year] option[value=' + parseInt(year) + ']').attr('selected', 'selected');
-        $('div.schedule #form select[name=start_time_delta] option[value=' + start_time_delta + ']').attr('selected', 'selected');
-        $('div.schedule #form select[name=end_time_delta] option[value=' + end_time_delta + ']').attr('selected', 'selected');
-        $('div.schedule #form select[name=room] option[value=' + link.attr('room_id') + ']').attr('selected', 'selected');
-        $('div.schedule #form input[name=week_days]').attr('checked', '');
-        $('div.schedule #form input[name=week_days][value=' + (parseInt(link.attr('weekday')) + 1) + ']').attr('checked', 'checked');
-        $('div.schedule #form input[name=tabtitle]').val(link.attr('title'));
-        $('div#form form.schedule .sidebar input[name=day_clicked]').val(year + '/' + month + '/' + day);
-        
         // REFRESH THE SELECT DEVICE WHEN DATA AND HOUR IS SELECTED IN THE CALENDAR
         var room =  $("form.schedule div.main_area select#id_room").val();
         if (room != ''){
@@ -372,17 +343,15 @@ function bindScheduleForm() {
         }
     });
 
-}
+});
 
 /**
  * schedule:
  * bind all schedule functions
  */
 
-function bindSchedule() {
-    // dialog box
-    $('div#dialog').dialog(dialog_options);
-    
+$('div.schedule').ready(function() {
+
     // load today daily occurrences and mini-calendar
     $('div.schedule table.schedule_results').unbind().ready(function() {
         $("div#mini_calendar").datepicker(schedule_options);
@@ -408,7 +377,7 @@ function bindSchedule() {
     
     
     /**
-     * filter links:
+     * occurrences filter
      * Re-draw the filter menu if item clicked
      */
 
@@ -576,8 +545,5 @@ function bindSchedule() {
         });
 
     });
-    
-    bindScheduleForm();
-
-    
-}
+   
+});

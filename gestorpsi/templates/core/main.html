@@ -27,10 +27,7 @@ GNU General Public License for more details.
 	<script type="text/javascript" src="/media/js/jquery.form.js"></script> <!-- jQuery Form Plugin -->
 	<script type="text/javascript" src="/media/js/jquery.validate.pack.js"></script> <!-- jQuery validation plug-in -->
 	<script type="text/javascript" src="/media/js/jquery-ui-1.5.3.custom.min.js"></script> <!-- JQuery UI with Draggable -->
-	<script type="text/javascript" src="/media/js/jquery.dimensions.js"></script> <!-- Fixed Save Menu (sidebar right) -->
 	<script type="text/javascript" src="/media/js/jquery.maskedinput-1.1.3.pack.js"></script> <!-- JQuery Masked Input Plugin -->
-	<script type="text/javascript" src="/media/js/jquery.scrollTo-min.js"></script> <!-- JQuery Scroll on Page Plugin -->
-	<script type="text/javascript" src="/media/js/jquery.asmselect.js"></script> <!-- JQuery SelectMultiple plugin-->
     <script type="text/javascript" src="/media/js/jquery.flexbox.js"></script>
 	<script type="text/javascript" src="/media/js/gestorpsi.util.js"></script>
 	<script type="text/javascript" src="/media/js/gestorpsi.frontend.js"></script> <!-- gestorpsi interface (ajax links and other stuffs) -->
@@ -40,7 +37,6 @@ GNU General Public License for more details.
 	<script type="text/javascript" src="/media/js/gestorpsi.forms.js"></script>
 	<script type="text/javascript" src="/media/js/gestorpsi.dates.js"></script>
 	<script type="text/javascript" src="/media/js/gestorpsi.schedule.js"></script>
-	<script type="text/javascript" src="/media/js/gestorpsi.client.js"></script>
 	<script type="text/javascript" src="/media/js/gestorpsi.json.js"></script>
 {% else %}
     <script type="text/javascript" src="/media/js/gestorpsi.browser.js"></script>
@@ -52,7 +48,6 @@ GNU General Public License for more details.
 	@import "/media/css/schedule.css";
 	@import "/media/css/jquery-ui/smoothness/ui.all.css";
 	@import "/media/css/jquery.autocomplete.css";
-	@import "/media/css/jquery.asmselect.css";
     @import "/media/css/jquery.flexbox.css";
 {% endif %}
 </style>
@@ -89,7 +84,7 @@ GNU General Public License for more details.
 
     <!-- <li><a href="#email">{% trans "email" %}</a></li>| -->
             <li id="logged">
-            <small>{% trans "Logged as" %} <b>{{ profile.user.username }}</small></b>
+            <small>{% trans "Logged as" %} <b>{{ user.username }}</small></b>
             </li>&nbsp;<li>
                 <a href="/profile/" id="profile" class="main_menu" display="form" title="{{ profile.person.name }}">{% trans "Meu cadastro" %}</a>
             </li>|<li>
@@ -106,142 +101,46 @@ CEP 32000 000 Cidade Estado País<br />
 telefone</span>
     </div>
 	<div id="menus">
-	<div id="main_menu">
-		<ul>
-			<li><a id="start" class="main_menu active" href="/frontend/">{% trans "start" %}</a></li>
-			<li><a id="schedule" class="main_menu" href="/schedule/" display="daily">{% trans "calendar" %}</a></li>
-			<li><a id="customers" class="main_menu" href="/client/" display="list">{% trans "clients" %}</a></li>
-			<li><a id="contacts" class="main_menu"  href="/contact/" display="list">{% trans "contacts" %}</a></li>
-			<li><a id="myoffice" class="main_menu notajax vertical" display="list">{{ profile.org_active.short_name }}</a>
-				<ul style="display:none" class="myoffice">
-					
-                    <li><a id="organization" href="/organization/">{% trans "My Organization" %}</a></li>
-					<li><a id="places" href="/place/" display="list">{% trans "Places" %}</a></li>
-                    <li><a id="rooms" href="/place/room/" display="list">{% trans "Rooms" %}</a></li>
-					<li><a id="devices" href="/device/" display="list">{% trans "Equipments" %}</a></li>
-					<li><a id="services" href="/service/" display="list">{% trans "Services" %}</a></li>
-					<li><a id="careprofessional" href="/careprofessional/" display="list">{% trans "Professionals" %}</a></li>
-                    <li><a id="employees" href="/employee/" display="list">{% trans "Employees" %}</a></li>
-					<li><a id="users" href="/user/" display="list">{% trans "Users" %}</a></li>
-					
-				</ul>
-			</li>
-		</ul>
-	</div>
-	<div id="sub_menu">
-
-        <!-- clients/customers -->
-		<ul id="sub_customers" style="display:none">
-			<li><a display="list" class="active first fastmenu" href="/client/">{% trans "all" %}</a></li>
-			<li><a display="form" class="fastmenu" href="/client/">{% trans "add" %}</a></li>
-	    <!-- <li><a display="search" class="fastmenu" href="/client/">{% trans "search" %}</a></li>
-		     <li><a>{% trans "booked" %}</a></li>
-			 <li><a>{% trans "actives" %}</a></li>
-			 <li><a>{% trans "waiting" %}</a></li> -->
-		</ul>
-
-         <!-- schedule -->
-		<ul id="sub_schedule" style="display:none">
-			<li><a display="daily" show="div#schedule_header" class="first active fastmenu" href="/schedule/">{% trans "daily" %}</a></li>
-			<li><a display="events" show="div#schedule_header" class="fastmenu" href="/schedule/">{% trans "events" %}</a></li>
-			<li><a display="form" hide="div#schedule_header" class="fastmenu" href="/schedule/">{% trans "add" %}</a></li>
-        </ul>
-        
-        <!-- PROFILE -->
-		<ul id="sub_profile" style="display:none">
-			<li><a display="form" class="fastmenu" href="/profile/">{% trans "Profile" %}</a></li>
-			<!-- <li><a>{% trans "search" %}</a></li> -->
-		</ul>
-
-        <!-- address book -->
-		<ul id="sub_contacts" style="display:none">
-			<li><a display="list" class="first active fastmenu" href="/contact/">{% trans "all" %}</a></li>
-			<li><a display="form" class="fastmenu" href="/contact/">{% trans "add" %}</a></li>
-			<!-- <li><a>{% trans "search" %}</a></li> -->
-		</ul>
-
-        <!-- orgnization config -->
-		<ul id="sub_organization" style="display:none">
-			<li><a display="identity" class="first active organization notajax" href="#">{% trans "Identity" %}</a></li>
-			<li><a display="profile" class="organization notajax" href="#">{% trans "Profile" %}</a></li>
-			<li><a display="address" class="organization notajax" href="#">{% trans "Address" %}</a></li>
-			<li><a display="phone" class="organization notajax" href="#">{% trans "Phones" %}</a></li>
-			<li><a display="internet" class="organization notajax" href="#">{% trans "Internet" %}</a></li>
-		</ul>
-
-        <!-- places -->
-		<ul id="sub_places" style="display:none">
-			<li><a display="list" class="first active fastmenu" href="/place/">{% trans "all" %}</a></li>
-			<li><a display="form" class="fastmenu" href="/place/">{% trans "add" %}</a></li>
-			<!-- <li><a>{% trans "search" %}</a></li> -->
-		</ul>
-
-        <!-- rooms -->
-        <ul id="sub_rooms" style="display:none">
-           <li><a display="list" class="first active fastmenu" href="/place/room/">{% trans "all" %}</a></li>
-           <li><a display="form" class="fastmenu" href="/place/room/">{% trans "add" %}</a></li>
-           <!-- <li><a>{% trans "search" %}</a></li> -->
-        </ul>
-		
-		<!--care employees-->
-		<ul id="sub_employees" style="display:none">
-			<li><a display="list" class="first active fastmenu" href="/employee/">{% trans "all" %}</a></li>
-			<li><a display="form" class="fastmenu" href="/employee/">{% trans "add" %}</a></li>
-			<!-- <li><a>{% trans "search" %}</a></li> -->
-		</ul>
-		
-		<!--care professional-->
-		<ul id="sub_careprofessional" style="display:none">
-			<li><a display="list" class="first active fastmenu" href="/careprofessional/">{% trans "all" %}</a></li>
-			<li><a display="form" class="fastmenu" href="/careprofessional/">{% trans "add" %}</a></li>
-			<!-- <li><a>{% trans "search" %}</a></li> -->
-		</ul>
-		
-		<!--services-->
-		<ul id="sub_services" style="display:none">
-			<li><a display="list" class="first active fastmenu" href="/service/">{% trans "all" %}</a></li>
-			<li><a display="form" class="fastmenu" href="/service/">{% trans "add" %}</a></li>
-		    <!-- <li><a>{% trans "search" %}</a></li> -->
-		</ul>
-
-		<!--devices-->		
-		<ul id="sub_devices" style="display:none">
-			<li><a display="list" class="first active fastmenu" href="/device/">{% trans "all" %}</a></li>
-			<li><a display="form" class="fastmenu" href="/device/">{% trans "add" %}</a></li>
-			<li><a display="list_type" class="fastmenu" href="/device/type/">{% trans "type" %}</a></li>
-            <!-- <li><a>{% trans "search" %}</a></li> -->
-		</ul>
-
-		<!--users-->		
-		<ul id="sub_users" style="display:none">
-			<li><a display="list" class="first active fastmenu" href="/users/">{% trans "all" %}</a></li>
-            <li><a display="form" class="fastmenu" href="/users/">{% trans "add" %}</a></li>
-		</ul>
-		
-		<ul class="opened_tabs" style="display:none;">
-			<li>
-			<div class="active">
-			    <a class="notajax fastmenu" display="edit_form" hide="div#schedule_header"></a>
-			    <a class="close"><span>fechar</span></a>
-			</div>
-			</li>
-		</ul>
-		<ul id="sub_contacts">
-		</ul>
-	</div>
+        <div id="main_menu">
+            <ul>
+                <li><a id="start" class="main_menu {% block menu_start %}{% endblock %}" href="/frontend/">{% trans "start" %}</a></li>
+                <li><a id="schedule" class="main_menu {% block menu_schedule %}{% endblock %}" href="/schedule/">{% trans "calendar" %}</a></li>
+                <li><a id="customers" class="main_menu {% block menu_client %}{% endblock %}" href="/client/">{% trans "clients" %}</a></li>
+                <li><a id="contacts" class="main_menu {% block menu_contact %}{% endblock %}"  href="/contact/">{% trans "contacts" %}</a></li>
+                <li><a id="myoffice" class="main_menu notajax vertical {% block menu_myoffice %}{% endblock %}">{{ user.profile.org_active.short_name }}{% block vertical_menu %}{% endblock %}</a>
+                    <ul style="display:none" class="myoffice">
+                        
+                        <li><a id="organization" href="/organization/">{% trans "My Organization" %}</a></li>
+                        <li><a id="places" href="/place/" display="list">{% trans "Places" %}</a></li>
+                        <li><a id="rooms" href="/place/room/" display="list">{% trans "Rooms" %}</a></li>
+                        <li><a id="devices" href="/device/" display="list">{% trans "Equipments" %}</a></li>
+                        <li><a id="services" href="/service/" display="list">{% trans "Services" %}</a></li>
+                        <li><a id="careprofessional" href="/careprofessional/" display="list">{% trans "Professionals" %}</a></li>
+                        <li><a id="employees" href="/employee/" display="list">{% trans "Employees" %}</a></li>
+                        <li><a id="users" href="/user/" display="list">{% trans "Users" %}</a></li>
+                        
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div id="sub_menu">
+            {% block submenu %}{% endblock %}
+        </div>
 	</div>
 {% endif %}
 
 	{% block registration %}{% endblock %}
 	<div id="content">
-                <div id="msg_area" style="display:none">
-	</div>
+        {% if messages %}
+            <div id="msg_area" class="alert">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
                 
 		<div id="core">
-			<!--  page core -->
-            {% if object %}
-                {% include "frontend/frontend_index.html" %}
-            {% endif %}
+            {% block core %}{% endblock %}
 		</div>
 		
 		<div id="loading">

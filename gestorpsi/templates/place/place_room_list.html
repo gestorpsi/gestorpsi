@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -15,8 +17,19 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-{% include "core/ajax_page_list.html" %}
 
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Rooms" %}{% endblock %}
+
+{% block submenu %}
+    <ul>
+        <li><a class="first active" href="/place/room/">{% trans "all" %}</a></li>
+        <li><a href="/place/room/add/">{% trans "add" %}</a></li>
+    </ul>
+{% endblock %}
+
+{% block core %}
 <div class="no_registers_available" style="display:none">
         <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/place/" class="fastmenu notajax" sub_menu="sub_rooms" display="form">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
 </div>
@@ -46,5 +59,4 @@ GNU General Public License for more details.
             {% include "tags/paginator.html" %}
         </div>
 </div>
-
-
+{% endblock %}

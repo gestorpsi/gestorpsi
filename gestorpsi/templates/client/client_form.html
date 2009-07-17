@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -15,15 +17,19 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-{% include "core/ajax_page_form.html" %}
-{% include "core/ajax_page_list.html" %}
 
+{% block menu_client %}active{% endblock %}
+
+{% block submenu %}
+    {% include "client/client_menu.html" %}
+{% endblock %}
+
+{% block core %}
 <input type="hidden" name="object_id" value="{{ object.id }}" />
 
 <h2 id="title_addressbook" style="display:none"></h2>
 
 {% if object.id %}
-	<div class="edit_form">
 	<h2 class="title_clients title">{{ object.person.name }}</h2>
 	<p class="description">Cliente cadastrado em {{ total_service }} Servi&ccedil;os <br />	
 {% else %}
@@ -35,7 +41,6 @@ GNU General Public License for more details.
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
 
-<div class="fast_content" id="client_form" style="display:block;">
 <form action="/client/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_client" class="form_people collapsable form_client">	
 <div class="main_area">
 
@@ -53,31 +58,21 @@ GNU General Public License for more details.
 <br />	
 </div>
 
-{% include "tags/client_sidebar.html" %}
+
+<div id="sidebar" class="sidebar">
+    {% if perms.client.client_write %}
+        <div class="bg_blue">
+            {% include "tags/save.html" %}
+        </div>
+    {% endif %}
+    {% if object.id %}
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
+</div>
+
+
 
 </form>
 {% include "tags/upload.html" %}
 
-</div> <!-- fast_content -->
-
-<div class="fast_content" id="client_admission">
-{% include "admission/admission_form.html" %}
-</div>
-
-<div class="fast_content" id="client_referral_form">
-{% include "referral/referral_form.html" %}
-</div>
-
-<div class="fast_content" id="client_referral_list">
-{% include "referral/referral_list.html" %}
-</div>
-
-<div class="fast_content" id="client_user_form">
-{% include "users/users_form.html" %}
-</div>
-
-{% if object.id %}
-</div> <!-- edit_form -->
-{% endif %}
-
-
+{% endblock %}

@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -15,11 +17,26 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-{% include "core/ajax_page.html" %}
+
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Equipments" %}{% endblock %}
+
+{% block submenu %}
+    <ul>
+        <li><a class="first" href="/device/">{% trans "all" %}</a></li>
+        <li><a class="{% if not object.id %}active{% endif %}" href="/device/add/">{% trans "add" %}</a></li>
+        <li><a href="/device/type/">{% trans "type" %}</a></li>
+        {% if object.id %}<li><a class="active">{{ object.description }}</a></li>{% endif %}
+        
+    </ul>
+{% endblock %}
+
+
+{% block core %}
 
 
 {% if object.id %}
-	<div class="edit_form">
 	<h2 class="title_device title">{{ object.description }}</h2>
 	<p class="description"><br />	
 {% else %}
@@ -55,5 +72,5 @@ GNU General Public License for more details.
     {% endif %}
 </div>
 </form>
-
+{% endblock %}
 

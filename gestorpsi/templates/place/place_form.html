@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -15,10 +17,24 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-{% include "core/ajax_page_form.html" %}
+
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Places" %}{% endblock %}
+
+{% block submenu %}
+    <ul>
+        <li><a class="first" href="/place/">{% trans "all" %}</a></li>
+        <li><a class="{% if not object.id %}active{% endif %}" href="/place/add/">{% trans "add" %}</a></li>
+        {% if object.id %}<li><a class="active">{{ object.label }}</a></li>{% endif %}
+        
+    </ul>
+{% endblock %}
+
+
+{% block core %}
 
 {% if object.id %}
-	<div class="edit_form">
 	<h2 class="title_places title">{{ object.label }}</h2>
 	<p class="description"><br />	
 {% else %}
@@ -29,7 +45,7 @@ GNU General Public License for more details.
 
 </p>
 
-<form action="/place/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="collapsable form_place" id="form_place">	
+<form action="/place/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="collapsable form_place">	
 <div class="main_area">
 
 	<!-- <a href="" id="help">&nbsp;</a> -->
@@ -113,8 +129,6 @@ GNU General Public License for more details.
 
 </form>
 
-{% if object.id %}
-</div> <!-- edit_form -->
-{% endif %}
+{% endblock %}
 
 

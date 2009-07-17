@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -15,8 +17,8 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-{% include "core/ajax_page_form.html" %}
-{% include "core/ajax_page_list.html" %}
+
+{% block core %}
 <div class="ticket_form">
 <h2 class="title_employee title">{% trans "New Support Request" %}</h2>
 <p class="description">{% trans "All fields are required" %}</p>
@@ -53,4 +55,5 @@ GNU General Public License for more details.
 </form>
 </div>
 
+{% endblock %}
 

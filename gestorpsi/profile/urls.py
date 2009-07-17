@@ -15,18 +15,12 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.profile.views import form
+from gestorpsi.profile.views import form, save, form_careprofessional, save_careprofessional
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
-    (r'^$', login_check(form)), #list objects
-    #(r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
-    #(r'^add/$', login_check(form)), #new object form
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form)),
-    #(r'^save/$', login_check(save)), #save new object
-    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save)),  #update object
-    #(r'^(?P<object_id>\d+)/delete/$', login_check(delete)), # delete object
-    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/delete/$', login_check(delete)),  #delete object
-    #(r'^print/$', login_required(print_list)), # print client list
-    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/print/$', login_required(print_record)),  # print record
+    (r'^$', login_check(form)), #profile form
+    (r'^careprofessional/$', login_check(form_careprofessional)), #professional profile form
+    (r'^save/$', login_check(save)), #save new object
+    (r'^save/careprofessional/$', login_check(save_careprofessional)), #save new object
 )

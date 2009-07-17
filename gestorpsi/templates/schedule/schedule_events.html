@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -16,16 +18,39 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<div class="schedule_events">
-    <table class="zebra schedule_results events" >
-    <div class="msg_area alert" style="display:none">{% trans "There is no events for this day." %}</div>
-    <tr>
-        <th class="tiny">{% trans "Room" %}</th>
-        <th class="small">{% trans "Hour" %}</th>
-        <th>{% trans "Event Details" %}</th>
-    </tr>
-    </table>
+{% block menu_schedule %}active{% endblock %}
+
+{% block submenu %}
+ <ul id="sub_schedule">
+    <li><a class="first" href="/schedule/">{% trans "daily" %}</a></li>
+    <li><a class="active" href="/schedule/events/">{% trans "events" %}</a></li>
+</ul>
+{% endblock %}
+
+{% block core %}
+<div class="schedule">
+    <a id="calendar_link" href="#"></a>
+    <div id="mini_calendar" style="display:none;"></div>
+
+    <div id="schedule_header">
+        {% include "schedule/schedule_header.html" %}
+    </div>
+
+    <div id="events">
+    
+        <div class="schedule_events">
+            <table class="zebra schedule_results events" >
+            <div class="msg_area alert" style="display:none">{% trans "There is no events for this day." %}</div>
+            <tr>
+                <th class="tiny">{% trans "Room" %}</th>
+                <th class="small">{% trans "Hour" %}</th>
+                <th>{% trans "Event Details" %}</th>
+            </tr>
+            </table>
+        </div>
+    </div>
 </div>
+{% endblock %}
 
 
 

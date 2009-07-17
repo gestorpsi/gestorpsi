@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-$(document).ready(function(){
+$(function(){
 	
 	/** global ajax events */
 	
@@ -56,37 +56,7 @@ $(document).ready(function(){
                $('#core').html('');
                return false;
         });
-          
-        /**
-         *
-         * Message Area (#msg_area)
-         *
-         * hide msg area and dialog in ever click
-         * 
-         */
-        
-        $('#menus a, #sub_menu a').click(function() {
-                $('#msg_area').removeClass();
-                $('#msg_area').hide();
-                $('.sidebar').css('padding-top','165px');
-                // hide dialog box even schedule click    
-                $('div#dialog').dialog('close');
-        });
-        
-        
-	/** ajax_link: load content inside div core */
-	$("#menus a:not(.notajax, .fastmenu), div#menu_log a:not(.logout)").click(function(){
-                var link = $(this);
-                        $("#core").load(link.attr('href'),'',function() {
-                                $.ajax({
-                                success: function() {
-                                                $('#core div.fast_menu_content').hide();
-                                                $('#core #'+link.attr('display')).show();
-                                        }
-                                });
-                        });
-                return false;
-		});
+
 		
 	/** horizontal menu selection */
 	$("#main_menu > ul > li > a:not(.vertical), div#menu_log a:not(.logout)").click(function(){
@@ -152,12 +122,12 @@ $(document).ready(function(){
                         $('.main_menu').removeClass('active');
                         link.addClass('active');
                         link.removeClass('main_menu');
-                        link.addClass('main_menu_big');
-                        $('#main_menu ul li ul').removeClass('main_menu_listing');
-                        $('#main_menu ul li ul').addClass('main_menu_listing_big');
+                        //link.addClass('main_menu_big');
+                        //$('#main_menu ul li ul').removeClass('main_menu_listing');
+                        //$('#main_menu ul li ul').addClass('main_menu_listing_big');
                         
                         link.children('span').remove();
-                        link.append('<span>&nbsp;-&nbsp;'+$(this).text()+'</span>');
+                        //link.append('<span>&nbsp;-&nbsp;'+$(this).text()+'</span>');
                         // hide Vertical menu
                         submenu.hide();
                         
@@ -176,76 +146,6 @@ $(document).ready(function(){
 	});
 
 
-		
-        /** sub menu selection */
-        
-        $("#sub_menu ul li a:not(.close)").click(function(){
-                var link = $(this);
-
-                    // remove active classes from sub_menu itens 
-                    $('#sub_menu ul li a').removeClass('active');
-                    // make active on clicked menu item
-                    link.addClass('active');
-        });
-
-	
-        /**
-         *
-         * fast menu itens
-         *
-         * display content,  that already has been loaded (like client_list, client add form)
-         *
-         */
-        
-        
-        $('#sub_menu a.fastmenu').click(function() {
-                var link = $(this);
-                // hide all opened content
-                $('#core .fast_menu_content').hide();
-
-                // display choiced item and set it to already loaded
-                if(!link.attr('display'))
-                        display = 'list';
-                else
-                        display = link.attr('display');
-                
-                $('div#' + display).show();
-
-                if(link.attr('hide')) {
-	                $(link.attr('hide')).hide();    
-                }
-                if(link.attr('show')) {
-	                $(link.attr('show')).show();
-                }
-                // if element have multiple forms childrens, show only first element on add form
-                if($('div#' + display + ' div.fast_content').size() && display == 'form') {
-                    $('div#' + display + ' div.fast_content').hide();
-                    $('div#' + display + ' div.fast_content:first').show();
-                }
-                $('.sidebar').css('padding-top','167px');
-                return false;
-                
-        });
-        
-        
-        /**
-         * ajaxable
-         *
-         * function used to re-bind an URL (used in opened tabs, when a new link is added by JavaScript)
-         *
-         */
-        
-        
-        $(".ajaxable").click(function(){
-            $('div#msg_area').hide();
-            $.get($(this).attr('href'),
-                function(data) {
-                    $("#core").html(data);
-            });
-            
-        });
-      
-
         // organization menu
         $('ul#sub_organization li a.organization').click(function() {
                 $('#form_organization .main_area fieldset.organization').hide();
@@ -257,6 +157,11 @@ $(document).ready(function(){
                 } else {
                         $('#form_organization .main_area fieldset.comment_form').hide();
                 }
+                /**
+                 * select submenu
+                 */
+                $('ul#sub_organization li a.organization').removeClass('active');
+                $(this).addClass('active');
                 
         });
 	

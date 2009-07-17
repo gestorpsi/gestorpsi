@@ -18,19 +18,12 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-{% block menu_myoffice %}active{% endblock %}
-
-{% block vertical_menu %} - {% trans "Professionals" %}{% endblock %}
-
 {% block submenu %}
     <ul>
-        <li><a class="first" href="/careprofessional/">{% trans "all" %}</a></li>
-        <li><a class="{% if not object.id %}active{% endif %}" href="/careprofessional/add/">{% trans "add" %}</a></li>
-        {% if object.id %}<li><a class="active">{{ object.person.name }}</a></li>{% endif %}
-        
+        <li><a class="first" href="/profile/">{% trans "Personal Profile" %}</a></li>
+        {% if object.person.is_careprofessional %}<li><a class="active" href="/profile/careprofessional/">{% trans "Professional Profile" %}</a></li>{% endif %}
     </ul>
 {% endblock %}
-
 
 {% block core %}
 
@@ -38,6 +31,7 @@ GNU General Public License for more details.
 
 {% if object.id %}
 	<h2 class="title_professional">{{ object.person.name }}</h2>
+    <p class="description">{% trans "Professional profile" %}</p>
 {% else %}
 	<h2 class="title_professional">{% trans "Adding New Profesional" %}</h2>
 	<p class="description">{% trans "Inform the professional details then click on Save button" %}</p>
@@ -49,15 +43,12 @@ GNU General Public License for more details.
 <h2 id="title_myoffice" style="display:none"></h2>
 
 
-<form action="/psychologist/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="form_people collapsable form_careprofessional">	
+<form action="/profile/save/careprofessional/" method="post" class="">	
 <div class="main_area">
-
-	<!-- <a href="" id="help">&nbsp;</a> -->
-	<!-- DataTypes form menu -->
-	
-	
-	{% include "meta/people_indentification.html" %}
-	
+	<input type="hidden" name="name" value="{{ object.person.name }}" />
+	<input type="hidden" name="nickname" value="{{ object.person.nickname }}" />
+	<input type="hidden" name="photo" value="{{ object.person.photo }}" />
+	<input type="hidden" name="birthDate" value="{{ object.person.birthDate }}" />
 	<!--
 	Professional infos
 	-->
@@ -114,7 +105,9 @@ GNU General Public License for more details.
 			</select>
 			</label>
 			<br />
+            {% comment %}
 			<label><a class="form_mini" display="place_mini">{% trans "Add New Workplace" %}</a></label>
+            {% endcomment %}
 	</fieldset>
 
 	<fieldset>
@@ -128,32 +121,6 @@ GNU General Public License for more details.
 			</select>
 			</label>
 	</fieldset>
-        {% include "meta/phones.html" %}
-	{% include "meta/people_profile.html" %}
-	{% include "meta/addressbook.html" %}
-	{% include "meta/internet.html" %}
-
-
-
-	<fieldset id="fieldset_professional_status" class="not_collapsable">
-		<legend>{% trans "Professional Status" %}</legend>
-			<label>{% trans "Active?" %}<br />
-			<select id="id_active" name="professional_active" class="small">
-				<option value="True" {% if not object.id %}selected{% else %}{% if object.active %} selected{% endif %}{% endif %}>{% trans "Yes" %}</option>
-				<option value="False" {% if object.id %}{% if not object.active %} selected{% endif %}{% endif %}>{% trans "No" %}</option>
-					
-			</select>
-			</label>
-	</fieldset>
-
-<fieldset class="comment_form">
-        <legend>{% trans "Comments" %}</legend>
-        <label>{% trans "Comments" %}<br />
-                <textarea name="comments" class="extrabig">{{ object.person.comments }}</textarea>
-        </label>
-
-</fieldset>
-
 
 <br />	
 </div>
@@ -162,7 +129,6 @@ GNU General Public License for more details.
 
 </form>
 
-{% include "tags/upload.html" %}
 {% include "tags/place_mini.html" %}
 
 {% endblock %}

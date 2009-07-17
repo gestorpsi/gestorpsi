@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -16,8 +18,21 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Services" %}{% endblock %}
+
+{% block submenu %}
+    <ul>
+        <li><a class="first active" href="/service/">{% trans "all" %}</a></li>
+        <li><a href="/service/add/">{% trans "add" %}</a></li>
+    </ul>
+{% endblock %}
+
+{% block core %}
+
 <div class="no_registers_available" style="display:none">
-        <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/service/" display="form" class="fastmenu notajax" sub_menu="sub_services">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
+        <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/service/add/" display="form" class="fastmenu notajax" sub_menu="sub_services">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
 </div>
 <div class="registers_available">
 
@@ -46,4 +61,4 @@ GNU General Public License for more details.
         </div>
 </div>
 
-
+{% endblock %}

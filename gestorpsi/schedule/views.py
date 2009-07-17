@@ -21,7 +21,7 @@ from datetime import datetime, timedelta
 from django import http
 from django.template.context import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response, HttpResponse
-from django.utils.translation import gettext as _
+from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from swingtime.forms import MultipleOccurrenceForm
 from swingtime.utils import create_timeslot_table
@@ -42,11 +42,15 @@ def schedule_occurrence_listing(request, year = 1, month = 1, day = None,
 
     occurrences = schedule_occurrences(request, year, month, day)
 
-    
-    
     return render_to_response(
         template, 
-        dict(extra_context, occurrences=occurrences),
+        dict(
+            extra_context, 
+            occurrences=occurrences,
+            places = Place.objects.filter(organization=request.user.get_profile().org_active.id),
+            services = Service.objects.filter(organization=request.user.get_profile().org_active.id),
+            professionals = CareProfessional.objects.filter(person__organization=request.user.get_profile().org_active.id)
+            ),
         context_instance=RequestContext(request)
     )
 
@@ -68,7 +72,8 @@ def add_event(
         event = Referral.objects.get(pk=request.POST['referral'])
         if recurrence_form.is_valid():
             recurrence_form.save(event)
-            return HttpResponse(event.id)
+            return http.HttpResponseRedirect('/schedule/events/%s/' % event.id)
+            #return HttpResponse(event.id)
 
     else:
         if 'dtstart' in request.GET:
@@ -84,14 +89,19 @@ def add_event(
         event_form = event_form_class()
         recurrence_form = recurrence_form_class(initial=dict(
             dtstart=dtstart, 
-            room=room, 
             day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"), 
             until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
             ))
-            
+
     return render_to_response(
         template,
-        dict(dtstart=dtstart, event_form=event_form, recurrence_form=recurrence_form),
+        dict(
+            dtstart=dtstart, 
+            event_form=event_form, 
+            recurrence_form=recurrence_form, 
+            rooms = Room.objects.filter(place__organization = request.user.profile.org_active, active=True),
+            room_id=room,
+            ),
         context_instance=RequestContext(request)
     )
 
@@ -142,12 +152,13 @@ def occurrence_view(
     form_class=ScheduleSingleOccurrenceForm
 ):
     user = request.user
-    rooms = Room.objects.filter(place__organization = user.profile.org_active)
+    rooms = Room.objects.filter(place__organization = user.profile.org_active, active=True)
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__pk=event_pk)
     if request.method == 'POST':
         form = form_class(request.POST, instance=occurrence)
         if form.is_valid():
             form.save()
+            request.user.message_set.create(message=_('Occurrence updated successfully'))
             return http.HttpResponseRedirect(request.path)
     else:
         form = form_class(instance=occurrence)
@@ -179,10 +190,10 @@ def _datetime_view(
         places = Place.objects.filter(organization=request.user.get_profile().org_active.id),
         services = Service.objects.filter(organization=request.user.get_profile().org_active.id),
         professionals = CareProfessional.objects.filter(person__organization=request.user.get_profile().org_active.id),
-        devices = DeviceDetails.objects.all(),
-        event_form = ReferralForm(),
-        recurrence_form = ScheduleOccurrenceForm(),
-        rooms = Room.objects.filter(place__organization = user.profile.org_active, active=True)
+        #devices = DeviceDetails.objects.all(),
+        #event_form = ReferralForm(),
+        #recurrence_form = ScheduleOccurrenceForm(),
+        #rooms = Room.objects.filter(place__organization = user.profile.org_active, active=True)
     )
 
     return render_to_response(
@@ -196,12 +207,12 @@ def schedule_index(request,
     year = datetime.now().strftime("%Y"), 
     month = datetime.now().strftime("%m"), 
     day = datetime.now().strftime("%d"), 
-    template='schedule/schedule_index.html',
+    template='schedule/schedule_daily.html',
      **params):
     
     # Test if clinic administrator has registered referrals before access schedule page.
     if not Referral.objects.filter(status='01', organization=request.user.get_profile().org_active).count():
-        return render_to_response('schedule/schedule_referral_alert.html', {'object': _("There's no Referral created yet. Please, create one before access Schedule."), }, context_instance=RequestContext(request))    
+        return render_to_response('schedule/schedule_referral_alert.html', context_instance=RequestContext(request))    
 
     return _datetime_view(request, template, datetime(int(year), int(month), int(day)), **params)
 
@@ -323,52 +334,52 @@ def occurrence_abstract(request, object_id = None):
     
     return HttpResponse(array, mimetype='application/json')
 
-@permission_required_with_403('schedule.schedule_read')
-def referral_occurrences(request, object_id = None):
-    try:
-        o = Referral.objects.get(pk=object_id)
-    except:
-        raise http.Http404
+#@permission_required_with_403('schedule.schedule_read')
+#def referral_occurrences(request, object_id = None):
+    #try:
+        #o = Referral.objects.get(pk=object_id)
+    #except:
+        #raise http.Http404
 
-    array = {} #json
+    #array = {} #json
 
-    array['id'] = o.id;
-    array['service'] = o.service.name;
-    array['annotation'] = o.annotation;
+    #array['id'] = o.id;
+    #array['service'] = o.service.name;
+    #array['annotation'] = o.annotation;
     
-    array['professional'] = {}
-    count = 0
-    for p in o.professional.all():
-        array['professional'][count] = ({
-            'id':p.id, 
-            'name':p.person.name,
-            'phone':p.person.get_phones(),
-            })
-        count = count + 1
+    #array['professional'] = {}
+    #count = 0
+    #for p in o.professional.all():
+        #array['professional'][count] = ({
+            #'id':p.id, 
+            #'name':p.person.name,
+            #'phone':p.person.get_phones(),
+            #})
+        #count = count + 1
 
-    count = 0
-    array['client'] = {}
-    for c in o.client.all():
-        array['client'][count] = ({
-            'id':c.id, 
-            'name':c.person.name,
-            'phone':c.person.get_phones(),
-            })
-        count = count + 1
+    #count = 0
+    #array['client'] = {}
+    #for c in o.client.all():
+        #array['client'][count] = ({
+            #'id':c.id, 
+            #'name':c.person.name,
+            #'phone':c.person.get_phones(),
+            #})
+        #count = count + 1
     
-    count = 0
-    array['occurrences'] = {}
-    for i in o.occurrence_set.all():
-        array['occurrences'][count] = ({
-            'id':i.id,
-            'date':i.start_time.strftime('%d/%m/%Y'),
-            'start_time':i.start_time.strftime('%H:%M'),
-            'end_time':i.end_time.strftime('%H:%M'),
-            'room':i.scheduleoccurrence.room.description,
-            'place':i.scheduleoccurrence.room.place.label,
-            })
-        count = count + 1
+    #count = 0
+    #array['occurrences'] = {}
+    #for i in o.occurrence_set.all():
+        #array['occurrences'][count] = ({
+            #'id':i.id,
+            #'date':i.start_time.strftime('%d/%m/%Y'),
+            #'start_time':i.start_time.strftime('%H:%M'),
+            #'end_time':i.end_time.strftime('%H:%M'),
+            #'room':i.scheduleoccurrence.room.description,
+            #'place':i.scheduleoccurrence.room.place.label,
+            #})
+        #count = count + 1
 
-    array = simplejson.dumps(array)
+    #array = simplejson.dumps(array)
     
-    return HttpResponse(array, mimetype='application/json')
+    #return HttpResponse(array, mimetype='application/json')

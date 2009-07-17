@@ -176,7 +176,7 @@ div#sub_menu .active {
 }
 
 #myoffice.main_menu {
-	width: 139px;
+	width: 200px;
 }
 
 #myoffice.main_menu_big, .main_menu_big {
@@ -214,8 +214,8 @@ div#sub_menu .active {
 	display: block;
 	position: absolute;
 	top: 30px;
-	left: -179px;
-	width: 177px;
+	left: -240px;
+	width: 238px;
 	background: #FCFCFC;
 	z-index: 5;
 	border-bottom: 1px solid #838383;
@@ -603,11 +603,8 @@ textarea {
 }
 
 .sidebar {
-	position:absolute;
-	top:0px;
 	margin-left:750px;
 	width: 240px;
-	padding-top: 165px;
 }
 
 
@@ -667,6 +664,10 @@ textarea {
 	line-height: 22px;
 	padding: 5px 0 5px 25px;
 	color: #000000;
+}
+
+.sidebar li .client_home {
+	background: url(../img/16/go-home.png) no-repeat 0 3px;
 }
 
 .sidebar li .client_form {
@@ -1068,6 +1069,7 @@ select.country {
 #footer {
 	clear: both;
 	display: block;
+	text-align: center;
 	padding: 8px;
 	margin-top: 20px;
 	font-size: 10px;

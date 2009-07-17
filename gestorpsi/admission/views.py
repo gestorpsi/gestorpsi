@@ -15,8 +15,9 @@ GNU General Public License for more details.
 """
 
 from datetime import datetime
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
+from django.utils.translation import ugettext as _
 from gestorpsi.client.models import Client, PersonLink, Relation
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
@@ -26,21 +27,22 @@ from gestorpsi.contact.views import *
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.util.decorators import permission_required_with_403
 
-## !! moved to client views
-#def form(request, object_id=''):
-    #object = get_object_or_404(Client, pk=object_id)
+@permission_required_with_403('admission.admission_read')
+def form(request, object_id=''):
+    object = get_object_or_404(Client, pk=object_id)
 
-    #return render_to_response('admission/admission_form.html', {
-        #'address_book_professionals': address_book_get_professionals(request),
-        #'address_book_organizations': address_book_get_organizations(request),
-        #'object': object,
+    return render_to_response('admission/admission_form.html', {
+        'object': object,
+        'address_book_professionals': address_book_get_professionals(request),
+        'address_book_organizations': address_book_get_organizations(request),
+        'object': object,
         #'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
-        #'licenceBoardTypes': LicenceBoard.objects.all(),
-        #'ReferralChoices': ReferralChoice.objects.all(),
-        #'IndicationsChoices': IndicationChoice.objects.all(),
-        #'Relations': Relation.objects.all(),
-        ##'IdRecord': get_object_or_404(IdRecordSeq, uid=object_id),
-    #})
+        'licenceBoardTypes': LicenceBoard.objects.all(),
+        'ReferralChoices': ReferralChoice.objects.all(),
+        'IndicationsChoices': IndicationChoice.objects.all(),
+        'Relations': Relation.objects.all(),
+        #'IdRecord': get_object_or_404(IdRecordSeq, uid=object_id),
+    }, context_instance=RequestContext(request))
 
 @permission_required_with_403('admission.admission_read')
 def is_responsible(value):
@@ -88,4 +90,7 @@ def save(request, object_id=''):
     object.save()
     
     add_relationship(request, object, request.POST.getlist('parent_name'),request.POST.getlist('parent_relation'), request.POST.getlist('parent_responsible'))
-    return HttpResponse(object.id)
+
+    request.user.message_set.create(message=_('Admission saved successfully'))
+
+    return HttpResponseRedirect('/client/%s/home' % object.id)

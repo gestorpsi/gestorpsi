@@ -16,30 +16,24 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<div id="sidebar" class="sidebar">
-    {% if perms.client.client_write %}
-        <div class="bg_blue">
-            {% include "tags/save.html" %}
-        </div>
-    {% endif %}
-	<div class="people_actions" {% if not object.id %}style="display:none"{% endif %}>	
-	<h3>{% trans 'Object Actions' %}</h3>
-	<ul>
-	    
-		<li><a class="fast_content client_form" display="client_form" title="{{ object.person.name }}">{% trans "Client Details" %}</a></li>
-		<li><a class="fast_content client_admit_form" display="client_admission" title="{{ object.person.name }}">{% trans "Admit Client" %}</a></li>
-		<li><a class="fast_content client_referral_form" display="client_referral_form" title="{{ object.person.name }}">{% trans "New Referral" %}</a></li>
-		<li><a class="fast_content client_referral_list" display="client_referral_list" title="{{ object.person.name }}">{% trans "Subscribed Services" %}</a></li>
-		<!-- <li><a class="fast_content client_user_form" display="client_user_form" title="{{ object.person.name }}">{% trans "Manage User" %}</a></li> -->
-        <li><a class="print" href="/client/{{ object.id }}/print/" title="{{ object.person.name }}">{% trans "Print Record" %}</a></li>
+<div class="people_actions">	
+<h3>{% trans 'Object Actions' %}</h3>
+<ul>
+    
+    <li><a href="/client/{{ object.id }}/home/" class="client_home" title="{{ object.person.name }}">{% trans "Client Home" %}</a></li>
+    <li><a href="/client/{{ object.id }}/" class="client_form" title="{{ object.person.name }}">{% trans "Client Details" %}</a></li>
+    <li><a href="/admission/{{ object.id }}/" class="client_admit_form" title="{{ object.person.name }}">{% trans "Admit Client" %}</a></li>
+    <li><a href="/referral/{{ object.id }}/form/" class="client_referral_form" title="{{ object.person.name }}">{% trans "New Referral" %}</a></li>
+    <li><a href="/referral/client/{{ object.id }}/" class="client_referral_list" title="{{ object.person.name }}">{% trans "Subscribed Services" %}</a></li>
+    <!-- <li><a class="client_user_form" display="client_user_form" title="{{ object.person.name }}">{% trans "Manage User" %}</a></li> -->
+    <li><a class="print" href="/client/{{ object.id }}/print/" title="{{ object.person.name }}">{% trans "Print Record" %}</a></li>
 {% comment %}
-        {% if object.person.profile %}
-              <li><a class="ajax user" href="/user/{{ object.person.id }}/" title="{{ object.person.name }}">{% trans "Manage User" %}</a></li>
-        {% else %}
-              {% if object.id %}<li><a class="ajax user" href="/user/{{ object.person.id }}/add/" title="{{ object.person.name }}">{% trans "Create User" %}</a></li>{% endif %}
-        {% endif %}
+    {% if object.person.profile %}
+          <li><a class="ajax user" href="/user/{{ object.person.id }}/" title="{{ object.person.name }}">{% trans "Manage User" %}</a></li>
+    {% else %}
+          {% if object.id %}<li><a class="ajax user" href="/user/{{ object.person.id }}/add/" title="{{ object.person.name }}">{% trans "Create User" %}</a></li>{% endif %}
+    {% endif %}
 {% endcomment %}
 
-	</ul>
-	</div>
+</ul>
 </div>

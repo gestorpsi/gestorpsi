@@ -22,50 +22,17 @@ var name = ".sidebar";
 var menuYloc = null;
 
 
-
-/** 
-* 
-* _automask and automaskme()
-* automatic mask for all input, type text, fields.
-* 
-* _dependency and thanks to Masked Input Plugin
-* 	url: http://digitalbush.com/projects/masked-input-plugin/
-* 
-* _description:
-* 
-* search for a 'mask' attribute in form text fields
-* 
-* you only must to define the 'mask' attribute to masked fields
-* 
-* eg.:
-* 	<input type="text" name="phone" mask="((999) 9999-9999)" />
-*                                      ^^^^  ^^^^^^ ^^^^^^^^^^
-* 
-* masks rules:
-* ------------------
-* a - Represents an alpha character (A-Z,a-z)
-* 9 - Represents a numeric character (0-9)
-* * - Represents an alphanumeric character (A-Z,a-z,0-9) 
-* 
-*/
-      
-function bindFieldMask() {
-     $("form input:text[mask]").unbind().each(function(){
-          $(this).mask($(this).attr('mask'));
-     });
- }
-
- 
-/**
- *
- * delete fields in forms
- *
- * used in oneToMany relationships registers
- * eg. phones, address, emails, IMs ...
- *
- */
-
 function bindDelete() {
+
+    /**
+    *
+    * delete fields in forms
+    *
+    * used in oneToMany relationships registers
+    * eg. phones, address, emails, IMs ...
+    *
+    */
+
      $('a.remove_from_form').unbind().click(function() {
           var fieldset = $(this).parents('fieldset');
           var total = 0;
@@ -98,29 +65,62 @@ function bindDelete() {
 }
 
 function reloadCities(el) {
-        var line = '<option value=""></option>';
-        $.getJSON('/address/search/cities/state/' + el.val() + '/', function(json) {
-                jQuery.each(json,  function(){
-                    line = line + '<option value="' + this.id + '">' + this.name + '</option>';
-                }); 
-            });
-            el.parent('label').parent('div').children('label.city').children('select').html(line); // rebuild city combo 
-            el.parent('label').parent('div').children('label.city').children('select').children('option[value=' + el.attr('city') + ']').attr('selected', 'selected'); // select city
+    var line = '<option value=""></option>';
+    $.getJSON('/address/search/cities/state/' + el.val() + '/', function(json) {
+            jQuery.each(json,  function(){
+                line = line + '<option value="' + this.id + '">' + this.name + '</option>';
+            }); 
+        });
+        el.parent('label').parent('div').children('label.city').children('select').html(line); // rebuild city combo 
+        el.parent('label').parent('div').children('label.city').children('select').children('option[value=' + el.attr('city') + ']').attr('selected', 'selected'); // select city
 }
 
-function bindAutoCompleteForm(reload_cities) {
+$(function() {
+    
+    bindDelete();
+    
+    /** 
+    * 
+    * _automask and automaskme()
+    * automatic mask for all input, type text, fields.
+    * 
+    * _dependency and thanks to Masked Input Plugin
+    * 	url: http://digitalbush.com/projects/masked-input-plugin/
+    * 
+    * _description:
+    * 
+    * search for a 'mask' attribute in form text fields
+    * 
+    * you only must to define the 'mask' attribute to masked fields
+    * 
+    * eg.:
+    * 	<input type="text" name="phone" mask="((999) 9999-9999)" />
+    *                                      ^^^^  ^^^^^^ ^^^^^^^^^^
+    * 
+    * masks rules:
+    * ------------------
+    * a - Represents an alpha character (A-Z,a-z)
+    * 9 - Represents a numeric character (0-9)
+    * * - Represents an alphanumeric character (A-Z,a-z,0-9) 
+    * 
+    */
+
+    $("form input:text[mask]").unbind().each(function(){
+      $(this).mask($(this).attr('mask'));
+    });
+
 
     /**
      * reload city combo
      */
 
-    if(reload_cities == true) {
-        $('form#form_organization label.state select.city_search, div#edit_form label.state select.city_search').each(function() {
-            if($(this).attr('city') > 0) {
-                reloadCities($(this));
-            }
-        });
-    }
+
+    $('#form_organization label.state select.city_search, label.state select.city_search').each(function() {
+        if($(this).attr('city') > 0) {
+            reloadCities($(this));
+        }
+    });
+
 
     $('label.state select.city_search').change(function() {
         reloadCities($(this));
@@ -150,31 +150,30 @@ function bindAutoCompleteForm(reload_cities) {
       */
       
      $('input.short_search').unbind().keyup(function() {
-	     $.ajax({
-		   type: "GET",
-		   url: "/organization/check/"+ $(this).val()+"/",
-		   success: function(msg){
-			if (msg == '1'){
-			   $("div.check_available").hide();
-			} else {
-			   $("div.check_available").show();
-			}
-		   }
-	     });
+         $.ajax({
+           type: "GET",
+           url: "/organization/check/"+ $(this).val()+"/",
+           success: function(msg){
+            if (msg == '1'){
+               $("div.check_available").hide();
+            } else {
+               $("div.check_available").show();
+            }
+           }
+         });
      });
 
-}
 
 
-function bindFormActions() {
-    
+
+
      /** 
       * 
       * clone div content and append it to form
       * 
       */
      
-     $('fieldset a.add_to_form').unbind().click(function() {
+     $('fieldset a.add_to_form').click(function() {
           var next = ($("input.profession_symbol:last").attr("id") + 1 );
           $(this).before('<div>' + $(this).parents('fieldset:first').children('div:first').html() + '</div>');
           $(this).parents('fieldset').children('div:last').children('input').val('');
@@ -187,9 +186,9 @@ function bindFormActions() {
                $(this).parents('fieldset').children('div').removeClass('multirow');
                $(this).parents('fieldset').children('div').not(':first').addClass('multirow');
           }
-          bindAutoCompleteForm(false);
+
           bindDelete();
-          bindFieldMask();
+
      });
      
      /**
@@ -312,7 +311,7 @@ function bindFormActions() {
       * 
       */
      
-     $('a.gender').unbind().click(function() {
+     $('form div.photo a.gender').unbind().click(function() {
           if($(this).hasClass('active')) {
                $('.gender').removeClass('active');
                $(this).siblings('input.gender').val('');
@@ -351,13 +350,13 @@ function bindFormActions() {
       */     
 
      $('form select.device_mobility').unbind().change(function() {
-     	if ($(this).val() == 1) { // Fixed Device
-     		//$(this).parents('label').parents('fieldset').children('label.device_place').show();
-     		$(this).parents('label').parents('fieldset').children('label.device_room').show();
-     	} else {
-     		//$(this).parents('label').parents('fieldset').children('label.device_place').hide();
-     		$(this).parents('label').parents('fieldset').children('label.device_room').hide();
-     	}
+        if ($(this).val() == 1) { // Fixed Device
+            //$(this).parents('label').parents('fieldset').children('label.device_place').show();
+            $(this).parents('label').parents('fieldset').children('label.device_room').show();
+        } else {
+            //$(this).parents('label').parents('fieldset').children('label.device_place').hide();
+            $(this).parents('label').parents('fieldset').children('label.device_room').hide();
+        }
      });
      
      $('form select.device_place').unbind().change(function() {
@@ -419,8 +418,8 @@ function bindFormActions() {
       
      $('div form input.cancel').click(function() {
           $(this).parent('label').parent('fieldset').children('label').children('input:text').val('');
-		  $(this).parents('div.form_mini:first').hide();
-		  $(this).parents('div.form:first').hide();
+          $(this).parents('div.form_mini:first').hide();
+          $(this).parents('div.form:first').hide();
           return false;
      
      });
@@ -445,19 +444,19 @@ function bindFormActions() {
      });
      
     /**
-	* sidebar. cancel buttom if is a new register
-	*/
-	
-	$('#sidebar input#cancel_button').click(function() {
-	    $('div#form.fast_menu_content input:text').val('');
-	    $('div#form.fast_menu_content').hide();
-	    $('div#sub_menu ul li a').removeClass('active');
-	    $('div#sub_menu ul li a:first').addClass('active');
-	    $('div#list.fast_menu_content').show();
-		$("ul.opened_tabs").hide();
-		$("#edit_form").hide();
-		$("#form").hide();
-	});
+    * sidebar. cancel buttom if is a new register
+    */
+
+    $('#sidebar input#cancel_button').click(function() {
+        $('div#form.fast_menu_content input:text').val('');
+        $('div#form.fast_menu_content').hide();
+        $('div#sub_menu ul li a').removeClass('active');
+        $('div#sub_menu ul li a:first').addClass('active');
+        $('div#list.fast_menu_content').show();
+        $("ul.opened_tabs").hide();
+        $("#edit_form").hide();
+        $("#form").hide();
+    });
 
      $('select.toggle_parent_label').change(function() {
          var select = $(this);
@@ -472,11 +471,9 @@ function bindFormActions() {
          });
      });
 
-     bindAutoCompleteForm(true);
-   
-}
 
-function bindFormMisc() {
+
+
 
     /**
     * bind select itensselected
@@ -495,53 +492,6 @@ function bindFormMisc() {
             $(select).children('option').attr('selected','selected');
         });
      });
-
-
-
-     /**
-     * sidebar. floating box
-     */
-        
-     /*
-     menuYloc = parseInt($(name).css("top").substring(0,$(name).css("top").indexOf("px")))  
-     $(window).scroll(function () {   
-             var offset = menuYloc+$(document).scrollTop()+"px";  
-             $(name).animate({top:offset},{duration:300,queue:false});  
-     });
-     */
-     /**
-      * scroll to top
-      */
-     /*
-     $('.sidebar input.save_button, table.newtab tr td a').click(function() {
-          $.scrollTo( $('body'),  {top:'1px', left:'1px'}, 50);
-	  
-     });
-     */
-     /**
-     *
-     * Message Area (#msg_area)
-     *
-     * hide msg area when cancel button is clicked
-     * 
-     */
-     
-     $('.sidebar input#cancel_button').click(function() {
-          $('#msg_area').removeClass();
-          $('#msg_area').hide();
-          $('div#sub_menu ul li a').removeClass('active');
-	  $('div#sub_menu ul li a:first').addClass('active');
-	  $('div#list.fast_menu_content').show();
-     });
-     
-     /**
-      * hide list when item is clicked
-      */
-     
-     $('table.newtab tr td a').click(function() {
-          $('div#list.fast_menu_content').hide();
-     });
-     
 
      
      /**
@@ -620,7 +570,7 @@ function bindFormMisc() {
     /**
      * hide and show weekly, monthly and yearly extra option in schedule form
      */
-    
+
     $('.schedule div.switch input[type=radio]').unbind().click(function() {
         var div = $(this).parents('label').parents('div');
         var elements_to_show = '.' +$(div).attr('clean')+'_'+$(this).val();
@@ -640,13 +590,13 @@ function bindFormMisc() {
     /**
      * generic switch to display and hide form elements
      */
-    
+
     $('.generic_switch').unbind().click(function() {
         var el = $(this);
         $(el.attr('hide')).hide();
         $(el.attr('show')).show();
     });
-    
+
      /**
       * select multiple plugin
       */
@@ -682,7 +632,7 @@ function bindFormMisc() {
         $("div#edit_form div.edit_form div.client_referral_list table.newtab tr.referral_off div.button_disable a[id=" + this.id + "]").hide();
         $("div#edit_form div.edit_form div.client_referral_list table.newtab tr.referral_off div[id=" + this.id + "]").show();
      }); 
-    
+
 
     // Confirm_not
     $('div#edit_form div.edit_form div.client_referral_list a.confirm_not').click(function() {
@@ -778,6 +728,19 @@ function bindFormMisc() {
         $('div.referral_details'+this.id).toggle();
     });
 
+    /** 
+     * Referral
+     * hide foreign referral in form
+     */
+    
+    $('form.client_referral label input[name=referral_type]').click(function() {
+        if($(this).val() == 'referral')
+            $('form.client_referral label.referral_type_referral').show();
+        else
+            $('form.client_referral label.referral_type_referral').hide();
+    });
+    
+
     /**
     * DEVICES - CHANGE SELECT TO FIXED WHEN LANDABLE CHEKBOX IS CHECKED, VICE-VERSA
     **/
@@ -814,4 +777,5 @@ function bindFormMisc() {
             $('form.new_device_form div#device_form input[id=id_lendable]').removeAttr("checked");
         }
     });
-}
+
+});

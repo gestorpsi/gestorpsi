@@ -18,6 +18,7 @@ GNU General Public License for more details.
 * client list
 */
 
+
 function updateClient(url) {
     $.getJSON(url, function(json) {
         var tableTR = '';
@@ -29,12 +30,12 @@ function updateClient(url) {
         jQuery.each(json,  function(){
             if(this.id) {
                 tableTR += '<tr id="' + this.id + '"><td class="title">';
-                tableTR += '<a href="/client/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
+                tableTR += '<a href="/client/' + this.id + '/home/" title="' + this.name + '">' + this.name + '</a>';
                 tableTR += '</td>';
                 tableTR += '<td><span class="phone">' + this.phone + '</span><br />';
                 tableTR += '<span class="email">' + this.email + '</span></td>';
                 tableTR += '<td>';
-                tableTR += '<a fast_content="client_admission" class="admit" href="/client/' + this.id + '/" title="' + this.name + '"><img src="/media/img/22/ico_reg.png"></a>';
+                tableTR += '<a class="admit" href="/admission/' + this.id + '/" title="' + this.name + '"><img src="/media/img/22/ico_reg.png"></a>';
                 tableTR += '</td>';
                 tableTR += '</tr>';
             }
@@ -43,7 +44,7 @@ function updateClient(url) {
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
         buildPaginator('client', json['paginator'], json['util'], 'div#list');
 
-        $("div#list ul.paginator a").unbind().click(function(){
+        $("ul.paginator a").unbind().click(function(){
             updateClient($(this).attr('href'))
             return false;
         });
@@ -172,10 +173,10 @@ function updateContact(url) {
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
         buildPaginator('contact', json['paginator'], json['util'], 'div#list');
-        $('div#list div.registers_available a.object_length span').text(json['util']['object_length']);
-        $('div#list div.registers_available a.organizations_length span').text(json['util']['organizations_length']);
-        $('div#list div.registers_available a.professionals_length span').text(json['util']['professionals_length']);
-        $("div#list ul.paginator a").unbind().click(function(){
+        $('div.registers_available a.object_length span').text(json['util']['object_length']);
+        $('div.registers_available a.organizations_length span').text(json['util']['organizations_length']);
+        $('div.registers_available a.professionals_length span').text(json['util']['professionals_length']);
+        $("ul.paginator a").unbind().click(function(){
             updateContact($(this).attr('href'))
             return false;
         });
@@ -272,7 +273,7 @@ function updateDevice(url) {
         jQuery.each(json,  function(){
             if(this.id) {
                 tableTR += '<tr id="' + this.id + '"><td class="title">';
-                tableTR += '<a href="/device/' + this.id + '/" title="' + this.model + '">' + this.model + '</a>';
+                tableTR += '<a href="/device/' + this.id + '/" title="' + this.model + '">' + this.name + ' ' + this.model + '</a>';
                 tableTR += '<br />' + this.type;
                 tableTR += '</td>';
                 tableTR += '<td><span class="phone"></span><br />';

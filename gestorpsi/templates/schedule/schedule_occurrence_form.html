@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -15,42 +17,67 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-{% include "core/ajax_page_form.html" %}
 
-<h2 class="title_schedule title">{{ occurrence.event.referral.client.all.0 }}</h2>
-<p class="description">{{ occurrence.event.referral.service }} - {{ occurrence.event.referral.professional.all.0 }}</p>
+{% block menu_schedule %}active{% endblock %}
+
+{% block submenu %}
+ <ul id="sub_schedule">
+    <li><a class="first" href="/schedule/">{% trans "daily" %}</a></li>
+    <li><a href="/schedule/events/">{% trans "events" %}</a></li>
+    <li><a class="active" href="#">{% trans "add" %}</a></li>
+</ul>
+{% endblock %}
+
+{% block core %}
+
+<h2 class="title_schedule title">{{ occurrence.event.referral.client.all.0 }} - {{ occurrence.event.referral.service }}</h2>
+<p class="description"><a href="/careprofessional/{{ occurrence.event.referral.professional.all.0.id }}/">{{ occurrence.event.referral.professional.all.0 }}</a> - <a href="/schedule/events/{{ occurrence.event.id}}/">{{ occurrence.event.occurrence_set.all|length }} {% trans "Occurrences" %}</a></p>
 
 <form method="post" action="/schedule/events/{{ occurrence.event.id }}/{{ occurrence.id }}/" class="schedule_occurrence">
 <div class="main_area">
 {{ event_form.errors }}
 {{ recurrence_form.errors }}
 	
-	<h3><span>{% trans "Occurrence Details" %}</span></h3>
+
         <fieldset>
         <legend>{% trans "Due Details" %}</legend>
-            <label>{% trans "Start Time" %}</label>
-            <div>
-            {{ form.start_time }}
-            </div>
-            <label>{% trans "End Time" %}</label>
-            <div>
+            <label>{% trans "Start Time" %}<br />
+            {{ form.start_time }}</label>
+            <label>{% trans "End Time" %}<br />
             {{ form.end_time }}
-            </div>
-            <label>{% trans "Room" %}</label>
-            <div>
+            </label>
+            <label>{% trans "Room" %}<br />
              <select name="room" class="extramedium asm" id="id_room">
               <option value="" selected="selected">---------</option>
                {% for room in rooms %}
-                <option value="{{ room.id }}">{{ room.description }}</option>
+                <option value="{{ room.id }}"{% ifequal room.id occurrence.room.id %} selected{% endifequal %}>{{ room.description }}</option>
                {% endfor %}
              </select>
-            </div>
+            </label>
             <label>{% trans "Notes" %}<br />
             {{ form.annotation }}
             </label>
             <label>{% trans "Devices Available" %}<br />
             {{ form.device }}
             </label>            
+        </fieldset>
+    
+
+
+        <fieldset>
+        <legend>{% trans "Occurrences" %}</legend>
+        <br />
+        {% if occurrence.event.occurrence_set.count %}
+            {% for o in occurrence.event.occurrence_set.all %}
+            <div>
+                &nbsp;&nbsp;<a href="{% url swingtime-occurrence occurrence.event.id o.id %}">
+                    {{ o.start_time|date:"l, F jS, Y P" }} &ndash; 
+                    {{ o.end_time|date:"l, F jS, Y P" }}</a>
+            </div>
+            {% endfor %}
+        {% else %}
+        {% endif %}
+        
         </fieldset>
  
 <div style="clear:both;"></div>
@@ -66,4 +93,4 @@ GNU General Public License for more details.
 </div>
 
 </form>
-
+{% endblock %}

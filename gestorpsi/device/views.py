@@ -15,12 +15,13 @@ GNU General Public License for more details.
 """
 
 from django.conf import settings
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.utils import simplejson
 from django.db.models import Q
+from django.utils.translation import ugettext as _
 from gestorpsi.device.models import DeviceDetails, Device
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.views import Profession
@@ -34,12 +35,7 @@ def index(request):
     @param request: this is a request sent by the browser.
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
     """
-    user = request.user
-    return render_to_response( "device/device_index.html", {
-                                                            'device_type': Device.objects.filter(organization=request.user.get_profile().org_active),
-                                                            'places': Place.objects.filter(organization=user.get_profile().org_active), 
-                                                            'PROFESSIONAL_AREAS': Profession.objects.all()},
-                                                            context_instance=RequestContext(request))
+    return render_to_response( "device/device_list.html", context_instance=RequestContext(request))
 
 
 @permission_required_with_403('device.device_list')
@@ -155,7 +151,9 @@ def save_device(request, object_id= ''):
     device.description = request.POST.get('label')
     device.organization = user.get_profile().org_active
     device.save()
-    return HttpResponse(device.id)
+    request.user.message_set.create(message=_('Device type saved successfully'))
+
+    return HttpResponseRedirect('/device/type/%s/' % device.id)
 
 @permission_required_with_403('device.device_write')
 def save(request, object_id='' ):
@@ -195,7 +193,10 @@ def save(request, object_id='' ):
     device_details.place = get_object_or_404(Place, pk=request.POST.get('place_associated'))
     device_details.room = get_object_or_404(Room, pk=request.POST.get('room_associated'))
     device_details.save()
-    return HttpResponse(device_details.id)
+
+    request.user.message_set.create(message=_('Device saved successfully'))
+
+    return HttpResponseRedirect('/device/%s/' % device_details.id)
 
 @permission_required_with_403('device.device_read')
 def get_visible(request, value):

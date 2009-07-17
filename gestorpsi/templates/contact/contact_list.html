@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -15,18 +17,24 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-{% include "core/ajax_page.html" %}
 
+{% block menu_contact %}active{% endblock %}
+
+
+{% block submenu %}
+    <ul>
+        <li><a class="first active" href="/contact/">{% trans "all" %}</a></li>
+        <li><a href="/contact/add/">{% trans "add" %}</a></li>
+        <!-- <li><a>{% trans "search" %}</a></li> -->
+    </ul>
+{% endblock %}
+
+{% block core %}
 <div class="no_registers_available" style="display:none">
 	<div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/contact/add/" display="form" class="fastmenu" sub_menu="sub_contacts">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
 </div>
 <div class="registers_available">
 
-
-	<div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
-	Esta caixa é mostrada quando há mensagens
-	</div>
-	
 	<h2 class="title_contacts">{% trans "All Contacts" %}</h2>
 	<p class="description">{% trans "Displaying" %} <a href="/contact/" display="list" class="object_length"><span></span> {% trans " general contact(s), " %} </a> <a href="/contact/" display="list" class="organizations_length"> <span></span> {% trans " organization(s) and " %} </a> <a href="/contact/" display="list" class="professionals_length"> <span></span> {% trans " professionals(s)" %}</a>.{% trans "Page" %} <b></b> {% trans "of" %} <b></b></p>
 	
@@ -57,3 +65,4 @@ GNU General Public License for more details.
 	</div>
 
 </div>
+{% endblock %}

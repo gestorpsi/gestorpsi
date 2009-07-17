@@ -16,11 +16,12 @@ GNU General Public License for more details.
 
 from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.utils import simplejson
+from django.utils.translation import ugettext as _
 from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, Room, RoomType, PlaceType
 from gestorpsi.address.models import Country, AddressType, State
@@ -31,26 +32,11 @@ from gestorpsi.util.decorators import permission_required_with_403
 
 @permission_required_with_403('place.place_list')
 def room_index(request):
-    user = request.user
-    return render_to_response( "place/place_room_index.html",{
-                                                            'RoomTypes': RoomType.objects.all(),
-                                                            'Places': Place.objects.filter(organization=user.get_profile().org_active.id),
-                                                            },
-                                                          context_instance=RequestContext(request))
+    return render_to_response( "place/place_room_list.html", context_instance=RequestContext(request))
 
 @permission_required_with_403('place.place_list')
 def index(request):
-    user = request.user
-    return render_to_response( "place/place_index.html", {
-                                                          'PlaceTypes': PlaceType.objects.all(),
-                                                          'countries': Country.objects.all(),
-                                                          'RoomTypes': RoomType.objects.all(),
-                                                          'PhoneTypes': PhoneType.objects.all(),
-                                                          'AddressTypes': AddressType.objects.all(),
-                                                          'States': State.objects.all(),
-                                                          'Places': Place.objects.filter(organization=user.get_profile().org_active.id),
-                                                          },
-                                                          context_instance=RequestContext(request))
+    return render_to_response( "place/place_list.html", context_instance=RequestContext(request))
 
 @permission_required_with_403('place.place_list')
 def list(request, page = 1):
@@ -101,14 +87,14 @@ def form(request, object_id=''):
         addresses= object.address.all()
         phones= object.phones.all()
         #rooms= object.room_set.all()
-        organization= Organization.objects.get(pk= user.get_profile().org_active.id)
+        #organization= Organization.objects.get(pk= user.get_profile().org_active.id)
 
     except (Http404, ObjectDoesNotExist):
         object= Place()
         place_type= PlaceType()
     return render_to_response('place/place_form.html', {'object': object,
                                                         'PlaceTypes': PlaceType.objects.all(), 
-                                                        'organization': organization,
+                                                        #'organization': organization,
                                                         'addresses': addresses,
                                                         'phones': phones,
                                                         'PhoneTypes': PhoneType.objects.all(),
@@ -147,7 +133,9 @@ def save(request, object_id=''):
                  request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
                  request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))
 
-    return HttpResponse(object.id)
+    request.user.message_set.create(message=_('Place saved successfully'))
+
+    return HttpResponseRedirect('/place/%s/' % object.id)
 
 def room_save(request, object_id=''):
     user = request.user
@@ -156,7 +144,6 @@ def room_save(request, object_id=''):
         object = Room.objects.get(pk=object_id)
     except:
         object = Room()
-        print request.POST.get('place_id')
         object.place = Place.objects.get(pk = request.POST.get('place_id'))
 
     object.description = request.POST.get( 'description' )
@@ -171,7 +158,9 @@ def room_save(request, object_id=''):
     else:
         object.save()
     
-    return HttpResponse(object.id)
+    request.user.message_set.create(message=_('Room saved successfully'))
+
+    return HttpResponseRedirect('/place/room/%s/' % object.id)
 
 def room_list(request, page = 1):
     user = request.user
@@ -212,7 +201,10 @@ def room_list(request, page = 1):
 
 def room_form(request, object_id = ' '):
     user = request.user
-    object = Room.objects.get(pk = object_id)
+    try:
+        object = Room.objects.get(pk = object_id)
+    except:
+        object = Room()
 
     return render_to_response('place/place_room_form.html', {
                                                         'object': object,

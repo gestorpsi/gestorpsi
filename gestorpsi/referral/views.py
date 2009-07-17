@@ -14,9 +14,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils import simplejson
+from django.template import RequestContext
+from django.utils.translation import ugettext as _
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.models import CareProfessional
@@ -24,6 +26,33 @@ from gestorpsi.referral.models import Referral,  ReferralPriority,  ReferralImpa
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.util.decorators import permission_required_with_403
 import codecs
+
+# add or edit form
+@permission_required_with_403('referral.referral_read')
+def form(request, object_id=''):
+    try:
+        object    = get_object_or_404(Client, pk=object_id)
+    except:
+        object = Client()
+        
+    # client referral
+    data = {'client': [object.id]}
+    referral_form = ReferralForm(data)
+    referral_form.fields['referral'].queryset = Referral.objects.filter(client=object)
+    referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
+    #referral_form.fields['professional'].queryset = CareProfessional.objects.filter(person__organization = request.user.get_profile().org_active.id)
+    referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
+    total_service = Referral.objects.filter(client=object).count()
+    referral_list = Referral.objects.filter(client=object, status='01')
+    
+    return render_to_response('referral/referral_form.html',
+                              {'object': object, 
+                                'referral_form': referral_form,
+                                'referral_list': referral_list,
+                                'referrals': Referral.objects.filter(client = object),
+                               },
+                              context_instance=RequestContext(request)
+                              )
 
 @permission_required_with_403('referral.referral_list')
 def referral_off(request, object_id=""):
@@ -74,8 +103,7 @@ def client_referrals(request, object_id = None):
     
     array = simplejson.dumps(array, encoding = 'iso8859-1')
     
-    return HttpResponse(array)
-    #return HttpResponse(array, mimetype='application/json')
+    return HttpResponse(array, mimetype='application/json')
 
 
 """ *** TODO: manage multiples referrals """
@@ -90,4 +118,6 @@ def save(request, object_id = None):
             object.save()
             form.save_m2m()
 
-    return HttpResponse(object.id)
+    request.user.message_set.create(message=_('Referral saved successfully'))
+
+    return HttpResponseRedirect('/client/%s/home' % request.POST.get('client_id'))

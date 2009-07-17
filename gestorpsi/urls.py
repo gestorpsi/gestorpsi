@@ -3,7 +3,7 @@ from django.contrib import admin
 from gestorpsi.authentication.forms import RegistrationForm
 from gestorpsi.authentication.models import Profile
 
-from gestorpsi.frontend.views import index as frontend_index
+from gestorpsi.frontend.views import start as frontend_start
 from django.contrib.auth.decorators import login_required
 
 #from gestorpsi.authentication.views import include_login_required
@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     url(r'^accounts/register/$', 'gestorpsi.authentication.views.register', {'form_class': RegistrationForm }, name='registration_register'),
     (r'^accounts/', include('gestorpsi.authentication.urls')),
     (r'^accounts/', include('registration.urls')),
-    (r'^$', login_required(frontend_index)),    
+    (r'^$', login_required(frontend_start)),    
     (r'^admin/(.*)', admin.site.root),
     (r'^contact/', include('gestorpsi.contact.urls')),
     (r'^place/', include('gestorpsi.place.urls')),

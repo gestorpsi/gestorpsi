@@ -1,0 +1,61 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_schedule %}active{% endblock %}
+
+{% block submenu %}
+ <ul id="sub_schedule">
+    <li><a class="first" href="/schedule/">{% trans "daily" %}</a></li>
+    <li><a href="/schedule/events/">{% trans "events" %}</a></li>
+    <li><a class="active" href="#">{% trans "add" %}</a></li>
+</ul>
+{% endblock %}
+
+{% block core %}
+
+<div class="schedule">
+    <h2 class="title_schedule title">{{ event.client.all.0 }} - {{ event.service }}</h2>
+    <p class="description"><a href="/careprofessional/{{ event.professional.all.0.id }}/">{{ event.professional.all.0 }}</a></p>
+
+    <form method="post" action="/schedule/events/add/" class="schedule refresh">
+    <input type="hidden" name="tabtitle" class="tabtitle" />
+    <div class="main_area">
+
+
+    <fieldset>
+    <legend>{% trans "Occurrences" %}</legend>
+    <br />
+    {% if event.occurrence_set.count %}
+        {% for o in event.occurrence_set.all %}
+        <div>
+            <a href="{% url swingtime-occurrence event.id o.id %}">
+                {{ o.start_time|date:"l, F jS, Y P" }} &ndash; 
+                {{ o.end_time|date:"l, F jS, Y P" }}</a>
+        </div>
+        {% endfor %}
+    {% else %}
+    {% endif %}
+    
+    </fieldset>
+   
+<br />    
+</div>
+</div>
+{% endblock %}

@@ -14,10 +14,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.template.defaultfilters import slugify
+from django.utils.translation import ugettext as _
 from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization, ProfessionalResponsible
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
@@ -131,7 +132,9 @@ def save(request):
     request.POST.getlist('zipCode'), request.POST.getlist('addressType'),
     request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
     request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))
-    return HttpResponse(object.id)
+
+    request.user.message_set.create(message=_('Organization details saved successfully'))
+    return HttpResponseRedirect('/organization/')
     
 # The question is, is available the short name?
 # 0 = NO

@@ -69,12 +69,13 @@ td.hour {
     text-align: right;
     padding: 3px 12px;
 }
-.color1, .color2, .color3, .color4, .color5, .color6, .color7, .color8, .color9, .color10, .color11, .color12, .color13, .color14, .color15, .color16, .color17, .color18, .color19, .color20, .color21, .color22, .color23, .color24, .occup {
+.color0, .color1, .color2, .color3, .color4, .color5, .color6, .color7, .color8, .color9, .color10, .color11, .color12, .color13, .color14, .color15, .color16, .color17, .color18, .color19, .color20, .color21, .color22, .color23, .color24, .occup {
 	font-size: 10px;
     padding: 3px;
     vertical-align:top;
 }
 
+.color0 {background: #FFFFCF; }
 .color1 {background: #8d91d0; }
 .color2 {background: #a51d1e; }
 .color3 {background: #efbb2e; }

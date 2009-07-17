@@ -14,139 +14,88 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.shortcuts import render_to_response, get_object_or_404
+import datetime
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from gestorpsi.organization.models import Agreement
-from gestorpsi.careprofessional.models import CareProfessional, ProfessionalProfile,  LicenceBoard, ProfessionalIdentification
+from django.utils.translation import gettext as _
 from gestorpsi.address.models import Country, State, AddressType
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.document.models import TypeDocument, Issuer
-from gestorpsi.person.models import Person, MaritalStatus
+from gestorpsi.person.models import MaritalStatus
+from gestorpsi.person.views import person_save
+from gestorpsi.careprofessional.models import CareProfessional, Profession
+from gestorpsi.organization.models import Agreement
 from gestorpsi.place.models import Place, PlaceType
-from gestorpsi.person.views import person_type_url 
-from gestorpsi.authentication.models import Profile
-from gestorpsi.person.models import Person
 from gestorpsi.service.models import Service
+from gestorpsi.psychologist.models import Psychologist
+from gestorpsi.careprofessional.views import care_professional_fill
 
-import datetime
-
-PROFESSIONAL_AREAS = (
-    ('psycho','Psychologist','CRP'),
-    )
-
-
+# person form
 def form(request):
-    #if(request.user.is_authenticated()):
-    # COMMON FOR ALL PERSON
-    user = request.user
-    profile = user.get_profile()
-    preferences = person_type_url(user.get_profile().person)
-    date = datetime.datetime.now()
-    phones = profile.person.phones.all()
-    addresses= profile.person.address.all()
-    documents = profile.person.document.all()                       
-    emails = profile.person.emails.all()
-    sites = profile.person.sites.all()
-    instantMessengers = profile.person.instantMessengers.all()
-
-################################## CAREPROFESSIONAL
     try:
-        workplaces = profile.person.careprofessional.professionalProfile.workplace.all()
-        agreements = profile.person.careprofessional.professionalProfile.agreement.all()
-
-        identification =  profile.person.careprofessional
-        return render_to_response('profile/profile_index.html', { 
-                                        'object': profile,
-                                        'profile': profile,
-                                        'preferences': preferences,
-                                        'date': date,
-                                        'emails': emails,
-                                        'websites': sites,
-                                        'ims': instantMessengers,
-                                        'addresses': addresses,
-                                        'phones': phones,
-                                        'documents': documents,
-                                        'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,                                    
-                                        'licenceBoardTypes': LicenceBoard.objects.all(),
-                                        'AgreementTypes': Agreement.objects.all(),
-                                        'WorkPlacesTypes': Place.objects.filter(organization = user.get_profile().org_active.id),
-                                        'countries': Country.objects.all(),
-                                        'PhoneTypes': PhoneType.objects.all(),
-                                        'AddressTypes': AddressType.objects.all(),
-                                        'EmailTypes': EmailType.objects.all(),
-                                        'IMNetworks': IMNetwork.objects.all() ,
-                                        'TypeDocuments': TypeDocument.objects.all(),
-                                        'Issuers': Issuer.objects.all(),
-                                        'States': State.objects.all(),
-                                        'MaritalStatusTypes': MaritalStatus.objects.all(),
-                                        'PlaceTypes': PlaceType.objects.all(),
-                                        'workplaces': workplaces,
-                                        'agreements': agreements,
-                                        'ServiceTypes': Service.objects.filter( active=True, organization=user.get_profile().org_active ),
-                                        'object': identification,
-                                        },
-                                    context_instance=RequestContext(request)
-                                      )
+        object = request.user.get_profile()
     except:
-        pass
-
-################################## EMPLOYEE
-    try:
-        identification =  profile.person.employee
-        return render_to_response('profile/profile_index.html', { 
-                                        'object': profile,
-                                        'profile': profile,
-                                        'preferences': preferences,
-                                        'date': date,
-                                        'emails': emails,
-                                        'websites': sites,
-                                        'ims': instantMessengers,
-                                        'addresses': addresses,
-                                        'phones': phones,
-                                        'documents': documents,
-                                        'countries': Country.objects.all(),
-                                        'PhoneTypes': PhoneType.objects.all(),
-                                        'AddressTypes': AddressType.objects.all(),
-                                        'EmailTypes': EmailType.objects.all(),
-                                        'IMNetworks': IMNetwork.objects.all() ,
-                                        'TypeDocuments': TypeDocument.objects.all(),
-                                        'Issuers': Issuer.objects.all(),
-                                        'States': State.objects.all(),
-                                        'PlaceTypes': PlaceType.objects.all(),
-                                        'object': identification,
-                                        },
-                                    context_instance=RequestContext(request)
-                                    )
-    except:
-        pass
+        raise Http404
     
-################################## CLIENT
+    countries = Country.objects.all()
+    PhoneTypes = PhoneType.objects.all()
+    AddressTypes = AddressType.objects.all()
+    EmailTypes = EmailType.objects.all()
+    IMNetworks = IMNetwork.objects.all() 
+    TypeDocuments = TypeDocument.objects.all()
+    Issuers = Issuer.objects.all()
+    States = State.objects.all()
+    MaritalStatusTypes = MaritalStatus.objects.all()
+    
+    return render_to_response('profile/profile_person.html', locals(), context_instance=RequestContext(request))
+
+def form_careprofessional(request):
+    documents = []
+    workplaces = []
+    agreements = []
     try:
-        identification =  profile.person.client
-        return render_to_response('profile/profile_index.html', { 
-                                        'object': profile,
-                                        'profile': profile,
-                                        'preferences': preferences,
-                                        'date': date,
-                                        'emails': emails,
-                                        'websites': sites,
-                                        'ims': instantMessengers,
-                                        'addresses': addresses,
-                                        'phones': phones,
-                                        'documents': documents,
-                                        'countries': Country.objects.all(),
-                                        'PhoneTypes': PhoneType.objects.all(),
-                                        'AddressTypes': AddressType.objects.all(),
-                                        'EmailTypes': EmailType.objects.all(),
-                                        'IMNetworks': IMNetwork.objects.all() ,
-                                        'TypeDocuments': TypeDocument.objects.all(),
-                                        'Issuers': Issuer.objects.all(),
-                                        'States': State.objects.all(),
-                                        'PlaceTypes': PlaceType.objects.all(),
-                                        'object': identification,
-                                        },
-                                    context_instance=RequestContext(request)
-                                    )
+        object = CareProfessional.objects.get(pk=request.user.get_profile().person.careprofessional.id)
+        workplaces = object.professionalProfile.workplace.all()
+        agreements = object.professionalProfile.agreement.all()
     except:
-        pass
+        raise Http404
+
+    return render_to_response('profile/profile_careprofessional.html', {
+                                    'object': object,
+                                    'PROFESSIONAL_AREAS': Profession.objects.all(),
+                                    'AgreementTypes': Agreement.objects.all(),
+                                    'WorkPlacesTypes': Place.objects.filter(organization = request.user.get_profile().org_active.id),
+                                    'workplaces': workplaces,
+                                    'agreements': agreements,
+                                    'ServiceTypes': Service.objects.filter( active=True, organization=request.user.get_profile().org_active ),
+                                    'PlaceTypes': PlaceType.objects.all(),
+                                    },
+                              context_instance=RequestContext(request)
+                              )
+
+def save(request):
+    if not request.method == 'POST':
+        raise Http404  
+    try:
+        person = request.user.get_profile().person
+        person_save(request, person)
+    except:
+        raise Http404
+
+    request.user.message_set.create(message=_('Profile updated successfully'))
+    return HttpResponseRedirect('/profile/')
+    
+def save_careprofessional(request):    
+    try:
+        object = Psychologist.objects.get(pk=request.user.get_profile().person.careprofessional.id)        
+    except:
+        raise Http404
+
+    object = care_professional_fill(request, object, None)
+    object.save()
+
+    request.user.message_set.create(message=_('Professional profile saved successfully'))
+
+    return HttpResponseRedirect('/profile/careprofessional/')

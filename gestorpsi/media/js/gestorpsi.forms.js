@@ -781,19 +781,37 @@ function bindFormMisc() {
     /**
     * DEVICES - CHANGE SELECT TO FIXED WHEN LANDABLE CHEKBOX IS CHECKED, VICE-VERSA
     **/
-        //  CHECK BOX 
-    $('input[id=id_lendable]').click(function(){
+   /// EDIT DEVICE FORM
+   //  CHECK BOX 
+    $('form.edit_device input[id=id_lendable]').click(function(){
         if (this.checked == true ){
-            if ($('div#edit_form select[name=select_mobility_type]').val() == "1"){
-                $('div#edit_form select[name=select_mobility_type]').val("2");
+            if ($('form.edit_device div#device_form select[name=select_mobility_type]').val() == "1"){
+                $('form.edit_device div#device_form select[name=select_mobility_type]').val("2");
             }
         }
     });
 
-        // SELECT TYPE
-    $('div#edit_form select[name=select_mobility_type]').change(function(){
+    // SELECT TYPE
+    $('form.edit_device div#device_form select[name=select_mobility_type]').change(function(){
         if (this.value == "1"){
-            $('input[id=id_lendable]').removeAttr("checked");
+            $('form.edit_device input[id=id_lendable]').removeAttr("checked");
+        }
+    });
+
+   /// NEW DEVICE FORM
+   //  CHECK BOX 
+    $('form.new_device_form div#device_form input[id=id_lendable]').click(function(){
+        if (this.checked == true ){
+            if ($('form.new_device_form div#device_form select[name=select_mobility_type]').val() == "1"){
+                $('form.new_device_form div#device_form select[name=select_mobility_type]').val("2");
+            }
+        }
+    });
+
+    // SELECT TYPE
+    $('form.new_device_form div#device_form select[name=select_mobility_type]').change(function(){
+        if (this.value == "1"){
+            $('form.new_device_form div#device_form input[id=id_lendable]').removeAttr("checked");
         }
     });
 }

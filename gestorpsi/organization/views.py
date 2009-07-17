@@ -35,7 +35,6 @@ def professional_responsible_save(request, object, ids, names, subscriptions, or
 
     for x in range(len(names)):
         obj = []
-        print professions[x]
 
         # Whitout Profession of the Professional
         if not professions[x]:

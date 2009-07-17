@@ -1497,7 +1497,7 @@ msgstr "Mobília"
 #: templates/place/place_room_list.html:29
 #: templates/schedule/schedule_filter.html:52
 msgid "All Rooms"
-msgstr "Todos os Clientes"
+msgstr "Todas as Salas"
 
 #: templates/place/place_room_list.html:30
 msgid "room(s)"

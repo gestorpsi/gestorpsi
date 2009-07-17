@@ -326,6 +326,7 @@ function bindScheduleForm() {
          paging: true,  
          maxVisibleRows: 12,
          width: 385,
+         queryDelay: 500,
          autoCompleteFirstMatch: true,
          onSelect: function() {  
             $.getJSON('/referral/client/' + this.getAttribute('hiddenValue') + '/', function(json) {

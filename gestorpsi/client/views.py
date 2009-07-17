@@ -236,7 +236,8 @@ def organization_clients(request):
        organization_clients: return json with all clients from logged organization
     """
     user = request.user
-    clients = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
+    clients = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1', person__name__istartswith=request.GET.get('q') ).order_by('person__name')
+
     dict = {}
     array = [] #json
     i = 0

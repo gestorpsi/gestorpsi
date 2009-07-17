@@ -410,8 +410,8 @@ $(function() {
           $(select).parents('fieldset').children('label').children('select.service_solicitation').children('option').hide();
           $(select).parents('fieldset').children('label').children('select.service_solicitation').children('option.area_'+$(select).val()).show();
           // show privates areas
-          $(select).parents('form').children('div').children('fieldset.service_areas').hide();
-          $(select).parents('form').children('div').children('fieldset.area_' + $(this).val()).show();
+          $('form div.service_areas').hide();
+          $('form div.area_' + $(this).val()).show();
      });
      
       // quick add

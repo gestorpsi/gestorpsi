@@ -124,7 +124,7 @@ GNU General Public License for more details.
 	<!--</fieldset>
 	
 	<fieldset class="service_areas area_3">-->
-    <div  class="service_areas area_3">
+    <div class="service_areas area_3{% ifnotequal object.area.id 3 %} hidden{% endifnotequal %}">
 		<!--<legend>{% trans "Clinica Area" %}</legend>-->
 	
 		<label>{% trans "Age" %}<br />

@@ -61,7 +61,7 @@ def index(request):
     #referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
 
     return render_to_response('client/client_list.html',
-                                        {
+                                        #{
                                         #'countries': Country.objects.all(),
                                         #'PhoneTypes': PhoneType.objects.all(), 
                                         #'AddressTypes': AddressType.objects.all(), 
@@ -77,7 +77,7 @@ def index(request):
                                         #'IndicationsChoices': IndicationChoice.objects.all(),
                                         #'Relations': Relation.objects.all(),
                                         #'referral_form': referral_form
-                                         },
+                                         #},
                                         context_instance=RequestContext(request))
 
 # client home

@@ -38,9 +38,6 @@ from gestorpsi.authentication.forms import RegistrationForm
 def login_check(f):
     @login_required
     def wrap(request, *args, **kwargs):
-        if not DEBUG:
-            if not request.is_ajax():
-                raise Http404
         return f(request, *args, **kwargs)
     wrap.__doc__=f.__doc__
     wrap.__name__=f.__name__

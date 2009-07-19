@@ -21,11 +21,9 @@ from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
-from gestorpsi.careprofessional.models import CareProfessional
-from gestorpsi.referral.models import Referral,  ReferralPriority,  ReferralImpact
+from gestorpsi.referral.models import Referral
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.util.decorators import permission_required_with_403
-import codecs
 
 # add or edit form
 @permission_required_with_403('referral.referral_read')

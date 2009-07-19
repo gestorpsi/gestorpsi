@@ -16,11 +16,8 @@ GNU General Public License for more details.
 
 import reversion
 from django.db import models
-from swingtime.models import Event, EventType, Occurrence
-from gestorpsi.service.models import Service
-from gestorpsi.careprofessional.models import CareProfessional
-from gestorpsi.client.models import Client
-from gestorpsi.place.models import Place, Room
+from swingtime.models import Occurrence
+from gestorpsi.place.models import Room
 from gestorpsi.device.models import DeviceDetails
 
 

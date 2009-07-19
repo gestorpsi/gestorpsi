@@ -21,7 +21,6 @@ from swingtime.models import Event, EventType
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.models import CareProfessional
-from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.organization.models import Organization
 

@@ -18,7 +18,6 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from gestorpsi.address.models import State
-from gestorpsi.util import audittrail
 from gestorpsi.util.uuid_field import UuidField
 
 class Issuer(models.Model):

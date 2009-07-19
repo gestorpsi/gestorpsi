@@ -17,8 +17,6 @@ GNU General Public License for more details.
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.core.paginator import Paginator
-from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User, Group
 from django.utils.translation import ugettext as _
@@ -28,7 +26,6 @@ from gestorpsi.person.models import Person
 from django.utils import simplejson
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.person.views import person_json_list
-from gestorpsi.internet.models import Email, Site, InstantMessenger
 
 @permission_required_with_403('users.users_list')
 def index(request):

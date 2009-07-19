@@ -15,8 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.shortcuts import render_to_response, get_object_or_404
-from django.contrib.auth.decorators import permission_required
+from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from gestorpsi.psychologist.models import Psychologist
 from gestorpsi.careprofessional.views import care_professional_fill

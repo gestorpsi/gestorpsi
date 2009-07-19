@@ -23,7 +23,6 @@ from django.utils import simplejson
 from django.db.models import Q
 from django.utils.translation import ugettext as _
 from gestorpsi.device.models import DeviceDetails, Device
-from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.views import Profession
 from gestorpsi.place.models import Place, Room
 from gestorpsi.util.decorators import permission_required_with_403

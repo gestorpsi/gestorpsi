@@ -22,7 +22,6 @@ from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.utils import simplejson
 from django.utils.translation import ugettext as _
-from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, Room, RoomType, PlaceType
 from gestorpsi.address.models import Country, AddressType, State
 from gestorpsi.address.views import address_save

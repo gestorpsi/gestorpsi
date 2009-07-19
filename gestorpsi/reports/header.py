@@ -16,7 +16,7 @@ GNU General Public License for more details.
 import os
 from gestorpsi.settings import MEDIA_ROOT, PROJECT_ROOT_PATH
 from reportlab.lib.units import cm
-from reportlab.lib.enums import TA_CENTER, TA_RIGHT, TA_LEFT
+from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from geraldo import ReportBand, BAND_WIDTH
 from geraldo import Image, Line, Label, SystemField
 

@@ -14,15 +14,13 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-import locale
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext as _
-from django.http import Http404
+from django.utils import simplejson
 
 from geraldo.generators import PDFGenerator
 
@@ -32,7 +30,7 @@ from gestorpsi.authentication.models import Profile
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
 from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.views import Profession
-from gestorpsi.client.models import Client, PersonLink, Relation
+from gestorpsi.client.models import Client, Relation
 from gestorpsi.client.reports import ClientRecord, ClientList
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.internet.models import EmailType, IMNetwork
@@ -44,7 +42,6 @@ from gestorpsi.referral.models import Referral
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.reports.header import header_gen
 from gestorpsi.reports.footer import footer_gen
-from django.utils import simplejson
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.person.views import person_json_list
 

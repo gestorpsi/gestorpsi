@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django.conf.urls.defaults import *
 from gestorpsi.authentication.views import login_check
-from gestorpsi.referral.views import save, client_referrals, referral_off, form
+from gestorpsi.referral.views import save, client_referrals, referral_off
 
 
 urlpatterns = patterns('gestorpsi.referral.views',

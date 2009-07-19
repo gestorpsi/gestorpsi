@@ -20,9 +20,6 @@ from gestorpsi.person.models import Person
 from gestorpsi.place.models import Place
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.organization.models import Agreement
-from gestorpsi.phone.models import Phone
-from gestorpsi.address.models import Address
-from gestorpsi.internet.models import Email, Site, InstantMessenger
 
 class InstitutionType(models.Model):
     """    

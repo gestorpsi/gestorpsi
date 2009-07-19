@@ -15,14 +15,12 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from django.views.generic.simple import direct_to_template
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm
 from gestorpsi.schedule.views import occurrence_view
 from gestorpsi.schedule.views import occurrence_abstract
 from gestorpsi.schedule.views import add_event
 from gestorpsi.schedule.views import schedule_index
-from gestorpsi.schedule.views import schedule_occurrence_listing
 from gestorpsi.schedule.views import schedule_occurrence_listing_today
 from gestorpsi.schedule.views import event_view
 from gestorpsi.schedule.views import daily_occurrences 

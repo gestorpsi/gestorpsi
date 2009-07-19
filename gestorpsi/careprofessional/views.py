@@ -17,8 +17,10 @@ GNU General Public License for more details.
 from datetime import datetime
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from django.http import HttpResponse
+from django.utils import simplejson
 from gestorpsi.person.models import Person, MaritalStatus
-from gestorpsi.careprofessional.models import ProfessionalProfile, LicenceBoard, ProfessionalIdentification, CareProfessional, Profession
+from gestorpsi.careprofessional.models import ProfessionalProfile, ProfessionalIdentification, CareProfessional, Profession
 from gestorpsi.organization.models import Agreement
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
@@ -28,8 +30,6 @@ from gestorpsi.place.models import Place, PlaceType
 from gestorpsi.person.views import person_save
 from gestorpsi.service.models import Service
 from gestorpsi.util.decorators import permission_required_with_403
-from django.http import HttpResponse
-from django.utils import simplejson
 from gestorpsi.person.views import person_json_list
 
 

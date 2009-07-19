@@ -18,7 +18,6 @@ GNU General Public License for more details.
   Original 'permission_required_with_403' found at: http://www.djangosnippets.org/snippets/254/
 """
 
-from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect

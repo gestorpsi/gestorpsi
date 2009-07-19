@@ -23,7 +23,6 @@ from django.template.context import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response, HttpResponse
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
-from swingtime.forms import MultipleOccurrenceForm
 from swingtime.utils import create_timeslot_table
 from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.referral.models import Referral
@@ -31,7 +30,6 @@ from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.place.models import Place, Room
 from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.models import CareProfessional
-from gestorpsi.device.models import DeviceDetails
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm
 from gestorpsi.util.decorators import permission_required_with_403
 

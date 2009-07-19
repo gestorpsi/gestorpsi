@@ -14,8 +14,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from Crypto.Cipher import Blowfish
 import binascii
+from Crypto.Cipher import Blowfish
 from django.conf import settings
 
 enc_obj= enc_obj= Blowfish.new(settings.SECRET_KEY)

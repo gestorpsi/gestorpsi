@@ -15,13 +15,12 @@ GNU General Public License for more details.
 """
 
 from datetime import datetime
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from gestorpsi.client.models import Client, PersonLink, Relation
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
-from gestorpsi.careprofessional.views import Profession
 from gestorpsi.admission.models import *
 from gestorpsi.contact.views import *
 from gestorpsi.util.views import get_object_or_None

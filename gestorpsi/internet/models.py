@@ -19,7 +19,6 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from gestorpsi.util.uuid_field import UuidField
-from gestorpsi.util import CryptographicUtils as cryptoUtils
 
 class EmailType(models.Model):
     description= models.CharField(max_length=45)

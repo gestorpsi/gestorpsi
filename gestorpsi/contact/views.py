@@ -263,8 +263,12 @@ def address_book_get_professionals(request):
             for y in CareProfessional.objects.filter(person__organization=x):
                 phone = y.person.get_first_phone()
                 email = y.person.get_first_email()
-                lista.append([y.id, y.person.name, email, phone, '2', 'GESTORPSI', '%s' % y.person.organization, '%s' % y.professionalIdentification.profession])
-
+                # Profession of the professional not is required
+                if y.professionalIdentification:
+                    lista.append([y.id, y.person.name, email, phone, '2', 'GESTORPSI', '%s' % y.person.organization, '%s' % y.professionalIdentification.profession])
+                else:
+                    lista.append([y.id, y.person.name, email, phone, '2', 'GESTORPSI', '%s' % y.person.organization, ""])
+                
     for x in Organization.objects.filter(contact_owner=user.get_profile().person):
         phone = x.get_first_phone()
         email = x.get_first_email()
@@ -297,3 +301,29 @@ def address_book_get_organizations(request):
         lista.append([x.id, x.name, email, phone, '1', 'LOCAL', x.name, "none"])
 
     return lista
+
+def order(request, object_type = '', object_id = ''):
+
+    # ORGANIZATION
+    if object_type == "1":
+        object = Organization.objects.get(pk = object_id)
+
+        if object.active == True:
+            object.active = False
+        else:
+            object.active = True
+
+        object.save(force_update=True)
+        return HttpResponseRedirect('/contact/%s/%s' % (object_type, object.id))
+
+    # PROFESSIONAL
+    if object_type == "2":
+        object = CareProfessional.objects.get(pk = object_id)
+
+        if object.active == True:
+            object.active = False
+        else:
+            object.active = True
+
+        object.save(force_update=True)
+        return HttpResponseRedirect('/contact/%s/%s' % (object_type, object.id) )

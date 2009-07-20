@@ -23,6 +23,12 @@ GNU General Public License for more details.
         </div>
     {% endif %}
 
+    <ul>
+    {% if object.id %}
+    <li><a href="/employee/{{ object.id }}/order/" class="employee_order" title="{{ object.person.name }}">{% if object.person.active %} Inativar {% else %} Ativar {% endif %} </a></li>
+    {% endif %}
+    </ul>
+
 {% comment %}
 
     <div class="people_actions" {% if not object.id %}style="display:none"{% endif %}>

@@ -178,6 +178,11 @@ GNU General Public License for more details.
         	<input type="hidden" name="place" value="{{ object.id }}" />
             {% include "tags/save.html" %}
         </div>
+
+        {% if object.id %}
+            {% include "tags/device_sidebar.html" %}
+        {% endif %}
+
     {% endif %}
 </div>
 

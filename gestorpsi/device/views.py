@@ -223,3 +223,15 @@ def list_device(request, object_id):
         c = c + 1
 
     return HttpResponse(simplejson.dumps(array), mimetype='application/json')
+
+
+def order(request, object_id = ''):
+    object = DeviceDetails.objects.get(pk = object_id)
+
+    if object.active == True:
+        object.active = False
+    else:
+        object.active = True
+
+    object.save(force_update = True)
+    return HttpResponseRedirect('/device/%s/' % object.id)

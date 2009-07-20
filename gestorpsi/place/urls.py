@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.place.views import index, form, save, list, room_form, room_save, room_list, room_index
+from gestorpsi.place.views import index, form, save, list, room_form, room_save, room_list, room_index, room_order, place_order
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
@@ -23,6 +23,7 @@ urlpatterns = patterns('',
     (r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
     (r'^add/$', login_check(form)),
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form)),
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/order/$', login_check(place_order)),
     (r'^save/$', login_check(save)),
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save)),
     (r'^room/$', login_check(room_index)),
@@ -31,5 +32,5 @@ urlpatterns = patterns('',
     (r'^room/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(room_save)),
     (r'^room/save/$', login_check(room_save)),
     (r'^room/page(?P<page>(\d)+)$', login_check(room_list)), #list objects
-
+    (r'^room/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/order/$', login_check(room_order)),
 )

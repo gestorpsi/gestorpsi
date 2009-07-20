@@ -293,3 +293,15 @@ def organization_clients(request):
     array = simplejson.dumps(dict, encoding = 'iso8859-1')
 
     return HttpResponse(array, mimetype='application/json')
+
+
+def order(request, object_id = ''):
+    object = Client.objects.get(pk = object_id)
+
+    if (object.person.active == True):
+        object.person.active = False
+    else:
+        object.person.active = True
+
+    object.person.save(force_update=True)
+    return HttpResponseRedirect('/client/%s/' % object.id)

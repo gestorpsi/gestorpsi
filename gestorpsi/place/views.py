@@ -230,3 +230,25 @@ def get_visible(value):
         return True
     else:
         return False 
+
+def place_order(request, object_id = ''):
+    object = Place.objects.get(pk = object_id)
+
+    if object.active == True:
+        object.active = False
+    else:
+        object.active = True
+
+    object.save(force_update=True)
+    return HttpResponseRedirect('/place/%s/' % object.id)
+
+def room_order(request, object_id = ''):
+    object = Room.objects.get(pk = object_id)
+
+    if object.active == True:
+        object.active = False
+    else:
+        object.active = True
+
+    object.save(force_update=True)
+    return HttpResponseRedirect('/place/room/%s/' % object.id)

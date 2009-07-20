@@ -112,6 +112,10 @@ GNU General Public License for more details.
             {% include "tags/save.html" %}
           </div>
 
+            {% if object.id %}
+                {% include "tags/contact_sidebar.html" %}
+            {% endif %}
+
     {% endif %}
 </div>
 </form>

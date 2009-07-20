@@ -122,3 +122,14 @@ def delete(request, object_id):
     object.active = False
     object.save()
     return render_to_response('employee/employee_index.html', {'employeeList': Employee.objects.all().filter(active = True) })
+
+def order(request, object_id = ''):
+    object = Employee.objects.get(pk = object_id)
+
+    if (object.person.active == True):
+        object.person.active = False
+    else:
+        object.person.active = True
+
+    object.person.save(force_update=True)
+    return HttpResponseRedirect('/employee/%s/' % object.id)

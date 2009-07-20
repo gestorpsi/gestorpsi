@@ -115,6 +115,10 @@ GNU General Public License for more details.
             <input type="hidden" name="place" value="{{ object.id }}" />
             {% include "tags/save.html" %}
         </div>    
+
+        {% if object.id %}
+            {% include "tags/place_sidebar.html" %}
+        {% endif %}
         
         <!--  
 		<div id="place_actions" {% if not object.id %}style="display:none"{% endif %}>	

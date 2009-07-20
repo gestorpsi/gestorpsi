@@ -17,7 +17,7 @@ GNU General Public License for more details.
 from datetime import datetime
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.careprofessional.models import ProfessionalProfile, ProfessionalIdentification, CareProfessional, Profession
@@ -166,3 +166,14 @@ def care_professional_fill(request, object, save_person = True):
     object.professionalIdentification = identification   
 
     return object
+
+def order(request, object_id = ''):
+    object = CareProfessional.objects.get(pk = object_id)
+
+    if (object.person.active == True):
+        object.person.active = False
+    else:
+        object.person.active = True
+
+    object.person.save(force_update=True)
+    return HttpResponseRedirect('/careprofessional/%s/' % object.id)

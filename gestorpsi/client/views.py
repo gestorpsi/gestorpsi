@@ -51,30 +51,7 @@ def index(request):
     # Test if clinic administrator has registered services before access client page.
     if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
         return render_to_response('client/client_service_alert.html', context_instance=RequestContext(request))
-
-    #referral_form = ReferralForm()
-    #referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
-    ##referral_form.fields['professional'].queryset = CareProfessional.objects.filter(person__organization = request.user.get_profile().org_active.id)
-    #referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
-
     return render_to_response('client/client_list.html',
-                                        #{
-                                        #'countries': Country.objects.all(),
-                                        #'PhoneTypes': PhoneType.objects.all(), 
-                                        #'AddressTypes': AddressType.objects.all(), 
-                                        #'EmailTypes': EmailType.objects.all(), 
-                                        #'IMNetworks': IMNetwork.objects.all() , 
-                                        #'TypeDocuments': TypeDocument.objects.all(), 
-                                        #'Issuers': Issuer.objects.all(), 
-                                        #'States': State.objects.all(), 
-                                        #'MaritalStatusTypes': MaritalStatus.objects.all(),
-                                        #'PROFESSIONAL_AREAS': Profession.objects.all(),
-                                        #'licenceBoardTypes': LicenceBoard.objects.all(),
-                                        #'ReferralChoices': ReferralChoice.objects.all(),
-                                        #'IndicationsChoices': IndicationChoice.objects.all(),
-                                        #'Relations': Relation.objects.all(),
-                                        #'referral_form': referral_form
-                                         #},
                                         context_instance=RequestContext(request))
 
 # client home
@@ -300,8 +277,10 @@ def order(request, object_id = ''):
 
     if (object.person.active == True):
         object.person.active = False
+        request.user.message_set.create(message=_('User deactivated successfully'))
     else:
         object.person.active = True
+        request.user.message_set.create(message=_('User activated successfully'))
 
     object.person.save(force_update=True)
     return HttpResponseRedirect('/client/%s/' % object.id)

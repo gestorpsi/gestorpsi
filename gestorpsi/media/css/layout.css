@@ -293,9 +293,20 @@ div#sub_menu .active {
 	width: 990px;
 	margin-bottom: 10px;
 }
+
+div.main_area h1, #content h2 {
+	font-family: Georgia, "Times New Roman", Times, serif;
+
+}
+
+div.main_area h1 {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 21px;
+	margin: 10px 0 0 20px;
+}
+
 #content h2 {
 	font-size: 22px;
-	font-family: Georgia, "Times New Roman", Times, serif;
 	line-height: 24px;
 	color: #808080;
 	font-weight: normal;
@@ -441,6 +452,7 @@ a.delete {
 	height: 16px;
 	padding-top: 2px;
 }
+
 a.edit {
 	display: block;
 	background: url(../img/ico_edit.png) no-repeat;
@@ -448,6 +460,15 @@ a.edit {
 	height: 16px;
 	padding-top: 2px;
 }
+
+a.add {
+	background: url(../img/16/list-add.png) no-repeat 0 3px;
+}
+
+a.list {
+	background: url(../img/16/filetype_small_dir.gif) no-repeat 0 3px;
+}
+
 a.clips {
 	background:url(../img/ico_clips.gif) no-repeat 98% 0;
 	text-align: right;
@@ -552,6 +573,8 @@ textarea.giant, input.giant {width: 645px;}
 	width: 76px;
 }
 
+
+
 .extrasmall {
 	width: 45px;
 }
@@ -599,7 +622,9 @@ select:focus {
 	background: #fff6d5;
 	border: 2px solid #2688ae;
 }
-textarea {
+
+select.high {
+    height: 300px;
 }
 
 .sidebar {
@@ -666,6 +691,13 @@ textarea {
 	color: #000000;
 }
 
+li a.add {
+	background: url(../img/16/list-add.png) no-repeat 0 3px;
+}
+
+li a.list {
+	background: url(../img/16/filetype_small_dir.gif) no-repeat 0 3px;
+}
 .sidebar li .client_home {
 	background: url(../img/16/go-home.png) no-repeat 0 3px;
 }
@@ -688,6 +720,10 @@ textarea {
 
 .sidebar li .client_user_form {
         background: url(../img/16/system-users.png) no-repeat 0 3px;
+}
+
+.sidebar li .client_order {
+        background: url(../img/16/edit-delete.png) no-repeat 0 3px;
 }
 
 .sidebar li .print {
@@ -1329,7 +1365,13 @@ ul.errorlist li {
     list-style: none;
     padding: 0px;
     margin-top: 15px;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+div.login ul.errorlist li {
     background-color: #FFCCCC;
+    margin-left: 0px;
 }
 
 /**

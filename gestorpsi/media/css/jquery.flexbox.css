@@ -8,6 +8,7 @@
 	background: #F9F9F9;
 	letter-spacing: 0.05em;
 	margin-left: -10px !important;
+	width: 380px !important;
 }
 /* Color of watermark, if present */
 .ffb-input.watermark { /* added and removed dynamically */
@@ -43,7 +44,7 @@
 	border-right:1px solid #7B9EBD;
 	border-bottom:1px solid #7B9EBD;
 	background-color:#fff; /* Give it a background-color, so it's not transparent */
-	margin: 25px 0 0 0 !important;
+	margin: 0 0 0 -10px !important;
 }
 /* Inner div for dropdown */
 .ffb .content {

@@ -235,20 +235,20 @@ def schedule_occurrences(request, year = 1, month = 1, day = None):
 
 @permission_required_with_403('schedule.schedule_list')
 def daily_occurrences(request, year = 1, month = 1, day = None):
-    #locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+    locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
     #locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
-    locale.setlocale(locale.LC_ALL,'pt_BR.ISO8859-1')
+    #locale.setlocale(locale.LC_ALL,'pt_BR.ISO8859-1')
     occurrences = schedule_occurrences(request, year, month, day)
 
     array = {} #json
     i = 0
-    
+
     date = datetime.strptime(('%s/%s/%s' % (year, month, day)), "%Y/%m/%d")
 
     array['util'] = {
         'date': ('%s-%s-%s' % (year, month, day)),
         'date_field': ('%s/%s/%s' % (year, month, day)),
-        'str_date': '%s, %s %s %s %s %s' % (date.strftime("%A"), date.strftime("%d"), _('of'), date.strftime("%B"), _('of'), date.strftime("%Y")),
+        'str_date': u'%s, %s %s %s %s %s' % (date.strftime("%A").decode('utf-8'), date.strftime("%d"), _('of'), date.strftime("%B"), _('of'), date.strftime("%Y")),
         'next_day': (date + timedelta(days=+1)).strftime("%Y/%m/%d"),
         'prev_day': (date + timedelta(days=-1)).strftime("%Y/%m/%d"),
         'weekday': date.weekday(),
@@ -287,7 +287,7 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
         i = i + 1
 
     array['util']['occurrences_total'] = i
-    array = simplejson.dumps(array, encoding = 'iso8859-1')
+    array = simplejson.dumps(array)
     
     return HttpResponse(array, mimetype='application/json')
     

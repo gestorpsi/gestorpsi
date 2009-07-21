@@ -267,19 +267,6 @@ function updateGrid(url) {
  */
 
 $(function() {
-    // bind links in table
-    $('div.schedule table.schedule_results a.book').click(function() {
-        // REFRESH THE SELECT DEVICE WHEN DATA AND HOUR IS SELECTED IN THE CALENDAR
-        var room =  $("form.schedule div.main_area select#id_room").val();
-        if (room != ''){
-            $.getJSON("/device/" + room + "/listdevice/", function(json) {
-                jQuery.each(json,  function(){
-                    $('select[name=device]').append(new Option(this.name, this.id));
-                });
-            });
-        }
-    
-    });
 
     // if start time is changed, increment 'increment_end_time' value to end time
     $('div.schedule select[name=start_time_delta] option').click(function() {

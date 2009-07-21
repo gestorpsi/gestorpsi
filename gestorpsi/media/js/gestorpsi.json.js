@@ -48,8 +48,6 @@ function updateClient(url) {
             updateClient($(this).attr('href'))
             return false;
         });
-        bindList();
-        
     });  
 
     return false;
@@ -87,8 +85,6 @@ function updateUser(url) {
             updateUser($(this).attr('href'))
             return false;
         });
-        bindList();
-        
     });  
 
     return false;
@@ -123,8 +119,6 @@ function updateEmployee(url) {
             updateEmployee($(this).attr('href'))
             return false;
         });
-        bindList();
-        
     });  
 
     return false;
@@ -180,8 +174,6 @@ function updateContact(url) {
             updateContact($(this).attr('href'))
             return false;
         });
-        bindList();
-        
     });  
 
     return false;
@@ -214,8 +206,6 @@ function updateRoom(url) {
             updateRoom($(this).attr('href'))
             return false;
         });
-        bindList();
-        
     });  
 
     return false;
@@ -251,8 +241,6 @@ function updatePlace(url) {
             updatePlace($(this).attr('href'))
             return false;
         });
-        bindList();
-        
     });  
 
     return false;
@@ -288,8 +276,6 @@ function updateDevice(url) {
             updateDevice($(this).attr('href'))
             return false;
         });
-        bindList();
-        
     });  
 
     return false;
@@ -325,8 +311,6 @@ function updateDeviceType(url) {
             updateDeviceType($(this).attr('href'))
             return false;
         });
-        bindList();
-        
     });  
 
     return false;
@@ -362,8 +346,6 @@ function updateService(url) {
             updateService($(this).attr('href'))
             return false;
         });
-        bindList();
-        
     });  
 
     return false;
@@ -464,8 +446,6 @@ function updateProfessional(url) {
             updateProfessional($(this).attr('href'))
             return false;
         });
-        bindList();
-        
     });  
 
     return false;

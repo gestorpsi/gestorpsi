@@ -48,7 +48,7 @@ class Person(models.Model):
     emails  = generic.GenericRelation(Email, null=True)
     sites = generic.GenericRelation(Site, null=True)
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True)
-    comments = models.TextField(blank=True, null=True)
+    comments = models.TextField(blank=True)
     active = models.BooleanField(default=True)
     organization = models.ForeignKey(Organization, null=True)
 

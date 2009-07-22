@@ -226,16 +226,6 @@ GNU General Public License for more details.
 	Service must to have a status
 	-->
 	
-	<fieldset>
-		<legend>{% trans "Service Status" %}</legend>
-			<label>{% trans "Active?" %}<br />
-			<select name="service_active" class="small">
-			<option value="True" {% if not object.id %}selected{% else %}{% if object.active %} selected{% endif %}{% endif %}>{% trans "Yes" %}</option>
-			<option value="False" {% if object.id %}{% if not object.active %} selected{% endif %}{% endif %}>{% trans "No" %}</option>
-			</select>
-			</label>
-	</fieldset>
-
 <fieldset class="comment_form">
         <legend>{% trans "Comments" %}</legend>
         <label>{% trans "Comments" %}<br />
@@ -254,6 +244,12 @@ GNU General Public License for more details.
             {% include "tags/save.html" %}
         </div>
     {% endif %}
+
+    {% if object.id %}
+            {% include "tags/service_sidebar.html" %}
+    {% endif %}
+
+    <ul>
 </div>
 
 </form>

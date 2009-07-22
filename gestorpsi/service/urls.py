@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.service.views import index, form, save, disable, list, list_professional
+from gestorpsi.service.views import index, form, save, disable, list, list_professional, order
 from gestorpsi.authentication.views import login_check
 
 urlpatterns= patterns('',
@@ -27,4 +27,5 @@ urlpatterns= patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save)),
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/delete/$', login_check(disable)),
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/listprofessional/$', login_check(list_professional)),
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/order/$', login_check(order)),
 )

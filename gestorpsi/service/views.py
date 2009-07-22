@@ -137,10 +137,6 @@ def save(request, object_id = ''):
     object.description = request.POST['service_description']
     object.keywords = request.POST['service_keywords']
     object.comments = request.POST.get('comments')
-    if request.POST['service_active'] == 'True':
-        object.active = True
-    else:
-        object.active = False
     object.area = Area.objects.get(pk=request.POST['service_area'])
     object.service_type = ServiceType.objects.get(pk=request.POST['service_type'])
     object.research_project_name = request.POST.get('research_project_name')
@@ -247,3 +243,15 @@ def list_professional(request, object_id):
 
     except:
         pass
+
+def order(request, object_id = ''):
+    object = Service.objects.get(pk = object_id)
+
+    if object.active == True:
+       object.active = False
+    else:
+        object.active = True
+
+    object.save(force_update = True)
+    return HttpResponseRedirect('/service/%s/' % object.id)
+

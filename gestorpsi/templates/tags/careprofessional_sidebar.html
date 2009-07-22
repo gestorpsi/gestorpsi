@@ -21,10 +21,13 @@ GNU General Public License for more details.
         <div class="bg_blue">
             {% include "tags/save.html" %}
         </div>
-        <ul>
     {% endif %}
+
+    {% if object.id %}
+        <ul>
         <li><a href="/careprofessional/{{ object.id }}/order/" class="client_order" title="{{ object.person.name }}">{% if object.person.active %} Desativar {% else %} Ativar {% endif %} </a></li>
         </ul>
+    {% endif %}
 
 {% comment %}
 

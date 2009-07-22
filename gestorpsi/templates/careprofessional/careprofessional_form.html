@@ -134,18 +134,6 @@ GNU General Public License for more details.
 	{% include "meta/internet.html" %}
 
 
-
-	<fieldset id="fieldset_professional_status" class="not_collapsable">
-		<legend>{% trans "Professional Status" %}</legend>
-			<label>{% trans "Active?" %}<br />
-			<select id="id_active" name="professional_active" class="small">
-				<option value="True" {% if not object.id %}selected{% else %}{% if object.active %} selected{% endif %}{% endif %}>{% trans "Yes" %}</option>
-				<option value="False" {% if object.id %}{% if not object.active %} selected{% endif %}{% endif %}>{% trans "No" %}</option>
-					
-			</select>
-			</label>
-	</fieldset>
-
 <fieldset class="comment_form">
         <legend>{% trans "Comments" %}</legend>
         <label>{% trans "Comments" %}<br />

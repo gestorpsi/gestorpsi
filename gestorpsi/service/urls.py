@@ -17,6 +17,7 @@ GNU General Public License for more details.
 from django.conf.urls.defaults import *
 from gestorpsi.service.views import index, form, save, disable, list, list_professional, order
 from gestorpsi.authentication.views import login_check
+from gestorpsi.referral.views import group_add, group_form, group_list
 
 urlpatterns= patterns('',
     (r'^$', login_check(index)),
@@ -28,4 +29,9 @@ urlpatterns= patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/delete/$', login_check(disable)),
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/listprofessional/$', login_check(list_professional)),
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/order/$', login_check(order)),
+
+    # service group
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/group/add/$', login_check(group_add)),
+    (r'^group/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/form/$', login_check(group_form)),
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/group/$', login_check(group_list)),
 )

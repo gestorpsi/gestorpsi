@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django import forms
-from gestorpsi.referral.models import Referral, ReferralPriority, ReferralImpact
+from gestorpsi.referral.models import Referral, ReferralPriority, ReferralImpact, ReferralGroup
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
@@ -37,3 +37,16 @@ class ReferralForm(forms.ModelForm):
         fields = ('client', 'service', 'professional', 'annotation', 'referral', 'annotation', 'referral_reason', 'available_time', 'priority', 'impact')
         model = Referral
 
+
+class ReferralGroupForm(forms.ModelForm):
+    description = forms.CharField(widget=forms.TextInput(attrs={'class':'giant', }))
+    comments = forms.CharField(widget=forms.Textarea(attrs={'class':'giant', }), required = False)
+    class Meta:
+        fields = ('description', 'comments', )
+        model = ReferralGroup
+
+class ReferralClientForm(forms.ModelForm):
+    client = forms.ModelMultipleChoiceField(queryset=Client.objects.all(),  widget=forms.SelectMultiple(attrs={'class':'giant high multiple multiselectable', }), required = False)
+    class Meta:
+        fields = ('client', )
+        model = Referral

@@ -120,6 +120,7 @@ $(function() {
       * schedule post form
       */
 
+    /*
     $('form.schedule').validate({
         rules: {
             referral: "required"
@@ -128,6 +129,7 @@ $(function() {
             name: 'Preenchimento Necessário'
         }
     });
+    */
 
      /**
       * schedule occurrence form

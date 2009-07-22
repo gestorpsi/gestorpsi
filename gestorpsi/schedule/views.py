@@ -25,7 +25,7 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from swingtime.utils import create_timeslot_table
 from gestorpsi.schedule.models import ScheduleOccurrence
-from gestorpsi.referral.models import Referral
+from gestorpsi.referral.models import Referral, ReferralGroup
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.place.models import Place, Room
 from gestorpsi.service.models import Service
@@ -67,7 +67,12 @@ def add_event(
     dtstart = None
     if request.method == 'POST':
         recurrence_form = recurrence_form_class(request.POST)
-        event = Referral.objects.get(pk=request.POST['referral'])
+        if request.POST['group']:
+            referral = request.POST['group']
+        else:
+            referral = request.POST['referral']
+
+        event = Referral.objects.get(pk=referral)
         if recurrence_form.is_valid():
             recurrence_form.save(event)
             return http.HttpResponseRedirect('/schedule/events/%s/' % event.id)
@@ -97,7 +102,9 @@ def add_event(
             dtstart=dtstart, 
             event_form=event_form, 
             recurrence_form=recurrence_form, 
+            group  = ReferralGroup.objects.filter(referral__organization = request.user.get_profile().org_active),
             rooms = Room.objects.filter(place__organization = request.user.profile.org_active, active=True),
+            
             room_id=room,
             ),
         context_instance=RequestContext(request)
@@ -265,6 +272,7 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
             'place': o.room.place_id,
             'room_name': ("%s" % o.room),
             'service_id':o.event.referral.service.id,
+            'group': o.event.referral.group_name(),
             'service':o.event.referral.service.name,
             'css_color_class':o.event.referral.service.css_color_class,
             'start_time': o.start_time.strftime('%H:%M:%S'),

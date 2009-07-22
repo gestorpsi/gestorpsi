@@ -1,0 +1,97 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Services" %}{% endblock %}
+
+{% block submenu %}
+    <ul>
+        <li><a class="first" href="/service/">{% trans "all" %}</a></li>
+        <li><a class="{% if not object.id %}active{% endif %}" href="/service/add/">{% trans "add" %}</a></li>
+        {% if object.id %}<li><a class="active">{{ object }}</a></li>{% endif %}
+        
+    </ul>
+{% endblock %}
+
+{% block core %}
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+{% if object.id %}
+	<h2 class="title_clients title">{{ object }}</h2>
+	<p class="description">{% trans "adding group" %}<br />	
+{% else %}
+	<h2 class="title_clients title">{% trans "New Admission" %}</h2>
+	<p class="description">{% trans "Inform the referral details then click on Save button" %}</p>
+{% endif %}
+
+</p>
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
+{% if not object.referral %}
+<form action="/service/{{object.id}}/group/add/" method="post">
+{% else %}
+<form action="/service/group/{{object.id}}/form/" method="post">
+{% endif %}
+<div class="main_area">
+    <a href="" id=help>&nbsp;</a>
+    <h3><span>{% trans "Group Details" %}</span></h3>
+    <fieldset>
+    <legend>{% trans "Basic informations" %}</legend>
+        <label>{% trans "Group Description" %}<br />
+        {{ form.description }}
+        {{ form.description.errors }}
+        </label>
+        <label>{% trans "Group Comments" %}<br />
+        {{ form.comments }}
+        {{ form.comments.errors }}
+        </label>
+    </fieldset>
+
+    <fieldset>
+    <legend>{% trans "Group Members" %}</legend>
+        <label>{% trans "Clients" %}<br /></label>
+        <div>
+        {{ client_form.client }}
+        {{ client_form.client.errors }}
+        </div>
+        
+    </fieldset>
+    
+<br />
+    
+</div>
+
+<div id="sidebar" class="sidebar">
+    {% if perms.client.client_write %}
+        <div class="bg_blue">
+            {% include "tags/save.html" %}
+        </div>
+    {% endif %}
+    {% if object.id %}
+        {% include "tags/service_sidebar.html" %}
+    {% endif %}
+</div>
+
+</form>
+
+{% endblock %}
+

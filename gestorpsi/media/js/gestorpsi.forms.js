@@ -247,6 +247,45 @@ $(function() {
              
      });
      
+    /**
+     * select multiple jquery widget plugin
+     * http://akibjorklund.com/code/multiselectable/
+     */
+
+    $('select.multiselectable').multiselectable({
+		selectableLabel: 'Disponíveis',
+		selectedLabel: 'Selecionados',
+		moveRightText: '>>',
+		moveLeftText: '<<',
+        template: '<div class="multiselectable"><input type="text" class="multiselectable_filter">' +
+            '<div class="m-selectable-from"><label for="m-selectable"></label>' +
+            '<select multiple="multiple" id="m-selectable"></select>' +
+            '</div>' +
+            '<div class="m-selectable-controls">' +
+            '<button class="multis-left"></button>' +
+            '<button class="multis-right"></button>' +
+            '</div>' +
+            '<div class="m-selectable-to"><label for="m-selected"></label>' +
+            '<select multiple="multiple" id="m-selected"></select>' +
+            '</div>' +
+        '</div>',
+	});
+    
+    $('div.multiselectable input.multiselectable_filter').keyup(function() {
+        var typed = $(this).val();
+        if(typed != '') {
+            $('select#m-selectable option').hide();
+            $('select#m-selectable option').each(function() {
+                option = $(this).text().toLowerCase()
+                if(option.match(typed.toLowerCase())) {
+                    $(this).show();
+                }
+
+            });
+        } else {
+            $('select#m-selectable option').show();    
+        }
+    });
       
      /** 
       * 
@@ -777,5 +816,5 @@ $(function() {
             $('form.new_device_form div#device_form input[id=id_lendable]').removeAttr("checked");
         }
     });
-
+    
 });

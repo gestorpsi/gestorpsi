@@ -67,7 +67,7 @@ GNU General Public License for more details.
             <fieldset class="existing_referral" id="existing_referral_true">
             <legend>{% trans "Existing Referral" %}</legend>
                 <div>
-                <label style="margin-left: 0px !important;">{% trans "Clients" %}<br />
+                <label style="margin-left: 0px !important;">{% trans "Client" %}<br />
                 <div id="fb_client"></div> <!-- clients from organization -->
                 </label>
                 </div>
@@ -77,6 +77,21 @@ GNU General Public License for more details.
                 </select>
                 </label>
                 </div>
+                <div style="clear:both"><br />
+                <a style="cursor:pointer;" onclick="$('fieldset.referral_group').show('slow'); $(this).parent('div').hide();">{% trans "Schedule a Group?" %}</a>
+                </div>
+            </fieldset>
+
+            <fieldset class="referral_group hidden">
+            <legend>{% trans "Group" %}</legend>
+                <label>{% trans "Choice one group or" %} <a href="/service/">{% trans "add a new one" %}</a> {% trans "from selected service" %}<br />
+                    <select name="group" class="giant">
+                    <option value="">--------</option>
+                    {% for i in group %}
+                        <option value="{{ i.referral.id }}">{{ i.referral.service.name }} - {{ i }}</option>
+                    {% endfor %}
+                    </select>
+                </label>
             </fieldset>
 
             <fieldset>
@@ -168,11 +183,9 @@ GNU General Public License for more details.
       </div>      
 
     <div id="sidebar" class="sidebar">
-        <div class="bg_blue">
-            <input type="hidden" name="day_clicked" class="day_clicked" value="{{ recurrence_form.initial.day|date:"Y/m/d" }}" />
-            <input class="save_button" name="_add" type="submit" value="{% trans 'Save' %}" />
-            <input class="save_button" name="cancel" id="cancel_button" type="button" value="{% trans 'Cancel' %}" />
-        </div>
+            <div class="bg_blue">
+                {% include "tags/save.html" %}
+            </div>
     </div>
 
     </form>

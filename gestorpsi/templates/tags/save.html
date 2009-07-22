@@ -20,17 +20,13 @@ GNU General Public License for more details.
 
 <div id="msg_info">
 	<p>
-		<span class="adding">
-		{% trans "This register are not saved yet. Click Save to register it." %}
-		</span>
-		<span class="editing">
-			{% trans 'Last revision' %} {#{% trans 'in' %}#}
-			<span class="last">
-			{{ object.revision.date_created|date:"r"|slice:":-9"}}&nbsp;hs
-			</span>
-			<span class="now" style="display:none;">
-			{% trans "less than one minute" %}
-			</span>
+        <span>
+		{% if not object.revision %}
+            {% trans "This register are not saved yet. Click Save to register it." %}
+        {% else %}
+        {% trans 'Last revision' %} 
+		{{ object.revision.date_created|date:"r"|slice:":-9"}}&nbsp;hs
+        {% endif %}
 		</span>
 	</p>
 </div>

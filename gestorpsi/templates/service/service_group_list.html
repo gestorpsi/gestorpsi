@@ -1,0 +1,67 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Services" %}{% endblock %}
+
+{% block submenu %}
+    <ul>
+        <li><a class="first" href="/service/">{% trans "All Services" %}</a></li>
+        <li><a href="/service/add/">{% trans "Add Service" %}</a></li>
+        <li><a class="active">{% trans "groups of" %} {{ service.name }}</a></li>
+    </ul>
+{% endblock %}
+
+{% block core %}
+
+{% if not object %}
+<div class="no_registers_available">
+        <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/service/{{ service.id }}/group/add/" display="form" class="fastmenu notajax" sub_menu="sub_services">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
+</div>
+{% else %}
+
+<div class="registers_available">
+        <h2 class="title_services">{{ object.0.referral.service.name }} {% trans "groups" %}</h2>
+        <p class="description">{% trans "Displaying" %} <a href="/service/{{ object.0.referral.service.id }}/group/"><span id="object_length">{{ object|length }}</span> {% trans "groups(s)" %}</a>. </p>
+        
+        <div class="main_area contact">
+                <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+                <thead> 
+                        <tr> 
+                        <th></th> 
+                        <th></th> 
+                        </tr> 
+                </thead>
+                <tbody>
+                    {% for o in object %}
+                    <tr class="zebra_{% cycle '0' '1' %}">
+                        <td class="title"><a href="/service/group/{{ o.id }}/form/" title="{{ o }}">{{ o }}</a><br></td>
+                        <td><span class="phone">{{ o.referral.client.all|length }} {% trans "client(s)" %}</span><br><span class="email">{{ o.comments|truncatewords:15 }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+                {# {% include "tags/paginator.html" %} #}
+        </div>
+</div>
+
+{% endif %}
+{% endblock %}

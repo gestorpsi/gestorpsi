@@ -148,14 +148,14 @@ $(function(){
 
         // organization menu
         $('ul#sub_organization li a.organization').click(function() {
-                $('#form_organization .main_area fieldset.organization').hide();
-				$('#form_organization .main_area div.photo').hide();
+                $('form .main_area fieldset.organization').hide();
+				$('form .main_area div.photo').hide();
 				if($(this).hasClass('first')) $('.main_area div.photo').show();
-                $('#form_organization .main_area fieldset.organization.' + $(this).attr('display')).show();
-                if($('#form_organization .main_area fieldset.organization.' + $(this).attr('display')).hasClass('comment')) {
-                        $('#form_organization .main_area fieldset.comment_form').show();
+                $('form .main_area fieldset.organization.' + $(this).attr('display')).show();
+                if($('form .main_area fieldset.organization.' + $(this).attr('display')).hasClass('comment')) {
+                        $('form .main_area fieldset.comment_form').show();
                 } else {
-                        $('#form_organization .main_area fieldset.comment_form').hide();
+                        $('form .main_area fieldset.comment_form').hide();
                 }
                 /**
                  * select submenu

@@ -16,10 +16,19 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<div class="service_actions">	
+{% if not hide_service_actions %}
+<div class="service_actions">
 <h3>{% trans 'Object Actions' %}</h3>
 <ul>
-    <li><a href="/service/{{ object.id }}/order/" class="service_order" title="{{ object.name }}">{% if object.active %} Desativar {% else %} Ativar {% endif %} </a></li>
+    <li><a href="/service/{{ object.id }}/order/" class="client_order" title="{{ object.name }}">{% if object.active %} Desativar {% else %} Ativar {% endif %} </a></li>
     <!-- <li><a class="print" href="/client/{{ object.id }}/print/" title="{{ object.person.name }}">{% trans "Print Record" %}</a></li> -->
+</ul>
+</div>
+{% endif %}
+<div class="service_actions">	
+<h3>{% trans 'Service Groups' %}</h3>
+<ul>
+    <li><a href="/service/{% if object.referral.service.id %}{{ object.referral.service.id }}{% else %}{{ object.id }}{% endif %}/group/add/" class="add">{% trans "Add group on this service" %}</a></li>
+    <li><a href="/service/{% if object.referral.service.id %}{{ object.referral.service.id }}{% else %}{{ object.id }}{% endif %}/group/" class="list">{% trans "List groups from this service" %}</a></li>
 </ul>
 </div>

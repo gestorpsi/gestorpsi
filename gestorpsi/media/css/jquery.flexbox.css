@@ -2,13 +2,19 @@
 .ffb-input {
 	float:left;
 	color:#000; /* must specify along with watermark color */
-	font-size: 16px;
+	height: 32px;
 	padding: 0px;
 	border: 2px solid #F9F9F9;
+	border-right: 0px !important;
 	background: #F9F9F9;
-	letter-spacing: 0.05em;
 	margin-left: -10px !important;
 	width: 380px !important;
+	height: 32px;
+	background-image: none !important;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	letter-spacing: 0.05em;
+
 }
 /* Color of watermark, if present */
 .ffb-input.watermark { /* added and removed dynamically */
@@ -17,9 +23,16 @@
 /* Drop-down arrow, with sprited image */
 .ffb-arrow {
 	float:left;
-	width:18px;
-	height:22px;
-	background-image:url(/media/img/sel.gif);
+	width:32px;
+	height:32px;
+	background: #FFF url(/media/img/22/search.png) no-repeat 80% 5px !important;
+	border: 2px solid #CCCCCC;
+	margin-top: 7px;
+	border-left: 0px;
+}
+
+.ffb-input:focus {
+background: #fff6d5 !important;
 }
 .ffb-arrow.out { /* css sprite technique */
 	background-position:0;
@@ -44,7 +57,9 @@
 	border-right:1px solid #7B9EBD;
 	border-bottom:1px solid #7B9EBD;
 	background-color:#fff; /* Give it a background-color, so it's not transparent */
-	margin: 0 0 0 -10px !important;
+	margin: 8px 0 0 -9px !important;
+	border: 2px solid #F9F9F9;
+	width: 410px !important;
 }
 /* Inner div for dropdown */
 .ffb .content {
@@ -52,21 +67,30 @@
 	margin-left: 2px !important;
 }
 .ffb .content .row {
-	border-bottom:1px solid #7B9EBD;
+	border-bottom:1px solid #F9F9F9;
 	color:#555;
-	height:20px;
+	height:24px;
 	clear:both;
 	margin-left: 0px !important;
+	font-size: 16px;
+	background: #fff6d5 !important;
 }
+
+.ffb .content .row:hover {
+color: #FFF;
+	background: #2688ae !important;
+
+}
+
 .ffb-sel {
 	cursor:pointer;
 	cursor:hand;
-	background-color:#ddd;
+	background-color:#FFF;
 }
 .ffb-match {
-	background-color:#ff9; /* light yellow */
+	background-color:#2688ae; /* light yellow */
 	text-decoration:underline;
-	color:#000;
+	color:#fff;
 }
 
 /* Paging */
@@ -101,3 +125,4 @@
 	float:left;
 	width:232px;
 }
+

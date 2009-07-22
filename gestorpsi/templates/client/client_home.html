@@ -38,14 +38,20 @@ GNU General Public License for more details.
 	<!-- <a href="" id="help">&nbsp;</a> -->
 	<!-- DataTypes form menu -->
 	<h3><span id="client_add_infotypes">{% trans "Administrative Details" %}</span></h3>
-    
+    <div class="photo">
+        <img class="img_people" src="{% if object.person.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
+        <br><br>
+    </div>    
     <h1>{{ object.person.name }}</h1>
-    <p>
+    <fieldset>
+    <label>
     {{ object.person.get_first_email }}<br />
     {{ object.person.get_first_phone }}<br />
     <a href="/client/{{ object.id}}/">{% trans "edit" %}</a>
-    </p>
+    </label>
+    </fieldset>
 <br />	
+
 </div>
 
 <div id="sidebar" class="sidebar">

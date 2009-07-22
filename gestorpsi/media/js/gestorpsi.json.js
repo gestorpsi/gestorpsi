@@ -336,6 +336,8 @@ function updateService(url) {
                 tableTR += '</td>';
                 tableTR += '<td><span class="phone"></span><br />';
                 tableTR += '<span class="email"></span></td>';
+                tableTR += '<td><a style="padding-bottom: 5px; text-decoration:none" href="/service/' + this.id + '/group/" class="list" title="Listar grupos deste serviço">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>';
+                tableTR += '<a style="padding-bottom: 5px; text-decoration:none" href="/service/' + this.id + '/group/add/" class="add" title="Adicionar Grupo neste serviço">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></td>';
                 tableTR += '</tr>';
             }
         });

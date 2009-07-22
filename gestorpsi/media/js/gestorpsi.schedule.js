@@ -66,13 +66,7 @@ function updateGrid(url) {
         $('table.schedule_results.daily tr td.clean a.book').each(function() { // update date ins url
             hour = $(this).parent('td').parent('tr').attr('hour');
             room = $(this).parent('td').attr('room');
-            //$(this).attr('href', '#');
-            //$(this).attr('date', json['util']['date']);
-            //$(this).attr('hour', hour);
-            //$(this).attr('room_id', room);
             $(this).attr('href', '/schedule/events/add/?dtstart=' + json['util']['date'] + 'T' + hour + '&room='+ room);
-            //$(this).attr('title', json['util']['str_date']);
-            //$(this).attr('weekday', json['util']['weekday']);
         });
         $('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/');
         $('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/');
@@ -104,12 +98,18 @@ function updateGrid(url) {
                  * append rows titles
                  */
                 
-                //append client list
-                jQuery.each(this.client,  function(){
-                    str_client += this.name + "<br />";
-                    str_client_inline += this.name + ", ";
-                });
-                str_client_inline = str_client_inline.substr(0, (str_client_inline.length-2))
+                //append group name or client list
+                if(this.group != null) {
+                    str_client = this.group + "<br />";
+                    str_client_inline = this.group;
+                } else {
+                    jQuery.each(this.client,  function(){
+                        str_client += this.name + "<br />";
+                        str_client_inline += this.name + ", ";
+                    });
+                    str_client_inline = str_client_inline.substr(0, (str_client_inline.length-2));
+                }
+                
                 
                 //append professional list
                 jQuery.each(this.professional,  function(){

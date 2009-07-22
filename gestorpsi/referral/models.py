@@ -23,6 +23,7 @@ from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.organization.models import Organization
+from gestorpsi.util.uuid_field import UuidField
 
 class ReferralPriority(models.Model):
     title = models.CharField(max_length=20)
@@ -43,9 +44,25 @@ REFERRAL_STATUS = (
     ('03', 'Unknown'),
 )
 
+class ReferralGroup(models.Model):
+    id = UuidField(primary_key=True)
+    referral = models.ForeignKey('Referral', null=True, blank=True)
+    description = models.CharField(max_length=100)
+    comments = models.TextField(blank=True)
+    #active = models.BooleanField(default=True)
+    
+    def __unicode__(self):
+        return u'%s' % (self.description)
+
+    class Meta:
+        ordering = ['referral__service__name', 'description']
+
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+
 class Referral(Event):
     #id = UuidField(primary_key=True)
-    client = models.ManyToManyField(Client)
+    client = models.ManyToManyField(Client, null=True, blank=True)
     professional = models.ManyToManyField(CareProfessional, null=True)
     service = models.ForeignKey(Service, null=True)
     referral = models.ForeignKey('Referral', null=True, blank=True, related_name='referral_parent')
@@ -85,6 +102,13 @@ class Referral(Event):
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
+    def group_name(self):
+        try:
+            r = self.referralgroup_set.all()[0]
+            return r.description
+        except:
+            return None
+
 reversion.register(Event)
 reversion.register(Referral, follow=['event_ptr'])
-
+reversion.register(ReferralGroup, follow=['referral'])

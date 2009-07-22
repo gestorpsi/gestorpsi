@@ -898,8 +898,12 @@ hr {
 	height: 50px;
 	width: 715px;
 	position:relative;
+}
+
+div.schedule #search_header {
 	padding-left: 90px;
 }
+
 #nav_back, #nav_fwd {
 	position: absolute; 
 	left: 10px;
@@ -921,14 +925,15 @@ hr {
 	margin-top: -4px;
 	text-align: center;
 }
-.contact #search_header input {
+.contact #search_header input, div.multiselectable input.multiselectable_filter, input.ffb-input {
 	float: left;
 	width: 120px;
 	margin-top: 7px;
 	background: #FFFFFF url(../img/22/search.png) no-repeat 98% 3px;
 	border: 2px solid #CCCCCC;
 }
-.contact #search_header input:focus {
+
+.contact #search_header input:focus, div.multiselectable input.multiselectable_filter:focus {
 	background: #fff6d5 url(../img/22/search.png) no-repeat 98% 3px;
 }
 #cleanup {
@@ -1317,6 +1322,7 @@ label div.error {
 
 fieldset div {
 	clear: both;
+	margin-left: 10px;
 }
 
 
@@ -1429,3 +1435,17 @@ h3.developingList {
 	text-align: center;
     cursor: default;
 }
+
+
+div.multiselectable select, .multiselectable div {  }
+div.multiselectable select { width: 280px; height: 300px; } 
+div.multiselectable select { font-size: 12px; }
+div.multiselectable div * { float:left; margin: 0 auto; }
+div.multiselectable div { display: inline; }
+div.multiselectable .m-selectable-controls button { margin: 120px 0px 0 0px; padding: 5px; font-weight: bold; }
+div.multiselectable .m-selectable-controls button.multis-left { margin-left: 10px;}
+div.multiselectable .m-selectable-controls button.multis-right { margin-right: 10px; }
+div.multiselectable input { margin-bottom: 10px; }
+div.multiselectable select#m-selectable { clear: both;}
+div.multiselectable div.m-selectable-from label { clear: both; }
+div.multiselectable div.m-selectable-to label  { margin-top: -20px; }

@@ -31,7 +31,7 @@ GNU General Public License for more details.
 {% block core %}
 
 <div class="schedule">
-    <h2 class="title_schedule title">{{ event.client.all.0 }} - {{ event.service }}</h2>
+    <h2 class="title_schedule title">{% if event.referralgroup_set.all %}<a href="/service/group/{{ event.referralgroup_set.all.0.id }}/form/">{{ event.group_name }}</a>{% else %}{{ event.client.all.0 }}{% endif %} - {{ event.service }}</h2>
     <p class="description"><a href="/careprofessional/{{ event.professional.all.0.id }}/">{{ event.professional.all.0 }}</a></p>
 
     <form method="post" action="/schedule/events/add/" class="schedule refresh">

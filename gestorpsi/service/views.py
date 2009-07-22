@@ -224,8 +224,9 @@ def disable(request, object_id=''):
         }, context_instance=RequestContext(request))
 
 
-""" Referral - List of professional of the service """
+@permission_required_with_403('service.service_list')
 def list_professional(request, object_id):
+    """ Referral - List of professional of the service """
     try:
         list_prof = CareProfessional.objects.filter(prof_services = object_id)
         
@@ -244,6 +245,7 @@ def list_professional(request, object_id):
     except:
         pass
 
+@permission_required_with_403('service.service_write')
 def order(request, object_id = ''):
     object = Service.objects.get(pk = object_id)
 

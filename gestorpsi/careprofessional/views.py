@@ -30,6 +30,7 @@ from gestorpsi.place.models import Place, PlaceType
 from gestorpsi.person.views import person_save
 from gestorpsi.service.models import Service
 from gestorpsi.util.decorators import permission_required_with_403
+from gestorpsi.util.views import get_object_or_None
 from gestorpsi.person.views import person_json_list
 
 
@@ -68,7 +69,6 @@ def form(request, object_id=''):
         instantMessengers = object.person.instantMessengers.all()
         workplaces = object.professionalProfile.workplace.all()
         agreements = object.professionalProfile.agreement.all()
-        #services = object.professionalProfile.services.all()
     except:
         object = CareProfessional() 
 
@@ -110,6 +110,7 @@ def care_professional_fill(request, object, save_person = True):
     @param object: it is the tyoe of CareProfessional that must be filled.
     @type object: an instance of the built-in type C{Psychologist}.            
     """
+    user = request.user
     try:
         person= Person.objects.get(pk=object.person_id)        
     except:        
@@ -125,7 +126,9 @@ def care_professional_fill(request, object, save_person = True):
         profile= ProfessionalProfile()
     
     if ( len( request.POST.getlist( 'professional_service' ) ) ):
-        object.prof_services.clear()
+        #object.prof_services.clear() #### Apagar somente os services da organizacao atual
+        for o in object.prof_services.filter(organization=user.get_profile().org_active):
+            object.prof_services.remove(o)
         for ps_id in request.POST.getlist( 'professional_service' ):
             ps = Service.objects.get(pk=ps_id)
             object.prof_services.add(ps)
@@ -137,30 +140,23 @@ def care_professional_fill(request, object, save_person = True):
     #profile.availableTime = request.POST['professional_availableTime']
     profile.save()
 
-    if ( len( request.POST.getlist( 'professional_agreement' ) ) ):
+    if (len(request.POST.getlist('professional_agreement'))):
+        #for o in profile.agreement.filter(organization=user.get_profile().org_active):
+        #    profile.agreement.remove(o)
         profile.agreement.clear()
-        for agreemt_id in request.POST.getlist( 'professional_agreement' ):
-               agreemt= Agreement.objects.get( pk= agreemt_id )
-               profile.agreement.add( agreemt )
+        for agreemt_id in request.POST.getlist('professional_agreement'):
+            profile.agreement.add(Agreement.objects.get(pk=agreemt_id))
 
-    if ( len(request.POST.getlist( 'professional_workplace' ) ) ):
-        profile.workplace.clear()
-        for wplace_id in request.POST.getlist( 'professional_workplace' ):
-            wplace= Place.objects.get( pk= wplace_id )
-            profile.workplace.add( wplace )
+    if (len(request.POST.getlist('professional_workplace'))):
+        for o in profile.workplace.filter(organization=user.get_profile().org_active):
+            profile.workplace.remove(o)
+        for wplace_id in request.POST.getlist('professional_workplace'):
+            profile.workplace.add(Place.objects.get(pk=wplace_id))
 
-    object.professionalProfile= profile
+    object.professionalProfile = profile
 
-    try:
-        identification =  ProfessionalIdentification.objects.get(pk = object.professionalIdentification_id )
-    except:
-        identification = ProfessionalIdentification()
-
-    try:
-        identification.profession = Profession.objects.get(symbol=request.POST.get('professional_area'))
-    except:
-        identification.profession = None
-
+    identification = get_object_or_None(ProfessionalIdentification, pk=object.professionalIdentification_id) or ProfessionalIdentification()
+    identification.profession = get_object_or_None(Profession, symbol=request.POST.get('professional_area'))
     identification.registerNumber = request.POST['professional_registerNumber']
     identification.save()
     object.professionalIdentification = identification   

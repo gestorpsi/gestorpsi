@@ -50,7 +50,7 @@ class Person(models.Model):
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True)
     comments = models.TextField(blank=True)
     active = models.BooleanField(default=True)
-    organization = models.ForeignKey(Organization, null=True)
+    organization = models.ManyToManyField(Organization)
 
     # the fields below were added in order to deal with foreign ones
     birthForeignCity = models.CharField(max_length=100, null=True)

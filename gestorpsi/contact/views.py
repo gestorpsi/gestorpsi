@@ -33,6 +33,7 @@ from gestorpsi.address.views import address_save
 from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
 from gestorpsi.util.decorators import permission_required_with_403
+from gestorpsi.util.views import get_object_or_None
 
 @permission_required_with_403('contact.contact_list')
 def list_order(request, dictionary):
@@ -50,7 +51,6 @@ def list_order(request, dictionary):
 @permission_required_with_403('contact.contact_list')
 def index(request):
     return render_to_response('contact/contact_list.html', context_instance=RequestContext(request))
-
 
 @permission_required_with_403('contact.contact_list')
 def list(request, page = 1):
@@ -127,8 +127,9 @@ def add(request):
 def form(request, object_type='', object_id=''):
     user = request.user
     org = user.get_profile().org_active
-    organizations = Organization.objects.filter(organization=None, active=True, visible=True)
-    
+    organizations = Organization.objects.filter(organization=None, active=True, visible=True).exclude(id=org.id)
+
+
     if object_type == '1':   # ORGANIZATION (1)
         object = get_object_or_404(Organization, pk=object_id)
         phones    = object.phones.all()
@@ -140,15 +141,14 @@ def form(request, object_type='', object_id=''):
             organizations = Organization.objects.filter(contact_owner=user.get_profile().person, active=True, visible=True)
     else:                    # PROFESSIONAL (2)
         object = get_object_or_404(CareProfessional, pk=object_id)
-        if object.person.organization.organization:
+        #if object.person.organization.organization:
+        if object.person.organization.count() == 1 and object.person.organization.all()[0].organization:
             organizations = Organization.objects.filter(contact_owner=user.get_profile().person, active=True, visible=True)
-            #organizations = organizations.filter(organization=org)
         phones    = object.person.phones.all()
         addresses = object.person.address.all()
         emails    = object.person.emails.all()
         sites     = object.person.sites.all()
         instantMessengers = object.person.instantMessengers.all()
-        #last_update = object.history.latest('_audit_timestamp')._audit_timestamp
         
     return render_to_response('contact/contact_form.html', {
                                     'object': object,
@@ -176,13 +176,9 @@ def save(request, object_id=''):
     if (request.POST.get('type') == 'organization'):
         type = "1"
 
-        try:
-            object = get_object_or_404(Organization, pk=object_id)
-        except:
-            object = Organization()
-        
-        object.name = request.POST.get('label') # adding by mini form
+        object = get_object_or_None(Organization, pk=object_id) or Organization()
 
+        object.name = request.POST.get('label') # adding by mini form
         if (object.name == None):   # input of mini form
             object.name = request.POST.get('name')
 
@@ -221,8 +217,8 @@ def save(request, object_id=''):
             object.professionalIdentification = identification
 
         person.name = request.POST.get('name')
-        person.organization = Organization.objects.get(pk=request.POST.get('organization'))
         person.save()
+        person.organization.add(Organization.objects.get(pk=request.POST.get('organization')))
 
         phone_save(person, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
         email_save(person, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
@@ -243,9 +239,12 @@ def save(request, object_id=''):
 
 @permission_required_with_403('contact.contact_write')
 def save_mini(request, object_id=''):
+    user = request.user
     object = Organization()
     object.name = request.POST.get('label') # adding by mini form
     object.short_name = slugify(object.name)
+    object.organization = user.get_profile().org_active
+    object.contact_owner = user.get_profile().person
     object.save()
 
     return HttpResponse("%s" % (object.id))
@@ -256,7 +255,7 @@ def address_book_get_professionals(request):
     org = user.get_profile().org_active
     lista = []
     
-    for x in Organization.objects.filter(organization=None, active=True, visible=True):
+    for x in Organization.objects.filter(organization=None, active=True, visible=True).exclude(id=org.id):
         if ( x.person_set.filter(profile__user__is_active=True).count() ):
             phone = x.get_first_phone()
             email = x.get_first_email()
@@ -289,7 +288,7 @@ def address_book_get_organizations(request):
     org = user.get_profile().org_active
     lista = []
     
-    for x in Organization.objects.filter(organization=None, active=True, visible=True):
+    for x in Organization.objects.filter(organization=None, active=True, visible=True).exclude(id=org.id):
         if ( x.person_set.filter(profile__user__is_active=True).count() ):
             phone = x.get_first_phone()
             email = x.get_first_email()

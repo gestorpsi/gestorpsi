@@ -66,9 +66,9 @@ def person_save(request, person):
             person.birthForeignCountry= None
 
 
+    person.save()    
     user = request.user
-    person.organization = user.get_profile().org_active    
-    person.save()
+    person.organization.add(user.get_profile().org_active)
 
     # save phone numbers (using Phone APP)
     phone_save(person, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))

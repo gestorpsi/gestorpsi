@@ -208,7 +208,7 @@ class Service(models.Model):
     professionals = models.ManyToManyField( CareProfessional, related_name="prof_services" )
     css_color_class = models.IntegerField(max_length=2, blank=True, null=True, default=0)
     date = models.DateTimeField(auto_now_add=True)
-    comments = models.TextField(blank=True, null=True)
+    comments = models.TextField(blank=True)
 
     # Generic Clinic Area Relationship
     content_type = models.ForeignKey(ContentType, null=True)

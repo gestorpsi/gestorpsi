@@ -150,7 +150,6 @@ def room_save(request, object_id=''):
     object.room_type = RoomType.objects.get(pk=request.POST.get('room_type'))
     object.furniture = request.POST.get('furniture')
     object.comments = request.POST.get('comments') 
-    object.active = get_visible(request.POST.get('active'))
 
     if object.id:
         object.save(force_update=True)

@@ -80,14 +80,6 @@ GNU General Public License for more details.
 			{% endif %}
 			</label>
 
-            <label>{% trans "Active for work?" %}<br />
-            <select name="active"> 
-                   <option value="on"{% if object.active %} selected{% endif %}>{% trans "Yes" %}</option>
-                   <option value="off"{% if not object.active %} selected{% endif %}>{% trans "No" %}</option>
-            </select>
-                            
-			</label>
-
 			<label>{% trans "Furniture" %}<br />
 			<textarea name="furniture" class="giant">{{ object.furniture }}</textarea>
 			

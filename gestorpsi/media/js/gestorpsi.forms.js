@@ -789,6 +789,7 @@ $(function() {
         if (this.checked == true ){
             if ($('form.edit_device div#device_form select[name=select_mobility_type]').val() == "1"){
                 $('form.edit_device div#device_form select[name=select_mobility_type]').val("2");
+                $('form.edit_device div#device_form label.device_room').hide();
             }
         }
     });
@@ -806,6 +807,7 @@ $(function() {
         if (this.checked == true ){
             if ($('form.new_device_form div#device_form select[name=select_mobility_type]').val() == "1"){
                 $('form.new_device_form div#device_form select[name=select_mobility_type]').val("2");
+                $('form.new_device_form div#device_form label.device_room').hide();
             }
         }
     });

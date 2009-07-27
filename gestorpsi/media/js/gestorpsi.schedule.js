@@ -269,12 +269,22 @@ function updateGrid(url) {
 $(function() {
 
     // if start time is changed, increment 'increment_end_time' value to end time
-    $('div.schedule select[name=start_time_delta] option').click(function() {
+    $('div.schedule select[name=start_time_delta] option, div.schedule select[name=start_time1] option').click(function() {
         var option = $(this);
         var end_time = (parseInt(increment_end_time) + parseInt(option.attr('value')));
 
         $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option').attr('selected','');
         $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option[value=' + end_time + ']').attr('selected','selected');
+        
+        $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option').attr('disabled',false)
+
+        $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option').each(function(){
+             
+            if ($(this).val() <= option.val() ){
+                $(this).attr('disabled','disabled');
+
+            }  
+        });
     });
 
     // get clients json list and draw flexbox

@@ -292,7 +292,6 @@ function updateDeviceType(url) {
         /**
         * build html
         */
-
         jQuery.each(json,  function(){
             if(this.id) {
                 tableTR += '<tr id="' + this.id + '"><td class="title">';

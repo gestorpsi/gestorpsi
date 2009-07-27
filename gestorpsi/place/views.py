@@ -143,8 +143,8 @@ def room_save(request, object_id=''):
         object = Room.objects.get(pk=object_id)
     except:
         object = Room()
-        object.place = Place.objects.get(pk = request.POST.get('place_id'))
 
+    object.place = Place.objects.get(pk = request.POST.get('place_id'))
     object.description = request.POST.get( 'description' )
     object.dimension = request.POST.get('dimension')
     object.room_type = RoomType.objects.get(pk=request.POST.get('room_type'))

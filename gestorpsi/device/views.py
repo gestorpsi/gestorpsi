@@ -150,9 +150,7 @@ def save_device(request, object_id= ''):
     device.description = request.POST.get('label')
     device.organization = user.get_profile().org_active
     device.save()
-    request.user.message_set.create(message=_('Device type saved successfully'))
-
-    return HttpResponseRedirect('/device/type/%s/' % device.id)
+    return HttpResponse(device.id)
 
 @permission_required_with_403('device.device_write')
 def save(request, object_id='' ):
@@ -209,13 +207,45 @@ def delete(request, object_id= ''):
     pass
 
 def list_device(request, object_id):
+    user = request.user
+
+    object = Room.objects.get(pk = object_id)
 
     array = {} # JSON
-    devices_from_room = DeviceDetails.objects.filter(room = object_id)  # ALL FIXED DEVICES FROM THE ROOM
-    list = DeviceDetails.objects.filter(Q(room = object_id) | Q(lendable=True) | Q(room = object_id, mobility="2"))
 
     c = 0
-    for device in list:
+
+    """
+    # LENDABLE = ORGANIZATION
+    devices = DeviceDetails.objects.filter(place__organization = user.get_profile().org_active, mobility="2", lendable=True)
+    for device in devices:
+        print "================================= %s" % c
+        print devices
+        array[c] = {
+            'id': device.id,
+            'name': '%s' % device,
+            }
+        c = c + 1
+
+    # MOVEL = LOCAL
+    devices = DeviceDetails.objects.filter(place =  object.place_id, place__organization = user.get_profile().org_active, mobility="2", lendable=False)
+
+    for device in devices:
+        print "================================= %s" % c
+        print devices
+        array[c] = {
+            'id': device.id,
+            'name': '%s' % device,
+        }
+        c = c + 1
+
+    # FIX ON THE ROOM
+    devices = DeviceDetails.objects.filter(room = object_id, mobility="1")
+    """
+
+    devices = DeviceDetails.objects.filter(Q(room = object_id, mobility="1") | Q(place =  object.place_id, place__organization = user.get_profile().org_active, mobility="2", lendable=False) | Q(place__organization = user.get_profile().org_active, mobility="2", lendable=True))
+
+    for device in devices:
         array[c] = {
             'id': device.id,
             'name': '%s' % device,

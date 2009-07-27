@@ -106,7 +106,7 @@ class ProfessionalProfile(models.Model):
     """
     id= UuidField( primary_key= True )
     academicResume = models.OneToOneField(AcademicResume, null=True)
-    initialProfessionalActivities = models.DateField(null=True)
+    initialProfessionalActivities = models.CharField(max_length=10, null=True)
     agreement = models.ManyToManyField(Agreement, null=True)
     profession = models.OneToOneField(Profession, null=True)
     services = models.CharField(max_length=100, null=True)

@@ -39,7 +39,7 @@ from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.person.views import person_save
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.referral.models import Referral
-from gestorpsi.referral.forms import ReferralForm
+from gestorpsi.referral.forms import ReferralForm, ReferralDischargeForm
 from gestorpsi.reports.header import header_gen
 from gestorpsi.reports.footer import footer_gen
 from gestorpsi.util.decorators import permission_required_with_403
@@ -61,10 +61,13 @@ def home(request, object_id=None):
         object    = get_object_or_404(Client, pk=object_id)
     except:
         raise Http404
+    
+    referrals = Referral.objects.charged()
+    referrals = referrals.filter(client=object)
     return render_to_response('client/client_home.html',
                                         {
                                         'object': object,
-                                        'total_service': Referral.objects.filter(client=object).count()
+                                        'referrals': referrals,
                                         },
                                         context_instance=RequestContext(request))
 
@@ -100,7 +103,7 @@ def list(request, page = 1):
     if user.groups.filter(name='administrator').count() == 1 or user.groups.filter(name='secretary').count() == 1:
         object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
     else:
-        object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1', referral__professional = user.profile.person.careprofessional.id).order_by('person__name')
+        object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1', referral__professional = user.profile.person.careprofessional.id).distinct().order_by('person__name')
 
     return HttpResponse(simplejson.dumps(person_json_list(request, object, 'client.client_read', page)),
                             mimetype='application/json')
@@ -141,16 +144,6 @@ def form(request, object_id=''):
         profile = Profile()
         profile.person = get_object_or_404(Person, pk=object.person.id)
         profile.user = User(username=slugify(profile.person.name))
-
-    # client referral
-    data = {'client': [object.id]}
-    referral_form = ReferralForm(data)
-    referral_form.fields['referral'].queryset = Referral.objects.filter(client=object)
-    referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
-    #referral_form.fields['professional'].queryset = CareProfessional.objects.filter(person__organization = request.user.get_profile().org_active.id)
-    referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
-    total_service = Referral.objects.filter(client=object).count()
-    referral_list = Referral.objects.filter(client=object, status='01')
     
     return render_to_response('client/client_form.html',
                               {'object': object, 
@@ -175,17 +168,98 @@ def form(request, object_id=''):
                                 'ReferralChoices': ReferralChoice.objects.all(),
                                 'IndicationsChoices': IndicationChoice.objects.all(),
                                 'Relations': Relation.objects.all(),
-                                'referral_form': referral_form,
-                                'referral_list': referral_list,
-                                'referrals': Referral.objects.filter(client = object),
                                 'profile': profile,
                                 'groups': groups,
-                                'total_service': total_service,
-                                'list_org': Organization.objects.filter(active=True, visible=True),
-                                'list_prof': CareProfessional.objects.all(),
                                },
                               context_instance=RequestContext(request)
                               )
+
+
+# add or edit form
+#@permission_required_with_403('referral.referral_view')
+def referral_form(request, object_id = None, referral_id = None):
+    try:
+        object    = Client.objects.get(pk = object_id, person__organization = request.user.get_profile().org_active)
+    except:
+        object = Client()
+
+    # client referral
+    data = {'client': [object.id]}
+    referral_form = ReferralForm(data)
+    referral_form.fields['referral'].queryset = Referral.objects.filter(client=object)
+    referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
+    #referral_form.fields['professional'].queryset = CareProfessional.objects.filter(person__organization = request.user.get_profile().org_active.id)
+    referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
+    total_service = Referral.objects.filter(client=object).count()
+    referral_list = Referral.objects.filter(client=object, status='01')
+    
+    return render_to_response('client/client_referral_form.html',
+                              {'object': object, 
+                                'referral_form': referral_form,
+                                'referral_list': referral_list,
+                                'referrals': Referral.objects.filter(client = object),
+                               },
+                              context_instance=RequestContext(request)
+                              )
+
+""" *** TODO: manage multiples referrals """
+@permission_required_with_403('referral.referral_write')
+def referral_save(request, object_id = None):
+    if request.method == 'POST':
+        form = ReferralForm(request.POST)
+        if form.is_valid():
+            object = form.save(commit=False)
+            object.organization = request.user.get_profile().org_active
+            object.status = '01'
+            object.save()
+            form.save_m2m()
+
+    request.user.message_set.create(message=_('Referral saved successfully'))
+
+    return HttpResponseRedirect('/client/%s/home' % request.POST.get('client_id'))
+
+def referral_discharge(request, object_id = None, referral_id = None):
+    object = get_object_or_404(Client, pk=object_id)
+    referral = Referral.objects.get(id=referral_id)
+    if request.method == 'POST':
+        form = ReferralDischargeForm(request.POST, initial=dict(client=object, referral=referral))
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.client = object
+            data.referral = referral
+            data.save()
+            request.user.message_set.create(message=_('Client discharged successfully'))
+            return HttpResponseRedirect('/client/%s/home/' % (object.id))
+        else:
+            request.user.message_set.create(message=_('Form Error'))
+            return render_to_response('client/client_referral_discharge_form.html', locals(), context_instance=RequestContext(request))
+    else:
+        form = ReferralDischargeForm(initial=dict(client=object, referral=referral))
+
+    return render_to_response('client/client_referral_discharge_form.html', locals(), context_instance=RequestContext(request))
+
+@permission_required_with_403('referral.referral_list')
+def referral_list(request, object_id = None, discharged = None):
+    object = get_object_or_404(Client, pk=object_id)
+
+    if discharged:
+        referrals = Referral.objects.discharged()
+    else:
+        referrals = Referral.objects.charged()
+        charged = True
+
+    referrals = referrals.filter(client=object)
+
+    if request.user.groups.filter(name='professional').count() :
+        referrals = referrals.filter(professional = request.user.profile.person.careprofessional.id)
+
+    return render_to_response('client/client_referral_list.html', locals(), context_instance=RequestContext(request))
+
+#@permission_required_with_403('referral.referral_view')
+def referral_home(request, object_id = None, referral_id = None):
+    object = get_object_or_404(Client, pk=object_id)
+    referral = Referral.objects.get(pk=referral_id)
+    return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('client.client_write')
 def save(request, object_id=""):

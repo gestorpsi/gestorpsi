@@ -29,24 +29,24 @@ GNU General Public License for more details.
 
 <h2 id="title_addressbook" style="display:none"></h2>
 
-	<h2 class="title_clients title">{{ object.person.name }}</h2>
-	<p class="description">{% trans "Customer subscribed in" %} {{ referrals|length }} {% trans "services" %} <br />	
+	<h2 class="title_clients title">{{ object.person.name }} </h2>
+	<p class="description">{{ referral }}<br />	
 
 </p>
 
 <div class="main_area home">
 	<!-- <a href="" id="help">&nbsp;</a> -->
 	<!-- DataTypes form menu -->
-	<h3><span>{% trans "Administrative Details" %}</span></h3>
+	<h3><span>{% trans "Schedule Details" %}</span></h3>
     <div class="photo">
         <img class="img_people" src="{% if object.person.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
         <br /><br />
     </div>    
-    <h1>{{ object.person.name }}</h1>
-    {% if object.person.address.all %}
+    <h1>{% trans "Upcoming Schedules" %}</h1>
+    {% if referral.upcoming_occurrences %}
         <p>
-        {% for i in object.person.address.all %}
-            {{ i.addressPrefix }} {{ i.addressLine1 }}, {{ i.addressNumber }} {{ i.addressLine2 }}  - {{ i.neighborhood }} {{ i.zipCode }} {{ i.city }} {{ i.city.state.shortName }}, {{ i.city.state.country }}
+        {% for i in referral.upcoming_occurrences %}
+            {{ i }}
             <br>
         {% endfor %}
         </p>
@@ -78,7 +78,7 @@ GNU General Public License for more details.
     
     
     <h2  class="red">{% trans "Subscribed Services" %}</h2>
-    {% if not referrals|length %}
+    {% if not object.referral_set.charged|length %}
         <p>{% trans "This customer has not been subscribed yet!" %}&nbsp;<a href="/client/{{ object.id}}/referral/form/">{% trans "Subscribe it now?" %}</a></p>
     {% else %}
         <p>

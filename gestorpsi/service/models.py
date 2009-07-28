@@ -223,6 +223,13 @@ class Service(models.Model):
         ordering = ['name']
         get_latest_by = ['date']
 
+    def groups(self):
+        group = []
+        for i in self.referral_set.all():
+            if i.group_name():
+                group.append(i.group_name())
+        return group
+
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 

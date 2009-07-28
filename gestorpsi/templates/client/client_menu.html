@@ -19,7 +19,7 @@ GNU General Public License for more details.
 <ul id="sub_customers">
     <li><a href="/client/">{% trans "all" %}</a></li>
     <li><a class="{% if not object.id %}active{% endif %}" href="/client/add">{% trans "add" %}</a></li>
-    {% if object.id %}<li><a class="active">{{ object.person.name }}</a></li>{% endif %}
+    {% if object.id %}<li><a class="active">{{ object.person.name }}{% if referral %} - {{ referral }}{% endif %}</a></li>{% endif %}
 <!-- <li><a display="search" class="fastmenu" href="/client/">{% trans "search" %}</a></li>
      <li><a>{% trans "booked" %}</a></li>
      <li><a>{% trans "actives" %}</a></li>

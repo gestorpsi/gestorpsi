@@ -393,7 +393,9 @@ div.main_area h1 {
 	background: url(../img/bg_options.gif) no-repeat;
 	cursor: pointer;
 }
-
+.main_area h2.red {
+	color: #800000 !important;
+}
 .main_area div.label {
 	float: left;
 	color: #916F6F;
@@ -712,6 +714,10 @@ li a.list {
 
 .sidebar li .client_referral_list {
 	background: url(../img/16/referral.png) no-repeat 0 3px;
+}
+
+.sidebar li .client_referral_discharge {
+	background: url(../img/16/system-log-out.png) no-repeat 0 3px;
 }
 
 .sidebar li .client_referral_form {
@@ -1212,6 +1218,56 @@ div.form_mini input[type=text] {
 	padding: 4px 0 4px 0;
 }
 
+/**
+* home pages
+*/
+
+
+div.main_area.home p {
+	color: #808080 !important;
+	margin: 7px 0 0px 6px !important;
+	font-size: 12px;
+}
+
+div.main_area.home p * {
+	line-height: 20px;
+	margin: 17px 0 0px 0px !important;
+}
+
+div.main_area.home h1 {
+	font-size: 30px;
+	line-height: 24px;
+	font-weight: normal;
+}
+
+div.main_area.home h2 {
+	padding: 20px 0px 0px 20px !important;
+	margin: 0 0 0 0px !important;
+	height: 25px !important;
+}
+
+div.main_area.home ul li {
+	color: #808080 !important;
+	list-style: none;
+	margin-top: 6px;
+	margin-left: 20px;
+	font-size: 10px;
+}
+
+div.main_area.home ul li a {
+	margin-left: 0px;
+	font-size: 12px;
+}
+
+div.main_area.home a {
+	margin-left: 20px;
+}
+
+div.main_area.home span.big {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 18px;
+	color: #000;
+}
 
 /*** Devices menu ****/
 

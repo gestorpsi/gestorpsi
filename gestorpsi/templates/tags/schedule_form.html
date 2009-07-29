@@ -1,0 +1,190 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<script type="text/javascript" src="/media/js/gestorpsi.schedule.js"></script>
+<div class="schedule">
+    <div id="form">
+
+    <h2 class="title_schedule title">{% trans "Adding New Event" %}</h2>
+    <p class="description">{% trans "Inform the schedule details then click on Save button" %}</p>
+
+    <form method="post" action="" class="schedule refresh">
+    <input type="hidden" name="tabtitle" class="tabtitle" />
+    <div class="main_area">
+    {{ event_form.errors }}
+    {{ recurrence_form.errors }}
+        <a href="" id="help">&nbsp;</a>
+            <fieldset>
+            <legend>{% trans "Schedule Due" %}</legend>
+                <label>{% trans "Date" %}</label>
+                <div>
+                {{ recurrence_form.day }}
+                </div>
+                <label>{% trans "Start Time" %}<br />
+                {{ recurrence_form.start_time_delta }}
+                </label>
+                <label>{% trans "End Time" %}<br />
+                {{ recurrence_form.end_time_delta }}
+                </label>
+                <label>{% trans "Room" %}<br />
+                    <select name="room" class="extramedium asm" id="id_room">
+                            <option value="" selected="selected">---------</option>
+                            {% for room in rooms %}
+                                <option value="{{ room.id }}"{% ifequal room.id room_id %} selected{% endifequal %}>{{ room.description }}</option>
+                            {% endfor %}
+                    </select>
+                </label>
+            </fieldset>
+
+            {% if not referral %} {# schedule view #}
+            <fieldset class="existing_referral" id="existing_referral_true">
+            <legend>{% trans "Existing Referral" %}</legend>
+                
+                    <div>
+                    <label style="margin-left: 0px !important;">{% trans "Client" %}<br />
+                    <div id="fb_client"></div> <!-- clients from organization -->
+                    </label>
+                    </div>
+                    <div class="hidden client_referrals" style="margin-left: 0px !important;">
+                    <label>{% trans "Referrals" %}<br />
+                    <select name="referral" class="big">
+                    </select>
+                    </label>
+                    </div>
+                    <div style="clear:both"><br />
+                    <a style="cursor:pointer;" onclick="$('fieldset.referral_group').show('slow'); $(this).parent('div').hide();">{% trans "Schedule a Group?" %}</a>
+                    </div>
+            </fieldset>
+            {% else %} {# client schedule view #}
+                <input type="hidden" name="referral" value="{{ referral.id }}" />
+            {% endif %}
+
+            <fieldset class="referral_group hidden">
+            <legend>{% trans "Group" %}</legend>
+                <label>{% trans "Choice one group or" %} <a href="/service/">{% trans "add a new one" %}</a> {% trans "from selected service" %}<br />
+                    <select name="group" class="giant">
+                    <option value="">--------</option>
+                    {% for i in group %}
+                        <option value="{{ i.referral.id }}">{{ i.referral.service.name }} - {{ i }}</option>
+                    {% endfor %}
+                    </select>
+                </label>
+            </fieldset>
+
+            <fieldset>
+            <legend>{% trans "Schedule Details" %}</legend>
+                <label>{% trans "Notes" %}<br />
+                {{ event_form.annotation }}
+                </label>
+                <label>{% trans "Devices" %}<br />
+                   <select name="device" class="extrabig multiple asm" id="id_device" multiple="multiple">
+                   </select>
+                </label>            
+            </fieldset>
+            
+            <fieldset>
+            <legend>{% trans "Occurrence Details" %}</legend>
+                <label>{% trans "Occurrence Format" %}</label>
+                <div class="switch" clean="occurrence_repeat">
+                {{ recurrence_form.repeats }}
+                </div>
+                <div style="clear:both;"></div>
+                <label class="occurrence_repeat occurrence_repeat_count">{% trans "Total Occurrences" %}<br />
+                {{ recurrence_form.count }}
+                </label>
+                <label class="occurrence_repeat occurrence_repeat_until hidden">{% trans "End Time" %}</label>
+                <div class="occurrence_repeat occurrence_repeat_until hidden">
+                {{ recurrence_form.until }}
+                </div>
+            </fieldset>
+            
+            <fieldset>
+            <legend>{% trans "Occurrence Frequency" %}</legend>
+                <label>{% trans "Frequency Period" %}</label>
+                <div class="switch" clean="occurrence_freq">
+                {{ recurrence_form.freq }}
+                </div>
+                <div style="clear:both;"></div>
+                <label>{% trans "Interval" %}<br />
+                {{ recurrence_form.interval }}
+                </label>
+            </fieldset>
+     
+            <fieldset class="occurrence_freq occurrence_freq_2">
+            <legend>{% trans "Weekly Options" %}</legend>
+                <label>{% trans "Days of the week" %}<br />
+                {{ recurrence_form.week_days }}
+                </label>
+            </fieldset>       
+
+            <fieldset class="occurrence_freq occurrence_freq_1 hidden">
+            <legend>{% trans "Monthly options" %}</legend>
+                <label>{% trans "Repeat" %}</label>
+                <div class="switch" clean="occurrence_monthly">
+                {{ recurrence_form.month_option }}
+                </div>
+                <div style="clear: both;"></div>
+                <label class="occurrence_monthly occurrence_monthly_on hidden">{% trans "Month ordinal" %}<br />
+                {{ recurrence_form.month_ordinal }}
+                </label>
+                <label class="occurrence_monthly occurrence_monthly_on hidden">{% trans "Month ordinal day" %}<br />
+                {{ recurrence_form.month_ordinal_day }}
+                </label>
+                <div class="occurrence_monthly occurrence_monthly_each">
+                <label>{% trans "Event repeat on these days of the month" %}
+                
+                </label>
+                {{ recurrence_form.each_month_day }}
+                </div>
+            </fieldset>    
+
+
+            <fieldset class="occurrence_freq occurrence_freq_0 hidden">
+            <legend>{% trans "Yearly options" %}</legend>
+                <label>{% trans "Event repeat on these months of year" %}<br />
+                {{ recurrence_form.year_months }}
+                </label>
+                <label>{% trans "Is year month ordinal" %}</label>
+                <div class="switch" clean="is_year_month_ordinal">
+                {{ recurrence_form.is_year_month_ordinal }}
+                </div>
+                <label class="is_year_month_ordinal hidden">{% trans "Year month ordinal" %}<br />
+                {{ recurrence_form.year_month_ordinal }}
+                </label>
+                <label class="is_year_month_ordinal hidden">{% trans "Year month ordinal day" %}<br />
+                {{ recurrence_form.year_month_ordinal_day }}
+                </label>
+            </fieldset> 
+    <div style="clear:both;"></div>
+    <br />
+      </div>      
+
+    <div id="sidebar" class="sidebar">
+            <div class="bg_blue">
+                {% include "tags/save.html" %}
+            </div>
+    </div>
+
+    </form>
+
+    <div id="schedule_occurrence_list">
+        {% include "schedule/schedule_occurrence_list.html" %}
+    </div>
+
+    </div>
+</div>

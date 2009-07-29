@@ -30,6 +30,7 @@ from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.place.models import Place, Room
 from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.models import CareProfessional
+from gestorpsi.client.models import Client
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm
 from gestorpsi.util.decorators import permission_required_with_403
 
@@ -62,7 +63,8 @@ def add_event(
     request, 
     template='schedule/schedule_form.html',
     event_form_class=ReferralForm,
-    recurrence_form_class=ScheduleOccurrenceForm
+    recurrence_form_class=ScheduleOccurrenceForm,
+    redirect_to = None
 ):
     dtstart = None
     if request.method == 'POST':
@@ -75,8 +77,9 @@ def add_event(
         event = Referral.objects.get(pk=referral)
         if recurrence_form.is_valid():
             recurrence_form.save(event)
-            return http.HttpResponseRedirect('/schedule/events/%s/' % event.id)
-            #return HttpResponse(event.id)
+            redirect_to = redirect_to or '/schedule/events/%s/' % event.id
+            request.user.message_set.create(message=_('Schedule saved successfully'))
+            return http.HttpResponseRedirect(redirect_to)
 
     else:
         if 'dtstart' in request.GET:
@@ -85,10 +88,20 @@ def add_event(
             except:
                 # TODO A badly formatted date is passed to add_event
                 dtstart = datetime.now()
-        if 'room' in request.GET:
+
+        try:
             room = request.GET['room']
-        else:
+        except:
             room = None
+        try:
+            client = Client.objects.get(pk=request.GET['client'])
+        except:
+            client = None
+        try:
+            referral = Referral.objects.get(pk=request.GET['referral'])
+        except:
+            referral = None
+        
         event_form = event_form_class()
         recurrence_form = recurrence_form_class(initial=dict(
             dtstart=dtstart, 
@@ -104,7 +117,8 @@ def add_event(
             recurrence_form=recurrence_form, 
             group  = ReferralGroup.objects.filter(referral__organization = request.user.get_profile().org_active),
             rooms = Room.objects.filter(place__organization = request.user.profile.org_active, active=True),
-            
+            object = client,
+            referral = referral,
             room_id=room,
             ),
         context_instance=RequestContext(request)
@@ -179,10 +193,22 @@ def _datetime_view(
     request, 
     template, 
     dt, 
+    referral = None,
+    client = None,
     timeslot_factory=None, 
     items=None,
     params=None
 ):
+
+    try:
+        referral = Referral.objects.get(pk=referral)
+    except:
+        referral = ''
+
+    try:
+        object = Client.objects.get(pk=client)
+    except:
+        object = ''
 
     user = request.user
     timeslot_factory = timeslot_factory or create_timeslot_table
@@ -195,10 +221,8 @@ def _datetime_view(
         places = Place.objects.filter(organization=request.user.get_profile().org_active.id),
         services = Service.objects.filter(organization=request.user.get_profile().org_active.id),
         professionals = CareProfessional.objects.filter(person__organization=request.user.get_profile().org_active.id),
-        #devices = DeviceDetails.objects.all(),
-        #event_form = ReferralForm(),
-        #recurrence_form = ScheduleOccurrenceForm(),
-        #rooms = Room.objects.filter(place__organization = user.profile.org_active, active=True)
+        referral = referral,
+        object = object,
     )
 
     return render_to_response(

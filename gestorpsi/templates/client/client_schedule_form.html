@@ -1,3 +1,5 @@
+{% extends "core/main.html" %}
+
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -16,22 +18,19 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
+{% block menu_client %}active{% endblock %}
 
-<h2 class="title_schedule">{% trans "Daily view" %} 
-    {% include "schedule/schedule_filter.html" %}
-</h2>
+{% block submenu %}
+    {% include "client/client_menu.html" %}
+{% endblock %}
 
-<p class="description">O dia de hoje possui <span id="occurrences_total"></span> consulta(s).</p>
-<a class="json_ocorrences prev_day" id="nav_back"></a>
-<a class="json_ocorrences next_day" id="nav_fwd"></a>
-<div id="search_header">
-    <h2><span class="date_selected"></span></h2>	
-    
-    
+{% block core %}
+    {% include "tags/schedule_form.html" %}
+
+<br />
+<div id="sidebar" class="sidebar">
+    {% if object.id %}
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
 </div>
-
-
-
-    
-    
-
+{% endblock %}

@@ -64,9 +64,17 @@ function updateGrid(url) {
         $('div.schedule span.date_selected').text(json['util']['str_date']); // switch selected date
         $('div.schedule div#schedule_header p.description span#occurrences_total').text(json['util']['occurrences_total']); // total of occurrences
         $('table.schedule_results.daily tr td.clean a.book').each(function() { // update date ins url
-            hour = $(this).parent('td').parent('tr').attr('hour');
-            room = $(this).parent('td').attr('room');
-            $(this).attr('href', '/schedule/events/add/?dtstart=' + json['util']['date'] + 'T' + hour + '&room='+ room);
+            var hour = $(this).parent('td').parent('tr').attr('hour');
+            var referral = $('input[name=referral]').val()
+            var client = $('input[name=client]').val()
+            var room = $(this).parent('td').attr('room');
+            
+            if(referral && client) {
+                href = '/client/schedule/add/?dtstart=' + json['util']['date'] + 'T' + hour + '&room='+ room + '&referral=' + referral + '&client=' + client;
+            } else {
+                href = '/schedule/events/add/?dtstart=' + json['util']['date'] + 'T' + hour + '&room='+ room;
+            }
+            $(this).attr('href',  href);
         });
         $('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/');
         $('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/');
@@ -79,6 +87,9 @@ function updateGrid(url) {
                 var str_professional_inline = ''; 
                 var str_service = '';
                 var str_service_inline = '';
+                var label = '';
+                var label_inline = '';
+                
                 
                 /** 
                  * start daily occurrence
@@ -90,42 +101,47 @@ function updateGrid(url) {
                  * start occurrence event
                  */
                 
-                event_line = '<tr><td>'+this.room_name+'</td><td><span class="time">' + this.start_time.substr(0, (this.start_time.length-3)) + '</span></td><td><div></div></td></tr>';
+                event_line = '<tr><td>'+this.room_name+'</td><td><span class="time">' + this.start_time.substr(0, (this.start_time.length-3)) + '&nbsp;' + this.end_time.substr(0, (this.end_time.length-3)) + '</span></td><td><div></div></td></tr>';
                 $('div.schedule_events table.events tr:last').after(event_line);
                 event = $('div.schedule_events table.events tr:last');
                 
                 /**
-                 * append rows titles
+                 * append rows titles if NOT in client view
                  */
                 
-                //append group name or client list
-                if(this.group != null) {
-                    str_client = this.group + "<br />";
-                    str_client_inline = this.group;
-                } else {
-                    jQuery.each(this.client,  function(){
-                        str_client += this.name + "<br />";
-                        str_client_inline += this.name + ", ";
+                if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {
+                
+                    //append group name or client list
+                    if(this.group != null) {
+                        str_client = this.group + "<br />";
+                        str_client_inline = this.group;
+                    } else {
+                        jQuery.each(this.client,  function(){
+                            str_client += this.name + "<br />";
+                            str_client_inline += this.name + ", ";
+                        });
+                        str_client_inline = str_client_inline.substr(0, (str_client_inline.length-2));
+                    }
+                    
+                    
+                    //append professional list
+                    jQuery.each(this.professional,  function(){
+                        str_professional += this.name + "<br />" ;
+                        str_professional_inline += this.name + ", " ;
+                        col.addClass('professional_' + this.id); // professionals in cell
+                        event.addClass('professional_' + this.id); // professionals in events
                     });
-                    str_client_inline = str_client_inline.substr(0, (str_client_inline.length-2));
+                    str_professional_inline = str_professional_inline.substr(0, (str_professional_inline.length-2))
+                    
+                    //append service
+                    str_service = '>>' + this.service + '<br />';
+                    str_service_inline = ' >> ' + this.service;
+                    
+                    label = str_client + str_service + str_professional;
+                    label_inline = str_client_inline + str_service_inline + '(' + str_professional_inline + ')';
+                } else {
+                    label = '<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reservado';
                 }
-                
-                
-                //append professional list
-                jQuery.each(this.professional,  function(){
-                    str_professional += this.name + "<br />" ;
-                    str_professional_inline += this.name + ", " ;
-                    col.addClass('professional_' + this.id); // professionals in cell
-                    event.addClass('professional_' + this.id); // professionals in events
-                });
-                str_professional_inline = str_professional_inline.substr(0, (str_professional_inline.length-2))
-                
-                //append service
-                str_service = '>>' + this.service + '<br />';
-                str_service_inline = ' >> ' + this.service;
-                
-                label = str_client + str_service + str_professional;
-                label_inline = str_client_inline + str_service_inline + '(' + str_professional_inline + ')';
 
                 /**
                  * populate daily view
@@ -146,7 +162,13 @@ function updateGrid(url) {
                 }
 
                 $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').hide(); // hide free slot 
-                $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" href="/schedule/events/' + this.event_id + '/' + this.id + '/" class="booked">' + label + '</a>'); // show booked event
+                
+                
+                if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {
+                    $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" href="/schedule/events/' + this.event_id + '/' + this.id + '/" class="booked">' + label + '</a>'); // show booked event
+                } else {
+                    $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a class="booked">' + label + '</a>'); // show booked event in Client View
+                }
                 
 
                 /**
@@ -158,7 +180,6 @@ function updateGrid(url) {
                 event.addClass('place_' + this.place); // service color
                 event.addClass('service_' + this.service_id); // service from cell
                 $(event).children('td').children('div').html('<a title="'+json['util']['str_date']+'" href="/schedule/events/' + this.event_id + '/' + this.id + '/" class="booked">' + label_inline + '</a>');
-                //$('div.schedule_events').html('<a title="'+json['util']['str_date']+'" occurrence="' + this.id + '" class="booked">' + label_inline + '</a>');
                 $('table.zebra tr:odd').addClass('zebra_0');
                 $('table.zebra tr:even').addClass('zebra_1');
                 }

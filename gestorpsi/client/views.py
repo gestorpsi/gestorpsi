@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from datetime import datetime
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -44,6 +45,8 @@ from gestorpsi.reports.header import header_gen
 from gestorpsi.reports.footer import footer_gen
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.person.views import person_json_list
+from gestorpsi.schedule.views import _datetime_view
+from gestorpsi.schedule.forms import ScheduleOccurrenceForm
 
 # list all active clients
 @permission_required_with_403('client.client_list')
@@ -183,6 +186,11 @@ def referral_form(request, object_id = None, referral_id = None):
     except:
         object = Client()
 
+    try:
+        referral = Referral.objects.get(pk=referral_id)
+    except:
+        referral = ''
+
     # client referral
     data = {'client': [object.id]}
     referral_form = ReferralForm(data)
@@ -195,12 +203,30 @@ def referral_form(request, object_id = None, referral_id = None):
     
     return render_to_response('client/client_referral_form.html',
                               {'object': object, 
+                              'referral': referral,
                                 'referral_form': referral_form,
                                 'referral_list': referral_list,
                                 'referrals': Referral.objects.filter(client = object),
                                },
                               context_instance=RequestContext(request)
                               )
+
+def schedule_daily(request,
+    year = datetime.now().strftime("%Y"), 
+    month = datetime.now().strftime("%m"), 
+    day = datetime.now().strftime("%d"), 
+    template='client/client_schedule_daily.html',
+     **params):
+
+    return _datetime_view(request, template, datetime(int(year), int(month), int(day)), referral = request.GET['referral'], client = request.GET['client'], **params)
+
+from gestorpsi.schedule.views import add_event
+def schedule_add(request):
+    return add_event(request, 
+        'client/client_schedule_form.html', 
+        event_form_class=ReferralForm,
+        recurrence_form_class=ScheduleOccurrenceForm,
+        redirect_to = '/client/%s/referral/%s/' % (request.GET['client'], request.GET['referral']))
 
 """ *** TODO: manage multiples referrals """
 @permission_required_with_403('referral.referral_write')

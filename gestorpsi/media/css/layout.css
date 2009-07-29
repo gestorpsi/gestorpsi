@@ -465,6 +465,19 @@ a.edit {
 
 a.add {
 	background: url(../img/16/list-add.png) no-repeat 0 3px;
+	padding-right: 22px;
+	padding-bottom: 22px;
+	width: 6px;
+	display:inline;
+	clear: both;
+}
+
+a.add span {
+	display:none;
+}
+
+fieldset a.add_to_form span {
+	display:none;
 }
 
 a.list {
@@ -712,8 +725,21 @@ li a.list {
 	background: url(../img/ico_reg.png) no-repeat 0 3px;
 }
 
+
+.sidebar li .referral_edit {
+	background: url(../img/ico_edit.png) no-repeat 0 6px;
+}
+
 .sidebar li .client_referral_list {
 	background: url(../img/16/referral.png) no-repeat 0 3px;
+}
+
+.sidebar li .client_services {
+	background: url(../img/16/services.png) no-repeat 0 3px;
+}
+
+.sidebar li .client_calendar {
+	background: url(../img/16/office-calendar.png) no-repeat 0 3px;
 }
 
 .sidebar li .client_referral_discharge {

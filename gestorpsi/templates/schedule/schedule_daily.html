@@ -30,33 +30,7 @@ GNU General Public License for more details.
 {% block core %}
 <script type="text/javascript" src="/media/js/gestorpsi.schedule.js"></script>
 <div class="schedule">
-    <a id="calendar_link" href="#"></a>
-    <div id="mini_calendar" style="display:none;"></div>
-
-    <div id="schedule_header">
-        {% include "schedule/schedule_header.html" %}
-    </div>
-
-    <div id="daily" class="schedule">
-        <table class="schedule_results daily zebra" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-                <th class="schedule"></th>
-                {% for place in places %}{% for room in place.room_set.all %}
-                    <th room="{{ room.id }}" place="{{ place.id }}">{{ room }}</th>
-                {% endfor %}{% endfor %}
-            </tr>
-            {% for tm,cells in timeslots %}
-            <tr hour="{{ tm|date:"H:i:s" }}">
-                <td class="hour">{{ tm|date:"H:i" }}</td>
-                {% for place in places %}{% for room in place.room_set.all %}
-                    <td class="clean" room="{{ room.id }}" place="{{ place.id }}">
-                    <a href="#" class="book">{% trans "Free" %}</a>
-                    </td>
-                {% endfor %}{% endfor %}
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
+    {% include "tags/schedule_daily.html" %}
 </div>
 {% endblock %}
 

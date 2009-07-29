@@ -29,68 +29,58 @@ GNU General Public License for more details.
 
 <h2 id="title_addressbook" style="display:none"></h2>
 
-	<h2 class="title_clients title">{{ object.person.name }} </h2>
-	<p class="description">{{ referral }}<br />	
+	<h2 class="title_clients title">{{ object.person.name }} {% trans "in" %} {{ referral }}</h2>
+	<p class="description">{% trans "Client subscribed in this service since" %} {{ referral.date|date:"d" }} {% trans "of" %} {{ referral.date|date:"F" }} {% trans "of" %} {{ referral.date|date:"Y" }}<br />	
 
 </p>
 
 <div class="main_area home">
 	<!-- <a href="" id="help">&nbsp;</a> -->
 	<!-- DataTypes form menu -->
-	<h3><span>{% trans "Schedule Details" %}</span></h3>
+	<h3><span>{% trans "Referral Details" %}</span></h3>
     <div class="photo">
         <img class="img_people" src="{% if object.person.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
         <br /><br />
     </div>    
-    <h1>{% trans "Upcoming Schedules" %}</h1>
-    {% if referral.upcoming_occurrences %}
-        <p>
-        {% for i in referral.upcoming_occurrences %}
-            {{ i }}
-            <br>
-        {% endfor %}
-        </p>
-    {% endif %}
-    {% if object.person.emails.all %}
-        <p>
-        {% for i in object.person.emails.all %}<a href="mailto:{{ i.email }}">{{ i }}</a> ({{ i.email_type }})<br>{% endfor %}
-        </p>
-    {% endif %}
-    {% if object.person.phones.all %}
-        <p>
-        {% for i in object.person.phones.all %}{% if i.area %}({{ i.area }}){% endif %}&nbsp;<span class="big">{{ i.phoneNumber }}</span> ({{ i.phoneType}})<br>{% endfor %}
-        </p>
-    {% endif %}
-</p>
-    <p>
-    
-    <a href="/client/{{ object.id}}/" title="{% trans "edit" %}" class="edit"><span>{% trans "edit" %}</span></a>
-    </p>
+    <h2 class="red">{% trans "Referral Details" %}</h2>
+        <p>{% trans "This customer has" %} {{ referral.upcoming_occurrences|length }} {% trans "upcoming event(s) and" %} {{ referral.past_occurrences|length }} {% trans "past events for this service" %}</p>
 
 <br />	
-
 </div>
 
 <div class="main_area home">
 	<!-- <a href="" id="help">&nbsp;</a> -->
 	<!-- DataTypes form menu -->
-	<h3><span>{% trans "Referrals Details" %}</span></h3>
-    
-    
-    <h2  class="red">{% trans "Subscribed Services" %}</h2>
-    {% if not object.referral_set.charged|length %}
-        <p>{% trans "This customer has not been subscribed yet!" %}&nbsp;<a href="/client/{{ object.id}}/referral/form/">{% trans "Subscribe it now?" %}</a></p>
-    {% else %}
-        <p>
-            <ul>
-            {% for i in referrals %}
-                <li><a href="/client/{{ object.id}}/referral/{{ i.id }}/">{{ i.service }}</a><br />{% for p in i.professional.all %}{% trans "Dr(a)" %} {{ p }} {% endfor %}</li>
-            {% endfor %}
-            </ul>
-        </p>
-    {% endif %}
-<br />	
+	<h3><span>{% trans "Schedule Details" %}</span></h3>
 
+    <h2 class="red">{% trans "Upcoming schedules for this service" %}</h2>
+    <p>
+    {% if not referral.upcoming_occurrences %}
+        {% trans "This customer has no upcoming schedules yet!" %}&nbsp;<a href="/client/{{ object.id}}/referral/{{ referral.id }}/schedule/add/">{% trans "Book it now?" %}</a>
+    {% else %}
+        {% for i in referral.upcoming_occurrences %}
+             {{ i.start_time|date:"r"|slice:"-9" }} hs - {{ i.scheduleoccurrence.room }}
+            <br>
+        {% endfor %}
+    {% endif %}
+    </p>
+    <br>
+    <a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}" title="{% trans "Book new" %}">{% trans "Book new" %}</a>
+
+
+    <h2 class="red">{% trans "Past schedules for this service" %}</h2>
+    <p>
+    {% if not referral.past_occurrences %}
+            {% trans "This customer has no past schedules!" %}
+    {% else %}
+        {% for i in referral.past_occurrences %}
+            {{ i.start_time|date:"r"|slice:"-9" }} hs - {{ i.scheduleoccurrence.room }}
+            <br>
+        {% endfor %}
+    {% endif %}
+    </p>
+
+<br />	
 </div>
 
 <div id="sidebar" class="sidebar">

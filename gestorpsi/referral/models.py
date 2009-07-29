@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 import reversion
 from dateutil import rrule
+from datetime import datetime
 from django.db import models
 from django.utils.translation import ugettext as _
 from swingtime.models import Event, EventType
@@ -156,6 +157,12 @@ class Referral(Event):
             return True
         else:
             return False
+
+    def past_occurrences(self):
+        '''
+        Return all past occurrences
+        '''
+        return self.occurrence_set.filter(start_time__lt=datetime.now())
 
 class ReferralDischarge(models.Model):
     id = UuidField(primary_key=True)

@@ -265,3 +265,12 @@ div#mini_calendar {
 .adressbook_montly table div {
 	margin: 1px 0;
 }
+
+div.schedule.client div#daily.schedule {
+	float:left;
+}
+
+div.sidebar_client_schedule {
+	margin-left: 20px;
+	float: left;
+}

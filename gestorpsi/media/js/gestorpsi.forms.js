@@ -482,21 +482,6 @@ $(function() {
           });
      });
      
-    /**
-    * sidebar. cancel buttom if is a new register
-    */
-
-    $('#sidebar input#cancel_button').click(function() {
-        $('div#form.fast_menu_content input:text').val('');
-        $('div#form.fast_menu_content').hide();
-        $('div#sub_menu ul li a').removeClass('active');
-        $('div#sub_menu ul li a:first').addClass('active');
-        $('div#list.fast_menu_content').show();
-        $("ul.opened_tabs").hide();
-        $("#edit_form").hide();
-        $("#form").hide();
-    });
-
      $('select.toggle_parent_label').change(function() {
          var select = $(this);
          $(select).parents('fieldset').children('label.hidden').hide();
@@ -509,10 +494,6 @@ $(function() {
              }
          });
      });
-
-
-
-
 
     /**
     * bind select itensselected

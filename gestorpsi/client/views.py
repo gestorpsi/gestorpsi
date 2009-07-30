@@ -25,7 +25,7 @@ from django.utils import simplejson
 
 from geraldo.generators import PDFGenerator
 
-from gestorpsi.address.models import Country, State, AddressType
+from gestorpsi.address.models import Country, State, AddressType, City
 from gestorpsi.admission.models import *
 from gestorpsi.authentication.models import Profile
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
@@ -79,7 +79,8 @@ def add(request):
      #Test if clinic administrator has registered services before access client page.
     if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
         return render_to_response('client/client_service_alert.html', {'object': _("There's no Service created yet. Please, create one before access Client."), }, context_instance=RequestContext(request))
-    else:
+    else: 
+        state = request.user.get_profile().org_active.address.all()[0].city.state_id
         return render_to_response('client/client_form.html',
                                         {
                                         'countries': Country.objects.all(),
@@ -89,6 +90,7 @@ def add(request):
                                         'IMNetworks': IMNetwork.objects.all() , 
                                         'TypeDocuments': TypeDocument.objects.all(), 
                                         'Issuers': Issuer.objects.all(), 
+                                        'Cities': City.objects.filter(state = state), 
                                         'States': State.objects.all(), 
                                         'MaritalStatusTypes': MaritalStatus.objects.all(),
                                         'PROFESSIONAL_AREAS': Profession.objects.all(),

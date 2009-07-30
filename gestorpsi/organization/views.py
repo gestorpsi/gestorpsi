@@ -91,13 +91,13 @@ def save(request):
 	        return HttpResponse("false")
         else:
             object.short_name = request.POST['short_name']
-         
+    
     #identity
     object.name = request.POST['name']
     object.trade_name = request.POST['trade_name']
     object.register_number = request.POST['register_number']
     object.cnes = request.POST['cnes']
-    object.state_inscription = request.POST['state_inscription']
+    object.state_inscription = request.POST.get('state_inscription')
     object.city_inscription = request.POST['city_inscription']
     object.photo = request.POST['photo']
     object.visible = get_visible( request, request.POST.get('visible') )

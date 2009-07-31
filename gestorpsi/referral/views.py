@@ -143,11 +143,14 @@ def client_referrals(request, object_id = None):
             impact = ""
         else:
             impact = ("%s" % o.impact).decode('utf-8')
-
+        try:
+            service_name = o.service.name
+        except:
+            service_name = ''
         array[i] = {
             'id': o.id,
             'status': o.status,
-            'service': o.service.name,
+            'service':  service_name,
             'professional': o.professional,
             'reason': o.referral_reason,
             'annotation': o.annotation,

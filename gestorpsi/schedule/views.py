@@ -103,10 +103,12 @@ def add_event(
             referral = None
         
         event_form = event_form_class()
+        print request.GET['room']
         recurrence_form = recurrence_form_class(initial=dict(
             dtstart=dtstart, 
             day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"), 
             until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
+            room=request.GET['room'],
             ))
 
     return render_to_response(
@@ -116,7 +118,7 @@ def add_event(
             event_form=event_form, 
             recurrence_form=recurrence_form, 
             group  = ReferralGroup.objects.filter(referral__organization = request.user.get_profile().org_active),
-            rooms = Room.objects.filter(place__organization = request.user.profile.org_active, active=True),
+            room = Room.objects.get(pk=room),
             object = client,
             referral = referral,
             room_id=room,
@@ -171,20 +173,23 @@ def occurrence_view(
     form_class=ScheduleSingleOccurrenceForm
 ):
     user = request.user
-    rooms = Room.objects.filter(place__organization = user.profile.org_active, active=True)
+
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__pk=event_pk)
     if request.method == 'POST':
+        
         form = form_class(request.POST, instance=occurrence)
         if form.is_valid():
             form.save()
             request.user.message_set.create(message=_('Occurrence updated successfully'))
             return http.HttpResponseRedirect(request.path)
+        else:
+            print form.errors
     else:
-        form = form_class(instance=occurrence)
+        form = form_class(instance=occurrence, initial={'start_time':occurrence.start_time})
         
     return render_to_response(
         template,
-        dict(occurrence=occurrence, form=form, rooms=rooms),
+        dict(occurrence=occurrence, form=form),
         context_instance=RequestContext(request)
     )
 

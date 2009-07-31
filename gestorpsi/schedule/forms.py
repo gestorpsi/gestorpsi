@@ -77,13 +77,12 @@ class SplitDateTimeWidget(forms.MultiWidget):
         return [None, None]
 
 class ScheduleSingleOccurrenceForm(SingleOccurrenceForm):
-    start_time = forms.DateTimeField(widget=SplitDateTimeWidget)
-    end_time = forms.DateTimeField(widget=SplitDateTimeWidget)
-
     room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=forms.Select(attrs={'class':'extramedium asm', }))
     device = forms.ModelMultipleChoiceField(required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
     annotation = forms.CharField(required = False, widget=forms.Textarea())
     
+    class Meta:
+        model = ScheduleOccurrence
 
 class ScheduleOccurrenceForm(MultipleOccurrenceForm):
     room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=forms.Select(attrs={'class':'extramedium asm', }))

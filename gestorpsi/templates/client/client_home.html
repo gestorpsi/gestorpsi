@@ -77,14 +77,25 @@ GNU General Public License for more details.
 	<h3><span>{% trans "Referrals Details" %}</span></h3>
     
     
-    <h2  class="red">{% trans "Subscribed Services" %}</h2>
+    <h2  class="red">{% trans "Subscribed Services" %} ({{ referrals|length }})</h2>
     {% if not referrals|length %}
         <p>{% trans "This customer has not been subscribed yet!" %}&nbsp;<a href="/client/{{ object.id}}/referral/form/">{% trans "Subscribe it now?" %}</a></p>
     {% else %}
         <p>
             <ul>
             {% for i in referrals %}
-                <li><a href="/client/{{ object.id}}/referral/{{ i.id }}/">{{ i.service }}</a><br />{% for p in i.professional.all %}{% trans "Dr(a)" %} {{ p }} {% endfor %}</li>
+                <li><a href="/client/{{ object.id}}/referral/{{ i.id }}/">{{ i.service }}</a> {% if i.upcoming_occurrences %} {% trans "with" %} {{ i.upcoming_occurrences|length }} {% trans "occurrences remaining" %}{% endif %}<br />
+                {% for p in i.professional.all %}
+                    {% trans "Dr(a)" %} <b>{{ p }}</b> {% for i in p.person.phones.all %} {{ i }} {{ i.phoneType }} {% endfor %}{{ p.person.get_first_email }}<br />
+                {% endfor %}
+                    {% if i.next_occurrence %}
+                        {% trans "Next occurrence" %}:
+                        {{ i.next_occurrence.start_time|date:"l, d" }} {% trans "of" %} {{ i.next_occurrence.start_time|date:"F" }} {% trans "of" %} {{ i.next_occurrence.start_time|date:"Y" }} {{ i.next_occurrence.start_time|date:"H:i" }} - {{ i.next_occurrence.end_time|date:"H:i" }}
+                    {% else %}
+                        {% trans "There is no upcoming occurrences for this service" %} <a href="/client/schedule/daily/?referral={{ i.id }}&client={{ object.id }}" class="small"><small>{% trans "book it now?" %}</small></a>
+                    {% endif %}
+                    
+                </li>
             {% endfor %}
             </ul>
         </p>

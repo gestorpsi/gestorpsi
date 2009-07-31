@@ -25,22 +25,38 @@ GNU General Public License for more details.
 
     <form method="post" action="" class="schedule refresh">
     <input type="hidden" name="tabtitle" class="tabtitle" />
+    <input type="hidden" name="day_month" id="id_day_month" value="{{  dtstart|date:"n" }}" />
+    <input type="hidden" name="day_day" id="id_day_day" value="{{ dtstart|date:"j" }}" />
+    <input type="hidden" name="day_year" id="id_day_year" value="{{ dtstart|date:"Y" }}" />
+    <input type="hidden" name="room" id="id_room" value="{{ room_id }}" />
+    
     <div class="main_area">
     {{ event_form.errors }}
     {{ recurrence_form.errors }}
         <a href="" id="help">&nbsp;</a>
             <fieldset>
             <legend>{% trans "Schedule Due" %}</legend>
+            <h2 class="red">
+            {{ dtstart|date:"l," }} {% trans "of" %} {{ dtstart|date:"F" }} {% trans "of" %} {{ dtstart|date:"Y" }} - {{ room }} <a href="javascript:history.back();"><small>[{% trans "change" %}]</small></a>
+            </h3>
+            {% comment %}
                 <label>{% trans "Date" %}</label>
                 <div>
                 {{ recurrence_form.day }}
+                
                 </div>
+            {% endcomment %}
                 <label>{% trans "Start Time" %}<br />
                 {{ recurrence_form.start_time_delta }}
                 </label>
                 <label>{% trans "End Time" %}<br />
                 {{ recurrence_form.end_time_delta }}
                 </label>
+{% comment %}
+                <label>{% trans "Room" %}<br />
+                {{ recurrence_form.room }}
+                </label>
+                
                 <label>{% trans "Room" %}<br />
                     <select name="room" class="extramedium asm" id="id_room">
                             <option value="" selected="selected">---------</option>
@@ -49,6 +65,7 @@ GNU General Public License for more details.
                             {% endfor %}
                     </select>
                 </label>
+                {% endcomment %}
             </fieldset>
 
             {% if not referral %} {# schedule view #}

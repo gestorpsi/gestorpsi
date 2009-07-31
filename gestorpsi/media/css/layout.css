@@ -395,6 +395,9 @@ div.main_area h1 {
 }
 .main_area h2.red {
 	color: #800000 !important;
+	font-size: 22px;
+	padding: 15px 0 0px 10px !important;
+	height: 35px !important;
 }
 .main_area div.label {
 	float: left;

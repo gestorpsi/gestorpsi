@@ -152,17 +152,15 @@ class Referral(Event):
         except:
             return None
 
-    def is_discharged(self):
-        if len(self.referraldischarge_set.all()) > 0:
-            return True
-        else:
-            return False
-
     def past_occurrences(self):
         '''
         Return all past occurrences
         '''
-        return self.occurrence_set.filter(start_time__lt=datetime.now())
+        return self.occurrence_set.filter(start_time__lt=datetime.now()).reverse()
+
+    def last_occurrence(self):
+        past = self.past_occurrences()
+        return past and past[0] or None
 
 class ReferralDischarge(models.Model):
     id = UuidField(primary_key=True)

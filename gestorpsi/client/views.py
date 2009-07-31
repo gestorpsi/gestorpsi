@@ -30,6 +30,7 @@ from gestorpsi.admission.models import *
 from gestorpsi.authentication.models import Profile
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
 from gestorpsi.service.models import Service
+from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.careprofessional.views import Profession
 from gestorpsi.client.models import Client, Relation
 from gestorpsi.client.reports import ClientRecord, ClientList
@@ -47,6 +48,7 @@ from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.person.views import person_json_list
 from gestorpsi.schedule.views import _datetime_view
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm
+from gestorpsi.schedule.views import add_event
 
 # list all active clients
 @permission_required_with_403('client.client_list')
@@ -65,8 +67,8 @@ def home(request, object_id=None):
     except:
         raise Http404
     
-    referrals = Referral.objects.charged()
-    referrals = referrals.filter(client=object)
+    referrals = Referral.objects.charged().filter(client=object)
+
     return render_to_response('client/client_home.html',
                                         {
                                         'object': object,
@@ -188,17 +190,20 @@ def referral_form(request, object_id = None, referral_id = None):
     except:
         object = Client()
 
+    data = {'client': [object.id]}
+
     try:
         referral = Referral.objects.get(pk=referral_id)
+        referral_form = ReferralForm(instance = referral)
+        referral_list = None
+        referral_form.fields['professional'].queryset = CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)
     except:
+        # new referral
         referral = ''
+        referral_form = ReferralForm(data)
 
-    # client referral
-    data = {'client': [object.id]}
-    referral_form = ReferralForm(data)
     referral_form.fields['referral'].queryset = Referral.objects.filter(client=object)
     referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
-    #referral_form.fields['professional'].queryset = CareProfessional.objects.filter(person__organization = request.user.get_profile().org_active.id)
     referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
     total_service = Referral.objects.filter(client=object).count()
     referral_list = Referral.objects.filter(client=object, status='01')
@@ -213,40 +218,29 @@ def referral_form(request, object_id = None, referral_id = None):
                               context_instance=RequestContext(request)
                               )
 
-def schedule_daily(request,
-    year = datetime.now().strftime("%Y"), 
-    month = datetime.now().strftime("%m"), 
-    day = datetime.now().strftime("%d"), 
-    template='client/client_schedule_daily.html',
-     **params):
-
-    return _datetime_view(request, template, datetime(int(year), int(month), int(day)), referral = request.GET['referral'], client = request.GET['client'], **params)
-
-from gestorpsi.schedule.views import add_event
-def schedule_add(request):
-    return add_event(request, 
-        'client/client_schedule_form.html', 
-        event_form_class=ReferralForm,
-        recurrence_form_class=ScheduleOccurrenceForm,
-        redirect_to = '/client/%s/referral/%s/' % (request.GET['client'], request.GET['referral']))
-
 """ *** TODO: manage multiples referrals """
 @permission_required_with_403('referral.referral_write')
-def referral_save(request, object_id = None):
+def referral_save(request, object_id = None, referral_id = None):
     if request.method == 'POST':
-        form = ReferralForm(request.POST)
+        try:
+            referral = Referral.objects.get(pk=referral_id)
+            form = ReferralForm(request.POST, instance = referral)
+        except:
+            form = ReferralForm(request.POST)
         if form.is_valid():
             object = form.save(commit=False)
             object.organization = request.user.get_profile().org_active
             object.status = '01'
             object.save()
             form.save_m2m()
-
+        else:
+            print form.errors
     request.user.message_set.create(message=_('Referral saved successfully'))
 
-    return HttpResponseRedirect('/client/%s/home' % request.POST.get('client_id'))
+    return HttpResponseRedirect('/client/%s/referral/%s/' % (request.POST.get('client_id'), object.id))
 
-def referral_discharge(request, object_id = None, referral_id = None):
+#@permission_required_with_403('referral.referral_view')
+def referral_discharge_form(request, object_id = None, referral_id = None):
     object = get_object_or_404(Client, pk=object_id)
     referral = Referral.objects.get(id=referral_id)
     if request.method == 'POST':
@@ -271,12 +265,10 @@ def referral_list(request, object_id = None, discharged = None):
     object = get_object_or_404(Client, pk=object_id)
 
     if discharged:
-        referrals = Referral.objects.discharged()
+        referrals = object.referrals_discharged()
     else:
-        referrals = Referral.objects.charged()
+        referrals = object.referrals_charged()
         charged = True
-
-    referrals = referrals.filter(client=object)
 
     if request.user.groups.filter(name='professional').count() :
         referrals = referrals.filter(professional = request.user.profile.person.careprofessional.id)
@@ -386,3 +378,21 @@ def order(request, object_id = ''):
 
     object.person.save(force_update=True)
     return HttpResponseRedirect('/client/%s/' % object.id)
+
+@permission_required_with_403('schedule.schedule_read')
+def schedule_daily(request,
+    year = datetime.now().strftime("%Y"), 
+    month = datetime.now().strftime("%m"), 
+    day = datetime.now().strftime("%d"), 
+    template='client/client_schedule_daily.html',
+     **params):
+
+    return _datetime_view(request, template, datetime(int(year), int(month), int(day)), referral = request.GET['referral'], client = request.GET['client'], **params)
+
+@permission_required_with_403('schedule.schedule_write')
+def schedule_add(request):
+    return add_event(request, 
+        'client/client_schedule_form.html', 
+        event_form_class=ReferralForm,
+        recurrence_form_class=ScheduleOccurrenceForm,
+        redirect_to = '/client/%s/referral/%s/' % (request.GET['client'], request.GET['referral']))

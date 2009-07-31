@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django.conf.urls.defaults import *
 from django.contrib.auth.decorators import login_required
-from gestorpsi.client.views import index, list, form, save, delete, print_list, print_record, organization_clients, add, home, order, referral_save, referral_list, referral_home, referral_form, referral_discharge, schedule_daily, schedule_add
+from gestorpsi.client.views import index, list, form, save, delete, print_list, print_record, organization_clients, add, home, order, referral_save, referral_list, referral_home, referral_form, referral_discharge_form, schedule_daily, schedule_add
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
@@ -43,7 +43,7 @@ urlpatterns = patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/$', login_check(referral_list)), # charged referrals list
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<discharged>discharged)/$', login_check(referral_list)), # descharged referrals list
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/$', login_check(referral_home)), # referral home
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/discharge/$', login_check(referral_discharge)), # referral shutdown
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/discharge/$', login_check(referral_discharge_form)), # referral shutdown
     (r'^schedule/daily/$', login_check(schedule_daily)), # book client (schedule daily view)
     (r'^schedule/add/$', login_check(schedule_add)), # book client (schedule add form)
        

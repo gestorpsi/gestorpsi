@@ -43,8 +43,33 @@ GNU General Public License for more details.
         <br /><br />
     </div>    
     <h2 class="red">{% trans "Referral Details" %}</h2>
-        <p>{% trans "This customer has" %} {{ referral.upcoming_occurrences|length }} {% trans "upcoming event(s) and" %} {{ referral.past_occurrences|length }} {% trans "past events for this service" %}</p>
-
+        <p>{% trans "This referral has" %} {{ referral.upcoming_occurrences|length }} {% trans "upcoming event(s) and" %} {{ referral.past_occurrences|length }} {% trans "past events" %} </p>
+        <p>
+        {% if referral.next_occurrence %}
+            {% trans "Next occurrence at" %} 
+            {{ referral.next_occurrence.start_time|date:"l, d" }} {% trans "of" %} {{ referral.next_occurrence.start_time|date:"F" }} {% trans "of" %} {{ referral.next_occurrence.start_time|date:"Y" }} {{ referral.next_occurrence.start_time|date:"H:i" }} - {{ referral.next_occurrence.end_time|date:"H:i" }}
+        {% endif %}
+        </p>
+        <p>
+        {% if referral.last_occurrence %}
+            {% trans "Last occurrence" %} 
+            {{ referral.last_occurrence.start_time|date:"l, d" }} {% trans "of" %} {{ referral.last_occurrence.start_time|date:"F" }} {% trans "of" %} {{ referral.last_occurrence.start_time|date:"Y" }} {{ referral.last_occurrence.start_time|date:"H:i" }} - {{ referral.last_occurrence.end_time|date:"H:i" }}
+        {% endif %}
+        </p>
+        <p>
+        
+        {% if not referral.professional.all %}
+            {% trans "There is no professional in this referral." %} <a href="/client/{{ object.id}}/referral/{{ referral.id }}/form/">{% trans "Add one now?" %}</a>
+        {% else %}
+        <b />{% trans "Professionals from this referral" %}</b>
+        <br />
+        {% for i in referral.professional.all %}
+            <a href="/careprofessional/{{ i.id }}/" title="{{ i }}">{{ i }}</a><br />{% for p in i.person.phones.all %} {{ p }} {{ p.phoneType }} {% endfor %}{{ i.person.get_first_email }}
+        
+        {% endfor %}
+        {% endif %}
+        </p>
+        
 <br />	
 </div>
 
@@ -56,16 +81,17 @@ GNU General Public License for more details.
     <h2 class="red">{% trans "Upcoming schedules for this service" %}</h2>
     <p>
     {% if not referral.upcoming_occurrences %}
-        {% trans "This customer has no upcoming schedules yet!" %}&nbsp;<a href="/client/{{ object.id}}/referral/{{ referral.id }}/schedule/add/">{% trans "Book it now?" %}</a>
+        {% trans "This customer has no upcoming schedules yet!" %}&nbsp;<a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}">{% trans "Book it now?" %}</a>
     {% else %}
         {% for i in referral.upcoming_occurrences %}
              {{ i.start_time|date:"r"|slice:"-9" }} hs - {{ i.scheduleoccurrence.room }}
             <br>
         {% endfor %}
+    
+    <a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}" title="{% trans "Book new" %}">{% trans "Book new" %}</a>
     {% endif %}
     </p>
-    <br>
-    <a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}" title="{% trans "Book new" %}">{% trans "Book new" %}</a>
+
 
 
     <h2 class="red">{% trans "Past schedules for this service" %}</h2>

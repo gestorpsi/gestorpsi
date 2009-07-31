@@ -143,10 +143,10 @@ function updateContact(url) {
                 if (this.type == '1'){ 
                     if (this.type_org == 'LOCAL'){
                         tableTR += '<tr class="clinic local" id="' + this.id + '"><td class="title">';
-                        tableTR += '<a href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
+                        tableTR += '<a href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a><br /> '+ this.phone +' - '+ this.email;
                     } else {
                         tableTR += '<tr class="clinic gestorpsi" id="' + this.id + '"><td class="title">';
-                        tableTR += '<a  href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
+                        tableTR += '<a  href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a><br /> '+ this.phone +' - '+ this.email;
                     }
                 } else {
                     if (this.type_org == 'LOCAL'){

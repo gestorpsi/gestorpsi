@@ -96,6 +96,8 @@ def list(request, page = 1):
         array[i] = {
             'id': o[0],
             'name': o[1],
+            'email': o[2],
+            'phone': o[3],
             'type': o[4],
             'type_org': o[5],
             'organization': o[6],
@@ -257,11 +259,11 @@ def address_book_get_professionals(request):
     
     for x in Organization.objects.filter(organization=None, active=True, visible=True).exclude(id=org.id):
         if ( x.person_set.filter(profile__user__is_active=True).count() ):
-            phone = x.get_first_phone()
-            email = x.get_first_email()
+            phone = "%s" % x.get_first_phone()
+            email = "%s" % x.get_first_email()
             for y in CareProfessional.objects.filter(person__organization=x):
-                phone = y.person.get_first_phone()
-                email = y.person.get_first_email()
+                phone = "%s" % x.get_first_phone()
+                email = "%s" % x.get_first_email()
                 # Profession of the professional not is required
                 if y.professionalIdentification:
                     lista.append([y.id, y.person.name, email, phone, '2', 'GESTORPSI', '%s' % y.person.organization, '%s' % y.professionalIdentification.profession])
@@ -269,11 +271,11 @@ def address_book_get_professionals(request):
                     lista.append([y.id, y.person.name, email, phone, '2', 'GESTORPSI', '%s' % y.person.organization, ""])
                 
     for x in Organization.objects.filter(contact_owner=user.get_profile().person):
-        phone = x.get_first_phone()
-        email = x.get_first_email()
+        phone = "%s" % x.get_first_phone()
+        email = "%s" % x.get_first_email()
         for y in CareProfessional.objects.filter(person__organization=x):
-            phone = y.person.get_first_phone()
-            email = y.person.get_first_email()
+            phone = "%s" % x.get_first_phone()
+            email = "%s" % x.get_first_email()
             # Profession of the professional not is required
             if y.professionalIdentification:
                 lista.append([y.id, y.person.name, email, phone, '2', 'LOCAL', '%s' % y.person.organization, '%s' % y.professionalIdentification.profession])
@@ -287,16 +289,16 @@ def address_book_get_organizations(request):
     user = request.user
     org = user.get_profile().org_active
     lista = []
-    
+
     for x in Organization.objects.filter(organization=None, active=True, visible=True).exclude(id=org.id):
         if ( x.person_set.filter(profile__user__is_active=True).count() ):
-            phone = x.get_first_phone()
-            email = x.get_first_email()
+            phone = "%s" % x.get_first_phone()
+            email = "%s" % x.get_first_email()
             lista.append([x.id, x.name, email, phone, '1', 'GESTORPSI', x.name, "none"])
 
     for x in Organization.objects.filter(contact_owner=user.get_profile().person):
-        phone = x.get_first_phone()
-        email = x.get_first_email()
+        phone = "%s" % x.get_first_phone()
+        email = "%s" % x.get_first_email()
         lista.append([x.id, x.name, email, phone, '1', 'LOCAL', x.name, "none"])
 
     return lista

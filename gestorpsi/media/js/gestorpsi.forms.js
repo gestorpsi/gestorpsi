@@ -74,10 +74,22 @@ function reloadCities(el) {
         el.parent('label').parent('div').children('label.city').children('select').html(line); // rebuild city combo 
         el.parent('label').parent('div').children('label.city').children('select').children('option[value=' + el.attr('city') + ']').attr('selected', 'selected'); // select city
 }
+    
+
+    /**
+     * PROFESSION - SYMBOL - PROFESSION DESCRIPTION
+     **/
+
+function reload_symbol_profession() { 
+    $("select.profession_type").change(function(){
+        $("input.profession_symbol[id="+this.id+"]").val(this.value);
+    });
+}
 
 $(function() {
     
     bindDelete();
+    reload_symbol_profession();
     
     /** 
     * 
@@ -188,6 +200,7 @@ $(function() {
           }
 
           bindDelete();
+          reload_symbol_profession();
 
      });
      
@@ -733,12 +746,6 @@ $(function() {
         }
     });
 
-    /**
-     * PROFESSION - SYMBOL - PROFESSION DESCRIPTION
-     **/
-    $("select.profession_type").change(function(){
-        $("input.profession_symbol[id="+this.id+"]").val(this.value);
-    });
 
     /**
      * REFERRAL - SHOW DETAILS OF CLIENT

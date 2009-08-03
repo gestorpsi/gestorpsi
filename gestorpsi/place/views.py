@@ -23,7 +23,7 @@ from django.core.paginator import Paginator
 from django.utils import simplejson
 from django.utils.translation import ugettext as _
 from gestorpsi.place.models import Place, Room, RoomType, PlaceType
-from gestorpsi.address.models import Country, AddressType, State
+from gestorpsi.address.models import Country, AddressType, State, City
 from gestorpsi.address.views import address_save
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.phone.views import phone_save
@@ -91,6 +91,12 @@ def form(request, object_id=''):
     except (Http404, ObjectDoesNotExist):
         object= Place()
         place_type= PlaceType()
+        
+    try:
+        cities = City.objects.filter(state=request.user.get_profile().org_active.address.all()[0].city.state)
+    except:
+        cities = {}
+
     return render_to_response('place/place_form.html', {'object': object,
                                                         'PlaceTypes': PlaceType.objects.all(), 
                                                         #'organization': organization,
@@ -102,6 +108,7 @@ def form(request, object_id=''):
                                                         'RoomTypes': RoomType.objects.all(),
                                                         #'rooms': rooms,
                                                         'States': State.objects.all(),
+                                                        'Cities': cities,
                                                         },
                                                         context_instance=RequestContext(request))
 

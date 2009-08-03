@@ -86,6 +86,16 @@ function reload_symbol_profession() {
     });
 }
 
+/**
+ * reload select cities when state in selected, in generic addresses forms
+ */
+
+function bindCityCombo() { 
+    $('label.state select.city_search').unbind().change(function() {
+        reloadCities($(this));
+    });
+}
+
 $(function() {
     
     bindDelete();
@@ -133,10 +143,7 @@ $(function() {
         }
     });
 
-
-    $('label.state select.city_search').change(function() {
-        reloadCities($(this));
-    });
+    bindCityCombo();
      
      /**
       * other countries address, not registered in database
@@ -201,6 +208,7 @@ $(function() {
 
           bindDelete();
           reload_symbol_profession();
+          bindCityCombo();
 
      });
      

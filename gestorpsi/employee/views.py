@@ -22,7 +22,7 @@ from django.utils.translation import ugettext as _
 from gestorpsi.employee.models import Employee
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.phone.models import PhoneType
-from gestorpsi.address.models import Country, State, AddressType
+from gestorpsi.address.models import Country, State, AddressType, City
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.person.views import person_save
@@ -75,9 +75,14 @@ def form(request, object_id= ''):
         #last_update = object.history.latest('_audit_timestamp')._audit_timestamp
     except:        
         object= Employee()
-        
+
+    try:
+        cities = City.objects.filter(state=request.user.get_profile().org_active.address.all()[0].city.state)
+    except:
+        cities = {}
+
     return render_to_response('employee/employee_form.html',
-                              {'object': object, 'emails': emails, 'websites': sites, 'ims': instantMessengers, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), 'MaritalStatusTypes': MaritalStatus.objects.all(), }, #'last_update': last_update },
+                              {'object': object, 'emails': emails, 'websites': sites, 'ims': instantMessengers, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), 'MaritalStatusTypes': MaritalStatus.objects.all(), 'Cities': cities, }, #'last_update': last_update },
                               context_instance=RequestContext(request)
                               )
 

@@ -44,19 +44,23 @@ GNU General Public License for more details.
 
 	<label style="float:left;">{% trans "Country" %}<br />
 	<select name="foreignCountry" class="select country">
-	    {% for country in countries %}
-		    <option value="{{ country.id }}" {% if not address.foreignCountry_id %}{% ifequal country.id user.get_profile.org_active.address.all.0.city.state.country_id %}selected{% endifequal %}{% else %}{% ifequal country.id address.foreignCountry_id %}selected{% endifequal %}{% endif %}>{{ country.name }}</option>
-	    {% endfor %}
+	{% for country in countries %}
+		<option value="{{ country.id }}" {% if not address.foreignCountry_id %}{% ifequal country.id 33 %}selected{% endifequal %}{% else %}{% ifequal country.id address.foreignCountry_id %}selected{% endifequal %}{% endif %}>{{ country.name }}</option>
+	{% endfor %}
 	</select>
 	</label>
 	
     <!--auto complete city-->
     <label class="autocomplete state"{% if address.foreignCity %} style="display:none"{% endif %}>
     {% trans "State/Region" %}<br />
-    <select class="city_search extrasmall" city="{{ address.city.id }}" name="state_inscription">
+    <select class="city_search extrasmall" city="{{ address.city.id }}">
         <option></option>
         {% for s in States %}
-        <option value="{{ s.id }}"{% if address.city.state.id %} {% ifequal address.city.state.id s.id %} selected {% endifequal %} {% else %} {% ifequal user.get_profile.org_active.address.all.0.city.state_id s.id %} selected {% endifequal %}  {% endif %} >{{ s.shortName }}</option>
+        {% if address %}
+            <option value="{{ s.id }}"{% ifequal address.city.state.id s.id %} selected{% endifequal %}>{{ s.shortName }}</option>
+        {% else %}
+            <option value="{{ s.id }}"{% ifequal user.get_profile.org_active.address.all.0.city.state.id s.id %}selected{% endifequal %}>{{ s.shortName }}</option>
+        {% endif %}
         {% endfor %}
     </select>
     </label>
@@ -64,10 +68,9 @@ GNU General Public License for more details.
     <label class="autocomplete city"{% if address.foreignCity %} style="display:none"{% endif %}>
     {% trans "City" %}<br />
     <select name="city" class="extramedium">
-        {% if not object %}
-            <option disabled>{% trans "Select state first" %}</option>
-            {% for city in Cities %}
-                <option value="{{ city.id }}"{% ifequal city.id user.get_profile.org_active.address.all.0.city_id %} selected {% endifequal %}>{{ city }} </option>
+        {% if not address.city.id %}
+            {% for c in Cities %}
+                    <option value="{{ c.id }}"{% ifequal user.get_profile.org_active.address.all.0.city.id c.id %} selected{% endifequal %}>{{ c.name }}</option>
             {% endfor %}
         {% endif %}
     </select>

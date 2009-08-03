@@ -25,7 +25,7 @@ from django.template.defaultfilters import slugify
 from django.utils.translation import gettext as _
 from gestorpsi.organization.models import Organization
 from gestorpsi.phone.models import PhoneType
-from gestorpsi.address.models import Country, State, AddressType
+from gestorpsi.address.models import Country, State, AddressType, City
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.person.models import Person
 from gestorpsi.careprofessional.models import CareProfessional, Profession, ProfessionalIdentification
@@ -110,6 +110,10 @@ def list(request, page = 1):
 @permission_required_with_403('contact.contact_read')
 def add(request):
     organizations = Organization.objects.filter(contact_owner=request.user.get_profile().person, active=True, visible=True)
+    try:
+        cities = City.objects.filter(state=request.user.get_profile().org_active.address.all()[0].city.state)
+    except:
+        cities = {}
     return render_to_response('contact/contact_form.html', {
                                     'object': object,
                                     'countries': Country.objects.all(),
@@ -119,7 +123,8 @@ def add(request):
                                     'EmailTypes': EmailType.objects.all(), 
                                     'IMNetworks': IMNetwork.objects.all(),
                                     'organizations': organizations,
-                                    'professions': Profession.objects.all()
+                                    'professions': Profession.objects.all(),
+                                    'Cities': cities,
                                      },
                                      context_instance=RequestContext(request)
                                      )
@@ -151,7 +156,7 @@ def form(request, object_type='', object_id=''):
         emails    = object.person.emails.all()
         sites     = object.person.sites.all()
         instantMessengers = object.person.instantMessengers.all()
-        
+    
     return render_to_response('contact/contact_form.html', {
                                     'object': object,
                                     'object_type': object_type,
@@ -167,7 +172,7 @@ def form(request, object_type='', object_id=''):
                                     'ims': instantMessengers,
                                     'phones': phones,
                                     'addresses': addresses,
-                                    'professions': Profession.objects.all()
+                                    'professions': Profession.objects.all(),
                                      },
                                      context_instance=RequestContext(request)
                                      )

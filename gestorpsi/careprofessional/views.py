@@ -23,7 +23,7 @@ from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.careprofessional.models import ProfessionalProfile, ProfessionalIdentification, CareProfessional, Profession
 from gestorpsi.organization.models import Agreement
 from gestorpsi.phone.models import PhoneType
-from gestorpsi.address.models import Country, State, AddressType
+from gestorpsi.address.models import Country, State, AddressType, City
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.place.models import Place, PlaceType
@@ -72,6 +72,11 @@ def form(request, object_id=''):
     except:
         object = CareProfessional() 
 
+    try:
+        cities = City.objects.filter(state=request.user.get_profile().org_active.address.all()[0].city.state)
+    except:
+        cities = {}
+
     return render_to_response('careprofessional/careprofessional_form.html', {
                                     'object': object,
                                     'emails': emails,
@@ -96,6 +101,7 @@ def form(request, object_id=''):
                                     'workplaces': workplaces,
                                     'agreements': agreements,
                                     'ServiceTypes': Service.objects.filter( active=True, organization=user.get_profile().org_active ),
+                                    'Cities': cities,
                                     },
                               context_instance=RequestContext(request)
                               )

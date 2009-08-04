@@ -52,6 +52,7 @@ def is_responsible(value):
 
 @permission_required_with_403('admission.admission_write')
 def add_relationship(request, object, name_list, relation_list, responsible_list):
+    user = request.user
     responsible = ''
     object.person_link.all().delete()
     for i in range(0, len(name_list)):
@@ -60,7 +61,9 @@ def add_relationship(request, object, name_list, relation_list, responsible_list
                 responsible = is_responsible(responsible_list[i])
             except:
                 responsible = False
-            object.person_link.add(PersonLink.objects.create(person=Person.objects.create(name=name_list[i]), relation=Relation.objects.get(pk=relation_list[i]), responsible=responsible))
+            person = Person.objects.create(name=name_list[i])
+            person.organization.add(user.get_profile().org_active)
+            object.person_link.add(PersonLink.objects.create(person=person, relation=Relation.objects.get(pk=relation_list[i]), responsible=responsible))
 
 @permission_required_with_403('admission.admission_write')
 def save(request, object_id=''):

@@ -41,9 +41,9 @@ class ReferralImpact(models.Model):
         return u'%s (%s)' % (self.title, self.description)
 
 REFERRAL_STATUS = (
-    ('01', 'Active'),
-    ('02', 'Inactive'),
-    ('03', 'Unknown'),
+    ('01', _('Active')),
+    ('02', _('Inactive')),
+    ('03', _('Unknown')),
 )
 
 REFERRAL_DISCHARGE_TYPE = (
@@ -81,7 +81,7 @@ class ReferralGroup(models.Model):
     referral = models.ForeignKey('Referral', null=True, blank=True)
     description = models.CharField(max_length=100)
     comments = models.TextField(blank=True)
-    #active = models.BooleanField(default=True)
+    active = models.BooleanField(default=True)
     
     def __unicode__(self):
         return u'%s' % (self.description)

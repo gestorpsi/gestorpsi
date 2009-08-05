@@ -108,12 +108,18 @@ def add(request):
 
 
 @permission_required_with_403('client.client_list')
-def list(request, page = 1):
+def list(request, page = 1, initial = None, filter = None):
     user = request.user
     if user.groups.filter(name='administrator').count() == 1 or user.groups.filter(name='secretary').count() == 1:
         object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
     else:
         object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1', referral__professional = user.profile.person.careprofessional.id).distinct().order_by('person__name')
+
+    if initial:
+        object = object.filter(person__name__istartswith = initial)
+        
+    if filter:
+        object = object.filter(person__name__icontains = filter)
 
     return HttpResponse(simplejson.dumps(person_json_list(request, object, 'client.client_read', page)),
                             mimetype='application/json')

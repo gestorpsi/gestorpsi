@@ -80,10 +80,10 @@ function buildTableList(tableTR, selector, has_perm_read) {
 
     if(tableTR == '') {
         $('div.no_registers_available').show();
-        $('div.registers_available').hide();
+        //$('div.registers_available').hide();
     } else {
         $('div.no_registers_available').hide();
-        $('div.registers_available').show();
+        //$('div.registers_available').show();
     }
 
     /**

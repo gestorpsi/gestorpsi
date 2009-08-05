@@ -19,7 +19,9 @@ GNU General Public License for more details.
 */
 
 
-function updateClient(url) {
+function updateClient(url, app) {
+    if (!app)
+        app = "client";
     $.getJSON(url, function(json) {
         var tableTR = '';
         
@@ -42,10 +44,10 @@ function updateClient(url) {
         });
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
-        buildPaginator('client', json['paginator'], json['util'], 'div#list');
+        buildPaginator(app, json['paginator'], json['util'], 'div#list');
 
         $("ul.paginator a").unbind().click(function(){
-            updateClient($(this).attr('href'))
+            updateClient($(this).attr('href'), app)
             return false;
         });
     });  

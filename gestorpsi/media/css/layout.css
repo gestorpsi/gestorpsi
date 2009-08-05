@@ -176,7 +176,7 @@ div#sub_menu .active {
 }
 
 #myoffice.main_menu {
-	width: 200px;
+	width: 170px;
 }
 
 #myoffice.main_menu_big, .main_menu_big {
@@ -214,8 +214,8 @@ div#sub_menu .active {
 	display: block;
 	position: absolute;
 	top: 30px;
-	left: -240px;
-	width: 238px;
+	left: -210px;
+	width: 208px;
 	background: #FCFCFC;
 	z-index: 5;
 	border-bottom: 1px solid #838383;
@@ -729,7 +729,7 @@ li a.list {
 }
 
 
-.sidebar li .referral_edit {
+.sidebar li .referral_edit, .edit_generic {
 	background: url(../img/ico_edit.png) no-repeat 0 6px;
 }
 
@@ -763,6 +763,10 @@ li a.list {
 
 .sidebar li .print {
 	background: url(../img/16/print.png) no-repeat 0 3px;
+}
+
+.sidebar li .occurrence_confirmation {
+	background: url(../img/16/internet-news-reader.png) no-repeat 0 3px;
 }
 
 .sidebar input.save_button {

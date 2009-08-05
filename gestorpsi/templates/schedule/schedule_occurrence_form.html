@@ -24,26 +24,27 @@ GNU General Public License for more details.
  <ul id="sub_schedule">
     <li><a class="first" href="/schedule/">{% trans "daily" %}</a></li>
     <li><a href="/schedule/events/">{% trans "events" %}</a></li>
-    <li><a class="active" href="#">{% trans "add" %}</a></li>
+    {% if occurrence.id %}<li><a class="active">{{ occurrence.event.referral }} - {{ occurrence.room }}</a></li>{% endif %}
 </ul>
 {% endblock %}
 
 {% block core %}
 
 <h2 class="title_schedule title">{% if occurrence.event.referral.referralgroup_set.all %}<a href="/service/group/{{ occurrence.event.referral.referralgroup_set.all.0.id }}/form/">{{ occurrence.event.referral.group_name }}</a>{% else %}{{ occurrence.event.referral.client.all.0 }}{% endif %} - {{ occurrence.event.referral.service }}</h2>
-<p class="description"><a href="/careprofessional/{{ occurrence.event.referral.professional.all.0.id }}/">{{ occurrence.event.referral.professional.all.0 }}</a> <a href="/schedule/events/{{ occurrence.event.id}}/">{{ occurrence.event.occurrence_set.all|length }} {% trans "Occurrences" %}</a></p>
+<p class="description"><a href="/careprofessional/{{ occurrence.event.referral.professional.all.0.id }}/">{% trans "Dr(a)" %} {{ occurrence.event.referral.professional.all.0 }}</a> &nbsp;&nbsp;<a href="/schedule/events/{{ occurrence.event.id}}/">{{ occurrence.event.occurrence_set.all|length }} {% trans "Occurrences" %}</a></p>
 
 <form method="post" action="/schedule/events/{{ occurrence.event.id }}/{{ occurrence.id }}/" class="schedule_occurrence">
-<div class="main_area">
+<div class="main_area home">
 {{ event_form.errors }}
 {{ recurrence_form.errors }}
 	
 
         <fieldset>
-        <legend>{% trans "Due Details" %}</legend>
+        <legend>{% trans "Occurrence Details" %}</legend>
              <h2 class="red">
-            {{ occurrence.start_time|date:"l," }} {% trans "of" %} {{ occurrence.start_time|date:"F" }} {% trans "of" %} {{ occurrence.start_time|date:"Y" }} - {{ occurrence.room }}</a>
-            </h3>
+            {{ occurrence.start_time|date:"l," }} {{ occurrence.start_time|date:"d" }} {% trans "of" %} {{ occurrence.start_time|date:"F" }} {% trans "of" %} {{ occurrence.start_time|date:"Y" }}</a>
+            </h2>
+            <p>{{ occurrence.room }} <b>{{ occurrence.start_time|date:"H:i" }} - {{ occurrence.end_time|date:"H:i" }} hs</b></p>
             <label style="display:none">{% trans "Start Time" %}<br />
             {{ form.start_time }}</label>
             <label style="display:none">{% trans "End Time" %}<br />
@@ -75,14 +76,21 @@ GNU General Public License for more details.
             </p>
             {% endfor %}
         {% else %}
+            <h2 class="red">{% trans "This referral have no upcoming occurrences" %}</h2>
         {% endif %}
 <br />
 </div>
 
 <div id="sidebar" class="sidebar">
-            <div class="bg_blue">
-                {% include "tags/save.html" %}
-            </div>
+    <div class="bg_blue">
+        {% include "tags/save.html" %}
+    </div>
+    {% if occurrence.is_past %}
+    <h3>{% trans 'Occurrence Actions' %}</h3>
+    <ul>
+        <li><a href="/schedule/events/{{ occurrence.id }}/confirmation/" class="occurrence_confirmation" title="{{ object }}">{% trans "Occurrence Confirmation" %}</a></li>
+    </ul>
+    {% endif %}
 </div>
 
 </form>

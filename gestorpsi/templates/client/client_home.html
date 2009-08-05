@@ -86,7 +86,7 @@ GNU General Public License for more details.
             {% for i in referrals %}
                 <li><a href="/client/{{ object.id}}/referral/{{ i.id }}/">{{ i.service }}</a> {% if i.upcoming_occurrences %} {% trans "with" %} {{ i.upcoming_occurrences|length }} {% trans "occurrences remaining" %}{% endif %}<br />
                 {% for p in i.professional.all %}
-                    {% trans "Dr(a)" %} <b>{{ p }}</b> {% for i in p.person.phones.all %} {{ i }} {{ i.phoneType }} {% endfor %}{{ p.person.get_first_email }}<br />
+                    <b>{{ p }}</b> {% for i in p.person.phones.all %} {{ i }} {{ i.phoneType }} {% endfor %}{{ p.person.get_first_email }}<br />
                 {% endfor %}
                     {% if i.next_occurrence %}
                         {% trans "Next occurrence" %}:

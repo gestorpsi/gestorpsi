@@ -1,0 +1,83 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_schedule %}active{% endblock %}
+
+{% block submenu %}
+ <ul id="sub_schedule">
+    <li><a class="first" href="/schedule/">{% trans "daily" %}</a></li>
+    <li><a href="/schedule/events/">{% trans "events" %}</a></li>
+    {% if occurrence.id %}<li><a class="active">{{ occurrence.event.referral }} - {{ occurrence.room }}</a></li>{% endif %}
+</ul>
+{% endblock %}
+
+{% block core %}
+{% if occurrence.is_past %}
+<h2 class="title_schedule title">{% if occurrence.event.referral.referralgroup_set.all %}<a href="/service/group/{{ occurrence.event.referral.referralgroup_set.all.0.id }}/form/">{{ occurrence.event.referral.group_name }}</a>{% else %}{{ occurrence.event.referral.client.all.0 }}{% endif %} - {{ occurrence.event.referral.service }}</h2>
+<p class="description"><a href="/careprofessional/{{ occurrence.event.referral.professional.all.0.id }}/">{{ occurrence.event.referral.professional.all.0 }}</a> <a href="/schedule/events/{{ occurrence.event.id}}/">{{ occurrence.event.occurrence_set.all|length }} {% trans "Occurrences" %}</a></p>
+
+
+    <form method="post" action="/schedule/events/{{ occurrence.id }}/confirmation/" class="schedule_occurrence">
+    <div class="main_area">
+    {{ event_form.errors }}
+    {{ recurrence_form.errors }}
+        
+
+            <fieldset>
+            <legend>{% trans "Occurrence Confirmation Details" %}</legend>
+                <label>{{ form.presence.label }}<br />
+                {{ form.presence }}
+                </label>
+                <div style="clear:both"></div>
+                <label>{{ form.date_started.label }}<br />
+                <div>
+                {{ form.date_started }}
+                </div>
+                </label>       
+                <label>{{ form.unmarked }}&nbsp;{{ form.unmarked.label }}           
+                </label>
+                <label>{{ form.remarked }}&nbsp;{{ form.remarked.label }}
+                </label>
+                <div style="clear:both"></div>
+                <label>{{ form.reason.label }}<br />
+                {{ form.reason }}
+                </label>            
+                <label>{{ form.comments.label }}<br />
+                {{ form.comments }}
+                </label>            
+            </fieldset>
+          <br />
+    </div>
+
+
+    <div id="sidebar" class="sidebar">
+                <div class="bg_blue">
+                    {% include "tags/save.html" %}
+                </div>
+        <h3>{% trans 'Occurrence Details' %}</h3>
+        <ul>
+            <li><a href="/schedule/events/{{ occurrence.event.id }}/{{ occurrence.id }}/" class="occurrence_confirmation edit_generic" title="{{ object }}">{% trans "Occurrence Details" %}</a></li>
+        </ul>
+               
+    </div>
+
+    </form>
+{% endif %}
+{% endblock %}

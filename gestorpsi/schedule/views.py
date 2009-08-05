@@ -24,7 +24,7 @@ from django.shortcuts import get_object_or_404, render_to_response, HttpResponse
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from swingtime.utils import create_timeslot_table
-from gestorpsi.schedule.models import ScheduleOccurrence
+from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation
 from gestorpsi.referral.models import Referral, ReferralGroup
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.place.models import Place, Room
@@ -186,6 +186,52 @@ def occurrence_view(
             print form.errors
     else:
         form = form_class(instance=occurrence, initial={'start_time':occurrence.start_time})
+        
+    return render_to_response(
+        template,
+        dict(occurrence=occurrence, form=form),
+        context_instance=RequestContext(request)
+    )
+
+@permission_required_with_403('schedule.schedule_read')
+def occurrence_confirmation_form(
+    request, 
+    pk, 
+    template='schedule/schedule_occurrence_confirmation_form.html',
+    form_class=ScheduleSingleOccurrenceForm
+):
+    user = request.user
+
+    occurrence = get_object_or_404(ScheduleOccurrence, pk=pk)
+
+    if not occurrence.is_past():
+        request.user.message_set.create(message=_('You can not confirme a not past occurrence'))
+        return render_to_response(
+        template,
+        context_instance=RequestContext(request)
+        )
+
+    try:
+        occurrence_confirmation = OccurrenceConfirmation.objects.get(pk = occurrence.occurrenceconfirmation.id)
+    except:
+        occurrence_confirmation = None
+
+    if request.method == 'POST':
+        form = form_class(request.POST, instance = occurrence_confirmation)
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.occurrence = occurrence
+            form.save()
+            request.user.message_set.create(message=_('Occurrence confirmation updated successfully'))
+            return http.HttpResponseRedirect(request.path)
+        else:
+            return render_to_response(
+                template,
+                dict(occurrence=occurrence, form=form),
+                context_instance=RequestContext(request)
+            )
+    else:
+        form = form_class(instance=occurrence_confirmation, initial={'occurrence':occurrence, 'start_time':occurrence.start_time})
         
     return render_to_response(
         template,

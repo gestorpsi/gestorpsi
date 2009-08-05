@@ -19,7 +19,7 @@ from django import forms
 from django.forms.extras.widgets import SelectDateWidget
 from swingtime.forms import MultipleOccurrenceForm, SingleOccurrenceForm
 from swingtime import utils
-from gestorpsi.schedule.models import ScheduleOccurrence
+from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation
 from gestorpsi.place.models import Room
 from gestorpsi.device.models import DeviceDetails
 from gestorpsi.schedule import settings as swingtime_settings
@@ -117,3 +117,23 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
 
         return event
 
+#from django.contrib.admin import widgets
+#from datetime import datetime
+#from django.forms.extras.widgets import SelectDateWidget 
+from gestorpsi.util.widgets import SplitSelectDateTimeWidget
+from gestorpsi.schedule.models import OCCURRENCE_CONFIRMATION_PRESENCE
+class OccurrenceConfirmationForm(forms.ModelForm):
+    date_started = forms.DateTimeField(widget=SplitSelectDateTimeWidget())
+    #presence = forms.ChoiceField()
+    #presence = forms.ChoiceField(choices = OCCURRENCE_CONFIRMATION_PRESENCE, widget = forms.TypedChoiceField)
+    
+    def __init__(self, *args, **kwargs):
+        super(OccurrenceConfirmationForm, self).__init__(*args, **kwargs)
+        self.initial.setdefault('date_started', self.initial.get('start_time'))
+        self.initial.setdefault('occurrence', self.initial.get('occurrence'))
+
+    class Meta:
+        model = OccurrenceConfirmation
+        fields = ('date_started', 'presence', 'unmarked', 'remarked', 'reason', 'comments')
+    
+    

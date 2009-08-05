@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django.conf.urls.defaults import *
 from gestorpsi.referral.forms import ReferralForm
-from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm
+from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm, OccurrenceConfirmationForm
 from gestorpsi.schedule.views import occurrence_view
 from gestorpsi.schedule.views import occurrence_abstract
 from gestorpsi.schedule.views import add_event
@@ -25,6 +25,7 @@ from gestorpsi.schedule.views import schedule_occurrence_listing_today
 from gestorpsi.schedule.views import event_view
 from gestorpsi.schedule.views import daily_occurrences 
 from gestorpsi.schedule.views import today_occurrences
+from gestorpsi.schedule.views import occurrence_confirmation_form
 #from gestorpsi.schedule.views import referral_occurrences
 
 #from gestorpsi.schedule.views import calendar_view
@@ -113,9 +114,18 @@ urlpatterns = patterns('',
         r'^events/(\d+)/(\d+)/$', 
         occurrence_view, 
         {'template':'schedule/schedule_occurrence_form.html',
-         'form_class': ScheduleSingleOccurrenceForm
+         'form_class': ScheduleSingleOccurrenceForm,
         },
         name='swingtime-occurrence'
+    ),
+    
+    url(
+        r'^events/(\d+)/confirmation/$', 
+        occurrence_confirmation_form, 
+        {'template':'schedule/schedule_occurrence_confirmation_form.html',
+         'form_class': OccurrenceConfirmationForm,
+        },
+        name='swingtime-occurrence-confirmation'
     ),
     
         #url(

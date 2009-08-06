@@ -120,8 +120,7 @@ CREATE TABLE "person_person_crypt" (
     "gender" varchar(1) NOT NULL,
     "maritalStatus_id" integer REFERENCES "person_maritalstatus" ("id") DEFERRABLE INITIALLY DEFERRED,
     "comments" text,
-    "active" boolean NOT NULL,
-    "organization_id" varchar(36) REFERENCES "organization_organization" ("id") DEFERRABLE INITIALLY DEFERRED
+    "active" boolean NOT NULL
 );
 
 CREATE OR REPLACE VIEW person_person
@@ -137,8 +136,7 @@ CREATE OR REPLACE VIEW person_person
             "gender",
             "maritalStatus_id",
             "comments",
-            "active",
-            "organization_id"
+            "active"
   FROM person_person_crypt;
 
 CREATE OR REPLACE RULE rule_insert_person_person AS ON INSERT
@@ -157,26 +155,24 @@ CREATE OR REPLACE RULE rule_insert_person_person AS ON INSERT
               NEW."gender",
               NEW."maritalStatus_id",
               NEW."comments",
-              NEW."active",
-              NEW."organization_id");
+              NEW."active");
 
 CREATE OR REPLACE RULE rule_update_person_person AS ON UPDATE
     TO person_person
     DO INSTEAD
     UPDATE person_person_crypt SET
-        "name" = gestorpsi_encrypt(NEW."name"),
+    "name" = gestorpsi_encrypt(NEW."name"),
 	"nickname" = gestorpsi_encrypt(NEW."nickname"),
 	"photo" = NEW."photo",
 	"birthDate" = NEW."birthDate",
 	"birthPlace_id" = NEW."birthPlace_id",
 	"birthForeignCity" = NEW."birthForeignCity",
-        "birthForeignState" = NEW."birthForeignState",
+    "birthForeignState" = NEW."birthForeignState",
 	"birthForeignCountry" = NEW."birthForeignCountry",
 	"gender" = NEW."gender", 
 	"maritalStatus_id" = NEW."maritalStatus_id",
-        "comments" = NEW."comments",
-        "active" = NEW."active",
-	"organization_id" = NEW."organization_id"
+    "comments" = NEW."comments",
+    "active" = NEW."active"
     WHERE "id" = OLD."id";
 
 CREATE OR REPLACE RULE rule_delete_person_person AS ON DELETE

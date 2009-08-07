@@ -106,7 +106,7 @@ GNU General Public License for more details.
 		</label>
 
 		<label>{% trans "Solicitation" %}<br />
-		<select name="service_solicitation" class="extramedium service_solicitation small_fonts multiple asm" multiple="multiple">
+		<select name="service_solicitation" class="extramedium service_solicitation multiple asm" multiple="multiple">
 			{% for m in Modalitys %}
 			<option value="{{ m.id }}" class="{% for a in Areas %}{% for am in a.modality.values_list %}{% ifequal m.id am.0 %}area_{{ a.id }} {% endifequal %}{% endfor %}{% endfor %}"{% for om in object.modalities.values_list %}{% ifequal om.0 m.id %} selected="selected"{% endifequal %}{% endfor %}>{{ m }}</option>
 			{% endfor %}
@@ -114,7 +114,7 @@ GNU General Public License for more details.
 		</label>
 		
 		<label>{% trans "Profession" %}<br />
-		<select name="service_profession" multiple="multiple" class="extramedium multiple small_fonts asm">
+		<select name="service_profession" multiple="multiple" class="high multiple giant">
 			{% for p in Professions %}
 				<option value="{{ p.id }}"{% for op in object.professions.all %}{% ifequal op.id p.id %} selected="selected"{% endifequal %}{% endfor %}>{{ p }}</option>
 			{% endfor %}			
@@ -128,7 +128,7 @@ GNU General Public License for more details.
 		<!--<legend>{% trans "Clinica Area" %}</legend>-->
 	
 		<label>{% trans "Age" %}<br />
-		<select name="service_age" multiple="multiple" class="extramedium multiple small_fonts asm">
+		<select name="service_age" multiple="multiple" class="multiple asm">
 		{% for l in AgeGroups %}
 			<option value="{{ l.id }}"{% for ag in object.content_object.age_group.all %}{% ifequal ag.id l.id %} selected="selected"{% endifequal %}{% endfor %}>{{ l }}</option>
 		{% endfor %}
@@ -192,7 +192,7 @@ GNU General Public License for more details.
 	
 			<label>{% trans "Agreements" %}<br />
 			<span>
-			<select multiple="multiple" name="service_agreements" class="select multiple extrabig asm small_fonts">
+			<select multiple="multiple" name="service_agreements" class="select multiple extrabig asm high">
 				{% for l in Agreements %}
 				<option value="{{ l.id }}"{% for oa in object.agreements.values_list %}{% ifequal oa.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{{ l }}</option>
 				{% endfor %}
@@ -202,7 +202,7 @@ GNU General Public License for more details.
 	
 			<label>{% trans "Related Professionals" %}<br />
 			<span>
-			<select multiple="multiple" name="service_professionals" class="select multiple extrabig asm small_fonts high">
+			<select multiple="multiple" name="service_professionals" class="select multiple extrabig asm high">
 				{% for l in CareProfessionals %}
 				<option value="{{ l.id }}"{% for or in object.professionals.values_list %}{% ifequal or.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{{ l }}</option>
 				{% endfor %}
@@ -212,7 +212,7 @@ GNU General Public License for more details.
 
 			<label>{% trans "Professionals Responsible" %}<br />
 			<span>
-			<select multiple="multiple" name="service_responsibles" class="select multiple extrabig asm small_fonts high">
+			<select multiple="multiple" name="service_responsibles" class="select multiple extrabig asm high">
 				{% for l in CareProfessionals %}
 				<option value="{{ l.id }}"{% for or in object.responsibles.values_list %}{% ifequal or.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{{ l }}</option>
 				{% endfor %}

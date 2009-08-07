@@ -683,10 +683,7 @@ hr {
 }
 
 #search_header {
-	height: 50px;
-	width: 715px;
-	position:relative;
-	padding-left: 90px;
+display: none;
 }
 #nav_back, #nav_fwd {
 	display: none;

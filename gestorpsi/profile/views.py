@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import gettext as _
 from gestorpsi.address.models import Country, State, AddressType
@@ -28,10 +28,8 @@ from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.organization.models import Agreement
 from gestorpsi.place.models import Place, PlaceType
 from gestorpsi.service.models import Service
-from gestorpsi.psychologist.models import Psychologist
-from gestorpsi.careprofessional.views import care_professional_fill
+from gestorpsi.careprofessional.views import save_careprof
 
-# person form
 def form(request):
     try:
         object = request.user.get_profile()
@@ -47,19 +45,20 @@ def form(request):
     Issuers = Issuer.objects.all()
     States = State.objects.all()
     MaritalStatusTypes = MaritalStatus.objects.all()
-    
+
+    phones    = object.person.phones.all()
+    addresses = object.person.address.all()
+    documents = object.person.document.all()                       
+    emails    = object.person.emails.all()
+    websites  = object.person.sites.all()
+    ims       = object.person.instantMessengers.all()
+
     return render_to_response('profile/profile_person.html', locals(), context_instance=RequestContext(request))
 
 def form_careprofessional(request):
-    documents = []
-    workplaces = []
-    agreements = []
-    try:
-        object = CareProfessional.objects.get(pk=request.user.get_profile().person.careprofessional.id)
-        workplaces = object.professionalProfile.workplace.all()
-        agreements = object.professionalProfile.agreement.all()
-    except:
-        raise Http404
+    object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
+    workplaces = object.professionalProfile.workplace.all()
+    agreements = object.professionalProfile.agreement.all()
 
     return render_to_response('profile/profile_careprofessional.html', {
                                     'object': object,
@@ -71,8 +70,7 @@ def form_careprofessional(request):
                                     'ServiceTypes': Service.objects.filter( active=True, organization=request.user.get_profile().org_active ),
                                     'PlaceTypes': PlaceType.objects.all(),
                                     },
-                              context_instance=RequestContext(request)
-                              )
+                              context_instance=RequestContext(request))
 
 def save(request):
     if not request.method == 'POST':
@@ -86,15 +84,8 @@ def save(request):
     request.user.message_set.create(message=_('Profile updated successfully'))
     return HttpResponseRedirect('/profile/')
     
-def save_careprofessional(request):    
-    try:
-        object = Psychologist.objects.get(pk=request.user.get_profile().person.careprofessional.id)        
-    except:
-        raise Http404
-
-    object = care_professional_fill(request, object, None)
-    object.save()
-
+def save_careprofessional(request):
+    object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
+    object = save_careprof(request, object.id, False)
     request.user.message_set.create(message=_('Professional profile saved successfully'))
-
     return HttpResponseRedirect('/profile/careprofessional/')

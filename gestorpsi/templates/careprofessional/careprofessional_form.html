@@ -49,7 +49,7 @@ GNU General Public License for more details.
 <h2 id="title_myoffice" style="display:none"></h2>
 
 
-<form action="/psychologist/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="form_people collapsable form_careprofessional">	
+<form action="/careprofessional/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="form_people collapsable form_careprofessional">	
 <div class="main_area">
 
 	<!-- <a href="" id="help">&nbsp;</a> -->
@@ -128,8 +128,9 @@ GNU General Public License for more details.
 			</select>
 			</label>
 	</fieldset>
-        {% include "meta/phones.html" %}
+    {% include "meta/phones.html" %}
 	{% include "meta/people_profile.html" %}
+    {% include "meta/people_documents.html" %}
 	{% include "meta/addressbook.html" %}
 	{% include "meta/internet.html" %}
 

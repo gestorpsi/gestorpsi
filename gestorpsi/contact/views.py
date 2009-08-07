@@ -182,8 +182,11 @@ def save(request, object_id=''):
     user = request.user
     if (request.POST.get('type') == 'organization'):
         type = "1"
-
         object = get_object_or_None(Organization, pk=object_id) or Organization()
+
+        """ Just a second security layer in case of template failure """
+        if not object.organization:
+            return HttpResponseRedirect('/contact/%s/%s' % (type, object.id))
 
         object.name = request.POST.get('label') # adding by mini form
         if (object.name == None):   # input of mini form
@@ -215,6 +218,7 @@ def save(request, object_id=''):
         except:
             object = CareProfessional()
             person = Person()
+
 
         if request.POST.get('symbol'): 
             identification = ProfessionalIdentification()

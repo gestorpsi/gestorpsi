@@ -24,7 +24,6 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, PlaceType, Room, RoomType
 from gestorpsi.authentication.models import Profile, Role
 from gestorpsi.person.models import Person
-from gestorpsi.psychologist.models import Psychologist
 from gestorpsi.careprofessional.models import CareProfessional, ProfessionalProfile, ProfessionalIdentification
 
 attrs_dict = { 'class': 'required' }
@@ -71,8 +70,9 @@ class RegistrationForm(RegistrationForm):
         Role.objects.create(profile=profile, organization=organization, group=admin_role)
         profile.user.groups.add(admin_role)
 
-        psycho = Psychologist()
-        psycho.person = person
-        psycho.professionalProfile = ProfessionalProfile.objects.create()
-        psycho.professionalIdentification = ProfessionalIdentification.objects.create(registerNumber='')
-        psycho.save()
+        careprof = CareProfessional()
+        careprof.person = person
+        careprof.professionalProfile = ProfessionalProfile.objects.create()
+        careprof.professionalIdentification = ProfessionalIdentification.objects.create(registerNumber='')
+        careprof.save()
+

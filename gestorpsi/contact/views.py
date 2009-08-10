@@ -64,9 +64,6 @@ def list(request, page = 1):
     for i in address_book_get_organizations(request): # append organizations
         lista.append(i)
     for i in address_book_get_professionals(request): # append professionals
-        print i[0]
-        print CareProfessional.objects.get(pk = i[0])
-        print CareProfessional.objects.get(pk = i[0]).person.get_first_phone()
         lista.append(i)
 
     lista = list_order(request, lista)
@@ -97,8 +94,6 @@ def list(request, page = 1):
     
     for o in object.object_list:
         if o[4] == '2':
-            print "prof"
-            print o[0]
             o[3] = u'%s' % CareProfessional.objects.get(pk = o[0]).person.get_first_phone()
             
         array[i] = {
@@ -189,11 +184,6 @@ def form(request, object_type='', object_id=''):
 def save(request, object_id=''):
     user = request.user
 
-    print "=====================0"
-    print request.POST.get('type')
-    print request.POST.get('name')
-    print request.POST.get('label')
-
     if (request.POST.get('type') == 'organization'):
         type = "1"
         object = get_object_or_None(Organization, pk=object_id) or Organization()
@@ -206,20 +196,12 @@ def save(request, object_id=''):
         if (object.name == None):   # input of mini form
             object.name = request.POST.get('name')
     
-        print "=====================1"
-        print request.POST.get('name')
-        print request.POST.get('label')
-        print slugify(object.name)
-
         object.short_name = slugify(object.name)
         object.organization = user.get_profile().org_active
         object.contact_owner = user.get_profile().person
         
-        print "=====================2"
         object.save()
         
-        print "=====================3"
-
         phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
         email_save(object, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
         site_save(object, request.POST.getlist('site_id'), request.POST.getlist('site_description'), request.POST.getlist('site_site'))
@@ -272,7 +254,6 @@ def save(request, object_id=''):
 
 @permission_required_with_403('contact.contact_write')
 def save_mini(request, object_id=''):
-    print "=====================LIXO"
     user = request.user
     object = Organization()
     object.name = request.POST.get('label') # adding by mini form

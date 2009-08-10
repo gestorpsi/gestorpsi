@@ -153,10 +153,10 @@ function updateContact(url) {
                 } else {
                     if (this.type_org == 'LOCAL'){
                         tableTR += '<tr class="person local" id="' + this.id + '"><td class="title">';
-                        tableTR += '<a  href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a><br />' + this.organization;
+                        tableTR += '<a  href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a><br />' + this.organization + '</a><br /> '+ this.phone +' - '+ this.email;
                     } else {
                         tableTR += '<tr class="person gestorpsi" id="' + this.id + '"><td class="title">';
-                        tableTR += '<a  href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + "  ( " + this.profession + " ) " + '</a><br />' + this.organization;
+                        tableTR += '<a  href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + "  ( " + this.profession + " ) " + '</a><br />' + this.organization + '</a><br /> '+ this.phone + ' - ' + this.email;
                     }
                 }
 

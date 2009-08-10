@@ -761,6 +761,10 @@ li a.list {
         background: url(../img/16/edit-delete.png) no-repeat 0 3px;
 }
 
+.sidebar li .contact_order {
+        background: url(../img/16/edit-delete.png) no-repeat 0 3px;
+}
+
 .sidebar li .print {
 	background: url(../img/16/print.png) no-repeat 0 3px;
 }

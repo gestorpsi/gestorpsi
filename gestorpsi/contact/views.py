@@ -59,8 +59,6 @@ def list(request, page = 1, initial = None, filter = None):
         person_id = user.get_profile().person.id, 
         filter_name = filter_name)
 
-    from django.db import connection
-    print connection.queries
     organizations_count = len(Contact.objects.filter(
         org_id = request.user.get_profile().org_active.id, 
         person_id = user.get_profile().person.id, 
@@ -113,8 +111,7 @@ def list(request, page = 1, initial = None, filter = None):
         }
         i = i + 1
 
-    #return HttpResponse(simplejson.dumps(array, sort_keys=True), mimetype='application/json')
-    return HttpResponse(simplejson.dumps(array, sort_keys=True))
+    return HttpResponse(simplejson.dumps(array, sort_keys=True), mimetype='application/json')
 
 @permission_required_with_403('contact.contact_read')
 def add(request):

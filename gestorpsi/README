@@ -108,14 +108,27 @@ ac = AreaClinic()
 ac.save()
 ac.age_group.add(1, 2, 3, 4)
 
+5) Open settings.py and edit the follow config:
+        DATABASE_NAME
+        DATABASE_USER
+        DATABASE_PASSWORD
+        DATABASE_HOST
+        DEBUG (set to True)
+        MEDIA_URL
+        MEDIA_ROOT
+        SECRET_KEY
+        TEMPLATE_DIRS
+        EMAIL_HOST
+        EMAIL_HOST_USER
+        EMAIL_HOST_PASSWORD 
 
-5) Compile language messages
+6) Compile language messages
 $ django-admin.py compilemessages
 
-6) Run development server
+7) Run development server
 $ python manage.py runserver
 
-7) Open your browser, and go to http://127.0.0.1:8000/
+8) Open your browser, and go to http://127.0.0.1:8000/
 
 If there are any errors during installing, check your build environment
 and try to find the error, otherwise contact one of the authors.

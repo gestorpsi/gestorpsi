@@ -65,9 +65,6 @@ function buildPaginator(app, json_paginator, json_util, selector) {
 
 function buildTableList(tableTR, selector, has_perm_read) {
     
-    //if(!selector)
-        //selector = 'div#list';
-
     /**
      * flush old list
      */
@@ -80,15 +77,14 @@ function buildTableList(tableTR, selector, has_perm_read) {
 
     if(tableTR == '') {
         $('div.no_registers_available').show();
-        //$('div.registers_available').hide();
     } else {
         $('div.no_registers_available').hide();
-        //$('div.registers_available').show();
     }
 
     /**
      * populate table
      */
+
     $('table#search_results tbody').html(tableTR);
     
     /**

@@ -18,11 +18,12 @@ from datetime import datetime
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
+from django.template.context import RequestContext
 from gestorpsi.client.models import Client, PersonLink, Relation
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
 from gestorpsi.admission.models import *
-from gestorpsi.contact.views import *
+#from gestorpsi.contact.views import *
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.util.decorators import permission_required_with_403
 
@@ -32,8 +33,8 @@ def form(request, object_id=''):
 
     return render_to_response('admission/admission_form.html', {
         'object': object,
-        'address_book_professionals': address_book_get_professionals(request),
-        'address_book_organizations': address_book_get_organizations(request),
+        #'address_book_professionals': address_book_get_professionals(request),
+        #'address_book_organizations': address_book_get_organizations(request),
         'object': object,
         #'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
         'licenceBoardTypes': LicenceBoard.objects.all(),

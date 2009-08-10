@@ -21,6 +21,8 @@ from gestorpsi.authentication.views import login_check
 urlpatterns = patterns('',
     (r'^$', login_check(index)),
     (r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
+    (r'^initial/(?P<initial>[a-z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
+    (r'^filter/(?P<filter>.*)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
     (r'^add/$', login_check(add)),
     (r'^(?P<object_type>\d+)/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form)),
     (r'^save/$', login_check(save)), #save new object

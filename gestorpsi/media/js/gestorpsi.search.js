@@ -17,12 +17,64 @@ GNU General Public License for more details.
 
 
 $(function() {
+   
+    /**
+     * client quick filter
+     */
     
-    /** 
-    * client initial list links
+    $('div#search_header.client_search table#letter_menu tr td a, div#search_header.client_search a#letter_back, div#search_header.client_search a#letter_fwd').click(function() {
+        updateClient('/client/initial/' + $(this).attr('initial') + '/page1/', 'client/initial/'+$(this).attr('initial'));
+    });
+
+    
+    /**
+    * client quick search
     */
+
+    $('div#search_header.client_search input[type=text].quick_search').keyup(function() {
+        ($(this).val().length >= 1) ? updateClient('/client/filter/' + $(this).val() + '/page1/', 'client/filter/' + $(this).val()) : updateClient('/client/page1');
+    }); 
+
+    /**
+     * client clean up
+     */
     
-    $('table#letter_menu.client tr td a, div#search_header a#letter_back, div#search_header a#letter_fwd').click(function() {
+    $('div#search_header.client_search a#cleanup').click(function() {
+        updateClient('/client/page1');
+    });
+    
+    
+    /**
+     * contact quick filter
+     */
+    
+    $('div#search_header.contact_search table#letter_menu tr td a, div#search_header.contact_search a#letter_back, div#search_header.contact_search a#letter_fwd').click(function() {
+        updateContact('/contact/initial/' + $(this).attr('initial') + '/page1/', 'contact/initial/'+$(this).attr('initial'));
+    });
+
+    
+    /**
+    * contact quick search
+    */
+
+    $('div#search_header.contact_search input[type=text].quick_search').keyup(function() {
+        ($(this).val().length >= 1) ? updateContact('/contact/filter/' + $(this).val() + '/page1/', 'contact/filter/' + $(this).val()) : updateContact('/contact/page1');
+    });
+    
+    /**
+     * contact clean up
+     */
+    
+    $('div#search_header.contact_search a#cleanup').click(function() {
+        updateContact('/contact/page1');
+    });
+    
+
+    /**
+     * commom quick filter events
+     */
+    
+    $('table#letter_menu tr td a, div#search_header a#letter_back, div#search_header a#letter_fwd').click(function() {
 
             var previous = ''
             var next = ''
@@ -30,10 +82,9 @@ $(function() {
             $('div#search_header a.arrow').show();
             $('table#letter_menu tr td a').removeClass('active');
             
-            $('h2.title_clients span span').html('"' + $(this).attr('initial').toUpperCase() + '"');
-            $('h2.title_clients span').show();
+            $('div.registers_available > h2 > span > span').html('"' + $(this).attr('initial').toUpperCase() + '"');
+            $('div.registers_available > h2 > span').show();
             
-            updateClient('/client/initial/' + $(this).attr('initial') + '/page1/', 'client/initial/'+$(this).attr('initial'));
             $(this).addClass('active');
             $('div#search_header div.capital_letter').text($(this).attr('initial').toUpperCase());
 
@@ -41,7 +92,7 @@ $(function() {
                 previous = $(this).parent('td').prev().children('a').text();
                 next = $(this).parent('td').next().children('a').text();
             } else { // A,B,C,D,E etc 
-                var selected = $('table#letter_menu.client tr td a[initial=' + $(this).attr('initial') + ']').addClass('active');
+                var selected = $('table#letter_menu tr td a[initial=' + $(this).attr('initial') + ']').addClass('active');
                 previous = selected.parent('td').prev().children('a').text();
                 next = selected.parent('td').next().children('a').text()
             }
@@ -56,22 +107,34 @@ $(function() {
                 $('div#search_header a.arrow#letter_back').hide();
             if(!next)
                 $('div#search_header a.arrow#letter_fwd').hide();
+                
+            $('div#search_header input[type=text].quick_search').val('');
 
     });
-    
+
     /**
-     * client quick search input text
-     */
-     
-     
-     $('div#search_header input[type=text].quick_search').keyup(function() {
-         if($(this).val().length >= 1) {
-            updateClient('/client/filter/' + $(this).val() + '/page1/', 'client/filter/' + $(this).val());
-            $('h2.title_clients span span').html('"' + $(this).val().toUpperCase() + '"');
-            $('h2.title_clients span').show();
+    * commom quick search events
+    */
+
+    $('div#search_header input[type=text].quick_search').keyup(function() {
+        if($(this).val().length >= 1) {
+            $('div.registers_available > h2 > span > span').html('"' + $(this).val().toUpperCase() + '"');
+            $('div.registers_available > h2 > span').show();
         } else {
             $('h2.title_clients span').hide();
-            updateClient('/client/page1');
         }
-        }); 
+    }); 
+    
+    /**
+     * commom clean up
+     */
+    
+    $('div#search_header a#cleanup').click(function() {
+        $('div#search_header input[type=text].quick_search').val('');
+        $('table#letter_menu tr td a').removeClass('active');
+        $('div.registers_available > h2 span span').html('');
+        $('div.registers_available > h2 span').hide();
+    });
+
+
 });

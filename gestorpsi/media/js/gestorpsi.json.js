@@ -130,7 +130,9 @@ function updateEmployee(url) {
 * contact list
 */
 
-function updateContact(url) {
+function updateContact(url, app) {
+    if (!app)
+        app = "contact";
     $.getJSON(url, function(json) {
         var tableTR = '';
         
@@ -140,25 +142,23 @@ function updateContact(url) {
 
         jQuery.each(json,  function(){
             if(this.id) {
-                //tableTR += '<tr id="' + this.id + '"><td class="title">';
+                var class_content = ""
 
-                if (this.type == '1'){ 
-                    if (this.type_org == 'LOCAL'){
-                        tableTR += '<tr class="clinic local" id="' + this.id + '"><td class="title">';
-                        tableTR += '<a href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a><br /> '+ this.phone +' - '+ this.email;
-                    } else {
-                        tableTR += '<tr class="clinic gestorpsi" id="' + this.id + '"><td class="title">';
-                        tableTR += '<a  href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a><br /> '+ this.phone +' - '+ this.email;
-                    }
-                } else {
-                    if (this.type_org == 'LOCAL'){
-                        tableTR += '<tr class="person local" id="' + this.id + '"><td class="title">';
-                        tableTR += '<a  href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a><br />' + this.organization + '</a><br /> '+ this.phone +' - '+ this.email;
-                    } else {
-                        tableTR += '<tr class="person gestorpsi" id="' + this.id + '"><td class="title">';
-                        tableTR += '<a  href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + "  ( " + this.profession + " ) " + '</a><br />' + this.organization + '</a><br /> '+ this.phone + ' - ' + this.email;
-                    }
-                }
+                if (this.type == '1' && this.type_org == 'LOCAL') class_content = "clinic local";
+                if (this.type == '1' && this.type_org == 'GESTORPSI') class_content = "clinic gestorpsi";
+                if (this.type == '2' && this.type_org == 'LOCAL') class_content = "person local";
+                if (this.type == '2' && this.type_org == 'GESTORPSI') class_content = "person gestorpsi";
+                
+                tableTR += '<tr class="' + class_content + '" id="' + this.id + '"><td class="title">';
+                tableTR += '<a href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
+                
+                if(this.profession) tableTR += ' (' + this.profession + ')';
+                
+                tableTR += '<br /> ';
+                
+                if(this.organization) tableTR += this.organization + ' ';
+                if(this.phone) tableTR +=  ' ' + this.phone;
+                if(this.email) tableTR +=  ' '+ this.email;
 
                 tableTR += '</td>';
                 tableTR += '<td><span class="phone"></span><br />';
@@ -168,12 +168,12 @@ function updateContact(url) {
         });
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
-        buildPaginator('contact', json['paginator'], json['util'], 'div#list');
-        $('div.registers_available a.object_length span').text(json['util']['object_length']);
-        $('div.registers_available a.organizations_length span').text(json['util']['organizations_length']);
-        $('div.registers_available a.professionals_length span').text(json['util']['professionals_length']);
+        buildPaginator(app, json['paginator'], json['util'], 'div#list');
+        $('div.registers_available span.object_length span').text(json['util']['object_length']);
+        $('div.registers_available span.organizations_length span').text(json['util']['organizations_length']);
+        $('div.registers_available span.professionals_length span').text(json['util']['professionals_length']);
         $("ul.paginator a").unbind().click(function(){
-            updateContact($(this).attr('href'))
+            updateContact($(this).attr('href'), app)
             return false;
         });
     });  

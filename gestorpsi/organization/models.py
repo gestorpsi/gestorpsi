@@ -204,6 +204,15 @@ class Organization(models.Model):
         else:
             return ''
 
+    def clients(self):
+        return self.person_set.filter(client__isnull = False, client__clientStatus = '1')
+
+    def care_professionals(self):
+        return self.person_set.filter(careprofessional__isnull = False, careprofessional__active = True)
+
+    def employees(self):
+        return self.person_set.filter(employee__isnull = False, employee__active = True)
+
     class Meta:
         ordering = ['name']
 

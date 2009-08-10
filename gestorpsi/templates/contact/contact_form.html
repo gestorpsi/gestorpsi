@@ -24,7 +24,7 @@ GNU General Public License for more details.
     <ul>
         <li><a class="first" href="/contact/">{% trans "all" %}</a></li>
         <li><a class="{% if not object.id %}active{% endif %}" href="/contact/add/">{% trans "add" %}</a></li>
-        {% if object.id %}<li><a class="active">editing</a></li>{% endif %}
+        {% if object.id %}<li><a class="active">{{ object }}</a></li>{% endif %}
     </ul>
 {% endblock %}
 

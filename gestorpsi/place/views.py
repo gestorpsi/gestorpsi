@@ -70,6 +70,7 @@ def list(request, page = 1):
             'id': o.id,
             'name': o.label,
             'phone': u'%s' % o.get_first_phone(),
+            'type': u'%s' % o.place_type,
         }
         i = i + 1
 
@@ -189,7 +190,6 @@ def room_list(request, page = 1):
         'object_length': object_length,
     }
 
-    
     array['paginator'] = {}
     for p in paginator.page_range:
         array['paginator'][p] = p
@@ -199,6 +199,7 @@ def room_list(request, page = 1):
             'id': o.id,
             'name': o.description,
             'place': o.place.label,
+            'type': u'%s' % o.room_type,
         }
         i = i + 1
 

@@ -37,7 +37,7 @@ GNU General Public License for more details.
             <fieldset>
             <legend>{% trans "Schedule Due" %}</legend>
             <h2 class="red">
-            {{ dtstart|date:"l," }} {% trans "of" %} {{ dtstart|date:"F" }} {% trans "of" %} {{ dtstart|date:"Y" }} - {{ room }} <a href="javascript:history.back();"><small>[{% trans "change" %}]</small></a>
+            {{ dtstart|date:"l," }} {{ dtstart|date:"d" }} {% trans "of" %} {{ dtstart|date:"F" }} {% trans "of" %} {{ dtstart|date:"Y" }} - {{ room }} <a href="javascript:history.back();"><small>[{% trans "change" %}]</small></a>
             </h3>
             {% comment %}
                 <label>{% trans "Date" %}</label>
@@ -106,7 +106,7 @@ GNU General Public License for more details.
             <fieldset>
             <legend>{% trans "Schedule Details" %}</legend>
                 <label>{% trans "Notes" %}<br />
-                {{ event_form.annotation }}
+                <textarea name="annotation" class="extrabig" rows="10"></textarea>
                 </label>
                 <label>{% trans "Devices" %}<br />
                    <select name="device" class="extrabig multiple asm" id="id_device" multiple="multiple">

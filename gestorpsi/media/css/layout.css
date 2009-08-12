@@ -1261,14 +1261,16 @@ div.form_mini input[type=text] {
 
 
 div.main_area.home p {
-	color: #808080 !important;
-	margin: 7px 0 0px 6px !important;
 	font-size: 12px;
+	line-height: 16px !important;
 }
 
-div.main_area.home p * {
-	line-height: 20px;
-	margin: 17px 0 0px 0px !important;
+div.main_area.home p a {
+	margin: 0 0 0 0px !important;
+}
+
+div.main_area.home p small {
+	line-height: 10px;
 }
 
 div.main_area.home h1 {

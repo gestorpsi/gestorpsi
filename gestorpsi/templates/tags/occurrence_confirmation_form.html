@@ -1,0 +1,49 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<h2 class="title_schedule title">{% if occurrence.event.referral.referralgroup_set.all %}<a href="/service/group/{{ occurrence.event.referral.referralgroup_set.all.0.id }}/form/">{{ occurrence.event.referral.group_name }}</a>{% else %}{{ occurrence.event.referral.client.all.0 }}{% endif %} - {{ occurrence.event.referral.service }}</h2>
+<p class="description"><a href="/careprofessional/{{ occurrence.event.referral.professional.all.0.id }}/">{{ occurrence.event.referral.professional.all.0 }}</a> <a href="/schedule/events/{{ occurrence.event.id}}/">{{ occurrence.event.occurrence_set.all|length }} {% trans "Occurrences" %}</a></p>
+
+<form method="post" action="" class="schedule_occurrence">
+<div class="main_area">
+    <fieldset>
+    <legend>{% trans "Occurrence Confirmation Details" %}</legend>
+        <label>{{ form.presence.label }}<br />
+        {{ form.presence }}
+        {{ form.presence.errors }}
+        </label>
+        <div style="clear:both"></div>
+        <label>{{ form.date_started.label }}<br />
+        <div>
+        {{ form.date_started }}
+        </div>
+        </label>       
+        <label>{{ form.unmarked }}&nbsp;{{ form.unmarked.label }}           
+        </label>
+        <label>{{ form.remarked }}&nbsp;{{ form.remarked.label }}
+        </label>
+        <div style="clear:both"></div>
+        <label>{{ form.reason.label }}<br />
+        {{ form.reason }}
+        </label>            
+        <label>{% trans "Notes" %}<br />
+        <textarea cols="40" rows="10" name="occurrence_annotation">{% if occurrence.annotation %}{{ occurrence.annotation }}{% endif %}</textarea>
+        </label>            
+    </fieldset>
+  <br />
+</div>

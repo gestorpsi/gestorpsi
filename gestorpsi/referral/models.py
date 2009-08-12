@@ -98,8 +98,6 @@ class ReferralManager(models.Manager):
 
     def discharged(self):
         return super(ReferralManager, self).get_query_set().filter(referraldischarge__isnull=False)
-    
-
 
 class Referral(Event):
     #id = UuidField(primary_key=True)
@@ -123,16 +121,16 @@ class Referral(Event):
         try: self.event_type = EventType.objects.all()[0]
         except: self.event_type = EventType.objects.create(abbr='')
 
-    def add_occurrences(self, start_time, end_time, room, device, **rrule_params):
+    def add_occurrences(self, start_time, end_time, room, device, annotation, **rrule_params):
         rrule_params.setdefault('freq', rrule.DAILY)
         if 'count' not in rrule_params and 'until' not in rrule_params:
-            o = ScheduleOccurrence.objects.create(event=self, start_time=start_time, end_time=end_time, room_id=room)
+            o = ScheduleOccurrence.objects.create(event=self, start_time=start_time, end_time=end_time, room_id=room, annotation=annotation)
             o.device = device
             o.save()
         else:
             delta = end_time - start_time
             for ev in rrule.rrule(dtstart=start_time, **rrule_params):
-                o = ScheduleOccurrence.objects.create(event=self, start_time=ev, end_time=ev + delta, room_id=room)
+                o = ScheduleOccurrence.objects.create(event=self, start_time=ev, end_time=ev + delta, room_id=room, annotation=annotation)
                 o.device = device
                 o.save()
 
@@ -161,6 +159,16 @@ class Referral(Event):
     def last_occurrence(self):
         past = self.past_occurrences()
         return past and past[0] or None
+
+    def professional_list(self):
+        a = []
+        for p in self.professional.all():
+            if(p.professionalIdentification.profession):
+                a.append(u'%s (%s)' % (p, p.professionalIdentification.profession))
+            else:
+                a.append(u'%s' % (p))
+        return a
+        
 
 class ReferralDischarge(models.Model):
     id = UuidField(primary_key=True)

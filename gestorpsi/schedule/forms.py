@@ -23,6 +23,7 @@ from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation
 from gestorpsi.place.models import Room
 from gestorpsi.device.models import DeviceDetails
 from gestorpsi.schedule import settings as swingtime_settings
+from gestorpsi.util.widgets import SplitSelectDateTimeWidget
 
 
 def timeslot_offset_options(
@@ -112,28 +113,24 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
             self.cleaned_data['end_time'],
             self.cleaned_data['room'].id,
             self.cleaned_data['device'],
+            self.cleaned_data['annotation'],
             **params
         )
 
         return event
 
-#from django.contrib.admin import widgets
-#from datetime import datetime
-#from django.forms.extras.widgets import SelectDateWidget 
-from gestorpsi.util.widgets import SplitSelectDateTimeWidget
-from gestorpsi.schedule.models import OCCURRENCE_CONFIRMATION_PRESENCE
+
 class OccurrenceConfirmationForm(forms.ModelForm):
     date_started = forms.DateTimeField(widget=SplitSelectDateTimeWidget())
-    #presence = forms.ChoiceField()
-    #presence = forms.ChoiceField(choices = OCCURRENCE_CONFIRMATION_PRESENCE, widget = forms.TypedChoiceField)
     
     def __init__(self, *args, **kwargs):
         super(OccurrenceConfirmationForm, self).__init__(*args, **kwargs)
         self.initial.setdefault('date_started', self.initial.get('start_time'))
         self.initial.setdefault('occurrence', self.initial.get('occurrence'))
+        self.fields['presence'].required = True
 
     class Meta:
         model = OccurrenceConfirmation
-        fields = ('date_started', 'presence', 'unmarked', 'remarked', 'reason', 'comments')
+        fields = ('date_started', 'presence', 'unmarked', 'remarked', 'reason')
     
     

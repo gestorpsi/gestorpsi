@@ -33,6 +33,8 @@ from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm
 from gestorpsi.util.decorators import permission_required_with_403
+from gestorpsi.util.views import get_object_or_None
+from gestorpsi.schedule.forms import OccurrenceConfirmationForm
 
 @permission_required_with_403('schedule.schedule_list')
 def schedule_occurrence_listing(request, year = 1, month = 1, day = None, 
@@ -93,17 +95,19 @@ def add_event(
             room = request.GET['room']
         except:
             room = None
+        
         try:
-            client = Client.objects.get(pk=request.GET['client'])
+            client = Client.objects.get(pk = request.GET['client'])
         except:
             client = None
+        
         try:
-            referral = Referral.objects.get(pk=request.GET['referral'])
+            referral = Referral.objects.get(pk = request.GET['referral'])
         except:
             referral = None
         
         event_form = event_form_class()
-        print request.GET['room']
+
         recurrence_form = recurrence_form_class(initial=dict(
             dtstart=dtstart, 
             day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"), 
@@ -135,6 +139,7 @@ def event_view(
     event_form_class=ReferralForm,
     recurrence_form_class=ScheduleOccurrenceForm
 ):
+    
 
     event = get_object_or_404(Referral, pk=pk)
     event_form = recurrence_form = None
@@ -198,7 +203,9 @@ def occurrence_confirmation_form(
     request, 
     pk, 
     template='schedule/schedule_occurrence_confirmation_form.html',
-    form_class=ScheduleSingleOccurrenceForm
+    form_class=OccurrenceConfirmationForm,
+    client_id = None,
+    redirect_to = None,
 ):
     user = request.user
 
@@ -215,6 +222,8 @@ def occurrence_confirmation_form(
         occurrence_confirmation = OccurrenceConfirmation.objects.get(pk = occurrence.occurrenceconfirmation.id)
     except:
         occurrence_confirmation = None
+    
+    object = get_object_or_None(Client, pk = client_id)
 
     if request.method == 'POST':
         form = form_class(request.POST, instance = occurrence_confirmation)
@@ -222,12 +231,15 @@ def occurrence_confirmation_form(
             data = form.save(commit=False)
             data.occurrence = occurrence
             form.save()
+            # save occurrence comment
+            occurrence.annotation = request.POST['occurrence_annotation']
+            occurrence.save()
             request.user.message_set.create(message=_('Occurrence confirmation updated successfully'))
-            return http.HttpResponseRedirect(request.path)
+            return http.HttpResponseRedirect(redirect_to or request.path)
         else:
             return render_to_response(
                 template,
-                dict(occurrence=occurrence, form=form),
+                dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral),
                 context_instance=RequestContext(request)
             )
     else:
@@ -235,7 +247,7 @@ def occurrence_confirmation_form(
         
     return render_to_response(
         template,
-        dict(occurrence=occurrence, form=form),
+        dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral),
         context_instance=RequestContext(request)
     )
 
@@ -352,6 +364,7 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
             'css_color_class':o.event.referral.service.css_color_class,
             'start_time': o.start_time.strftime('%H:%M:%S'),
             'end_time': o.end_time.strftime('%H:%M:%S'),
+            'is_past': o.is_past(),
             'rowspan': rowspan,
         }
         
@@ -375,92 +388,3 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
     return HttpResponse(array, mimetype='application/json')
     
 
-@permission_required_with_403('schedule.schedule_read')
-def occurrence_abstract(request, object_id = None):
-    try:
-        o = ScheduleOccurrence.objects.get(pk=object_id)
-    except:
-        raise http.Http404
-
-    array = {} #json
-
-    array['id'] = o.id
-    array['event_id'] = o.event.id
-    array['date'] = o.start_time.strftime('%d/%m/%Y %H:%M')
-    array['day'] = o.start_time.strftime('%Y/%m/%d')
-    array['room'] = o.room.description
-    array['service'] = o.event.referral.service.name
-    
-    array['professional'] = {}
-    count = 0
-    for p in o.event.referral.professional.all():
-        array['professional'][count] = ({
-            'id':p.id, 
-            'name':p.person.name,
-            'phone':p.person.get_phones(),
-            })
-        count = count + 1
-
-    count = 0
-    array['client'] = {}
-    for c in o.event.referral.client.all():
-        array['client'][count] = ({
-            'id':c.id, 
-            'name':c.person.name,
-            'phone':c.person.get_phones(),
-            })
-        count = count + 1
-
-    array = simplejson.dumps(array, encoding = 'iso8859-1')
-    
-    return HttpResponse(array, mimetype='application/json')
-
-#@permission_required_with_403('schedule.schedule_read')
-#def referral_occurrences(request, object_id = None):
-    #try:
-        #o = Referral.objects.get(pk=object_id)
-    #except:
-        #raise http.Http404
-
-    #array = {} #json
-
-    #array['id'] = o.id;
-    #array['service'] = o.service.name;
-    #array['annotation'] = o.annotation;
-    
-    #array['professional'] = {}
-    #count = 0
-    #for p in o.professional.all():
-        #array['professional'][count] = ({
-            #'id':p.id, 
-            #'name':p.person.name,
-            #'phone':p.person.get_phones(),
-            #})
-        #count = count + 1
-
-    #count = 0
-    #array['client'] = {}
-    #for c in o.client.all():
-        #array['client'][count] = ({
-            #'id':c.id, 
-            #'name':c.person.name,
-            #'phone':c.person.get_phones(),
-            #})
-        #count = count + 1
-    
-    #count = 0
-    #array['occurrences'] = {}
-    #for i in o.occurrence_set.all():
-        #array['occurrences'][count] = ({
-            #'id':i.id,
-            #'date':i.start_time.strftime('%d/%m/%Y'),
-            #'start_time':i.start_time.strftime('%H:%M'),
-            #'end_time':i.end_time.strftime('%H:%M'),
-            #'room':i.scheduleoccurrence.room.description,
-            #'place':i.scheduleoccurrence.room.place.label,
-            #})
-        #count = count + 1
-
-    #array = simplejson.dumps(array)
-    
-    #return HttpResponse(array, mimetype='application/json')

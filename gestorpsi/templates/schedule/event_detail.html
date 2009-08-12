@@ -30,32 +30,37 @@ GNU General Public License for more details.
 
 {% block core %}
 
-<div class="schedule">
+<div class="registers_available">
     <h2 class="title_schedule title">{% if event.referralgroup_set.all %}<a href="/service/group/{{ event.referralgroup_set.all.0.id }}/form/">{{ event.group_name }}</a>{% else %}{{ event.client.all.0 }}{% endif %} - {{ event.service }}</h2>
     <p class="description"><a href="/careprofessional/{{ event.professional.all.0.id }}/">{{ event.professional.all.0 }}</a></p>
 
-    <form method="post" action="/schedule/events/add/" class="schedule refresh">
-    <input type="hidden" name="tabtitle" class="tabtitle" />
-    <div class="main_area">
+    <div class="main_area contact">
 
-
-    <fieldset>
-    <legend>{% trans "Occurrences" %}</legend>
-    <br />
-    {% if event.occurrence_set.count %}
-        {% for o in event.occurrence_set.all %}
-        <div>
-            <a href="{% url swingtime-occurrence event.id o.id %}">
-            {{ o.start_time|date:"l, d" }} {% trans "of" %} {{ o.start_time|date:"F" }} {% trans "of" %} {{ o.start_time|date:"Y" }} {{ o.start_time|date:"H:i" }} - {{ o.end_time|date:"H:i" }}
-
+    {% if not event.upcoming_occurrences %}
+        <div id="msg_area" class="alert no_registers_available">
+            {% trans "There is no registers available." %}<br />
         </div>
-        {% endfor %}
     {% else %}
+        <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+        <thead> 
+                <tr> 
+                <th></th> 
+                <th></th>
+                <th></th>
+                </tr> 
+        </thead>
+        <tbody>
+            {% for o in event.upcoming_occurrences %}
+                <tr class="zebra_{% cycle 0 1 %}">
+                <td><a href="{% url swingtime-occurrence event.id o.id %}">{{ o.start_time|date:"l, d" }} {% trans "of" %} {{ o.start_time|date:"F" }} {% trans "of" %} {{ o.start_time|date:"Y" }}</a></td>
+                <td>{{ o.start_time|date:"H:i" }} - {{ o.end_time|date:"H:i" }} hs<br />{{ o.scheduleoccurrence.room }}</td>
+                <td></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
     {% endif %}
-    
-    </fieldset>
-   
-<br />    
+    <br />    
 </div>
 </div>
 {% endblock %}

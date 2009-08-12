@@ -18,7 +18,7 @@ from django.conf.urls.defaults import *
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm, OccurrenceConfirmationForm
 from gestorpsi.schedule.views import occurrence_view
-from gestorpsi.schedule.views import occurrence_abstract
+#from gestorpsi.schedule.views import occurrence_abstract
 from gestorpsi.schedule.views import add_event
 from gestorpsi.schedule.views import schedule_index
 from gestorpsi.schedule.views import schedule_occurrence_listing_today
@@ -68,11 +68,11 @@ urlpatterns = patterns('',
         { 'template': 'schedule/schedule_events.html', },
         name='schedule-events-today'
     ),
-    url(
-        r'^occurrence/abstract/(\d+)/$', 
-        occurrence_abstract,
-        name='occurrence-abstract'
-    ),
+    #url(
+        #r'^occurrence/abstract/(\d+)/$', 
+        #occurrence_abstract,
+        #name='occurrence-abstract'
+    #),
     #url(
         #r'^events/(\d{4})/(0?[1-9]|1[012])/([0-3]?\d)/$',
         #schedule_occurrence_listing,

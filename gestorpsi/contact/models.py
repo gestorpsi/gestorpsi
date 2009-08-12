@@ -105,16 +105,10 @@ class Contact(models.Model):
         return u'%s' % self.name
 
     def is_organization(self):
-        if self.type == 1:
-            return True
-        else:
-            return False
+        return True if self.type == 1 else False
 
     def is_professional(self):
-        if self.type == 2:
-            return True
-        else:
-            return False
+        return True if self.type == 2 else False
 
     def instance(self):
         if self.is_organization(): # is organization

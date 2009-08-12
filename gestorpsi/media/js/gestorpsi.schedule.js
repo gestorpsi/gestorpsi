@@ -80,7 +80,7 @@ function updateGrid(url) {
         $('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/');
         jQuery.each(json,  function(){
             if(this.start_time) {
-                
+
                 var str_client = '';
                 var str_client_inline = ''; 
                 var str_professional = ''; 
@@ -164,8 +164,14 @@ function updateGrid(url) {
                 $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').hide(); // hide free slot 
                 
                 
+                if(this.is_past) {
+                    url = '/schedule/events/' + this.id + '/confirmation/';
+                } else {
+                    url = '/schedule/events/' + this.event_id + '/' + this.id + '/';
+                }
+                
                 if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {
-                    $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" href="/schedule/events/' + this.event_id + '/' + this.id + '/" class="booked">' + label + '</a>'); // show booked event
+                    $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" href="' + url + '" class="booked">' + label + '</a>'); // show booked event
                 } else {
                     $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a class="booked">' + label + '</a>'); // show booked event in Client View
                 }
@@ -179,7 +185,7 @@ function updateGrid(url) {
                 event.addClass('room_' + this.room); // service color
                 event.addClass('place_' + this.place); // service color
                 event.addClass('service_' + this.service_id); // service from cell
-                $(event).children('td').children('div').html('<a title="'+json['util']['str_date']+'" href="/schedule/events/' + this.event_id + '/' + this.id + '/" class="booked">' + label_inline + '</a>');
+                $(event).children('td').children('div').html('<a title="'+json['util']['str_date']+'" href="' + url + '" class="booked">' + label_inline + '</a>');
                 $('table.zebra tr:odd').addClass('zebra_0');
                 $('table.zebra tr:even').addClass('zebra_1');
                 }
@@ -210,77 +216,8 @@ function updateGrid(url) {
         }
     );
     
-    /**
-     * bind dialog box
-     */
-
-    //$('table.schedule_results a.booked').unbind().click(function() {
-        //$.getJSON('/schedule/occurrence/abstract/'+ $(this).attr('occurrence') +'/', function(json) {
-            
-            //var str_client = ''; var str_professional = '';
-            ////append client list
-            //jQuery.each(json.client,  function(){
-            //str_client += this.name + ' ' +this.phone+ '<br />' ;
-            //});
-
-            ////append professional list
-            //jQuery.each(json.professional,  function(){
-                //str_professional += this.name + ' ' +this.phone+ '<br />' ;
-            //});
-            
-            //$('div#dialog h1[key=date]').text(json['date']);
-            //$('div#dialog div[key=room]').text(json['room']);
-            //$('div#dialog div[key=service]').text(json['service']);
-            //$('div#dialog div[key=client]').html(str_client);
-            //$('div#dialog div[key=professional]').html(str_professional);
-            //$('div#dialog a[key=edit_link]').attr('href','/schedule/events/' + json['event_id'] + '/' + json['id'] + '/');
-            //$('div#dialog a[key=edit_link]').attr('title', json['client'][0].name);
-            //$('div#edit_form form.schedule .sidebar .bg_blue input[name=day_clicked]').val(json['day']);
-        //});
-        //$('div#dialog').dialog('open');
-    //});
-    
     return false;
 }
-
-/**
- * load data from inserted event (referral) with occurrences
- */
-
-//function updateScheduleReferralDetails(url) {
-    
-    //$('.schedule #edit_form div#schedule_occurrence_list table .clean').html(''); // clean old data
-    
-    //$.getJSON(url, function(json) {
-        
-        //var str_professional_inline = ''; 
-        //var str_client_inline = ''; 
-        //var description = ''; 
-        //var tableTR = '';
-    
-        
-        //str_client_inline = personInLine(json['client']);
-        //str_professional_inline = personInLine(json['professional']);
-        
-        //$('.schedule #edit_form h2.title_schedule, ul.opened_tabs li div a:first').text(str_client_inline); // set title (h2 and opened tab)
-        //$('.schedule #edit_form p.description').text(json['service'] + ' - ' + str_professional_inline); // set description
-        
-                
-        //jQuery.each(json['occurrences'],  function(){
-            //tableTR = tableTR + '<tr><td class="title">' + this.date + ' ' + this.start_time + ' - ' + this.end_time + '<br>' + this.place + ' - ' + this.room + '</td></tr>';
-        //});
-
-        //$('.schedule #edit_form div#schedule_occurrence_list div.occurrence_list table tbody').html(tableTR);
-        
-        //$('table.zebra tr:odd').addClass('zebra_0');
-        //$('table.zebra tr:even').addClass('zebra_1');
-
-        //}
-    //);
-  
-    
-    //return false;
-//}
 
 /** 
  * schedule form

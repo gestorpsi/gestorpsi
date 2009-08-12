@@ -28,19 +28,29 @@ OCCURRENCE_CONFIRMATION_PRESENCE = (
     ('3', _('Not arrive')),
 )
 
+class ScheduleOccurrenceManager(models.Manager):
+    def confirmed(self):
+        return super(ScheduleOccurrenceManager, self).get_query_set().filter(start_time__lt = datetime.now(), occurrenceconfirmation__isnull = False)
+    
+    def not_confirmed(self):
+        return super(ScheduleOccurrenceManager, self).get_query_set().filter(start_time__lt = datetime.now(), occurrenceconfirmation__isnull = True)
+
 class ScheduleOccurrence(Occurrence):
     room = models.ForeignKey(Room, null=True, blank=True)
     device = models.ManyToManyField(DeviceDetails, null=True, blank=True)
     annotation = models.CharField(max_length=765, null=True, blank=True)
 
-    #def is_past(self):
-        #if self.start_time < datetime.now():
-            #return True
-        #else:
-            #return False
+    objects = ScheduleOccurrenceManager()
 
     def is_past(self):
-        return self.start_time < datetime.now() or None
+        return True if self.start_time < datetime.now() else False
+    
+    def was_confirmed(self):
+        try:
+            self.occurrenceconfirmation
+            return True
+        except:
+            return False
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
@@ -52,11 +62,12 @@ class OccurrenceConfirmation(models.Model):
     unmarked = models.BooleanField(_('Occurrence Unmarked'), default = False)
     remarked = models.BooleanField(_('Occurrence Rescheduled'), default = False)
     reason = models.TextField(_('Unmark or Reschedule Reason (if exists)'), blank = True)
-    comments = models.TextField(_('Aditional Comments'), blank = True)
 
     def __unicode__(self):
-        return self.occurrence.event.referral.service.name
+        return u'%s' % self.get_presence_display()
 
 reversion.register(Occurrence)
 reversion.register(ScheduleOccurrence, follow=['occurrence_ptr'])
+
+reversion.register(OccurrenceConfirmation, follow=['occurrence'])
 

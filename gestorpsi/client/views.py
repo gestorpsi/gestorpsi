@@ -49,6 +49,10 @@ from gestorpsi.person.views import person_json_list
 from gestorpsi.schedule.views import _datetime_view
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm
 from gestorpsi.schedule.views import add_event
+from gestorpsi.schedule.views import occurrence_confirmation_form
+from gestorpsi.schedule.forms import OccurrenceConfirmationForm
+from gestorpsi.schedule.models import ScheduleOccurrence
+from gestorpsi.util.views import get_object_or_None
 
 # list all active clients
 @permission_required_with_403('client.client_list')
@@ -405,3 +409,38 @@ def schedule_add(request):
         event_form_class=ReferralForm,
         recurrence_form_class=ScheduleOccurrenceForm,
         redirect_to = '/client/%s/referral/%s/' % (request.GET['client'], request.GET['referral']))
+
+@permission_required_with_403('schedule.schedule_write')
+def occurrence_confirmation(request, object_id = None, occurrence_id = None):
+    occurrence = get_object_or_None(ScheduleOccurrence, pk = occurrence_id)
+
+    return occurrence_confirmation_form(request, 
+        occurrence_id,
+        template = 'client/client_occurrence_confirmation_form.html', 
+        form_class=OccurrenceConfirmationForm,
+        client_id=object_id,
+        redirect_to = '/client/%s/referral/%s/' % (object_id, occurrence.event.referral.id)
+        )
+
+@permission_required_with_403('schedule.schedule_read')
+def occurrence_view(request, object_id = None, occurrence_id = None):
+    occurrence = get_object_or_None(ScheduleOccurrence, pk = occurrence_id)
+
+    return occurrence_confirmation_form(request,
+        occurrence_id,
+        template = 'client/client_occurrence_confirmation_form.html', 
+        form_class=OccurrenceConfirmationForm,
+        client_id=object_id,
+        redirect_to = '/client/%s/referral/%s/' % (object_id, occurrence.event.referral.id)
+        )
+
+@permission_required_with_403('schedule.schedule_list')
+def referral_occurrences(request, object_id = None, referral_id = None, type = 'upcoming'):
+    object = get_object_or_None(Client, pk = object_id)
+    referral = get_object_or_None(Referral, pk = referral_id)
+    
+    occurrences = referral.past_occurrences() if type == 'past' else  referral.upcoming_occurrences()
+    
+    return render_to_response('client/client_referral_occurrences.html', locals(), context_instance=RequestContext(request))
+    
+    

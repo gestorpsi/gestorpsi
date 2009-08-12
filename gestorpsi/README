@@ -109,18 +109,18 @@ ac.save()
 ac.age_group.add(1, 2, 3, 4)
 
 5) Open settings.py and edit the follow config:
-        DATABASE_NAME
-        DATABASE_USER
-        DATABASE_PASSWORD
-        DATABASE_HOST
-        DEBUG (set to True)
-        MEDIA_URL
-        MEDIA_ROOT
-        SECRET_KEY
-        TEMPLATE_DIRS
-        EMAIL_HOST
-        EMAIL_HOST_USER
-        EMAIL_HOST_PASSWORD 
+	-> DATABASE_NAME
+        -> DATABASE_USER
+        -> DATABASE_PASSWORD
+        -> DATABASE_HOST
+        -> DEBUG (set to False)
+        -> MEDIA_URL
+        -> MEDIA_ROOT
+        -> SECRET_KEY
+        -> TEMPLATE_DIRS
+        -> EMAIL_HOST
+        -> EMAIL_HOST_USER
+        -> EMAIL_HOST_PASSWORD 
 
 6) Compile language messages
 $ django-admin.py compilemessages

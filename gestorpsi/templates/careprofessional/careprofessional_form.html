@@ -83,7 +83,7 @@ GNU General Public License for more details.
 	<fieldset id="fieldset_professional_profile">
 		<legend>{% trans "Professional Profile" %}</legend>
 			<label>{% trans "Inital Activities Date" %}<br />
-				<input type="text" maxlength="10" name="professional_initialActivitiesDate" value="{{ object.professionalProfile.initialProfessionalActivities }}" class="initialActivities calendar" />
+				<input type="text" maxlength="10" name="professional_initialActivitiesDate" value="{% ifnotequal object.professionalProfile.initialProfessionalActivities 'None' %}{{ object.professionalProfile.initialProfessionalActivities }}{% endifnotequal %}" class="initialActivities calendar" />
 			</label>
             {% comment %}
 			<label>{% trans "Available Time" %}<br />

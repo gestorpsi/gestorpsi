@@ -39,11 +39,11 @@ $(document).ready(function(){
   } else {
       $('div.login div.ff_not_ok a.login_unlock').click(function() {
         $('div.login div.ff_not_ok').hide();
-        $('div.login .ff_ok').fadeIn(800);
+        $('div.login .ff_ok').show();
       });
   }
 
-  $('body').fadeIn(800);
+  $('body').show();
  
   
 });

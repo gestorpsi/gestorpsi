@@ -68,7 +68,7 @@ GNU General Public License for more details.
         {% for a in attachs %}
                 <table class="nozebra">
                         <tr>
-                                <td nowrap="nowrap"><span class="date">{{ a.date }} </span><br /><span class="time">14:31:07</span></td>
+                                <td nowrap="nowrap"><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
                                 <td><span  class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
                                 <td><span>{% for t in types %}
                                             {% ifequal a.type t.0 %}</span>{{ t.1 }}:<br /> {{ a.description }} </td> {% endifequal %} {% endfor %}

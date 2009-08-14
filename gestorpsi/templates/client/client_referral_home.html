@@ -114,6 +114,30 @@ GNU General Public License for more details.
 </div>
 
 <div class="main_area home">
+	<h3><span>{% trans "Attach" %}</span></h3>
+    {% if attachs %}
+        {% for a in attachs %}
+                <table class="nozebra">
+                        <tr>
+                                <td nowrap="nowrap"><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
+                                <td><span  class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
+                                <td><span>{% for t in types %}
+                                            {% ifequal a.type t.0 %}</span>{{ t.1 }}:<br /> {{ a.description }} </td> {% endifequal %} {% endfor %}
+                                <td><a href="" class="edit" title="editar"><span>Edit</span></a></td>
+                                <td><a href="" class="delete" title="delete" ><span>Delete</span></a></td>
+                        </tr>
+                        <tr>
+                </table>
+        {% endfor %}
+    {% else %}
+             <p class="empty">Nenhum documento anexado</p>
+             <br />
+    {% endif %}
+
+</div>
+
+
+<div class="main_area home">
 	<!-- <a href="" id="help">&nbsp;</a> -->
 	<!-- DataTypes form menu -->
 	<h3><span>{% trans "Schedule Details" %}</span></h3>

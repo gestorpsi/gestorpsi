@@ -36,9 +36,3 @@ class IndicationChoiceAdmin(admin.ModelAdmin):
 class IndicationAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(ReferralChoice, ReferralChoiceAdmin)
-admin.site.register(AdmissionReferral, AdmissionReferralAdmin)
-admin.site.register(IndicationChoice, IndicationChoiceAdmin)
-admin.site.register(Indication, IndicationAdmin)
-
-

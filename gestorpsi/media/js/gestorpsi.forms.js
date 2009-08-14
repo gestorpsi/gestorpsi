@@ -221,9 +221,17 @@ $(function() {
      * show upload box when clicked (close automatic, when file is selected).
      * 
      */
-     
      $('a.clips').unbind().click(function() {
           $(this).parents('form').parents('div').children('div.photo_form_upload').show();
+     });
+
+     /**
+     *
+     * attach referral upload
+     * 
+     */
+     $('a.clips_attach').unbind().click(function() {
+          $(this).parents('form').parents('div').children('div.attach_form_upload').show();
      });
      
     /** 

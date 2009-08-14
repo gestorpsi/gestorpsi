@@ -1084,6 +1084,21 @@ div.schedule #search_header {
 	cursor: pointer;
 }
 
+div.attach_form_upload {
+	position: absolute;
+	margin-top: 0px;
+	margin-left: 350px;
+	_margin-left: -350px;
+	_margin-top: -100px;
+	background-color: #fff;
+	border: 1px solid black;
+	padding: 30px 30px 30px 30px;
+	width: 270px;
+	height: 70px;
+	display:none;
+
+}
+
 div.photo_form_upload {
 	position: absolute;
 	margin-top: 0px;

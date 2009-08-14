@@ -20,6 +20,10 @@ from gestorpsi.settings import MEDIA_ROOT
 import uuid
 from PIL import Image
 from gestorpsi.util.decorators import permission_required_with_403
+from gestorpsi.referral.models import ReferralAttach, Referral, REFERRAL_ATTACH_TYPE
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
 
 @permission_required_with_403('upload.upload_write')
 def send(request):
@@ -36,6 +40,7 @@ def send(request):
                 os.chmod('%s/.thumb' % pathdir, 0777)
                 os.chmod('%s/.thumb-whitebg' % pathdir, 0777)
             file = request.FILES['file']
+
             try:
                 if file.content_type in ['image/jpeg', 'image/png', 'image/gif']:
                     filename = str(uuid.uuid4()) + '.png'
@@ -82,6 +87,63 @@ def send(request):
                 print "error sending file"
 
         return HttpResponse('%s' % filename)
-        
 
 
+@permission_required_with_403('upload.upload_write')
+def attach_form(request, object_id = ''):
+    user = request.user
+    referral = Referral.objects.get(pk = object_id)
+    organization = user.get_profile().org_active.id
+    
+    types = REFERRAL_ATTACH_TYPE
+
+    #indication = Indication.objects.get(referral = object_id)
+    attachs = ReferralAttach.objects.filter(referral = object_id)
+    print attachs
+
+    return render_to_response('upload/upload_attach.html', locals(), context_instance=RequestContext(request))
+
+@permission_required_with_403('upload.upload_write')
+def attach_save(request, object_id = ''):
+    # object_id = subscription
+
+    if request.method == 'POST':
+        user = request.user
+        filename = ''
+
+        if 'file' in request.FILES:
+            path = '%simg/organization/%s' % (MEDIA_ROOT, user.get_profile().org_active.id)
+            print path
+            if not os.path.exists(path):
+                os.mkdir(path)
+                os.chmod(path, 0777)
+
+            path = '%simg/organization/%s/attach' % (MEDIA_ROOT, user.get_profile().org_active.id)
+            print path
+            if not os.path.exists(path):
+                os.mkdir(path)
+                os.chmod(path, 0777)
+
+            try:
+                    filename = request.FILES['file']
+                    file = str(uuid.uuid4()) + '.'+ (str(filename).split('.')[-1])
+                    destination = open('%s/%s' % (path,  file), 'w+')
+                    for chunk in filename.chunks():
+                        destination.write(chunk)
+                    destination.close()
+                        
+                    attachs = ReferralAttach.objects.filter(referral = object_id)               
+
+                    attach = ReferralAttach()
+                    attach.filename = '%s' % request.FILES['file']
+                    attach.file = '%s' % file
+                    attach.description = request.POST.get('description')
+                    attach.type = request.POST.get('doc_type')
+                    attach.referral = Referral.objects.get(pk = object_id)
+                    attach.save()
+    
+            except IOError:
+                print "error sending file"
+
+        return HttpResponseRedirect('/upload/%s/attach/' % object_id)
+        #return HttpResponse('%s' % file)

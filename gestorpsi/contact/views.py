@@ -113,6 +113,27 @@ def list(request, page = 1, initial = None, filter = None):
 
     return HttpResponse(simplejson.dumps(array, sort_keys=True), mimetype='application/json')
 
+def test(request):
+    organizations = Organization.objects.filter(contact_owner=request.user.get_profile().person, active=True, visible=True)
+    try:
+        cities = City.objects.filter(state=request.user.get_profile().org_active.address.all()[0].city.state)
+    except:
+        cities = {}
+    return render_to_response('tags/address_book_organization_mini.html', {
+                                    'object': object,
+                                    'countries': Country.objects.all(),
+                                    'States': State.objects.all(),
+                                    'AddressTypes': AddressType.objects.all(),
+                                    'PhoneTypes': PhoneType.objects.all(), 
+                                    'EmailTypes': EmailType.objects.all(), 
+                                    'IMNetworks': IMNetwork.objects.all(),
+                                    'organizations': organizations,
+                                    'professions': Profession.objects.all(),
+                                    'Cities': cities,
+                                     },
+                                     context_instance=RequestContext(request)
+                                     )
+
 @permission_required_with_403('contact.contact_read')
 def add(request):
     organizations = Organization.objects.filter(contact_owner=request.user.get_profile().person, active=True, visible=True)
@@ -187,24 +208,34 @@ def form(request, object_type='', object_id=''):
 def save(request, object_id=''):
     user = request.user
 
+    print "=====================0"
+    print request.POST.get('type')
+    print request.POST.get('name')
+    print request.POST.get('label')
+
     if (request.POST.get('type') == 'organization'):
         type = "1"
-        object = get_object_or_None(Organization, pk=object_id) or Organization()
 
-        """ Just a second security layer in case of template failure """
-        if not object.organization:
-            return HttpResponseRedirect('/contact/%s/%s' % (type, object.id))
+        object = get_object_or_None(Organization, pk=object_id) or Organization()
 
         object.name = request.POST.get('label') # adding by mini form
         if (object.name == None):   # input of mini form
             object.name = request.POST.get('name')
     
+        print "=====================1"
+        print request.POST.get('name')
+        print request.POST.get('label')
+        print slugify(object.name)
+
         object.short_name = slugify(object.name)
         object.organization = user.get_profile().org_active
         object.contact_owner = user.get_profile().person
         
+        print "=====================2"
         object.save()
         
+        print "=====================3"
+
         phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
         email_save(object, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
         site_save(object, request.POST.getlist('site_id'), request.POST.getlist('site_description'), request.POST.getlist('site_site'))
@@ -217,15 +248,17 @@ def save(request, object_id=''):
                  request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))        
 
     if request.POST.get('type') == 'professional':
+        print "=====================4"
         type = "2"
         try:
+            print "=====================5"
             object = get_object_or_404(CareProfessional, pk=object_id)
             identification = object.professionalIdentification
             person = object.person
         except:
+            print "=====================6"
             object = CareProfessional()
             person = Person()
-
 
         if request.POST.get('symbol'): 
             identification = ProfessionalIdentification()
@@ -234,7 +267,8 @@ def save(request, object_id=''):
             identification.save()
             object.professionalIdentification = identification
 
-        person.name = request.POST.get('name')
+        person.name = request.POST.get('label')
+        print "=====================7"
         person.save()
         person.organization.add(Organization.objects.get(pk=request.POST.get('organization')))
 
@@ -251,12 +285,16 @@ def save(request, object_id=''):
         
         object.person = person
         object.save()
+        print "=====================8"
 
     request.user.message_set.create(message=_('Contact saved successfully'))
-    return HttpResponseRedirect('/contact/%s/%s' % (type, object.id))
+    print ('/contact/%s/%s' % (type, object.id))
+    return HttpResponseRedirect('/contact/%s/%s/' % (type, object.id))
+    #return HttpResponseRedirect('/')
 
 @permission_required_with_403('contact.contact_write')
 def save_mini(request, object_id=''):
+    print "=====================LIXO"
     user = request.user
     object = Organization()
     object.name = request.POST.get('label') # adding by mini form
@@ -292,3 +330,4 @@ def order(request, object_type = '', object_id = ''):
 
         object.save(force_update=True)
         return HttpResponseRedirect('/contact/%s/%s' % (object_type, object.id) )
+

@@ -13,7 +13,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
-
+"""
 import reversion
 from django.db import models
 from gestorpsi.organization.models import Organization
@@ -41,25 +41,26 @@ class AdmissionReferral(models.Model):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(AdmissionReferral, follow=['client'])
+"""
 
-class IndicationChoice(models.Model):
-    description = models.CharField(max_length=250)
-    nick = models.CharField(max_length=50)
-    
-    def __unicode__(self):
-        return u"%s" % self.description
+#class IndicationChoice(models.Model):
+#    description = models.CharField(max_length=250)
+#    nick = models.CharField(max_length=50)
+#    
+#    def __unicode__(self):
+#        return u"%s" % self.description
 
-class Indication(models.Model):
-    id = UuidField(primary_key=True)
-    indication_choice = models.ForeignKey(IndicationChoice)
-    referral_organization = models.ForeignKey(Organization, null=True)
-    referral_professional = models.ForeignKey(CareProfessional, null=True)
-    client = models.ForeignKey(Client)
-
-    def __unicode__(self):
-        return u"%s" % self.indication_choice
-
-    def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
-
-reversion.register(Indication, follow=['client'])
+#class Indication(models.Model):
+#    id = UuidField(primary_key=True)
+#    indication_choice = models.ForeignKey(IndicationChoice)
+#    referral = models.ForeignKey(Referral)
+#    referral_organization = models.ForeignKey(Organization, null=True)
+#    referral_professional = models.ForeignKey(CareProfessional, null=True)
+#
+#    def __unicode__(self):
+#        return u"%s" % self.indication_choice
+#
+#    def revision(self):
+#        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+#
+#reversion.register(Indication, follow=['client'])

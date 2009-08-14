@@ -1,0 +1,91 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_client %}active{% endblock %}
+
+{% block submenu %}
+    {% include "client/client_menu.html" %}
+{% endblock %}
+
+{% block core %}
+<input type="hidden" name="object_id" value="{{ object.id }}" />
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+	<h2 class="title_clients title">{{ object.person.name }} {% trans "in" %} {{ referral }}</h2>
+	<p class="description">{% trans "Client subscribed in this service since" %} {{ referral.date|date:"d" }} {% trans "of" %} {{ referral.date|date:"F" }} {% trans "of" %} {{ referral.date|date:"Y" }}<br />	
+
+</p>
+
+<div class="main_area">
+<form action="/upload/{{ referral.id }}/attach/save/" method="post" name="attach" enctype="multipart/form-data">
+
+<fieldset>
+ <legend>Mídias</legend>
+        <div id="documents">
+                <!-- Aparece quando "Anexar Documento", desaparece após
+ enviar arquivo, podem haver vários-->
+                <div class="documents_form">
+                <label>Arquivo<br />
+
+                <input type="file" class="file" name="file" />
+
+                </label>
+                <label>Tipo de documento<br />
+                <select name="doc_type" class="big">
+                        {% for type in types %}
+                            <option value="{{ type.0 }}">{{ type.1 }}</option>
+                        {% endfor %}
+                </select></label>
+
+                <label>Assunto do documento<br />
+                <input name="description" type="text" class="big" /></label>
+                <label><input name="" type="submit" class="btn"
+ value="Enviar Arquivo" /></label>
+                </div>
+
+                <br class="newline" />
+                <br />
+
+    {% if attachs %}
+        {% for a in attachs %}
+                <table class="nozebra">
+                        <tr>
+                                <td nowrap="nowrap"><span class="date">{{ a.date }} </span><br /><span class="time">14:31:07</span></td>
+                                <td><span  class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
+                                <td><span>{% for t in types %}
+                                            {% ifequal a.type t.0 %}</span>{{ t.1 }}:<br /> {{ a.description }} </td> {% endifequal %} {% endfor %}
+                                <td><a href="" class="edit" title="editar"><span>Edit</span></a></td>
+                                <td><a href="" class="delete" title="delete" ><span>Delete</span></a></td>
+                        </tr>
+                        <tr>
+                </table>
+        {% endfor %}
+    {% else %}
+             <p class="empty">Nenhum documento anexado</p>
+             <br />
+    {% endif %}
+
+   </fieldset>
+  </form>
+ <br />
+</div>
+
+{% endblock %}

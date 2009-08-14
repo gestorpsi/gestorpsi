@@ -38,8 +38,8 @@ def form(request, object_id=''):
         'object': object,
         #'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
         'licenceBoardTypes': LicenceBoard.objects.all(),
-        'ReferralChoices': ReferralChoice.objects.all(),
-        'IndicationsChoices': IndicationChoice.objects.all(),
+        #'ReferralChoices': ReferralChoice.objects.all(),
+        #'IndicationsChoices': IndicationChoice.objects.all(),
         'Relations': Relation.objects.all(),
         #'IdRecord': get_object_or_404(IdRecordSeq, uid=object_id),
     }, context_instance=RequestContext(request))

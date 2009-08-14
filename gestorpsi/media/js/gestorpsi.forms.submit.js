@@ -301,6 +301,28 @@ $(function() {
         }
     });
 
+    /**
+     *
+     * fileupload
+     *
+     * _description:
+     * attach referral
+     *
+     */
+
+     $('form.form_file_attach').each(function() {
+          $(this).validate({event:"submit",
+            submitHandler: function(form) {
+                 var form_file_options = {
+                      success:    function(file) {
+                         $('form.client_referral div.main_area div.attach input.attach').attr("value", file);
+                      }
+                 };
+                 $(form).ajaxSubmit(form_file_options);
+                 $(form).parents('div.attach_form_upload').hide();
+            }
+          });
+     });
 
     /**
      *

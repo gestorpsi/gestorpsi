@@ -47,17 +47,19 @@ var form_mini_options = {
                // get option label
                var text = $(form).children('fieldset').children('label').children('input:text').val();
 
+               // add <option> to asm select - referral form new 
+
                // add <option> to asmselect select box
-               $.form_mini_link.parents('fieldset').children('label').children('select.asmSelect:first').append('<option value='+response+' disabled="disabled">'+text+'</option>');
+               //$.form_mini_link.parents('fieldset').children('label').children('select.asmSelect:first').append('<option value='+response+' disabled="disabled">'+text+'</option>');
 
                // add <option> to asm select box
-               $.form_mini_link.parents('label').children('select.asm:first').append('<option value='+response+' selected="selected">'+text+'</option>');
+               //$.form_mini.parents('label').children('select.asm:first').append('<option value='+response+' selected="selected">'+text+'</option>');
 
                // add <option> to real multiselect
-               $.form_mini_link.parents('fieldset').children('label').children('select.multiple').append('<option value='+response+' selected="selected">'+text+'</option>');
+               //$.form_mini_link.parents('fieldset').children('label').children('select.multiple').append('<option value='+response+' selected="selected">'+text+'</option>');
 
                // append it to list
-               $.form_mini_link.parents('fieldset').children('label').children('ol').append('<li style="display: list-item;" class="asmListItem"><span class="asmListItemLabel">'+text+'</span><a class="asmListItemRemove dyn_added">remove</a></li>');
+               //$.form_mini_link.parents('fieldset').children('label').children('ol').append('<li style="display: list-item;" class="asmListItem"><span class="asmListItemLabel">'+text+'</span><a class="asmListItemRemove dyn_added">remove</a></li>');
 
                $('a.asmListItemRemove.dyn_added').unbind().click(function() {
                     $(this).parents("li").remove();

@@ -44,16 +44,11 @@ GNU General Public License for more details.
 <input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
 <div class="main_area">
     <a href="" id=help>&nbsp;</a>
-    <h3><span>{% trans "Referral Details" %}</span></h3>
-    
+    <h3><span>{% trans "Subscription Details" %}</span></h3>
     
     <fieldset>
-    <legend>{% trans "Referral Details" %}</legend>
-        {% if not referral %}
-            <label><input type="radio" name="referral_type" value="subscription" checked>&nbsp; {% trans "Subscription" %}</label>
-            <label><input type="radio" name="referral_type" value="referral">&nbsp; {% trans "From existing referral" %}</label>
-            <label><div class="error_radio" style="display:none;"><h3><font color="red">{% trans "Choose one option." %}</font></h3></div></label>
-            <label class="referral_type_referral hidden">{% trans "Last Referral" %}<br />
+    <legend>{% trans "Subscritpion Details" %}</legend>
+            <label class="referral_type_referral hidden">{% trans "Last Referral" %}
                 <select name="referral" class="extrabig asm referral_list" {% if object.id %} id="id_referral" {% endif %} >
                     <option value="">---------</option>
                     {% for p in referral_list %}
@@ -72,9 +67,8 @@ GNU General Public License for more details.
                         </option>
                     {% endfor %}
                 </select>
-                <label><div class="error_select" style="display:none;"><h3><font color="red">{% trans "This fields is required." %}</font></div></label>
             </label>
-        {% endif %}
+
             <label{% if referral %} style="display:none"{% endif %}>{% trans "To Service" %}<br />
             {{ referral_form.service }}
             </label>
@@ -95,6 +89,58 @@ GNU General Public License for more details.
         </label>
     </fieldset>
 
+        <!-- <div class="attach">
+         <fieldset>
+          <legend>{% trans "Attach document" %}</legend>
+           <label>{% trans "File" %}<br />
+             <a class="clips_attach notajax">{% trans "Document" %}</a>
+              <input type="hidden" name="attach" class="attach" />
+           </label>
+
+              <label> {% trans "Description" %}<br />
+                <textarea name="description" cols="40" rows="3"/></textarea>
+              </label>
+
+          </fieldset>
+         </div> -->
+
+        <!-- INDICATION  -->
+        <div class="admission_indication">
+         <fieldset>
+          <legend>{% trans "Indications" %}</legend>
+           <label>{% trans "Indication done by" %}<br />
+                <select name="indication" class="big toggle_parent_label">
+                        {% for o in IndicationsChoices %}
+                                <option value="{{ o.id }}" label="{{ o.nick }}" {% ifequal o.id object.indication_set.all.0.indication_choice_id %} selected{% endifequal %}>{{ o }}</option>
+                        {% endfor %}
+                </select>
+           </label>
+
+        <div class="admission_ind_org" {% ifnotequal object.indication_set.all.0.indication_choice_id 3 %} style="display:none;" {% endifnotequal %} >
+         <label class="organization">{% trans "Select Organization, or"%} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
+          <select name="indication_organization" class="select extrabig asm">
+                <option>Escolha...</option>
+                {% for org in list_org %}
+                    <option value="{{ org.id }}" {% ifequal org.id object.indication_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org }}</option>
+                {% endfor %}
+          </select>
+         </label>
+        </div>
+
+        <div class="admission_ind_prof" {% ifnotequal object.indication_set.all.0.indication_choice_id 4 %} style="display:none;" {% endifnotequal %} >
+         <label class="professional">{% trans "Select Professional, or"%} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
+          <select name="indication_professional" class="select extrabig asm">
+                <option>Escolha...</option>
+                {% for prof in list_prof %}
+                    <option value="{{ prof.id }}" {% ifequal prof.id object.indication_set.all.0.referral_professional_id %} selected {% endifequal %}>{{ prof }}</option>
+                {% endfor %}
+          </select>
+         </label>
+        </div>
+
+       </fieldset>
+      </div>
+      <!-- INDICATION -->
 
     <fieldset>
     <legend>{% trans "Referral Additional Infos" %}</legend>
@@ -132,6 +178,10 @@ GNU General Public License for more details.
 </div>
 <input type="hidden" name="client_id" value="{{ object.id }}" />
 </form>
+
+{% include "tags/attach.html" %} 
+{% include "tags/address_book_professional_mini.html" %} 
+{% include "tags/address_book_organization_mini.html" %}
 
 {% endblock %}
 

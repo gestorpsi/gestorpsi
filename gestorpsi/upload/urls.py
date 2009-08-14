@@ -15,9 +15,14 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.upload.views import send
+from gestorpsi.upload.views import send, attach_form, attach_save
+from gestorpsi.referral.models import ReferralAttach, Referral
 from django.contrib.auth.decorators import login_required
+from gestorpsi.authentication.views import login_check
+
 
 urlpatterns = patterns('',
     (r'^send/$', login_required(send)), 
+    (r'^(?P<object_id>\d+)/attach/$' , login_check(attach_form)),
+    (r'^(?P<object_id>\d+)/attach/save/$' , login_check(attach_save))
 )

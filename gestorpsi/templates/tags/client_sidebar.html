@@ -31,6 +31,7 @@ GNU General Public License for more details.
     <ul>
         <li><a href="/admission/{{ object.id }}/" class="client_admit_form" title="{{ object.person.name }}">{% trans "Admit Client" %}</a></li>
         <li><a href="/client/{{ object.id }}/referral/form/" class="client_referral_form" title="{{ object.person.name }}">{% trans "New Referral" %}</a></li>
+        <li><a href="/client/{{ object.id }}/referral/plus/form/" class="client_referral_form" title="{{ object.person.name }}">{% trans "+ Referral" %}</a></li>
         <!-- <li><a class="client_user_form" display="client_user_form" title="{{ object.person.name }}">{% trans "Manage User" %}</a></li> -->
         <li><a href="/client/{{ object.id }}/order/" class="client_order" title="{{ object.person.name }}">{% if object.person.active %} Desativar {% else %} Ativar {% endif %} </a></li>
     {% comment %}
@@ -58,8 +59,8 @@ GNU General Public License for more details.
         <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/past/" class="client_calendar" title="{{ object.person.name }}">{% trans "Past Occurrences" %}</a></li>
         <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/discharge/" class="client_referral_discharge" title="{{ object.person.name }}">{% trans "Service Discharge" %}</a></li>
         <li><a class="print" href="/client/{{ object.id }}/print/" title="{{ object.person.name }}">{% trans "Print Record" %}</a></li>
+        <li><a class="document" href="/upload/{{ referral.id }}/attach/" title="{{ object.person.name }}">{% trans "Document" %}</a></li>
     </ul>
 {% endif %}
-    
 
 </div>

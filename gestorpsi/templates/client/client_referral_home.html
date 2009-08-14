@@ -59,7 +59,57 @@ GNU General Public License for more details.
             <br>
             {% trans "Client subscribed on this service since" %} {{ referral.date|date:"d" }} {% trans "of" %} {{ referral.date|date:"F" }} {% trans "of" %} {{ referral.date|date:"Y" }}
         </p>
-        
+
+        <p>
+            {% if dt %}
+            <b />{% trans "Data" %}</b><br />
+                {{ dt }}
+            {% endif %}
+        </p>
+        <p>
+            {% if referral.referral %}
+            <b />{% trans "Referral" %}</b><br />
+                {{ referral.referral }}
+            {% endif %}
+        </p>
+        <p>
+            {% if indication %}
+            <b />{% trans "Indication" %}</b><br />
+                {{ indication }}
+            {% endif %}
+        </p>
+        <p>
+            {% if referral.impact %}
+            <b />{% trans "Impact" %}</b><br />
+                {{ referral.impact }}
+            {% endif %}
+        </p>
+        <p>
+            {% if referral.priority%}
+            <b />{% trans "prority" %}</b><br />
+                {{ referral.priority }}
+            {% endif %}
+        </p>
+        <p>
+            {% if referral.referral_reason %}
+            <b />{% trans "Reason" %}</b><br />
+                {{ referral.referral_reason }}
+            {% endif %}
+        </p>
+        <p>
+            {% if referral.available_time%}
+            <b />{% trans "Available Time" %}</b><br />
+                {{ referral.available_time }}
+            {% endif %}
+        </p>
+        <p>
+
+            {% if referral.annotation %}
+            <b />{% trans "Annotation" %}</b><br />
+                {{ referral.annotation }}
+            {% endif %}
+        </p>
+
 <br />	
 </div>
 

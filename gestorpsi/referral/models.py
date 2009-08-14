@@ -17,8 +17,10 @@ GNU General Public License for more details.
 import reversion
 from dateutil import rrule
 from datetime import datetime
+from django.core.files import File
 from django.db import models
 from django.utils.translation import ugettext as _
+from django.core.files.storage import FileSystemStorage
 from swingtime.models import Event, EventType
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
@@ -26,6 +28,8 @@ from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
+
+fs = FileSystemStorage(location='/tmp')
 
 class ReferralPriority(models.Model):
     title = models.CharField(max_length=20)
@@ -39,6 +43,21 @@ class ReferralImpact(models.Model):
     
     def __unicode__(self):
         return u'%s (%s)' % (self.title, self.description)
+
+REFERRAL_ATTACH_TYPE = (
+    ('01', _('Drawing')),
+    ('02', _('Diagnosis')),
+    ('03', _('Medical Examination')),
+    ('04', _('Reference')),
+    ('05', _('Results sheet')),
+    ('06', _('Test sheet')),
+    ('07', _('Photo')),
+    ('08', _('Laudo')),
+    ('09', _('Parecer')),
+    ('10', _('Termo de Consentimento Livre e Esclarecido (TCLE)')),
+    ('11', _('Others')),
+)
+
 
 REFERRAL_STATUS = (
     ('01', _('Active')),
@@ -98,6 +117,18 @@ class ReferralManager(models.Manager):
 
     def discharged(self):
         return super(ReferralManager, self).get_query_set().filter(referraldischarge__isnull=False)
+
+class ReferralAttach(models.Model):
+    id = UuidField(primary_key=True)
+    filename = models.CharField(null=True, max_length=50)
+    description = models.CharField(null=True, max_length=1000)
+    date = models.DateTimeField(auto_now_add=True)
+    file = models.CharField(max_length=200)
+    type = models.CharField(max_length=2, blank=True, null=True, choices=REFERRAL_ATTACH_TYPE) 
+    referral = models.ForeignKey('Referral')
+
+    def __unicode__(self):
+        return u'%s' % (self.file)
 
 class Referral(Event):
     #id = UuidField(primary_key=True)
@@ -192,3 +223,48 @@ reversion.register(Event)
 reversion.register(ReferralDischarge, follow=['referral'])
 reversion.register(Referral, follow=['event_ptr'])
 reversion.register(ReferralGroup, follow=['referral'])
+
+class IndicationChoice(models.Model):
+    description = models.CharField(max_length=250)
+    nick = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return u"%s" % self.description
+
+class Indication(models.Model):
+    id = UuidField(primary_key=True)
+    indication_choice = models.ForeignKey(IndicationChoice, null=False)
+    referral = models.ForeignKey(Referral)
+    referral_organization = models.ForeignKey(Organization, null=True)
+    referral_professional = models.ForeignKey(CareProfessional, null=True)
+
+    def __unicode__(self):
+        return u"%s" % self.indication_choice
+
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+
+reversion.register(Indication, follow=['client'])
+
+
+class ReferralChoice(models.Model):
+    description = models.CharField(max_length=250)
+    nick = models.CharField(max_length=50)
+    def __unicode__(self):
+        return u"%s" % self.description
+
+class ReferralReferral(models.Model):
+    id = UuidField(primary_key=True)
+    referral_choice = models.ForeignKey(ReferralChoice)
+    referral_organization = models.ForeignKey(Organization, null=True)
+    referral_professional = models.ForeignKey(CareProfessional, null=True)
+    client = models.ForeignKey(Client)
+
+    def __unicode__(self):
+        return u"%s" % self.referral_choice
+
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+
+reversion.register(ReferralReferral, follow=['client'])
+

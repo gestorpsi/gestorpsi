@@ -261,6 +261,21 @@ $(function() {
 
     /**
      *
+     * attach form of referral
+     *
+     */
+
+    $('form.upload_referral').validate({
+        rules: {
+            file: "required",
+        },
+        messages: {
+            name: 'Preenchimento Necessário'
+        }
+    });
+
+    /**
+     *
      * referral form
      *
      * _description:

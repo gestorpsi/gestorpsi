@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django.conf.urls.defaults import *
 from django.contrib.auth.decorators import login_required
-from gestorpsi.client.views import index, list, form, save, delete, print_list, print_record, organization_clients, add, home, order, referral_save, referral_list, referral_home, referral_form, referral_discharge_form, schedule_daily, schedule_add, occurrence_confirmation, occurrence_view, referral_occurrences, referral_plus_form, referral_plus_savesave
+from gestorpsi.client.views import index, list, form, save, delete, print_list, print_record, organization_clients, add, home, order, referral_save, referral_list, referral_home, referral_form, referral_discharge_form, schedule_daily, schedule_add, occurrence_confirmation, occurrence_view, referral_occurrences, referral_plus_form, referral_plus_save
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',

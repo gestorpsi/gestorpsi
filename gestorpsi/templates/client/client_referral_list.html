@@ -42,7 +42,7 @@ GNU General Public License for more details.
                 <tbody>
                     {% for r in referrals %}
                     <tr class="zebra_{% cycle '0' '1' %}">
-                        <td class="title">{% if charged %}<a href="/client/{{ object.id }}/referral/{{ r.id }}/" title="{{ r }}">{% endif %}{{ r }}{% if charged %}</a>{% endif %}<br></td>
+                        <td class="title"><a href="/client/{{ object.id }}/referral/{{ r.id }}/" title="{{ r }}">{{ r }}</a><br></td>
                         <td><span class="phone">{% if r.professional.all.0 %}{% trans "Dr(a)" %} {{ r.professional.all.0 }}{% endif %}</span><br><span class="email">{% trans "subscribed at" %} <b>{{ r.revision.date_created|date:"r"|slice:":-15"}}</b></span></td>
                     </tr>
                     {% endfor %}

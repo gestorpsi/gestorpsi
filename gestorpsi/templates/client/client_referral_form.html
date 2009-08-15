@@ -80,7 +80,11 @@ GNU General Public License for more details.
             </label>
         {% else %}
             <label>{% trans "Professionals" %}<br />
-                {{ referral_form.professional }}
+                <select name="professional" class="extrabig asm multiple" id="id_professional" multiple="multiple">
+                   {% for prof in Profs_service %}
+                        <option value="" {% ifnotequal referral.professional.all.0 prof %} disabled {% else %} selected {% endifnotequal %}> {{ prof }} </option>
+                   {% endfor %}
+                </select>
             </label>            
         {% endif %}
 

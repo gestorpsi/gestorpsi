@@ -258,17 +258,18 @@ def referral_form(request, object_id = None, referral_id = None):
     referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
     total_service = Referral.objects.filter(client=object).count()
     referral_list = Referral.objects.filter(client=object, status='01')
-    
+
     return render_to_response('client/client_referral_form.html',
-                              {'object': object, 
-                              'referral': referral,
+                              { 'object': object, 
+                                'referral': referral,
                                 'referral_form': referral_form,
                                 'referral_list': referral_list,
                                 'referrals': Referral.objects.filter(client = object),
                                 'IndicationsChoices': IndicationChoice.objects.all(),
                                 'list_org': Organization.objects.all(),
                                 'list_prof': CareProfessional.objects.all(),
-                                'AttachTypes': REFERRAL_ATTACH_TYPE
+                                'AttachTypes': REFERRAL_ATTACH_TYPE,
+                                'Profs_service': CareProfessional.objects.filter(prof_services = Referral.objects.get(pk = referral_id).service)
                                },
                               context_instance=RequestContext(request)
                               )

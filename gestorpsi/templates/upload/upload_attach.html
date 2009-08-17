@@ -88,4 +88,12 @@ GNU General Public License for more details.
  <br />
 </div>
 
+<div id="sidebar" class="sidebar">
+    {% if object.id %}
+        <br />
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
+</div>
+<input type="hidden" name="client_id" value="{{ object.id }}" />
+
 {% endblock %}

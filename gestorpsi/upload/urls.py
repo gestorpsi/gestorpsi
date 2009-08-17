@@ -23,6 +23,6 @@ from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
     (r'^send/$', login_required(send)), 
-    (r'^(?P<object_id>\d+)/attach/$' , login_check(attach_form)),
+    (r'^client/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/attach/(?P<referral_id>\d+)/$' , login_check(attach_form)),
     (r'^(?P<object_id>\d+)/attach/save/$' , login_check(attach_save))
 )

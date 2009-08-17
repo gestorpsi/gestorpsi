@@ -236,6 +236,7 @@ def referral_plus_form(request, object_id = None, referral_id = None):
 # add or edit form
 #@permission_required_with_403('referral.referral_view')
 def referral_form(request, object_id = None, referral_id = None):
+
     try:
         object    = Client.objects.get(pk = object_id, person__organization = request.user.get_profile().org_active)
     except:
@@ -260,8 +261,6 @@ def referral_form(request, object_id = None, referral_id = None):
     referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
     total_service = Referral.objects.filter(client=object).count()
     referral_list = Referral.objects.filter(client=object, status='01')
-
-    print Profs_service
 
     return render_to_response('client/client_referral_form.html',
                               { 'object': object, 
@@ -343,6 +342,7 @@ def referral_save(request, object_id = None, referral_id = None):
 def referral_discharge_form(request, object_id = None, referral_id = None):
     object = get_object_or_404(Client, pk=object_id)
     referral = Referral.objects.get(id=referral_id)
+
     if request.method == 'POST':
         form = ReferralDischargeForm(request.POST, initial=dict(client=object, referral=referral))
         if form.is_valid():
@@ -381,6 +381,12 @@ def referral_home(request, object_id = None, referral_id = None):
     object = get_object_or_404(Client, pk=object_id)
     referral = Referral.objects.get(pk=referral_id)
     organization = user.get_profile().org_active.id
+
+    discharged_list = object.referrals_discharged()
+    if discharged_list.filter(pk = referral_id).count():
+        referral_discharged = True
+    else: 
+        referral_discharged = False
 
     dt = referral.date.strftime("%d-%m-%Y  %H:%M %p")
     indication = Indication.objects.get(referral = referral_id)

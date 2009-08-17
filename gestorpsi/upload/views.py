@@ -21,6 +21,7 @@ import uuid
 from PIL import Image
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.referral.models import ReferralAttach, Referral, REFERRAL_ATTACH_TYPE
+from gestorpsi.client.models import Client
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -90,16 +91,16 @@ def send(request):
 
 
 @permission_required_with_403('upload.upload_write')
-def attach_form(request, object_id = ''):
+def attach_form(request, object_id = '', referral_id = ''):
     user = request.user
-    referral = Referral.objects.get(pk = object_id)
+    referral = Referral.objects.get(pk = referral_id)
     organization = user.get_profile().org_active.id
     
     types = REFERRAL_ATTACH_TYPE
 
     #indication = Indication.objects.get(referral = object_id)
-    attachs = ReferralAttach.objects.filter(referral = object_id)
-    print attachs
+    attachs = ReferralAttach.objects.filter(referral = referral_id)
+    object = Client.objects.get(pk = object_id)
 
     return render_to_response('upload/upload_attach.html', locals(), context_instance=RequestContext(request))
 
@@ -113,13 +114,11 @@ def attach_save(request, object_id = ''):
 
         if 'file' in request.FILES:
             path = '%simg/organization/%s' % (MEDIA_ROOT, user.get_profile().org_active.id)
-            print path
             if not os.path.exists(path):
                 os.mkdir(path)
                 os.chmod(path, 0777)
 
             path = '%simg/organization/%s/attach' % (MEDIA_ROOT, user.get_profile().org_active.id)
-            print path
             if not os.path.exists(path):
                 os.mkdir(path)
                 os.chmod(path, 0777)

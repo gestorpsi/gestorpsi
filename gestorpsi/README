@@ -96,17 +96,7 @@ $ cd /home/foo/gestorpsi
 $ python manage.py syncdb
 
 4) Install initial data
-** MOVED TO syncdb (fixture)
-You only need to create age_groups in service.areaclinic
-
-{"pk": 1, "model": "service.areaclinic", "fields": {"age_group": [1, 2, 3, 4]}}
-
-OR 
-
-from gestorpsi.service.models import AreaClinic
-ac = AreaClinic()
-ac.save()
-ac.age_group.add(1, 2, 3, 4)
+$ python install.py
 
 5) Open settings.py and edit the follow config:
 	-> DATABASE_NAME

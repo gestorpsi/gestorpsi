@@ -574,6 +574,10 @@ textarea.giant, input.giant {width: 645px;}
 	width: 500px;
 }
 
+textarea.extrabig {
+	height: 230px;
+}
+
 .medium {
 	width: 175px;
 }

@@ -153,7 +153,7 @@ class Organization(models.Model):
     id= UuidField(primary_key=True)
 
     # identity
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, blank=False)
     trade_name = models.CharField(max_length=100, blank=True)
     short_name = models.CharField(max_length=100, blank=True, unique=True)
     register_number = models.CharField(max_length=100, blank=True)

@@ -150,7 +150,7 @@ function updateContact(url, app) {
                 if (this.type == '2' && this.type_org == 'GESTORPSI') class_content = "person gestorpsi";
                 
                 tableTR += '<tr class="' + class_content + '" id="' + this.id + '"><td class="title">';
-                tableTR += '<a href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
+                tableTR += '<a href="/contact/form/' + ((this.type == 1)?'organization':'professional') + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
                 
                 if(this.profession) tableTR += ' (' + this.profession + ')';
                 

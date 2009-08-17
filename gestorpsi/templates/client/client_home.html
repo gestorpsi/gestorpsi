@@ -30,7 +30,7 @@ GNU General Public License for more details.
 <h2 id="title_addressbook" style="display:none"></h2>
 
 	<h2 class="title_clients title">{{ object.person.name }}</h2>
-	<p class="description">{% trans "Customer subscribed in" %} <a href="/client/{{ object.id }}/referral/">{{ referrals|length }} {% trans "service(s)" %}</a> <br />	
+	<p class="description">{% if object.person.birthDate %}{{ object.person.birthDate.date.timesince }}{% endif %} {% trans "Customer subscribed in" %} <a href="/client/{{ object.id }}/referral/">{{ referrals|length }} {% trans "service(s)" %}</a> <br />	
 
 </p>
 

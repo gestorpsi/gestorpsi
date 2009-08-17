@@ -41,7 +41,7 @@ class ContactManager(models.Manager):
     Contact.objects.filter(
         org_id = request.user.get_profile().org_active.id, 
         person_id = request.user.get_profile().person.id, 
-        filter_name = 'foo',
+        filter_name = 'elvis presley',
         filter_type = 1, # where 1 = org, 2 = professional
         )
     """
@@ -77,7 +77,7 @@ class ContactManager(models.Manager):
             'WHERE (organization_organization.active = true AND organization_organization.visible = true  AND T5.id IS NULL ' \
             'AND NOT (careprofessional_careprofessional.person_id IN (SELECT U2.person_id FROM person_person_organization U2 ' \
             'WHERE U2.organization_id = %s ) AND careprofessional_careprofessional.person_id IS NOT NULL) '\
-            'AND organization_organization.name LIKE LOWER(%s) \
+            'AND (LOWER(organization_organization.name) LIKE LOWER(%s) OR LOWER(person_person.name) LIKE LOWER(%s)) \
             ) ORDER BY name'
         
         cursor = connection.cursor()
@@ -90,6 +90,7 @@ class ContactManager(models.Manager):
             kwargs.get('person_id') or '%', \
             kwargs.get('filter_name') or '%', \
             kwargs.get('org_id') or '%', \
+            kwargs.get('filter_name') or '%', \
             kwargs.get('filter_name') or '%', \
             ])
         

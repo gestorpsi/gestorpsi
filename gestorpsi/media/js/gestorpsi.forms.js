@@ -503,7 +503,7 @@ $(function() {
                     }
                },
                messages: {
-                    name: 'This field is required'
+                    label: 'Este campo é obrigatório'
                },
                submitHandler: function(form) {
                     $(form).ajaxSubmit(form_mini_options);
@@ -562,24 +562,6 @@ $(function() {
      });
      
      
-     /**
-      * contact form
-     */
-     
-     $('form.form_contact select[name=type]').unbind().change(function() {
-          $(this).parents('fieldset').siblings('.contact').hide();
-          $(this).parents('fieldset').siblings('.' + $(this).val()).show();
-          
-          // its necessary, because you can have two required fields, organization name OR professional name
-          // reset name attribute, and rewrite it.
-          $(this).parents('form').children('div').children('fieldset').children('label').children('input[type=text].cleanme').attr('name','');
-          $(this).parents('form').children('div').children('fieldset').children('label').children('input[type=text].cleanme').removeClass('tabtitle');
-          $(this).parents('form').children('div').children('fieldset').children('label').children('input[type=text].' + $(this).val() + '_name').attr('name','name');
-          $(this).parents('form').children('div').children('fieldset').children('label').children('input[type=text].' + $(this).val() + '_name').addClass('tabtitle');
-                    
-     });
-     
-
      /**
       * referral service/professional select
       *

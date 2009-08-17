@@ -23,7 +23,8 @@ GNU General Public License for more details.
 {% block submenu %}
     <ul>
         <li><a class="first" href="/contact/">{% trans "all" %}</a></li>
-        <li><a class="{% if not object.id %}active{% endif %}" href="/contact/add/">{% trans "add" %}</a></li>
+        <li><a class="" href="/contact/form/organization/">{% trans "add organization" %}</a></li>
+        <li><a class="{% if not object.id %}active{% endif %}" href="/contact/form/professional/">{% trans "add professional" %}</a></li>
         {% if object.id %}<li><a class="active">{{ object }}</a></li>{% endif %}
     </ul>
 {% endblock %}
@@ -32,31 +33,25 @@ GNU General Public License for more details.
 <h2 id="title_addressbook" style="display:none"></h2>
 
 
-<h2 class="title_contacts title">{% trans "Adding New Contact" %}</h2>
-<p class="description">{% trans "Inform the client details then click on Save button" %}</p>
-
+<h2 class="title_contacts title">{% if not object.id %}{% trans "Adding New Contact Professional" %}{% else %}{{ object }} ({% trans "Professional" %}){% endif %}</h2>
+<p class="description">
+    {% if not hide_save_buttom %}
+        {% trans "Inform the professional details then click on Save button" %}
+    {% else %}
+        {{ object.person.organization.all|join:", " }}
+    {% endif %}</p>
 </p>
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
 
 
-<form action="/contact/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="collapsable form_contact">	
+<form action="/contact/professional/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="collapsable form_contact_professional">	
 <div class="main_area">
-	
-<fieldset>
 
-<legend>{% trans "Contact Type" %}</legend>
-		<label>{% trans "Type" %}<br />
-		<select name="type" class="big">
-			<option value="professional" {% ifequal object_type '2' %}selected{% endifequal %}>{% trans "Professional" %}</option>
-			<option value="organization" {% ifequal object_type '1' %}selected{% endifequal %}>{% trans "Organization" %}</option>
-		</select>
-		</label>
-</fieldset>
-
-<fieldset class="professional contact" {% ifequal object_type '1'%} style="display:none"{%endifequal%}>
+{% if not hide_save_buttom %}
+<fieldset class="professional contact">
 <legend>{% trans "Professional Organization" %}</legend>
-		<label>{% trans "Select Organization, or"%} <a class="form_mini" display="organization_mini">{% trans "add a new one" %}</a><br />
+		<label>{% trans "Select Professional Organization, or"%} <a class="form_mini" display="organization_mini">{% trans "add a new one" %}</a><br />
 		<select name="organization" class="extrabig asm">
 			{% for o in organizations %}
                <option value="{{ o.id }}"{% ifequal object.person.organization.all.0.id o.id %} selected{% endifequal %}>{{ o }}</option>
@@ -64,13 +59,13 @@ GNU General Public License for more details.
 		</select>
 		</label>
 </fieldset>
+{% endif %}
 
-
-<fieldset class="professional contact" {% ifequal object_type '1' %}style="display:none"{% endifequal %}>
+<fieldset class="professional contact">
 <legend>{% trans "Professional Identification" %}</legend>
-		<label>{% trans "Name" %}<br />
-		<input type="text" maxlength="50" {% ifnotequal object_type '1' %} name="name" class="giant professional_name cleanme tabtitle" {% else %} name="" class="giant professional_name cleanme" {% endifnotequal %} value="{{ object.person.name }}" />
-		</label>
+    <label>{% trans "Name" %}<br />
+        <input type="text" name="name" class="giant" value="{{ object.person.name }}" />
+    </label>
 
     <label>{% trans "Profession" %}<br />
         <select id="{{forloop.counter0}}" name="service_profession" class="medium asm profession_type">
@@ -88,15 +83,6 @@ GNU General Public License for more details.
         <label>{% trans "Professional Subscription" %}<br />
             <input type="text" maxlength="50" class="medium" name="professional_subscription" value="{{ object.professionalIdentification.registerNumber }}" />
         </label>
-
-</fieldset>
-
-
-<fieldset class="organization contact"{% if not object.id %} style="display:none"{%else%}{% ifequal object_type '2'%} style="display:none"{%endifequal%}{% endif %}>
-<legend>{% trans "Organization Identification" %}</legend>
-		<label>{% trans "Name" %}<br />
-		<input type="text" maxlength="50" {% ifequal object_type '1' %} name="name" {% endifequal %} class="big tabtitle organization_name cleanme" value="{{ object.name }}" />
-		</label>
 </fieldset>
 
 {% include "meta/addressbook.html" %}
@@ -107,18 +93,31 @@ GNU General Public License for more details.
 </div>
 
 <div id="sidebar" class="sidebar">
-    {% if perms.contact.contact_write %}
+    {% if perms.contact.contact_write and not hide_save_buttom %}
       
-          <div class="bg_blue">
-            {% include "tags/save.html" %}
-          </div>
+        <div class="bg_blue">
+        {% include "tags/save.html" %}
+        </div>
 
-            {% if object.id %}
-                {% include "tags/contact_sidebar.html" %}
-            {% endif %}
+        {% if object.id %}
+            <div class="contact_actions">	
+            <h3>{% trans 'Object Actions' %}</h3>
+            <ul>
+                <li><a href="/contact/professional/order/{{ object.id }}/" class="contact_order" title="{{ object.name }}">{% if object.active %}{% trans "Deactivate" %}{% else %}{% trans "Activate" %}{% endif %} </a></li>
+            </ul>
+            </div>
+        {% endif %}
 
     {% endif %}
 </div>
+{% if hide_save_buttom %}
+    <script>
+    $(function() {
+        $('form input, form select, form textarea').attr('disabled', true);
+        $('form a.add_to_form, a.remove_from_form').hide();
+    })
+    </script>
+{% endif %}
 </form>
 
 {% include "tags/organization_mini.html" %}

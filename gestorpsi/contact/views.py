@@ -36,6 +36,20 @@ from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.contact.models import Contact
 
+@permission_required_with_403('contact.contact_write')
+def extra_data_save(request, object = None):
+    phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
+    email_save(object, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
+    site_save(object, request.POST.getlist('site_id'), request.POST.getlist('site_description'), request.POST.getlist('site_site'))
+    im_save(object, request.POST.getlist('im_id'), request.POST.getlist('im_identity'), request.POST.getlist('im_network'))
+    address_save(object, request.POST.getlist('addressId'), request.POST.getlist('addressPrefix'),
+        request.POST.getlist('addressLine1'), request.POST.getlist('addressLine2'),
+        request.POST.getlist('addressNumber'), request.POST.getlist('neighborhood'),
+        request.POST.getlist('zipCode'), request.POST.getlist('addressType'),
+        request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
+        request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))
+    return object
+
 @permission_required_with_403('contact.contact_list')
 def index(request):
     return render_to_response('contact/contact_list.html', context_instance=RequestContext(request))
@@ -53,7 +67,6 @@ def list(request, page = 1, initial = None, filter = None):
     if filter:
         filter_name = '%' + filter + '%'
 
-    print filter_name
     list = Contact.objects.filter(
         org_id = request.user.get_profile().org_active.id, 
         person_id = user.get_profile().person.id, 
@@ -135,199 +148,162 @@ def test(request):
                                      )
 
 @permission_required_with_403('contact.contact_read')
-def add(request):
-    organizations = Organization.objects.filter(contact_owner=request.user.get_profile().person, active=True, visible=True)
+def contact_organization_form(request, object_id = None):
+    
+    object = get_object_or_None(Organization, pk=object_id) or Organization()
+    
+    # check if user logged is the owner of actual register
+    if object.id and not object.contact_owner == request.user.get_profile().person:
+        hide_save_buttom = True
+
     try:
-        cities = City.objects.filter(state=request.user.get_profile().org_active.address.all()[0].city.state)
+        Cities = City.objects.filter(state=request.user.get_profile().org_active.address.all()[0].city.state)
     except:
-        cities = {}
-    return render_to_response('contact/contact_form.html', {
-                                    'object': object,
-                                    'countries': Country.objects.all(),
-                                    'States': State.objects.all(),
-                                    'AddressTypes': AddressType.objects.all(),
-                                    'PhoneTypes': PhoneType.objects.all(), 
-                                    'EmailTypes': EmailType.objects.all(), 
-                                    'IMNetworks': IMNetwork.objects.all(),
-                                    'organizations': organizations,
-                                    'professions': Profession.objects.all(),
-                                    'Cities': cities,
-                                     },
+        Cities = {}
+
+    countries = Country.objects.all()
+    States = State.objects.all()
+    AddressTypes = AddressType.objects.all()
+    PhoneTypes = PhoneType.objects.all() 
+    EmailTypes = EmailType.objects.all() 
+    IMNetworks = IMNetwork.objects.all()
+
+    phones    = object.phones.all()
+    addresses = object.address.all()
+    emails    = object.emails.all()
+    websites     = object.sites.all()
+    ims = object.instantMessengers.all()
+
+    return render_to_response('contact/contact_organization_form.html', locals(),
                                      context_instance=RequestContext(request)
                                      )
 
-
 @permission_required_with_403('contact.contact_read')
-def form(request, object_type='', object_id=''):
-    user = request.user
-    org = user.get_profile().org_active
-    organizations = Organization.objects.filter(organization=None, active=True, visible=True).exclude(id=org.id)
+def contact_professional_form(request, object_id = None):
+    object = get_object_or_None(CareProfessional, pk=object_id) or CareProfessional()
+    organizations = Organization.objects.filter(contact_owner=request.user.get_profile().person, active=True, visible=True)
 
+    # check if user is the owner of the register 
+    if object.id and not object.revision().user == request.user:
+        hide_save_buttom = True
 
-    if object_type == '1':   # ORGANIZATION (1)
-        object = get_object_or_404(Organization, pk=object_id)
-        phones    = object.phones.all()
-        addresses = object.address.all()
-        emails    = object.emails.all()
-        sites     = object.sites.all()
-        instantMessengers = object.instantMessengers.all()
-        if object.organization:
-            organizations = Organization.objects.filter(contact_owner=user.get_profile().person, active=True, visible=True)
-    else:                    # PROFESSIONAL (2)
-        object = get_object_or_404(CareProfessional, pk=object_id)
-        #if object.person.organization.organization:
-        if object.person.organization.count() == 1 and object.person.organization.all()[0].organization:
-            organizations = Organization.objects.filter(contact_owner=user.get_profile().person, active=True, visible=True)
+    if object_id:
         phones    = object.person.phones.all()
         addresses = object.person.address.all()
         emails    = object.person.emails.all()
-        sites     = object.person.sites.all()
-        instantMessengers = object.person.instantMessengers.all()
+        websites     = object.person.sites.all()
+        ims = object.person.instantMessengers.all()
+
+    countries = Country.objects.all()
+    States = State.objects.all()
+    AddressTypes = AddressType.objects.all()
+    PhoneTypes = PhoneType.objects.all() 
+    EmailTypes = EmailType.objects.all() 
+    IMNetworks = IMNetwork.objects.all()
+    professions = Profession.objects.all()
+
+    try:
+        Cities = City.objects.filter(state=request.user.get_profile().org_active.address.all()[0].city.state)
+    except:
+        Cities = {}
     
-    return render_to_response('contact/contact_form.html', {
-                                    'object': object,
-                                    'object_type': object_type,
-                                    'countries': Country.objects.all(),
-                                    'States': State.objects.all(),
-                                    'AddressTypes': AddressType.objects.all(),
-                                    'PhoneTypes': PhoneType.objects.all(), 
-                                    'EmailTypes': EmailType.objects.all(), 
-                                    'IMNetworks': IMNetwork.objects.all(),
-                                    'organizations': organizations,
-                                    'emails': emails,
-                                    'websites': sites,
-                                    'ims': instantMessengers,
-                                    'phones': phones,
-                                    'addresses': addresses,
-                                    'professions': Profession.objects.all(),
-                                     },
+    return render_to_response('contact/contact_professional_form.html', locals(),
                                      context_instance=RequestContext(request)
                                      )
 
 @permission_required_with_403('contact.contact_write')
-def save(request, object_id=''):
-    user = request.user
-
-    print "=====================0"
-    print request.POST.get('type')
-    print request.POST.get('name')
-    print request.POST.get('label')
-
-    if (request.POST.get('type') == 'organization'):
-        type = "1"
-
-        object = get_object_or_None(Organization, pk=object_id) or Organization()
-
-        object.name = request.POST.get('label') # adding by mini form
-        if (object.name == None):   # input of mini form
-            object.name = request.POST.get('name')
+def contact_organization_save(request, object_id = None):
+    object = get_object_or_None(Organization, pk=object_id) or Organization()
     
-        print "=====================1"
-        print request.POST.get('name')
-        print request.POST.get('label')
-        print slugify(object.name)
+    # check if user is the owner of the register
+    if object.id and not object.contact_owner == request.user.get_profile().person:
+        return render_to_response('403.html', {'object': _("Access Denied"), }, context_instance=RequestContext(request))
 
-        object.short_name = slugify(object.name)
-        object.organization = user.get_profile().org_active
-        object.contact_owner = user.get_profile().person
-        
-        print "=====================2"
-        object.save()
-        
-        print "=====================3"
+    if not request.POST.get('name'):
+        return HttpResponseRedirect(('/contact/form/organization/' if not object.id else ('/contact/form/organization/%s/') % object.id ))
 
-        phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
-        email_save(object, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
-        site_save(object, request.POST.getlist('site_id'), request.POST.getlist('site_description'), request.POST.getlist('site_site'))
-        im_save(object, request.POST.getlist('im_id'), request.POST.getlist('im_identity'), request.POST.getlist('im_network'))
-        address_save(object, request.POST.getlist('addressId'), request.POST.getlist('addressPrefix'),
-                 request.POST.getlist('addressLine1'), request.POST.getlist('addressLine2'),
-                 request.POST.getlist('addressNumber'), request.POST.getlist('neighborhood'),
-                 request.POST.getlist('zipCode'), request.POST.getlist('addressType'),
-                 request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
-                 request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))        
+    object.name = request.POST.get('name')
+    object.short_name = slugify(object.name)
+    object.organization = request.user.get_profile().org_active
+    object.contact_owner = request.user.get_profile().person
 
-    if request.POST.get('type') == 'professional':
-        print "=====================4"
-        type = "2"
-        try:
-            print "=====================5"
-            object = get_object_or_404(CareProfessional, pk=object_id)
-            identification = object.professionalIdentification
-            person = object.person
-        except:
-            print "=====================6"
-            object = CareProfessional()
-            person = Person()
+    object.save()
 
-        if request.POST.get('symbol'): 
-            identification = ProfessionalIdentification()
-            identification.profession = Profession.objects.get(symbol=request.POST.get('symbol'))
-            identification.registerNumber = request.POST.get('professional_subscription')
-            identification.save()
-            object.professionalIdentification = identification
-
-        person.name = request.POST.get('label')
-        print "=====================7"
-        person.save()
-        person.organization.add(Organization.objects.get(pk=request.POST.get('organization')))
-
-        phone_save(person, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
-        email_save(person, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
-        site_save(person, request.POST.getlist('site_id'), request.POST.getlist('site_description'), request.POST.getlist('site_site'))
-        im_save(person, request.POST.getlist('im_id'), request.POST.getlist('im_identity'), request.POST.getlist('im_network'))
-        address_save(person, request.POST.getlist('addressId'), request.POST.getlist('addressPrefix'),
-                 request.POST.getlist('addressLine1'), request.POST.getlist('addressLine2'),
-                 request.POST.getlist('addressNumber'), request.POST.getlist('neighborhood'),
-                 request.POST.getlist('zipCode'), request.POST.getlist('addressType'),
-                 request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
-                 request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))        
-        
-        object.person = person
-        object.save()
-        print "=====================8"
-
-    request.user.message_set.create(message=_('Contact saved successfully'))
-    print ('/contact/%s/%s' % (type, object.id))
-    return HttpResponseRedirect('/contact/%s/%s/' % (type, object.id))
-    #return HttpResponseRedirect('/')
+    object = extra_data_save(request, object)
+    request.user.message_set.create(message=_('Organization contact saved successfully'))
+    return HttpResponseRedirect('/contact/form/organization/%s/' % (object.id))
 
 @permission_required_with_403('contact.contact_write')
-def save_mini(request, object_id=''):
-    print "=====================LIXO"
+def contact_professional_save(request, object_id = None):
+
+    try:
+        object = get_object_or_404(CareProfessional, pk=object_id)
+        identification = object.professionalIdentification
+        person = object.person
+    except:
+        object = CareProfessional()
+        person = Person()
+    
+    # check if user is the owner of the register 
+    if object.id and not object.revision().user == request.user:
+        return render_to_response('403.html', {'object': _("Access Denied"), }, context_instance=RequestContext(request))
+
+    if not request.POST.get('name'):
+        return HttpResponseRedirect(('/contact/form/professional/' if not object.id else ('/contact/form/professional/%s/') % object.id ))
+
+    if request.POST.get('symbol'): 
+        identification = ProfessionalIdentification()
+        identification.profession = Profession.objects.get(symbol=request.POST.get('symbol'))
+        identification.registerNumber = request.POST.get('professional_subscription')
+        identification.save()
+        object.professionalIdentification = identification
+
+    person.name = request.POST.get('name')
+    person.save()
+
+    person.organization.remove()
+    person.organization.add(Organization.objects.get(pk=request.POST.get('organization')))
+
+    person = extra_data_save(request, person)
+
+    object.person = person
+    object.save()
+    
+    request.user.message_set.create(message=_('Professional contact saved successfully'))
+    return HttpResponseRedirect('/contact/form/professional/%s/' % (object.id))
+
+@permission_required_with_403('contact.contact_write')
+def save_mini(request):
     user = request.user
     object = Organization()
     object.name = request.POST.get('label') # adding by mini form
-    object.short_name = slugify(object.name)
+    object.short_name = slugify(request.POST.get('label'))
     object.organization = user.get_profile().org_active
     object.contact_owner = user.get_profile().person
     object.save()
 
     return HttpResponse("%s" % (object.id))
 
-def order(request, object_type = '', object_id = ''):
+@permission_required_with_403('contact.contact_write')
+def contact_organization_order(request, object_id = None):
+    object = get_object_or_None(Organization, pk=object_id) or Organization()
 
-    # ORGANIZATION
-    if object_type == "1":
-        object = Organization.objects.get(pk = object_id)
+    if object.active == True:
+        object.active = False
+    else:
+        object.active = True
 
-        if object.active == True:
-            object.active = False
-        else:
-            object.active = True
+    object.save(force_update=True)
+    return HttpResponseRedirect('/contact/form/organization/%s/' % (object.id))
 
-        object.save(force_update=True)
-        return HttpResponseRedirect('/contact/%s/%s' % (object_type, object.id))
+@permission_required_with_403('contact.contact_write')
+def contact_professional_order(request, object_id = None):
+    object = get_object_or_None(CareProfessional, pk=object_id) or CareProfessional()
 
-    # PROFESSIONAL
-    if object_type == "2":
-        object = CareProfessional.objects.get(pk = object_id)
+    if object.active == True:
+        object.active = False
+    else:
+        object.active = True
 
-        if object.active == True:
-            object.active = False
-        else:
-            object.active = True
-
-        object.save(force_update=True)
-        return HttpResponseRedirect('/contact/%s/%s' % (object_type, object.id) )
-
+    object.save(force_update=True)
+    return HttpResponseRedirect('/contact/form/professional/%s/' % (object.id))

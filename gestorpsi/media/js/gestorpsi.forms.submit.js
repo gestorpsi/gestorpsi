@@ -89,11 +89,22 @@ $(function() {
       * contact post form
       */
 
-    $('form.form_contact').validate({
+    $('form.form_contact_organization').validate({
         rules: {
             name: "required"
         },
         messages: {
+            name: 'Preenchimento Necessário'
+        }
+    });
+
+    $('form.form_contact_professional').validate({
+        rules: {
+            organization: "required",
+            name: "required"
+        },
+        messages: {
+            organization: 'Preenchimento Necessário',
             name: 'Preenchimento Necessário'
         }
     });

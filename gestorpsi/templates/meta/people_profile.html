@@ -34,6 +34,7 @@ People Personal Profile Form
         {% endcomment %}
         <label>{% trans "Marital Status" %}<br />
                 <select name="maritalStatus" class="select extramedium">
+                        <option></option>
                         {% for m in MaritalStatusTypes %}
                                 <option value="{{ m.id }}"{% ifequal m.id object.person.maritalStatus_id %} selected{% endifequal %}>{{ m }}</option>
                         {% endfor %}

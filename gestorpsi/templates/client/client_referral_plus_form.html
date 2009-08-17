@@ -1,0 +1,170 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_client %}active{% endblock %}
+
+{% block submenu %}
+    {% include "client/client_menu.html" %}
+{% endblock %}
+
+{% block core %}
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+{% if object.id %}
+	<h2 class="title_clients title">{{ object.person.name }}</h2>
+	<p class="description">{% trans "Referral Details" %}<br />	
+{% else %}
+	<h2 class="title_clients title">{% trans "New Admission" %}</h2>
+	<p class="description">{% trans "Inform the referral details then click on Save button" %}</p>
+{% endif %}
+
+</p>
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
+
+<form action="/client/{{ object.id }}/referral/{% if referral.id %}{{ referral.id }}/{% endif %}save/" method="post" id="client_referral_form" class="client_referral">
+<input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
+<div class="main_area">
+    <a href="" id=help>&nbsp;</a>
+    <h3><span>{% trans "Referral Details" %}</span></h3>
+    
+    
+    <fieldset>
+    <legend>{% trans "Referral Details" %}</legend>
+            <label class="referral_type_referral">{% trans "Last Referral" %}<br />
+                <select name="referral" class="extrabig asm referral_list" {% if object.id %} id="id_referral" {% endif %} >
+                    <option value="">---------</option>
+                    {% for p in referral_list %}
+                        <option value="{{ p.id }}"> {{ p }} 
+                            {% if p.professional.all.0 %}
+                                ( {{ p.professional.all.0 }} )
+                            {% endif %}
+
+                            {% if p.professional.all.1 %}
+                                ( {{ p.professional.all.1 }})
+                            {% endif %}
+
+                            {% if p.professional.all.2 %}
+                                ({{ p.professional.all.2 }} )
+                            {% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+                <label><div class="error_select" style="display:none;"><h3><font color="red">{% trans "This fields is required." %}</font></div></label>
+            </label>
+            <label{% if referral %} style="display:none"{% endif %}>{% trans "To Service" %}<br />
+            {{ referral_form.service }}
+            </label>
+
+        {% if not referral %}
+            <label>{% trans "Professionals" %}<br />
+                <select name="professional" class="extrabig multiple asm" id="id_professional" multiple="multiple">
+                </select>
+            </label>
+        {% else %}
+            <label>{% trans "Professionals" %}<br />
+                {{ referral_form.professional }}
+            </label>            
+        {% endif %}
+
+        <label style="display:none">{% trans "Clients" %}<br />
+        {{ referral_form.client }}
+        </label>
+    </fieldset>
+
+
+        <!-- INDICATION -->
+        <div class="admission_indication">
+             <fieldset>
+              <legend>{% trans "Indications" %}</legend>
+               <label>{% trans "Indication done by" %}<br />
+                                <select name="indication" class="big toggle_parent_label">
+                        {% for o in IndicationsChoices %}
+                                <option value="{{ o.id }}" label="{{ o.nick }}" {% ifequal o.id object.indication_set.all.0.indication_choice_id %} selected{% endifequal %}>{{ o }}</option>
+                        {% endfor %}
+                                </select>
+           </label>
+
+        <div class="admission_ind_org" {% ifnotequal object.indication_set.all.0.indication_choice_id 3 %} style="display:none;" {% endifnotequal %} >
+                 <label class="organization">{% trans "Select Organization, or"%} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
+                  <select name="indication_organization" class="select extrabig asm">
+                                <option>Escolha...</option>
+                                {% for org in list_org %}
+                    <option value="{{ org.id }}" {% ifequal org.id object.indication_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org }}</option>
+                                {% endfor %}
+                  </select>
+                 </label>
+        </div>
+
+        <div class="admission_ind_prof" {% ifnotequal object.indication_set.all.0.indication_choice_id 4 %} style="display:none;" {% endifnotequal %} >
+                 <label class="professional">{% trans "Select Professional, or"%} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
+                  <select name="indication_professional" class="select extrabig asm">
+                                <option>Escolha...</option>
+                                {% for prof in list_prof %}
+                                    <option value="{{ prof.id }}" {% ifequal prof.id object.indication_set.all.0.referral_professional_id %} selected {% endifequal %}>{{ prof }}</option>
+                                {% endfor %}
+                  </select>
+                 </label>
+        </div>
+
+       </fieldset>
+      </div>
+      <!-- INDICATION -->
+
+    <fieldset>
+    <legend>{% trans "Referral Additional Infos" %}</legend>
+        <label>{% trans "Referral Reason" %}<br />
+        {{ referral_form.referral_reason }}
+        </label>
+        <label>{% trans "Priority" %}<br />
+        {{ referral_form.priority }}
+        </label>
+        <label>{% trans "Impact" %}<br />
+        {{ referral_form.impact }}
+        </label>        
+        <label>{% trans "Available Time" %}<br />
+        {{ referral_form.available_time }}
+        </label>
+        <label>{% trans "Comments" %}<br />
+        {{ referral_form.annotation }}
+        </label>
+    </fieldset>
+    
+<br />
+    
+</div>
+
+<div id="sidebar" class="sidebar">
+    {% if perms.client.client_write %}
+        <div class="bg_blue">
+            {% include "tags/save.html" %}
+        </div>
+    {% endif %}
+    {% if object.id %}
+        <br />
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
+</div>
+<input type="hidden" name="client_id" value="{{ object.id }}" />
+</form>
+
+{% endblock %}
+

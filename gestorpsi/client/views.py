@@ -248,16 +248,20 @@ def referral_form(request, object_id = None, referral_id = None):
         referral_form = ReferralForm(instance = referral)
         referral_list = None
         referral_form.fields['professional'].queryset = CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)
+        Profs_service =  CareProfessional.objects.filter(prof_services = Referral.objects.get(pk = referral_id).service)
     except:
         # new referral
         referral = ''
         referral_form = ReferralForm(data)
+        Profs_service = None
 
     referral_form.fields['referral'].queryset = Referral.objects.filter(client=object)
     referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
     referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
     total_service = Referral.objects.filter(client=object).count()
     referral_list = Referral.objects.filter(client=object, status='01')
+
+    print Profs_service
 
     return render_to_response('client/client_referral_form.html',
                               { 'object': object, 
@@ -269,7 +273,7 @@ def referral_form(request, object_id = None, referral_id = None):
                                 'list_org': Organization.objects.all(),
                                 'list_prof': CareProfessional.objects.all(),
                                 'AttachTypes': REFERRAL_ATTACH_TYPE,
-                                'Profs_service': CareProfessional.objects.filter(prof_services = Referral.objects.get(pk = referral_id).service)
+                                'Profs_service': Profs_service
                                },
                               context_instance=RequestContext(request)
                               )

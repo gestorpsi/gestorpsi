@@ -15,10 +15,10 @@ EMAIL_FROM = 'GestorPsi <webmaster@gestorpsi.com.br>'
 MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'postgresql_psycopg2'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'gestortmp'             # Or path to database file if using sqlite3.
+DATABASE_NAME = 'gestor'             # Or path to database file if using sqlite3.
 DATABASE_USER = 'gestor'             # Not used with sqlite3.
 DATABASE_PASSWORD = 'gestor'         # Not used with sqlite3.
-DATABASE_HOST = 'dbhost'             # Set to empty string for localhost. Not used with sqlite3.
+DATABASE_HOST = '127.0.0.1'             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
 
 # Local time zone for this installation. Choices can be found here:
@@ -134,6 +134,7 @@ INSTALLED_APPS = (
     'gestorpsi.document',
     'gestorpsi.internet',
     'gestorpsi.upload',
+	'gestorpsi.support',
 	'swingtime',
 	'registration',
     'gestorpsi.schedule',

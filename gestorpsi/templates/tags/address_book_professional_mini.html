@@ -17,13 +17,13 @@ GNU General Public License for more details.
 {% load i18n %}
 
 <div class="form_mini address_book_professional_mini">
-<form action="/contact/save_mini/" method="post">
+<form action="/contact/save_mini_professional/" method="post">
 
 <fieldset class="professional contact">
 <legend>{% trans "Adding new Professional" %}</legend>
 		<label>{% trans "Select Organization, or"%} {#<a class="form_mini" display="address_book_organization_mini">#}{% trans "add a new one" %}{#</a>#}<br />
 		<select name="organization" class="extrabig asm">
-				{% for org in list_org %}
+				{% for org in contact_organizations %}
 				    <option value="{{ org.id }}">{{ org }}</option>
 				{% endfor %}
 		</select>
@@ -43,6 +43,5 @@ GNU General Public License for more details.
 </fieldset>
 </form>
 </div>
-
 
 

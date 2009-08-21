@@ -26,7 +26,6 @@ from django.utils import simplejson
 from geraldo.generators import PDFGenerator
 
 from gestorpsi.address.models import Country, State, AddressType, City
-#from gestorpsi.admission.models import *
 from gestorpsi.authentication.models import Profile
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
 from gestorpsi.service.models import Service
@@ -53,6 +52,7 @@ from gestorpsi.schedule.views import add_event
 from gestorpsi.schedule.views import occurrence_confirmation_form
 from gestorpsi.schedule.forms import OccurrenceConfirmationForm
 from gestorpsi.schedule.models import ScheduleOccurrence
+from gestorpsi.contact.models import Contact
 from gestorpsi.util.views import get_object_or_None
 
 # list all active clients
@@ -195,6 +195,7 @@ def form(request, object_id=''):
                               context_instance=RequestContext(request)
                               )
 
+@permission_required_with_403('referral.referral_read')
 def referral_plus_form(request, object_id = None, referral_id = None):
     try:
         object    = Client.objects.get(pk = object_id, person__organization = request.user.get_profile().org_active)
@@ -226,15 +227,25 @@ def referral_plus_form(request, object_id = None, referral_id = None):
                                 'referral_list': referral_list,
                                 'referrals': Referral.objects.filter(client = object),
                                 'IndicationsChoices': IndicationChoice.objects.all(),
-                                'list_org': Organization.objects.all(),
-                                'list_prof': CareProfessional.objects.all(),
+                                'contact_organizations': Contact.objects.filter(
+                                                org_id = request.user.get_profile().org_active.id, 
+                                                person_id = request.user.get_profile().person.id, 
+                                                filter_name = None,
+                                                filter_type = 1
+                                            ),
+                                'contact_professionals': Contact.objects.filter(
+                                                org_id = request.user.get_profile().org_active.id, 
+                                                person_id = request.user.get_profile().person.id, 
+                                                filter_name = None,
+                                                filter_type = 2
+                                            ),
                                },
                               context_instance=RequestContext(request)
                               )
 
 
 # add or edit form
-#@permission_required_with_403('referral.referral_view')
+@permission_required_with_403('referral.referral_read')
 def referral_form(request, object_id = None, referral_id = None):
 
     try:
@@ -249,12 +260,10 @@ def referral_form(request, object_id = None, referral_id = None):
         referral_form = ReferralForm(instance = referral)
         referral_list = None
         referral_form.fields['professional'].queryset = CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)
-        Profs_service =  CareProfessional.objects.filter(prof_services = Referral.objects.get(pk = referral_id).service)
     except:
         # new referral
         referral = ''
         referral_form = ReferralForm(data)
-        Profs_service = None
 
     referral_form.fields['referral'].queryset = Referral.objects.filter(client=object)
     referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
@@ -269,10 +278,19 @@ def referral_form(request, object_id = None, referral_id = None):
                                 'referral_list': referral_list,
                                 'referrals': Referral.objects.filter(client = object),
                                 'IndicationsChoices': IndicationChoice.objects.all(),
-                                'list_org': Organization.objects.all(),
-                                'list_prof': CareProfessional.objects.all(),
+                                'contact_organizations': Contact.objects.filter(
+                                                org_id = request.user.get_profile().org_active.id, 
+                                                person_id = request.user.get_profile().person.id, 
+                                                filter_name = None,
+                                                filter_type = 1
+                                            ),
+                                'contact_professionals': Contact.objects.filter(
+                                                org_id = request.user.get_profile().org_active.id, 
+                                                person_id = request.user.get_profile().person.id, 
+                                                filter_name = None,
+                                                filter_type = 2
+                                            ),
                                 'AttachTypes': REFERRAL_ATTACH_TYPE,
-                                'Profs_service': Profs_service
                                },
                               context_instance=RequestContext(request)
                               )
@@ -338,7 +356,7 @@ def referral_save(request, object_id = None, referral_id = None):
 
     return HttpResponseRedirect('/client/%s/referral/%s/' % (request.POST.get('client_id'), object.id))
 
-#@permission_required_with_403('referral.referral_view')
+@permission_required_with_403('referral.referral_read')
 def referral_discharge_form(request, object_id = None, referral_id = None):
     object = get_object_or_404(Client, pk=object_id)
     referral = Referral.objects.get(id=referral_id)
@@ -375,7 +393,7 @@ def referral_list(request, object_id = None, discharged = None):
 
     return render_to_response('client/client_referral_list.html', locals(), context_instance=RequestContext(request))
 
-#@permission_required_with_403('referral.referral_view')
+@permission_required_with_403('referral.referral_read')
 def referral_home(request, object_id = None, referral_id = None):
     user = request.user
     object = get_object_or_404(Client, pk=object_id)
@@ -389,7 +407,10 @@ def referral_home(request, object_id = None, referral_id = None):
         referral_discharged = False
 
     dt = referral.date.strftime("%d-%m-%Y  %H:%M %p")
-    indication = Indication.objects.get(referral = referral_id)
+    try:
+        indication = Indication.objects.get(referral = referral_id)
+    except:
+        indication = None
     attachs = ReferralAttach.objects.filter(referral = referral_id)
 
     return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))

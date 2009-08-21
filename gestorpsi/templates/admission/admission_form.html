@@ -68,10 +68,10 @@ GNU General Public License for more details.
 
         </fieldset>
 
-        <!-- REFERRAL
+        <!-- How the client heard about this organization -->
         <div class="admission_referral">
 		<fieldset>
-		<legend>{% trans "Referrals" %}</legend>
+		<legend>{% trans "Indications" %}</legend>
         <label>{% trans "How the client heard about this organization?" %}<br />
                 <select name="referral" class="big toggle_parent_label">
                         {% for o in ReferralChoices %}
@@ -87,7 +87,7 @@ GNU General Public License for more details.
                      <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
                       <select name="referral_organization" class="select extrabig asm">
                        <option>Escolha...</option>
-                        {% for org in list_org %}
+                        {% for org in contact_organizations %}
                             <option value="{{ org.id }}" {% ifequal org.id object.admissionreferral_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org }}</option>
                         {% endfor %}
                       </select>
@@ -99,7 +99,7 @@ GNU General Public License for more details.
                      <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
                       <select name="referral_professional" class="select extrabig asm">
                        <option>Escolha...</option>
-                        {% for prof in list_prof %}
+                        {% for prof in contact_professionals %}
                             <option value="{{ prof.id }}" {% ifequal prof.id object.admissionreferral_set.all.0.referral_professional_id %} selected {% endifequal %}>{{ prof }}</option>
                         {% endfor %}
                       </select>
@@ -107,45 +107,6 @@ GNU General Public License for more details.
                </div>
         </fieldset>
        </div>
-       REFERRAL -->
-
-        <!-- INDICATION 
-        <div class="admission_indication">
-	     <fieldset>
-	      <legend>{% trans "Indications" %}</legend>
-	       <label>{% trans "Indication done by" %}<br />
-				<select name="indication" class="big toggle_parent_label">
-                        {% for o in IndicationsChoices %}
-                                <option value="{{ o.id }}" label="{{ o.nick }}" {% ifequal o.id object.indication_set.all.0.indication_choice_id %} selected{% endifequal %}>{{ o }}</option>
-                        {% endfor %}
-				</select>
-           </label>
-
-        <div class="admission_ind_org" {% ifnotequal object.indication_set.all.0.indication_choice_id 3 %} style="display:none;" {% endifnotequal %} >
-		 <label class="organization">{% trans "Select Organization, or"%} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
-		  <select name="indication_organization" class="select extrabig asm">
-				<option>Escolha...</option>
-				{% for org in list_org %}
-                    <option value="{{ org.id }}" {% ifequal org.id object.indication_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org }}</option>
-				{% endfor %}
-		  </select>
-		 </label>
-        </div>
-
-        <div class="admission_ind_prof" {% ifnotequal object.indication_set.all.0.indication_choice_id 4 %} style="display:none;" {% endifnotequal %} >
-		 <label class="professional">{% trans "Select Professional, or"%} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
-		  <select name="indication_professional" class="select extrabig asm">
-				<option>Escolha...</option>
-				{% for prof in list_prof %}
-				    <option value="{{ prof.id }}" {% ifequal prof.id object.indication_set.all.0.referral_professional_id %} selected {% endifequal %}>{{ prof }}</option>
-				{% endfor %}
-		  </select>
-		 </label>
-        </div>
-
-       </fieldset>
-      </div>
-      INDICATION -->
 
         <fieldset>
                 <legend>{% trans "Parents" %}</legend>
@@ -210,4 +171,3 @@ GNU General Public License for more details.
 {% include "tags/address_book_organization_mini.html" %}
 
 {% endblock %}
-

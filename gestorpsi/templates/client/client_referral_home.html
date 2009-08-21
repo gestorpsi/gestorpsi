@@ -123,8 +123,8 @@ GNU General Public License for more details.
                                 <td><span  class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
                                 <td><span>{% for t in types %}
                                             {% ifequal a.type t.0 %}</span>{{ t.1 }}:<br /> {{ a.description }} </td> {% endifequal %} {% endfor %}
-                                <td><a href="" class="edit" title="editar"><span>Edit</span></a></td>
-                                <td><a href="" class="delete" title="delete" ><span>Delete</span></a></td>
+                                <td>{# <a href="" class="edit" title="editar"><span>Edit</span></a> #}</td>
+                                <td>{# <a href="" class="delete" title="delete" ><span>Delete</span></a> #}</td>
                         </tr>
                         <tr>
                 </table>

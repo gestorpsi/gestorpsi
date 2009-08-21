@@ -107,7 +107,7 @@ GNU General Public License for more details.
                  <label class="organization">{% trans "Select Organization, or"%} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
                   <select name="indication_organization" class="select extrabig asm">
                                 <option>Escolha...</option>
-                                {% for org in list_org %}
+                                {% for org in contact_organizations %}
                     <option value="{{ org.id }}" {% ifequal org.id object.indication_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org }}</option>
                                 {% endfor %}
                   </select>
@@ -118,7 +118,7 @@ GNU General Public License for more details.
                  <label class="professional">{% trans "Select Professional, or"%} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
                   <select name="indication_professional" class="select extrabig asm">
                                 <option>Escolha...</option>
-                                {% for prof in list_prof %}
+                                {% for prof in contact_professionals %}
                                     <option value="{{ prof.id }}" {% ifequal prof.id object.indication_set.all.0.referral_professional_id %} selected {% endifequal %}>{{ prof }}</option>
                                 {% endfor %}
                   </select>
@@ -165,6 +165,9 @@ GNU General Public License for more details.
 </div>
 <input type="hidden" name="client_id" value="{{ object.id }}" />
 </form>
+
+{% include "tags/address_book_professional_mini.html" %} 
+{% include "tags/address_book_organization_mini.html" %}
 
 {% endblock %}
 

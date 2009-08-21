@@ -19,11 +19,12 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
+from gestorpsi.person.models import Person
 from gestorpsi.client.models import Client, PersonLink, Relation
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
 from gestorpsi.admission.models import *
-#from gestorpsi.contact.views import *
+from gestorpsi.contact.models import Contact
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.util.decorators import permission_required_with_403
 
@@ -33,15 +34,21 @@ def form(request, object_id=''):
 
     return render_to_response('admission/admission_form.html', {
         'object': object,
-        #'address_book_professionals': address_book_get_professionals(request),
-        #'address_book_organizations': address_book_get_organizations(request),
+        'contact_organizations':  Contact.objects.filter(
+                        org_id = request.user.get_profile().org_active.id, 
+                        person_id = request.user.get_profile().person.id, 
+                        filter_name = None,
+                        filter_type = 1
+                    ),
+        'contact_professionals': Contact.objects.filter(
+                        org_id = request.user.get_profile().org_active.id, 
+                        person_id = request.user.get_profile().person.id, 
+                        filter_name = None,
+                        filter_type = 2
+                    ),
         'object': object,
-        #'PROFESSIONAL_AREAS': PROFESSIONAL_AREAS,
-        'licenceBoardTypes': LicenceBoard.objects.all(),
-        #'ReferralChoices': ReferralChoice.objects.all(),
-        #'IndicationsChoices': IndicationChoice.objects.all(),
+        'ReferralChoices': ReferralChoice.objects.all(),
         'Relations': Relation.objects.all(),
-        #'IdRecord': get_object_or_404(IdRecordSeq, uid=object_id),
     }, context_instance=RequestContext(request))
 
 @permission_required_with_403('admission.admission_read')
@@ -81,14 +88,6 @@ def save(request, object_id=''):
     ar.referral_professional = get_object_or_None(CareProfessional, id=request.POST.get('referral_professional'))
     ar.client = object
     ar.save()
-
-    """ Indication  Section """
-    indication = Indication()
-    indication.indication_choice = IndicationChoice.objects.get(pk=request.POST.get('indication'))
-    indication.referral_organization = get_object_or_None(Organization, id=request.POST.get('indication_organization'))
-    indication.referral_professional = get_object_or_None(CareProfessional, id=request.POST.get('indication_professional'))
-    indication.client = object
-    indication.save()
 
     object.save()
     

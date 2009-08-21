@@ -35,7 +35,7 @@ GNU General Public License for more details.
 </p>
 
 <div class="main_area">
-<form action="/upload/{{ referral.id }}/attach/save/" method="post" name="attach" enctype="multipart/form-data" class="upload_referral">
+<form action="/upload/{{ object.id}}/{{ referral.id }}/attach/save/" method="post" name="attach" enctype="multipart/form-data" class="upload_referral">
 
 <fieldset>
  <legend>Mídias</legend>
@@ -57,8 +57,7 @@ GNU General Public License for more details.
 
                 <label>Assunto do documento<br />
                 <input name="description" type="text" class="big" /></label>
-                <label><input name="" type="submit" class="btn"
- value="Enviar Arquivo" /></label>
+                <label><input name="" type="submit" class="btn" value="Enviar Arquivo" /></label>
                 </div>
 
                 <br class="newline" />
@@ -72,8 +71,8 @@ GNU General Public License for more details.
                                 <td><span  class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
                                 <td><span>{% for t in types %}
                                             {% ifequal a.type t.0 %}</span>{{ t.1 }}:<br /> {{ a.description }} </td> {% endifequal %} {% endfor %}
-                                <td><a href="" class="edit" title="editar"><span>Edit</span></a></td>
-                                <td><a href="" class="delete" title="delete" ><span>Delete</span></a></td>
+                                <td> {# <a href="" class="edit" title="editar"><span>Edit</span></a> #}</td>
+                                <td> {# <a href="" class="delete" title="delete" ><span>Delete</span></a> #}</td>
                         </tr>
                         <tr>
                 </table>

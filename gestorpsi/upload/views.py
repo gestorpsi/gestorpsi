@@ -105,8 +105,7 @@ def attach_form(request, object_id = '', referral_id = ''):
     return render_to_response('upload/upload_attach.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('upload.upload_write')
-def attach_save(request, object_id = ''):
-    # object_id = subscription
+def attach_save(request, object_id = None, client_id = None):
 
     if request.method == 'POST':
         user = request.user
@@ -144,5 +143,4 @@ def attach_save(request, object_id = ''):
             except IOError:
                 print "error sending file"
 
-        return HttpResponseRedirect('/upload/%s/attach/' % object_id)
-        #return HttpResponse('%s' % file)
+        return HttpResponseRedirect('/upload/client/%s/attach/%s/' % (client_id, object_id))

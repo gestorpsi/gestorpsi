@@ -44,6 +44,12 @@ class ReferralImpact(models.Model):
     def __unicode__(self):
         return u'%s (%s)' % (self.title, self.description)
 
+QUEUE_PRIORITY= (
+    ('01', _('High')),
+    ('02', _('Medium')),
+    ('03', _('Low')),
+)
+
 REFERRAL_ATTACH_TYPE = (
     ('01', _('Drawing')),
     ('02', _('Diagnosis')),
@@ -117,6 +123,17 @@ class ReferralManager(models.Manager):
 
     def discharged(self):
         return super(ReferralManager, self).get_query_set().filter(referraldischarge__isnull=False)
+
+class Queue(models.Model):
+    comments = models.TextField(_('comments'), blank=True)
+    date_in = models.DateTimeField(_('Data In'), auto_now_add=True)
+    date_out = models.DateTimeField(_('Data Out'), null=True, blank=True)
+    priority = models.CharField(_('Priority'), max_length=2, blank=True, choices=QUEUE_PRIORITY) 
+    client = models.ForeignKey(Client)
+    referral = models.ForeignKey('Referral')
+
+    def __unicode__(self):
+        return u'%s' % (self.priority)
 
 class ReferralAttach(models.Model):
     id = UuidField(primary_key=True)
@@ -245,7 +262,6 @@ class Indication(models.Model):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(Indication, follow=['client'])
-
 
 class ReferralChoice(models.Model):
     description = models.CharField(max_length=250)

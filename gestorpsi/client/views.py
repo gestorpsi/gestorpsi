@@ -39,8 +39,8 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.person.views import person_save
 from gestorpsi.phone.models import PhoneType
-from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, ReferralAttach, REFERRAL_ATTACH_TYPE
-from gestorpsi.referral.forms import ReferralForm, ReferralDischargeForm
+from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, ReferralAttach, REFERRAL_ATTACH_TYPE, Queue
+from gestorpsi.referral.forms import ReferralForm, ReferralDischargeForm, QueueForm
 from gestorpsi.reports.header import header_gen
 from gestorpsi.reports.footer import footer_gen
 from gestorpsi.util.decorators import permission_required_with_403
@@ -399,6 +399,7 @@ def referral_home(request, object_id = None, referral_id = None):
     object = get_object_or_404(Client, pk=object_id)
     referral = Referral.objects.get(pk=referral_id)
     organization = user.get_profile().org_active.id
+    queues = Queue.objects.filter(client = object_id, date_out = None)
 
     discharged_list = object.referrals_discharged()
     if discharged_list.filter(pk = referral_id).count():
@@ -565,3 +566,26 @@ def referral_occurrences(request, object_id = None, referral_id = None, type = '
     return render_to_response('client/client_referral_occurrences.html', locals(), context_instance=RequestContext(request))
     
     
+def referral_queue(request, object_id = '',  referral_id = ''):
+    object = get_object_or_None(Client, pk = object_id)
+    referral = get_object_or_None(Referral, pk = referral_id)
+
+    form=QueueForm()
+
+    return render_to_response('client/client_referral_queue.html', locals(), context_instance=RequestContext(request))
+
+def referral_queue_save(request, object_id = '',  referral_id = ''):
+    object = get_object_or_None(Client, pk = object_id)
+    referral = get_object_or_None(Referral, pk = referral_id)
+
+    form = QueueForm(request.POST)
+
+    if form.is_valid():
+        object_q = Queue()
+        object_q = form.save(commit=False)
+        object_q.save()
+    else:
+        print form.errors
+
+    request.user.message_set.create(message=_('Referral saved successfully'))
+    return HttpResponseRedirect('/client/%s/referral/' % (request.POST.get('client_id')))

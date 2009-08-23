@@ -15,11 +15,10 @@ GNU General Public License for more details.
 """
 
 from django import forms
-from gestorpsi.referral.models import Referral, ReferralPriority, ReferralImpact, ReferralGroup, ReferralDischarge
+from gestorpsi.referral.models import Referral, ReferralPriority, ReferralImpact, ReferralGroup, ReferralDischarge, Queue
 from gestorpsi.careprofessional.models import CareProfessional
-from gestorpsi.client.models import Client
+from gestorpsi.client.models import Client 
 from gestorpsi.service.models import Service
-
 
 class ReferralForm(forms.ModelForm):
     referral = forms.ModelChoiceField(queryset=Referral.objects.all(), required = False, widget=forms.Select(attrs={'class':'extrabig asm', }))
@@ -31,7 +30,6 @@ class ReferralForm(forms.ModelForm):
     available_time = forms.CharField(widget=forms.Textarea(), required = False)
     priority = forms.ModelChoiceField(queryset=ReferralPriority.objects.all(), required = False, widget=forms.Select(attrs={'class':'extramedium', }))
     impact = forms.ModelChoiceField(queryset=ReferralImpact.objects.all(), required = False, widget=forms.Select(attrs={'class':'giant', }))
-    
     
     class Meta:
         fields = ('client', 'service', 'professional', 'annotation', 'referral', 'annotation', 'referral_reason', 'available_time', 'priority', 'impact')
@@ -63,3 +61,8 @@ class ReferralDischargeForm(forms.ModelForm):
         super(ReferralDischargeForm, self).__init__(*args, **kwargs)
         self.initial.setdefault('referral', self.initial.get('referral', None))
         self.initial.setdefault('client', self.initial.get('client', None))
+
+class QueueForm(forms.ModelForm):
+    class Meta:
+        fields = ('comments', 'priority', 'client', 'referral')
+        model = Queue

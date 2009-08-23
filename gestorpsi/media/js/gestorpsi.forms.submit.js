@@ -375,4 +375,16 @@ $(function() {
           });
      });
 
+    /**
+     * Validate queue form
+     */
+    $('form.client_referral_queue').validate({
+        rules: {
+            priority: "required",
+        },
+        messages: {
+            name: 'Preenchimento Necessário'
+        }
+    });
+
 });

@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django.conf.urls.defaults import *
 from django.contrib.auth.decorators import login_required
-from gestorpsi.client.views import index, list, form, save, delete, print_list, print_record, organization_clients, add, home, order, referral_save, referral_list, referral_home, referral_form, referral_discharge_form, schedule_daily, schedule_add, occurrence_confirmation, occurrence_view, referral_occurrences, referral_plus_form, referral_plus_save
+from gestorpsi.client.views import index, list, form, save, delete, print_list, print_record, organization_clients, add, home, order, referral_save, referral_list, referral_home, referral_form, referral_discharge_form, schedule_daily, schedule_add, occurrence_confirmation, occurrence_view, referral_occurrences, referral_plus_form, referral_plus_save, referral_queue, referral_queue_save
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
@@ -54,6 +54,6 @@ urlpatterns = patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/occurence/(?P<occurrence_id>\d+)/$', login_check(occurrence_view)), # occurence confirmation
     (r'^schedule/daily/$', login_check(schedule_daily)), # book client (schedule daily view)
     (r'^schedule/add/$', login_check(schedule_add)), # book client (schedule add form)
-       
-
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/queue/$', login_check(referral_queue)), # queue form
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/queue/save/$', login_check(referral_queue_save)) # queue form save
 )

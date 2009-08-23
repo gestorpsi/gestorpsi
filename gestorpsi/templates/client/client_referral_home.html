@@ -114,6 +114,25 @@ GNU General Public License for more details.
 </div>
 
 <div class="main_area home">
+	<h3><span>{% trans "Queue" %}</span></h3>
+    {% if queues %}
+        {% for a in queues %}
+                <table class="nozebra">
+                        <tr>
+                                <td nowrap="nowrap"><span class="date"> {% trans "Date In" %} {{ a.date_in|date:"d-m-Y" }} - {{ a.date_in|date:"P" }}</span></td>
+                                <td nowrap="nowrap"><span class="date"> {% trans "Date Out" %} {{ a.date_out|date:"d-m-Y" }} - {{ a.date_out|date:"P" }}</span></td>
+                                <span></span>
+                                <td><span>{{ a.referral }} - {{ a.comments }}</span></td>
+                        </tr>
+                </table>
+        {% endfor %}
+    {% else %}
+             <p class="empty">Nenhum serviço na fila.</p>
+             <br />
+    {% endif %}
+</div>
+
+<div class="main_area home">
 	<h3><span>{% trans "Attach" %}</span></h3>
     {% if attachs %}
         {% for a in attachs %}
@@ -133,7 +152,6 @@ GNU General Public License for more details.
              <p class="empty">Nenhum documento anexado</p>
              <br />
     {% endif %}
-
 </div>
 
 

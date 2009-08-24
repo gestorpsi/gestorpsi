@@ -588,7 +588,7 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
         print form.errors
 
     request.user.message_set.create(message=_('Referral saved successfully'))
-    return HttpResponseRedirect('/client/%s/referral/' % (request.POST.get('client_id')))
+    return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))
 
 def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id = ''):
     """ This action don't remove the register, just save date out of the register """
@@ -601,4 +601,4 @@ def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id =
     queue.save()
 
     request.user.message_set.create(message=_('Referral saved successfully'))
-    return HttpResponseRedirect('/client/%s/referral/' % (request.POST.get('client_id')))
+    return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))

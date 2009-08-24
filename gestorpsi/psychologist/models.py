@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 #from django.db import models
 #from gestorpsi.careprofessional.models import CareProfessional
+from gestorpsi.util.uuid_field import UuidField
 
 #class Approaches(models.Model):
 #    """

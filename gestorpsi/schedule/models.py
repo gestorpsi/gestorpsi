@@ -21,6 +21,7 @@ from django.utils.translation import ugettext as _
 from swingtime.models import Occurrence
 from gestorpsi.place.models import Room
 from gestorpsi.device.models import DeviceDetails
+from gestorpsi.util.uuid_field import UuidField
 
 OCCURRENCE_CONFIRMATION_PRESENCE = (
     ('1', _('Arrived on time')),

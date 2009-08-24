@@ -63,6 +63,9 @@ GNU General Public License for more details.
         <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/discharge/" class="client_referral_discharge" title="{{ object.person.name }}">{% trans "Service Discharge" %}</a></li>
         <li><a class="print" href="/client/{{ object.id }}/print/" title="{{ object.person.name }}">{% trans "Print Record" %}</a></li>
         <li><a class="document" href="/upload/client/{{ object.id }}/attach/{{ referral.id }}" title="{{ object.person.name }}">{% trans "Document" %}</a></li>
+
+        <li><a class="queue" href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/" title="{{ object.person.name }}">{% trans "Queue" %}</a></li>
+
     {% endif %}
     </ul>
 {% endif %}

@@ -1,0 +1,83 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_client %}active{% endblock %}
+
+{% block submenu %}
+    {% include "client/client_menu.html" %}
+{% endblock %}
+
+{% block core %}
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+{% if object.id %}
+	<h2 class="title_clients title">{{ object.person.name }} - {{ referral }} </h2>
+	<p class="description">{% trans "Referral Details" %}<br />	
+{% else %}
+	<h2 class="title_clients title">{% trans "New Admission" %}</h2>
+	<p class="description">{% trans "Inform the referral details then click on Save button" %}</p>
+{% endif %}
+
+</p>
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
+
+<form action="/client/{{ object.id }}/referral/{{ referral.id }}/queue/save/" method="post" id="client_referral_form" class="client_referral_queue">
+
+<input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
+<div class="main_area">
+    <a href="" id=help>&nbsp;</a>
+    <h3><span>{% trans "Queue Details" %}</span></h3>
+
+    <input type="hidden" id="id_client" name="client" value="{{ object.id }}">
+    <input type="hidden" id="id_referral" name="referral" value="{{ referral.id }}">
+
+    <fieldset>
+    <legend>{% trans "Queue Form" %}</legend>
+        <label>{{ form.comments.label }} <br />
+        {{ form.comments }}
+        </label>
+
+        <label>{{ form.priority.label }} <br />
+        {{ form.priority}}
+        </label>
+    </fieldset>
+    
+<br />
+    
+</div>
+
+<div id="sidebar" class="sidebar">
+    {% if perms.referral.referral_write %}
+        <div class="bg_blue">
+            {% include "tags/save.html" %}
+        </div>
+    {% endif %}
+    {% if object.id %}
+        <br />
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
+</div>
+<input type="hidden" name="client_id" value="{{ object.id }}" />
+</form>
+
+{% endblock %}
+

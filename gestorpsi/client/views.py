@@ -14,7 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from datetime import datetime
+from datetime import datetime, time
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -399,7 +399,7 @@ def referral_home(request, object_id = None, referral_id = None):
     object = get_object_or_404(Client, pk=object_id)
     referral = Referral.objects.get(pk=referral_id)
     organization = user.get_profile().org_active.id
-    queues = Queue.objects.filter(client = object_id, date_out = None)
+    queue = get_object_or_None(Queue, referral=referral_id)
 
     discharged_list = object.referrals_discharged()
     if discharged_list.filter(pk = referral_id).count():
@@ -586,6 +586,19 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
         object_q.save()
     else:
         print form.errors
+
+    request.user.message_set.create(message=_('Referral saved successfully'))
+    return HttpResponseRedirect('/client/%s/referral/' % (request.POST.get('client_id')))
+
+def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id = ''):
+    """ This action don't remove the register, just save date out of the register """
+
+    object = get_object_or_None(Client, pk = object_id)
+    referral = get_object_or_None(Referral, pk = referral_id)
+    queue = get_object_or_None(Queue, pk = queue_id)
+    
+    queue.date_out = datetime.now()
+    queue.save()
 
     request.user.message_set.create(message=_('Referral saved successfully'))
     return HttpResponseRedirect('/client/%s/referral/' % (request.POST.get('client_id')))

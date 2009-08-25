@@ -587,6 +587,8 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
     else:
         print form.errors
 
+    queues = Queue.objects.filter(referral=referral_id)
+
     request.user.message_set.create(message=_('Referral saved successfully'))
     return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))
 

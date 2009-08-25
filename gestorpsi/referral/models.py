@@ -137,8 +137,8 @@ class Queue(models.Model):
 
 class ReferralAttach(models.Model):
     id = UuidField(primary_key=True)
-    filename = models.CharField(null=True, max_length=50)
-    description = models.CharField(null=True, max_length=1000)
+    filename = models.CharField(null=True, max_length=255)
+    description = models.TextField(null=True)
     date = models.DateTimeField(auto_now_add=True)
     file = models.CharField(max_length=200)
     type = models.CharField(max_length=2, blank=True, null=True, choices=REFERRAL_ATTACH_TYPE) 

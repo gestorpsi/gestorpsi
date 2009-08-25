@@ -128,7 +128,7 @@ class Queue(models.Model):
     comments = models.TextField(_('comments'), blank=True)
     date_in = models.DateTimeField(_('Data In'), auto_now_add=True)
     date_out = models.DateTimeField(_('Data Out'), null=True, blank=True)
-    priority = models.CharField(_('Priority'), max_length=2, blank=True, choices=QUEUE_PRIORITY) 
+    priority = models.CharField(_('Priority'), max_length=2, blank=True, choices=QUEUE_PRIORITY, default='03') 
     client = models.ForeignKey(Client)
     referral = models.ForeignKey('Referral')
 

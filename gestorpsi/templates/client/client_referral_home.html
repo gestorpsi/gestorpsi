@@ -117,10 +117,13 @@ GNU General Public License for more details.
 	<h3><span>{% trans "Queue" %}</span></h3>
     {% if queues %}
             {% for a in queues %}
-                <label> {{ a.referral }}  
+                <label> {{ a.referral }} - {{ a.get_priority_display }}
                 <table class="nozebra">
                         <tr>
                                 <td><span>{{ a.comments }}</span>{% if not a.date_out %}  <a class="queue" href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/{{ a.id }}/remove/" title="{{ object.person.name }}">{% trans "Remove" %}</a> {% endif %} </td>
+                        </tr>
+                        <tr>
+                                <td nowrap="nowrap"><span% trans "Date In" %} {{ a.date_in|date:"d-m-Y" }} - {{ a.date_in|date:"P" }}</span></td>
                         </tr>
                         <tr>
                                 <td nowrap="nowrap"><span class="date"> {% trans "Date In" %} {{ a.date_in|date:"d-m-Y" }} - {{ a.date_in|date:"P" }}</span></td>

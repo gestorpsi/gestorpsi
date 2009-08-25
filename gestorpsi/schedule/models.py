@@ -47,11 +47,7 @@ class ScheduleOccurrence(Occurrence):
         return True if self.start_time < datetime.now() else False
     
     def was_confirmed(self):
-        try:
-            self.occurrenceconfirmation
-            return True
-        except:
-            return False
+        return True if len(OccurrenceConfirmation.objects.filter(occurrence=self)) else False
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

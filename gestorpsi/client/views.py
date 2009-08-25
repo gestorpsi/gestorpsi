@@ -399,7 +399,7 @@ def referral_home(request, object_id = None, referral_id = None):
     object = get_object_or_404(Client, pk=object_id)
     referral = Referral.objects.get(pk=referral_id)
     organization = user.get_profile().org_active.id
-    queue = get_object_or_None(Queue, referral=referral_id)
+    queues = Queue.objects.filter(referral=referral_id)
 
     discharged_list = object.referrals_discharged()
     if discharged_list.filter(pk = referral_id).count():
@@ -599,6 +599,8 @@ def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id =
     
     queue.date_out = datetime.now()
     queue.save()
+
+    queues = Queue.objects.filter(referral=referral_id)
 
     request.user.message_set.create(message=_('Referral saved successfully'))
     return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))

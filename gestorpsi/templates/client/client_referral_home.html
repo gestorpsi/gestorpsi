@@ -115,23 +115,25 @@ GNU General Public License for more details.
 
 <div class="main_area home">
 	<h3><span>{% trans "Queue" %}</span></h3>
-    {% if queue %}
+    {% if queues %}
+            {% for a in queues %}
+                <label> {{ a.referral }}  
                 <table class="nozebra">
                         <tr>
-                                <td><span>{{ queue.referral }} - {{ queue.comments }}</span>{% if not queue.date_out %}  <a class="queue" href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/{{ queue.id }}/remove/" title="{{ object.person.name }}">{% trans "Remove" %}</a> {% endif %} </td>
+                                <td><span>{{ a.comments }}</span>{% if not a.date_out %}  <a class="queue" href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/{{ a.id }}/remove/" title="{{ object.person.name }}">{% trans "Remove" %}</a> {% endif %} </td>
                         </tr>
                         <tr>
-                                <td nowrap="nowrap"><span class="date"> {% trans "Date In" %} {{ queue.date_in|date:"d-m-Y" }} - {{ queue.date_in|date:"P" }}</span></td>
+                                <td nowrap="nowrap"><span class="date"> {% trans "Date In" %} {{ a.date_in|date:"d-m-Y" }} - {{ a.date_in|date:"P" }}</span></td>
                         </tr>
                         <tr>
-                                <td nowrap="nowrap"><span class="date"> {% trans "Date Out" %} {{ queue.date_out|date:"d-m-Y" }} - {{ queue.date_out|date:"P" }}</span></td>
+                                <td nowrap="nowrap"><span class="date"> {% trans "Date Out" %} {{ a.date_out|date:"d-m-Y" }} - {{ a.date_out|date:"P" }}</span></td>
                                 <span></span>
                         </tr>
                 </table>
+                </label>
+        {% endfor %}
     {% else %}
-             <br />
              <p class="empty">Nenhum serviço na fila.</p>
-             <br />
     {% endif %}
 </div>
 
@@ -153,7 +155,6 @@ GNU General Public License for more details.
         {% endfor %}
     {% else %}
              <p class="empty">Nenhum documento anexado</p>
-             <br />
     {% endif %}
 </div>
 

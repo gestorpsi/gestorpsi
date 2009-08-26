@@ -23,7 +23,7 @@ from django.utils.translation import ugettext as _
 from gestorpsi.service.models import Service, Area, ServiceType, Modality, AreaClinic
 from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure
 from gestorpsi.careprofessional.models import CareProfessional, Profession
-from gestorpsi.referral.models import Queue
+from gestorpsi.referral.models import Queue, Referral
 from django.utils import simplejson
 from gestorpsi.util.decorators import permission_required_with_403
 from django.core.paginator import Paginator
@@ -263,7 +263,9 @@ def order(request, object_id = ''):
 def queue(request, object_id = ''):
     object = Service.objects.get(pk = object_id)
 
-    list_queue = Queue.objects.filter(referral__service = object_id, date_out = None).order_by('date_in').order_by('priority')
+    queue = Queue.objects.filter(referral__service = object_id, date_out = None).order_by('date_in').order_by('priority')
+
+    list_queue = Referral.objects.filter(queue__referral__service = object_id, queue__date_out = None).order_by('date').order_by('-priority')
 
     return render_to_response( "service/service_queue.html", {
         'queues': list_queue,

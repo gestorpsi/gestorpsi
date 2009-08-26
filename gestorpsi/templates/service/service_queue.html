@@ -47,14 +47,13 @@ GNU General Public License for more details.
 
                         {% for q in queues %}
                             <tr class="zebra_0">
-                                <td class="title"><a href="/client/{{ q.client.id }}/referral/{{ q.referral.id }}/" title="alongamento">{{ q.client }} - {{ q.referral.professional.all.0 }}</a>
+                                <td class="title"><a href="/client/{{ q.client.only.0.id }}/referral/{{ q.id }}/" title="alongamento">{{ q.client.only.0 }} - {{ q.professional.all.0 }}</a>
                                     <br />
-                                    Priority {{ q.get_priority_display }}
+                                    Priority {{ q.priority }}
                                     <br />
-                                    Date in {{ q.date_in|date:"d-m-Y" }} 
-                                    <br />
-                                    Date out {{ q.date_out|date:"d-m-Y" }} 
+                                    Date in {{  q.queue_set.all.0.date_in|date:"d-m-Y" }} 
                                 </td>
+                            </tr>
                         {% endfor %}
                         <th></th> 
                         </tr> 

@@ -64,5 +64,5 @@ class ReferralDischargeForm(forms.ModelForm):
 
 class QueueForm(forms.ModelForm):
     class Meta:
-        fields = ('comments', 'priority', 'client', 'referral')
+        fields = ('comments', 'client', 'referral')
         model = Queue

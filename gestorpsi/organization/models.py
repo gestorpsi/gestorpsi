@@ -13,7 +13,6 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
-
 import reversion
 from django.db import models
 from django.contrib.contenttypes import generic
@@ -21,6 +20,7 @@ from gestorpsi.phone.models import Phone
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Address
 from gestorpsi.util.uuid_field import UuidField
+from gestorpsi.util.first_capitalized import first_capitalized
 
 class ProfessionalResponsible(models.Model):
     """    
@@ -203,6 +203,17 @@ class Organization(models.Model):
             return self.emails.all()[0]
         else:
             return ''
+
+    def get_first_address(self):
+        text = ""
+        if self.address.all().count():
+            addr = self.address.all()[0]
+            text = "%s %s, %s" % (addr.addressPrefix, addr.addressLine1, addr.addressNumber)
+            if len(addr.addressLine2): text += " - %s" % addr.addressLine2
+            if len(addr.neighborhood): text += " - %s" % addr.neighborhood
+            text += "<br />%s - %s - %s" % (first_capitalized(addr.city.name), addr.city.state.shortName, addr.city.state.country.name)
+            if len(addr.zipCode): text += " - CEP: %s" % addr.zipCode
+        return text
 
     def clients(self):
         return self.person_set.filter(client__isnull = False, client__clientStatus = '1')

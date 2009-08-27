@@ -17,7 +17,7 @@ GNU General Public License for more details.
 import reversion
 from django.db import models
 from django.utils.translation import ugettext as _
-from gestorpsi.organization.models import Organization, Agreement, AgeGroup, EducationLevel, HierarchicalLevel
+from gestorpsi.organization.models import Organization, Agreement, AgeGroup, EducationLevel, HierarchicalLevel, Procedure
 from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.util.uuid_field import UuidField 
 
@@ -41,8 +41,8 @@ class Modality(models.Model):
         ordering = ['name']
 
 class Area(models.Model):
-    area_name = models.CharField(_('Area Name'), max_length=100, blank=True)
-    area_code = models.CharField(_('Area Code'), max_length=30, blank=True)
+    area_name = models.CharField(_('Area Name'), max_length=100, blank=True, null=True)
+    area_code = models.CharField(_('Area Code'), max_length=30, blank=True, null=True)
     service_type = models.ManyToManyField(ServiceType, null=True, blank=True)
     modalities = models.ManyToManyField(Modality, null=True, blank=True)
     age_group = models.ManyToManyField(AgeGroup, null=True, blank=True)
@@ -84,6 +84,8 @@ class Service(models.Model):
     css_color_class = models.IntegerField(max_length=2, blank=True, null=True, default=0)
     date = models.DateTimeField(auto_now_add=True)
     comments = models.TextField(blank=True)
+
+    procedures = models.ManyToManyField(Procedure)
 
     def __unicode__(self):
         return u"%s" % (self.name)

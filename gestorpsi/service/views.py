@@ -23,7 +23,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
-from gestorpsi.service.models import Service, Area, ServiceType, Modality, AreaClinic
+from gestorpsi.service.models import Service, Area, ServiceType, Modality
 from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure
 from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.referral.models import Queue, Referral
@@ -223,6 +223,28 @@ def order(request, object_id = ''):
     object.save(force_update = True)
     return HttpResponseRedirect('/service/%s/' % object.id)
 
+@permission_required_with_403('service.service_write')
+def disable(request, object_id=''):
+    """
+    This function view searches for a C{Service} object which has the id equals to I{object_id}, if there is
+    such C{Service} instance it is disabled.
+    """
+    user = request.user
+    object = get_object_or_404( Service, pk=object_id )
+    object.active = False
+    object.save()
+    return render_to_response( "service/service_index.html", {
+        'object':Service.objects.filter( active=True, organization=user.get_profile().org_active ),
+        'Agreements': Agreement.objects.all(),
+        'CareProfessionals': CareProfessional.objects.all(person__organization = user.get_profile().org_active.id),
+        'AgeGroups': AgeGroup.objects.all(),
+        'ProcedureProviders': ProcedureProvider.objects.all(),
+        'Procedures': Procedure.objects.all(),
+        'Areas': Area.objects.all(),
+        'ServiceTypes': ServiceType.objects.all(),
+        'Modalitys': Modality.objects.all(),
+        'Professions': Profession.objects.all(),
+        }, context_instance=RequestContext(request))
 
 @permission_required_with_403('service.service_write')
 def queue(request, object_id = ''):

@@ -40,6 +40,12 @@ GNU General Public License for more details.
 
 <fieldset class="userField">
 <div class="ie_block">
+{% if form_messages %}
+    <ul class="errorlist"><li>
+    {{ form_messages }}
+    </li></ul>
+{% endif %}
+
 <label>{% trans "Username" %}<br />{{ form.username }}</label>
 <label>{% trans "Password" %}<br />{{ form.password }}</label>
 <input type="submit" value="{% trans "Log in" %}" class="btn"/>

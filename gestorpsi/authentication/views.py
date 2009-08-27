@@ -52,9 +52,18 @@ def user_authentication(request):
     password = request.POST.get('password')
     if (unblocked_user(username)):
         user = authenticate(username=username, password=password)
+        
+        # user does not exist
         if user is None:
             set_trylogin(username)
-            return render_to_response('registration/login.html', {'form':form })
+            form_messages = _('Invalid username or password')
+            return render_to_response('registration/login.html', {'form': form, 'form_messages': form_messages })
+        
+        # user has not confirmed registration yet
+        if user.registrationprofile_set.all()[0].activation_key != 'ALREADY_ACTIVATED':
+            form_messages = _('Your account has not been confirmated yet. Please check your email and use your activation code to continue')
+            return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
+        
         if user.is_active:
             clear_login(user)
             profile = user.get_profile()

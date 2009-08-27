@@ -84,7 +84,7 @@ GNU General Public License for more details.
 
     <!-- <li><a href="#email">{% trans "email" %}</a></li>| -->
             <li id="logged">
-            <small><b>{{ user.username }}</b> {% trans "at" %} <b>{{ user.get_profile.org_active }}</b></small>
+            <small><b>{{ user.username }}</b> {% trans "at" %} <b>{{ user.profile.org_active.short_name }}</b></small>
             </li>&nbsp;<li>
                 <a href="/profile/" id="profile" class="main_menu" display="form" title="{{ profile.person.name }}">{% trans "Meu cadastro" %}</a>
             </li>|<li>

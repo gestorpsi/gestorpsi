@@ -263,7 +263,7 @@ function updateDevice(url) {
         jQuery.each(json,  function(){
             if(this.id) {
                 tableTR += '<tr id="' + this.id + '"><td class="title">';
-                tableTR += '<a href="/device/' + this.id + '/" title="' + this.model + '">' + this.name + ' ' + this.model + '</a>';
+                tableTR += '<a href="/device/' + this.id + '/" title="' + this.model + '">' + this.model + ' - ' + this.name + '</a>';
                 tableTR += '<br />' + this.type;
                 tableTR += '</td>';
                 tableTR += '<td><span class="phone"></span><br />';

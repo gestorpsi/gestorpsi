@@ -360,6 +360,7 @@ def referral_save(request, object_id = None, referral_id = None):
 def referral_discharge_form(request, object_id = None, referral_id = None):
     object = get_object_or_404(Client, pk=object_id)
     referral = Referral.objects.get(id=referral_id)
+    queue = get_object_or_None(Queue, referral=referral_id)
 
     if request.method == 'POST':
         form = ReferralDischargeForm(request.POST, initial=dict(client=object, referral=referral))
@@ -368,6 +369,11 @@ def referral_discharge_form(request, object_id = None, referral_id = None):
             data.client = object
             data.referral = referral
             data.save()
+
+            if queue:
+                queue.date_out = datetime.now()
+                queue.save()
+
             request.user.message_set.create(message=_('Client discharged successfully'))
             return HttpResponseRedirect('/client/%s/home/' % (object.id))
         else:

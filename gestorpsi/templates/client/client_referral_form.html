@@ -72,21 +72,18 @@ GNU General Public License for more details.
             <label{% if referral %} style="display:none"{% endif %}>{% trans "To Service" %}<br />
             {{ referral_form.service }}
             </label>
-
-        {% if not referral %}
+            
             <label>{% trans "Professionals" %}<br />
+            {% if not referral %}
                 <select name="professional" class="extrabig multiple asm" id="id_professional" multiple="multiple">
-                </select>
-            </label>
-        {% else %}
-            <label>{% trans "Professionals" %}<br />
-                <select name="professional" class="extrabig asm multiple" id="id_professional" multiple="multiple">
+            {% else %}
+                <select name="professional" class="extrabig asm multiple" id="id_professional" multiple="multiple" disabled="disabled">
                    {% for prof in referral.service.professionals.all %}
-                        <option value="{{ prof.id }}" {% ifnotequal referral.professional.all.0 prof %} disabled {% else %} selected {% endifnotequal %}> {{ prof }} </option>
+                        <option value="{{ prof.id }}" {% ifequal referral.professional.all.0 prof %} selected {% endifequal %}> {{ prof }} </option>
                    {% endfor %}
-                </select>
-            </label>            
-        {% endif %}
+            {% endif %}
+               </select>
+            </label>
 
         <label style="display:none">{% trans "Clients" %}<br />
         {{ referral_form.client }}
@@ -115,7 +112,7 @@ GNU General Public License for more details.
          <fieldset>
           <legend>{% trans "Indications" %}</legend>
            <label>{% trans "Indication done by" %}<br />
-                <select name="indication" class="big toggle_parent_label">
+                <select name="indication" class="big toggle_parent_label" {% if referral %}disabled="disabled"{% endif %}>
                         {% for o in IndicationsChoices %}
                                 <option value="{{ o.id }}" label="{{ o.nick }}" {% ifequal o.id referral.indication_set.all.0.indication_choice_id %} selected{% endifequal %}>{{ o }}</option>
                         {% endfor %}
@@ -123,8 +120,8 @@ GNU General Public License for more details.
            </label>
 
         <div class="admission_ind_org" {% ifnotequal referral.indication_set.all.0.indication_choice_id 3 %} style="display:none;" {% endifnotequal %} >
-         <label class="organization">{% trans "Select Organization, or"%} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
-          <select name="indication_organization" class="select extrabig asm">
+         <label class="organization">{% trans "Select Organization" %} {% if not referral %}, {% trans "or" %} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a>{% endif %}<br />
+          <select name="indication_organization" class="select extrabig asm" {% if referral %}disabled="disabled"{% endif %}>
                 <option>Escolha...</option>
                 {% for org in contact_organizations %}
                     <option value="{{ org.id }}" {% ifequal org.id referral.indication_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org }}</option>
@@ -134,8 +131,8 @@ GNU General Public License for more details.
         </div>
 
         <div class="admission_ind_prof" {% ifnotequal referral.indication_set.all.0.indication_choice_id 4 %} style="display:none;" {% endifnotequal %} >
-         <label class="professional">{% trans "Select Professional, or"%} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
-          <select name="indication_professional" class="select extrabig asm">
+         <label class="professional">{% trans "Select Professional" %} {% if not referral %}, {% trans "or" %} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a>{% endif %}<br />
+          <select name="indication_professional" class="select extrabig asm" {% if referral %}disabled="disabled"{% endif %}>
                 <option>Escolha...</option>
                 {% for prof in contact_professionals %}
                     <option value="{{ prof.id }}" {% ifequal prof.id referral.indication_set.all.0.referral_professional_id %} selected {% endifequal %}>{{ prof }}</option>

@@ -22,22 +22,9 @@ GNU General Public License for more details.
 """
 
 from django.contrib import admin
-from gestorpsi.service.models import Service, Area, Modality, ServiceType, AreaClinic
+from gestorpsi.service.models import Service, Area, Modality, ServiceType
 
-class AreaInline(admin.TabularInline):
-    model = ServiceType
-
-class ServiceAdmin(admin.ModelAdmin):
-    pass
-
-class AreaAdmin(admin.ModelAdmin):
-    #inlines = [AreaInline]
-    pass
-
-
-
-admin.site.register(Service, ServiceAdmin)
-admin.site.register(Area, AreaAdmin)
+admin.site.register(Service)
+admin.site.register(Area)
 admin.site.register(Modality)
 admin.site.register(ServiceType)
-admin.site.register(AreaClinic)

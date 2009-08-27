@@ -153,7 +153,7 @@ class Organization(models.Model):
     id= UuidField(primary_key=True)
 
     # identity
-    name = models.CharField(max_length=100, blank=False)
+    name = models.CharField(max_length=100)
     trade_name = models.CharField(max_length=100, blank=True)
     short_name = models.CharField(max_length=100, blank=True, unique=True)
     register_number = models.CharField(max_length=100, blank=True)
@@ -259,6 +259,24 @@ class AgeGroup(models.Model):
     class Meta:
         ordering = ['minimum_age_endpoint']    
 
+class EducationLevel(models.Model):
+    description = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return u"%s" % self.description
+    
+    class Meta:
+        ordering = ['id']
+
+class HierarchicalLevel(models.Model):
+    description = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return u"%s" % self.description
+
+    class Meta:
+        ordering = ['id']
+
 class ProcedureProvider(models.Model):
     """
     This class was created to represent entities which provide some kind of health care service.
@@ -281,3 +299,4 @@ class Procedure(models.Model):
         return u"code: %s, description: %s" % (self.procedure_code, self.description)
     class Meta:
         ordering = ['description']
+

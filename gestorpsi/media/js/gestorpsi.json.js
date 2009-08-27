@@ -150,7 +150,7 @@ function updateContact(url, app) {
                 if (this.type == '2' && this.type_org == 'GESTORPSI') class_content = "person gestorpsi";
                 
                 tableTR += '<tr class="' + class_content + '" id="' + this.id + '"><td class="title">';
-                tableTR += '<a href="/contact/form/' + ((this.type == 1)?'organization':'professional') + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
+                tableTR += '<a href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
                 
                 if(this.profession) tableTR += ' (' + this.profession + ')';
                 
@@ -204,7 +204,7 @@ function updateRoom(url) {
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
         buildPaginator('place/room', json['paginator'], json['util'], 'div#list');
-        $("ul.paginator a").unbind().click(function(){
+        $("div#list ul.paginator a").unbind().click(function(){
             updateRoom($(this).attr('href'))
             return false;
         });
@@ -239,7 +239,7 @@ function updatePlace(url) {
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
         buildPaginator('place', json['paginator'], json['util'], 'div#list');
-        $("ul.paginator a").unbind().click(function(){
+        $("div#list ul.paginator a").unbind().click(function(){
             updatePlace($(this).attr('href'))
             return false;
         });
@@ -274,7 +274,7 @@ function updateDevice(url) {
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
         buildPaginator('device', json['paginator'], json['util'], 'div#list');
-        $("ul.paginator a").unbind().click(function(){
+        $("div#list ul.paginator a").unbind().click(function(){
             updateDevice($(this).attr('href'))
             return false;
         });
@@ -308,7 +308,7 @@ function updateDeviceType(url) {
 
         buildTableList(tableTR, 'div#list_type', json['util']['has_perm_read']);
         buildPaginator('device/type', json['paginator'], json['util'], 'div#list_type');
-        $("ul.paginator a").unbind().click(function(){
+        $("div#list_type ul.paginator a").unbind().click(function(){
             updateDeviceType($(this).attr('href'))
             return false;
         });
@@ -332,7 +332,7 @@ function updateService(url) {
         jQuery.each(json,  function(){
             if(this.id) {
                 tableTR += '<tr id="' + this.id + '"><td class="title">';
-                tableTR += '<a href="/service/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
+                tableTR += '<a href="/service/form/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
                 tableTR += '<br />' + this.description;
                 tableTR += '</td>';
                 tableTR += '<td><span class="phone"></span><br />';
@@ -345,7 +345,7 @@ function updateService(url) {
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
         buildPaginator('service', json['paginator'], json['util'], 'div#list');
-        $("ul.paginator a").unbind().click(function(){
+        $("div#list ul.paginator a").unbind().click(function(){
             updateService($(this).attr('href'))
             return false;
         });
@@ -445,7 +445,7 @@ function updateProfessional(url) {
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
         buildPaginator('careprofessional', json['paginator'], json['util']);
-        $("ul.paginator a").unbind().click(function(){
+        $("div#list ul.paginator a").unbind().click(function(){
             updateProfessional($(this).attr('href'))
             return false;
         });

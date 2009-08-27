@@ -84,35 +84,15 @@ GNU General Public License for more details.
 	-->
 	
 	<fieldset>
+    <input type="hidden" name="service_area" value="{{ area.id }}" />
+    
 		<legend>{% trans "Service Profile" %}</legend>
-	
-		<label>{% trans "Area" %}<br>
-		<select name="service_area" class="extramedium service_area">
-			{% for a in Areas %}
-				{% if a.modality.values_list %}
-				<option value="{{ a.id }}"{% ifequal a.id object.area.id %} selected{% endifequal %}>{{ a }}</option>
-				{% endif %}
-			{% endfor %}
-		</select>
-		</label>
-		
-		
-		<label>{% trans "Type" %}<br />
-		<select name="service_type" class="extramedium service_type">
-			{% for s in ServiceTypes %}
-			<option value="{{ s.id }}" area="{{ s.area.id }}"{% ifequal s.id object.service_type.id %} selected{% endifequal %}>{{ s }} </option>
-			{% endfor %}
-		</select>
-		</label>
+        <label>{{area.area_name}} [ <a href="/service/add/{% if object.id %}{{ object.id }}/{% endif %}">Change Area</a> ]</label><br />
 
-		<label>{% trans "Solicitation" %}<br />
-		<select name="service_solicitation" class="extramedium service_solicitation multiple asm" multiple="multiple">
-			{% for m in Modalitys %}
-			<option value="{{ m.id }}" class="{% for a in Areas %}{% for am in a.modality.values_list %}{% ifequal m.id am.0 %}area_{{ a.id }} {% endifequal %}{% endfor %}{% endfor %}"{% for om in object.modalities.values_list %}{% ifequal om.0 m.id %} selected="selected"{% endifequal %}{% endfor %}>{{ m }}</option>
-			{% endfor %}
-		</select>
-		</label>
-		
+        <div class="form_as_ul">
+            {{ form_area.as_ul }}
+        </div>
+
 		<label>{% trans "Profession" %}<br />
 		<select name="service_profession" multiple="multiple" class="high multiple giant">
 			{% for p in Professions %}
@@ -121,67 +101,8 @@ GNU General Public License for more details.
 		</select>
 		</label>
 
-	<!--</fieldset>
-	
-	<fieldset class="service_areas area_3">-->
-    <div class="service_areas area_3{% ifnotequal object.area.id 3 %} hidden{% endifnotequal %}">
-		<!--<legend>{% trans "Clinica Area" %}</legend>-->
-	
-		<label>{% trans "Age" %}<br />
-		<select name="service_age" multiple="multiple" class="multiple asm">
-		{% for l in AgeGroups %}
-			<option value="{{ l.id }}"{% for ag in object.content_object.age_group.all %}{% ifequal ag.id l.id %} selected="selected"{% endifequal %}{% endfor %}>{{ l }}</option>
-		{% endfor %}
-		</select>
-		</label>
-	</div>
     </fieldset>
 
-{% comment %}
-		
-	<fieldset>
-		<legend>{% trans "Service Procedures" %}</legend>
-
-		<!-- procedures providers to choice -->
-		<label>
-		{% for l in ProcedureProviders %}
-			<a class="notajax select_multiple_menu" display="service_procedure_{{ l.name }}">{{ l.name }}</a>
-		{% endfor %}
-		<br />
-		<!-- procedures itens -->
-		{% for l in Procedures %}
-			{% ifchanged l.procedure %}
-				{% if not forloop.first %}
-				</select>
-				{% endif %}
-				
-				<select multiple="multiple" class="service_procedure_{{ l.procedure.name }} extrabig multiple itens_available small_fonts{% if forloop.first %} first{% endif %}">
-			{% endifchanged %}
-				<option value="{{ l.id }}"{% for p in object.procedures.values_list %}{% ifequal p.0 l.id %} style="display:none"{% endifequal %}{% endfor %}>{{ l.description }}</option>
-	
-			{% if forloop.last %}
-				</select>
-			{% endif %}
-		{% endfor %}
-		
-		</label>
-		
-		<!-- itens choiced -->
-		
-		<label>{% trans "Procedures Choiced" %}<br />
-		<select name="service_type_procedure" multiple="multiple" group="service_procedure" class="extrabig multiple itens_selected small_fonts">
-		{% for p in object.procedures.values_list %}
-		<option value="{{ p.0 }}" selected="selected">{{ p.2 }}</option>
-		{% endfor %}
-		</select>
-		
-		</label>
-		
-		
-			
-	</fieldset>
-	
-{%  endcomment %}
 	
 	<!--
 	Services Relations

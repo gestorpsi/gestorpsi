@@ -1,0 +1,63 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Services" %}{% endblock %}
+
+{% block submenu %}
+    <ul>
+        <li><a class="first" href="/service/">{% trans "all" %}</a></li>
+        <li><a class="{% if not object.id %}active{% endif %}" href="/service/add/">{% trans "add" %}</a></li>
+        {% if object.id %}<li><a class="active">{{ object.name }}</a></li>{% endif %}
+        
+    </ul>
+{% endblock %}
+
+{% block core %}
+
+{% if object.id %}
+	<h2 class="title_services title">{{ object.name }}</h2>
+	<p class="description">{{ object.description }}<br />	
+{% else %}
+	<h2 class="title_services title">{% trans "Adding New Service" %}</h2>
+	<p class="description">{% trans "Select service area and click next" %}</p>
+{% endif %}
+</p>
+
+<form action="/service/form/{% if object.id %}{{ object.id }}/{% endif %}" method="post" id="form_service" class="form_service">	
+<div class="main_area">
+	<fieldset>
+		<legend>{% trans "Select the service area" %}</legend>
+		<label>{% trans "Areas" %}<br />
+            <select name="area">
+                {% for object in areas %}
+                    <option value="{{ object.area_code }}">{{ object.area_name }}</option>
+                {% endfor %}
+            </select><br /><br /><input type='submit' value='{% trans "Next Step" %}' />
+		</label>
+    </fieldset>
+<br />	
+</div>
+</form>
+
+{% endblock %}
+
+

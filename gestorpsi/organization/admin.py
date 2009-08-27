@@ -21,65 +21,19 @@ GNU General Public License for more details.
    @version: 1.0
 """
 from django.contrib import admin
-from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization, AgreementType, Agreement, AgeGroup, ProcedureProvider, Procedure
+from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization, AgreementType, Agreement, AgeGroup, EducationLevel, HierarchicalLevel
 
-class AgeGroupAdmin(admin.ModelAdmin):
-    pass
-
-class PersonTypeAdmin(admin.ModelAdmin):
-    pass
-
-class UnitTypeAdmin(admin.ModelAdmin):
-    pass
-
-class AdministrationEnvironmentAdmin(admin.ModelAdmin):
-    pass
-
-class AgreementAdmin(admin.ModelAdmin):
-    pass
-
-class AgreementTypeAdmin(admin.ModelAdmin):
-    pass
-
-class SourceAdmin(admin.ModelAdmin):
-    pass
-
-class ProvidedTypeAdmin(admin.ModelAdmin):
-    pass
-
-class ManagementAdmin(admin.ModelAdmin):
-    pass
-
-class DependenceAdmin(admin.ModelAdmin):
-    pass
-
-class ActivitieAdmin(admin.ModelAdmin):
-    pass
-
-class ManagementAdmin(admin.ModelAdmin):
-    pass
-
-class ProcedureProviderAdmin(admin.ModelAdmin):
-    pass
-
-class ProcedureAdmin(admin.ModelAdmin):
-    pass
-
-class OrganizationAdmin(admin.ModelAdmin):
-    pass
-
-admin.site.register(Agreement, AgreementAdmin)
-admin.site.register(AgreementType, AgreementTypeAdmin)
-admin.site.register(PersonType, PersonTypeAdmin)
-admin.site.register(AdministrationEnvironment, AdministrationEnvironmentAdmin)
-admin.site.register(Source, SourceAdmin)
-admin.site.register(ProvidedType, ProvidedTypeAdmin)
-admin.site.register(Management, ManagementAdmin)
-admin.site.register(Dependence, DependenceAdmin)
-admin.site.register(Activitie, ActivitieAdmin)
-admin.site.register(UnitType, UnitTypeAdmin)
-admin.site.register(Organization, OrganizationAdmin)
-admin.site.register(AgeGroup, AgeGroupAdmin)
-admin.site.register(ProcedureProvider, ProcedureProviderAdmin)
-admin.site.register(Procedure, ProcedureAdmin)
-
+admin.site.register(Agreement)
+admin.site.register(AgreementType)
+admin.site.register(PersonType)
+admin.site.register(AdministrationEnvironment)
+admin.site.register(Source)
+admin.site.register(ProvidedType)
+admin.site.register(Management)
+admin.site.register(Dependence)
+admin.site.register(Activitie)
+admin.site.register(UnitType)
+admin.site.register(Organization)
+admin.site.register(AgeGroup)
+admin.site.register(EducationLevel)
+admin.site.register(HierarchicalLevel)

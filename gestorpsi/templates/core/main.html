@@ -104,7 +104,7 @@ GNU General Public License for more details.
     {% endif %}
     <span>
         {{ user.profile.org_active.get_first_address|safe }}<br />
-        Telefone: {{ user.profile.org_active.get_first_phone }}
+        {{ user.profile.org_active.get_first_phone }}
     </span>
 
 <!--    <span>Teste de texto. Este endereço não quer dizetr nadadasdad<br />

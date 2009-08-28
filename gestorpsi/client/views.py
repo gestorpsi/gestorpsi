@@ -68,7 +68,7 @@ def index(request):
 @permission_required_with_403('client.client_read')
 def home(request, object_id=None):
     try:
-        object    = get_object_or_404(Client, pk=object_id)
+        object = get_object_or_404(Client, pk=object_id)
     except:
         raise Http404
     

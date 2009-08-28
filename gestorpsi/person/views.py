@@ -33,8 +33,13 @@ def person_save(request, person):
     else:
         person.photo = ''
 
-    if(request.POST['birthDate']):
-        person.birthDate = datetime.strptime(request.POST['birthDate'],'%d/%m/%Y')
+    if(request.POST.get('dataNasc')):
+        person.birthDate = datetime.strptime(request.POST.get('dataNasc'),'%d/%m/%Y')
+
+    if(request.POST.get('birthDate_supposed')):
+        person.birthDateSupposed = True
+    else:
+        person.birthDateSupposed = False
 
     person.gender = request.POST['gender']
     

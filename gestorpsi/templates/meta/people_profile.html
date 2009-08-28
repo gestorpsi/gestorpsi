@@ -16,6 +16,8 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
+{% load calculate_age %}
+
 	
 <!--
 People Personal Profile Form	
@@ -24,13 +26,36 @@ People Personal Profile Form
 <fieldset>
         <legend>{% trans "Personal Profile" %}</legend>
 
-        <label>{% trans "Birthdate" %}<br />
-                <input type="text" class="calendar" name="birthDate" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate|date:"d/m/Y" }}{% endifnotequal %}" mask="99/99/9999" />
+            <label>{% trans "Birthdate ( dd/mm/yyyy )" %}<br />
+                <input class="calendar" type="text" name="dataNasc" id="dataNasc" onchange="displayAge();" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate|date:"d/m/Y" }}{% endifnotequal %}" />
+            </label>
+
+
+        <label> {% trans "Age" %} <br />
+            <input class="calendar" type="text" name="Anos" id="Anos" onchange="displayAge();" value="{% if object.person.birthDate %}{{ object.person.birthDate|age }}{% endif %}"/>
         </label>
+        
+        <label>
+            <input name="aprox" type="checkbox" id="aprox" onclick="datOuIdade();"  />
+            {% trans "approximate" %} 
+        </label>
+
+         <br />
+         <br />
+
+        <label>
+            <input name="birthDate_supposed" type="checkbox" id="birthDate_supposed" {% if object.person.birthDateSupposed  %} checked="checked" {% endif %} />
+            {% trans "Date of birth supposedly from the age" %} 
+        </label>
+        
+         <br />
+         <br />
+
         {% comment %}
         <label>{% trans "Age" %}<br />
                 <input type="text" name="age" class="extrasmall" value="{{ object.age }}" id="id_age" />
         </label>
+
         {% endcomment %}
         <label>{% trans "Marital Status" %}<br />
                 <select name="maritalStatus" class="select extramedium">

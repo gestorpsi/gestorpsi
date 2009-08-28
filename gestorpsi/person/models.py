@@ -40,6 +40,7 @@ class Person(models.Model):
     photo = models.CharField(max_length=100)
     birthDate = models.DateField(null=True)
     birthPlace = models.ForeignKey(City, null=True)
+    birthDateSupposed = models.BooleanField(default=False)
     gender = models.CharField(max_length=1, choices=Gender) 
     maritalStatus = models.ForeignKey(MaritalStatus, null=True)
     phones = generic.GenericRelation(Phone, null=True)

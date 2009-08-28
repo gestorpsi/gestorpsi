@@ -223,16 +223,9 @@ $(function() {
      */
      $('a.clips').unbind().click(function() {
           $(this).parents('form').parents('div').children('div.photo_form_upload').show();
+          $('div#over').show();
      });
 
-     /**
-     *
-     * attach referral upload
-     * 
-     */
-     $('a.clips_attach').unbind().click(function() {
-          $(this).parents('form').parents('div').children('div.attach_form_upload').show();
-     });
      
     /** 
       * 

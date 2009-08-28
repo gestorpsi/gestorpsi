@@ -1088,23 +1088,8 @@ div.schedule #search_header {
 	cursor: pointer;
 }
 
-div.attach_form_upload {
-	position: absolute;
-	margin-top: 0px;
-	margin-left: 350px;
-	_margin-left: -350px;
-	_margin-top: -100px;
-	background-color: #fff;
-	border: 1px solid black;
-	padding: 30px 30px 30px 30px;
-	width: 270px;
-	height: 70px;
-	display:none;
-
-}
-
 div.photo_form_upload {
-	position: absolute;
+	position: fixed;
 	margin-top: 0px;
 	margin-left: 350px;
 	_margin-left: -350px;
@@ -1115,7 +1100,7 @@ div.photo_form_upload {
 	width: 270px;
 	height: 70px;
 	display:none;
-
+	z-index: 10001; 
 }
 
 #over {
@@ -1124,7 +1109,7 @@ div.photo_form_upload {
 	margin: -55px 0 75px -22px;
 	background:  url("/media/img/transp75.png");
 	z-index: 6;
-	min-height: 500px;
+	min-height: 800px;
 }
 
 #disable_menu {

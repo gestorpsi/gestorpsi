@@ -27,7 +27,7 @@ GNU General Public License for more details.
         <select id="{{forloop.counter0}}" name="service_profession" class="medium asm profession_type">
                 <option value="" selected="selected" >------</option>
             {% for p in Professions %}
-                <option value="{{ p.symbol }}"{% ifequal p professional.profession %} selected="selected"{% endifequal %} >{{ p.type }}</option>
+                <option symbol="{{ p.symbol }}" value="{{ p.id }}"{% ifequal p professional.profession %} selected="selected"{% endifequal %} >{{ p.type }}</option>
             {% endfor %}            
         </select>
     </label>

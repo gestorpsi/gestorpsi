@@ -81,8 +81,8 @@ function reloadCities(el) {
      **/
 
 function reload_symbol_profession() { 
-    $("select.profession_type").change(function(){
-        $("input.profession_symbol[id="+this.id+"]").val(this.value);
+    $("select.profession_type option").click(function(){
+        $("input.profession_symbol[id="+this.id+"]").val($(this).attr("symbol"));
     });
 }
 

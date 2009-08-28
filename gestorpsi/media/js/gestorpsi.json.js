@@ -147,6 +147,10 @@ function updateContact(url, app) {
         jQuery.each(json,  function(){
             if(this.id) {
                 var class_content = ""
+                var type = ''
+                
+                if(this.type == 1) type = 'organization';
+                if(this.type == 2) type = 'professional';
 
                 if (this.type == '1' && this.type_org == 'LOCAL') class_content = "clinic local";
                 if (this.type == '1' && this.type_org == 'GESTORPSI') class_content = "clinic gestorpsi";
@@ -154,7 +158,7 @@ function updateContact(url, app) {
                 if (this.type == '2' && this.type_org == 'GESTORPSI') class_content = "person gestorpsi";
                 
                 tableTR += '<tr class="' + class_content + '" id="' + this.id + '"><td class="title">';
-                tableTR += '<a href="/contact/' + this.type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
+                tableTR += '<a href="/contact/form/' + type + '/' + this.id + '/" title="' + this.name + '">' + this.name + '</a>';
                 
                 if(this.profession) tableTR += ' (' + this.profession + ')';
                 

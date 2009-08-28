@@ -31,7 +31,7 @@ GNU General Public License for more details.
 <h2 id="title_addressbook" style="display:none"></h2>
 
 	<h2 class="title_clients title">{{ object.person.name }}</h2>
-	<p class="description">{% if object.person.birthDate %}{{ object.person.birthDate.date.timesince }}{% endif %} {% trans "Customer subscribed in" %} <a href="/client/{{ object.id }}/referral/">{{ referrals|length }} {% trans "service(s)" %}</a> <br />	
+	<p class="description">{% trans "Customer subscribed in" %} <a href="/client/{{ object.id }}/referral/">{{ referrals|length }} {% trans "service(s)" %}</a> <br />	
 
 </p>
 
@@ -44,8 +44,8 @@ GNU General Public License for more details.
         <br /><br />
     </div>    
     <h1>{{ object.person.name }}</h1>
-    <p><span class="big">{% if object.person.maritalStatus %}Estado Civil: {{ object.person.maritalStatus }}{% endif %}</span></p>
-    <p><span class="big">{% if object.person.birthDate %}Idade: {{ object.person.birthDate|age }} anos {% endif %}</span></p>
+    <p><span class="big">{% if object.person.maritalStatus %}{% trans "Marital Status" %}: {{ object.person.maritalStatus }}{% endif %}</span></p>
+    <p><span class="big">{% if object.person.birthDate %}{% trans "Age" %}: {{ object.person.birthDate|age }} {% trans "years" %} {% endif %}</span></p>
     {% if object.person.address.all %}
         <p>
         {% for i in object.person.address.all %}

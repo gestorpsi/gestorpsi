@@ -487,6 +487,24 @@ a.list {
 	background: url(../img/16/filetype_small_dir.gif) no-repeat 0 3px;
 }
 
+
+a.group {
+	background: url(../img/16/people-clients.png) no-repeat 0 3px;
+}
+
+a.group_add {
+	background: url(../img/16/group_add.png) no-repeat 0 3px;
+}
+
+a.queue {
+	background: url(../img/16/filetype_small_rar.gif) no-repeat 0 3px;
+}
+
+a.document {
+	background: url(../img/16/attachment.png) no-repeat 0 3px;
+}
+
+
 a.clips {
 	background:url(../img/ico_clips.gif) no-repeat 98% 0;
 	text-align: right;

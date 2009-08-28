@@ -17,6 +17,7 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
+{% load calculate_age %}
 
 {% block menu_client %}active{% endblock %}
 
@@ -44,7 +45,7 @@ GNU General Public License for more details.
     </div>    
     <h1>{{ object.person.name }}</h1>
     <p><span class="big">{% if object.person.maritalStatus %}Estado Civil: {{ object.person.maritalStatus }}{% endif %}</span></p>
-    <p><span class="big">{% if object.person.birthDate %}Idade: {{ object.person.birthDate|timesince }} {% endif %}</span></p>
+    <p><span class="big">{% if object.person.birthDate %}Idade: {{ object.person.birthDate|age }} anos {% endif %}</span></p>
     {% if object.person.address.all %}
         <p>
         {% for i in object.person.address.all %}

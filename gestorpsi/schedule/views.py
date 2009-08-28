@@ -243,7 +243,7 @@ def occurrence_confirmation_form(
                 context_instance=RequestContext(request)
             )
     else:
-        form = form_class(instance=occurrence_confirmation, initial={'occurrence':occurrence, 'start_time':occurrence.start_time})
+        form = form_class(instance=occurrence_confirmation, initial={'occurrence':occurrence, 'start_time':occurrence.start_time, 'end_time':occurrence.end_time})
         
     return render_to_response(
         template,

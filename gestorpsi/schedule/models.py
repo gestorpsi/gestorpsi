@@ -55,6 +55,7 @@ class ScheduleOccurrence(Occurrence):
 class OccurrenceConfirmation(models.Model):
     occurrence = models.OneToOneField(ScheduleOccurrence)
     date_started = models.DateTimeField(_('Occurrence Date Started'), blank=True)
+    date_finished = models.DateTimeField(_('Occurrence Date Finished'), blank=True, null=True)
     presence = models.CharField(_('Presence Confirmation'), max_length=2, blank=True, choices=OCCURRENCE_CONFIRMATION_PRESENCE)
     unmarked = models.BooleanField(_('Occurrence Unmarked'), default = False)
     remarked = models.BooleanField(_('Occurrence Rescheduled'), default = False)

@@ -35,16 +35,11 @@ People Personal Profile Form
             <input class="calendar" type="text" name="Anos" id="Anos" onchange="displayAge();" value="{% if object.person.birthDate %}{{ object.person.birthDate|age }}{% endif %}"/>
         </label>
         
-        <label>
-            <input name="aprox" type="checkbox" id="aprox" onclick="datOuIdade();"  />
-            {% trans "approximate" %} 
-        </label>
-
          <br />
          <br />
 
         <label>
-            <input name="birthDate_supposed" type="checkbox" id="birthDate_supposed" {% if object.person.birthDateSupposed  %} checked="checked" {% endif %} />
+            <input name="aprox" type="checkbox" id="aprox" {% if object.person.birthDateSupposed  %} checked="checked" {% endif %}  onclick="datOuIdade();" />
             {% trans "Date of birth supposedly from the age" %} 
         </label>
         

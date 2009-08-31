@@ -34,12 +34,11 @@ def person_save(request, person):
         person.photo = ''
 
     """ AGE """
-    birthYear = (( int(datetime.now().strftime("%Y")) ) - ( int(request.POST.get('Anos')) ) ) 
-    today = (datetime.now().strftime("%d/%m/"))
-
     if(request.POST.get('dataNasc')):
         person.birthDate = datetime.strptime(request.POST.get('dataNasc'),'%d/%m/%Y')
     else:
+        birthYear = (( int(datetime.now().strftime("%Y")) ) - ( int(request.POST.get('Anos')) ) ) 
+        today = (datetime.now().strftime("%d/%m/"))
         dt = "%s%s" % (today, birthYear)
         person.birthDate = datetime.strptime(dt ,'%d/%m/%Y')
 

@@ -72,7 +72,10 @@ function calculaidade() {
             yourage = yourage - 1;
             }
         }
-    return yourage;
+    if(yourage > 0)
+        return yourage;
+    else
+        return ""
 }
 function calculaData() {
     idade = document.getElementById('Anos').value;

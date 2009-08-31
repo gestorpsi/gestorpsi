@@ -127,8 +127,12 @@ $(function() {
     * 
     */
 
-    $("form input:text[mask]").unbind().each(function(){
+    $("form input:text[mask]").each(function(){
       $(this).mask($(this).attr('mask'));
+    });
+
+    $("form input:text[name=dataNasc]").keyup(function(){
+      displayAge();
     });
 
 

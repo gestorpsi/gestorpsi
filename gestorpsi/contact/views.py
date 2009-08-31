@@ -253,10 +253,12 @@ def contact_professional_save(request, object_id = None):
 
     if request.POST.get('symbol'): 
         identification = ProfessionalIdentification()
-        identification.profession = Profession.objects.get(id=request.POST.get('symbol'))
+        identification.profession = Profession.objects.get(id=request.POST.get('service_profession'))
         identification.registerNumber = request.POST.get('professional_subscription')
         identification.save()
         object.professionalIdentification = identification
+    else:
+        object.professionalIdentification = None
 
     person.name = request.POST.get('name')
     person.save()

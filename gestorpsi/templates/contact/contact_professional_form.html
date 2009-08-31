@@ -68,14 +68,14 @@ GNU General Public License for more details.
     </label>
 
     <label>{% trans "Profession" %}<br />
-        <select id="{{forloop.counter0}}" name="service_profession" class="medium asm profession_type">
-                <option value="" selected="selected" >------</option>
+        <select id="" name="service_profession" class="medium asm profession_type">
+                <option symbol="" value="" selected="selected" >------</option>
             {% for p in professions %}
-                <option value="{{ p.symbol }}"{% ifequal p object.professionalIdentification.profession %} selected="selected"{% endifequal %} >{{ p.type }}</option>
+                <option symbol="{{ p.symbol }}" value="{{ p.id }}"{% ifequal p object.professionalIdentification.profession %} selected="selected"{% endifequal %} >{{ p.type }}</option>
             {% endfor %}            
         </select>
     </label>
-    
+
     <label>{% trans "Symbol" %}<br />
             <input id="{{forloop.counter0}}" type="text" name="symbol" class="profession_symbol small" readonly="1" {% ifnotequal object.professionalIdentification.profession.symbol "" %} value="{{ object.professionalIdentification.profession.symbol }}" {% endifnotequal %}>
     </label>

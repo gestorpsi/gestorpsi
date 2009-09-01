@@ -18,7 +18,6 @@ from django.conf.urls.defaults import *
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm, OccurrenceConfirmationForm
 from gestorpsi.schedule.views import occurrence_view
-#from gestorpsi.schedule.views import occurrence_abstract
 from gestorpsi.schedule.views import add_event
 from gestorpsi.schedule.views import schedule_index
 from gestorpsi.schedule.views import schedule_occurrence_listing_today
@@ -26,32 +25,13 @@ from gestorpsi.schedule.views import event_view
 from gestorpsi.schedule.views import daily_occurrences 
 from gestorpsi.schedule.views import today_occurrences
 from gestorpsi.schedule.views import occurrence_confirmation_form
-#from gestorpsi.schedule.views import referral_occurrences
-
-#from gestorpsi.schedule.views import calendar_view
 
 urlpatterns = patterns('',
-    #url(r'^$', direct_to_template, { 'template': 'schedule/schedule_index.html'}, name='schedule-home'),
-#    url(r'^swingtime/events/type/([^/]+)/$', 'event_type', name='karate-event'),
-    
-     #url(
-        #r'^(?:calendar/)?$', 
-        #calendar_view, 
-        #{ 'template': 'schedule/daily_view.html', },
-        #name='swingtime-today'
-    #),
-    
      url(
         r'^(?:calendar/)?$', 
         schedule_index, 
         name='schedule-index'
     ),
-    #url(
-        #r'^calendar/(\d{4})/(0?[1-9]|1[012])/([0-3]?\d)/$', 
-        #calendar_view,
-        #{ 'template':'schedule/daily_view.html', },
-        #name='swingtime-daily-view'
-    #),
     url(
         r'^occurrences/(\d{4})/(0?[1-9]|1[012])/([0-3]?\d)/$', 
         daily_occurrences,
@@ -68,21 +48,6 @@ urlpatterns = patterns('',
         { 'template': 'schedule/schedule_events.html', },
         name='schedule-events-today'
     ),
-    #url(
-        #r'^occurrence/abstract/(\d+)/$', 
-        #occurrence_abstract,
-        #name='occurrence-abstract'
-    #),
-    #url(
-        #r'^events/(\d{4})/(0?[1-9]|1[012])/([0-3]?\d)/$',
-        #schedule_occurrence_listing,
-        #name='schedule-listing-daily'
-    #),
-    #url(
-        #r'^events/(\d{4})/(0?[1-9]|1[012])/$',
-        #schedule_occurrence_listing,
-        #name='schedule-listing-monthly'
-    #),
     url(
         r'^events/add/$', 
         add_event, 
@@ -104,12 +69,6 @@ urlpatterns = patterns('',
         },       
         name='swingtime-event'
     ),
-    #url(
-        #r'^events/(\d+)/$', 
-        #referral_occurrences,
-        #name='referral_occurrences'
-    #),
-    
     url(
         r'^events/(\d+)/(\d+)/$', 
         occurrence_view, 
@@ -127,17 +86,5 @@ urlpatterns = patterns('',
         },
         name='swingtime-occurrence-confirmation'
     ),
-    
-        #url(
-        #r'^events/(\d+)/$', 
-        #event_view, 
-        #name='swingtime-event'
-    #),
-    
-    #url(
-        #r'^events/(\d+)/(\d+)/$', 
-        #occurrence_view, 
-        #name='swingtime-occurrence'
-    #),
     
 )

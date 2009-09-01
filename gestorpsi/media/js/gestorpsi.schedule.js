@@ -87,6 +87,7 @@ function updateGrid(url) {
                 var str_professional_inline = ''; 
                 var str_service = '';
                 var str_service_inline = '';
+                var str_device_inline = '';
                 var label = '';
                 var label_inline = '';
                 
@@ -138,7 +139,24 @@ function updateGrid(url) {
                     str_service_inline = ' >> ' + this.service;
                     
                     label = str_client + str_service + str_professional;
-                    label_inline = str_client_inline + str_service_inline + '(' + str_professional_inline + ')';
+                    label_inline = str_client_inline + str_service_inline;
+                    
+                    label_inline += (str_professional_inline) ? ' (' + str_professional_inline + ')' : '';
+                    
+                                        
+                    //append device list
+                    jQuery.each(this.device,  function(){
+                        str_device_inline += this.name + ", " ;
+                        col.addClass('device_' + this.id); // device in cell
+                        event.addClass('device_' + this.id); // devices in events
+                    });
+                    str_device_inline = str_device_inline.substr(0, (str_device_inline.length-2))
+                    if(str_device_inline) {
+                        label += str_device_inline;
+                        label_inline += ' >> ' + str_device_inline;
+                    }
+                    
+                    
                 } else {
                     label = '<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reservado';
                 }

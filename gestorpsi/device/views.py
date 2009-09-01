@@ -206,55 +206,7 @@ def get_visible(request, value):
 def delete(request, object_id= ''):
     pass
 
-def list_device(request, object_id):
-    user = request.user
-
-    object = Room.objects.get(pk = object_id)
-
-    array = {} # JSON
-
-    c = 0
-
-    """
-    # LENDABLE = ORGANIZATION
-    devices = DeviceDetails.objects.filter(place__organization = user.get_profile().org_active, mobility="2", lendable=True)
-    for device in devices:
-        print "================================= %s" % c
-        print devices
-        array[c] = {
-            'id': device.id,
-            'name': '%s' % device,
-            }
-        c = c + 1
-
-    # MOVEL = LOCAL
-    devices = DeviceDetails.objects.filter(place =  object.place_id, place__organization = user.get_profile().org_active, mobility="2", lendable=False)
-
-    for device in devices:
-        print "================================= %s" % c
-        print devices
-        array[c] = {
-            'id': device.id,
-            'name': '%s' % device,
-        }
-        c = c + 1
-
-    # FIX ON THE ROOM
-    devices = DeviceDetails.objects.filter(room = object_id, mobility="1")
-    """
-
-    devices = DeviceDetails.objects.filter(Q(room = object_id, mobility="1") | Q(place =  object.place_id, place__organization = user.get_profile().org_active, mobility="2", lendable=False) | Q(place__organization = user.get_profile().org_active, mobility="2", lendable=True))
-
-    for device in devices:
-        array[c] = {
-            'id': device.id,
-            'name': '%s' % device,
-        }
-        c = c + 1
-
-    return HttpResponse(simplejson.dumps(array), mimetype='application/json')
-
-
+@permission_required_with_403('device.device_write')
 def order(request, object_id = ''):
     object = DeviceDetails.objects.get(pk = object_id)
 

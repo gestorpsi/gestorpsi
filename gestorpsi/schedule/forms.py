@@ -80,15 +80,15 @@ class SplitDateTimeWidget(forms.MultiWidget):
 
 class ScheduleSingleOccurrenceForm(SingleOccurrenceForm):
     room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=forms.Select(attrs={'class':'extramedium asm', }))
-    device = forms.ModelMultipleChoiceField(required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
-    annotation = forms.CharField(required = False, widget=forms.Textarea())
+    device = forms.ModelMultipleChoiceField(required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'multiselectable', }))
+    annotation = forms.CharField(required = False, widget=forms.Textarea(attrs={'class':'giant'}))
     
     class Meta:
         model = ScheduleOccurrence
 
 class ScheduleOccurrenceForm(MultipleOccurrenceForm):
     room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=forms.Select(attrs={'class':'extramedium asm', }))
-    device = forms.ModelMultipleChoiceField(required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
+    device = forms.ModelMultipleChoiceField(required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'multiselectable', }))
     annotation = forms.CharField(required = False, widget=forms.Textarea())
     start_time_delta = forms.IntegerField(
         label='Start time',
@@ -124,7 +124,10 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
 class OccurrenceConfirmationForm(forms.ModelForm):
     date_started = forms.DateTimeField(label=_('Time Started'), widget=SplitSelectDateTimeWidget(minute_step=5))
     date_finished = forms.DateTimeField(label=_('Time Finished'), widget=SplitSelectDateTimeWidget(minute_step=5))
-    
+    device = forms.ModelMultipleChoiceField(label=_('Utilized Devices in Session'), required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'multiselectable', }))
+    reason = forms.CharField(label=_('Unmark or Reschedule Reason (if exists)'), required = False, widget=forms.Textarea(attrs={'class':'giant'}))
+    anotation = forms.CharField(label=_('Anotation'), required = False, widget=forms.Textarea(attrs={'class':'giant'}))
+
     def __init__(self, *args, **kwargs):
         super(OccurrenceConfirmationForm, self).__init__(*args, **kwargs)
         self.initial.setdefault('date_started', self.initial.get('start_time'))
@@ -134,6 +137,6 @@ class OccurrenceConfirmationForm(forms.ModelForm):
 
     class Meta:
         model = OccurrenceConfirmation
-        fields = ('date_started', 'date_finished', 'presence', 'unmarked', 'remarked', 'reason')
+        fields = ('date_started', 'date_finished', 'presence', 'unmarked', 'remarked', 'reason', 'device')
     
     

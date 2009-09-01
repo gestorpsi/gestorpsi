@@ -56,9 +56,13 @@ $(function() {
         <div style="clear:both"></div>
         <label>{{ form.reason.label }}<br />
         {{ form.reason }}
-        </label>            
+        </label>
+        <label>{{ form.device.label }}<br /></label>
+        <div>
+        {{ form.device }}
+        </div>        
         <label>{% trans "Notes" %}<br />
-        <textarea cols="40" rows="10" name="occurrence_annotation">{% if occurrence.annotation %}{{ occurrence.annotation }}{% endif %}</textarea>
+        <textarea rows="10" name="occurrence_annotation" class="giant">{% if occurrence.annotation %}{{ occurrence.annotation }}{% endif %}</textarea>
         </label>            
     </fieldset>
   <br />

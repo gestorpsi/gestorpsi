@@ -23,6 +23,7 @@ from django.template.context import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response, HttpResponse
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
+from django.db.models import Q
 from swingtime.utils import create_timeslot_table
 from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation
 from gestorpsi.referral.models import Referral, ReferralGroup
@@ -35,6 +36,7 @@ from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccur
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.schedule.forms import OccurrenceConfirmationForm
+from gestorpsi.device.models import DeviceDetails
 
 @permission_required_with_403('schedule.schedule_list')
 def schedule_occurrence_listing(request, year = 1, month = 1, day = None, 
@@ -82,7 +84,6 @@ def add_event(
             redirect_to = redirect_to or '/schedule/events/%s/' % event.id
             request.user.message_set.create(message=_('Schedule saved successfully'))
             return http.HttpResponseRedirect(redirect_to)
-
     else:
         if 'dtstart' in request.GET:
             try:
@@ -92,7 +93,7 @@ def add_event(
                 dtstart = datetime.now()
 
         try:
-            room = request.GET['room']
+            room = Room.objects.get(pk=request.GET['room'])
         except:
             room = None
         
@@ -112,8 +113,10 @@ def add_event(
             dtstart=dtstart, 
             day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"), 
             until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
-            room=request.GET['room'],
+            room=room.id,
             ))
+
+        recurrence_form.fields['device'].queryset = DeviceDetails.objects.filter(Q(room = room, mobility="1") | Q(place =  room.place, room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=False) | Q(room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=True))
 
     return render_to_response(
         template,
@@ -122,10 +125,10 @@ def add_event(
             event_form=event_form, 
             recurrence_form=recurrence_form, 
             group  = ReferralGroup.objects.filter(referral__organization = request.user.get_profile().org_active),
-            room = Room.objects.get(pk=room),
+            room = room,
             object = client,
             referral = referral,
-            room_id=room,
+            room_id=room.id,
             ),
         context_instance=RequestContext(request)
     )
@@ -191,7 +194,7 @@ def occurrence_view(
             print form.errors
     else:
         form = form_class(instance=occurrence, initial={'start_time':occurrence.start_time})
-        
+        form.fields['device'].queryset = DeviceDetails.objects.filter(Q(room = occurrence.room, mobility="1") | Q(place =  occurrence.room.place, room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=False) | Q(room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=True))
     return render_to_response(
         template,
         dict(occurrence=occurrence, form=form),
@@ -243,7 +246,13 @@ def occurrence_confirmation_form(
                 context_instance=RequestContext(request)
             )
     else:
-        form = form_class(instance=occurrence_confirmation, initial={'occurrence':occurrence, 'start_time':occurrence.start_time, 'end_time':occurrence.end_time})
+        form = form_class(instance=occurrence_confirmation, initial={
+            'occurrence':occurrence, 
+            'start_time':occurrence.start_time, 
+            'end_time':occurrence.end_time,
+            'device': [device.pk for device in occurrence.device.all()],
+            })
+        form.fields['device'].queryset = DeviceDetails.objects.filter(Q(room = occurrence.room, mobility="1") | Q(place =  occurrence.room.place, room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=False) | Q(room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=True))
         
     return render_to_response(
         template,
@@ -378,6 +387,12 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
         array[i]['client'] = {}
         for c in o.event.referral.client.all():
             array[i]['client'][sub_count] = ({'id':c.id, 'name':c.person.name})
+            sub_count = sub_count + 1
+        
+        sub_count = 0
+        array[i]['device'] = {}
+        for o in o.scheduleoccurrence.device.all():
+            array[i]['device'][sub_count] = ({'id':o.id, 'name': ("%s - %s - %s" % (o.device.description, o.brand, o.model)) })
             sub_count = sub_count + 1
 
         i = i + 1

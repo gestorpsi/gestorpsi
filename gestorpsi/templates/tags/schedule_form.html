@@ -106,12 +106,12 @@ GNU General Public License for more details.
             <fieldset>
             <legend>{% trans "Schedule Details" %}</legend>
                 <label>{% trans "Notes" %}<br />
-                <textarea name="annotation" class="extrabig" rows="10"></textarea>
+                <textarea name="annotation" class="giant" rows="10"></textarea>
                 </label>
-                <label>{% trans "Devices" %}<br />
-                   <select name="device" class="extrabig multiple asm" id="id_device" multiple="multiple">
-                   </select>
-                </label>            
+                <label>{% trans "Devices" %}<br /></label>
+                <div>
+                    {{ recurrence_form.device }}
+                </div>            
             </fieldset>
             
             <fieldset>
@@ -135,6 +135,9 @@ GNU General Public License for more details.
                 <label>{% trans "Frequency Period" %}</label>
                 <div class="switch" clean="occurrence_freq">
                 {{ recurrence_form.freq }}
+                <script>
+                    $(function() { $('label[for=id_freq_3]').hide() });
+                </script>
                 </div>
                 <div style="clear:both;"></div>
                 <label>{% trans "Interval" %}<br />

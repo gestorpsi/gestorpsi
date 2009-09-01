@@ -60,6 +60,7 @@ class OccurrenceConfirmation(models.Model):
     unmarked = models.BooleanField(_('Occurrence Unmarked'), default = False)
     remarked = models.BooleanField(_('Occurrence Rescheduled'), default = False)
     reason = models.TextField(_('Unmark or Reschedule Reason (if exists)'), blank = True)
+    device = models.ManyToManyField(DeviceDetails, null=True, blank=True)
 
     def __unicode__(self):
         return u'%s' % self.get_presence_display()

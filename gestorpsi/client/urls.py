@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django.conf.urls.defaults import *
 from django.contrib.auth.decorators import login_required
-from gestorpsi.client.views import index, list, form, save, delete, print_list, print_record, organization_clients, add, home, order, referral_save, referral_list, referral_home, referral_form, referral_discharge_form, schedule_daily, schedule_add, occurrence_confirmation, occurrence_view, referral_occurrences, referral_plus_form, referral_plus_save, referral_queue, referral_queue_save, referral_queue_remove
+from gestorpsi.client.views import index, list, form, save, delete, print_list, print_record, organization_clients, add, home, order, referral_save, referral_list, referral_home, referral_form, referral_discharge_form, schedule_daily, schedule_add, occurrence_confirmation, occurrence_view, referral_occurrences, referral_plus_form, referral_plus_save, referral_queue, referral_queue_save, referral_queue_remove, referral_ext_form, referral_ext_save
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
@@ -38,6 +38,9 @@ urlpatterns = patterns('',
     (r'^organization_clients/$', login_required(organization_clients)),  # clients for logged otganization
     
     # referral
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/ext/(?P<referral_id>\d+)/form/$', login_check(referral_ext_form)), # referral external form
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/ext/(?P<referral_id>\d+)/save/$', login_check(referral_ext_save)), # referral external save
+
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/form/$', login_check(referral_form)), # add form
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/plus/form/$', login_check(referral_plus_form)), # add form plus
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/form/$', login_check(referral_form)), # edit form

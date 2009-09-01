@@ -39,8 +39,8 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.person.views import person_save
 from gestorpsi.phone.models import PhoneType
-from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, ReferralAttach, REFERRAL_ATTACH_TYPE, Queue
-from gestorpsi.referral.forms import ReferralForm, ReferralDischargeForm, QueueForm
+from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, ReferralAttach, REFERRAL_ATTACH_TYPE, Queue, ReferralExternal
+from gestorpsi.referral.forms import ReferralForm, ReferralDischargeForm, QueueForm, ReferralExtForm
 from gestorpsi.reports.header import header_gen
 from gestorpsi.reports.footer import footer_gen
 from gestorpsi.util.decorators import permission_required_with_403
@@ -406,6 +406,7 @@ def referral_home(request, object_id = None, referral_id = None):
     referral = Referral.objects.get(pk=referral_id)
     organization = user.get_profile().org_active.id
     queues = Queue.objects.filter(referral=referral_id)
+    referrals = ReferralExternal.objects.filter(referral=referral_id)
 
     discharged_list = object.referrals_discharged()
     if discharged_list.filter(pk = referral_id).count():
@@ -611,4 +612,45 @@ def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id =
     queues = Queue.objects.filter(referral=referral_id)
 
     request.user.message_set.create(message=_('Referral saved successfully'))
+    return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))
+
+def referral_ext_form(request, object_id ='', referral_id=''):
+    object = Client.objects.get(pk = object_id)
+    referral = Referral.objects.get(pk = referral_id)
+    organizations = Organization.objects.all()
+
+    contact_professionals = Contact.objects.filter(
+                                                org_id = request.user.get_profile().org_active.id,
+                                                person_id = request.user.get_profile().person.id,
+                                                filter_name = None,
+                                                filter_type = 2
+                                                )
+
+    contact_organizations = Contact.objects.filter(
+                                                org_id = request.user.get_profile().org_active.id, 
+                                                person_id = request.user.get_profile().person.id, 
+                                                filter_name = None,
+                                                filter_type = 1
+                                                )
+
+    form = ReferralExtForm()
+    return render_to_response('client/client_referral_ext.html', locals(), context_instance=RequestContext(request))
+
+def referral_ext_save(request, object_id = '', referral_id=''):
+    object = get_object_or_None(Client, pk = object_id)
+    referral = get_object_or_None(Referral, pk = referral_id)
+    form = ReferralExtForm(request.POST) 
+    queues = Queue.objects.filter(referral=referral_id)
+    referrals = ReferralExternal.objects.filter(referral=referral_id)
+
+    if form.is_valid():
+        referral_ext = ReferralExternal() 
+        referral_ext = form.save(commit=False)
+        referral_ext.professional = get_object_or_None(CareProfessional, pk = request.POST.get('professional') )
+        referral_ext.organization = get_object_or_None(Organization, pk = request.POST.get('organization') )
+        referral_ext.save()
+    else:
+        print form.errors
+
+    request.user.message_set.create(message=_('External Referral saved successfully'))
     return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))

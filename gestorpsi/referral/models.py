@@ -284,3 +284,9 @@ class ReferralReferral(models.Model):
 
 reversion.register(ReferralReferral, follow=['client'])
 
+class ReferralExternal(models.Model):
+    comments = models.TextField(_('comments'), blank=True)
+    date = models.DateTimeField(_('Data'), auto_now_add=True)
+    referral = models.ForeignKey('Referral')
+    organization = models.ForeignKey(Organization, null=True)
+    professional = models.ForeignKey(CareProfessional, null=True)

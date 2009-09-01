@@ -74,10 +74,6 @@ GNU General Public License for more details.
 
 </div>
 
-
-
-
-
 <div class="main_area home">
 	<!-- <a href="" id="help">&nbsp;</a> -->
 	<!-- DataTypes form menu -->
@@ -172,6 +168,32 @@ GNU General Public License for more details.
                         <tr>
                                 <td nowrap="nowrap"><span class="date"> {% trans "Date Out" %} {{ a.date_out|date:"d-m-Y" }} - {{ a.date_out|date:"P" }}</span></td>
                                 <span></span>
+                        </tr>
+                </table>
+                </label>
+        {% endfor %}
+    {% else %}
+             <p class="empty">Nenhum serviço na fila.</p>
+    {% endif %}
+</div>
+
+<div class="main_area home">
+	<h3><span>{% trans "External Referral" %}</span></h3>
+    {% if referrals %}
+            {% for a in referrals %}
+                <label> {{ a.referral }} - {{ a.referral.priority }}
+                <table class="nozebra">
+                        <tr>
+                                <td nowrap="nowrap"><span class="date"> {% trans "Date" %} {{ a.date|date:"d-m-Y" }} - {{ a.date_in|date:"P" }}</span></td>
+                        </tr>
+                        <tr>
+                                <td><span>{% trans "Comments" %}{{ a.comments }}</span> </td>
+                        </tr>
+                        <tr>
+                                <td><span>{% trans "Professional" %} {{ a.professional }}</span> </td>
+                        </tr>
+                        <tr>
+                                <td><span>{% trans "Organization" %} {{ a.organization }}</span> </td>
                         </tr>
                 </table>
                 </label>

@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django import forms
-from gestorpsi.referral.models import Referral, ReferralPriority, ReferralImpact, ReferralGroup, ReferralDischarge, Queue
+from gestorpsi.referral.models import Referral, ReferralPriority, ReferralImpact, ReferralGroup, ReferralDischarge, Queue, ReferralExternal
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client 
 from gestorpsi.service.models import Service
@@ -66,3 +66,8 @@ class QueueForm(forms.ModelForm):
     class Meta:
         fields = ('comments', 'client', 'referral')
         model = Queue
+
+class ReferralExtForm(forms.ModelForm):
+    class Meta:
+        fields = ('comments','referral')
+        model = ReferralExternal

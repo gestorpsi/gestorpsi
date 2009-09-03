@@ -131,15 +131,13 @@ $(function() {
       $(this).mask($(this).attr('mask'));
     });
 
-    $("form input:text[name=dataNasc]").keyup(function(){
+    $("form input:text[name=dateBirth]").keyup(function(){
       displayAge();
     });
-
 
     /**
      * reload city combo
      */
-
 
     $('#form_organization label.state select.city_search, label.state select.city_search').each(function() {
         if($(this).attr('city') > 0) {

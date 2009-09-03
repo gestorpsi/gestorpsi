@@ -27,19 +27,19 @@ People Personal Profile Form
         <legend>{% trans "Personal Profile" %}</legend>
 
             <label>{% trans "Birthdate ( dd/mm/yyyy )" %}<br />
-                <input mask="99/99/9999" class="calendar" type="text" name="dataNasc" id="dataNasc" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate|date:"d/m/Y" }}{% endifnotequal %}" />
+                <input mask="99/99/9999" class="calendar" type="text" name="dateBirth" id="dateBirth" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate|date:"d/m/Y" }}{% endifnotequal %}" />
             </label>
 
 
         <label> {% trans "Age" %} <br />
-            <input class="calendar" type="text" name="Anos" id="Anos" onchange="displayAge();" value="{% if object.person.birthDate %}{{ object.person.birthDate|age }}{% endif %}"/>
+            <input class="calendar" type="text" name="Years" id="Years" onchange="displayAge();" value="{% if object.person.birthDate %}{{ object.person.birthDate|age }}{% endif %}"/>
         </label>
         
          <br />
          <br />
 
         <label>
-            <input name="aprox" type="checkbox" id="aprox" {% if object.person.birthDateSupposed  %} checked="checked" {% endif %}  onclick="datOuIdade();" />
+            <input name="aprox" type="checkbox" id="aprox" {% if object.person.birthDateSupposed  %} checked="checked" {% endif %}  onclick="dateOrAge();" />
             {% trans "Date of birth supposedly from the age" %} 
         </label>
         

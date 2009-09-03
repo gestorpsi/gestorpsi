@@ -39,21 +39,21 @@ function personInLine(list) {
  * calula idade
  */
 
-function datOuIdade() {
+function dateOrAge() {
     if (document.getElementById('aprox').checked==false) {
-        document.getElementById('Anos').disabled=true;
-        document.getElementById('Anos').value="";
-        document.getElementById('dataNasc').disabled=false;
+        document.getElementById('Years').disabled=true;
+        document.getElementById('Years').value="";
+        document.getElementById('dateBirth').disabled=false;
     }else{
-        document.getElementById('dataNasc').disabled=true;
-        document.getElementById('dataNasc').value="";
-        document.getElementById('Anos').disabled=false;
+        document.getElementById('dateBirth').disabled=true;
+        document.getElementById('dateBirth').value="";
+        document.getElementById('Years').disabled=false;
     }
 }
-function calculaidade() {
+function CalcAge() {
 
-    dNasc = document.getElementById('dataNasc').value;
-    x = dNasc.split("/");
+    dBirth = document.getElementById('dateBirth').value;
+    x = dBirth.split("/");
     var mm = x[1];
     var dd = x[0];
     var yy = x[2];
@@ -77,26 +77,26 @@ function calculaidade() {
     else
         return ""
 }
-function calculaData() {
-    idade = document.getElementById('Anos').value;
+function calcDate() {
+    age = document.getElementById('Years').value;
     
     var thedate = new Date()
     var mm2 = thedate.getMonth() + 1;
     var dd2 = thedate.getDate();
     var yy2 = thedate.getFullYear();
     
-    var anoNasc = yy2 - idade;
+    var yearBirth = yy2 - age;
     
-    var dtNasc = dd2 + "/" + mm2 + "/" + anoNasc;
-    return dtNasc;
+    var dtBirth = dd2 + "/" + mm2 + "/" + yearBirth
+    return dtBirth;
 
 }
 
 function displayAge() {
-    if (document.getElementById('dataNasc').value == "") {
-        document.getElementById('dataNasc').value = calculaData();
+    if (document.getElementById('dateBirth').value == "") {
+        document.getElementById('dateBirth').value = calcDate();
     }else{
-        document.getElementById('Anos').value = calculaidade();
+        document.getElementById('Years').value = CalcAge();
     }
 }
 

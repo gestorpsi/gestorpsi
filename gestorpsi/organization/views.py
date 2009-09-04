@@ -42,7 +42,7 @@ def professional_responsible_save(request, object, ids, names, subscriptions, or
             obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x] ))
         else:
             # Whit Profession of the Professional
-            obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x], profession=Profession.objects.get(id=professions[x])))
+            obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x], profession=get_object_or_None(Profession, pk=professions[x])))
 
         if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):
             obj.save()

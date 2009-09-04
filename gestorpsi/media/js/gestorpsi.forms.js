@@ -82,7 +82,7 @@ function reloadCities(el) {
 
 function reload_symbol_profession() { 
     $("select.profession_type option").click(function(){
-        $("input.profession_symbol[id="+this.id+"]").val($(this).attr("symbol"));
+        $(this).parents('fieldset').children('label').children('input.profession_symbol').val($(this).attr("symbol"));
     });
 }
 

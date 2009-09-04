@@ -63,11 +63,10 @@ GNU General Public License for more details.
         <input name="legacyRecord" maxlength="15" type="text" class="medium" value="{{ object.legacyRecord }}" /></label>
         <label>{% trans "Admission Date" %}<br />
         <input name="admission_date" type="text" class="medium" value="{% if not object.admission_date %}{% now "d/m/Y" %}{% else %}{{ object.admission_date|date:"d/m/Y" }}{% endif %}" mask="99/99/9999" /></label>
-        <label>{% trans "Health Document" %}<br />
-        <input name="healthDocument" maxlength="15" type="text" class="big" value="{{ object.healthDocument }}" /></label>
-
         </fieldset>
-
+ {% for i in banana %}ae
+                                {{ i }}
+                        {% endfor %}
         <!-- How the client heard about this organization -->
         <div class="admission_referral">
 		<fieldset>
@@ -80,45 +79,33 @@ GNU General Public License for more details.
                 </select>
         </label>
 
-                <!-- show PROF or ORG. if user choose org, hide prof and show org, contrariwise -->
+        <!-- show PROF or ORG. if user choose org, hide prof and show org, contrariwise -->
 
-               <div class="admission_ref_org" {% ifnotequal object.admissionreferral_set.all.0.referral_choice_id 7 %} style="display:none;"{% endifnotequal %}>
-                <label 	class="organization"> {% trans "Select Organization, or"%}
-                     <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
-                      <select name="referral_organization" class="select extrabig asm">
-                       <option>Escolha...</option>
-                        {% for org in contact_organizations %}
-                            <option value="{{ org.id }}" {% ifequal org.id object.admissionreferral_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org }}</option>
-                        {% endfor %}
-                      </select>
-                </label>
-               </div>
-                    
-               <div class="admission_ref_prof" {% ifnotequal object.admissionreferral_set.all.0.referral_choice_id 8 %} style="display:none;" {% endifnotequal %} >
-                <label 	class="professional"> {% trans "Select Professional, or"%}
-                     <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
-                      <select name="referral_professional" class="select extrabig asm">
-                       <option>Escolha...</option>
-                        {% for prof in contact_professionals %}
-                            <option value="{{ prof.id }}" {% ifequal prof.id object.admissionreferral_set.all.0.referral_professional_id %} selected {% endifequal %}>{{ prof }}</option>
-                        {% endfor %}
-                      </select>
-                </label>
-               </div>
+        <div class="admission_ref_org" {% ifnotequal object.admissionreferral_set.all.0.referral_choice_id 7 %} style="display:none;"{% endifnotequal %}>
+        <label 	class="organization"> {% trans "Select Organization, or"%}
+             <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
+              <select name="referral_organization" class="select extrabig asm">
+               <option>Escolha...</option>
+                {% for org in contact_organizations %}
+                    <option value="{{ org.id }}" {% ifequal org.id object.admissionreferral_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org }}</option>
+                {% endfor %}
+              </select>
+        </label>
+        </div>
+            
+        <div class="admission_ref_prof" {% ifnotequal object.admissionreferral_set.all.0.referral_choice_id 8 %} style="display:none;" {% endifnotequal %} >
+        <label 	class="professional"> {% trans "Select Professional, or"%}
+             <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
+              <select name="referral_professional" class="select extrabig asm">
+               <option>Escolha...</option>
+                {% for prof in contact_professionals %}
+                    <option value="{{ prof.id }}" {% ifequal prof.id object.admissionreferral_set.all.0.referral_professional_id %} selected {% endifequal %}>{{ prof }}</option>
+                {% endfor %}
+              </select>
+        </label>
+        </div>
         </fieldset>
-       </div>
-
-        <fieldset>
-                <legend>{% trans "Parents" %}</legend>
-                        {% if not object.person_link.all %}
-                                {% include "tags/people_parent.html" %}
-                        {% else %}
-                                {% for p in object.person_link.all %}
-                                        {% include "tags/people_parent.html" %}
-                                {% endfor %}
-                        {% endif %}
-                <a class="add_to_form"><span>{% trans "Add Parent" %}</span></a>
-        </fieldset>
+        </div>
 
         <fieldset style="display:none">
         <legend>{% trans "Forwards" %}</legend>
@@ -140,14 +127,14 @@ GNU General Public License for more details.
                         </tbody>
                 </table>
         </div>
-
-
-        <label>{% trans "Admission reason" %}<br />
+        
+        <label>{% trans "Admission reason" %}<br />a
         <textarea name="" cols="" rows="3" class="giant"></textarea></label>
 
         </fieldset>
 
         <fieldset>
+        <legend>{% trans "Indications" %}</legend>
         <label>{% trans "Comments" %}<br />
         <textarea name="comments" cols="" rows="8" class="giant">{{ object.comments }}</textarea></label>
 

@@ -16,9 +16,60 @@ GNU General Public License for more details.
 
 import reversion
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
+from django.db.models import Q
 from gestorpsi.person.models import Person
 from gestorpsi.util.uuid_field import UuidField
 
+CLIENT_STATUS = ( ('0','Inativo'),('1','Ativo'))
+
+FAMILY_RELATION = ( 
+    (1, _('Parents')),
+    (2, _('Children')),
+    (3, _('Siblings')),
+    (4, _('Step parents')),
+    (5, _('Stepchildren')),
+    (6, _('Half sibling or stepsibling')),
+    (7, _('Uncles')),
+    (8, _('Nephews')),
+    (9, _('Cousins')),
+    (10, _('Grandparents')),
+    (11, _('Grandchildren')),
+    (12, _('Spouse')),
+)
+
+FAMILY_RELATION_REVERSE = ( 
+    (1, _('Children')),
+    (2, _('Parents')),
+    (3, _('Siblings')),
+    (4, _('Stepchildren')),
+    (5, _('Step parents')),
+    (6, _('Half sibling or stepsibling')),
+    (7, _('Nephews')),
+    (8, _('Uncles')),
+    (9, _('Cousins')),
+    (10, _('Grandchildren')),
+    (11, _('Grandparents')),
+    (12, _('Spouse')),
+)
+
+
+class MaritalStatus(models.Model):
+    description = models.CharField(max_length=20)
+    def __unicode__(self):
+        return u"%s" % self.description
+    class Meta:
+        ordering = ['description']
+
+class Family(models.Model):
+    client = models.ForeignKey('Client', related_name='family_client_selected', null=True, blank=True)
+    client_related = models.ForeignKey('Client', related_name='family_client_related', null=True, blank=True)
+    relation_level = models.IntegerField(choices = FAMILY_RELATION, max_length=2, null=True, blank=True)
+
+    def __unicode__(self):
+        return u"%s" % self.get_relation_level_display()
+
+''' class not in use! moved to parents relations to class Family. removing soon  ''' 
 class Relation(models.Model):
     description = models.CharField(max_length=30)
     def __unicode__(self):
@@ -26,6 +77,7 @@ class Relation(models.Model):
     class Meta:
         ordering = ['description']
 
+''' class not in use! moved to parents relations to class Family. removing soon ''' 
 class PersonLink(models.Model):
     id = UuidField(primary_key=True)
     person = models.OneToOneField(Person)
@@ -34,16 +86,13 @@ class PersonLink(models.Model):
     def __unicode__(self):
         return u"%s" % self.person.name
 
-CLIENT_STATUS = ( ('0','Inativo'),('1','Ativo'))
 class Client(models.Model):
     id = UuidField(primary_key=True)
     person = models.OneToOneField(Person)
     idRecord = models.PositiveIntegerField()
     legacyRecord = models.CharField(max_length=15)
-    healthDocument = models.CharField(max_length=15)
     admission_date = models.DateField(null=True)
     clientStatus = models.CharField(max_length=1, default='1', choices=CLIENT_STATUS)
-    person_link = models.ManyToManyField(PersonLink)
     comments = models.TextField(blank=True)
 
     def __unicode__(self):
@@ -60,9 +109,24 @@ class Client(models.Model):
 
     def referrals_discharged(self):
         return self.referral_set.discharged().filter(client=self)
+    
+    def family_members(self):
+        family_list = []
+        for i in Family.objects.filter(Q(client=self) | Q(client_related=self)).order_by('relation_level','client__person__name', 'client_related__person__name'):
+            id = i.client.id if not i.client == self else i.client_related.id
+            name = i.client if not i.client == self else i.client_related
+            dict = {}
+            if not i.client == self:
+                for x,y in FAMILY_RELATION_REVERSE:
+                    dict[x] = y.__unicode__()
+                relation_level = dict[i.relation_level]
+            else:
+                relation_level = i.get_relation_level_display()
 
-reversion.register(Client, follow=['person', 'person_link','indication'])
-reversion.register(PersonLink)
+            family_list.append([id, name, relation_level])
+        
+        return family_list
 
-
+reversion.register(Client, follow=['person', ])
+reversion.register(Family)
 

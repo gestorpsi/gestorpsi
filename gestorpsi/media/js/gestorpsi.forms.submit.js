@@ -304,6 +304,29 @@ $(function() {
         }
     });
 
+
+     /**
+      *
+      * client family post form
+      *
+      * _description:
+      * validate and post family client form.
+      *
+      */
+
+
+    $('form.form_family').validate({
+        rules: {
+            name: "required",
+            relation_level: "required"
+        },
+        messages: {
+            name: 'Preenchimento Necessário',
+            relation_level: 'Preenchimento Necessário'
+        }
+    });
+
+
      /**
      *
      * support form

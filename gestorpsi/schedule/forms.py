@@ -124,7 +124,7 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
 class OccurrenceConfirmationForm(forms.ModelForm):
     date_started = forms.DateTimeField(label=_('Time Started'), widget=SplitSelectDateTimeWidget(minute_step=5))
     date_finished = forms.DateTimeField(label=_('Time Finished'), widget=SplitSelectDateTimeWidget(minute_step=5))
-    device = forms.ModelMultipleChoiceField(label=_('Utilized Devices in Session'), required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'multiselectable', }))
+    device = forms.ModelMultipleChoiceField(label=_('Devices utilized in this session'), required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'multiselectable', }))
     reason = forms.CharField(label=_('Unmark or Reschedule Reason (if exists)'), required = False, widget=forms.Textarea(attrs={'class':'giant'}))
     anotation = forms.CharField(label=_('Anotation'), required = False, widget=forms.Textarea(attrs={'class':'giant'}))
 

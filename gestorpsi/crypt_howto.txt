@@ -379,8 +379,7 @@ CREATE TABLE "client_client_crypt" (
     "id" varchar(36) NOT NULL PRIMARY KEY,
     "person_id" varchar(36) NOT NULL UNIQUE REFERENCES "person_person_crypt" ("id") DEFERRABLE INITIALLY DEFERRED,
     "idRecord" integer NOT NULL,
-    "legacyRecord" varchar(250) NOT NULL,
-    "healthDocument" varchar(250) NOT NULL,
+    "legacyRecord" varchar(15) NOT NULL,
     "admission_date" date,
     "clientStatus" varchar(1) NOT NULL,
     "comments" text NOT NULL
@@ -391,7 +390,6 @@ CREATE OR REPLACE VIEW client_client
             "person_id",
             "idRecord",
             gestorpsi_decrypt("legacyRecord") as "legacyRecord",
-            gestorpsi_decrypt("healthDocument") as "healthDocument",
             "admission_date",
             "clientStatus",
             "comments"
@@ -405,7 +403,6 @@ CREATE OR REPLACE RULE rule_insert_client_client AS ON INSERT
              NEW."person_id",
              NEW."idRecord",
              gestorpsi_encrypt(NEW."legacyRecord"),
-             gestorpsi_encrypt(NEW."healthDocument"),
              NEW."admission_date",
              NEW."clientStatus",
              NEW."comments");
@@ -417,7 +414,6 @@ CREATE OR REPLACE RULE rule_update_client_client AS ON UPDATE
              "person_id" = NEW."person_id",
              "idRecord" = NEW."idRecord",
              "legacyRecord" = gestorpsi_encrypt(NEW."legacyRecord"),
-             "healthDocument" = gestorpsi_encrypt(NEW."healthDocument"),
              "admission_date" = NEW."admission_date",
              "clientStatus" = NEW."clientStatus",
              "comments" = NEW."comments"

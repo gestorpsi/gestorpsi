@@ -20,11 +20,12 @@ GNU General Public License for more details.
 
     <h3>{% trans 'Client Details' %}</h3>
     <ul>
-        <li><a href="/client/{{ object.id }}/home/" class="client_home" title="{{ object.person.name }}">{% trans "Client Home" %}</a></li>
-        <li><a href="/client/{{ object.id }}/" class="client_form" title="{{ object.person.name }}">{% trans "Demographic Data" %}</a></li>
+        <li><a href="/client/{{ object.id }}/home/" class="client_home" title="{% trans "Client Home" %}">{% trans "Client Home" %}</a></li>
+        <li><a href="/client/{{ object.id }}/" class="client_form" title="{% trans "Demographic Data" %}">{% trans "Demographic Data" %}</a></li>
+        <li><a href="/client/{{ object.id }}/family/" class="client_family" title="{% trans "Client Family" %}">{% trans "Client Family" %}</a></li>
             {% if object.referral_set.all %}
-                <li><a href="/client/{{ object.id }}/referral/" class="client_referral_list" title="{{ object.person.name }}">{% trans "Subscribed Services" %}</a></li>
-                <li><a href="/client/{{ object.id }}/referral/discharged/" class="client_referral_discharge" title="{{ object.person.name }}">{% trans "Discharged Services" %}</a></li>
+                <li><a href="/client/{{ object.id }}/referral/" class="client_referral_list" title="{% trans "Subscribed Services" %}">{% trans "Subscribed Services" %}</a></li>
+                <li><a href="/client/{{ object.id }}/referral/discharged/" class="client_referral_discharge" title="{% trans "Discharged Services" %}">{% trans "Discharged Services" %}</a></li>
             {% endif %}
     </ul>
     <h3>{% trans 'Client Actions' %}</h3>

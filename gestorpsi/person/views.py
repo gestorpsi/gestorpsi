@@ -124,31 +124,47 @@ def person_type_url(person):
     except:
         pass
 
-def person_json_list(request, object, perm, page):
+def person_json_list(request, object, perm, page, no_paging = False):
     object_length = len(object)
-    paginator = Paginator(object, settings.PAGE_RESULTS)
-    object = paginator.page(page)
-
+    
     array = {} #json
     i = 0
 
+    if not no_paging:
+        paginator = Paginator(object, settings.PAGE_RESULTS)
+        object = paginator.page(page)
+        object_list = object.object_list
+        paginator_has_previous = object.has_previous().real
+        paginator_has_next = object.has_next().real
+        paginator_previous_page_number = object.previous_page_number().real
+        paginator_next_page_number = object.next_page_number().real
+        paginator_actual_page = object.number
+        paginator_num_pages = paginator.num_pages
+        
+        array['paginator'] = {}
+        for p in paginator.page_range:
+            array['paginator'][p] = p
+    else:
+        object_list = object
+        paginator_has_previous = None
+        paginator_has_next = None
+        paginator_previous_page_number = None
+        paginator_next_page_number = None
+        paginator_actual_page = None
+        paginator_num_pages = None
+
     array['util'] = {
         'has_perm_read': request.user.has_perm(perm),
-        'paginator_has_previous': object.has_previous().real,
-        'paginator_has_next': object.has_next().real,
-        'paginator_previous_page_number': object.previous_page_number().real,
-        'paginator_next_page_number': object.next_page_number().real,
-        'paginator_actual_page': object.number,
-        'paginator_num_pages': paginator.num_pages,
+        'paginator_has_previous': paginator_has_previous,
+        'paginator_has_next': paginator_has_next,
+        'paginator_previous_page_number': paginator_previous_page_number,
+        'paginator_next_page_number': paginator_next_page_number,
+        'paginator_actual_page': paginator_actual_page,
+        'paginator_num_pages': paginator_num_pages,
         'object_length': object_length,
     }
-
     
-    array['paginator'] = {}
-    for p in paginator.page_range:
-        array['paginator'][p] = p
-    
-    for c in object.object_list:
+    for c in object_list:
         try:
             username = c.user.username
         except:

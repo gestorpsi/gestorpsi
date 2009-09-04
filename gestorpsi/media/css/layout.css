@@ -783,6 +783,10 @@ li a.list {
         background: url(../img/16/edit-delete.png) no-repeat 0 3px;
 }
 
+.sidebar li .client_family {
+        background: url(../img/16/client_family.png) no-repeat 0 3px;
+}
+
 .sidebar li .contact_order {
         background: url(../img/16/edit-delete.png) no-repeat 0 3px;
 }
@@ -1283,8 +1287,8 @@ div.form_mini input[type=text] {
 
 
 div.main_area.home p {
-	font-size: 12px;
-	line-height: 16px !important;
+	font-size: 14px;
+	line-height: 18px !important;
 }
 
 div.main_area.home p a {

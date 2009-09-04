@@ -33,6 +33,7 @@ from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.careprofessional.views import Profession
 from gestorpsi.client.models import Client, Relation
 from gestorpsi.client.reports import ClientRecord, ClientList
+from gestorpsi.client.forms import FamilyForm
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.organization.models import Organization
@@ -113,7 +114,7 @@ def add(request):
 
 
 @permission_required_with_403('client.client_list')
-def list(request, page = 1, initial = None, filter = None):
+def list(request, page = 1, initial = None, filter = None, no_paging = False):
     user = request.user
     if user.groups.filter(name='administrator').count() == 1 or user.groups.filter(name='secretary').count() == 1:
         object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
@@ -126,7 +127,7 @@ def list(request, page = 1, initial = None, filter = None):
     if filter:
         object = object.filter(person__name__icontains = filter)
 
-    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'client.client_read', page)),
+    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'client.client_read', page, no_paging)),
                             mimetype='application/json')
 
 # add or edit form
@@ -342,13 +343,14 @@ def referral_save(request, object_id = None, referral_id = None):
             form.save_m2m()
 
             """ Indication  Section """
-            indication = Indication()
-            indication.indication_choice = IndicationChoice.objects.get(pk=request.POST.get('indication'))
-            indication.referral_organization = get_object_or_None(Organization, id=request.POST.get('indication_organization'))
-            indication.referral_professional = get_object_or_None(CareProfessional, id=request.POST.get('indication_professional'))
-            # indication.client = Client.objects.get(pk = object_id)
-            indication.referral = Referral.objects.get(pk = object)
-            indication.save()
+            if request.POST.get('indication'):
+                indication = Indication()
+                indication.indication_choice = IndicationChoice.objects.get(pk=request.POST.get('indication'))
+                indication.referral_organization = get_object_or_None(Organization, id=request.POST.get('indication_organization'))
+                indication.referral_professional = get_object_or_None(CareProfessional, id=request.POST.get('indication_professional'))
+                # indication.client = Client.objects.get(pk = object_id)
+                indication.referral = Referral.objects.get(pk = object)
+                indication.save()
 
         else:
             print form.errors
@@ -572,7 +574,7 @@ def referral_occurrences(request, object_id = None, referral_id = None, type = '
     
     return render_to_response('client/client_referral_occurrences.html', locals(), context_instance=RequestContext(request))
     
-    
+@permission_required_with_403('referral.referral_read')
 def referral_queue(request, object_id = '',  referral_id = ''):
     object = get_object_or_None(Client, pk = object_id)
     referral = get_object_or_None(Referral, pk = referral_id)
@@ -581,6 +583,7 @@ def referral_queue(request, object_id = '',  referral_id = ''):
 
     return render_to_response('client/client_referral_queue.html', locals(), context_instance=RequestContext(request))
 
+@permission_required_with_403('referral.referral_write')
 def referral_queue_save(request, object_id = '',  referral_id = ''):
     object = get_object_or_None(Client, pk = object_id)
     referral = get_object_or_None(Referral, pk = referral_id)
@@ -599,6 +602,7 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
     request.user.message_set.create(message=_('Referral saved successfully'))
     return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))
 
+@permission_required_with_403('referral.referral_write')
 def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id = ''):
     """ This action don't remove the register, just save date out of the register """
 
@@ -614,6 +618,7 @@ def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id =
     request.user.message_set.create(message=_('Referral saved successfully'))
     return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))
 
+@permission_required_with_403('referral.referral_read')
 def referral_ext_form(request, object_id ='', referral_id=''):
     object = Client.objects.get(pk = object_id)
     referral = Referral.objects.get(pk = referral_id)
@@ -636,6 +641,7 @@ def referral_ext_form(request, object_id ='', referral_id=''):
     form = ReferralExtForm()
     return render_to_response('client/client_referral_ext.html', locals(), context_instance=RequestContext(request))
 
+@permission_required_with_403('referral.referral_write')
 def referral_ext_save(request, object_id = '', referral_id=''):
     object = get_object_or_None(Client, pk = object_id)
     referral = get_object_or_None(Referral, pk = referral_id)
@@ -654,3 +660,20 @@ def referral_ext_save(request, object_id = '', referral_id=''):
 
     request.user.message_set.create(message=_('External Referral saved successfully'))
     return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))
+
+@permission_required_with_403('client.client_write')
+def family(request, object_id = None):
+    object = get_object_or_None(Client, pk = object_id)
+
+    if request.method == 'POST':
+        form = FamilyForm(request.POST)
+        if form.is_valid():
+            form.save(request, object)
+            request.user.message_set.create(message=_('Family member added successfully'))
+            return HttpResponseRedirect('/client/%s/family/' % object.id)
+        else:
+            return render_to_response('client/client_family.html', locals(), context_instance=RequestContext(request))
+
+    form = FamilyForm()
+
+    return render_to_response('client/client_family.html', locals(), context_instance=RequestContext(request))

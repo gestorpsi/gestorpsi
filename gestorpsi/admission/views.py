@@ -20,7 +20,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
 from gestorpsi.person.models import Person
-from gestorpsi.client.models import Client, PersonLink, Relation
+from gestorpsi.client.models import Client
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
 from gestorpsi.admission.models import *
@@ -46,9 +46,7 @@ def form(request, object_id=''):
                         filter_name = None,
                         filter_type = 2
                     ),
-        'object': object,
         'ReferralChoices': ReferralChoice.objects.all(),
-        'Relations': Relation.objects.all(),
     }, context_instance=RequestContext(request))
 
 @permission_required_with_403('admission.admission_read')
@@ -59,39 +57,22 @@ def is_responsible(value):
         return False
 
 @permission_required_with_403('admission.admission_write')
-def add_relationship(request, object, name_list, relation_list, responsible_list):
-    user = request.user
-    responsible = ''
-    object.person_link.all().delete()
-    for i in range(0, len(name_list)):
-        if (len(name_list[i])):
-            try:
-                responsible = is_responsible(responsible_list[i])
-            except:
-                responsible = False
-            person = Person.objects.create(name=name_list[i])
-            person.organization.add(user.get_profile().org_active)
-            object.person_link.add(PersonLink.objects.create(person=person, relation=Relation.objects.get(pk=relation_list[i]), responsible=responsible))
-
-@permission_required_with_403('admission.admission_write')
 def save(request, object_id=''):
     object = get_object_or_404(Client, pk=object_id)
     object.admission_date = datetime.strptime(request.POST.get('admission_date'), '%d/%m/%Y')
     object.legacyRecord = request.POST.get('legacyRecord')
-    object.healthDocument = request.POST.get('healthDocument')
     object.comments = request.POST.get('comments')
 
     """ Referral Section """
-    ar = AdmissionReferral()
-    ar.referral_choice = ReferralChoice.objects.get(pk=request.POST.get('referral'))
-    ar.referral_organization = get_object_or_None(Organization, id=request.POST.get('referral_organization'))
-    ar.referral_professional = get_object_or_None(CareProfessional, id=request.POST.get('referral_professional'))
-    ar.client = object
-    ar.save()
+    if request.POST.get('referral'):
+        ar = AdmissionReferral()
+        ar.referral_choice_id = ReferralChoice.objects.get(pk=request.POST.get('referral')).id
+        ar.referral_organization = get_object_or_None(Organization, id=request.POST.get('referral_organization'))
+        ar.referral_professional = get_object_or_None(CareProfessional, id=request.POST.get('referral_professional'))
+        ar.client = object
+        ar.save()
 
     object.save()
-    
-    add_relationship(request, object, request.POST.getlist('parent_name'),request.POST.getlist('parent_relation'), request.POST.getlist('parent_responsible'))
 
     request.user.message_set.create(message=_('Admission saved successfully'))
 

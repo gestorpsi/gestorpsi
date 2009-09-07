@@ -31,20 +31,27 @@ from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.person.views import person_json_list
 
 @permission_required_with_403('employee.employee_list')
-def index(request):
+def index(request, deactive = False ):
+
     """
     This view function returns a list that contains all employees currently in the system.
     @param request: this is a request sent by the browser.
     @type request: a instance of the class C{HttpRequest} created by the framework Django
     """ 
-
-    return render_to_response('employee/employee_list.html', context_instance=RequestContext(request))
+    return render_to_response('employee/employee_list.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('employee.employee_list')
-def list(request, page = 1):
+def list(request, page = 1 , deactive = False):
     user = request.user
-    object = Employee.objects.filter(person__organization = user.get_profile().org_active.id, active=True).order_by('person__name')
+
+    #object = Employee.objects.filter(person__organization = user.get_profile().org_active.id, active=True).order_by('person__name')
+    #lista = Employee.objects.active(user.get_profile().org_active)
     
+    if deactive:
+        object = Employee.objects.deactive(user.get_profile().org_active)
+    else:   
+        object = Employee.objects.active(user.get_profile().org_active)
+         
     return HttpResponse(simplejson.dumps(person_json_list(request, object, 'employee.employee_read', page)),
                             mimetype='application/json')
 
@@ -131,10 +138,10 @@ def delete(request, object_id):
 def order(request, object_id = ''):
     object = Employee.objects.get(pk = object_id)
 
-    if (object.person.active == True):
-        object.person.active = False
+    if (object.active == True):
+        object.active = False
     else:
-        object.person.active = True
+        object.active = True
 
-    object.person.save(force_update=True)
+    object.save(force_update=True)
     return HttpResponseRedirect('/employee/%s/' % object.id)

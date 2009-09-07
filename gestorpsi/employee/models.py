@@ -19,12 +19,19 @@ from django.db import models
 from gestorpsi.person.models import Person
 from gestorpsi.util.uuid_field import UuidField
 
+class EmployeeManager(models.Manager):
+    def active(self, organization):
+        return super(EmployeeManager, self).get_query_set().filter(active=True, person__organization = organization).order_by('person__name')
+    def deactive(self, organization):
+        return super(EmployeeManager, self).get_query_set().filter(active=False, person__organization = organization).order_by('person__name')
+
 class Employee(models.Model):
     id= UuidField(primary_key=True)
     person = models.OneToOneField(Person)
     hiredate = models.DateField(blank=True, null=True)
     job = models.CharField(max_length=30, blank=True)
     active = models.BooleanField(default=True)
+    objects = EmployeeManager()
     
     def __unicode__(self):
         return u"%s" % self.person.name
@@ -36,3 +43,5 @@ class Employee(models.Model):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(Employee, follow=['person'])
+
+

@@ -26,7 +26,7 @@ People Personal Profile Form
 <fieldset>
         <legend>{% trans "Personal Profile" %}</legend>
 
-            <label>{% trans "Birthdate ( dd/mm/yyyy )" %}<br />
+            <label>{% trans "Birthdate" %} ( dd/mm/yyyy )<br />
                 <input mask="99/99/9999" class="calendar" type="text" name="dateBirth" id="dateBirth" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate|date:"d/m/Y" }}{% endifnotequal %}" />
             </label>
 
@@ -40,7 +40,7 @@ People Personal Profile Form
 
         <label>
             <input name="aprox" type="checkbox" id="aprox" {% if object.person.birthDateSupposed  %} checked="checked" {% endif %}  onclick="dateOrAge();" />
-            {% trans "Date of birth supposedly from the age" %} 
+            {% trans "Birthdate supposedly from the age" %} 
         </label>
         
          <br />

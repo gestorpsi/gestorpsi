@@ -25,7 +25,7 @@ GNU General Public License for more details.
 
     <ul>
     {% if object.id %}
-    <li><a href="/employee/{{ object.id }}/order/" class="client_order" title="{{ object.person.name }}">{% if object.active %} Desativar {% else %} Ativar {% endif %} </a></li>
+    <li><a href="/employee/{{ object.id }}/order/" class="client_order" title="{{ object.person.name }}">{% if object.active %} {% trans "Inactive" %} {% else %} {% trans "Active" %} {% endif %} </a></li>
     {% endif %}
     </ul>
 

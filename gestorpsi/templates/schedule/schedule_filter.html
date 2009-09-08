@@ -16,7 +16,7 @@ GNU General Public License for more details.
 {% load i18n %}
 
 <span style="position: relative">
-<a href="#" class="option toggle" display="div.filter.place">{% trans "places" %}</a>
+<a href="#" class="option toggle" display="div.filter.place">{% trans "Places" %}</a>
     <div class="filter incols place" style="display:none">
         <table>
             {% for o in places %}
@@ -36,7 +36,7 @@ GNU General Public License for more details.
 </span>
 
 <span style="position: relative">
-<a href="#" class="option toggle" display="div.filter.room">{% trans "rooms" %}</a>
+<a href="#" class="option toggle" display="div.filter.room">{% trans "Rooms" %}</a>
     <div class="filter incols room" style="display:none">
         <table>
             {% for place in places %}{% for o in place.room_set.all %}
@@ -57,7 +57,7 @@ GNU General Public License for more details.
 
 
 <span style="position: relative">
-<a href="#" class="option toggle" display="div.filter.service">{% trans "services" %}</a>
+<a href="#" class="option toggle" display="div.filter.service">{% trans "Services" %}</a>
     <div class="filter service" style="display:none">
         <table>
             {% for o in services %}

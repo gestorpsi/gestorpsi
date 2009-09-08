@@ -37,7 +37,7 @@ GNU General Public License for more details.
         <li><a href="/client/{{ object.id }}/referral/ext/{{ referral.id }}/form/" class="client_referral_ext_form" title="{{ object.person.name }}">{% trans "External Referral" %}</a></li>
     {% endif %}
         <!-- <li><a class="client_user_form" display="client_user_form" title="{{ object.person.name }}">{% trans "Manage User" %}</a></li> -->
-        <li><a href="/client/{{ object.id }}/order/" class="client_order" title="{{ object.person.name }}">{% if object.person.active %} Desativar {% else %} Ativar {% endif %} </a></li>
+        <li><a href="/client/{{ object.id }}/order/" class="client_order" title="{{ object.person.name }}">{% if object.person.active %} {% trans "Inactive" %} {% else %} {% trans "Active" %} {% endif %} </a></li>
     {% comment %}
         {% if object.person.profile %}
               <li><a class="ajax user" href="/user/{{ object.person.id }}/" title="{{ object.person.name }}">{% trans "Manage User" %}</a></li>

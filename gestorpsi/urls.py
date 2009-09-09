@@ -1,12 +1,10 @@
 from django.conf.urls.defaults import *
+from django.conf import settings
 from django.contrib import admin
 from gestorpsi.authentication.forms import RegistrationForm
 from gestorpsi.authentication.models import Profile
-
 from gestorpsi.frontend.views import start as frontend_start
 from django.contrib.auth.decorators import login_required
-
-#from gestorpsi.authentication.views import include_login_required
 
 admin.autodiscover()
 
@@ -36,3 +34,8 @@ urlpatterns = patterns('',
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'media/', 'show_indexes': False}),
     (r'^profile/', include('gestorpsi.profile.urls')),
 )
+
+if 'rosetta' in settings.INSTALLED_APPS:
+    urlpatterns += patterns('',
+        url(r'^rosetta/', include('rosetta.urls')),
+    )

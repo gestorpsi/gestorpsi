@@ -86,6 +86,9 @@ Python Packages:
 - Django South (>= 0.6)
   maintainer: http://south.aeracode.org/
 
+- Django Rosetta (>= 0.4.5)
+  maintainer: http://code.google.com/p/django-rosetta/
+
 - Some database server running, and configured:
   MySQL Server, PostgreSQL, Oracle or SQLite
 

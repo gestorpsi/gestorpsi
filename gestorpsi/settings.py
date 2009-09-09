@@ -126,6 +126,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',  
+    'django_extensions',  
     'gestorpsi.authentication',
     'gestorpsi.util',
     'gestorpsi.sponsor',
@@ -150,6 +151,7 @@ INSTALLED_APPS = (
 	'swingtime',
 	'registration',
 	'south',
+    'rosetta',
     'gestorpsi.schedule',
     'reversion',
     'gestorpsi.frontend', #load at last
@@ -188,8 +190,9 @@ SWINGTIME_SETTINGS_MODULE = 'gestorpsi.schedule.settings'
 
 # registration
 ACCOUNT_ACTIVATION_DAYS=7
-EMAIL_HOST='yourdomain.com'
+EMAIL_HOST='gestorpsi.com.br'
 EMAIL_PORT=25
-EMAIL_HOST_USER='noreply@yourdomain.com'
-EMAIL_HOST_PASSWORD='email_password_here'
+EMAIL_HOST_USER='noreply@gestorpsi.com.br'
+EMAIL_HOST_PASSWORD='YrA|e-Q.tnsJ'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER    # used by django registration
+

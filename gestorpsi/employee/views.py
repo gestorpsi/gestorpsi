@@ -32,7 +32,6 @@ from gestorpsi.person.views import person_json_list
 
 @permission_required_with_403('employee.employee_list')
 def index(request, deactive = False ):
-
     """
     This view function returns a list that contains all employees currently in the system.
     @param request: this is a request sent by the browser.
@@ -40,8 +39,24 @@ def index(request, deactive = False ):
     """ 
     return render_to_response('employee/employee_list.html', locals(), context_instance=RequestContext(request))
 
+def list(request, page = 1, initial = None, filter = None, no_paging = False, deactive = False, status = None ):
+    user = request.user
+
+    if deactive:
+        object = Employee.objects.deactive(user.get_profile().org_active)
+    else:   
+        object = Employee.objects.active(user.get_profile().org_active)
+
+    if initial:
+        object = object.filter(person__name__istartswith = initial)
+        
+    if filter:
+        object = object.filter(person__name__icontains = filter)
+
+    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'client.client_read', page, no_paging)), mimetype='application/json')
+
 @permission_required_with_403('employee.employee_list')
-def list(request, page = 1 , deactive = False):
+def lista(request, page = 1 , deactive = False):
     user = request.user
 
     #object = Employee.objects.filter(person__organization = user.get_profile().org_active.id, active=True).order_by('person__name')

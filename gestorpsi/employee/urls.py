@@ -32,20 +32,11 @@ urlpatterns = patterns('',
     (r'^filter/(?P<filter>.*)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
     (r'^filter/(?P<filter>.*)/$', login_check(list), {'no_paging': True}), # quick search
 
+    # DEACTIVE
     (r'^initial/(?P<initial>[a-z])/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick filter
     (r'^initial/(?P<initial>[a-z])/deactive/$', login_check(list), {'deactive':True} ), # quick filter
-
-    # ERRO
-    (r'^filter/(?P<filter>.*)/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick search
-    (r'^filter/(?P<filter>.*)/deacive/$', login_check(list), {'no_paging': True, 'deactive':True } ), # quick search
-    # ERRO
-
-    (r'^test/(?P<filter>.*)/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick search
-    (r'^test/(?P<filter>.*)/deacive/$', login_check(list), {'no_paging': True, 'deactive':True } ), # quick search
-
+    (r'^filt/(?P<filter>.*)/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick search
+    (r'^filt/(?P<filter>.*)/deacive/$', login_check(list), {'no_paging': True, 'deactive':True } ), # quick search
     (r'^deactive/$', login_check(index), {'deactive':True}), # list objects deactive
     (r'^page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True}), #list objects
-
-    (r'^test/(?P<filter>.*)/page(?P<page>(\d)+)/(?P<status>deactive)/$', login_check(list) ),
-    (r'^test/(?P<filter>.*)/page(?P<page>(\d)+)/(?P<status>active)/$', login_check(list) ),
 )

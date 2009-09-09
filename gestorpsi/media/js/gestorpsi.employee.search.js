@@ -36,7 +36,7 @@ $(function() {
 	    */
 
 	    $('div#search_employee_header.employee_search input[type=text].quick_employee_search').keyup(function() {
-		($(this).val().length >= 1) ? updateEmployee('/employee/test/' + $(this).val() + '/page1/deactive/', 'employee/test/' + $(this).val()+ '/deactive/') : updateEmployee('/employee/page1/deactive/');
+		($(this).val().length >= 1) ? updateEmployee('/employee/filt/' + $(this).val() + '/page1/deactive/', 'employee/filt/' + $(this).val()+ '/deactive/') : updateEmployee('/employee/page1/deactive/');
 	    }); 
 
 	    /**

@@ -24,8 +24,11 @@ GNU General Public License for more details.
 
 {% block submenu %}
     <ul>
-        <li><a class="first active" href="/careprofessional/">{% trans "all" %}</a></li>
+        <li><a class="first {%if not deactive %} active {% endif %}" href="/careprofessional/">{% trans "all" %}</a></li>
         <li><a href="/careprofessional/add/">{% trans "add" %}</a></li>
+        <li><a class="{% if deactive %}active{% endif %}" href="/careprofessional/deactive/">{% trans "All deactive" %}
+</a></li>
+
     </ul>
 {% endblock %}
 
@@ -35,63 +38,25 @@ GNU General Public License for more details.
         <h2 id="title_addressbook" style="display: none"></h2>
         <h2 id="title_clients" style="display: none"></h2>
         
-        <h2 class="title_professional">{% trans "All Professionals" %}</h2>
+        {% if deactive %}
+            <h2 class="title_professional">{% trans "All Professionals Deactive" %}</h2>
+        {% else %}
+            <h2 class="title_professional">{% trans "All Professionals" %}</h2>
+        {% endif %}
+
         <p class="description">{% trans "Displaying" %} <a href="/careprofessional/" display="list"><span id="object_length"></span> {% trans "professional(s)" %}</a>. {% trans "Page" %} <b></b> {% trans "of" %} <b></b></p>
         <h2 id="title_myoffice" style="display: none"></h2>
-        
-        
-        <div class="main_area contact">
-                <div id="search_header" style="display: none">
-                
-                        <a href="" id="letter_fwd">
-                        C</a>
-                        <a href="" id="letter_back">
-                        A</a>
-                        <div class="capital_letter">B</div><input name="" type="text" /><a href="" id="cleanup"></a>
-                        <table id="letter_menu" border="0" cellspacing="0" cellpadding="2">
-                        <tr>
-                
-                                <td><a href="">#</a></td>
-                                <td><a href="">A</a></td>
-                                <td><a href="" class="active">B</a></td>
-                                <td><a href="">C</a></td>
-                                <td><a href="">D</a></td>
-                                <td><a href="">E</a></td>
-                
-                                <td><a href="">F</a></td>
-                                <td><a href="">G</a></td>
-                                <td><a href="">H</a></td>
-                                <td><a href="">I</a></td>
-                                <td><a href="">J</a></td>
-                                <td><a href="">K</a></td>
-                
-                                <td><a href="">L</a></td>
-                                <td><a href="">M</a></td>
-                                <td><a href="">N</a></td>
-                                <td><a href="">O</a></td>
-                                <td><a href="">P</a></td>
-                                <td><a href="">Q</a></td>
-                
-                                <td><a href="">R</a></td>
-                                <td><a href="">S</a></td>
-                                <td><a href="">T</a></td>
-                                <td><a href="">U</a></td>
-                                <td><a href="">V</a></td>
-                                <td><a href="">W</a></td>
-                
-                                <td><a href="">X</a></td>
-                                <td><a href="">Y</a></td>
-                                <td><a href="">Z</a></td>
-                        </tr>
-                </table>
-                        
-                        
-                </div>
+
+        <div id="main_area contact search_careprofessional_header" class="careprofessional_search">
+           {% include "tags/search_careprofessional_header.html" %}
+        </div>
 
         <div id="msg_area" class="alert no_registers_available hidden">
-            {% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/careprofessional/add/">{% trans "here" %}</a> {% trans "if you want to add a new one." %}
+           {% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/careprofessional/add/">{% trans "here" %}</a> {% trans "if you want to add a new one." %}
         </div>
+
         <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+            <input type="hidden" name="careprofessional_deactive" id="careprofessional_deactive" value="{{ deactive }}">
                 <thead> 
                 <tr> 
                     <th></th> 
@@ -100,7 +65,11 @@ GNU General Public License for more details.
                 </thead>
                 <tbody>
                     <script>
-                    updateProfessional('/careprofessional/page1');
+                        {% if deactive %}
+                            updateProfessional('/careprofessional/page1/deactive/');
+                        {% else %}
+                            updateProfessional('/careprofessional/page1');
+                        {% endif %}
                     </script>
                 </tbody>
                 </table>

@@ -49,7 +49,6 @@ GNU General Public License for more details.
         <p class="description">{% trans "Displaying" %} <a href="/employee/" display="list"><span id="object_length"></span> {% trans "employees(s)" %}</a>. {% trans "Page" %} <b></b> {% trans "of" %} <b></b></p>
         <h2 id="title_myoffice" style="display: none"></h2>
         
-        
         <div class="main_area contact">
 
             <div id="search_employee_header" class="employee_search">
@@ -61,7 +60,7 @@ GNU General Public License for more details.
         </div>
 
         <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-		<input type="hidden" name="deactive" id="deactive" value="{{ deactive }}">
+		 <input type="hidden" name="employee_deactive" id="employee_deactive" value="{{ deactive }}">
                 <thead> 
                         <tr> 
                         <th></th> 

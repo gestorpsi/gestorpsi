@@ -19,8 +19,7 @@ $(function() {
     /**
      * Get deactive True OR False
      */
-     deactive = $('div.main_area table#search_results input[name=deactive]').val();
-
+     deactive = $('div.main_area table#search_results input[name=employee_deactive]').val();
 
     if (deactive == "True" ){
 	    /**

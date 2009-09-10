@@ -39,7 +39,7 @@ def index(request, deactive = False ):
     """ 
     return render_to_response('employee/employee_list.html', locals(), context_instance=RequestContext(request))
 
-def list(request, page = 1, initial = None, filter = None, no_paging = False, deactive = False, status = None ):
+def list(request, page = 1, initial = None, filter = None, no_paging = False, deactive = False ):
     user = request.user
 
     if deactive:

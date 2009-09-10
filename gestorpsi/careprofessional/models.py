@@ -148,6 +148,12 @@ class ProfessionalIdentification(models.Model):
 
 reversion.register(ProfessionalIdentification)
 
+class CareProfessionalManager(models.Manager):
+    def actives(self, organization):
+        return super(CareProfessionalManager, self).get_query_set().filter(active=True, person__organization = organization).order_by('person__name')
+    def deactives(self, organization):
+        return super(CareProfessionalManager, self).get_query_set().filter(active=False, person__organization = organization).order_by('person__name')
+        
 class CareProfessional(models.Model):
     """
     This class represents a careprofessional 
@@ -160,6 +166,7 @@ class CareProfessional(models.Model):
     person = models.OneToOneField(Person)
     comments = models.CharField(max_length=200, null=True)
     active = models.BooleanField(default=True)
+    objects = CareProfessionalManager()
 
     def __unicode__(self):
         return u"%s" % self.person

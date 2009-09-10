@@ -35,17 +35,25 @@ from gestorpsi.util.views import get_object_or_None
 
 
 @permission_required_with_403('careprofessional.careprofessional_list')
-def index(request):
-    return render_to_response('careprofessional/careprofessional_list.html', context_instance=RequestContext(request))
+def index(request, deactive = False):
+    return render_to_response('careprofessional/careprofessional_list.html', locals(), context_instance=RequestContext(request))
   
-
 @permission_required_with_403('careprofessional.careprofessional_list')
-def list(request, page = 1):
+def list(request, page = 1, deactive = False, filter = None, initial = None, no_paging = False ):
     user = request.user
-    object = CareProfessional.objects.filter(person__organization = user.get_profile().org_active.id).order_by('person__name')
-    
-    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'careprofessional.careprofessional_read', page)),
-                            mimetype='application/json')
+
+    if deactive:
+        object = CareProfessional.objects.deactives(user.get_profile().org_active)
+    else:
+        object = CareProfessional.objects.actives(user.get_profile().org_active)
+
+    if initial:
+        object = object.filter(person__name__istartswith = initial)
+
+    if filter:
+        object = object.filter(person__name__icontains = filter)
+
+    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'careprofessional.careprofessional_read', page)), mimetype='application/json')
 
 @permission_required_with_403('careprofessional.careprofessional_read')
 def form(request, object_id=''):
@@ -165,10 +173,11 @@ def save(request, object_id='', save_person=True):
 def order(request, object_id = ''):
     object = CareProfessional.objects.get(pk = object_id)
 
-    if (object.person.active == True):
-        object.person.active = False
+    if (object.active == True):
+        object.active = False
     else:
-        object.person.active = True
+        object.active = True
 
-    object.person.save(force_update=True)
+    object.save(force_update=True)
+
     return HttpResponseRedirect('/careprofessional/%s/' % object.id)

@@ -64,6 +64,7 @@ a:hover {
 	margin: 2px 0 0 10px;
 	height: 30px;
 	position: relative;
+    min-width: 1024px;
 }
 #main_menu li {
 	display: inline;

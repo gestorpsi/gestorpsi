@@ -66,4 +66,11 @@ urlpatterns = patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/queue/save/$', login_check(referral_queue_save)), # queue form save
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/queue/(?P<queue_id>\d+)/remove/$', login_check(referral_queue_remove)), # queue form remove
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/family/$', login_check(family)), # client family
+
+    # DEACTIVES
+    (r'^deactive/$', login_check(index), {'deactive': True} ), #list objects
+    (r'^page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), #list objects
+    (r'^initial/(?P<initial>[a-z])/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive': True}), # quick filter
+    (r'^filt/(?P<filter>.*)/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive': True}), # quick search
+    (r'^filt/(?P<filter>.*)/deactive/$', login_check(list), {'no_paging': True, 'deactive': True}), # quick search
 )

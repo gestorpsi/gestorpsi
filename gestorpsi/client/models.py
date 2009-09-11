@@ -86,6 +86,12 @@ class PersonLink(models.Model):
     def __unicode__(self):
         return u"%s" % self.person.name
 
+class ClientManager(models.Manager):
+    def active(self, organization):
+        return super(Client, self).get_query_set().filter(active=True, person__organization = organization).order_by('person__name')
+    def deactive(self, organization):
+        return super(Client, self).get_query_set().filter(active=False, person__organization = organization).order_by('person__name')
+
 class Client(models.Model):
     id = UuidField(primary_key=True)
     person = models.OneToOneField(Person)
@@ -94,6 +100,7 @@ class Client(models.Model):
     admission_date = models.DateField(null=True)
     clientStatus = models.CharField(max_length=1, default='1', choices=CLIENT_STATUS)
     comments = models.TextField(blank=True)
+    objects = ClientManager()
 
     def __unicode__(self):
         return u"%s" % self.person.name

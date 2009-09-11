@@ -58,12 +58,11 @@ from gestorpsi.util.views import get_object_or_None
 
 # list all active clients
 @permission_required_with_403('client.client_list')
-def index(request):
+def index(request, deactive = False):
     # Test if clinic administrator has registered services before access client page.
     if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
         return render_to_response('client/client_service_alert.html', context_instance=RequestContext(request))
-    return render_to_response('client/client_list.html',
-                                        context_instance=RequestContext(request))
+    return render_to_response('client/client_list.html', locals(), context_instance=RequestContext(request))
 
 # client home
 @permission_required_with_403('client.client_read')
@@ -114,12 +113,20 @@ def add(request):
 
 
 @permission_required_with_403('client.client_list')
-def list(request, page = 1, initial = None, filter = None, no_paging = False):
+def list(request, page = 1, initial = None, filter = None, no_paging = False, deactive = False):
     user = request.user
+
     if user.groups.filter(name='administrator').count() == 1 or user.groups.filter(name='secretary').count() == 1:
-        object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
+
+        if deactive:
+            object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '0').order_by('person__name')
+        else:
+            object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
     else:
-        object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1', referral__professional = user.profile.person.careprofessional.id).distinct().order_by('person__name')
+        if deactive:
+            object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '0', referral__professional = user.profile.person.careprofessional.id).distinct().order_by('person__name')
+        else:
+            object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1', referral__professional = user.profile.person.careprofessional.id).distinct().order_by('person__name')
 
     if initial:
         object = object.filter(person__name__istartswith = initial)
@@ -513,14 +520,14 @@ def organization_clients(request):
 def order(request, object_id = ''):
     object = Client.objects.get(pk = object_id)
 
-    if (object.person.active == True):
-        object.person.active = False
+    if (object.clientStatus == "1" ):
+        object.clientStatus  = "0"
         request.user.message_set.create(message=_('User deactivated successfully'))
     else:
-        object.person.active = True
+        object.clientStatus = "1"
         request.user.message_set.create(message=_('User activated successfully'))
 
-    object.person.save(force_update=True)
+    object.save(force_update=True)
     return HttpResponseRedirect('/client/%s/' % object.id)
 
 @permission_required_with_403('schedule.schedule_read')

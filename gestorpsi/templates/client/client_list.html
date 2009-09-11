@@ -22,8 +22,9 @@ GNU General Public License for more details.
 
 {% block submenu %}
 		<ul>
-			<li><a display="list" class="active first fastmenu" href="/client/">{% trans "all" %}</a></li>
+			<li><a display="list" class="{% if not deactive %} active {% endif %} first fastmenu" href="/client/">{% trans "all" %}</a></li>
 			<li><a display="form" class="fastmenu" href="/client/add">{% trans "add" %}</a></li>
+			<li><a class="{% if deactive %} active {% endif %}" href="/client/deactive/">{% trans "all Deactive" %}</a></li>
 		</ul>
 {% endblock %}
 
@@ -33,7 +34,11 @@ GNU General Public License for more details.
         <h2 id="title_addressbook" style="display: none"></h2>
         <h2 id="title_clients" style="display: none"></h2>
         
-        <h2 class="title_clients">{% trans "All Customers" %}<span class="hidden"> {% trans "with filter" %}<span></span></span></h2>
+        {% if deactive %}
+            <h2 class="title_clients">{% trans "All Customers Deactive" %}<span class="hidden"> {% trans "with filter" %}<span></span></span></h2>
+        {% else %}
+            <h2 class="title_clients">{% trans "All Customers" %}<span class="hidden"> {% trans "with filter" %}<span></span></span></h2>
+        {% endif %}
         <p class="description">{% trans "Displaying" %} <a href="/client/" display="list"><span id="object_length"></span> {% trans "customer(s)" %}</a>.{% trans "Page" %} <b></b> {% trans "of" %} <b></b></p>
         <h2 id="title_myoffice" style="display: none"></h2>
         
@@ -48,6 +53,7 @@ GNU General Public License for more details.
                 </div>
 
                 <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+                <input type="hidden" name="client_deactive" id="client_deactive" value="{{ deactive }}">
                 <thead> 
                         <tr> 
                         <th></th> 
@@ -57,7 +63,11 @@ GNU General Public License for more details.
                 </thead>
                 <tbody>
                     <script>
-                    updateClient('/client/page1');
+                            {% if deactive %}
+                                updateClient('/client/page1/deactive/');
+                            {% else %}
+                                updateClient('/client/page1');
+                            {% endif %}
                     </script>
                 </tbody>
                 </table>

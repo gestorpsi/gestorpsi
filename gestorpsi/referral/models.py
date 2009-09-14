@@ -243,10 +243,14 @@ reversion.register(ReferralGroup, follow=['referral'])
 
 class IndicationChoice(models.Model):
     description = models.CharField(max_length=250)
-    nick = models.CharField(max_length=50)
+    nick = models.CharField(max_length=50, blank=True)
+    weight = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
         return u"%s" % self.description
+
+    class Meta:
+        ordering = ['weight']
 
 class Indication(models.Model):
     id = UuidField(primary_key=True)

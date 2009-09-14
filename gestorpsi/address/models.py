@@ -48,11 +48,13 @@ class City(models.Model):
 
 class AddressType(models.Model):
     description = models.CharField(max_length=20)
+    weight = models.IntegerField(blank=True, null=True)
+
     def __unicode__(self):
         return u"%s" % self.description
 
     class Meta:
-        ordering = ['description']
+        ordering = ['weight']
 
 class Address(models.Model):
     # Brazil Address

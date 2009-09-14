@@ -17,7 +17,7 @@ GNU General Public License for more details.
 {% load i18n %}
 
 <h2 class="title_schedule title">{% if occurrence.event.referral.referralgroup_set.all %}<a href="/service/group/{{ occurrence.event.referral.referralgroup_set.all.0.id }}/form/">{{ occurrence.event.referral.group_name }}</a>{% else %}{{ occurrence.event.referral.client.all.0 }}{% endif %} - {{ occurrence.event.referral.service }}</h2>
-<p class="description"><a href="/careprofessional/{{ occurrence.event.referral.professional.all.0.id }}/">{{ occurrence.event.referral.professional.all.0 }}</a> <a href="/schedule/events/{{ occurrence.event.id}}/">{{ occurrence.event.occurrence_set.all|length }} {% trans "Occurrences" %}</a></p>
+<p class="description">{{ occurrence.start_time|date:"d" }} {% trans "of" %} {{ occurrence.start_time|date:"F" }} {% trans "of" %} {{ occurrence.start_time|date:"Y" }}
 
 {% comment %}
 hide Date fields and second field
@@ -27,6 +27,13 @@ hide Date fields and second field
 $(function() {
     $('select#id_date_started_0_month, select#id_date_started_0_day, select#id_date_started_0_year, select#id_date_started_1_second').hide();
     $('select#id_date_finished_0_month, select#id_date_finished_0_day, select#id_date_finished_0_year, select#id_date_finished_1_second').hide();
+    $('form input[name=presence]').click(function(){
+        if($(this).val()>2) {
+            $('div.date_fields').hide();
+        } else {
+            $('div.date_fields').show();
+        }
+    });
 });
 </script>
 
@@ -39,20 +46,17 @@ $(function() {
         {{ form.presence.errors }}
         </label>
         <div style="clear:both"></div>
-        <label>{{ form.date_started.label }}<br />
-        <div>
-        {{ form.date_started }}
+        <div class="date_fields{% if hide_date_field %} hidden{% endif %}">
+            <label>{{ form.date_started.label }}<br />
+            <div>
+            {{ form.date_started }}
+            </div>
+            <label>{{ form.date_finished.label }}<br />
+            <div>
+            {{ form.date_finished }}
+            </div>
+            </label>
         </div>
-        <label>{{ form.date_finished.label }}<br />
-        <div>
-        {{ form.date_finished }}
-        </div>
-        </label>
-        <br />
-        <label>{{ form.unmarked }}&nbsp;{{ form.unmarked.label }}           
-        </label>
-        <label>{{ form.remarked }}&nbsp;{{ form.remarked.label }}
-        </label>
         <div style="clear:both"></div>
         <label>{{ form.reason.label }}<br />
         {{ form.reason }}

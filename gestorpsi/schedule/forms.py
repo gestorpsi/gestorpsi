@@ -120,10 +120,11 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
 
         return event
 
-
+from gestorpsi.schedule.models import OCCURRENCE_CONFIRMATION_PRESENCE 
 class OccurrenceConfirmationForm(forms.ModelForm):
-    date_started = forms.DateTimeField(label=_('Time Started'), widget=SplitSelectDateTimeWidget(minute_step=5))
-    date_finished = forms.DateTimeField(label=_('Time Finished'), widget=SplitSelectDateTimeWidget(minute_step=5))
+    presence = forms.CharField(label=_('Presence'), required=True, widget=forms.RadioSelect(choices=OCCURRENCE_CONFIRMATION_PRESENCE))
+    date_started = forms.DateTimeField(label=_('Time Started'), required=False, widget=SplitSelectDateTimeWidget(minute_step=5))
+    date_finished = forms.DateTimeField(label=_('Time Finished'), required=False, widget=SplitSelectDateTimeWidget(minute_step=5))
     device = forms.ModelMultipleChoiceField(label=_('Devices utilized in this session'), required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'multiselectable', }))
     reason = forms.CharField(label=_('Unmark or Reschedule Reason (if exists)'), required = False, widget=forms.Textarea(attrs={'class':'giant'}))
     anotation = forms.CharField(label=_('Anotation'), required = False, widget=forms.Textarea(attrs={'class':'giant'}))
@@ -137,6 +138,6 @@ class OccurrenceConfirmationForm(forms.ModelForm):
 
     class Meta:
         model = OccurrenceConfirmation
-        fields = ('date_started', 'date_finished', 'presence', 'unmarked', 'remarked', 'reason', 'device')
+        fields = ('date_started', 'date_finished', 'presence', 'reason', 'device')
     
     

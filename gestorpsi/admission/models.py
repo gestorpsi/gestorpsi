@@ -23,9 +23,14 @@ from gestorpsi.util.uuid_field import UuidField
 
 class ReferralChoice(models.Model):
     description = models.CharField(max_length=250)
-    nick = models.CharField(max_length=50)
+    nick = models.CharField(max_length=50, blank=True)
+    weight = models.IntegerField(blank=True, null=True)
+
     def __unicode__(self):
         return u"%s" % self.description
+
+    class Meta:
+        ordering = ['weight']
 
 class AdmissionReferral(models.Model):
     id = UuidField(primary_key=True)
@@ -35,7 +40,7 @@ class AdmissionReferral(models.Model):
     client = models.ForeignKey(Client)
     
     def __unicode__(self):
-        return u"%s" % self.referral_choice
+        return u"%s - %s" % (self.client, self.referral_choice)
     
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

@@ -24,9 +24,11 @@ from gestorpsi.device.models import DeviceDetails
 from gestorpsi.util.uuid_field import UuidField
 
 OCCURRENCE_CONFIRMATION_PRESENCE = (
-    ('1', _('Arrived on time')),
-    ('2', _('Arrived Late')),
-    ('3', _('Not arrive')),
+    (1, _('Client arrived on time')),
+    (2, _('Client arrived Late')),
+    (3, _('Client not arrived')),
+    (4, _('Occurrence unmarked')),
+    (5, _('Occurrence rescheduled')),
 )
 
 class ScheduleOccurrenceManager(models.Manager):
@@ -54,11 +56,9 @@ class ScheduleOccurrence(Occurrence):
 
 class OccurrenceConfirmation(models.Model):
     occurrence = models.OneToOneField(ScheduleOccurrence)
-    date_started = models.DateTimeField(_('Occurrence Date Started'), blank=True)
+    date_started = models.DateTimeField(_('Occurrence Date Started'), blank=True, null=True)
     date_finished = models.DateTimeField(_('Occurrence Date Finished'), blank=True, null=True)
     presence = models.CharField(_('Presence Confirmation'), max_length=2, blank=True, choices=OCCURRENCE_CONFIRMATION_PRESENCE)
-    unmarked = models.BooleanField(_('Occurrence Unmarked'), default = False)
-    remarked = models.BooleanField(_('Occurrence Rescheduled'), default = False)
     reason = models.TextField(_('Unmark or Reschedule Reason (if exists)'), blank = True)
     device = models.ManyToManyField(DeviceDetails, null=True, blank=True)
 

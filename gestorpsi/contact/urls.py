@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.contact.views import index, list, save_mini
+from gestorpsi.contact.views import index, list, save_mini, save_mini_professional
 from gestorpsi.contact.views import contact_organization_form, contact_professional_form
 from gestorpsi.contact.views import contact_organization_save, contact_professional_save
 from gestorpsi.contact.views import contact_organization_order, contact_professional_order
@@ -35,6 +35,7 @@ urlpatterns = patterns('',
     (r'^organization/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(contact_organization_save)),  #save organization
     (r'^professional/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(contact_professional_save)),  #save professional
     (r'^save_mini/$', login_check(save_mini)), #save new object
+    (r'^save_mini_professional/$', login_check(save_mini_professional)), #save new object
     (r'^organization/order/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(contact_organization_order)),
     (r'^professional/order/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(contact_professional_order)),
 )

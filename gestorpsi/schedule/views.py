@@ -201,7 +201,7 @@ def occurrence_view(
         context_instance=RequestContext(request)
     )
 
-@permission_required_with_403('schedule.schedule_read')
+@permission_required_with_403('schedule.schedule_write')
 def occurrence_confirmation_form(
     request, 
     pk, 
@@ -233,7 +233,11 @@ def occurrence_confirmation_form(
         if form.is_valid():
             data = form.save(commit=False)
             data.occurrence = occurrence
-            form.save()
+            if int(data.presence) not in (1,2): # client not arrive, dont save datetime field
+                data.date_started = None
+                data.date_finished = None
+            data.save()
+
             # save occurrence comment
             occurrence.annotation = request.POST['occurrence_annotation']
             occurrence.save()
@@ -246,6 +250,10 @@ def occurrence_confirmation_form(
                 context_instance=RequestContext(request)
             )
     else:
+        if occurrence_confirmation and int(occurrence_confirmation.presence) not in (1,2): # load initial data if client dont arrive
+            occurrence_confirmation.date_started = occurrence.start_time
+            occurrence_confirmation.date_finished = occurrence.end_time
+
         form = form_class(instance=occurrence_confirmation, initial={
             'occurrence':occurrence, 
             'start_time':occurrence.start_time, 
@@ -253,10 +261,10 @@ def occurrence_confirmation_form(
             'device': [device.pk for device in occurrence.device.all()],
             })
         form.fields['device'].queryset = DeviceDetails.objects.filter(Q(room = occurrence.room, mobility="1") | Q(place =  occurrence.room.place, room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=False) | Q(room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=True))
-        
+
     return render_to_response(
         template,
-        dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral),
+        dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral, occurrence_confirmation = occurrence_confirmation, hide_date_field = True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None ),
         context_instance=RequestContext(request)
     )
 

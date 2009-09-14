@@ -287,6 +287,18 @@ def save_mini(request):
     return HttpResponse("%s" % (object.id))
 
 @permission_required_with_403('contact.contact_write')
+def save_mini_professional(request):
+    object = CareProfessional()
+    person = Person()
+    person.name = request.POST.get('label')
+    person.save()
+    person.organization.add(Organization.objects.get(pk=request.POST.get('organization')))
+    object.person = person
+    object.save()
+
+    return HttpResponse("%s" % (object.id))
+
+@permission_required_with_403('contact.contact_write')
 def contact_organization_order(request, object_id = None):
     object = get_object_or_None(Organization, pk=object_id) or Organization()
 

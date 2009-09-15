@@ -28,7 +28,6 @@ GNU General Public License for more details.
         <li><a class="{% if not object.id %}active{% endif %}" href="/careprofessional/add/">{% trans "add" %}</a></li>
         <li><a href="/careprofessional/deactive/">{% trans "Deactives" %}</a></li>
         {% if object.id %}<li><a class="active">{{ object.person.name }}</a></li>{% endif %}
-        <li><a class="{% if not object.id %}active{% endif %}" href="/careprofessional/deactive/">{% trans "All deactive" %}
     </ul>
 {% endblock %}
 

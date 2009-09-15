@@ -47,10 +47,10 @@ def list(request, page = 1, initial = None, filter = None, deactive = False):
         object = DeviceDetails.objects.filter(active = True, device__organization=request.user.get_profile().org_active)
 
     if initial:
-        object = object.filter(brand__istartswith = initial)
+        object = object.filter(model__istartswith = initial)
         
     if filter:
-        object = object.filter(brand__icontains = filter)
+        object = object.filter(model__icontains = filter)
 
     object_length = len(object)
     paginator = Paginator(object, settings.PAGE_RESULTS)

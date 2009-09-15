@@ -24,9 +24,10 @@ GNU General Public License for more details.
 
 {% block submenu %}
     <ul>
-        <li><a class="first active" href="/device/">{% trans "all" %}</a></li>
+        <li><a class="first {% if not deactive %} active {% endif %}" href="/device/">{% trans "all" %}</a></li>
         <li><a href="/device/add/">{% trans "add" %}</a></li>
         <li><a href="/device/type/">{% trans "types" %}</a></li>
+        <li><a class="{% if deactive %} active {% endif %}" href="/device/deactive/">{% trans "all Deactive" %}</a></li>
     </ul>
 {% endblock %}
 
@@ -54,7 +55,11 @@ GNU General Public License for more details.
                 </thead>
                 <tbody>               
                 <script>
-                    updateDevice('/device/page1');
+                    {% if deactive %}
+                        updateDevice('/device/page1/deactive/');
+                    {% else %}
+                        updateDevice('/device/page1');
+                    {% endif %}
                 </script>
                 </tbody>
                 </table>

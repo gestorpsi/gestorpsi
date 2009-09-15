@@ -18,6 +18,14 @@ GNU General Public License for more details.
 
 $(function() {
     /**
+     * contact quick filter
+     */
+    
+    $('div#search_header.contact_search table#letter_menu tr td a, div#search_header.contact_search a#letter_back, div#search_header.contact_search a#letter_fwd').click(function() {
+        updateContact('/contact/initial/' + $(this).attr('initial') + '/page1/', 'contact/initial/'+$(this).attr('initial'));
+    });
+
+    /**
     * contact quick search
     */
 
@@ -147,13 +155,102 @@ $(function() {
     $('div#search_header.client_search.deactive a#cleanup').click(function() {
         updateClient('/client/page1/deactive/');
     });
-    
-    /**
-     * contact quick filter
-     */
-    
-    $('div#search_header.contact_search table#letter_menu tr td a, div#search_header.contact_search a#letter_back, div#search_header.contact_search a#letter_fwd').click(function() {
-        updateContact('/contact/initial/' + $(this).attr('initial') + '/page1/', 'contact/initial/'+$(this).attr('initial'));
-    });
+
+        /**
+         * employee quick filter active
+         */
+
+        $('div#search_header.employee_search.active table#letter_menu tr td a, div#search_header.employee_search.active a#letter_back, div#search_header.employee_search.active a#letter_fwd').click(function() {
+        updateEmployee('/employee/initial/' + $(this).attr('initial') + '/page1/', 'employee/initial/'+$(this).attr('initial'));
+        });
+
+        /**
+        * employee quick search active
+        */
+
+        $('div#search_header.employee_search.active input[type=text].quick_search').keyup(function() {
+        ($(this).val().length >= 1) ? updateEmployee('/employee/filter/' + $(this).val() + '/page1/', 'employee/filter/' + $(this).val()) : updateEmployee('/employee/page1');
+        }); 
+
+        /**
+         * employee clean up active
+         */
+
+        $('div#search_header.employee.active_search a#cleanup').click(function() {
+        updateEmployee('/employee/page1');
+        });
+
+        /**
+         * employee quick filter deactive
+         */
+
+        $('div#search_header.employee_search.deactive table#letter_menu tr td a, div#search_header.employee_search.deactive a#letter_back, div#search_header.employee_search.deactive a#letter_fwd').click(function() {
+        updateEmployee('/employee/initial/' + $(this).attr('initial') + '/page1/deactive/', 'employee/initial/'+$(this).attr('initial')+ '/deactive/');
+        });
+
+        /**
+        * employee quick search deactive
+        */
+
+        $('div#search_header.employee_search.deactive input[type=text].quick_search').keyup(function() {
+        ($(this).val().length >= 1) ? updateEmployee('/employee/filt/' + $(this).val() + '/page1/deactive/', 'employee/filt/' + $(this).val()+ '/deactive/') : updateEmployee('/employee/page1/deactive/');
+        }); 
+
+        /**
+         * employee clean up deactive
+         */
+
+        $('div#search_header.employee_search.deactive a#cleanup').click(function() {
+        updateEmployee('/employee/page1/deactive/');
+        });
+
+	    /**
+	     * careprofessional quick filter deactive
+	     */
+	    
+	    $('div#search_header.careprofessional_search.deactive table#letter_menu tr td a, div#search_header.careprofessional_search.deactive a#letter_back, div#search_header.careprofessional_search.deactive a#letter_fwd').click(function() {
+		updateProfessional('/careprofessional/initial/' + $(this).attr('initial') + '/page1/deactive/', 'careprofessional/initial/'+$(this).attr('initial')+ '/deactive/');
+	    });
+
+	    /**
+	    * careprofessional quick search deactive
+	    */
+
+	    $('div#search_header.careprofessional_search.deactive input[type=text].quick_search').keyup(function() {
+		($(this).val().length >= 1) ? updateProfessional('/careprofessional/filt/' + $(this).val() + '/page1/deactive/', 'careprofessional/filt/' + $(this).val()+ '/deactive/') : updateProfessional('/careprofessional/page1/deactive/');
+	    }); 
+
+	    /**
+	     * careprofessional clean up deactive
+	     */
+	    
+	    $('div#search_header.careprofessional_search.deactive a#cleanup').click(function() {
+		updateProfessional('/careprofessional/page1/deactive/');
+	    });
+
+	    /**
+	     * careprofessional quick filter active
+	     */
+	    
+	    $('div#search_header.careprofessional_search.active table#letter_menu tr td a, div#search_header.careprofessional_search.active a#letter_back, div#search_header.careprofessional_search.active a#letter_fwd').click(function() {
+		updateProfessional('/careprofessional/initial/' + $(this).attr('initial') + '/page1/', 'careprofessional/initial/'+$(this).attr('initial'));
+	    });
+
+	    
+	    /**
+	    * careprofessional quick search active
+	    */
+
+	    $('div#search_header.careprofessional_search.active input[type=text].quick_search').keyup(function() {
+		($(this).val().length >= 1) ? updateProfessional('/careprofessional/filter/' + $(this).val() + '/page1/', 'careprofessional/filter/' + $(this).val()) : updateProfessional('/careprofessional/page1');
+	    }); 
+
+	    /**
+	     * careprofessional clean up active
+	     */
+	    
+	    $('div#search_header.careprofessional_search.active a#cleanup').click(function() {
+		updateProfessional('/careprofessional/page1');
+	    });
 
 });

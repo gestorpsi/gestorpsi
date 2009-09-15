@@ -47,8 +47,8 @@ GNU General Public License for more details.
         <p class="description">{% trans "Displaying" %} <a href="/careprofessional/" display="list"><span id="object_length"></span> {% trans "professional(s)" %}</a>. {% trans "Page" %} <b></b> {% trans "of" %} <b></b></p>
         <h2 id="title_myoffice" style="display: none"></h2>
 
-        <div id="search_careprofessional_header" class="careprofessional_search">
-           {% include "tags/search_careprofessional_header.html" %}
+        <div id="search_header" class="careprofessional_search {% if deactive %} deactive {% else %} active {% endif %}">
+           {% include "tags/search_header.html" %}
         </div>
 
         <div id="msg_area" class="alert no_registers_available hidden">

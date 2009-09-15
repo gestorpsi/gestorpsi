@@ -51,8 +51,8 @@ GNU General Public License for more details.
         
         <div class="main_area contact">
 
-            <div id="search_employee_header" class="employee_search">
-                {% include "tags/search_employee_header.html" %}
+            <div id="search_header" class="employee_search {% if deactive %} deactive {% else %} active {% endif %}">
+                {% include "tags/search_header.html" %}
             </div>
 
         <div id="msg_area" class="alert no_registers_available hidden">

@@ -253,4 +253,54 @@ $(function() {
 		updateProfessional('/careprofessional/page1');
 	    });
 
+	    /**
+	     * device quick filter active
+	     */
+	    
+	    $('div#search_header.device_search.active table#letter_menu tr td a, div#search_header.device_search.active a#letter_back, div#search_header.device_search.active a#letter_fwd').click(function() {
+		updateDevice('/device/initial/' + $(this).attr('initial') + '/page1/', 'device/initial/'+$(this).attr('initial'));
+	    });
+
+	    
+	    /**
+	    * device quick search active
+	    */
+
+	    $('div#search_header.device_search.active input[type=text].quick_search').keyup(function() {
+		($(this).val().length >= 1) ? updateDevice('/device/filter/' + $(this).val() + '/page1/', 'device/filter/' + $(this).val()) : updateDevice('/device/page1');
+	    }); 
+
+	    /**
+	     * device clean up active
+	     */
+	    
+	    $('div#search_header.device_search.active a#cleanup').click(function() {
+		updateDevice('/device/page1');
+	    });
+
+	    /**
+	     * device quick filter deactive
+	     */
+	    
+	    $('div#search_header.device_search.deactive table#letter_menu tr td a, div#search_header.device_search.deactive a#letter_back, div#search_header.device_search.deactive a#letter_fwd').click(function() {
+		updateDevice('/device/initial/' + $(this).attr('initial') + '/page1/deactive/', 'device/initial/'+$(this).attr('initial')+'/deactive/');
+	    });
+
+	    
+	    /**
+	    * device quick search deactive
+	    */
+
+	    $('div#search_header.device_search.deactive input[type=text].quick_search').keyup(function() {
+		($(this).val().length >= 1) ? updateDevice('/device/filt/' + $(this).val() + '/page1/deactive/', 'device/filt/' + $(this).val()+'/deactive/') : updateDevice('/device/page1/deactive/');
+	    }); 
+
+	    /**
+	     * device clean up deactive
+	     */
+	    
+	    $('div#search_header.device_search.deactive a#cleanup').click(function() {
+		updateDevice('/device/page1/deactive/');
+	    });
+
 });

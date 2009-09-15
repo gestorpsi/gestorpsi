@@ -33,5 +33,16 @@ urlpatterns = patterns('',
     (r'^type/page(?P<page>(\d)+)$', login_check(list_types)), #list type objects
     (r'^type/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form_type)), # edit type form
     (r'^type/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save_device)), # save type
-)
 
+    (r'^initial/(?P<initial>[a-z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
+    (r'^filter/(?P<filter>.*)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
+    (r'^filter/(?P<filter>.*)/$', login_check(list), {'no_paging': True}), # quick search
+
+    # DEACTIVE
+    (r'^initial/(?P<initial>[a-z])/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick filter
+    (r'^initial/(?P<initial>[a-z])/deactive/$', login_check(list), {'deactive':True} ), # quick filter
+    (r'^filt/(?P<filter>.*)/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick search
+    (r'^filt/(?P<filter>.*)/deacive/$', login_check(list), {'no_paging': True, 'deactive':True } ), # quick search
+    (r'^deactive/$', login_check(index), {'deactive':True}), # list objects deactive
+    (r'^page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True}), #list objects
+)

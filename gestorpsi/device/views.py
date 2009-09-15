@@ -28,20 +28,30 @@ from gestorpsi.place.models import Place, Room
 from gestorpsi.util.decorators import permission_required_with_403
 
 @permission_required_with_403('device.device_list')
-def index(request):
+def index(request, deactive = False):
     """
     Returns details about all currently existing devices.
     @param request: this is a request sent by the browser.
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
     """
-    return render_to_response( "device/device_list.html", context_instance=RequestContext(request))
+    return render_to_response( "device/device_list.html", locals(), context_instance=RequestContext(request))
 
 
 @permission_required_with_403('device.device_list')
-def list(request, page = 1):
+def list(request, page = 1, initial = None, filter = None, deactive = False):
     user = request.user
-    object = DeviceDetails.objects.filter(device__organization=request.user.get_profile().org_active)
-    
+
+    if deactive:
+        object = DeviceDetails.objects.filter(active = False, device__organization=request.user.get_profile().org_active)
+    else:
+        object = DeviceDetails.objects.filter(active = True, device__organization=request.user.get_profile().org_active)
+
+    if initial:
+        object = object.filter(brand__istartswith = initial)
+        
+    if filter:
+        object = object.filter(brand__icontains = filter)
+
     object_length = len(object)
     paginator = Paginator(object, settings.PAGE_RESULTS)
     object = paginator.page(page)
@@ -60,7 +70,6 @@ def list(request, page = 1):
         'object_length': object_length,
     }
 
-    
     array['paginator'] = {}
     for p in paginator.page_range:
         array['paginator'][p] = p

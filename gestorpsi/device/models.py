@@ -41,6 +41,12 @@ class DeviceDetailsManager(models.Manager):
     def fix(self):
         return super(DeviceDetailsManager, self).get_query_set().filter(mobility__exact='1')
 
+    def active(self, organization):
+        return super(DeviceDetails, self).get_query_set().filter(active = True, device__organization = organization).order_by('brand')
+
+    def deactive(self, organization):
+        return super(DeviceDetails, self).get_query_set().filter(active = False, device__organization = organization).order_by('brand')
+        
 class Device(models.Model):
     """
     The class C{Device} is used to represent devices in the context of the GestorPsi project. Using this class,
@@ -63,6 +69,7 @@ class Device(models.Model):
    
     class Meta:
         ordering = ['description']
+
 
 
 class DeviceDetails(models.Model):

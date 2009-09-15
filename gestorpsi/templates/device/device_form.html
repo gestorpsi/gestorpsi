@@ -28,6 +28,7 @@ GNU General Public License for more details.
         <li><a class="{% if not object.id %}active{% endif %}" href="/device/add/">{% trans "add" %}</a></li>
         <li><a href="/device/type/">{% trans "types" %}</a></li>
         {% if object.id %}<li><a class="active">{{ object.model }} - {{ object.brand }}</a></li>{% endif %}
+        <li><a class="{% if deactive %} active {% endif %}" href="/device/deactive/">{% trans "all Deactives" %}</a></li>
         
     </ul>
 {% endblock %}

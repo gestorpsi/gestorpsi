@@ -18,11 +18,6 @@ GNU General Public License for more details.
 
 $(function() {
     /**
-     * Get deactive True OR False
-     */
-     deactive = $('table#search_results input[name=client_deactive]').val();
-
-    /**
     * contact quick search
     */
 
@@ -105,32 +100,53 @@ $(function() {
         $('div.registers_available > h2 span').hide();
     });
 
-    if (deactive == "False"){
     /**
-     * client quick filter
+     * client quick filter active
      */
     
-    $('div#search_header.client_search table#letter_menu tr td a, div#search_header.client_search a#letter_back, div#search_header.client_search a#letter_fwd').click(function() {
+    $('div#search_header.client_search.active table#letter_menu tr td a, div#search_header.client_search.active a#letter_back, div#search_header.client_search.active a#letter_fwd').click(function() {
         updateClient('/client/initial/' + $(this).attr('initial') + '/page1/', 'client/initial/'+$(this).attr('initial'));
     });
 
-    
     /**
-    * client quick search
+     * client quick filter deactive
+     */
+    
+    $('div#search_header.client_search.deactive table#letter_menu tr td a, div#search_header.client_search.deactive a#letter_back, div#search_header.client_search.deactive a#letter_fwd').click(function() {
+        updateClient('/client/initial/' + $(this).attr('initial') + '/page1/deactive/', '/client/initial/'+$(this).attr('initial')+'/deactive/');
+    });
+
+    /**
+    * client quick search active
     */
 
-    $('div#search_header.client_search input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateClient('/client/filter/' + $(this).val() + '/page1/', 'client/filter/' + $(this).val()) : updateClient('/client/page1');
+    $('div#search_header.client_search.active input[type=text].quick_search').keyup(function() {
+        ($(this).val().length >= 1) ? updateClient('/client/filter/' + $(this).val() + '/page1/', '/client/filter/' + $(this).val()) : updateClient('/client/page1');
     }); 
 
     /**
-     * client clean up
+    * client quick search deactive
+    */
+
+    $('div#search_header.client_search.deactive input[type=text].quick_search').keyup(function() {
+        ($(this).val().length >= 1) ? updateClient('/client/filt/' + $(this).val() + '/page1/deactive/', 'client/filt/' + $(this).val()+'/deactive/') : updateClient('/client/page1/deactive/');
+    }); 
+
+    /**
+     * client clean up active
      */
     
-    $('div#search_header.client_search a#cleanup').click(function() {
+    $('div#search_header.client_search.active a#cleanup').click(function() {
         updateClient('/client/page1');
     });
+
+    /**
+     * client clean up deactive
+     */
     
+    $('div#search_header.client_search.deactive a#cleanup').click(function() {
+        updateClient('/client/page1/deactive/');
+    });
     
     /**
      * contact quick filter
@@ -140,31 +156,4 @@ $(function() {
         updateContact('/contact/initial/' + $(this).attr('initial') + '/page1/', 'contact/initial/'+$(this).attr('initial'));
     });
 
- } else {
-
-    /**
-     * client quick filter
-     */
-    
-    $('div#search_header.client_search table#letter_menu tr td a, div#search_header.client_search a#letter_back, div#search_header.client_search a#letter_fwd').click(function() {
-        updateClient('/client/initial/' + $(this).attr('initial') + '/page1/deactive/', 'client/initial/'+$(this).attr('initial')+'/deactive/');
-    });
-
-    
-    /**
-    * client quick search
-    */
-
-    $('div#search_header.client_search input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateClient('/client/filt/' + $(this).val() + '/page1/deactive/', 'client/filt/' + $(this).val()) : updateClient('/client/page1/deactive/');
-    }); 
-
-    /**
-     * client clean up
-     */
-    
-    $('div#search_header.client_search a#cleanup').click(function() {
-        updateClient('/client/page1/deactive/');
-    });
-  }
 });

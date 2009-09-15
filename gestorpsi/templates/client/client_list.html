@@ -44,7 +44,7 @@ GNU General Public License for more details.
         
         
         <div class="main_area contact">
-            <div id="search_header" class="client_search">
+            <div id="search_header" class="client_search {% if deactive %} deactive {% else %} active {% endif %}">
                 {% include "tags/search_header.html" %}
             </div>
             
@@ -53,7 +53,6 @@ GNU General Public License for more details.
                 </div>
 
                 <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-                <input type="hidden" name="client_deactive" id="client_deactive" value="{{ deactive }}">
                 <thead> 
                         <tr> 
                         <th></th> 

@@ -33,7 +33,6 @@ GNU General Public License for more details.
         <li><a href="/admission/{{ object.id }}/" class="client_admit_form" title="{{ object.person.name }}">{% trans "Admit Client" %}</a></li>
         <li><a href="/client/{{ object.id }}/referral/form/" class="client_referral_form" title="{{ object.person.name }}">{% trans "Subscription" %}</a></li>
         <li><a href="/client/{{ object.id }}/referral/plus/form/" class="client_referral_form" title="{{ object.person.name }}">{% trans "Referral" %}</a></li>
-        <li>{{ object.id }}</li>
 
     {% if referral.id %}
         <li><a href="/client/{{ object.id }}/referral/ext/{{ referral.id }}/form/" class="client_referral_ext_form" title="{{ object.person.name }}">{% trans "External Referral" %}</a></li>

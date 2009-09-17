@@ -58,7 +58,7 @@ class OccurrenceConfirmation(models.Model):
     occurrence = models.OneToOneField(ScheduleOccurrence)
     date_started = models.DateTimeField(_('Occurrence Date Started'), blank=True, null=True)
     date_finished = models.DateTimeField(_('Occurrence Date Finished'), blank=True, null=True)
-    presence = models.CharField(_('Presence Confirmation'), max_length=2, blank=True, choices=OCCURRENCE_CONFIRMATION_PRESENCE)
+    presence = models.IntegerField(_('Presence Confirmation'), max_length=2, blank=True, null=True, choices=OCCURRENCE_CONFIRMATION_PRESENCE)
     reason = models.TextField(_('Unmark or Reschedule Reason (if exists)'), blank = True)
     device = models.ManyToManyField(DeviceDetails, null=True, blank=True)
 

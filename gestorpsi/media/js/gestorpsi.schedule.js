@@ -181,12 +181,7 @@ function updateGrid(url) {
 
                 $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').hide(); // hide free slot 
                 
-                
-                if(this.is_past) {
-                    url = '/schedule/events/' + this.id + '/confirmation/';
-                } else {
-                    url = '/schedule/events/' + this.event_id + '/' + this.id + '/';
-                }
+                url = '/schedule/events/' + this.id + '/confirmation/';
                 
                 if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {
                     $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" href="' + url + '" class="booked">' + label + '</a>'); // show booked event
@@ -210,10 +205,10 @@ function updateGrid(url) {
             });
             
             if($('div.schedule_events table.events tr td:first').size() < 1) {
-                $('div.schedule_events table.events div.msg_area').show();
+                $('div.schedule_events div.msg_area').show();
                 $('div.schedule_events table.events tr').hide();
             } else {
-                $('div.schedule_events table.events div.msg_area').hide();
+                $('div.schedule_events div.msg_area').hide();
                 $('div.schedule_events table.events tr').show();
             }
             

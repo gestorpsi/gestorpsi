@@ -214,13 +214,6 @@ def occurrence_confirmation_form(
 
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk)
 
-    if not occurrence.is_past():
-        request.user.message_set.create(message=_('You can not confirme a not past occurrence'))
-        return render_to_response(
-        template,
-        context_instance=RequestContext(request)
-        )
-
     try:
         occurrence_confirmation = OccurrenceConfirmation.objects.get(pk = occurrence.occurrenceconfirmation.id)
     except:
@@ -250,7 +243,7 @@ def occurrence_confirmation_form(
                 context_instance=RequestContext(request)
             )
     else:
-        if occurrence_confirmation and int(occurrence_confirmation.presence) not in (1,2): # load initial data if client dont arrive
+        if hasattr(occurrence_confirmation, 'presence') and int(occurrence_confirmation.presence) not in (1,2): # load initial data if client dont arrive
             occurrence_confirmation.date_started = occurrence.start_time
             occurrence_confirmation.date_finished = occurrence.end_time
 
@@ -338,11 +331,14 @@ def schedule_occurrences(request, year = 1, month = 1, day = None):
         date_start = datetime.strptime("%s%s" % (year, month),"%Y%m")
         date_end = date_start+timedelta( days=calendar.monthrange(int(year), int(month))[1] + 0)
 
-    return ScheduleOccurrence.objects.filter(
-        start_time__gte=date_start,
-        start_time__lt=date_end,
-        event__referral__organization=request.user.get_profile().org_active.id,
-    )
+    objs = ScheduleOccurrence.objects.filter(
+            start_time__gte=date_start,
+            start_time__lt=date_end,
+            event__referral__organization=request.user.get_profile().org_active.id
+            ).exclude(occurrenceconfirmation__presence = 4 # unmarked's
+            ).exclude(occurrenceconfirmation__presence = 5) # remarked
+
+    return objs
 
 @permission_required_with_403('schedule.schedule_list')
 def daily_occurrences(request, year = 1, month = 1, day = None):
@@ -381,7 +377,6 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
             'css_color_class':o.event.referral.service.css_color_class,
             'start_time': o.start_time.strftime('%H:%M:%S'),
             'end_time': o.end_time.strftime('%H:%M:%S'),
-            'is_past': o.is_past(),
             'rowspan': rowspan,
         }
         

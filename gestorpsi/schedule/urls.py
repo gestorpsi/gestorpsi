@@ -70,8 +70,8 @@ urlpatterns = patterns('',
         name='swingtime-event'
     ),
     url(
-        r'^events/(\d+)/(\d+)/$', 
-        occurrence_view, 
+        r'^events/(\d+)/(\d+)/$',
+        occurrence_view,
         {'template':'schedule/schedule_occurrence_form.html',
          'form_class': ScheduleSingleOccurrenceForm,
         },

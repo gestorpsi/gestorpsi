@@ -202,7 +202,10 @@ class Referral(Event):
         '''
         Return all past occurrences
         '''
-        return self.occurrence_set.filter(start_time__lt=datetime.now()).reverse()
+        return self.occurrence_set.filter(start_time__lt=datetime.now()
+            ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 4 # unmarked
+            ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 5 # re-marked
+            ).reverse()
 
     def last_occurrence(self):
         past = self.past_occurrences()
@@ -216,7 +219,11 @@ class Referral(Event):
             else:
                 a.append(u'%s' % (p))
         return a
-        
+
+    def upcoming_occurrences(self):
+        return self.occurrence_set.filter(start_time__gte=datetime.now()
+            ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 4 # unmarked
+            ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 5) # re-marked
 
 class ReferralDischarge(models.Model):
     id = UuidField(primary_key=True)

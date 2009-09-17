@@ -15,12 +15,15 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.users.views import index, list, form, form_new_user, create_user, update_user, update_pwd, set_form_user, add
+from gestorpsi.users.views import index, list, form, form_new_user, create_user, update_user, update_pwd, set_form_user, add, order
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
     (r'^$', login_check(index)),
     (r'^page(?P<page>(\d)+)$', login_check(list)),
+    (r'^initial/(?P<initial>[a-z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
+    (r'^filter/(?P<filter>.*)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
+    (r'^filter/(?P<filter>.*)/$', login_check(list), {'no_paging': True}), # quick search
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/add/$', login_check(form_new_user)),
     (r'^save/$', login_check(create_user)),
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form)),
@@ -28,4 +31,12 @@ urlpatterns = patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(update_user)),
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/savepwd/$', login_check(update_pwd)),
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/setformuser/$', login_check(set_form_user)),
+    (r'^(?P<profile_id>(\d)+)/order/$', login_check(order)),
+    # DEACTIVE
+    (r'^deactive/$', login_check(index), { 'deactive':True }),
+    (r'^page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True}),
+    (r'^initial/(?P<initial>[a-z])/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick filter
+    (r'^initial/(?P<initial>[a-z])/deactive/$', login_check(list), {'deactive':True} ), # quick filter
+    (r'^filt/(?P<filter>.*)/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick search
+    (r'^filt/(?P<filter>.*)/deacive/$', login_check(list), {'no_paging': True, 'deactive':True } ), # quick search
 )

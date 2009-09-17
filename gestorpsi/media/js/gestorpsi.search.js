@@ -303,4 +303,55 @@ $(function() {
 		updateDevice('/device/page1/deactive/');
 	    });
 
+
+
+
+	    /**
+	     * user quick filter active
+	     */
+	    
+	    $('div#search_header.user_search.active table#letter_menu tr td a, div#search_header.user_search.active a#letter_back, div#search_header.user_search.active a#letter_fwd').click(function() {
+		updateUser('/user/initial/' + $(this).attr('initial') + '/page1/', 'user/initial/'+$(this).attr('initial'));
+	    });
+
+	    /**
+	    * user quick search active
+	    */
+
+	    $('div#search_header.user_search.active input[type=text].quick_search').keyup(function() {
+		($(this).val().length >= 1) ? updateUser('/user/filter/' + $(this).val() + '/page1/', 'user/filter/' + $(this).val()) : updateUser('/device/page1');
+	    }); 
+
+	    /**
+	     * user clean up active
+	     */
+	    
+	    $('div#search_header.user_search.active a#cleanup').click(function() {
+		updateUser('/device/page1');
+	    });
+
+	    /**
+	     * user quick filter deactive
+	     */
+	    
+	    $('div#search_header.user_search.deactive table#letter_menu tr td a, div#search_header.user_search.deactive a#letter_back, div#search_header.user_search.deactive a#letter_fwd').click(function() {
+		updateUser('/user/initial/' + $(this).attr('initial') + '/page1/deactive/', 'user/initial/'+$(this).attr('initial')+'/deactive/');
+	    });
+	    
+	    /**
+	    * user quick search deactive
+	    */
+
+	    $('div#search_header.user_search.deactive input[type=text].quick_search').keyup(function() {
+		($(this).val().length >= 1) ? updateUser('/user/filt/' + $(this).val() + '/page1/deactive/', 'user/filt/' + $(this).val()+'/deactive/') : updateUser('/user/page1/deactive/');
+	    }); 
+
+	    /**
+	     * user clean up deactive
+	     */
+	    
+	    $('div#search_header.user_search.deactive a#cleanup').click(function() {
+		updateUser('/user/page1/deactive/');
+	    });
+
 });

@@ -28,14 +28,31 @@ from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.person.views import person_json_list
 
 @permission_required_with_403('users.users_list')
-def index(request):
-    return render_to_response('users/users_list.html', context_instance=RequestContext(request))    
+def index(request, deactive = False):
+    return render_to_response('users/users_list.html', locals(), context_instance=RequestContext(request))    
 
 @permission_required_with_403('users.users_list')
-def list(request, page = 1):
+def list(request, page = 1, initial = None, filter = None, deactive = False):
     user = request.user
-    object = Profile.objects.filter(org_active = user.get_profile().org_active).order_by('user__username')
 
+    if deactive:
+        print "========== 1"
+        object = Profile.objects.filter(org_active = user.get_profile().org_active, user__is_active = False).order_by('user__username')
+    else:
+        print "========== 0"
+        object = Profile.objects.filter(org_active = user.get_profile().org_active, user__is_active = True).order_by('user__username')
+
+    print object
+
+    if initial:
+        print "========== INITIAL "
+        object = object.filter(person__name__istartswith = initial)
+        
+    if filter:
+        print "========== FILTER "
+        object = object.filter(person__name__icontains = filter)
+
+    print "lixo"
     return HttpResponse(simplejson.dumps(person_json_list(request, object, 'users.users_read', page)),
                             mimetype='application/json')
 
@@ -190,3 +207,16 @@ def set_form_user(request, object_id=0):
         pass
     
     return HttpResponse(simplejson.dumps(array), mimetype='application/json')
+
+def order(request, profile_id = None):
+    object = Profile.objects.get(pk = profile_id)
+    
+    if object.user.is_active:
+        object.user.is_active = False
+    else:
+        object.user.is_active = True
+
+    object.user.save(force_update=True)
+
+    request.user.message_set.create(message=_('User updated successfully'))
+    return HttpResponseRedirect('/user/%s/' % object.person.id)

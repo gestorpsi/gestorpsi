@@ -26,6 +26,8 @@ GNU General Public License for more details.
     <ul>
         <li><a class="first" href="/user/">{% trans "all" %}</a></li>
         <li><a class="{% if not profile %}active{% endif %}" href="/user/add/">{% trans "add" %}</a></li>
+        <li><a href="/user/deactive/">{% trans "all Deactive" %}</a></li>
+
         {% if profile %}<li><a class="active">{{ profile.person.name }}</a></li>{% endif %}
         
     </ul>
@@ -150,6 +152,7 @@ GNU General Public License for more details.
 	<div class="bg_blue">
 		{% include "tags/save.html" %}
 	</div>
+        {% include "tags/user_sidebar.html" %}
 </div>
 
 </form>
@@ -174,5 +177,6 @@ GNU General Public License for more details.
         </fieldset>
     </form>
 </div>
+
 
 {% endblock %}

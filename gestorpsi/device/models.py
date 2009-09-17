@@ -42,10 +42,10 @@ class DeviceDetailsManager(models.Manager):
         return super(DeviceDetailsManager, self).get_query_set().filter(mobility__exact='1')
 
     def active(self, organization):
-        return super(DeviceDetails, self).get_query_set().filter(active = True, device__organization = organization).order_by('brand')
+        return super(DeviceDetailsManager, self).get_query_set().filter(active = True, device__organization = organization).order_by('model')
 
     def deactive(self, organization):
-        return super(DeviceDetails, self).get_query_set().filter(active = False, device__organization = organization).order_by('brand')
+        return super(DeviceDetailsManager, self).get_query_set().filter(active = False, device__organization = organization).order_by('model')
         
 class Device(models.Model):
     """

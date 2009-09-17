@@ -36,23 +36,16 @@ def list(request, page = 1, initial = None, filter = None, deactive = False):
     user = request.user
 
     if deactive:
-        print "========== 1"
         object = Profile.objects.filter(org_active = user.get_profile().org_active, user__is_active = False).order_by('user__username')
     else:
-        print "========== 0"
         object = Profile.objects.filter(org_active = user.get_profile().org_active, user__is_active = True).order_by('user__username')
 
-    print object
-
     if initial:
-        print "========== INITIAL "
         object = object.filter(person__name__istartswith = initial)
         
     if filter:
-        print "========== FILTER "
         object = object.filter(person__name__icontains = filter)
 
-    print "lixo"
     return HttpResponse(simplejson.dumps(person_json_list(request, object, 'users.users_read', page)),
                             mimetype='application/json')
 

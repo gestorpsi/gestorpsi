@@ -42,9 +42,9 @@ def list(request, page = 1, initial = None, filter = None, deactive = False):
     user = request.user
 
     if deactive:
-        object = DeviceDetails.objects.filter(active = False, device__organization=request.user.get_profile().org_active)
+        object = DeviceDetails.objects.deactive(request.user.get_profile().org_active)
     else:
-        object = DeviceDetails.objects.filter(active = True, device__organization=request.user.get_profile().org_active)
+        object = DeviceDetails.objects.active(request.user.get_profile().org_active)
 
     if initial:
         object = object.filter(model__istartswith = initial)

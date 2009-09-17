@@ -43,9 +43,9 @@ def list(request, page = 1, deactive = False, filter = None, initial = None, no_
     user = request.user
 
     if deactive:
-        object = CareProfessional.objects.deactives(user.get_profile().org_active)
+        object = CareProfessional.objects.deactive(user.get_profile().org_active)
     else:
-        object = CareProfessional.objects.actives(user.get_profile().org_active)
+        object = CareProfessional.objects.active(user.get_profile().org_active)
 
     if initial:
         object = object.filter(person__name__istartswith = initial)

@@ -149,9 +149,9 @@ class ProfessionalIdentification(models.Model):
 reversion.register(ProfessionalIdentification)
 
 class CareProfessionalManager(models.Manager):
-    def actives(self, organization):
+    def active(self, organization):
         return super(CareProfessionalManager, self).get_query_set().filter(active=True, person__organization = organization).order_by('person__name')
-    def deactives(self, organization):
+    def deactive(self, organization):
         return super(CareProfessionalManager, self).get_query_set().filter(active=False, person__organization = organization).order_by('person__name')
         
 class CareProfessional(models.Model):

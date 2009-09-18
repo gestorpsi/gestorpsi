@@ -31,7 +31,7 @@ GNU General Public License for more details.
 {% block core %}
 
 <h2 class="title_schedule title">{% if occurrence.event.referral.referralgroup_set.all %}<a href="/service/group/{{ occurrence.event.referral.referralgroup_set.all.0.id }}/form/">{{ occurrence.event.referral.group_name }}</a>{% else %}{{ occurrence.event.referral.client.all.0 }}{% endif %} - {{ occurrence.event.referral.service }}</h2>
-<p class="description"><a href="/careprofessional/{{ occurrence.event.referral.professional.all.0.id }}/">{% trans "Dr(a)" %} {{ occurrence.event.referral.professional.all.0 }}</a> &nbsp;&nbsp;<a href="/schedule/events/{{ occurrence.event.id}}/">{{ occurrence.event.occurrence_set.all|length }} {% trans "Occurrences" %}</a></p>
+<p class="description"><a href="/careprofessional/{{ occurrence.event.referral.professional.all.0.id }}/">{{ occurrence.event.referral.professional.all.0 }}</a> &nbsp;&nbsp;<a href="/schedule/events/{{ occurrence.event.id}}/">{{ occurrence.event.occurrence_set.all|length }} {% trans "Occurrences" %}</a></p>
 
 <form method="post" action="/schedule/events/{{ occurrence.event.id }}/{{ occurrence.id }}/" class="schedule_occurrence">
 <div class="main_area home">

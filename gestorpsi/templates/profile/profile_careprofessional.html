@@ -59,12 +59,12 @@ GNU General Public License for more details.
 			<select name="professional_area" class="medium profession_type" id="0">
                     <option value="">------</option>
 				{% for l in PROFESSIONAL_AREAS %}
-					<option value="{{ l.symbol }}" {% ifequal object.professionalIdentification.profession.symbol l.symbol%} selected {% endifequal %}>{{ l }}</option>
+					<option value="{{ l.id }}" symbol="{{ l.symbol }}" {% ifequal object.professionalIdentification.profession.symbol l.symbol%} selected {% endifequal %}>{{ l }}</option>
 				{% endfor %}
 			</select>
 			</label>
 			<label>{% trans "Licence" %}<br />
-			    <input id="0" type="text" name="professional_licenceBoard" class="small profession_symbol" readonly="1" {% if object.professionalIdentification.profession.symbol %} value="{{ object.professionalIdentification.profession.symbol }}" {% endif %}>
+			    <input id="0" type="text" name="symbol" class="small profession_symbol" readonly="1" {% if object.professionalIdentification.profession.symbol %} value="{{ object.professionalIdentification.profession.symbol }}" {% endif %}>
 			</label>
 			<label>{% trans "Professional Subscription" %}<br />
 				<input type="text" name="professional_registerNumber" maxlength="50" value="{{ object.professionalIdentification.registerNumber }}" />

@@ -36,18 +36,22 @@ from gestorpsi.service.models import Service, Area, ServiceType, Modality
 from gestorpsi.service.forms import GenericAreaForm, SchoolAreaForm, OrganizationalAreaForm, GENERIC_AREA #, ClinicAreaForm
 
 @permission_required_with_403('service.service_list')
-def index(request):
+def index(request, deactive = False):
     """
     Returns a list that contains all the currently existing services.
     @param request: this is a request sent by the browser.
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
     """
-    return render_to_response( "service/service_list.html", context_instance=RequestContext(request))
+    return render_to_response( "service/service_list.html", locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('service.service_list')
-def list(request, page = 1):
+def list(request, page = 1, deactive = False):
     user = request.user
-    object = Service.objects.filter( active=True, organization=user.get_profile().org_active )
+
+    if deactive:
+        object = Service.objects.filter( active=False, organization=user.get_profile().org_active )
+    else:
+        object = Service.objects.filter( active=True, organization=user.get_profile().org_active )
     
     object_length = len(object)
     paginator = Paginator(object, settings.PAGE_RESULTS)
@@ -215,13 +219,21 @@ def list_professional(request, object_id):
 def order(request, object_id = ''):
     object = Service.objects.get(pk = object_id)
 
-    if object.active == True:
-       object.active = False
-    else:
-        object.active = True
+    """ CHECK QUEUE ON THE SERVICE """
+    queue = Queue.objects.filter(referral__service = object_id, date_out = None).order_by('date_in').order_by('priority').count()
 
-    object.save(force_update = True)
-    return HttpResponseRedirect('/service/%s/' % object.id)
+    if queue == 0:
+        if object.active == True:
+            object.active = False
+        else:
+            object.active = True
+
+        object.save(force_update = True)
+        request.user.message_set.create(message=_('Service saved successfully'))
+    else:
+        request.user.message_set.create(message=_('Exist client on the queue'))
+
+    return HttpResponseRedirect('/service/form/%s/' % object.id)
 
 @permission_required_with_403('service.service_write')
 def disable(request, object_id=''):

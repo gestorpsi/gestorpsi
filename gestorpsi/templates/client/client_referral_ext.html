@@ -29,7 +29,7 @@ GNU General Public License for more details.
 <h2 id="title_addressbook" style="display:none"></h2>
 
 {% if object.id %}
-	<h2 class="title_clients title">{{ object.person.name }}</h2>
+	<h2 class="title_clients title">{{ object.person.name }} - {{ referral }}</h2>
 	<p class="description">{% trans "Referral Details" %}<br />	
 {% else %}
 	<h2 class="title_clients title">{% trans "New Admission" %}</h2>

@@ -206,7 +206,7 @@ def form(request, object_id=''):
 @permission_required_with_403('referral.referral_read')
 def referral_plus_form(request, object_id = None, referral_id = None):
     try:
-        object    = Client.objects.get(pk = object_id, person__organization = request.user.get_profile().org_active)
+        object = Client.objects.get(pk = object_id, person__organization = request.user.get_profile().org_active)
     except:
         object = Client()
 
@@ -228,9 +228,12 @@ def referral_plus_form(request, object_id = None, referral_id = None):
     total_service = Referral.objects.filter(client=object).count()
     referral_list = Referral.objects.filter(client=object, status='01')
 
+    print "R E F E R R A L"
+    print referral
+
     return render_to_response('client/client_referral_plus_form.html',
                               {'object': object, 
-                              'referral': referral,
+                                'referral': referral,
                                 'referral_form': referral_form,
                                 'referral_list': referral_list,
                                 'referrals': Referral.objects.filter(client = object),

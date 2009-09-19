@@ -226,6 +226,7 @@ def contact_organization_save(request, object_id = None):
     object.short_name = slugify(object.name)
     object.organization = request.user.get_profile().org_active
     object.contact_owner = request.user.get_profile().person
+    object.comment = request.POST.get('comments')
 
     object.save()
 
@@ -267,7 +268,8 @@ def contact_professional_save(request, object_id = None):
     person.organization.add(Organization.objects.get(pk=request.POST.get('organization')))
 
     person = extra_data_save(request, person)
-
+    
+    object.comments = request.POST.get('comments')
     object.person = person
     object.save()
     

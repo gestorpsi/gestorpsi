@@ -83,13 +83,21 @@ GNU General Public License for more details.
         <label>{% trans "Professional Subscription" %}<br />
             <input type="text" maxlength="50" class="medium" name="professional_subscription" value="{{ object.professionalIdentification.registerNumber }}" />
         </label>
+
+
 </fieldset>
 
 {% include "meta/addressbook.html" %}
 {% include "meta/phones.html" %}
 {% include "meta/internet.html" %}
 
-<br />	
+        <fieldset class="comment_form">
+                <legend>Comments</legend>
+                <label>Comments<br/>
+                        <textarea class="extrabig" name="comments"/>{{ object.comments }}</textarea>
+                </label>
+        </fieldset>
+
 </div>
 
 <div id="sidebar" class="sidebar">

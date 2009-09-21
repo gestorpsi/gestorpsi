@@ -110,12 +110,19 @@ GNU General Public License for more details.
 <div class="main_area home">
 	<h3><span>{% trans "Referral Discharged" %}</span></h3>
 
-    {% for referral in referrals_discharged %}
-       <p>
-        <a href="/client/{{ object.id }}/referral/{{ referral.id }}/" title="{{ referral }}">{{ referral }}</a><br />
-        {% if referral.professional.all.0 %}{{ referral.professional.all.0 }}&nbsp;-&nbsp;{% endif %}{% trans "subscribed at" %} <b>{{ referral.revision.date_created|date:"r"|slice:":-15"}}</b>
-       </p>
-    {% endfor %}
+
+    {% if referrals_discharged %}
+            {% for referral in referrals_discharged %}
+               <p>
+                <a href="/client/{{ object.id }}/referral/{{ referral.id }}/" title="{{ referral }}">{{ referral }}</a><br />
+                {% if referral.professional.all.0 %}{{ referral.professional.all.0 }}&nbsp;-&nbsp;{% endif %}{% trans "subscribed at" %} <b>{{ referral.revision.date_created|date:"r"|slice:":-15"}}</b>
+               </p>
+            {% endfor %}
+    {% else %}    
+            <p class="empty">
+                {% trans "There is no referral discharged" %}
+            </p>
+    {% endif %}
 </div>
 
 <div id="sidebar" class="sidebar">

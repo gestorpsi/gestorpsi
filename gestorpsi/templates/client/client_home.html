@@ -107,6 +107,17 @@ GNU General Public License for more details.
 
 </div>
 
+<div class="main_area home">
+	<h3><span>{% trans "Referral Discharged" %}</span></h3>
+
+    {% for referral in referrals_discharged %}
+       <p>
+        <a href="/client/{{ object.id }}/referral/{{ referral.id }}/" title="{{ referral }}">{{ referral }}</a><br />
+        {% if referral.professional.all.0 %}{{ referral.professional.all.0 }}&nbsp;-&nbsp;{% endif %}{% trans "subscribed at" %} <b>{{ referral.revision.date_created|date:"r"|slice:":-15"}}</b>
+       </p>
+    {% endfor %}
+</div>
+
 <div id="sidebar" class="sidebar">
     {% if object.id %}
         {% include "tags/client_sidebar.html" %}

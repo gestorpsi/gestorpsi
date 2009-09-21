@@ -73,11 +73,13 @@ def home(request, object_id=None):
         raise Http404
     
     referrals = Referral.objects.charged().filter(client=object)
+    referrals_discharged = Referral.objects.discharged().filter(client=object)
 
     return render_to_response('client/client_home.html',
                                         {
                                         'object': object,
                                         'referrals': referrals,
+                                        'referrals_discharged': referrals_discharged,
                                         },
                                         context_instance=RequestContext(request))
 

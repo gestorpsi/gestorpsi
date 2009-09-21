@@ -88,7 +88,8 @@ REFERRAL_DISCHARGE_TYPE = (
     ('14', _('Not informed')),
     ('15', _('End stage - the case was closed')),
     ('16', _('Treatment / Service terminated by court order')),
-    ('17', _('Other')),
+    ('17', _('Internal referral')),
+    ('18', _('Other')),
 )
 
 REFERRAL_DISCHARGE_STATUS = (

@@ -38,8 +38,14 @@ GNU General Public License for more details.
 	<p class="description">{% trans "Displaying" %} <span class="object_length"><span></span> {% trans " general contact(s), " %} </span>, <span class="organizations_length"> <span></span> {% trans " organization(s) and " %} </span> <span class="professionals_length"> <span></span> {% trans " professionals(s)" %}</span>.{% trans "Page" %} <b></b> {% trans "of" %} <b></b></p>
 	
 	
-	<div class="main_area contact">
+        <div id="legend">
+				<div>&nbsp;<img src="/media/img/16/proffessional.png" align="left" /> {% trans "Professionals" %}</div>
+				<!-- <div><img src="/media/img/16/employed.png" align="left" /> {% trans "Employees" %}</div> -->
+				<div>&nbsp;<img src="/media/img/16/go-home.png" align="left" /> {% trans "Organizations" %}</div>
+				<div>&nbsp;<img src="/media/img/16/asterisc.png" align="left" /> {% trans "GestorPsi Network" %}</div>
+        </div>
 
+	<div class="main_area contact">
         <div id="search_header" class="contact_search">
             {% include "tags/search_header.html" %}
         </div>
@@ -62,12 +68,7 @@ GNU General Public License for more details.
             </script>
 			</tbody>
 		</table>
-        <div id="legend">
-				<div><img src="/media/img/16/proffessional.png" align="left" /> {% trans "Professionals" %}</div>
-				<!-- <div><img src="/media/img/16/employed.png" align="left" /> {% trans "Employees" %}</div> -->
-				<div><img src="/media/img/16/go-home.png" align="left" /> {% trans "Organizations" %}</div>
-				<div><img src="/media/img/16/asterisc.png" align="left" /> {% trans "GestorPsi Network" %}</div>
-			</div>
+
         <div style="clear:both"></div>
         {% include "tags/paginator.html" %}
 	</div>

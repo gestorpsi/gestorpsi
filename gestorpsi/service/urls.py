@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.service.views import select_area, index, form, save, disable, list, list_professional, order, queue
+from gestorpsi.service.views import select_area, index, form, save, disable, list, list_professional, order, queue, client_list_index, client_list
 from gestorpsi.authentication.views import login_check
 from gestorpsi.referral.views import group_add, group_form, group_list
 
@@ -39,4 +39,14 @@ urlpatterns= patterns('',
     # DEACTIVE
     (r'^deactive/$', login_check(index), {'deactive': True} ),
     (r'^page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), #list objects
+
+    # LIST CLIENT - ACTIVE 
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/clientlist/$', login_check(client_list_index)), # mount html client list
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/page(?P<page>(\d)+)/clientlist/$', login_check(client_list)), # mount jquery 
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/page(?P<page>(\d)+)/$', login_check(client_list)), #list objects
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/initial/(?P<initial>[a-z])/page(?P<page>(\d)+)/$', login_check(client_list)), # quick filter
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/initial/(?P<initial>[a-z])/$', login_check(client_list)), # quick filter
+    # FILTER
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/filter/(?P<filter>.*)/page(?P<page>(\d)+)/$', login_check(client_list)), # quick search
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/filter/(?P<filter>.*)/$', login_check(client_list), {'no_paging': True}), # quick search
 )

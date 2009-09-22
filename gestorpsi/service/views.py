@@ -24,6 +24,7 @@ from django.core.paginator import Paginator
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from gestorpsi.service.models import Service, Area, ServiceType, Modality
+from gestorpsi.person.views import person_json_list
 from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure
 from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.referral.models import Queue, Referral
@@ -34,6 +35,7 @@ from gestorpsi.organization.models import Agreement, AgeGroup, EducationLevel, H
 from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.service.models import Service, Area, ServiceType, Modality
 from gestorpsi.service.forms import GenericAreaForm, SchoolAreaForm, OrganizationalAreaForm, GENERIC_AREA #, ClinicAreaForm
+from gestorpsi.client.forms import Client
 
 @permission_required_with_403('service.service_list')
 def index(request, deactive = False):
@@ -270,3 +272,25 @@ def queue(request, object_id = ''):
         'queues': list_queue,
         'object': object,
         }, context_instance=RequestContext(request))
+
+def client_list_index(request, object_id = None):
+    user = request.user
+    object = get_object_or_404(Service, pk = object_id)
+
+    return render_to_response('service/service_client_list.html', locals(), context_instance=RequestContext(request))
+
+def client_list(request, page = 1, object_id = None, no_paging = None, initial = None, filter = None):
+    user = request.user
+
+    if Service.objects.get(pk = object_id).responsibles.all().filter(person = user.profile.person).count() == 1:
+        object = Client.objects.all()
+    else:
+        object = Client.objects.filter(referral__service = object_id).distinct()
+
+    if initial:
+        object = object.filter(person__name__istartswith = initial)
+        
+    if filter:
+        object = object.filter(person__name__icontains = filter)
+
+    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'client.client_read', page, no_paging)),mimetype='application/json')

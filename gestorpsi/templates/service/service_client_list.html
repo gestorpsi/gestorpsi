@@ -1,0 +1,75 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Service" %}{% endblock %}
+
+{% block submenu %}
+{% endblock %}
+
+{% block core %}
+
+<div class="registers_available">
+        
+        <div id="msg_area" class="alert" style="display: none"><!-- ou class="error" ou "alert" sem classe -->
+            Esta caixa é mostrada quando há mensagens
+        </div>
+        
+        <h2 id="title_addressbook" style="display: none"></h2>
+        <h2 id="title_clients" style="display: none"></h2>
+       
+            <h2 class="title_service">{% trans "Client list" %}&nbsp;-&nbsp;{{ object }}</h2>
+        <p class="description">{% trans "Displaying" %} <a href="/service/" display="list"><span id="object_length"></span> {% trans "service(s)" %}</a>. {% trans "Page" %} <b></b> {% trans "of" %} <b></b></p>
+        <h2 id="title_myoffice" style="display: none"></h2>
+        
+        <div class="main_area contact">
+            <div id="search_header" class="service_client_search active">
+                {% include "tags/search_header.html" %}
+            </div>
+
+        <div id="msg_area" class="alert no_registers_available hidden">
+            {% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/service/add/" display="form" class="fastmenu notajax">{% trans "here" %}</a> {% trans "if you want to add a new one." %}
+        </div>
+
+        <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+            <input type="hidden" name="service_id" id="service_id" value="{{ object.id }}">
+                <thead> 
+                        <tr> 
+                        <th></th> 
+                        <th></th> 
+                        </tr> 
+                </thead>
+                <tbody>
+                    <script>
+                            updateClient('/service/{{ object.id }}/page1/clientlist/');
+                    </script>
+                </tbody>
+                </table>
+                {% include "tags/paginator.html"%}
+        </div>
+
+<div id="sidebar" class="sidebar">
+        {% include "tags/service_sidebar.html" %}
+</div>
+
+
+</div>
+{% endblock %}

@@ -251,12 +251,12 @@ GNU General Public License for more details.
             <input type="checkbox" name="visible" {% if object.visible %} checked {% endif %} /> {% trans "Visible?" %}
         </label>
 </fieldset>
-<fieldset class="comment_form">
+
+<fieldset id="fieldset_place_status" class="identity organization">
 	<legend>{% trans "Comments" %}</legend>
 	<label>{% trans "Comments" %}<br />
                 <textarea name="comment" class="extrabig">{{ object.comment }}</textarea>
         </label>
-	
 </fieldset>
 
 <br />	

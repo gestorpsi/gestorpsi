@@ -30,7 +30,7 @@ GNU General Public License for more details.
     <li><a href="/service/{{ object.id }}/order/" class="client_order" title="{{ object.name }}">{% if object.active %} {% trans "Inactive" %} {% else %} {% trans "Active" %} {% endif %} </a></li>
     <li><a href="/service/{{ object.id }}/queue/" class="queue" title="{{ object.name }}">Queue</a></li>
     <!-- <li><a class="print" href="/client/{{ object.id }}/print/" title="{{ object.person.name }}">{% trans "Print Record" %}</a></li> -->
-    <li><a href="/service/{{ object.id }}/clientlist/" class="clientlist" title="{{ object.name }}">{% trans "registered customers" %}</a></li>
+    <li><a href="/service/{{ object.id }}/clientlist/" class="clientlist" title="{{ object.name }}">{% trans "Client list" %}</a></li>
 </ul>
 </div>
 {% endif %}

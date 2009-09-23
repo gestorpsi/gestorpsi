@@ -53,18 +53,17 @@ GNU General Public License for more details.
 </div> 
 
 
-
-
 <fieldset class="identity organization first comment fieldset_personal_identification">
         <legend>{% trans "Corporate Identity" %}</legend>
+
+        <label>{% trans "Trade Name" %}<br />
+                <input type="text" maxlength="100" value="{{ object.trade_name }}" name="trade_name" class="extrabig" />
+        </label>
 
         <label>{% trans "Company" %}<br />
                 <input type="text" maxlength="100"  value="{{ object.name }}" name="name" class="extrabig tabtitle" />
         </label>
 
-        <label>{% trans "Trade Name" %}<br />
-                <input type="text" maxlength="100" value="{{ object.trade_name }}" name="trade_name" class="extrabig" />
-        </label>
 	
 	<label>{% trans "Short Name" %}<br />
          	   <input class="short_search medium tabtitle" maxlength="100" type="text" value="{{ object.short_name }}" name="short_name" />

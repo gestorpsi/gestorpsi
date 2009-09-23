@@ -187,7 +187,7 @@ class Organization(models.Model):
     contact_owner = models.ForeignKey('person.Person', related_name="contact_owner", null=True, blank=True)
     
     def __unicode__(self):
-        return self.name
+        return self.trade_name
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

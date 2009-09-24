@@ -117,7 +117,7 @@ GNU General Public License for more details.
             {% if not referral %}
                 <select name="professional" class="extrabig multiple asm" id="id_professional" multiple="multiple">
             {% else %}
-                <select name="professional" class="extrabig asm multiple" id="id_professional" multiple="multiple" disabled="disabled">
+                <select name="professional" class="extrabig asm multiple" id="id_professional" multiple="multiple" {% if referral.professional.all.0 %} disabled="disabled" {% endif %}>
                    {% for prof in referral.service.professionals.all %}
                         <option value="{{ prof.id }}" {% ifequal referral.professional.all.0 prof %} selected {% endifequal %}> {{ prof }} </option>
                    {% endfor %}

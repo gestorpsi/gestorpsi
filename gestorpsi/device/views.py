@@ -39,7 +39,6 @@ def index(request, deactive = False):
 
 @permission_required_with_403('device.device_list')
 def list(request, page = 1, initial = None, filter = None, deactive = False):
-    user = request.user
 
     if deactive:
         object = DeviceDetails.objects.deactive(request.user.get_profile().org_active)
@@ -60,7 +59,7 @@ def list(request, page = 1, initial = None, filter = None, deactive = False):
     i = 0
 
     array['util'] = {
-        'has_perm_read': user.has_perm('device.device_read'),
+        'has_perm_read': request.user.has_perm('device.device_read'),
         'paginator_has_previous': object.has_previous().real,
         'paginator_has_next': object.has_next().real,
         'paginator_previous_page_number': object.previous_page_number().real,
@@ -83,7 +82,7 @@ def list(request, page = 1, initial = None, filter = None, deactive = False):
         }
         i = i + 1
 
-    return HttpResponse(simplejson.dumps(array), mimetype='application/json')
+    return HttpResponse(simplejson.dumps(array, sort_keys=True), mimetype='application/json')
 
 @permission_required_with_403('device.device_list')
 def list_types(request, page = 1):
@@ -124,45 +123,41 @@ def list_types(request, page = 1):
 
 
 @permission_required_with_403('device.device_read')
-def form(request, object_id= ''):
-    user = request.user
-    try:
-        object = get_object_or_404( DeviceDetails, pk= object_id )
-    except Http404:
-        object= DeviceDetails()
+def form(request, object_id= None):
+    object= get_object_or_404(DeviceDetails, pk=object_id, device__organization=request.user.get_profile().org_active) if object_id else DeviceDetails()
+
     return render_to_response('device/device_form.html', {
                                                           'object': object,  
-                                                          'device_type': Device.objects.filter(organization=user.get_profile().org_active),
-                                                          'places': Place.objects.filter(organization=user.get_profile().org_active.id),                                                          
+                                                          'device_type': Device.objects.filter(organization=request.user.get_profile().org_active),
+                                                          'places': Place.objects.filter(organization=request.user.get_profile().org_active.id),
                                                           'PROFESSIONAL_AREAS': Profession.objects.all(), },
                                                           context_instance=RequestContext(request))
 
 
 @permission_required_with_403('device.device_list')
 def index_type(request):
-    return render_to_response( "device/device_type_list.html", 
-        #{'object': Device.objects.filter(organization=user.get_profile().org_active), }, 
-        context_instance=RequestContext(request))
+    return render_to_response( "device/device_type_list.html", context_instance=RequestContext(request))
 
 @permission_required_with_403('device.device_read')
-def form_type(request, object_id= ''):
-    return render_to_response('device/device_type_form.html', {'object': get_object_or_404( Device, pk=object_id) }, context_instance=RequestContext(request) )
+def form_type(request, object_id= None):
+    object= get_object_or_404(Device, pk=object_id, organization=request.user.get_profile().org_active)
+    return render_to_response('device/device_type_form.html', {'object': object }, context_instance=RequestContext(request) )
 
 @permission_required_with_403('device.device_write')
-def save_device(request, object_id= ''):
-    try:
-        device= get_object_or_404( Device, pk=object_id)
-    except Http404:
-        device = Device()
+def save_device(request, object_id= None):
+    object= get_object_or_404(Device, pk=object_id, organization=request.user.get_profile().org_active) if object_id else Device()
 
-    user = request.user
-    device.description = request.POST.get('label')
-    device.organization = user.get_profile().org_active
-    device.save()
-    return HttpResponse(device.id)
+    object.description = request.POST.get('label')
+    object.organization = request.user.get_profile().org_active
+    object.save()
+
+    if object_id: #editing
+        return HttpResponseRedirect('/device/type/')
+    else: # added from mini-form
+        return HttpResponse(object.id)
 
 @permission_required_with_403('device.device_write')
-def save(request, object_id='' ):
+def save(request, object_id=None ):
     """
     This function view creates an instance of the class C{DeviceDetails} with id equals to I{object_id} and
     uses the I{request} object to set the newly created class attributes. If there is some C{DeviceDetails}
@@ -172,13 +167,10 @@ def save(request, object_id='' ):
     @param object_id: the id of the C{DeviceDetails} instance to be saved or updated.
     @type object_id: an instance of the built-in class c{int}.
     """
-    
-    try:
-        device_details= get_object_or_404( DeviceDetails, pk=object_id)
-    except Http404:
-        device_details = DeviceDetails()
 
-    device_details.device = get_object_or_404(Device, pk=request.POST.get('select_device'))
+    object= get_object_or_404(DeviceDetails, pk=object_id, device__organization=request.user.get_profile().org_active) if object_id else DeviceDetails()
+
+    device_details.device = get_object_or_404(Device, pk=request.POST.get('select_device'), organization=request.user.get_profile().org_active)
     device_details.brand = request.POST.get('brand')
     device_details.model = request.POST.get('model')
     device_details.part_number = request.POST.get('part_number')
@@ -212,12 +204,8 @@ def get_visible(request, value):
         return False
      
 @permission_required_with_403('device.device_write')
-def delete(request, object_id= ''):
-    pass
-
-@permission_required_with_403('device.device_write')
-def order(request, object_id = ''):
-    object = DeviceDetails.objects.get(pk = object_id)
+def order(request, object_id=None):
+    object= get_object_or_404(DeviceDetails, pk=object_id, device__organization=request.user.get_profile().org_active)
 
     if object.active == True:
         object.active = False
@@ -225,4 +213,5 @@ def order(request, object_id = ''):
         object.active = True
 
     object.save(force_update = True)
+    request.user.message_set.create(message=('%s' % (_('Device activated successfully') if object.active else _('Device deactivated successfully'))))
     return HttpResponseRedirect('/device/%s/' % object.id)

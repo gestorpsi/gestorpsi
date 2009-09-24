@@ -14,7 +14,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from datetime import datetime
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
@@ -40,12 +39,10 @@ def index(request, deactive = False):
   
 @permission_required_with_403('careprofessional.careprofessional_list')
 def list(request, page = 1, deactive = False, filter = None, initial = None, no_paging = False ):
-    user = request.user
-
     if deactive:
-        object = CareProfessional.objects.deactive(user.get_profile().org_active)
+        object = CareProfessional.objects.deactive(request.user.get_profile().org_active)
     else:
-        object = CareProfessional.objects.active(user.get_profile().org_active)
+        object = CareProfessional.objects.active(request.user.get_profile().org_active)
 
     if initial:
         object = object.filter(person__name__istartswith = initial)
@@ -53,32 +50,15 @@ def list(request, page = 1, deactive = False, filter = None, initial = None, no_
     if filter:
         object = object.filter(person__name__icontains = filter)
 
-    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'careprofessional.careprofessional_read', page)), mimetype='application/json')
+    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'careprofessional.careprofessional_read', page), sort_keys=True), mimetype='application/json')
 
 @permission_required_with_403('careprofessional.careprofessional_read')
 def form(request, object_id=''):
-    user = request.user
-    phones = []
-    addresses = []
-    emails    = []
-    sites     = []
-    instantMessengers = []
-    documents = []
-    workplaces = []
-    agreements = []
 
-    try:
-        object = get_object_or_404(CareProfessional, pk=object_id)
-        phones= object.person.phones.all()
-        addresses= object.person.address.all()
-        documents = object.person.document.all()                       
-        emails    = object.person.emails.all()
-        sites     = object.person.sites.all()
-        instantMessengers = object.person.instantMessengers.all()
-        workplaces = object.professionalProfile.workplace.all()
-        agreements = object.professionalProfile.agreement.all()
-    except:
-        object = CareProfessional() 
+    if object_id:
+        object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
+    else:
+        object = CareProfessional()
 
     try:
         cities = City.objects.filter(state=request.user.get_profile().org_active.address.all()[0].city.state)
@@ -87,15 +67,15 @@ def form(request, object_id=''):
 
     return render_to_response('careprofessional/careprofessional_form.html', {
                                     'object': object,
-                                    'emails': emails,
-                                    'websites': sites,
-                                    'ims': instantMessengers,
-                                    'addresses': addresses,
-                                    'phones': phones,
-                                    'documents': documents,
+                                    'phones' : None if not hasattr(object, 'person') else object.person.phones.all(),
+                                    'addresses' : None if not hasattr(object, 'person') else object.person.address.all(),
+                                    'documents' : None if not hasattr(object, 'person') else object.person.document.all(),
+                                    'emails' : None if not hasattr(object, 'person') else object.person.emails.all(),
+                                    'websites' : None if not hasattr(object, 'person') else object.person.sites.all(),
+                                    'ims' : None if not hasattr(object, 'person') else object.person.instantMessengers.all(),
                                     'PROFESSIONAL_AREAS': Profession.objects.all(),
                                     'AgreementTypes': Agreement.objects.all(),
-                                    'WorkPlacesTypes': Place.objects.filter(organization = user.get_profile().org_active.id),
+                                    'WorkPlacesTypes': Place.objects.filter(organization = request.user.get_profile().org_active.id),
                                     'countries': Country.objects.all(),
                                     'PhoneTypes': PhoneType.objects.all(),
                                     'AddressTypes': AddressType.objects.all(),
@@ -106,9 +86,7 @@ def form(request, object_id=''):
                                     'States': State.objects.all(),
                                     'MaritalStatusTypes': MaritalStatus.objects.all(),
                                     'PlaceTypes': PlaceType.objects.all(),
-                                    'workplaces': workplaces,
-                                    'agreements': agreements,
-                                    'ServiceTypes': Service.objects.filter( active=True, organization=user.get_profile().org_active ),
+                                    'ServiceTypes': Service.objects.filter( active=True, organization=request.user.get_profile().org_active ),
                                     'Cities': cities,
                                     },
                               context_instance=RequestContext(request)
@@ -123,14 +101,18 @@ def save_careprof(request, object_id, save_person):
     @param object: it is the tyoe of CareProfessional that must be filled.
     @type object: an instance of the built-in type C{CareProfessional}.            
     """
-    user = request.user
-    object = get_object_or_None(CareProfessional, pk=object_id) or CareProfessional()
+
+    if object_id:
+        object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
+    else:
+        object = CareProfessional()
+
     if save_person:
         object.person = person_save(request, get_object_or_None(Person, pk=object.person_id) or Person())
     object.save()
 
     if (len(request.POST.getlist('professional_service'))):
-        for o in object.prof_services.filter(organization=user.get_profile().org_active):
+        for o in object.prof_services.filter(organization=request.user.get_profile().org_active):
             object.prof_services.remove(o)
         for ps_id in request.POST.getlist('professional_service'):
             ps = Service.objects.get(pk=ps_id)
@@ -147,7 +129,7 @@ def save_careprof(request, object_id, save_person):
             profile.agreement.add(Agreement.objects.get(pk=agreemt_id))
 
     if (len(request.POST.getlist('professional_workplace'))):
-        for o in profile.workplace.filter(organization=user.get_profile().org_active):
+        for o in profile.workplace.filter(organization=request.user.get_profile().org_active):
             profile.workplace.remove(o)
         for wplace_id in request.POST.getlist('professional_workplace'):
             profile.workplace.add(Place.objects.get(pk=wplace_id))
@@ -165,13 +147,14 @@ def save_careprof(request, object_id, save_person):
     return object
 
 @permission_required_with_403('careprofessional.careprofessional_write')
-def save(request, object_id='', save_person=True):
+def save(request, object_id=None, save_person=True):
     object = save_careprof(request, object_id, save_person)
     request.user.message_set.create(message=_('Professional saved successfully'))
     return HttpResponseRedirect('/careprofessional/%s/' % object.id)
 
-def order(request, object_id = ''):
-    object = CareProfessional.objects.get(pk = object_id)
+@permission_required_with_403('careprofessional.careprofessional_write')
+def order(request, object_id=None):
+    object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
 
     if (object.active == True):
         object.active = False
@@ -179,5 +162,5 @@ def order(request, object_id = ''):
         object.active = True
 
     object.save(force_update=True)
-
+    request.user.message_set.create(message=('%s' % (_('Professional activated successfully') if object.active else _('Professional deactivated successfully'))))
     return HttpResponseRedirect('/careprofessional/%s/' % object.id)

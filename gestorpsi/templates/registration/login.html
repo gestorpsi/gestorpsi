@@ -48,6 +48,7 @@ GNU General Public License for more details.
 
 <label>{% trans "Username" %}<br />{{ form.username }}</label>
 <label>{% trans "Password" %}<br />{{ form.password }}</label>
+<input type="hidden" name="next" value="{{ next}}" />
 <input type="submit" value="{% trans "Log in" %}" class="btn"/>
 </div>
 </fieldset>

@@ -81,7 +81,7 @@ def form(request):
 def save(request):
     user = request.user
     try:
-		object = Organization.objects.get(pk= user.get_profile().org_active.id)
+	object = Organization.objects.get(pk= user.get_profile().org_active.id)
     except:
         object = Organization()
         object.short_name = slugify(request.POST['name'])
@@ -119,8 +119,6 @@ def save(request):
     object.save()
    
     professional_responsible_save(request, object, request.POST.getlist('professionalId'), request.POST.getlist('professional_name'), request.POST.getlist('professional_subscription'), request.POST.getlist('professional_organization_subscription'), request.POST.getlist('service_profession'))
-            #object.subscriptions_professional_institutional = request.POST['subscriptions_professional_institutional']
-            #object.professional_responsible = request.POST['professional_responsible']
 
     phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
     email_save(object, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))

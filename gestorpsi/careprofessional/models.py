@@ -177,6 +177,9 @@ class CareProfessional(models.Model):
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
+    def revision_created(self):
+        return reversion.models.Version.objects.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
+
 reversion.register(CareProfessional, follow=['person', 'professionalIdentification', 'professionalProfile'])
 
 

@@ -35,7 +35,6 @@ GNU General Public License for more details.
 
     {% if referral.id %}
         <li><a href="/client/{{ object.id }}/referral/plus/{{ referral.id }}/form/" class="client_referral_form" title="{{ object.person.name }}">{% trans "Referral" %}</a></li>
-
         <li><a href="/client/{{ object.id }}/referral/ext/{{ referral.id }}/form/" class="client_referral_ext_form" title="{{ object.person.name }}">{% trans "External Referral" %}</a></li>
     {% endif %}
         <!-- <li><a class="client_user_form" display="client_user_form" title="{{ object.person.name }}">{% trans "Manage User" %}</a></li> -->

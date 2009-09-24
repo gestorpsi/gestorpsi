@@ -93,14 +93,14 @@ def send(request):
 @permission_required_with_403('upload.upload_write')
 def attach_form(request, object_id = '', referral_id = ''):
     user = request.user
-    referral = Referral.objects.get(pk = referral_id)
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
     organization = user.get_profile().org_active.id
     
     types = REFERRAL_ATTACH_TYPE
 
     #indication = Indication.objects.get(referral = object_id)
-    attachs = ReferralAttach.objects.filter(referral = referral_id)
-    object = Client.objects.get(pk = object_id)
+    attachs = ReferralAttach.objects.filter(referral = referral_id, referral__service__organization=request.user.get_profile().org_active)
+    object = Client.objects.get(pk = object_id, person__organization=request.user.get_profile().org_active)
 
     return render_to_response('upload/upload_attach.html', locals(), context_instance=RequestContext(request))
 
@@ -130,14 +130,14 @@ def attach_save(request, object_id = None, client_id = None):
                         destination.write(chunk)
                     destination.close()
                         
-                    attachs = ReferralAttach.objects.filter(referral = object_id)               
+                    attachs = ReferralAttach.objects.filter(referral = object_id, referral__service__organization=request.user.get_profile().org_active)
 
                     attach = ReferralAttach()
                     attach.filename = '%s' % request.FILES['file']
                     attach.file = '%s' % file
                     attach.description = request.POST.get('description')
                     attach.type = request.POST.get('doc_type')
-                    attach.referral = Referral.objects.get(pk = object_id)
+                    attach.referral = Referral.objects.get(pk = object_id, service__organization=request.user.get_profile().org_active)
                     attach.save()
     
             except IOError:

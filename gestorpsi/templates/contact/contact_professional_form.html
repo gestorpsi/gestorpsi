@@ -30,8 +30,17 @@ GNU General Public License for more details.
 {% endblock %}
 
 {% block core %}
-<h2 id="title_addressbook" style="display:none"></h2>
 
+{% if hide_save_buttom %}
+    <script>
+    $(function() {
+        $('form input, form select, form textarea').attr('readonly', true);
+        $('form a.add_to_form, a.remove_from_form').hide();
+    })
+    </script>
+{% endif %}
+
+<h2 id="title_addressbook" style="display:none"></h2>
 
 <h2 class="title_contacts title">{% if not object.id %}{% trans "Adding New Contact Professional" %}{% else %}{{ object }} ({% trans "Professional" %}){% endif %}</h2>
 <p class="description">
@@ -64,7 +73,7 @@ GNU General Public License for more details.
 <fieldset class="professional contact">
 <legend>{% trans "Professional Identification" %}</legend>
     <label>{% trans "Name" %}<br />
-        <input type="text" name="name" class="giant" value="{{ object.person.name }}" />
+        <input type="text" name="name" class="giant" maxlength="50" value="{{ object.person.name }}" />
     </label>
 
     <label>{% trans "Profession" %}<br />
@@ -118,14 +127,6 @@ GNU General Public License for more details.
 
     {% endif %}
 </div>
-{% if hide_save_buttom %}
-    <script>
-    $(function() {
-        $('form input, form select, form textarea').attr('disabled', true);
-        $('form a.add_to_form, a.remove_from_form').hide();
-    })
-    </script>
-{% endif %}
 </form>
 
 {% include "tags/organization_mini.html" %}

@@ -53,25 +53,20 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
     if filter:
         object = object.filter(person__name__icontains = filter)
 
-    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'client.client_read', page, no_paging)), mimetype='application/json')
+    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'client.client_read', page, no_paging), sort_keys=True), mimetype='application/json')
 
 @permission_required_with_403('employee.employee_list')
 def lista(request, page = 1 , deactive = False):
-    user = request.user
-
-    #object = Employee.objects.filter(person__organization = user.get_profile().org_active.id, active=True).order_by('person__name')
-    #lista = Employee.objects.active(user.get_profile().org_active)
-    
     if deactive:
-        object = Employee.objects.deactive(user.get_profile().org_active)
+        object = Employee.objects.deactive(request.user.get_profile().org_active)
     else:   
-        object = Employee.objects.active(user.get_profile().org_active)
+        object = Employee.objects.active(request.user.get_profile().org_active)
          
     return HttpResponse(simplejson.dumps(person_json_list(request, object, 'employee.employee_read', page)),
                             mimetype='application/json')
 
 @permission_required_with_403('employee.employee_read')
-def form(request, object_id= ''):
+def form(request, object_id=None):
     """
     This function view creates an employee form. If the object_id has a value, this form will be fill with employee information.
     otherwise, a new form will be create
@@ -80,36 +75,39 @@ def form(request, object_id= ''):
     @param object_id: it is the I{id} of the employee that must be saved.
     @type object_id: an instance of the built-in type C{int}. 
     """
-    phones    = []
-    addresses = []
-    documents = []
-    emails    = []
-    sites     = []
-    instantMessengers = []    
-    try:
-        object    = get_object_or_404(Employee, pk=object_id)        
-        phones    = object.person.phones.all()
-        addresses = object.person.address.all()
-        documents = object.person.document.all()
-        emails    = object.person.emails.all()
-        sites     = object.person.sites.all()
-        instantMessengers = object.person.instantMessengers.all()
-        #last_update = object.history.latest('_audit_timestamp')._audit_timestamp
-    except:        
-        object= Employee()
+
+    if object_id:
+        object = get_object_or_404(Employee, pk=object_id, person__organization=request.user.get_profile().org_active)
+    else:
+        object = Employee()
 
     try:
         cities = City.objects.filter(state=request.user.get_profile().org_active.address.all()[0].city.state)
     except:
         cities = {}
 
-    return render_to_response('employee/employee_form.html',
-                              {'object': object, 'emails': emails, 'websites': sites, 'ims': instantMessengers, 'phones': phones, 'addresses': addresses, 'countries': Country.objects.all(), 'PhoneTypes': PhoneType.objects.all(), 'AddressTypes': AddressType.objects.all(), 'EmailTypes': EmailType.objects.all(), 'IMNetworks': IMNetwork.objects.all() , 'documents': documents, 'TypeDocuments': TypeDocument.objects.all(), 'Issuers': Issuer.objects.all(), 'States': State.objects.all(), 'MaritalStatusTypes': MaritalStatus.objects.all(), 'Cities': cities, }, #'last_update': last_update },
-                              context_instance=RequestContext(request)
-                              )
+    return render_to_response('employee/employee_form.html', {
+                                'object': object,
+                                'phones' : None if not hasattr(object, 'person') else object.person.phones.all(),
+                                'addresses' : None if not hasattr(object, 'person') else object.person.address.all(),
+                                'documents' : None if not hasattr(object, 'person') else object.person.document.all(),
+                                'emails' : None if not hasattr(object, 'person') else object.person.emails.all(),
+                                'websites' : None if not hasattr(object, 'person') else object.person.sites.all(),
+                                'ims' : None if not hasattr(object, 'person') else object.person.instantMessengers.all(),
+                                'countries': Country.objects.all(),
+                                'PhoneTypes': PhoneType.objects.all(),
+                                'AddressTypes': AddressType.objects.all(),
+                                'EmailTypes': EmailType.objects.all(),
+                                'IMNetworks': IMNetwork.objects.all() ,
+                                'TypeDocuments': TypeDocument.objects.all(),
+                                'Issuers': Issuer.objects.all(),
+                                'States': State.objects.all(),
+                                'MaritalStatusTypes': MaritalStatus.objects.all(),
+                                'Cities': cities,
+                              }, context_instance=RequestContext(request))
 
 @permission_required_with_403('employee.employee_write')
-def save(request, object_id= ''):
+def save(request, object_id=None):
     """
     This function view saves an employees, its address and phones.
     @param request: this is a request sent by the browser.
@@ -117,13 +115,14 @@ def save(request, object_id= ''):
     @param object_id: it is the I{id} of the employee that must be saved.
     @type object_id: an instance of the built-in type C{int}. 
     """    
-    try:
-        object = get_object_or_404(Employee, pk=object_id)
+
+    if object_id:
+        object = get_object_or_404(Employee, pk=object_id, person__organization=request.user.get_profile().org_active)
         person = object.person
-    except Http404:
+    else:
         object = Employee()
         person = Person()
-    
+
     object.person = person_save(request, person)
     object.job = request.POST['job']
     if(request.POST['hiredate']):
@@ -136,22 +135,16 @@ def save(request, object_id= ''):
     return HttpResponseRedirect('/employee/%s/' % object.id)
 
 @permission_required_with_403('employee.employee_write')
-def delete(request, object_id):
+def order(request, object_id=None):
     """
     This function view search for an employee which has the id equals to the C{int} (I{employee_id})
-    passed as parameter and change the field I{active} to "False' 
+    passed as parameter and change the field I{active} to "False'
     @param request: this is a request sent by the browser.
     @type request: an instance of the class C{HttpRequest} created by the framework Django.
     @param object_id: represents the I{id} of the employee to be deleted.
     @type object_id: an instance of the built-in class C{int}.
     """
-    object = get_object_or_404(Employee, pk=object_id)
-    object.active = False
-    object.save()
-    return render_to_response('employee/employee_index.html', {'employeeList': Employee.objects.all().filter(active = True) })
-
-def order(request, object_id = ''):
-    object = Employee.objects.get(pk = object_id)
+    object = get_object_or_404(Employee, pk=object_id, person__organization=request.user.get_profile().org_active)
 
     if (object.active == True):
         object.active = False
@@ -159,4 +152,5 @@ def order(request, object_id = ''):
         object.active = True
 
     object.save(force_update=True)
+    request.user.message_set.create(message=('%s' % (_('Employee activated successfully') if object.active else _('Employee deactivated successfully'))))
     return HttpResponseRedirect('/employee/%s/' % object.id)

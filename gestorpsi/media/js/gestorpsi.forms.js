@@ -96,41 +96,45 @@ function bindCityCombo() {
     });
 }
 
-$(function() {
-    
-    bindDelete();
-    reload_symbol_profession();
-    
-    /** 
-    * 
+function bindMask() {
+    /**
+    *
     * _automask and automaskme()
     * automatic mask for all input, type text, fields.
-    * 
+    *
     * _dependency and thanks to Masked Input Plugin
     * 	url: http://digitalbush.com/projects/masked-input-plugin/
-    * 
+    *
     * _description:
-    * 
+    *
     * search for a 'mask' attribute in form text fields
-    * 
+    *
     * you only must to define the 'mask' attribute to masked fields
-    * 
+    *
     * eg.:
     * 	<input type="text" name="phone" mask="((999) 9999-9999)" />
     *                                      ^^^^  ^^^^^^ ^^^^^^^^^^
-    * 
+    *
     * masks rules:
     * ------------------
     * a - Represents an alpha character (A-Z,a-z)
     * 9 - Represents a numeric character (0-9)
-    * * - Represents an alphanumeric character (A-Z,a-z,0-9) 
-    * 
+    * * - Represents an alphanumeric character (A-Z,a-z,0-9)
+    *
     */
 
     $("form input:text[mask]").each(function(){
       $(this).mask($(this).attr('mask'));
     });
+}
 
+
+$(function() {
+    
+    bindDelete();
+    reload_symbol_profession();
+    bindMask();
+    
     $("form input:text[name=dateBirth]").keyup(function(){
       displayAge();
     });
@@ -211,6 +215,7 @@ $(function() {
           bindDelete();
           reload_symbol_profession();
           bindCityCombo();
+          bindMask();
 
      });
      

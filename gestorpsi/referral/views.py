@@ -14,7 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils import simplejson
 from django.template import RequestContext
@@ -22,17 +22,14 @@ from django.utils.translation import ugettext as _
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, ReferralGroup
-from gestorpsi.referral.forms import ReferralForm, ReferralGroupForm, ReferralClientForm
+from gestorpsi.referral.forms import ReferralGroupForm, ReferralClientForm
 from gestorpsi.util.decorators import permission_required_with_403
 
 
 # list referral groups
 @permission_required_with_403('referral.referral_list')
-def group_list(request, object_id=''):
-    try:
-        object  = ReferralGroup.objects.filter(referral__service__id = object_id, referral__organization = request.user.get_profile().org_active)
-    except:
-        raise Http404
+def group_list(request, object_id=None):
+    object  = ReferralGroup.objects.filter(referral__service__id = object_id, referral__organization = request.user.get_profile().org_active)
 
     return render_to_response('service/service_group_list.html',
                               { 'object': object, 
@@ -43,11 +40,8 @@ def group_list(request, object_id=''):
 
 # referral group add form from selected SERVICE
 @permission_required_with_403('referral.referral_write')
-def group_add(request, object_id=''):
-    try:
-        object  = Service.objects.get(pk = object_id, organization = request.user.get_profile().org_active)
-    except:
-        raise Http404
+def group_add(request, object_id=None):
+    object = get_object_or_404(Service, pk=object_id, organization = request.user.get_profile().org_active)
 
     if request.method == 'POST':
         form = ReferralGroupForm(request.POST)
@@ -87,11 +81,8 @@ def group_add(request, object_id=''):
                               
 # referral group edit form from selected GROUP
 @permission_required_with_403('referral.referral_write')
-def group_form(request, object_id=''):
-    try:
-        object  = ReferralGroup.objects.get(pk = object_id)
-    except:
-        raise Http404
+def group_form(request, object_id=None):
+    object = get_object_or_404(ReferralGroup, pk=object_id, referral__service__organization=request.user.get_profile().org_active)
 
     if request.method == 'POST':
         form = ReferralGroupForm(request.POST, instance=object)
@@ -118,16 +109,16 @@ def group_form(request, object_id=''):
                               )
 
 @permission_required_with_403('referral.referral_list')
-def referral_off(request, object_id=""):
-    referral = Referral.objects.get(pk = object_id)
+def referral_off(request, object_id=None):
+    object = get_object_or_404(Referral, pk=object_id, service__organization=request.user.get_profile().org_active)
     referral.status = '02'
     referral.save(force_update = True)
     return HttpResponse(referral.id)
 
 @permission_required_with_403('referral.referral_list')
 def client_referrals(request, object_id = None):
-    object = get_object_or_404(Client, pk=object_id)
-    referral = Referral.objects.charged().filter(client=object)
+    object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+    referral = Referral.objects.charged().filter(client=object, service__organization=request.user.get_profile().org_active)
 
     array = {} #json
     i = 0

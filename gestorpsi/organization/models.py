@@ -192,6 +192,9 @@ class Organization(models.Model):
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
+    def revision_created(self):
+        return reversion.models.Version.objects.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
+
     def get_first_phone(self):
         if ( len( self.phones.all() ) != 0 ):
             return self.phones.all()[0]
@@ -223,6 +226,12 @@ class Organization(models.Model):
 
     def employees(self):
         return self.person_set.filter(employee__isnull = False, employee__active = True)
+
+    def is_real(self):
+        return True if not self.organization else False
+
+    def is_local(self):
+        return True if self.organization else False
 
     class Meta:
         ordering = ['name']

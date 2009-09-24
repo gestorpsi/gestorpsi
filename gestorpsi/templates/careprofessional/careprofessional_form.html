@@ -99,7 +99,7 @@ GNU General Public License for more details.
 			<label>{% trans "Agreements" %}<br />
 			<select name="professional_agreement" multiple="multiple" class="select multiple extrabig asm">
 				{% for l in AgreementTypes %}
-				<option value="{{ l.id }}"{% for a in agreements %}{% ifequal a.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+				<option value="{{ l.id }}"{% for a in object.professionalProfile.agreement.all %}{% ifequal a.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
 				{% endfor %}
 			</select>
 			</label>
@@ -111,7 +111,7 @@ GNU General Public License for more details.
 			<label>{% trans "Workplaces" %}<br />
 			<select name="professional_workplace" multiple="multiple" class="select multiple extrabig asm">
 				{% for l in WorkPlacesTypes %}
-				<option value="{{ l.id }}"{% for w in workplaces %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+				<option value="{{ l.id }}"{% for w in object.professionalProfile.workplace.all %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
 				{% endfor %}
 			</select>
 			</label>

@@ -46,14 +46,14 @@ def list(request, page = 1, initial = None, filter = None, deactive = False):
     if filter:
         object = object.filter(person__name__icontains = filter)
 
-    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'users.users_read', page)),
+    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'users.users_read', page), sort_keys=True),
                             mimetype='application/json')
 
 @permission_required_with_403('users.users_read')
 def form(request, object_id = None):
     user = request.user
     try:
-        profile = Profile.objects.get(person=object_id)
+        profile = Profile.objects.get(person=object_id, person__organization=request.user.get_profile().org_active)
         # HAVE JUST ONE ADMINISTRATOR?
         show = "False"
         
@@ -86,7 +86,7 @@ def add(request):
 @permission_required_with_403('users.users_read')
 def form_new_user(request, object_id):
     profile = Profile()
-    profile.person = get_object_or_404(Person, pk=object_id)
+    profile.person = get_object_or_404(Person, pk=object_id, organization=request.user.get_profile().org_active)
     profile.user = User(username=slugify(profile.person.name))
     return render_to_response('users/users_form.html', {
                                 'profile': profile,
@@ -95,7 +95,7 @@ def form_new_user(request, object_id):
 
 @permission_required_with_403('users.users_write')
 def create_user(request):
-    person = get_object_or_404(Person, pk=request.POST.get('id_person'))
+    person = get_object_or_404(Person, pk=request.POST.get('id_person'), organization=request.user.get_profile().org_active)
     organization = request.user.get_profile().org_active
     username = request.POST.get('username').strip().lower()
     password = request.POST.get('password')
@@ -135,7 +135,7 @@ def create_user(request):
 @permission_required_with_403('users.users_write')
 def update_user(request, object_id):
     organization = request.user.get_profile().org_active
-    profile = Profile.objects.get(person = object_id)
+    profile = Profile.objects.get(person = object_id, person__organization=request.user.get_profile().org_active)
     permissions = request.POST.getlist('perms')
 
     # GROUPS - clear all permissions and re-create them
@@ -165,24 +165,8 @@ def update_user(request, object_id):
     return HttpResponseRedirect('/user/%s/' % profile.person.id)
 
 @permission_required_with_403('users.users_write')
-def save(request, object_id=0):
-    try:
-        object = get_object_or_404(Client, pk=object_id)
-        person = object.person
-    except Http404:
-        object = Client()
-        person = Person()
-
-    object.person = person_save(request, person)
-    object.save()
-
-    request.user.message_set.create(message=_('User updated successfully'))
-
-    return HttpResponseRedirect('/user/%s/' % object.id)
-
-@permission_required_with_403('users.users_write')
 def update_pwd(request, object_id=0):
-    user = Profile.objects.get(person = object_id).user
+    user = Profile.objects.get(person = object_id, person__organization=request.user.get_profile().org_active).user
     user.set_password(request.POST.get('password_mini'))
     user.profile.temp = request.POST.get('password_mini')    # temporary field (LDAP)
     user.profile.save()
@@ -190,10 +174,11 @@ def update_pwd(request, object_id=0):
 
     return HttpResponse(user.profile.id)
 
+@permission_required_with_403('users.users_write')
 def set_form_user(request, object_id=0):
     array = {} #json
     try: 
-        person = Person.objects.get(pk = object_id)
+        person = Person.objects.get(pk = object_id, organization=request.user.get_profile().org_active)
         array[0] = slugify(person.name)
         array[1] = u'%s' % person.get_first_email()
     except:
@@ -201,15 +186,18 @@ def set_form_user(request, object_id=0):
     
     return HttpResponse(simplejson.dumps(array), mimetype='application/json')
 
+@permission_required_with_403('users.users_write')
 def order(request, profile_id = None):
-    object = Profile.objects.get(pk = profile_id)
-    
-    if object.user.is_active:
-        object.user.is_active = False
+    object = Profile.objects.get(pk = profile_id, person__organization=request.user.get_profile().org_active)
+    if request.user.get_profile() == object:
+        request.user.message_set.create(message=('Sorry, you can not disable yourself!'))
     else:
-        object.user.is_active = True
+        if object.user.is_active:
+            object.user.is_active = False
+        else:
+            object.user.is_active = True
 
-    object.user.save(force_update=True)
-
-    request.user.message_set.create(message=_('User updated successfully'))
+        object.user.save(force_update=True)
+        request.user.message_set.create(message=('%s' % (_('User activated successfully') if object.user.is_active else _('User deactivated successfully'))))
+    
     return HttpResponseRedirect('/user/%s/' % object.person.id)

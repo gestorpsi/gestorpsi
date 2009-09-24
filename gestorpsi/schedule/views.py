@@ -78,7 +78,7 @@ def add_event(
         else:
             referral = request.POST['referral']
 
-        event = Referral.objects.get(pk=referral)
+        event = get_object_or_404(Referral, pk=referral, service__organization=request.user.get_profile().org_active)
         if recurrence_form.is_valid():
             recurrence_form.save(event)
             redirect_to = redirect_to or '/schedule/events/%s/' % event.id
@@ -93,17 +93,17 @@ def add_event(
                 dtstart = datetime.now()
 
         try:
-            room = Room.objects.get(pk=request.GET['room'])
+            room = Room.objects.get(pk=request.GET['room'], place__organization=request.user.get_profile().org_active)
         except:
             room = None
         
         try:
-            client = Client.objects.get(pk = request.GET['client'])
+            client = Client.objects.get(pk = request.GET['client'], person__organization=request.user.get_profile().org_active)
         except:
             client = None
         
         try:
-            referral = Referral.objects.get(pk = request.GET['referral'])
+            referral = Referral.objects.get(pk = request.GET['referral'], service__organization=request.user.get_profile().org_active)
         except:
             referral = None
         
@@ -143,8 +143,7 @@ def event_view(
     recurrence_form_class=ScheduleOccurrenceForm
 ):
     
-
-    event = get_object_or_404(Referral, pk=pk)
+    event = get_object_or_404(Referral, pk=pk, service__organization=request.user.get_profile().org_active)
     event_form = recurrence_form = None
     if request.method == 'POST':
         if '_update' in request.POST:
@@ -182,7 +181,7 @@ def occurrence_view(
 ):
     user = request.user
 
-    occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__pk=event_pk)
+    occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__pk=event_pk, event__referral__service__organization=request.user.get_profile().org_active)
     if request.method == 'POST':
         
         form = form_class(request.POST, instance=occurrence)
@@ -210,16 +209,15 @@ def occurrence_confirmation_form(
     client_id = None,
     redirect_to = None,
 ):
-    user = request.user
 
-    occurrence = get_object_or_404(ScheduleOccurrence, pk=pk)
+    occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
 
     try:
         occurrence_confirmation = OccurrenceConfirmation.objects.get(pk = occurrence.occurrenceconfirmation.id)
     except:
         occurrence_confirmation = None
     
-    object = get_object_or_None(Client, pk = client_id)
+    object = get_object_or_None(Client, pk = client_id, person__organization=request.user.get_profile().org_active)
 
     if request.method == 'POST':
         form = form_class(request.POST, instance = occurrence_confirmation)
@@ -274,12 +272,12 @@ def _datetime_view(
 ):
 
     try:
-        referral = Referral.objects.get(pk=referral)
+        referral = Referral.objects.get(pk=referral, service__organization=request.user.get_profile().org_active)
     except:
-        referral = ''
+        referral = None
 
     try:
-        object = Client.objects.get(pk=client)
+        object = Client.objects.get(pk=client, person__organization=request.user.get_profile().org_active)
     except:
         object = ''
 
@@ -404,5 +402,3 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
     array = simplejson.dumps(array)
     
     return HttpResponse(array, mimetype='application/json')
-    
-

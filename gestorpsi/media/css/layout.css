@@ -1095,16 +1095,17 @@ div.schedule #search_header {
 #search_results tr.clinic.gestorpsi,  #search_results tr.clinic.gestorpsi:hover {background-image: url(../img/16/go-home_gestor.png); background-repeat: no-repeat; background-position: 98% 10px;}
 
 
-
-
 #legend div {
-        float: left;
-        padding: 10px 10px;
-        font-size: 10px;
-        color: #999999;
+	float: left;
+	padding: 10px 12px;
+	font-size: 10px;
+	color: #999999;
+}
+#legend div * {
+	margin-left: -10px !important;
 }
 #legend div img {
-        margin: -2px 3px 0 15px;
+	margin: -16px 0px 0 0;
 }
 
 .ajax_link {

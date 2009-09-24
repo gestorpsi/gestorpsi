@@ -48,12 +48,10 @@ def index(request, deactive = False):
 
 @permission_required_with_403('service.service_list')
 def list(request, page = 1, deactive = False):
-    user = request.user
-
     if deactive:
-        object = Service.objects.filter( active=False, organization=user.get_profile().org_active )
+        object = Service.objects.filter( active=False, organization=request.user.get_profile().org_active )
     else:
-        object = Service.objects.filter( active=True, organization=user.get_profile().org_active )
+        object = Service.objects.filter( active=True, organization=request.user.get_profile().org_active )
     
     object_length = len(object)
     paginator = Paginator(object, settings.PAGE_RESULTS)
@@ -63,7 +61,7 @@ def list(request, page = 1, deactive = False):
     i = 0
 
     array['util'] = {
-        'has_perm_read': user.has_perm('service.service_read'),
+        'has_perm_read': request.user.has_perm('service.service_read'),
         'paginator_has_previous': object.has_previous().real,
         'paginator_has_next': object.has_next().real,
         'paginator_previous_page_number': object.previous_page_number().real,
@@ -86,17 +84,19 @@ def list(request, page = 1, deactive = False):
         }
         i = i + 1
 
-    return HttpResponse(simplejson.dumps(array), mimetype='application/json')
+    return HttpResponse(simplejson.dumps(array, sort_keys=True), mimetype='application/json')
 
+@permission_required_with_403('service.service_write')
 def select_area(request, object_id=''):
-    object = get_object_or_None(Service, pk=object_id) or Service()
+    object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active) if object_id else Service()
     return render_to_response('service/select_area.html', {
                                         'areas': Area.objects.all(),
                                         'object': object, },
                                         context_instance=RequestContext(request) )
 
-def form(request, object_id=''):
-    object = get_object_or_None(Service, pk=object_id) or Service()
+@permission_required_with_403('service.service_read')
+def form(request, object_id=None):
+    object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active) if object_id else Service()
     selected_area = get_object_or_None(Area, area_code=request.POST.get('area')) or object.area
 
     if selected_area.area_code in GENERIC_AREA:
@@ -129,7 +129,7 @@ def form(request, object_id=''):
 
 @permission_required_with_403('service.service_write')
 def save(request, object_id=''):
-    object = get_object_or_None(Service, pk=object_id) or Service()
+    object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active) if object_id else Service()
     object.organization = request.user.get_profile().org_active
     object.name = request.POST.get('service_name')
     object.description = request.POST.get('service_description')
@@ -202,7 +202,7 @@ def save(request, object_id=''):
 def list_professional(request, object_id):
     """ Referral - List of professional of the service """
     try:
-        list_prof = CareProfessional.objects.filter(prof_services = object_id)
+        list_prof = CareProfessional.objects.filter(prof_services = object_id, person__organization=request.user.get_profile().org_active)
         i = 0
         array = {} #JSON
         for o in list_prof:
@@ -218,8 +218,8 @@ def list_professional(request, object_id):
         pass
 
 @permission_required_with_403('service.service_write')
-def order(request, object_id = ''):
-    object = Service.objects.get(pk = object_id)
+def order(request, object_id=None):
+    object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active)
 
     """ CHECK QUEUE ON THE SERVICE """
     queue = Queue.objects.filter(referral__service = object_id, date_out = None).order_by('date_in').order_by('priority').count()
@@ -231,26 +231,25 @@ def order(request, object_id = ''):
             object.active = True
 
         object.save(force_update = True)
-        request.user.message_set.create(message=_('Service saved successfully'))
+        request.user.message_set.create(message=_('Service deactivated successfully'))
     else:
-        request.user.message_set.create(message=_('Exist client on the queue'))
+        request.user.message_set.create(message=_('You can not disable a service with clients on the queue'))
 
     return HttpResponseRedirect('/service/form/%s/' % object.id)
 
 @permission_required_with_403('service.service_write')
-def disable(request, object_id=''):
+def disable(request, object_id=None):
     """
     This function view searches for a C{Service} object which has the id equals to I{object_id}, if there is
     such C{Service} instance it is disabled.
     """
-    user = request.user
-    object = get_object_or_404( Service, pk=object_id )
+    object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active)
     object.active = False
     object.save()
     return render_to_response( "service/service_index.html", {
-        'object':Service.objects.filter( active=True, organization=user.get_profile().org_active ),
+        'object':Service.objects.filter( active=True, organization=request.user.get_profile().org_active ),
         'Agreements': Agreement.objects.all(),
-        'CareProfessionals': CareProfessional.objects.all(person__organization = user.get_profile().org_active.id),
+        'CareProfessionals': CareProfessional.objects.all(person__organization = request.user.get_profile().org_active.id),
         'AgeGroups': AgeGroup.objects.all(),
         'ProcedureProviders': ProcedureProvider.objects.all(),
         'Procedures': Procedure.objects.all(),
@@ -261,9 +260,8 @@ def disable(request, object_id=''):
         }, context_instance=RequestContext(request))
 
 @permission_required_with_403('service.service_write')
-def queue(request, object_id = ''):
-    object = Service.objects.get(pk = object_id)
-
+def queue(request, object_id=None):
+    object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active)
     queue = Queue.objects.filter(referral__service = object_id, date_out = None).order_by('date_in').order_by('priority')
 
     list_queue = Referral.objects.filter(queue__referral__service = object_id, queue__date_out = None).order_by('date').order_by('-priority')
@@ -273,19 +271,19 @@ def queue(request, object_id = ''):
         'object': object,
         }, context_instance=RequestContext(request))
 
+@permission_required_with_403('service.service_list')
 def client_list_index(request, object_id = None):
-    user = request.user
-    object = get_object_or_404(Service, pk = object_id)
+    object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active)
 
     return render_to_response('service/service_client_list.html', locals(), context_instance=RequestContext(request))
 
+@permission_required_with_403('service.service_list')
 def client_list(request, page = 1, object_id = None, no_paging = None, initial = None, filter = None):
-    user = request.user
 
-    if Service.objects.get(pk = object_id).responsibles.all().filter(person = user.profile.person).count() == 1:
-        object = Client.objects.all()
+    if Service.objects.get(pk = object_id, organization=request.user.get_profile().org_active).responsibles.all().filter(person = request.user.profile.person).count() == 1:
+        object = Client.objects.filter(person__organization=request.user.get_profile().org_active)
     else:
-        object = Client.objects.filter(referral__service = object_id).distinct()
+        object = Client.objects.filter(referral__service = object_id, person__organization=request.user.get_profile().org_active).distinct()
 
     if initial:
         object = object.filter(person__name__istartswith = initial)

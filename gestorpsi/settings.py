@@ -132,7 +132,6 @@ INSTALLED_APPS = (
     'gestorpsi.sponsor',
     'gestorpsi.organization',
     'gestorpsi.careprofessional',
-    'gestorpsi.psychologist',
     'gestorpsi.contact',
     'gestorpsi.place',
     'gestorpsi.device',

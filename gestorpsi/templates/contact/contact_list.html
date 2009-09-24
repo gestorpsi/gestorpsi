@@ -36,14 +36,6 @@ GNU General Public License for more details.
 
 	<h2 class="title_contacts">{% trans "All Contacts" %}</h2>
 	<p class="description">{% trans "Displaying" %} <span class="object_length"><span></span> {% trans " general contact(s), " %} </span>, <span class="organizations_length"> <span></span> {% trans " organization(s) and " %} </span> <span class="professionals_length"> <span></span> {% trans " professionals(s)" %}</span>.{% trans "Page" %} <b></b> {% trans "of" %} <b></b></p>
-	
-	
-        <div id="legend">
-				<div>&nbsp;<img src="/media/img/16/proffessional.png" align="left" /> {% trans "Professionals" %}</div>
-				<!-- <div><img src="/media/img/16/employed.png" align="left" /> {% trans "Employees" %}</div> -->
-				<div>&nbsp;<img src="/media/img/16/go-home.png" align="left" /> {% trans "Organizations" %}</div>
-				<div>&nbsp;<img src="/media/img/16/asterisc.png" align="left" /> {% trans "GestorPsi Network" %}</div>
-        </div>
 
 	<div class="main_area contact">
         <div id="search_header" class="contact_search">
@@ -54,20 +46,27 @@ GNU General Public License for more details.
             {% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/contact/form/professional/" display="form" class="fastmenu" sub_menu="sub_contacts">{% trans "here" %}</a> {% trans "if you want to add a new one." %}
         </div>
     
-		<table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-			<thead> 
-			<tr> 
-				<th></th> 
-				<th></th>
-				<th></th>
-			</tr> 
-			</thead>
-			<tbody>
+        <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+            <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
             <script>
-                updateContact('/contact/page1');
+            updateContact('/contact/page1');
             </script>
-			</tbody>
-		</table>
+            </tbody>
+        </table>
+
+        <div id="legend">
+            <div>&nbsp;<img src="/media/img/16/proffessional.png" align="left" /> {% trans "Professionals" %}</div>
+            <!-- <div><img src="/media/img/16/employed.png" align="left" /> {% trans "Employees" %}</div> -->
+            <div>&nbsp;<img src="/media/img/16/go-home.png" align="left" /> {% trans "Organizations" %}</div>
+            <div>&nbsp;<img src="/media/img/16/asterisc.png" align="left" /> {% trans "GestorPsi Network" %}</div>
+        </div>
 
         <div style="clear:both"></div>
         {% include "tags/paginator.html" %}

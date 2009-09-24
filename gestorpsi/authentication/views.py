@@ -64,7 +64,10 @@ def user_authentication(request):
             form_messages = _('Your account has not been confirmated yet. Please check your email and use your activation code to continue')
             return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
         
-        if user.is_active:
+        if not user.is_active:
+            form_messages = _('Your account has been disable. Please contact our support')
+            return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
+        else:
             clear_login(user)
             profile = user.get_profile()
             if profile.organization.distinct().count() > 1:
@@ -81,7 +84,7 @@ def user_authentication(request):
                     request.session['temp_user'] = user
                     return render_to_response('registration/select_organization.html', { 'objects': profile.organization.distinct() })
             login(request, user)
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(request.POST.get('next') or '/')
 
 def user_organization(request):
     organization = Organization.objects.get(pk=request.POST.get('organization'))

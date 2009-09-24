@@ -30,7 +30,7 @@ from gestorpsi.util.decorators import permission_required_with_403
 
 @permission_required_with_403('admission.admission_read')
 def form(request, object_id=''):
-    object = get_object_or_404(Client, pk=object_id)
+    object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
 
     return render_to_response('admission/admission_form.html', {
         'object': object,
@@ -58,7 +58,7 @@ def is_responsible(value):
 
 @permission_required_with_403('admission.admission_write')
 def save(request, object_id=''):
-    object = get_object_or_404(Client, pk=object_id)
+    object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
     object.admission_date = datetime.strptime(request.POST.get('admission_date'), '%d/%m/%Y')
     object.legacyRecord = request.POST.get('legacyRecord')
     object.comments = request.POST.get('comments')

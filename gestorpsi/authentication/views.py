@@ -186,6 +186,9 @@ def register(request, success_url=None,
             form = form_class(data=request.POST) # organization already exists, escaping .. 
             error_msg = _(u"Informed organization is already registered. Please choice another name here or login with an existing account")
             form.errors["organization"] = ErrorList([error_msg])
+        elif request.POST.get('username') != slugify(request.POST.get('username')):
+            error_msg = _(u"Enter a valid username.")
+            form.errors["username"] = ErrorList([error_msg])
         else:
             if form.is_valid():
                 new_user = form.save()

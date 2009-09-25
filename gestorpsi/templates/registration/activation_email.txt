@@ -2,7 +2,7 @@ Ola,
 
 Segue abaixo o endereço para a confirmação de seu cadastro no GestorPsi:
 
-http://beta.psico.net/accounts/activate/{{ activation_key }}/
+https://beta.psico.net/accounts/activate/{{ activation_key }}/
 
 Apenas clique, ou copie e cole na barra de endereços do seu navegador de internet.
 

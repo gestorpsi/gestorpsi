@@ -74,7 +74,6 @@ function reloadCities(el) {
         el.parent('label').parent('div').children('label.city').children('select').html(line); // rebuild city combo 
         el.parent('label').parent('div').children('label.city').children('select').children('option[value=' + el.attr('city') + ']').attr('selected', 'selected'); // select city
 }
-    
 
     /**
      * PROFESSION - SYMBOL - PROFESSION DESCRIPTION
@@ -82,7 +81,8 @@ function reloadCities(el) {
 
 function reload_symbol_profession() { 
     $("select.profession_type option").click(function(){
-        $(this).parents('fieldset').children('label').children('input.profession_symbol').val($(this).attr("symbol"));
+        //$(this).parents('fieldset').children('label').children('input.profession_symbol').val($(this).attr("symbol"));
+        $('div label input[name=symbol].profession_symbol').val($(this).attr("symbol"));
     });
 }
 

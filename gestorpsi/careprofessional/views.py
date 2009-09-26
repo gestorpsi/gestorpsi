@@ -31,7 +31,9 @@ from gestorpsi.place.models import Place, PlaceType
 from gestorpsi.service.models import Service
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
-
+from gestorpsi.authentication.models import Profile, Role
+from gestorpsi.careprofessional.models import CareProfessional
+from django.contrib.auth.models import User, Group
 
 @permission_required_with_403('careprofessional.careprofessional_list')
 def index(request, deactive = False):
@@ -54,6 +56,17 @@ def list(request, page = 1, deactive = False, filter = None, initial = None, no_
 
 @permission_required_with_403('careprofessional.careprofessional_read')
 def form(request, object_id=''):
+    user = request.user
+    object = get_object_or_404(CareProfessional, pk=object_id)
+
+    show = "False"
+    try:
+        if ( (Group.objects.get(name='administrator').user_set.all().filter(profile__organization=user.get_profile().org_active).count()) == 1 ):
+            if (user.groups.filter(name='administrator').count() == 1 ):
+                show = "True"
+
+    except:
+        pass
 
     if object_id:
         object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
@@ -88,6 +101,7 @@ def form(request, object_id=''):
                                     'PlaceTypes': PlaceType.objects.all(),
                                     'ServiceTypes': Service.objects.filter( active=True, organization=request.user.get_profile().org_active ),
                                     'Cities': cities,
+                                    'show': show,
                                     },
                               context_instance=RequestContext(request)
                               )

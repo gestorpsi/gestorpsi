@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.users.views import index, list, form, form_new_user, create_user, update_user, update_pwd, set_form_user, add, order
+from gestorpsi.users.views import index, list, form, form_new_user, create_user, update_user, update_pwd, set_form_user, add, order, username_is_available
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
@@ -32,6 +32,7 @@ urlpatterns = patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/savepwd/$', login_check(update_pwd)),
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/setformuser/$', login_check(set_form_user)),
     (r'^(?P<profile_id>(\d)+)/order/$', login_check(order)),
+    (r'^check/(?P<user>.*)/$', (username_is_available)),  #check username
     # DEACTIVE
     (r'^deactive/$', login_check(index), { 'deactive':True }),
     (r'^page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True}),

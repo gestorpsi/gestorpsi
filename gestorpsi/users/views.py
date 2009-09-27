@@ -95,6 +95,7 @@ def form_new_user(request, object_id):
 
 @permission_required_with_403('users.users_write')
 def create_user(request):
+    print " C R E A T E   U S E R"
     person = get_object_or_404(Person, pk=request.POST.get('id_person'), organization=request.user.get_profile().org_active)
     organization = request.user.get_profile().org_active
     username = request.POST.get('username').strip().lower()
@@ -201,3 +202,13 @@ def order(request, profile_id = None):
         request.user.message_set.create(message=('%s' % (_('User activated successfully') if object.user.is_active else _('User deactivated successfully'))))
     
     return HttpResponseRedirect('/user/%s/' % object.person.id)
+
+#  User name is available?
+# 0 = NO
+# 1 = YES
+@permission_required_with_403('organization.organization_read')
+def username_is_available(request, user):
+    if User.objects.filter(username__iexact = user).count():
+            return HttpResponse("0")
+    else:
+            return HttpResponse("1")

@@ -173,7 +173,6 @@ $(function() {
      /**
       * VALID IF EXIST A SHORT NAME IN FORM ORGANIZATION
       */
-      
      $('input.short_search').unbind().keyup(function() {
          $.ajax({
            type: "GET",
@@ -188,14 +187,25 @@ $(function() {
          });
      });
 
-
-
-
+     /**
+      * VALID IF EXIST A USER NAME
+      */
+     $('input#id_username').unbind().keyup(function() {
+         $.ajax({
+           type: "GET",
+           url: "/user/check/"+ $(this).val()+"/",
+           success: function(msg){
+            if (msg == '1'){
+               $("div.check_available_user").hide();
+            } else {
+               $("div.check_available_user").show();
+            }
+           }
+         });
+     });
 
      /** 
-      * 
       * clone div content and append it to form
-      * 
       */
      
      $('fieldset a.add_to_form').click(function() {

@@ -82,6 +82,9 @@ GNU General Public License for more details.
 
                 <label>{% trans "Username" %}<br />
                     <input type="text" name="username" class="giant" value="{{ profile.user.username }}" id="id_username" {% if profile.user.username %} readonly="1" {% endif %} />
+                    <div class="check_available_user" style="display:none">
+                        {% trans "Not available" %}
+                     </div>
                 </label>
 
                 {% if profile.id %}

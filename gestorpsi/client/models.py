@@ -36,6 +36,7 @@ FAMILY_RELATION = (
     (10, _('Grandparents')),
     (11, _('Grandchildren')),
     (12, _('Spouse')),
+    (13, _('Others')),
 )
 
 FAMILY_RELATION_REVERSE = ( 
@@ -51,6 +52,7 @@ FAMILY_RELATION_REVERSE = (
     (10, _('Grandchildren')),
     (11, _('Grandparents')),
     (12, _('Spouse')),
+    (13, _('Others')),
 )
 
 

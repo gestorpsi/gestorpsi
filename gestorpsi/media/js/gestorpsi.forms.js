@@ -134,6 +134,10 @@ $(function() {
     bindDelete();
     reload_symbol_profession();
     bindMask();
+
+    /**
+     * calc age of client
+     */
     
     $("form input:text[name=dateBirth]").keyup(function(){
       displayAge();
@@ -813,6 +817,22 @@ $(function() {
         if (this.value == "1"){
             $('form.new_device_form div#device_form input[id=id_lendable]').removeAttr("checked");
         }
+    });
+
+
+    /***
+    * show professionals of organization of external referral select
+    **/
+    $('div.main_area select#id_organization').unbind().change(function(){
+        $('select[name=professional] option').remove();
+        if (this.value != ''){
+            $.getJSON("/client/org/" + this.value + "/listprofessional/", function(json) {
+                jQuery.each(json,  function(){
+                    $('select[name=professional]').append(new Option(this.name, this.id));
+                });
+            });
+        }
+                
     });
     
 });

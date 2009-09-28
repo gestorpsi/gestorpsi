@@ -22,6 +22,7 @@ from gestorpsi.client.views import index, list, form, save, print_list, print_re
         occurrence_view, referral_occurrences, referral_plus_form, referral_plus_save, referral_queue, \
         referral_queue_save, referral_queue_remove, referral_ext_form, referral_ext_save, family
 from gestorpsi.authentication.views import login_check
+from gestorpsi.organization.views import list_prof_org
 
 urlpatterns = patterns('',
     (r'^$', login_check(index)), #list objects
@@ -41,6 +42,8 @@ urlpatterns = patterns('',
     (r'^print/$', login_required(print_list)), # print client list
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/print/$', login_required(print_record)),  # print record
     (r'^organization_clients/$', login_required(organization_clients)),  # clients for logged otganization
+
+    (r'^org/(?P<org_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/listprofessional/$', login_check(list_prof_org)), # get all professional of organization
     
     # referral
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/ext/(?P<referral_id>\d+)/form/$', login_check(referral_ext_form)), # referral external form

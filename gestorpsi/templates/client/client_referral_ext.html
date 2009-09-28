@@ -53,6 +53,7 @@ GNU General Public License for more details.
 
             <label>{% trans "Select Organization" %} <a class="form_mini" display="organization_mini">{% trans "add a new one" %}</a><br />
                 <select name="organization" id="id_organization" class="extrabig asm">
+                    <option value="" selected> Escolha...</option>
                         {% for o in contact_organizations %}
                     <option value="{{ o.id }}"{% ifequal object.person.organization.all.0.id o.id %} selected{% endifequal %}>{{ o }}</option>
                         {% endfor %}
@@ -61,10 +62,7 @@ GNU General Public License for more details.
 
         <label class="professional" id="id_professional" name="professional" >{% trans "Select Professional" %} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
           <select name="professional" class="select extrabig asm" >
-                <option value="">Escolha...</option>
-                {% for prof in contact_professionals %}
-                    <option value="{{ prof.id }}" >{{ prof }}</option>
-                {% endfor %}
+                <option disabled="disabled" value="">{% trans "Choose a organization first" %}</option>
           </select>
          </label>
 

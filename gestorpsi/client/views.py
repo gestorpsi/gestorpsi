@@ -589,13 +589,6 @@ def referral_ext_form(request, object_id ='', referral_id=''):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
 
-    contact_professionals = Contact.objects.filter(
-                                                org_id = request.user.get_profile().org_active.id,
-                                                person_id = request.user.get_profile().person.id,
-                                                filter_name = None,
-                                                filter_type = 2
-                                                )
-
     contact_organizations = Contact.objects.filter(
                                                 org_id = request.user.get_profile().org_active.id, 
                                                 person_id = request.user.get_profile().person.id, 

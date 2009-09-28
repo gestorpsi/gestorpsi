@@ -13,7 +13,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
-
+from django.utils import simplejson
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -27,7 +27,7 @@ from gestorpsi.address.views import address_save
 from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
 from gestorpsi.util.decorators import permission_required_with_403
-from gestorpsi.careprofessional.models import Profession
+from gestorpsi.careprofessional.models import Profession, CareProfessional
 from gestorpsi.util.views import get_object_or_None
 
 @permission_required_with_403('organization.organization_write')
@@ -150,3 +150,18 @@ def get_visible( request, value ):
         return True
     else:
         return False 
+
+def list_prof_org(request, org_id = None):
+    org = Organization.objects.get(pk = org_id)
+    list = CareProfessional.objects.filter(person__organization = org, active=True, person__organization__visible = True)
+
+    i = 0
+    array = {} #JSON
+    for o in list:
+        array[i] = {
+                'name': '%s' % o,
+                'id': o.id,
+                }
+        i = i + 1
+
+    return HttpResponse(simplejson.dumps(array), mimetype='application/json')

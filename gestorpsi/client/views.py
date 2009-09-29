@@ -497,6 +497,8 @@ def order(request, object_id = ''):
             request.user.message_set.create(message=_('User activated successfully'))
             object.save(force_update=True)
 
+        object.save(force_update=True)
+    
     else:
         request.user.message_set.create(message=_('The user have registered referral'))
         url += '?class=error'

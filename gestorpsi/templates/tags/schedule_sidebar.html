@@ -23,4 +23,11 @@ GNU General Public License for more details.
         <li><a href="/schedule/events/{{ occurrence.event.id }}/" title="{% trans "Upcomming Occurrences from this event" %}">{% trans "Upcomming Occurrences from this event" %}</a></li>
     </ul>
 
+    <h3>{% trans 'Clients' %}</h3>
+    <ul>
+     {% for c in referral.client.all %}
+       <li>     <a class="customers" href="/client/{{c.id}}/">{{ c }} </a><br /> </li>
+     {% endfor %}
+    </ul>
+
 </div>

@@ -220,23 +220,25 @@ def list_professional(request, object_id):
 
 @permission_required_with_403('service.service_write')
 def order(request, object_id=None):
+    object = Service.objects.get(pk = object_id)
     url = "/service/form/%s/"
 
     """ CHECK QUEUE AND REFERRAL """
     if ( Referral.objects.filter(service = object).count()) == 0:
         if (Queue.objects.filter(referral__service = object_id, date_out = None).order_by('date_in').order_by('priority').count()) == 0:
             if object.active == True:
+                request.user.message_set.create(message=_('Service deactive successfully'))
                 object.active = False
             else:
+                request.user.message_set.create(message=_('Service active successfully'))
                 object.active = True
 
             object.save(force_update = True)
-            request.user.message_set.create(message=_('Service update successfully'))
         else:
             request.user.message_set.create(message=_('You can not disable a service with clients on the queue'))
             url += '?class=error'
     else:
-            request.user.message_set.create(message=_('You can not disable a service with clients with referral'))
+            request.user.message_set.create(message=_('You can not disable a service with clients subscription on the referral'))
             url += '?class=error'
     return HttpResponseRedirect(url % object.id)
 

@@ -178,6 +178,7 @@ def form(request, object_id=''):
                                 'Relations': Relation.objects.all(),
                                 'profile': profile,
                                 'groups': groups,
+                                 'class': request.GET.get('class'),
                                },
                               context_instance=RequestContext(request)
                               )
@@ -485,16 +486,22 @@ def organization_clients(request):
 @permission_required_with_403('client.client_write')
 def order(request, object_id = ''):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+    url = '/client/%s/'
 
-    if (object.clientStatus == "1" ):
-        object.clientStatus  = "0"
-        request.user.message_set.create(message=_('User deactivated successfully'))
+    if Referral.objects.filter(client = object).count() == 0:
+        if (object.clientStatus == "1" ):
+            object.clientStatus  = "0"
+            request.user.message_set.create(message=_('User deactivated successfully'))
+        else:
+            object.clientStatus = "1"
+            request.user.message_set.create(message=_('User activated successfully'))
+            object.save(force_update=True)
+
     else:
-        object.clientStatus = "1"
-        request.user.message_set.create(message=_('User activated successfully'))
-
-    object.save(force_update=True)
-    return HttpResponseRedirect('/client/%s/' % object.id)
+        request.user.message_set.create(message=_('The user have registered referral'))
+        url += '?class=error'
+        
+    return HttpResponseRedirect(url % object.id)
 
 @permission_required_with_403('schedule.schedule_read')
 def schedule_daily(request,

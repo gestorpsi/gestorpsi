@@ -52,7 +52,7 @@ def list(request, page = 1, deactive = False):
         object = Service.objects.filter( active=False, organization=request.user.get_profile().org_active )
     else:
         object = Service.objects.filter( active=True, organization=request.user.get_profile().org_active )
-    
+
     object_length = len(object)
     paginator = Paginator(object, settings.PAGE_RESULTS)
     object = paginator.page(page)
@@ -74,7 +74,7 @@ def list(request, page = 1, deactive = False):
     array['paginator'] = {}
     for p in paginator.page_range:
         array['paginator'][p] = p
-    
+
     for o in object.object_list:
         array[i] = {
             'id': o.id,
@@ -124,8 +124,9 @@ def form(request, object_id=None):
         'Modalitys': Modality.objects.all(),
         'Professions': Profession.objects.all(),
         'area': selected_area,
-        'form_area': form_area,},
-        context_instance=RequestContext(request) )
+        'form_area': form_area,
+        'class':request.GET.get('class')
+        }, context_instance=RequestContext(request) )
 
 @permission_required_with_403('service.service_write')
 def save(request, object_id=''):
@@ -211,7 +212,7 @@ def list_professional(request, object_id):
                     'id': o.id,
             }
             i = i + 1
-        
+
         return HttpResponse(simplejson.dumps(array), mimetype='application/json')
 
     except:
@@ -219,23 +220,25 @@ def list_professional(request, object_id):
 
 @permission_required_with_403('service.service_write')
 def order(request, object_id=None):
-    object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active)
+    url = "/service/form/%s/"
 
-    """ CHECK QUEUE ON THE SERVICE """
-    queue = Queue.objects.filter(referral__service = object_id, date_out = None).order_by('date_in').order_by('priority').count()
+    """ CHECK QUEUE AND REFERRAL """
+    if ( Referral.objects.filter(service = object).count()) == 0:
+        if (Queue.objects.filter(referral__service = object_id, date_out = None).order_by('date_in').order_by('priority').count()) == 0:
+            if object.active == True:
+                object.active = False
+            else:
+                object.active = True
 
-    if queue == 0:
-        if object.active == True:
-            object.active = False
+            object.save(force_update = True)
+            request.user.message_set.create(message=_('Service update successfully'))
         else:
-            object.active = True
-
-        object.save(force_update = True)
-        request.user.message_set.create(message=_('Service deactivated successfully'))
+            request.user.message_set.create(message=_('You can not disable a service with clients on the queue'))
+            url += '?class=error'
     else:
-        request.user.message_set.create(message=_('You can not disable a service with clients on the queue'))
-
-    return HttpResponseRedirect('/service/form/%s/' % object.id)
+            request.user.message_set.create(message=_('You can not disable a service with clients with referral'))
+            url += '?class=error'
+    return HttpResponseRedirect(url % object.id)
 
 @permission_required_with_403('service.service_write')
 def disable(request, object_id=None):
@@ -287,7 +290,7 @@ def client_list(request, page = 1, object_id = None, no_paging = None, initial =
 
     if initial:
         object = object.filter(person__name__istartswith = initial)
-        
+
     if filter:
         object = object.filter(person__name__icontains = filter)
 

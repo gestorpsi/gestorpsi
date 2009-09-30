@@ -561,9 +561,13 @@ def referral_queue(request, object_id = '',  referral_id = ''):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
 
-    form=QueueForm()
-
-    return render_to_response('client/client_referral_queue.html', locals(), context_instance=RequestContext(request))
+    if referral.upcoming_occurrences().count() == 0:
+        form=QueueForm()
+        return render_to_response("client/client_referral_queue.html", locals(), context_instance=RequestContext(request))
+    else:
+        request.user.message_set.create(message=_('Subscript in the queue not is possible. Exist hour in the schedule'))
+        return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
+    
 
 @permission_required_with_403('referral.referral_write')
 def referral_queue_save(request, object_id = '',  referral_id = ''):

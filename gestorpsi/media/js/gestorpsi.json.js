@@ -15,16 +15,63 @@ GNU General Public License for more details.
 */
 
 /** 
+* client list of service
+*/
+function updateClientService(url, app) {
+    if (!app)
+        app = "client";
+    $.getJSON(url, function(json) {
+        var tableTR = '';
+
+        /**
+        * build html
+        */
+
+        tableTR = '';
+
+        jQuery.each(json,  function(){
+              jQuery.each(this.client,  function(){
+                        str_client = this.name;
+                        str_client_id = this.id;
+                    });
+
+              str_professional = '';
+              str_professional_id = '';
+
+              if (this.professional){
+               jQuery.each(this.professional,  function(){
+                        str_professional += ' ('+ this.name + ')';
+                        str_professional_id = this.id;
+                    });
+                }
+ 
+                tableTR += '<tr>';
+                tableTR += '<td class="title">'+ str_client +'  '+ str_professional +'<br> data ' + this.dt;
+                tableTR += '</td>';
+                tableTR += '<td></td>';
+                tableTR += '</tr>';
+        });
+
+        buildTableList(tableTR, 'div#list');
+        buildPaginator(app, json['paginator'], json['util'], 'div#list');
+
+        $("ul.paginator a").unbind().click(function(){
+            updateClientService($(this).attr('href'), app);
+            return false;
+        });
+    });
+
+    return false;
+}
+/**
 * client list
 */
-
-
 function updateClient(url, app) {
     if (!app)
         app = "client";
     $.getJSON(url, function(json) {
         var tableTR = '';
-        
+
         /**
         * build html
         */
@@ -50,7 +97,7 @@ function updateClient(url, app) {
             updateClient($(this).attr('href'), app);
             return false;
         });
-    });  
+    });
 
     return false;
 }

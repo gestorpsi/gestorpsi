@@ -224,7 +224,7 @@ def order(request, object_id=None):
     url = "/service/form/%s/"
 
     """ CHECK QUEUE AND REFERRAL """
-    if ( Referral.objects.filter(service = object).count()) == 0:
+    if ( Referral.objects.charged(service = object).count()) == 0:
         if (Queue.objects.filter(referral__service = object_id, date_out = None).order_by('date_in').order_by('priority').count()) == 0:
             if object.active == True:
                 request.user.message_set.create(message=_('Service deactive successfully'))
@@ -284,16 +284,34 @@ def client_list_index(request, object_id = None):
 
 @permission_required_with_403('service.service_list')
 def client_list(request, page = 1, object_id = None, no_paging = None, initial = None, filter = None):
-
-    if Service.objects.get(pk = object_id, organization=request.user.get_profile().org_active).responsibles.all().filter(person = request.user.profile.person).count() == 1:
-        object = Client.objects.filter(person__organization=request.user.get_profile().org_active)
-    else:
-        object = Client.objects.filter(referral__service = object_id, person__organization=request.user.get_profile().org_active).distinct()
+    array = {} # json
+    i = 0
+    
+    referral = Referral.objects.charged().filter(service = object_id).order_by('date')
 
     if initial:
-        object = object.filter(person__name__istartswith = initial)
+        referral = referral.filter(client__person__name__istartswith = initial)
 
     if filter:
-        object = object.filter(person__name__icontains = filter)
+        referral = referral.filter(client__person__name__icontains = filter)
+        
+    for r in referral:
+        array[i] = {
+            'dt': r.date.strftime("%d-%m-%Y  %H:%M %p")
+        }
+        
+        sub = 0;
+        array[i]['professional'] = {}
+        for p in r.professional.all():
+            array[i]['professional'][sub] = ({'id':p.id, 'name':p.person.name})
+            sub = sub + 1
 
-    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'client.client_read', page, no_paging)),mimetype='application/json')
+        sub = 0;
+        array[i]['client'] = {}
+        for p in r.client.all():
+            array[i]['client'][sub] =  ({'id':p.id, 'name':p.person.name})
+            sub = sub + 1
+
+        i = i + 1
+
+    return HttpResponse(simplejson.dumps(array, sort_keys=True), mimetype='application/json')

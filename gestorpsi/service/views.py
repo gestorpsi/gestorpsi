@@ -125,7 +125,7 @@ def form(request, object_id=None):
         'Professions': Profession.objects.all(),
         'area': selected_area,
         'form_area': form_area,
-        'class':request.GET.get('class')
+        'clss':request.GET.get('clss')
         }, context_instance=RequestContext(request) )
 
 @permission_required_with_403('service.service_write')
@@ -235,11 +235,11 @@ def order(request, object_id=None):
 
             object.save(force_update = True)
         else:
-            request.user.message_set.create(message=_('You can not disable a service with clients on the queue'))
-            url += '?class=error'
+            request.user.message_set.create(message=_('You can not disable a service with clients in the queue'))
+            url += '?clss=error'
     else:
-            request.user.message_set.create(message=_('You can not disable a service with clients subscription on the referral'))
-            url += '?class=error'
+            request.user.message_set.create(message=_('You can not disable a service with clients registered in the referral'))
+            url += '?clss=error'
     return HttpResponseRedirect(url % object.id)
 
 @permission_required_with_403('service.service_write')

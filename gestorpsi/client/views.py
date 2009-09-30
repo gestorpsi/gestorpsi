@@ -341,12 +341,11 @@ def referral_save(request, object_id = None, referral_id = None):
 
 @permission_required_with_403('referral.referral_read')
 def referral_discharge_form(request, object_id = None, referral_id = None):
-    print "D I S C H A R G E D"
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
     queue = get_object_or_None(Queue, referral=referral_id)
 
-    if Occurrence.objects.filter(event__referral = referral).count() == 0:
+    if referral.upcoming_occurrences().count() == 0:
         if request.method == 'POST':
             form = ReferralDischargeForm(request.POST, initial=dict(client=object, referral=referral))
             if form.is_valid():
@@ -370,7 +369,6 @@ def referral_discharge_form(request, object_id = None, referral_id = None):
         return render_to_response('client/client_referral_discharge_form.html', locals(), context_instance=RequestContext(request))
 
     else:
-        print " E R R O!"
         request.user.message_set.create(message=_('Registered have hour in the schedule'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
 
@@ -391,7 +389,6 @@ def referral_list(request, object_id = None, discharged = None):
 
 @permission_required_with_403('referral.referral_read')
 def referral_home(request, object_id = None, referral_id = None):
-    print " H O M E"
     user = request.user
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)

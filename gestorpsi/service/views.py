@@ -224,7 +224,7 @@ def order(request, object_id=None):
     url = "/service/form/%s/"
 
     """ CHECK QUEUE AND REFERRAL """
-    if ( Referral.objects.charged(service = object).count()) == 0:
+    if ( Referral.objects.charged().filter(service = object).count()) == 0:
         if (Queue.objects.filter(referral__service = object_id, date_out = None).order_by('date_in').order_by('priority').count()) == 0:
             if object.active == True:
                 request.user.message_set.create(message=_('Service deactive successfully'))

@@ -494,7 +494,7 @@ def order(request, object_id = ''):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
     url = '/client/%s/'
 
-    if Referral.objects.filter(client = object).count() == 0:
+    if Referral.objects.charged().filter(client = object).count() == 0:
         if (object.clientStatus == "1" ):
             object.clientStatus  = "0"
             request.user.message_set.create(message=_('User deactivated successfully'))

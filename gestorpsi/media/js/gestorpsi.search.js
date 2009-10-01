@@ -358,7 +358,7 @@ $(function() {
         service = $('table#search_results input[name=service_id]').val();
 
             $('div#search_header.service_client_search.active table#letter_menu tr td a, div#search_header.service_client_search.active a#letter_back, div#search_header.service_client_search.active a#letter_fwd').click(function() {
-                updateClient('/service/'+ service +'/initial/' + $(this).attr('initial') + '/page1/', 'service/initial/'+$(this).attr('initial'));
+                updateClientService('/service/'+ service +'/initial/' + $(this).attr('initial') + '/page1/', 'service/initial/'+$(this).attr('initial'));
             });
 
             /**
@@ -366,7 +366,7 @@ $(function() {
             */
 
             $('div#search_header.service_client_search.active input[type=text].quick_search').keyup(function() {
-                ($(this).val().length >= 1) ? updateClient('/service/' + service + '/filter/' + $(this).val() + '/page1/', 'service/' + service + '/filter/' + $(this).val()) : updateClient('/service/' + service + '/page1');
+                ($(this).val().length >= 1) ? updateClientService('/service/' + service + '/filter/' + $(this).val() + '/page1/', 'service/' + service + '/filter/' + $(this).val()) : updateClientService('/service/' + service + '/page1');
             });
 
             /**
@@ -374,7 +374,7 @@ $(function() {
              */
 
             $('div#search_header.service_client_search.active a#cleanup').click(function() {
-                updateClient('/service/'+ service + '/page1');
+                updateClientService('/service/'+ service + '/page1');
             });
 
 });

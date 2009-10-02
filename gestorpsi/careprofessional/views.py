@@ -57,7 +57,10 @@ def list(request, page = 1, deactive = False, filter = None, initial = None, no_
 @permission_required_with_403('careprofessional.careprofessional_read')
 def form(request, object_id=''):
     user = request.user
-    object = get_object_or_404(CareProfessional, pk=object_id)
+    if object_id:
+        object = get_object_or_404(CareProfessional, pk=object_id)
+    else:
+        object = CareProfessional()
 
     show = "False"
     try:

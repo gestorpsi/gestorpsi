@@ -76,6 +76,7 @@ def home(request, object_id=None):
                                         'object': object,
                                         'referrals': referrals,
                                         'referrals_discharged': referrals_discharged,
+					'clss':request.GET.get('clss')
                                         },
                                         context_instance=RequestContext(request))
 
@@ -310,9 +311,12 @@ def referral_plus_save(request, object_id = None, referral_id = None):
 """ *** TODO: manage multiples referrals """
 @permission_required_with_403('referral.referral_write')
 def referral_save(request, object_id = None, referral_id = None):
+    msg = "Referral saved successfully"
+    url = '/client/%s/home/'
+
     if request.method == 'POST':
         try:
-            referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active)
+            referral = Referral.objects.charged().filter(pk=referral_id, service__organization=request.user.get_profile().org_active)
             form = ReferralForm(request.POST, instance = referral)
         except:
             form = ReferralForm(request.POST)
@@ -320,24 +324,26 @@ def referral_save(request, object_id = None, referral_id = None):
             object = form.save(commit=False)
             object.organization = request.user.get_profile().org_active
             object.status = '01'
-            object.save()
-            form.save_m2m()
-
-            """ Indication  Section """
-            if request.POST.get('indication'):
-                indication = Indication()
-                indication.indication_choice = IndicationChoice.objects.get(pk=request.POST.get('indication'))
-                indication.referral_organization = get_object_or_None(Organization, id=request.POST.get('indication_organization'))
-                indication.referral_professional = get_object_or_None(CareProfessional, id=request.POST.get('indication_professional'))
-                # indication.client = Client.objects.get(pk = object_id)
-                indication.referral = Referral.objects.get(pk = object)
-                indication.save()
-
+            if object.service.active:
+                object.save()
+                form.save_m2m()
+		""" Indication  Section """
+		if request.POST.get('indication'):
+			indication = Indication()
+			indication.indication_choice = IndicationChoice.objects.get(pk=request.POST.get('indication'))
+			indication.referral_organization = get_object_or_None(Organization, id=request.POST.get('indication_organization'))
+			indication.referral_professional = get_object_or_None(CareProfessional, id=request.POST.get('indication_professional'))
+			# indication.client = Client.objects.get(pk = object_id)
+			indication.referral = Referral.objects.get(pk = object)
+			indication.save()
+            else:
+		url = '/client/%s/home/?clss=error'
+		msg = "Service is deactive. Impossible register a referral."
         else:
             print form.errors
-    request.user.message_set.create(message=_('Referral saved successfully'))
 
-    return HttpResponseRedirect('/client/%s/referral/%s/' % (request.POST.get('client_id'), object.id))
+    request.user.message_set.create(message=_(msg))
+    return HttpResponseRedirect(url % object_id)
 
 @permission_required_with_403('referral.referral_read')
 def referral_discharge_form(request, object_id = None, referral_id = None):

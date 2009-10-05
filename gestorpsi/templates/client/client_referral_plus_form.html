@@ -70,7 +70,7 @@ GNU General Public License for more details.
                 </select>
                 <label><div class="error_select" style="display:none;"><h3><font color="red">{% trans "This fields is required." %}</font></div></label>
             </label>
-            <label{% if referral %} style="display:none"{% endif %}>{% trans "To Service" %}<br />
+            <label{% if referral_form.id %} style="display:none"{% endif %}>{% trans "To Service" %}<br />
             {{ referral_form.service }}
             </label>
 

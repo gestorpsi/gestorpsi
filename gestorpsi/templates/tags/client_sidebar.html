@@ -23,7 +23,11 @@ GNU General Public License for more details.
         <li><a href="/client/{{ object.id }}/home/" class="client_home" title="{% trans "Client Home" %}">{% trans "Client Home" %}</a></li>
     {% ifequal object.clientStatus "1" %} 
         <li><a href="/client/{{ object.id }}/" class="client_form" title="{% trans "Demographic Data" %}">{% trans "Demographic Data" %}</a></li>
-        <li><a href="/client/{{ object.id }}/family/" class="client_family" title="{% trans "Client Family" %}">{% trans "Client Family" %}</a></li>
+        {% if not object.is_company %}
+            <li><a href="/client/{{ object.id }}/family/" class="client_family" title="{% trans "Client Family" %}">{% trans "Client Family" %}</a></li>
+        {% else %}
+            <li><a href="/client/{{ object.id }}/company_clients/" class="company_clients" title="{% trans "Related Clients" %}">{% trans "Related Clients" %}</a></li>
+        {% endif %}
             {% if object.referral_set.all %}
                 <li><a href="/client/{{ object.id }}/referral/" class="client_referral_list" title="{% trans "Subscribed Services" %}">{% trans "Subscribed Services" %}</a></li>
                 <li><a href="/client/{{ object.id }}/referral/discharged/" class="client_referral_discharge" title="{% trans "Discharged Services" %}">{% trans "Discharged Services" %}</a></li>
@@ -41,6 +45,11 @@ GNU General Public License for more details.
         <li><a href="/client/{{ object.id }}/referral/plus/{{ referral.id }}/form/" class="client_referral_form" title="{{ object.person.name }}">{% trans "Referral" %}</a></li>
         <li><a href="/client/{{ object.id }}/referral/ext/{{ referral.id }}/form/" class="client_referral_ext_form" title="{{ object.person.name }}">{% trans "External Referral" %}</a></li>
     {% endif %}
+
+    {% if object.is_company %}
+        <li><a href="/client/{{ object.id }}/company_clients/form/" class="add_company_clients" title="{% trans "Add Related Client" %}">{% trans "Add Related Client" %}</a></li>
+    {% endif %}
+
         <!-- <li><a class="client_user_form" display="client_user_form" title="{{ object.person.name }}">{% trans "Manage User" %}</a></li> -->
         <li><a href="/client/{{ object.id }}/order/" class="client_order" title="{{ object.person.name }}">{% ifequal object.clientStatus "1" %} {% trans "Inactive" %} {% else %} {% trans "Active" %} {% endifequal %} </a></li>
     {% comment %}
@@ -71,7 +80,7 @@ GNU General Public License for more details.
         <li><a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}" class="client_calendar" title="{{ object.person.name }}">{% trans "Schedule Client" %}</a></li>
         <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/discharge/" class="client_referral_discharge" title="{{ object.person.name }}">{% trans "Service Discharge" %}</a></li>
         <li><a class="print" href="/client/{{ object.id }}/print/" title="{{ object.person.name }}">{% trans "Print Record" %}</a></li>
-        <li><a class="document" href="/upload/client/{{ object.id }}/attach/{{ referral.id }}" title="{{ object.person.name }}">{% trans "Document" %}</a></li>
+        <li><a class="document" href="/upload/client/{{ object.id }}/attach/{{ referral.id }}" title="{{ object.person.name }}">{% trans "Attach Document" %}</a></li>
 
         <li><a class="queue" href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/" title="{{ object.person.name }}">{% trans "Queue" %}</a></li>
 

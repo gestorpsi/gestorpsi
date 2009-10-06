@@ -1,0 +1,134 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_client %}active{% endblock %}
+
+{% block submenu %}
+    {% include "client/client_menu.html" %}
+{% endblock %}
+
+{% block core %}
+
+
+<script>
+$(function() {
+    $('input[name=client_search_button]').click(function() {
+        $.getJSON('/client/filter/' + $('input[name=client_search_key]').val() + '/', function(json) {
+            var tableTR = '';
+
+            /**
+            * build html
+            */
+
+            jQuery.each(json,  function(){
+                if(this.id) {
+                    tableTR += '<tr>';
+                    tableTR += '<td>' + this.name + '</td>';
+                    tableTR += '<td> <a href="#form" class="add_as_member_family" id="' + this.id + '" name="' + this.name + '">Adicionar</a></td>';
+                    tableTR += '<td></td>';
+                    tableTR += '</tr>';
+                }
+            });
+
+            $('table#company_clients_results tbody').html(tableTR);
+
+            // bind when click
+            $('table#company_clients_results tbody a.add_as_member_family').click(function(){
+                $('form#form_client_related input[name=client_id]').val($(this).attr('id'));
+                $('form#form_client_related input[name=name]').val($(this).attr('name'));
+
+            });
+        });
+    });
+});
+</script>
+
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+<h2 class="title_clients title">{% trans "Company related clients" %}</h2>
+<p class="description">&nbsp;</p>
+
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
+
+<form action="" method="post" id="form_client_related" class="form_client_related">
+<div class="main_area">
+    {% if not company_client %}
+    <fieldset>
+
+    <legend>{% trans "Add an existing client as company related client" %}</legend>
+        <label>{% trans "Type client name then in Search" %}<br />
+        <input name="client_search_key" type="text" class="big" /></label>
+        <label><input name="client_search_button" type="button" class="btn" value="{% trans "Search" %}" /></label>
+
+        <label>{% trans "Choose the client from the list, or use the form below to add a new one" %}</label>
+        <div class="overflow">
+
+                <table id="company_clients_results" class="zebra">
+                        <thead>
+                        <tr><th></th><th></th><th></th></tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                </table>
+        </div>
+    </fieldset>
+    {% endif %}
+    <fieldset>
+    <a name="form"></a>
+    <legend>{% trans "Add new client and set it client as a company related member" %}</legend>
+            <input type="hidden" name="client_id" value="{{ company_client.client.id }}">
+                    <label>{% trans "Name" %}<br />
+                    {{ form.name }}
+                    </label>
+                    <label>{% trans "Is Reponsible?" %}<br />
+                    {{ form.responsible }}
+                    </label>
+                    {% if company_client %}
+                    <label>{% trans "Is Active?" %}<br />
+                    {{ form.active }}
+                    </label>
+                    {% endif %}
+
+                    <div class="btn_left">
+                    </div>
+    </fieldset>
+<br />
+</div>
+
+<div id="sidebar" class="sidebar">
+    {% if perms.client.client_write %}
+        <div class="bg_blue">
+            {% include "tags/save.html" %}
+        </div>
+    {% endif %}
+    {% if object.id %}
+        <br />
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
+</div>
+
+
+</form>
+{% include "tags/upload.html" %}
+
+{% endblock %}

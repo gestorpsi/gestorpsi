@@ -16,6 +16,7 @@ GNU General Public License for more details.
 import reversion
 from django.db import models
 from django.contrib.contenttypes import generic
+from django.utils.translation import ugettext_lazy as _
 from gestorpsi.phone.models import Phone
 from gestorpsi.address.models import City, Address, Country
 from gestorpsi.document.models import Document
@@ -24,7 +25,17 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util.first_capitalized import first_capitalized
    
-Gender = ( ('0','No Information'),('1','Female'), ('2','Male'))
+Gender = (
+    ('0','No Information'),
+    ('1','Female'),
+    ('2','Male')
+)
+
+COMPANY_SIZE = (
+    (1, _('Small')),
+    (2, _('Medium')),
+    (3, _('Big')),
+)
 
 class MaritalStatus(models.Model):
     description = models.CharField(max_length=20)
@@ -59,7 +70,7 @@ class Person(models.Model):
     birthForeignCountry = models.IntegerField(max_length=4, null=True)
         
     def __unicode__(self):
-        return u"%s" % self.name
+        return (u"%s (%s)" % (self.name, _('Company'))) if self.is_company() else (u"%s" % (self.name))
 
     """ function used only in reports.py waiting a fix in Geraldo SubReport"""
     def get_documents(self):
@@ -161,6 +172,9 @@ class Person(models.Model):
         else:
             return ''        
 
+    def is_company(self):
+        return True if hasattr(self, 'company') else False
+
     def is_client(self):
         return True if hasattr(self, 'client') else False
 
@@ -179,4 +193,30 @@ class Person(models.Model):
     class Meta:
         ordering = ['name']
 
+class CompanyClient(models.Model):
+    from gestorpsi.client.models import Client
+    client = models.ForeignKey(Client)
+    company = models.ForeignKey('Company')
+    responsible = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return '%s @ %s' % (self.client, self.company)
+
+    class Meta:
+        ordering = ['-active', '-responsible', 'client']
+        unique_together = (('client', 'company'),)
+
+class Company(models.Model):
+    from gestorpsi.client.models import Client
+    person = models.OneToOneField(Person, blank=True, null=True)
+    size = models.IntegerField(_('Company Size'), blank=True, null=True, choices=COMPANY_SIZE)
+    cnae_class = models.CharField(_('CNAE Class Code'), blank=True, max_length=7)
+    client = models.ManyToManyField(Client, blank=True, through='CompanyClient')
+
+    def __unicode__(self):
+        return u'%s' % self.person.name
+
+reversion.register(Company, follow=['person','client'])
+reversion.register(CompanyClient)
 reversion.register(Person, follow=['phones','address', 'emails', 'sites', 'instantMessengers'])

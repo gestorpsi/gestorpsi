@@ -37,7 +37,8 @@ from gestorpsi.client.forms import FamilyForm
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.organization.models import Organization
-from gestorpsi.person.models import Person, MaritalStatus
+from gestorpsi.person.models import Person, MaritalStatus, CompanyClient
+from gestorpsi.person.forms import CompanyForm, CompanyClientForm
 from gestorpsi.person.views import person_save
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, ReferralAttach, REFERRAL_ATTACH_TYPE, Queue, ReferralExternal
@@ -55,6 +56,7 @@ from gestorpsi.schedule.forms import OccurrenceConfirmationForm
 from gestorpsi.schedule.models import ScheduleOccurrence, Occurrence
 from gestorpsi.contact.models import Contact
 from gestorpsi.util.views import get_object_or_None
+from gestorpsi.util.models import Cnae
 
 # list all active clients
 @permission_required_with_403('client.client_list')
@@ -97,7 +99,7 @@ def add(request):
                                         'AddressTypes': AddressType.objects.all(), 
                                         'EmailTypes': EmailType.objects.all(), 
                                         'IMNetworks': IMNetwork.objects.all() , 
-                                        'TypeDocuments': TypeDocument.objects.all(), 
+                                        'TypeDocuments': TypeDocument.objects.filter(source=1), 
                                         'Issuers': Issuer.objects.all(), 
                                         'Cities': cities,
                                         'States': State.objects.all(), 
@@ -107,6 +109,7 @@ def add(request):
                                         'ReferralChoices': ReferralChoice.objects.all(),
                                         'IndicationsChoices': IndicationChoice.objects.all(),
                                         'Relations': Relation.objects.all(),
+                                        'cnae': Cnae.objects.all(),
                                          },
                                         context_instance=RequestContext(request))
 
@@ -155,7 +158,14 @@ def form(request, object_id=''):
         profile.person = get_object_or_404(Person, pk=object.person.id)
         profile.user = User(username=slugify(profile.person.name))
     
-    return render_to_response('client/client_form.html',
+    if object.person.is_company():
+        template_name = 'client/client_form_company.html'
+        company_form = CompanyForm(instance=object.person.company)
+    else:
+        template_name = 'client/client_form.html'
+        company_form = None
+
+    return render_to_response(template_name,
                               {'object': object,
                                 'phones' : object.person.phones.all(),
                                 'addresses' : object.person.address.all(),
@@ -168,7 +178,7 @@ def form(request, object_id=''):
                                 'AddressTypes': AddressType.objects.all(), 
                                 'EmailTypes': EmailType.objects.all(), 
                                 'IMNetworks': IMNetwork.objects.all(), 
-                                'TypeDocuments': TypeDocument.objects.all(), 
+                                'TypeDocuments': TypeDocument.objects.filter(source=1), 
                                 'Issuers': Issuer.objects.all(), 
                                 'States': State.objects.all(), 
                                 'MaritalStatusTypes': MaritalStatus.objects.all(), 
@@ -180,6 +190,36 @@ def form(request, object_id=''):
                                 'profile': profile,
                                 'groups': groups,
                                 'clss': request.GET.get('clss'),
+                                'company_form': company_form,
+                                'cnae': Cnae.objects.all() if object.person.is_company() else None,
+                               },
+                              context_instance=RequestContext(request)
+                              )
+
+@permission_required_with_403('client.client_read')
+def add_company(request, object_id=''):
+    object = Client() if not object_id else get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+    company_form = CompanyForm()
+
+    return render_to_response('client/client_form_company.html',
+                              {'object': object,
+                                'phones' : None if not object_id else object.person.phones.all(),
+                                'addresses' : None if not object_id else object.person.address.all(),
+                                'documents' : None if not object_id else object.person.document.all(),
+                                'emails' : None if not object_id else object.person.emails.all(),
+                                'websites' : None if not object_id else object.person.sites.all(),
+                                'ims' : None if not object_id else object.person.instantMessengers.all(),
+                                'countries': Country.objects.all(),
+                                'PhoneTypes': PhoneType.objects.all(), 
+                                'AddressTypes': AddressType.objects.all(), 
+                                'EmailTypes': EmailType.objects.all(), 
+                                'IMNetworks': IMNetwork.objects.all(), 
+                                'TypeDocuments': TypeDocument.objects.filter(source=2), 
+                                'Issuers': Issuer.objects.all(), 
+                                'States': State.objects.all(), 
+                                'Relations': Relation.objects.all(),
+                                'company_form': company_form,
+                                'cnae': Cnae.objects.all(),
                                },
                               context_instance=RequestContext(request)
                               )
@@ -419,7 +459,7 @@ def referral_home(request, object_id = None, referral_id = None):
     return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('client.client_write')
-def save(request, object_id=None):
+def save(request, object_id=None, is_company = False):
     """
        Save or Update a client record
     """
@@ -440,6 +480,16 @@ def save(request, object_id=None):
 
     object.person = person_save(request, person)
     object.save()
+    
+    if is_company:
+        company_form = CompanyForm(request.POST) if not object_id else CompanyForm(request.POST, instance=object.person.company)
+        if not company_form.is_valid():
+            print company_form.errors
+        else:
+            company = company_form.save(commit=False)
+            print object.person
+            company.person = object.person
+            company.save()
 
     request.user.message_set.create(message=_('Client saved successfully'))
 
@@ -660,3 +710,42 @@ def family(request, object_id = None):
     form = FamilyForm()
 
     return render_to_response('client/client_family.html', locals(), context_instance=RequestContext(request))
+
+@permission_required_with_403('client.client_list')
+def company_related(request, object_id = None):
+    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+    clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active)
+
+    return render_to_response('client/client_company_related.html', locals(), context_instance=RequestContext(request))
+
+@permission_required_with_403('client.client_write')
+def company_related_form(request, object_id = None, company_client_id=None):
+    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+    form = CompanyClientForm()
+
+    if company_client_id:
+        company_client = get_object_or_404(CompanyClient, \
+            pk=company_client_id, \
+            company__person__organization=request.user.get_profile().org_active, \
+            client__person__organization=request.user.get_profile().org_active, \
+            )
+        form = CompanyClientForm(instance=company_client)
+        
+        from django import forms
+        form.fields['name'].widget = forms.TextInput(attrs={'readonly':'readonly', 'class':'extrabig'})
+        form.fields['name'].initial = company_client.client
+
+    if request.method == 'POST':
+        if company_client_id:
+            form = CompanyClientForm(request.POST, instance=company_client)
+        else:
+            form = CompanyClientForm(request.POST)
+            
+        if form.is_valid():
+            form.save(request, object)
+            request.user.message_set.create(message=_('Related client added successfully to this company'))
+            return HttpResponseRedirect('/client/%s/company_clients/' % object.id)
+        else:
+            return render_to_response('client/client_company_related_form.html', locals(), context_instance=RequestContext(request))
+
+    return render_to_response('client/client_company_related_form.html', locals(), context_instance=RequestContext(request))

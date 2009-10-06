@@ -105,7 +105,7 @@ class Client(models.Model):
     objects = ClientManager()
 
     def __unicode__(self):
-        return u"%s" % self.person.name
+        return (u"%s (%s)" % (self.person.name, _('Company'))) if self.person.is_company() else (u"%s" % (self.person.name))
     
     class Meta:
         ordering = ['person']
@@ -135,6 +135,9 @@ class Client(models.Model):
             family_list.append([id, name, relation_level])
         
         return family_list
+
+    def is_company(self):
+        return True if hasattr(self.person, 'company') else False
 
 reversion.register(Client, follow=['person', ])
 reversion.register(Family)

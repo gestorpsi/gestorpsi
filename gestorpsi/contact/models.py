@@ -32,7 +32,7 @@ def cursor_to_list(cursor, filter_type = None):
 
     return list
 
-class ContactManager(models.Manager):
+class ContactManager(object):
     
     """
     contact filter(*args, **kwargs)
@@ -103,11 +103,8 @@ class ContactManager(models.Manager):
 
         return cursor_to_list(cursor.fetchall(), kwargs.get('filter_type') or None)
 
-class Contact(models.Model):
+class Contact(object):
     objects = ContactManager()
-    
-    class Meta:
-        managed = False
     
     def __unicode__(self):
         return u'%s' % self.name

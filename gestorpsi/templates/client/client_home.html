@@ -43,7 +43,7 @@ GNU General Public License for more details.
         <img class="img_people" src="{% if object.person.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
         <br /><br />
     </div>    
-    <h1>{{ object.person.name }}</h1>
+    <h1>{{ object }}</h1>
     <p><span class="big">{% if object.person.maritalStatus %}{{ object.person.maritalStatus }}{% endif %}</span></p>
     <p><span class="big">{% if object.person.birthDate %}{{ object.person.birthDate|age }} {% trans "years old" %} {% endif %}</span></p>
     {% if object.person.address.all %}

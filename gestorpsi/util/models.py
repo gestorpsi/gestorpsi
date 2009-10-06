@@ -14,4 +14,13 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-# Create your models here.
+from django.db import models
+
+class Cnae(models.Model):
+    id = models.CharField(max_length=30, primary_key=True)
+    cnae_class = models.CharField(max_length=765)
+    class Meta:
+        db_table = u'cnae'
+    
+    def __unicode__(self):
+        return "%s %s" % (self.id, self.cnae_class)

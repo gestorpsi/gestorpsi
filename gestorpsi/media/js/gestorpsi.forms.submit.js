@@ -278,7 +278,7 @@ $(function() {
 
     $('form.upload_referral').validate({
         rules: {
-            file: "required",
+            file: "required"
         },
         messages: {
             name: 'Preenchimento Necessário'
@@ -323,6 +323,25 @@ $(function() {
         messages: {
             name: 'Preenchimento Necessário',
             relation_level: 'Preenchimento Necessário'
+        }
+    });
+
+     /**
+      *
+      * client company related
+      *
+      * _description:
+      * validate and post client company related
+      *
+      */
+
+
+    $('form.form_client_related').validate({
+        rules: {
+            name: "required"
+        },
+        messages: {
+            name: 'Preenchimento Necessário'
         }
     });
 

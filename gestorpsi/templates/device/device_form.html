@@ -27,7 +27,7 @@ GNU General Public License for more details.
         <li><a class="first" href="/device/">{% trans "all" %}</a></li>
         <li><a class="{% if not object.id %}active{% endif %}" href="/device/add/">{% trans "add" %}</a></li>
         <li><a href="/device/type/">{% trans "types" %}</a></li>
-        {% if object.id %}<li><a class="active">{{ object.model }} - {{ object.brand }}</a></li>{% endif %}
+        {% if object.id %}<li><a class="active">{{ object.model }}</a></li>{% endif %}
         <li><a class="{% if deactive %} active {% endif %}" href="/device/deactive/">{% trans "all Deactives" %}</a></li>
         
     </ul>
@@ -37,7 +37,7 @@ GNU General Public License for more details.
 {% block core %}
 
 {% if object.id %}
-	<h2 class="title_device title">{{ object.model }} - {{ object.brand }}</h2>
+	<h2 class="title_device title">{{ object.model }}</h2>
 	<p class="description">{{ object.device.description }}<br></p>
 {% else %}
 	<h2 class="title_device title">{% trans "Adding Equipments" %}</h2>

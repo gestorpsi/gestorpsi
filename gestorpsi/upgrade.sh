@@ -63,7 +63,7 @@ if [ ${sure} != y ] && [ ${sure} != Y ]
     exit 0
 elif [ ${sure} = y ] || [ ${sure} = Y ]
     then
-    array=(organization person service referral admission client place schedule employee careprofessional device)
+    array=(organization person service referral admission client place schedule employee careprofessional device phone)
 
     # clean update south table
     python util/reset_south.py

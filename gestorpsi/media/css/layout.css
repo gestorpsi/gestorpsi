@@ -291,7 +291,7 @@ div#sub_menu .active {
 }
 
 #content {
-        width: 990px;
+        width: 100%;
         margin-bottom: 10px;
 }
 

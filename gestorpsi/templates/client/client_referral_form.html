@@ -42,7 +42,7 @@ GNU General Public License for more details.
 
 <form action="/client/{{ object.id }}/referral/{% if referral.id %}{{ referral.id }}/{% endif %}save/" method="post" id="client_referral_form" class="client_referral">
 <input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
-<div class="main_area">
+<div class="main_area home">
     <a href="" id=help>&nbsp;</a>
     <h3><span>{% trans "Subscription Details" %}</span></h3>
 
@@ -91,19 +91,9 @@ GNU General Public License for more details.
             <label class="referral_type_referral hidden">{% trans "Last Referral" %}
                 <select name="referral" class="extrabig asm referral_list" {% if object.id %} id="id_referral" {% endif %} >
                     <option value="">---------</option>
-                    {% for p in referral_list %}
-                        <option value="{{ p.id }}"> {{ p }} 
-                            {% if p.professional.all.0 %}
-                                ( {{ p.professional.all.0 }} )
-                            {% endif %}
-
-                            {% if p.professional.all.1 %}
-                                ( {{ p.professional.all.1 }})
-                            {% endif %}
-
-                            {% if p.professional.all.2 %}
-                                ({{ p.professional.all.2 }} )
-                            {% endif %}
+                    {% for r in referral_list %}
+                        <option value="{{ p.id }}"> {{ r }} 
+                            {{ r.professional.all|join:", " }}
                         </option>
                     {% endfor %}
                 </select>
@@ -113,17 +103,18 @@ GNU General Public License for more details.
             {{ referral_form.service }}
             </label>
             
+            {% if not referral or not referral.professional.all %}
             <label>{% trans "Professionals" %}<br />
-            {% if not referral %}
                 <select name="professional" class="extrabig multiple asm" id="id_professional" multiple="multiple">
-            {% else %}
-                <select name="professional" class="extrabig asm multiple" id="id_professional" multiple="multiple" {% if referral.professional.all.0 %} disabled="disabled" {% endif %}>
-                   {% for prof in referral.service.professionals.all %}
+                {% for prof in referral.service.professionals.all %}
                         <option value="{{ prof.id }}" {% ifequal referral.professional.all.0 prof %} selected {% endifequal %}> {{ prof }} </option>
                    {% endfor %}
-            {% endif %}
                </select>
             </label>
+            {% else %}
+                <h2 class="red">{% trans "Referral Professionals" %}</h2>
+                <p>{{ referral.professional.all|join:", " }}</p>
+            {% endif %}
 
         <label style="display:none">{% trans "Clients" %}<br />
         {{ referral_form.client }}

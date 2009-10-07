@@ -70,8 +70,6 @@ def add_event(
     recurrence_form_class=ScheduleOccurrenceForm,
     redirect_to = None
 ):
-
-    erro = None
     dtstart = None
     if request.method == 'POST':
         recurrence_form = recurrence_form_class(request.POST)
@@ -82,18 +80,10 @@ def add_event(
 
         event = get_object_or_404(Referral, pk=referral, service__organization=request.user.get_profile().org_active)
         if recurrence_form.is_valid():
-	    client = event.client.all()[0]
-            if event.service.active:
-            	if Referral.objects.discharged().filter(pk = event.id).count() == '0':
-					recurrence_form.save(event)
-					redirect_to = redirect_to or '/schedule/events/%s/' % event.id
-					request.user.message_set.create(message=_('Schedule saved successfully'))
-					return http.HttpResponseRedirect(redirect_to)
-                else:
-                    erro = '2'
-            else:
-                erro = '1'
-
+            recurrence_form.save(event)
+            redirect_to = redirect_to or '/schedule/events/%s/' % event.id
+            request.user.message_set.create(message=_('Schedule saved successfully'))
+            return http.HttpResponseRedirect(redirect_to)
     else:
         if 'dtstart' in request.GET:
             try:
@@ -125,31 +115,24 @@ def add_event(
             until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
             room=room.id,
             ))
+
         recurrence_form.fields['device'].queryset = DeviceDetails.objects.filter(Q(room = room, mobility="1") | Q(place =  room.place, room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=False) | Q(room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=True))
 
-
-    if not erro:
-		return render_to_response(
-				template,
-				dict(
-				    dtstart=dtstart,
-				    event_form=event_form,
-				    recurrence_form=recurrence_form,
-				    group  = ReferralGroup.objects.filter(referral__organization = request.user.get_profile().org_active),
-				    room = room,
-				    object = client,
-				    referral = referral,
-				    room_id=room.id,
-				    ),
-				context_instance=RequestContext(request)
+    return render_to_response(
+        template,
+        dict(
+            dtstart=dtstart, 
+            event_form=event_form, 
+            recurrence_form=recurrence_form, 
+            group  = ReferralGroup.objects.filter(referral__organization = request.user.get_profile().org_active),
+            room = room,
+            object = client,
+            referral = referral,
+            room_id=room.id,
+            ),
+        context_instance=RequestContext(request)
     )
-    else:
-        if erro == '1':
-            request.user.message_set.create(message=_('Service is deactive. Impossible continue'))
-            return http.HttpResponseRedirect('/client/%s/home/?clss=error' % client.id)
-        else:
-            request.user.message_set.create(message=_('Referral is discharged. Impossible continue'))
-            return http.HttpResponseRedirect('/client/%s/home/?clss=error' % client.id)
+
 
 @permission_required_with_403('schedule.schedule_read')
 def event_view(

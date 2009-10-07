@@ -1164,3 +1164,7 @@ h3.developingList {
 	text-decoration: underline;
 	
 }
+
+a.book {
+    display:none;
+}

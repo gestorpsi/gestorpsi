@@ -392,7 +392,10 @@ def referral_save(request, object_id = None, referral_id = None):
 def referral_discharge_form(request, object_id = None, referral_id = None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
-    queue = get_object_or_None(Queue, referral=referral_id)
+ 
+    if referral.on_queue():
+        request.user.message_set.create(message=_('Sorry, you can not discharge a queued referral. Remove it from queue first before to continue'))
+        return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
 
     if referral.upcoming_occurrences().count() == 0:
         if request.method == 'POST':
@@ -402,10 +405,6 @@ def referral_discharge_form(request, object_id = None, referral_id = None):
                 data.client = object
                 data.referral = referral
                 data.save()
-
-                if queue:
-                    queue.date_out = datetime.now()
-                    queue.save()
 
                 request.user.message_set.create(message=_('Client discharged successfully'))
                 return HttpResponseRedirect('/client/%s/home/' % (object.id))
@@ -633,6 +632,10 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
 
+    if referral.on_queue():
+        request.user.message_set.create(message=_('Error, referral is already queued'))
+        return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
+
     form = QueueForm(request.POST)
 
     if form.is_valid():
@@ -644,8 +647,8 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
 
     queues = Queue.objects.filter(referral=referral_id)
 
-    request.user.message_set.create(message=_('Referral saved successfully'))
-    return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))
+    request.user.message_set.create(message=_('Referral added to queue successfully'))
+    return HttpResponseRedirect('/client/%s/referral/%s/' % (object.id, referral.id))
 
 @permission_required_with_403('referral.referral_write')
 def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id = ''):

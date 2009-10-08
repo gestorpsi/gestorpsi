@@ -226,6 +226,9 @@ class Referral(Event):
             ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 4 # unmarked
             ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 5) # re-marked
 
+    def on_queue(self):
+        return True if self.queue_set.filter(date_out__isnull=True) else False
+
 class ReferralDischarge(models.Model):
     id = UuidField(primary_key=True)
     referral = models.ForeignKey(Referral, null=False, blank=False)

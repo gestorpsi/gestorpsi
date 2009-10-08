@@ -578,7 +578,11 @@ def schedule_daily(request,
      **params):
 
     # verify if user has perm
-    get_object_or_404(Referral, pk=request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
+    referral = get_object_or_404(Referral, pk=request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
+    
+    if referral.on_queue():
+        request.user.message_set.create(message=_('Sorry, you can not book a queued client. Remove it first from queue before continue'))
+        return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (request.GET.get('client'), referral.id))
     
     return _datetime_view(request, template, datetime(int(year), int(month), int(day)), referral = request.GET['referral'], client = request.GET['client'], **params)
 
@@ -619,13 +623,16 @@ def referral_queue(request, object_id = '',  referral_id = ''):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
 
-    if referral.upcoming_occurrences().count() == 0:
-        form=QueueForm()
-        return render_to_response("client/client_referral_queue.html", locals(), context_instance=RequestContext(request))
-    else:
-        request.user.message_set.create(message=_('Subscript in the queue not is possible. Exist hour in the schedule'))
+    if referral.on_queue():
+        request.user.message_set.create(message=_('Error adding to queue! Referral is already queued'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
-    
+
+    if referral.upcoming_occurrences():
+        request.user.message_set.create(message=_('Error adding to queue! Referral have upcoming occurrences'))
+        return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
+
+    form=QueueForm()
+    return render_to_response("client/client_referral_queue.html", locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('referral.referral_write')
 def referral_queue_save(request, object_id = '',  referral_id = ''):
@@ -633,7 +640,11 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
 
     if referral.on_queue():
-        request.user.message_set.create(message=_('Error, referral is already queued'))
+        request.user.message_set.create(message=_('Error adding to queue! Referral is already queued'))
+        return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
+
+    if referral.upcoming_occurrences():
+        request.user.message_set.create(message=_('Subscript in the queue not is possible. Referral have upcoming occurrences'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
 
     form = QueueForm(request.POST)
@@ -662,7 +673,7 @@ def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id =
 
     queues = Queue.objects.filter(referral=referral_id)
 
-    request.user.message_set.create(message=_('Referral saved successfully'))
+    request.user.message_set.create(message=_('Client removed from queue successfully'))
     return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('referral.referral_read')

@@ -20,7 +20,7 @@ from gestorpsi.client.models import Client
 from gestorpsi.person.models import Person, Company, CompanyClient
 
 class CompanyForm(forms.ModelForm):
-    cnae_class = forms.CharField(label=_('CNAE Class Code'), required=False, widget=forms.TextInput(attrs={'mask':'99.99-9'}))
+    cnae_class = forms.CharField(label=_('CNAE Class Code'), required=False, widget=forms.TextInput(attrs={'mask':'9999-9/99'}))
     class Meta:
         model = Company
         fields = ('size', 'cnae_class', )

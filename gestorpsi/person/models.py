@@ -211,7 +211,7 @@ class Company(models.Model):
     from gestorpsi.client.models import Client
     person = models.OneToOneField(Person, blank=True, null=True)
     size = models.IntegerField(_('Company Size'), blank=True, null=True, choices=COMPANY_SIZE)
-    cnae_class = models.CharField(_('CNAE Class Code'), blank=True, max_length=7)
+    cnae_class = models.CharField(_('CNAE Subclass Code'), blank=True, max_length=9)
     client = models.ManyToManyField(Client, blank=True, through='CompanyClient')
 
     def __unicode__(self):

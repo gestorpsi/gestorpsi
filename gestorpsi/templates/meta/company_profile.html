@@ -22,64 +22,56 @@ People Company Profile Form
 
 <script>
 $(function() {
-    $('table#cnae_results tr td a').click(function() {
-        $('input[name=cnae_class]').val($(this).attr('code'));
-        $('.cnae_search').hide();
-        $('table#cnae_results tbody tr').show();
-        $('input[name=cnae_search_key]').val('');
-    });
-    
     $('a.show_cnae_search').click(function() {
         $('.cnae_search').toggle();
+        $('table#cnae_results tbody').html('');
     });
     
     $('input[name=cnae_search_key]').keyup(function() {
         var typed = $(this).val();
-        if(typed != '') {
-            $('table#cnae_results tbody tr').hide();
-            $('table#cnae_results tbody tr').each(function() {
-                option = $(this).attr('cnae_class').toLowerCase();
-                if(option.match(typed.toLowerCase())) {
-                    $(this).show();
-                }
+        if(typed.length >= 2) {
+            $.getJSON('/util/cnae/?query=' + typed, function(json) {
+                line = '';
+                jQuery.each(json, function() {
+                   line += '<tr><td class="cnae_id">' + this.id + '</td><td class="cnae_label"><a style="cursor:pointer;">' + this.name + '</a></td></tr>';
+                });
+                $('table#cnae_results tbody').html(line);
+                $('table#cnae_results tr td a').click(function() {
+                    $('input[name=cnae_class]').val($(this).parents('tr').children('td.cnae_id').text());
+                    $('span.cnae_name').text($(this).parents('tr').children('td.cnae_label').children('a').text());
+                    $('.cnae_search').hide();
+                    $('table#cnae_results tbody tr').show();
+                    $('input[name=cnae_search_key]').val('');
+                });
+               
             });
         } else {
-            $('table#cnae_results tbody tr').show();    
+            $('table#cnae_results tbody').html('');
         }
     });    
-
 });
 </script>   
 
 <fieldset>
-        <legend>{% trans "Company Profile" %}</legend>
-
-            <label>{{ company_form.size.label }}<br />
-                {{ company_form.size }}
-            </label>
-            <label>{{ company_form.cnae_class.label }} <a class="show_cnae_search" style="cursor:pointer;">{% trans "Search Code?" %}</a><br />
-                {{ company_form.cnae_class }}
-            </label>
-            
-            <label class="cnae_search hidden">{% trans "CNAE Search" %}<br />
-            <input name="cnae_search_key" type="text" class="big" /></label>
-            <div class="overflow cnae_search hidden">
-                <table id="cnae_results" class="zebra">
-                        <thead>  
-                        <tr><th></th><th></th></tr> 
-                        </thead>
-                        <tbody>
-                        {% for c in cnae %}
-                        <tr class="zebra_{% cycle 0,1 %}" cnae_class="{{ c.cnae_class }}">
-                            <td>{{ c }}</td><td><a style="cursor:pointer;" code="{{ c.id }}">{% trans "Select" %}</a></td>
-                        </tr>
-                        {% endfor %}
-                        </tbody>
-                </table>
-            </div>
-            
-
+    <legend>{% trans "Company Profile" %}</legend>
+        <label>{{ company_form.size.label }}<br />
+            {{ company_form.size }}
+        </label>
+        <label>{{ company_form.cnae_class.label }} <a class="show_cnae_search" style="cursor:pointer;">{% trans "Search Code?" %}</a><br />
+            {{ company_form.cnae_class }}
+        </label>
+        <label><br />
+        <span class="cnae_name">{{ cnae.cnae_class }}</span>
+        </label>
+        <label class="cnae_search hidden">{% trans "CNAE Search" %}<br />
+        <input name="cnae_search_key" type="text" class="big" /></label>
+        <div class="overflow cnae_search hidden">
+            <table id="cnae_results" class="zebra">
+                    <thead>  
+                    <tr><th></th><th></th></tr> 
+                    </thead>
+                    <tbody>
+                    </tbody>
+            </table>
+        </div>
 </fieldset>
-
-
-

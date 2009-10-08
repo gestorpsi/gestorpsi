@@ -143,7 +143,7 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
 @permission_required_with_403('client.client_read')
 def form(request, object_id=''):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
-
+    cnae = None
     # User Registration Code
     groups = [False, False, False, False]
     try:
@@ -161,6 +161,8 @@ def form(request, object_id=''):
     if object.person.is_company():
         template_name = 'client/client_form_company.html'
         company_form = CompanyForm(instance=object.person.company)
+        if object.person.company.cnae_class:
+            cnae = Cnae.objects.get(pk=object.person.company.cnae_class)
     else:
         template_name = 'client/client_form.html'
         company_form = None
@@ -191,7 +193,7 @@ def form(request, object_id=''):
                                 'groups': groups,
                                 'clss': request.GET.get('clss'),
                                 'company_form': company_form,
-                                'cnae': Cnae.objects.all() if object.person.is_company() else None,
+                                'cnae': cnae,
                                },
                               context_instance=RequestContext(request)
                               )
@@ -364,7 +366,7 @@ def referral_save(request, object_id = None, referral_id = None):
             if object.service.active:
                 object.save()
                 ''' just save professionals one time '''
-                if not referral.professional.all():
+                if not object.professional.all():
                     form.save_m2m()
                 ''' Indication  Section '''
                 if request.POST.get('indication'):

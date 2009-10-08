@@ -13,6 +13,9 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
+from django.http import HttpResponse
+from django.utils import simplejson
+from gestorpsi.util.models import Cnae
 
 def get_object_or_new(klass, *args, **kwargs):
     # bitbucket.org/offline/django-annoying/src/tip/annoying/functions.py
@@ -36,3 +39,12 @@ def get_object_or_None(klass, *args, **kwargs):
     except queryset.model.DoesNotExist:
         return None
 
+def cnae(request):
+    '''
+    filter Cnae's return a dict with cnae codes and sub classes names 
+    '''
+    results = []
+    for i in Cnae.objects.filter(cnae_class__icontains=request.GET.get('query')):
+        results.append({'id': i.id, 'name': i.cnae_class})
+    
+    return HttpResponse(simplejson.dumps(results))

@@ -168,8 +168,7 @@ def save(request, object_id=None ):
     @type object_id: an instance of the built-in class c{int}.
     """
 
-    object= get_object_or_404(DeviceDetails, pk=object_id, device__organization=request.user.get_profile().org_active) if object_id else DeviceDetails()
-
+    device_details = get_object_or_404(DeviceDetails, pk=object_id, device__organization=request.user.get_profile().org_active) if object_id else DeviceDetails()
     device_details.device = get_object_or_404(Device, pk=request.POST.get('select_device'), organization=request.user.get_profile().org_active)
     device_details.brand = request.POST.get('brand')
     device_details.model = request.POST.get('model')

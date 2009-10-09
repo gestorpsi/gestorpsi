@@ -143,7 +143,6 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
 @permission_required_with_403('client.client_read')
 def form(request, object_id=''):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
-    cnae = None
     # User Registration Code
     groups = [False, False, False, False]
     try:
@@ -161,8 +160,7 @@ def form(request, object_id=''):
     if object.person.is_company():
         template_name = 'client/client_form_company.html'
         company_form = CompanyForm(instance=object.person.company)
-        if object.person.company.cnae_class:
-            cnae = Cnae.objects.get(pk=object.person.company.cnae_class)
+        cnae = get_object_or_None(Cnae, pk=object.person.company.cnae_class)
     else:
         template_name = 'client/client_form.html'
         company_form = None

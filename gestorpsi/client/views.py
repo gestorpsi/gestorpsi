@@ -143,6 +143,7 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
 @permission_required_with_403('client.client_read')
 def form(request, object_id=''):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+    cnae = None
     # User Registration Code
     groups = [False, False, False, False]
     try:

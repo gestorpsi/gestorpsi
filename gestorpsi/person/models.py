@@ -75,10 +75,10 @@ class Person(models.Model):
     """ function used only in reports.py waiting a fix in Geraldo SubReport"""
     def get_documents(self):
         if self.document.all().count() > 1:
-            text = "%s " % self.document.all()[0]
-            text += " | %s" % self.document.all()[1]
+            text = u"%s " % self.document.all()[0]
+            text += u" | %s" % self.document.all()[1]
         elif self.document.all().count() == 1:
-            text = "%s" % self.document.all()[0]
+            text = u"%s" % self.document.all()[0]
         else:
             text = ""
         return text
@@ -125,10 +125,13 @@ class Person(models.Model):
 
     def get_photo(self):
         from gestorpsi.settings import MEDIA_ROOT #, PROJECT_ROOT_PATH
-        if len(self.photo):
-            return "%simg/organization/%s/.thumb-whitebg/%s" % (MEDIA_ROOT, self.organization.id, self.photo)
-        else:
-            return "%simg/%s" % (MEDIA_ROOT, 'male_generic_photo.png')
+        #TODO: NEED FIX THIS BUG WHEN GENERATING CLIENT PDF WITH PHOTO
+        #      PERSON HAS A M2M RELATIONSHIP TO ORGANIZATION, NOT ONE-TO-ONE
+        #if len(self.photo):
+        #    return "%simg/organization/%s/.thumb-whitebg/%s" % (MEDIA_ROOT, self.organization.id, self.photo)
+        #else:
+        #    return "%simg/%s" % (MEDIA_ROOT, 'male_generic_photo.png')
+        return "%simg/%s" % (MEDIA_ROOT, 'male_generic_photo.png')
 
     def get_birthdate(self):
         if self.birthDate == None:

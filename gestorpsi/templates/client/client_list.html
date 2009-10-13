@@ -64,7 +64,7 @@ GNU General Public License for more details.
                 <tbody>
                     <script>
                             {% if deactive %}
-                                updateClient('/client/page1/deactive/');
+                                updateClient('/client/page1/deactive/', true);
                             {% else %}
                                 updateClient('/client/page1');
                             {% endif %}

@@ -19,16 +19,15 @@ GNU General Public License for more details.
  * build paginator from JSON data
  */
 
-function buildPaginator(app, json_paginator, json_util, selector) { 
+function buildPaginator(app, json_paginator, json_util, selector, deactive) { 
     
-        //if(!selector)
-            //selector = 'div#list';
-
+        if(!selector) selector = 'div#list';
+        url_extra = (deactive)?'/deactive/':'';
         var page_range = '';
 
         jQuery.each(json_paginator,  function(){
             if(this != json_util['paginator_actual_page']) 
-                page_range += '<a href="/' + app + '/page'+ this +'">';
+                page_range += '<a href="/' + app + '/page'+ this + url_extra + '">';
             page_range += this;
             if(this != json_util['paginator_actual_page']) 
                 page_range += '</a>';
@@ -43,12 +42,12 @@ function buildPaginator(app, json_paginator, json_util, selector) {
         $('ul.paginator li.next a').hide();
         
         if(json_util['paginator_has_previous']) {
-            $('ul.paginator li.previous a').attr('href','/' + app + '/page' + json_util['paginator_previous_page_number']);
+            $('ul.paginator li.previous a').attr('href','/' + app + '/page' + json_util['paginator_previous_page_number'] + url_extra);
             $('ul.paginator li.previous a').show();
         }
 
         if(json_util['paginator_has_next']) {
-            $('ul.paginator li.next a').attr('href','/' + app + '/page' + json_util['paginator_next_page_number']);
+            $('ul.paginator li.next a').attr('href','/' + app + '/page' + json_util['paginator_next_page_number'] + url_extra);
             $('ul.paginator li.next a').show();
         }
         

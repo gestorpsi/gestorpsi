@@ -117,7 +117,8 @@ def form(request, object_id=None):
     return render_to_response('service/service_form.html', {
         'object': object,
         'Agreements': Agreement.objects.all(),
-        'CareProfessionals': CareProfessional.objects.filter(person__organization= request.user.get_profile().org_active),
+        'CareProfessionals': CareProfessional.objects.active(request.user.get_profile().org_active),
+        'Students': CareProfessional.objects.students_active(request.user.get_profile().org_active),
         'AgeGroups': AgeGroup.objects.all(),
         'Areas': Area.objects.all(),
         'ServiceTypes': ServiceType.objects.all(),
@@ -137,6 +138,7 @@ def save(request, object_id=''):
     object.keywords = request.POST.get('service_keywords')
     object.research_project = request.POST.get('research_project') or False
     object.research_project_name = request.POST.get('research_project_name')
+    object.academic_related = request.POST.get('academic_related') or False
     object.comments = request.POST.get('comments')
 
     """ chose one css color to this service """

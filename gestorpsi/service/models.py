@@ -84,6 +84,7 @@ class Service(models.Model):
     css_color_class = models.IntegerField(max_length=2, blank=True, null=True, default=0)
     date = models.DateTimeField(auto_now_add=True)
     comments = models.TextField(blank=True)
+    academic_related = models.BooleanField(_('Academic (supervised) related service'), default=False)
 
     procedures = models.ManyToManyField(Procedure)
 

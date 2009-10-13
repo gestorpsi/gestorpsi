@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 import reversion
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 from gestorpsi.person.models import Person
 from gestorpsi.place.models import Place
 from gestorpsi.util.uuid_field import UuidField
@@ -81,14 +82,16 @@ class Profession(models.Model):
     number  :   Is CBO(Pt_BR) (Classificação Brasileira de Ocupações)
     symbol  :   Symbol of the class of the professional (CRM, CRP, ...)
     symbolDesc : Description of the symbol
+    academic_name : Name of the profession in academic context
     
     @author:Tiago de Souza Moraes
     @version: 1.0 
     """
     type = models.CharField(max_length=50, null=True)
-    number = models.CharField(max_length=10, null=True)
-    symbol = models.CharField(max_length=20, null=True)
+    number = models.CharField(max_length=10, null=True, blank=True)
+    symbol = models.CharField(max_length=20, null=True, blank=True)
     symbol_desc = models.CharField(max_length=100, null=True)
+    academic_name = models.CharField(max_length=100, null=True, blank=True)
     
     def __unicode__(self):
         return u"%s" % self.type
@@ -148,12 +151,37 @@ class ProfessionalIdentification(models.Model):
 
 reversion.register(ProfessionalIdentification)
 
+class StudentProfile(models.Model):
+    """
+    This class represents the student profile
+    """
+    lecture_class = models.ForeignKey(Profession, null=True, blank=True)
+    period = models.CharField(_('Student Class Period'), max_length=255, null=True, blank=True)
+    class_duration = models.CharField(_('Student Class Duration'), max_length=255, null=True, blank=True)
+    register_number = models.CharField(_('Student Register Number'), max_length=255, null=True, blank=True)
+    professional = models.OneToOneField('CareProfessional')
+    
+    def __unicode__(self):
+        return '%s' % ( self.lecture_class )
+
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+
+reversion.register(StudentProfile)
+
 class CareProfessionalManager(models.Manager):
     def active(self, organization):
-        return super(CareProfessionalManager, self).get_query_set().filter(active=True, person__organization = organization).order_by('person__name')
+        return super(CareProfessionalManager, self).get_query_set().filter(active=True, studentprofile__id__isnull=True, person__organization = organization).order_by('person__name')
+
     def deactive(self, organization):
-        return super(CareProfessionalManager, self).get_query_set().filter(active=False, person__organization = organization).order_by('person__name')
-        
+        return super(CareProfessionalManager, self).get_query_set().filter(active=False, studentprofile__id__isnull=True, person__organization = organization).order_by('person__name')
+
+    def students_active(self, organization):
+        return super(CareProfessionalManager, self).get_query_set().filter(active=True, studentprofile__id__isnull=False, person__organization = organization).order_by('person__name')
+
+    def students_deactive(self, organization):
+        return super(CareProfessionalManager, self).get_query_set().filter(active=False, studentprofile__id__isnull=False, person__organization = organization).order_by('person__name')
+
 class CareProfessional(models.Model):
     """
     This class represents a careprofessional 
@@ -163,9 +191,11 @@ class CareProfessional(models.Model):
     id= UuidField( primary_key= True )
     professionalIdentification = models.OneToOneField(ProfessionalIdentification, null=True)
     professionalProfile = models.OneToOneField(ProfessionalProfile, null = True)
+    #studentProfile = models.OneToOneField(StudentProfile, null=True)
     person = models.OneToOneField(Person)
     comments = models.CharField(max_length=200, null=True)
     active = models.BooleanField(default=True)
+    #is_student = models.BooleanField(default=False)
     objects = CareProfessionalManager()
 
     def __unicode__(self):
@@ -174,12 +204,16 @@ class CareProfessional(models.Model):
     class Meta:
         ordering = ['person']
 
+    def _is_student(self):
+        return False if not hasattr(self, 'studentprofile') else True
+
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
     def revision_created(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
 
+    is_student = property(_is_student)
 reversion.register(CareProfessional, follow=['person', 'professionalIdentification', 'professionalProfile'])
 
 

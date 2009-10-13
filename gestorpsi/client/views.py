@@ -118,8 +118,7 @@ def add(request):
 def list(request, page = 1, initial = None, filter = None, no_paging = False, deactive = False):
     user = request.user
 
-    if user.groups.filter(name='administrator').count() == 1 or user.groups.filter(name='secretary').count() == 1:
-
+    if user.groups.filter(name='administrator') or user.groups.filter(name='secretary'):
         if deactive:
             object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '0').order_by('person__name')
         else:
@@ -132,7 +131,7 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
 
     if initial:
         object = object.filter(person__name__istartswith = initial)
-        
+
     if filter:
         object = object.filter(person__name__icontains = filter)
 

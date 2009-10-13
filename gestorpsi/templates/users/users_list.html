@@ -64,7 +64,7 @@ GNU General Public License for more details.
                 <tbody>           
                     <script>
                     {% if deactive %}
-                        updateUser('/user/page1/deactive/');
+                        updateUser('/user/page1/deactive/', true);
                     {% else %}
                         updateUser('/user/page1');
                     {% endif %}

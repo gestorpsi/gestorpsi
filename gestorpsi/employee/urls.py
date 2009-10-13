@@ -27,15 +27,15 @@ urlpatterns = patterns('',
     (r'^save/$', login_check(save)), # save new object
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save)), # update object
 
-    (r'^initial/(?P<initial>[a-z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
-    (r'^filter/(?P<filter>.*)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
-    (r'^filter/(?P<filter>.*)/$', login_check(list), {'no_paging': True}), # quick search
+    (r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
+    (r'^filter/(?P<filter>[a-zA-Z]+)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
+    (r'^filter/(?P<filter>[a-zA-Z]+)/$', login_check(list), {'no_paging': True}), # quick search
 
     # DEACTIVE
-    (r'^initial/(?P<initial>[a-z])/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick filter
-    (r'^initial/(?P<initial>[a-z])/deactive/$', login_check(list), {'deactive':True} ), # quick filter
-    (r'^filt/(?P<filter>.*)/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick search
-    (r'^filt/(?P<filter>.*)/deacive/$', login_check(list), {'no_paging': True, 'deactive':True } ), # quick search
+    (r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick filter
+    (r'^initial/(?P<initial>[a-zA-Z])/deactive/$', login_check(list), {'deactive':True} ), # quick filter
+    (r'^filter/(?P<filter>[a-zA-Z]+)/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick search
+    (r'^filter/(?P<filter>[a-zA-Z]+)/deactive/$', login_check(list), {'no_paging': True, 'deactive':True } ), # quick search
     (r'^deactive/$', login_check(index), {'deactive':True}), # list objects deactive
     (r'^page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True}), #list objects
 )

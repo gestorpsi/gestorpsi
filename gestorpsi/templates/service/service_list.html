@@ -51,7 +51,7 @@ GNU General Public License for more details.
                 <tbody> 
                     <script>
                     {% if deactive %}
-                        updateService('/service/page1/deactive/');
+                        updateService('/service/page1/deactive/', true);
                     {% else %}
                         updateService('/service/page1');
                     {% endif %}

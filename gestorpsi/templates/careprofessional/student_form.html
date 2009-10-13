@@ -1,0 +1,130 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Students" %}{% endblock %}
+
+{% block submenu %}
+    <ul>
+        <li><a class="first" href="/careprofessional/student/">{% trans "all" %}</a></li>
+        <li><a class="{% if not object.id %}active{% endif %}" href="/careprofessional/student/add/">{% trans "add" %}</a></li>
+        <li><a href="/careprofessional/student/deactive/">{% trans "Deactives" %}</a></li>
+        {% if object.id %}<li><a class="active">{{ object.person.name }}</a></li>{% endif %}
+    </ul>
+{% endblock %}
+
+
+{% block core %}
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+{% if object.id %}
+	<h2 class="title_professional">{{ object.person.name }}</h2>
+{% else %}
+	<h2 class="title_professional">{% trans "Adding New Student" %}</h2>
+	<p class="description">{% trans "Inform the student details then click on Save button" %}</p>
+{% endif %}
+
+
+</p>
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
+
+
+<form action="/careprofessional/student/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="form_people collapsable form_careprofessional">	
+<div class="main_area">
+
+	<!-- <a href="" id="help">&nbsp;</a> -->
+	<!-- DataTypes form menu -->
+	
+	{% include "meta/people_indentification.html" %}
+	
+    <fieldset>
+        <legend>{% trans "Student Profile" %}</legend>
+        <label>{{ student_form.lecture_class.label }}<br />
+            {{ student_form.lecture_class }}
+        </label>
+        <label>{{ student_form.register_number.label }}<br />
+            {{ student_form.register_number }}
+        </label>
+        <label>{{ student_form.period.label }}<br />
+            {{ student_form.period }}
+        </label>
+        <label>{{ student_form.class_area.label }}<br />
+            {{ student_form.class_area }}
+        </label>
+        <label>{{ student_form.class_duration.label }}<br />
+            {{ student_form.class_duration }}
+        </label>
+    </fieldset>
+
+	<fieldset id="fieldset_professional_workplace">
+		<legend>{% trans "Professional Workplaces" %}</legend>
+			
+			<label>{% trans "Workplaces" %}<br />
+			<select name="professional_workplace" multiple="multiple" class="select multiple extrabig asm">
+				{% for l in WorkPlacesTypes %}
+				<option value="{{ l.id }}"{% for w in object.professionalProfile.workplace.all %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+				{% endfor %}
+			</select>
+			</label>
+			<br />
+			<label><a class="form_mini" display="place_mini">{% trans "Add New Workplace" %}</a></label>
+	</fieldset>
+
+	<fieldset>
+		<legend>{% trans "Professional Services" %}</legend>
+			
+			<label>{% trans "Services" %}<br />
+			<select name="professional_service" multiple="multiple" class="select multiple extrabig asm">
+				{% for l in ServiceTypes %}
+				<option value="{{ l.id }}"{% for sc in object.prof_services.all %}{% ifequal sc.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+				{% endfor %}
+			</select>
+			</label>
+	</fieldset>
+    {% include "meta/phones.html" %}
+	{% include "meta/people_profile.html" %}
+    {% include "meta/people_documents.html" %}
+	{% include "meta/addressbook.html" %}
+	{% include "meta/internet.html" %}
+
+
+<fieldset class="comment_form">
+        <legend>{% trans "Comments" %}</legend>
+        <label>{% trans "Comments" %}<br />
+                <textarea name="comments" class="extrabig">{{ object.person.comments }}</textarea>
+        </label>
+
+</fieldset>
+
+
+<br />	
+</div>
+
+{% include "tags/careprofessional_sidebar.html" %}
+
+</form>
+
+{% include "tags/upload.html" %}
+{% include "tags/place_mini.html" %}
+
+{% endblock %}

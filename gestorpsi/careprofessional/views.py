@@ -32,19 +32,25 @@ from gestorpsi.service.models import Service
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.authentication.models import Profile, Role
-from gestorpsi.careprofessional.models import CareProfessional
+from gestorpsi.careprofessional.forms import StudentProfileForm
 from django.contrib.auth.models import User, Group
 
 @permission_required_with_403('careprofessional.careprofessional_list')
-def index(request, deactive = False):
-    return render_to_response('careprofessional/careprofessional_list.html', locals(), context_instance=RequestContext(request))
+def index(request, template_name='careprofessional/careprofessional_list.html', deactive = False):
+    return render_to_response(template_name, locals(), context_instance=RequestContext(request))
   
 @permission_required_with_403('careprofessional.careprofessional_list')
-def list(request, page = 1, deactive = False, filter = None, initial = None, no_paging = False ):
-    if deactive:
-        object = CareProfessional.objects.deactive(request.user.get_profile().org_active)
-    else:
-        object = CareProfessional.objects.active(request.user.get_profile().org_active)
+def list(request, page = 1, deactive = False, filter = None, initial = None, no_paging = False, is_student = False ):
+    if not is_student: # professional
+        if deactive:
+            object = CareProfessional.objects.deactive(request.user.get_profile().org_active)
+        else:
+            object = CareProfessional.objects.active(request.user.get_profile().org_active)
+    else: # stundent
+        if deactive:
+            object = CareProfessional.objects.students_deactive(request.user.get_profile().org_active)
+        else:
+            object = CareProfessional.objects.students_active(request.user.get_profile().org_active)
 
     if initial:
         object = object.filter(person__name__istartswith = initial)
@@ -55,22 +61,7 @@ def list(request, page = 1, deactive = False, filter = None, initial = None, no_
     return HttpResponse(simplejson.dumps(person_json_list(request, object, 'careprofessional.careprofessional_read', page), sort_keys=True), mimetype='application/json')
 
 @permission_required_with_403('careprofessional.careprofessional_read')
-def form(request, object_id=''):
-    user = request.user
-    if object_id:
-        object = get_object_or_404(CareProfessional, pk=object_id)
-    else:
-        object = CareProfessional()
-
-    show = "False"
-    try:
-        if ( (Group.objects.get(name='administrator').user_set.all().filter(profile__organization=user.get_profile().org_active).count()) == 1 ):
-            if (user.groups.filter(name='administrator').count() == 1 ):
-                show = "True"
-
-    except:
-        pass
-
+def form(request, object_id=None, template_name='careprofessional/careprofessional_form.html', is_student = False):
     if object_id:
         object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
     else:
@@ -81,8 +72,12 @@ def form(request, object_id=''):
     except:
         cities = {}
 
-    return render_to_response('careprofessional/careprofessional_form.html', {
+    if is_student:
+        student_form = StudentProfileForm(instance=object.studentprofile) if object_id else StudentProfileForm()
+
+    return render_to_response(template_name, {
                                     'object': object,
+                                    'student_form': student_form if is_student else None,
                                     'phones' : None if not hasattr(object, 'person') else object.person.phones.all(),
                                     'addresses' : None if not hasattr(object, 'person') else object.person.address.all(),
                                     'documents' : None if not hasattr(object, 'person') else object.person.document.all(),
@@ -104,13 +99,12 @@ def form(request, object_id=''):
                                     'PlaceTypes': PlaceType.objects.all(),
                                     'ServiceTypes': Service.objects.filter( active=True, organization=request.user.get_profile().org_active ),
                                     'Cities': cities,
-                                    'show': show,
                                     },
                               context_instance=RequestContext(request)
                               )
 
 @permission_required_with_403('careprofessional.careprofessional_write')
-def save_careprof(request, object_id, save_person):
+def save_careprof(request, object_id, save_person, is_student=False):
     """
     This view function returns the informations about CareProfessional 
     @param request: this is a request sent by the browser.
@@ -140,37 +134,45 @@ def save_careprof(request, object_id, save_person):
     profile.save()
     object.professionalProfile = profile
 
-    if (len(request.POST.getlist('professional_agreement'))):
-        profile.agreement.clear()
-        for agreemt_id in request.POST.getlist('professional_agreement'):
-            profile.agreement.add(Agreement.objects.get(pk=agreemt_id))
-
     if (len(request.POST.getlist('professional_workplace'))):
         for o in profile.workplace.filter(organization=request.user.get_profile().org_active):
             profile.workplace.remove(o)
         for wplace_id in request.POST.getlist('professional_workplace'):
             profile.workplace.add(Place.objects.get(pk=wplace_id))
 
-    identification = get_object_or_None(ProfessionalIdentification, pk=object.professionalIdentification_id) or ProfessionalIdentification()
-    if identification:
-        identification.profession = get_object_or_None(Profession, id=request.POST.get('professional_area'))
-        identification.registerNumber = request.POST.get('professional_registerNumber')
-        identification.save()
-        object.professionalIdentification = identification
-    else:
-        object.professionalIdentification = None
+    if not is_student:
+        if (len(request.POST.getlist('professional_agreement'))):
+            profile.agreement.clear()
+            for agreemt_id in request.POST.getlist('professional_agreement'):
+                profile.agreement.add(Agreement.objects.get(pk=agreemt_id))
+
+        identification = get_object_or_None(ProfessionalIdentification, pk=object.professionalIdentification_id) or ProfessionalIdentification()
+        if identification:
+            identification.profession = get_object_or_None(Profession, id=request.POST.get('professional_area'))
+            identification.registerNumber = request.POST.get('professional_registerNumber')
+            identification.save()
+            object.professionalIdentification = identification
+        else:
+            object.professionalIdentification = None
 
     object.save()
     return object
 
 @permission_required_with_403('careprofessional.careprofessional_write')
-def save(request, object_id=None, save_person=True):
-    object = save_careprof(request, object_id, save_person)
-    request.user.message_set.create(message=_('Professional saved successfully'))
-    return HttpResponseRedirect('/careprofessional/%s/' % object.id)
+def save(request, object_id=None, save_person=True, is_student=False):
+    object = save_careprof(request, object_id, save_person, is_student)
+    if is_student:
+        student_form = StudentProfileForm(request.POST, instance=object.studentprofile) if object_id else StudentProfileForm(request.POST)
+        if student_form.is_valid():
+            data = student_form.save(commit=False)
+            data.professional = object
+            data.save()
+
+    request.user.message_set.create(message=_('Professional saved successfully') if not is_student else _('Student saved successfully'))
+    return HttpResponseRedirect(('/careprofessional/%s/' % object.id) if not is_student else ('/careprofessional/student/%s/' % object.id))
 
 @permission_required_with_403('careprofessional.careprofessional_write')
-def order(request, object_id=None):
+def order(request, object_id=None, is_student=False):
     object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
 
     if (object.active == True):
@@ -179,5 +181,9 @@ def order(request, object_id=None):
         object.active = True
 
     object.save(force_update=True)
-    request.user.message_set.create(message=('%s' % (_('Professional activated successfully') if object.active else _('Professional deactivated successfully'))))
-    return HttpResponseRedirect('/careprofessional/%s/' % object.id)
+    
+    request.user.message_set.create(message=('%s %s %s' % ( \
+        (_('Student') if is_student else _('Professional')), \
+        (_('activated') if object.active else _('deactivated')), \
+        _('successfully'))))
+    return HttpResponseRedirect(('/careprofessional/%s/' % object.id) if not is_student else ('/careprofessional/student/%s/' % object.id))

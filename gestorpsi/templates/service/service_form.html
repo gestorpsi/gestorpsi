@@ -66,6 +66,13 @@ GNU General Public License for more details.
 			</label>
     </fieldset>
     <fieldset>
+		<legend>{% trans "Academic Related" %}</legend>
+            <label>
+                <input type="checkbox" name="academic_related"{% if object.academic_related %} checked{% endif %} />&nbsp;
+                {% trans "This service is academic (supervised) related." %} 
+            </label>
+	</fieldset>
+    <fieldset>
 		<legend>{% trans "Research Project" %}</legend>
             <label>
                 <input class="research_project_name" type="checkbox" name="research_project"{% if object.research_project %} checked{% endif %} />&nbsp;
@@ -77,7 +84,6 @@ GNU General Public License for more details.
 			            <input type="text" maxlength="100" name="research_project_name" class="giant" value="{{ object.research_project_name }}" />
                     </label>
                 </div>
-            
 	</fieldset>
 
 	<!--
@@ -126,7 +132,10 @@ GNU General Public License for more details.
 			<span>
 			<select multiple="multiple" name="service_professionals" class="select multiple extrabig asm high">
 				{% for l in CareProfessionals %}
-				<option value="{{ l.id }}"{% for or in object.professionals.values_list %}{% ifequal or.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{{ l }}</option>
+				<option value="{{ l.id }}"{% for or in object.professionals.values_list %}{% ifequal or.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{% trans "Professional" %} - {{ l }}{% if l.professionalIdentification.profession %} ({{ l.professionalIdentification.profession }}){% endif %}</option>
+				{% endfor %}
+				{% for l in Students %}
+				<option value="{{ l.id }}"{% for or in object.professionals.values_list %}{% ifequal or.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{% trans "Student" %} - {{ l }}{% if l.studentprofile.lecture_class.academic_name %} ({{ l.studentprofile.lecture_class.academic_name }}){% endif %}</option>
 				{% endfor %}
 			</select>
 			</span>
@@ -136,7 +145,7 @@ GNU General Public License for more details.
 			<span>
 			<select multiple="multiple" name="service_responsibles" class="select multiple extrabig asm high">
 				{% for l in CareProfessionals %}
-				<option value="{{ l.id }}"{% for or in object.responsibles.values_list %}{% ifequal or.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{{ l }}</option>
+				<option value="{{ l.id }}"{% for or in object.responsibles.values_list %}{% ifequal or.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{{ l }}{% if l.professionalIdentification.profession %} ({{ l.professionalIdentification.profession }}){% endif %}</option>
 				{% endfor %}
 			</select>
 			</span>

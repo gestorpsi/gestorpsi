@@ -40,7 +40,7 @@ GNU General Public License for more details.
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
 
-<form action="/client/{{ object.id }}/referral/{% if referral.id %}{{ referral.id }}/{% endif %}save/" method="post" id="client_referral_form" class="client_referral">
+<form action="/client/{{ object.id }}/referral/plus/save/" method="post" id="client_referral_form" class="client_referral">
 <input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
 <div class="main_area">
     <a href="" id=help>&nbsp;</a>
@@ -49,27 +49,26 @@ GNU General Public License for more details.
     
     <fieldset>
     <legend>{% trans "Referral Details" %}</legend>
+
             <label class="referral_type_referral">{% trans "Last Referral" %}<br />
                 <select name="referral" class="extrabig asm referral_list" {% if object.id %} id="id_referral" {% endif %} >
-                    <option value="">---------</option>
-                    {% for p in referral_list %}
-                        <option value="{{ p.id }}"> {{ p }} 
-                            {% if p.professional.all.0 %}
-                                ( {{ p.professional.all.0 }} )
+                        <option value="{{ referral.id }}"> {{ referral }} 
+                            {% if referral.professional.all.0 %}
+                                ( {{ referral.professional.all.0 }} )
                             {% endif %}
 
-                            {% if p.professional.all.1 %}
-                                ( {{ p.professional.all.1 }})
+                            {% if referral.professional.all.1 %}
+                                ( {{ referral.professional.all.1 }})
                             {% endif %}
 
-                            {% if p.professional.all.2 %}
-                                ({{ p.professional.all.2 }} )
+                            {% if referral.professional.all.2 %}
+                                ({{ referral.professional.all.2 }} )
                             {% endif %}
                         </option>
-                    {% endfor %}
                 </select>
                 <label><div class="error_select" style="display:none;"><h3><font color="red">{% trans "This fields is required." %}</font></div></label>
             </label>
+
             <label{% if referral_form.id %} style="display:none"{% endif %}>{% trans "To Service" %}<br />
             {{ referral_form.service }}
             </label>

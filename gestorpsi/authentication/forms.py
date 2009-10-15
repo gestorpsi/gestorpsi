@@ -45,6 +45,7 @@ class RegistrationForm(RegistrationForm):
         profile.save()
         organization = Organization.objects.create( #create organization
             name = self.cleaned_data['organization'],
+            trade_name = self.cleaned_data['organization'],
             short_name = slugify(self.cleaned_data['shortname']),
         )
         default_place = Place.objects.create(         #create default place

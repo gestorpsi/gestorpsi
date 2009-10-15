@@ -65,49 +65,58 @@ class Place( models.Model ):
 reversion.register(Place, follow=['address', 'phones'])
 
 class RoomType( models.Model ):
-   """
-   This class contains information on room types, thus instances of this class can be used to
-   handle information related to room types.
-   @version: 1.0
-   """
-   description= models.CharField( max_length= 45, unique= True )
+    """
+    This class contains information on room types, thus instances of this class can be used to
+    handle information related to room types.
+    @version: 1.0
+    """
+    description= models.CharField( max_length= 45, unique= True )
 
-   def __unicode__(self):
-      return "%s" % self.description
-   class Meta:
-       ordering = ['description']
+    def __unicode__(self):
+        return "%s" % self.description
+    class Meta:
+        ordering = ['description']
 
 class Room( models.Model ):
-   """
-   This class represents a room, it also holds information on the furniture that belongs to
-   the underlying room and its dimension.
-   @version: 1.0
-   """
-   id = UuidField(primary_key=True)
-   description= models.CharField( max_length= 80, blank=True )
-   dimension = models.CharField(max_length=10, blank=True)
-   place= models.ForeignKey( Place )
-   room_type= models.ForeignKey( RoomType, related_name= 'room_type' )
-   furniture= models.TextField()
-   active = models.BooleanField(default=True)
-   comments = models.TextField(blank=True)
+    """
+    This class represents a room, it also holds information on the furniture that belongs to
+    the underlying room and its dimension.
+    @version: 1.0
+    """
+    id = UuidField(primary_key=True)
+    description= models.CharField( max_length= 80, blank=True )
+    dimension = models.CharField(max_length=10, blank=True)
+    place= models.ForeignKey( Place )
+    room_type= models.ForeignKey( RoomType, related_name= 'room_type' )
+    furniture= models.TextField()
+    active = models.BooleanField(default=True)
+    comments = models.TextField(blank=True)
 
-   class Meta:
-       ordering = ['description']
+    class Meta:
+        ordering = ['description']
 
-   def __unicode__(self):
-      return "%s" % self.description
+    def __unicode__(self):
+        return "%s" % self.description
 
-   def revision(self):
-      return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
-  
-#   def __cmp__(self, other):
-#      if (self.description == other.description ) and \
-#         (self.dimension == other.dimension ) and \
-#         (self.room_type.id == other.room_type.id ) and \
-#         (self.furniture == other.furniture ):
-#         return 0
-#      else:
-#         return 1
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+
+    def is_busy(self, start_time, end_time):
+        ''' check if room is busy in schedule for selected range ''' 
+        ''' filter 1: start time not in occurrence range ''' 
+        ''' filter 2: end time not in occurrence range '''
+        ''' filter 2: end time not in occurrence range '''
+        ''' filter 3: occurrence range are not between asked values '''
+        
+        queryset = self.scheduleoccurrence_set.filter(occurrenceconfirmation__isnull=True) | \
+            self.scheduleoccurrence_set.filter(occurrenceconfirmation__isnull=False) \
+                .exclude(occurrenceconfirmation__presence=4) \
+                .exclude(occurrenceconfirmation__presence=5)
+        
+        return True if \
+            queryset.filter(start_time__lte = start_time, end_time__gt = start_time) or \
+            queryset.filter(start_time__lt = end_time, end_time__gte = end_time) or \
+            queryset.filter(start_time__gte = start_time, end_time__lte = end_time) \
+            else False
 
 reversion.register(Room)

@@ -28,6 +28,7 @@ from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
+from gestorpsi.place.models import Room
 
 fs = FileSystemStorage(location='/tmp')
 
@@ -172,16 +173,53 @@ class Referral(Event):
 
     def add_occurrences(self, start_time, end_time, room, device, annotation, **rrule_params):
         rrule_params.setdefault('freq', rrule.DAILY)
+
+        error_list = []
         if 'count' not in rrule_params and 'until' not in rrule_params:
-            o = ScheduleOccurrence.objects.create(event=self, start_time=start_time, end_time=end_time, room_id=room, annotation=annotation)
-            o.device = device
-            o.save()
+            is_busy = self.check_busy(start_time, end_time, room)
+            if not is_busy:
+                o = ScheduleOccurrence.objects.create(event=self, start_time=start_time, end_time=end_time, room_id=room, annotation=annotation)
+                o.device = device
+                o.save()
+            else:
+                error_list.append(is_busy)
         else:
             delta = end_time - start_time
             for ev in rrule.rrule(dtstart=start_time, **rrule_params):
-                o = ScheduleOccurrence.objects.create(event=self, start_time=ev, end_time=ev + delta, room_id=room, annotation=annotation)
-                o.device = device
-                o.save()
+                is_busy = self.check_busy(ev, (ev + delta), room)
+                if not is_busy:
+                    o = ScheduleOccurrence.objects.create(event=self, start_time=ev, end_time=ev + delta, room_id=room, annotation=annotation)
+                    o.device = device
+                    o.save()
+                else:
+                    error_list.append(is_busy)
+        
+        return error_list
+
+    def check_busy(self, start_time, end_time, room_id):
+        room = Room.objects.get(pk=room_id)
+
+        error_message = []
+        if room.is_busy(start_time, end_time):
+            error_message.append(_('%s is busy in this range') % room)
+
+        for p in self.professional.all():
+            if p.is_busy(start_time, end_time):
+                error_message.append(_('Professional %s is busy in this range') % p)
+
+        for c in self.client.all():
+            if c.is_busy(start_time, end_time):
+                error_message.append(_('Client %s is busy in this range') % c)
+        
+        if not error_message:
+            return None
+        else:
+            return {
+                'start_time': start_time, 
+                'end_time': end_time, 
+                'room': room, 
+                'error_message': error_message
+                }
 
     class Meta:
         ordering = ('title', )

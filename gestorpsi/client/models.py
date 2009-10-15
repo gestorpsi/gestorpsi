@@ -139,6 +139,27 @@ class Client(models.Model):
     def is_company(self):
         return True if hasattr(self.person, 'company') else False
 
+    def is_busy(self, start_time, end_time):
+        ''' 
+        check if client is busy in schedule for selected range
+        filter 1: start time not in occurrence range
+        filter 2: end time not in occurrence range
+        filter 2: end time not in occurrence range
+        filter 3: occurrence range are not between asked values
+        note for exclude filters: 
+            presence = 4 -> occurrence unmarked
+            presence = 5 -> occurrence rescheduled
+        '''
+        queryset = self.referral_set.filter(occurrence__scheduleoccurrence__occurrenceconfirmation__isnull=True) | \
+            self.referral_set.filter(occurrence__scheduleoccurrence__occurrenceconfirmation__isnull=False) \
+                .exclude(occurrence__scheduleoccurrence__occurrenceconfirmation__presence=4) \
+                .exclude(occurrence__scheduleoccurrence__occurrenceconfirmation__presence=5)
+        return True if \
+            queryset.filter(occurrence__start_time__lte = start_time, occurrence__end_time__gt = start_time) or \
+            queryset.filter(occurrence__start_time__lt = end_time, occurrence__end_time__gte = end_time) or \
+            queryset.filter(occurrence__start_time__gte = start_time, occurrence__end_time__lte = end_time) \
+            else False
+
 reversion.register(Client, follow=['person', ])
 reversion.register(Family)
 

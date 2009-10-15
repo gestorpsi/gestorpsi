@@ -17,6 +17,7 @@ GNU General Public License for more details.
 from datetime import datetime
 import reversion
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import ugettext as _
 from swingtime.models import Occurrence
 from gestorpsi.place.models import Room
@@ -37,6 +38,12 @@ class ScheduleOccurrenceManager(models.Manager):
     
     def not_confirmed(self):
         return super(ScheduleOccurrenceManager, self).get_query_set().filter(start_time__lt = datetime.now(), occurrenceconfirmation__isnull = True)
+    
+    def unmarked(self):
+        return super(ScheduleOccurrenceManager, self).get_query_set().filter(Q(occurrenceconfirmation__presence=4) | Q(occurrenceconfirmation__presence=5))
+    
+    def not_unmarked(self):
+        return super(ScheduleOccurrenceManager, self).get_query_set().exclude(occurrenceconfirmation__presence=4).exclude(occurrenceconfirmation__presence=5)
 
 class ScheduleOccurrence(Occurrence):
     room = models.ForeignKey(Room, null=True, blank=True)

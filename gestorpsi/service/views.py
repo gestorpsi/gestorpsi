@@ -142,16 +142,13 @@ def save(request, object_id=''):
     object.comments = request.POST.get('comments')
 
     """ chose one css color to this service """
-    if not (object.css_color_class):
-        try:
-            latest_css = Service.objects.filter(organization=request.user.get_profile().org_active).latest('date')
-            next_css = latest_css.css_color_class + 1
-            if next_css <= 24:
-                object.css_color_class = next_css
-            else:
-                object.css_color_class = 1
-        except:
-            pass
+    if not request.user.get_profile().org_active.service_set.all():
+        object.css_color_class = 1
+    else:
+        if not object.css_color_class:
+            object.css_color_class = (int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) + 1) \
+                                if int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) <=24 \
+                                else 1
 
     object.area =  Area.objects.get(pk=request.POST.get('service_area'))
     object.service_type = ServiceType.objects.get(pk=request.POST.get('service_type'))

@@ -72,6 +72,8 @@ def add_event(
 ):
     dtstart = None
     if request.method == 'POST':
+        if int(request.POST['count']) > 40: # limit occurrence repeat
+            return render_to_response('403.html', {'object':_('Sorry. You can not book more than 40 occurrence at the same time')})
         recurrence_form = recurrence_form_class(request.POST)
         if request.POST['group']:
             referral = request.POST['group']
@@ -80,10 +82,17 @@ def add_event(
 
         event = get_object_or_404(Referral, pk=referral, service__organization=request.user.get_profile().org_active)
         if recurrence_form.is_valid():
-            recurrence_form.save(event)
+            event = recurrence_form.save(event)
             redirect_to = redirect_to or '/schedule/events/%s/' % event.id
-            request.user.message_set.create(message=_('Schedule saved successfully'))
-            return http.HttpResponseRedirect(redirect_to)
+            if not event.errors:
+                request.user.message_set.create(message=_('Schedule saved successfully'))
+                return http.HttpResponseRedirect(redirect_to)
+            else:
+                return render_to_response(
+                    'schedule/event_detail.html', 
+                    dict(event=event),
+                    context_instance=RequestContext(request)
+                )
     else:
         if 'dtstart' in request.GET:
             try:

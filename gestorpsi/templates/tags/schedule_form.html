@@ -121,8 +121,8 @@ GNU General Public License for more details.
                 {{ recurrence_form.repeats }}
                 </div>
                 <div style="clear:both;"></div>
-                <label class="occurrence_repeat occurrence_repeat_count">{% trans "Total Occurrences" %}<br />
-                {{ recurrence_form.count }}
+                <label class="occurrence_repeat occurrence_repeat_count">{% trans "Total Occurrences" %} <small>({% trans "Limited about 40 occurrences for each submit" %})</small><br />
+                {{ recurrence_form.count }} 
                 </label>
                 <label class="occurrence_repeat occurrence_repeat_until hidden">{% trans "End Time" %}</label>
                 <div class="occurrence_repeat occurrence_repeat_until hidden">

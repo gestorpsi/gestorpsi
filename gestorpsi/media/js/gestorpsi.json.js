@@ -17,7 +17,7 @@ GNU General Public License for more details.
 /** 
 * client list of service
 */
-function updateClientService(url, app) {
+function updateClientService(url, deactive, app) {
     if (!app) app = "client";
     $.getJSON(url, function(json) {
         var tableTR = '';
@@ -544,4 +544,10 @@ function updateStudent(url, deactive, app) {
     return false;
 }
 
-
+function referralMultSelect(url) {
+    $.getJSON(url, function(json) {
+                jQuery.each(json,  function(){
+                    $('form div.main_area div select#m-selectable').append(new Option(this.client + this.prof0 + this.prof1 + this.prof2 , this.id));
+                });
+            });
+}

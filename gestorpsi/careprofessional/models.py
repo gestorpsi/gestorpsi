@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 import reversion
 from django.db import models
+from django.db.models import Q 
 from django.utils.translation import ugettext_lazy as _
 from gestorpsi.person.models import Person
 from gestorpsi.place.models import Place
@@ -191,11 +192,9 @@ class CareProfessional(models.Model):
     id= UuidField( primary_key= True )
     professionalIdentification = models.OneToOneField(ProfessionalIdentification, null=True)
     professionalProfile = models.OneToOneField(ProfessionalProfile, null = True)
-    #studentProfile = models.OneToOneField(StudentProfile, null=True)
     person = models.OneToOneField(Person)
     comments = models.CharField(max_length=200, null=True)
     active = models.BooleanField(default=True)
-    #is_student = models.BooleanField(default=False)
     objects = CareProfessionalManager()
 
     def __unicode__(self):
@@ -212,6 +211,27 @@ class CareProfessional(models.Model):
 
     def revision_created(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
+    
+    def is_busy(self, start_time, end_time):
+        ''' 
+        check if professional is busy in schedule for selected range
+        filter 1: start time not in occurrence range
+        filter 2: end time not in occurrence range
+        filter 2: end time not in occurrence range
+        filter 3: occurrence range are not between asked values
+        note for exclude filters: 
+            presence = 4 -> occurrence unmarked
+            presence = 5 -> occurrence rescheduled
+        '''
+        queryset = self.referral_set.filter(occurrence__scheduleoccurrence__occurrenceconfirmation__isnull=True) | \
+            self.referral_set.filter(occurrence__scheduleoccurrence__occurrenceconfirmation__isnull=False) \
+                .exclude(occurrence__scheduleoccurrence__occurrenceconfirmation__presence=4) \
+                .exclude(occurrence__scheduleoccurrence__occurrenceconfirmation__presence=5)
+        return True if \
+            queryset.filter(occurrence__start_time__lte = start_time, occurrence__end_time__gt = start_time) or \
+            queryset.filter(occurrence__start_time__lt = end_time, occurrence__end_time__gte = end_time) or \
+            queryset.filter(occurrence__start_time__gte = start_time, occurrence__end_time__lte = end_time) \
+            else False
 
     is_student = property(_is_student)
 reversion.register(CareProfessional, follow=['person', 'professionalIdentification', 'professionalProfile'])

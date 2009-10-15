@@ -17,6 +17,7 @@ GNU General Public License for more details.
 from datetime import datetime, date, time, timedelta
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
+from django.utils.translation import ugettext as _
 from swingtime.forms import MultipleOccurrenceForm, SingleOccurrenceForm
 from swingtime import utils
 from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation
@@ -24,8 +25,7 @@ from gestorpsi.place.models import Room
 from gestorpsi.device.models import DeviceDetails
 from gestorpsi.schedule import settings as swingtime_settings
 from gestorpsi.util.widgets import SplitSelectDateTimeWidget
-from django.utils.translation import ugettext as _
-
+from gestorpsi.schedule.models import OCCURRENCE_CONFIRMATION_PRESENCE 
 
 def timeslot_offset_options(
     interval=swingtime_settings.TIMESLOT_INTERVAL,
@@ -109,7 +109,7 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
         else:
             params = self._build_rrule_params()
 
-        event.add_occurrences(
+        event.errors = event.add_occurrences(
             self.cleaned_data['start_time'], 
             self.cleaned_data['end_time'],
             self.cleaned_data['room'].id,
@@ -120,7 +120,6 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
 
         return event
 
-from gestorpsi.schedule.models import OCCURRENCE_CONFIRMATION_PRESENCE 
 class OccurrenceConfirmationForm(forms.ModelForm):
     presence = forms.CharField(label=_('Presence'), required=True, widget=forms.RadioSelect(choices=OCCURRENCE_CONFIRMATION_PRESENCE))
     date_started = forms.DateTimeField(label=_('Time Started'), required=False, widget=SplitSelectDateTimeWidget(minute_step=5))

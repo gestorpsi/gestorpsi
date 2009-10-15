@@ -144,6 +144,10 @@ class Activitie(models.Model):
     class Meta:
         ordering = ['description']
 
+class OrganizationManager(models.Manager):
+    def real(self):
+        return super(OrganizationManager, self).get_query_set().filter(active=True, organization__isnull=True)
+
 class Organization(models.Model):
     """    
     This class represents the organization model.   
@@ -186,6 +190,8 @@ class Organization(models.Model):
     organization = models.ForeignKey('self', related_name="%(class)s_related", null=True, blank=True)
     contact_owner = models.ForeignKey('person.Person', related_name="contact_owner", null=True, blank=True)
     
+    objects = OrganizationManager()
+
     def __unicode__(self):
         return self.trade_name
 

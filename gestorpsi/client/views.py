@@ -319,9 +319,7 @@ def referral_plus_save(request, object_id=None):
             object = form.save(commit=False)
             object.organization = request.user.get_profile().org_active
             object.status = '01'
-            object.referral = None
             object.save()
-            object.referral_parent.add(Referral.objects.get(pk=request.POST.get('referral')))
             form.save_m2m()
         else:
             print form.errors

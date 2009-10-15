@@ -153,7 +153,7 @@ class Referral(Event):
     client = models.ManyToManyField(Client, null=True, blank=True)
     professional = models.ManyToManyField(CareProfessional, null=True)
     service = models.ForeignKey(Service, null=True)
-    referral = models.ForeignKey('Referral', null=True, blank=True, related_name='referral_parent')
+    referral = models.ForeignKey('Referral', null=True, blank=True, related_name='referral_children')
     date = models.DateTimeField(auto_now_add=True)
     referral_reason = models.CharField(max_length=765, null=True, blank=True)
     annotation = models.CharField(max_length=765, null=True, blank=True)

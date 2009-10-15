@@ -22,10 +22,7 @@ GNU General Public License for more details.
 """
 
 from django.contrib import admin
-from gestorpsi.referral.models import IndicationChoice
+from gestorpsi.referral.models import IndicationChoice, ReferralImpact
 
-class IndicationChoiceAdmin(admin.ModelAdmin):
-    pass
-
-admin.site.register(IndicationChoice, IndicationChoiceAdmin)
-
+admin.site.register(IndicationChoice)
+admin.site.register(ReferralImpact)

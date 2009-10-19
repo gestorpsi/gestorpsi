@@ -67,15 +67,18 @@ GNU General Public License for more details.
     </fieldset>
 
     <fieldset>
-    <legend>{% trans "Group Members" %}</legend>
-        <label>{% trans "Clients" %}<br /></label>
+    <legend>Group Members</legend>
+        <label>Clients<br /></label>
         <div>
-        {{ client_form.client }}
-        {{ client_form.client.errors }}
+            <select multiple="multiple" id="id_client" class="giant high multiple multiselectable" name="client">
+                <script>
+                    referralMultSelect('/referral/multselect/{{ object.id }}/');
+                </script>
+            </select>
         </div>
-        
     </fieldset>
-    
+
+
 <br />
     
 </div>

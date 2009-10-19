@@ -36,6 +36,7 @@ function updateClientService(url, deactive, app) {
 
               str_professional = '';
               str_professional_id = '';
+              str_occurence = '';
 
               if (this.professional){
                jQuery.each(this.professional,  function(){
@@ -43,11 +44,19 @@ function updateClientService(url, deactive, app) {
                         str_professional_id = this.id;
                     });
                 }
+
+              if (this.occurence){
+               jQuery.each(this.occurence,  function(){
+                        str_occurence += ' ('+ this.p + ')';
+                    });
+                }
  
                 tableTR += '<tr>';
-                tableTR += '<td class="title">'+ str_client +'  '+ str_professional +'<br> data ' + this.dt;
+                tableTR += '<td class="title">'+ str_client +' '+ str_professional +'<br /> Date ' + this.dt + '<br />Occurences: '+ str_occurence;
                 tableTR += '</td>';
-                tableTR += '<td></td>';
+                tableTR += '<td>';
+//                tableTR += '<a href="www.gestorpsi.com.br">lnk</a>';
+                tableTR += '</td>';
                 tableTR += '</tr>';
         });
 
@@ -544,10 +553,13 @@ function updateStudent(url, deactive, app) {
     return false;
 }
 
+/***
+ * service group select; details about referral , professionals
+ */
 function referralMultSelect(url) {
     $.getJSON(url, function(json) {
                 jQuery.each(json,  function(){
                     $('form div.main_area div select#m-selectable').append(new Option(this.client + this.prof0 + this.prof1 + this.prof2 , this.id));
                 });
-            });
+    });
 }

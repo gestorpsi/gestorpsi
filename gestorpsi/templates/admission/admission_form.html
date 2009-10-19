@@ -35,7 +35,6 @@ GNU General Public License for more details.
 	<h2 class="title_clients title">{% trans "New Admission" %}</h2>
 	<p class="description">{% trans "Inform the client details then click on Save button" %}</p>
 {% endif %}
-
 </p>
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
@@ -64,9 +63,6 @@ GNU General Public License for more details.
         <label>{% trans "Admission Date" %}<br />
         <input name="admission_date" type="text" class="medium" value="{% if not object.admission_date %}{% now "d/m/Y" %}{% else %}{{ object.admission_date|date:"d/m/Y" }}{% endif %}" mask="99/99/9999" /></label>
         </fieldset>
- {% for i in banana %}ae
-                                {{ i }}
-                        {% endfor %}
         <!-- How the client heard about this organization -->
         <div class="admission_referral">
 		<fieldset>
@@ -141,15 +137,82 @@ GNU General Public License for more details.
         </fieldset>
 </div>
 
-<div id="sidebar" class="sidebar">
-    {% if perms.client.client_write %}
-        <div class="bg_blue">
-            {% include "tags/save.html" %}
-        </div>
+    <div id="sidebar" class="sidebar">
+        {% if perms.client.client_write %}
+            <div class="bg_blue">
+                {% include "tags/save.html" %}
+            </div>
+        {% endif %}
+        {% if object.id %}
+            {% include "tags/client_sidebar.html" %}
+        {% endif %}
+    </div>
+
+</form>
+
+
+<input type="hidden" name="object_id" value="{{ object.id }}" />
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+	<h2 class="title_clients title">{{ object.person.name }} {% trans "in" %} {{ referral }}</h2>
+	<p class="description">{% trans "Client subscribed in this service since" %} {{ referral.date|date:"d" }} {% trans "of" %} {{ referral.date|date:"F" }} {% trans "of" %} {{ referral.date|date:"Y" }}<br />
+
+</p>
+
+<div class="main_area">
+<form action="/admission/{{ object.id}}/attach/" method="post" name="attach" enctype="multipart/form-data" class="upload_referral">
+
+<fieldset>
+ <legend>{% trans "Media" %}</legend>
+        <div id="documents">
+                <!-- Aparece quando "Anexar Documento", desaparece após
+ enviar arquivo, podem haver vários-->
+                <div class="documents_form">
+                <label>{% trans "File" %}<br />
+
+                <input type="file" class="file" name="file" />
+
+                </label>
+                <label>{% trans "Document Type" %}<br />
+                    <select name="doc_type" class="big">
+                            {% for type in types %}
+                                <option value="{{ type.0 }}">{{ type.1 }}</option>
+                            {% endfor %}
+                    </select>
+                    <label>
+                       <input type="checkbox" name="signed" id="signed" checked="checked">&nbsp;
+                       {% trans "Asigned by the client" %}
+                    </label>
+                </label>
+
+                <label>{% trans "Document Subject" %}<br />
+                <input name="description" type="text" class="big" /></label>
+                <label><input name="" type="submit" class="btn" value="{% trans "Send file" %}" /></label>
+                </div>
+
+                <br class="newline" />
+                <br />
+
+    {% if attachs %}
+        {% for a in attachs %}
+                <table class="nozebra">
+                        <tr>
+                                <td nowrap="nowrap"><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
+                                <td><span  class="pdf"><a href="/media/img/organization/{{ org_id }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
+                                <td><span>{{ a.description }} {% for t in types %}{% ifequal a.type t.0 %} {{ t.1 }} </span> <br /> {% endifequal %} {% endfor %} 
+                                    <td><span>{% if a.signed_bythe_client %}{% trans "Signed by the client" %}{% endif %}</span></td>
+                        </tr>
+                </table>
+        {% endfor %}
+    {% else %}
+             <p class="empty">Nenhum documento anexado</p>
+             <br />
     {% endif %}
-    {% if object.id %}
-        {% include "tags/client_sidebar.html" %}
-    {% endif %}
+
+   </fieldset>
+  </form>
+ <br />
 </div>
 </form>
 

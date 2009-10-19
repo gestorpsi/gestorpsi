@@ -68,13 +68,15 @@ def group_add(request, object_id=None):
     else:
         form = ReferralGroupForm()
         client_form = ReferralClientForm()
-        client_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1', referral__service = object).distinct()
+        #client_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1', referral__service = object).distinct()
 
     return render_to_response('service/service_group_form.html',
                               {'object': object, 
                                 'form': form,
                                 'client_form': client_form,
                                 'hide_service_actions': True,
+#                                'clients': Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1', referral__service = object).distinct(),
+                                'clients': Referral.objects.filter(organization = request.user.get_profile().org_active, status = '01', service = object).distinct(),
                                },
                               context_instance=RequestContext(request)
                               )
@@ -163,3 +165,46 @@ def client_referrals(request, object_id = None):
     
     return HttpResponse(array, mimetype='application/json')
 
+
+@permission_required_with_403('referral.referral_list')
+def mult_select(request, object_id = None):
+    print "M U L T"
+    object = get_object_or_404(Service, pk=object_id, organization = request.user.get_profile().org_active)
+#    object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+#    referral = Referral.objects.charged().filter(client=object, service__organization=request.user.get_profile().org_active)
+
+    referrals = Referral.objects.filter(organization = request.user.get_profile().org_active, status = '01', service = object).distinct()
+
+    array = {} #json
+    i = 0
+
+    for o in referrals:
+        prof0 = ''
+        prof1 = ''
+        prof2 = ''
+
+        try:
+            prof0 = '%s' % o.professional.all()[0]
+            prof0 = ('(%s' ' %s)' % (prof0.split(' ')[0], prof0.split(' ')[1][0]))
+
+            prof1 = '%s' % o.professional.all()[1]
+            prof1 = ('(%s' ' %s)' % (prof1.split(' ')[0], prof1.split(' ')[1][0]))
+
+            prof2 = '%s' % o.professional.all()[2]
+            prof2 = ('(%s' ' %s)' % (prof2.split(' ')[0], prof2.split(' ')[1][0]))
+
+        except:
+            pass
+
+        array[i] = {
+            'client': '%s' % o.client.all()[0],
+            'id': '%s' % o.client.all()[0].id,
+            'prof0': ' %s' % prof0,
+            'prof1': ' %s' % prof1,
+            'prof2': ' %s' % prof2,
+        }
+        i = i + 1
+
+    array = simplejson.dumps(array, encoding = 'iso8859-1')
+
+    return HttpResponse(array, mimetype='application/json')

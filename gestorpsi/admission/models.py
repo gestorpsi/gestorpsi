@@ -14,12 +14,22 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+
+
+
 import reversion
 from django.db import models
+from django.utils.translation import ugettext as _
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client
 from gestorpsi.util.uuid_field import UuidField
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
+
+ATTACH_TYPE = (
+    ('01', _('Termo de Consentimento Livre e Esclarecido (TCLE)')),
+)
 
 class ReferralChoice(models.Model):
     description = models.CharField(max_length=250)
@@ -46,3 +56,15 @@ class AdmissionReferral(models.Model):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(AdmissionReferral, follow=['client'])
+
+class Attach(models.Model):
+    filename = models.CharField(null=True, max_length=255)
+    description = models.TextField(null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    file = models.CharField(max_length=200)
+    type = models.CharField(max_length=2, blank=True, null=True, choices=ATTACH_TYPE) 
+    client = models.ForeignKey(Client)
+    signed_bythe_client = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return u'%s' % (self.file)

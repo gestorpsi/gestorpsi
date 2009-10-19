@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 
 """
 Copyright (C) 2008 GestorPsi
@@ -27,13 +27,20 @@ from gestorpsi.admission.models import *
 from gestorpsi.contact.models import Contact
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.util.decorators import permission_required_with_403
+from gestorpsi.settings import MEDIA_ROOT
+import os
+import uuid
 
 @permission_required_with_403('admission.admission_read')
 def form(request, object_id=''):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+    attachs = Attach.objects.filter(client = object)
 
     return render_to_response('admission/admission_form.html', {
         'object': object,
+        'types': ATTACH_TYPE,
+        'attachs': attachs,
+        'org_id': request.user.get_profile().org_active.id,
         'contact_organizations':  Contact.objects.filter(
                         org_id = request.user.get_profile().org_active.id, 
                         person_id = request.user.get_profile().person.id, 
@@ -77,3 +84,49 @@ def save(request, object_id=''):
     request.user.message_set.create(message=_('Admission saved successfully'))
 
     return HttpResponseRedirect('/client/%s/home' % object.id)
+
+def attach_save(request, object_id = None):
+    object = get_object_or_404(Client, pk = object_id)
+
+    if request.method == 'POST':
+        user = request.user
+        filename = ''
+
+        if 'file' in request.FILES:
+            path = '%simg/organization/%s' % (MEDIA_ROOT, user.get_profile().org_active.id)
+            if not os.path.exists(path):
+                os.mkdir(path)
+                os.chmod(path, 0777)
+
+            path = '%simg/organization/%s/attach' % (MEDIA_ROOT, user.get_profile().org_active.id)
+            if not os.path.exists(path):
+                os.mkdir(path)
+                os.chmod(path, 0777)
+
+            try:
+                    filename = request.FILES['file']
+                    file = str(uuid.uuid4()) + '.'+ (str(filename).split('.')[-1])
+                    destination = open('%s/%s' % (path,  file), 'w+')
+
+                    for chunk in filename.chunks():
+                        destination.write(chunk)
+                    destination.close()
+
+                    attach = Attach()
+                    if not request.POST.get('signed'):
+                        attach.signed_bythe_client = False
+                    else:
+                        attach.signed_bythe_client = True
+
+                    attach.filename = '%s' %  filename
+                    attach.description = request.POST.get('description')
+                    attach.file = '%s' % file
+                    attach.type = request.POST.get('doc_type')
+                    attach.client = object
+                    attach.save()
+
+            except IOError:
+                print "error sending file"
+
+        return HttpResponseRedirect('/admission/%s/' % object_id)
+        return HttpResponseRedirect('/admission/%s/' % object_id)

@@ -125,7 +125,7 @@ def add_event(
             room=room.id,
             ))
 
-        recurrence_form.fields['device'].queryset = DeviceDetails.objects.filter(Q(room = room, mobility="1") | Q(place =  room.place, room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=False) | Q(room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=True))
+        recurrence_form.fields['device'].queryset = DeviceDetails.objects.filter(Q(room = room, mobility="1") | Q(place =  room.place, room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=False) | Q(room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=True, active=True))
 
     return render_to_response(
         template,

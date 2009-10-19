@@ -13,8 +13,25 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+     /**
+      *  My Record - Profile
+      * _description:
+      * change password of loged user
+      *
+      */
 
 $(function() {
+
+    $('form.record_chpass').validate({
+        rules: {
+            c_pass: "required",
+            n_pass: "required",
+            n_pass0: "required"
+        },
+        messages: {
+            name: 'Preenchimento Necessário'
+        }
+    });
 
      /**
       *

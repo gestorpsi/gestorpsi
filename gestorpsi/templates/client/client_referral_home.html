@@ -31,19 +31,18 @@ GNU General Public License for more details.
 <h2 id="title_addressbook" style="display:none"></h2>
 
 	<h2 class="title_clients title">{{ object.person.name }}</h2>
-	<p class="description"><br /></p>
-
-
+    <p class="description"><br /></p>
 
 <div class="main_area home">
 	<!-- <a href="" id="help">&nbsp;</a> -->
 	<!-- DataTypes form menu -->
-	<h3><span>{% trans "Administrative Details" %}</span></h3>
+	<h3><span>{% trans "registration information" %}</span></h3>
     <div class="photo">
         <img class="img_people" src="{% if object.person.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
         <br /><br />
     </div>    
     <h1>{{ object.person.name }}</h1>
+    <p><span class="big">{% if object.person.nickname %}{{ object.person.nickname }}{% endif %}</span></p>
     <p><span class="big">{% if object.person.maritalStatus %}{{ object.person.maritalStatus }}{% endif %}</span></p>
     <p><span class="big">{% if object.person.birthDate %}{{ object.person.birthDate|age }} {% trans "years" %} {% endif %}</span></p>
     {% if object.person.address.all %}
@@ -91,18 +90,12 @@ GNU General Public License for more details.
             {% if not referral.professional.all %}
                 {% trans "There is no professional in this referral." %} <a href="/client/{{ object.id}}/referral/{{ referral.id }}/form/">{% trans "Add one now?" %}</a>
             {% else %}
-                {% trans "Professionals" %}: {{ referral.professional_list|safeseq|join:", "}}
-            {% endif %}
+                    {% trans "Professionals" %}: {{ referral.professional_list|safeseq|join:", "}}
+                {% endif %}
             <br>
-            {% trans "Client subscribed on this service since" %} {{ referral.date|date:"d" }} {% trans "of" %} {{ referral.date|date:"F" }} {% trans "of" %} {{ referral.date|date:"Y" }}
+            {% trans "Client subscribed on this service since" %} {{ dt }} 
         </p>
 
-        <p>
-            {% if dt %}
-            <b />{% trans "Data" %}</b><br />
-                {{ dt }}
-            {% endif %}
-        </p>
         <p>
             {% if referral.referral %}
             <b />{% trans "Referral" %}</b><br />

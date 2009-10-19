@@ -30,20 +30,22 @@ GNU General Public License for more details.
 
 <h2 id="title_addressbook" style="display:none"></h2>
 
-	<h2 class="title_clients title">{{ object.person.name }}</h2>
-	<p class="description">{% trans "Customer subscribed in" %} <a href="/client/{{ object.id }}/referral/">{{ referrals|length }} {% trans "service(s)" %}</a> <br />	
-
-</p>
+    <h2 class="title_clients title">{% trans "Details of Client"%} </h2>
+    <p class="description">{% trans "Customer subscribed in" %} <a href="/client/{{ object.id }}/referral/">{{ referrals|length }} {% trans "service(s)" %}</a>&nbsp;
+        {% trans "Admission Date" %} ( {{ object.admission_date|date:"d-m-Y" }} ) &nbsp; 
+        {% trans "Subscribers" %} ( {{ service_subscribers }} )  &nbsp; 
+        {% trans "Care delivery" %} ( {{ care_delivered }} ) 
+    </p>
 
 <div class="main_area home">
 	<!-- <a href="" id="help">&nbsp;</a> -->
 	<!-- DataTypes form menu -->
-	<h3><span>{% trans "Administrative Details" %}</span></h3>
+	<h3><span>{% trans "registration information" %}</span></h3>
     <div class="photo">
         <img class="img_people" src="{% if object.person.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
         <br /><br />
     </div>    
-    <h1>{{ object }}</h1>
+    <h1>{{ object }} ( {{ object.person.nickname }} )</h1>
     <p><span class="big">{% if object.person.maritalStatus %}{{ object.person.maritalStatus }}{% endif %}</span></p>
     <p><span class="big">{% if object.person.birthDate %}{{ object.person.birthDate|age }} {% trans "years old" %} {% endif %}</span></p>
     {% if object.person.address.all %}
@@ -89,7 +91,7 @@ GNU General Public License for more details.
             <p>
                 <a href="/client/{{ object.id}}/referral/{{ i.id }}/">{{ i.service }}</a> {% if i.upcoming_occurrences %} {% trans "with" %} {{ i.upcoming_occurrences|length }} {% trans "occurrences remaining" %}{% endif %}<br />
                 {% for p in i.professional.all %}
-                    <b>{{ p }}</b> {% for i in p.person.phones.all %} {{ i }} {{ i.phoneType }} {% endfor %}{{ p.person.get_first_email }}<br />
+                <b>{{ p }}</b> {{ p.professionalIdentification.profession }} - {{ p.professionalIdentification.profession.symbol }}&nbsp;{{ p.professionalIdentification }} <br />
                 {% endfor %}
                     {% if i.next_occurrence %}
                         {% trans "Next occurrence" %}:

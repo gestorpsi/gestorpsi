@@ -89,3 +89,26 @@ def save_careprofessional(request):
     object = save_careprof(request, object.id, False)
     request.user.message_set.create(message=_('Professional profile saved successfully'))
     return HttpResponseRedirect('/profile/careprofessional/')
+
+def change_pass(request):
+    object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
+
+    clss = request.GET.get("clss")
+
+    if request.POST.get('c_pass'):
+        if not object.person.profile.user.check_password(request.POST.get("c_pass")):
+            request.user.message_set.create(message=_('The current password is wrong'))
+            return HttpResponseRedirect('/profile/chpass/?clss=error')
+        else:
+            if request.POST.get("n_pass") != request.POST.get("n_pass0"):
+                request.user.message_set.create(message=_('The confirmation of the new password is wrong'))
+                return HttpResponseRedirect('/profile/chpass/?clss=error')
+            else:
+                object.person.profile.user.set_password(request.POST.get('n_pass'))
+                object.person.profile.temp = request.POST.get('n_pass')    # temporary field (LDAP)
+                object.person.profile.save(force_update=True)
+                object.person.profile.user.save(force_update=True)
+                request.user.message_set.create(message=_('Password updated successfully'))
+                return HttpResponseRedirect('/profile/chpass')
+    else:
+        return render_to_response('profile/profile_change_pass.html', locals(), context_instance=RequestContext(request))

@@ -73,12 +73,18 @@ def home(request, object_id=None):
     referrals = Referral.objects.charged().filter(client=object)
     referrals_discharged = Referral.objects.discharged().filter(client=object)
 
+    c=0
+    for x in (Referral.objects.filter(client=object)):
+        c += x.past_occurrences().count()
+
     return render_to_response('client/client_home.html',
                                         {
                                         'object': object,
                                         'referrals': referrals,
                                         'referrals_discharged': referrals_discharged,
-					'clss':request.GET.get('clss')
+                                        'service_subscribers': Service.objects.filter(referral__client = object).distinct().count(),
+                                        'care_delivered': c,
+                    					'clss':request.GET.get('clss')
                                         },
                                         context_instance=RequestContext(request))
 
@@ -428,7 +434,7 @@ def referral_home(request, object_id = None, referral_id = None):
         referral_discharged = False
 
     clss = request.GET.get("clss")
-    dt = referral.date.strftime("%d-%m-%Y  %H:%M %p")
+    dt = referral.date.strftime("%d-%m-%Y  %H:%M ")
     try:
         indication = Indication.objects.get(referral = referral_id)
     except:

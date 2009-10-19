@@ -32,27 +32,27 @@ GNU General Public License for more details.
 <h2 class="title_myoffice title">{{ object.person.name }}</h2>
 <p class="description">{% trans "Personal profile" %}</p>
 
-</p>
+<form action="/profile/chpass/" method="post" class="record_chpass">
+    <div class="main_area">
+            <fieldset class="fieldset_personal_identification">
+                <legend>{% trans "Change password" %}</legend>
+                    <label>{% trans "Current password" %}<br/>
+                    <input type="password" class="big" id="c_pass" maxlength="20" name="c_pass"/>
+                    </label>
+                    <label>{% trans "New password" %}<br/>
+                    <input type="password" class="big" id="n_pass" maxlength="20" name="n_pass"/>
+                    </label>
+                    <label>{% trans "Confirm the new password" %}<br/>
+                    <input type="password" class="big" id="n_pass0" maxlength="20" name="n_pass0"/>
+                    </label>
+            </fieldset>
+        <br />
+    </div>
 
-<form action="/profile/save/" method="post" class="form_people">	
-<div class="main_area">
-	{% include "meta/people.html" %}
-<br />	
-</div>
-
-<div id="sidebar" class="sidebar">
-          <div class="bg_blue">
-            {% include "tags/save.html" %}
-          </div>
-
-          <div>
-                {% include "tags/profile_sidebar.html" %}
-          </div>
-</div>
-
+    <div id="sidebar" class="sidebar">
+              <div class="bg_blue">
+                {% include "tags/save.html" %}
+              </div>
+    </div>
 </form>
-
-{% include "tags/upload.html" %}
-
 {% endblock %}
-

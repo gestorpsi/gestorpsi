@@ -266,16 +266,15 @@ def disable(request, object_id=None):
 @permission_required_with_403('service.service_write')
 def queue(request, object_id=None):
     object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active)
-    queue = Queue.objects.filter(referral__service = object_id, date_out = None).order_by('date_in').order_by('priority')
+    queue = Queue.objects.filter(referral__service = object_id, date_out = None).order_by('-date_in')
 
-    list_queue = Referral.objects.filter(queue__referral__service = object_id, queue__date_out = None).order_by('date').order_by('-priority')
+    list_queue = Referral.objects.filter(queue__referral__service = object, queue__date_out = None).order_by('-queue__date_in')
 
     return render_to_response( "service/service_queue.html", {
         'queues': list_queue,
         'object': object,
         }, context_instance=RequestContext(request))
 
-@permission_required_with_403('service.service_list')
 def client_list_index(request, object_id = None):
     object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active)
 
@@ -286,7 +285,7 @@ def client_list(request, page = 1, object_id = None, no_paging = None, initial =
     array = {} # json
     i = 0
     
-    referral = Referral.objects.charged().filter(service = object_id).order_by('date')
+    referral = Referral.objects.charged().filter(service = object_id).order_by('-date')
 
     if initial:
         referral = referral.filter(client__person__name__istartswith = initial)
@@ -296,16 +295,23 @@ def client_list(request, page = 1, object_id = None, no_paging = None, initial =
         
     for r in referral:
         array[i] = {
-            'dt': r.date.strftime("%d-%m-%Y  %H:%M %p")
+            'dt': r.date.strftime("%d-%m-%Y  %H:%M ")
         }
-        
-        sub = 0;
+
+        list = r.upcoming_occurrences()
+        sub = 0
+        array[i]['occurence'] = {}
+        for p in list:
+            array[i]['occurence'][sub] = ({'p': ('%s' % p.start_time.strftime(" %d-%m-%Y  %H:%M ")) })
+            sub = sub + 1
+
+        sub = 0
         array[i]['professional'] = {}
         for p in r.professional.all():
             array[i]['professional'][sub] = ({'id':p.id, 'name':p.person.name})
             sub = sub + 1
 
-        sub = 0;
+        sub = 0
         array[i]['client'] = {}
         for p in r.client.all():
             array[i]['client'][sub] =  ({'id':p.id, 'name':p.person.name})

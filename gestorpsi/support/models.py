@@ -73,3 +73,13 @@ class TicketIteration(models.Model):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(TicketIteration)
+
+class Documentation(models.Model):
+    title = models.CharField(max_length=255)
+    body = models.TextField()
+    parent = models.ForeignKey('Documentation', blank=True, null=True)
+    
+    def __unicode__(self):
+        return '%s' % self.title
+
+reversion.register(Documentation)

@@ -370,6 +370,15 @@ div.main_area h1 {
         border: 2px solid #FF0000;
 }
 
+#msg_area ul, .msg_area ul {
+        margin: 10px 0 0 0px;
+}
+
+#msg_area li, .msg_area li {
+        margin: 5px 0 0 25px;
+}
+
+
 .main_area {
         width: 715px;
         background: #ECECEC;

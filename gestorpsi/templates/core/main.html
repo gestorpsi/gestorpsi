@@ -103,6 +103,7 @@ GNU General Public License for more details.
         <img src="/media/img/generic_photo.gif" width="71" height="83" />
     {% endif %}
     <span>
+        <b>{{ user.profile.org_active.trade_name }}</b><br />
         {{ user.profile.org_active.get_first_address|safe }}<br />
         {{ user.profile.org_active.get_first_phone }}
     </span>

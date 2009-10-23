@@ -1,0 +1,105 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_client %}active{% endblock %}
+
+{% block submenu %}
+<ul id="sub_customers">
+    <li><a href="/client/">{% trans "all" %}</a></li>
+    <li><a {% if not object.id %} class="active" {% endif %}href="/client/add">{% trans "add" %}</a></li>
+    <li><a href="/client/add/company/">{% trans "add company" %}</a></li>
+    <li><a class="{% if deactive %} active {% endif %}" href="/client/deactive/">{% trans "all Deactive" %}</a></li>
+
+    {% if object.id %}<li><a class="active">{{ object.person.name }}{% if referral %} - {{ referral }}{% endif %}</a></li>{% endif %}
+</ul>
+{% endblock %}
+
+{% block core %}
+<input type="hidden" name="object_id" value="{{ object.id }}" />
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+{% if object.id %}
+	<h2 class="title_clients title">{% trans "Print Record Form" %}</h2>
+	<p class="description">{% trans "Select options below to configure your report view" %}<br />	
+{% endif %}
+
+</p>
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
+
+<form action="/client/{% if object.id %}{{ object.id }}/{% endif %}print/" method="post" id="form_client_print" class="form_client_print">	
+<div class="main_area">
+
+	<!-- <a href="" id="help">&nbsp;</a> -->
+	<!-- DataTypes form menu -->
+	<h3><span id="client_add_infotypes">{% trans "Print Options" %}</span></h3>
+	<ul id="form_options" class="float_menu" style="display:none;">
+		<li><label><input name="this" type="radio" value="" checked/>{% trans "Demographic" %}</label></li>
+		<li><label><input name="this" type="radio" value="" />{% trans "Socio-Demographic" %}</label></li>
+		<li><label><input name="this" type="radio" value="" />{% trans "Socio-Economic" %}</label></li>
+	</ul>
+
+<fieldset>
+        <legend>{% trans "Service print options" %}</legend> 
+        <label><b>{% trans "Print subscribed services option" %}</b><br /></label>
+        <div class="label">
+        {% for i in object.referral_set.all %}
+            <input type="checkbox" name="referral" value="{{ i.id }}" checked />&nbsp;{{ i }}{% if i.professional.all %} - {{ i.professional.all|join:", " }}{% endif %}<br />
+        {% endfor %}
+        </div>
+        <label><input type="checkbox" name="schedule" value="True" checked />&nbsp; <b>
+        {% trans "Print service schedule occurrence option" %}</b>
+                    <small>({% trans "if selected will print upcomming occurrences for selected services" %})</small>
+        </label>
+        <label><b>{% trans "Print output format" %}</b><br /></label>
+        <div class="label">
+            <input type="radio" name="output" value="pdf" checked />&nbsp;PDF</span>
+            &nbsp;&nbsp;<input type="radio" name="output" value="html" />&nbsp;HTML</span>
+        </div>
+</fieldset>
+
+<br />	
+</div>
+
+
+<div id="sidebar" class="sidebar">
+    {% if perms.client.client_write %}
+        <div class="bg_blue">
+        <input class="save_button" name="save" type="submit" value="{% trans 'Print' %}" />
+        <input class="save_button" name="cancel" id="cancel_button" type="button" value="{% trans 'Back' %}" onclick="javascript:history.go(-1)" />
+        
+        <div id="msg_info">
+            <p>
+            </p>
+        </div>
+        </div>
+    {% endif %}
+    {% if object.id %}
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
+</div>
+
+
+
+</form>
+{% include "tags/upload.html" %}
+
+{% endblock %}

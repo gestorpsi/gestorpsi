@@ -93,7 +93,10 @@ class Address(models.Model):
             return 1    
     
     def __unicode__(self):
-        return u"%s %s\n%s" % (self.addressPrefix, self.addressLine1, self.addressLine2)
+        return u"%s<br />%s %s %s %s<br />%s %s %s %s %s" % (\
+            self.addressType, self.addressPrefix, self.addressLine1, self.addressNumber, self.addressLine2, \
+            self.zipCode, self.neighborhood, self.city, '' if not hasattr(self.city, 'state') else self.city.state.shortName, '' if not hasattr(self.city, 'state') else self.city.state.country,\
+        )
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

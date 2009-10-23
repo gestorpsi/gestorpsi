@@ -22,9 +22,9 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
+from django.template.defaultfilters import slugify
 
-from geraldo.generators import PDFGenerator
-
+from gestorpsi.settings import DEBUG, MEDIA_URL
 from gestorpsi.address.models import Country, State, AddressType, City
 from gestorpsi.authentication.models import Profile
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
@@ -55,7 +55,7 @@ from gestorpsi.schedule.views import occurrence_confirmation_form
 from gestorpsi.schedule.forms import OccurrenceConfirmationForm
 from gestorpsi.schedule.models import ScheduleOccurrence, Occurrence
 from gestorpsi.contact.models import Contact
-from gestorpsi.util.views import get_object_or_None
+from gestorpsi.util.views import get_object_or_None, write_pdf
 from gestorpsi.util.models import Cnae
 
 # list all active clients
@@ -424,7 +424,7 @@ def referral_home(request, object_id = None, referral_id = None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
     organization = user.get_profile().org_active.id
-    queues = Queue.objects.filter(referral=referral_id)
+    queues = Queue.objects.filter(referral=referral_id, client=object)
     referrals = ReferralExternal.objects.filter(referral=referral_id)
 
     discharged_list = object.referrals_discharged()
@@ -481,30 +481,31 @@ def save(request, object_id=None, is_company = False):
     return HttpResponseRedirect('/client/%s/home' % object.id)
 
 @permission_required_with_403('client.client_list')
-def print_list(request):
-    user = request.user
-    response = HttpResponse(mimetype='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=clients.pdf'
-    object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
-    report = ClientList(queryset=object)
-    report.title = "Client List"
-    report.band_page_header = header_gen(user.get_profile().org_active)
-    report.band_page_footer = footer_gen(user.get_profile().org_active)
-    report.generate_by(PDFGenerator, filename=response)
-    return response
+def client_print(request, object_id = None):
+    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
 
-@permission_required_with_403('client.client_read')
-def print_record(request, object_id):
-    user = request.user
-    response = HttpResponse(mimetype='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=client.pdf'
-    client = Client.objects.filter(pk=object_id, person__organization = user.get_profile().org_active.id)
-    report = ClientRecord(queryset=client)
-    report.title = "Client Record"
-    report.band_page_header = header_gen(organization=user.get_profile().org_active, header_line=False, clinic_info=True)
-    report.band_page_footer = footer_gen(organization=user.get_profile().org_active)
-    report.generate_by(PDFGenerator, filename=response)
-    return response
+    if not request.POST:
+        return render_to_response('client/client_print_form.html', locals(), context_instance=RequestContext(request))
+    else:
+        referral = object.referral_set.filter(pk__in=request.POST.getlist('referral'))
+        print_schedule = None if not request.POST.get('schedule') else True
+        company_related_clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active) if object.is_company else None
+        dict = {
+            'referral': referral,
+            'print_schedule': print_schedule,
+            'pagesize' : 'A4',
+            'object': object, 
+            'org_active': request.user.get_profile().org_active, 
+            'user': request.user, 
+            'DEBUG': DEBUG, 
+            'MEDIA_URL': MEDIA_URL, 
+            'company_related_clients': company_related_clients, 
+            }
+
+        if request.POST.get('output') == 'html':
+            return render_to_response('client/client_print.html', dict, context_instance=RequestContext(request))
+        
+        return write_pdf('client/client_print.html', dict, '%s.pdf' % slugify(object.person.name))
 
 @permission_required_with_403('client.client_read')
 def organization_clients(request):
@@ -547,7 +548,7 @@ def order(request, object_id = ''):
         object.save(force_update=True)
     
     else:
-        request.user.message_set.create(message=_('The user have registered referral'))
+        request.user.message_set.create(message=_('Sorry, you can not deactivate a client with registered referral'))
         url += '?clss=error'
         
     return HttpResponseRedirect(url % object.id)

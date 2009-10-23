@@ -70,6 +70,7 @@ def save(request, object_id=''):
     object.legacyRecord = request.POST.get('legacyRecord')
     object.comments = request.POST.get('comments')
 
+    object.admissionreferral_set.all().delete()
     """ Referral Section """
     if request.POST.get('referral'):
         ar = AdmissionReferral()

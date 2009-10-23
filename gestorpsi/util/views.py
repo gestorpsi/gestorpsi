@@ -13,8 +13,15 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
+
+import ho.pisa as pisa
+import cStringIO as StringIO
+import cgi
+from django import http
 from django.http import HttpResponse
 from django.utils import simplejson
+from django.template.loader import get_template
+from django.template import Context
 from gestorpsi.util.models import Cnae
 
 def get_object_or_new(klass, *args, **kwargs):
@@ -48,3 +55,17 @@ def cnae(request):
         results.append({'id': i.id, 'name': i.cnae_class})
     
     return HttpResponse(simplejson.dumps(results))
+
+def write_pdf(template_src, context_dict, filename='output.pdf'):
+    template = get_template(template_src)
+    context = Context(context_dict)
+    html  = template.render(context)
+    result = StringIO.StringIO()
+    pdf = pisa.pisaDocument(StringIO.StringIO(
+        html.encode("UTF-8")), result)
+    if not pdf.err:
+        response =  HttpResponse(result.getvalue(), mimetype='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename=%s' % filename
+        return response
+    return http.HttpResponse('Erro making pdf! %s' % cgi.escape(html))
+

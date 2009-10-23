@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django.conf.urls.defaults import *
 from django.contrib.auth.decorators import login_required
-from gestorpsi.client.views import index, list, form, save, print_list, print_record, \
+from gestorpsi.client.views import index, list, form, save, client_print, \
         organization_clients, add, home, order, referral_save, referral_list, referral_home, \
         referral_form, referral_discharge_form, schedule_daily, schedule_add, \
         occurrence_view, referral_occurrences, referral_plus_form, referral_plus_save, referral_queue, \
@@ -46,8 +46,9 @@ urlpatterns = patterns('',
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/company/$', login_check(save), {'is_company':True}),  #update company client
 #    (r'^(?P<object_id>\d+)/delete/$', login_check(delete)), # delete object
 #    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/delete/$', login_check(delete)),  #delete object
-    (r'^print/$', login_required(print_list)), # print client list
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/print/$', login_required(print_record)),  # print record
+    #(r'^print/$', login_required(print_list)), # print client list
+    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/print/$', login_required(print_record)),  # print record
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/print/$', login_required(client_print)),  # print record
     (r'^organization_clients/$', login_required(organization_clients)),  # clients for logged otganization
 
     (r'^org/(?P<org_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/listprofessional/$', login_check(list_prof_org)), # get all professional of organization

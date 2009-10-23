@@ -292,7 +292,11 @@ def client_list(request, page = 1, object_id = None, no_paging = None, initial =
 
     if filter:
         referral = referral.filter(client__person__name__icontains = filter)
-        
+
+    array['util'] = {
+        'has_perm_read': request.user.has_perm('place.place_read'),
+    }
+
     for r in referral:
         array[i] = {
             'dt': r.date.strftime("%d-%m-%Y  %H:%M ")

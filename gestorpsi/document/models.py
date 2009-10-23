@@ -62,7 +62,7 @@ class Document(models.Model):
             return 1
 
     def __unicode__(self):
-        text = u"%s: %s" % (self.typeDocument, self.document)
+        text = u"%s %s" % (self.typeDocument, self.document)
         if self.issuer != None:
             text += u" %s" % self.issuer
         if self.state != None:

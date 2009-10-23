@@ -15,6 +15,7 @@ GNU General Public License for more details.
 """
 
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 from gestorpsi.client.models import Family, FAMILY_RELATION
 from gestorpsi.person.models import Person
 from gestorpsi.client.models import Client

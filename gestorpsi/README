@@ -48,7 +48,7 @@ Todo
 Requirements
 ------------
 Before install GestorPsi, you need to get and install the follows
-Python Packages:
+Python packages:
 
 - Python (>=2.5)
   maintainer: http://www.python.org/
@@ -67,15 +67,8 @@ Python Packages:
 - Django Swingtime (>= 0.2)
   maintainer: http://code.google.com/p/django-swingtime/
 
-- GetText (>= 0.17-2)
+- Gettext (>= 0.17-2)
   debian/ubuntu: sudo apt-get install gettext
-
-- Reportlab (>= 2.1)
-  maintainer: http://www.reportlab.org
-  debian/ubuntu: sudo apt-get install python-reportlab
-
-- Geraldo Reports Engine (>= 0.2.2)
-  maintainer: http://geraldo.sourceforge.net
 
 - Django Registration (>= r220)
   maintainer: http://bitbucket.org/ubernostrum/django-registration/wiki/Home
@@ -94,6 +87,12 @@ Python Packages:
 
 - Python module for PostgreSQL
   debian/ubuntu: sudo apt-get install python-psycopg2
+
+- Pisa (>= 3.0.32)
+  maintainer: http://pypi.python.org/pypi/pisa/
+
+- html5lib (>= 0.11.1-1)
+  debian/ubuntu: sudo apt-get install python-html5lib
 
 - Firefox Web Browser (>=3.0.5)
   maintainer: http://www.mozilla.com/firefox/

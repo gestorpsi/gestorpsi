@@ -90,7 +90,7 @@ People Personal Profile Form
                 <label class="autocomplete city"{% if object.person.birthForeignCity %} style="display:none"{% endif %}>
                 {% trans "City" %}<br />
                 <select name="birthPlace" class="extramedium">
-                    {% if not object.person.birthPlace.id %}
+                    {% if not object.person.birthPlace %}
                         <option disabled>{% trans "Select state first" %}</option>
                     {% endif %}
                 </select>

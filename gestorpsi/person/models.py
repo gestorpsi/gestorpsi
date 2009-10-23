@@ -204,7 +204,7 @@ class CompanyClient(models.Model):
     active = models.BooleanField(default=True)
 
     def __unicode__(self):
-        return '%s @ %s' % (self.client, self.company)
+        return '%s' % (self.client)
 
     class Meta:
         ordering = ['-active', '-responsible', 'client']

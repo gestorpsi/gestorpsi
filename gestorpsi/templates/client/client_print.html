@@ -267,19 +267,19 @@ table {
       {% else %}
       <table>
           <tr class="title" nowrap="nowrap">
-            <td>{% trans "Filename" %}</td>
-            <td>{% trans "Date" %}</td>
-            <td>{% trans "Type" %}</td>
-            <td>{% trans "Client Signed" %}</td>
-            <td>{% trans "Description" %}</td>
+            <td><small>{% trans "Filename" %}</small></td>
+            <td><small>{% trans "Date" %}</small></td>
+            <td><small>{% trans "Type" %}</small></td>
+            <td><small>{% trans "Client Signed" %}</small></td>
+            <td><small>{% trans "Description" %}</small></td>
         </tr>
         {% for attach in object.attach_set.all %}
         <tr class="zebra_{% cycle 0,1 %}">
-            <td>{{ attach.filename }}</td>
-            <td>{{ attach.date|date:"d/m/Y" }}</td>
-            <td>{{ attach.get_type_display }}</td>
-            <td>{% if not attach.signed_bythe_client %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}</td>
-            <td>{{ attach.description }}</td>
+            <td><small>{{ attach.filename }}</small></td>
+            <td><small>{{ attach.date|date:"d/m/Y" }}</small></td>
+            <td><small>{{ attach.get_type_display }}</small></td>
+            <td><small>{% if not attach.signed_bythe_client %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}</small></td>
+            <td><small>{{ attach.description }}</small></td>
         </tr>
         {% endfor %}
       </table>

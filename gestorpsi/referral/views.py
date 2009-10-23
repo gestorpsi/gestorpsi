@@ -68,7 +68,7 @@ def group_add(request, object_id=None):
     else:
         form = ReferralGroupForm()
         client_form = ReferralClientForm()
-        #client_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1', referral__service = object).distinct()
+        client_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1', referral__service = object).distinct()
 
     return render_to_response('service/service_group_form.html',
                               {'object': object, 

@@ -85,7 +85,10 @@ GNU General Public License for more details.
             
             <br>
             {% if not referral.professional.all %}
-                {% trans "There is no professional in this referral." %} <a href="/client/{{ object.id}}/referral/{{ referral.id }}/form/">{% trans "Add one now?" %}</a>
+                {% trans "There is no professional in this referral." %}
+                {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator or user.get_profile.person.is_careprofessional %}
+                <a href="/client/{{ object.id}}/referral/{{ referral.id }}/form/">{% trans "Add one now?" %}</a>
+                {% endif %}
             {% else %}
                     {% trans "Professionals" %}: {{ referral.professional_list|safeseq|join:", "}}
                 {% endif %}

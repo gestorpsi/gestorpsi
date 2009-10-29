@@ -210,6 +210,7 @@ def mult_select(request, object_id = None):
     return HttpResponse(array, mimetype='application/json')
     
 def _referral_view(request, object_id = None, referral_id = None, template_name = 'client/client_referral_home.html'):
+    clss = request.GET.get("clss")
     user = request.user
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
@@ -217,18 +218,16 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     queues = Queue.objects.filter(referral=referral_id, client=object)
     referrals = ReferralExternal.objects.filter(referral=referral_id)
 
-    discharged_list = object.referrals_discharged()
-    if discharged_list.filter(pk = referral_id).count():
-        referral_discharged = True
-    else: 
-        referral_discharged = False
+    try:
+        discharged = ReferralDischarge.objects.get(referral=referral)
+    except:
+        pass
 
-    clss = request.GET.get("clss")
-    dt = referral.date.strftime("%d-%m-%Y  %H:%M ")
     try:
         indication = Indication.objects.get(referral = referral_id)
     except:
         indication = None
+
     attachs = ReferralAttach.objects.filter(referral = referral_id)
 
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))

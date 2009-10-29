@@ -20,7 +20,7 @@ from gestorpsi.client.views import index, list, form, save, client_print, \
         organization_clients, add, home, order, referral_save, referral_list, referral_home, \
         referral_form, referral_discharge_form, schedule_daily, schedule_add, \
         occurrence_view, referral_occurrences, referral_plus_form, referral_plus_save, referral_queue, \
-        referral_queue_save, referral_queue_remove, referral_ext_form, referral_ext_save, family, \
+        referral_queue_save, referral_queue_remove, referral_ext_form, referral_ext_save, family, family_form, \
         add_company, company_related, company_related_form
 from gestorpsi.online_messages.views import referral_messages, occurrence_chat, chat_message, update_chat_message, exit_chat, client_messages, new_message_topic, topic_messages, new_topic_message, chat_messages_history
 from gestorpsi.authentication.views import login_check
@@ -45,10 +45,6 @@ urlpatterns = patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/company_clients/(?P<company_client_id>\d+)/form/$', login_check(company_related_form)), # company related clients form
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save)),  #update client
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/company/$', login_check(save), {'is_company':True}),  #update company client
-#    (r'^(?P<object_id>\d+)/delete/$', login_check(delete)), # delete object
-#    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/delete/$', login_check(delete)),  #delete object
-    #(r'^print/$', login_required(print_list)), # print client list
-    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/print/$', login_required(print_record)),  # print record
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/print/$', login_required(client_print)),  # print record
     (r'^organization_clients/$', login_required(organization_clients)),  # clients for logged otganization
 
@@ -90,6 +86,8 @@ urlpatterns = patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/queue/save/$', login_check(referral_queue_save)), # queue form save
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/queue/(?P<queue_id>\d+)/remove/$', login_check(referral_queue_remove)), # queue form remove
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/family/$', login_check(family)), # client family
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/family/form/$', login_check(family_form)), # client family
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/family/(?P<relation_id>\d+)/form/$', login_check(family_form)), # client family
 
     # DEACTIVES
     (r'^deactive/$', login_check(index), {'deactive': True} ), #list objects

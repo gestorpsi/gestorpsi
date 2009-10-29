@@ -676,22 +676,57 @@ def referral_ext_save(request, object_id = '', referral_id=''):
     request.user.message_set.create(message=_('External Referral saved successfully'))
     return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))
 
-@permission_required_with_403('client.client_write')
+@permission_required_with_403('client.client_list')
 def family(request, object_id = None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+    return render_to_response('client/client_family.html', locals(), context_instance=RequestContext(request))
+
+@permission_required_with_403('client.client_write')
+def family_form(request, object_id = None, relation_id=None):
+    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+
+    if relation_id:
+        from gestorpsi.client.models import Family
+        relation = get_object_or_404(Family, \
+            pk=relation_id, \
+            client__person__organization=request.user.get_profile().org_active, \
+            client_related__person__organization=request.user.get_profile().org_active, \
+        )
 
     if request.method == 'POST':
-        form = FamilyForm(request.POST)
+        form = FamilyForm(request.POST, instance=relation) if relation_id else FamilyForm(request.POST)
         if form.is_valid():
-            form.save(request, object)
+            if not relation_id:
+                data = form.save(request, object)
+            else:
+                relation.responsible = True if request.POST.get('responsible') else False
+                relation.relation_level = None if not request.POST.get('relation_level') else request.POST.get('relation_level')
+                relation.active = True if request.POST.get('active') else False
+                relation.save()
             request.user.message_set.create(message=_('Family member added successfully'))
             return HttpResponseRedirect('/client/%s/family/' % object.id)
         else:
-            return render_to_response('client/client_family.html', locals(), context_instance=RequestContext(request))
+            return render_to_response('client/client_family_form.html', locals(), context_instance=RequestContext(request))
 
-    form = FamilyForm()
+    else:
+        if relation_id:
+            from django import forms
+            form = FamilyForm(instance=Family.objects.get(pk=relation.id))
+            form.fields['name'].widget = forms.TextInput(attrs={'readonly':'readonly', 'class':'extrabig'})
+            if not relation.client == object:
+                is_reverse = True
+                from gestorpsi.client.models import FAMILY_RELATION_REVERSE
+                form.fields['relation_level'].choices = FAMILY_RELATION_REVERSE
+                name = relation.client
+            else:
+                is_reverse = False
+                name = relation.client_related
 
-    return render_to_response('client/client_family.html', locals(), context_instance=RequestContext(request))
+            form.fields['name'].initial = name
+        else:
+            form = FamilyForm()
+
+    return render_to_response('client/client_family_form.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('client.client_list')
 def company_related(request, object_id = None):

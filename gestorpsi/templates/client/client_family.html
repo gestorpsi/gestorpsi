@@ -61,67 +61,28 @@ $(function() {
 </script>
 
 
-<h2 id="title_addressbook" style="display:none"></h2>
-
-<h2 class="title_clients title">{% trans "Client Family" %}</h2>
-<p class="description">&nbsp;</p>
-
-<h2 id="title_contacts" style="display:none"></h2>
-<h2 id="title_myoffice" style="display:none"></h2>
-
-<div class="main_area home">
-	<h3><span>{% trans "Family members related" %}</span></h3>
+<h2 class="title_clients">
+{% trans "Client Family" %}
+</h2>
+<p class="description">{% if not object.family_members %}{% trans "No results" %}{% else %}{% trans "Displaying" %} {{ object.family_members|length }} {% trans "register(s)" %}. <a href="/client/{{ object.id }}/family/form/">{% trans "Add a new one?" %}</a>{% endif %}</p>
+<div class="contact main_area">
     {% if not object.family_members %}
-    <h2 class="red">{% trans "This client have no related family member yet" %}</h2>
-    {% else %}
-    {% for i in object.family_members %}
-        <p><a href="/client/{{ i.0 }}/home/">{{ i.1 }}</a>{% if i.2 %} ({{ i.2 }}){% endif %}</p>
-    {% endfor %}
-    {% endif %}
-    <br />
-</div>
-
-
-<form action="" method="post" id="form_family" class="form_family">	
-<div class="main_area">
-    <fieldset>
-    
-    <legend>{% trans "Add an existing client as family member" %}</legend>
-        <label>{% trans "Type client name then in Search" %}<br />
-        <input name="client_search_key" type="text" class="big" /></label>
-        <label><input name="client_search_button" type="button" class="btn" value="{% trans "Search" %}" /></label>
-        
-        <label>{% trans "Choose the client from the list, or use the form below to add a new one" %}</label>
-        <div class="overflow">
-
-                <table id="client_family_results" class="zebra">
-                        <thead>  
-                        <tr><th></th><th></th><th></th></tr> 
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                </table>
+        <div id="msg_area" class="alert no_registers_available">
+            {% trans "This client have no family member yet." %}<br />{% if not deactive %}<br />{% trans "Click" %} <a href="/client/{{ object.id }}/family/form/">{% trans "here" %}</a> {% trans "if you want to add a new one." %}{% endif %}
         </div>
-    </fieldset>
-    
-    <fieldset>
-    <a name="form"></a>
-    <legend>{% trans "Add new client and set it client as a related family member" %}</legend>
-            <input type="hidden" name="client_id" value="">
-                    <label>{% trans "Name" %}<br />
-                    {{ form.name }}
-                    </label>
-                    <label>{% trans "Family Relation Level" %}<br />
-                    {{ form.relation_level }}
-                    </label>
-
-                    <div class="btn_left">
-                    <input name="" type="submit" class="btn" value="{% trans "Save" %}" />
-                    </div>
-    </fieldset>
-<br />	
-
+    {% else %}
+        <table id="search_results" class="zebra chat" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+        {% for i in object.family_members %}
+            <tr class="zebra_{% cycle '0' '1' %}">
+                <td class="title"><a href="/client/{{ object.id }}/family/{{ i.4 }}/form/">{{ i.1 }}</a><br>{% if i.5 %}{% trans "Active" %}{% else %}{% trans "Deactive" %}{% endif %}</td>
+                <td><span class="phone">{% if i.3 %}{% trans "Responsible" %}{% endif %}</span><br><span class="email"></span></td>
+            </tr>
+            
+        {% endfor %}
+        </tbody>
+        </table>
+    {% endif %}
 </div>
 
 <div id="sidebar" class="sidebar">
@@ -130,9 +91,6 @@ $(function() {
     {% endif %}
 </div>
 
-
-
-</form>
 {% include "tags/upload.html" %}
 
 {% endblock %}

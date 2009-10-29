@@ -48,6 +48,8 @@ GNU General Public License for more details.
 
     {% if object.is_company %}
         <li><a href="/client/{{ object.id }}/company_clients/form/" class="add_company_clients" title="{% trans "Add Related Client" %}">{% trans "Add Related Client" %}</a></li>
+    {% else %}
+        <li><a href="/client/{{ object.id }}/family/form/" class="client_family" title="{% trans "Add Family Member" %}">{% trans "Add Family Member" %}</a></li>
     {% endif %}
 
         <!-- <li><a class="client_user_form" display="client_user_form" title="{{ object.person.name }}">{% trans "Manage User" %}</a></li> -->

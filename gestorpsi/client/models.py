@@ -67,6 +67,8 @@ class Family(models.Model):
     client = models.ForeignKey('Client', related_name='family_client_selected', null=True, blank=True)
     client_related = models.ForeignKey('Client', related_name='family_client_related', null=True, blank=True)
     relation_level = models.IntegerField(choices = FAMILY_RELATION, max_length=2, null=True, blank=True)
+    responsible = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
 
     def __unicode__(self):
         return u"%s" % self.get_relation_level_display()
@@ -121,7 +123,8 @@ class Client(models.Model):
     
     def family_members(self):
         family_list = []
-        for i in Family.objects.filter(Q(client=self) | Q(client_related=self)).order_by('relation_level','client__person__name', 'client_related__person__name'):
+        for i in Family.objects.filter(Q(client=self) | Q(client_related=self)).order_by('-active', '-responsible', 'relation_level','client__person__name', 'client_related__person__name'):
+            responsable = False
             id = i.client.id if not i.client == self else i.client_related.id
             name = i.client if not i.client == self else i.client_related
             dict = {}
@@ -130,9 +133,10 @@ class Client(models.Model):
                     dict[x] = y.__unicode__()
                 relation_level = dict[i.relation_level]
             else:
+                if i.responsible: responsable = True
                 relation_level = i.get_relation_level_display()
 
-            family_list.append([id, name, relation_level])
+            family_list.append([id, name, relation_level, responsable, i.id, i.active]) # id = client selected id, i.id = family relation id 
         
         return family_list
 
@@ -143,7 +147,6 @@ class Client(models.Model):
         ''' 
         check if client is busy in schedule for selected range
         filter 1: start time not in occurrence range
-        filter 2: end time not in occurrence range
         filter 2: end time not in occurrence range
         filter 3: occurrence range are not between asked values
         note for exclude filters: 

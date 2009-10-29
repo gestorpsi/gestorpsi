@@ -77,6 +77,17 @@ GNU General Public License for more details.
 </div>
 
 <div id="bar"><h1>[GestorPsi]</h1>
+{% if user.is_authenticated %}
+    <ul>
+        <li>
+            <a href="/profile/" id="profile" class="main_menu" display="form" title="{{ profile.person.name }}">{% trans "My record" %}</a>
+        </li>|<li>
+            <a href="/support/ticket/form/" class="support ajaxable">{% trans "Support" %}</a>
+        </li>|<li>
+            <a href="/accounts/logout" class="logout">{% trans "Quit" %}</a>
+        </li>
+    </ul>
+{% endif %}
 </div>
 {% if user.is_authenticated %}
 	<div id="menu_log">
@@ -85,12 +96,6 @@ GNU General Public License for more details.
     <!-- <li><a href="#email">{% trans "email" %}</a></li>| -->
             <li id="logged">
             <small><b>{{ user.username }}</b> {% trans "at" %} <b>{{ user.profile.org_active.short_name }}</b></small>
-            </li>&nbsp;<li>
-                <a href="/profile/" id="profile" class="main_menu" display="form" title="{{ profile.person.name }}">{% trans "My record" %}</a>
-            </li>|<li>
-            <a href="/support/ticket/form/" class="support ajaxable">{% trans "Support" %}</a>
-            </li>|<li>
-            <a href="/accounts/logout" class="logout">{% trans "Quit" %}</a>
             </li>
 		</ul>
 	</div>

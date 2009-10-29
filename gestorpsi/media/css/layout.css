@@ -580,6 +580,15 @@ input[type=submit].mini {
         background: #fff6d5;
 }
 
+form input.submit {
+        padding: 5px 10px 5px 10px;
+        border: 1px solid #aaaaaa;
+        color: #808080;
+        clear: both;
+        margin: 15px 0 0 12px;
+        cursor: pointer;
+}
+
 
 
 .btn {
@@ -775,6 +784,10 @@ li a.list {
 
 .sidebar li .client_calendar {
         background: url(../img/16/office-calendar.png) no-repeat 0 3px;
+}
+
+.sidebar li .client_messages {
+	background: url(../img/16/internet-mail.png) no-repeat 0 3px;
 }
 
 .sidebar li .client_referral_discharge {
@@ -1531,6 +1544,10 @@ div.form_as_ul li {
 
 div.fast_content {
     display: none;
+}
+
+a.pointer {
+    cursor: pointer;
 }
 
 /**

@@ -21,7 +21,7 @@ from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
-from gestorpsi.referral.models import Referral, ReferralGroup
+from gestorpsi.referral.models import Referral, ReferralGroup, Queue, ReferralExternal, ReferralAttach
 from gestorpsi.referral.forms import ReferralGroupForm, ReferralClientForm
 from gestorpsi.util.decorators import permission_required_with_403
 
@@ -208,3 +208,34 @@ def mult_select(request, object_id = None):
     array = simplejson.dumps(array, encoding = 'iso8859-1')
 
     return HttpResponse(array, mimetype='application/json')
+    
+def _referral_view(request, object_id = None, referral_id = None, template_name = 'client/client_referral_home.html'):
+    user = request.user
+    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
+    organization = user.get_profile().org_active.id
+    queues = Queue.objects.filter(referral=referral_id, client=object)
+    referrals = ReferralExternal.objects.filter(referral=referral_id)
+
+    discharged_list = object.referrals_discharged()
+    if discharged_list.filter(pk = referral_id).count():
+        referral_discharged = True
+    else: 
+        referral_discharged = False
+
+    clss = request.GET.get("clss")
+    dt = referral.date.strftime("%d-%m-%Y  %H:%M ")
+    try:
+        indication = Indication.objects.get(referral = referral_id)
+    except:
+        indication = None
+    attachs = ReferralAttach.objects.filter(referral = referral_id)
+
+    return render_to_response(template_name, locals(), context_instance=RequestContext(request))
+    
+def _referral_occurrences(request, object_id = None, referral_id = None, type = 'upcoming', template_name='client/client_referral_occurrences.html'):
+    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
+    occurrences = referral.past_occurrences() if type == 'past' else  referral.upcoming_occurrences()
+    
+    return render_to_response(template_name, locals(), context_instance=RequestContext(request))

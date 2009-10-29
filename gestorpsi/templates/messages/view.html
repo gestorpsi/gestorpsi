@@ -1,0 +1,38 @@
+{% extends "messages/base.html" %} 
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %} 
+{% block content %}
+<h1>{% trans "View Message" %}</h1>
+<dl class="message-headers">
+    <dt>{% trans "Subject" %}</dt>
+    <dd><strong>{{ message.subject }}</strong></dd>
+    <dt>{% trans "Sender" %}</dt>
+    <dd>{{ message.sender }}</dd>
+    <dt>{% trans "Date" %} </dt>
+    <dd>{{ message.sent_at|date:_("DATETIME_FORMAT")}}</dd>
+    <dt>{% trans "Recipient" %}</dt>
+    <dd>{{ message.recipient }}</dd>
+</dl>
+{{ message.body|linebreaksbr }}<br /><br />
+
+{% ifequal message.recipient user %}
+<a href="{% url messages_reply message.id %}">{% trans "Reply" %}</a>
+{% endifequal %}
+<a href="{% url messages_delete message.id %}">{% trans "Delete" %}</a>
+{% endblock %}

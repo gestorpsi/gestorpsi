@@ -1,0 +1,44 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_client_referral %}active{% endblock %}
+
+{% block submenu %}
+    <ul>
+        <li><a class="first" href="{% url profile-client-referral-list %}">{% trans "all" %}</a></li>
+        {% if referral.id %}
+            <li><a class="first active" href="{% url profile-client-referral-home referral.id %}">{{ referral }}</a></li>
+        {% else %}
+            {% if messagetopic.referral.id %}
+                <li><a class="first active" href="{% url profile-client-referral-home messagetopic.referral.id %}">{{ messagetopic.referral }}</a></li>
+            {% endif %}
+        {% endif %}
+    </ul>
+{% endblock %}}
+
+
+{% block core %} 
+
+{% block main_messages %}
+{% endblock %}
+
+{% endblock %}
+{% block sidebar %}
+{% endblock %}

@@ -60,6 +60,8 @@ GNU General Public License for more details.
         {% endif %}
     {% endcomment %}
     <li><a class="print" href="/client/{{ object.id }}/print/" title="{{ object.person.name }}">{% trans "Print Record" %}</a></li>
+    {# <li><a class="client_messages" href="/client/{{ object.id }}/messages/" title="{{ object.person.name }}">{% trans "Messages" %}</a></li> #}
+
     </ul>
 
 {% if referral %}
@@ -73,6 +75,7 @@ GNU General Public License for more details.
         {# <li><a href="/client/{{ object.id }}/" class="client_form" title="{{ object.person.name }}">{% trans "Treatment Registers" %}</a></li> #}
         <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/upcoming/" class="client_calendar" title="{{ object.person.name }}">{% trans "Upcoming Occurrences" %}</a></li>
         <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/past/" class="client_calendar" title="{{ object.person.name }}">{% trans "Past Occurrences" %}</a></li>
+        <li><a class="client_messages" href="/client/{{ object.id }}/referral/{{ referral.id }}/messages/" title="{{ object.person.name }}">{% trans "Messages" %}</a></li>
     </ul>
     {% if not referral_discharged %}
     <h3>{% trans 'Referral Actions' %}</h3>

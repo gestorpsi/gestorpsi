@@ -34,14 +34,18 @@ environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Group, Permission, User
 
-appnames = ['admission', 'client', 'contact', 'place', 'schedule', 'employee', 'careprofessional', 'service', 'device', 'organization', 'users', 'referral', 'upload']
+print "Installing system groups..."
+
+appnames = ['admission', 'client', 'contact', 'place', 'schedule', 'employee', 'careprofessional', 'service', 'device', 'organization', 'users', 'referral', 'upload', 'messages', 'messages_topic']
 for appname in appnames:
+    print "app %s " % appname
     ct, created = ContentType.objects.get_or_create(model='', app_label=appname, defaults={'name': appname})
     Permission.objects.get_or_create(codename='%s_list' % appname, name='%s List' % appname.capitalize(), content_type=ct)
     Permission.objects.get_or_create(codename='%s_read' % appname, name='%s Read' % appname.capitalize(), content_type=ct)
     Permission.objects.get_or_create(codename='%s_write' % appname, name='%s Write' % appname.capitalize(), content_type=ct)
 
 # Administrator
+print "assigning permissions for group administrator"
 grp_administrator,created = Group.objects.get_or_create(name='administrator')
 grp_administrator.permissions.add(Permission.objects.get(codename='admission_write'))
 grp_administrator.permissions.add(Permission.objects.get(codename='admission_read'))
@@ -82,8 +86,13 @@ grp_administrator.permissions.add(Permission.objects.get(codename='service_list'
 grp_administrator.permissions.add(Permission.objects.get(codename='upload_write'))
 grp_administrator.permissions.add(Permission.objects.get(codename='upload_read'))
 grp_administrator.permissions.add(Permission.objects.get(codename='upload_list'))
+grp_administrator.permissions.add(Permission.objects.get(codename='messages_write'))
+grp_administrator.permissions.add(Permission.objects.get(codename='messages_topic_write'))
+grp_administrator.permissions.add(Permission.objects.get(codename='messages_read'))
+grp_administrator.permissions.add(Permission.objects.get(codename='messages_list'))
 
 # Professional
+print "assigning permissions for group careprofessional"
 grp_professional, created = Group.objects.get_or_create(name='professional')
 grp_professional.permissions.add(Permission.objects.get(codename='client_read'))
 grp_professional.permissions.add(Permission.objects.get(codename='client_list'))
@@ -104,18 +113,23 @@ grp_professional.permissions.add(Permission.objects.get(codename='referral_read'
 grp_professional.permissions.add(Permission.objects.get(codename='referral_list'))
 grp_professional.permissions.add(Permission.objects.get(codename='service_read'))
 grp_professional.permissions.add(Permission.objects.get(codename='service_list'))
-grp_administrator.permissions.add(Permission.objects.get(codename='upload_write'))
-grp_administrator.permissions.add(Permission.objects.get(codename='upload_read'))
-grp_administrator.permissions.add(Permission.objects.get(codename='upload_list'))
+grp_professional.permissions.add(Permission.objects.get(codename='upload_write'))
+grp_professional.permissions.add(Permission.objects.get(codename='upload_read'))
+grp_professional.permissions.add(Permission.objects.get(codename='upload_list'))
+grp_professional.permissions.add(Permission.objects.get(codename='messages_topic_write'))
+grp_professional.permissions.add(Permission.objects.get(codename='messages_write'))
+grp_professional.permissions.add(Permission.objects.get(codename='messages_read'))
+grp_professional.permissions.add(Permission.objects.get(codename='messages_list'))
 
 # Secretary
+print "assigning permissions for group secretary"
 grp_secretary, created = Group.objects.get_or_create(name='secretary')
-grp_administrator.permissions.add(Permission.objects.get(codename='admission_write'))
-grp_administrator.permissions.add(Permission.objects.get(codename='admission_read'))
-grp_administrator.permissions.add(Permission.objects.get(codename='admission_list'))
-grp_administrator.permissions.add(Permission.objects.get(codename='users_write'))
-grp_administrator.permissions.add(Permission.objects.get(codename='users_read'))
-grp_administrator.permissions.add(Permission.objects.get(codename='users_list'))
+grp_secretary.permissions.add(Permission.objects.get(codename='admission_write'))
+grp_secretary.permissions.add(Permission.objects.get(codename='admission_read'))
+grp_secretary.permissions.add(Permission.objects.get(codename='admission_list'))
+grp_secretary.permissions.add(Permission.objects.get(codename='users_write'))
+grp_secretary.permissions.add(Permission.objects.get(codename='users_read'))
+grp_secretary.permissions.add(Permission.objects.get(codename='users_list'))
 grp_secretary.permissions.add(Permission.objects.get(codename='client_write'))
 grp_secretary.permissions.add(Permission.objects.get(codename='client_read'))
 grp_secretary.permissions.add(Permission.objects.get(codename='client_list'))
@@ -130,12 +144,19 @@ grp_secretary.permissions.add(Permission.objects.get(codename='contact_list'))
 grp_secretary.permissions.add(Permission.objects.get(codename='employee_list'))
 grp_secretary.permissions.add(Permission.objects.get(codename='careprofessional_read'))
 grp_secretary.permissions.add(Permission.objects.get(codename='careprofessional_list'))
-grp_administrator.permissions.add(Permission.objects.get(codename='upload_write'))
-grp_administrator.permissions.add(Permission.objects.get(codename='upload_read'))
-grp_administrator.permissions.add(Permission.objects.get(codename='upload_list'))
+grp_secretary.permissions.add(Permission.objects.get(codename='upload_write'))
+grp_secretary.permissions.add(Permission.objects.get(codename='upload_read'))
+grp_secretary.permissions.add(Permission.objects.get(codename='upload_list'))
+grp_secretary.permissions.add(Permission.objects.get(codename='messages_topic_write'))
+grp_secretary.permissions.add(Permission.objects.get(codename='messages_write'))
+grp_secretary.permissions.add(Permission.objects.get(codename='messages_read'))
+grp_secretary.permissions.add(Permission.objects.get(codename='messages_list'))
 
 # Client
+print "assigning permissions for group client"
 grp_client, created = Group.objects.get_or_create(name='client')
-grp_client.permissions.add(Permission.objects.get(codename='client_read'))
+grp_client.permissions.add(Permission.objects.get(codename='upload_write'))
+grp_client.permissions.add(Permission.objects.get(codename='upload_read'))
+grp_client.permissions.add(Permission.objects.get(codename='upload_list'))
 
 print "Done!"

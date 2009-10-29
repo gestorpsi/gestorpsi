@@ -66,6 +66,11 @@ GNU General Public License for more details.
                     </select>
                 </label>
                 {% endcomment %}
+                <div style="clear:both"></div>
+                <label class="event_is_online">{% trans "Is online" %}</label>
+                <div class="event_is_online">
+                {{ recurrence_form.is_online }}
+                </div>
             </fieldset>
 
             {% if not referral %} {# schedule view #}

@@ -75,12 +75,14 @@ def add_event(
         if int(request.POST['count']) > 40: # limit occurrence repeat
             return render_to_response('403.html', {'object':_('Sorry. You can not book more than 40 occurrence at the same time')})
         recurrence_form = recurrence_form_class(request.POST)
+
         if request.POST['group']:
             referral = request.POST['group']
         else:
             referral = request.POST['referral']
 
         event = get_object_or_404(Referral, pk=referral, service__organization=request.user.get_profile().org_active)
+
         if recurrence_form.is_valid():
             event = recurrence_form.save(event)
             redirect_to = redirect_to or '/schedule/events/%s/' % event.id
@@ -385,6 +387,7 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
             'start_time': o.start_time.strftime('%H:%M:%S'),
             'end_time': o.end_time.strftime('%H:%M:%S'),
             'rowspan': rowspan,
+            'online': o.is_online,
         }
         
         sub_count = 0

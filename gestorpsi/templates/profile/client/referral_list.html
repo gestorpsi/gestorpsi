@@ -1,0 +1,64 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_client_referral %}active{% endblock %}
+
+{% block submenu %}
+    <ul>
+        <li><a class="first active" href="{% url profile-client-referral-list %}">{% trans "all" %}</a></li>
+    </ul>
+{% endblock %}
+
+{% block core %}
+
+{% if object.referral_set.all %}
+<div class="registers_available">
+        <h2 class="title_services">{% trans "Charged referrals of" %} {{ object }}</h2>
+        <p class="description">{% trans "Displaying" %} <a href="{% url profile-client-referral-list %}"><span id="object_length">{{ object.referral_set.all|length }}</span></a> {% trans "referral(s)" %}</p>
+        
+        <div class="main_area contact">
+                <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+                <thead> 
+                        <tr> 
+                        <th></th> 
+                        <th></th> 
+                        </tr> 
+                </thead>
+                <tbody>
+                    {% for r in object.referral_set.all %}
+                    <tr class="zebra_{% cycle '0' '1' %}">
+                        <td class="title"><a href="{% url profile-client-referral-home r.id %}" title="{{ r }}">{{ r }}</a><br></td>
+                        <td><span class="phone">{{ r.professional.all|join:", " }}</span><br><span class="email">{% trans "subscribed at" %} <b>{{ r.revision.date_created|date:"r"|slice:":-15"}}</b></span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+                {# {% include "tags/paginator.html" %} #}
+        </div>
+</div>
+
+{% endif %}
+
+
+<div id="sidebar" class="sidebar">
+        {# {% include "tags/client_sidebar.html" %} #}
+</div>
+
+{% endblock %}

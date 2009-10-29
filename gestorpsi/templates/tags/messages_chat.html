@@ -1,0 +1,61 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+<script type="text/javascript">
+
+
+    $('document').ready(function(){  
+        $('#chatform').submit(function () {
+            $(this).ajaxSubmit();
+            $("[name=messagebody]").val("");
+            return false;
+        });
+
+        window.setInterval("updateChat()", 1000);
+
+        $(window).unload(function () { window.clearInterval() });
+
+    });
+</script>
+
+
+<div class="registers_available">
+        <h2 class="title_clients">
+        {% trans "Chat " %} - {{messagetopic.event.start_time|date:"H:i"}} - {{messagetopic.event.end_time|date:"H:i"}}
+        </h2>
+        <p class="description">Online users: {{ messagetopic.online_users.all|join:", " }}. <a href="{% if user.get_profile.person.is_administrator or user.get_profile.person.is_secretary %}/client/{{client_id}}/{% else %}/profile/client/{% endif %}messages/chat/exit/{{messagetopic.id}}/">{% trans "Quit chat" %}</a></p>
+        <div class="contact main_area">
+                <table id="search_results" class="zebra chat" border="0" cellspacing="0" cellpadding="0">
+                <thead> 
+                        <tr> 
+                        <th></th> 
+                        </tr> 
+                </thead>
+                <tbody>
+                    <tr class="chatmessage hidden" mid="0">
+                        <td class="title">
+                        </td>
+                    </tr>
+                </tbody>
+                </table>
+        </div>
+</div>
+
+
+
+         
+

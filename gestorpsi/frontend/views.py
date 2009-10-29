@@ -15,16 +15,22 @@ GNU General Public License for more details.
 """
 
 import datetime
+from django.http import Http404
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from gestorpsi.client.models import Client
 
 def start(request):
-    user = request.user
-    profile = user.get_profile()
+    profile = request.user.get_profile()
     date = datetime.datetime.now()
-    return render_to_response('frontend/frontend_start.html', {
-                                 'profile': profile, 
-                                 'date': date,
-                                 },   
-                            context_instance=RequestContext(request)
-                            )
+    
+    """ users client home page """
+    if request.user.get_profile().person.is_client():
+        object = Client.objects.get(pk=request.user.get_profile().person.client.id)
+        return render_to_response('frontend/frontend_client_start.html', locals(), context_instance=RequestContext(request))
+    
+    """ users admistrator home page """
+    if request.user.get_profile().person.is_careprofessional() or request.user.get_profile().person.is_administrator():
+        return render_to_response('frontend/frontend_start.html', locals(), context_instance=RequestContext(request))
+    
+    raise Http404

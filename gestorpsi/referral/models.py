@@ -19,6 +19,7 @@ from dateutil import rrule
 from datetime import datetime
 from django.core.files import File
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import ugettext as _
 from django.core.files.storage import FileSystemStorage
 from swingtime.models import Event, EventType
@@ -171,7 +172,7 @@ class Referral(Event):
         try: self.event_type = EventType.objects.all()[0]
         except: self.event_type = EventType.objects.create(abbr='')
 
-    def add_occurrences(self, start_time, end_time, room, device, annotation, **rrule_params):
+    def add_occurrences(self, start_time, end_time, room, device, annotation, is_online, **rrule_params):
         rrule_params.setdefault('freq', rrule.DAILY)
 
         error_list = []
@@ -180,6 +181,7 @@ class Referral(Event):
             if not is_busy:
                 o = ScheduleOccurrence.objects.create(event=self, start_time=start_time, end_time=end_time, room_id=room, annotation=annotation)
                 o.device = device
+                o.is_online = is_online
                 o.save()
             else:
                 error_list.append(is_busy)
@@ -190,6 +192,7 @@ class Referral(Event):
                 if not is_busy:
                     o = ScheduleOccurrence.objects.create(event=self, start_time=ev, end_time=ev + delta, room_id=room, annotation=annotation)
                     o.device = device
+                    o.is_online = is_online
                     o.save()
                 else:
                     error_list.append(is_busy)
@@ -244,7 +247,14 @@ class Referral(Event):
         return self.occurrence_set.filter(start_time__lt=datetime.now()
             ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 4 # unmarked
             ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 5 # re-marked
+            ).exclude( Q(scheduleoccurrence__is_online=True) & Q(end_time__gt=datetime.now())
             ).reverse()
+
+    def online_and_active_occurrences(self):
+        '''
+        Return all occurrences that are active and that are online
+        '''
+        return self.occurrence_set.filter(start_time__lt=datetime.now()).filter(Q(scheduleoccurrence__is_online=True) & Q(end_time__gt=datetime.now())).reverse()
 
     def last_occurrence(self):
         past = self.past_occurrences()

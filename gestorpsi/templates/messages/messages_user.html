@@ -1,0 +1,44 @@
+{% extends "messages/base.html" %} 
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %} 
+{% block main_messages %}
+    <h1>{% trans "Inbox for user: " %} {{messages_user}}</h1>
+
+    <p>{% trans "Showing all messages that wasn't read by this user, in all subscribed referrals." %}</p>
+
+    <p>{% trans "User referrals: " %}</p>
+
+    {% for referral in referrals %}
+        <b>{%trans "Referral"%}: {{referral}}</b><br>
+
+        {% for topic in referral.topics.all %}
+            <b> Tópico: {{topic.subject }} 
+                {% if topic.event.is_online %}
+                    {{topic.event.start_time|date:"d/m/Y"}}, das {{topic.event.start_time|date:"H:i"}} às {{topic.event.end_time|date:"H:i"}}
+                {% endif %}
+            </b><br/>
+
+            {% for message in topic.messages.all %}
+                [{{message.sent_at|date:"d/m/Y - H:i"}}] <i>{{message.sender}}</i> - {{message.body}} <br/>
+            {% endfor %}
+        {% endfor %}
+
+    {% endfor %}
+
+{% endblock %}

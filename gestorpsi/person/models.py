@@ -178,6 +178,18 @@ class Person(models.Model):
     def is_company(self):
         return True if hasattr(self, 'company') else False
 
+    def is_administrator(self):
+        if not hasattr(self, 'profile'): 
+            return False
+        else:
+            return False if not 'administrator' in [i.name for i in self.profile.user.groups.all()] else True
+
+    def is_secretary(self):
+        if not hasattr(self, 'profile'): 
+            return False
+        else:
+            return False if not 'secretary' in [i.name for i in self.profile.user.groups.all()] else True
+
     def is_client(self):
         return True if hasattr(self, 'client') else False
 

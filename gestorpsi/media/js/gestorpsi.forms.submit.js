@@ -386,6 +386,40 @@ $(function() {
         }
     });
 
+     /**
+     *
+     * message topic form
+     *
+     * _description:
+     * validate and post new topic message form.
+     *
+     */
+    $('form.message_newtopic').validate({
+        rules: {
+            topic: "required"
+        },
+        messages: {
+            topic: 'Preenchimento Necessário'
+        }
+    });
+
+     /**
+     *
+     * message topic form
+     *
+     * _description:
+     * validate and post message form.
+     *
+     */
+    $('form.message_sendmessages').validate({
+        rules: {
+            message: "required"
+        },
+        messages: {
+            message: 'Preenchimento Necessário'
+        }
+    });
+
     /**
      *
      * fileupload

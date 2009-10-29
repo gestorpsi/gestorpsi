@@ -147,6 +147,7 @@ INSTALLED_APPS = (
     'gestorpsi.internet',
     'gestorpsi.upload',
 	'gestorpsi.support',
+    'gestorpsi.online_messages',
 	'swingtime',
 	'registration',
 	'south',

@@ -1,0 +1,52 @@
+{% extends "profile/client/messages_base.html" %} 
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+{% block core %}
+<script>
+var lastMessageId=0;
+
+function updateChat() {
+    $.post("/profile/client/messages/chat/update/{{messagetopic.id}}/"+lastMessageId+"/", function(data){
+       $(".chatmessage:last").after(data); 
+        lastMessageId = $(".chatmessage:last").attr("mid");
+        $('table.zebra tr:odd').addClass('zebra_0');
+        $('table.zebra tr:even').addClass('zebra_1');
+    });
+}
+</script>
+{% include "tags/messages_chat.html" %}
+
+<form method="POST" id="chatform" action="/profile/client/messages/chat/postmessage/{{messagetopic.id}}/" class="message_sendmessages">
+<div class="main_area">
+    <h3><span id="client_add_infotypes">{% trans "Send Message" %}</span></h3>
+        <fieldset>
+        <label>{% trans "Message Body" %}<br />
+        <textarea name="messagebody" class="giant"></textarea>
+        </label>
+        <br/>
+        <input type="submit" class="submit" value="{% trans "Send" %}" />
+        </fieldset>
+    <br />
+</div>
+</form>
+
+<div id="sidebar" class="sidebar">
+       {% include "profile/client/referral_sidebar.html" %}
+</div>
+{% endblock %}

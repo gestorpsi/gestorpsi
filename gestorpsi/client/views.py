@@ -43,6 +43,8 @@ from gestorpsi.person.views import person_save
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, ReferralAttach, REFERRAL_ATTACH_TYPE, Queue, ReferralExternal
 from gestorpsi.referral.forms import ReferralForm, ReferralDischargeForm, QueueForm, ReferralExtForm
+from gestorpsi.referral.views import _referral_view
+from gestorpsi.referral.views import _referral_occurrences
 from gestorpsi.reports.header import header_gen
 from gestorpsi.reports.footer import footer_gen
 from gestorpsi.util.decorators import permission_required_with_403
@@ -418,30 +420,10 @@ def referral_list(request, object_id = None, discharged = None):
 
     return render_to_response('client/client_referral_list.html', locals(), context_instance=RequestContext(request))
 
+
 @permission_required_with_403('referral.referral_read')
-def referral_home(request, object_id = None, referral_id = None):
-    user = request.user
-    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
-    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
-    organization = user.get_profile().org_active.id
-    queues = Queue.objects.filter(referral=referral_id, client=object)
-    referrals = ReferralExternal.objects.filter(referral=referral_id)
-
-    discharged_list = object.referrals_discharged()
-    if discharged_list.filter(pk = referral_id).count():
-        referral_discharged = True
-    else: 
-        referral_discharged = False
-
-    clss = request.GET.get("clss")
-    dt = referral.date.strftime("%d-%m-%Y  %H:%M ")
-    try:
-        indication = Indication.objects.get(referral = referral_id)
-    except:
-        indication = None
-    attachs = ReferralAttach.objects.filter(referral = referral_id)
-
-    return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))
+def referral_home(request, object_id = None, referral_id = None): 
+    return _referral_view(request, object_id, referral_id, 'client/client_referral_home.html')
 
 @permission_required_with_403('client.client_write')
 def save(request, object_id=None, is_company = False):
@@ -596,11 +578,7 @@ def occurrence_view(request, object_id = None, occurrence_id = None):
 
 @permission_required_with_403('schedule.schedule_list')
 def referral_occurrences(request, object_id = None, referral_id = None, type = 'upcoming'):
-    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
-    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
-    occurrences = referral.past_occurrences() if type == 'past' else  referral.upcoming_occurrences()
-    
-    return render_to_response('client/client_referral_occurrences.html', locals(), context_instance=RequestContext(request))
+    return _referral_occurrences(request, object_id, referral_id, type, 'client/client_referral_occurrences.html')
     
 @permission_required_with_403('referral.referral_read')
 def referral_queue(request, object_id = '',  referral_id = ''):

@@ -1,0 +1,62 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+{% load calculate_age %}
+
+{% comment %}
+This tag is used in client (home) view for administrator AND CLIENT users.  
+{% endcomment %}
+
+<!-- <a href="" id="help">&nbsp;</a> -->
+<!-- DataTypes form menu -->
+<h3><span>{% trans "registration information" %}</span></h3>
+<div class="photo">
+    <img class="img_people" src="{% if object.person.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
+    <br /><br />
+</div>    
+<h1>{{ object }} ( {{ object.person.nickname }} )</h1>
+<p><span class="big">{% if object.person.maritalStatus %}{{ object.person.maritalStatus }}{% endif %}</span></p>
+<p><span class="big">{% if object.person.birthDate %}{{ object.person.birthDate|age }} {% trans "years old" %} {% endif %}</span></p>
+{% if object.person.address.all %}
+    <p>
+    {% for i in object.person.address.all %}
+        {{ i.addressPrefix }} {{ i.addressLine1 }}, {{ i.addressNumber }} {{ i.addressLine2 }}  - {{ i.neighborhood }} {{ i.zipCode }} {{ i.city }} {{ i.city.state.shortName }}, {{ i.city.state.country }}
+        <br>
+    {% endfor %}
+    </p>
+{% endif %}
+{% if object.person.emails.all %}
+    <p>
+    {% for i in object.person.emails.all %}<a href="mailto:{{ i.email }}">{{ i }}</a> ({{ i.email_type }})<br>{% endfor %}
+    </p>
+{% endif %}
+{% if object.person.phones.all %}
+    <p>
+    {% for i in object.person.phones.all %}{% if i.area %}({{ i.area }}){% endif %}&nbsp;<span class="big">{{ i.phoneNumber }}</span> ({{ i.phoneType}})<br>{% endfor %}
+    </p>
+{% endif %}
+</p>
+<p>
+
+{% if not user.get_profile.person.is_administrator or user.get_profile.person.is_secretary %}
+    <a href="/profile/" title="{% trans "edit" %}" class="edit"><span>{% trans "edit" %}</span></a>
+{% else %}
+    <a href="/client/{{ object.id}}/" title="{% trans "edit" %}" class="edit"><span>{% trans "edit" %}</span></a>
+{% endif %}
+</p>
+
+<br />	

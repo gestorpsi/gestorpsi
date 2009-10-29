@@ -91,12 +91,15 @@ def save_careprofessional(request):
     return HttpResponseRedirect('/profile/careprofessional/')
 
 def change_pass(request):
-    object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
+    #if request.user.get_profile().person.is_careprofessional:
+        #object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
+    #if request.user.get_profile().person.is_careprofessional:
+        #object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
 
     clss = request.GET.get("clss")
 
     if request.POST.get('c_pass'):
-        if not object.person.profile.user.check_password(request.POST.get("c_pass")):
+        if not request.user.check_password(request.POST.get("c_pass")):
             request.user.message_set.create(message=_('The current password is wrong'))
             return HttpResponseRedirect('/profile/chpass/?clss=error')
         else:
@@ -104,10 +107,10 @@ def change_pass(request):
                 request.user.message_set.create(message=_('The confirmation of the new password is wrong'))
                 return HttpResponseRedirect('/profile/chpass/?clss=error')
             else:
-                object.person.profile.user.set_password(request.POST.get('n_pass'))
-                object.person.profile.temp = request.POST.get('n_pass')    # temporary field (LDAP)
-                object.person.profile.save(force_update=True)
-                object.person.profile.user.save(force_update=True)
+                request.user.set_password(request.POST.get('n_pass'))
+                request.user.get_profile().temp = request.POST.get('n_pass')    # temporary field (LDAP)
+                request.user.get_profile().save(force_update=True)
+                request.user.save(force_update=True)
                 request.user.message_set.create(message=_('Password updated successfully'))
                 return HttpResponseRedirect('/profile/chpass')
     else:

@@ -1,0 +1,73 @@
+{% extends "messages/base.html" %} 
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %} 
+{% block main_messages %}
+
+
+<div class="registers_available">
+        <h2 class="title_clients">
+        {% trans "Topic:" %} {{messagetopic.subject}}
+         {% if messagetopic.event.is_online %}
+             {{messagetopic.event.start_time|date:"d/m/Y"}}, {% trans "from" %} {{messagetopic.event.start_time|date:"H:i"}} {% trans "until" %} {{messagetopic.event.end_time|date:"H:i"}}
+         {% endif %}
+        </h2>
+        <p class="description"><a href="/client/{{ object.id }}/referral/{{ referral.id }}/messages/">{% trans "Display existing topics for this referral?" %}</a></p>
+        <div class="contact main_area">
+                <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+                <thead> 
+                        <tr> 
+                        <th></th> 
+                        </tr> 
+                </thead>
+                <tbody>
+                    {% for message in messagetopic.messages.all %}
+                    <tr class="zebra_{% cycle '0' '1' %}">
+                        <td class="title">
+                        {{message.sent_at|date:"d/m/Y - H:i"}} <i>{{message.sender}}</i><br />{{message.body}}
+                        </td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+        </div>
+
+</div>
+
+{% if not messagetopic.event.is_online %}
+        <form method="POST" action="/client/{{client_id}}/referral/{{referral.id}}/messages/topic/{{messagetopic.id}}/newmessage" class="message_sendmessages">
+        <div class="main_area">
+            <h3><span id="client_add_infotypes">{% trans "Send Message" %}</span></h3>
+                <fieldset>
+                <label>{% trans "Message Body" %}<br />
+                <textarea name="message" class="giant"></textarea>
+                </label>
+                <br/>
+                <input type="submit" class="submit" value="{% trans "Send" %}" />
+            </fieldset>
+            <br />
+        </div>
+        </form>
+{% endif %}
+
+<div id="sidebar" class="sidebar">
+        {% include "tags/client_sidebar.html" %}
+</div>
+
+{% endblock %}

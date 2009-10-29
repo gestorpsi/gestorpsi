@@ -1,0 +1,39 @@
+{% extends "messages/base.html" %} 
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %} 
+{% block content %} 
+<h1>{% trans "Sent Messages" %}</h1>
+<table class="messages">
+    <thead>
+        <tr><th>{% trans "Recipient" %}</th><th>{% trans "Subject" %}</th><th>{% trans "Sent" %}</th><th>{% trans "Action" %}</th></tr>
+    </thead>
+    <tbody>
+{% for message in message_list %} 
+    <tr>
+        <td>{{ message.recipient }}</td>
+        <td>
+        <a href="{{ message.get_absolute_url }}">{{ message.subject }}</a>
+        </td>
+        <td>{{ message.sent_at|date:_("DATETIME_FORMAT") }}</td>
+        <td><a href="{% url messages_delete message.id %}?next={% url messages_outbox %}">{% trans "delete" %}</a></td>
+    </tr>
+{% endfor %}
+    </tbody>
+</table>
+{% endblock %}

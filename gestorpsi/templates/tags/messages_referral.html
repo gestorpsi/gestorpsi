@@ -1,0 +1,62 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %} 
+
+<div class="registers_available">
+        <h2 class="title_clients">{% trans "Message topics in referral " %} {{referral}}</h2>
+        <p class="description">{% trans "Displaying" %} {{ referral.topics.all|length }} {% trans "topics(s)" %}.
+        {% if user.get_profile.person.is_secretary or user.get_profile.person.is_careprofessional or user.get_profile.person.is_administrator %}
+            <a href="/client/{{ object.id }}/referral/{{ referral.id }}/messages/newtopic">{% trans "Create new topic for this referral?" %}</a>
+        {% endif %}</p>
+        
+        <div class="contact main_area">
+                <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+                <thead> 
+                        <tr> 
+                        <th></th> 
+                        </tr> 
+                </thead>
+                <tbody>
+                    {% for topic in referral.topics.all %}
+                    <tr class="zebra_{% cycle '0' '1' %}">
+                        <td class="title">
+                        {% if user.get_profile.person.is_client %}
+                        <a href="/profile/client/referral/{{referral.id}}/messages/topic/{{topic.id}}">
+                        {% else %}
+                        <a href="/client/{{client_id}}/referral/{{referral.id}}/messages/topic/{{topic.id}}">
+                        {% endif %}
+                        <b> TÃ³pico: {{topic.subject }} </b>
+                        {% if topic.event.is_online %}
+                            {{topic.event.start_time|date:"d/m/Y"}}, das {{topic.event.start_time|date:"H:i"}} Ã s {{topic.event.end_time|date:"H:i"}}
+                        {% endif %}
+                        
+                        </a>
+                        <br />
+                        {% if not topic.messages.latest.sent_at %}
+                            {% trans "This topic have no messages yet" %}
+                        {% else %}
+                        {% trans "Last message at" %} <b>{{topic.messages.latest.sent_at|date:"d/m/Y"}} {{topic.messages.latest.sent_at|date:"H:i"}}{% trans "hs" %}</b>  {% trans "by" %} <b>{{ topic.messages.latest.sender.get_profile.person }} ({{ topic.messages.latest.sender}})</b>
+                        {% endif %}
+                        </td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+        </div>
+</div>
+

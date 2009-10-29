@@ -46,9 +46,18 @@ class ScheduleOccurrenceManager(models.Manager):
         return super(ScheduleOccurrenceManager, self).get_query_set().exclude(occurrenceconfirmation__presence=4).exclude(occurrenceconfirmation__presence=5)
 
 class ScheduleOccurrence(Occurrence):
+    """
+    This class represents a "Scheduled Event". It can optionally relate a room,
+    devices (none, one or many), it can has an annotation, and it has information
+    about the type of the event - online or "in place". Online events are those
+    scheduled and taked in an online manner - in general, it represents that one
+    or more careprofessionals are taking the event online, using a computer in a room
+    to take the online event.
+    """
     room = models.ForeignKey(Room, null=True, blank=True)
     device = models.ManyToManyField(DeviceDetails, null=True, blank=True)
     annotation = models.CharField(max_length=765, null=True, blank=True)
+    is_online = models.BooleanField(default=False)
 
     objects = ScheduleOccurrenceManager()
 
@@ -57,6 +66,15 @@ class ScheduleOccurrence(Occurrence):
     
     def was_confirmed(self):
         return True if len(OccurrenceConfirmation.objects.filter(occurrence=self)) else False
+
+    def online_users(self):
+
+        if self.messagetopic_set.count() == 0:
+            return 0
+
+        messagetopic = self.messagetopic_set.all()[0]
+
+        return messagetopic.online_users.count()
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

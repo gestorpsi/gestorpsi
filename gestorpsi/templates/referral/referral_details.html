@@ -1,0 +1,321 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+{% load calculate_age %}
+
+<input type="hidden" name="object_id" value="{{ object.id }}" />
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+	<h2 class="title_clients title">{{ object.person.name }}</h2>
+    <p class="description"><br /></p>
+
+<div class="main_area home">
+	<!-- <a href="" id="help">&nbsp;</a> -->
+	<!-- DataTypes form menu -->
+	<h3><span>{% trans "registration information" %}</span></h3>
+    <div class="photo">
+        <img class="img_people" src="{% if object.person.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
+        <br /><br />
+    </div>    
+    <h1>{{ object.person.name }}</h1>
+    <p><span class="big">{% if object.person.nickname %}{{ object.person.nickname }}{% endif %}</span></p>
+    <p><span class="big">{% if object.person.maritalStatus %}{{ object.person.maritalStatus }}{% endif %}</span></p>
+    <p><span class="big">{% if object.person.birthDate %}{{ object.person.birthDate|age }} {% trans "years" %} {% endif %}</span></p>
+    {% if object.person.address.all %}
+        <p>
+        {% for i in object.person.address.all %}
+            {{ i.addressPrefix }} {{ i.addressLine1 }}, {{ i.addressNumber }} {{ i.addressLine2 }}  - {{ i.neighborhood }} {{ i.zipCode }} {{ i.city }} {{ i.city.state.shortName }}, {{ i.city.state.country }}
+            <br>
+        {% endfor %}
+        </p>
+    {% endif %}
+    {% if object.person.emails.all %}
+        <p>
+        {% for i in object.person.emails.all %}<a href="mailto:{{ i.email }}">{{ i }}</a> ({{ i.email_type }})<br>{% endfor %}
+        </p>
+    {% endif %}
+    {% if object.person.phones.all %}
+        <p>
+        {% for i in object.person.phones.all %}{% if i.area %}({{ i.area }}){% endif %}&nbsp;<span class="big">{{ i.phoneNumber }}</span> ({{ i.phoneType}})<br>{% endfor %}
+        </p>
+    {% endif %}
+</p>
+    <p>
+    {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator or user.get_profile.person.is_careprofessional %}
+    <a href="/client/{{ object.id}}/" title="{% trans "edit" %}" class="edit">
+    {% else %}
+        {% if user.get_profile.person.is_client %}
+            <a href="/profile/" title="{% trans "edit" %}" class="edit">
+        {% endif %}
+    {% endif %}
+    <span>{% trans "edit" %}</span></a>
+    </p>
+
+<br />	
+
+</div>
+
+<div class="main_area home">
+	<!-- <a href="" id="help">&nbsp;</a> -->
+	<!-- DataTypes form menu -->
+	<h3><span>{% trans "Service Details" %}</span></h3>
+
+    <h2 class="red">{{ referral }}</h2>
+        <p><small>{{ referral.service.description }}</small></p>
+        
+        <p>{% trans "Area" %}: {{ referral.service.area }}
+            {% if referral.service.modalities.all %}
+            <br>{% trans "Modalities" %}:  {{ referral.service.modalities.all|safeseq|join:", " }}
+            {% endif %}
+            
+            <br>
+            {% if not referral.professional.all %}
+                {% trans "There is no professional in this referral." %} <a href="/client/{{ object.id}}/referral/{{ referral.id }}/form/">{% trans "Add one now?" %}</a>
+            {% else %}
+                    {% trans "Professionals" %}: {{ referral.professional_list|safeseq|join:", "}}
+                {% endif %}
+            <br>
+            {% trans "Client subscribed on this service since" %} {{ dt }} 
+        </p>
+
+        <p>
+            {% if referral.referral %}
+            <b />{% trans "Referral" %}</b><br />
+                {{ referral.referral }}
+            {% endif %}
+        </p>
+        <p>
+            {% if indication %}
+            <b />{% trans "Indication" %}</b><br />
+                {{ indication }}
+            {% endif %}
+        </p>
+        <p>
+            {% if referral.impact %}
+            <b />{% trans "Impact" %}</b><br />
+                {{ referral.impact }}
+            {% endif %}
+        </p>
+        <p>
+            {% if referral.priority%}
+            <b />{% trans "prority" %}</b><br />
+                {{ referral.priority }}
+            {% endif %}
+        </p>
+        <p>
+            {% if referral.referral_reason %}
+            <b />{% trans "Reason" %}</b><br />
+                {{ referral.referral_reason }}
+            {% endif %}
+        </p>
+        <p>
+            {% if referral.available_time%}
+            <b />{% trans "Available Time" %}</b><br />
+                {{ referral.available_time }}
+            {% endif %}
+        </p>
+        <p>
+
+            {% if referral.annotation %}
+            <b />{% trans "Annotation" %}</b><br />
+                {{ referral.annotation }}
+            {% endif %}
+        </p>
+
+<br />	
+</div>
+
+{% if queues %}
+<div class="main_area home">
+	<h3><span>{% trans "Queue" %}</span></h3>
+    
+            {% for a in queues %}
+                <label> {{ a.referral }} - {{ a.referral.priority }}
+                <table class="nozebra">
+                        <tr>
+                                <td><span>{{ a.comments }}</span>
+                                {% if not a.date_out %}  
+                                    {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
+                                    <a class="queue" href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/{{ a.id }}/remove/" title="{{ object.person.name }}">{% trans "Remove" %}</a> 
+                                    {% endif %}
+                                {% endif %} </td>
+                        </tr>
+                        <tr>
+                                <td nowrap="nowrap"><span% trans "Date In" %} {{ a.date_in|date:"d-m-Y" }} - {{ a.date_in|date:"P" }}</span></td>
+                        </tr>
+                        <tr>
+                                <td nowrap="nowrap"><span class="date"> {% trans "Date In" %} {{ a.date_in|date:"d-m-Y" }} - {{ a.date_in|date:"P" }}</span></td>
+                        </tr>
+                        <tr>
+                                <td nowrap="nowrap"><span class="date"> {% trans "Date Out" %} {{ a.date_out|date:"d-m-Y" }} - {{ a.date_out|date:"P" }}</span></td>
+                                <span></span>
+                        </tr>
+                </table>
+                </label>
+        {% endfor %}
+</div>
+{% endif %}
+
+{% if referrals %}
+<div class="main_area home">
+	<h3><span>{% trans "External Referral" %}</span></h3>
+            {% for a in referrals %}
+                <label> {{ a.referral }} - {{ a.referral.priority }}
+                <table class="nozebra">
+                        <tr>
+                                <td nowrap="nowrap"><span class="date"> {% trans "Date" %} {{ a.date|date:"d-m-Y" }} - {{ a.date_in|date:"P" }}</span></td>
+                        </tr>
+                        <tr>
+                                <td><span>{% trans "Comments" %}{{ a.comments }}</span> </td>
+                        </tr>
+                        <tr>
+                                <td><span>{% trans "Professional" %} {{ a.professional }}</span> </td>
+                        </tr>
+                        <tr>
+                                <td><span>{% trans "Organization" %} {{ a.organization }}</span> </td>
+                        </tr>
+                </table>
+                </label>
+        {% endfor %}
+</div>
+{% endif %}
+
+{% if attachs %}
+<div class="main_area home">
+	<h3><span>{% trans "Attach" %}</span></h3>
+    
+        {% for a in attachs %}
+                <table class="nozebra">
+                        <tr>
+                                <td nowrap="nowrap"><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
+                                <td><span  class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
+                                <td><span>{% for t in types %}
+                                            {% ifequal a.type t.0 %}</span>{{ t.1 }}:<br /> {{ a.description }} </td> {% endifequal %} {% endfor %}
+                                <td>{# <a href="" class="edit" title="editar"><span>Edit</span></a> #}</td>
+                                <td>{# <a href="" class="delete" title="delete" ><span>Delete</span></a> #}</td>
+                        </tr>
+                        <tr>
+                </table>
+        {% endfor %}
+</div>
+{% endif %}
+
+
+<div class="main_area home">
+	<!-- <a href="" id="help">&nbsp;</a> -->
+	<!-- DataTypes form menu -->
+	<h3><span>{% trans "Schedule Details" %}</span></h3>
+    
+    <p>
+    {% trans "This referral has" %} {{ referral.upcoming_occurrences|length }} {% trans "upcoming event(s) and" %} {{ referral.past_occurrences|length }} {% trans "past events" %}
+    <br>
+    {% if referral.next_occurrence %}
+        {% trans "Next occurrence at" %} 
+        {{ referral.next_occurrence.start_time|date:"l, d" }} {% trans "of" %} {{ referral.next_occurrence.start_time|date:"F" }} {% trans "of" %} {{ referral.next_occurrence.start_time|date:"Y" }} {{ referral.next_occurrence.start_time|date:"H:i" }} - {{ referral.next_occurrence.end_time|date:"H:i" }}
+    {% endif %}
+    <br>
+    {% if referral.last_occurrence %}
+        {% trans "Last occurrence" %} 
+        {{ referral.last_occurrence.start_time|date:"l, d" }} {% trans "of" %} {{ referral.last_occurrence.start_time|date:"F" }} {% trans "of" %} {{ referral.last_occurrence.start_time|date:"Y" }} {{ referral.last_occurrence.start_time|date:"H:i" }} - {{ referral.last_occurrence.end_time|date:"H:i" }}
+    {% endif %}
+    </p>
+
+
+    <h2 class="red">{% trans "Upcoming schedules for this service" %}</h2>
+    <p>
+    {% if not referral.upcoming_occurrences %}
+        {% trans "This customer has no upcoming schedules yet!" %}
+        {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
+            <a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}">{% trans "Book it now?" %}</a>
+        {% endif %}
+    {% else %}
+        {% for i in referral.online_and_active_occurrences|slice:":5" %}
+                <p>
+             {{ i.start_time|date:"r"|slice:"-9" }} hs - {{ i.scheduleoccurrence.room }}
+                - <i>({% trans "online and active event" %})</i> 
+                - <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}messages/chat/{{i.scheduleoccurrence.id}}">{% trans "Enter chat" %}</a>
+                - ({% firstof i.scheduleoccurrence.online_users "0" %} {% trans "online users" %})
+             </p>
+        {% endfor %}
+
+
+        {% for i in referral.upcoming_occurrences|slice:":5" %}
+                <p>
+             {{ i.start_time|date:"r"|slice:"-9" }} hs - {{ i.scheduleoccurrence.room }}
+             {% if i.scheduleoccurrence.is_online %} 
+                - <i>({% trans "online event" %})</i>
+                - <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}messages/chat/{{i.scheduleoccurrence.id}}">{% trans "Enter chat" %}</a>
+                - ({% firstof i.scheduleoccurrence.online_users "0" %} {% trans "online users" %})
+             {% endif %}
+
+             </p>
+        {% endfor %}
+    <p>
+    <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}referral/{{ referral.id }}/upcoming/">{% trans "See all" %}</a>
+    {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
+        <a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}" title="{% trans "Book new" %}">{% trans "Book new" %}</a>
+    {% endif %}
+    {% endif %}
+    </p>
+
+    <h2 class="red">{% trans "Past schedules for this service" %}</h2>
+    <p>
+    {% if not referral.past_occurrences %}
+            {% trans "This customer has no past schedules!" %}
+    {% else %}
+        {% for i in referral.past_occurrences|slice:":5" %}
+            <p>{{ i.start_time|date:"r"|slice:"-9" }} hs
+
+            {% if i.scheduleoccurrence.is_online %}
+            <i>(online)</i>
+            {% ifnotequal i.scheduleoccurrence.messagetopic_set.count 0 %}
+            - <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}referral/{{referral.id}}/messages/chat/{{i.scheduleoccurrence.id}}">{% trans "View chat history" %}</a>
+            {% else %}
+            - NÃ£o hÃ¡ sessÃ£o de chat armazenada
+            {% endifnotequal %}
+            - <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}messages/chat/{{i.scheduleoccurrence.id}}">{% trans "Enter chat" %}</a>
+            - ({% firstof i.scheduleoccurrence.online_users "0" %} {% trans "online users" %})
+            {% endif %}
+
+            <small>
+            <br>
+            {{ i.scheduleoccurrence.room }} 
+            {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
+                <a href="/client/{{ object.id }}/occurence/{{ i.id }}/">
+            {% endif %}
+            {% if i.scheduleoccurrence.was_confirmed %}
+                {{ i.scheduleoccurrence.occurrenceconfirmation }}
+            {% else %}
+                {% trans "This occurrence has not been confirmed yet" %}
+            {% endif %}
+            {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
+                </a>
+            {% endif %}
+            </small>
+            </p>
+        {% endfor %}
+        <p>
+        <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}referral/{{ referral.id }}/past/">{% trans "See all" %}</a>
+        </p>
+    {% endif %}
+    </p>
+
+<br />	
+</div>
+
+

@@ -90,6 +90,7 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
     room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=forms.Select(attrs={'class':'extramedium asm', }))
     device = forms.ModelMultipleChoiceField(required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'multiselectable', }))
     annotation = forms.CharField(required = False, widget=forms.Textarea())
+    is_online = forms.BooleanField(required = False)
     start_time_delta = forms.IntegerField(
         label='Start time',
         widget=forms.Select(choices=default_timeslot_offset_options)
@@ -109,12 +110,16 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
         else:
             params = self._build_rrule_params()
 
+        import logging
+        logging.debug("is online: " + str(self.cleaned_data['is_online']))
+
         event.errors = event.add_occurrences(
             self.cleaned_data['start_time'], 
             self.cleaned_data['end_time'],
             self.cleaned_data['room'].id,
             self.cleaned_data['device'],
             self.cleaned_data['annotation'],
+            self.cleaned_data['is_online'],
             **params
         )
 

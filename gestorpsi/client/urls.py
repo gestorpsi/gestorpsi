@@ -22,6 +22,7 @@ from gestorpsi.client.views import index, list, form, save, client_print, \
         occurrence_view, referral_occurrences, referral_plus_form, referral_plus_save, referral_queue, \
         referral_queue_save, referral_queue_remove, referral_ext_form, referral_ext_save, family, \
         add_company, company_related, company_related_form
+from gestorpsi.online_messages.views import referral_messages, occurrence_chat, chat_message, update_chat_message, exit_chat, client_messages, new_message_topic, topic_messages, new_topic_message, chat_messages_history
 from gestorpsi.authentication.views import login_check
 from gestorpsi.organization.views import list_prof_org
 
@@ -73,6 +74,18 @@ urlpatterns = patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/occurence/(?P<occurrence_id>\d+)/$', login_check(occurrence_view)), # occurence confirmation
     (r'^schedule/daily/$', login_check(schedule_daily)), # book client (schedule daily view)
     (r'^schedule/add/$', login_check(schedule_add)), # book client (schedule add form)
+
+    url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/messages/$', login_check(referral_messages)), # referral messages
+    url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/messages/newtopic$', login_check(new_message_topic), name='messages-newtopic'), # referral messages (new topic)
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/messages/topic/(?P<topic_id>\d+)$', login_check(topic_messages)), # referral topic messages
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/messages/topic/(?P<topic_id>\d+)/newmessage$', login_check(new_topic_message)), # referral topic messages
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/messages/chat/(?P<scheduleoccurrence_id>\d+)/$', login_check(occurrence_chat)), # event chat
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/messages/chat/(?P<scheduleoccurrence_id>\d+)$', login_check(chat_messages_history)), # referral topic messages
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/messages/chat/postmessage/(?P<messagetopic_id>\d+)/$', login_check(chat_message)), # event chat
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/messages/chat/update/(?P<messagetopic_id>\d+)/(?P<lastmessage_id>\d+)/$', login_check(update_chat_message)), # event chat
+    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/messages/chat/exit/(?P<messagetopic_id>\d+)/$', login_check(exit_chat)), # exit chat
+    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/messages/$', login_check(client_messages)), # all messages for this client - inbox
+
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/queue/$', login_check(referral_queue)), # queue form
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/queue/save/$', login_check(referral_queue_save)), # queue form save
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/queue/(?P<queue_id>\d+)/remove/$', login_check(referral_queue_remove)), # queue form remove

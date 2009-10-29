@@ -17,11 +17,14 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-
+{% if user.get_profile.person.is_client %}
+{% block menu_client_profile %}active{% endblock %}
+{% endif %}
 {% block submenu %}
     <ul>
-        <li><a class="first active" href="/profile/">{% trans "Personal Profile" %}</a></li>
+        <li><a class="first" href="/profile/">{% trans "Personal Profile" %}</a></li>
         {% if object.person.is_careprofessional %}<li><a href="/profile/careprofessional/">{% trans "Professional Profile" %}</a></li>{% endif %}
+        <li><a class="active" href="/profile/chpass/">{% trans "Change password" %}</a></li>
     </ul>
 {% endblock %}
 
@@ -29,8 +32,8 @@ GNU General Public License for more details.
 
 <h2 id="title_addressbook" style="display:none"></h2>
 
-<h2 class="title_myoffice title">{{ object.person.name }}</h2>
-<p class="description">{% trans "Personal profile" %}</p>
+<h2 class="title_myoffice title">{{ user.get_profile.person.name }}</h2>
+<p class="description">{% trans "Change password" %}</p>
 
 <form action="/profile/chpass/" method="post" class="record_chpass">
     <div class="main_area">

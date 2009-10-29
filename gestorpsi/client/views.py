@@ -41,7 +41,7 @@ from gestorpsi.person.models import Person, MaritalStatus, CompanyClient
 from gestorpsi.person.forms import CompanyForm, CompanyClientForm
 from gestorpsi.person.views import person_save
 from gestorpsi.phone.models import PhoneType
-from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, ReferralAttach, REFERRAL_ATTACH_TYPE, Queue, ReferralExternal
+from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, ReferralAttach, REFERRAL_ATTACH_TYPE, Queue, ReferralExternal, ReferralDischarge
 from gestorpsi.referral.forms import ReferralForm, ReferralDischargeForm, QueueForm, ReferralExtForm
 from gestorpsi.referral.views import _referral_view
 from gestorpsi.referral.views import _referral_occurrences
@@ -73,7 +73,7 @@ def index(request, deactive = False):
 def home(request, object_id=None):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
     referrals = Referral.objects.charged().filter(client=object)
-    referrals_discharged = Referral.objects.discharged().filter(client=object)
+    referrals_discharged = ReferralDischarge.objects.filter(client=object)
 
     c=0
     for x in (Referral.objects.filter(client=object)):
@@ -420,13 +420,13 @@ def referral_list(request, object_id = None, discharged = None):
 
     return render_to_response('client/client_referral_list.html', locals(), context_instance=RequestContext(request))
 
-
 @permission_required_with_403('referral.referral_read')
 def referral_home(request, object_id = None, referral_id = None): 
     return _referral_view(request, object_id, referral_id, 'client/client_referral_home.html')
 
 @permission_required_with_403('client.client_write')
 def save(request, object_id=None, is_company = False):
+    print "S A V E "
     """
        Save or Update a client record
     """
@@ -444,6 +444,9 @@ def save(request, object_id=None, is_company = False):
         object.idRecord = org.last_id_record + 1
         org.last_id_record = org.last_id_record + 1
         org.save()
+
+        # Admission date
+        object.admission_date = datetime.now()
 
     object.person = person_save(request, person)
     object.save()

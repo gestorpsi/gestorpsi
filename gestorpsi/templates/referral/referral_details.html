@@ -148,28 +148,37 @@ GNU General Public License for more details.
 	<h3><span>{% trans "Queue" %}</span></h3>
     
             {% for a in queues %}
-                <label> {{ a.referral }} - {{ a.referral.priority }}
-                <table class="nozebra">
-                        <tr>
-                                <td><span>{{ a.comments }}</span>
-                                {% if not a.date_out %}  
-                                    {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
-                                    <a class="queue" href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/{{ a.id }}/remove/" title="{{ object.person.name }}">{% trans "Remove" %}</a> 
-                                    {% endif %}
-                                {% endif %} </td>
-                        </tr>
-                        <tr>
-                                <td nowrap="nowrap"><span% trans "Date In" %} {{ a.date_in|date:"d-m-Y" }} - {{ a.date_in|date:"P" }}</span></td>
-                        </tr>
-                        <tr>
-                                <td nowrap="nowrap"><span class="date"> {% trans "Date In" %} {{ a.date_in|date:"d-m-Y" }} - {{ a.date_in|date:"P" }}</span></td>
-                        </tr>
-                        <tr>
-                                <td nowrap="nowrap"><span class="date"> {% trans "Date Out" %} {{ a.date_out|date:"d-m-Y" }} - {{ a.date_out|date:"P" }}</span></td>
-                                <span></span>
-                        </tr>
-                </table>
-                </label>
+                <h2 class="red">{{ a.referral }} </h2>
+                    <p><small>{{ referral.service.description }}</small></p>
+                    
+                    <p>
+                        <b />{% trans "Date in" %}</b>&nbsp;
+                            {{ a.date_in|date:"d-m-Y" }}
+                    </p>
+
+                    <p>
+                        <b />{% trans "Priority" %}</b>&nbsp;
+                        {{ a.get_priority_display }}
+                    </p>
+
+                    <p>
+                        {% if a.comments %}
+                        <b />{% trans "Description" %}</b>&nbsp;
+                            {{ a.comments }}
+                        {% endif %}
+                    </p>
+
+                    <p>
+                        {% if a.date_out %}
+                        <b />{% trans "Date out" %}</b>&nbsp;
+                            {{ a.date_out|date:"d-m-Y" }}
+                        {% endif %}
+                    </p>
+                    <p>
+                    {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
+                      <a class="queue" href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/{{ a.id }}/remove/" title="{{ object.person.name }}">{% trans "Remove" %}</a> 
+                    {% endif %}
+                    </p>
         {% endfor %}
 </div>
 {% endif %}

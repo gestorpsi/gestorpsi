@@ -65,12 +65,16 @@ GNU General Public License for more details.
 	<fieldset id="fieldset_professional_identification">
 		<legend>{% trans "Professional Identification" %}</legend>
 			<label>{% trans "Profession" %}<br />
-			<select name="professional_area" class="medium profession_type" id="0">
-                    <option symbol="" value="0">------</option>
-				{% for l in PROFESSIONAL_AREAS %}
-					<option symbol="{{ l.symbol }}" value="{{ l.id }}" {% ifequal object.professionalIdentification.profession.symbol l.symbol%} selected {% endifequal %}>{{ l }}</option>
-				{% endfor %}
-			</select>
+              {% if object.id %}
+                <input id="" type="text" name="profession" class="profession medium" readonly="1" value="{{ object.professionalIdentification.profession }}">
+              {% else %}
+                <select name="professional_area" class="medium profession_type" id="0">
+                 <option symbol="" value="0" disabled="disabled">------</option>
+				    {% for l in PROFESSIONAL_AREAS %}
+                        <option symbol="{{ l.symbol }}" value="{{ l.id }}" {% ifequal object.professionalIdentification.profession.symbol l.symbol%} selected {% endifequal %}>{{ l }}</option>
+				    {% endfor %}
+			    </select>
+            {% endif %}
 			</label>
 
             <label>{% trans "Symbol" %}<br />
@@ -78,7 +82,7 @@ GNU General Public License for more details.
             </label>
 
 			<label>{% trans "Professional Subscription" %}<br />
-				<input type="text" name="professional_registerNumber" maxlength="50" value="{{ object.professionalIdentification.registerNumber }}" />
+                <input type="text" name="professional_registerNumber" maxlength="50" value="{{ object.professionalIdentification.registerNumber }}" {% if object.id %} readonly="1" {% endif %}/>
 			</label>
 	</fieldset>
 

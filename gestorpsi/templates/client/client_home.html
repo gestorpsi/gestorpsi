@@ -75,14 +75,31 @@ GNU General Public License for more details.
 
 <div class="main_area home">
 	<h3><span>{% trans "Referral Discharged" %}</span></h3>
-
-
     {% if referrals_discharged %}
             {% for referral in referrals_discharged %}
                <p>
-                <a href="/client/{{ object.id }}/referral/{{ referral.id }}/" title="{{ referral }}">{{ referral }}</a><br />
-                {% if referral.professional.all.0 %}{{ referral.professional.all.0 }}&nbsp;-&nbsp;{% endif %}{% trans "subscribed at" %} <b>{{ referral.revision.date_created|date:"r"|slice:":-15"}}</b>
+                <a href="/client/{{ object.id }}/referral/{{ referral.referral.id }}/" title="{{ referral }}">{{ referral.referral.service }}</a><br />
+                {% if referral.professional.all.0 %}{{ referral.professional.all.0 }}&nbsp;-&nbsp;{% endif %}{% trans "subscribed at" %} <b>{{ referral.revision.date_created|date:"r"|slice:":-15"}}</b> <br>
                </p>
+               <p>
+                Date discharge:&nbsp;<b>{{ referral.date|date:"d-m-Y H:m" }}</b>
+               </p>
+                <p>
+                Reason:&nbsp;<b>{{ referral.get_reason_display }}</b>
+                </p>
+                <p>
+                Was discussed with client:&nbsp;<b>{{ referral.was_discussed_with_client }}</b>
+                </p>
+                <p>
+                Details:&nbsp;<b>{{ referral.details }}</b>
+                </p>
+                <p>
+                Status:&nbsp;<b>{{ referral.status }}</b>
+                </p>
+                <p>
+                Description:&nbsp;<b>{{ referral.description }}</b>
+                </p>
+
             {% endfor %}
     {% else %}    
             <p class="empty">

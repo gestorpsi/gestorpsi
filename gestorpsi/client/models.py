@@ -105,7 +105,7 @@ class Client(models.Model):
     objects = ClientManager()
 
     def __unicode__(self):
-        return (u"%s (%s)" % (self.person.name, _('Company'))) if self.person.is_company() else (u"%s" % (self.person.name))
+        return (u"%s" % (self.person.name, )) if self.person.is_company() else (u"%s" % (self.person.name))
     
     class Meta:
         ordering = ['person']

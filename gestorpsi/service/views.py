@@ -268,7 +268,7 @@ def queue(request, object_id=None):
     object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active)
     queue = Queue.objects.filter(referral__service = object_id, date_out = None).order_by('-date_in')
 
-    list_queue = Referral.objects.filter(queue__referral__service = object, queue__date_out = None).order_by('-queue__date_in')
+    list_queue = Referral.objects.filter(queue__referral__service = object, queue__date_out = None).order_by('queue__date_in')
 
     return render_to_response( "service/service_queue.html", {
         'queues': list_queue,

@@ -147,7 +147,7 @@ class Session(models.Model):
     #upload
     
     def __unicode__(self):
-        return u"%s" % self.title
+        return u"%s" % self.descriptive
     
     class Meta:
         ordering = ['-occurrence']

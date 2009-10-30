@@ -62,7 +62,7 @@ GNU General Public License for more details.
         <label><b>{% trans "Print subscribed services option" %}</b><br /></label>
         <div class="label">
         {% for i in object.referral_set.all %}
-            <input type="checkbox" name="referral" value="{{ i.id }}" checked />&nbsp;{{ i }}{% if i.professional.all %} - {{ i.professional.all|join:", " }}{% endif %}<br />
+            <input type="checkbox" name="referral" value="{{ i.id }}" checked />&nbsp;{{ i }}{% if i.professional.all %} - {{ i.professional.all|join:", " }}{% endif %} {% if i.referraldischarge_set.all %}<b>({% trans "Referral is discharged" %})</b>{% endif %}<br />
         {% endfor %}
         </div>
         <label><input type="checkbox" name="schedule" value="True" checked />&nbsp; <b>

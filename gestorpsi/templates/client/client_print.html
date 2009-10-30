@@ -89,7 +89,7 @@ table {
         <td style="text-align:right;font-size: 12px;">
                 <b>{% trans "Client Report" %}</b><br>
         {% trans "generated at" %} {% now "d/m/Y H:i" %} hs<br>
-        {% trans "by " %} {{ user.get_profile.person.name }} ({{ user }})<br>
+        {% trans "by " %} {{ user.get_profile.person.name }}<br>
         </td>
     </tr>
 </table>
@@ -108,14 +108,14 @@ table {
                 {% ifequal object.person.gender '1' %} {% trans "Female" %} {% endifequal %}   
                 {% ifequal object.person.gender '2' %} {% trans "Male" %} {% endifequal %}   
             {% else %}{% trans "Not Informed" %}{% endif %}<br>
-        {% trans "Birthdate" %}: {% if object.person.birthDate %}{{ object.person.birthDate|date:"d/m/Y" }}  ({{ object.person.birthDate|age }} {% trans "years old" %}) {% else %}{% trans "Not Informed" %}{% endif %} <br>
+        {% trans "Birthdate" %}: {% if object.person.birthDate %}{% if not object.person.birthDateSupposed %}{{ object.person.birthDate|date:"d/m/Y" }}{% endif %} - {{ object.person.birthDate|age }} {% trans "years old" %} {% if object.person.birthDateSupposed %}<b>{% trans "Birthdate is supposed" %}</b>{% endif %}{% else %}{% trans "Not Informed" %}{% endif %} <br>
         {% trans "Marital Status" %}: {% if object.person.maritalStatus %}{{ object.person.maritalStatus }}{% else %}{% trans "Not Informed" %}{% endif %}<br>
         {% trans "Birth Place" %}: 
             {% if object.person.birthPlace or object.person.birthForeignCity or object.person.birthForeignState or object.person.birthForeignCountry %}
                 {% if object.person.birthPlace %}
-                    {{ object.person.birthPlace|title }} - {{ object.person.birthPlace.state.shortName }} {{ object.person.birthPlace.state.country }}
+                    {{ object.person.birthPlace|title }} {{ object.person.birthPlace.state.shortName }} {{ object.person.birthPlace.state.country }}
                 {% else %}
-                    {{ object.person.birthForeignCity }} - {{ object.person.birthForeignState }} {{ object.person.birthForeignCountry }}
+                    {{ object.person.birthForeignCity }} {{ object.person.birthForeignState }} {{ object.person.birthForeignCountry }}
                 {% endif %}
             {% else %}{% trans "Not Informed" %}{% endif %}<br>
 </td>
@@ -229,8 +229,12 @@ table {
 <br/><br/>
 
 
-<strong>{% trans "Admission Details" %}</strong><hr />
+<h1>{% trans "Admission Details" %}</h1><hr />
 <table>
+    <tr>
+        <td class="first">{% trans "Admission Date" %}</td>
+        <td>{{ object.admission_date|date:"d/m/Y" }}</td>
+    </tr>
     <tr>
         <td class="first">{% trans "ID Record" %}</td>
         <td>{{ object.idRecord }}</td>
@@ -238,10 +242,6 @@ table {
     <tr class="zebra_1">
         <td class="first">{% trans "Legacy Record" %}</td>
         <td>{{ object.legacyRecord }}</td>
-    </tr>
-    <tr>
-        <td class="first">{% trans "Admission Date" %}</td>
-        <td>{{ object.admission_date|date:"d/m/Y" }}</td>
     </tr>
     <tr class="zebra_1">
         <td class="first">{% trans "Admission Knowledge" %}</td>
@@ -302,7 +302,7 @@ table {
 </h1>
 
 {% for i in referral %}
-    <strong>{{ i.service }}</strong><hr />
+    <strong>{{ i.service }}{% if i.service.academic_related %} ({% trans "Service is academic related" %}){% endif %}</strong><hr />
     <table>
         <tr class="zebra_1">
             <td class="first">{% trans "Date" %}</td>
@@ -313,45 +313,71 @@ table {
             <td>
                 {% if not i.professional.all %}&nbsp;{% else %}
                 {% for p in i.professional.all %}
-                {{ p.person.name }} {{ p.professionalIdentification.profession.symbol }} {{ p.professionalIdentification.registerNumber }}{% if not forloop.last %},{% endif %}
+                {{ p.person.name }}
+                {% if not p.is_student %}
+                {{ p.professionalIdentification.profession.symbol }} {{ p.professionalIdentification.registerNumber }}
+                {% else %}
+                    ({{ p.studentprofile.lecture_class.academic_name }})
+                {% endif %}{% if not forloop.last %},{% endif %}
                 {% endfor %}
                 {% endif %}
             </td>
         </tr>
         <tr class="zebra_1">
+            <td class="first">{% trans "Professionals Responsible" %}</td>
+            <td>
+                {% if not i.service.responsibles.all %}
+                    {% trans "This referral have no responsible professional" %}
+                {% else %}
+                    {% for p in i.service.responsibles.all %}
+                        {{ p.person.name }} {{ p.professionalIdentification.profession.symbol }} {{ p.professionalIdentification.registerNumber }}
+                    {% if not forloop.last %},{% endif %}
+                {% endfor %}
+                
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <td class="first">{% trans "Referral Source" %}</td>
             <td>{% if not i.referral %}&nbsp;{% else %}{{ i.referral }}{% endif %}</td>
         </tr>
-        <tr>
+        <tr class="zebra_1">
             <td class="first">{% trans "Group" %}</td>
             <td>
             {% if not i.referralgroup_set.all %}{% trans "No"%}{% else%}{{ i.referralgroup_set.all|join:", " }}{% endif %}</td>
         </tr>
-        <tr class="zebra_1">
-            <td class="first">{% trans "Status" %}</td>
-            <td>{{ i.get_status_display }}</td>
-        </tr>
         <tr>
+            <td class="first">{% trans "Status" %}</td>
+            <td>
+                {% ifequal i.get_status_display 'Active' %}
+                    {% trans "Service is charged" %}
+                {% else %}
+                    {% trans "Service is discharged" %}
+                {% endifequal %}
+            
+            </td>
+        </tr>
+        <tr class="zebra_1">
             <td class="first">{% trans "Reason" %}</td>
             <td>{% if not i.referral_reason %}{% trans "Not informed" %}{% else %}{{ i.referral_reason }}{% endif %}</td>
         </tr>
-        <tr class="zebra_1">
+        <tr>
             <td class="first">{% trans "Priority" %}</td>
             <td>{% if not i.priority %}{% trans "Not informed" %}{% else %}{{ i.priority }}{% endif %}</td>
         </tr>
-        <tr>
+        <tr class="zebra_1">
             <td class="first">{% trans "Impact" %}</td>
             <td>{% if not i.impact %}{% trans "Not informed" %}{% else %}{{ i.impact }}{% endif %}</td>
         </tr>
-        <tr class="zebra_1">
+        <tr>
             <td class="first">{% trans "Available Time" %}</td>
             <td>{{ i.available_time }}</td>
         </tr>
-        <tr>
+        <tr class="zebra_1">
             <td class="first">{% trans "Comments" %}</td>
             <td>{{ i.annotation }}</td>
         </tr>
-        <tr class="zebra_1">
+        <tr>
             <td class="first">{% trans "Queue Details" %}</td>
             <td>
                 {% for q in i.queue_set.all %}
@@ -362,7 +388,7 @@ table {
                 {% endfor %}
             </td>
         </tr>
-        <tr>
+        <tr class="zebra_1">
             <td class="first">{% trans "Discharge Detail" %}</td>
             <td>
             {% if i.referraldischarge_set.all %}
@@ -378,6 +404,16 @@ table {
             {% endif %}
             </td>
         </tr>
+        <tr>
+            <td class="first">{% trans "Referral total occurrences" %}</td>
+            <td>
+            {% if not i.occurrence_set.all %}
+                {% trans "This referral have no occurrences registered" %}
+            {% else %}
+                {{ i.occurrence_set.all|length }}
+            {% endif %}
+            </td>
+        </tr>
     </table>
     
     <br />
@@ -389,19 +425,15 @@ table {
         <table>
           <tr class="title" nowrap="nowrap">
             <td width="19%" nowrap="nowrap">{% trans "Date" %}</td>
+            <td nowrap="nowrap" width="50%">{% trans "Occurrence Confirmation" %}</td>
             <td nowrap="nowrap">{% trans "Place" %}</td>
             <td nowrap="nowrap">{% trans "Room" %}</td>
             <td nowrap="nowrap">{% trans "Devices" %}</td>
             <td nowrap="nowrap">{% trans "Notes" %}</td>
-            <td nowrap="nowrap" width="50%">{% trans "Occurrence Confirmation" %}</td>
         </tr>
         {% for o in i.occurrence_set.all %}
         <tr class="zebra_{% cycle 0,1 %}">
             <td width="19%" nowrap="nowrap"><small>{{ o.start_time|date:"d/m/Y H:i" }} - {{ o.end_time|date:"H:i" }}{% trans "hs" %}</small></td>
-            <td nowrap="nowrap"><small>{{ o.scheduleoccurrence.room.place }}</small></td>
-            <td nowrap="nowrap"><small>{{ o.scheduleoccurrence.room }}</small></td>
-            <td><small>{{ o.scheduleoccurrence.device.all|join:", " }}</small></td>
-            <td><small>{{ o.scheduleoccurrence.annotation }}</small></td>
             <td width="50%"><small>
             {% if not o.scheduleoccurrence.was_confirmed %}
                 {% trans "Not confirmed" %}
@@ -421,6 +453,10 @@ table {
                 
             {% endif %}
             </small></td>
+            <td nowrap="nowrap"><small>{{ o.scheduleoccurrence.room.place }}</small></td>
+            <td nowrap="nowrap"><small>{{ o.scheduleoccurrence.room }}</small></td>
+            <td><small>{{ o.scheduleoccurrence.device.all|join:", " }}</small></td>
+            <td><small>{{ o.scheduleoccurrence.annotation }}</small></td>
         </tr>
         {% endfor %}
         </table>
@@ -428,6 +464,22 @@ table {
     {% endif %}
     
     
+<br />
+        {% if i.service.academic_related and i.service.responsibles.all %}
+        <br /><br />
+        <table class="signature">
+            <tr>
+                {% for p in i.service.responsibles.all %}
+                <td>____________________________</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                {% for p in i.service.responsibles.all %}
+                <td>{{ p.person.name }} {{ p.professionalIdentification.profession.symbol }} {{ p.professionalIdentification.registerNumber }}</td>
+                {% endfor %}
+            </tr>
+        </table>
+        {% endif %}
 <br />
         {% if not i.professional.all %}&nbsp;{% else %}
         <br /><br />
@@ -443,8 +495,8 @@ table {
                 {% endfor %}
             </tr>
         </table>
-
         {% endif %}
+    
 <br /><br />
 {% endfor %} {# referrals #}
 

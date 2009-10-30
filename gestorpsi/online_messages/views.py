@@ -22,7 +22,7 @@ if "notification" in settings.INSTALLED_APPS:
 else:
     notification = None
 
-@permission_required_with_403('messages.messages_read')
+@permission_required_with_403('online_messages.online_messages_read')
 def client_messages(request, object_id, referral=None, template_name='messages/messages_user.html'):
     """
     Displays a list of received messages for the given client
@@ -46,7 +46,7 @@ def client_messages(request, object_id, referral=None, template_name='messages/m
     }, context_instance=RequestContext(request))
 client_messages = login_required(client_messages)
 
-@permission_required_with_403('messages.messages_read')
+@permission_required_with_403('online_messages.online_messages_read')
 def user_messages(request, referral=None, template_name='messages/messages_referral.html'):
     """
     Displays a list of received messages for the current user in the given
@@ -92,7 +92,7 @@ def _referral_messages(request, referral_id, object_id, template_name="messages/
     #topics = MessageTopic.objects.filter(referral=referral, referral__service__organization=request.user.get_profile().org_active).order_by('messages__sent_at').reverse().distinct()
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
 
-@permission_required_with_403('messages.messages_list')
+@permission_required_with_403('online_messages.online_messages_list')
 def referral_messages(request, referral_id, object_id):
     return _referral_messages(request, referral_id, object_id, "messages/messages_referral.html")
 
@@ -104,7 +104,7 @@ def _topic_messages(request, referral_id, topic_id, object_id, template_name="me
 
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
 
-@permission_required_with_403('messages.messages_list')
+@permission_required_with_403('online_messages.online_messages_list')
 def topic_messages(request, referral_id, topic_id, object_id, template_name="messages/messages_topic.html"):
     return _topic_messages(request, referral_id, topic_id, object_id, "messages/messages_topic.html")
 
@@ -114,7 +114,7 @@ def _chat_messages_history(request, object_id, scheduleoccurrence_id, referral_i
     from django.shortcuts import redirect
     return redirect(redirect_to or "/client/%s/referral/%s/messages/topic/%s" % (client_id, referral_id, messagetopic.id) )
 
-@permission_required_with_403('messages.messages_read')
+@permission_required_with_403('online_messages.online_messages_read')
 def chat_messages_history(request, object_id, scheduleoccurrence_id, referral_id):
     scheduleoccurrence = ScheduleOccurrence.objects.get(pk=scheduleoccurrence_id)
 
@@ -143,11 +143,11 @@ def _new_topic_message(request, referral_id, topic_id, object_id, redirect_to=No
     else:
         return HttpResponseRedirect(redirect_to or '/client/%s/referral/%s/messages/topic/%s' % (object.id, referral.id, topic_id))
 
-@permission_required_with_403('messages.messages_write')
+@permission_required_with_403('online_messages.online_messages_write')
 def new_topic_message(request, referral_id, topic_id, object_id):
     return _new_topic_message(request, referral_id, topic_id, object_id)
 
-@permission_required_with_403('messages_topic.messages_topic_write')
+@permission_required_with_403('online_messages_topic.online_messages_topic_write')
 def new_message_topic(request, referral_id, object_id, template_name="messages/messages_referral.html"):
     client_id = object_id
     referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active)
@@ -192,7 +192,7 @@ def _occurrence_chat(request, object_id, scheduleoccurrence_id, template_name="m
         'referral' : scheduleoccurrence.event.referral,
     }, context_instance=RequestContext(request))
 
-@permission_required_with_403('messages.messages_write')
+@permission_required_with_403('online_messages.online_messages_write')
 def occurrence_chat(request, object_id, scheduleoccurrence_id):
     return _occurrence_chat(request, object_id, scheduleoccurrence_id, 'messages/messages_chat.html')
 
@@ -212,7 +212,7 @@ def _chat_message(request, object_id, messagetopic_id):
     from django.http import HttpResponse
     return HttpResponse("ok")
 
-@permission_required_with_403('messages.messages_write')
+@permission_required_with_403('online_messages.online_messages_write')
 def chat_message(request, object_id, messagetopic_id):
     return _chat_message(request, object_id, messagetopic_id)
 
@@ -226,7 +226,7 @@ def _update_chat_message(request, object_id, messagetopic_id, lastmessage_id):
 
     return render_to_response("messages/chat_update.html", locals(), context_instance=RequestContext(request))
 
-@permission_required_with_403('messages.messages_read')
+@permission_required_with_403('online_messages.online_messages_read')
 def update_chat_message(request, object_id, messagetopic_id, lastmessage_id):
     return _update_chat_message(request, object_id, messagetopic_id, lastmessage_id)
 
@@ -241,11 +241,11 @@ def _exit_chat(request, object_id, messagetopic_id, redirect_to = None):
     from django.shortcuts import redirect
     return redirect(redirect_to or "/client/"+object_id+"/referral/"+str(messagetopic.referral.id))
 
-@permission_required_with_403('messages.messages_read')
+@permission_required_with_403('online_messages.online_messages_read')
 def exit_chat(request, object_id, messagetopic_id):
     return _exit_chat(request, object_id, messagetopic_id)
 
-@permission_required_with_403('messages.messages_read')
+@permission_required_with_403('online_messages.online_messages_read')
 def outbox(request, template_name='messages/outbox.html'):
     """
     Displays a list of sent messages by the current user.
@@ -258,7 +258,7 @@ def outbox(request, template_name='messages/outbox.html'):
     }, context_instance=RequestContext(request))
 outbox = login_required(outbox)
 
-@permission_required_with_403('messages.messages_read')
+@permission_required_with_403('online_messages.online_messages_read')
 def trash(request, template_name='messages/trash.html'):
     """
     Displays a list of deleted messages. 
@@ -273,7 +273,7 @@ def trash(request, template_name='messages/trash.html'):
     }, context_instance=RequestContext(request))
 trash = login_required(trash)
 
-@permission_required_with_403('messages.messages_write')
+@permission_required_with_403('online_messages.online_messages_write')
 def compose(request, recipient=None, form_class=ComposeForm,
         template_name='messages/compose.html', success_url=None, recipient_filter=None):
     """
@@ -314,7 +314,7 @@ def compose(request, recipient=None, form_class=ComposeForm,
     }, context_instance=RequestContext(request))
 compose = login_required(compose)
 
-@permission_required_with_403('messages.messages_write')
+@permission_required_with_403('online_messages.online_messages_write')
 def reply(request, message_id, form_class=ComposeForm,
         template_name='messages/compose.html', success_url=None, recipient_filter=None):
     """
@@ -347,7 +347,7 @@ def reply(request, message_id, form_class=ComposeForm,
     }, context_instance=RequestContext(request))
 reply = login_required(reply)
 
-@permission_required_with_403('messages.messages_write')
+@permission_required_with_403('online_messages.online_messages_write')
 def delete(request, message_id, success_url=None):
     """
     Marks a message as deleted by sender or recipient. The message is not
@@ -383,7 +383,7 @@ def delete(request, message_id, success_url=None):
     raise Http404
 delete = login_required(delete)
 
-@permission_required_with_403('messages.messages_write')
+@permission_required_with_403('online_messages.online_messages_write')
 def undelete(request, message_id, success_url=None):
     """
     Recovers a message from trash. This is achieved by removing the
@@ -411,7 +411,7 @@ def undelete(request, message_id, success_url=None):
     raise Http404
 undelete = login_required(undelete)
 
-@permission_required_with_403('messages.messages_read')
+@permission_required_with_403('online_messages.online_messages_read')
 def view(request, message_id, template_name='messages/view.html'):
     """
     Shows a single message.``message_id`` argument is required.

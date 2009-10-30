@@ -13,9 +13,12 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
+
+import re
 import reversion
 from django.db import models
 from django.contrib.contenttypes import generic
+from django.contrib.auth.models import Group
 from gestorpsi.phone.models import Phone
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Address
@@ -194,6 +197,27 @@ class Organization(models.Model):
 
     def __unicode__(self):
         return self.trade_name
+
+    def save(self, *args, **kwargs):
+        if self.id:
+            original_state = Organization.objects.get(pk=self.id)
+        super(Organization, self).save(*args, **kwargs)
+        
+        if original_state.active != self.active: # active state has been changed
+            if not self.active: # organization has been deactivated, lets set all users as read-only mode
+                for person in self.person_set.all():
+                    if hasattr(person, 'profile'): # is valid user (maybe) =)
+                        for group in person.profile.user.groups.all():
+                            new_group = Group.objects.get(name=('%s_ro' % group.name))
+                            person.profile.user.groups.add(new_group) # add user to new group (a readonly group)
+                            person.profile.user.groups.remove(Group.objects.get(name=group.name)) # remove user from past group
+            else: # organization has been activated, lets set all users as NOT read-only mode
+                for person in self.person_set.all():
+                    if hasattr(person, 'profile'): # is valid user (maybe) =)
+                        for group in person.profile.user.groups.all():
+                            new_group = Group.objects.get(name=re.sub('_ro','',group.name))
+                            person.profile.user.groups.add(new_group) # add user to new group (a readonly group)
+                            person.profile.user.groups.remove(Group.objects.get(name=group.name)) # remove user from past group 
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

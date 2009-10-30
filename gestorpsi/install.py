@@ -169,4 +169,41 @@ grp_client.permissions.add(Permission.objects.get(codename='upload_write'))
 grp_client.permissions.add(Permission.objects.get(codename='upload_read'))
 grp_client.permissions.add(Permission.objects.get(codename='upload_list'))
 
+
+""" READ ONLY MODE PERMISSION """
+""" will be usefull to deactivate an organization """
+
+# Administrator in Read Only Mode
+# just read grp_administrator permission excluding '_write' codename match
+print "assigning permissions for group administrator read-only (administrator_ro)"
+grp_administrator_ro,created = Group.objects.get_or_create(name='administrator_ro')
+for i in grp_administrator.permissions.all():
+    if not re.search('_write' , i.codename):
+        grp_administrator_ro.permissions.add(Permission.objects.get(codename=i.codename))
+
+# Professional Read Only
+# just read grp_professional permission excluding '_write' codename match
+print "assigning permissions for group careprofessional read-only (professional_ro)"
+grp_professional_ro, created = Group.objects.get_or_create(name='professional_ro')
+for i in grp_professional.permissions.all():
+    if not re.search('_write' , i.codename):
+        grp_professional_ro.permissions.add(Permission.objects.get(codename=i.codename))
+
+# Secretary Read Only
+# just read grp_secretary permission excluding '_write' codename match
+print "assigning permissions for group secretary read-only (secretary_ro)"
+grp_secretary_ro, created = Group.objects.get_or_create(name='secretary_ro')
+for i in grp_secretary.permissions.all():
+    if not re.search('_write' , i.codename):
+        grp_secretary_ro.permissions.add(Permission.objects.get(codename=i.codename))
+
+# Client Read Only
+# just read grp_client permission excluding '_write' codename match
+print "assigning permissions for group client read-only (client_ro)"
+grp_client_ro, created = Group.objects.get_or_create(name='client_ro')
+for i in grp_client.permissions.all():
+    if not re.search('_write' , i.codename):
+        grp_client_ro.permissions.add(Permission.objects.get(codename=i.codename))
+
+
 print "Done!"

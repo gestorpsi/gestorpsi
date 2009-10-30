@@ -70,6 +70,9 @@ GNU General Public License for more details.
 </head>
 
 <body>
+{% if user.is_authenticated and not user.profile.org_active.active %}
+<div class="read-only">{% trans "Organization running is READ ONLY MODE. Data can not be writed. For questions about please use the" %} <a href="/support/ticket/form/">{% trans "support form" %}</a></div>
+{% endif %}
 <a name="top"></a>
 <div id="over" style="display:none">
 </div>

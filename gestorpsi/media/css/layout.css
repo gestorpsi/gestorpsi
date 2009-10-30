@@ -1551,6 +1551,11 @@ div.form_as_ul li {
     margin: 3px !important;
 }
 
+div.read-only {
+        background:#FFCCCC;
+        padding: 10px;
+}
+
 /**
 *  utils
 */

@@ -21,6 +21,7 @@ from django.db.models import Q
 from django.utils.translation import ugettext as _
 from swingtime.models import Occurrence
 from gestorpsi.place.models import Room
+from gestorpsi.client.models import Client
 from gestorpsi.device.models import DeviceDetails
 from gestorpsi.util.uuid_field import UuidField
 
@@ -90,8 +91,15 @@ class OccurrenceConfirmation(models.Model):
     def __unicode__(self):
         return u'%s' % self.get_presence_display()
 
+class OccurrenceFamily(models.Model):
+    occurrence = models.OneToOneField(ScheduleOccurrence)
+    client = models.ManyToManyField(Client, null=False, blank=False)
+
+    def __unicode__(self):
+        return u'%s: %s' % (self.occurrence, ", ".join([ c.person.name for c in self.client.all()]))
+
 reversion.register(Occurrence)
 reversion.register(ScheduleOccurrence, follow=['occurrence_ptr'])
-
 reversion.register(OccurrenceConfirmation, follow=['occurrence'])
+reversion.register(OccurrenceFamily)
 

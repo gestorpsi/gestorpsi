@@ -25,9 +25,14 @@ GNU General Public License for more details.
 
     <h3>{% trans 'Clients' %}</h3>
     <ul>
-     {% for c in referral.client.all %}
-       <li>     <a class="customers" href="/client/{{c.id}}/">{{ c }} </a><br /> </li>
+     {% for c in occurrence.event.referral.client.all %}
+       <li><a class="customers" href="/client/{{c.id}}/">{{ c }}</a><br /></li>
      {% endfor %}
+    </ul>
+
+    <h3>{% trans 'Client Family' %}</h3>
+    <ul>
+       <li><a class="client_family" href="/schedule/events/{{ occurrence.id }}/family/form/">{% if not occurrence.occurrencefamily %}{% trans "Schedule member family on this occurrence" %}{% else %}{% trans "See family members from this occurrence" %}{% endif %}</a><br /></li>
     </ul>
 
 </div>

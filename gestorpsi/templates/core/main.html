@@ -158,7 +158,7 @@ GNU General Public License for more details.
         {% if messages %}
             <div id="msg_area" class="{% if clss %}{{ clss }}{% else %}alert{% endif%}">
                 {% for message in messages %}
-                    {{ message }}
+                    {{ message|safe }}
                 {% endfor %}
             </div>
         {% endif %}

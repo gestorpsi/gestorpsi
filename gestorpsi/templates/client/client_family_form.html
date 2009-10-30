@@ -1,0 +1,136 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_client %}active{% endblock %}
+
+{% block submenu %}
+    {% include "client/client_menu.html" %}
+{% endblock %}
+
+{% block core %}
+
+
+<script>
+$(function() {
+    $('input[name=client_search_button]').click(function() {
+        $.getJSON('/client/filter/' + $('input[name=client_search_key]').val() + '/', function(json) {
+            var tableTR = '';
+            
+            /**
+            * build html
+            */
+
+            jQuery.each(json,  function(){
+                if(this.id) {
+                    tableTR += '<tr>';
+                    tableTR += '<td>' + this.name + '</td>';
+                    tableTR += '<td> <a href="#form" class="add_as_member_family" id="' + this.id + '" name="' + this.name + '">Adicionar</a></td>';
+                    tableTR += '<td></td>';
+                    tableTR += '</tr>';
+                }
+            });
+            
+            $('table#client_family_results tbody').html(tableTR);
+            
+            // bind when click
+            $('table#client_family_results tbody a.add_as_member_family').click(function(){
+                $('form#form_family input[name=client_id]').val($(this).attr('id'));
+                $('form#form_family input[name=name]').val($(this).attr('name'));
+                
+            });
+        });  
+    });
+});
+</script>
+
+<h2 class="title_clients">
+{% trans "Client Family" %}
+</h2>
+<p class="description">{% trans "Adding new family member" %}</p>
+
+
+
+<form action="" method="post" id="form_family" class="form_family">	
+<div class="main_area">
+{% if not form.instance.id %}
+    <fieldset>
+    <legend>{% trans "Add an existing client as family member" %}</legend>
+        <label>{% trans "Type client name then in Search" %}<br />
+        <input name="client_search_key" type="text" class="big" /></label>
+        <label><input name="client_search_button" type="button" class="btn" value="{% trans "Search" %}" /></label>
+        
+        <label>{% trans "Choose the client from the list, or use the form below to add a new one" %}</label>
+        <div class="overflow">
+                <table id="client_family_results" class="zebra">
+                        <tbody>
+                        </tbody>
+                </table>
+        </div>
+    </fieldset>
+{% endif %}
+    <fieldset>
+    <a name="form"></a>
+    <legend>{% trans "Add new client and set it client as a related family member" %}</legend>
+            <input type="hidden" name="client_id" value="">
+                    <label>{% trans "Name" %}<br />
+                    {{ form.name }}
+                    </label>
+                    <label>{% trans "Family Relation Level" %}<br />
+                    {{ form.relation_level }}
+                    </label>
+                    
+                    <label>{% trans "Is Responsible" %}<br />
+                        {% if not is_reverse %}
+                            {{ form.responsible }}
+                        {% else %}
+                            {% if form.instance and not form.instance.responsible %}
+                                {{ form.responsible }}
+                            {% else %}
+                                {% trans "Note: You can not set it as responsible because client already have a responsible" %} ({{ form.instance.client_related}}). {% trans "Add another relation instead" %}
+                            {% endif %}
+                        {% endif %}
+                    </label>
+                    
+                    {% if form.instance.id %}
+                    <label>{% trans "Is Active?" %}<br />
+                    {{ form.active }}
+                    </label>
+                    {% endif %}
+
+                    <div class="btn_left">
+                    <input name="" type="submit" class="btn" value="{% trans "Save" %}" />
+                    </div>
+    </fieldset>
+<br />	
+
+</div>
+
+<div id="sidebar" class="sidebar">
+    {% if object.id %}
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
+</div>
+
+
+
+</form>
+{% include "tags/upload.html" %}
+
+{% endblock %}

@@ -274,6 +274,9 @@ class Referral(Event):
             ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 4 # unmarked
             ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 5) # re-marked
 
+    def occurrences(self):
+        return ScheduleOccurrence.objects.filter(event__referral=self)
+
     def on_queue(self):
         return True if self.queue_set.filter(date_out__isnull=True) else False
 

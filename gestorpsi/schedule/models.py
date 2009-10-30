@@ -80,6 +80,11 @@ class ScheduleOccurrence(Occurrence):
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
+    def __unicode__(self):
+        return u"%s - %s" % (datetime.strftime(self.start_time, '%d/%m/%Y %H:%M'), datetime.strftime(self.end_time, '%H:%M'))
+
+
+
 class OccurrenceConfirmation(models.Model):
     occurrence = models.OneToOneField(ScheduleOccurrence)
     date_started = models.DateTimeField(_('Occurrence Date Started'), blank=True, null=True)

@@ -1,0 +1,172 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_client %}active{% endblock %}
+
+{% block submenu %}
+    {% include "client/client_menu.html" %}
+{% endblock %}
+
+{% block core %}
+<input type="hidden" name="object_id" value="{{ object.id }}" />
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+{% if object.id %}
+	<h2 class="title_clients title">{{ object.person.name }}</h2>
+	<p class="description">{% if total_service %}{% trans "Client subscribed in" %} {{ total_service }} {% trans "services" %}{% else %}{% trans "This client have no subscribed services" %}. <a href="/client/{{ object.id }}/referral/form/">{% trans "Subscribe it now?" %}</a>{% endif %}<br />	
+{% else %}
+	<h2 class="title_clients title">{% trans "Adding New Client" %}</h2>
+	<p class="description">{% trans "Inform the client details then click on Save button" %}</p>
+{% endif %}
+
+</p>
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
+
+<div class="main_area home">
+<h3><span id="client_add_infotypes">{% trans "Transportation Detail" %}</span></h3>
+<p>
+    {% if transportations %}
+        {% for t in transportations %}
+            <b>{{ t.get_transportation_display }}</b> ({{ t.travel_time }} {% trans "of travel time" %})<br />
+        {% endfor %}
+    {% else %}
+        Nenhum meio de transporte cadastrado.
+    {% endif %}
+</p>
+</div>
+
+<div class="main_area home">
+<h3><span id="client_add_infotypes">{% trans "Income" %}</span></h3>
+<p>
+    {% if object.income %}
+        <b>{% trans "Total individual earnings" %}:</b> {{ object.income.get_individual_earning_display }}<br />
+        <b>{% trans "Total household income" %}:</b> {{ object.income.get_household_income_display }}<br />
+        {% if object.income.incomesource_set.all %}<b>{% trans "Income Sources" %}:</b><br/>{% endif %}
+        {% for income_source in object.income.incomesource_set.all %}
+            &nbsp;&nbsp;&nbsp;&nbsp;{{ income_source.get_income_source_display }}<br />
+        {% endfor %}
+    {% else %}
+        Nenhuma renda cadastrada
+    {% endif %}
+</p>
+</div>
+
+<div class="main_area home">
+<h3><span id="client_add_infotypes">{% trans "Housing" %}</span></h3>
+<p>
+    <b>People Household</b><br />
+    {% if people_household %}
+        &nbsp;&nbsp;&nbsp;&nbsp;Number of people: {{ people_household.number_of_people }}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;Family's Head Education Level: {{ people_household.get_head_family_edulevel_display }}<br /><br />
+    {% else %}
+        &nbsp;&nbsp;&nbsp;&nbsp;people_household não cadastrado<br /><br />
+    {% endif %}
+
+    <b>Dwelling Features</b><br />
+    {% if dwelling %}
+        &nbsp;&nbsp;&nbsp;&nbsp;Location: {{ dwelling.get_location_display }}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;Situation: {{ dwelling.get_situation_display }}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;Dwelling Type: {{ dwelling.get_dwelling_type_display }}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;Rooms: {{ dwelling.rooms }}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;Construction Type: {{ dwelling.get_construction_type_display }}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;Principal floor covering: {{ dwelling.get_covering_floor_display }}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;Main material for roof: {{ dwelling.get_roof_material_display }}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;Coating on the walls? {{ dwelling.coating_walls }}<br /><br />
+    {% else %}
+        &nbsp;&nbsp;&nbsp;&nbsp;dwelling não cadastrado<br /><br />
+    {% endif %}
+    
+    <b>Paving</b><br />
+    {% if paving %}
+        &nbsp;&nbsp;&nbsp;&nbsp;Paved street? {{ paving.paved_street }}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;Paviment Type: {{ paving.get_paviment_type_display }}<br /><br />
+    {% else %}
+        &nbsp;&nbsp;&nbsp;&nbsp;paving não cadastrado<br /><br />
+    {% endif %}
+
+    <b>Sanitation:</b><br />
+    {% if sanitation %}
+        &nbsp;&nbsp;&nbsp;&nbsp;Water Supply: {{ sanitation.get_water_supply_display }}<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;Water Treatment: {{ sanitation.get_water_treatment_display }}<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;Sewer: {{ sanitation.get_sewer_display }}<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;Waste Disposition: {{ sanitation.get_waste_disposition_display }}<br/><br/>
+    {% else %}
+        &nbsp;&nbsp;&nbsp;&nbsp;paving não cadastrado<br /><br />
+    {% endif %}
+
+    <b>Eletricity:</b> {{ eletricity.get_eletricity_display }}<br />
+    
+
+
+</p>
+</div>
+
+<div class="main_area home">
+<h3><span id="client_add_infotypes">{% trans "Possession" %}</span></h3>
+<p>
+    {% if possessions %}
+        {% for possession in possessions %}
+            {{ possession.get_item_display }} ({{ possession.quantity }})<br/>
+        {% endfor %}
+    {% else %}
+        Nenhuma posse de item.
+    {% endif %}
+</p>
+</div>
+
+<!--
+<form action="/client/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_client" class="form_people collapsable form_client">	
+<div class="main_area">
+
+<h3><span id="client_add_infotypes">{% trans "Socio-Economic Form" %}</span></h3>
+
+{% for t in transp_set %}
+    {{ t.as_p }}
+{% endfor %}
+
+<hr />
+{{ income.as_p }}
+{{ income_source.as_p }}
+<hr />
+{{ possession.as_p }}
+<hr />
+{{ eletricity.as_p }}
+<hr />
+{{sanitation.as_p }}
+<hr />
+{{paving.as_p }}
+<hr />
+{{dwelling.as_p }}
+<hr />
+{{ peoplehousehold.as_p }}
+<hr />
+<br />	
+</div>
+-->
+
+<div id="sidebar" class="sidebar">
+    {% if object.id %}
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
+</div>
+
+{% endblock %}

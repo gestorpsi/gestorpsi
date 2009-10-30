@@ -1,0 +1,60 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_client %}active{% endblock %}
+
+{% block submenu %}
+    {% include "client/client_menu.html" %}
+{% endblock %}
+
+{% block core %}
+<input type="hidden" name="object_id" value="{{ object.id }}" />
+
+<h2 class="title_clients title">{{ object.person.name }}</h2>
+<p class="description"><br /></p>
+
+<form action="/client/{{ object.id }}/demographic/education/save/" method="post" id="form_client" class="form_people collapsable form_client">
+<div class="main_area home">
+<h3><span id="client_add_infotypes">{% trans "Education Level" %}</span></h3>
+<p>
+<fieldset>
+    <legend>{% trans "Education Detail" %}</legend>
+        <div class="form_as_ul">
+            {{ education_form.as_ul }}
+        </div>        
+</fieldset>
+
+
+</p>
+</div>
+
+<div id="sidebar" class="sidebar">
+    {% if perms.client.client_write %}
+        <div class="bg_blue">
+            {% include "tags/save.html" %}
+        </div>    
+    {% endif %}
+    {% if object.id %}
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
+</div>
+</form>
+
+{% endblock %}

@@ -21,8 +21,11 @@ GNU General Public License for more details.
     <h3>{% trans 'Client Details' %}</h3>
     <ul>
         <li><a href="/client/{{ object.id }}/home/" class="client_home" title="{% trans "Client Home" %}">{% trans "Client Home" %}</a></li>
+
     {% ifequal object.clientStatus "1" %} 
-        <li><a href="/client/{{ object.id }}/" class="client_form" title="{% trans "Demographic Data" %}">{% trans "Demographic Data" %}</a></li>
+        <li><a href="/client/{{ object.id }}/" class="client_form" title="{% trans "Record Data" %}">{% trans "Record Data" %}</a></li>
+        <li><a href="/client/{{ object.id }}/demographic/" class="client_form" title="{% trans "Demographic Data" %}">{% trans "Demographic Data" %}</a></li>
+        {# <li><a href="/client/{{ object.id }}/socioeconomic/" class="client_form" title="{% trans "Socio-economic" %}">{% trans "Socio-economic" %}</a></li> #}
         {% if not object.is_company %}
             <li><a href="/client/{{ object.id }}/family/" class="client_family" title="{% trans "Client Family" %}">{% trans "Client Family" %}</a></li>
         {% else %}
@@ -34,6 +37,31 @@ GNU General Public License for more details.
             {% endif %}
     {% endifequal %} 
     </ul>
+
+    {% if demographic_menu %}
+    <h3>{% trans 'Demographic Data' %}</h3>
+    <ul>
+        <li><a href="/client/{{ object.id }}/demographic/education/" class="client_form" title="{% trans "Education Level" %}">{% trans "Education Level" %}</a></li>
+        <li><a href="/client/{{ object.id }}/demographic/occupation/" class="client_form" title="{% trans "Occupation" %}">{% trans "Occupation" %}</a></li>
+    </ul>
+    {% endif %}
+
+
+    {% comment %}
+    <!-- don't remove this commented block... i'll use it for socio-economic stufss -->
+    {% if socioeconomic_menu %}
+    <h3>{% trans 'Socio-economic Data' %}</h3>
+    <ul>
+        <li><a href="/client/{{ object.id }}/socioeconomic/transportation/" class="client_form" title="{% trans "Transportation" %}">{% trans "Transportation" %}</a></li>
+        <li><a href="/client/{{ object.id }}/socioeconomic/" class="client_form" title="{% trans "Income" %}">{% trans "Income" %}</a></li>
+        <li><a href="/client/{{ object.id }}/socioeconomic/" class="client_form" title="{% trans "Housing" %}">{% trans "Housing" %}</a></li>
+        <li><a href="/client/{{ object.id }}/socioeconomic/" class="client_form" title="{% trans "Possession" %}">{% trans "Possession" %}</a></li>
+    </ul>
+    {% endif %}
+    {% endcomment %}
+
+
+
     <h3>{% trans 'Client Actions' %}</h3>
     <ul>
     {% ifequal object.clientStatus "1" %} 
@@ -65,6 +93,7 @@ GNU General Public License for more details.
     {# <li><a class="client_messages" href="/client/{{ object.id }}/messages/" title="{{ object.person.name }}">{% trans "Messages" %}</a></li> #}
 
     </ul>
+
 
 {% if referral %}
     <h3>{% trans 'Referral Details' %}</h3>

@@ -1,0 +1,67 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_client %}active{% endblock %}
+
+{% block submenu %}
+    {% include "client/client_menu.html" %}
+{% endblock %}
+
+{% block core %}
+<input type="hidden" name="object_id" value="{{ object.id }}" />
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+<h2 class="title_clients title">{{ object.person.name }}</h2>
+
+</p>
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
+
+<form action="/client/{{ object.id }}/{{ referral.id }}/diagnosis/{% if diagnosis_form.instance.id %}{{ diagnosis_form.instance.id }}/{% endif %}save/" method="post" id="form_client" class="form_people collapsable form_client">
+
+<div class="main_area home">
+<h3><span id="client_add_infotypes">{% trans "Diagnosis" %}</span></h3>
+<p>
+
+<fieldset>
+    <legend>{% trans "Diagnosis" %}</legend>
+    <div class="form_as_ul">
+        {{ diagnosis_form.as_ul }}
+    </div>
+</fieldset>
+</p>
+<p></p>
+</div>
+
+<div id="sidebar" class="sidebar">
+    {% if perms.ehr.ehr_write %}
+        <div class="bg_blue">
+            {% include "ehr/ehr_diagnosis_save.html" %}
+        </div>    
+    {% endif %}
+
+    {% if object.id %}
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
+</div>
+</form>
+
+{% endblock %}

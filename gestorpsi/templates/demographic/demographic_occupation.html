@@ -1,0 +1,74 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_client %}active{% endblock %}
+
+{% block submenu %}
+    {% include "client/client_menu.html" %}
+{% endblock %}
+
+{% block core %}
+<input type="hidden" name="object_id" value="{{ object.id }}" />
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+<h2 class="title_clients title">{{ object.person.name }}</h2>
+<p class="description"><a href="/client/{{ object.id }}/demographic/occupation/">{% trans "Add new occupation" %}</a><br /></p>
+
+
+<form action="/client/{{ object.id }}/demographic/occupation/save/{% if profession_form.instance.id %}{{ profession_form.instance.id }}/{% endif %}" method="post" id="form_client" class="form_people collapsable form_client">
+<div class="main_area home">
+<h3><span id="client_add_infotypes">{% trans "Occupation" %}</span></h3>
+<p>
+
+<fieldset>
+    <legend>{% trans "Occupations" %}</legend>
+    <br />
+    {% if not professions %}
+          <p>{% trans "There's no occupation yet"%}</p>
+    {% endif %}
+    {% for profession in professions %}
+        <a href="/client/{{ object.id }}/demographic/occupation/{{ profession.id }}/">{{ profession }}</a> - <small>{% if profession.status %} {% trans "Active" %} {% else %} {% trans "Inactive" %} {% endif %}</small><br />
+    {% endfor %}
+</fieldset>
+
+<fieldset>
+    <legend>{% trans "Occupation Detail" %}</legend>
+        <div class="form_as_ul">
+            {{ profession_form.as_ul }}
+        </div>        
+</fieldset>
+
+</p>
+</div>
+
+<div id="sidebar" class="sidebar">
+    {% if perms.client.client_write %}
+        <div class="bg_blue">
+            {% include "tags/save.html" %}
+        </div>    
+    {% endif %}
+    {% if object.id %}
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
+</div>
+</form>
+
+{% endblock %}

@@ -42,7 +42,8 @@ TIME_ZONE = 'America/Sao_Paulo'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'pt_BR'
+#LANGUAGE_CODE = 'pt_BR'
+LANGUAGE_CODE = 'en_US'
 
 _ = lambda s: s
 
@@ -146,11 +147,15 @@ INSTALLED_APPS = (
     'gestorpsi.document',
     'gestorpsi.internet',
     'gestorpsi.upload',
-	'gestorpsi.support',
+    'gestorpsi.support',
+    'gestorpsi.cbo',
+    'gestorpsi.demographic',
+    #'gestorpsi.socioeconomic',  <--- TO BE IMPLEMENTED SOON
+    'gestorpsi.ehr',
+    'swingtime',
+    'registration',
+    'south',
     'gestorpsi.online_messages',
-	'swingtime',
-	'registration',
-	'south',
     'rosetta',
     'gestorpsi.schedule',
     'reversion',
@@ -192,7 +197,7 @@ SWINGTIME_SETTINGS_MODULE = 'gestorpsi.schedule.settings'
 ACCOUNT_ACTIVATION_DAYS=7
 EMAIL_HOST='gestorpsi.com.br'
 EMAIL_PORT=25
-EMAIL_HOST_USER='noreply@gestorpsi.com.br'
-EMAIL_HOST_PASSWORD='YrA|e-Q.tnsJ'
+EMAIL_HOST_USER=''
+EMAIL_HOST_PASSWORD=''
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER    # used by django registration
 

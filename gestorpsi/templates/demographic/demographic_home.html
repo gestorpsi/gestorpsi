@@ -1,0 +1,74 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_client %}active{% endblock %}
+
+{% block submenu %}
+    {% include "client/client_menu.html" %}
+{% endblock %}
+
+{% block core %}
+<input type="hidden" name="object_id" value="{{ object.id }}" />
+
+{% comment %}
+{% if object.id %}
+	<h2 class="title_clients title">{{ object.person.name }}</h2>
+	<p class="description">{% if total_service %}{% trans "Client subscribed in" %} {{ total_service }} {% trans "services" %}{% else %}{% trans "This client have no subscribed services" %}. <a href="/client/{{ object.id }}/referral/form/">{% trans "Subscribe it now?" %}</a>{% endif %}<br />	
+{% else %}
+	<h2 class="title_clients title">{% trans "Adding New Client" %}</h2>
+	<p class="description">{% trans "Inform the client details then click on Save button" %}</p>
+{% endif %}
+{% endcomment %}
+
+<h2 class="title_clients title">{{ object.person.name }}</h2>
+<p class="description"><br /></p>
+
+<div class="main_area home">
+<h3><span id="client_add_infotypes">{% trans "Education Level" %}</span></h3>
+<p>
+    {% if object.educationallevel %}
+        <strong>{% trans "School Grade" %}:</strong><br />{{ object.educationallevel }}<br />
+    {% else %}
+        <a href="/client/{{ object.id }}/demographic/education/">{% trans "Add an education level" %}</a>
+    {% endif %}
+</p>
+</div>
+
+<div class="main_area home">
+<h3><span id="client_add_infotypes">{% trans "Occupation" %}</span></h3>
+<p>
+    {% if object.profession_set.all %}
+        <strong>{% trans "Profession" %}:</strong><br />
+        {% for prof in object.profession_set.all %}
+            {% if prof.status %}{{ prof }}{% endif %}<br />
+        {% endfor %}
+    {% else %}
+        <a href="/client/{{ object.id }}/demographic/occupation/">{% trans "Add an occupation" %}</a>
+    {% endif %}
+</p>
+</div>
+
+<div id="sidebar" class="sidebar">
+    {% if object.id %}
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
+</div>
+
+{% endblock %}

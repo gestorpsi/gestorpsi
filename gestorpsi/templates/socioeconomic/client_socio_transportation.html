@@ -1,0 +1,78 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_client %}active{% endblock %}
+
+{% block submenu %}
+    {% include "client/client_menu.html" %}
+{% endblock %}
+
+{% block core %}
+<input type="hidden" name="object_id" value="{{ object.id }}" />
+
+<h2 id="title_addressbook" style="display:none"></h2>
+
+{% if object.id %}
+	<h2 class="title_clients title">{{ object.person.name }}</h2>
+	<p class="description">{% if total_service %}{% trans "Client subscribed in" %} {{ total_service }} {% trans "services" %}{% else %}{% trans "This client have no subscribed services" %}. <a href="/client/{{ object.id }}/referral/form/">{% trans "Subscribe it now?" %}</a>{% endif %}<br />	
+{% else %}
+	<h2 class="title_clients title">{% trans "Adding New Client" %}</h2>
+	<p class="description">{% trans "Inform the client details then click on Save button" %}</p>
+{% endif %}
+
+</p>
+<h2 id="title_contacts" style="display:none"></h2>
+<h2 id="title_myoffice" style="display:none"></h2>
+
+<form action="/client/{{ object.id }}/socioeconomic/transportation/save/{% if transportation_form.instance.id %}{{ transportation_form.instance.id }}/{% endif %}" method="post" id="form_client" class="form_people collapsable form_client">	
+
+<div class="main_area">
+<h3><span id="client_add_infotypes">{% trans "Transportation Form" %}</span></h3>
+<p>
+{{ transportation_form.as_p }}
+</p>
+</div>
+
+<div class="main_area home">
+<h3><span id="client_add_infotypes">{% trans "Transportation List" %}</span></h3>
+<p>
+    {% if transportations %}
+        {% for t in transportations %}
+            <b>{{ t.get_transportation_display }}</b> ({{ t.travel_time }} {% trans "of travel time" %}) <a class="edit" title="{% trans "Edit" %}" href="/client/{{ object.id }}/socioeconomic/transportation/{{ t.id }}/"></a><br />
+        {% endfor %}
+    {% else %}
+        Nenhum meio de transporte cadastrado.
+    {% endif %}
+</p>
+</div>
+
+<div id="sidebar" class="sidebar">
+    {% if perms.client.client_write %}
+        <div class="bg_blue">
+            {% include "tags/save.html" %}
+        </div>
+    {% endif %}    
+    {% if object.id %}
+        {% include "tags/client_sidebar.html" %}
+    {% endif %}
+</div>
+</form>
+
+{% endblock %}

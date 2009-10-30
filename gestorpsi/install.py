@@ -100,6 +100,9 @@ grp_administrator.permissions.add(Permission.objects.get(codename='online_messag
 grp_administrator.permissions.add(Permission.objects.get(codename='online_messages_topic_write'))
 grp_administrator.permissions.add(Permission.objects.get(codename='online_messages_read'))
 grp_administrator.permissions.add(Permission.objects.get(codename='online_messages_list'))
+grp_administrator.permissions.add(Permission.objects.get(codename='ehr_write'))
+grp_administrator.permissions.add(Permission.objects.get(codename='ehr_read'))
+grp_administrator.permissions.add(Permission.objects.get(codename='ehr_list'))
 
 # Professional
 print "assigning permissions for group careprofessional"
@@ -130,6 +133,9 @@ grp_professional.permissions.add(Permission.objects.get(codename='online_message
 grp_professional.permissions.add(Permission.objects.get(codename='online_messages_write'))
 grp_professional.permissions.add(Permission.objects.get(codename='online_messages_read'))
 grp_professional.permissions.add(Permission.objects.get(codename='online_messages_list'))
+grp_professional.permissions.add(Permission.objects.get(codename='ehr_write'))
+grp_professional.permissions.add(Permission.objects.get(codename='ehr_read'))
+grp_professional.permissions.add(Permission.objects.get(codename='ehr_list'))
 
 # Secretary
 print "assigning permissions for group secretary"

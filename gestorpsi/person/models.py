@@ -47,7 +47,7 @@ class MaritalStatus(models.Model):
 class Person(models.Model):
     id = UuidField(primary_key=True)
     name = models.CharField(max_length=50)
-    nickname = models.CharField(max_length=20, null=True, blank=True)
+    nickname = models.CharField(max_length=50, null=True, blank=True)
     photo = models.CharField(max_length=100)
     birthDate = models.DateField(null=True)
     birthPlace = models.ForeignKey(City, null=True)

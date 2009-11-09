@@ -79,7 +79,8 @@ def form(request, object_id = None):
 @permission_required_with_403('users.users_read')
 def add(request):
         return render_to_response('users/users_form.html', {
-                            'person_list': Person.objects.filter(organization = request.user.get_profile().org_active, profile = None)
+                            'person_list': Person.objects.filter(organization = request.user.get_profile().org_active, profile = None),
+                            'clss':request.GET.get('clss'),
                         },
                         context_instance=RequestContext(request))
 
@@ -95,7 +96,6 @@ def form_new_user(request, object_id):
 
 @permission_required_with_403('users.users_write')
 def create_user(request):
-    print " C R E A T E   U S E R"
     person = get_object_or_404(Person, pk=request.POST.get('id_person'), organization=request.user.get_profile().org_active)
     organization = request.user.get_profile().org_active
     username = request.POST.get('username').strip().lower()
@@ -104,31 +104,34 @@ def create_user(request):
     email = request.POST.get('email_send_user')
     permissions = request.POST.getlist('perms')
 
-    if password == pwd_conf:
-        user = RegistrationProfile.objects.create_inactive_user(username, password, email)
-        profile = Profile(user=user)
-        profile.org_active = organization
-        profile.temp = password    # temporary field (LDAP)
-        profile.person = person
-        profile.save()
-        #profile.organization.add(organization)
+    if not password == pwd_conf:
+        request.user.message_set.create(message=_('Error: Supplied passwords are differents.'))
+        return HttpResponseRedirect('/user/add/?clss=error')
 
-        if permissions.count('administrator'):
-            Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='administrator'))
-            profile.user.groups.add(Group.objects.get(name='administrator'))
-            
-        if permissions.count('professional'):
-            Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='professional'))
-            profile.user.groups.add(Group.objects.get(name='professional'))
-                        
-        if permissions.count('secretary'):
-            Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='secretary'))
-            profile.user.groups.add(Group.objects.get(name='secretary'))
-                        
-        if permissions.count('client'):
-            Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='client'))
-            profile.user.groups.add(Group.objects.get(name='client'))
+    user = RegistrationProfile.objects.create_inactive_user(username, password, email)
+    profile = Profile(user=user)
+    profile.org_active = organization
+    profile.temp = password    # temporary field (LDAP)
+    profile.person = person
+    profile.save()
+    #profile.organization.add(organization)
+
+    if permissions.count('administrator'):
+        Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='administrator'))
+        profile.user.groups.add(Group.objects.get(name='administrator'))
         
+    if permissions.count('professional'):
+        Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='professional'))
+        profile.user.groups.add(Group.objects.get(name='professional'))
+                    
+    if permissions.count('secretary'):
+        Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='secretary'))
+        profile.user.groups.add(Group.objects.get(name='secretary'))
+                    
+    if permissions.count('client'):
+        Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='client'))
+        profile.user.groups.add(Group.objects.get(name='client'))
+     
     request.user.message_set.create(message=_('User created successfully'))
 
     return HttpResponseRedirect('/user/%s/' % profile.person.id)

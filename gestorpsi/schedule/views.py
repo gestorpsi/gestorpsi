@@ -72,14 +72,14 @@ def add_event(
 ):
     dtstart = None
     if request.method == 'POST':
-        if int(request.POST['count']) > 40: # limit occurrence repeat
+        if int(request.POST.get('count')) > 40: # limit occurrence repeat
             return render_to_response('403.html', {'object':_('Sorry. You can not book more than 40 occurrence at the same time')})
         recurrence_form = recurrence_form_class(request.POST)
 
-        if request.POST['group']:
-            referral = request.POST['group']
+        if request.POST.get('group'):
+            referral = request.POST.get('group')
         else:
-            referral = request.POST['referral']
+            referral = request.POST.get('referral')
 
         event = get_object_or_404(Referral, pk=referral, service__organization=request.user.get_profile().org_active)
 

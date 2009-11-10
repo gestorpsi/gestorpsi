@@ -75,7 +75,7 @@ def demand_save(request, client_id, referral_id, demand_id=0):
 
     demand_form = DemandForm(request.POST, instance=demand)
     if not demand_form.is_valid():
-        request.user.message_set.create(message=_('Choosen occurence already in use by another demand.')) if session_form.errors.get('occurrence') else request.user.message_set.create(message=_("There's been an error in demand form."))
+        request.user.message_set.create(message=_('Choosen occurence already in use by another demand.')) if demand_form.errors.get('occurrence') else request.user.message_set.create(message=_("There's been an error in demand form."))
         return HttpResponseRedirect('/client/%s/%s/demand/%s/?clss=error' % (client_id, referral_id, demand.id)) if demand.id else HttpResponseRedirect('/client/%s/%s/demand/add/?clss=error' % (client_id, referral_id))
 
     demand = demand_form.save(commit=False)

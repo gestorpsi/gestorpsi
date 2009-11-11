@@ -26,8 +26,8 @@ GNU General Public License for more details.
     <ul>
         <li><a class="first" href="/place/">{% trans "all" %}</a></li>
         <li><a class="{% if not object.id %}active{% endif %}" href="/place/add/">{% trans "add" %}</a></li>
+        <li><a class="{% if deactive %}active{% endif %}" href="/place/deactive/">{% trans "all Deactive" %}</a></li>
         {% if object.id %}<li><a class="active">{{ object.label }}</a></li>{% endif %}
-        
     </ul>
 {% endblock %}
 
@@ -125,15 +125,6 @@ GNU General Public License for more details.
         {% if object.id %}
             {% include "tags/place_sidebar.html" %}
         {% endif %}
-        
-        <!--  
-		<div id="place_actions" {% if not object.id %}style="display:none"{% endif %}>	
-		<h3>{% trans 'Object Actions' %}</h3>
-		<ul>
-			<li id="add_room" class="add_to_form"><a class="notajax" href="#top">{% trans "Add room in this place" %}</a></li>
-		</ul>
-        </div>		
-        -->
 	{% endif %}
 </div>
 

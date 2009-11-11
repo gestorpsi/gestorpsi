@@ -28,8 +28,8 @@ urlpatterns = patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save)), # update object
 
     (r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
-    (r'^filter/(?P<filter>[a-zA-Z]+)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
-    (r'^filter/(?P<filter>[a-zA-Z]+)/$', login_check(list), {'no_paging': True}), # quick search
+    (r'^filter/(?P<filter>[a-zA-Z ]+)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
+    (r'^filter/(?P<filter>[a-zA-Z ]+)/$', login_check(list), {'no_paging': True}), # quick search
 
     # DEACTIVE
     (r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick filter

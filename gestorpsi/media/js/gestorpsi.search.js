@@ -23,7 +23,7 @@ $(function() {
      */
 
     $('div#search_header.contact_search table#letter_menu tr td a, div#search_header.contact_search a#letter_back, div#search_header.contact_search a#letter_fwd').click(function() {
-        updateContact('/contact/initial/' + $(this).attr('initial') + '/page1/');
+        updateContact('/contact/initial/' + $(this).attr('initial') + '/page1/', false, 'contact/initial/'+$(this).attr('initial'));
     });
 
     /**
@@ -31,7 +31,7 @@ $(function() {
     */
 
     $('div#search_header.contact_search input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateContact('/contact/filter/' + $(this).val() + '/page1/') : updateContact('/contact/page1');
+        ($(this).val().length >= 1) ? updateContact('/contact/filter/' + $(this).val() + '/page1/', false, 'contact/filter/' + $(this).val()) : updateContact('/contact/page1');
     });
 
     /**
@@ -47,7 +47,7 @@ $(function() {
      */
 
     $('div#search_header.client_search.active table#letter_menu tr td a, div#search_header.client_search.active a#letter_back, div#search_header.client_search.active a#letter_fwd').click(function() {
-        updateClient('/client/initial/' + $(this).attr('initial') + '/page1/');
+        updateClient('/client/initial/' + $(this).attr('initial') + '/page1/', false, 'client/initial/'+$(this).attr('initial'));
     });
 
     /**
@@ -55,7 +55,7 @@ $(function() {
      */
 
     $('div#search_header.client_search.deactive table#letter_menu tr td a, div#search_header.client_search.deactive a#letter_back, div#search_header.client_search.deactive a#letter_fwd').click(function() {
-        updateClient('/client/initial/' + $(this).attr('initial') + '/page1/deactive/', true);
+        updateClient('/client/initial/' + $(this).attr('initial') + '/page1/deactive/', true, 'client/initial/'+$(this).attr('initial'));
     });
 
     /**
@@ -63,7 +63,7 @@ $(function() {
     */
 
     $('div#search_header.client_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateClient('/client/filter/' + $(this).val() + '/page1/') : updateClient('/client/page1');
+        ($(this).val().length >= 1) ? updateClient('/client/filter/' + $(this).val() + '/page1/', false, 'client/filter/'+$(this).val()) : updateClient('/client/page1');
     });
 
     /**
@@ -71,7 +71,7 @@ $(function() {
     */
 
     $('div#search_header.client_search.deactive input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateClient('/client/filter/' + $(this).val() + '/page1/deactive/', true) : updateClient('/client/page1/deactive/', true);
+        ($(this).val().length >= 1) ? updateClient('/client/filter/' + $(this).val() + '/page1/deactive/', true, 'client/filter/'+$(this).val()) : updateClient('/client/page1/deactive/', true);
     });
 
     /**
@@ -95,7 +95,7 @@ $(function() {
      */
 
     $('div#search_header.employee_search.active table#letter_menu tr td a, div#search_header.employee_search.active a#letter_back, div#search_header.employee_search.active a#letter_fwd').click(function() {
-    updateEmployee('/employee/initial/' + $(this).attr('initial') + '/page1/');
+        updateEmployee('/employee/initial/' + $(this).attr('initial') + '/page1/', false, 'employee/initial/'+$(this).attr('initial'));
     });
 
     /**
@@ -103,14 +103,14 @@ $(function() {
     */
 
     $('div#search_header.employee_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateEmployee('/employee/filter/' + $(this).val() + '/page1/') : updateEmployee('/employee/page1');
+        ($(this).val().length >= 1) ? updateEmployee('/employee/filter/' + $(this).val() + '/page1/', false, 'employee/filter/'+$(this).val()) : updateEmployee('/employee/page1');
     });
 
     /**
      * employee clean up active
      */
 
-    $('div#search_header.employee.active_search a#cleanup').click(function() {
+    $('div#search_header.employee_search.active a#cleanup').click(function() {
         updateEmployee('/employee/page1');
     });
 
@@ -119,7 +119,7 @@ $(function() {
      */
 
     $('div#search_header.employee_search.deactive table#letter_menu tr td a, div#search_header.employee_search.deactive a#letter_back, div#search_header.employee_search.deactive a#letter_fwd').click(function() {
-        updateEmployee('/employee/initial/' + $(this).attr('initial') + '/page1/deactive/', true);
+        updateEmployee('/employee/initial/' + $(this).attr('initial') + '/page1/deactive/', true, 'employee/initial/'+$(this).attr('initial'));
     });
 
     /**
@@ -127,7 +127,7 @@ $(function() {
     */
 
     $('div#search_header.employee_search.deactive input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateEmployee('/employee/filt/' + $(this).val() + '/page1/deactive/', true) : updateEmployee('/employee/page1/deactive/', true);
+        ($(this).val().length >= 1) ? updateEmployee('/employee/filter/' + $(this).val() + '/page1/deactive/', true, 'employee/filter/'+$(this).val()) : updateEmployee('/employee/page1/deactive/', true);
     });
 
     /**
@@ -143,7 +143,7 @@ $(function() {
      */
 
     $('div#search_header.careprofessional_search.deactive table#letter_menu tr td a, div#search_header.careprofessional_search.deactive a#letter_back, div#search_header.careprofessional_search.deactive a#letter_fwd').click(function() {
-        updateProfessional('/careprofessional/initial/' + $(this).attr('initial') + '/page1/deactive/', true);
+        updateProfessional('/careprofessional/initial/' + $(this).attr('initial') + '/page1/deactive/', true, 'careprofessional/initial/'+$(this).attr('initial'));
     });
 
     /**
@@ -151,7 +151,7 @@ $(function() {
     */
 
     $('div#search_header.careprofessional_search.deactive input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateProfessional('/careprofessional/filter/' + $(this).val() + '/page1/deactive/', true) : updateProfessional('/careprofessional/page1/deactive/', true);
+        ($(this).val().length >= 1) ? updateProfessional('/careprofessional/filter/' + $(this).val() + '/page1/deactive/', true, 'careprofessional/filter/'+$(this).val()) : updateProfessional('/careprofessional/page1/deactive/', true);
     });
 
     /**
@@ -167,7 +167,7 @@ $(function() {
      */
 
     $('div#search_header.careprofessional_search.active table#letter_menu tr td a, div#search_header.careprofessional_search.active a#letter_back, div#search_header.careprofessional_search.active a#letter_fwd').click(function() {
-        updateProfessional('/careprofessional/initial/' + $(this).attr('initial') + '/page1/');
+        updateProfessional('/careprofessional/initial/' + $(this).attr('initial') + '/page1/', false, 'careprofessional/initial/'+$(this).attr('initial'));
     });
 
 
@@ -176,7 +176,7 @@ $(function() {
     */
 
     $('div#search_header.careprofessional_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateProfessional('/careprofessional/filter/' + $(this).val() + '/page1/') : updateProfessional('/careprofessional/page1');
+        ($(this).val().length >= 1) ? updateProfessional('/careprofessional/filter/' + $(this).val() + '/page1/', false, 'careprofessional/filter/'+$(this).val()) : updateProfessional('/careprofessional/page1');
     });
 
     /**
@@ -192,7 +192,7 @@ $(function() {
      */
 
     $('div#search_header.student_search.deactive table#letter_menu tr td a, div#search_header.student_search.deactive a#letter_back, div#search_header.student_search.deactive a#letter_fwd').click(function() {
-        updateStudent('/careprofessional/student/initial/' + $(this).attr('initial') + '/page1/deactive/', true);
+        updateStudent('/careprofessional/student/initial/' + $(this).attr('initial') + '/page1/deactive/', true, 'careprofessional/student/initial/'+$(this).attr('initial'));
     });
 
     /**
@@ -200,7 +200,7 @@ $(function() {
     */
 
     $('div#search_header.student_search.deactive input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateStudent('/careprofessional/student/filter/' + $(this).val() + '/page1/deactive/', true) : updateStudent('/careprofessional/student/page1/deactive/', true);
+        ($(this).val().length >= 1) ? updateStudent('/careprofessional/student/filter/' + $(this).val() + '/page1/deactive/', true, 'careprofessional/student/filter/'+$(this).val()) : updateStudent('/careprofessional/student/page1/deactive/', true);
     });
 
     /**
@@ -216,7 +216,7 @@ $(function() {
      */
 
     $('div#search_header.student_search.active table#letter_menu tr td a, div#search_header.student_search.active a#letter_back, div#search_header.student_search.active a#letter_fwd').click(function() {
-        updateStudent('/careprofessional/student/initial/' + $(this).attr('initial') + '/page1/');
+        updateStudent('/careprofessional/student/initial/' + $(this).attr('initial') + '/page1/', false, 'careprofessional/student/initial/'+$(this).attr('initial'));
     });
 
 
@@ -225,7 +225,7 @@ $(function() {
     */
 
     $('div#search_header.student_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateStudent('/careprofessional/student/filter/' + $(this).val() + '/page1/') : updateStudent('/careprofessional/student/page1');
+        ($(this).val().length >= 1) ? updateStudent('/careprofessional/student/filter/' + $(this).val() + '/page1/', false, 'careprofessional/student/filter/'+$(this).val()) : updateStudent('/careprofessional/student/page1');
     });
 
     /**
@@ -242,7 +242,7 @@ $(function() {
      */
 
     $('div#search_header.device_search.active table#letter_menu tr td a, div#search_header.device_search.active a#letter_back, div#search_header.device_search.active a#letter_fwd').click(function() {
-        updateDevice('/device/initial/' + $(this).attr('initial') + '/page1/');
+        updateDevice('/device/initial/' + $(this).attr('initial') + '/page1/', false, 'device/initial/'+$(this).attr('initial'));
     });
 
     /**
@@ -250,7 +250,7 @@ $(function() {
     */
 
     $('div#search_header.device_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateDevice('/device/filter/' + $(this).val() + '/page1/') : updateDevice('/device/page1');
+        ($(this).val().length >= 1) ? updateDevice('/device/filter/' + $(this).val() + '/page1/', false, 'device/filter/'+$(this).val()) : updateDevice('/device/page1');
     });
 
     /**
@@ -266,7 +266,7 @@ $(function() {
      */
 
     $('div#search_header.device_search.deactive table#letter_menu tr td a, div#search_header.device_search.deactive a#letter_back, div#search_header.device_search.deactive a#letter_fwd').click(function() {
-        updateDevice('/device/initial/' + $(this).attr('initial') + '/page1/deactive/', true);
+        updateDevice('/device/initial/' + $(this).attr('initial') + '/page1/deactive/', true, 'device/initial/'+$(this).attr('initial'));
     });
 
 
@@ -275,7 +275,7 @@ $(function() {
     */
 
     $('div#search_header.device_search.deactive input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateDevice('/device/filt/' + $(this).val() + '/page1/deactive/', true) : updateDevice('/device/page1/deactive/');
+        ($(this).val().length >= 1) ? updateDevice('/device/filter/' + $(this).val() + '/page1/deactive/', true, 'device/filter/'+$(this).val()) : updateDevice('/device/page1/deactive/');
     });
 
     /**
@@ -291,7 +291,7 @@ $(function() {
      */
 
     $('div#search_header.user_search.active table#letter_menu tr td a, div#search_header.user_search.active a#letter_back, div#search_header.user_search.active a#letter_fwd').click(function() {
-        updateUser('/user/initial/' + $(this).attr('initial') + '/page1/');
+        updateUser('/user/initial/' + $(this).attr('initial') + '/page1/', false, 'user/initial/' + $(this).attr('initial'));
     });
 
     /**
@@ -299,7 +299,7 @@ $(function() {
     */
 
     $('div#search_header.user_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateUser('/user/filter/' + $(this).val() + '/page1/') : updateUser('/device/page1');
+        ($(this).val().length >= 1) ? updateUser('/user/filter/' + $(this).val() + '/page1/', false, 'user/filter/' + $(this).val()) : updateUser('/device/page1');
     });
 
     /**
@@ -315,7 +315,7 @@ $(function() {
      */
 
     $('div#search_header.user_search.deactive table#letter_menu tr td a, div#search_header.user_search.deactive a#letter_back, div#search_header.user_search.deactive a#letter_fwd').click(function() {
-        updateUser('/user/initial/' + $(this).attr('initial') + '/page1/deactive/', true);
+        updateUser('/user/initial/' + $(this).attr('initial') + '/page1/deactive/', true, 'user/initial/' + $(this).attr('initial'));
     });
 
     /**
@@ -323,7 +323,7 @@ $(function() {
     */
 
     $('div#search_header.user_search.deactive input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateUser('/user/filt/' + $(this).val() + '/page1/deactive/', true) : updateUser('/user/page1/deactive/');
+        ($(this).val().length >= 1) ? updateUser('/user/filter/' + $(this).val() + '/page1/deactive/', true, 'user/filter/' + $(this).val()) : updateUser('/user/page1/deactive/');
     });
 
     /**
@@ -341,7 +341,7 @@ $(function() {
     service = $('table#search_results input[name=service_id]').val();
 
     $('div#search_header.service_client_search.active table#letter_menu tr td a, div#search_header.service_client_search.active a#letter_back, div#search_header.service_client_search.active a#letter_fwd').click(function() {
-        updateClientService('/service/'+ service +'/initial/' + $(this).attr('initial') + '/page1/');
+        updateClientService('/service/'+ service +'/initial/' + $(this).attr('initial') + '/page1/', false, 'service/'+ service +'/initial/' + $(this).attr('initial'));
     });
 
     /**
@@ -349,7 +349,7 @@ $(function() {
     */
 
     $('div#search_header.service_client_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateClientService('/service/' + service + '/filter/' + $(this).val() + '/page1/') : updateClientService('/service/' + service + '/page1');
+        ($(this).val().length >= 1) ? updateClientService('/service/' + service + '/filter/' + $(this).val() + '/page1/', false, 'service/' + service + '/filter/' + $(this).val()) : updateClientService('/service/' + service + '/page1');
     });
 
     /**
@@ -357,9 +357,57 @@ $(function() {
      */
 
     $('div#search_header.service_client_search.active a#cleanup').click(function() {
-        updateClientService('/service/'+ service + '/page1');
+        updateClientService('/service/'+ service + '/page1', false);
     });
-    
+
+    /**
+     * place quick filter active
+     */
+
+    $('div#search_header.place_search.active table#letter_menu tr td a, div#search_header.place_search.active a#letter_back, div#search_header.place_search.active a#letter_fwd').click(function() {
+        updatePlace('/place/initial/' + $(this).attr('initial') + '/page1/', false, 'place/initial/'+$(this).attr('initial'));
+    });
+
+    /**
+    * place quick search active
+    */
+
+    $('div#search_header.place_search.active input[type=text].quick_search').keyup(function() {
+        ($(this).val().length >= 1) ? updatePlace('/place/filter/' + $(this).val() + '/page1/', false, 'place/filter/'+$(this).val()) : updatePlace('/place/page1');
+    });
+
+    /**
+     * place clean up active
+     */
+
+    $('div#search_header.place_search.active a#cleanup').click(function() {
+        updatePlace('/place/page1');
+    });
+
+    /**
+     * place quick filter deactive
+     */
+
+    $('div#search_header.place_search.deactive table#letter_menu tr td a, div#search_header.place_search.deactive a#letter_back, div#search_header.place_search.deactive a#letter_fwd').click(function() {
+        updatePlace('/place/initial/' + $(this).attr('initial') + '/page1/deactive/', true, 'place/initial/'+$(this).attr('initial'));
+    });
+
+    /**
+    * place quick search deactive
+    */
+
+    $('div#search_header.place_search.deactive input[type=text].quick_search').keyup(function() {
+        ($(this).val().length >= 1) ? updatePlace('/place/filter/' + $(this).val() + '/page1/deactive/', true, 'place/filter/'+$(this).val()) : updatePlace('/place/page1/deactive/', true);
+    });
+
+    /**
+     * place clean up deactive
+     */
+
+    $('div#search_header.place_search.deactive a#cleanup').click(function() {
+        updatePlace('/place/page1/deactive/', true);
+    });
+
     
     /**
      * commom quick filter events

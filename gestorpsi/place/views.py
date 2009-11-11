@@ -33,14 +33,23 @@ def room_index(request):
     return render_to_response( "place/place_room_list.html", context_instance=RequestContext(request))
 
 @permission_required_with_403('place.place_list')
-def index(request):
-    return render_to_response( "place/place_list.html", context_instance=RequestContext(request))
+def index(request, deactive = False):
+    return render_to_response( "place/place_list.html", locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('place.place_list')
-def list(request, page = 1):
-    user = request.user
-    object = Place.objects.filter(organization=user.get_profile().org_active.id)
-    
+def list(request, page = 1, initial = None, filter = None, no_paging = False, deactive = False ):
+
+    if deactive:
+        object = Place.objects.deactive().filter(organization=request.user.get_profile().org_active.id)
+    else:   
+        object = Place.objects.active().filter(organization=request.user.get_profile().org_active.id)
+
+    if initial:
+        object = object.filter(label__istartswith = initial)
+        
+    if filter:
+        object = object.filter(label__icontains = filter)
+
     object_length = len(object)
     paginator = Paginator(object, settings.PAGE_RESULTS)
     object = paginator.page(page)
@@ -49,7 +58,7 @@ def list(request, page = 1):
     i = 0
 
     array['util'] = {
-        'has_perm_read': user.has_perm('place.place_read'),
+        'has_perm_read': request.user.has_perm('place.place_read'),
         'paginator_has_previous': object.has_previous().real,
         'paginator_has_next': object.has_next().real,
         'paginator_previous_page_number': object.previous_page_number().real,

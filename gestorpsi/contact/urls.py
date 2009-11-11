@@ -25,7 +25,7 @@ urlpatterns = patterns('',
     (r'^$', login_check(index)),
     (r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
     (r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
-    (r'^filter/(?P<filter>[a-zA-Z]+)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
+    (r'^filter/(?P<filter>[a-zA-Z ]+)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
     (r'^form/organization/$', login_check(contact_organization_form)), # add form
     (r'^form/professional/$', login_check(contact_professional_form)), # add form
     (r'^form/organization/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(contact_organization_form)), # edit form

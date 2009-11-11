@@ -33,6 +33,12 @@ class PlaceType( models.Model ):
     class Meta:
         ordering = ['description']
 
+class PlaceManager(models.Manager):
+    def active(self):
+        return super(PlaceManager, self).get_query_set().filter(active=True)
+    def deactive(self):
+        return super(PlaceManager, self).get_query_set().filter(active=False)
+
 class Place( models.Model ):
     """
     This class represents a place.
@@ -46,6 +52,8 @@ class Place( models.Model ):
     place_type = models.ForeignKey(PlaceType)
     organization = models.ForeignKey(Organization, null= True, blank= True)
     comments = models.TextField(blank=True)
+    
+    objects = PlaceManager()
     
     def __unicode__(self):
        return "%s" % self.label
@@ -77,6 +85,12 @@ class RoomType( models.Model ):
     class Meta:
         ordering = ['description']
 
+class RoomManager(models.Manager):
+    def active(self):
+        return super(RoomManager, self).get_query_set().filter(active=True)
+    def deactive(self):
+        return super(RoomManager, self).get_query_set().filter(active=False)
+
 class Room( models.Model ):
     """
     This class represents a room, it also holds information on the furniture that belongs to
@@ -91,6 +105,8 @@ class Room( models.Model ):
     furniture= models.TextField()
     active = models.BooleanField(default=True)
     comments = models.TextField(blank=True)
+    
+    objects = RoomManager()
 
     class Meta:
         ordering = ['description']

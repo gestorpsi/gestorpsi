@@ -196,28 +196,32 @@ class Organization(models.Model):
     objects = OrganizationManager()
 
     def __unicode__(self):
-        return self.trade_name
+        return self.name
 
     def save(self, *args, **kwargs):
-        if self.id:
+        if self.id: # save original state from register to verify if it has been changed from latest save
             original_state = Organization.objects.get(pk=self.id)
+        else:
+            original_state = None
+
         super(Organization, self).save(*args, **kwargs)
         
-        if original_state.active != self.active: # active state has been changed
-            if not self.active: # organization has been deactivated, lets set all users as read-only mode
-                for person in self.person_set.all():
-                    if hasattr(person, 'profile'): # is valid user (maybe) =)
-                        for group in person.profile.user.groups.all():
-                            new_group = Group.objects.get(name=('%s_ro' % group.name))
-                            person.profile.user.groups.add(new_group) # add user to new group (a readonly group)
-                            person.profile.user.groups.remove(Group.objects.get(name=group.name)) # remove user from past group
-            else: # organization has been activated, lets set all users as NOT read-only mode
-                for person in self.person_set.all():
-                    if hasattr(person, 'profile'): # is valid user (maybe) =)
-                        for group in person.profile.user.groups.all():
-                            new_group = Group.objects.get(name=re.sub('_ro','',group.name))
-                            person.profile.user.groups.add(new_group) # add user to new group (a readonly group)
-                            person.profile.user.groups.remove(Group.objects.get(name=group.name)) # remove user from past group 
+        if self.id and original_state:
+            if original_state.active != self.active and not original_state.organization: # active state has been changed and organization is a real organization
+                if not self.active: # organization has been deactivated, lets set all users as read-only mode
+                    for person in self.person_set.all():
+                        if hasattr(person, 'profile'): # is valid user (maybe) =)
+                            for group in person.profile.user.groups.all():
+                                new_group = Group.objects.get(name=('%s_ro' % group.name))
+                                person.profile.user.groups.add(new_group) # add user to new group (a readonly group)
+                                person.profile.user.groups.remove(Group.objects.get(name=group.name)) # remove user from past group
+                else: # organization has been activated, lets set all users as NOT read-only mode
+                    for person in self.person_set.all():
+                        if hasattr(person, 'profile'): # is valid user (maybe) =)
+                            for group in person.profile.user.groups.all():
+                                new_group = Group.objects.get(name=re.sub('_ro','',group.name))
+                                person.profile.user.groups.add(new_group) # add user to new group (a readonly group)
+                                person.profile.user.groups.remove(Group.objects.get(name=group.name)) # remove user from past group 
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

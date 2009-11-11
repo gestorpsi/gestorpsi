@@ -55,7 +55,6 @@ function updateClientService(url, deactive, app) {
                 tableTR += '<td class="title">'+ str_client +' '+ str_professional +'<br /> Date ' + this.dt + '<br />Occurences: '+ str_occurence;
                 tableTR += '</td>';
                 tableTR += '<td>';
-//                tableTR += '<a href="www.gestorpsi.com.br">lnk</a>';
                 tableTR += '</td>';
                 tableTR += '</tr>';
         });

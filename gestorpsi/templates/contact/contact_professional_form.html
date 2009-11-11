@@ -77,7 +77,7 @@ GNU General Public License for more details.
     </label>
 
     <label>{% trans "Profession" %}<br />
-        <select id="" name="service_profession" class="medium asm profession_type">
+        <select id="" {% if object.professionalIdentification.profession %}disabled{% endif %} name="service_profession" class="medium asm profession_type">
                 <option symbol="" value="" selected="selected" >------</option>
             {% for p in professions %}
                 <option symbol="{{ p.symbol }}" value="{{ p.id }}"{% ifequal p object.professionalIdentification.profession %} selected="selected"{% endifequal %} >{{ p.type }}</option>
@@ -86,11 +86,11 @@ GNU General Public License for more details.
     </label>
 
     <label>{% trans "Symbol" %}<br />
-            <input id="{{forloop.counter0}}" type="text" name="symbol" class="profession_symbol small" readonly="1" {% ifnotequal object.professionalIdentification.profession.symbol "" %} value="{{ object.professionalIdentification.profession.symbol }}" {% endifnotequal %}>
+            <input id="{{forloop.counter0}}" {% if object.professionalIdentification.profession %}disabled{% endif %} type="text" name="symbol" class="profession_symbol small" readonly="1" {% ifnotequal object.professionalIdentification.profession.symbol "" %} value="{{ object.professionalIdentification.profession.symbol }}" {% endifnotequal %}>
     </label>
 
         <label>{% trans "Professional Subscription" %}<br />
-            <input type="text" maxlength="50" class="medium" name="professional_subscription" value="{{ object.professionalIdentification.registerNumber }}" />
+            <input type="text" {% if object.professionalIdentification.profession %}disabled{% endif %} maxlength="50" class="medium" name="professional_subscription" value="{{ object.professionalIdentification.registerNumber }}" />
         </label>
 
 

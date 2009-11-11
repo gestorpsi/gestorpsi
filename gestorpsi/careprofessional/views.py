@@ -170,14 +170,15 @@ def save_careprof(request, object_id, save_person, is_student=False):
             for agreemt_id in request.POST.getlist('professional_agreement'):
                 profile.agreement.add(Agreement.objects.get(pk=agreemt_id))
 
-        identification = get_object_or_None(ProfessionalIdentification, pk=object.professionalIdentification_id) or ProfessionalIdentification()
-        if identification:
-            identification.profession = get_object_or_None(Profession, id=request.POST.get('professional_area'))
-            identification.registerNumber = request.POST.get('professional_registerNumber')
-            identification.save()
-            object.professionalIdentification = identification
-        else:
-            object.professionalIdentification = None
+        if not object.professionalIdentification:
+            identification = get_object_or_None(ProfessionalIdentification, pk=object.professionalIdentification_id) or ProfessionalIdentification()
+            if identification:
+                identification.profession = get_object_or_None(Profession, id=request.POST.get('professional_area'))
+                identification.registerNumber = request.POST.get('professional_registerNumber')
+                identification.save()
+                object.professionalIdentification = identification
+            else:
+                object.professionalIdentification = None
 
     object.save()
     return (object, exist_referral)

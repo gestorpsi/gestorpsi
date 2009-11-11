@@ -56,7 +56,7 @@ GNU General Public License for more details.
 	<fieldset id="fieldset_professional_identification">
 		<legend>{% trans "Professional Identification" %}</legend>
 			<label>{% trans "Profession" %}<br />
-			<select name="professional_area" class="medium profession_type" id="0">
+			<select name="professional_area" {% if object.professionalIdentification.profession %}disabled{% endif %} class="medium profession_type" id="0">
                     <option value="">------</option>
 				{% for l in PROFESSIONAL_AREAS %}
 					<option value="{{ l.id }}" symbol="{{ l.symbol }}" {% ifequal object.professionalIdentification.profession.symbol l.symbol%} selected {% endifequal %}>{{ l }}</option>
@@ -64,10 +64,10 @@ GNU General Public License for more details.
 			</select>
 			</label>
 			<label>{% trans "Licence" %}<br />
-			    <input id="0" type="text" name="symbol" class="small profession_symbol" readonly="1" {% if object.professionalIdentification.profession.symbol %} value="{{ object.professionalIdentification.profession.symbol }}" {% endif %}>
+			    <input id="0" {% if object.professionalIdentification.profession %}disabled{% endif %} type="text" name="symbol" class="small profession_symbol" readonly="1" {% if object.professionalIdentification.profession.symbol %} value="{{ object.professionalIdentification.profession.symbol }}" {% endif %}>
 			</label>
 			<label>{% trans "Professional Subscription" %}<br />
-				<input type="text" name="professional_registerNumber" maxlength="50" value="{{ object.professionalIdentification.registerNumber }}" />
+				<input type="text" {% if object.professionalIdentification.profession %}disabled{% endif %} name="professional_registerNumber" maxlength="50" value="{{ object.professionalIdentification.registerNumber }}" />
 			</label>
 	</fieldset>
 

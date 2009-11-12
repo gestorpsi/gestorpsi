@@ -102,17 +102,26 @@ def form(request, object_id=None):
     if selected_area.area_code in GENERIC_AREA:
         form_area = GenericAreaForm(instance=object)
         form_area.fields['age_group'].queryset = selected_area.age_group.all()
+        if object_id:
+            form_area.fields['age_group'].widget.attrs = {'class':'giant multiple asm', 'disabled':'disabled'}
 
     if selected_area.area_code in ('school', 'psychoedu'):
         form_area = SchoolAreaForm(instance=object)
         form_area.fields['education_level'].queryset = selected_area.education_level.all()
+        if object_id:
+            form_area.fields['education_level'].widget.attrs = {'class':'giant multiple asm', 'disabled':'disabled'}
 
     if selected_area.area_code == 'organizational':
         form_area = OrganizationalAreaForm(instance=object)
         form_area.fields['hierarchical_level'].queryset = selected_area.hierarchical_level.all()
+        if object_id:
+            form_area.fields['hierarchical_level'].widget.attrs = {'class':'giant multiple asm', 'disabled':'disabled'}
 
     form_area.fields['service_type'].queryset = selected_area.service_type.all()
     form_area.fields['modalities'].queryset = selected_area.modalities.all()
+    if object_id:
+       form_area.fields['service_type'].widget.attrs = {'class':'giant asm', 'disabled':'disabled'} 
+       form_area.fields['modalities'].widget.attrs = {'class':'giant multiple asm', 'disabled':'disabled'}
 
     return render_to_response('service/service_form.html', {
         'object': object,
@@ -136,10 +145,14 @@ def save(request, object_id=''):
     object.name = request.POST.get('service_name')
     object.description = request.POST.get('service_description')
     object.keywords = request.POST.get('service_keywords')
-    object.research_project = request.POST.get('research_project') or False
-    object.research_project_name = request.POST.get('research_project_name')
-    object.academic_related = request.POST.get('academic_related') or False
     object.comments = request.POST.get('comments')
+
+    if not object_id:
+      object.research_project = request.POST.get('research_project') or False
+      object.research_project_name = request.POST.get('research_project_name')
+      object.academic_related = request.POST.get('academic_related') or False
+      object.area = Area.objects.get(pk=request.POST.get('service_area'))
+      object.service_type = ServiceType.objects.get(pk=request.POST.get('service_type'))
 
     """ chose one css color to this service """
     if not request.user.get_profile().org_active.service_set.all():
@@ -150,14 +163,38 @@ def save(request, object_id=''):
                                 if int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) <=24 \
                                 else 1
 
-    object.area =  Area.objects.get(pk=request.POST.get('service_area'))
-    object.service_type = ServiceType.objects.get(pk=request.POST.get('service_type'))
     object.save()
 
-    """ Professions """
-    object.professions.clear()
-    for p in request.POST.getlist('service_profession'):
-        object.professions.add(Profession.objects.get(pk=p))
+    if not object_id:
+        """ Responsibles list """
+        object.responsibles.clear()
+        for p in request.POST.getlist('service_responsibles'):
+            object.responsibles.add(CareProfessional.objects.get(pk=p))
+
+        """ Professions """
+        object.professions.clear()
+        for p in request.POST.getlist('service_profession'):
+            object.professions.add(Profession.objects.get(pk=p))
+
+        """ Modalities """
+        object.modalities.clear()
+        for m in request.POST.getlist('modalities'):
+            object.modalities.add(Modality.objects.get(pk=m))
+
+        """ Age Group """
+        object.age_group.clear()
+        for age in request.POST.getlist('age_group'):
+            object.age_group.add(AgeGroup.objects.get(pk=age))
+
+        """ Education Level """
+        object.education_level.clear()
+        for edu in request.POST.getlist('education_level'):
+            object.education_level.add(EducationLevel.objects.get(pk=edu))
+
+        """ Hierachical Level """
+        object.hierarchical_level.clear()
+        for hierarc in request.POST.getlist('hierarchical_level'):
+            object.hierarchical_level.add(HierarchicalLevel.objects.get(pk=hierarc))
 
     """ Agreements """
     object.agreements.clear()
@@ -168,31 +205,6 @@ def save(request, object_id=''):
     object.professionals.clear()
     for p in request.POST.getlist('service_professionals'):
         object.professionals.add(CareProfessional.objects.get(pk=p))
-
-    """ Responsibles list """
-    object.responsibles.clear()
-    for p in request.POST.getlist('service_responsibles'):
-        object.responsibles.add(CareProfessional.objects.get(pk=p))
-
-    """ Modalities """
-    object.modalities.clear()
-    for m in request.POST.getlist('modalities'):
-        object.modalities.add(Modality.objects.get(pk=m))
-
-    """ Age Group """
-    object.age_group.clear()
-    for age in request.POST.getlist('age_group'):
-        object.age_group.add(AgeGroup.objects.get(pk=age))
-
-    """ Education Level """
-    object.education_level.clear()
-    for edu in request.POST.getlist('education_level'):
-        object.education_level.add(EducationLevel.objects.get(pk=edu))
-
-    """ Hierachical Level """
-    object.hierarchical_level.clear()
-    for hierarc in request.POST.getlist('hierarchical_level'):
-        object.hierarchical_level.add(HierarchicalLevel.objects.get(pk=hierarc))
 
     request.user.message_set.create(message=_('Service saved successfully'))
 

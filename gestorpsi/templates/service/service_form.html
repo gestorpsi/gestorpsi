@@ -68,20 +68,20 @@ GNU General Public License for more details.
     <fieldset>
 		<legend>{% trans "Academic Related" %}</legend>
             <label>
-                <input type="checkbox" name="academic_related"{% if object.academic_related %} checked{% endif %} />&nbsp;
+                <input type="checkbox" name="academic_related" {% if object.id %}disabled="disabled"{% endif %}{% if object.academic_related %} checked{% endif %} />&nbsp;
                 {% trans "This service is academic (supervised) related." %} 
             </label>
 	</fieldset>
     <fieldset>
 		<legend>{% trans "Research Project" %}</legend>
             <label>
-                <input class="research_project_name" type="checkbox" name="research_project"{% if object.research_project %} checked{% endif %} />&nbsp;
+                <input class="research_project_name" type="checkbox" {% if object.id %}disabled="disabled"{% endif %} name="research_project"{% if object.research_project %} checked{% endif %} />&nbsp;
                 {% trans "This service is linked with a research project" %} 
             </label>
                 <div class="research_project_name" {% if object.research_project_name %} style="display:block;" {% else %} style="display:none;" {% endif %}>
                     <label> 
                         {% trans "Name" %}
-			            <input type="text" maxlength="100" name="research_project_name" class="giant" value="{{ object.research_project_name }}" />
+			            <input type="text" maxlength="100" name="research_project_name" {% if object.id %}disabled="disabled"{% endif %} class="giant" value="{{ object.research_project_name }}" />
                     </label>
                 </div>
 	</fieldset>
@@ -94,14 +94,14 @@ GNU General Public License for more details.
     <input type="hidden" name="service_area" value="{{ area.id }}" />
     
 		<legend>{% trans "Service Profile" %}</legend>
-        <label>{{area.area_name}} [ <a href="/service/add/{% if object.id %}{{ object.id }}/{% endif %}">Change Area</a> ]</label><br />
+        <label>{{area.area_name}} {#[ <a href="/service/add/{% if object.id %}{{ object.id }}/{% endif %}">Change Area</a> ]#}</label><br />
 
         <div class="form_as_ul">
             {{ form_area.as_ul }}
         </div>
 
 		<label>{% trans "Profession" %}<br />
-		<select name="service_profession" multiple="multiple" class="high multiple giant">
+		<select name="service_profession" multiple="multiple" {% if object.id %}disabled="disabled"{% endif %} class="high multiple giant">
 			{% for p in Professions %}
 				<option value="{{ p.id }}"{% for op in object.professions.all %}{% ifequal op.id p.id %} selected="selected"{% endifequal %}{% endfor %}>{{ p }}</option>
 			{% endfor %}			
@@ -143,7 +143,7 @@ GNU General Public License for more details.
 
 			<label>{% trans "Professionals Responsible" %}<br />
 			<span>
-			<select multiple="multiple" name="service_responsibles" class="select multiple extrabig asm high">
+			<select multiple="multiple" name="service_responsibles" {% if object.id %}disabled="disabled"{% endif %} class="select multiple extrabig asm high">
 				{% for l in CareProfessionals %}
 				<option value="{{ l.id }}"{% for or in object.responsibles.values_list %}{% ifequal or.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{{ l }}{% if l.professionalIdentification.profession %} ({{ l.professionalIdentification.profession }}){% endif %}</option>
 				{% endfor %}

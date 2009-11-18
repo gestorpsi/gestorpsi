@@ -195,7 +195,6 @@ def save(request, object_id=None ):
 
     return HttpResponseRedirect('/device/%s/' % device_details.id)
 
-@permission_required_with_403('device.device_read')
 def get_visible(request, value):
     if (value == 'on'):
         return True

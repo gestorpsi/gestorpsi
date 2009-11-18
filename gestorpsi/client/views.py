@@ -90,9 +90,8 @@ def home(request, object_id=None):
                                         },
                                         context_instance=RequestContext(request))
 
-@permission_required_with_403('client.client_write')
+@permission_required_with_403('client.client_read')
 def add(request):
-     #Test if clinic administrator has registered services before access client page.
     if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
         return render_to_response('client/client_service_alert.html', {'object': _("There's no Service created yet. Please, create one before access Client."), }, context_instance=RequestContext(request))
     else:
@@ -465,7 +464,7 @@ def save(request, object_id=None, is_company = False):
 
     return HttpResponseRedirect('/client/%s/home' % object.id)
 
-@permission_required_with_403('client.client_list')
+@permission_required_with_403('client.client_read')
 def client_print(request, object_id = None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
 
@@ -676,7 +675,7 @@ def referral_ext_save(request, object_id = '', referral_id=''):
     request.user.message_set.create(message=_('External Referral saved successfully'))
     return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))
 
-@permission_required_with_403('client.client_list')
+@permission_required_with_403('client.client_read')
 def family(request, object_id = None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
     return render_to_response('client/client_family.html', locals(), context_instance=RequestContext(request))

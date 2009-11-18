@@ -144,7 +144,6 @@ def shortname_is_available(request, short):
     else:
 	    return HttpResponse("1")
 
-@permission_required_with_403('organization.organization_read')
 def get_visible( request, value ):
     if ( value == 'on' ):
         return True

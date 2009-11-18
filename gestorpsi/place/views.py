@@ -216,7 +216,6 @@ def room_form(request, object_id=None):
                                                         },
                                                         context_instance=RequestContext(request))
 
-@permission_required_with_403('place.place_read')
 def get_visible(value):
     if value == 'on':
         return True

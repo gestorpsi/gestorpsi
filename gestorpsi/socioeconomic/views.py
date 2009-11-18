@@ -18,7 +18,7 @@ from gestorpsi.socioeconomic.forms import TransportationForm, IncomeForm, Income
 from gestorpsi.socioeconomic.forms import SanitationForm, PavingForm, DwellingFeaturesForm, PeopleHouseholdForm
 from gestorpsi.socioeconomic.models import Transportation
 
-@permission_required_with_403('client.client_read')
+@permission_required_with_403('socioeconomic.socioeconomic_read')
 def socioeconomic_home(request, object_id):
     object = get_object_or_404(Client, pk=object_id)
     transportations = [t for t in object.transportation_set.all()]
@@ -65,7 +65,7 @@ def socioeconomic_home(request, object_id):
                                         'eletricity': eletricity,
                                         }, context_instance=RequestContext(request))
 
-@permission_required_with_403('client.client_read')
+@permission_required_with_403('socioeconomic.socioeconomic_read')
 def socioeconomic_transportation(request, object_id, transportation_id=0):
     object = get_object_or_404(Client, pk=object_id)
     transportation_object = get_object_or_None(Transportation, id=transportation_id) or Transportation()
@@ -78,7 +78,7 @@ def socioeconomic_transportation(request, object_id, transportation_id=0):
                                         'transportation_form': transportation_form,
                                         }, context_instance=RequestContext(request))
 
-@permission_required_with_403('client.client_write')
+@permission_required_with_403('socioeconomic.socioeconomic_write')
 def socioeconomic_transportation_save(request, object_id, transportation_id=0):
     object = get_object_or_404(Client, pk=object_id)
     transportation_object = get_object_or_None(Transportation, id=transportation_id) or Transportation()

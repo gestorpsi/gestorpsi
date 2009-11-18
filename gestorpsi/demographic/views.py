@@ -24,7 +24,7 @@ from gestorpsi.client.models import Client
 from gestorpsi.demographic.forms import EducationalLevelForm, ProfessionForm
 from gestorpsi.demographic.models import EducationalLevel, Profession
 
-@permission_required_with_403('client.client_read')
+@permission_required_with_403('demographic.demographic_read')
 def home(request, object_id):
     object = get_object_or_404(Client, pk=object_id)
     return render_to_response('demographic/demographic_home.html', {
@@ -32,7 +32,7 @@ def home(request, object_id):
                                     'demographic_menu': True,
                                     }, context_instance=RequestContext(request))
 
-@permission_required_with_403('client.client_read')
+@permission_required_with_403('demographic.demographic_read')
 def education(request, object_id):
     object = get_object_or_404(Client, pk=object_id)
     if hasattr(object, 'educationallevel'):
@@ -46,7 +46,7 @@ def education(request, object_id):
                                     'education_form': education_form,
                                     }, context_instance=RequestContext(request))
 
-@permission_required_with_403('client.client_write')
+@permission_required_with_403('demographic.demographic_write')
 def education_save(request, object_id):
     object = get_object_or_404(Client, pk=object_id)
     if hasattr(object, 'educationallevel'):
@@ -63,7 +63,7 @@ def education_save(request, object_id):
                                         'education_form': education_form,
                                         }, context_instance=RequestContext(request))
 
-@permission_required_with_403('client.client_read')
+@permission_required_with_403('demographic.demographic_read')
 def occupation(request, object_id, occupation_id=0):
     object = get_object_or_404(Client, pk=object_id)
     occupation_object = get_object_or_None(Profession, id=occupation_id) or Profession()
@@ -76,7 +76,7 @@ def occupation(request, object_id, occupation_id=0):
                                     'profession_form': profession_form,
                                     }, context_instance=RequestContext(request))
 
-@permission_required_with_403('client.client_write')
+@permission_required_with_403('demographic.demographic_write')
 def occupation_save(request, object_id, occupation_id=0):
     object = get_object_or_404(Client, pk=object_id)
     occupation_object = get_object_or_None(Profession, id=occupation_id) or Profession()

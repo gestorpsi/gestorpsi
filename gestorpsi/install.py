@@ -45,9 +45,9 @@ for i in INSTALLED_APPS:
 appnames.append('online_messages_topic')
 appnames.append('users')
 
-if Group.objects.all().count():
-    print "Cleaning old groups..."
-    Group.objects.all().delete()
+#if Group.objects.all().count():
+#    print "Cleaning old groups..."
+#    Group.objects.all().delete()
 
 print "Installing system groups..."
 

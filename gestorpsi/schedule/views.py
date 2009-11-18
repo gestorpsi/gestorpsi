@@ -50,9 +50,9 @@ def schedule_occurrence_listing(request, year = 1, month = 1, day = None,
         dict(
             extra_context, 
             occurrences=occurrences,
-            places = Place.objects.filter(organization=request.user.get_profile().org_active.id),
-            services = Service.objects.filter(organization=request.user.get_profile().org_active.id),
-            professionals = CareProfessional.objects.filter(person__organization=request.user.get_profile().org_active.id)
+            places = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
+            services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
+            professionals = CareProfessional.objects.active(request.user.get_profile().org_active.id)
             ),
         context_instance=RequestContext(request)
     )
@@ -300,8 +300,8 @@ def _datetime_view(
         next_day=dt + timedelta(days=+1),
         prev_day=dt + timedelta(days=-1),
         timeslots=timeslot_factory(dt, items, **params),
-        places = Place.objects.filter(organization=request.user.get_profile().org_active.id),
-        services = Service.objects.filter(organization=request.user.get_profile().org_active.id),
+        places = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
+        services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
         professionals = CareProfessional.objects.filter(person__organization=request.user.get_profile().org_active.id),
         referral = referral,
         object = object,
@@ -345,10 +345,12 @@ def schedule_occurrences(request, year = 1, month = 1, day = None):
             start_time__lt=date_end,
             event__referral__organization=request.user.get_profile().org_active.id
             ).exclude(occurrenceconfirmation__presence = 4 # unmarked's
-            ).exclude(occurrenceconfirmation__presence = 5) # remarked
+            ).exclude(occurrenceconfirmation__presence = 5 # remarked
+            ).exclude(room__place__active = False # not actived places
+            ).exclude(room__active = False) # not actived rooms
 
     return objs
-
+    
 @permission_required_with_403('schedule.schedule_list')
 def daily_occurrences(request, year = 1, month = 1, day = None):
     #locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')

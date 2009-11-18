@@ -408,7 +408,55 @@ $(function() {
         updatePlace('/place/page1/deactive/', true);
     });
 
-    
+
+    /**
+     * room quick filter active
+     */
+
+    $('div#search_header.room_search.active table#letter_menu tr td a, div#search_header.room_search.active a#letter_back, div#search_header.room_search.active a#letter_fwd').click(function() {
+        updateRoom('/place/room/initial/' + $(this).attr('initial') + '/page1/', false, 'place/room/initial/'+$(this).attr('initial'));
+    });
+
+    /**
+    * room quick search active
+    */
+
+    $('div#search_header.room_search.active input[type=text].quick_search').keyup(function() {
+        ($(this).val().length >= 1) ? updateRoom('/place/room/filter/' + $(this).val() + '/page1/', false, 'place/room/filter/'+$(this).val()) : updateRoom('/place/room/page1');
+    });
+
+    /**
+     * room clean up active
+     */
+
+    $('div#search_header.room_search.active a#cleanup').click(function() {
+        updateRoom('/place/room/page1');
+    });
+
+    /**
+     * room quick filter deactive
+     */
+
+    $('div#search_header.room_search.deactive table#letter_menu tr td a, div#search_header.room_search.deactive a#letter_back, div#search_header.room_search.deactive a#letter_fwd').click(function() {
+        updateRoom('/place/room/initial/' + $(this).attr('initial') + '/page1/deactive/', true, 'place/room/initial/'+$(this).attr('initial'));
+    });
+
+    /**
+    * room quick search deactive
+    */
+
+    $('div#search_header.room_search.deactive input[type=text].quick_search').keyup(function() {
+        ($(this).val().length >= 1) ? updateRoom('/place/room/filter/' + $(this).val() + '/page1/deactive/', true, 'place/room/filter/'+$(this).val()) : updateRoom('/place/room/page1/deactive/', true);
+    });
+
+    /**
+     * room clean up deactive
+     */
+
+    $('div#search_header.room_search.deactive a#cleanup').click(function() {
+        updateRoom('/place/room/page1/deactive/', true);
+    });
+
     /**
      * commom quick filter events
      */

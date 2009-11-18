@@ -31,16 +31,20 @@ GNU General Public License for more details.
         <tr>
             <th class="schedule"></th>
             {% for place in places %}{% for room in place.room_set.all %}
-                <th room="{{ room.id }}" place="{{ place.id }}">{{ room }}</th>
+                {% if room.active %}
+                    <th room="{{ room.id }}" place="{{ place.id }}">{{ room }}</th>
+                {% endif %}
             {% endfor %}{% endfor %}
         </tr>
         {% for tm,cells in timeslots %}
         <tr hour="{{ tm|date:"H:i:s" }}">
             <td class="hour">{{ tm|date:"H:i" }}</td>
             {% for place in places %}{% for room in place.room_set.all %}
+                {% if room.active %}
                 <td class="clean" room="{{ room.id }}" place="{{ place.id }}">
                 <a href="#" class="book">{% trans "Free" %}</a>
                 </td>
+                {% endif %}
             {% endfor %}{% endfor %}
         </tr>
         {% endfor %}

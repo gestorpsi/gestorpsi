@@ -55,6 +55,12 @@ class Area(models.Model):
     class Meta:
         ordering = ['area_name']
 
+class ServiceManager(models.Manager):
+    def active(self):
+        return super(ServiceManager, self).get_query_set().filter(active=True)
+    def deactive(self):
+        return super(ServiceManager, self).get_query_set().filter(active=False)
+
 class Service(models.Model):
     """
     This class is used to maintain information on services.
@@ -87,6 +93,8 @@ class Service(models.Model):
     academic_related = models.BooleanField(_('Academic (supervised) related service'), default=False)
 
     procedures = models.ManyToManyField(Procedure)
+    
+    objects = ServiceManager()
 
     def __unicode__(self):
         return u"%s" % (self.name)

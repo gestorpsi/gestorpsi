@@ -135,6 +135,7 @@ GNU General Public License for more details.
         <textarea name="comments" cols="" rows="8" class="giant">{{ object.comments }}</textarea></label>
 
         </fieldset>
+        <br />
 </div>
 
     <div id="sidebar" class="sidebar">
@@ -149,16 +150,6 @@ GNU General Public License for more details.
     </div>
 
 </form>
-
-
-<input type="hidden" name="object_id" value="{{ object.id }}" />
-
-<h2 id="title_addressbook" style="display:none"></h2>
-
-	<h2 class="title_clients title">{{ object.person.name }} {% trans "in" %} {{ referral }}</h2>
-	<p class="description">{% trans "Client subscribed in this service since" %} {{ referral.date|date:"d" }} {% trans "of" %} {{ referral.date|date:"F" }} {% trans "of" %} {{ referral.date|date:"Y" }}<br />
-
-</p>
 
 <div class="main_area">
 <form action="/admission/{{ object.id}}/attach/" method="post" name="attach" enctype="multipart/form-data" class="upload_referral">

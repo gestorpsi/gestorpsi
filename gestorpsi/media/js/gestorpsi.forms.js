@@ -432,23 +432,30 @@ $(function() {
       */     
 
      $('form select.device_mobility').unbind().change(function() {
+        // reset old values selected when changed
+        $('form select[name=place_associated]').val('');
+        $('form select[name=room_associated]').val('');
+        $(this).parents('label').parents('fieldset').children('label.device_room').children('select').children('option:not(first)').hide();
         if ($(this).val() == 1) { // Fixed Device
-            //$(this).parents('label').parents('fieldset').children('label.device_place').show();
             $(this).parents('label').parents('fieldset').children('label.device_room').show();
+            $('form select[name=place_associated] option[no_room=True]').attr('disabled', 'disabled');
         } else {
-            //$(this).parents('label').parents('fieldset').children('label.device_place').hide();
             $(this).parents('label').parents('fieldset').children('label.device_room').hide();
+            $('form select[name=place_associated] option').attr('disabled', '');
         }
      });
      
-     $('form select.device_place').unbind().change(function() {
-         $(this).parents('label').parents('fieldset').children('label.device_room').children('select').children('option').hide();
-         //$(this).parents('label').parents('fieldset').children('label.device_room').children('select').text('');
-         $(this).parents('label').parents('fieldset').children('label.device_room').children('select').children('option.place_'+$(this).val()).show();
-         //$(this).parents('label').parents('fieldset').children('label.device_room').children('select').children('option:first').append('<option value="" selected="selected"></option>');
-         $(this).parents('label').parents('fieldset').children('label.device_room').children('select').children('option:visible:first').attr('selected','selected');
-         //$(this).parents('label').parents('fieldset').children('label.device_room').children('option:not(.place_'+$(this).val()).hide();
-     });
+    $('form select.device_place').unbind().change(function() {
+        $(this).parents('label').parents('fieldset').children('label.device_room').children('select').children('option:not(first)').hide();
+        $(this).parents('label').parents('fieldset').children('label.device_room').children('select').children('option.place_'+$(this).val()).show();
+        $(this).parents('label').parents('fieldset').children('label.device_room').children('select').children('option:visible:first').attr('selected','selected');
+        if($(this).val()=='') {
+            $(this).parents('label').parents('fieldset').children('label.device_room').children('select').children('option:first').attr('checked', 'checked');
+            $(this).parents('label').parents('fieldset').children('label.device_room').hide();
+        }
+    });
+     
+
 
      /** 
      * service form - Research project name

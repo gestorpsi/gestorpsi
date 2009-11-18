@@ -26,8 +26,8 @@ GNU General Public License for more details.
     <ul>
         <li><a class="first" href="/place/room/">{% trans "all" %}</a></li>
         <li><a class="{% if not object.id %}active{% endif %}" href="/place/room/add/">{% trans "add" %}</a></li>
+        <li><a class="{% if deactive %}active{% endif %}" href="/place/room/deactive/">{% trans "all Deactive" %}</a></li>
         {% if object.id %}<li><a class="active">{{ object.description }}</a></li>{% endif %}
-        
     </ul>
 {% endblock %}
 

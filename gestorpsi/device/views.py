@@ -187,8 +187,16 @@ def save(request, object_id=None ):
     """ Device Mobility """
     mobility = request.POST.get('select_mobility_type')
     device_details.mobility = mobility
-    device_details.place = get_object_or_404(Place, pk=request.POST.get('place_associated'))
-    device_details.room = get_object_or_404(Room, pk=request.POST.get('room_associated'))
+     
+    try:
+        device_details.place = get_object_or_404(Place, pk=request.POST.get('place_associated'))
+    except:
+        device_details.place = None
+    if mobility == '1':
+        try:
+            device_details.room = get_object_or_404(Room, pk=request.POST.get('room_associated'))
+        except:    
+            device_details.room = None
     device_details.save()
 
     request.user.message_set.create(message=_('Device saved successfully'))

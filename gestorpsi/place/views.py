@@ -29,8 +29,8 @@ from gestorpsi.phone.views import phone_save
 from gestorpsi.util.decorators import permission_required_with_403
 
 @permission_required_with_403('place.place_list')
-def room_index(request):
-    return render_to_response( "place/place_room_list.html", context_instance=RequestContext(request))
+def room_index(request, deactive = False):
+    return render_to_response( "place/place_room_list.html", locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('place.place_list')
 def index(request, deactive = False):
@@ -166,9 +166,19 @@ def room_save(request, object_id=None):
     return HttpResponseRedirect('/place/room/%s/' % object.id)
 
 @permission_required_with_403('place.place_list')
-def room_list(request, page = 1):
-    object = Room.objects.filter(place__organization = request.user.get_profile().org_active)
-    
+def room_list(request, page = 1, initial = None, filter = None, no_paging = False, deactive = False):
+
+    if deactive:
+        object = Room.objects.deactive().filter(place__organization = request.user.get_profile().org_active)
+    else:   
+        object = Room.objects.active().filter(place__organization = request.user.get_profile().org_active)
+
+    if initial:
+        object = object.filter(description__istartswith = initial)
+        
+    if filter:
+        object = object.filter(description__icontains = filter)
+
     object_length = len(object)
     paginator = Paginator(object, settings.PAGE_RESULTS)
     object = paginator.page(page)

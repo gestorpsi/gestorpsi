@@ -153,14 +153,16 @@ GNU General Public License for more details.
 		<!--  place  -->
 		<label class="device_place clear">{% trans "Place" %}<br />
 			<select name="place_associated" class="extramedium device_place">
+                <option value="">------------</option>
 				{% for p in places %}
-					<option value="{{ p.id }}"{% ifequal object.place_id p.id %} selected{% endifequal %}>{{ p.label }}</option>
+					<option value="{{ p.id }}"{% ifequal object.place_id p.id %} selected{% endifequal %}{% if not p.room_set.all %} no_room="True"{% ifequal object.mobility '1' %} disabled{% endifequal %}{% endif %}>{{ p.label }}</option>
 				{% endfor %}
 			</select>
 
 		<!--  room  -->
 		<label class="device_room"{% ifnotequal object.mobility '1' %} style="display:none;"{% endifnotequal %}>{% trans "Room" %}<br />
 			<select name="room_associated" class="extramedium device_room">
+                <option value="">------------</option>
 				{% for p in places %}
 					{% for r in p.room_set.all %}
 						<option class="place_{{ p.id }}" value="{{ r.id }}"{% if object.place_id %}{% ifnotequal p.id object.place_id %} style="display:none;"{% endifnotequal %}{% endif %}{% if not forloop.parentloop.first and not object.id %} style="display:none;"{% endif %}{% ifequal object.room_id r.id %} selected{% endifequal %}>{{ r }}</option>

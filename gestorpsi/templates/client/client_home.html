@@ -88,13 +88,13 @@ GNU General Public License for more details.
                 {% trans "Discharge Reason" %}:&nbsp;<b>{{ referral.get_reason_display }}</b>
                 </p>
                 <p>
-                {% trans "Discharge was discussed with client" %}:&nbsp;<b>{{ referral.was_discussed_with_client }}</b>
+                {% trans "Discharge was discussed with client" %}:&nbsp;<b>{% if referral.was_discussed_with_client %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</b>
                 </p>
                 <p>
                 {% trans "Discharge Details" %}:&nbsp;<b>{{ referral.details }}</b>
                 </p>
                 <p>
-                {% trans "Referral discharge status" %}:&nbsp;<b>{{ referral.status }}</b>
+                {% trans "Referral discharge status" %}:&nbsp;<b>{% if not referral.status %}{% trans "Not informed" %}{% else %}{{ referral.status }}{% endif %}</b>
                 </p>
                 <p>
                 {% trans "Referral discharge description" %}:&nbsp;<b>{{ referral.description }}</b>

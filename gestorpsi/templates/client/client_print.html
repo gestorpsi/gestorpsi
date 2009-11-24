@@ -349,11 +349,11 @@ table {
         <tr>
             <td class="first">{% trans "Status" %}</td>
             <td>
-                {% ifequal i.get_status_display 'Active' %}
-                    {% trans "Service is charged" %}
+                {% if i.referraldischarge_set.all %}
+                    {% trans "Referral is discharged" %}
                 {% else %}
-                    {% trans "Service is discharged" %}
-                {% endifequal %}
+                    {% trans "Service is charged" %}
+                {% endif %}
             
             </td>
         </tr>
@@ -394,7 +394,7 @@ table {
             {% if i.referraldischarge_set.all %}
             {% for d in i.referraldischarge_set.all %}
                 <strong>{% trans "Reason" %}</strong><br />
-                {% if not i.reason %}{% trans "Not informed" %}{% else %}
+                {% if not d.reason %}{% trans "Not informed" %}{% else %}
                 {{ d.get_reason_display }}{% endif %}<br />
                 <strong>{% trans "Was discussed with client" %}</strong><br />
                 {% if not d.was_discussed_with_client %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}<br />

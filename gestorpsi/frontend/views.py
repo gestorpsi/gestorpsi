@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 import datetime
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from gestorpsi.client.models import Client
@@ -29,8 +29,12 @@ def start(request):
         object = Client.objects.get(pk=request.user.get_profile().person.client.id)
         return render_to_response('frontend/frontend_client_start.html', locals(), context_instance=RequestContext(request))
     
-    """ users admistrator home page """
+    """ users admistrator and professional home page """
     if request.user.get_profile().person.is_careprofessional() or request.user.get_profile().person.is_administrator():
         return render_to_response('frontend/frontend_start.html', locals(), context_instance=RequestContext(request))
     
+    """ users employee home page """
+    if request.user.get_profile().person.is_employee():
+        return HttpResponseRedirect('/schedule/events/')
+
     raise Http404

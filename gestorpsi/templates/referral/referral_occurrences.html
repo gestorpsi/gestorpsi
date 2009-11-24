@@ -38,7 +38,7 @@ GNU General Public License for more details.
         <tbody>
             {% for o in occurrences %}
                 <tr class="zebra_{% cycle 0 1 %}">
-                <td>{% ifequal type 'past' %}<a href="/client/{{ object.id }}/occurence/{{ o.id}}/">{% endifequal %}{{ o.start_time|date:"l, d" }} {% trans "of" %} {{ o.start_time|date:"F" }} {% trans "of" %} {{ o.start_time|date:"Y" }}{% ifequal type 'past' %}</a>{% endifequal %}</td>
+                <td><a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"l, d" }} {% trans "of" %} {{ o.start_time|date:"F" }} {% trans "of" %} {{ o.start_time|date:"Y" }}</a></td>
                 <td>{{ o.start_time|date:"H:i" }} - {{ o.end_time|date:"H:i" }} hs<br />{{ o.scheduleoccurrence.room }}</td>
                 <td></td>
                 </tr>

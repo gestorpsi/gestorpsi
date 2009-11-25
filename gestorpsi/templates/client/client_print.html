@@ -541,33 +541,40 @@ table {
             <td width="150px" nowrap="nowrap">{% trans "Occurrence Date" %}</td>
             <td nowrap="nowrap">{% trans "Demand" %}</td>
             <td nowrap="nowrap">{% trans "Initial complaint" %}</td>
-            <td width="20%">{% trans "Description" %}</td>
             <td nowrap="nowrap">{% trans "How long it happens" %}</td>
             <td nowrap="nowrap">{% trans "Frequency" %}</td>
             <td nowrap="nowrap">{% trans "Severity" %}</td>
             <td nowrap="nowrap">{% trans "Duration" %}</td>
             <td nowrap="nowrap">{% trans "Status" %}</td>
             <td nowrap="nowrap">{% trans "Resolution" %}</td>
-            <td width="20%">{% trans "Bibliography" %}</td>
-            <td>{% trans "Related Sites" %}</td>
-            <td>{% trans "Comentários" %}</td>
-        </tr>
+          </tr>
+          
         {% for o in i.demand_set.all %}
-        <tr class="zebra_{% cycle 0,1 %}">
-            <td width="150px" nowrap="nowrap"><small>{% if not o.occurrence.start_time %}{% trans "Not related" %}{% else %}{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "hs" %}{% endif %}</small></td>
-            <td nowrap="nowrap"><small>{{ o.demand }}</small></td>
-            <td><small>{% if not o.initial_complaint %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}</small></td>
-            <td width="20%"><small>{{ o.description }}</small></td>
-            <td><small>{{ o.how_long_it_happens.unit }} {{ o.how_long_it_happens.get_time_display }}</small></td>
-            <td><small>{{ o.frequency.unit }} {{ o.frequency.get_time_display }}</small></td>
-            <td><small>{{ o.get_severity_display }}</small></td>
-            <td><small>{{ o.duration.unit }} {{ o.duration.get_time_display }}</small></td>
-            <td><small>{{ o.get_demand_status_display }}</small></td>
-            <td><small>{{ o.demand_resolution|date:"d/m/Y" }}</small></td>
-            <td><small>{{ o.bibliography }}</small></td>
-            <td><small>{{ o.related_sites }}</small></td>
-            <td><small>{{ o.comments }}</small></td>
-        </tr>
+            <tr class="zebra_{% cycle 0,1 %}">
+                <td width="150px" nowrap="nowrap"><small>{% if not o.occurrence.start_time %}{% trans "Not related" %}{% else %}{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "hs" %}{% endif %}</small></td>
+                <td nowrap="nowrap"><small>{{ o.demand }}</small></td>
+                <td><small>{% if not o.initial_complaint %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}</small></td>
+                <td><small>{{ o.how_long_it_happens.unit }} {{ o.how_long_it_happens.get_time_display }}</small></td>
+                <td><small>{{ o.frequency.unit }} {{ o.frequency.get_time_display }}</small></td>
+                <td><small>{{ o.get_severity_display }}</small></td>
+                <td><small>{{ o.duration.unit }} {{ o.duration.get_time_display }}</small></td>
+                <td><small>{{ o.get_demand_status_display }}</small></td>
+                <td><small>{{ o.demand_resolution|date:"d/m/Y" }}</small></td>
+            </tr>
+            
+            <tr class="zebra_{% cycle 0,1 %}">
+                <td></td>
+                <td colspan="8">
+                    <strong>{% trans "Description" %}</strong>
+                    <small>{% if not o.description %} {% trans "Not informed" %}{% else %}<br />{{ o.description }}{% endif %}</small><br />
+                    <strong>{% trans "Bibliography" %}</strong>
+                    <small>{% if not o.bibliography %} {% trans "Not informed" %}{% else %}<br />{{ o.bibliography }}{% endif %}</small><br />
+                    <strong>{% trans "Related Sites" %}</strong>
+                    <small>{% if not o.related_sites %} {% trans "Not informed" %}{% else %}<br />{{ o.related_sites }}{% endif %}</small><br />
+                    <strong>{% trans "Comments" %}</strong>
+                    <small>{% if not o.comments %} {% trans "Not informed" %}{% else %}<br />{{ o.comments }}{% endif %}</small><br />
+                </td>
+            </tr>
         {% endfor %}
         </table>
         {% endif %}
@@ -586,12 +593,16 @@ table {
             <td nowrap="nowrap" width="62px">{% trans "Resolution" %}</td>
             <td>{% trans "Diagnose" %}</td>
             <td nowrap="nowrap">{% trans "Status" %}</td>
-            <td nowrap="nowrap">{% trans "Description" %}</td>
             <td nowrap="nowrap">{% trans "Severity" %}</td>
+          </tr>
+          
+<!--
+            <td nowrap="nowrap">{% trans "Description" %}</td>
             <td nowrap="nowrap">{% trans "Treatment Indicated" %}</td>
             <td nowrap="nowrap">{% trans "Bibliography" %}</td>
             <td nowrap="nowrap">{% trans "Related Sites" %}</td>
             <td width="20%">{% trans "Comentários" %}</td>
+-->
         </tr>
         {% for o in i.diagnosis_set.all %}
         <tr class="zebra_{% cycle 0,1 %}">
@@ -600,12 +611,22 @@ table {
             <td width="62px"><small>{{ o.diagnosis_resolution|date:"d/m/Y" }}</small></td>
             <td><small>{{ o.diagnosis }}</small></td>
             <td><small>{{ o.get_diagnosis_status_display }} {{ o.get_diagnosis_status2_display }}</small></td>
-            <td><small>{{ o.clinical_description }}</small></td>
             <td><small>{{ o.get_severity_display }}</small></td>
-            <td><small>{{ o.treatment_indicated }}</small></td>
-            <td><small>{{ o.bibliography }}</small></td>
-            <td><small>{{ o.related_sites }}</small></td>
-            <td><small>{{ o.comments }}</small></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="5">
+                <strong>{% trans "Description" %}</strong>
+                <small>{% if not o.clinical_description %} {% trans "Not informed" %}{% else %}<br />{{ o.clinical_description }}{% endif %}</small><br />
+                <strong>{% trans "Treatment Indicated" %}</strong>
+                <small>{% if not o.treatment_indicated %} {% trans "Not informed" %}{% else %}<br />{{ o.treatment_indicated }}{% endif %}</small><br />
+                <strong>{% trans "Bibliography" %}</strong>
+                <small>{% if not o.bibliography %} {% trans "Not informed" %}{% else %}<br />{{ o.bibliography }}{% endif %}</small><br />
+                <strong>{% trans "Related Sites" %}</strong>
+                <small>{% if not o.related_sites %} {% trans "Not informed" %}{% else %}<br />{{ o.related_sites }}{% endif %}</small><br />
+                <strong>{% trans "Comments" %}</strong>
+                <small>{% if not o.comments %} {% trans "Not informed" %}{% else %}<br />{{ o.comments }}{% endif %}</small><br />
+            </td>
         </tr>
         {% endfor %}
         </table>

@@ -473,10 +473,14 @@ def client_print(request, object_id = None):
     else:
         referral = object.referral_set.filter(pk__in=request.POST.getlist('referral'))
         print_schedule = None if not request.POST.get('schedule') else True
+        print_demographic = None if not request.POST.get('demographic') else True
+        print_ehr = None if not request.POST.get('ehr') else True
         company_related_clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active) if object.is_company else None
         dict = {
             'referral': referral,
             'print_schedule': print_schedule,
+            'print_demographic': print_demographic,
+            'print_ehr': print_ehr,
             'pagesize' : 'A4',
             'object': object, 
             'org_active': request.user.get_profile().org_active, 

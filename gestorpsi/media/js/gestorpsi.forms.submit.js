@@ -419,6 +419,60 @@ $(function() {
             message: 'Preenchimento Necessário'
         }
     });
+    
+     /**
+     *
+     * ehr session form
+     *
+     * _description:
+     * validate and post session form.
+     *
+     */
+
+    $('form.form_session').validate({
+        rules: {
+            occurrence: "required"
+        },
+        messages: {
+            occurrence: 'Preenchimento Necessário'
+        }
+    });
+    
+     /**
+     *
+     * ehr diagnosis form
+     *
+     * _description:
+     * validate and post diagnosis form.
+     *
+     */
+
+    $('form.form_diagnosis').validate({
+        rules: {
+            diagnosis: "required"
+        },
+        messages: {
+            diagnosis: 'Preenchimento Necessário'
+        }
+    });
+    
+     /**
+     *
+     * ehr demand form
+     *
+     * _description:
+     * validate and post demand form.
+     *
+     */
+
+    $('form.form_demand').validate({
+        rules: {
+            demand: "required"
+        },
+        messages: {
+            demand: 'Preenchimento Necessário'
+        }
+    });
 
     /**
      *

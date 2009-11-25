@@ -139,6 +139,13 @@ class Client(models.Model):
             family_list.append([id, name, relation_level, responsable, i.id, i.active]) # id = client selected id, i.id = family relation id 
         
         return family_list
+    
+    def family_members_active(self):
+        family_list = []
+        for i in self.family_members():
+            if i[5]:
+                family_list.append(i)
+        return family_list
 
     def is_company(self):
         return True if hasattr(self.person, 'company') else False

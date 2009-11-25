@@ -217,10 +217,10 @@ table {
     {% endfor %}
     {% endif %}
 {% else%}
-    {% if not object.family_members %}
+    {% if not object.family_members_active %}
         {% trans "There is no family members information" %}
     {% else %}
-    {% for i in object.family_members %}
+    {% for i in object.family_members_active %}
     {{ i.1 }} ({{ i.2 }})
     {% if not forloop.last %},{% endif %}
     {% endfor %}
@@ -228,22 +228,64 @@ table {
 {% endif %}
 <br/><br/>
 
-
-<h1>{% trans "Admission Details" %}</h1><hr />
+{% if print_demographic %}
+<h1>{% trans "Demographic Data" %}</h1>
+<strong>{% trans "Education Level" %}</strong><hr />
 <table>
-    <tr>
-        <td class="first">{% trans "Admission Date" %}</td>
+    <tr class="zebra_0">
+        <td>{% trans "School Grade" %}</td>
+        <td>{% if not object.educationallevel.get_school_grade_display %}{% trans "Not informed" %}{% else %}{{ object.educationallevel.get_school_grade_display }}{% endif %}</td>
+    </tr>
+    <tr class="zebra_1">
+        <td>{% trans "Comments" %}</td>
+        <td>{{ object.educationallevel.comments }}</td>
+    </tr>
+</table>
+
+<br />
+<strong>{% trans "Occupations" %}</strong>
+{% if not object.profession_set.all %}
+    <hr />{% trans "Client have no occupation registered" %}
+{% else %}
+      <table>
+          <tr class="title" nowrap="nowrap">
+            <td><small>{% trans "Profession" %}</small></td>
+            <td nowrap="nowrap"><small>{% trans "Labor Market Status" %}</small></td>
+            <td><small>{% trans "Workplace" %}</small></td>
+            <td><small>{% trans "Working Hours" %}</small></td>
+            <td><small>{% trans "Status" %}</small></td>
+            <td><small>{% trans "Comments" %}</small></td>
+        </tr>
+        {% for p in object.profession_set.all %}
+        <tr class="zebra_{% cycle 0,1 %}">
+            <td><small>{{ p.profession }}</small></td>
+            <td><small>{{ p.get_labor_market_status_display }}</small></td>
+            <td><small>{{ p.workplace }}</small></td>
+            <td><small>{{ p.working_hours }}</small></td>
+            <td><small>{% if not p.status %}{% trans "Do not active in this occupation" %}{% else %}{% trans "Still active in this occupation" %}{% endif %}</small></td>
+            <td><small>{{ p.comments }}</small></td>
+        </tr>
+        {% endfor %}
+      </table>
+{% endif %}
+<br/>
+{% endif %}
+
+<h1>{% trans "Admission Details" %}</h1>
+<table>
+    <tr class="zebra_1">
+        <td>{% trans "Admission Date" %}</td>
         <td>{{ object.admission_date|date:"d/m/Y" }}</td>
     </tr>
-    <tr>
-        <td class="first">{% trans "ID Record" %}</td>
+    <tr class="zebra_0">
+        <td>{% trans "ID Record" %}</td>
         <td>{{ object.idRecord }}</td>
     </tr>
     <tr class="zebra_1">
         <td class="first">{% trans "Legacy Record" %}</td>
         <td>{{ object.legacyRecord }}</td>
     </tr>
-    <tr class="zebra_1">
+    <tr class="zebra_0">
         <td class="first">{% trans "Admission Knowledge" %}</td>
         <td>
             {% if not object.admissionreferral_set.all %}
@@ -259,7 +301,7 @@ table {
             {% endif %}
         </td>
     </tr>
-    <tr>
+    <tr class="zebra_1">
       <td class="first">{% trans "Admission Files" %}</td>
       <td>
       {% if not object.attach_set.all %}
@@ -286,8 +328,8 @@ table {
       {% endif %}
       </td>
     </tr>
-    <tr>
-      <td class="first">{% trans "Comments" %}</td>
+    <tr class="zebra_0">
+      <td>{% trans "Comments" %}</td>
       <td>{{ object.comments }}</td>
     </tr>
 </table>
@@ -462,7 +504,114 @@ table {
         </table>
         {% endif %}
     {% endif %}
-    
+
+    <br />
+    {% if print_ehr %}
+        <strong>{% trans "Referral Sessions" %}</strong><br />
+        {% if not i.session_set.all %}
+            {% trans "This referral have no session registered yet" %}
+        {% else %}
+        <table>
+          <tr class="title" nowrap="nowrap">
+            <td width="19%" nowrap="nowrap">{% trans "Date" %}</td>
+            <td nowrap="nowrap">{% trans "Session Goals" %}</td>
+            <td nowrap="nowrap" width="30%">{% trans "Descriptive" %}</td>
+            <td nowrap="nowrap" width="30%">{% trans "Comments" %}</td>
+        </tr>
+        {% for o in i.session_set.all %}
+        <tr class="zebra_{% cycle 0,1 %}">
+            <td width="19%" nowrap="nowrap"><small>{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "hs" %}</small></td>
+            <td nowrap="nowrap"><small>{{ o.get_session_goals_display }}</small></td>
+            <td><small>{{ o.descriptive }}</small></td>
+            <td><small>{{ o.comments }}</small></td>
+        </tr>
+        {% endfor %}
+        </table>
+        {% endif %}
+    {% endif %}
+
+    <br />
+    {% if print_ehr %}
+        <strong>{% trans "Referral Demands" %}</strong><br />
+        {% if not i.demand_set.all %}
+            {% trans "This referral have no demand registered yet" %}
+        {% else %}
+        <table>
+          <tr class="title" nowrap="nowrap">
+            <td width="150px" nowrap="nowrap">{% trans "Occurrence Date" %}</td>
+            <td nowrap="nowrap">{% trans "Demand" %}</td>
+            <td nowrap="nowrap">{% trans "Initial complaint" %}</td>
+            <td width="20%">{% trans "Description" %}</td>
+            <td nowrap="nowrap">{% trans "How long it happens" %}</td>
+            <td nowrap="nowrap">{% trans "Frequency" %}</td>
+            <td nowrap="nowrap">{% trans "Severity" %}</td>
+            <td nowrap="nowrap">{% trans "Duration" %}</td>
+            <td nowrap="nowrap">{% trans "Status" %}</td>
+            <td nowrap="nowrap">{% trans "Resolution" %}</td>
+            <td width="20%">{% trans "Bibliography" %}</td>
+            <td>{% trans "Related Sites" %}</td>
+            <td>{% trans "Comentários" %}</td>
+        </tr>
+        {% for o in i.demand_set.all %}
+        <tr class="zebra_{% cycle 0,1 %}">
+            <td width="150px" nowrap="nowrap"><small>{% if not o.occurrence.start_time %}{% trans "Not related" %}{% else %}{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "hs" %}{% endif %}</small></td>
+            <td nowrap="nowrap"><small>{{ o.demand }}</small></td>
+            <td><small>{% if not o.initial_complaint %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}</small></td>
+            <td width="20%"><small>{{ o.description }}</small></td>
+            <td><small>{{ o.how_long_it_happens.unit }} {{ o.how_long_it_happens.get_time_display }}</small></td>
+            <td><small>{{ o.frequency.unit }} {{ o.frequency.get_time_display }}</small></td>
+            <td><small>{{ o.get_severity_display }}</small></td>
+            <td><small>{{ o.duration.unit }} {{ o.duration.get_time_display }}</small></td>
+            <td><small>{{ o.get_demand_status_display }}</small></td>
+            <td><small>{{ o.demand_resolution|date:"d/m/Y" }}</small></td>
+            <td><small>{{ o.bibliography }}</small></td>
+            <td><small>{{ o.related_sites }}</small></td>
+            <td><small>{{ o.comments }}</small></td>
+        </tr>
+        {% endfor %}
+        </table>
+        {% endif %}
+    {% endif %}
+
+    <br />
+    {% if print_ehr %}
+        <strong>{% trans "Referral Diagnosis" %}</strong><br />
+        {% if not i.diagnosis_set.all %}
+            {% trans "This referral have no diagnose registered yet" %}
+        {% else %}
+        <table>
+          <tr class="title" nowrap="nowrap">
+            <td width="150px" nowrap="nowrap">{% trans "Occurrence Date" %}</td>
+            <td nowrap="nowrap">{% trans "Date" %}</td>
+            <td nowrap="nowrap" width="62px">{% trans "Resolution" %}</td>
+            <td>{% trans "Diagnose" %}</td>
+            <td nowrap="nowrap">{% trans "Status" %}</td>
+            <td nowrap="nowrap">{% trans "Description" %}</td>
+            <td nowrap="nowrap">{% trans "Severity" %}</td>
+            <td nowrap="nowrap">{% trans "Treatment Indicated" %}</td>
+            <td nowrap="nowrap">{% trans "Bibliography" %}</td>
+            <td nowrap="nowrap">{% trans "Related Sites" %}</td>
+            <td width="20%">{% trans "Comentários" %}</td>
+        </tr>
+        {% for o in i.diagnosis_set.all %}
+        <tr class="zebra_{% cycle 0,1 %}">
+            <td width="150px" nowrap="nowrap"><small>{% if not o.occurrence.start_time %}{% trans "Not related" %}{% else %}{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "hs" %}{% endif %}</small></td>
+            <td nowrap="nowrap"><small>{{ o.diagnosis_date|date:"d/m/Y" }}</small></td>
+            <td width="62px"><small>{{ o.diagnosis_resolution|date:"d/m/Y" }}</small></td>
+            <td><small>{{ o.diagnosis }}</small></td>
+            <td><small>{{ o.get_diagnosis_status_display }} {{ o.get_diagnosis_status2_display }}</small></td>
+            <td><small>{{ o.clinical_description }}</small></td>
+            <td><small>{{ o.get_severity_display }}</small></td>
+            <td><small>{{ o.treatment_indicated }}</small></td>
+            <td><small>{{ o.bibliography }}</small></td>
+            <td><small>{{ o.related_sites }}</small></td>
+            <td><small>{{ o.comments }}</small></td>
+        </tr>
+        {% endfor %}
+        </table>
+        {% endif %}
+    {% endif %}
+
     
 <br />
         {% if i.service.academic_related and i.service.responsibles.all %}

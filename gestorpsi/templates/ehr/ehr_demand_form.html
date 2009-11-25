@@ -35,7 +35,7 @@ GNU General Public License for more details.
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
 
-<form action="/client/{{ object.id }}/{{ referral.id }}/demand/{% if demand_form.instance.id %}{{ demand_form.instance.id }}/{% endif %}save/" method="post" id="form_client" class="form_people collapsable form_client">
+<form action="/client/{{ object.id }}/{{ referral.id }}/demand/{% if demand_form.instance.id %}{{ demand_form.instance.id }}/{% endif %}save/" method="post" class="form_demand">
 
 <div class="main_area home">
 <h3><span id="client_add_infotypes">{% trans "Demand" %}</span></h3>

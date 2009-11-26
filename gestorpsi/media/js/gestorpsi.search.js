@@ -62,16 +62,16 @@ $(function() {
     * client quick search active
     */
 
-    $('div#search_header.client_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateClient('/client/filter/' + $(this).val() + '/page1/', false, 'client/filter/'+$(this).val()) : updateClient('/client/page1');
+    $('div#search_header.client_search.active a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateClient('/client/filter/' + $(this).prev().val() + '/page1/', false, 'client/filter/'+$(this).prev().val()) : updateClient('/client/page1');
     });
 
     /**
     * client quick search deactive
     */
 
-    $('div#search_header.client_search.deactive input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateClient('/client/filter/' + $(this).val() + '/page1/deactive/', true, 'client/filter/'+$(this).val()) : updateClient('/client/page1/deactive/', true);
+    $('div#search_header.client_search.deactive a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateClient('/client/filter/' + $(this).prev().val() + '/page1/deactive/', true, 'client/filter/'+$(this).prev().val()) : updateClient('/client/page1/deactive/', true);
     });
 
     /**
@@ -102,8 +102,8 @@ $(function() {
     * employee quick search active
     */
 
-    $('div#search_header.employee_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateEmployee('/employee/filter/' + $(this).val() + '/page1/', false, 'employee/filter/'+$(this).val()) : updateEmployee('/employee/page1');
+    $('div#search_header.employee_search.active a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateEmployee('/employee/filter/' + $(this).prev().val() + '/page1/', false, 'employee/filter/'+$(this).prev().val()) : updateEmployee('/employee/page1');
     });
 
     /**
@@ -126,8 +126,8 @@ $(function() {
     * employee quick search deactive
     */
 
-    $('div#search_header.employee_search.deactive input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateEmployee('/employee/filter/' + $(this).val() + '/page1/deactive/', true, 'employee/filter/'+$(this).val()) : updateEmployee('/employee/page1/deactive/', true);
+    $('div#search_header.employee_search.deactive a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateEmployee('/employee/filter/' + $(this).prev().val() + '/page1/deactive/', true, 'employee/filter/'+$(this).prev().val()) : updateEmployee('/employee/page1/deactive/', true);
     });
 
     /**
@@ -150,8 +150,8 @@ $(function() {
     * careprofessional quick search deactive
     */
 
-    $('div#search_header.careprofessional_search.deactive input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateProfessional('/careprofessional/filter/' + $(this).val() + '/page1/deactive/', true, 'careprofessional/filter/'+$(this).val()) : updateProfessional('/careprofessional/page1/deactive/', true);
+    $('div#search_header.careprofessional_search.deactive a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateProfessional('/careprofessional/filter/' + $(this).prev().val() + '/page1/deactive/', true, 'careprofessional/filter/'+$(this).prev().val()) : updateProfessional('/careprofessional/page1/deactive/', true);
     });
 
     /**
@@ -175,8 +175,8 @@ $(function() {
     * careprofessional quick search active
     */
 
-    $('div#search_header.careprofessional_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateProfessional('/careprofessional/filter/' + $(this).val() + '/page1/', false, 'careprofessional/filter/'+$(this).val()) : updateProfessional('/careprofessional/page1');
+    $('div#search_header.careprofessional_search.active a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateProfessional('/careprofessional/filter/' + $(this).prev().val() + '/page1/', false, 'careprofessional/filter/'+$(this).prev().val()) : updateProfessional('/careprofessional/page1');
     });
 
     /**
@@ -199,8 +199,8 @@ $(function() {
     * student quick search deactive
     */
 
-    $('div#search_header.student_search.deactive input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateStudent('/careprofessional/student/filter/' + $(this).val() + '/page1/deactive/', true, 'careprofessional/student/filter/'+$(this).val()) : updateStudent('/careprofessional/student/page1/deactive/', true);
+    $('div#search_header.student_search.deactive a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateStudent('/careprofessional/student/filter/' + $(this).prev().val() + '/page1/deactive/', true, 'careprofessional/student/filter/'+$(this).prev().val()) : updateStudent('/careprofessional/student/page1/deactive/', true);
     });
 
     /**
@@ -224,8 +224,8 @@ $(function() {
     * student quick search active
     */
 
-    $('div#search_header.student_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateStudent('/careprofessional/student/filter/' + $(this).val() + '/page1/', false, 'careprofessional/student/filter/'+$(this).val()) : updateStudent('/careprofessional/student/page1');
+    $('div#search_header.student_search.active a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateStudent('/careprofessional/student/filter/' + $(this).prev().val() + '/page1/', false, 'careprofessional/student/filter/'+$(this).prev().val()) : updateStudent('/careprofessional/student/page1');
     });
 
     /**
@@ -249,8 +249,8 @@ $(function() {
     * device quick search active
     */
 
-    $('div#search_header.device_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateDevice('/device/filter/' + $(this).val() + '/page1/', false, 'device/filter/'+$(this).val()) : updateDevice('/device/page1');
+    $('div#search_header.device_search.active a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateDevice('/device/filter/' + $(this).prev().val() + '/page1/', false, 'device/filter/'+$(this).prev().val()) : updateDevice('/device/page1');
     });
 
     /**
@@ -274,8 +274,8 @@ $(function() {
     * device quick search deactive
     */
 
-    $('div#search_header.device_search.deactive input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateDevice('/device/filter/' + $(this).val() + '/page1/deactive/', true, 'device/filter/'+$(this).val()) : updateDevice('/device/page1/deactive/');
+    $('div#search_header.device_search.deactive a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateDevice('/device/filter/' + $(this).prev().val() + '/page1/deactive/', true, 'device/filter/'+$(this).prev().val()) : updateDevice('/device/page1/deactive/');
     });
 
     /**
@@ -298,8 +298,8 @@ $(function() {
     * user quick search active
     */
 
-    $('div#search_header.user_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateUser('/user/filter/' + $(this).val() + '/page1/', false, 'user/filter/' + $(this).val()) : updateUser('/device/page1');
+    $('div#search_header.user_search.active a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateUser('/user/filter/' + $(this).prev().val() + '/page1/', false, 'user/filter/' + $(this).prev().val()) : updateUser('/device/page1');
     });
 
     /**
@@ -322,8 +322,8 @@ $(function() {
     * user quick search deactive
     */
 
-    $('div#search_header.user_search.deactive input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateUser('/user/filter/' + $(this).val() + '/page1/deactive/', true, 'user/filter/' + $(this).val()) : updateUser('/user/page1/deactive/');
+    $('div#search_header.user_search.deactive a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateUser('/user/filter/' + $(this).prev().val() + '/page1/deactive/', true, 'user/filter/' + $(this).prev().val()) : updateUser('/user/page1/deactive/');
     });
 
     /**
@@ -348,8 +348,8 @@ $(function() {
     * service - client list - quick search active
     */
 
-    $('div#search_header.service_client_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateClientService('/service/' + service + '/filter/' + $(this).val() + '/page1/', false, 'service/' + service + '/filter/' + $(this).val()) : updateClientService('/service/' + service + '/page1');
+    $('div#search_header.service_client_search.active a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateClientService('/service/' + service + '/filter/' + $(this).prev().val() + '/page1/', false, 'service/' + service + '/filter/' + $(this).prev().val()) : updateClientService('/service/' + service + '/page1');
     });
 
     /**
@@ -372,8 +372,8 @@ $(function() {
     * place quick search active
     */
 
-    $('div#search_header.place_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updatePlace('/place/filter/' + $(this).val() + '/page1/', false, 'place/filter/'+$(this).val()) : updatePlace('/place/page1');
+    $('div#search_header.place_search.active a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updatePlace('/place/filter/' + $(this).prev().val() + '/page1/', false, 'place/filter/'+$(this).prev().val()) : updatePlace('/place/page1');
     });
 
     /**
@@ -396,8 +396,8 @@ $(function() {
     * place quick search deactive
     */
 
-    $('div#search_header.place_search.deactive input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updatePlace('/place/filter/' + $(this).val() + '/page1/deactive/', true, 'place/filter/'+$(this).val()) : updatePlace('/place/page1/deactive/', true);
+    $('div#search_header.place_search.deactive a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updatePlace('/place/filter/' + $(this).prev().val() + '/page1/deactive/', true, 'place/filter/'+$(this).prev().val()) : updatePlace('/place/page1/deactive/', true);
     });
 
     /**
@@ -421,8 +421,8 @@ $(function() {
     * room quick search active
     */
 
-    $('div#search_header.room_search.active input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateRoom('/place/room/filter/' + $(this).val() + '/page1/', false, 'place/room/filter/'+$(this).val()) : updateRoom('/place/room/page1');
+    $('div#search_header.room_search.active a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateRoom('/place/room/filter/' + $(this).prev().val() + '/page1/', false, 'place/room/filter/'+$(this).prev().val()) : updateRoom('/place/room/page1');
     });
 
     /**
@@ -445,8 +445,8 @@ $(function() {
     * room quick search deactive
     */
 
-    $('div#search_header.room_search.deactive input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateRoom('/place/room/filter/' + $(this).val() + '/page1/deactive/', true, 'place/room/filter/'+$(this).val()) : updateRoom('/place/room/page1/deactive/', true);
+    $('div#search_header.room_search.deactive a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateRoom('/place/room/filter/' + $(this).prev().val() + '/page1/deactive/', true, 'place/room/filter/'+$(this).prev().val()) : updateRoom('/place/room/page1/deactive/', true);
     });
 
     /**
@@ -503,10 +503,11 @@ $(function() {
     * commom quick search events
     */
 
-    $('div#search_header input[type=text].quick_search').keydown(function() {
-        if($(this).val().length >= 1) {
-            $('div.registers_available > h2 > span > span').html('"' + $(this).val().toUpperCase() + '"');
+    $('div#search_header a.quick_search').click(function() {
+        if($(this).prev().val().length >= 1) {
+            $('div.registers_available > h2 > span > span').html('"' + $(this).prev().val().toUpperCase() + '"');
             $('div.registers_available > h2 > span').show();
+            $('div.registers_available > h2 > span > span').show();
         } else {
             $('h2.title_clients span').hide();
         }

@@ -1037,12 +1037,22 @@ div.schedule #search_header {
         float: left;
         width: 120px;
         margin-top: 7px;
-        background: #FFFFFF url(../img/22/search.png) no-repeat 98% 3px;
+        background-color: #FFF;
         border: 2px solid #CCCCCC;
+        border-right: 0px;
+}
+
+.contact #search_header a.quick_search {
+        background: #FFFFFF url(../img/22/search.png) no-repeat 98% 3px;
+        padding: 15px 12px 15px 14px;
+        margin-top: 7px;
+        float: left;
+        border: 2px solid #CCCCCC;
+        border-left: 0px;
 }
 
 .contact #search_header input:focus, div.multiselectable input.multiselectable_filter:focus {
-        background: #fff6d5 url(../img/22/search.png) no-repeat 98% 3px;
+        background-color: #fff6d5;
 }
 #cleanup {
         display: block;
@@ -1458,17 +1468,13 @@ fieldset.collapsed legend {
         color: #000;
 }
 
-label div.error, .login span.error, .login form p.errors {
+form div.error, .login span.error {
         color: red !important;
+        font-size: 17px;
 }
 
 div.error {
         display: block;
-}
-
-label div.error {
-        display: block;
-        font-size: 17px;
 }
 
 .login span.error, .login form p.errors {

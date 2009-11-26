@@ -30,8 +30,8 @@ $(function() {
     * contact quick search
     */
 
-    $('div#search_header.contact_search input[type=text].quick_search').keyup(function() {
-        ($(this).val().length >= 1) ? updateContact('/contact/filter/' + $(this).val() + '/page1/', false, 'contact/filter/' + $(this).val()) : updateContact('/contact/page1');
+    $('div#search_header.contact_search a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateContact('/contact/filter/' + $(this).prev().val() + '/page1/', false, 'contact/filter/' + $(this).prev().val()) : updateContact('/contact/page1');
     });
 
     /**

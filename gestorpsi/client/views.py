@@ -620,12 +620,15 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
     if form.is_valid():
         object_q = Queue()
         object_q = form.save(commit=False)
-        if referral.priority.title == 'Baixa':
+        try:
+            if referral.priority.title == 'Alta':
+                object_q.priority = '01'
+            elif referral.priority.title == u'Média':
+                object_q.priority = '02'
+            else:
+                object_q.priority = '03'
+        except:
             object_q.priority = '03'
-        elif referral.priority.title == 'Alta':
-            object_q.priority = '01'
-        else:
-            object_q.priority = '02'
         object_q.save()
     else:
         print form.errors

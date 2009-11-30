@@ -504,7 +504,6 @@ table {
         </table>
         {% endif %}
     {% endif %}
-
     <br />
     {% if print_ehr %}
         <strong>{% trans "Referral Sessions" %}</strong><br />
@@ -595,14 +594,6 @@ table {
             <td nowrap="nowrap">{% trans "Status" %}</td>
             <td nowrap="nowrap">{% trans "Severity" %}</td>
           </tr>
-          
-<!--
-            <td nowrap="nowrap">{% trans "Description" %}</td>
-            <td nowrap="nowrap">{% trans "Treatment Indicated" %}</td>
-            <td nowrap="nowrap">{% trans "Bibliography" %}</td>
-            <td nowrap="nowrap">{% trans "Related Sites" %}</td>
-            <td width="20%">{% trans "Comentários" %}</td>
--->
         </tr>
         {% for o in i.diagnosis_set.all %}
         <tr class="zebra_{% cycle 0,1 %}">
@@ -632,8 +623,6 @@ table {
         </table>
         {% endif %}
     {% endif %}
-
-    
 <br />
         {% if i.service.academic_related and i.service.responsibles.all %}
         <br /><br />

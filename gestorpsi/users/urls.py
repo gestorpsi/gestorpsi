@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.users.views import index, list, form, form_new_user, create_user, update_user, update_pwd, set_form_user, add, order, username_is_available
+from gestorpsi.users.views import index, list, form, create_user, update_user, update_pwd, set_form_user, add, order, username_is_available #, form_new_user (WILL BE DELETED)
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
@@ -24,7 +24,7 @@ urlpatterns = patterns('',
     (r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
     (r'^filter/(?P<filter>[a-zA-Z ]+)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
     (r'^filter/(?P<filter>[a-zA-Z ]+)/$', login_check(list), {'no_paging': True}), # quick search
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/add/$', login_check(form_new_user)),
+    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/add/$', login_check(form_new_user)), WILL BE DELETED
     (r'^save/$', login_check(create_user)),
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form)),
     (r'^add/$', login_check(add)),

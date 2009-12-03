@@ -25,7 +25,6 @@ GNU General Public License for more details.
 {% block submenu %}
     <ul>
         <li><a class="first {% if not deactive %} active {% endif %}" href="/user/">{% trans "all" %}</a></li>
-        <li><a href="/user/add/">{% trans "add" %}</a></li>
         <li><a class="{% if deactive %} active {% endif %}" href="/user/deactive/">{% trans "all Deactive" %}</a></li>
     </ul>
 {% endblock %}

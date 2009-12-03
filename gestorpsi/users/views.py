@@ -50,7 +50,7 @@ def list(request, page = 1, initial = None, filter = None, deactive = False):
                             mimetype='application/json')
 
 @permission_required_with_403('users.users_read')
-def form(request, object_id = None):
+def form(request, object_id=None):
     user = request.user
     try:
         profile = Profile.objects.get(person=object_id, person__organization=request.user.get_profile().org_active)
@@ -70,29 +70,34 @@ def form(request, object_id = None):
         return render_to_response('users/users_form.html', {
                                 'show': show,
                                 'profile': profile,
+                                'person': profile.person,
                                 'emails': profile.person.emails.all(),
                                 'groups': groups, },
                                 context_instance=RequestContext(request))
     except:
-        raise Http404
+        return render_to_response('users/users_form.html', {
+                            'person_list': Person.objects.filter(pk=object_id, organization=request.user.get_profile().org_active, profile=None),
+                            'person': Person.objects.get(pk=object_id, organization=request.user.get_profile().org_active),
+                            'clss':request.GET.get('clss'),
+                            }, context_instance=RequestContext(request))
 
 @permission_required_with_403('users.users_read')
 def add(request):
-        return render_to_response('users/users_form.html', {
+    return render_to_response('users/users_form.html', {
                             'person_list': Person.objects.filter(organization = request.user.get_profile().org_active, profile = None),
                             'clss':request.GET.get('clss'),
-                        },
-                        context_instance=RequestContext(request))
+                            }, context_instance=RequestContext(request))
 
-@permission_required_with_403('users.users_read')
-def form_new_user(request, object_id):
-    profile = Profile()
-    profile.person = get_object_or_404(Person, pk=object_id, organization=request.user.get_profile().org_active)
-    profile.user = User(username=slugify(profile.person.name))
-    return render_to_response('users/users_form.html', {
-                                'profile': profile,
-                                'emails': profile.person.emails.all(), },
-                                context_instance=RequestContext(request))
+# WILL BE DELETED SOON
+#@permission_required_with_403('users.users_read')
+#def form_new_user(request, object_id):
+#    profile = Profile()
+#    profile.person = get_object_or_404(Person, pk=object_id, organization=request.user.get_profile().org_active)
+#    profile.user = User(username=slugify(profile.person.name))
+#    return render_to_response('users/users_form.html', {
+#                                'profile': profile,
+#                                'emails': profile.person.emails.all(), },
+#                                context_instance=RequestContext(request))
 
 @permission_required_with_403('users.users_write')
 def create_user(request):
@@ -206,11 +211,13 @@ def order(request, profile_id = None):
     
     return HttpResponseRedirect('/user/%s/' % object.person.id)
 
-#  User name is available?
-# 0 = NO
-# 1 = YES
 @permission_required_with_403('organization.organization_read')
 def username_is_available(request, user):
+    """
+    Check if username is available:
+       0 = No
+       1 = Yes
+    """
     if User.objects.filter(username__iexact = user).count():
             return HttpResponse("0")
     else:

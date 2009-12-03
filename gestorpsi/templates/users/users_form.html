@@ -25,18 +25,13 @@ GNU General Public License for more details.
 {% block submenu %}
     <ul>
         <li><a class="first" href="/user/">{% trans "all" %}</a></li>
-        <li><a class="{% if not profile %}active{% endif %}" href="/user/add/">{% trans "add" %}</a></li>
         <li><a href="/user/deactive/">{% trans "all Deactive" %}</a></li>
-
-        {% if profile %}<li><a class="active">{{ profile.person.name }}</a></li>{% endif %}
-        
+        {% if person %}<li><a class="active">{{ person.name }}</a></li>{% endif %}
     </ul>
 {% endblock %}
 
 
 {% block core %}
-
-<h2 id="title_addressbook" style="display:none"></h2>
 
 {% if profile.id %}
 	<h2 class="title_clients title">{{ profile.person.name }}</h2>
@@ -46,10 +41,6 @@ GNU General Public License for more details.
 	<p class="description">{% trans "Inform the user details then click on Save button" %}</p>
 {% endif %}
 
-
-<h2 id="title_contacts" style="display:none"></h2>
-<h2 id="title_myoffice" style="display:none"></h2>
-
 {% if profile.id %}
     <form action="/user/{{ profile.person.id }}/save/" method="post" id="form_user" class="form_user">
 {% else %}
@@ -58,8 +49,6 @@ GNU General Public License for more details.
 
 <div class="main_area">
 
-	<!-- <a href="" id="help">&nbsp;</a> -->
-	<!-- DataTypes form menu -->
 	<h3><span id="client_add_infotypes">{% trans "User registration" %}</span></h3>
 	<ul id="form_options" class="float_menu" style="display:none;">
 		<li><label><input name="this" type="radio" value="" checked/>{% trans "User registration" %}</label></li>
@@ -70,7 +59,6 @@ GNU General Public License for more details.
                 <label>{% trans "Name" %}<br />
                         {% if person_list %} 
                                     <select name="id_person" class="giant get_user_json">
-                                    <option value=""></option>
                                         {% for o in person_list %}
                                             <option id="" value="{{ o.id }}"> {{ o.name }} </option>
                                         {% endfor %}
@@ -126,6 +114,7 @@ GNU General Public License for more details.
 
 </fieldset>
 
+{# comment #}
 <!-- TO BE IMPLEMENTED!
 <fieldset>
         <legend>{% trans "Expiration Date" %}</legend>
@@ -133,6 +122,7 @@ GNU General Public License for more details.
         <input type="text" class="calendar" name="expiration_date" value="{{ profile.person.birthDate|date:"d/m/Y" }}" mask="99/99/9999" />
 </fieldset>
 -->
+{# endcomment #}
 
 <fieldset>
         {% ifequal show "True" %}
@@ -141,10 +131,10 @@ GNU General Public License for more details.
         {% else %}
                 <legend>{% trans "Role" %}</legend>
                 <h2 class="title_clients title">{% trans "Permissions" %}</h2>
-                <p><input class="group" type="checkbox" id="1" name="perms" value="administrator" {% if groups.0 %}checked{% endif %}>{% trans "Administrator" %}</p>
-                <p><input class="group" type="checkbox" id="2" name="perms" value="professional" {% if groups.1 %}checked{% endif %}>{% trans "Professional" %}</p>
-                <p><input class="group" type="checkbox" id="3" name="perms" value="secretary" {% if groups.2 %}checked{% endif %}>{% trans "Secretary" %}</p>
-                <p><input class="group" type="checkbox" id="4" name="perms" value="client" {% if groups.3 %}checked{% endif %}>{% trans "Client" %}</p>
+                {% if person.is_client %}<p><input class="group" type="checkbox" id="4" name="perms" value="client" {% if groups.3 %}checked{% endif %}>{% trans "Client" %}</p>{% endif %}
+                {% if person.is_employee or person.is_careprofessional %}<p><input class="group" type="checkbox" id="1" name="perms" value="administrator" {% if groups.0 %}checked{% endif %}>{% trans "Administrator" %}</p>{% endif %}
+                {% if person.is_employee or person.is_careprofessional %}<p><input class="group" type="checkbox" id="3" name="perms" value="secretary" {% if groups.2 %}checked{% endif %}>{% trans "Secretary" %}</p>{% endif %}
+                {% if person.is_careprofessional %}<p><input class="group" type="checkbox" id="2" name="perms" value="professional" {% if groups.1 %}checked{% endif %}>{% trans "Professional" %}</p>{% endif %}
          {% endifequal %}
 </fieldset>
 	
@@ -152,10 +142,8 @@ GNU General Public License for more details.
 </div>
 
 <div id="sidebar" class="sidebar">
-	<div class="bg_blue">
-		{% include "tags/save.html" %}
-	</div>
-        {% include "tags/user_sidebar.html" %}
+    {% if perms.users.users_write %}<div class="bg_blue">{% include "tags/save.html" %}</div>{% endif %}
+    {% include "tags/user_sidebar.html" %}
 </div>
 
 </form>

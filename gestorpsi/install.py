@@ -108,6 +108,43 @@ grp_professional.permissions.add(Permission.objects.get(codename='online_message
 grp_professional.permissions.add(Permission.objects.get(codename='online_messages_read'))
 grp_professional.permissions.add(Permission.objects.get(codename='online_messages_list'))
 
+# Student
+print "assigning permissions for group student"
+grp_student, created = Group.objects.get_or_create(name='student')
+grp_student.permissions.add(Permission.objects.get(codename='client_read'))
+grp_student.permissions.add(Permission.objects.get(codename='client_list'))
+grp_student.permissions.add(Permission.objects.get(codename='demographic_read'))
+grp_student.permissions.add(Permission.objects.get(codename='demographic_list'))
+#grp_student.permissions.add(Permission.objects.get(codename='socioeconomic_read'))
+#grp_student.permissions.add(Permission.objects.get(codename='socioeconomic_list'))
+grp_student.permissions.add(Permission.objects.get(codename='ehr_write'))
+grp_student.permissions.add(Permission.objects.get(codename='ehr_read'))
+grp_student.permissions.add(Permission.objects.get(codename='ehr_list'))
+grp_student.permissions.add(Permission.objects.get(codename='admission_write'))
+grp_student.permissions.add(Permission.objects.get(codename='admission_read'))
+grp_student.permissions.add(Permission.objects.get(codename='admission_list'))
+grp_student.permissions.add(Permission.objects.get(codename='referral_write'))
+grp_student.permissions.add(Permission.objects.get(codename='referral_read'))
+grp_student.permissions.add(Permission.objects.get(codename='referral_list'))
+grp_student.permissions.add(Permission.objects.get(codename='upload_write'))
+grp_student.permissions.add(Permission.objects.get(codename='upload_read'))
+grp_student.permissions.add(Permission.objects.get(codename='upload_list'))
+grp_student.permissions.add(Permission.objects.get(codename='schedule_read'))
+grp_student.permissions.add(Permission.objects.get(codename='schedule_list'))
+grp_student.permissions.add(Permission.objects.get(codename='contact_read'))
+grp_student.permissions.add(Permission.objects.get(codename='contact_list'))
+grp_student.permissions.add(Permission.objects.get(codename='careprofessional_read'))
+grp_student.permissions.add(Permission.objects.get(codename='careprofessional_list'))
+grp_student.permissions.add(Permission.objects.get(codename='service_read'))
+grp_student.permissions.add(Permission.objects.get(codename='service_list'))
+grp_student.permissions.add(Permission.objects.get(codename='device_read'))
+grp_student.permissions.add(Permission.objects.get(codename='device_list'))
+grp_student.permissions.add(Permission.objects.get(codename='employee_read'))
+grp_student.permissions.add(Permission.objects.get(codename='employee_list'))
+grp_student.permissions.add(Permission.objects.get(codename='online_messages_topic_write'))
+grp_student.permissions.add(Permission.objects.get(codename='online_messages_write'))
+grp_student.permissions.add(Permission.objects.get(codename='online_messages_read'))
+grp_student.permissions.add(Permission.objects.get(codename='online_messages_list'))
 
 # Secretary
 print "assigning permissions for group secretary"
@@ -196,5 +233,12 @@ for i in grp_client.permissions.all():
     if not re.search('_write' , i.codename):
         grp_client_ro.permissions.add(Permission.objects.get(codename=i.codename))
 
+# Student Read Only
+# just read grp_student permission excluding '_write' codename match
+print "assigning permissions for group student read-only (student_ro)"
+grp_student_ro, created = Group.objects.get_or_create(name='student_ro')
+for i in grp_student.permissions.all():
+    if not re.search('_write' , i.codename):
+        grp_student_ro.permissions.add(Permission.objects.get(codename=i.codename))
 
 print "Done!"

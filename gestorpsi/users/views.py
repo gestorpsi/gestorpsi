@@ -61,12 +61,13 @@ def form(request, object_id=None):
             if (profile.user.groups.filter(name='administrator').count() == 1 ):
                 show = "True"
 
-        groups = [False, False, False, False]   # Template Permission Order: Admin, Psycho, Secretary and Client
+        groups = [False, False, False, False]   # Template Permission Order: Admin, Psycho, Secretary, Client and Student
         for g in profile.user.groups.all():
             if g.name == "administrator": groups[0] = True
             if g.name == "professional":  groups[1] = True
             if g.name == "secretary":     groups[2] = True
             if g.name == "client":        groups[3] = True
+            if g.name == "student":       groups[4] = True
         return render_to_response('users/users_form.html', {
                                 'show': show,
                                 'profile': profile,
@@ -136,6 +137,10 @@ def create_user(request):
     if permissions.count('client'):
         Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='client'))
         profile.user.groups.add(Group.objects.get(name='client'))
+
+    if permissions.count('student'):
+        Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='student'))
+        profile.user.groups.add(Group.objects.get(name='student'))
      
     request.user.message_set.create(message=_('User created successfully'))
 
@@ -166,6 +171,10 @@ def update_user(request, object_id):
     if permissions.count('client'):
         Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='client'))
         profile.user.groups.add(Group.objects.get(name='client'))
+
+    if permissions.count('student'):
+        Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='student'))
+        profile.user.groups.add(Group.objects.get(name='student'))
 
     profile.user.save(force_update = True)
 

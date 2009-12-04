@@ -32,8 +32,8 @@ def start(request):
         object = Client.objects.get(pk=request.user.get_profile().person.client.id)
         return render_to_response('frontend/frontend_client_start.html', locals(), context_instance=RequestContext(request))
     
-    """ user's professional home page """
-    if request.user.get_profile().person.is_careprofessional():
+    """ user's professional and student home page """
+    if request.user.get_profile().person.is_careprofessional() or request.user.get_profile().person.is_student():
         object = CareProfessional.objects.get(pk=request.user.get_profile().person.careprofessional.id)
         events = schedule_occurrences(request, datetime.now().strftime('%Y'), datetime.now().strftime('%m'), datetime.now().strftime('%d')).filter(event__referral__professional=object)
         referrals = object.referral_set.filter(status='01').order_by('-date')[:10]

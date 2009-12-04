@@ -115,8 +115,7 @@ GNU General Public License for more details.
         <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/discharge/" class="client_referral_discharge" title="{{ object.person.name }}">{% trans "Service Discharge" %}</a></li>
         <li><a class="client_messages" href="/client/{{ object.id }}/referral/{{ referral.id }}/messages/" title="{{ object.person.name }}">{% trans "Messages" %}</a></li>
         <li><a class="document" href="/upload/client/{{ object.id }}/attach/{{ referral.id }}" title="{{ object.person.name }}">{% trans "Attach Document" %}</a></li>
-
-        <li><a class="queue" href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/" title="{{ object.person.name }}">{% trans "Queue" %}</a></li>
+        <li><a class="queue" href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/" title="{{ object.person.name }}">{% trans "Queue (add/remove)" %}</a></li>
 
     {% endif %}
     </ul>

@@ -26,7 +26,12 @@ This tag is used in client (home) view for administrator AND CLIENT users.
 <h3><span>{% trans "registration information" %}</span></h3>
 <div class="photo">
     <img class="img_people" src="{% if object.person.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
-    <br /><br />
+    {% ifequal object.person.gender '2'%}
+        <a class="male notajax gender active" value="2"><span>{% trans "Male" %}</span></a>
+    {% else %}
+        <a class="female notajax gender active" value="1"><span>{% trans "Female" %}</span></a>
+    {% endifequal %} 
+ 	<br /><br /> 
 </div>    
 <h1>{{ object }} ( {{ object.person.nickname }} )</h1>
 <p><span class="big">{% if object.person.maritalStatus %}{{ object.person.maritalStatus }}{% endif %}</span></p>

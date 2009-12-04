@@ -78,28 +78,15 @@ GNU General Public License for more details.
     {% if referrals_discharged %}
             {% for referral in referrals_discharged %}
                <p>
-                <a href="/client/{{ object.id }}/referral/{{ referral.referral.id }}/" title="{{ referral }}">{{ referral.referral.service }}</a><br />
-                {% if referral.professional.all.0 %}{{ referral.professional.all.0 }}&nbsp;-&nbsp;{% endif %}{% trans "subscribed at" %} <b>{{ referral.revision.date_created|date:"r"|slice:":-15"}}</b> <br>
+                   <a href="/client/{{ object.id }}/referral/{{ referral.referral.id }}/" title="{{ referral }}">{{ referral.referral.service }}</a><br />
+                   {% if referral.professional.all.0 %}{{ referral.professional.all.0 }}&nbsp;-&nbsp;{% endif %}{% trans "subscribed at" %} <b>{{ referral.revision.date_created|date:"r"|slice:":-15"}}</b> <br>
                </p>
-               <p>
-                {% trans "Date discharged" %}:&nbsp;<b>{{ referral.date|date:"d-m-Y H:m" }}</b>
-               </p>
-                <p>
-                {% trans "Discharge Reason" %}:&nbsp;<b>{{ referral.get_reason_display }}</b>
-                </p>
-                <p>
-                {% trans "Discharge was discussed with client" %}:&nbsp;<b>{% if referral.was_discussed_with_client %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</b>
-                </p>
-                <p>
-                {% trans "Discharge Details" %}:&nbsp;<b>{{ referral.details }}</b>
-                </p>
-                <p>
-                {% trans "Referral discharge status" %}:&nbsp;<b>{% if not referral.status %}{% trans "Not informed" %}{% else %}{{ referral.status }}{% endif %}</b>
-                </p>
-                <p>
-                {% trans "Referral discharge description" %}:&nbsp;<b>{{ referral.description }}</b>
-                </p>
-
+               {% if referral.date %}<p>Date discharge:&nbsp;{{ referral.date|date:"d-m-Y" }}</p>{% endif %}
+               {% if referral.reason %}<p>{% trans "Discharge Reason" %}:&nbsp;<b>{{ referral.get_reason_display }}</b></p>{% endif %}
+               <p>{% trans "Discharge was discussed with client" %}:&nbsp;<b>{% if referral.was_discussed_with_client %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</b></p>
+               {% if referral.details %}<p>{% trans "Discharge Details" %}:&nbsp;<b>{{ referral.details }}</b></p>{% endif %}
+               <p>{% trans "Referral discharge status" %}:&nbsp;<b>{% if not referral.status %}{% trans "Not informed" %}{% else %}{{ referral.status }}{% endif %}</b></p>
+               {% if referral.description %}<p>{% trans "Referral discharge description" %}:&nbsp;<b>{{ referral.description }}</b></p>{% endif %}
             {% endfor %}
     {% else %}    
             <p class="empty">

@@ -97,8 +97,10 @@ GNU General Public License for more details.
                 <a href="/client/{{ object.id}}/referral/{{ referral.id }}/form/">{% trans "Add one now?" %}</a>
                 {% endif %}
             {% else %}
-                    {% trans "Professionals" %}: {{ referral.professional_list|safeseq|join:", "}}
-                {% endif %}
+                {% for p in referral.professional.all %}
+                    {{ p }} {{ p.professionalIdentification.profession }} - {{ p.professionalIdentification.profession.symbol }}&nbsp;{{ p.professionalIdentification }} <br />
+                {% endfor %}
+            {% endif %}
             <br>
             {% trans "Client subscribed on this service since" %} {{ dt }} 
         </p>

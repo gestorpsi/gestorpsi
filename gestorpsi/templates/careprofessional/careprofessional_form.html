@@ -65,8 +65,10 @@ GNU General Public License for more details.
 	<fieldset id="fieldset_professional_identification">
 		<legend>{% trans "Professional Identification" %}</legend>
 			<label>{% trans "Profession" %}<br />
-              {% if object.id %}
-                <input id="" type="text" name="profession" class="profession medium" readonly="1" value="{{ object.professionalIdentification.profession }}">
+              {% if object.professionalIdentification.registerNumber %} 
+ 		          <select name="professional_area" class="medium profession_type" id="0"> 
+ 		              <option symbol="{{  object.professionalIdentification.profession.symbol }}" value="{{ object.professionalIdentification.profession.id }}" selected >{{  object.professionalIdentification.profession }}</option> 
+                  </select> 
               {% else %}
                 <select name="professional_area" class="medium profession_type" id="0">
                  <option symbol="" value="0" disabled="disabled">------</option>
@@ -82,7 +84,7 @@ GNU General Public License for more details.
             </label>
 
 			<label>{% trans "Professional Subscription" %}<br />
-                <input type="text" name="professional_registerNumber" maxlength="50" value="{{ object.professionalIdentification.registerNumber }}" {% if object.id %} readonly="1" {% endif %}/>
+                <input type="text" name="professional_registerNumber" maxlength="50" value="{{ object.professionalIdentification.registerNumber }}" {% if object.professionalIdentification.registerNumber %} readonly="1" {% endif %} />
 			</label>
 	</fieldset>
 

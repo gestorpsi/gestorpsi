@@ -194,7 +194,10 @@ class Person(models.Model):
         return True if hasattr(self, 'client') else False
 
     def is_careprofessional(self):
-        return True if hasattr(self, 'careprofessional') else False
+        return True if hasattr(self, 'careprofessional') and not hasattr(self.careprofessional, 'studentprofile') else False
+
+    def is_student(self):
+        return True if hasattr(self, 'careprofessional') and hasattr(self.careprofessional, 'studentprofile') else False
 
     def is_employee(self):
         return True if hasattr(self, 'employee') else False

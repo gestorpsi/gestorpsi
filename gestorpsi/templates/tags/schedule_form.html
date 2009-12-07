@@ -39,33 +39,13 @@ GNU General Public License for more details.
             <h2 class="red">
             {{ dtstart|date:"l," }} {{ dtstart|date:"d" }} {% trans "of" %} {{ dtstart|date:"F" }} {% trans "of" %} {{ dtstart|date:"Y" }} - {{ room }} <a href="javascript:history.back();"><small>[{% trans "change" %}]</small></a>
             </h2>
-            {% comment %}
-                <label>{% trans "Date" %}</label>
-                <div>
-                {{ recurrence_form.day }}
-                
-                </div>
-            {% endcomment %}
                 <label>{% trans "Start Time" %}<br />
                 {{ recurrence_form.start_time_delta }}
                 </label>
                 <label>{% trans "End Time" %}<br />
                 {{ recurrence_form.end_time_delta }}
                 </label>
-{% comment %}
-                <label>{% trans "Room" %}<br />
-                {{ recurrence_form.room }}
-                </label>
-                
-                <label>{% trans "Room" %}<br />
-                    <select name="room" class="extramedium asm" id="id_room">
-                            <option value="" selected="selected">---------</option>
-                            {% for room in rooms %}
-                                <option value="{{ room.id }}"{% ifequal room.id room_id %} selected{% endifequal %}>{{ room.description }}</option>
-                            {% endfor %}
-                    </select>
-                </label>
-                {% endcomment %}
+
                 <div style="clear:both"></div>
                 <label class="event_is_online">{% trans "Is online" %}</label>
                 <div class="event_is_online">
@@ -89,7 +69,7 @@ GNU General Public License for more details.
                     </label>
                     </div>
                     <div style="clear:both"><br />
-                    <a style="cursor:pointer;" onclick="$('fieldset.referral_group').show('slow'); $(this).parent('div').hide();">{% trans "Schedule a Group?" %}</a>
+                    <a style="cursor:pointer;" onclick="$('fieldset#existing_referral_true').hide();$('fieldset.referral_group').show('slow'); ">{% trans "Schedule a Group?" %}</a>
                     </div>
             </fieldset>
             {% else %} {# client schedule view #}
@@ -102,10 +82,13 @@ GNU General Public License for more details.
                     <select name="group" class="giant">
                     <option value="">--------</option>
                     {% for i in group %}
-                        <option value="{{ i.referral.id }}">{{ i.referral.service.name }} - {{ i }}</option>
+                        <option value="{{ i.id }}"{% if not i.charged_members %} disabled{% endif %}>{{ i.service.name }} - {{ i }}{% if not i.charged_members %} ({% trans "Empty" %}){% endif %}</option>
                     {% endfor %}
                     </select>
                 </label>
+                <div style="clear:both"><br />
+                    <a style="cursor:pointer;" onclick="$('fieldset.referral_group').hide();$('fieldset.existing_referral').show('slow');$('fieldset.referral_group select option:first').attr('selected', 'selected');">{% trans "Schedule a single client?" %}</a>
+                </div>
             </fieldset>
 
             <fieldset>

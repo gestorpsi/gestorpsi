@@ -28,7 +28,7 @@ from gestorpsi.settings import DEBUG, MEDIA_URL
 from gestorpsi.address.models import Country, State, AddressType, City
 from gestorpsi.authentication.models import Profile
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
-from gestorpsi.service.models import Service
+from gestorpsi.service.models import Service, ServiceGroup, GroupMembers
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.careprofessional.views import Profession
 from gestorpsi.client.models import Client, Relation
@@ -246,27 +246,15 @@ def referral_plus_form(request, object_id=None, referral_id=None):
     referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
 
     total_service = Referral.objects.filter(client=object).count()
-    #referral_list = Referral.objects.filter(client=object, status='01')
 
     return render_to_response('client/client_referral_plus_form.html',
                               {'object': object, 
                                 'referral': referral,
                                 'referral_form': referral_form,
-                                #'referral_list': referral_list,
+                                'services': Service.objects.filter(active=True, organization=request.user.get_profile().org_active),
                                 'referrals': Referral.objects.filter(client = object),
                                 'IndicationsChoices': IndicationChoice.objects.all(),
-                                'contact_organizations': Contact.objects.filter(
-                                                org_id = request.user.get_profile().org_active.id, 
-                                                person_id = request.user.get_profile().person.id, 
-                                                filter_name = None,
-                                                filter_type = 1
-                                            ),
-                                'contact_professionals': Contact.objects.filter(
-                                                org_id = request.user.get_profile().org_active.id, 
-                                                person_id = request.user.get_profile().person.id, 
-                                                filter_name = None,
-                                                filter_type = 2
-                                            ),
+                                'groups': ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active, active=True),
                                }, context_instance=RequestContext(request))
 
 
@@ -298,7 +286,9 @@ def referral_form(request, object_id = None, referral_id = None):
                                 'referral': referral,
                                 'referral_form': referral_form,
                                 'referral_list': referral_list,
+                                'services': Service.objects.filter(active=True, organization=request.user.get_profile().org_active),
                                 'referrals': Referral.objects.filter(client = object),
+                                'groups': ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active, active=True),
                                 'IndicationsChoices': IndicationChoice.objects.all(),
                                 'contact_organizations': Contact.objects.filter(
                                                 org_id = request.user.get_profile().org_active.id, 
@@ -328,6 +318,12 @@ def referral_plus_save(request, object_id=None):
             object.status = '01'
             object.save()
             form.save_m2m()
+            ''' if asked, add referral and client to some existing group ''' 
+            if request.POST.get('group'):
+                group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active)
+                for c in request.POST.getlist('client'):
+                    gm = GroupMembers(group=group, client=Client.objects.get(pk = object_id, person__organization=request.user.get_profile().org_active), referral=object)
+                    gm.save()
         else:
             print form.errors
     request.user.message_set.create(message=_('Referral saved successfully'))
@@ -361,6 +357,13 @@ def referral_save(request, object_id = None, referral_id = None):
                     # indication.client = Client.objects.get(pk = object_id)
                     indication.referral = Referral.objects.get(pk = object)
                     indication.save()
+                ''' if asked, add referral and client to some existing group ''' 
+                if request.POST.get('group'):
+                    group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active)
+                    for c in request.POST.getlist('client'):
+                        gm = GroupMembers(group=group, client=Client.objects.get(pk = object_id, person__organization=request.user.get_profile().org_active), referral=object)
+                        gm.save()
+                
                 url = '/client/%s/referral/%s/'
                 msg = _('Referral saved successfully')
             else:
@@ -425,7 +428,6 @@ def referral_home(request, object_id = None, referral_id = None):
 
 @permission_required_with_403('client.client_write')
 def save(request, object_id=None, is_company = False):
-    print "S A V E "
     """
        Save or Update a client record
     """

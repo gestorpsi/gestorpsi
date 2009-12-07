@@ -34,7 +34,7 @@ This tag is used in client (home) view for administrator AND CLIENT users.
     {% endifequal %} 
  	<br /><br /> 
 </div>    
-<h1>{{ object }} ( {{ object.person.nickname }} )</h1>
+<h1>{{ object }} {% if object.person.nickname %}( {{ object.person.nickname }} ){% endif %}</h1>
 <p><span class="big">{% if object.person.maritalStatus %}{{ object.person.maritalStatus }}{% endif %}</span></p>
 <p><span class="big">{% if object.person.birthDate %}{{ object.person.birthDate|age }} {% trans "years old" %} {% endif %}</span></p>
 {% if object.person.address.all %}

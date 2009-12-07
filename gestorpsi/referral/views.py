@@ -21,94 +21,8 @@ from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
-from gestorpsi.referral.models import Referral, ReferralGroup, Queue, ReferralExternal, ReferralAttach
-from gestorpsi.referral.forms import ReferralGroupForm, ReferralClientForm
+from gestorpsi.referral.models import Referral, Queue, ReferralExternal, ReferralAttach
 from gestorpsi.util.decorators import permission_required_with_403
-
-
-# list referral groups
-@permission_required_with_403('referral.referral_list')
-def group_list(request, object_id=None):
-    object  = ReferralGroup.objects.filter(referral__service__id = object_id, referral__organization = request.user.get_profile().org_active)
-
-    return render_to_response('service/service_group_list.html',
-                              { 'object': object, 
-                               'service': Service.objects.get(pk=object_id),
-                              },
-                              context_instance=RequestContext(request)
-                              )
-
-# referral group add form from selected SERVICE
-@permission_required_with_403('referral.referral_write')
-def group_add(request, object_id=None):
-    object = get_object_or_404(Service, pk=object_id, organization = request.user.get_profile().org_active)
-
-    if request.method == 'POST':
-        form = ReferralGroupForm(request.POST)
-        client_form = ReferralClientForm(request.POST)
-        if form.is_valid() and client_form.is_valid():
-            # create 'empty' referral
-            referral = Referral()
-            referral.service = object
-            referral.organization = request.user.get_profile().org_active
-            referral.save()
-            
-            # save group details
-            object = form.save(commit=False)
-            object.referral = referral
-            object.save()
-            
-            # if exists, add clients on referral
-            client_form = ReferralClientForm(request.POST, instance=referral)
-            client_form.save()
-
-            request.user.message_set.create(message=_('Group saved successfully'))
-            return HttpResponseRedirect('/service/group/%s/form/' % object.id)
-
-    else:
-        form = ReferralGroupForm()
-        client_form = ReferralClientForm()
-        client_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1', referral__service = object).distinct()
-
-    return render_to_response('service/service_group_form.html',
-                              {'object': object, 
-                                'form': form,
-                                'client_form': client_form,
-                                'hide_service_actions': True,
-#                                'clients': Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1', referral__service = object).distinct(),
-                                'clients': Referral.objects.filter(organization = request.user.get_profile().org_active, status = '01', service = object).distinct(),
-                               },
-                              context_instance=RequestContext(request)
-                              )
-                              
-# referral group edit form from selected GROUP
-@permission_required_with_403('referral.referral_write')
-def group_form(request, object_id=None):
-    object = get_object_or_404(ReferralGroup, pk=object_id, referral__service__organization=request.user.get_profile().org_active)
-
-    if request.method == 'POST':
-        form = ReferralGroupForm(request.POST, instance=object)
-        client_form = ReferralClientForm(request.POST, instance=object.referral)
-        if form.is_valid() and client_form.is_valid():
-            object = form.save(commit=False)
-            object.save()
-            client_form.save()
-
-            request.user.message_set.create(message=_('Group saved successfully'))
-            return HttpResponseRedirect('/service/group/%s/form/' % object.id)
-
-    else:
-        form = ReferralGroupForm(instance=object)
-        client_form = ReferralClientForm(instance=object.referral)
-
-    return render_to_response('service/service_group_form.html',
-                              {'object': object, 
-                                'form': form,
-                                'client_form': client_form,
-                                'hide_service_actions': True,
-                               },
-                              context_instance=RequestContext(request)
-                              )
 
 @permission_required_with_403('referral.referral_list')
 def referral_off(request, object_id=None):
@@ -165,50 +79,6 @@ def client_referrals(request, object_id = None):
     
     return HttpResponse(array, mimetype='application/json')
 
-
-@permission_required_with_403('referral.referral_list')
-def mult_select(request, object_id = None):
-    print "M U L T"
-    object = get_object_or_404(Service, pk=object_id, organization = request.user.get_profile().org_active)
-#    object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
-#    referral = Referral.objects.charged().filter(client=object, service__organization=request.user.get_profile().org_active)
-
-    referrals = Referral.objects.filter(organization = request.user.get_profile().org_active, status = '01', service = object).distinct()
-
-    array = {} #json
-    i = 0
-
-    for o in referrals:
-        prof0 = ''
-        prof1 = ''
-        prof2 = ''
-
-        try:
-            prof0 = '%s' % o.professional.all()[0]
-            prof0 = ('(%s' ' %s)' % (prof0.split(' ')[0], prof0.split(' ')[1][0]))
-
-            prof1 = '%s' % o.professional.all()[1]
-            prof1 = ('(%s' ' %s)' % (prof1.split(' ')[0], prof1.split(' ')[1][0]))
-
-            prof2 = '%s' % o.professional.all()[2]
-            prof2 = ('(%s' ' %s)' % (prof2.split(' ')[0], prof2.split(' ')[1][0]))
-
-        except:
-            pass
-
-        array[i] = {
-            'client': '%s' % o.client.all()[0],
-            'id': '%s' % o.client.all()[0].id,
-            'prof0': ' %s' % prof0,
-            'prof1': ' %s' % prof1,
-            'prof2': ' %s' % prof2,
-        }
-        i = i + 1
-
-    array = simplejson.dumps(array, encoding = 'iso8859-1')
-
-    return HttpResponse(array, mimetype='application/json')
-    
 def _referral_view(request, object_id = None, referral_id = None, template_name = 'client/client_referral_home.html'):
     clss = request.GET.get("clss")
     user = request.user

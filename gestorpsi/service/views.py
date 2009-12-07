@@ -33,8 +33,8 @@ from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.organization.models import Agreement, AgeGroup, EducationLevel, HierarchicalLevel
 from gestorpsi.careprofessional.models import CareProfessional, Profession
-from gestorpsi.service.models import Service, Area, ServiceType, Modality
-from gestorpsi.service.forms import GenericAreaForm, SchoolAreaForm, OrganizationalAreaForm, GENERIC_AREA #, ClinicAreaForm
+from gestorpsi.service.models import Service, Area, ServiceType, Modality, ServiceGroup
+from gestorpsi.service.forms import ServiceGroupForm, GenericAreaForm, SchoolAreaForm, OrganizationalAreaForm, GENERIC_AREA #, ClinicAreaForm
 from gestorpsi.client.forms import Client
 
 @permission_required_with_403('service.service_list')
@@ -76,9 +76,13 @@ def list(request, page = 1, deactive = False):
         array['paginator'][p] = p
 
     for o in object.object_list:
+        name = u'%s' % o.name
+        if o.is_group:
+            name += " (%s)" % _('Group')
         array[i] = {
             'id': o.id,
-            'name': u'%s' % o.name,
+            'name': name,
+            'is_group': False if not o.is_group else True,
             'description': u'%s' % o.description,
             'email': '',
         }
@@ -151,6 +155,7 @@ def save(request, object_id=''):
       object.research_project = request.POST.get('research_project') or False
       object.research_project_name = request.POST.get('research_project_name')
       object.academic_related = request.POST.get('academic_related') or False
+      object.is_group = request.POST.get('is_group') or False
       object.area = Area.objects.get(pk=request.POST.get('service_area'))
       object.service_type = ServiceType.objects.get(pk=request.POST.get('service_type'))
 
@@ -336,3 +341,48 @@ def client_list(request, page = 1, object_id = None, no_paging = None, initial =
         i = i + 1
 
     return HttpResponse(simplejson.dumps(array, sort_keys=True), mimetype='application/json')
+
+
+# list referral groups
+@permission_required_with_403('referral.referral_list')
+def group_list(request, object_id=None):
+    object  = ServiceGroup.objects.filter(service__id = object_id, service__organization = request.user.get_profile().org_active)
+
+    return render_to_response('service/service_group_list.html',
+                              { 'object': object, 
+                               'service': Service.objects.get(pk=object_id),
+                              },
+                              context_instance=RequestContext(request)
+                              )
+
+# referral group add form from selected SERVICE
+@permission_required_with_403('referral.referral_write')
+def group_form(request, object_id=None, group_id=None):
+    object = get_object_or_404(Service, pk=object_id, organization = request.user.get_profile().org_active)
+
+    if not object.is_group:
+        return render_to_response('403.html', {'object':_('Sorry, this service was configured without group support.')})
+
+    group = get_object_or_None(ServiceGroup, pk=group_id, service__organization = request.user.get_profile().org_active)
+
+    if request.method == 'POST':
+        form = ServiceGroupForm(request.POST, instance=group) if group else ServiceGroupForm(request.POST)
+        if form.is_valid():
+            group = form.save(commit=False)
+            group.service = object 
+            group.save()
+            request.user.message_set.create(message=_('Group saved successfully'))
+            return HttpResponseRedirect('/service/%s/group/%s/form/' % (object.id, group.id))
+
+    else:
+        form = ServiceGroupForm(instance=group) if group else ServiceGroupForm()
+
+    return render_to_response('service/service_group_form.html',
+                              {'object': object, 
+                                'form': form,
+                                'group': group,
+                                'hide_service_actions': True,
+                               },
+                              context_instance=RequestContext(request)
+                              )
+

@@ -83,7 +83,8 @@ class ScheduleOccurrence(Occurrence):
     def __unicode__(self):
         return u"%s - %s" % (datetime.strftime(self.start_time, '%d/%m/%Y %H:%M'), datetime.strftime(self.end_time, '%H:%M'))
 
-
+    class Meta:
+        ordering = ('start_time',)
 
 class OccurrenceConfirmation(models.Model):
     occurrence = models.OneToOneField(ScheduleOccurrence)

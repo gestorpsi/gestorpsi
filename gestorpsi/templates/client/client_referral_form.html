@@ -100,7 +100,20 @@ GNU General Public License for more details.
             </label>
 
             <label{% if referral %} style="display:none"{% endif %}>{% trans "To Service" %}<br />
-            {{ referral_form.service }}
+                <select id="id_service" class="extrabig asm" name="service">
+                    <option value="">---------</option>
+                    {% for s in services %}
+                    <option value="{{ s.id }}" is_group="{% if s.is_group %}True{% else %}False{% endif %}"{% if s.is_group and not s.servicegroup_set.all %} disabled{% endif %}>{{ s }}{% if s.is_group and not s.servicegroup_set.all %} ({% trans "Empty" %}){% endif %}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            
+            <label class="referral_group" style="display:none;">{% trans "Subscribe this customer in a group" %}<br />
+                <select name="group" class="extrabig">
+                    {% for g in groups %}
+                    <option value="{{ g.id }}" service="{{ g.service.id }}"> {{ g }} </option>
+                    {% endfor %}
+                </select>
             </label>
             
             {% if not referral or not referral.professional.all %}

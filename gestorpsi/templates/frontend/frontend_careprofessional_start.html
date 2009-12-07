@@ -46,8 +46,10 @@ GNU General Public License for more details.
                     <span class="email"></span></td>
                     
                     <td>
-                        <a style="padding-bottom: 5px; text-decoration:none" href="/service/{{ service.id }}/group/" class="group" title="{% trans "List groups in this service" %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                        <a style="padding-bottom: 5px; text-decoration:none" href="/service/{{ service.id }}/group/add/" class="group_add" title="{% trans "Add group in this service" %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        {% if service.is_group %}
+                            <a style="padding-bottom: 5px; text-decoration:none" href="/service/{{ service.id }}/group/" class="group" title="{% trans "List groups in this service" %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                            <a style="padding-bottom: 5px; text-decoration:none" href="/service/{{ service.id }}/group/add/" class="group_add" title="{% trans "Add group in this service" %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

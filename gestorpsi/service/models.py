@@ -19,6 +19,7 @@ from django.db import models
 from django.utils.translation import ugettext as _
 from gestorpsi.organization.models import Organization, Agreement, AgeGroup, EducationLevel, HierarchicalLevel, Procedure
 from gestorpsi.careprofessional.models import CareProfessional, Profession
+from gestorpsi.client.models import Client
 from gestorpsi.util.uuid_field import UuidField 
 
 class ServiceType(models.Model):
@@ -72,6 +73,7 @@ class Service(models.Model):
     description = models.CharField(max_length=999, blank=True)
     keywords = models.CharField(max_length=100, blank=True)
     active = models.BooleanField(default=True)
+    is_group = models.BooleanField(default=False)
     area = models.ForeignKey(Area)
     service_type = models.ForeignKey(ServiceType)
     modalities = models.ManyToManyField(Modality)
@@ -97,21 +99,51 @@ class Service(models.Model):
     objects = ServiceManager()
 
     def __unicode__(self):
-        return u"%s" % (self.name)
+        u = u"%s" % (self.name)
+        if self.is_group:
+            u += " (%s)" % _('Group')
+        return u
     
     class Meta:
         ordering = ['name']
         get_latest_by = ['date']
 
-    def groups(self):
-        group = []
-        for i in self.referral_set.all():
-            if i.group_name():
-                group.append(i.group_name())
-        return group
+    def revision(self):
+        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+
+class ServiceGroup(models.Model):
+    id = UuidField(primary_key=True)
+    service = models.ForeignKey(Service, null=False, blank=False)
+    members = models.ManyToManyField(Client, null=True, blank=True, through='GroupMembers')
+    description = models.CharField(max_length=100)
+    comments = models.TextField(blank=True)
+    active = models.BooleanField(default=True)
+    
+    def __unicode__(self):
+        return u'%s' % (self.description)
+
+    class Meta:
+        ordering = ['service__name', 'description']
+
+    def charged_members(self):
+        from gestorpsi.referral.models import ReferralDischarge
+        members = []
+        for i in self.groupmembers_set.all():
+            if not ReferralDischarge.objects.filter(client=i.client, referral=i.referral):
+                members.append(i)
+        return members
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+
+class GroupMembers(models.Model):
+    from gestorpsi.referral.models import Referral
+    group = models.ForeignKey(ServiceGroup)
+    client = models.ForeignKey(Client)
+    referral = models.ForeignKey(Referral)
+    
+    def __unicode__(self):
+        return u'%s' % (self.client)
 
 reversion.register(Service, follow=['modalities', 'agreements', 'professions', 'responsibles', 'professionals' ])
 reversion.register(Modality)

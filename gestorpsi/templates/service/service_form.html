@@ -86,6 +86,14 @@ GNU General Public License for more details.
                 </div>
 	</fieldset>
 
+    <fieldset>
+		<legend>{% trans "Service Group Support" %}</legend>
+            <label>
+                <input type="checkbox" name="is_group" {% if object.id %}disabled="disabled"{% endif %}{% if object.is_group %} checked{% endif %} />&nbsp;
+                {% trans "If checked, this service will accept group members." %} 
+            </label>
+	</fieldset>
+
 	<!--
 	Service Profile 
 	-->

@@ -32,36 +32,51 @@ GNU General Public License for more details.
 
 {% block core %}
 
-{% if not object %}
-<div class="no_registers_available">
-        <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/service/{{ service.id }}/group/add/" display="form" class="fastmenu notajax" sub_menu="sub_services">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
-</div>
+{% if not service.is_group %}
+    <div class="no_registers_available">
+            <div id="msg_area" class="alert">{% trans "Sorry, this service was configured without group support." %}<br /></div>
+    </div>
 {% else %}
 
-<div class="registers_available">
-        <h2 class="title_services">{{ object.0.referral.service.name }} {% trans "groups" %}</h2>
-        <p class="description">{% trans "Displaying" %} <a href="/service/{{ object.0.referral.service.id }}/group/"><span id="object_length">{{ object|length }}</span> {% trans "groups(s)" %}</a>. </p>
-        
-        <div class="main_area contact">
-                <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-                <thead> 
-                        <tr> 
-                        <th></th> 
-                        <th></th> 
-                        </tr> 
-                </thead>
-                <tbody>
-                    {% for o in object %}
-                    <tr class="zebra_{% cycle '0' '1' %}">
-                        <td class="title"><a href="/service/group/{{ o.id }}/form/" title="{{ o }}">{{ o }}</a><br></td>
-                        <td><span class="phone">{{ o.referral.client.all|length }} {% trans "client(s)" %}</span><br><span class="email">{{ o.comments|truncatewords:15 }}</span></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                </table>
-                {# {% include "tags/paginator.html" %} #}
-        </div>
-</div>
+    {% if not object %}
+    <div class="no_registers_available">
+            <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/service/{{ service.id }}/group/add/" display="form" class="fastmenu notajax" sub_menu="sub_services">{% trans "here" %}</a> {% trans "if you want to add a new one." %}</div>
+    </div>
+    {% else %}
 
+    <div class="registers_available">
+            <h2 class="title_services">{{ service.name }} {% trans "groups" %}</h2>
+            <p class="description">{% trans "Displaying" %} <a href="/service/{{ object.0.referral.service.id }}/group/"><span id="object_length">{{ object|length }}</span> {% trans "groups(s)" %}</a>. </p>
+            
+            <div class="main_area contact">
+                    <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+                    <thead> 
+                            <tr> 
+                            <th></th> 
+                            <th></th> 
+                            </tr> 
+                    </thead>
+                    <tbody>
+                        {% for o in object %}
+                        <tr class="zebra_{% cycle '0' '1' %}">
+                            <td class="title"><a href="/service/{{ service.id }}/group/{{ o.id }}/form/" title="{{ o }}">{{ o }}</a><br></td>
+                            <td><span class="phone">{{ o.charged_members|length }} {% trans "client(s)" %}</span><br><span class="email">{{ o.comments|truncatewords:15 }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                    {# {% include "tags/paginator.html" %} #}
+            </div>
+    </div>
+
+    <div id="sidebar" class="sidebar">
+        {% if service.id %}
+        {% with service as object %}
+            {% include "tags/service_sidebar.html" %}
+        {% endwith %}
+        {% endif %}
+    </div>
+
+    {% endif %}
 {% endif %}
 {% endblock %}

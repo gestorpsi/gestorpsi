@@ -113,7 +113,7 @@ function updateGrid(url) {
                 if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {
                 
                     //append group name or client list
-                    if(this.group != null) {
+                    if(this.group != '') {
                         str_client = this.group + "<br />";
                         str_client_inline = this.group;
                     } else {
@@ -181,7 +181,7 @@ function updateGrid(url) {
 
                 $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').hide(); // hide free slot 
                 
-                url = '/schedule/events/' + this.id + '/confirmation/';
+                url = (this.group != '')?'/schedule/events/group/' +  this.group_id + '/occurrence/' + this.id + '/':'/schedule/events/' + this.id + '/confirmation/';
                 
                 if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {
                     $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" href="' + url + '" class="booked">' + label + '</a>'); // show booked event

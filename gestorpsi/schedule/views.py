@@ -26,10 +26,10 @@ from django.utils import simplejson
 from django.db.models import Q
 from swingtime.utils import create_timeslot_table
 from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation, OccurrenceFamily
-from gestorpsi.referral.models import Referral, ReferralGroup
+from gestorpsi.referral.models import Referral
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.place.models import Place, Room
-from gestorpsi.service.models import Service
+from gestorpsi.service.models import Service, ServiceGroup
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm
@@ -76,16 +76,19 @@ def add_event(
             return render_to_response('403.html', {'object':_('Sorry. You can not book more than 40 occurrence at the same time')})
         recurrence_form = recurrence_form_class(request.POST)
 
-        if request.POST.get('group'):
-            referral = request.POST.get('group')
-        else:
-            referral = request.POST.get('referral')
-
-        event = get_object_or_404(Referral, pk=referral, service__organization=request.user.get_profile().org_active)
-
         if recurrence_form.is_valid():
-            event = recurrence_form.save(event)
-            redirect_to = redirect_to or '/schedule/events/%s/' % event.id
+            if not request.POST.get('group'): # booking single client
+                referral = get_object_or_404(Referral, pk=request.POST.get('referral'), service__organization=request.user.get_profile().org_active)
+                event = recurrence_form.save(referral)
+                redirect_to = redirect_to or '/schedule/events/%s/' % event.id
+            else: # booking a group
+                group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active, active=True)
+                if group.charged_members(): # this check is already done in template. just to prevent empty groups
+                    for f in group.charged_members():
+                        referral = get_object_or_404(Referral, pk=f.referral.id, service__organization=request.user.get_profile().org_active)
+                        event = recurrence_form.save(referral)
+                redirect_to = redirect_to or ('/schedule/events/group/%s/occurrence/%s/' % (group.id, event.occurrence_set.all()[0].id))
+    
             if not event.errors:
                 request.user.message_set.create(message=_('Schedule saved successfully'))
                 return http.HttpResponseRedirect(redirect_to)
@@ -135,7 +138,7 @@ def add_event(
             dtstart=dtstart, 
             event_form=event_form, 
             recurrence_form=recurrence_form, 
-            group  = ReferralGroup.objects.filter(referral__organization = request.user.get_profile().org_active),
+            group  = ServiceGroup.objects.filter(service__organization = request.user.get_profile().org_active, active=True),
             room = room,
             object = client,
             referral = referral,
@@ -270,6 +273,27 @@ def occurrence_confirmation_form(
         context_instance=RequestContext(request)
     )
 
+@permission_required_with_403('schedule.schedule_read')
+def occurrence_group(
+    request,
+    group_id,
+    occurrence_id,
+    template='schedule/schedule_occurrence_group.html',
+    #form_class=OccurrenceConfirmationForm,
+):
+
+    group = get_object_or_404(ServiceGroup, pk=group_id, service__organization = request.user.get_profile().org_active, active=True)
+    occurrence = get_object_or_404(ScheduleOccurrence, pk=occurrence_id, event__referral__service__organization=request.user.get_profile().org_active)
+    group_occurrences = ScheduleOccurrence.objects.filter(start_time=occurrence.start_time, end_time=occurrence.end_time)
+    event = occurrence.event.referral
+    
+    return render_to_response(
+        template,
+        locals(),
+        #dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral, occurrence_confirmation = occurrence_confirmation, hide_date_field = True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None ),
+        context_instance=RequestContext(request)
+    )
+
 @permission_required_with_403('schedule.schedule_list')
 def _datetime_view(
     request, 
@@ -360,6 +384,7 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
 
     array = {} #json
     i = 0
+    groups = []
 
     date = datetime.strptime(('%s/%s/%s' % (year, month, day)), "%Y/%m/%d")
 
@@ -373,44 +398,54 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
     }
     
     for o in occurrences:
-        range = o.end_time-o.start_time
-        rowspan = range.seconds/1800 # how many blocks of 30min the occurrence have
+        have_same_group = False
+        if hasattr(o.event.referral.group, 'id'):
+            if o.event.referral.group.id in groups:
+                have_same_group = True
         
-        array[i] = {
-            'id': o.id,
-            'event_id': o.event.id,
-            'room': o.room_id,
-            'place': o.room.place_id,
-            'room_name': ("%s" % o.room),
-            'service_id':o.event.referral.service.id,
-            'group': o.event.referral.group_name(),
-            'service':o.event.referral.service.name,
-            'css_color_class':o.event.referral.service.css_color_class,
-            'start_time': o.start_time.strftime('%H:%M:%S'),
-            'end_time': o.end_time.strftime('%H:%M:%S'),
-            'rowspan': rowspan,
-            'online': o.is_online,
-        }
-        
-        sub_count = 0
-        array[i]['professional'] = {}
-        for p in o.event.referral.professional.all():
-            array[i]['professional'][sub_count] = ({'id':p.id, 'name':p.person.name})
-            sub_count = sub_count + 1
-        
-        sub_count = 0
-        array[i]['client'] = {}
-        for c in o.event.referral.client.all():
-            array[i]['client'][sub_count] = ({'id':c.id, 'name':c.person.name})
-            sub_count = sub_count + 1
-        
-        sub_count = 0
-        array[i]['device'] = {}
-        for o in o.scheduleoccurrence.device.all():
-            array[i]['device'][sub_count] = ({'id':o.id, 'name': ("%s - %s - %s" % (o.device.description, o.brand, o.model)) })
-            sub_count = sub_count + 1
+        if not have_same_group:
+            range = o.end_time-o.start_time
+            rowspan = range.seconds/1800 # how many blocks of 30min the occurrence have
 
-        i = i + 1
+            array[i] = {
+                'id': o.id,
+                'event_id': o.event.id,
+                'room': o.room_id,
+                'place': o.room.place_id,
+                'room_name': ("%s" % o.room),
+                'service_id':o.event.referral.service.id,
+                'group': ("%s" % '' if not hasattr(o.event.referral.group, 'id') else o.event.referral.group.description),
+                'group_id': '' if not hasattr(o.event.referral.group, 'id') else o.event.referral.group.id,
+                'service': "%s %s" % (o.event.referral.service.name, '' if not hasattr(o.event.referral.group, 'id') else '(' + _('Group') + ')'),
+                'css_color_class':o.event.referral.service.css_color_class,
+                'start_time': o.start_time.strftime('%H:%M:%S'),
+                'end_time': o.end_time.strftime('%H:%M:%S'),
+                'rowspan': rowspan,
+                'online': o.is_online,
+            }
+            
+            sub_count = 0
+            array[i]['professional'] = {}
+            for p in o.event.referral.professional.all():
+                array[i]['professional'][sub_count] = ({'id':p.id, 'name':p.person.name})
+                sub_count = sub_count + 1
+            
+            sub_count = 0
+            array[i]['client'] = {}
+            for c in o.event.referral.client.all():
+                array[i]['client'][sub_count] = ({'id':c.id, 'name':c.person.name})
+                sub_count = sub_count + 1
+            
+            sub_count = 0
+            array[i]['device'] = {}
+            for o in o.scheduleoccurrence.device.all():
+                array[i]['device'][sub_count] = ({'id':o.id, 'name': ("%s - %s - %s" % (o.device.description, o.brand, o.model)) })
+                sub_count = sub_count + 1
+
+            i = i + 1
+            
+            if hasattr(o.event.referral.group, 'id'):
+                groups.append(o.event.referral.group.id)
 
     array['util']['occurrences_total'] = i
     array = simplejson.dumps(array)

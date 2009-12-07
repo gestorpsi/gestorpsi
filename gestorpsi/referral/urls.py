@@ -16,14 +16,10 @@ GNU General Public License for more details.
 
 from django.conf.urls.defaults import *
 from gestorpsi.authentication.views import login_check
-from gestorpsi.referral.views import referral_off, client_referrals, mult_select
+from gestorpsi.referral.views import referral_off, client_referrals
 
 
 urlpatterns = patterns('gestorpsi.referral.views',
-    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/form/$', login_check(form)), ## MOVED TO CLIENT VIEW
     (r'^client/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(client_referrals)), ## MOVED TO CLIENT VIEW
-    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save)), ## MOVED TO CLIENT VIEW
     (r'^(?P<object_id>\d+)/off/$', login_check(referral_off)),
-    #(r'^save/$', login_check(save)),
-    (r'^multselect/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(mult_select)),
 )

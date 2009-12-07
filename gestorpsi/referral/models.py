@@ -104,22 +104,6 @@ REFERRAL_DISCHARGE_STATUS = (
     ('7', _('Off')),
 )
 
-class ReferralGroup(models.Model):
-    id = UuidField(primary_key=True)
-    referral = models.ForeignKey('Referral', null=True, blank=True)
-    description = models.CharField(max_length=100)
-    comments = models.TextField(blank=True)
-    active = models.BooleanField(default=True)
-    
-    def __unicode__(self):
-        return u'%s' % (self.description)
-
-    class Meta:
-        ordering = ['referral__service__name', 'description']
-
-    def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
-
 class ReferralManager(models.Manager):
     def charged(self):
         return super(ReferralManager, self).get_query_set().filter(referraldischarge__isnull=True)
@@ -174,11 +158,19 @@ class Referral(Event):
 
     def add_occurrences(self, start_time, end_time, room, device, annotation, is_online, **rrule_params):
         rrule_params.setdefault('freq', rrule.DAILY)
-
         error_list = []
+        group = None
         if 'count' not in rrule_params and 'until' not in rrule_params:
+            adding_to_existing_group = False
+            try: # this try function is used to book a group. verify if the occurrence inserted is part from the same group
+                occurrence = ScheduleOccurrence.objects.filter(start_time=ev, end_time=ev + delta, room=Room.objects.get(pk=room))[0]
+                if occurrence.scheduleoccurrence.event.referral.group and occurrence.scheduleoccurrence.event.referral.group == self.group:
+                    adding_to_existing_group = True
+            except:
+                adding_to_existing_group = False
+
             is_busy = self.check_busy(start_time, end_time, room)
-            if not is_busy:
+            if not is_busy or adding_to_existing_group:
                 o = ScheduleOccurrence.objects.create(event=self, start_time=start_time, end_time=end_time, room_id=room, annotation=annotation)
                 o.device = device
                 o.is_online = is_online
@@ -188,8 +180,16 @@ class Referral(Event):
         else:
             delta = end_time - start_time
             for ev in rrule.rrule(dtstart=start_time, **rrule_params):
+                adding_to_existing_group = False
+                try: # this try function is used to book a group. verify if the occurrence inserted is part from the same group
+                    occurrence = ScheduleOccurrence.objects.filter(start_time=ev, end_time=ev + delta, room=Room.objects.get(pk=room))[0]
+                    if occurrence.scheduleoccurrence.event.referral.group and occurrence.scheduleoccurrence.event.referral.group == self.group:
+                        adding_to_existing_group = True
+                except:
+                    adding_to_existing_group = False
+                
                 is_busy = self.check_busy(ev, (ev + delta), room)
-                if not is_busy:
+                if not is_busy or adding_to_existing_group:
                     o = ScheduleOccurrence.objects.create(event=self, start_time=ev, end_time=ev + delta, room_id=room, annotation=annotation)
                     o.device = device
                     o.is_online = is_online
@@ -221,7 +221,8 @@ class Referral(Event):
                 'start_time': start_time, 
                 'end_time': end_time, 
                 'room': room, 
-                'error_message': error_message
+                'group': self.group, 
+                'error_message': error_message,
                 }
 
     class Meta:
@@ -233,12 +234,8 @@ class Referral(Event):
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
-    def group_name(self):
-        try:
-            r = self.referralgroup_set.all()[0]
-            return r.description
-        except:
-            return None
+    def revision_created(self):
+        return reversion.models.Version.objects.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
 
     def past_occurrences(self):
         '''
@@ -280,11 +277,20 @@ class Referral(Event):
     def on_queue(self):
         return True if self.queue_set.filter(date_out__isnull=True) else False
 
+    def _group(self):
+        from gestorpsi.service.models import GroupMembers
+        if not self.service.is_group:
+            return None
+        else:
+            g = GroupMembers.objects.filter(referral=self)[0]
+            return g.group if g else None
+    
+    group = property(_group)
+
 class ReferralDischarge(models.Model):
     id = UuidField(primary_key=True)
     referral = models.ForeignKey(Referral, null=False, blank=False)
     client = models.ForeignKey(Client, null=True, blank=True)
-    group = models.ForeignKey(ReferralGroup, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     was_discussed_with_client =  models.BooleanField(_('Was Discussed With Client'), default=False)
     reason = models.CharField(_('Discharge Reason'), max_length=2, blank=True, null=True, choices=REFERRAL_DISCHARGE_TYPE)
@@ -301,7 +307,6 @@ class ReferralDischarge(models.Model):
 reversion.register(Event)
 reversion.register(ReferralDischarge, follow=['referral'])
 reversion.register(Referral, follow=['event_ptr'])
-reversion.register(ReferralGroup, follow=['referral'])
 
 class IndicationChoice(models.Model):
     description = models.CharField(max_length=250)

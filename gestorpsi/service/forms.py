@@ -16,7 +16,8 @@ GNU General Public License for more details.
 
 from django import forms
 from django.utils.translation import ugettext as _
-from gestorpsi.service.models import Area, ServiceType, Modality
+from gestorpsi.service.models import ServiceGroup, Area, ServiceType, Modality
+from gestorpsi.client.models import Client
 from gestorpsi.organization.models import AgeGroup, EducationLevel, HierarchicalLevel
 
 GENERIC_AREA = ('clinic', 'hospital', 'sport', 'forensic', 'legal', 'neuropsyc', 'social', 'traffic', 'psychomotor')
@@ -46,3 +47,12 @@ class OrganizationalAreaForm(forms.ModelForm):
     class Meta:
         model = Area
         fields = ('service_type', 'modalities', 'hierarchical_level',)
+
+class ServiceGroupForm(forms.ModelForm):
+    description = forms.CharField(widget=forms.TextInput(attrs={'class':'giant', }))
+    comments = forms.CharField(widget=forms.Textarea(attrs={'class':'giant', }), required = False)
+
+    class Meta:
+        fields = ('description', 'comments', 'active')
+        model = ServiceGroup
+

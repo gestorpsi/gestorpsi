@@ -26,6 +26,7 @@ from gestorpsi.schedule.views import daily_occurrences
 from gestorpsi.schedule.views import today_occurrences
 from gestorpsi.schedule.views import occurrence_confirmation_form
 from gestorpsi.schedule.views import occurrence_family_form
+from gestorpsi.schedule.views import occurrence_group
 
 urlpatterns = patterns('',
      url(
@@ -78,7 +79,6 @@ urlpatterns = patterns('',
         },
         name='swingtime-occurrence'
     ),
-    
     url(
         r'^events/(\d+)/confirmation/$', 
         occurrence_confirmation_form, 
@@ -86,6 +86,14 @@ urlpatterns = patterns('',
          'form_class': OccurrenceConfirmationForm,
         },
         name='swingtime-occurrence-confirmation'
+    ),
+    url(
+        r'^events/group/(?P<group_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/occurrence/(?P<occurrence_id>\d+)/$', 
+        occurrence_group, 
+        {'template':'schedule/schedule_occurrence_group.html',
+         #'form_class': OccurrenceConfirmationForm,
+        },
+        name='swingtime-occurrence-group'
     ),
     url(
         r'^events/(\d+)/family/form/$', 

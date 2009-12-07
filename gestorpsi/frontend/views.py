@@ -42,6 +42,10 @@ def start(request):
     
     """ user's employee home page """
     if request.user.get_profile().person.is_employee():
+        """ items to be added in secretary home page:
+            - today event list
+            - referrals (complete information)
+            - queue """
         return HttpResponseRedirect('/schedule/events/')
 
     raise Http404

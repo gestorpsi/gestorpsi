@@ -28,7 +28,8 @@ This tag is used in client (home) view for administrator AND CLIENT users.
     <img class="img_people" src="{% if object.person.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
     {% ifequal object.person.gender '2'%}
         <a class="male notajax gender active" value="2"><span>{% trans "Male" %}</span></a>
-    {% else %}
+    {% endifequal %}
+    {% ifequal object.person.gender '1'%}
         <a class="female notajax gender active" value="1"><span>{% trans "Female" %}</span></a>
     {% endifequal %} 
  	<br /><br /> 

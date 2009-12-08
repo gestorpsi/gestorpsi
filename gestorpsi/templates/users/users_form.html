@@ -132,10 +132,10 @@ GNU General Public License for more details.
                 <legend>{% trans "Role" %}</legend>
                 <h2 class="title_clients title">{% trans "Permissions" %}</h2>
                 {% if person.is_client %}<p><input class="group" type="checkbox" id="4" name="perms" value="client" {% if groups.3 %}checked{% endif %}>{% trans "Client" %}</p>{% endif %}
-                {% if person.is_employee or person.is_careprofessional %}<p><input class="group" type="checkbox" id="1" name="perms" value="administrator" {% if groups.0 %}checked{% endif %}>{% trans "Administrator" %}</p>{% endif %}
-                {% if person.is_employee or person.is_careprofessional %}<p><input class="group" type="checkbox" id="3" name="perms" value="secretary" {% if groups.2 %}checked{% endif %}>{% trans "Secretary" %}</p>{% endif %}
-                {% if person.is_careprofessional %}<p><input class="group" type="checkbox" id="2" name="perms" value="professional" {% if groups.1 %}checked{% endif %}>{% trans "Professional" %}</p>{% endif %}
-                {% if person.is_student %}<p><input class="group" type="checkbox" id="4" name="perms" value="student" {% if groups.4 %}checked{% endif %}>{% trans "Student" %}</p>{% endif %}
+                {% if not person.is_client %}<p><input class="group" type="checkbox" id="1" name="perms" value="administrator" {% if groups.0 %}checked{% endif %}>{% trans "Administrator" %}</p>{% endif %}
+                {% if not person.is_client %}<p><input class="group" type="checkbox" id="3" name="perms" value="secretary" {% if groups.2 %}checked{% endif %}>{% trans "Secretary" %}</p>{% endif %}
+                {% if not person.is_client %}<p><input class="group" type="checkbox" id="2" name="perms" value="professional" {% if groups.1 %}checked{% endif %}>{% trans "Professional" %}</p>{% endif %}
+                {% if not person.is_client %}<p><input class="group" type="checkbox" id="4" name="perms" value="student" {% if groups.4 %}checked{% endif %}>{% trans "Student" %}</p>{% endif %}
         {% endifequal %}
 </fieldset>
 	

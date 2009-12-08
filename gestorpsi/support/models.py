@@ -76,7 +76,7 @@ reversion.register(TicketIteration)
 
 class Documentation(models.Model):
     title = models.CharField(max_length=255)
-    body = models.TextField()
+    body = models.TextField(blank=True, null=True)
     parent = models.ForeignKey('Documentation', blank=True, null=True)
     
     def __unicode__(self):

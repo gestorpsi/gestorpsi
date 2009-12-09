@@ -174,6 +174,8 @@ def contact_organization_form(request, object_id = None):
     websites     = object.sites.all()
     ims = object.instantMessengers.all()
 
+    clss = request.GET.get('clss')
+
     return render_to_response('contact/contact_organization_form.html', locals(),
                                      context_instance=RequestContext(request)
                                      )
@@ -236,7 +238,14 @@ def contact_organization_save(request, object_id = None):
     object.contact_owner = request.user.get_profile().person
     object.comment = request.POST.get('comments')
 
-    object.save()
+    from django.db import IntegrityError
+    try:
+        object.save()
+    except IntegrityError:
+        from django.db import connection
+        connection.close()
+        request.user.message_set.create(message=_('This organization has already been registered'))
+        return HttpResponseRedirect('/contact/form/organization/?clss=error')
 
     object = extra_data_save(request, object)
     
@@ -293,7 +302,12 @@ def save_mini(request):
     object.short_name = slugify(request.POST.get('label'))
     object.organization = user.get_profile().org_active
     object.contact_owner = user.get_profile().person
-    object.save()
+
+    from django.db import IntegrityError
+    try:
+        object.save()
+    except IntegrityError:
+        return HttpResponse("IntegrityError")
 
     return HttpResponse("%s" % (object.id))
 

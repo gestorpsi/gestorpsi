@@ -156,7 +156,7 @@ class StudentProfile(models.Model):
     """
     This class represents the student profile
     """
-    lecture_class = models.ForeignKey(Profession, null=True, blank=True)
+    lecture_class = models.ForeignKey(Profession, null=True, blank=True, verbose_name=_('Lecture Class'))
     period = models.CharField(_('Student Class Period'), max_length=255, null=True, blank=True)
     class_duration = models.CharField(_('Student Class Duration'), max_length=255, null=True, blank=True)
     register_number = models.CharField(_('Student Register Number'), max_length=255, null=True, blank=True)

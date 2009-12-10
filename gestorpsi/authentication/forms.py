@@ -37,8 +37,12 @@ class RegistrationForm(RegistrationForm):
     organization = forms.CharField(label=_('Organization'), help_text=_('Name of your organization'))
     shortname = forms.CharField(label=_('Short Name'), help_text=_('Shortname of your organization'))
 
-    def save(self):
-        user = super(RegistrationForm, self).save() #create user
+    def save(self, send_email=True):
+        user = RegistrationProfile.objects.create_inactive_user(username=self.cleaned_data['username'],
+                                                                    password=self.cleaned_data['password1'],
+                                                                    email=self.cleaned_data['email'],
+                                                                    send_email=send_email
+                                                                    )
         user.username = user.username.strip().lower()
         user.save()         # remove spaces from username and change all to lowercase
         profile = Profile(user=user)
@@ -76,4 +80,5 @@ class RegistrationForm(RegistrationForm):
         careprof.professionalProfile = ProfessionalProfile.objects.create()
         careprof.professionalIdentification = ProfessionalIdentification.objects.create(registerNumber='')
         careprof.save()
-
+        
+        return organization

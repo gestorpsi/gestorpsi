@@ -110,6 +110,8 @@ a:hover {
         padding: 7px 9px 7px 29px;
         -moz-border-radius-topleft: 8px;
         -moz-border-radius-topright: 8px;
+        -webkit-border-radius-topleft: 8px;
+        -webkit-border-radius-topright: 8px;
         height: 15px;
 }
 
@@ -126,6 +128,7 @@ div#logotype {
     margin: 2px;
     margin-right: 10px;
         -moz-border-radius: 8px;
+        -webkit-border-radius: 8px;
     padding-left: 5px;
 }
 div#logotype span{
@@ -177,6 +180,8 @@ div#logotype span{
         color: #000000;
         -moz-border-radius-topleft: 8px;
         -moz-border-radius-topright: 8px;
+        -webkit-border-radius-topleft: 8px;
+        -webkit-border-radius-topright: 8px;
         padding: 13px 20px 6px 20px;
         border-bottom: 1px solid #DDDDDD;
         height: 16px;
@@ -273,6 +278,8 @@ div#sub_menu .active {
         border-left: 1px solid #838383;
         -moz-border-radius-topright: 8px;
         -moz-border-radius-topleft: 8px;
+        -webkit-border-radius-topright: 8px;
+        -webkit-border-radius-topleft: 8px;
         padding: 12px 0px 7px 19px;
 }
 
@@ -282,12 +289,16 @@ div#sub_menu .active {
         height: 16px;
         -moz-border-radius-topright: 0;
         -moz-border-radius-topleft: 0;
+        -webkit-border-radius-topright: 0;
+        -webkit-border-radius-topleft: 0;
 }
 
 #sub_menu ul.opened_tabs li .active a:hover {
         background: #FFFFFF;
         -moz-border-radius-topright: 0;
         -moz-border-radius-topleft: 0;
+        -webkit-border-radius-topright: 0;
+        -webkit-border-radius-topleft: 0;
 }
 
 
@@ -728,6 +739,10 @@ select.high {
         -moz-border-radius-topright: 8px;
         -moz-border-radius-bottomleft: 8px;
         -moz-border-radius-bottomright: 8px;
+        -webkit-border-radius-topleft: 8px;
+        -webkit-border-radius-topright: 8px;
+        -webkit-border-radius-bottomleft: 8px;
+        -webkit-border-radius-bottomright: 8px;
         color: #45ACD4;
         margin: 10px;
         margin-right: 0;
@@ -1120,6 +1135,11 @@ div.schedule #search_header {
         vertical-align: top;
         border-top: 2px solid #FFFFFF;
 }
+#search_results.newtab td {
+
+        border-top: none;
+        padding-top: 12px;
+}
 #search_results td.icons {
         text-align: center;
         vertical-align: middle;
@@ -1416,6 +1436,10 @@ body .main_area.login form fieldset {
         -moz-border-radius-topright: 8px;
         -moz-border-radius-bottomleft: 8px;
         -moz-border-radius-bottomright: 8px;
+        -webkit-border-radius-topleft: 8px;
+        -webkit-border-radius-topright: 8px;
+        -webkit-border-radius-bottomleft: 8px;
+        -webkit-border-radius-bottomright: 8px;
         border: 1px solid #838383;
 }
 body .main_area.login form fieldset.orgField {
@@ -1458,6 +1482,7 @@ div.main_area.login label input
  {
         width: 250px;
 }
+
 fieldset.collapsed {
         border: 0px;
         height: 1px;

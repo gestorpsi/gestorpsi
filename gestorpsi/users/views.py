@@ -61,7 +61,7 @@ def form(request, object_id=None):
             if (profile.user.groups.filter(name='administrator').count() == 1 ):
                 show = "True"
 
-        groups = [False, False, False, False]   # Template Permission Order: Admin, Psycho, Secretary, Client and Student
+        groups = [False, False, False, False, False]   # Template Permission Order: Admin, Psycho, Secretary, Client and Student
         for g in profile.user.groups.all():
             if g.name == "administrator": groups[0] = True
             if g.name == "professional":  groups[1] = True

@@ -21,6 +21,7 @@ from gestorpsi.organization.models import Organization, Agreement, AgeGroup, Edu
 from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.client.models import Client
 from gestorpsi.util.uuid_field import UuidField 
+from gestorpsi.referral.models import Referral
 
 class ServiceType(models.Model):
     name = models.CharField(max_length=100)
@@ -137,10 +138,9 @@ class ServiceGroup(models.Model):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 class GroupMembers(models.Model):
-    from gestorpsi.referral import models as referral_models
     group = models.ForeignKey(ServiceGroup)
     client = models.ForeignKey(Client)
-    referral = models.ForeignKey(referral_models.Referral)
+    referral = models.ForeignKey(Referral)
     
     def __unicode__(self):
         return u'%s' % (self.client)

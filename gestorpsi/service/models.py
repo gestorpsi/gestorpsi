@@ -93,7 +93,7 @@ class Service(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     comments = models.TextField(blank=True)
     academic_related = models.BooleanField(_('Academic (supervised) related service'), default=False)
-
+    is_online = models.BooleanField(default=False)
     procedures = models.ManyToManyField(Procedure)
     
     objects = ServiceManager()

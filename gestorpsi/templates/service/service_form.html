@@ -94,6 +94,14 @@ GNU General Public License for more details.
             </label>
 	</fieldset>
 
+    <fieldset>
+		<legend>{% trans "On-line Service" %}</legend>
+            <label>
+                <input type="checkbox" name="is_online" {% if object.id %}disabled="disabled"{% endif %}{% if object.is_online %} checked{% endif %} />&nbsp;
+                {% trans "If checked, this service will accept on-line chat and messages." %} 
+            </label>
+	</fieldset>
+
 	<!--
 	Service Profile 
 	-->

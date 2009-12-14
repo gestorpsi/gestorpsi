@@ -137,10 +137,10 @@ class ServiceGroup(models.Model):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 class GroupMembers(models.Model):
-    from gestorpsi.referral.models import Referral
+    from gestorpsi.referral import models as referral_models
     group = models.ForeignKey(ServiceGroup)
     client = models.ForeignKey(Client)
-    referral = models.ForeignKey(Referral)
+    referral = models.ForeignKey(referral_models.Referral)
     
     def __unicode__(self):
         return u'%s' % (self.client)

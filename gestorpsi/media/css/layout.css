@@ -774,11 +774,11 @@ select.high {
 }
 .sidebar li {
         list-style: none;
-        padding-left: 10px;
+        padding-left: 2px;
 }
 .sidebar li a {
         line-height: 22px;
-        padding: 5px 0 5px 25px;
+        padding: 5px 0 5px 1px;
         color: #000000;
 }
 
@@ -790,68 +790,67 @@ li a.list {
         background: url(../img/16/filetype_small_dir.gif) no-repeat 0 3px;
 }
 .sidebar li .client_home {
-        background: url(../img/16/go-home.png) no-repeat 0 3px;
+        /*background: url(../img/16/go-home.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_form {
-        background: url(../img/16/people-clients.png) no-repeat 0 3px;
+        /*background: url(../img/16/people-clients.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_admit_form {
-        background: url(../img/ico_reg.png) no-repeat 0 3px;
+        /*background: url(../img/ico_reg.png) no-repeat 0 3px;*/
 }
 
-
 .sidebar li .referral_edit, .edit_generic {
-        background: url(../img/ico_edit.png) no-repeat 0 6px;
+        /*background: url(../img/ico_edit.png) no-repeat 0 6px;*/
 }
 
 .sidebar li .client_referral_list {
-        background: url(../img/16/referral.png) no-repeat 0 3px;
+        /*background: url(../img/16/referral.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_services {
-        background: url(../img/16/services.png) no-repeat 0 3px;
+        /*background: url(../img/16/services.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_calendar {
-        background: url(../img/16/office-calendar.png) no-repeat 0 3px;
+        /*background: url(../img/16/office-calendar.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_messages {
-	background: url(../img/16/internet-mail.png) no-repeat 0 3px;
+        /*background: url(../img/16/internet-mail.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_referral_discharge {
-        background: url(../img/16/system-log-out.png) no-repeat 0 3px;
+        /*background: url(../img/16/system-log-out.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_referral_form {
-        background: url(../img/16/list-add.png) no-repeat 0 3px;
+        /*background: url(../img/16/list-add.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_user_form {
-        background: url(../img/16/system-users.png) no-repeat 0 3px;
+        /*background: url(../img/16/system-users.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_order {
-        background: url(../img/16/edit-delete.png) no-repeat 0 3px;
+        /*background: url(../img/16/edit-delete.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_family {
-        background: url(../img/16/client_family.png) no-repeat 0 3px;
+        /*background: url(../img/16/client_family.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .contact_order {
-        background: url(../img/16/edit-delete.png) no-repeat 0 3px;
+        /*background: url(../img/16/edit-delete.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .print {
-        background: url(../img/16/print.png) no-repeat 0 3px;
+        /*background: url(../img/16/print.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .occurrence_confirmation {
-        background: url(../img/16/internet-news-reader.png) no-repeat 0 3px;
+        /*background: url(../img/16/internet-news-reader.png) no-repeat 0 3px;*/
 }
 
 .sidebar input.save_button {

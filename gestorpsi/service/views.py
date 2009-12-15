@@ -299,50 +299,40 @@ def client_list_index(request, object_id = None):
     return render_to_response('service/service_client_list.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('service.service_list')
-def client_list(request, page = 1, object_id = None, no_paging = None, initial = None, filter = None):
+def client_list(request, page=1, object_id=None, no_paging=None, initial=None, filter=None):
     array = {} # json
     i = 0
-    
     referral = Referral.objects.charged().filter(service = object_id).order_by('-date')
-
     if initial:
         referral = referral.filter(client__person__name__istartswith = initial)
-
     if filter:
         referral = referral.filter(client__person__name__icontains = filter)
-
-    array['util'] = {
-        'has_perm_read': request.user.has_perm('place.place_read'),
-    }
-
+    #array['util'] = {
+    #    'has_perm_read': request.user.has_perm('place.place_read'),
+    #}
     for r in referral:
         array[i] = {
-            'dt': r.date.strftime("%d-%m-%Y  %H:%M ")
+            'dt': r.date.strftime("%d/%m/%Y  %H:%M ")
         }
-
         list = r.upcoming_occurrences()
         sub = 0
         array[i]['occurence'] = {}
         for p in list:
             array[i]['occurence'][sub] = ({'p': ('%s' % p.start_time.strftime(" %d-%m-%Y  %H:%M ")) })
             sub = sub + 1
-
         sub = 0
         array[i]['professional'] = {}
         for p in r.professional.all():
             array[i]['professional'][sub] = ({'id':p.id, 'name':p.person.name})
             sub = sub + 1
-
         sub = 0
         array[i]['client'] = {}
         for p in r.client.all():
             array[i]['client'][sub] =  ({'id':p.id, 'name':p.person.name})
             sub = sub + 1
-
         i = i + 1
 
     return HttpResponse(simplejson.dumps(array, sort_keys=True), mimetype='application/json')
-
 
 # list referral groups
 @permission_required_with_403('referral.referral_list')

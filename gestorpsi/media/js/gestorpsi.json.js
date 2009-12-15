@@ -21,44 +21,43 @@ function updateClientService(url, deactive, app) {
     if (!app) app = "client";
     $.getJSON(url, function(json) {
         var tableTR = '';
+        tableTR = '';
 
         /**
         * build html
         */
 
-        tableTR = '';
-
         jQuery.each(json,  function(){
-              jQuery.each(this.client,  function(){
-                        str_client = this.name;
-                        str_client_id = this.id;
-                    });
+            jQuery.each(this.client,  function(){
+                str_client = this.name;
+                str_client_id = this.id;
+            });
 
-              str_professional = '';
-              str_professional_id = '';
-              str_occurence = '';
+            str_professional = '';
+            str_professional_id = '';
+            //str_occurence = '';
 
-              if (this.professional){
-               jQuery.each(this.professional,  function(){
-                        str_professional += ' ('+ this.name + ')';
-                        str_professional_id = this.id;
-                    });
-                }
+            if (this.professional){
+                jQuery.each(this.professional,  function(){
+                    str_professional += ' '+ this.name + '';
+                    str_professional_id = this.id;
+                });
+            }
 
-              if (this.occurence){
-               jQuery.each(this.occurence,  function(){
-                        str_occurence += ' ('+ this.p + ')';
-                    });
-                }
+            //if (this.occurence){
+            //    jQuery.each(this.occurence,  function(){
+            //        str_occurence += ' ('+ this.p + ')';
+            //    });
+            //}
  
-                tableTR += '<tr>';
-                tableTR += '<td class="title">'+ str_client +' '+ str_professional +'<br /> Date ' + this.dt + '<br />Occurences: '+ str_occurence;
-                tableTR += '</td>';
-                tableTR += '<td>';
-                tableTR += '</td>';
-                tableTR += '</tr>';
+            tableTR += '<tr>';
+            tableTR += '<td class="title">'+ str_client + '<br />' + str_professional +'<br /> Inscrito em: ' + this.dt; //+ '<br />Occurences: '+ str_occurence;
+            tableTR += '</td>';
+            tableTR += '<td>';
+            tableTR += '</td>';
+            tableTR += '</tr>';
         });
-
+        
         buildTableList(tableTR, 'div#list');
         buildPaginator(app, json['paginator'], json['util'], 'div#list');
 
@@ -67,7 +66,6 @@ function updateClientService(url, deactive, app) {
             return false;
         });
     });
-
     return false;
 }
 /**

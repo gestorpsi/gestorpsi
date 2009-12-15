@@ -444,7 +444,7 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
 
             i = i + 1
             
-            if hasattr(o.event.referral.group, 'id'):
+            if hasattr(o, 'event') and hasattr(o.event.referral.group, 'id'):
                 groups.append(o.event.referral.group.id)
 
     array['util']['occurrences_total'] = i

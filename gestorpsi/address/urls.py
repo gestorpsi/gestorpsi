@@ -19,5 +19,5 @@ from gestorpsi.authentication.views import login_check
 from gestorpsi.address.views import get_cities
 
 urlpatterns = patterns('',
-    (r'^search/cities/state/(?P<state_id>[0-9]+)/$', login_check(get_cities)),
+    (r'^search/cities/state/(?P<state_id>[0-9]+)/$', get_cities),
 )

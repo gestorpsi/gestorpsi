@@ -74,6 +74,10 @@ class RegistrationForm(RegistrationForm):
         admin_role = Group.objects.get(name='administrator')
         Role.objects.create(profile=profile, organization=organization, group=admin_role)
         profile.user.groups.add(admin_role)
+                
+        professional_role = Group.objects.get(name='professional')
+        Role.objects.create(profile=profile, organization=organization, group=professional_role)
+        profile.user.groups.add(professional_role)
 
         careprof = CareProfessional()
         careprof.person = person

@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     url(r'^compose/(?P<recipient>[\+\w]+)/$', compose, name='messages_compose_to'),
     url(r'^reply/(?P<message_id>[\d]+)/$', reply, name='messages_reply'),
     url(r'^view/(?P<message_id>[\d]+)/$', view, name='messages_detail'),
-    url(r'^delete/(?P<message_id>[\d]+)/$', delete, name='messages_delete'),
+#    url(r'^delete/(?P<message_id>[\d]+)/$', delete, name='messages_delete'),
     url(r'^undelete/(?P<message_id>[\d]+)/$', undelete, name='messages_undelete'),
     url(r'^trash/$', trash, name='messages_trash'),
 )

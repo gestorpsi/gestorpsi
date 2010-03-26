@@ -58,7 +58,7 @@ This tag is used in client (home) view for administrator AND CLIENT users.
 </p>
 <p>
 
-{% if not user.get_profile.person.is_administrator or user.get_profile.person.is_secretary %}
+{% if user.get_profile.person.is_client %}
     <a href="/profile/" title="{% trans "edit" %}" class="edit"><span>{% trans "edit" %}</span></a>
 {% else %}
     <a href="/client/{{ object.id}}/" title="{% trans "edit" %}" class="edit"><span>{% trans "edit" %}</span></a>

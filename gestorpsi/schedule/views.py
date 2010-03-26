@@ -38,6 +38,19 @@ from gestorpsi.util.views import get_object_or_None
 from gestorpsi.schedule.forms import OccurrenceConfirmationForm
 from gestorpsi.device.models import DeviceDetails
 
+
+def _access_check_by_occurrence(request, occurrence):
+    from gestorpsi.client.views import _access_check_referral_write, _access_check
+    denied_to_read = None
+    for c in occurrence.event.referral.client.all():
+        if not _access_check(request, c):
+            denied_to_read = True
+
+    if denied_to_read:
+        return False
+
+    return True
+
 @permission_required_with_403('schedule.schedule_list')
 def schedule_occurrence_listing(request, year = 1, month = 1, day = None, 
     template='schedule/schedule_events.html',
@@ -214,6 +227,7 @@ def occurrence_view(
         context_instance=RequestContext(request)
     )
 
+
 @permission_required_with_403('schedule.schedule_write')
 def occurrence_confirmation_form(
     request, 
@@ -225,6 +239,10 @@ def occurrence_confirmation_form(
 ):
 
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
+    
+    # check if requested user have perms to read it
+    if not _access_check_by_occurrence(request, occurrence):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     try:
         occurrence_confirmation = OccurrenceConfirmation.objects.get(pk = occurrence.occurrenceconfirmation.id)
@@ -233,7 +251,15 @@ def occurrence_confirmation_form(
     
     object = get_object_or_None(Client, pk = client_id, person__organization=request.user.get_profile().org_active)
 
+    from gestorpsi.client.views import  _access_check_referral_write
+    denied_to_write = None
+
+    if not _access_check_referral_write(request, occurrence.event.referral):
+        denied_to_write = True
+
     if request.method == 'POST':
+        if denied_to_write:
+            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
         form = form_class(request.POST, instance = occurrence_confirmation)
         if form.is_valid():
             data = form.save(commit=False)
@@ -269,7 +295,7 @@ def occurrence_confirmation_form(
 
     return render_to_response(
         template,
-        dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral, occurrence_confirmation = occurrence_confirmation, hide_date_field = True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None ),
+        dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral, occurrence_confirmation = occurrence_confirmation, hide_date_field = True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None, denied_to_write = denied_to_write ),
         context_instance=RequestContext(request)
     )
 
@@ -400,7 +426,7 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
     for o in occurrences:
         have_same_group = False
         if hasattr(o.event.referral.group, 'id'):
-            if o.event.referral.group.id in groups:
+            if '%s-%s-%s' % (o.event.referral.group.id, o.room_id, o.start_time.strftime('%H:%M:%S')) in groups:
                 have_same_group = True
         
         if not have_same_group:
@@ -443,18 +469,26 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
                 sub_count = sub_count + 1
 
             i = i + 1
-            
+
+            # concat group id, room id and start time to register in a list and verify in the begin of the loop if the same
+            # occurrence already has been registered
             if hasattr(o, 'event') and hasattr(o.event.referral.group, 'id'):
-                groups.append(o.event.referral.group.id)
+                groups.append('%s-%s-%s' % (o.event.referral.group.id, o.room_id, o.start_time.strftime('%H:%M:%S')))
 
     array['util']['occurrences_total'] = i
     array = simplejson.dumps(array)
     
     return HttpResponse(array, mimetype='application/json')
 
+
 @permission_required_with_403('schedule.schedule_write')
 def occurrence_family_form(request, occurence_id = None, template=None):
     occurrence = get_object_or_404(ScheduleOccurrence, pk=occurence_id, event__referral__service__organization=request.user.get_profile().org_active)
+
+    # check if requested user have perms to read it
+    if not _access_check_by_occurrence(request, occurrence):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     if request.POST:
         if not request.POST.getlist('family_members'):
             request.user.message_set.create(message=_('No member family selected'))

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-14 15:40-0200\n"
+"POT-Creation-Date: 2010-03-26 18:08-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: settings.py:52
+#: settings.py:51
 msgid "Brazilian Portuguese"
 msgstr ""
 
-#: settings.py:53
+#: settings.py:52
 msgid "English"
 msgstr ""
 
@@ -28,7 +28,28 @@ msgstr ""
 msgid "Termo de Consentimento Livre e Esclarecido (TCLE)"
 msgstr ""
 
-#: admission/views.py:85
+#: admission/views.py:41 admission/views.py:78 admission/views.py:105
+#: client/views.py:131 client/views.py:221 client/views.py:315
+#: client/views.py:343 client/views.py:351 client/views.py:423
+#: client/views.py:470 client/views.py:505 client/views.py:524
+#: client/views.py:545 client/views.py:583 client/views.py:647
+#: client/views.py:680 client/views.py:695 client/views.py:718
+#: client/views.py:728 client/views.py:733 client/views.py:752
+#: client/views.py:794 client/views.py:814 client/views.py:832
+#: client/views.py:857 client/views.py:867 client/views.py:918
+#: client/views.py:930 demographic/views.py:34 demographic/views.py:46
+#: demographic/views.py:64 demographic/views.py:85 demographic/views.py:102
+#: ehr/views.py:86 ehr/views.py:103 ehr/views.py:114 ehr/views.py:142
+#: ehr/views.py:202 ehr/views.py:219 ehr/views.py:230 ehr/views.py:251
+#: ehr/views.py:284 ehr/views.py:301 ehr/views.py:312 ehr/views.py:331
+#: online_messages/views.py:94 online_messages/views.py:112
+#: online_messages/views.py:144 online_messages/views.py:172
+#: schedule/views.py:245 schedule/views.py:262 schedule/views.py:490
+#: upload/views.py:102 upload/views.py:117 util/decorators.py:43
+msgid "Oops! You don't have access for this service!"
+msgstr ""
+
+#: admission/views.py:96
 msgid "Admission saved successfully"
 msgstr ""
 
@@ -61,7 +82,7 @@ msgstr ""
 msgid "Your email address"
 msgstr ""
 
-#: authentication/forms.py:34 templates/registration/login.html:44
+#: authentication/forms.py:34 templates/registration/login.html:50
 #: templates/users/users_form.html:80 templates/users/users_form.html.py:83
 #: templates/users/users_form.html:205 templates/users/users_form.html:208
 msgid "Password"
@@ -79,7 +100,7 @@ msgstr ""
 msgid "Type password again"
 msgstr ""
 
-#: authentication/forms.py:36 templates/registration/login.html:43
+#: authentication/forms.py:36 templates/registration/login.html:49
 #: templates/users/users_form.html:70
 msgid "Username"
 msgstr ""
@@ -238,89 +259,89 @@ msgstr ""
 msgid "Others"
 msgstr ""
 
-#: client/views.py:96
+#: client/views.py:154
 msgid ""
 "There's no Service created yet. Please, create one before access Client."
 msgstr ""
 
-#: client/views.py:329 client/views.py:368
+#: client/views.py:412 client/views.py:453
 msgid "Referral saved successfully"
 msgstr ""
 
-#: client/views.py:371
+#: client/views.py:456
 msgid "Service is deactive. Impossible register a referral."
 msgstr ""
 
-#: client/views.py:384
+#: client/views.py:473
 msgid ""
 "Sorry, you can not discharge a queued referral. Remove it from queue first "
 "before to continue"
 msgstr ""
 
-#: client/views.py:396
+#: client/views.py:485
 msgid "Client discharged successfully"
 msgstr ""
 
-#: client/views.py:399
+#: client/views.py:488
 msgid "Form Error"
 msgstr ""
 
-#: client/views.py:407
+#: client/views.py:496
 msgid "Registered have hour in the schedule"
 msgstr ""
 
-#: client/views.py:465
+#: client/views.py:573
 msgid "Client saved successfully"
 msgstr ""
 
-#: client/views.py:532 users/views.py:219
+#: client/views.py:654 users/views.py:219
 msgid "User deactivated successfully"
 msgstr ""
 
-#: client/views.py:535 users/views.py:219
+#: client/views.py:657 users/views.py:219
 msgid "User activated successfully"
 msgstr ""
 
-#: client/views.py:541
+#: client/views.py:663
 msgid "Sorry, you can not deactivate a client with registered referral"
 msgstr ""
 
-#: client/views.py:558
+#: client/views.py:683
 msgid ""
 "Sorry, you can not book a queued client. Remove it first from queue before "
 "continue"
 msgstr ""
 
-#: client/views.py:597 client/views.py:613
+#: client/views.py:736 client/views.py:757
 msgid "Error adding to queue! Referral is already queued"
 msgstr ""
 
-#: client/views.py:601
+#: client/views.py:740
 msgid "Error adding to queue! Referral have upcoming occurrences"
 msgstr ""
 
-#: client/views.py:617
+#: client/views.py:761
 msgid ""
 "Subscript in the queue not is possible. Referral have upcoming occurrences"
 msgstr ""
 
-#: client/views.py:640
+#: client/views.py:784
 msgid "Referral added to queue successfully"
 msgstr ""
 
-#: client/views.py:655
+#: client/views.py:804
 msgid "Client removed from queue successfully"
 msgstr ""
 
-#: client/views.py:690
+#: client/views.py:848
 msgid "External Referral saved successfully"
 msgstr ""
 
-#: client/views.py:720
+#: client/views.py:887
 msgid "Family member added successfully"
 msgstr ""
 
-#: client/views.py:777
+#: client/views.py:954
 msgid "Related client added successfully to this company"
 msgstr ""
 
@@ -462,11 +483,11 @@ msgstr ""
 msgid "School Grade"
 msgstr ""
 
-#: demographic/views.py:59
+#: demographic/views.py:73
 msgid "Education saved successfully"
 msgstr ""
 
-#: demographic/views.py:88
+#: demographic/views.py:110
 msgid "Occupation saved successfully"
 msgstr ""
 
@@ -714,63 +735,63 @@ msgstr ""
 msgid "Confirmed by the professional"
 msgstr ""
 
-#: ehr/views.py:73
+#: ehr/views.py:146
 msgid "You cannot change a confirmed demand."
 msgstr ""
 
-#: ehr/views.py:78
+#: ehr/views.py:151
 msgid "Choosen occurence already in use by another demand."
 msgstr ""
 
-#: ehr/views.py:78
+#: ehr/views.py:151
 msgid "There's been an error in demand form."
 msgstr ""
 
-#: ehr/views.py:95
+#: ehr/views.py:168
 msgid "There's an error in 'How long it happens' field."
 msgstr ""
 
-#: ehr/views.py:104
+#: ehr/views.py:177
 msgid "There's an error in 'Frequency' field."
 msgstr ""
 
-#: ehr/views.py:113
+#: ehr/views.py:186
 msgid "There's an error in 'Duration' field."
 msgstr ""
 
-#: ehr/views.py:120
+#: ehr/views.py:193
 msgid "Demand saved successfully"
 msgstr ""
 
-#: ehr/views.py:157
+#: ehr/views.py:255
 msgid "You cannot change a confirmed diagnosis."
 msgstr ""
 
-#: ehr/views.py:162
+#: ehr/views.py:260
 msgid "Choosen occurence already in use by another diagnosis."
 msgstr ""
 
-#: ehr/views.py:162
+#: ehr/views.py:260
 msgid "There's been an error in diagnosis form."
 msgstr ""
 
-#: ehr/views.py:177
+#: ehr/views.py:275
 msgid "Diagnosis saved successfully"
 msgstr ""
 
-#: ehr/views.py:212
+#: ehr/views.py:335
 msgid "You cannot change a confirmed session."
 msgstr ""
 
-#: ehr/views.py:217
+#: ehr/views.py:340
 msgid "Choosen occurence already in use by another session."
 msgstr ""
 
-#: ehr/views.py:217
+#: ehr/views.py:340
 msgid "There's been an error in session form."
 msgstr ""
 
-#: ehr/views.py:232
+#: ehr/views.py:355
 msgid "Session saved successfully"
 msgstr ""
 
@@ -902,31 +923,27 @@ msgstr ""
 msgid "New Message: %(subject)s"
 msgstr ""
 
-#: online_messages/views.py:165
+#: online_messages/views.py:183
 msgid "Message topic created successfully"
 msgstr ""
 
-#: online_messages/views.py:296 online_messages/views.py:332
+#: online_messages/views.py:314 online_messages/views.py:350
 msgid "Message successfully sent."
 msgstr ""
 
-#: online_messages/views.py:338
+#: online_messages/views.py:356
 #, python-format
 msgid ""
 "%(sender)s wrote:\n"
 "%(body)s"
 msgstr ""
 
-#: online_messages/views.py:342
+#: online_messages/views.py:360
 #, python-format
 msgid "Re: %(subject)s"
 msgstr ""
 
-#: online_messages/views.py:379
-msgid "Message successfully deleted."
-msgstr ""
-
-#: online_messages/views.py:407
+#: online_messages/views.py:425
 msgid "Message successfully recovered."
 msgstr ""
 
@@ -1244,6 +1261,62 @@ msgstr ""
 msgid "Data"
 msgstr ""
 
+#: registration/forms.py:36
+msgid "username"
+msgstr ""
+
+#: registration/forms.py:39
+msgid "email address"
+msgstr ""
+
+#: registration/forms.py:41
+msgid "password"
+msgstr ""
+
+#: registration/forms.py:43
+msgid "password (again)"
+msgstr ""
+
+#: registration/forms.py:55
+msgid "This username is already taken. Please choose another."
+msgstr ""
+
+#: registration/forms.py:67
+msgid "You must type the same password each time"
+msgstr ""
+
+#: registration/forms.py:90
+msgid "I have read and agree to the Terms of Service"
+msgstr ""
+
+#: registration/forms.py:107
+msgid ""
+"This email address is already in use. Please supply a different email "
+"address."
+msgstr ""
+
+#: registration/forms.py:133
+msgid ""
+"Registration using free email addresses is prohibited. Please supply a "
+"different email address."
+msgstr ""
+
+#: registration/models.py:218
+msgid "user"
+msgstr ""
+
+#: registration/models.py:219
+msgid "activation key"
+msgstr ""
+
+#: registration/models.py:224
+msgid "registration profile"
+msgstr ""
+
+#: registration/models.py:225
+msgid "registration profiles"
+msgstr ""
+
 #: schedule/forms.py:129
 msgid "Presence"
 msgstr ""
@@ -1300,23 +1373,23 @@ msgstr ""
 msgid "Presence Confirmation"
 msgstr ""
 
-#: schedule/views.py:76
+#: schedule/views.py:89
 msgid "Sorry. You can not book more than 40 occurrence at the same time"
 msgstr ""
 
-#: schedule/views.py:93
+#: schedule/views.py:106
 msgid "Schedule saved successfully"
 msgstr ""
 
-#: schedule/views.py:204
+#: schedule/views.py:217
 msgid "Occurrence updated successfully"
 msgstr ""
 
-#: schedule/views.py:249
+#: schedule/views.py:275
 msgid "Occurrence confirmation updated successfully"
 msgstr ""
 
-#: schedule/views.py:394
+#: schedule/views.py:420
 #: templates/careprofessional/careprofessional_list.html:47
 #: templates/careprofessional/student_list.html:46
 #: templates/client/client_home.html:62 templates/client/client_list.html:43
@@ -1342,7 +1415,7 @@ msgstr ""
 msgid "of"
 msgstr ""
 
-#: schedule/views.py:419 service/models.py:104 service/views.py:81
+#: schedule/views.py:445 service/models.py:104 service/views.py:81
 #: templates/client/client_print.html:387
 #: templates/referral/referral_details.html:88
 #: templates/referral/referral_details.html:106
@@ -1350,11 +1423,11 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#: schedule/views.py:460
+#: schedule/views.py:494
 msgid "No member family selected"
 msgstr ""
 
-#: schedule/views.py:475
+#: schedule/views.py:509
 msgid "Family members added successfully"
 msgstr ""
 
@@ -1414,12 +1487,12 @@ msgstr ""
 msgid "You can not disable a service with clients registered in the referral"
 msgstr ""
 
-#: service/views.py:365 templates/service/service_group_form.html:51
+#: service/views.py:355 templates/service/service_group_form.html:51
 #: templates/service/service_group_list.html:37
 msgid "Sorry, this service was configured without group support."
 msgstr ""
 
-#: service/views.py:375
+#: service/views.py:365
 msgid "Group saved successfully"
 msgstr ""
 
@@ -2191,7 +2264,6 @@ msgstr ""
 #: templates/referral/referral_occurrences.html:27
 #: templates/schedule/event_detail.html:53
 #: templates/schedule/schedule_occurrence_group.html:41
-#: templates/service/service_client_list.html:49
 #: templates/service/service_group_list.html:43
 #: templates/service/service_list.html:42
 #: templates/service/service_queue.html:41
@@ -2212,7 +2284,6 @@ msgstr ""
 #: templates/ehr/ehr_session_list.html:37
 #: templates/employee/employee_list.html:58 templates/place/place_list.html:49
 #: templates/place/place_room_list.html:49
-#: templates/service/service_client_list.html:49
 #: templates/service/service_group_list.html:43
 #: templates/service/service_list.html:42
 #: templates/service/service_queue.html:41 templates/users/users_list.html:52
@@ -2232,7 +2303,6 @@ msgstr ""
 #: templates/ehr/ehr_session_list.html:37
 #: templates/employee/employee_list.html:58 templates/place/place_list.html:49
 #: templates/place/place_room_list.html:49
-#: templates/service/service_client_list.html:49
 #: templates/service/service_group_list.html:43
 #: templates/service/service_list.html:42
 #: templates/service/service_queue.html:41 templates/users/users_list.html:52
@@ -2252,7 +2322,6 @@ msgstr ""
 #: templates/ehr/ehr_session_list.html:37
 #: templates/employee/employee_list.html:58 templates/place/place_list.html:49
 #: templates/place/place_room_list.html:49
-#: templates/service/service_client_list.html:49
 #: templates/service/service_group_list.html:43
 #: templates/service/service_list.html:42
 #: templates/service/service_queue.html:41 templates/users/users_list.html:52
@@ -3044,23 +3113,23 @@ msgstr ""
 msgid "if selected will print client demographic data"
 msgstr ""
 
-#: templates/client/client_print_form.html:73
+#: templates/client/client_print_form.html:74
 msgid "Print EHR data"
 msgstr ""
 
-#: templates/client/client_print_form.html:74
+#: templates/client/client_print_form.html:75
 msgid "if selected will print client EHR data"
 msgstr ""
 
-#: templates/client/client_print_form.html:77
+#: templates/client/client_print_form.html:79
 msgid "Print output format"
 msgstr ""
 
-#: templates/client/client_print_form.html:91
+#: templates/client/client_print_form.html:93
 msgid "Print"
 msgstr ""
 
-#: templates/client/client_print_form.html:92
+#: templates/client/client_print_form.html:94
 #: templates/ehr/ehr_demand_save.html:28
 #: templates/ehr/ehr_diagnosis_save.html:28
 #: templates/ehr/ehr_session_save.html:28 templates/tags/save.html:19
@@ -4402,7 +4471,7 @@ msgid ""
 "for"
 msgstr ""
 
-#: templates/registration/login.html:21 templates/registration/login.html:46
+#: templates/registration/login.html:21 templates/registration/login.html:52
 #: templates/registration/password_reset_complete.html:15
 #: templates/registration/password_reset_form.html:21
 msgid "Log in"
@@ -4436,6 +4505,23 @@ msgstr ""
 
 #: templates/registration/login.html:32
 msgid "Read more"
+msgstr ""
+
+#: templates/registration/login.html:57
+msgid "If you don't have an account, you can"
+msgstr ""
+
+#: templates/registration/login.html:57
+msgid "sign up"
+msgstr ""
+
+#: templates/registration/login.html:57
+msgid "for one"
+msgstr ""
+
+#: templates/registration/login.html:58
+#: templates/registration/registration_form.html:63
+msgid "Forgot Password?"
 msgstr ""
 
 #: templates/registration/logout.html:22
@@ -4544,11 +4630,11 @@ msgid ""
 "new one."
 msgstr ""
 
-#: templates/registration/password_reset_form.html:31
+#: templates/registration/password_reset_form.html:32
 msgid "E-mail address:"
 msgstr ""
 
-#: templates/registration/password_reset_form.html:34
+#: templates/registration/password_reset_form.html:35
 msgid "Reset password"
 msgstr ""
 
@@ -4598,10 +4684,6 @@ msgstr ""
 
 #: templates/registration/registration_form.html:62
 msgid "Already have an account?"
-msgstr ""
-
-#: templates/registration/registration_form.html:63
-msgid "Forgot Password?"
 msgstr ""
 
 #: templates/schedule/event_detail.html:25
@@ -4738,6 +4820,10 @@ msgstr ""
 #: templates/service/service_client_list.html:39
 #: templates/tags/service_sidebar.html:24
 msgid "Client list"
+msgstr ""
+
+#: templates/service/service_client_list.html:49
+msgid "There is no client subscribed in this service."
 msgstr ""
 
 #: templates/service/service_form.html:43
@@ -5526,8 +5612,4 @@ msgstr ""
 
 #: users/views.py:181
 msgid "User updated successfully"
-msgstr ""
-
-#: util/decorators.py:43
-msgid "Oops! You don't have access for this service!"
 msgstr ""

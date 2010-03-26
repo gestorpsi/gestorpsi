@@ -505,7 +505,7 @@ table {
         {% endif %}
     {% endif %}
     <br />
-    {% if print_ehr %}
+    {% if print_ehr and have_ehr_read_perms %}
         <strong>{% trans "Referral Sessions" %}</strong><br />
         {% if not i.session_set.all %}
             {% trans "This referral have no session registered yet" %}
@@ -530,7 +530,7 @@ table {
     {% endif %}
 
     <br />
-    {% if print_ehr %}
+    {% if print_ehr and have_ehr_read_perms %}
         <strong>{% trans "Referral Demands" %}</strong><br />
         {% if not i.demand_set.all %}
             {% trans "This referral have no demand registered yet" %}
@@ -580,7 +580,7 @@ table {
     {% endif %}
 
     <br />
-    {% if print_ehr %}
+    {% if print_ehr and have_ehr_read_perms %}
         <strong>{% trans "Referral Diagnosis" %}</strong><br />
         {% if not i.diagnosis_set.all %}
             {% trans "This referral have no diagnose registered yet" %}

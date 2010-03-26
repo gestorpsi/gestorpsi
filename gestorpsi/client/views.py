@@ -23,6 +23,7 @@ from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.template.defaultfilters import slugify
+from django.db.models import Q
 
 from gestorpsi.settings import DEBUG, MEDIA_URL
 from gestorpsi.address.models import Country, State, AddressType, City
@@ -32,7 +33,7 @@ from gestorpsi.service.models import Service, ServiceGroup, GroupMembers
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.careprofessional.views import Profession
 from gestorpsi.client.models import Client, Relation
-from gestorpsi.client.reports import ClientRecord, ClientList
+#from gestorpsi.client.reports import ClientRecord, ClientList
 from gestorpsi.client.forms import FamilyForm
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.internet.models import EmailType, IMNetwork
@@ -45,8 +46,8 @@ from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice
 from gestorpsi.referral.forms import ReferralForm, ReferralDischargeForm, QueueForm, ReferralExtForm
 from gestorpsi.referral.views import _referral_view
 from gestorpsi.referral.views import _referral_occurrences
-from gestorpsi.reports.header import header_gen
-from gestorpsi.reports.footer import footer_gen
+#from gestorpsi.reports.header import header_gen
+#from gestorpsi.reports.footer import footer_gen
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.person.views import person_json_list
@@ -59,6 +60,58 @@ from gestorpsi.schedule.models import ScheduleOccurrence, Occurrence
 from gestorpsi.contact.models import Contact
 from gestorpsi.util.views import get_object_or_None, write_pdf
 from gestorpsi.util.models import Cnae
+from gestorpsi.ehr.views import _access_ehr_check_read
+
+def _access_check(request, object=None):
+    """
+    client read rights
+    this method checks if logged professional have rights to read client data
+    @object: client
+    """
+
+    if not object:
+        return False
+        
+    # check if user is professional and not admin or secretary. if it's true, check if professional has referral with this customer
+    if not request.user.groups.filter(name='administrator') and not request.user.groups.filter(name='secretary'):
+        # not admin or secretary. let check if it's at least a professional
+        if not request.user.groups.filter(name='professional') and not request.user.groups.filter(name='student'):
+            return False
+        else:
+            # professional. lets check if request.user (professional) have referral with this client
+            professional_have_referral_with_client = False
+
+            for r in object.referral_set.all():
+                if request.user.profile.person.careprofessional in [p for p in r.professional.all()]:
+                    professional_have_referral_with_client = True
+
+            # check if client is referred by professional or if professional is owner of this record
+            if not professional_have_referral_with_client and object.revision().user != request.user:
+                return False
+
+    return True
+
+def _access_check_referral_write(request, referral=None):
+    """
+    this method checks professional as users when accessing clients
+    @object: client
+    """
+
+    if not referral:
+        return False
+
+    # check if user is professional and not admin or secretary. if it's true, check if professional has referral with this customer
+    if not request.user.groups.filter(name='administrator') and not request.user.groups.filter(name='secretary'):
+        # not admin or secretary. let check if it's at least a professional
+        if not request.user.groups.filter(name='professional') and not request.user.groups.filter(name='student'):
+            return False
+        else:
+            # lets check if request.user (professional) have referral with this client
+            if not request.user.profile.person.careprofessional in [p for p in referral.professional.all()]:
+                return False
+
+    return True
+
 
 # list all active clients
 @permission_required_with_403('client.client_list')
@@ -72,6 +125,11 @@ def index(request, deactive = False):
 @permission_required_with_403('client.client_read')
 def home(request, object_id=None):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     referrals = Referral.objects.charged().filter(client=object)
     referrals_discharged = ReferralDischarge.objects.filter(client=object)
 
@@ -131,10 +189,18 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
         else:
             object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
     else:
+        added_by_me = [] # registers added by me, got by django-reversion
+        for c in Client.objects.all():
+            if c.revision().user == request.user:
+                added_by_me.append(c.id)
+
+        object = Client.objects.filter(Q(person__organization = user.get_profile().org_active.id, referral__professional = user.profile.person.careprofessional.id) \
+                        | Q(pk__in=added_by_me)).distinct().order_by('person__name')
+
         if deactive:
-            object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '0', referral__professional = user.profile.person.careprofessional.id).distinct().order_by('person__name')
+            object = object.filter(clientStatus = '0')
         else:
-            object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1', referral__professional = user.profile.person.careprofessional.id).distinct().order_by('person__name')
+            object = object.filter(clientStatus = '1')
 
     if initial:
         object = object.filter(person__name__istartswith = initial)
@@ -149,6 +215,11 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
 @permission_required_with_403('client.client_read')
 def form(request, object_id=''):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     cnae = None
     # User Registration Code
     groups = [False, False, False, False]
@@ -206,6 +277,7 @@ def form(request, object_id=''):
 @permission_required_with_403('client.client_read')
 def add_company(request, object_id=''):
     object = Client() if not object_id else get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+
     company_form = CompanyForm()
 
     return render_to_response('client/client_form_company.html',
@@ -236,9 +308,12 @@ def referral_plus_form(request, object_id=None, referral_id=None):
     """ This function render a form used by internal referral """
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
     data = {'client': [object.id]}
-
     referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active)
-    #referral_form = ReferralForm(instance=referral)
+
+    # check access by requested user
+    if not _access_check(request, object) or not _access_check_referral_write(request, referral):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     referral_form = ReferralForm(data)
     referral_form.fields['professional'].queryset = CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)
     referral_form.fields['referral'].queryset = Referral.objects.filter(client=object)
@@ -263,10 +338,18 @@ def referral_plus_form(request, object_id=None, referral_id=None):
 def referral_form(request, object_id = None, referral_id = None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
 
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     data = {'client': [object.id]}
 
     try:
         referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active)
+        # check access by requested user
+        if not _access_check_referral_write(request, referral):
+            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
         referral_form = ReferralForm(instance = referral)
         referral_list = None
         referral_form.fields['professional'].queryset = CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)
@@ -336,6 +419,8 @@ def referral_save(request, object_id = None, referral_id = None):
     if request.method == 'POST':
         try:
             referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active, referraldischarge__isnull=True)
+            if not _access_check_referral_write(request, referral):
+                return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
             form = ReferralForm(request.POST, instance = referral)
         except:
             form = ReferralForm(request.POST)
@@ -370,7 +455,7 @@ def referral_save(request, object_id = None, referral_id = None):
                 url = '/client/%s/referral/%s/?clss=error'
                 msg = _('Service is deactive. Impossible register a referral.')
         else:
-            return render_to_response('client/client_referral_form.html', locals())
+            return render_to_response('client/client_referral_form.html', locals(), context_instance=RequestContext(request))
 
     request.user.message_set.create(message=_(msg))
     return HttpResponseRedirect(url % (object_id, object.id))
@@ -379,7 +464,11 @@ def referral_save(request, object_id = None, referral_id = None):
 def referral_discharge_form(request, object_id = None, referral_id = None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
- 
+
+    # check access by requested user
+    if not _access_check(request, object) or not _access_check_referral_write(request, referral):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     if referral.on_queue():
         request.user.message_set.create(message=_('Sorry, you can not discharge a queued referral. Remove it from queue first before to continue'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
@@ -411,6 +500,10 @@ def referral_discharge_form(request, object_id = None, referral_id = None):
 def referral_list(request, object_id = None, discharged = None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
 
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     if discharged:
         referrals = object.referrals_discharged()
     else:
@@ -423,8 +516,18 @@ def referral_list(request, object_id = None, discharged = None):
     return render_to_response('client/client_referral_list.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('referral.referral_read')
-def referral_home(request, object_id = None, referral_id = None): 
-    return _referral_view(request, object_id, referral_id, 'client/client_referral_home.html')
+def referral_home(request, object_id = None, referral_id = None):
+    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    access_check_referral_write = None
+    if _access_check_referral_write(request, get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)):
+        access_check_referral_write = True
+
+    return _referral_view(request, object_id, referral_id, 'client/client_referral_home.html', access_check_referral_write)
 
 @permission_required_with_403('client.client_write')
 def save(request, object_id=None, is_company = False):
@@ -436,6 +539,11 @@ def save(request, object_id=None, is_company = False):
     if object_id:
         object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
         person = object.person
+
+        # check access by requested user
+        if not _access_check(request, object):
+            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     else:
         object = Client()
         person = Person()
@@ -470,6 +578,14 @@ def save(request, object_id=None, is_company = False):
 def client_print(request, object_id = None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
 
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    have_ehr_read_perms = False
+    if _access_ehr_check_read(request, object):
+        have_ehr_read_perms = True
+    
     if not request.POST:
         return render_to_response('client/client_print_form.html', locals(), context_instance=RequestContext(request))
     else:
@@ -489,7 +605,8 @@ def client_print(request, object_id = None):
             'user': request.user, 
             'DEBUG': DEBUG, 
             'MEDIA_URL': MEDIA_URL, 
-            'company_related_clients': company_related_clients, 
+            'company_related_clients': company_related_clients,
+            'have_ehr_read_perms': have_ehr_read_perms,
             }
 
         if request.POST.get('output') == 'html':
@@ -524,6 +641,11 @@ def organization_clients(request):
 @permission_required_with_403('client.client_write')
 def order(request, object_id = ''):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     url = '/client/%s/'
 
     if Referral.objects.charged().filter(client = object).count() == 0:
@@ -553,7 +675,10 @@ def schedule_daily(request,
 
     # verify if user has perm
     referral = get_object_or_404(Referral, pk=request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
-    
+
+    if not _access_check(request, get_object_or_404(Client, pk=request.GET.get('client'), person__organization=request.user.get_profile().org_active)):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     if referral.on_queue():
         request.user.message_set.create(message=_('Sorry, you can not book a queued client. Remove it first from queue before continue'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (request.GET.get('client'), referral.id))
@@ -564,7 +689,10 @@ def schedule_daily(request,
 def schedule_add(request):
 
     # verify if user has perm
-    get_object_or_404(Referral, pk=request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
+    referral = get_object_or_404(Referral, pk=request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
+
+    if not _access_check_referral_write(request, referral):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     return add_event(request, 
         'client/client_schedule_form.html', 
@@ -586,12 +714,23 @@ def occurrence_view(request, object_id = None, occurrence_id = None):
 
 @permission_required_with_403('schedule.schedule_list')
 def referral_occurrences(request, object_id = None, referral_id = None, type = 'upcoming'):
+    if not _access_check(request, get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     return _referral_occurrences(request, object_id, referral_id, type, 'client/client_referral_occurrences.html')
     
 @permission_required_with_403('referral.referral_read')
 def referral_queue(request, object_id = '',  referral_id = ''):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
+
+    if not _access_check_referral_write(request, referral):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     if referral.on_queue():
         request.user.message_set.create(message=_('Error adding to queue! Referral is already queued'))
@@ -607,6 +746,11 @@ def referral_queue(request, object_id = '',  referral_id = ''):
 @permission_required_with_403('referral.referral_write')
 def referral_queue_save(request, object_id = '',  referral_id = ''):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
 
     if referral.on_queue():
@@ -644,6 +788,11 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
 def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id = ''):
     """ This action don't remove the register, just save date out of the register """
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
     queue = get_object_or_None(Queue, pk = queue_id)
     
@@ -660,6 +809,10 @@ def referral_ext_form(request, object_id ='', referral_id=''):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
 
+    # check access by requested user
+    if not _access_check(request, object) or not _access_check_referral_write(request, referral):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     contact_organizations = Contact.objects.filter(
                                                 org_id = request.user.get_profile().org_active.id, 
                                                 person_id = request.user.get_profile().person.id, 
@@ -673,6 +826,11 @@ def referral_ext_form(request, object_id ='', referral_id=''):
 @permission_required_with_403('referral.referral_write')
 def referral_ext_save(request, object_id = '', referral_id=''):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
     form = ReferralExtForm(request.POST) 
     queues = Queue.objects.filter(referral=referral_id)
@@ -693,11 +851,20 @@ def referral_ext_save(request, object_id = '', referral_id=''):
 @permission_required_with_403('client.client_read')
 def family(request, object_id = None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     return render_to_response('client/client_family.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('client.client_write')
 def family_form(request, object_id = None, relation_id=None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     if relation_id:
         from gestorpsi.client.models import Family
@@ -745,6 +912,11 @@ def family_form(request, object_id = None, relation_id=None):
 @permission_required_with_403('client.client_list')
 def company_related(request, object_id = None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active)
 
     return render_to_response('client/client_company_related.html', locals(), context_instance=RequestContext(request))
@@ -752,6 +924,11 @@ def company_related(request, object_id = None):
 @permission_required_with_403('client.client_write')
 def company_related_form(request, object_id = None, company_client_id=None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     form = CompanyClientForm()
 
     if company_client_id:

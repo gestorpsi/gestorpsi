@@ -69,10 +69,12 @@ GNU General Public License for more details.
         {% trans "Print demographic data" %}</b>
             <small>({% trans "if selected will print client demographic data" %})</small>
         </label>
+        {% if have_ehr_read_perms %}
         <label><input type="checkbox" name="ehr" value="True" checked />&nbsp; <b>
         {% trans "Print EHR data" %}</b>
             <small>({% trans "if selected will print client EHR data" %})</small>
         </label>
+        {% endif %}
         <div style="clear:both"></div>
         <label><b>{% trans "Print output format" %}</b><br /></label>
         <div class="label">

@@ -24,9 +24,15 @@ from gestorpsi.client.models import Client
 from gestorpsi.demographic.forms import EducationalLevelForm, ProfessionForm
 from gestorpsi.demographic.models import EducationalLevel, Profession
 
+from gestorpsi.client.views import _access_check
+
 @permission_required_with_403('demographic.demographic_read')
 def home(request, object_id):
-    object = get_object_or_404(Client, pk=object_id)
+    object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     return render_to_response('demographic/demographic_home.html', {
                                     'object': object,
                                     'demographic_menu': True,
@@ -34,7 +40,11 @@ def home(request, object_id):
 
 @permission_required_with_403('demographic.demographic_read')
 def education(request, object_id):
-    object = get_object_or_404(Client, pk=object_id)
+    object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     if hasattr(object, 'educationallevel'):
         education_form = EducationalLevelForm(instance=object.educationallevel)
     else:
@@ -48,7 +58,11 @@ def education(request, object_id):
 
 @permission_required_with_403('demographic.demographic_write')
 def education_save(request, object_id):
-    object = get_object_or_404(Client, pk=object_id)
+    object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     if hasattr(object, 'educationallevel'):
         education_form = EducationalLevelForm(request.POST, instance=object.educationallevel)
     else:
@@ -65,7 +79,11 @@ def education_save(request, object_id):
 
 @permission_required_with_403('demographic.demographic_read')
 def occupation(request, object_id, occupation_id=0):
-    object = get_object_or_404(Client, pk=object_id)
+    object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     occupation_object = get_object_or_None(Profession, id=occupation_id) or Profession()
     profession_form = ProfessionForm(instance=occupation_object)
     professions = [p for p in object.profession_set.all()]
@@ -78,7 +96,11 @@ def occupation(request, object_id, occupation_id=0):
 
 @permission_required_with_403('demographic.demographic_write')
 def occupation_save(request, object_id, occupation_id=0):
-    object = get_object_or_404(Client, pk=object_id)
+    object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     occupation_object = get_object_or_None(Profession, id=occupation_id) or Profession()
     profession_form = ProfessionForm(request.POST, instance=occupation_object)
     profession = profession_form.save(commit=False)

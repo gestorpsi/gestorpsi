@@ -30,10 +30,16 @@ from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.settings import MEDIA_ROOT
 import os
 import uuid
+from gestorpsi.client.views import _access_check
 
 @permission_required_with_403('admission.admission_read')
 def form(request, object_id=''):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     attachs = Attach.objects.filter(client = object)
 
     return render_to_response('admission/admission_form.html', {
@@ -66,6 +72,11 @@ def is_responsible(value):
 @permission_required_with_403('admission.admission_write')
 def save(request, object_id=''):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     object.admission_date = datetime.strptime(request.POST.get('admission_date'), '%d/%m/%Y')
     object.legacyRecord = request.POST.get('legacyRecord')
     object.comments = request.POST.get('comments')
@@ -87,7 +98,11 @@ def save(request, object_id=''):
     return HttpResponseRedirect('/client/%s/home' % object.id)
 
 def attach_save(request, object_id = None):
-    object = get_object_or_404(Client, pk = object_id)
+    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         user = request.user

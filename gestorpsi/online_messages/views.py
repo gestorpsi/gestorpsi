@@ -16,6 +16,7 @@ from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.referral.models import Referral
 from gestorpsi.client.models import Client
 from gestorpsi.util.decorators import permission_required_with_403
+from gestorpsi.client.views import  _access_check_referral_write, _access_check
 
 if "notification" in settings.INSTALLED_APPS:
     from notification import models as notification
@@ -32,9 +33,9 @@ def client_messages(request, object_id, referral=None, template_name='messages/m
     message_list = []
     referrals = []
 
-    object = Client.objects.get(pk=object_id)
+    object = Client.objects.get(pk=object_id, person__organization=request.user.get_profile().org_active)
  
-    referrals = Referral.objects.filter(client=object)
+    referrals = Referral.objects.filter(client=object, service__organization=request.user.get_profile().org_active)
  
     for referral in referrals:
         message_list += Message.objects.inbox_for(request.user, referral)
@@ -86,7 +87,12 @@ def _referral_messages(request, referral_id, object_id, template_name="messages/
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
     client_id = object_id
     referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active)
+
     if not request.user.get_profile().person.is_client():
+        # check if professional can read it
+        if not _access_check(request, object) and not _access_check_referral_write(request, referral):
+            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
         if not referral.topics.all():
             return HttpResponseRedirect('/client/%s/referral/%s/messages/newtopic' % (object.id, referral.id))
     #topics = MessageTopic.objects.filter(referral=referral, referral__service__organization=request.user.get_profile().org_active).order_by('messages__sent_at').reverse().distinct()
@@ -98,8 +104,13 @@ def referral_messages(request, referral_id, object_id):
 
 def _topic_messages(request, referral_id, topic_id, object_id, template_name="messages/messages_topic.html"):
     client_id = object_id
+
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
     referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active)
+
+    if not _access_check(request, object) and not _access_check_referral_write(request, referral):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     messagetopic = MessageTopic.objects.get(pk=topic_id)
 
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
@@ -128,6 +139,10 @@ def _new_topic_message(request, referral_id, topic_id, object_id, redirect_to=No
     client_id = object_id
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
     referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active)
+
+    if not _access_check_referral_write(request, referral):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     messagetopic = MessageTopic.objects.get(pk=topic_id)
     if request.POST.get('message'):
         from datetime import datetime
@@ -152,6 +167,9 @@ def new_message_topic(request, referral_id, object_id, template_name="messages/m
     client_id = object_id
     referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active)
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+
+    if not _access_check_referral_write(request, referral):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     if not request.POST:
         return render_to_response('messages/messages_newtopic.html', locals(), context_instance=RequestContext(request))
@@ -347,41 +365,41 @@ def reply(request, message_id, form_class=ComposeForm,
     }, context_instance=RequestContext(request))
 reply = login_required(reply)
 
-@permission_required_with_403('online_messages.online_messages_write')
-def delete(request, message_id, success_url=None):
-    """
-    Marks a message as deleted by sender or recipient. The message is not
-    really removed from the database, because two users must delete a message
-    before it's save to remove it completely. 
-    A cron-job should prune the database and remove old messages which are 
-    deleted by both users.
-    As a side effect, this makes it easy to implement a trash with undelete.
-    
-    You can pass ?next=/foo/bar/ via the url to redirect the user to a different
-    page (e.g. `/foo/bar/`) than ``success_url`` after deletion of the message.
-    """
-    user = request.user
-    now = datetime.datetime.now()
-    message = get_object_or_404(Message, id=message_id)
-    deleted = False
-    if success_url is None:
-        success_url = reverse('messages_inbox')
-    if request.GET.has_key('next'):
-        success_url = request.GET['next']
-    if message.sender == user:
-        message.sender_deleted_at = now
-        deleted = True
-    if message.recipient == user:
-        message.recipient_deleted_at = now
-        deleted = True
-    if deleted:
-        message.save()
-        user.message_set.create(message=_(u"Message successfully deleted."))
-        if notification:
-            notification.send([user], "messages_deleted", {'message': message,})
-        return HttpResponseRedirect(success_url)
-    raise Http404
-delete = login_required(delete)
+#@permission_required_with_403('online_messages.online_messages_write')
+#def delete(request, message_id, success_url=None):
+#    """
+#    Marks a message as deleted by sender or recipient. The message is not
+#    really removed from the database, because two users must delete a message
+#    before it's save to remove it completely.
+#    A cron-job should prune the database and remove old messages which are
+#    deleted by both users.
+#    As a side effect, this makes it easy to implement a trash with undelete.
+#
+#    You can pass ?next=/foo/bar/ via the url to redirect the user to a different
+#    page (e.g. `/foo/bar/`) than ``success_url`` after deletion of the message.
+#    """
+#    user = request.user
+#    now = datetime.datetime.now()
+#    message = get_object_or_404(Message, id=message_id)
+#    deleted = False
+#    if success_url is None:
+#        success_url = reverse('messages_inbox')
+#    if request.GET.has_key('next'):
+#        success_url = request.GET['next']
+#    if message.sender == user:
+#        message.sender_deleted_at = now
+#        deleted = True
+#    if message.recipient == user:
+#        message.recipient_deleted_at = now
+#        deleted = True
+#    if deleted:
+#        message.save()
+#        user.message_set.create(message=_(u"Message successfully deleted."))
+#        if notification:
+#            notification.send([user], "messages_deleted", {'message': message,})
+#        return HttpResponseRedirect(success_url)
+#    raise Http404
+#delete = login_required(delete)
 
 @permission_required_with_403('online_messages.online_messages_write')
 def undelete(request, message_id, success_url=None):

@@ -52,7 +52,7 @@ GNU General Public License for more details.
 </div>
 
 <div id="sidebar" class="sidebar">
-    {% if perms.ehr.ehr_write %}
+    {% if perms.ehr.ehr_write and have_perms_to_write %}
         <div class="bg_blue">
             {% include "ehr/ehr_diagnosis_save.html" %}
         </div>    

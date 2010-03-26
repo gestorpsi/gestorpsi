@@ -19,12 +19,14 @@ from django.http import HttpResponse
 from gestorpsi.settings import MEDIA_ROOT
 import uuid
 from PIL import Image
+from django.utils.translation import ugettext as _
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.referral.models import ReferralAttach, Referral, REFERRAL_ATTACH_TYPE
 from gestorpsi.client.models import Client
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from gestorpsi.client.views import  _access_check_referral_write
 
 @permission_required_with_403('upload.upload_write')
 def send(request):
@@ -95,7 +97,10 @@ def attach_form(request, object_id = '', referral_id = ''):
     user = request.user
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
     organization = user.get_profile().org_active.id
-    
+
+    if not _access_check_referral_write(request, referral):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     types = REFERRAL_ATTACH_TYPE
 
     #indication = Indication.objects.get(referral = object_id)
@@ -106,6 +111,10 @@ def attach_form(request, object_id = '', referral_id = ''):
 
 @permission_required_with_403('upload.upload_write')
 def attach_save(request, object_id = None, client_id = None):
+
+    referral = get_object_or_404(Referral, pk=object_id, service__organization=request.user.get_profile().org_active)
+    if not _access_check_referral_write(request, referral):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         user = request.user

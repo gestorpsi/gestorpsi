@@ -79,7 +79,7 @@ def client_referrals(request, object_id = None):
     
     return HttpResponse(array, mimetype='application/json')
 
-def _referral_view(request, object_id = None, referral_id = None, template_name = 'client/client_referral_home.html'):
+def _referral_view(request, object_id = None, referral_id = None, template_name = 'client/client_referral_home.html', access_check_referral_write = None):
     clss = request.GET.get("clss")
     user = request.user
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)

@@ -29,10 +29,63 @@ from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.client.models import Client
 from gestorpsi.referral.models import Referral
 
+def _access_ehr_check_read(request, object=None):
+    """
+    this method checks if professional have rights to read client ehr
+    in others words, check if client is referred by logged professional
+    @object: client
+    """
+
+    # only professionals can access it. return false if request user is not a professional
+    if not object:
+        return False
+
+    # only professionals can access it. return false if request user is not a professional
+    if not request.user.groups.filter(name='professional') and not request.user.groups.filter(name='student'):
+        return False
+
+    # professional. lets check if request.user (professional) have referral with this client
+    professional_have_referral_with_client = False
+
+    for r in object.referral_set.all():
+        if request.user.profile.person.careprofessional in [p for p in r.professional.all()]:
+            professional_have_referral_with_client = True
+
+    # check if client is referred by professional or if professional is owner of this record
+    if not professional_have_referral_with_client and object.revision().user != request.user:
+        return False
+
+    return True
+
+def _access_ehr_check_write(request, referral=None):
+    """
+    this method checks if professional have rights to read client ehr
+    in others words, check if client is referred by logged professional
+    @referral: referral
+    """
+
+    if not referral:
+        return False
+
+    # only professionals can access it. return false if request user is not a professional
+    if not request.user.groups.filter(name='professional') and not request.user.groups.filter(name='student'):
+        return False
+
+    # lets check if request.user (professional) have referral with this client
+    if not request.user.profile.person.careprofessional in [p for p in referral.professional.all()]:
+        return False
+
+    return True
+
 @permission_required_with_403('ehr.ehr_list')
 def demand_list(request, client_id, referral_id):
-    client = get_object_or_404(Client, pk=client_id)
-    referral = get_object_or_404(Referral, pk=referral_id)
+    client = get_object_or_404(Client, pk=client_id, person__organization=request.user.get_profile().org_active)
+
+    # check if logged user can read it
+    if not _access_ehr_check_read(request, client):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
     demands = referral.demand_set.all()
     return render_to_response('ehr/ehr_demand_list.html', {
                                     'object': client,
@@ -42,9 +95,24 @@ def demand_list(request, client_id, referral_id):
 
 @permission_required_with_403('ehr.ehr_read')
 def demand_form(request, client_id, referral_id, demand_id=0):
-    client = get_object_or_404(Client, pk=client_id)
-    referral = get_object_or_404(Referral, pk=referral_id)
+    client = get_object_or_404(Client, pk=client_id, person__organization=request.user.get_profile().org_active)
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
+
+    # check if logged user can read it
+    if not _access_ehr_check_read(request, client):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    have_perms_to_write = None
+    # check if logged user can write on it
+    if _access_ehr_check_write(request, referral):
+        have_perms_to_write = True
+
     demand = get_object_or_None(Demand, pk=demand_id) or Demand()
+
+    # logged profissionais not referred client dont have permission to add, only to view form data
+    if not demand.id and not have_perms_to_write:
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     demand_form = DemandForm(instance=demand)
     demand_form.fields['occurrence'].queryset = referral.occurrences()
     
@@ -61,13 +129,18 @@ def demand_form(request, client_id, referral_id, demand_id=0):
                                     'frequency_form': frequency_form,
                                     'duration_form': duration_form,
                                     'clss':request.GET.get('clss'),
+                                    'have_perms_to_write': have_perms_to_write,
                                     }, context_instance=RequestContext(request))
 
 @permission_required_with_403('ehr.ehr_write')
 def demand_save(request, client_id, referral_id, demand_id=0):
-    client = get_object_or_404(Client, pk=client_id)
-    referral = get_object_or_404(Referral, pk=referral_id)
-    
+    client = get_object_or_404(Client, pk=client_id, person__organization=request.user.get_profile().org_active)
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
+
+    # check if logged user can write it
+    if not _access_ehr_check_write(request, referral):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     demand = get_object_or_None(Demand, pk=demand_id) or Demand()
     if demand.edit_status in ('2', '4'):
         request.user.message_set.create(message=_("You cannot change a confirmed demand."))
@@ -122,8 +195,13 @@ def demand_save(request, client_id, referral_id, demand_id=0):
 
 @permission_required_with_403('ehr.ehr_list')
 def diagnosis_list(request, client_id, referral_id):
-    client = get_object_or_404(Client, pk=client_id)
-    referral = get_object_or_404(Referral, pk=referral_id)
+    client = get_object_or_404(Client, pk=client_id, person__organization=request.user.get_profile().org_active)
+
+    # check if logged user can read it
+    if not _access_ehr_check_read(request, client):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
     diagnoses = referral.diagnosis_set.all()
     return render_to_response('ehr/ehr_diagnosis_list.html', {
                                     'object': client,
@@ -133,9 +211,24 @@ def diagnosis_list(request, client_id, referral_id):
 
 @permission_required_with_403('ehr.ehr_read')
 def diagnosis_form(request, client_id, referral_id, diagnosis_id=0):
-    client = get_object_or_404(Client, pk=client_id)
-    referral = get_object_or_404(Referral, pk=referral_id)
+    client = get_object_or_404(Client, pk=client_id, person__organization=request.user.get_profile().org_active)
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
+
+    # check if logged user can read it
+    if not _access_ehr_check_read(request, client):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    have_perms_to_write = None
+    # check if logged user can write on it
+    if _access_ehr_check_write(request, referral):
+        have_perms_to_write = True
+
     diagnosis = get_object_or_None(Diagnosis, pk=diagnosis_id) or Diagnosis()
+
+    # logged profissionais not referred client dont have permission to add, only to view form data
+    if not diagnosis.id and not have_perms_to_write:
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     diagnosis_form = DiagnosisForm(instance=diagnosis, label_suffix='')
     if not diagnosis.diagnosis_date:
         diagnosis_form.initial = {'diagnosis_date': datetime.strftime(datetime.now(), "%d/%m/%Y")}
@@ -145,13 +238,18 @@ def diagnosis_form(request, client_id, referral_id, diagnosis_id=0):
                                     'referral': referral,
                                     'diagnosis_form': diagnosis_form,
                                     'clss':request.GET.get('clss'),
+                                    'have_perms_to_write': have_perms_to_write,
                                     }, context_instance=RequestContext(request))
 
 @permission_required_with_403('ehr.ehr_write')
 def diagnosis_save(request, client_id, referral_id, diagnosis_id=0):
-    client = get_object_or_404(Client, pk=client_id)
-    referral = get_object_or_404(Referral, pk=referral_id)
-    
+    client = get_object_or_404(Client, pk=client_id, person__organization=request.user.get_profile().org_active)
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
+
+    # check if logged user can write it
+    if not _access_ehr_check_write(request, referral):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     diagnosis = get_object_or_None(Diagnosis, pk=diagnosis_id) or Diagnosis()
     if diagnosis.edit_status in ('2', '4'):
         request.user.message_set.create(message=_("You cannot change a confirmed diagnosis."))
@@ -179,8 +277,13 @@ def diagnosis_save(request, client_id, referral_id, diagnosis_id=0):
 
 @permission_required_with_403('ehr.ehr_list')
 def session_list(request, client_id, referral_id):
-    client = get_object_or_404(Client, pk=client_id)
-    referral = get_object_or_404(Referral, pk=referral_id)
+    client = get_object_or_404(Client, pk=client_id, person__organization=request.user.get_profile().org_active)
+
+    # check if logged user can read it
+    if not _access_ehr_check_read(request, client):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
     sessions = referral.session_set.all()
     return render_to_response('ehr/ehr_session_list.html', {
                                     'object': client,
@@ -190,9 +293,24 @@ def session_list(request, client_id, referral_id):
 
 @permission_required_with_403('ehr.ehr_read')
 def session_form(request, client_id, referral_id, session_id=0):
-    client = get_object_or_404(Client, pk=client_id)
-    referral = get_object_or_404(Referral, pk=referral_id)
+    client = get_object_or_404(Client, pk=client_id, person__organization=request.user.get_profile().org_active)
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
+
+    # check if logged user can read it
+    if not _access_ehr_check_read(request, client):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    have_perms_to_write = None
+    # check if logged user can write on it
+    if _access_ehr_check_write(request, referral):
+        have_perms_to_write = True
+
     session = get_object_or_None(Session, pk=session_id) or Session()
+
+    # logged profissionais not referred client dont have permission to add, only to view form data
+    if not session.id and not have_perms_to_write:
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     session_form = SessionForm(instance=session)
     session_form.fields['occurrence'].queryset = referral.occurrences().filter(session=None) if session_id==0 else referral.occurrences()
     return render_to_response('ehr/ehr_session_form.html', {
@@ -200,13 +318,18 @@ def session_form(request, client_id, referral_id, session_id=0):
                                     'referral': referral,
                                     'session_form': session_form,
                                     'clss':request.GET.get('clss'),
+                                    'have_perms_to_write': have_perms_to_write,
                                     }, context_instance=RequestContext(request))
 
 @permission_required_with_403('ehr.ehr_write')
 def session_save(request, client_id, referral_id, session_id=0):
-    client = get_object_or_404(Client, pk=client_id)
-    referral = get_object_or_404(Referral, pk=referral_id)
-    
+    client = get_object_or_404(Client, pk=client_id, person__organization=request.user.get_profile().org_active)
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
+
+    # check if logged user can write it
+    if not _access_ehr_check_write(request, referral):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     session = get_object_or_None(Session, pk=session_id) or Session()
     if session.edit_status in ('2', '4'):
         request.user.message_set.create(message=_("You cannot change a confirmed session."))

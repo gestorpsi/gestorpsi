@@ -19,7 +19,7 @@ TIMESLOT_START_TIME = datetime.time(0)
 # 1:30am (01:30), in which case a value of datetime.timedelta(hours=10.5) 
 # could be specified to indicate that the 1:30 represents the following date's
 # time and not the current date.
-TIMESLOT_END_TIME_DURATION = datetime.timedelta(hours=+23.5)
+TIMESLOT_END_TIME_DURATION = datetime.timedelta(hours=+23)
 
 # Indicates a minimum value for the number grid columns to be shown in the time
 # slot table.

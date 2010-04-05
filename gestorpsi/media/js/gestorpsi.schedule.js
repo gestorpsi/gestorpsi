@@ -247,13 +247,12 @@ $(function() {
         $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option').attr('selected','');
         $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option[value=' + end_time + ']').attr('selected','selected');
         
-        $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option').attr('disabled',false)
+        //$(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option').attr('disabled',false)
+        $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option').show();
 
         $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option').each(function(){
-             
-            if ($(this).val() <= option.val() ){
-                $(this).attr('disabled','disabled');
-
+            if (parseInt($(this).val()) <= parseInt(option.val()) ){
+                $(this).hide();
             }  
         });
     });

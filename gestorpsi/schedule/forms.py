@@ -31,7 +31,8 @@ def timeslot_offset_options(
     interval=swingtime_settings.TIMESLOT_INTERVAL,
     start_time=swingtime_settings.TIMESLOT_START_TIME,
     end_delta=swingtime_settings.TIMESLOT_END_TIME_DURATION,
-    fmt=swingtime_settings.TIMESLOT_TIME_FORMAT
+    fmt=swingtime_settings.TIMESLOT_TIME_FORMAT,
+    type='start',
 ):
     '''
     Create a list of time slot options for use in swingtime forms.
@@ -42,6 +43,8 @@ def timeslot_offset_options(
     '''
     dt = datetime.combine(date.today(), time(0))
     dtstart = datetime.combine(dt.date(), start_time)
+    if type == 'end':
+        dtstart = dtstart + timedelta(hours=+0.5)
     dtend = dtstart + end_delta
     options = []
 
@@ -51,11 +54,13 @@ def timeslot_offset_options(
         options.append((delta, dtstart.strftime('%H:%M')))
         dtstart += interval
         delta += seconds
-    
+
     return options
 
 default_timeslot_options = timeslot_offset_options()
 default_timeslot_offset_options = timeslot_offset_options()
+default_timeslot_offset_options_start = timeslot_offset_options(type='start')
+default_timeslot_offset_options_end = timeslot_offset_options(type='end')
 
 class SplitDateTimeWidget(forms.MultiWidget):
     '''
@@ -93,12 +98,12 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
     is_online = forms.BooleanField(required = False)
     start_time_delta = forms.IntegerField(
         label='Start time',
-        widget=forms.Select(choices=default_timeslot_offset_options)
+        widget=forms.Select(choices=default_timeslot_offset_options_start)
     )
     
     end_time_delta = forms.IntegerField(
         label='End time',
-        widget=forms.Select(choices=default_timeslot_offset_options)
+        widget=forms.Select(choices=default_timeslot_offset_options_end)
     )
     
     class Meta:

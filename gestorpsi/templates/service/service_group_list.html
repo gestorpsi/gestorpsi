@@ -25,7 +25,9 @@ GNU General Public License for more details.
 {% block submenu %}
     <ul>
         <li><a class="first" href="/service/">{% trans "All Services" %}</a></li>
-        <li><a href="/service/add/">{% trans "Add Service" %}</a></li>
+        {% if perms.service.service_write %}
+            <li><a href="/service/add/">{% trans "Add Service" %}</a></li>
+        {% endif %}
         <li><a class="active">{% trans "groups of" %} {{ service.name }}</a></li>
     </ul>
 {% endblock %}

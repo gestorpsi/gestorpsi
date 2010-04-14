@@ -109,6 +109,10 @@ grp_professional.permissions.add(Permission.objects.get(codename='online_message
 grp_professional.permissions.add(Permission.objects.get(codename='online_messages_write'))
 grp_professional.permissions.add(Permission.objects.get(codename='online_messages_read'))
 grp_professional.permissions.add(Permission.objects.get(codename='online_messages_list'))
+grp_professional.permissions.add(Permission.objects.get(codename='place_list'))
+grp_professional.permissions.add(Permission.objects.get(codename='place_read'))
+grp_professional.permissions.add(Permission.objects.get(codename='organization_list'))
+grp_professional.permissions.add(Permission.objects.get(codename='organization_read'))
 
 # Student
 print "assigning permissions for group student"
@@ -123,10 +127,10 @@ grp_student.permissions.add(Permission.objects.get(codename='demographic_write')
 grp_student.permissions.add(Permission.objects.get(codename='ehr_write'))
 grp_student.permissions.add(Permission.objects.get(codename='ehr_read'))
 grp_student.permissions.add(Permission.objects.get(codename='ehr_list'))
-grp_student.permissions.add(Permission.objects.get(codename='admission_write'))
+#grp_student.permissions.add(Permission.objects.get(codename='admission_write'))
 grp_student.permissions.add(Permission.objects.get(codename='admission_read'))
 grp_student.permissions.add(Permission.objects.get(codename='admission_list'))
-grp_student.permissions.add(Permission.objects.get(codename='referral_write'))
+#grp_student.permissions.add(Permission.objects.get(codename='referral_write'))
 grp_student.permissions.add(Permission.objects.get(codename='referral_read'))
 grp_student.permissions.add(Permission.objects.get(codename='referral_list'))
 grp_student.permissions.add(Permission.objects.get(codename='upload_write'))
@@ -148,6 +152,10 @@ grp_student.permissions.add(Permission.objects.get(codename='online_messages_top
 grp_student.permissions.add(Permission.objects.get(codename='online_messages_write'))
 grp_student.permissions.add(Permission.objects.get(codename='online_messages_read'))
 grp_student.permissions.add(Permission.objects.get(codename='online_messages_list'))
+grp_student.permissions.add(Permission.objects.get(codename='place_list'))
+grp_student.permissions.add(Permission.objects.get(codename='place_read'))
+grp_student.permissions.add(Permission.objects.get(codename='organization_list'))
+grp_student.permissions.add(Permission.objects.get(codename='organization_read'))
 
 # Secretary
 print "assigning permissions for group secretary"

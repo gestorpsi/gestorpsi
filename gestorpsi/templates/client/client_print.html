@@ -77,7 +77,7 @@ table {
                 <small>{% trans "Image not available when Debug=True and server running in localhost" %}</small>
                 </div>
             {% else %}
-                <img width="120px" alt="{{ org_active.trade_name }}" src="{{ MEDIA_URL }}img/organization/{{ org_active.id}}/.thumb/{{ org_active.photo }}">
+                <img width="134px" alt="{{ org_active.trade_name }}" src="{{ MEDIA_URL }}img/organization/{{ org_active.id}}/.thumb/{{ org_active.photo }}">
             {% endif %}
         {% endif %}
         </td>
@@ -126,9 +126,9 @@ table {
     </div>
 {% else %}
     {% if not object.person.photo %}
-        <img alt="Client Picture" src="{{ MEDIA_URL }}img/generic_photo.gif">
+        <img width="116px" alt="Client Picture" src="{{ MEDIA_URL }}img/generic_photo.gif">
     {% else %}
-        <img alt="Client Picture" src="{{ MEDIA_URL }}img/organization/{{ org_active.id}}/.thumb/{{ object.person.photo }}">
+        <img width="116px" alt="Client Picture" src="{{ MEDIA_URL }}img/organization/{{ org_active.id}}/.thumb/{{ object.person.photo }}">
     {% endif %}
 {% endif %}
 </td>
@@ -142,7 +142,7 @@ table {
 {% else %}
 {{ object.person.document.all|join:"<br /> " }}
 {% endif %}
-<br/><br/>
+<br /><br />
 
 <strong>{% trans "Phone" %}</strong><hr />
 {% if not object.person.phones.all %}
@@ -150,7 +150,7 @@ table {
 {% else %}
 {{ object.person.phones.all|join:", "}}
 {% endif %}
-<br/><br/>
+<br /><br />
 
 <strong>{% trans "Address" %}</strong><hr />
 {% if not object.person.address.all %}
@@ -161,7 +161,7 @@ table {
     {% if not forloop.last %}<br /><br />{% endif %}
 {% endfor %}
 {% endif %}
-<br/><br/>
+<br /><br />
 
 <strong>{% trans "Email" %}</strong><hr />
 {% if not object.person.emails.all %}
@@ -172,7 +172,7 @@ table {
     {% if not forloop.last %}, {% endif %}
 {% endfor %}
 {% endif %}
-<br/><br/>
+<br /><br />
 
 <strong>{% trans "Website" %}</strong><hr />
 {% if not object.person.sites.all %}
@@ -183,7 +183,7 @@ table {
     {% if not forloop.last %}, {% endif %}
 {% endfor %}
 {% endif %}
-<br/><br/>
+<br /><br />
 
 <strong>{% trans "Instant Messenger" %}</strong><hr />
 {% if not object.person.instantMessengers.all %}
@@ -191,7 +191,7 @@ table {
 {% else %}
 {{ object.person.instantMessengers.all|join:", " }}
 {% endif %}
-<br/><br/>
+<br /><br />
 
 <strong>{% trans "Comments" %}</strong><hr />
 {% if not object.person.comments.all %}
@@ -199,7 +199,7 @@ table {
 {% else %}
 {{ object.person.comments|safe }}
 {% endif %}
-<br/><br/>
+<br /><br />
 
 
 <strong>
@@ -226,7 +226,7 @@ table {
     {% endfor %}
     {% endif %}
 {% endif %}
-<br/><br/>
+<br /><br />
 
 {% if print_demographic %}
 <h1>{% trans "Demographic Data" %}</h1>
@@ -268,7 +268,7 @@ table {
         {% endfor %}
       </table>
 {% endif %}
-<br/>
+<br />
 {% endif %}
 
 <h1>{% trans "Admission Details" %}</h1>
@@ -333,7 +333,7 @@ table {
       <td>{{ object.comments }}</td>
     </tr>
 </table>
-<br/>
+<br />
 
 <h1>
 {% if not object.referral_set.all %}

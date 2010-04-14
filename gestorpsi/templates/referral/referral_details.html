@@ -164,7 +164,7 @@ GNU General Public License for more details.
                     
                     <p>
                         <b />{% trans "Date in" %}</b>&nbsp;
-                            {{ a.date_in|date:"d-m-Y" }}
+                            {{ a.date_in|date:"d/m/Y" }}
                     </p>
 
                     <p>
@@ -182,12 +182,12 @@ GNU General Public License for more details.
                     <p>
                         {% if a.date_out %}
                         <b />{% trans "Date out" %}</b>&nbsp;
-                            {{ a.date_out|date:"d-m-Y" }}
+                            {{ a.date_out|date:"d/m/Y" }}
                         {% endif %}
                     </p>
                     <p>
-                    {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
-                      <a class="queue" href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/{{ a.id }}/remove/" title="{{ object.person.name }}">{% trans "Remove" %}</a> 
+                    {% if not a.date_out %}
+                      <a href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/{{ a.id }}/remove/" title="{{ object.person.name }}">{% trans "Remove" %}</a> 
                     {% endif %}
                     </p>
         {% endfor %}

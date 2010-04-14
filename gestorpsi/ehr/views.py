@@ -44,15 +44,21 @@ def _access_ehr_check_read(request, object=None):
     if not request.user.groups.filter(name='professional') and not request.user.groups.filter(name='student'):
         return False
 
-    # professional. lets check if request.user (professional) have referral with this client
     professional_have_referral_with_client = False
+    professional_is_responsible_for_service = False
 
+    # professional. lets check if request.user (professional) have referral with this client
     for r in object.referral_set.all():
         if request.user.profile.person.careprofessional in [p for p in r.professional.all()]:
             professional_have_referral_with_client = True
 
+    # professional. lets check if request.user (professional) is responsible for referral service
+    for r in object.referral_set.all():
+        if request.user.profile.person.careprofessional in [p for p in r.service.responsibles.all()]:
+            professional_is_responsible_for_service = True
+
     # check if client is referred by professional or if professional is owner of this record
-    if not professional_have_referral_with_client and object.revision().user != request.user:
+    if not professional_have_referral_with_client and not professional_is_responsible_for_service and object.revision().user != request.user:
         return False
 
     return True
@@ -71,8 +77,18 @@ def _access_ehr_check_write(request, referral=None):
     if not request.user.groups.filter(name='professional') and not request.user.groups.filter(name='student'):
         return False
 
+    professional_referral_with_client = False
+    professional_is_responsible_for_service = False
+    
     # lets check if request.user (professional) have referral with this client
-    if not request.user.profile.person.careprofessional in [p for p in referral.professional.all()]:
+    if request.user.profile.person.careprofessional in [p for p in referral.professional.all()]:
+        professional_referral_with_client = True
+    
+    # professional. lets check if request.user (professional) is responsible for referral service
+    if request.user.profile.person.careprofessional in [p for p in referral.service.responsibles.all()]:
+        professional_is_responsible_for_service = True
+
+    if not professional_referral_with_client and not professional_is_responsible_for_service:
         return False
 
     return True

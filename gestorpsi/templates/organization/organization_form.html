@@ -47,9 +47,11 @@ GNU General Public License for more details.
 
 <div class="photo">
         <img class="img_people" organization="{{ user.get_profile.org_active.id }}" src="{% if object.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
-        <a class="clips notajax">{% trans "Logo" %}</a>
-        <input type="hidden" name="photo" value="{{ object.photo }}" class="photo" />
-        <a class="notajax delete" title="delete" onclick="$(this).siblings('input.photo').val(''); $(this).siblings('img.img_people').attr('src', '/media/img/generic_photo.gif');"><span>{% trans "Delete" %}</span></a>
+        {% if perms.organization.organization_write %}
+            <a class="clips notajax">{% trans "Logo" %}</a>
+            <input type="hidden" name="photo" value="{{ object.photo }}" class="photo" />
+            <a class="notajax delete" title="delete" onclick="$(this).siblings('input.photo').val(''); $(this).siblings('img.img_people').attr('src', '/media/img/generic_photo.gif');"><span>{% trans "Delete" %}</span></a>
+        {% endif %}
 </div> 
 
 
@@ -261,12 +263,13 @@ GNU General Public License for more details.
 <br />	
 </div>
 
+{% if perms.organization.organization_write %}
 <div id="sidebar" class="sidebar">
 	<div class="bg_blue">
 		{% include "tags/save.html" %}
 	</div>
-	
 </div>
+{% endif %}
 
 </form>
 

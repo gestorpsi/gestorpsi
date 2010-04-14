@@ -23,6 +23,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
+from django.db.models import Q
 from gestorpsi.service.models import Service, Area, ServiceType, Modality
 from gestorpsi.person.views import person_json_list
 from gestorpsi.organization.models import Agreement, AgeGroup, ProcedureProvider, Procedure
@@ -36,6 +37,52 @@ from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.service.models import Service, Area, ServiceType, Modality, ServiceGroup
 from gestorpsi.service.forms import ServiceGroupForm, GenericAreaForm, SchoolAreaForm, OrganizationalAreaForm, GENERIC_AREA #, ClinicAreaForm
 from gestorpsi.client.forms import Client
+
+def _can_view_group(request, group=None, service=None):
+    """
+    this method must to check if request user have perms to view group data
+    both parameters can be used. at least one must be used
+    """
+    if request.user.groups.filter(name='administrator') or request.user.groups.filter(name='secretary'):
+        return True
+
+    if group and hasattr(request.user.profile.person, 'careprofessional'):
+        # can view only professional responsible and professionals related
+        if group:
+            if request.user.profile.person.careprofessional in group.service.responsibles.all() or \
+                request.user.profile.person.careprofessional in group.service.professionals.all():
+                return True
+        if service:
+            if request.user.profile.person.careprofessional in service.responsibles.all() or \
+                request.user.profile.person.careprofessional in service.professionals.all():
+                return True 
+
+    return False
+
+def _can_write_group(request, service):
+    if request.user.groups.filter(name='administrator') or request.user.groups.filter(name='secretary'):
+        return True
+
+    if hasattr(request.user.profile.person, 'careprofessional'):
+        if request.user.profile.person.careprofessional in service.responsibles.all():
+            return True
+
+    return False
+
+def _group_list(request, service = None):
+    # filter only groups that request user have permission to read them clients
+    group_list = ServiceGroup.objects.filter(service__referral__client__id__in = [i.id for i in _service_clients(request, service)]).distinct()
+
+    return group_list
+
+def _queue_list(request, service):
+    queue_list = Queue.objects.filter(referral__service__organization=request.user.get_profile().org_active, \
+        referral__service=service, \
+        date_in__isnull = False, date_out__isnull = True, \
+        referral__client__in = [s for s in _service_clients(request, service) ]) \
+        .order_by('date_in','date_out','referral__client__person__name') \
+        .distinct()
+    return queue_list
 
 @permission_required_with_403('service.service_list')
 def index(request, deactive = False):
@@ -69,6 +116,7 @@ def list(request, page = 1, deactive = False):
         'paginator_actual_page': object.number,
         'paginator_num_pages': paginator.num_pages,
         'object_length': object_length,
+        'is_student': True if hasattr(request.user.profile.person, 'careprofessional') and request.user.profile.person.careprofessional.is_student else False,
     }
 
     array['paginator'] = {}
@@ -76,6 +124,7 @@ def list(request, page = 1, deactive = False):
         array['paginator'][p] = p
 
     for o in object.object_list:
+        # can add group only with service_write or professional is responsible for service
         name = u'%s' % o.name
         if o.is_group:
             name += " (%s)" % _('Group')
@@ -85,6 +134,8 @@ def list(request, page = 1, deactive = False):
             'is_group': False if not o.is_group else True,
             'description': u'%s' % o.description,
             'email': '',
+            'have_client_to_list': False if not len(_group_list(request, o)) else True,
+            'can_add_group': False if not _can_write_group(request, o) else True,
         }
         i = i + 1
 
@@ -139,7 +190,11 @@ def form(request, object_id=None):
         'Professions': Profession.objects.all(),
         'area': selected_area,
         'form_area': form_area,
-        'clss':request.GET.get('clss')
+        'clss':request.GET.get('clss'),
+        'client_list': _service_clients(request, object),
+        'queue_list': _queue_list(request,object),
+        'can_list_groups': False if not len(_group_list(request, object)) else True,
+        'can_write_group': False if not _can_write_group(request, object) else True,
         }, context_instance=RequestContext(request) )
 
 @permission_required_with_403('service.service_write')
@@ -219,21 +274,18 @@ def save(request, object_id=''):
 @permission_required_with_403('service.service_list')
 def list_professional(request, object_id):
     """ Referral - List of professional of the service """
-    try:
-        list_prof = CareProfessional.objects.filter(prof_services = object_id, person__organization=request.user.get_profile().org_active)
-        i = 0
-        array = {} #JSON
-        for o in list_prof:
-            array[i] = {
-                    'name': '%s' % o,
-                    'id': o.id,
-            }
-            i = i + 1
 
-        return HttpResponse(simplejson.dumps(array), mimetype='application/json')
+    list_prof = CareProfessional.objects.filter(prof_services = object_id, person__organization=request.user.get_profile().org_active)
+    i = 0
+    array = {} #JSON
+    for o in list_prof:
+        array[i] = {
+                'name': '%s' % o,
+                'id': o.id,
+        }
+        i = i + 1
 
-    except:
-        pass
+    return HttpResponse(simplejson.dumps(array), mimetype='application/json')
 
 @permission_required_with_403('service.service_write')
 def order(request, object_id=None):
@@ -281,82 +333,125 @@ def disable(request, object_id=None):
         'Professions': Profession.objects.all(),
         }, context_instance=RequestContext(request))
 
-@permission_required_with_403('service.service_write')
+
+@permission_required_with_403('service.service_list')
 def queue(request, object_id=None):
     object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active)
-    #### ???? queue = Queue.objects.filter(referral__service = object_id, date_out = None).order_by('-date_in')
-
-    list_queue = Referral.objects.filter(queue__referral__service = object, queue__date_out = None).order_by('queue__date_in')
 
     return render_to_response( "service/service_queue.html", {
-        'queues': list_queue,
+        'queue_list': _queue_list(request, object),
         'object': object,
+        'client_list': _service_clients(request, object),
         }, context_instance=RequestContext(request))
 
+def _service_clients(request, service):
+    client_list = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, referral__service=service).distinct()
+    
+    if not request.user.groups.filter(name='administrator') and not request.user.groups.filter(name='secretary'):
+        added_by_me = [] # registers added by me, got by django-reversion
+        for c in Client.objects.all():
+            if c.revision().user == request.user:
+                added_by_me.append(c.id)
+
+        client_list = client_list.filter(Q(referral__professional = request.user.profile.person.careprofessional.id) \
+                        | Q(pk__in=added_by_me) \
+                        | Q(referral__service__responsibles=request.user.profile.person.careprofessional) \
+                        ).distinct().order_by('clientStatus', 'person__name')
+    return client_list
+
+@permission_required_with_403('client.client_list')
 def client_list_index(request, object_id = None):
+    # deny access to student add new referral
+    if hasattr(request.user.profile.person, 'careprofessional') and request.user.profile.person.careprofessional.is_student:
+        return render_to_response('403.html', {'object': _("Sorry! Students have no access to this service!"), }, context_instance=RequestContext(request))
+
     object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active)
+
+    client_list = _service_clients(request, object)
+    queue_list = _queue_list(request, object)
 
     return render_to_response('service/service_client_list.html', locals(), context_instance=RequestContext(request))
 
-@permission_required_with_403('service.service_list')
-def client_list(request, page=1, object_id=None, no_paging=None, initial=None, filter=None):
-    array = {} # json
-    i = 0
-    referral = Referral.objects.charged().filter(service = object_id).order_by('-date')
-    if initial:
-        referral = referral.filter(client__person__name__istartswith = initial)
-    if filter:
-        referral = referral.filter(client__person__name__icontains = filter)
-    #array['util'] = {
-    #    'has_perm_read': request.user.has_perm('place.place_read'),
-    #}
-    for r in referral:
-        array[i] = {
-            'dt': r.date.strftime("%d/%m/%Y  %H:%M ")
-        }
-        list = r.upcoming_occurrences()
-        sub = 0
-        array[i]['occurence'] = {}
-        for p in list:
-            array[i]['occurence'][sub] = ({'p': ('%s' % p.start_time.strftime(" %d-%m-%Y  %H:%M ")) })
-            sub = sub + 1
-        sub = 0
-        array[i]['professional'] = {}
-        for p in r.professional.all():
-            array[i]['professional'][sub] = ({'id':p.id, 'name':p.person.name})
-            sub = sub + 1
-        sub = 0
-        array[i]['client'] = {}
-        for p in r.client.all():
-            array[i]['client'][sub] =  ({'id':p.id, 'name':p.person.name})
-            sub = sub + 1
-        i = i + 1
+# def client_list
+# method commented for while. have to bugs
+# -> display not distinct values. filters are wrong
+# -> not working search and initial letter filter
+#@permission_required_with_403('service.service_list')
+#def client_list(request, page=1, object_id=None, no_paging=None, initial=None, filter=None):
 
-    return HttpResponse(simplejson.dumps(array, sort_keys=True), mimetype='application/json')
+    ## deny access to student add new referral
+    #if hasattr(request.user.profile.person, 'careprofessional') and request.user.profile.person.careprofessional.is_student:
+        #return render_to_response('403.html', {'object': _("Sorry! Students have no access to this service!"), }, context_instance=RequestContext(request))
+
+    #array = {} # json
+    #i = 0
+    #referral = Referral.objects.charged().filter(service = object_id).order_by('-date')
+    #if initial:
+        #referral = referral.filter(client__person__name__istartswith = initial)
+    #if filter:
+        #referral = referral.filter(client__person__name__icontains = filter)
+
+
+    ##array['util'] = {
+    ##    'has_perm_read': request.user.has_perm('place.place_read'),
+    ##}
+    #for r in referral:
+        #array[i] = {
+            #'dt': r.date.strftime("%d/%m/%Y  %H:%M ")
+        #}
+        #list = r.upcoming_occurrences()
+        #sub = 0
+        #array[i]['occurence'] = {}
+        #for p in list:
+            #array[i]['occurence'][sub] = ({'p': ('%s' % p.start_time.strftime(" %d-%m-%Y  %H:%M ")) })
+            #sub = sub + 1
+        #sub = 0
+        #array[i]['professional'] = {}
+        #for p in r.professional.all():
+            #array[i]['professional'][sub] = ({'id':p.id, 'name':p.person.name})
+            #sub = sub + 1
+        #sub = 0
+        #array[i]['client'] = {}
+        #for p in r.client.all():
+            #array[i]['client'][sub] =  ({'id':p.id, 'name':p.person.name})
+            #sub = sub + 1
+        #i = i + 1
+
+    #return HttpResponse(simplejson.dumps(array, sort_keys=True), mimetype='application/json')
 
 # list referral groups
-@permission_required_with_403('referral.referral_list')
+@permission_required_with_403('service.service_list')
 def group_list(request, object_id=None):
-    object  = ServiceGroup.objects.filter(service__id = object_id, service__organization = request.user.get_profile().org_active)
+    service = get_object_or_404(Service, pk=object_id, organization = request.user.get_profile().org_active)
+    object = _group_list(request, service)
+
+    if hasattr(request.user.profile.person, 'careprofessional') and request.user.profile.person.careprofessional.is_student:
+        return render_to_response('403.html', {'object': _("Sorry! Students have no access to this service!"), }, context_instance=RequestContext(request))
+
 
     return render_to_response('service/service_group_list.html',
                               { 'object': object, 
                                'service': Service.objects.get(pk=object_id),
+                               'queue_list': _queue_list(request, service),
+                               'client_list': _service_clients(request, service),
                               },
                               context_instance=RequestContext(request)
                               )
 
-# referral group add form from selected SERVICE
-@permission_required_with_403('referral.referral_write')
+# NOTE: Permission below must to been checked by _can_manage_group method
+#@permission_required_with_403('service.service_write')
 def group_form(request, object_id=None, group_id=None):
     object = get_object_or_404(Service, pk=object_id, organization = request.user.get_profile().org_active)
-
+    
     if not object.is_group:
         return render_to_response('403.html', {'object':_('Sorry, this service was configured without group support.')})
 
     group = get_object_or_None(ServiceGroup, pk=group_id, service__organization = request.user.get_profile().org_active)
 
     if request.method == 'POST':
+        if not _can_write_group(request, object):
+            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+        
         form = ServiceGroupForm(request.POST, instance=group) if group else ServiceGroupForm(request.POST)
         if form.is_valid():
             group = form.save(commit=False)
@@ -366,13 +461,24 @@ def group_form(request, object_id=None, group_id=None):
             return HttpResponseRedirect('/service/%s/group/%s/form/' % (object.id, group.id))
 
     else:
+        if not group: # adding new. only if have write permission on this service
+            if not _can_write_group(request, object):
+                return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+        
+        else: # opening existing group
+            if not _can_view_group(request, group):
+                return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
         form = ServiceGroupForm(instance=group) if group else ServiceGroupForm()
 
     return render_to_response('service/service_group_form.html',
                               {'object': object, 
                                 'form': form,
                                 'group': group,
+                                'queue_list': _queue_list(request, object),
+                                'client_list': _service_clients(request, object),
                                 'hide_service_actions': True,
+                                'have_write_perms': False if not _can_write_group(request, object) else True,
                                },
                               context_instance=RequestContext(request)
                               )

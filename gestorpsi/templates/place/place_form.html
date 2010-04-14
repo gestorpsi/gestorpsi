@@ -25,7 +25,9 @@ GNU General Public License for more details.
 {% block submenu %}
     <ul>
         <li><a class="first" href="/place/">{% trans "all" %}</a></li>
-        <li><a class="{% if not object.id %}active{% endif %}" href="/place/add/">{% trans "add" %}</a></li>
+        {% if perms.place.place_write %}
+            <li><a class="{% if not object.id %}active{% endif %}" href="/place/add/">{% trans "add" %}</a></li>
+        {% endif %}
         <li><a class="{% if deactive %}active{% endif %}" href="/place/deactive/">{% trans "all Deactive" %}</a></li>
         {% if object.id %}<li><a class="active">{{ object.label }}</a></li>{% endif %}
     </ul>

@@ -119,20 +119,9 @@ def add_event(
                 # TODO A badly formatted date is passed to add_event
                 dtstart = datetime.now()
 
-        try:
-            room = Room.objects.get(pk=request.GET['room'], place__organization=request.user.get_profile().org_active)
-        except:
-            room = None
-        
-        try:
-            client = Client.objects.get(pk = request.GET['client'], person__organization=request.user.get_profile().org_active)
-        except:
-            client = None
-        
-        try:
-            referral = Referral.objects.get(pk = request.GET['referral'], service__organization=request.user.get_profile().org_active)
-        except:
-            referral = None
+        room = get_object_or_None(Room, pk=request.GET.get('room'), place__organization=request.user.get_profile().org_active)
+        client = get_object_or_None(Client, pk = request.GET.get('client'), person__organization=request.user.get_profile().org_active)
+        referral = get_object_or_None(Referral, pk = request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
         
         event_form = event_form_class()
 

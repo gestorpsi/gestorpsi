@@ -79,6 +79,9 @@ def form(request, object_id=None):
     if object_id:
         object = get_object_or_404(Employee, pk=object_id, person__organization=request.user.get_profile().org_active)
     else:
+        if not request.user.has_perm('employee.employee_write'):
+            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
         object = Employee()
 
     try:

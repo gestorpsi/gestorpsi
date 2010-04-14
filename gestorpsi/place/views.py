@@ -91,6 +91,9 @@ def form(request, object_id=None):
         addresses= object.address.all()
         phones= object.phones.all()
     else:
+        if not request.user.has_perm('place.place_write'):
+            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
         object= Place()
         place_type= PlaceType()
         
@@ -217,6 +220,9 @@ def room_form(request, object_id=None):
     if object_id:
         object = get_object_or_404(Room, pk=object_id, place__organization=request.user.get_profile().org_active)
     else:
+        if not request.user.has_perm('place.place_write'):
+            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
         object = Room()
 
     return render_to_response('place/place_room_form.html', {

@@ -25,7 +25,7 @@ from django.utils import simplejson
 from django.template.defaultfilters import slugify
 from django.db.models import Q
 
-from gestorpsi.settings import DEBUG, MEDIA_URL
+from gestorpsi.settings import DEBUG, MEDIA_URL, MEDIA_ROOT
 from gestorpsi.address.models import Country, State, AddressType, City
 from gestorpsi.authentication.models import Profile
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
@@ -72,45 +72,60 @@ def _access_check(request, object=None):
     if not object:
         return False
         
-    # check if user is professional and not admin or secretary. if it's true, check if professional has referral with this customer
-    if not request.user.groups.filter(name='administrator') and not request.user.groups.filter(name='secretary'):
-        # not admin or secretary. let check if it's at least a professional
-        if not request.user.groups.filter(name='professional') and not request.user.groups.filter(name='student'):
-            return False
-        else:
-            # professional. lets check if request.user (professional) have referral with this client
-            professional_have_referral_with_client = False
+    # check if user is professional and not admin or secretary. 
+    if request.user.groups.filter(name='administrator') or request.user.groups.filter(name='secretary'):
+        return True
 
-            for r in object.referral_set.all():
-                if request.user.profile.person.careprofessional in [p for p in r.professional.all()]:
-                    professional_have_referral_with_client = True
+    # check if professional
+    if hasattr(request.user.profile.person, 'careprofessional'):
+        professional_have_referral_with_client = False
+        professional_is_responsible_for_service = False
+        # professional. lets check if request.user (professional) have referral with this client
+        for r in object.referral_set.all():
+            if request.user.profile.person.careprofessional in [p for p in r.professional.all()]:
+                professional_have_referral_with_client = True
 
-            # check if client is referred by professional or if professional is owner of this record
-            if not professional_have_referral_with_client and object.revision().user != request.user:
-                return False
+        # professional. lets check if request.user (professional) is responsible for referral service
+        for r in object.referral_set.all():
+            if request.user.profile.person.careprofessional in [p for p in r.service.responsibles.all()]:
+                professional_is_responsible_for_service = True
 
-    return True
+        # check if client is referred by professional or if professional is owner of this record
+        if professional_have_referral_with_client or professional_is_responsible_for_service or object.revision().user == request.user:
+            return True
+
+    return False
 
 def _access_check_referral_write(request, referral=None):
     """
     this method checks professional as users when accessing clients
-    @object: client
+    @referral: referral object
     """
 
     if not referral:
         return False
 
     # check if user is professional and not admin or secretary. if it's true, check if professional has referral with this customer
-    if not request.user.groups.filter(name='administrator') and not request.user.groups.filter(name='secretary'):
-        # not admin or secretary. let check if it's at least a professional
-        if not request.user.groups.filter(name='professional') and not request.user.groups.filter(name='student'):
-            return False
-        else:
-            # lets check if request.user (professional) have referral with this client
-            if not request.user.profile.person.careprofessional in [p for p in referral.professional.all()]:
-                return False
+    if request.user.groups.filter(name='administrator') or request.user.groups.filter(name='secretary'):
+        return True
 
-    return True
+    # check if professional
+    if hasattr(request.user.profile.person, 'careprofessional'):
+        professional_have_referral_with_client = False
+        professional_is_responsible_for_service = False
+
+        # lets check if request.user (professional) have referral with this client
+        if request.user.profile.person.careprofessional in [p for p in referral.professional.all()]:
+            professional_have_referral_with_client = True
+        
+        # lets check if request.user (professional) is responsible for this referral service
+        if request.user.profile.person.careprofessional in [p for p in referral.service.responsibles.all()]:
+            professional_is_responsible_for_service = True
+
+        if professional_have_referral_with_client or professional_is_responsible_for_service:
+            return True
+
+    return False
 
 
 # list all active clients
@@ -182,20 +197,22 @@ def add(request):
 @permission_required_with_403('client.client_list')
 def list(request, page = 1, initial = None, filter = None, no_paging = False, deactive = False):
     user = request.user
-
-    if user.groups.filter(name='administrator') or user.groups.filter(name='secretary'):
-        if deactive:
-            object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '0').order_by('person__name')
-        else:
-            object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
+    
+    if deactive:
+        object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '0').order_by('person__name')
     else:
+        object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
+
+    if not user.groups.filter(name='administrator') and not user.groups.filter(name='secretary'):
         added_by_me = [] # registers added by me, got by django-reversion
         for c in Client.objects.all():
             if c.revision().user == request.user:
                 added_by_me.append(c.id)
 
-        object = Client.objects.filter(Q(person__organization = user.get_profile().org_active.id, referral__professional = user.profile.person.careprofessional.id) \
-                        | Q(pk__in=added_by_me)).distinct().order_by('person__name')
+        object = object.filter(Q(referral__professional = user.profile.person.careprofessional.id) \
+                        | Q(pk__in=added_by_me) \
+                        | Q(referral__service__responsibles=request.user.profile.person.careprofessional) \
+                        ).distinct().order_by('person__name')
 
         if deactive:
             object = object.filter(clientStatus = '0')
@@ -337,6 +354,11 @@ def referral_plus_form(request, object_id=None, referral_id=None):
 @permission_required_with_403('referral.referral_read')
 def referral_form(request, object_id = None, referral_id = None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+
+    # deny access to student add new referral
+    if hasattr(request.user.profile.person, 'careprofessional'):
+        if not referral_id and request.user.profile.person.careprofessional.is_student:
+            return render_to_response('403.html', {'object': _("Sorry, students have no permission to add new referral!"), }, context_instance=RequestContext(request))
 
     # check access by requested user
     if not _access_check(request, object):
@@ -509,10 +531,11 @@ def referral_list(request, object_id = None, discharged = None):
     else:
         referrals = object.referrals_charged()
         charged = True
-
-    if request.user.groups.filter(name='professional').count() :
-        referrals = referrals.filter(professional = request.user.profile.person.careprofessional.id)
-
+    
+    # not in use anymore. if user have perm to see client, will display every referral
+    #if request.user.groups.filter(name='professional').count() :
+        #referrals = referrals.filter(professional = request.user.profile.person.careprofessional.id)
+    
     return render_to_response('client/client_referral_list.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('referral.referral_read')
@@ -582,9 +605,7 @@ def client_print(request, object_id = None):
     if not _access_check(request, object):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
-    have_ehr_read_perms = False
-    if _access_ehr_check_read(request, object):
-        have_ehr_read_perms = True
+    have_ehr_read_perms = False if not _access_ehr_check_read(request, object) else True
     
     if not request.POST:
         return render_to_response('client/client_print_form.html', locals(), context_instance=RequestContext(request))
@@ -604,7 +625,7 @@ def client_print(request, object_id = None):
             'org_active': request.user.get_profile().org_active, 
             'user': request.user, 
             'DEBUG': DEBUG, 
-            'MEDIA_URL': MEDIA_URL, 
+            'MEDIA_URL': MEDIA_URL if request.POST.get('output') == 'html' else MEDIA_ROOT.replace('\\','/') + '/', 
             'company_related_clients': company_related_clients,
             'have_ehr_read_perms': have_ehr_read_perms,
             }
@@ -621,6 +642,17 @@ def organization_clients(request):
     """
     user = request.user
     clients = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1', person__name__istartswith=request.GET.get('q') ).order_by('person__name')
+
+    if not user.groups.filter(name='administrator') and not user.groups.filter(name='secretary'):
+        added_by_me = [] # registers added by me, got by django-reversion
+        for c in Client.objects.all():
+            if c.revision().user == request.user:
+                added_by_me.append(c.id)
+
+        clients = clients.filter(Q(referral__professional = user.profile.person.careprofessional.id) \
+                        | Q(pk__in=added_by_me) \
+                        | Q(referral__service__responsibles=request.user.profile.person.careprofessional) \
+                        ).distinct().order_by('person__name')
 
     dict = {}
     array = [] #json
@@ -721,6 +753,11 @@ def referral_occurrences(request, object_id = None, referral_id = None, type = '
     
 @permission_required_with_403('referral.referral_read')
 def referral_queue(request, object_id = '',  referral_id = ''):
+
+    # deny access to student
+    if hasattr(request.user.profile.person, 'careprofessional') and request.user.profile.person.careprofessional.is_student:
+        return render_to_response('403.html', {'object': _("Sorry, students have no enough permission to add client on queue!"), }, context_instance=RequestContext(request))
+
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
 
     # check access by requested user
@@ -745,6 +782,10 @@ def referral_queue(request, object_id = '',  referral_id = ''):
 
 @permission_required_with_403('referral.referral_write')
 def referral_queue_save(request, object_id = '',  referral_id = ''):
+    # deny access to student
+    if hasattr(request.user.profile.person, 'careprofessional') and request.user.profile.person.careprofessional.is_student:
+        return render_to_response('403.html', {'object': _("Sorry, students have no enough permission to add client on queue!"), }, context_instance=RequestContext(request))
+
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
 
     # check access by requested user
@@ -786,6 +827,11 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
 
 @permission_required_with_403('referral.referral_write')
 def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id = ''):
+
+    # deny access to student
+    if hasattr(request.user.profile.person, 'careprofessional') and request.user.profile.person.careprofessional.is_student:
+        return render_to_response('403.html', {'object': _("Sorry, students have no enough permission to add client on queue!"), }, context_instance=RequestContext(request))
+
     """ This action don't remove the register, just save date out of the register """
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
 

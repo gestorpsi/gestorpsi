@@ -26,34 +26,35 @@ GNU General Public License for more details.
 
 {% block core %}
 
-{% if referrals %}
 <div class="registers_available">
-        <h2 class="title_services">{% if charged %}{% trans "Charged referrals of" %}{% else %}{% trans "Discharged referrals of" %}{% endif %} {{ object }}</h2>
-        <p class="description">{% trans "Displaying" %} <a href="/client/{{ object.id }}/referral/"><span id="object_length">{{ referrals|length }}</span></a> {% trans "referral(s)" %}</p>
-        
-        <div class="main_area contact">
-                <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-                <thead> 
-                        <tr> 
-                        <th></th> 
-                        <th></th> 
-                        </tr> 
-                </thead>
-                <tbody>
-                    {% for r in referrals %}
-                    <tr class="zebra_{% cycle '0' '1' %}">
-                        <td class="title"><a href="/client/{{ object.id }}/referral/{{ r.id }}/" title="{{ r }}">{{ r }}</a><br></td>
-                        <td><span class="phone">{% if r.professional.all.0 %}{{ r.professional.all.0 }}{% endif %}</span><br><span class="email">{% trans "subscribed at" %} <b>{{ r.revision.date_created|date:"r"|slice:":-15"}}</b></span></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                </table>
-                {# {% include "tags/paginator.html" %} #}
+    <h2 class="title_services">{% if charged %}{% trans "Charged referrals of" %}{% else %}{% trans "Discharged referrals of" %}{% endif %} {{ object }}</h2>
+    <p class="description">{% trans "Displaying" %} <a href="/client/{{ object.id }}/referral/"><span id="object_length">{{ referrals|length }}</span></a> {% trans "referral(s)" %}</p>
+    <div class="main_area contact">
+    {% if not referrals %}
+        <div id="msg_area" class="alert no_registers_available">
+            {% trans "There is no registers available." %}<br />
         </div>
+    {% else %}
+        <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+        <thead> 
+                <tr> 
+                <th></th> 
+                <th></th> 
+                </tr> 
+        </thead>
+        <tbody>
+            {% for r in referrals %}
+            <tr class="zebra_{% cycle '0' '1' %}">
+                <td class="title"><a href="/client/{{ object.id }}/referral/{{ r.id }}/" title="{{ r }}">{{ r }}</a><br></td>
+                <td><span class="phone">{% if r.professional.all.0 %}{{ r.professional.all.0 }}{% endif %}</span><br><span class="email">{% trans "subscribed at" %} <b>{{ r.revision.date_created|date:"r"|slice:":-15"}}</b></span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        {# {% include "tags/paginator.html" %} #}
+    {% endif %}
+    </div>
 </div>
-
-{% endif %}
-
 
 <div id="sidebar" class="sidebar">
         {% include "tags/client_sidebar.html" %}

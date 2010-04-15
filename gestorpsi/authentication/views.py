@@ -46,6 +46,8 @@ def login_check(f):
 
 
 def user_authentication(request):
+    if SITE_DISABLED:
+        return render_to_response('core/site_disabled.html')
     if request.method != "POST":
         return render_to_response('registration/login.html', {'form': AuthenticationForm() })
     form = AuthenticationForm(data=request.POST)

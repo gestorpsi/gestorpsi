@@ -5,7 +5,7 @@ from gestorpsi.authentication.forms import RegistrationForm
 from gestorpsi.authentication.models import Profile
 from gestorpsi.frontend.views import start as frontend_start
 from django.contrib.auth.decorators import login_required
-from gestorpsi.registration.views import login as gestorpsi_login
+from gestorpsi.authentication.views import login as gestorpsi_login
 
 admin.autodiscover()
 

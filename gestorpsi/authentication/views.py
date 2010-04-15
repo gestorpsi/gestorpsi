@@ -26,7 +26,8 @@ from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from django.forms.util import ErrorList
 from django.utils.translation import ugettext as _
-
+from django.contrib.auth.views import login as django_login
+from gestorpsi.settings import SITE_DISABLED
 from gestorpsi.organization.models import Organization
 from gestorpsi.settings import DEBUG
 from gestorpsi.authentication.forms import RegistrationForm
@@ -204,3 +205,8 @@ def register(request, success_url=None,
     return render_to_response(template_name,
                               { 'form': form },
                               context_instance=context)
+
+def login(request, *args, **kwargs):
+    if SITE_DISABLED:
+        return render_to_response('core/site_disabled.html')
+    return django_login(request, *args, **kwargs)

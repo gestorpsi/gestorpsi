@@ -5,11 +5,13 @@ from gestorpsi.authentication.forms import RegistrationForm
 from gestorpsi.authentication.models import Profile
 from gestorpsi.frontend.views import start as frontend_start
 from django.contrib.auth.decorators import login_required
+from gestorpsi.registration.views import login as gestorpsi_login
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^accounts/register/$', 'gestorpsi.authentication.views.register', {'form_class': RegistrationForm }, name='registration_register'),
+    url(r'^accounts/login/$', 'gestorpsi.authentication.views.login', {'template_name': 'registration/login.html'}, name='auth_login'),
     (r'^accounts/', include('gestorpsi.authentication.urls')),
     (r'^accounts/', include('registration.urls')),
     (r'^$', login_required(frontend_start)),    

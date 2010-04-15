@@ -208,7 +208,7 @@ def register(request, success_url=None,
                               { 'form': form },
                               context_instance=context)
 
-def login(request, *args, **kwargs):
+def gestorpsi_login(request, *args, **kwargs):
     if SITE_DISABLED:
         return render_to_response('core/site_disabled.html')
     return django_login(request, *args, **kwargs)

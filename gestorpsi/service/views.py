@@ -80,7 +80,7 @@ def _queue_list(request, service):
         referral__service=service, \
         date_in__isnull = False, date_out__isnull = True, \
         referral__client__in = [s for s in _service_clients(request, service) ]) \
-        .order_by('date_in','date_out','referral__client__person__name') \
+        .order_by('priority','date_in','referral__client__person__name') \
         .distinct()
     return queue_list
 
@@ -345,7 +345,15 @@ def queue(request, object_id=None):
         }, context_instance=RequestContext(request))
 
 def _service_clients(request, service):
+    # select clients by service and organization
     client_list = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, referral__service=service).distinct()
+
+    # check if user have at least one referral charged on selected service
+    is_client_charged = []
+    for i in client_list:
+        if i.id not in is_client_charged and i.referrals_charged():
+            is_client_charged.append(i.id)
+    client_list = client_list.filter(pk__in = is_client_charged)
     
     if not request.user.groups.filter(name='administrator') and not request.user.groups.filter(name='secretary'):
         added_by_me = [] # registers added by me, got by django-reversion

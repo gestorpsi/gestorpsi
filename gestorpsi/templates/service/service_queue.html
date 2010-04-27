@@ -55,7 +55,7 @@ GNU General Public License for more details.
                             <tr class="zebra_0">
                                 <td class="title">
                                 {% for c in q.referral.client.all %}
-                                <a href="/client/{{ c.id }}/referral/{{ q.referral.id }}/" title="{{ c }}">
+                                <a href="/client/{{ c.id }}/home/" title="{{ c }}">
                                     {{ c }}
                                 </a>
                                 {% if not forloop.last %}, {% endif %}

@@ -67,7 +67,7 @@ GNU General Public License for more details.
                 <tbody>
                     {% for i in client_list %}
                         <tr class="zebra_{% cycle 0,1 %}">
-                        <td class="title"><a href="/client/{{i.id}}/">{{ i }}</a>
+                        <td class="title"><a href="/client/{{i.id}}/home/">{{ i }}</a>
                         <br><b>{% trans "subscribed services" %}:</b> {{ i.referral_set.all|join:", " }}<br> 
                         <b>{% trans "client since" %}:</b> {{ i.revision_created.date_created|date:"d/m/Y" }}</td>
                         <td>{% if not i.clientStatus %}{% trans "deactivated" %}{% endif %}</td>

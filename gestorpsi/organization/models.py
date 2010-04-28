@@ -267,6 +267,12 @@ class Organization(models.Model):
     def is_local(self):
         return True if self.organization else False
 
+    def adminstrators(self):
+        return self.person_set.filter(profile__user__groups__name='administrator').order_by('profile__user__date_joined')
+
+    def services(self):
+        return self.service_set.filter(active=True)
+    
     class Meta:
         ordering = ['name']
 

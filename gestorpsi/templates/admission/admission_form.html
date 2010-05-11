@@ -165,16 +165,18 @@ GNU General Public License for more details.
                 <input type="file" class="file" name="file" />
 
                 </label>
+
                 <label>{% trans "Document Type" %}<br />
-                    <select name="doc_type" class="big">
-                            {% for type in types %}
-                                <option value="{{ type.0 }}">{{ type.1 }}</option>
-                            {% endfor %}
-                    </select>
-                    <label>
-                       <input type="checkbox" name="signed" id="signed" checked="checked">&nbsp;
-                       {% trans "Asigned by the client" %}
-                    </label>
+                 <select name="doc_type" class="big">
+                   {% for type in types %}
+                      <option value="{{ type.0 }}">{{ type.1 }}</option>
+                   {% endfor %}
+                 </select>
+                </label>
+
+                <label>
+                 <input type="checkbox" name="signed" id="signed">&nbsp;
+                  {% trans "Asigned by the client" %}
                 </label>
 
                 <label>{% trans "Document Subject" %}<br />
@@ -186,16 +188,16 @@ GNU General Public License for more details.
                 <br />
 
     {% if attachs %}
-        {% for a in attachs %}
-                <table class="nozebra">
-                        <tr>
-                                <td nowrap="nowrap"><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
-                                <td><span  class="pdf"><a href="/media/img/organization/{{ org_id }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
-                                <td><span>{{ a.description }} {% for t in types %}{% ifequal a.type t.0 %} {{ t.1 }} </span> <br /> {% endifequal %} {% endfor %} 
-                                    <td><span>{% if a.signed_bythe_client %}{% trans "Signed by the client" %}{% endif %}</span></td>
-                        </tr>
-                </table>
-        {% endfor %}
+      {% for a in attachs %}
+        <table class="nozebra">
+         <tr>
+          <td nowrap="nowrap"><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
+          <td><span  class="pdf"><a href="/media/img/organization/{{ org_id }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
+          <td><span>{{ a.description }} {% for t in types %}{% ifequal a.type t.0 %} {{ t.1 }} </span> <br /> {% endifequal %} {% endfor %} 
+          <td><span>{% if a.signed_bythe_client %}{% trans "Signed by the client" %}{% endif %}</span></td>
+         </tr>
+        </table>
+      {% endfor %}
     {% else %}
              <p class="empty">Nenhum documento anexado</p>
              <br />

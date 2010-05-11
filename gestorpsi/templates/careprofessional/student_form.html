@@ -39,9 +39,9 @@ GNU General Public License for more details.
 <h2 id="title_addressbook" style="display:none"></h2>
 
 {% if object.id %}
-	<h2 class="title_professional">{{ object.person.name }}</h2>
+	<h2 class="title_student">{{ object.person.name }}</h2>
 {% else %}
-	<h2 class="title_professional">{% trans "Adding New Student" %}</h2>
+	<h2 class="title_student">{% trans "Adding New Student" %}</h2>
 	<p class="description">{% trans "Inform the student details then click on Save button" %}</p>
 {% endif %}
 

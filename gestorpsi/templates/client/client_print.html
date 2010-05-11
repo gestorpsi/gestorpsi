@@ -301,6 +301,13 @@ table {
             {% endif %}
         </td>
     </tr>
+
+    <tr class="zebra_1">
+      <td class="first">{% trans "Asigned by the client" %}</td>
+      <td>{% if not object.signed_bythe_client %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}</td>
+    </tr>
+
+
     <tr class="zebra_1">
       <td class="first">{% trans "Admission Files" %}</td>
       <td>
@@ -312,7 +319,6 @@ table {
             <td><small>{% trans "Filename" %}</small></td>
             <td><small>{% trans "Date" %}</small></td>
             <td><small>{% trans "Type" %}</small></td>
-            <td><small>{% trans "Client Signed" %}</small></td>
             <td><small>{% trans "Description" %}</small></td>
         </tr>
         {% for attach in object.attach_set.all %}
@@ -320,7 +326,6 @@ table {
             <td><small>{{ attach.filename }}</small></td>
             <td><small>{{ attach.date|date:"d/m/Y" }}</small></td>
             <td><small>{{ attach.get_type_display }}</small></td>
-            <td><small>{% if not attach.signed_bythe_client %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}</small></td>
             <td><small>{{ attach.description }}</small></td>
         </tr>
         {% endfor %}

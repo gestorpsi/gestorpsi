@@ -5463,6 +5463,7 @@ msgstr "Número de eventos"
 msgid "Limited about 40 occurrences for each submit"
 msgstr "Limite de 40 ocorrências para cada apresentação"
 
+
 #: templates/tags/schedule_form.html:122
 msgid "Occurrence Frequency"
 msgstr "Frequência"
@@ -5660,6 +5661,10 @@ msgid ""
 msgstr ""
 "Acesso às mensagens on-line, Prontuário Eletrônico, Admissão, "
 "Encaminhamentos e acesso somente leitura dos....????"
+
+#: users/views.py : 145
+msgid "User created successfully. An email will be sent to the user with instructions on how to finish the registration process."
+msgstr "Usuário cadastrado com sucesso. Um e-mail será enviado para o usuário com as instruções sobre como concluir o cadastro."
 
 #: templates/users/users_form.html:203
 msgid "Password not match. Try again."

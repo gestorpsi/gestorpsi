@@ -142,7 +142,7 @@ def create_user(request):
         Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='student'))
         profile.user.groups.add(Group.objects.get(name='student'))
      
-    request.user.message_set.create(message=_('User created successfully'))
+    request.user.message_set.create(message=_('User created successfully. An email will be sent to the user with instructions on how to finish the registration process.'))
 
     return HttpResponseRedirect('/user/%s/' % profile.person.id)
 

@@ -81,6 +81,11 @@ def save(request, object_id=''):
     object.legacyRecord = request.POST.get('legacyRecord')
     object.comments = request.POST.get('comments')
 
+    if request.POST.get('signed'):
+        object.signed_bythe_client = True
+    else:
+        object.signed_bythe_client = False
+
     object.admissionreferral_set.all().delete()
     """ Referral Section """
     if request.POST.get('referral'):

@@ -104,6 +104,7 @@ class Client(models.Model):
     admission_date = models.DateField(null=True)
     clientStatus = models.CharField(max_length=1, default='1', choices=CLIENT_STATUS)
     comments = models.TextField(blank=True)
+    signed_bythe_client = models.BooleanField(default=False)
     objects = ClientManager()
 
     def __unicode__(self):

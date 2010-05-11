@@ -197,9 +197,9 @@ SWINGTIME_SETTINGS_MODULE = 'gestorpsi.schedule.settings'
 
 # registration
 ACCOUNT_ACTIVATION_DAYS=7
-EMAIL_HOST='smtp.terra.com.br'
+EMAIL_HOST=''
 EMAIL_PORT=25
-EMAIL_HOST_USER='ljm2008@terra.com.br'
-EMAIL_HOST_PASSWORD='102030'
+EMAIL_HOST_USER=''
+EMAIL_HOST_PASSWORD=''
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER    # used by django registration
 

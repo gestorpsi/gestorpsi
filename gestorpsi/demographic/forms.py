@@ -21,7 +21,7 @@ from gestorpsi.demographic.choices import *
 from gestorpsi.cbo.models import Occupation
 
 class ProfessionForm(forms.ModelForm):
-    profession = forms.ModelChoiceField(queryset=Occupation.objects.all(), widget=forms.Select(attrs={'class':'giant asm'}), label=_('Profession Ocupation'))
+    #profession = forms.ModelChoiceField(queryset=Occupation.objects.all(), widget=forms.Select(attrs={'class':'giant asm'}), label=_('Profession Ocupation'))
     labor_market_status = forms.ChoiceField(choices=LABOR_MARKET_STATUS, widget=forms.Select(attrs={'class':'giant asm'}), label=_('Labor Market Status'))
     workplace = forms.CharField(required=False, widget=forms.Textarea(attrs={'class':'giant asm'}), label=_('Profession Workplace'))
     working_hours = forms.CharField(required=False, widget=forms.Textarea(attrs={'class':'giant asm'}), label=_('Profession Working Hours'))
@@ -29,7 +29,7 @@ class ProfessionForm(forms.ModelForm):
     status = forms.BooleanField(required=False, help_text=_("Still active in this occupation"), label=_('Profession Status'))
     class Meta:
         model = Profession
-        fields = ('profession','labor_market_status', 'workplace', 'working_hours', 'comments', 'status')
+        fields = ('labor_market_status', 'workplace', 'working_hours', 'comments', 'status')
 
 class EducationalLevelForm(forms.ModelForm):
     school_grade = forms.ChoiceField(choices=EDUCATION_LEVEL, widget=forms.Select(attrs={'class':'giant asm'}), label=_('School Grade'))

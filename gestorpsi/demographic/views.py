@@ -24,6 +24,8 @@ from gestorpsi.client.models import Client
 from gestorpsi.demographic.forms import EducationalLevelForm, ProfessionForm
 from gestorpsi.demographic.models import EducationalLevel, Profession
 
+from gestorpsi.cbo.models import Occupation
+
 from gestorpsi.client.views import _access_check
 
 @permission_required_with_403('demographic.demographic_read')
@@ -80,18 +82,22 @@ def education_save(request, object_id):
 @permission_required_with_403('demographic.demographic_read')
 def occupation(request, object_id, occupation_id=0):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+
     # check access by requested user
     if not _access_check(request, object):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     occupation_object = get_object_or_None(Profession, id=occupation_id) or Profession()
+
     profession_form = ProfessionForm(instance=occupation_object)
+
     professions = [p for p in object.profession_set.all()]
     return render_to_response('demographic/demographic_occupation.html', {
                                     'object': object,
                                     'demographic_menu': True,
                                     'professions': professions,
                                     'profession_form': profession_form,
+                                    'occupation': occupation_object,
                                     }, context_instance=RequestContext(request))
 
 @permission_required_with_403('demographic.demographic_write')
@@ -103,7 +109,13 @@ def occupation_save(request, object_id, occupation_id=0):
 
     occupation_object = get_object_or_None(Profession, id=occupation_id) or Profession()
     profession_form = ProfessionForm(request.POST, instance=occupation_object)
+
+    print profession_form.errors
+    print request.POST.get('ocup_class')
+    print Occupation.objects.get(pk=request.POST.get('ocup_class'))
+
     profession = profession_form.save(commit=False)
+    profession.profession = Occupation.objects.get(pk=request.POST.get('ocup_class'))
     profession.client = object
     profession.save()
     professions = [p for p in object.profession_set.all()]

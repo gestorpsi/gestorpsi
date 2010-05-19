@@ -16,8 +16,9 @@ GNU General Public License for more details.
 
 from django.conf.urls.defaults import *
 from django.contrib.auth.decorators import login_required
-from gestorpsi.util.views import cnae
+from gestorpsi.util.views import cnae, ocupation
 
 urlpatterns = patterns('',
     (r'^cnae/$', login_required(cnae)), 
+    (r'^ocupation/$', login_required(ocupation)), 
 )

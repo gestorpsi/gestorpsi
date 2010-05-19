@@ -23,6 +23,7 @@ from django.utils import simplejson
 from django.template.loader import get_template
 from django.template import Context
 from gestorpsi.util.models import Cnae
+from gestorpsi.cbo.models import Occupation
 
 def get_object_or_new(klass, *args, **kwargs):
     # bitbucket.org/offline/django-annoying/src/tip/annoying/functions.py
@@ -53,6 +54,17 @@ def cnae(request):
     results = []
     for i in Cnae.objects.filter(cnae_class__icontains=request.GET.get('query')):
         results.append({'id': i.id, 'name': i.cnae_class})
+    
+    return HttpResponse(simplejson.dumps(results))
+
+def ocupation(request):
+    print "ocupation"
+    '''
+    filter Cnae's return a dict with cnae codes and sub classes names 
+    '''
+    results = []
+    for i in Occupation.objects.filter(title__icontains=request.GET.get('query')):
+        results.append({'id': i.id, 'name': i.title })
     
     return HttpResponse(simplejson.dumps(results))
 

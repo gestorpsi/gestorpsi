@@ -50,11 +50,46 @@ GNU General Public License for more details.
 </fieldset>
 
 <fieldset>
-    <legend>{% trans "Occupation Detail" %}</legend>
-        <div class="form_as_ul">
-            {{ profession_form.as_ul }}
-        </div>        
+ <legend>{% trans "Occupation Detail " %}</legend>
+
+
+    <label>Occupation Code <a style="cursor: pointer;" class="show_ocup_search">Search Code?</a><br>
+        <input type="text" id="id_ocup_class" name="ocup_class" value="{{ occupation.profession.id }}">
+    </label>
+
+    <br />
+    <br />
+
+    <label>
+     <span class="ocup_name">{{ occupation }}</span>
+    </label>
+
+    <br />
+    <br />
+    <br />
+
+    <label class="ocup_search hidden" style="display: none;">Occupation Search<br>
+        <input type="text" class="big" name="ocup_search_key">
+    </label>
+
+    <div class="overflow ocup_search hidden" style="display: none;">
+     <table class="zebra" id="ocup_results">
+      <thead>  
+       <tr>
+        <th></th>
+        <th></th>
+       </tr> 
+      </thead>
+      <tbody></tbody>
+     </table>
+    </div>
+
+    <div class="form_as_ul">
+      {{ profession_form.as_ul }}
+    </div>        
+                               
 </fieldset>
+ <br />
 
 </p>
 </div>

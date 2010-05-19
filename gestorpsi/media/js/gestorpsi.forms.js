@@ -853,5 +853,39 @@ $(function() {
         }
                 
     });
-    
+
+    /********
+    *  OCUPATION SEARCH 
+    *********/
+
+        $('a.show_ocup_search').click(function() {
+            $('.ocup_search').toggle();
+            $('table#ocup_results tbody').html('');
+        });
+        
+        $('input[name=ocup_search_key]').keyup(function() {
+            var typed = $(this).val();
+            if(typed.length >= 2) {
+                $.getJSON('/util/ocupation/?query=' + typed, function(json) {
+                    line = '';
+                    jQuery.each(json, function() {
+                       line += '<tr><td class="ocup_id">' + this.id + '</td><td class="ocup_label"><a style="cursor:pointer;">' + this.name + '</a></td></tr>';
+                    });
+                    $('table#ocup_results tbody').html(line);
+                    $('table#ocup_results tr td a').click(function() {
+                        $('input[name=ocup_class]').val($(this).parents('tr').children('td.ocup_id').text());
+                        $('span.ocup_name').text($(this).parents('tr').children('td.ocup_label').children('a').text());
+                        $('.ocup_search').hide();
+                        $('table#ocup_results tbody tr').show();
+                        $('input[name=ocup_search_key]').val('');
+                    });
+                   
+                });
+            } else {
+                $('table#ocup_results tbody').html('');
+            }
+        });    
+
+
+/* MAIN FUNCTION */ 
 });

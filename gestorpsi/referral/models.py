@@ -242,8 +242,8 @@ class Referral(Event):
         Return all past occurrences
         '''
         return self.occurrence_set.filter(start_time__lt=datetime.now()
-            ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 4 # unmarked
-            ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 5 # re-marked
+            #).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 4 # unmarked
+            #).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 5 # re-marked
             ).exclude( Q(scheduleoccurrence__is_online=True) & Q(end_time__gt=datetime.now())
             ).reverse()
 

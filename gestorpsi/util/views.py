@@ -58,7 +58,6 @@ def cnae(request):
     return HttpResponse(simplejson.dumps(results))
 
 def ocupation(request):
-    print "ocupation"
     '''
     filter Cnae's return a dict with cnae codes and sub classes names 
     '''

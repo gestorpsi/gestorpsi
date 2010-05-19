@@ -110,10 +110,6 @@ def occupation_save(request, object_id, occupation_id=0):
     occupation_object = get_object_or_None(Profession, id=occupation_id) or Profession()
     profession_form = ProfessionForm(request.POST, instance=occupation_object)
 
-    print profession_form.errors
-    print request.POST.get('ocup_class')
-    print Occupation.objects.get(pk=request.POST.get('ocup_class'))
-
     profession = profession_form.save(commit=False)
     profession.profession = Occupation.objects.get(pk=request.POST.get('ocup_class'))
     profession.client = object

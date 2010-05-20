@@ -355,8 +355,8 @@ def referral_plus_form(request, object_id=None, referral_id=None):
 def referral_form(request, object_id = None, referral_id = None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
 
-    # deny access to student add new referral
-    if hasattr(request.user.profile.person, 'careprofessional'):
+    # deny access to student (not admin or secretary) add new referral
+    if not request.user.groups.filter(name='administrator') and not request.user.groups.filter(name='secretary') and hasattr(request.user.profile.person, 'careprofessional'):
         if not referral_id and request.user.profile.person.careprofessional.is_student:
             return render_to_response('403.html', {'object': _("Sorry, students have no permission to add new referral!"), }, context_instance=RequestContext(request))
 
@@ -755,8 +755,10 @@ def referral_occurrences(request, object_id = None, referral_id = None, type = '
 def referral_queue(request, object_id = '',  referral_id = ''):
 
     # deny access to student
-    if hasattr(request.user.profile.person, 'careprofessional') and request.user.profile.person.careprofessional.is_student:
-        return render_to_response('403.html', {'object': _("Sorry, students have no enough permission to add client on queue!"), }, context_instance=RequestContext(request))
+        # deny access to student (not admin or secretary) add new referral
+    if not request.user.groups.filter(name='administrator') and not request.user.groups.filter(name='secretary') and hasattr(request.user.profile.person, 'careprofessional'):
+        if request.user.profile.person.careprofessional.is_student:
+            return render_to_response('403.html', {'object': _("Sorry, students have no enough permission to add client on queue!"), }, context_instance=RequestContext(request))
 
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
 
@@ -783,8 +785,9 @@ def referral_queue(request, object_id = '',  referral_id = ''):
 @permission_required_with_403('referral.referral_write')
 def referral_queue_save(request, object_id = '',  referral_id = ''):
     # deny access to student
-    if hasattr(request.user.profile.person, 'careprofessional') and request.user.profile.person.careprofessional.is_student:
-        return render_to_response('403.html', {'object': _("Sorry, students have no enough permission to add client on queue!"), }, context_instance=RequestContext(request))
+    if not request.user.groups.filter(name='administrator') and not request.user.groups.filter(name='secretary') and hasattr(request.user.profile.person, 'careprofessional'):
+        if request.user.profile.person.careprofessional.is_student:
+            return render_to_response('403.html', {'object': _("Sorry, students have no enough permission to add client on queue!"), }, context_instance=RequestContext(request))
 
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
 
@@ -829,8 +832,9 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
 def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id = ''):
 
     # deny access to student
-    if hasattr(request.user.profile.person, 'careprofessional') and request.user.profile.person.careprofessional.is_student:
-        return render_to_response('403.html', {'object': _("Sorry, students have no enough permission to add client on queue!"), }, context_instance=RequestContext(request))
+    if not request.user.groups.filter(name='administrator') and not request.user.groups.filter(name='secretary') and hasattr(request.user.profile.person, 'careprofessional'):
+        if request.user.profile.person.careprofessional.is_student:
+            return render_to_response('403.html', {'object': _("Sorry, students have no enough permission to add client on queue!"), }, context_instance=RequestContext(request))
 
     """ This action don't remove the register, just save date out of the register """
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)

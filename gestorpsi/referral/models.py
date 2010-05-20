@@ -239,13 +239,19 @@ class Referral(Event):
 
     def past_occurrences(self):
         '''
-        Return all past occurrences
+        Return all past occurrences without umarked and re-marked
         '''
         return self.occurrence_set.filter(start_time__lt=datetime.now()
-            #).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 4 # unmarked
-            #).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 5 # re-marked
+            ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 4 # unmarked
+            ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 5 # re-marked
             ).exclude( Q(scheduleoccurrence__is_online=True) & Q(end_time__gt=datetime.now())
             ).reverse()
+
+    def past_occurrences_all(self):
+        '''
+        Return all occurrences
+        '''
+        return self.occurrence_set.filter(start_time__lt=datetime.now())
 
     def online_and_active_occurrences(self):
         '''

@@ -301,7 +301,7 @@ GNU General Public License for more details.
     {% if not referral.past_occurrences %}
             {% trans "This customer has no past schedules!" %}
     {% else %}
-        {% for i in referral.past_occurrences|slice:":5" %}
+        {% for i in referral.past_occurrences_all|slice:":5" %}
             <p>{{ i.start_time|date:"r"|slice:"-9" }} hs
 
             {% if i.scheduleoccurrence.is_online %}

@@ -63,7 +63,7 @@ def ocupation(request):
     '''
     results = []
     for i in Occupation.objects.filter(title__icontains=request.GET.get('query')):
-        results.append({'id': i.id, 'name': i.title })
+        results.append({'id': i.cbo_code, 'name': i.title })
     
     return HttpResponse(simplejson.dumps(results))
 

@@ -110,15 +110,30 @@ def occupation_save(request, object_id, occupation_id=0):
     occupation_object = get_object_or_None(Profession, id=occupation_id) or Profession()
     profession_form = ProfessionForm(request.POST, instance=occupation_object)
 
-    profession = profession_form.save(commit=False)
-    profession.profession = Occupation.objects.get(pk=request.POST.get('ocup_class'))
-    profession.client = object
-    profession.save()
-    professions = [p for p in object.profession_set.all()]
-    request.user.message_set.create(message=_('Occupation saved successfully'))
-    return render_to_response('demographic/demographic_occupation.html', {
-                                    'object': object,
-                                    'demographic_menu': True,
-                                    'professions': professions,
-                                    'profession_form': profession_form,
-                                    }, context_instance=RequestContext(request))
+    ocup = request.POST.get('ocup_class').replace('-','')
+
+    # occupation found
+    try:
+        profession = profession_form.save(commit=False)
+        profession.profession = Occupation.objects.get(cbo_code=ocup)
+        profession.client = object
+        profession.save()
+        request.user.message_set.create(message=_('Occupation saved successfully'))
+        professions = [p for p in object.profession_set.all()]
+        return render_to_response('demographic/demographic_occupation.html', {
+                                        'object': object,
+                                        'demographic_menu': True,
+                                        'professions': professions,
+                                        'profession_form': profession_form,
+                                        }, context_instance=RequestContext(request))
+    # occupation not found
+    except:
+        request.user.message_set.create(message=_('Occupation not found'))
+        professions = [p for p in object.profession_set.all()]
+        return render_to_response('demographic/demographic_occupation.html', {
+                                        'object': object,
+                                        'demographic_menu': True,
+                                        'professions': professions,
+                                        'profession_form': profession_form,
+                                        'clss': 'error',
+                                        }, context_instance=RequestContext(request))

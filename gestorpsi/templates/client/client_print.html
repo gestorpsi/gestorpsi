@@ -304,7 +304,10 @@ table {
 
     <tr class="zebra_1">
       <td class="first">{% trans "Signed by the client" %}</td>
-      <td>{% if not object.signed_bythe_client %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}</td>
+      <td>{% for a in object.admissionreferral_set.all %}
+            {% if not a.signed_bythe_client %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}
+          {% endfor %}
+       </td>
     </tr>
 
 

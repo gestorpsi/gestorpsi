@@ -81,11 +81,6 @@ def save(request, object_id=''):
     object.legacyRecord = request.POST.get('legacyRecord')
     object.comments = request.POST.get('comments')
 
-    if request.POST.get('signed'):
-        object.signed_bythe_client = True
-    else:
-        object.signed_bythe_client = False
-
     object.admissionreferral_set.all().delete()
     """ Referral Section """
     if request.POST.get('referral'):
@@ -93,6 +88,7 @@ def save(request, object_id=''):
         ar.referral_choice_id = ReferralChoice.objects.get(pk=request.POST.get('referral')).id
         ar.referral_organization = get_object_or_None(Organization, id=request.POST.get('referral_organization'))
         ar.referral_professional = get_object_or_None(CareProfessional, id=request.POST.get('referral_professional'))
+        ar.signed_bythe_client = True if request.POST.get('signed') else False
         ar.client = object
         ar.save()
 

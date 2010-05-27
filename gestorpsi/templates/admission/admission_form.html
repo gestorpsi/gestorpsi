@@ -139,7 +139,7 @@ GNU General Public License for more details.
         <fieldset>
         <legend>{% trans "Signed by the client" %}</legend>
             <label>
-                <input type="checkbox" name="signed" id="signed" {% if object.signed_bythe_client %} checked="check" {% endif %}>&nbsp;
+                <input type="checkbox" name="signed" id="signed" {% if object.admissionreferral_set.all.0.signed_bythe_client %} checked="check" {% endif %}>&nbsp;
               {% trans "Termo de Consentimento Livre e Esclarecido (TCLE)" %}
             </label>
         </fieldset>

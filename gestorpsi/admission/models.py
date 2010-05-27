@@ -47,6 +47,7 @@ class AdmissionReferral(models.Model):
     referral_choice = models.ForeignKey(ReferralChoice)
     referral_organization = models.ForeignKey(Organization, null=True)
     referral_professional = models.ForeignKey(CareProfessional, null=True)
+    signed_bythe_client = models.BooleanField(default=False)
     client = models.ForeignKey(Client)
     
     def __unicode__(self):
@@ -64,7 +65,6 @@ class Attach(models.Model):
     file = models.CharField(max_length=200)
     type = models.CharField(max_length=2, blank=True, null=True, choices=ATTACH_TYPE) 
     client = models.ForeignKey(Client)
-    #signed_bythe_client = models.BooleanField(default=False)
 
     def __unicode__(self):
         return u'%s' % (self.file)

@@ -490,6 +490,10 @@ def referral_discharge_form(request, object_id = None, referral_id = None):
         request.user.message_set.create(message=_('Sorry, you can not discharge a queued referral. Remove it from queue first before to continue'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
 
+    if referral.referraldischarge_set.all():
+        request.user.message_set.create(message=_('Sorry, this referral is already discharged'))
+        return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
+
     if referral.upcoming_occurrences().count() == 0:
         if request.method == 'POST':
             form = ReferralDischargeForm(request.POST, initial=dict(client=object, referral=referral))

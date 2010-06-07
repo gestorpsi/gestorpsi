@@ -117,6 +117,7 @@ def save_careprof(request, object_id, save_person, is_student=False):
     @param object: it is the tyoe of CareProfessional that must be filled.
     @type object: an instance of the built-in type C{CareProfessional}.            
     """
+    print "P R O F E S S I O N A L !"
     if object_id:
         object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
     else:
@@ -174,14 +175,12 @@ def save_careprof(request, object_id, save_person, is_student=False):
                 profile.agreement.add(Agreement.objects.get(pk=agreemt_id))
 
         if not object.professionalIdentification:
-            identification = get_object_or_None(ProfessionalIdentification, pk=object.professionalIdentification_id) or ProfessionalIdentification()
-            if identification:
+            if not request.POST.get('professional_registerNumber') == '':
+                identification = ProfessionalIdentification()
                 identification.profession = get_object_or_None(Profession, id=request.POST.get('professional_area'))
                 identification.registerNumber = request.POST.get('professional_registerNumber')
                 identification.save()
                 object.professionalIdentification = identification
-            else:
-                object.professionalIdentification = None
 
     object.save()
     return (object, exist_referral)

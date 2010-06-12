@@ -2,25 +2,25 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-26 18:08-0300\n"
-"PO-Revision-Date: 2009-12-15 01:19\n"
-"Last-Translator: <webmaster@psico.net>\n"
+"POT-Creation-Date: 2010-01-19 10:44-0200\n"
+"PO-Revision-Date: 2010-06-11 00:42\n"
+"Last-Translator: <webmaster@gestorpsi.com.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Translated-Using: django-rosetta 0.4.5.svn\n"
 
-#: settings.py:51
+#: settings.py:39
 msgid "Brazilian Portuguese"
 msgstr "Português Brasileiro"
 
-#: settings.py:52
+#: settings.py:40
 msgid "English"
 msgstr "Inglês"
 
@@ -28,28 +28,7 @@ msgstr "Inglês"
 msgid "Termo de Consentimento Livre e Esclarecido (TCLE)"
 msgstr "Termo de Consentimento Livre e Esclarecido (TCLE)"
 
-#: admission/views.py:41 admission/views.py:78 admission/views.py:105
-#: client/views.py:131 client/views.py:221 client/views.py:315
-#: client/views.py:343 client/views.py:351 client/views.py:423
-#: client/views.py:470 client/views.py:505 client/views.py:524
-#: client/views.py:545 client/views.py:583 client/views.py:647
-#: client/views.py:680 client/views.py:695 client/views.py:718
-#: client/views.py:728 client/views.py:733 client/views.py:752
-#: client/views.py:794 client/views.py:814 client/views.py:832
-#: client/views.py:857 client/views.py:867 client/views.py:918
-#: client/views.py:930 demographic/views.py:34 demographic/views.py:46
-#: demographic/views.py:64 demographic/views.py:85 demographic/views.py:102
-#: ehr/views.py:86 ehr/views.py:103 ehr/views.py:114 ehr/views.py:142
-#: ehr/views.py:202 ehr/views.py:219 ehr/views.py:230 ehr/views.py:251
-#: ehr/views.py:284 ehr/views.py:301 ehr/views.py:312 ehr/views.py:331
-#: online_messages/views.py:94 online_messages/views.py:112
-#: online_messages/views.py:144 online_messages/views.py:172
-#: schedule/views.py:245 schedule/views.py:262 schedule/views.py:490
-#: upload/views.py:102 upload/views.py:117 util/decorators.py:43
-msgid "Oops! You don't have access for this service!"
-msgstr "Oops! Você não tem acesso a este serviço!"
-
-#: admission/views.py:96
+#: admission/views.py:85
 msgid "Admission saved successfully"
 msgstr "Admissão salva com sucesso"
 
@@ -73,18 +52,20 @@ msgstr "Nome"
 msgid "Responsible professional name"
 msgstr "Nome do profissional responsável"
 
-#: authentication/forms.py:33 templates/client/client_print.html:166
-#: templates/tags/email.html:21
+#: authentication/forms.py:33 gcm/templates/gcm/org_pen_detail.html:42
+#: templates/client/client_print.html:166 templates/tags/email.html:21
 msgid "Email"
 msgstr "E-mail"
 
-#: authentication/forms.py:33 templates/registration/registration_form.html:37
+#: authentication/forms.py:33 gcm/templates/gcm/registration_form.html:54
+#: templates/registration/registration_form.html:37
 msgid "Your email address"
 msgstr "Endereço de e-mail"
 
-#: authentication/forms.py:34 templates/registration/login.html:50
-#: templates/users/users_form.html:80 templates/users/users_form.html.py:83
-#: templates/users/users_form.html:205 templates/users/users_form.html:208
+#: authentication/forms.py:34 gcm/templates/gcm/login.html:18
+#: templates/registration/login.html:50 templates/users/users_form.html:80
+#: templates/users/users_form.html.py:83 templates/users/users_form.html:205
+#: templates/users/users_form.html:208
 msgid "Password"
 msgstr "Senha"
 
@@ -100,16 +81,16 @@ msgstr "Senha (confirmação)"
 msgid "Type password again"
 msgstr "Digite novamente sua senha"
 
-#: authentication/forms.py:36 templates/registration/login.html:49
-#: templates/users/users_form.html:70
+#: authentication/forms.py:36 gcm/templates/gcm/login.html:13
+#: templates/registration/login.html:49 templates/users/users_form.html:70
 msgid "Username"
 msgstr "Nome de Usuário"
 
 #: authentication/forms.py:36
 msgid "Choice one unique identifier"
-msgstr "Escolha um nome de usuário"
+msgstr "Escolha um nome de usuário. Nomes de usuário apenas podem conter letras, números, e underscore. Não pode conter espaços."
 
-#: authentication/forms.py:37
+#: authentication/forms.py:37 gcm/forms/invoice.py:23
 #: templates/contact/contact_organization_form.html:47
 #: templates/referral/referral_details.html:213
 msgid "Organization"
@@ -133,29 +114,20 @@ msgid "Invalid username or password"
 msgstr "Nome de usuário ou senha inválida"
 
 #: authentication/views.py:64
-msgid ""
-"Your account has not been confirmated yet. Please check your email and use "
-"your activation code to continue"
-msgstr ""
-"Sua conta ainda não foi ativada. Por favor, verifique seu e-mail e use seu "
-"código de acesso para continuar."
+msgid "Your account has not been confirmated yet. Please check your email and use your activation code to continue"
+msgstr "Sua conta ainda não foi ativada. Por favor, verifique seu e-mail e use seu código de acesso para continuar."
 
 #: authentication/views.py:68
 msgid "Your account has been disable. Please contact our support"
-msgstr ""
-"Sua conta foi desativada. Por favor, entre em contato com nosso suporte."
+msgstr "Sua conta foi desativada. Por favor, entre em contato com nosso suporte."
 
-#: authentication/views.py:187
-msgid ""
-"Informed organization is already registered. Please choice another name here "
-"or login with an existing account"
-msgstr ""
-"O estabelecimento informado já está registrado. Por favor, escolha outro "
-"nome ou acesse com uma conta já existente"
+#: authentication/views.py:187 gcm/views/auth.py:26
+msgid "Informed organization is already registered. Please choice another name here or login with an existing account"
+msgstr "O estabelecimento informado já está registrado. Por favor, escolha outro nome ou acesse com uma conta já existente"
 
-#: authentication/views.py:190
+#: authentication/views.py:190 gcm/views/auth.py:29
 msgid "Enter a valid username."
-msgstr "Insira um nome de usuário válido."
+msgstr "Insira um nome de usuário válido. (Nomes de usuário apenas podem conter letras, números, underscore e não pode conter espaços) "
 
 #: careprofessional/models.py:159
 msgid "Lecture Class"
@@ -182,10 +154,8 @@ msgid "Student saved successfully"
 msgstr "Estagiário salvo com sucesso."
 
 #: careprofessional/views.py:203
-msgid ""
-"Impossible discharged of the service. Exist referral to this professional."
-msgstr ""
-"Impossível desligar do serviço. Existe inscrição para esse profissional."
+msgid "Impossible discharged of the service. Exist referral to this professional."
+msgstr "Impossível desligar do serviço. Existe inscrição para este profissional."
 
 #: careprofessional/views.py:218 templates/service/service_form.html:154
 #: templates/users/users_form.html:168 templates/users/users_form.html:182
@@ -206,11 +176,11 @@ msgstr "Ativado"
 
 #: careprofessional/views.py:219
 msgid "deactivated"
-msgstr "Desativados"
+msgstr "Desativado"
 
 #: careprofessional/views.py:220
 msgid "successfully"
-msgstr "Sala salva com sucesso."
+msgstr "sucesso"
 
 #: client/models.py:27 client/models.py:44
 msgid "Parents"
@@ -265,96 +235,83 @@ msgstr "Esposo(a)"
 msgid "Others"
 msgstr "Outros"
 
-#: client/views.py:154
-msgid ""
-"There's no Service created yet. Please, create one before access Client."
-msgstr ""
-"Nenhum \"Serviço\" foi criado até o momento. Por favor, crie um antes de "
-"acessar \"Clientes\"."
+#: client/views.py:96
+msgid "There's no Service created yet. Please, create one before access Client."
+msgstr "Nenhum \"Serviço\" foi criado até o momento. Por favor, crie um antes de acessar \"Clientes\"."
 
-#: client/views.py:412 client/views.py:453
+#: client/views.py:329 client/views.py:368
 msgid "Referral saved successfully"
 msgstr "Operação efetuada com sucesso."
 
-#: client/views.py:456
+#: client/views.py:371
 msgid "Service is deactive. Impossible register a referral."
 msgstr "Este serviço está desativado. Impossível registrar uma inscrição."
 
-#: client/views.py:473
-msgid ""
-"Sorry, you can not discharge a queued referral. Remove it from queue first "
-"before to continue"
-msgstr ""
-"Desculpe, impossível desligar um serviço com fila de espera. Remova a fila "
-"para continuar."
+#: client/views.py:384
+msgid "Sorry, you can not discharge a queued referral. Remove it from queue first before to continue"
+msgstr "Desculpe, impossível desligar um serviço com fila de espera. Remova a fila para continuar."
 
-#: client/views.py:485
+#: client/views.py:396
 msgid "Client discharged successfully"
 msgstr "Cliente desligado com sucesso."
 
-#: client/views.py:488
+#: client/views.py:399
 msgid "Form Error"
 msgstr "Erro"
 
-#: client/views.py:496
+#: client/views.py:407
 msgid "Registered have hour in the schedule"
 msgstr "Este registro possui agendamentos."
 
-#: client/views.py:573
+#: client/views.py:465
 msgid "Client saved successfully"
 msgstr "Cliente salvo com sucesso."
 
-#: client/views.py:654 users/views.py:219
+#: client/views.py:532 users/views.py:219
 msgid "User deactivated successfully"
 msgstr "Usuário desativado com sucesso."
 
-#: client/views.py:657 users/views.py:219
+#: client/views.py:535 users/views.py:219
 msgid "User activated successfully"
 msgstr "Usuário ativado com sucesso."
 
-#: client/views.py:663
+#: client/views.py:541
 msgid "Sorry, you can not deactivate a client with registered referral"
 msgstr "Você não pode desativar um cliente com inscrições em serviços."
 
-#: client/views.py:683
-msgid ""
-"Sorry, you can not book a queued client. Remove it first from queue before "
-"continue"
-msgstr ""
-"Desculpe, você não pode agendar um cliente que está na lista de espera. "
-"Remova-o da fila antes de continuar."
+#: client/views.py:558
+msgid "Sorry, you can not book a queued client. Remove it first from queue before continue"
+msgstr "Desculpe, você não pode agendar um cliente que está na lista de espera. Remova-o da fila antes de continuar."
 
-#: client/views.py:736 client/views.py:757
+#: client/views.py:597 client/views.py:613
 msgid "Error adding to queue! Referral is already queued"
-msgstr ""
-"Erro ao adicionar à fila! Cliente já está na lista de espera deste serviço."
+msgstr "Erro ao adicionar à fila! Cliente já está na lista de espera deste serviço."
 
-#: client/views.py:740
+#: client/views.py:601
 msgid "Error adding to queue! Referral have upcoming occurrences"
 msgstr "Erro ao adicionar à fila! Eventos futuros cadastrados."
 
-#: client/views.py:761
-msgid ""
-"Subscript in the queue not is possible. Referral have upcoming occurrences"
+#: client/views.py:617
+msgid "Subscript in the queue not is possible. Referral have upcoming occurrences"
 msgstr "Inscrição na fila não é possível! Eventos futuros cadastrados."
 
-#: client/views.py:784
+#: client/views.py:640
 msgid "Referral added to queue successfully"
 msgstr "Cliente adicionado à lista de espera com sucesso."
 
-#: client/views.py:804
+#: client/views.py:655
 msgid "Client removed from queue successfully"
 msgstr "Cliente removido da lista de espera com sucesso"
 
-#: client/views.py:848
+#: client/views.py:690
 msgid "External Referral saved successfully"
 msgstr "Encaminhamento externo salvo com sucesso."
 
-#: client/views.py:887
+#: client/views.py:720
 msgid "Family member added successfully"
 msgstr "Familiar adicionado com sucesso."
 
-#: client/views.py:954
+#: client/views.py:777
 msgid "Related client added successfully to this company"
 msgstr "Funcionário adicionado com sucesso para essa Pessoa Jurídica"
 
@@ -496,11 +453,11 @@ msgstr "Status"
 msgid "School Grade"
 msgstr "Grau de Escolaridade"
 
-#: demographic/views.py:73
+#: demographic/views.py:59
 msgid "Education saved successfully"
 msgstr "Nível educacional salvo com sucesso"
 
-#: demographic/views.py:110
+#: demographic/views.py:88
 msgid "Occupation saved successfully"
 msgstr "Ocupação salva com sucesso."
 
@@ -674,31 +631,31 @@ msgstr "Resolvido"
 
 #: ehr/models.py:47
 msgid "Second(s)"
-msgstr "Segundo"
+msgstr "Segundo(s)"
 
 #: ehr/models.py:48
 msgid "Minut(s)"
-msgstr "Minuto"
+msgstr "Minuto(s)"
 
 #: ehr/models.py:49
 msgid "Hour(s)"
-msgstr "Hora"
+msgstr "Hora(s)"
 
 #: ehr/models.py:50
 msgid "Day(s)"
-msgstr "Diariamente"
+msgstr "Dia(s)"
 
 #: ehr/models.py:51
 msgid "Week(s)"
-msgstr "Semanalmente"
+msgstr "Semana(s)"
 
 #: ehr/models.py:52
 msgid "Month(s)"
-msgstr "Mensalmente"
+msgstr "Mês(es)"
 
 #: ehr/models.py:53
 msgid "Year(s)"
-msgstr "Anualmente"
+msgstr "Ano(s)"
 
 #: ehr/models.py:57
 msgid "Collection Data"
@@ -748,63 +705,63 @@ msgstr "Confimação de profissional pendente"
 msgid "Confirmed by the professional"
 msgstr "Confirmado pelo profissional "
 
-#: ehr/views.py:146
+#: ehr/views.py:73
 msgid "You cannot change a confirmed demand."
 msgstr "Você não pode modificar uma demanda confirmada."
 
-#: ehr/views.py:151
+#: ehr/views.py:78
 msgid "Choosen occurence already in use by another demand."
 msgstr "A ocorrência escolhida já está sendo usada por outra demanda."
 
-#: ehr/views.py:151
+#: ehr/views.py:78
 msgid "There's been an error in demand form."
-msgstr "Há um erro no formulário do problema."
+msgstr "Há um erro no formulário do \"Problema\"."
 
-#: ehr/views.py:168
+#: ehr/views.py:95
 msgid "There's an error in 'How long it happens' field."
 msgstr "Há um erro no campo \"Há quanto tempo acontece?\"."
 
-#: ehr/views.py:177
+#: ehr/views.py:104
 msgid "There's an error in 'Frequency' field."
 msgstr "Há um erro no campo \"Frequência\"."
 
-#: ehr/views.py:186
+#: ehr/views.py:113
 msgid "There's an error in 'Duration' field."
 msgstr "Há um erro no campo \"Duração\"."
 
-#: ehr/views.py:193
+#: ehr/views.py:120
 msgid "Demand saved successfully"
 msgstr "Problema salvo com sucesso."
 
-#: ehr/views.py:255
+#: ehr/views.py:157
 msgid "You cannot change a confirmed diagnosis."
-msgstr "Vocẽ não pode modificar um diagnóstico confirmado."
+msgstr "Você não pode modificar um diagnóstico confirmado."
 
-#: ehr/views.py:260
+#: ehr/views.py:162
 msgid "Choosen occurence already in use by another diagnosis."
 msgstr "A ocorrência escolhida já está sendo utilizada em outro diagnóstico."
 
-#: ehr/views.py:260
+#: ehr/views.py:162
 msgid "There's been an error in diagnosis form."
-msgstr "Houve um erro no formulário de diagnóstico."
+msgstr "Houve um erro no formulário de \"Diagnóstico\"."
 
-#: ehr/views.py:275
+#: ehr/views.py:177
 msgid "Diagnosis saved successfully"
 msgstr "Diagnóstico salvo com sucesso."
 
-#: ehr/views.py:335
+#: ehr/views.py:212
 msgid "You cannot change a confirmed session."
 msgstr "Você não pode modificar um atendimento confirmado."
 
-#: ehr/views.py:340
+#: ehr/views.py:217
 msgid "Choosen occurence already in use by another session."
 msgstr "Ocorrência escolhida já está sendo utilizada em outro atendimento."
 
-#: ehr/views.py:340
+#: ehr/views.py:217
 msgid "There's been an error in session form."
-msgstr "Houve um erro no formulário do atendimento."
+msgstr "Houve um erro no formulário do \"Atendimento\"."
 
-#: ehr/views.py:355
+#: ehr/views.py:232
 msgid "Session saved successfully"
 msgstr "Atendimento salvo com sucesso"
 
@@ -820,10 +777,520 @@ msgstr "Funcionário ativado com sucesso."
 msgid "Employee deactivated successfully"
 msgstr "Funcionário desativado com sucesso."
 
+#: gcm/forms/auth.py:26
+msgid "Access Plan"
+msgstr "Plano de Acesso"
+
+#: gcm/forms/auth.py:26
+msgid "Choice one access plan"
+msgstr "Escolha um plano de acesso"
+
+#: gcm/forms/auth.py:27
+msgid "Phone Number"
+msgstr "Telefone"
+
+#: gcm/forms/auth.py:27
+msgid "Enter your phone number with area code here"
+msgstr "Informe seu número de telefone com o código de área"
+
+#: gcm/forms/auth.py:28
+msgid "CPF Number"
+msgstr "CPF"
+
+#: gcm/forms/auth.py:28
+msgid "Enter your CPF number here"
+msgstr "Informe aqui o número de seu CPF"
+
+#: gcm/forms/auth.py:29
+msgid "Address Street"
+msgstr "Logradouro"
+
+#: gcm/forms/auth.py:29
+msgid "Enter your address here"
+msgstr "Informe aqui seu endereço"
+
+#: gcm/forms/auth.py:30
+msgid "Address Number"
+msgstr "Número"
+
+#: gcm/forms/auth.py:30
+msgid "Enter your address number here"
+msgstr "Número do endereço com complementos"
+
+#: gcm/forms/auth.py:31 templates/tags/address.html:41
+msgid "ZIP Code"
+msgstr "CEP"
+
+#: gcm/forms/auth.py:31
+msgid "Enter your ZIP Code here"
+msgstr "Informe o CEP do endereço"
+
+#: gcm/forms/auth.py:32 templates/meta/people_profile.html:81
+#: templates/tags/address.html:55
+msgid "State/Region"
+msgstr "Estado"
+
+#: gcm/forms/auth.py:32
+msgid "Enter your state/region here"
+msgstr "Estado/Região"
+
+#: gcm/forms/invoice.py:23
+msgid "Choice one organization"
+msgstr "Escolha um estabelecimento"
+
+#: gcm/models/invoice.py:13
+msgid "Emitido"
+msgstr "Emitido"
+
+#: gcm/models/invoice.py:14
+msgid "Pago"
+msgstr "Pago"
+
+#: gcm/models/invoice.py:15
+msgid "Excluido"
+msgstr "Excluído"
+
+#: gcm/models/invoice.py:19 gcm/templates/gcm/invoice_list.html:16
+#: gcm/templates/gcm/org_list.html:10 gcm/templates/gcm/org_pen_list.html:13
+msgid "Organizacao"
+msgstr "Organização"
+
+#: gcm/models/invoice.py:20 gcm/templates/gcm/invoice_list.html:16
+#: gcm/templates/gcm/org_form.html:40 referral/models.py:360
+msgid "Data"
+msgstr "Data"
+
+#: gcm/models/invoice.py:21
+msgid "Data do Pagamento"
+msgstr ""
+
+#: gcm/models/invoice.py:21
+msgid "Preencher apenas quando efetuado pagamento. Formato dd/mm/aaaa. Ex.: 16/12/2009"
+msgstr ""
+
+#: gcm/models/invoice.py:22
+msgid "Data do Vencimento"
+msgstr "Vencimento"
+
+#: gcm/models/invoice.py:22 gcm/models/invoice.py:23
+msgid "Formato dd/mm/aaaa. Ex.: 16/12/2009"
+msgstr ""
+
+#: gcm/models/invoice.py:23
+msgid "Data de Expiracao"
+msgstr "Data da expiração"
+
+#: gcm/models/invoice.py:24 gcm/templates/gcm/org_form.html:40
+#: gcm/templates/gcm/org_pen_detail.html:54
+#: gcm/templates/gcm/plan_list.html:16
+msgid "Valor"
+msgstr ""
+
+#: gcm/models/invoice.py:24
+msgid "Utilizar pontos, nao virgulas. Ex.: 39.90"
+msgstr "Utilizar pontos, não vírgulas. Ex.: 39.90"
+
+#: gcm/models/invoice.py:25
+msgid "Desconto"
+msgstr "Desconto"
+
+#: gcm/models/invoice.py:25
+msgid "Valor para desconto. Utilizar apenas valor decimais aqui, NAO porcentagem. Ex.: 5.90"
+msgstr "Valor para desconto. Utilizar apenas valores decimais aqui, NÃO porcentagem. Ex.: 5.90"
+
+#: gcm/models/invoice.py:26 gcm/templates/gcm/invoice_list.html:16
+#: gcm/templates/gcm/org_form.html:40
+msgid "Estado"
+msgstr ""
+
+#: gcm/models/invoice.py:27
+msgid "Plan"
+msgstr "Plano"
+
+#: gcm/models/plan.py:11 gcm/templates/gcm/plan_list.html:16
+msgid "Nome do Plano"
+msgstr "Nome do Plano"
+
+#: gcm/models/plan.py:11
+msgid "Ex: de 1 a 9 profissionais"
+msgstr ""
+
+#: gcm/models/plan.py:12
+msgid "Valor em R$"
+msgstr ""
+
+#: gcm/models/plan.py:12
+msgid "Utilizar pontos, nao virgulas"
+msgstr "Utilizar pontos, não vírgulas"
+
+#: gcm/models/plan.py:13
+msgid "Duracao"
+msgstr "Duração"
+
+#: gcm/models/plan.py:13
+msgid "Duracao em MESES do plano. Preencher 1 para plano mensal, 3 para trimestral etc"
+msgstr "Duração em MESES do plano. Preencher 1 para plano mensal, 3 para trimestral, etc."
+
+#: gcm/models/plan.py:14 gcm/templates/gcm/plan_list.html:16
+msgid "Peso"
+msgstr "Peso"
+
+#: gcm/models/plan.py:14
+msgid "Peso para ordenacao visual no formulario de cadastro. Utilizar valores inteiros aqui"
+msgstr "Peso para ordenação visual no formulário de cadastro. Utilizar valores inteiros aqui."
+
+#: gcm/models/plan.py:25
+msgid "Mensal"
+msgstr "Mensal"
+
+#: gcm/models/plan.py:27
+msgid "Trimestral"
+msgstr ""
+
+#: gcm/models/plan.py:29
+msgid "Semestral"
+msgstr "Semestral"
+
+#: gcm/models/plan.py:31
+msgid "Anual"
+msgstr ""
+
+#: gcm/models/plan.py:33
+msgid "Bianual"
+msgstr ""
+
+#: gcm/templates/gcm/delete.html:5 gcm/templates/gcm/delete.html.py:6
+#: gcm/templates/gcm/main.html:22 gcm/templates/gcm/org_pen_detail.html:5
+#: gcm/templates/gcm/org_pen_detail.html:6
+#: gcm/templates/gcm/org_pen_list.html:5 gcm/templates/gcm/org_pen_list.html:6
+msgid "Organizacoes Pendentes"
+msgstr "Organizações Pendentes"
+
+#: gcm/templates/gcm/delete.html:9
+msgid "Deseja realmente deletar "
+msgstr "Deseja realmente apagar?"
+
+#: gcm/templates/gcm/delete.html:11
+msgid "Todos os registros relacionado serão excluídos também"
+msgstr "Todos os registros relacionados serão excluídos também."
+
+#: gcm/templates/gcm/delete.html:16 gcm/templates/gcm/org_list.html:19
+#: gcm/templates/gcm/plan_list.html:27
+msgid "Sim"
+msgstr ""
+
+#: gcm/templates/gcm/delete.html:20
+msgid "Cancelar"
+msgstr "Cancelar"
+
+#: gcm/templates/gcm/invoice_form.html:5 gcm/templates/gcm/invoice_form.html:6
+#: gcm/templates/gcm/invoice_list.html:5 gcm/templates/gcm/invoice_list.html:6
+#: gcm/templates/gcm/main.html:25 gcm/templates/gcm/plan_form.html:5
+#: gcm/templates/gcm/plan_form.html.py:6 gcm/templates/gcm/plan_list.html:5
+#: gcm/templates/gcm/plan_list.html.py:6
+msgid "Planos"
+msgstr "Planos"
+
+#: gcm/templates/gcm/invoice_form.html:17 gcm/templates/gcm/plan_form.html:12
+msgid "Plan Details"
+msgstr "Detalhes do Plano"
+
+#: gcm/templates/gcm/invoice_form.html:26 gcm/templates/gcm/org_form.html:32
+#: gcm/templates/gcm/plan_form.html:21
+#: templates/client/client_family_form.html:118
+#: templates/client/client_related.html:120
+#: templates/ehr/ehr_demand_save.html:21 templates/ehr/ehr_demand_save.html:25
+#: templates/ehr/ehr_diagnosis_save.html:21
+#: templates/ehr/ehr_diagnosis_save.html:25
+#: templates/ehr/ehr_session_save.html:21
+#: templates/ehr/ehr_session_save.html:25 templates/tags/save.html:18
+msgid "Save"
+msgstr "Salvar"
+
+#: gcm/templates/gcm/invoice_form.html:30 gcm/templates/gcm/org_form.html:56
+#: gcm/templates/gcm/org_pen_detail.html:65
+#: gcm/templates/gcm/plan_form.html:25
+#: templates/client/client_print_form.html:92
+#: templates/ehr/ehr_demand_save.html:28
+#: templates/ehr/ehr_diagnosis_save.html:28
+#: templates/ehr/ehr_session_save.html:28 templates/tags/save.html:19
+msgid "Back"
+msgstr "Voltar"
+
+#: gcm/templates/gcm/invoice_form.html:31
+#: gcm/templates/gcm/invoice_list.html:29 gcm/templates/gcm/plan_form.html:26
+#: gcm/templates/gcm/plan_list.html:34
+#: templates/tags/address_book_organization_mini.html:30
+#: templates/tags/address_book_professional_mini.html:40
+#: templates/tags/careprofessional_mini.html:44
+#: templates/tags/device_mini.html:27 templates/tags/organization_mini.html:29
+#: templates/tags/place_mini.html:33
+msgid "Add"
+msgstr "Adicionar"
+
+#: gcm/templates/gcm/invoice_list.html:11
+msgid "Nenhuma fatura registrada até o momento!"
+msgstr ""
+
+#: gcm/templates/gcm/invoice_list.html:16 gcm/templates/gcm/org_form.html:40
+#: gcm/templates/gcm/org_pen_detail.html:52
+msgid "Plano"
+msgstr "Plano"
+
+#: gcm/templates/gcm/login.html:10
+msgid "GCM"
+msgstr ""
+
+#: gcm/templates/gcm/login.html:23 templates/registration/login.html:21
+#: templates/registration/login.html:52
+#: templates/registration/password_reset_complete.html:15
+#: templates/registration/password_reset_form.html:21
+msgid "Log in"
+msgstr "Entrar"
+
+#: gcm/templates/gcm/logout.html:7 templates/registration/logout.html:22
+msgid "You've been logged out."
+msgstr "Sessão encerrada"
+
+#: gcm/templates/gcm/logout.html:9 templates/registration/logout.html:25
+msgid "log in again"
+msgstr "Acessar novamente"
+
+#: gcm/templates/gcm/main.html:8
+msgid "CM"
+msgstr ""
+
+#: gcm/templates/gcm/main.html:8
+msgid "Inicio"
+msgstr "Início"
+
+#: gcm/templates/gcm/main.html:19
+msgid "GestorPSI"
+msgstr "GestorPsi"
+
+#: gcm/templates/gcm/main.html:19
+msgid "Controle de clientes"
+msgstr "Controle de clientes"
+
+#: gcm/templates/gcm/main.html:23 gcm/templates/gcm/org_form.html:5
+#: gcm/templates/gcm/org_form.html.py:6 gcm/templates/gcm/org_list.html:5
+#: gcm/templates/gcm/org_list.html.py:6
+msgid "Organizacoes"
+msgstr "Organizações"
+
+#: gcm/templates/gcm/main.html:24
+msgid "Faturas"
+msgstr "Faturas"
+
+#: gcm/templates/gcm/main.html:26
+msgid "Sair"
+msgstr "Sair"
+
+#: gcm/templates/gcm/org_form.html:11
+msgid "Organizacão"
+msgstr "Organização"
+
+#: gcm/templates/gcm/org_form.html:11
+msgid "Ativa"
+msgstr "Ativa"
+
+#: gcm/templates/gcm/org_form.html:11
+msgid "Desativada"
+msgstr "Desativada"
+
+#: gcm/templates/gcm/org_form.html:12
+msgid "Desativar?"
+msgstr "Desativar?"
+
+#: gcm/templates/gcm/org_form.html:12
+msgid "Ativar?"
+msgstr "Ativar?"
+
+#: gcm/templates/gcm/org_form.html:17
+msgid "Ativar/Desativar Organizacao"
+msgstr "Ativar/Desativar Organização"
+
+#: gcm/templates/gcm/org_form.html:30
+msgid "Desativando esta organizacao, ela ficará impossibitada de adicionar novo registros, ficará apenas disponíveis dados para leitura como listagens, consultas, relatórios etc"
+msgstr "Desativando esta organização, ela ficará impossibitada de adicionar novos registros. Ficarão disponíveis apenas dados para leitura como listagens, consultas, relatórios, etc."
+
+#: gcm/templates/gcm/org_form.html:40
+msgid "Data de Vencimento"
+msgstr "Data do Vencimento"
+
+#: gcm/templates/gcm/org_form.html:40
+msgid "Data Pagamento"
+msgstr "Data do Pagamento"
+
+#: gcm/templates/gcm/org_form.html:42
+msgid "Faturas desta organizacão"
+msgstr "Faturas desta organização"
+
+#: gcm/templates/gcm/org_list.html:10
+msgid "Numero de profissionais"
+msgstr "Qtde de profissionais"
+
+#: gcm/templates/gcm/org_list.html:10 gcm/templates/gcm/plan_list.html:16
+msgid "Ativo"
+msgstr "Ativo"
+
+#: gcm/templates/gcm/org_list.html:19 gcm/templates/gcm/plan_list.html:27
+msgid "Não"
+msgstr "Não"
+
+#: gcm/templates/gcm/org_pen_detail.html:10
+msgid "Dados pendente a aprovacao"
+msgstr "Dados sujeitos à aprovação"
+
+#: gcm/templates/gcm/org_pen_detail.html:12
+msgid "Dados da Organizacão"
+msgstr "Dados da Organização"
+
+#: gcm/templates/gcm/org_pen_detail.html:15
+#: gcm/templates/gcm/org_pen_detail.html:24
+msgid "Nome"
+msgstr "Nome"
+
+#: gcm/templates/gcm/org_pen_detail.html:17
+msgid "Sigla"
+msgstr "Sigla"
+
+#: gcm/templates/gcm/org_pen_detail.html:21
+msgid "Dados do Profissional"
+msgstr "Dados do profissional"
+
+#: gcm/templates/gcm/org_pen_detail.html:26
+msgid "CPF"
+msgstr ""
+
+#: gcm/templates/gcm/org_pen_detail.html:28
+msgid "Fone"
+msgstr "Telefone"
+
+#: gcm/templates/gcm/org_pen_detail.html:30
+#, fuzzy
+msgid "Endereco"
+msgstr "Endereço"
+
+#: gcm/templates/gcm/org_pen_detail.html:37
+msgid "Dados do Usuário"
+msgstr ""
+
+#: gcm/templates/gcm/org_pen_detail.html:40
+msgid "Usuário"
+msgstr ""
+
+#: gcm/templates/gcm/org_pen_detail.html:44
+msgid "Senha"
+msgstr "Senha"
+
+#: gcm/templates/gcm/org_pen_detail.html:49
+msgid "Dados do Plano de acesso"
+msgstr ""
+
+#: gcm/templates/gcm/org_pen_detail.html:56
+msgid "Data da requisicão"
+msgstr "Data da requisição"
+
+#: gcm/templates/gcm/org_pen_detail.html:61
+msgid "Excluir"
+msgstr ""
+
+#: gcm/templates/gcm/org_pen_detail.html:62
+msgid "Aprovar"
+msgstr "Aprovar"
+
+#: gcm/templates/gcm/org_pen_list.html:10
+msgid "Não existe organizacao pendentes"
+msgstr "Não existem organizações pendentes"
+
+#: gcm/templates/gcm/org_pen_list.html:13
+msgid "Data de inscricao"
+msgstr "Data da inscrição"
+
+#: gcm/templates/gcm/org_pen_list.html:13
+msgid "Plano de acesso"
+msgstr ""
+
+#: gcm/templates/gcm/plan_list.html:11
+msgid "You dont have any plan registered yet!"
+msgstr "Nenhum plano cadastrado"
+
+#: gcm/templates/gcm/plan_list.html:16
+msgid "Validade (meses)"
+msgstr ""
+
+#: gcm/templates/gcm/registration_complete.html:3
+#: templates/registration/registration_complete.html:3
+msgid "Registration complete"
+msgstr "Cadastro completo"
+
+#: gcm/templates/gcm/registration_complete.html:6
+msgid "Your account has been registered successfully."
+msgstr "Sua conta foi registrada com sucesso!"
+
+#: gcm/templates/gcm/registration_complete.html:7
+msgid "Please wait until one of our operators to contact you for payment, and soon your account is enable for use."
+msgstr "Um de nossos operadores entrará em contato em breve para acertar os últimos detalhes, como forma de pagamento e, em seguida, sua conta será ativada para uso."
+
+#: gcm/templates/gcm/registration_form.html:40
+#: templates/registration/registration_form.html:22
+msgid "New account"
+msgstr "Novo registro"
+
+#: gcm/templates/gcm/registration_form.html:41
+#: templates/registration/registration_form.html:23
+msgid "Fill out the form to the left (all fields are required), and your account will be created; you'll be sent an email with instructions on how to finish your registration"
+msgstr "Preencha o formulário de criação da conta de seu estabelecimento. <b>O usuário cadastrado será o administrador do estabelecimento.</b> Um e-mail será enviado com as instruções sobre como concluir o cadastro."
+
+#: gcm/templates/gcm/registration_form.html:43
+#: templates/registration/registration_form.html:25
+msgid "Form errors! Please correct errors below and try again"
+msgstr "Por favor, corrija os erros abaixo e tente novamente."
+
+#: gcm/templates/gcm/registration_form.html:62
+#: templates/meta/people_profile.html:91
+#: templates/meta/people_profile.html:100 templates/tags/address.html:69
+#: templates/tags/address.html.py:80
+msgid "City"
+msgstr "Cidade"
+
+#: gcm/templates/gcm/registration_form.html:72
+#: gcm/templates/gcm/registration_form.html:227
+#: templates/registration/registration_form.html:40
+#: templates/registration/registration_form.html:57
+msgid "terms of service"
+msgstr "Termos de Serviço"
+
+#: gcm/templates/gcm/registration_form.html:227
+#: templates/registration/registration_form.html:57
+msgid "By clicking the Signup button below, you agree that you have read and agree to the"
+msgstr "Clicando no botão abaixo, você concordará que leu e aceitou os"
+
+#: gcm/templates/gcm/registration_form.html:229
+#: templates/registration/registration_form.html:59
+msgid "Accept terms and register"
+msgstr "Aceitar os termos e continuar"
+
+#: gcm/templates/gcm/registration_form.html:232
+#: templates/registration/registration_form.html:62
+msgid "Already have an account?"
+msgstr "Já possui uma conta?"
+
+#: gcm/templates/gcm/registration_form.html:233
+#: templates/registration/registration_form.html:63
+msgid "Forgot Password?"
+msgstr "Esqueceu sua senha?"
+
+#: gcm/views/auth.py:57
+#, python-format
+msgid "Organizacao %s ativada com sucesso"
+msgstr "Organização %s ativada com sucesso"
+
 #: online_messages/fields.py:53
 #, python-format
 msgid "The following usernames are incorrect: %(users)s"
-msgstr "Nomes de usuários incorretos: %(users)s"
+msgstr "Os nomes de usuário a seguir estão incorretos: %(users)s"
 
 #: online_messages/forms.py:20 online_messages/models.py:61
 msgid "Body"
@@ -936,27 +1403,31 @@ msgstr "Encaminhamento interno"
 msgid "New Message: %(subject)s"
 msgstr "Nova mensagem: %(subject)s"
 
-#: online_messages/views.py:183
+#: online_messages/views.py:165
 msgid "Message topic created successfully"
 msgstr "Tópico de mensagem criado com sucesso."
 
-#: online_messages/views.py:314 online_messages/views.py:350
+#: online_messages/views.py:296 online_messages/views.py:332
 msgid "Message successfully sent."
 msgstr "Mensagem enviada com sucesso."
 
-#: online_messages/views.py:356
+#: online_messages/views.py:338
 #, python-format
 msgid ""
 "%(sender)s wrote:\n"
 "%(body)s"
 msgstr "%(sender)s escreveu: %(body)s"
 
-#: online_messages/views.py:360
+#: online_messages/views.py:342
 #, python-format
 msgid "Re: %(subject)s"
 msgstr "Re: %(subject)s"
 
-#: online_messages/views.py:425
+#: online_messages/views.py:379
+msgid "Message successfully deleted."
+msgstr "Mensagem apagada com sucesso."
+
+#: online_messages/views.py:407
 msgid "Message successfully recovered."
 msgstr "Mensagem recuperada com sucesso."
 
@@ -1034,7 +1505,7 @@ msgstr "A confirmação da senha está incorreta."
 
 #: profile/views.py:114
 msgid "Password updated successfully"
-msgstr "Usuário atualizado com sucesso."
+msgstr "Senha atualizada com sucesso."
 
 #: referral/models.py:50
 msgid "High"
@@ -1099,7 +1570,7 @@ msgstr "Ativo"
 #: templates/tags/employee_sidebar.html:28 templates/tags/room_sidebar.html:23
 #: templates/tags/service_sidebar.html:33 templates/tags/user_sidebar.html:27
 msgid "Inactive"
-msgstr "Desativar"
+msgstr "Inativo"
 
 #: referral/models.py:73
 msgid "Unknown"
@@ -1115,9 +1586,7 @@ msgstr "Desistência do serviço - Procurou outro tipo de tratamento "
 
 #: referral/models.py:79
 msgid "Withdrawal of service - The shutdown was reported by the "
-msgstr ""
-"Desistência do serviço - O desligamento foi comunicado pelo cliente ou por "
-"terceiros "
+msgstr "Desistência do serviço - O desligamento foi comunicado pelo cliente ou por terceiros "
 
 #: referral/models.py:80
 msgid "Withdrawal of service - The incompatibility of schedule "
@@ -1129,7 +1598,7 @@ msgstr "Impossibilidade de contato com o cliente"
 
 #: referral/models.py:82
 msgid "Abandonment / withdrawal from the (a) professional"
-msgstr "Abandono/desistência por parte do(a) profissional "
+msgstr "Abandono / desistência por parte do(a) profissional "
 
 #: referral/models.py:83
 msgid "High * (end of the process without the professional)"
@@ -1153,7 +1622,7 @@ msgstr "Inadimplência "
 
 #: referral/models.py:88
 msgid "Change of city/address "
-msgstr "Mudança de cidade/endereço "
+msgstr "Mudança de cidade / endereço "
 
 #: referral/models.py:89
 msgid "Do not attended the first consultation"
@@ -1183,7 +1652,7 @@ msgstr "Término do estágio - O processo foi encerrado "
 
 #: referral/models.py:92
 msgid "Treatment / Service terminated by court order"
-msgstr "Tratamento/Serviço encerrado por ordem judicial "
+msgstr "Tratamento / Serviço encerrado por ordem judicial "
 
 #: referral/models.py:93
 msgid "Internal referral"
@@ -1206,12 +1675,8 @@ msgid "In attendance (active)"
 msgstr "Em atendimento (ativo) "
 
 #: referral/models.py:102
-msgid ""
-"Forwarded to external service and remains in attendance at the clinic "
-"(active)"
-msgstr ""
-"Encaminhado para atendimento externo e continua em atendimento na clínica "
-"(ativo)"
+msgid "Forwarded to external service and remains in attendance at the clinic (active)"
+msgstr "Encaminhado para atendimento externo e continua em atendimento na clínica (ativo)"
 
 #: referral/models.py:104
 msgid "Off"
@@ -1242,17 +1707,17 @@ msgstr "Prioridade"
 #: referral/models.py:207
 #, python-format
 msgid "%s is busy in this range"
-msgstr "%s está ocupado neste intervalo"
+msgstr "%s está ocupado nesse intervalo"
 
 #: referral/models.py:211
 #, python-format
 msgid "Professional %s is busy in this range"
-msgstr "Profissional %s está ocupado neste intervalo"
+msgstr "Profissional %s está ocupado nesse intervalo"
 
 #: referral/models.py:215
 #, python-format
 msgid "Client %s is busy in this range"
-msgstr "Cliente %s está ocupado neste intervalo"
+msgstr "Cliente %s está ocupado nesse intervalo"
 
 #: referral/models.py:295
 msgid "Was Discussed With Client"
@@ -1273,74 +1738,6 @@ msgstr "Detalhes do Desligamento"
 #: templates/service/service_group_form.html:72
 msgid "Status"
 msgstr "Status"
-
-#: referral/models.py:360
-msgid "Data"
-msgstr "Data"
-
-#: registration/forms.py:36
-#, fuzzy
-msgid "username"
-msgstr "Nome de Usuário"
-
-#: registration/forms.py:39
-#, fuzzy
-msgid "email address"
-msgstr "Endereço de e-mail:"
-
-#: registration/forms.py:41
-#, fuzzy
-msgid "password"
-msgstr "Senha"
-
-#: registration/forms.py:43
-#, fuzzy
-msgid "password (again)"
-msgstr "Senha (confirmação)"
-
-#: registration/forms.py:55
-msgid "This username is already taken. Please choose another."
-msgstr ""
-
-#: registration/forms.py:67
-msgid "You must type the same password each time"
-msgstr ""
-
-#: registration/forms.py:90
-msgid "I have read and agree to the Terms of Service"
-msgstr ""
-
-#: registration/forms.py:107
-msgid ""
-"This email address is already in use. Please supply a different email "
-"address."
-msgstr ""
-
-#: registration/forms.py:133
-msgid ""
-"Registration using free email addresses is prohibited. Please supply a "
-"different email address."
-msgstr ""
-
-#: registration/models.py:218
-#, fuzzy
-msgid "user"
-msgstr "Usuários"
-
-#: registration/models.py:219
-#, fuzzy
-msgid "activation key"
-msgstr "Ativado"
-
-#: registration/models.py:224
-#, fuzzy
-msgid "registration profile"
-msgstr "Cadastro completo"
-
-#: registration/models.py:225
-#, fuzzy
-msgid "registration profiles"
-msgstr "Cadastro completo"
 
 #: schedule/forms.py:129
 msgid "Presence"
@@ -1398,23 +1795,23 @@ msgstr "Data da última ocorrência"
 msgid "Presence Confirmation"
 msgstr "Confirmação de presença"
 
-#: schedule/views.py:89
+#: schedule/views.py:76
 msgid "Sorry. You can not book more than 40 occurrence at the same time"
-msgstr "Você não pode agendar mais de 40 eventos de uma vez."
+msgstr "Desculpe. Impossível agendar mais de 40 eventos de uma vez."
 
-#: schedule/views.py:106
+#: schedule/views.py:93
 msgid "Schedule saved successfully"
 msgstr "Agendamento salvo com sucesso."
 
-#: schedule/views.py:217
+#: schedule/views.py:204
 msgid "Occurrence updated successfully"
 msgstr "Atualização salva com sucesso."
 
-#: schedule/views.py:275
+#: schedule/views.py:249
 msgid "Occurrence confirmation updated successfully"
 msgstr "Confirmação de evento realizada com sucesso."
 
-#: schedule/views.py:420
+#: schedule/views.py:394
 #: templates/careprofessional/careprofessional_list.html:47
 #: templates/careprofessional/student_list.html:46
 #: templates/client/client_home.html:62 templates/client/client_list.html:43
@@ -1440,7 +1837,7 @@ msgstr "Confirmação de evento realizada com sucesso."
 msgid "of"
 msgstr "de"
 
-#: schedule/views.py:445 service/models.py:104 service/views.py:81
+#: schedule/views.py:419 service/models.py:104 service/views.py:81
 #: templates/client/client_print.html:387
 #: templates/referral/referral_details.html:88
 #: templates/referral/referral_details.html:106
@@ -1448,11 +1845,11 @@ msgstr "de"
 msgid "Group"
 msgstr "Grupo"
 
-#: schedule/views.py:494
+#: schedule/views.py:460
 msgid "No member family selected"
 msgstr "Nenhum familiar selecionado"
 
-#: schedule/views.py:509
+#: schedule/views.py:475
 msgid "Family members added successfully"
 msgstr "Familiar adicionado com sucesso."
 
@@ -1486,7 +1883,7 @@ msgstr "Área"
 
 #: service/models.py:46
 msgid "Area Code"
-msgstr "Código da Área"
+msgstr "Código de Área"
 
 #: service/models.py:95
 msgid "Academic (supervised) related service"
@@ -1887,7 +2284,7 @@ msgstr "Você pode"
 
 #: templates/403.html:28 templates/404.html:26 templates/500.html:26
 msgid "Go Back"
-msgstr "Voltar"
+msgstr "voltar"
 
 #: templates/403.html:28 templates/client/client_referral_form.html:64
 #: templates/client/client_referral_form.html:75
@@ -1912,12 +2309,8 @@ msgid "Server Error <em>(500)</em>"
 msgstr "Erro do servidor <em>(500)</em>"
 
 #: templates/500.html:24
-msgid ""
-"There's been an error. It's been reported to the site administrators via e-"
-"mail and should be fixed shortly. Thanks for your patience."
-msgstr ""
-"Ocorreu um erro. Será reportado ao administrador do site via e-mail e deverá "
-"ser corrigido em breve. Obrigado pela paciência."
+msgid "There's been an error. It's been reported to the site administrators via e-mail and should be fixed shortly. Thanks for your patience."
+msgstr "Ocorreu um erro. Será reportado ao administrador do site via e-mail e deverá ser corrigido em breve. Obrigado pela paciência."
 
 #: templates/admission/admission_form.html:33
 #: templates/admission/admission_form.html:46
@@ -2459,15 +2852,12 @@ msgstr "Procurar"
 #: templates/client/client_family_form.html:79
 #: templates/client/client_related.html:94
 msgid "Choose the client from the list, or use the form below to add a new one"
-msgstr ""
-"Escolha o cliente a partir de uma lista ou utilize o formuário abaixo para "
-"adicionar um novo"
+msgstr "Escolha o cliente a partir de uma lista ou utilize o formulário abaixo para adicionar um novo"
 
 #: templates/client/client_company_related_form.html:98
 #: templates/client/client_related.html:110
 msgid "Add new client and set it client as a company related member"
-msgstr ""
-"Adicione novo cliente e cadastre-o como um funcionário dessa Pessoa Jurídica"
+msgstr "Adicione novo cliente e cadastre-o como um funcionário dessa Pessoa Jurídica"
 
 #: templates/client/client_company_related_form.html:103
 #: templates/client/client_related.html:115
@@ -2524,26 +2914,12 @@ msgid "Is Responsible"
 msgstr "Responsável?"
 
 #: templates/client/client_family_form.html:106
-msgid ""
-"Note: You can not set it as responsible because client already have a "
-"responsible"
-msgstr ""
-"Nota: você não pode estabelecer um responsável porque o cliente já tem um "
-"responsável."
+msgid "Note: You can not set it as responsible because client already have a responsible"
+msgstr "Nota: você não pode estabelecer um responsável porque o cliente já tem um responsável."
 
 #: templates/client/client_family_form.html:106
 msgid "Add another relation instead"
 msgstr "Adicionar outro familiar"
-
-#: templates/client/client_family_form.html:118
-#: templates/client/client_related.html:120
-#: templates/ehr/ehr_demand_save.html:21 templates/ehr/ehr_demand_save.html:25
-#: templates/ehr/ehr_diagnosis_save.html:21
-#: templates/ehr/ehr_diagnosis_save.html:25
-#: templates/ehr/ehr_session_save.html:21
-#: templates/ehr/ehr_session_save.html:25 templates/tags/save.html:18
-msgid "Save"
-msgstr "Salvar"
 
 #: templates/client/client_form.html:41
 #: templates/client/client_form_company.html:41
@@ -2807,12 +3183,12 @@ msgstr "Nº do Documento"
 
 #: templates/client/client_print.html:147
 msgid "Phone"
-msgstr "Telefones"
+msgstr "Telefone(s)"
 
 #: templates/client/client_print.html:155
 #: templates/organization/organization_form.html:29
 msgid "Address"
-msgstr "Endereços"
+msgstr "Endereço(s)"
 
 #: templates/client/client_print.html:177
 msgid "Website"
@@ -2832,7 +3208,7 @@ msgstr "Grau de Parentesco"
 
 #: templates/client/client_print.html:212
 msgid "There is no related client information"
-msgstr "Não há informações de funcionários"
+msgstr "Não há informações de parentes do cliente"
 
 #: templates/client/client_print.html:221
 msgid "There is no family members information"
@@ -2978,7 +3354,7 @@ msgstr "Detalhes do Desligamento"
 
 #: templates/client/client_print.html:441
 msgid "Was discussed with client"
-msgstr "Término do serviço foi discutido junto ao cliente"
+msgstr "Término do tratamento foi discutido junto ao cliente"
 
 #: templates/client/client_print.html:443
 #: templates/tags/service_sidebar.html:20
@@ -3143,30 +3519,23 @@ msgstr "Imprimir Dados Demográficos"
 
 #: templates/client/client_print_form.html:70
 msgid "if selected will print client demographic data"
-msgstr "Imprime todos os dados demográficos do cliente"
+msgstr "Imprime os dados demográficos do cliente"
 
-#: templates/client/client_print_form.html:74
+#: templates/client/client_print_form.html:73
 msgid "Print EHR data"
 msgstr "Imprimir Prontuário Eletrônico"
 
-#: templates/client/client_print_form.html:75
+#: templates/client/client_print_form.html:74
 msgid "if selected will print client EHR data"
-msgstr "Selecionar para imprimir Prontuário Eletrônico do cliente"
+msgstr "Imprime Prontuário Eletrônico do cliente"
 
-#: templates/client/client_print_form.html:79
+#: templates/client/client_print_form.html:77
 msgid "Print output format"
 msgstr "Escolha o formato do arquivo para impressão:"
 
-#: templates/client/client_print_form.html:93
+#: templates/client/client_print_form.html:91
 msgid "Print"
 msgstr "Imprimir"
-
-#: templates/client/client_print_form.html:94
-#: templates/ehr/ehr_demand_save.html:28
-#: templates/ehr/ehr_diagnosis_save.html:28
-#: templates/ehr/ehr_session_save.html:28 templates/tags/save.html:19
-msgid "Back"
-msgstr "Voltar"
 
 #: templates/client/client_referral_discharge_form.html:33
 #: templates/client/client_referral_discharge_form.html:47
@@ -3315,12 +3684,8 @@ msgid "Next"
 msgstr "Próximo"
 
 #: templates/client/client_service_alert.html:26
-msgid ""
-"There's no Service created yet. Please, <a href='/service/add/'>create one</"
-"a> before access Client."
-msgstr ""
-"Nenhum \"Serviço\" foi criado até o momento. Por favor, cadastre um serviço "
-"antes de acessar \"Clientes\"."
+msgid "There's no Service created yet. Please, <a href='/service/add/'>create one</a> before access Client."
+msgstr "Nenhum \"Serviço\" foi criado até o momento. Por favor, cadastre um serviço antes de acessar \"Clientes\"."
 
 #: templates/contact/contact_list.html:27
 #: templates/contact/contact_organization_form.html:26
@@ -3416,12 +3781,8 @@ msgid "Sistema de Gestão de Serviços em Psicologia"
 msgstr "Sistema de Gestão de Serviços em Psicologia"
 
 #: templates/core/main.html:74
-msgid ""
-"Organization running is READ ONLY MODE. Data can not be writed. For "
-"questions about please use the"
-msgstr ""
-"Estabelecimento está no modo somente leitura. Dados não podem ser escritos. "
-"Em caso de dúvidas, por favor, use o Formulário de Suporte."
+msgid "Organization running is READ ONLY MODE. Data can not be writed. For questions about please use the"
+msgstr "Estabelecimento está no modo somente leitura. Dados não podem ser escritos. Em caso de dúvidas, por favor, use o Formulário de Suporte."
 
 #: templates/core/main.html:74
 msgid "support form"
@@ -3510,7 +3871,7 @@ msgstr "Carregando"
 
 #: templates/demographic/demographic_education.html:38
 msgid "Education Detail"
-msgstr "Detalhes Educacionais"
+msgstr "Detalhes Escolares"
 
 #: templates/demographic/demographic_home.html:49
 msgid "Add an education level"
@@ -3685,7 +4046,7 @@ msgstr "Diagnóstico"
 
 #: templates/ehr/ehr_diagnosis_list.html:31
 msgid "Add new diagnosis"
-msgstr "Adicionar novo diagnóstico"
+msgstr "Adicionar diagnóstico"
 
 #: templates/ehr/ehr_session_form.html:41
 #: templates/ehr/ehr_session_form.html:45
@@ -3700,11 +4061,11 @@ msgstr "Atendimentos"
 
 #: templates/ehr/ehr_session_list.html:31
 msgid "Add new session"
-msgstr "Adicionar novo atendimento"
+msgstr "Adicionar atendimento"
 
 #: templates/employee/employee_form.html:42
 msgid "Adding New Employee"
-msgstr "Adicionar Novo Funcionário"
+msgstr "Adicionar Funcionário"
 
 #: templates/employee/employee_form.html:43
 msgid "Inform the employee details then click on Save button"
@@ -3728,7 +4089,7 @@ msgstr "Funcionários"
 
 #: templates/employee/employee_list.html:49
 msgid "employees(s)"
-msgstr "Funcionários"
+msgstr "Funcionário(s)"
 
 #: templates/frontend/frontend_careprofessional_start.html:24
 #: templates/frontend/frontend_start.html:24
@@ -3850,11 +4211,8 @@ msgid "You have no topic created yet."
 msgstr "Você ainda não criou o tópico"
 
 #: templates/messages/messages_newtopic.html:30
-msgid ""
-"You can start using messages system by creating a new topic using form below"
-msgstr ""
-"Você pode iniciar a utilizar o sistema de mensagens criando um novo tópico, "
-"utilizando o formulário abaixo."
+msgid "You can start using messages system by creating a new topic using form below"
+msgstr "Você pode iniciar a utilizar o sistema de mensagens criando um novo tópico, utilizando o formulário abaixo."
 
 #: templates/messages/messages_newtopic.html:36
 msgid "Create new topic"
@@ -3888,11 +4246,8 @@ msgid "Inbox for user: "
 msgstr "Caixa de Entrada do usuário:"
 
 #: templates/messages/messages_user.html:23
-msgid ""
-"Showing all messages that wasn't read by this user, in all subscribed "
-"referrals."
-msgstr ""
-"Exibindo todas as mensagens não lidas pelo usuário, em todas as inscrições."
+msgid "Showing all messages that wasn't read by this user, in all subscribed referrals."
+msgstr "Exibindo todas as mensagens não lidas pelo usuário, em todas as inscrições."
 
 #: templates/messages/messages_user.html:25
 msgid "User referrals: "
@@ -3905,9 +4260,7 @@ msgid ""
 "\n"
 "you received a private message from %(sender)s with\n"
 "the following contents:"
-msgstr ""
-"Olá %(recipient)s, você recebeu uma mensagem de %(sender)s com o seguinte "
-"conteúdo:"
+msgstr "Olá %(recipient)s, você recebeu uma mensagem de %(sender)s com o seguinte conteúdo:"
 
 #: templates/messages/new_message.html:25
 #, python-format
@@ -3948,12 +4301,8 @@ msgid "undelete"
 msgstr "Recuperar"
 
 #: templates/messages/trash.html:40
-msgid ""
-"Deleted Messages are removed from the trash at unregular intervals, don't "
-"rely on this feature for long-time storage."
-msgstr ""
-"Mensagens apagadas são removidas da lixeiras em intervalos regulares. Não "
-"conte com esse recurso para o armazenamento a longo prazo."
+msgid "Deleted Messages are removed from the trash at unregular intervals, don't rely on this feature for long-time storage."
+msgstr "Mensagens apagadas são removidas da lixeiras em intervalos regulares. Não conte com esse recurso para o armazenamento a longo prazo."
 
 #: templates/messages/view.html:21
 msgid "View Message"
@@ -4075,16 +4424,6 @@ msgstr "Naturalidade"
 msgid "Country"
 msgstr "País"
 
-#: templates/meta/people_profile.html:81 templates/tags/address.html:55
-msgid "State/Region"
-msgstr "Estado"
-
-#: templates/meta/people_profile.html:91
-#: templates/meta/people_profile.html:100 templates/tags/address.html:69
-#: templates/tags/address.html.py:80
-msgid "City"
-msgstr "Cidade"
-
 #: templates/meta/people_profile.html:94
 msgid "Select state first"
 msgstr "Selecione um estado"
@@ -4205,14 +4544,11 @@ msgstr "Visível na Rede do GestorPsi"
 
 #: templates/organization/organization_form.html:250
 msgid "Visible?"
-msgstr ""
-"Deixar o cadastro do meu estabelecimento e lista dos profissionais "
-"cadastrados visíveis na área de contatos dos outros estabelecimentos da rede "
-"do GestorPsi."
+msgstr "Deixar o cadastro do meu estabelecimento e lista dos profissionais cadastrados visíveis na área de contatos dos outros estabelecimentos da rede do GestorPsi."
 
 #: templates/place/place_form.html:41
 msgid "Adding New Place"
-msgstr "Adicionar Novo Local"
+msgstr "Adicionar Local"
 
 #: templates/place/place_form.html:42
 msgid "Inform the place details then click on Save button"
@@ -4245,7 +4581,7 @@ msgstr "Local(is)"
 
 #: templates/place/place_room_form.html:41
 msgid "Adding New Room"
-msgstr "Adicionar nova Sala"
+msgstr "Adicionar Sala"
 
 #: templates/place/place_room_form.html:42
 msgid "Inform the room details then click on Save button"
@@ -4511,31 +4847,16 @@ msgid "Opppss..."
 msgstr "Opppss..."
 
 #: templates/registration/activate.html:12
-msgid ""
-"Sorry, it didn't work. Either your activation link was incorrect, or the "
-"activation key for your account has expired; activation keys are only valid "
-"for"
-msgstr ""
-"Não foi possível confirmar o seu cadastro. Alguns dos possíveis motivos para "
-"isso são:<br><br><b>Cadastro já confirmado.</b><br><b>Prazo para a "
-"confirmação excedido.</b><br><b>Endereço de ativação inválido</b><br><br><a "
-"href=/accounts/login/>Fazer Log in</a><br><a href=/accounts/register/"
-">Realizar novo cadastro</a>"
-
-#: templates/registration/login.html:21 templates/registration/login.html:52
-#: templates/registration/password_reset_complete.html:15
-#: templates/registration/password_reset_form.html:21
-msgid "Log in"
-msgstr "Entrar"
+msgid "Sorry, it didn't work. Either your activation link was incorrect, or the activation key for your account has expired; activation keys are only valid for"
+msgstr "Não foi possível confirmar o seu cadastro. Alguns dos possíveis motivos para isso são:<br><br><b>Cadastro já confirmado.</b><br><b>Prazo para a confirmação excedido.</b><br><b>Endereço de ativação inválido</b><br><br><a href=/accounts/login/>Fazer Log in</a><br><a href=/accounts/register/>Realizar novo cadastro</a>"
 
 #: templates/registration/login.html:24
 #: templates/registration/password_reset_form.html:24
 msgid "Welcome to GestorPsi"
-msgstr "Bem vindo ao GestorPsi"
+msgstr "Bem vindo ao GestorPsi!"
 
 #: templates/registration/login.html:29
-msgid ""
-"Your browser is not compatible with and some functions can not work well"
+msgid "Your browser is not compatible with and some functions can not work well"
 msgstr "Seu navegador não é totalmente compatível."
 
 #: templates/registration/login.html:31
@@ -4548,7 +4869,7 @@ msgstr "Firefox"
 
 #: templates/registration/login.html:31
 msgid "to get all features running"
-msgstr "para utilizar todas os recursos do GestorPsi"
+msgstr "para utilizar todos os recursos do GestorPsi"
 
 #: templates/registration/login.html:32
 msgid "continue with restricted features"
@@ -4560,7 +4881,7 @@ msgstr "Saiba mais"
 
 #: templates/registration/login.html:57
 msgid "If you don't have an account, you can"
-msgstr "Se o seu estabelecimento ainda não possui uma conta, você pode"
+msgstr "Se você ainda não possui uma conta, você pode"
 
 #: templates/registration/login.html:57
 msgid "sign up"
@@ -4570,22 +4891,9 @@ msgstr "cadastrar-se"
 msgid "for one"
 msgstr "aqui"
 
-#: templates/registration/login.html:58
-#: templates/registration/registration_form.html:63
-msgid "Forgot Password?"
-msgstr "Esqueceu sua senha?"
-
-#: templates/registration/logout.html:22
-msgid "You've been logged out."
-msgstr "Sessão encerrada"
-
 #: templates/registration/logout.html:23
 msgid "Thanks for use GestorPsi!"
 msgstr "Obrigado por utilizar o GestorPsi!"
-
-#: templates/registration/logout.html:25
-msgid "log in again"
-msgstr "Acessar novamente"
 
 #: templates/registration/password_reset_complete.html:5
 #: templates/registration/password_reset_confirm.html:4
@@ -4617,12 +4925,8 @@ msgid "Enter new password"
 msgstr "Digite sua nova senha"
 
 #: templates/registration/password_reset_confirm.html:14
-msgid ""
-"Please enter your new password twice so we can verify you typed it in "
-"correctly."
-msgstr ""
-"Por favor, digite sua nova senha duas vezes para que possamos verificar se "
-"digitou corretamente."
+msgid "Please enter your new password twice so we can verify you typed it in correctly."
+msgstr "Por favor, digite sua nova senha duas vezes para que possamos verificar se digitou corretamente."
 
 #: templates/registration/password_reset_confirm.html:19
 msgid "New password:"
@@ -4641,12 +4945,8 @@ msgid "Password reset unsuccessful"
 msgstr "Senha não foi redefinida"
 
 #: templates/registration/password_reset_confirm.html:35
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used.  Please request a new password reset."
-msgstr ""
-"O link de redefinição de senha é inválido, provavelmente porque já está "
-"sendo utilizado. Por favor, soiciite uma nova redefinição de senha."
+msgid "The password reset link was invalid, possibly because it has already been used.  Please request a new password reset."
+msgstr "O link de redefinição de senha é inválido, provavelmente porque já está sendo utilizado. Por favor, solicite uma nova redefinição de senha."
 
 #: templates/registration/password_reset_done.html:7
 #: templates/registration/password_reset_done.html:11
@@ -4654,12 +4954,8 @@ msgid "Password reset successful"
 msgstr "Senha redefinida com sucesso."
 
 #: templates/registration/password_reset_done.html:13
-msgid ""
-"We've e-mailed you instructions for setting your password to the e-mail "
-"address you submitted. You should be receiving it shortly."
-msgstr ""
-"Em breve você receberá, em seu endereço de e-mail cadastrado, instruções "
-"para redefinição de senha."
+msgid "We've e-mailed you instructions for setting your password to the e-mail address you submitted. You should be receiving it shortly."
+msgstr "Em breve você receberá, em seu endereço de e-mail cadastrado, instruções para redefinição de senha."
 
 #: templates/registration/password_reset_email.html:2
 msgid "You're receiving this e-mail because you requested a password reset"
@@ -4682,73 +4978,24 @@ msgid "Thanks for using our system!"
 msgstr "Obrigado por utilizar nosso sistema!"
 
 #: templates/registration/password_reset_form.html:26
-msgid ""
-"Enter your e-mail address below, and we'll e-mail instructions for setting a "
-"new one."
-msgstr ""
-"Digite seu endereço de e-mail abaixo, e enviaremos instruções para "
-"configurar uma nova."
+msgid "Enter your e-mail address below, and we'll e-mail instructions for setting a new one."
+msgstr "Digite seu endereço de e-mail abaixo, e enviaremos instruções para configurar uma nova."
 
-#: templates/registration/password_reset_form.html:32
+#: templates/registration/password_reset_form.html:31
 msgid "E-mail address:"
 msgstr "Endereço de e-mail:"
 
-#: templates/registration/password_reset_form.html:35
+#: templates/registration/password_reset_form.html:34
 msgid "Reset password"
 msgstr "Redefinir Senha"
-
-#: templates/registration/registration_complete.html:3
-msgid "Registration complete"
-msgstr "Cadastro completo"
 
 #: templates/registration/registration_complete.html:6
 msgid "Check your email"
 msgstr "Verifique seu e-mail"
 
 #: templates/registration/registration_complete.html:7
-msgid ""
-"An activation link has been sent to the email address you supplied, along "
-"with instructions for activating your account."
-msgstr ""
-"Um link de ativação foi enviado ao endereço de e-mail fornecido, juntamente "
-"às instruções para ativação da sua conta."
-
-#: templates/registration/registration_form.html:22
-msgid "New account"
-msgstr "Registre seu estabelecimento"
-
-#: templates/registration/registration_form.html:23
-msgid ""
-"Fill out the form to the left (all fields are required), and your account "
-"will be created; you'll be sent an email with instructions on how to finish "
-"your registration"
-msgstr ""
-"Preencha o formulário de criação da conta de seu estabelecimento. <b>O "
-"usuário cadastrado será o administrador do estabelecimento.</b> Um e-mail "
-"será enviado com as instruções sobre como concluir o cadastro."
-
-#: templates/registration/registration_form.html:25
-msgid "Form errors! Please correct errors below and try again"
-msgstr "Por favor, corrija os erros abaixo e tente novamente."
-
-#: templates/registration/registration_form.html:40
-#: templates/registration/registration_form.html:57
-msgid "terms of service"
-msgstr "Termos de Serviço"
-
-#: templates/registration/registration_form.html:57
-msgid ""
-"By clicking the Signup button below, you agree that you have read and agree "
-"to the"
-msgstr "Clicando no botão abaixo, você concordará que leu e aceitou os"
-
-#: templates/registration/registration_form.html:59
-msgid "Accept terms and register"
-msgstr "Aceitar os termos e continuar"
-
-#: templates/registration/registration_form.html:62
-msgid "Already have an account?"
-msgstr "Já possui uma conta?"
+msgid "An activation link has been sent to the email address you supplied, along with instructions for activating your account."
+msgstr "Um link de ativação foi enviado ao endereço de e-mail fornecido, juntamente às instruções para ativação da sua conta."
 
 #: templates/schedule/event_detail.html:25
 #: templates/schedule/schedule_daily.html:25
@@ -4774,8 +5021,7 @@ msgstr "Eventos"
 
 #: templates/schedule/event_detail.html:36
 msgid "Some occurrences could not be registered due to conflict errors."
-msgstr ""
-"Algumas ocorrências não puderam ser registradas devido a erros de conflito."
+msgstr "Algumas ocorrências não puderam ser registradas devido a erros de conflito."
 
 #: templates/schedule/event_detail.html:37
 msgid "Follow below a list with these conflits and their reasons:"
@@ -4840,7 +5086,7 @@ msgstr "Sem eventos futuros"
 
 #: templates/schedule/schedule_occurrence_form.html:90
 msgid "Occurrence Actions"
-msgstr "Ações da Ocorrência"
+msgstr "Ações"
 
 #: templates/schedule/schedule_occurrence_group.html:57
 msgid "Confirm occurrence for this client"
@@ -4851,17 +5097,13 @@ msgid "Occurrence already confirmed"
 msgstr "Evento confirmado"
 
 #: templates/schedule/schedule_referral_alert.html:26
-msgid ""
-"There is no client referral created yet. Please <a href='/client/'>create</"
-"a> at least one before start Schedule."
-msgstr ""
-"Nenhuma inscrição foi realizada até o momento. Por favor, inscreva um "
-"cliente antes de acessar a Agenda."
+msgid "There is no client referral created yet. Please <a href='/client/'>create</a> at least one before start Schedule."
+msgstr "Nenhuma inscrição foi realizada até o momento. Por favor, inscreva um cliente antes de acessar a Agenda."
 
 #: templates/service/select_area.html:40
 #: templates/service/service_form.html:42
 msgid "Adding New Service"
-msgstr "Adicionar novo serviço"
+msgstr "Adicionar serviço"
 
 #: templates/service/select_area.html:41
 msgid "Select service area and click next"
@@ -4890,9 +5132,8 @@ msgid "Client list"
 msgstr "Lista de Clientes"
 
 #: templates/service/service_client_list.html:49
-#, fuzzy
 msgid "There is no client subscribed in this service."
-msgstr "Cliente inscrito no serviço desde"
+msgstr "Não há cliente inscrito neste serviço."
 
 #: templates/service/service_form.html:43
 msgid "Inform the service details then click on Save button"
@@ -4995,12 +5236,8 @@ msgid "This group have no members yet"
 msgstr "Esse grupo ainda não foi formado"
 
 #: templates/service/service_group_form.html:92
-msgid ""
-"Note: To add client to this group, use the subscription form from a selected "
-"referral"
-msgstr ""
-"Nota: para adicionar cliente a esse grupo, use o formulário de inscrição do "
-"serviço"
+msgid "Note: To add client to this group, use the subscription form from a selected referral"
+msgstr "Nota: para adicionar clientes a esse grupo, use o formulário de inscrição do serviço"
 
 #: templates/service/service_group_list.html:28
 msgid "Add Service"
@@ -5054,7 +5291,7 @@ msgstr "Renda"
 
 #: templates/socioeconomic/client_socioeconomic.html:61
 msgid "Total individual earnings"
-msgstr "Renda individual tota"
+msgstr "Renda individual total"
 
 #: templates/socioeconomic/client_socioeconomic.html:62
 msgid "Total household income"
@@ -5152,27 +5389,15 @@ msgstr "Complemento"
 msgid "Neighborhood"
 msgstr "Bairro"
 
-#: templates/tags/address.html:41
-msgid "ZIP Code"
-msgstr "CEP"
-
 #: templates/tags/address_book_organization_mini.html:23
 #: templates/tags/organization_mini.html:22
 msgid "Adding new Organization"
-msgstr "Adicionar novo Estabelecimento"
-
-#: templates/tags/address_book_organization_mini.html:30
-#: templates/tags/address_book_professional_mini.html:40
-#: templates/tags/careprofessional_mini.html:44
-#: templates/tags/device_mini.html:27 templates/tags/organization_mini.html:29
-#: templates/tags/place_mini.html:33
-msgid "Add"
-msgstr "Adicionar"
+msgstr "Adicionar Estabelecimento"
 
 #: templates/tags/address_book_professional_mini.html:23
 #: templates/tags/careprofessional_mini.html:22
 msgid "Adding new Professional"
-msgstr "Adicionar Novo Profissional"
+msgstr "Adicionar Profissional"
 
 #: templates/tags/address_book_professional_mini.html:34
 msgid "Professional Details"
@@ -5182,7 +5407,7 @@ msgstr "Detalhes do Profissional"
 #: templates/tags/client_sidebar.html:38
 #: templates/tags/employee_sidebar.html:29
 msgid "User"
-msgstr "Usuários"
+msgstr "Usuário"
 
 #: templates/tags/client_sidebar.html:21
 msgid "Client Details"
@@ -5198,7 +5423,7 @@ msgstr "Dados de registro"
 
 #: templates/tags/client_sidebar.html:32
 msgid "Related Clients"
-msgstr "Funcionários"
+msgstr "Clientes"
 
 #: templates/tags/client_sidebar.html:36
 msgid "Discharged Services"
@@ -5359,11 +5584,11 @@ msgstr "Ramal"
 
 #: templates/tags/place_mini.html:22
 msgid "Adding new Place"
-msgstr "Adicionar novo local"
+msgstr "Adicionar Local"
 
 #: templates/tags/professional.html:22
 msgid "Professional name"
-msgstr "Profissional"
+msgstr "Nome do Profissional"
 
 #: templates/tags/professional.html:43
 msgid "Professional Organization Subscription"
@@ -5463,7 +5688,6 @@ msgstr "Número de eventos"
 msgid "Limited about 40 occurrences for each submit"
 msgstr "Limite de 40 ocorrências para cada apresentação"
 
-
 #: templates/tags/schedule_form.html:122
 msgid "Occurrence Frequency"
 msgstr "Frequência"
@@ -5494,7 +5718,7 @@ msgstr "Repete"
 
 #: templates/tags/schedule_form.html:150
 msgid "Month ordinal"
-msgstr "Especifique"
+msgstr "Mês"
 
 #: templates/tags/schedule_form.html:153
 msgid "Month ordinal day"
@@ -5613,12 +5837,8 @@ msgid "Role"
 msgstr "Papel"
 
 #: templates/users/users_form.html:126
-msgid ""
-"You are the only Administrator on organization. You can't change your "
-"permission at this time."
-msgstr ""
-"Você é o único administrador do estabelecimento. Você não pode alterar sua "
-"permissão neste momento."
+msgid "You are the only Administrator on organization. You can't change your permission at this time."
+msgstr "Você é o único administrador do estabelecimento. Você não pode alterar sua permissão neste momento."
 
 #: templates/users/users_form.html:129
 msgid "Permissions"
@@ -5637,34 +5857,20 @@ msgid "Secretary"
 msgstr "Secretária"
 
 #: templates/users/users_form.html:153
-msgid ""
-"Give a user access to Organization, Places, Devices, Users, Professionals, "
-"Students, Employees, Contacts, Client and Schedule."
-msgstr ""
-"Acesso ao Estabelecimento, Locais, Equipamentos, Usuários, Profissionais, "
-"Estagiários, Funcionários, Contatos, Clientes e Agenda."
+msgid "Give a user access to Organization, Places, Devices, Users, Professionals, Students, Employees, Contacts, Client and Schedule."
+msgstr "Acesso ao Estabelecimento, Locais, Equipamentos, Usuários, Profissionais, Estagiários, Funcionários, Contatos, Clientes e Agenda."
 
 #: templates/users/users_form.html:161
-msgid ""
-"Give a user access to Online Messages, Electronic Health Record, Admission, "
-"Referral, Schedule, Contacts, Device and read-only access to Client, "
-"Professionals, Students and Employee."
-msgstr ""
-"Acesso às mensagens on-line, Prontuário Eletrônico, Admissão, "
-"Encaminhamentos, Agenda, Contatos, Equipamentos e acesso somente leitura aos "
-"Clientes??, Profissionais, Estagiários e Funcionários."
+msgid "Give a user access to Online Messages, Electronic Health Record, Admission, Referral, Schedule, Contacts, Device and read-only access to Client, Professionals, Students and Employee."
+msgstr "Acesso às mensagens on-line, Prontuário Eletrônico, Admissão, Encaminhamentos, Agenda, Contatos, Equipamentos, Clientes (somente os próprios) e acesso somente leitura aos Profissionais, Estagiários e Funcionários."
 
 #: templates/users/users_form.html:169
-msgid ""
-"Give a user to Online Messages, Electronic Health Record, Admission, "
-"Referral and read-only access to the same professional access."
-msgstr ""
-"Acesso às mensagens on-line, Prontuário Eletrônico, Admissão, "
-"Encaminhamentos e acesso somente leitura dos....????"
+msgid "Give a user to Online Messages, Electronic Health Record, Admission, Referral and read-only access to the same professional access."
+msgstr "Acesso às mensagens on-line e acesso somente leitura dos Clientes e Prontuários Eletrônicos, Profissionais e outros dados do estabelecimento."
 
-#: users/views.py : 145
+#: users/views.py  145
 msgid "User created successfully. An email will be sent to the user with instructions on how to finish the registration process."
-msgstr "Usuário cadastrado com sucesso. Um e-mail será enviado para o usuário com as instruções sobre como concluir o cadastro."
+msgstr "Usuário cadastrado com sucesso. Um e-mail será enviado com as instruções sobre como concluir o cadastro."
 
 #: templates/users/users_form.html:203
 msgid "Password not match. Try again."
@@ -5698,8 +5904,9 @@ msgstr "Usuário cadastrado com sucesso."
 msgid "User updated successfully"
 msgstr "Usuário atualizado com sucesso."
 
-#~ msgid "Message successfully deleted."
-#~ msgstr "Mensagem apagada com sucesso."
+#: util/decorators.py:43
+msgid "Oops! You don't have access for this service!"
+msgstr "Oops! Você não tem acesso a este serviço!"
 
 #~ msgid "Service is discharged"
 #~ msgstr "Desligado do serviço"
@@ -5826,9 +6033,6 @@ msgstr "Usuário atualizado com sucesso."
 
 #~ msgid "Feb"
 #~ msgstr "Fev"
-
-#~ msgid "Apr"
-#~ msgstr "Abr"
 
 #~ msgid "Jun"
 #~ msgstr "Jun"
@@ -5964,9 +6168,6 @@ msgstr "Usuário atualizado com sucesso."
 
 #~ msgid "monthly"
 #~ msgstr "Mensal"
-
-#~ msgid "Nome do estabelecimento"
-#~ msgstr "Nome do Estabelecimento"
 
 #~ msgid "Password (type again to catch typos)"
 #~ msgstr "Senha (digite novamente para a captura de erros ortográficos)"

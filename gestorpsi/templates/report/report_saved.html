@@ -1,0 +1,53 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% if not admissions and not trash %}
+<br />
+<h3>{% trans "You have no saved reports" %}</h3>
+{% endif %}
+
+{% if admissions %}
+<div class="saved_table">
+    <h1 class="pointer">{% trans "Admissions reports saved" %}</h1>
+    <div style="clear:both;"></div>
+    <br />
+    <ul>
+        {% for i in admissions %}
+            <li class="{% cycle 'odd' '' %}"><span class="title">{{ i }}<span class="tools"><a class="pointer report_load_admission" title="{{ i.label }}" date="{{ i.date|date:"d/m/Y H:i" }}" data="{{ i.data }}">{% trans "load report" %}</a>&nbsp;<a href="{% url report_del i.id %}" class="del_report">{% trans "del" %}</a></span></li>
+        {% endfor %}
+    </ul>
+    <small>{% trans "Total" %} {{ admissions|length }}</small>
+</div>
+{% endif %}
+
+<div style="clear:both;"></div>
+
+{% if trash %}
+<div class="saved_table">
+    <h1 class="pointer">{% trans "Excluded reports (Trash)" %}</h1>
+    <div style="clear:both;"></div>
+    <br />
+    <ul>
+        {% for i in trash %}
+            <li class="{% cycle 'odd' '' %}"><span class="title">{{ i }}<span class="tools"><a class="pointer report_load_admission" title="{{ i.label }}" date="{{ i.date|date:"d/m/Y H:i" }}" data="{{ i.data }}">{% trans "load report" %}</a>&nbsp;<a href="{% url report_undelete i.id %}" class="del_report">{% trans "undelete" %}</a></span></li>
+        {% endfor %}
+    </ul>
+    <small>{% trans "Total" %} {{ trash|length }}</small><small style="float:right;"><a href="{% url report_empty %}" class="del_report">{% trans "empty trash" %}</a></small>
+</div>
+{% endif %}
+

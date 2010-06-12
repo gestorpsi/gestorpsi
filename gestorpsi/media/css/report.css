@@ -1,0 +1,89 @@
+/**
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
+
+div.report_main { width: 715px; margin: 0 0 10px 20px; float: left; position: relative; }
+
+/**
+* report tables
+*/
+
+table.report { width: 330px; margin: 15px 20px 2px 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; border: 2px solid #aaaaaa; padding: 0px 10px 20px 10px; }
+table.report tr.title { text-align:left; height: 30px;}
+table.report tr.odd, ul li.odd { background-color: #ececec; }
+table.report tr.legend td { text-align:center; }
+table.report th.close_report  {  display:none; text-align:right; }
+table.report th.close_report a, a.close_dialog  { font-size:16px; color: #999999; text-decoration: none;}
+table.report tr td { text-align:center;}
+table.report td.left { text-align:left;}
+table.report td { text-align: right; color: #666666; padding: 5px 15px 5px 10px; }
+table.report td a, .client_dialog a, div.saved_table a, div.saved_table li { color: #666666;}
+
+table.saved_itens { width: 680px;  }
+table.saved_itens tbody { overflow: auto; height: 200px; overflowy: scroll; }
+
+.report_float_table table { margin: 15px 5px 2px 15px; width: 330px; float:left;}
+div.report_main h3 { margin: 40px 0 10px 20px;}
+
+div.loaded_report_title { padding: 0px 0px 0px 15px; color: #444444;}
+/**
+* report forms
+*/
+
+div.report_main select, div.report_main input { border: 1px solid #ccc; height: 20px; font-size: 13px; -moz-border-radius: 2px; -webkit-border-radius:2px;}
+div.report_main input#id_date_start, div.report_main input#id_date_end { width: 90px; text-align:center;}
+div.report_filter_nav {color: #999999; padding: 10px;}
+div.report_main button { border: 1px solid #999999; padding: 4px 10px 4px 10px; color: #444444;margin-right: 8px; -moz-border-radius: 15px; -webkit-border-radius:15px; cursor:pointer; }
+div.report_main form input, div.report_main form select { margin: 0 5px 0 5px;}
+button.report_submit_export { margin-top: 25px;}
+
+/**
+* client list dialog box and saved itens
+*/
+
+div.client_dialog, div.saved_table {
+       -moz-border-radius: 8px; -webkit-border-radius: 8px; border: 2px solid #aaaaaa; 
+}
+
+div.client_dialog {
+        position: fixed;
+        background:  url("/media/img/transp75.png") white;
+        z-index: 6;
+        margin-left: 120px; 
+}
+
+div.saved_table { width: 645px; margin-left: 15px; margin-top:20px;}
+div.saved_table ul { overflow:auto;  height: 200px; width: 640px; margin-bottom: 20px; }
+div.saved_table span.tools { float:right;}
+
+div.client_dialog, div.saved_table { padding: 15px 15px 20px 15px;}
+div.client_dialog ul { overflow:auto;  height: 300px; width: 440px; margin-bottom: 20px; }
+div.client_dialog h1, div.saved_table h1 { font-size: 15px;float:left; padding-bottom:0px; padding-right: 10px;}
+div.client_dialog ul li, div.saved_table ul li { margin-right: 10px; padding: 5px 3px 5px 13px; }
+div.client_dialog .close_dialog, div.saved_table .close_dialog {float:right; }
+div.client_dialog .date_range { font-size: 11px; color: #666666; text-align:left; padding-right: 0px; margin-bottom: 20px;}
+div.client_dialog small, div.saved_table small { color: #666;}
+
+/**
+* utils
+*/
+
+.pointer { cursor:pointer;}
+.tab_content p.description { margin-left:42px !important;}
+a.load_report, a.report_load_admission { text-decoration: none; border-right: 1px solid #cccccc; padding-right: 7px;}
+a.del_report { text-decoration: none; padding-right: 10px; padding-left:2px;}
+a.load_report:hover, a.del_report:hover { color: #444444;}
+div.loaded_report_title {}

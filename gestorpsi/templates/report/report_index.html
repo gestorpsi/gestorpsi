@@ -1,0 +1,113 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_report %}active{% endblock %}
+
+
+{% block submenu %}
+    {% include "report/report_menu.html" %}
+{% endblock %}
+
+{% block core %}
+<script type="text/javascript" src="/media/js/gestorpsi.report.lib.js"></script>
+<script type="text/javascript" src="/media/js/gestorpsi.report.js"></script>
+<script type="text/javascript" src="/media/js/gestorpsi.report.forms.js"></script>
+
+<div id="msg_area" class="alert saved_successfully" style="display:none;">
+    {% trans "Report saved successfully with label" %} <b></b>
+</div>
+
+<h2 class="title_report title">{% trans "Report for" %} {{ user.get_profile.org_active }}</h2>
+
+<!-- save report form  -->
+<div id="save_form">
+</div>
+
+<!-- client list dialog  -->
+<div id="report_clients">
+</div>
+
+<div class="report_main">
+    <div class="tab_content reports_saved" style="display:none;">
+        <p class="description">{% trans "Displaying saved reports. Here you can load saved data into report dashboard" %}</p>
+        <div id="reports_saved_html">
+        {# saved tables loaded here by jquery #}
+        </div>
+    </div>
+    
+    <div class="tab_content dashboard">
+        <p class="description">{% trans "Displaying reports. Use the controls below to customize this page and save it on the tab My Reports" %}</p>
+        <div class="report_filter_nav">
+        <form method="post" id="report_filter" action="{% url report_admission_export %}">
+            {% trans "Reports for" %} {{ form.view }} 
+            {% trans "between" %} {{ form.date_start }} {% trans "and" %} {{ form.date_end }}
+            <button type="submit" class="float_right dashboard_overview" name="save" class="form_mini_noinsert save_report_button">{% trans "Save Report" %}</button>
+            <button type="submit" class="float_right dashboard_overview" name="update">{% trans "Update" %}</button>
+            <div style="clear:both;"></div>
+            <div class="export_data_form hidden">
+                <br />
+                <label><b>{{ form.clients.label }}</b></label><br />
+                <br />{{ form.clients }}&nbsp;<small>{{ form.clients.help_text }}</small>
+                <br /><br />
+                <label><b>{{ form.format.label }}</b></label><br />
+                <br />{{ form.format }}&nbsp;<small>{{ form.format.help_text }}</small>
+                <br />
+                <button type="submit" name="export" class="report_submit_export">{% trans "Export Data" %}</button>
+            </div>
+            <br />
+            <!-- referral filters goes here! -->
+        </form>
+        </div>
+        
+        <div class="dashboard_overview">
+            <div class="loaded_report_title hidden">
+                <h4></h4>
+                <small>{% trans "Saved at" %} <span></span> hs</small>
+            </div>
+
+            <!-- chart -->
+            <div id="report_chart" style="width:700px;height:300px;">
+            </div>
+
+            <div style="clear:both;"></div>
+            <h3>{% trans "Admissions data reports" %}</h3>
+            <div id="admission_table">
+                {# {% include "report/report_admission_table.html" %} #}
+            </div>
+            
+            {% comment %}
+            <div style="clear:both;"></div>
+                <h3>{% trans "Demographic data reports" %}</h3>
+                <div id="admission_demographic_data">
+            </div>
+            {% endcomment %}
+        </div>
+    </div>
+</div>
+
+<div id="sidebar" class="sidebar">
+    <h3>{% trans "Admissions report filters" %}</h3>
+    <ul>
+        {% for f in filters %}
+        <li><a class="pointer report_filter" data="view=admission&date_start={{f.date_start|date:"d/m/Y"}}&date_end={{f.date_end|date:"d/m/Y"}}">{{ f.name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

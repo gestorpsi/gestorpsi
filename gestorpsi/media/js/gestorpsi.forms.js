@@ -506,15 +506,14 @@ $(function() {
       // quick add
       
      $('div form input.cancel').click(function() {
-          $(this).parent('label').parent('fieldset').children('label').children('input:text').val('');
-          $(this).parents('div.form_mini:first').hide();
+          $(this).parents('div.form_mini:first, div.form_mini_noinsert:first').effect('slide', {'direction':'up', 'mode':'hide'});
           $(this).parents('div.form:first').hide();
           return false;
      
      });
      
      $('a.form_mini').unbind().click(function() {
-          var form_mini = $(this).parents('form').parents('div').children('div.'+$(this).attr('display')).show();
+          var form_mini = $(this).parents('form').parents('div').children('div.'+$(this).attr('display')).effect('slide', {'direction':'up'});
           $.form_mini_link = $(this);
           $(form_mini).children('form').validate({
                event:"submit",
@@ -530,6 +529,12 @@ $(function() {
                     $(form).ajaxSubmit(form_mini_options);
                }
           });
+          return false;
+     });
+     
+     $('a.form_mini_noinsert').unbind().click(function() {
+          $(this).parents('form').parents('div').children('div.'+$(this).attr('display')).effect('slide', {'direction':'up'});
+          return false;
      });
      
      $('select.toggle_parent_label').change(function() {

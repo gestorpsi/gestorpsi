@@ -113,6 +113,9 @@ grp_professional.permissions.add(Permission.objects.get(codename='place_list'))
 grp_professional.permissions.add(Permission.objects.get(codename='place_read'))
 grp_professional.permissions.add(Permission.objects.get(codename='organization_list'))
 grp_professional.permissions.add(Permission.objects.get(codename='organization_read'))
+grp_professional.permissions.add(Permission.objects.get(codename='report_list'))
+grp_professional.permissions.add(Permission.objects.get(codename='report_read'))
+grp_professional.permissions.add(Permission.objects.get(codename='report_list'))
 
 # Student
 print "assigning permissions for group student"

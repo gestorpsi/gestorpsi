@@ -154,6 +154,7 @@ INSTALLED_APPS = (
     'gestorpsi.demographic',
     #'gestorpsi.socioeconomic',  <--- TO BE IMPLEMENTED SOON
     'gestorpsi.ehr',
+    'gestorpsi.report',
     'swingtime',
     'registration',
     'south',

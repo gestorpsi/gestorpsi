@@ -229,6 +229,9 @@ class Organization(models.Model):
     def revision_created(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
 
+    def created(self):
+        return self.revision_created().date_created
+
     def get_first_phone(self):
         if ( len( self.phones.all() ) != 0 ):
             return self.phones.all()[0]

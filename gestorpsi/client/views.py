@@ -198,34 +198,15 @@ def add(request):
 def list(request, page = 1, initial = None, filter = None, no_paging = False, deactive = False):
     user = request.user
     
-    if deactive:
-        object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '0').order_by('person__name')
-    else:
-        object = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1').order_by('person__name')
-
-    if not user.groups.filter(name='administrator') and not user.groups.filter(name='secretary'):
-        added_by_me = [] # registers added by me, got by django-reversion
-        for c in Client.objects.all():
-            if c.revision().user == request.user:
-                added_by_me.append(c.id)
-
-        object = object.filter(Q(referral__professional = user.profile.person.careprofessional.id) \
-                        | Q(pk__in=added_by_me) \
-                        | Q(referral__service__responsibles=request.user.profile.person.careprofessional) \
-                        ).distinct().order_by('person__name')
-
-        if deactive:
-            object = object.filter(clientStatus = '0')
-        else:
-            object = object.filter(clientStatus = '1')
+    object_list = Client.objects.from_user(user, 'deactive' if deactive else 'active')
 
     if initial:
-        object = object.filter(person__name__istartswith = initial)
+        object_list = object_list.filter(person__name__istartswith = initial)
 
     if filter:
-        object = object.filter(person__name__icontains = filter)
+        object_list = object_list.filter(person__name__icontains = filter)
 
-    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'client.client_read', page, no_paging), sort_keys=True),
+    return HttpResponse(simplejson.dumps(person_json_list(request, object_list, 'client.client_read', page, no_paging), sort_keys=True),
                             mimetype='application/json')
 
 # edit form

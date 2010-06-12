@@ -80,3 +80,8 @@ def write_pdf(template_src, context_dict, filename='output.pdf'):
         return response
     return http.HttpResponse('Erro making pdf! %s' % cgi.escape(html))
 
+def percentage(number, total):
+    if not total:
+        return 0
+    return "%.1f" % ((int(number)*100.0)/int(total))
+

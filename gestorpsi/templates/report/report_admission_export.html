@@ -1,0 +1,183 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+{% load i18n %}
+{% load calculate_age %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<script type="text/javascript" src="/media/js/jquery-1.4.2.min.js"></script> <!-- JQuery Core Library -->
+<script type="text/javascript" src="/media/js/jquery-ui-1.8.1.custom.min.js"></script> <!-- JQuery UI with Draggable -->
+<script type="text/javascript" src="/media/js/jquery.flot.min.js"></script>
+<script type="text/javascript" src="/media/js/gestorpsi.report.lib.js"></script>
+<style media="all">
+@page {
+  size:  portrait;
+  margin: 1cm;
+} 
+
+body {
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 12px;
+}
+
+hr {
+    margin-top: 0px;
+    clear: both;
+}
+
+a { color: black; text-decoration:none;}
+
+table.report {
+     border: 0px;
+    width: 40%;
+    float: left;
+    margin: 30px 20px 20px 20px;
+}
+
+table.report td {
+   text-align:center;
+   padding-top: 3px;
+   padding-left: 5px;
+   padding-right: 5px;
+}
+
+table.report td.left {
+    text-align:left;
+}
+
+table.report th {
+    font-size: 14px;
+    background-color: #fff;
+    text-align:left;
+}
+
+th.close_report a { display:none; }
+
+.odd { background-color: #ececec;}
+
+tr.title{
+    background: #e6e6e6;
+    text-align: center;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+
+
+.zebra_1 {
+    background: #F9F9F9;
+}
+
+table.signature {
+    font-size: 11px;
+    text-align: center;
+    margin-right: 20px;
+}
+
+/**
+ * from pisa documentation: 
+ * "Pisa is not able to split table cells that are larger than the available space. 
+ * To work around it you may define what should happen in this case. 
+ * The -pdf-keep-in-frame-mode can be one of: "error", "overflow", "shrink", "truncate", where "shrink" 
+ * is the default value."
+ */
+
+/*
+table {
+    -pdf-keep-in-frame-mode: shrink;
+}
+*/
+</style>
+
+<!--
+<link rel="stylesheet" type="text/css" href="/media/css/report.css" media="print"/>
+-->
+
+<title>{% trans "Admission Report" %}</title></head>
+<body>
+<table width="100%">
+    <tr>
+        <td width="5%">
+        {% if org_active.photo %}
+            {% if DEBUG  %}
+                <div  style="border:1px solid black">
+                <small>{% trans "Image not available when Debug=True and server running in localhost" %}</small>
+                </div>
+            {% else %}
+                <img width="134px" alt="{{ org_active.trade_name }}" src="{{ MEDIA_URL }}img/organization/{{ org_active.id}}/.thumb/{{ org_active.photo }}">
+            {% endif %}
+        {% endif %}
+        </td>
+        <td style="padding-left: 5px; font-size: 12px;">
+            <b>{{ org_active.trade_name }}</b><br>
+            {% if org_active.get_first_address %} {{ org_active.get_first_address|safe }} {% endif %}<br>
+            {% if org_active.phones.all %} {{ org_active.phones.all|join:", "}} {% endif %}<br>
+        </td>
+        <td style="text-align:right;font-size: 12px;">
+                <b>{% trans "Admission Report" %}</b><br>
+        {% trans "generated at" %} {% now "d/m/Y H:i" %} hs<br>
+        {% trans "by " %} {{ user.get_profile.person.name }}<br>
+        </td>
+    </tr>
+</table>
+
+<hr />
+
+<br>
+
+<h2>{% trans "Organization Admissions between" %} {{ date_start|date:"d/m/Y" }} {% trans "and" %} {{ date_end|date:"d/m/Y" }}</h2>
+
+<!-- chart -->
+<div id="report_chart" style="width:700px;height:300px;">
+</div>
+<script>
+$(function() {
+    $.getJSON('/report/admission/chart/?date_start={{ date_start|date:"d/m/Y" }}&date_end={{ date_end|date:"d/m/Y" }}', function(json) {
+        updateAdmissionChart(json);
+    });
+});
+</script>
+
+{% include "report/report_admission_table.html" %}
+
+<div style="clear:both"></div>
+
+{% if report_admission_clients %}
+    <h2>{% trans "List of clients between" %} {{ date_start|date:"d/m/Y" }} {% trans "and" %} {{ date_end|date:"d/m/Y" }}</h2>
+    {% for i in report_admission_clients %}
+        <table class="report">
+        {% with i.0 as report_title %}
+            <tr class="title"><th>{{ report_title }}</th></tr>
+                {% if not i.1 %}
+                    <tr class="">
+                        <td class="left">{% trans "No results" %}</td>
+                    </tr>
+                {% else %}
+                    {% for client in i.1 %}
+                    <tr class="{% cycle odd,even %}">
+                        <td class="left">{{ client }}</td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+        {% endwith %}
+        </table>
+    {% endfor %}
+{% endif %} 
+</body></html>

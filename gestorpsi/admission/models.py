@@ -18,6 +18,7 @@ GNU General Public License for more details.
 
 
 import reversion
+from datetime import datetime
 from django.db import models
 from django.utils.translation import ugettext as _
 from gestorpsi.organization.models import Organization
@@ -42,6 +43,46 @@ class ReferralChoice(models.Model):
     class Meta:
         ordering = ['weight']
 
+class AdmissionManager(models.Manager):
+    def inrange(self, organization, datetime_start=None, datetime_end=None):
+        """
+        filter admissions by logged organization, date start and date end
+        if not provided 'date start' set it as the creation date of the organization
+        if not provided 'date end' set it as now
+        """
+
+        if not datetime_start or not datetime_end:
+            datetime_start = organization.created()
+            datetime_end = datetime.now()
+
+        inrange = []
+        for a in super(AdmissionManager, self).get_query_set().filter(client__person__organization=organization):
+            if a.created() >= datetime_start and a.created() <= datetime_end:
+                inrange.append(a.id)
+
+        return AdmissionReferral.objects.filter(pk__in=inrange)
+
+    #def signed(self, organization, query_pk_in=None):
+        #q = super(AdmissionManager, self).get_query_set().filter(client__person__active=True, signed_bythe_client=True, client__person__organization=organization)
+        #if query_pk_in:
+            #q = q.filter(pk__in=query_pk_in)
+        #return q
+
+    #def not_signed(self, organization, query_pk_in=None):
+        #q = super(AdmissionManager, self).get_query_set().filter(client__person__active=True, signed_bythe_client=False, client__person__organization=organization)
+        #if query_pk_in:
+            #q = q.filter(pk__in=query_pk_in)
+        #return q
+
+class AdmissionInRangeManager(models.Manager):
+    """
+    this manager has been created as a help
+    to provide data to use in 'report' app
+    """
+    
+    def all(self, organization, datetime_start=None, datetime_end=None):
+        return AdmissionReferral.objects.inrange(organization, datetime_start, datetime_end)
+
 class AdmissionReferral(models.Model):
     id = UuidField(primary_key=True)
     referral_choice = models.ForeignKey(ReferralChoice)
@@ -50,11 +91,20 @@ class AdmissionReferral(models.Model):
     signed_bythe_client = models.BooleanField(default=False)
     client = models.ForeignKey(Client)
     
+    objects = AdmissionManager()
+    objects_inrange = AdmissionInRangeManager()
+    
     def __unicode__(self):
         return u"%s - %s" % (self.client, self.referral_choice)
     
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+    
+    def revision_created(self):
+        return reversion.models.Version.objects.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
+
+    def created(self):
+        return self.revision_created().date_created
 
 reversion.register(AdmissionReferral, follow=['client'])
 

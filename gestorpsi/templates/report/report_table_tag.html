@@ -1,0 +1,30 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+
+<tr class="legend">
+    <td>&nbsp;</td>
+    <td>N</td>
+    <td>%</td>
+</tr>
+{% for i in table_data %}
+<tr class="{% cycle 'odd' 'even' %}">
+    <td class="left">{% if not remove_links %}<a class="pointer report_clients"{% if i.url and i.total %} href="{{ i.url }}?date_start={{date_start|date:"d/m/Y"}}&date_end={{date_end|date:"d/m/Y"}}"{% endif %}>{% endif %}{{ i.name|title }}{% if not remove_links %}</a>{% endif %}</td>
+    <td>{{ i.total }}</td>
+    <td>{{ i.percentage }}</td>
+</tr>
+{% endfor %}
+

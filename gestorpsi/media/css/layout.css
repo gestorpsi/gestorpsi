@@ -1,3 +1,4 @@
+
 /**
 
 Copyright (C) 2008 GestorPsi
@@ -99,7 +100,7 @@ a:hover {
         background-repeat: no-repeat;
 }
 
-#main_menu a:hover, #main_menu a.active, #main_menu a.hover  {
+#main_menu a:hover, #main_menu a.active, #main_menu a.hover {
         background-color: #FCFCFC;
         background-position: 6px 6px;
         background-repeat: no-repeat;
@@ -108,10 +109,22 @@ a:hover {
         border-left: 1px solid #838383;
         border-right: 1px solid #838383;
         padding: 7px 9px 7px 29px;
-        -moz-border-radius-topleft: 8px;
-        -moz-border-radius-topright: 8px;
-        -webkit-border-radius-topleft: 8px;
-        -webkit-border-radius-topright: 8px;
+        -moz-border-radius: 8px 8px 0 0;
+        -webkit-border-radius: 8px 8px 0 0;
+        height: 15px;
+}
+
+.border_menu_active {
+        background-color: #FCFCFC;
+        background-position: 6px 6px;
+        background-repeat: no-repeat;
+        color: #005A7D;
+        border-top: 1px solid #838383;
+        border-left: 1px solid #838383;
+        border-right: 1px solid #838383;
+        padding: 7px 9px 7px 29px !important ;
+        -moz-border-radius: 8px 8px 0 0;
+        -webkit-border-radius: 8px 8px 0 0;
         height: 15px;
 }
 
@@ -146,6 +159,7 @@ div#logotype span{
 #customers {
         background-image: url(../img/16/people-clients.png);
         }
+#report { background: url(../img/16/report.png); }
 #myoffice {
         background-image: url(../img/16/go-home.png);
         }
@@ -178,10 +192,8 @@ div#logotype span{
 #sub_menu a:hover, #sub_menu .active  {
         background: #F7F7F7;
         color: #000000;
-        -moz-border-radius-topleft: 8px;
-        -moz-border-radius-topright: 8px;
-        -webkit-border-radius-topleft: 8px;
-        -webkit-border-radius-topright: 8px;
+        -moz-border-radius: 8px 8px 0 0;
+        -webkit-border-radius: 8px 8px 0 0;
         padding: 13px 20px 6px 20px;
         border-bottom: 1px solid #DDDDDD;
         height: 16px;
@@ -201,6 +213,9 @@ div#sub_menu .active {
 #myoffice.main_menu {
         width: 170px;
 }
+
+ul.myoffice { -moz-border-radius: 0 0 8px 8px; -webkit-radius-border: 0 0 8px 8px;}
+ul.myoffice li a:hover { -moz-border-radius: 0px !important; background-color:#F7F7F7 !important; }
 
 #myoffice.main_menu_big, .main_menu_big {
         width: 230px
@@ -367,6 +382,7 @@ div.main_area h1 {
 #content h2.title_rooms{background: url(../img/42/room.png) no-repeat 20px 15px;}
 #content h2.title_organization {background: url(../img/42/go-home.png) no-repeat 20px 15px;}
 #content h2.title_fronted {background: url(../img/42/user-desktop.png) no-repeat 20px 15px;}
+#content h2.title_report {background: url(../img/42/report.png) no-repeat 20px 15px;}
 
 #content p.description {
         font-size: 9px;
@@ -573,7 +589,7 @@ a.prase_edit {
 #content a.delete span, #content a.edit span {
         display: none
 }
-.main_area label, .form_mini label {
+.main_area label, .form_mini label, .form_mini_noinsert label {
         float: left;
         margin: 2px;
         color: #916F6F;
@@ -636,6 +652,11 @@ textarea.giant, input.giant {width: 645px;}
 .big {
         width: 344px;
 }
+
+.mini_form_input {
+        width: 370px;
+}
+
 
 .extrabig {
         width: 500px;
@@ -1323,30 +1344,44 @@ form div.main_area fieldset ul li  {
     list-style: none;
 }
 
-div.form_mini {
+div.form_mini, div.form_mini_noinsert {
         display:none;
         position: fixed;
-        top: 150px;
-        width: 580px;
-        margin-left: 60px;
-        background-color: white;
+        top: 0px;
+        width: 420px;
+        margin-left: 240px;
+        background-color: #fff;
         padding: 20px 20px 20px 20px;
-        border: 1px solid black;
+        border-bottom: 1px solid #aaaaaa;
+        border-left: 1px solid #aaaaaa;
+        border-right: 1px solid #aaaaaa;
+        -moz-border-radius: 0 0 15px 15px; 
+        -webkit-border-radius: 0 0 15px 15px;
+        z-index: 6;
 }
 
-div.form_mini input[type=submit] {
-        margin: 20px 0 0 0;
-        color: #999999;
+div.form_mini legend, div.form_mini_noinsert legend { font-size: 20px;}
+
+div.form_mini fieldset, div.form_mini_noinsert fieldset { border: 0px; }
+div.form_mini input[type=submit], div.form_mini_noinsert input[type=submit] {
+        background-color: #ecedee;
+        margin: 0px 0 0 0;
+        border: 1px solid #999999;
+        -moz-border-radius: 15px; 
+        -webkit-border-radius: 15px;
+        color: #666;
+        font-size: 13px;
+}
+
+div.form_mini select, div.form_mini input[type=text], div.form_mini input[type=password],
+div.form_mini_noinsert select, div.form_mini_noinsert input[type=text], div.form_mini_noinsert input[type=password] {
         border: 1px solid #999999;
 }
 
-div.form_mini select, div.form_mini input[type=text], div.form_mini input[type=password] {
-        border: 1px solid #999999;
-}
-
-div.form_mini input[type=text] {
+div.form_mini input[type=text], div.form_mini_noinsert input[type=text] {
         font-size: 16px;
-        padding: 4px 0 4px 0;
+        padding: 4px 5px 4px 5px;
+        color: #999;
 }
 
 /**
@@ -1587,6 +1622,8 @@ div.read-only {
         padding: 10px;
 }
 
+label.error { color: red; float: right;}
+
 /**
 *  utils
 */
@@ -1601,6 +1638,10 @@ div.fast_content {
 
 a.pointer {
     cursor: pointer;
+}
+
+.float_right {
+    float:right;
 }
 
 /**

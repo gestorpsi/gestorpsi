@@ -334,7 +334,7 @@ body .ui-resizable-autohide .ui-resizable-handle { display: none; } /* use 'body
 	font-family: Verdana,Arial,sans-serif;
 	background: #ffffff url(images/ffffff_40x100_textures_01_flat_75.png) 0 0 repeat-x;
 	font-size: 1.1em;
-	border: 4px solid #aaaaaa;
+	border: 2px solid #aaaaaa;
 	width: 15.5em;
 	padding: 2.5em .5em .5em .5em;
 	position: relative;

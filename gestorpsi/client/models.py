@@ -15,6 +15,8 @@ GNU General Public License for more details.
 """
 
 import reversion
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
@@ -93,8 +95,108 @@ class PersonLink(models.Model):
 class ClientManager(models.Manager):
     def active(self, organization):
         return super(Client, self).get_query_set().filter(active=True, person__organization = organization).order_by('person__name')
+    
     def deactive(self, organization):
         return super(Client, self).get_query_set().filter(active=False, person__organization = organization).order_by('person__name')
+    
+    def from_organization(self, organization, query_pk_in=None):
+        
+        """
+        return clients list from logged organization
+        and/or with a pk range filter
+        ...
+        actually used in report app
+        """
+        
+        query = super(ClientManager, self).get_query_set().filter(person__organization = organization)
+
+        if query_pk_in:
+            query = query.filter(pk__in=[ i.client.id for i in query_pk_in])
+        query = query.order_by('person__name')
+
+        return query
+
+    def from_user(self, user, status=None, query_pk_in=None):
+
+        object_list = Client.objects.from_organization(user.get_profile().org_active, query_pk_in)
+        
+        if status:
+            if status == 'deactive' : status = '0'
+            else:  status = '1'
+            object_list = object_list.filter(clientStatus = status)
+        
+        if not user.groups.filter(name='administrator') and not user.groups.filter(name='secretary'):
+            added_by_me = [] # registers added by me, got by django-reversion
+            for c in Client.objects.all():
+                if c.revision().user == user:
+                    added_by_me.append(c.id)
+
+            object_list = object_list.filter(Q(referral__professional = user.profile.person.careprofessional.id) \
+                            | Q(pk__in=added_by_me) \
+                            | Q(referral__service__responsibles=user.profile.person.careprofessional) \
+                            ).distinct().order_by('person__name')
+        
+        return object_list
+
+    def Individuals(self, organization, query_pk_in=None):
+        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__company__isnull=True, person__organization=organization)
+        if query_pk_in:
+            q = q.filter(pk__in=query_pk_in)
+        return q
+
+    def Companies(self, organization, query_pk_in=None):
+        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__company__isnull=False, person__organization=organization)
+        if query_pk_in:
+            q = q.filter(pk__in=query_pk_in)
+        return q
+
+    def GenderMale(self, organization, query_pk_in=None):
+        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__gender='1', person__organization=organization)
+        if query_pk_in:
+            q = q.filter(pk__in=query_pk_in)
+        return q
+    
+    def GenderFemale(self, organization, query_pk_in=None):
+        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__gender='2', person__organization=organization)
+        if query_pk_in:
+            q = q.filter(pk__in=query_pk_in)
+        return q
+
+    def GenderUnknown(self, organization, query_pk_in=None):
+        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__organization=organization).exclude(person__gender='1').exclude(person__gender='2')
+        if query_pk_in:
+            q = q.filter(pk__in=query_pk_in)
+        return q
+
+    def AgeChildren(self, organization, query_pk_in=None):
+        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__gt = datetime.now()-relativedelta(years=13), person__organization=organization)
+        if query_pk_in:
+            q = q.filter(pk__in=query_pk_in)
+        return q
+
+    def AgeTeen(self, organization, query_pk_in=None):
+        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=13), person__birthDate__gt = datetime.now()-relativedelta(years=18), person__organization=organization)
+        if query_pk_in:
+            q = q.filter(pk__in=query_pk_in)
+        return q
+
+    def AgeAdult(self, organization, query_pk_in=None):
+        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=18), person__birthDate__gt = datetime.now()-relativedelta(years=66), person__organization=organization)
+        if query_pk_in:
+            q = q.filter(pk__in=query_pk_in)
+        return q
+
+    def AgeElderly(self, organization, query_pk_in=None):
+        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=66), person__organization=organization)
+        if query_pk_in:
+            q = q.filter(pk__in=query_pk_in)
+        return q
+
+    def AgeUnknown(self, organization, query_pk_in=None):
+        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__isnull=True, person__organization=organization)
+        if query_pk_in:
+            q = q.filter(pk__in=query_pk_in)
+        return q
 
 class Client(models.Model):
     id = UuidField(primary_key=True)

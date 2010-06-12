@@ -24,11 +24,9 @@ $(function(){
 		});
         	
         $("#loading p").bind("ajaxSend", function(){
-				//$('#disable_menu').show();
                 $(this).show();
         }).bind("ajaxComplete", function(){
                 $(this).hide();
-				//$('#disable_menu').hide();
         });
 
 
@@ -61,89 +59,50 @@ $(function(){
 	/** horizontal menu selection */
 	$("#main_menu > ul > li > a:not(.vertical), div#menu_log a:not(.logout)").click(function(){
                 
-                // reset vertical menu to original size
-                var vertical_menu = $('#main_menu > ul > li > a.vertical');
-                vertical_menu.removeClass('main_menu_big');
-                vertical_menu.addClass('main_menu');
-                vertical_menu.children('span').remove();
-               // $('#main_menu ul li ul').addClass('main_menu_listing'); 
-				$('#main_menu ul li ul').removeClass('main_menu_listing_big'); 
-                
-	        var link = $(this);
-                $('#already_loaded').val('False');
-                
-                $('#sub_menu ul').hide();
+            // reset vertical menu to original size
+            var vertical_menu = $('#main_menu > ul > li > a.vertical');
+            vertical_menu.removeClass('main_menu_big');
+            vertical_menu.addClass('main_menu');
+            vertical_menu.children('span').remove();
+           // $('#main_menu ul li ul').addClass('main_menu_listing'); 
+            $('#main_menu ul li ul').removeClass('main_menu_listing_big'); 
+            
+        var link = $(this);
+            $('#already_loaded').val('False');
+            
+            $('#sub_menu ul').hide();
 
-                // remove active from main_menu
-                $('.main_menu').removeClass('active');
-                // make active on clicked menu item
-                link.addClass('active');
-                // show only selected
-                $('#sub_'+link.attr('id')).show();
-                // reset submenu to first option
-                $('#sub_menu ul li a').removeClass('active');
-                $('#sub_menu ul li a.first').addClass('active');
+            // remove active from main_menu
+            $('.main_menu').removeClass('active');
+            // make active on clicked menu item
+            link.addClass('active');
+            // show only selected
+            $('#sub_'+link.attr('id')).show();
+            // reset submenu to first option
+            $('#sub_menu ul li a').removeClass('active');
+            $('#sub_menu ul li a.first').addClass('active');
         });
 
 
-	/** vertical menu selection */
-	$("#main_menu > ul > li > a.vertical").mouseover(function(){
-               var link = $(this);
-
-                //link.addClass('active');
-                // show only selected
-                $('#sub_'+link.attr('id')).show();
-                
-                // show VERTICAL submenu  (used in 'organization') if exists
-                submenu = link.next('ul');
-                submenu.show().fadeIn();
-                        
-                // hide VERTICAL submenu when mouse is out of sub-menu range
-                submenu_li = link.next('ul li');
-                
-                submenu_li.mouseover(function(){
-                        submenu.show();
-                        link.addClass('hover');
-                });
-                link.parent('li').mouseout(function(){
-                        submenu.hide();
-                        //link.removeClass('active');
-						link.removeClass('hover');
-                });
-                        
-                // hide vertical submenu an item is selected
-                
-                array = submenu.children().children();
-                array.click(function() {
-                        link.parent('li').mouseout(function(){
-                                //link.addClass('active');
-                        });
-
-                        $('.main_menu').removeClass('active');
-                        link.addClass('active');
-                        link.removeClass('main_menu');
-                        //link.addClass('main_menu_big');
-                        //$('#main_menu ul li ul').removeClass('main_menu_listing');
-                        //$('#main_menu ul li ul').addClass('main_menu_listing_big');
-                        
-                        link.children('span').remove();
-                        //link.append('<span>&nbsp;-&nbsp;'+$(this).text()+'</span>');
-                        // hide Vertical menu
-                        submenu.hide();
-                        
-                        // hide sub menu horizontal menu
-                        $('#sub_menu ul').hide();
-                        
-                        // show assigned div
-                        idToShow = $(this).attr('id');
-                        $('#sub_menu #sub_'+idToShow).show();
-                        
-                        // reset submenu to first option
-                        $('#sub_menu ul li a').removeClass('active');
-                        $('#sub_menu ul li a.first').addClass('active');
-
-                });
-	});
+        /**
+         *  vertical main menu selection
+         */
+    
+        $("#main_menu > ul > li > a.vertical").mouseover(function(){
+            $('ul.myoffice').show();
+        });
+        $("ul.myoffice li").each(function(){ 
+            var menu = $('ul.myoffice'); 
+             
+            $(this).hover(function(){ 
+                menu.show();
+                $('#main_menu a#myoffice').addClass('border_menu_active');
+            }, function(){
+                menu.hide();
+                $('#main_menu a#myoffice').removeClass('border_menu_active');
+            });
+        });
+        
 
 
         // organization menu

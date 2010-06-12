@@ -68,7 +68,7 @@ class ReportSaveAdmissionForm(ReportSaveForm):
         date_end = kwargs.pop('date_end', None)
         super(ReportSaveAdmissionForm, self).__init__(*args, **kwargs)
         if date_start and date_end:
-            self.fields['label'].initial = _('Admission between %s and %s' % (date_start.strftime("%d/%m/%Y"), date_end.strftime("%d/%m/%Y")))
+            self.fields['label'].initial = '%s %s %s %s' % (_('Admission between'), date_start.strftime("%d/%m/%Y"), _('and'), date_end.strftime("%d/%m/%Y")))
             self.fields['data'].initial = 'view=admission&date_start=%s&date_end=%s'% (date_start.strftime("%d/%m/%Y"), date_end.strftime("%d/%m/%Y"))
 
     def save(self, user, organization, *args, **kwargs):

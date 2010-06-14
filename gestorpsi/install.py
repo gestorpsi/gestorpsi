@@ -115,7 +115,7 @@ grp_professional.permissions.add(Permission.objects.get(codename='organization_l
 grp_professional.permissions.add(Permission.objects.get(codename='organization_read'))
 grp_professional.permissions.add(Permission.objects.get(codename='report_list'))
 grp_professional.permissions.add(Permission.objects.get(codename='report_read'))
-grp_professional.permissions.add(Permission.objects.get(codename='report_list'))
+grp_professional.permissions.add(Permission.objects.get(codename='report_write'))
 
 # Student
 print "assigning permissions for group student"
@@ -159,6 +159,9 @@ grp_student.permissions.add(Permission.objects.get(codename='place_list'))
 grp_student.permissions.add(Permission.objects.get(codename='place_read'))
 grp_student.permissions.add(Permission.objects.get(codename='organization_list'))
 grp_student.permissions.add(Permission.objects.get(codename='organization_read'))
+grp_student.permissions.add(Permission.objects.get(codename='report_list'))
+grp_student.permissions.add(Permission.objects.get(codename='report_read'))
+grp_student.permissions.add(Permission.objects.get(codename='report_write'))
 
 # Secretary
 print "assigning permissions for group secretary"
@@ -205,6 +208,9 @@ grp_secretary.permissions.add(Permission.objects.get(codename='schedule_list'))
 grp_secretary.permissions.add(Permission.objects.get(codename='upload_write'))
 grp_secretary.permissions.add(Permission.objects.get(codename='upload_read'))
 grp_secretary.permissions.add(Permission.objects.get(codename='upload_list'))
+grp_secretary.permissions.add(Permission.objects.get(codename='report_list'))
+grp_secretary.permissions.add(Permission.objects.get(codename='report_read'))
+grp_secretary.permissions.add(Permission.objects.get(codename='report_write'))
 
 
 # Client

@@ -36,32 +36,31 @@ def _access_ehr_check_read(request, object=None):
     @object: client
     """
 
-    # only professionals can access it. return false if request user is not a professional
     if not object:
         return False
 
-    # only professionals can access it. return false if request user is not a professional
-    if not request.user.groups.filter(name='professional') and not request.user.groups.filter(name='student'):
-        return False
+    if request.user.groups.filter(name='administrator'):
+        return True
+    
+    if request.user.groups.filter(name='professional') or request.user.groups.filter(name='student'):
+        professional_have_referral_with_client = False
+        professional_is_responsible_for_service = False
 
-    professional_have_referral_with_client = False
-    professional_is_responsible_for_service = False
+        # professional. lets check if request.user (professional) have referral with this client
+        for r in object.referral_set.all():
+            if request.user.profile.person.careprofessional in [p for p in r.professional.all()]:
+                professional_have_referral_with_client = True
 
-    # professional. lets check if request.user (professional) have referral with this client
-    for r in object.referral_set.all():
-        if request.user.profile.person.careprofessional in [p for p in r.professional.all()]:
-            professional_have_referral_with_client = True
+        # professional. lets check if request.user (professional) is responsible for referral service
+        for r in object.referral_set.all():
+            if request.user.profile.person.careprofessional in [p for p in r.service.responsibles.all()]:
+                professional_is_responsible_for_service = True
 
-    # professional. lets check if request.user (professional) is responsible for referral service
-    for r in object.referral_set.all():
-        if request.user.profile.person.careprofessional in [p for p in r.service.responsibles.all()]:
-            professional_is_responsible_for_service = True
+        # check if client is referred by professional or if professional is owner of this record
+        if professional_have_referral_with_client or professional_is_responsible_for_service or object.revision().user == request.user:
+            return True
 
-    # check if client is referred by professional or if professional is owner of this record
-    if not professional_have_referral_with_client and not professional_is_responsible_for_service and object.revision().user != request.user:
-        return False
-
-    return True
+    return False
 
 def _access_ehr_check_write(request, referral=None):
     """
@@ -73,25 +72,25 @@ def _access_ehr_check_write(request, referral=None):
     if not referral:
         return False
 
-    # only professionals can access it. return false if request user is not a professional
-    if not request.user.groups.filter(name='professional') and not request.user.groups.filter(name='student'):
-        return False
+    if request.user.groups.filter(name='administrator'):
+        return True
 
-    professional_referral_with_client = False
-    professional_is_responsible_for_service = False
-    
-    # lets check if request.user (professional) have referral with this client
-    if request.user.profile.person.careprofessional in [p for p in referral.professional.all()]:
-        professional_referral_with_client = True
-    
-    # professional. lets check if request.user (professional) is responsible for referral service
-    if request.user.profile.person.careprofessional in [p for p in referral.service.responsibles.all()]:
-        professional_is_responsible_for_service = True
+    if request.user.groups.filter(name='professional') or request.user.groups.filter(name='student'):
+        professional_referral_with_client = False
+        professional_is_responsible_for_service = False
+        
+        # lets check if request.user (professional) have referral with this client
+        if request.user.profile.person.careprofessional in [p for p in referral.professional.all()]:
+            professional_referral_with_client = True
+        
+        # professional. lets check if request.user (professional) is responsible for referral service
+        if request.user.profile.person.careprofessional in [p for p in referral.service.responsibles.all()]:
+            professional_is_responsible_for_service = True
 
-    if not professional_referral_with_client and not professional_is_responsible_for_service:
-        return False
+        if professional_referral_with_client or professional_is_responsible_for_service:
+            return True
 
-    return True
+    return False
 
 @permission_required_with_403('ehr.ehr_list')
 def demand_list(request, client_id, referral_id):
@@ -124,10 +123,6 @@ def demand_form(request, client_id, referral_id, demand_id=0):
         have_perms_to_write = True
 
     demand = get_object_or_None(Demand, pk=demand_id) or Demand()
-
-    # logged profissionais not referred client dont have permission to add, only to view form data
-    if not demand.id and not have_perms_to_write:
-        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     demand_form = DemandForm(instance=demand)
     demand_form.fields['occurrence'].queryset = referral.occurrences()
@@ -241,10 +236,6 @@ def diagnosis_form(request, client_id, referral_id, diagnosis_id=0):
 
     diagnosis = get_object_or_None(Diagnosis, pk=diagnosis_id) or Diagnosis()
 
-    # logged profissionais not referred client dont have permission to add, only to view form data
-    if not diagnosis.id and not have_perms_to_write:
-        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
-
     diagnosis_form = DiagnosisForm(instance=diagnosis, label_suffix='')
     if not diagnosis.diagnosis_date:
         diagnosis_form.initial = {'diagnosis_date': datetime.strftime(datetime.now(), "%d/%m/%Y")}
@@ -322,10 +313,6 @@ def session_form(request, client_id, referral_id, session_id=0):
         have_perms_to_write = True
 
     session = get_object_or_None(Session, pk=session_id) or Session()
-
-    # logged profissionais not referred client dont have permission to add, only to view form data
-    if not session.id and not have_perms_to_write:
-        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     session_form = SessionForm(instance=session)
     session_form.fields['occurrence'].queryset = referral.occurrences().filter(session=None) if session_id==0 else referral.occurrences()

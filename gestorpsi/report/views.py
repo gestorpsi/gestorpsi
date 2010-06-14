@@ -26,7 +26,9 @@ from gestorpsi.report.forms import ReportForm, ReportSaveAdmissionForm
 from gestorpsi.report.models import ReportAdmission, ReportsSaved, Report
 from gestorpsi.settings import MEDIA_URL, MEDIA_ROOT
 from gestorpsi.util.views import write_pdf
+from gestorpsi.util.decorators import permission_required_with_403
 
+@permission_required_with_403('report.report_list')
 def index(request):
     """
     display initial templates
@@ -42,11 +44,13 @@ def index(request):
     filters = r.filters()
     
     return render_to_response('report/report_index.html', locals(), context_instance=RequestContext(request))
-    
+
+@permission_required_with_403('report.report_list')
 def report_date(request):
     date_start,date_end = Report().set_date(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'))
     return HttpResponse(simplejson.dumps({'date_start':date_start.strftime('%d/%m/%Y'), 'date_end':date_end.strftime('%d/%m/%Y')}))
-    
+
+@permission_required_with_403('report.report_list')
 def chart(request, view='admission'):
     organization = request.user.get_profile().org_active
     report = Report()
@@ -62,6 +66,7 @@ def chart(request, view='admission'):
     
     return HttpResponse()
 
+@permission_required_with_403('report.report_list')
 def admission_data(request):
     """
     load admission dashboard reports
@@ -71,6 +76,7 @@ def admission_data(request):
 
     return render_to_response('report/report_admission_table.html', locals(), context_instance=RequestContext(request))
 
+@permission_required_with_403('report.report_list')
 def admission_client_report(request, view, filter):
     """
     fetch client list from selected admission report
@@ -84,6 +90,7 @@ def admission_client_report(request, view, filter):
 
     return render_to_response('report/report_client_list.html', locals(), context_instance=RequestContext(request))
 
+@permission_required_with_403('report.report_list')
 def demographic_data(request, view='admission'):
     organization = request.user.get_profile().org_active
     report = Report()
@@ -95,7 +102,8 @@ def demographic_data(request, view='admission'):
         demographic = ReportAdmission.objects_demographic.all(organization, [i.client.id for i in range])
     
     return render_to_response('report/report_demographic_table.html', locals(), context_instance=RequestContext(request))
-    
+
+@permission_required_with_403('report.report_write')
 def report_save(request, form_class=ReportSaveAdmissionForm, view='admission', template='report/report_admission_save.html'):
     """
     save new report
@@ -114,7 +122,8 @@ def report_save(request, form_class=ReportSaveAdmissionForm, view='admission', t
     form = form_class(date_start=date_start, date_end=date_end)
     
     return render_to_response(template, locals(), context_instance=RequestContext(request))
-    
+
+@permission_required_with_403('report.report_write')
 def reports_saved(request, view='admission'):
     """
     list saved reports
@@ -125,7 +134,8 @@ def reports_saved(request, view='admission'):
     trash = ReportsSaved.objects.trash(request.user, organization)
     
     return render_to_response('report/report_saved.html', locals(), context_instance=RequestContext(request))
-    
+
+@permission_required_with_403('report.report_write')
 def report_del(request, object_id, undelete=False):
     """
     delete/undelete saved reports
@@ -136,6 +146,7 @@ def report_del(request, object_id, undelete=False):
     
     return HttpResponse(obj.id)
 
+@permission_required_with_403('report.report_write')
 def report_empty(request):
     """
     empty deleted reports from trash
@@ -143,6 +154,7 @@ def report_empty(request):
     ReportsSaved.objects.filter(trash=True, user=request.user, organization=request.user.get_profile().org_active).delete()
     return HttpResponse(True)
 
+@permission_required_with_403('report.report_list')
 def admission_export(request):
     """
     export admission data in html or pdf
@@ -166,5 +178,3 @@ def admission_export(request):
 
         remove_links = True
         return render_to_response('report/report_admission_export.html', locals(), context_instance=RequestContext(request))
-
-    

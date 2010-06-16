@@ -223,15 +223,17 @@ class CareProfessional(models.Model):
             presence = 4 -> occurrence unmarked
             presence = 5 -> occurrence rescheduled
         '''
-        queryset = self.referral_set.filter(occurrence__scheduleoccurrence__occurrenceconfirmation__isnull=True) | \
-            self.referral_set.filter(occurrence__scheduleoccurrence__occurrenceconfirmation__isnull=False) \
-                .exclude(occurrence__scheduleoccurrence__occurrenceconfirmation__presence=4) \
-                .exclude(occurrence__scheduleoccurrence__occurrenceconfirmation__presence=5)
+
+        from gestorpsi.schedule.models import ScheduleOccurrence
+        queryset = ScheduleOccurrence.objects.filter(event__referral__professional=self) \
+            .exclude(occurrenceconfirmation__presence=4).exclude(occurrenceconfirmation__presence=5)
+
         return True if \
-            queryset.filter(occurrence__start_time__lte = start_time, occurrence__end_time__gt = start_time) or \
-            queryset.filter(occurrence__start_time__lt = end_time, occurrence__end_time__gte = end_time) or \
-            queryset.filter(occurrence__start_time__gte = start_time, occurrence__end_time__lte = end_time) \
+            queryset.filter(start_time__lte = start_time, end_time__gt = start_time) or \
+            queryset.filter(start_time__lt = end_time, end_time__gte = end_time) or \
+            queryset.filter(start_time__gte = start_time, end_time__lte = end_time) \
             else False
+
 
     is_student = property(_is_student)
 reversion.register(CareProfessional, follow=['person', 'professionalIdentification', 'professionalProfile'])

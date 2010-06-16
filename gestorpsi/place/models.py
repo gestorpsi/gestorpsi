@@ -124,11 +124,10 @@ class Room( models.Model ):
         ''' filter 2: end time not in occurrence range '''
         ''' filter 3: occurrence range are not between asked values '''
         
-        queryset = self.scheduleoccurrence_set.filter(occurrenceconfirmation__isnull=True) | \
-            self.scheduleoccurrence_set.filter(occurrenceconfirmation__isnull=False) \
-                .exclude(occurrenceconfirmation__presence=4) \
-                .exclude(occurrenceconfirmation__presence=5)
-        
+        from gestorpsi.schedule.models import ScheduleOccurrence
+        queryset = ScheduleOccurrence.objects.filter(room=self) \
+            .exclude(occurrenceconfirmation__presence=4).exclude(occurrenceconfirmation__presence=5)
+
         return True if \
             queryset.filter(start_time__lte = start_time, end_time__gt = start_time) or \
             queryset.filter(start_time__lt = end_time, end_time__gte = end_time) or \

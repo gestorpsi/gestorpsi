@@ -27,7 +27,7 @@ GNU General Public License for more details.
         {% endfor %}
     </ul>
     <small>{% trans "Total" %} {{ object_list|length }}</small>
-    {% if organization_total|length %}<br /><br />
-    <small>*{{ organization_total|length }} {% trans "client names will not displayed due to access privacy restrictions"%}</small>
+    {% if not_diplay_count %}<br /><br />
+    <small>*{{ not_diplay_count }} {% trans "client names will not displayed due to access privacy restrictions"%}</small>
     {% endif %}
 </div>

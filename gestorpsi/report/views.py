@@ -88,6 +88,8 @@ def admission_client_report(request, view, filter):
 
     verbose_name, object_list, organization_total = ReportAdmission.objects.clients(request.user, date_start, date_end, view, filter)
 
+    not_diplay_count = int(len(organization_total))-int(len(object_list))
+
     return render_to_response('report/report_client_list.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('report.report_list')

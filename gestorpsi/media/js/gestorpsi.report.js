@@ -156,6 +156,7 @@ $(function() {
     
     $('a.report_filter').click(function() {
         updateAdmission($(this).attr('data'));
+        $('div.loaded_report_title').hide();
         return false;
     });
     

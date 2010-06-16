@@ -36,7 +36,7 @@ VIEWS_CHOICES = (
 class Report(models.Model):
     def set_date(self, organization, date_start=None, date_end=None):
         if not date_start or not date_end:
-            date_start = organization.created()
+            date_start = datetime.now()-relativedelta(months=1)
             date_end = datetime.now()
         else:
             date_start = datetime.strptime(date_start, '%d/%m/%Y')
@@ -91,7 +91,7 @@ class Report(models.Model):
             for a in range:
                 if a.created() >= start_tmp and a.created() < next_month:
                     pks.append(a.id)
-            dots.append((start_tmp.strftime("%m/%y"), range.filter(pk__in=pks).count())) # coordinates here: x, y
+            dots.append((start_tmp.strftime("%m/%Y"), range.filter(pk__in=pks).count())) # coordinates here: x, y
         
             start_tmp = start_tmp+relativedelta(months=+1)
         return dots

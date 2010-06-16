@@ -43,6 +43,7 @@ from gestorpsi.person.forms import CompanyForm, CompanyClientForm
 from gestorpsi.person.views import person_save
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, ReferralAttach, REFERRAL_ATTACH_TYPE, Queue, ReferralExternal, ReferralDischarge
+from gestorpsi.admission.models import ReferralChoice as AdmissionChoice, AdmissionReferral
 from gestorpsi.referral.forms import ReferralForm, ReferralDischargeForm, QueueForm, ReferralExtForm
 from gestorpsi.referral.views import _referral_view
 from gestorpsi.referral.views import _referral_occurrences
@@ -573,6 +574,14 @@ def save(request, object_id=None, is_company = False):
             company.person = object.person
             company.save()
 
+    '''
+    automatic admit client
+    '''
+    
+    a = AdmissionReferral()
+    a.referral_choice_id = AdmissionChoice.objects.all().order_by('weight')[0].id
+    object.admissionreferral_set.add(a)
+    
     request.user.message_set.create(message=_('Client saved successfully'))
 
     return HttpResponseRedirect('/client/%s/home' % object.id)

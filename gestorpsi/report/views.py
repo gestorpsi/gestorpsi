@@ -20,6 +20,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.shortcuts import get_object_or_404
+from django.template.defaultfilters import slugify
 from django.utils import simplejson
 from gestorpsi.admission.models import AdmissionReferral
 from gestorpsi.report.forms import ReportForm, ReportSaveAdmissionForm
@@ -176,7 +177,7 @@ def admission_export(request):
 
         if int(request.POST.get('format')) == 2: # pdf print
             user = request.user
-            return write_pdf('report/report_admission_export.html', locals(), '%s.pdf' % _('admission-report'))
+            return write_pdf('report/report_admission_export.html', locals(), '%s.pdf' % slugify(_('admission-report')))
 
         remove_links = True
         return render_to_response('report/report_admission_export.html', locals(), context_instance=RequestContext(request))

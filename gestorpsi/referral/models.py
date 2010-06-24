@@ -251,7 +251,7 @@ class Referral(Event):
         '''
         Return all occurrences
         '''
-        return self.occurrence_set.filter(start_time__lt=datetime.now())
+        return self.occurrence_set.filter(start_time__lt=datetime.now()).order_by('-id')
 
     def online_and_active_occurrences(self):
         '''

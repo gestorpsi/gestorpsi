@@ -868,8 +868,8 @@ $(function() {
             $('table#ocup_results tbody').html('');
         });
         
-        $('input[name=ocup_search_key]').keyup(function() {
-            var typed = $(this).val();
+        $('a[name=ocup_search_key]').click(function() {
+            var typed = $('input[name=ocup_search_key]').val()
             if(typed.length >= 2) {
                 $.getJSON('/util/ocupation/?query=' + typed, function(json) {
                     line = '';

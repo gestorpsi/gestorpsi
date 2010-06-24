@@ -53,7 +53,7 @@ GNU General Public License for more details.
  <legend>{% trans "Occupation Detail " %}</legend>
 
 
-    <label>Occupation Code <a style="cursor: pointer;" class="show_ocup_search">Search Code?</a><br>
+ <label>{% trans "Occupation Code" %}<a style="cursor: pointer;" class="show_ocup_search">{% trans "Search Code?" %}</a><br>
       <input type="text" id="id_ocup_class" name="ocup_class" value="{{ occupation.profession.cbo_code }}" mask="9999-99">
     </label>
 
@@ -68,8 +68,9 @@ GNU General Public License for more details.
     <br />
     <br />
 
-    <label class="ocup_search hidden" style="display: none;">Occupation Search<br>
+    <label class="ocup_search hidden" style="display: none;">{% trans "Occupation Search" %}<br>
         <input type="text" class="big" name="ocup_search_key">
+        <a id="ocup_search_key" name="ocup_search_key">Buscar</a>
     </label>
 
     <div class="overflow ocup_search hidden" style="display: none;">

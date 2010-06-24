@@ -3692,6 +3692,12 @@ msgstr "Dados Demográficos"
 msgid "Occupations"
 msgstr "Ocupações"
 
+msgid "Occupation Code"
+msgstr "Código de ocupação"
+
+msgid "Occupation Search"
+msgstr "Procurar ocupação"
+
 #: templates/client/client_print.html:248
 msgid "Client have no occupation registered"
 msgstr "Ocupação não registrada"

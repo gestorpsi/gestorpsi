@@ -147,8 +147,8 @@ class ProfessionalIdentification(models.Model):
     profession = models.ForeignKey(Profession, null=True)
     registerNumber = models.CharField(max_length=50, null=True)    
     
-    def __unicode__(self):
-        return self.registerNumber
+    #def __unicode__(self):
+        #return self.registerNumber
 
 reversion.register(ProfessionalIdentification)
 

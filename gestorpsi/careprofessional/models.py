@@ -163,7 +163,7 @@ class StudentProfile(models.Model):
     professional = models.OneToOneField('CareProfessional')
     
     def __unicode__(self):
-        return '%s' % ( self.lecture_class )
+        return u'%s' % ( self.lecture_class )
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

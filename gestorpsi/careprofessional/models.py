@@ -118,7 +118,11 @@ class ProfessionalProfile(models.Model):
     workplace = models.ManyToManyField(Place, null=True)
 
     def __unicode__(self):
-        return u'%s' % CareProfessional.objects.get(professionalProfile=self)
+        try:
+            p  = CareProfessional.objects.get(professionalProfile=self).person.name
+        except:
+            p = _('[no professional related]')
+        return u'%s' % p
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
@@ -148,7 +152,11 @@ class ProfessionalIdentification(models.Model):
     registerNumber = models.CharField(max_length=50, null=True)    
     
     def __unicode__(self):
-        return u'%s' % CareProfessional.objects.get(professionalIdentification=self)
+        try:
+            p  = CareProfessional.objects.get(professionalIdentification=self).person.name
+        except:
+            p = _('[no professional related]')
+        return u'%s' % p
 
 reversion.register(ProfessionalIdentification)
 

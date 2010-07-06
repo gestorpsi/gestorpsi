@@ -23,13 +23,13 @@ GNU General Public License for more details.
 {% block content %}
 <h1>{% trans "Welcome to GestorPsi" %}</h1>
 
-<div class="ff_not_ok" style="display:none">
+<div class="ff_not_ok">
 <img src="/media/img/logos/firefox-icon.png">
 <br>
 {% trans "Your browser is not compatible with and some functions can not work well" %}.
 <br>
 {% trans "Please, get the latest version of" %} <a target="_blank" href="http://br.mozdev.org/firefox/download.html">{% trans "Firefox" %}</a> {% trans "to get all features running" %}
-<span class="block_ie">{% trans "or" %} <a class="login_unlock">{% trans "continue with restricted features" %}</a>.</span><br /><br /><span class="read_more"><a href="http://www.gestorpsi.com.br/trac/wiki/Firefox" target="_blank">{% trans "Read more" %}</a></span>
+{% trans "or" %} {% trans "continue with restricted features" %}.<br /><span class="read_more"><a href="http://www.gestorpsi.com.br/trac/wiki/Firefox" target="_blank">{% trans "Read more" %}</a>
 </div>
 
 <form method="post" action="/accounts/authentication/" id="form_login" class="ff_ok">

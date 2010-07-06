@@ -19,33 +19,13 @@ GNU General Public License for more details.
  */
 
 $(document).ready(function(){
-  $('body').hide();
-  
   /**
    * not mozilla
    */
 
-  if(!$.browser.mozilla) {
-      $('div.login .ff_ok').hide();
-      $('div.login div.ff_not_ok').show();
+  if($.browser.mozilla) {
+      $('div.login .ff_not_ok').hide();
   }
-  
-  /**
-   * is ie
-   */
-
-  if ($.browser.msie) {
-        $('div.ff_not_ok span.block_ie').hide();
-  } else {
-      $('div.login div.ff_not_ok a.login_unlock').click(function() {
-        $('div.login div.ff_not_ok').hide();
-        $('div.login .ff_ok').show();
-      });
-  }
-
-  $('body').show();
- 
-  
 });
 
 

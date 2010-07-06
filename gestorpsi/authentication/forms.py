@@ -81,8 +81,12 @@ class RegistrationForm(RegistrationForm):
 
         careprof = CareProfessional()
         careprof.person = person
-        careprof.professionalProfile = ProfessionalProfile.objects.create()
-        careprof.professionalIdentification = ProfessionalIdentification.objects.create(registerNumber='')
+        pp = ProfessionalProfile()
+        pi = ProfessionalIdentification()
+        pp.save()
+        pi.save()
+        careprof.professionalProfile = pp
+        careprof.professionalIdentification = pi
         careprof.save()
-        
+
         return organization

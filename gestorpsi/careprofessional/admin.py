@@ -25,6 +25,7 @@ from gestorpsi.careprofessional.models import PostGraduate, InstitutionType, Aca
 from gestorpsi.careprofessional.models import Profession, ProfessionalProfile
 from gestorpsi.careprofessional.models import LicenceBoard, ProfessionalIdentification
 from gestorpsi.careprofessional.models import CareProfessional
+from gestorpsi.careprofessional.models import StudentProfile
 
 class InstitutionTypeAdmin(admin.ModelAdmin):
     pass
@@ -49,6 +50,9 @@ class ProfessionalIdentificationAdmin(admin.ModelAdmin):
 
 class CareProfessionalAdmin(admin.ModelAdmin):
     pass
+    
+class StudentProfileAdmin(admin.ModelAdmin):
+    pass
 
 admin.site.register(PostGraduate, PostGraduateAdmin)
 admin.site.register(InstitutionType, InstitutionTypeAdmin)
@@ -58,3 +62,4 @@ admin.site.register(ProfessionalProfile, ProfessionalProfileAdmin)
 admin.site.register(LicenceBoard, LicenceBoardAdmin)
 admin.site.register(ProfessionalIdentification, ProfessionalIdentificationAdmin)
 admin.site.register(CareProfessional, CareProfessionalAdmin)
+admin.site.register(StudentProfile, StudentProfileAdmin)

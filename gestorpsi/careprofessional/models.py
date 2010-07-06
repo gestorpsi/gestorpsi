@@ -116,9 +116,9 @@ class ProfessionalProfile(models.Model):
     services = models.CharField(max_length=100, null=True)
     availableTime = models.CharField(max_length=100, null=True)
     workplace = models.ManyToManyField(Place, null=True)
-    
+
     def __unicode__(self):
-        return '%s' % ( self.initialProfessionalActivities )
+        return u'%s' % CareProfessional.objects.get(professionalProfile=self)
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
@@ -147,8 +147,8 @@ class ProfessionalIdentification(models.Model):
     profession = models.ForeignKey(Profession, null=True)
     registerNumber = models.CharField(max_length=50, null=True)    
     
-    #def __unicode__(self):
-        #return self.registerNumber
+    def __unicode__(self):
+        return u'%s' % CareProfessional.objects.get(professionalIdentification=self)
 
 reversion.register(ProfessionalIdentification)
 
@@ -163,7 +163,7 @@ class StudentProfile(models.Model):
     professional = models.OneToOneField('CareProfessional')
     
     def __unicode__(self):
-        return u'%s' % ( self.lecture_class )
+        return u'%s' % ( self.professional )
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

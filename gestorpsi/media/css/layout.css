@@ -1622,6 +1622,9 @@ div.read-only {
         padding: 10px;
 }
 
+div.overflow ul li { clear:both; display:block; padding:0px; margin:0px !important; }
+div.overflow label { padding: 2px 0 0 10px; margin:0 0 0 0}
+
 label.error { color: red; float: right;}
 
 /**

@@ -132,7 +132,7 @@ def add_event(
             room=room.id,
             ))
 
-        recurrence_form.fields['device'].queryset = DeviceDetails.objects.filter(Q(room = room, mobility="1") | Q(place =  room.place, room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=False) | Q(room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=True, active=True))
+        recurrence_form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=room) | Q(mobility=2, lendable=True) | Q(place =  room.place, mobility=2, lendable=False))]
 
     return render_to_response(
         template,
@@ -229,6 +229,11 @@ def occurrence_confirmation_form(
 
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
     
+    if not occurrence.scheduleoccurrence.was_confirmed():
+        initial_device = [device.pk for device in occurrence.device.all()]
+    else:
+        initial_device = [device.pk for device in occurrence.occurrenceconfirmation.device.all()]
+        
     # check if requested user have perms to read it
     if not _access_check_by_occurrence(request, occurrence):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
@@ -249,7 +254,7 @@ def occurrence_confirmation_form(
     if request.method == 'POST':
         if denied_to_write:
             return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
-        form = form_class(request.POST, instance = occurrence_confirmation)
+        form = form_class(request.POST, instance = occurrence_confirmation, initial={ 'device':initial_device, })
         if form.is_valid():
             data = form.save(commit=False)
             data.occurrence = occurrence
@@ -257,6 +262,7 @@ def occurrence_confirmation_form(
                 data.date_started = None
                 data.date_finished = None
             data.save()
+            form.save_m2m()
 
             # save occurrence comment
             occurrence.annotation = request.POST['occurrence_annotation']
@@ -264,6 +270,7 @@ def occurrence_confirmation_form(
             request.user.message_set.create(message=_('Occurrence confirmation updated successfully'))
             return http.HttpResponseRedirect(redirect_to or request.path)
         else:
+            form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility=2, lendable=True) | Q(place =  occurrence.room.place, mobility=2, lendable=False))]
             return render_to_response(
                 template,
                 dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral),
@@ -278,9 +285,10 @@ def occurrence_confirmation_form(
             'occurrence':occurrence, 
             'start_time':occurrence.start_time, 
             'end_time':occurrence.end_time,
-            'device': [device.pk for device in occurrence.device.all()],
+            'device': initial_device,
             })
-        form.fields['device'].queryset = DeviceDetails.objects.filter(Q(room = occurrence.room, mobility="1") | Q(place =  occurrence.room.place, room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=False) | Q(room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=True))
+
+        form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility=2, lendable=True) | Q(place =  occurrence.room.place, mobility=2, lendable=False))]
 
     return render_to_response(
         template,
@@ -453,7 +461,13 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
             
             sub_count = 0
             array[i]['device'] = {}
-            for o in o.scheduleoccurrence.device.all():
+
+            if not o.scheduleoccurrence.was_confirmed():
+                device_list = o.device.all()
+            else:
+                device_list = o.occurrenceconfirmation.device.all()
+
+            for o in device_list:
                 array[i]['device'][sub_count] = ({'id':o.id, 'name': ("%s - %s - %s" % (o.device.description, o.brand, o.model)) })
                 sub_count = sub_count + 1
 

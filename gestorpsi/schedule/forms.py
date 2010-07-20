@@ -93,7 +93,9 @@ class ScheduleSingleOccurrenceForm(SingleOccurrenceForm):
 
 class ScheduleOccurrenceForm(MultipleOccurrenceForm):
     room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=forms.Select(attrs={'class':'extramedium asm', }))
-    device = forms.ModelMultipleChoiceField(required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'multiselectable', }))
+    device = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, choices = (
+        [(i.id, i) for i in DeviceDetails.objects.all()]
+        ))    
     annotation = forms.CharField(required = False, widget=forms.Textarea())
     is_online = forms.BooleanField(required = False)
     start_time_delta = forms.IntegerField(
@@ -134,7 +136,9 @@ class OccurrenceConfirmationForm(forms.ModelForm):
     presence = forms.CharField(label=_('Presence'), required=True, widget=forms.RadioSelect(choices=OCCURRENCE_CONFIRMATION_PRESENCE))
     date_started = forms.DateTimeField(label=_('Time Started'), required=False, widget=SplitSelectDateTimeWidget(minute_step=5))
     date_finished = forms.DateTimeField(label=_('Time Finished'), required=False, widget=SplitSelectDateTimeWidget(minute_step=5))
-    device = forms.ModelMultipleChoiceField(label=_('Devices utilized in this session'), required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'multiselectable', }))
+    device = forms.MultipleChoiceField(label=_('Devices utilized in this session'), required=False, widget=forms.CheckboxSelectMultiple, choices = (
+        [(i.id, i) for i in DeviceDetails.objects.all()]
+        ))   
     reason = forms.CharField(label=_('Unmark or Reschedule Reason (if exists)'), required = False, widget=forms.Textarea(attrs={'class':'giant'}))
     anotation = forms.CharField(label=_('Anotation'), required = False, widget=forms.Textarea(attrs={'class':'giant'}))
 

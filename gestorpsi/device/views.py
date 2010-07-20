@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from datetime import datetime
 from django.conf import settings
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
@@ -130,7 +131,9 @@ def form(request, object_id= None):
                                                           'object': object,  
                                                           'device_type': Device.objects.filter(organization=request.user.get_profile().org_active),
                                                           'places': Place.objects.filter(organization=request.user.get_profile().org_active.id),
-                                                          'PROFESSIONAL_AREAS': Profession.objects.all(), },
+                                                          'PROFESSIONAL_AREAS': Profession.objects.all(), 
+                                                          'clss':request.GET.get('clss'),
+                                                          },
                                                           context_instance=RequestContext(request))
 
 
@@ -214,7 +217,12 @@ def order(request, object_id=None):
     object= get_object_or_404(DeviceDetails, pk=object_id, device__organization=request.user.get_profile().org_active)
 
     if object.active == True:
-        object.active = False
+        upcoming_occurrences = object.scheduleoccurrence_set.filter(end_time__gt=datetime.now()).exclude(occurrenceconfirmation__presence=4).exclude(occurrenceconfirmation__presence=3)
+        if len(upcoming_occurrences):
+            request.user.message_set.create(message=_('Sorry, you can not disable a device with upcoming occurrence(s). Total upcoming occurrences %s' % len(upcoming_occurrences)))
+            return HttpResponseRedirect('/device/%s/?clss=error' % (object.id))
+        else:
+            object.active = False
     else:
         object.active = True
 

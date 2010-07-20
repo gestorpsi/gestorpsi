@@ -173,7 +173,7 @@ def admission_export(request):
         if request.POST.get('clients'):
             report_admission_clients = ReportAdmission.objects.clients_all(request.user, request.POST.get('date_start'), request.POST.get('date_end'))
         
-        MEDIA_URL = MEDIA_URL if request.POST.get('format') == 1 else MEDIA_ROOT.replace('\\','/') + '/' # this a path bug fix. format == 1 (html)
+        IMG_PREFIX = '/media/' if int(request.POST.get('format')) == 1 else MEDIA_ROOT.replace('\\','/') + '/' # this a path bug fix. format == 1 (html)
 
         if int(request.POST.get('format')) == 2: # pdf print
             user = request.user

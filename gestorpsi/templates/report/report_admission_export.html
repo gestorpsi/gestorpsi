@@ -121,7 +121,7 @@ table {
                 <small>{% trans "Image not available when Debug=True and server running in localhost" %}</small>
                 </div>
             {% else %}
-                <img width="134px" alt="{{ org_active.trade_name }}" src="{{ MEDIA_URL }}img/organization/{{ org_active.id}}/.thumb/{{ org_active.photo }}">
+                <img width="134px" alt="{{ org_active.trade_name }}" src="{{ IMG_PREFIX }}img/organization/{{ org_active.id}}/.thumb/{{ org_active.photo }}">
             {% endif %}
         {% endif %}
         </td>

@@ -30,7 +30,7 @@ GNU General Public License for more details.
 	<script type="text/javascript" src="/media/js/jquery.form.js"></script> <!-- jQuery Form Plugin -->
 	<script type="text/javascript" src="/media/js/jquery.validate.min.js"></script> <!-- jQuery validation plug-in -->
 	<!--<script type="text/javascript" src="/media/js/jquery-ui-1.5.3.custom.min.js"></script>--> <!-- JQuery UI with Draggable -->
-	<script type="text/javascript" src="/media/js/jquery-ui-1.8.1.custom.min.js"></script> <!-- JQuery UI with Draggable -->
+	<script type="text/javascript" src="/media/js/jquery-ui-1.8.2.custom.min.js"></script> <!-- JQuery UI with Draggable -->
     <script type="text/javascript" src="/media/js/jquery.flexbox.js"></script>
     <script type="text/javascript" src="/media/js/jquery.flot.min.js"></script>
     <script type="text/javascript" src="/media/js/multiselectable.js"></script>
@@ -78,6 +78,16 @@ GNU General Public License for more details.
 {% if user.is_authenticated and not user.profile.org_active.active %}
 <div class="read-only">{% trans "Organization running is READ ONLY MODE. Data can not be writed. For questions about please use the" %} <a href="/support/ticket/form/">{% trans "support form" %}</a></div>
 {% endif %}
+
+{% if messages %}
+    <div id="msg_area" class="{% if clss %}{{ clss }}{% else %}alert{% endif%}">
+        {% for message in messages %}
+            {{ message|safe }}
+        {% endfor %}
+        <a class="close_link"><img src="/media/img/close.gif" /></a>
+    </div>
+{% endif %}
+
 <a name="top"></a>
 <div id="over" style="display:none">
 </div>
@@ -162,18 +172,9 @@ GNU General Public License for more details.
 
 	{% block registration %}{% endblock %}
 	<div id="content">
-        {% if messages %}
-            <div id="msg_area" class="{% if clss %}{{ clss }}{% else %}alert{% endif%}">
-                {% for message in messages %}
-                    {{ message|safe }}
-                {% endfor %}
-            </div>
-        {% endif %}
-                
 		<div id="core">
             {% block core %}{% endblock %}
 		</div>
-		
 		<div id="loading">
 			<p>{% trans "Loading" %} ...</p>
 		</div>

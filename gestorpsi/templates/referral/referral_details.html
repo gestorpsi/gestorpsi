@@ -85,7 +85,10 @@ GNU General Public License for more details.
     <h2 class="red">{{ referral }}</h2>
         <p><small>{{ referral.service.description }}</small></p>
         <p>
-        {% if referral.group %}{% trans "Group" %}: <a href="/service/{{ referral.service.id}}/group/{{ referral.group.id }}/form/">{{ referral.group }}</a><br />{% endif %}
+        {% if referral.group %}
+            {% trans "Group" %}: <a href="/service/{{ referral.service.id}}/group/{{ referral.group.id }}/form/">{{ referral.group }}</a><br />
+            {% if referral.group.comments %}<small>{{ referral.group.comments }}</small><br /><br />{% endif %}
+        {% endif %}
         {% trans "Area" %}: {{ referral.service.area }}
             {% if referral.service.modalities.all %}
             <br>{% trans "Modalities" %}:  {{ referral.service.modalities.all|safeseq|join:", " }}

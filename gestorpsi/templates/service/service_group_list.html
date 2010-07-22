@@ -61,8 +61,8 @@ GNU General Public License for more details.
                     <tbody>
                         {% for o in object %}
                         <tr class="zebra_{% cycle '0' '1' %}">
-                            <td class="title"><a href="/service/{{ service.id }}/group/{{ o.id }}/form/" title="{{ o }}">{{ o }}</a><br></td>
-                            <td><span class="phone">{{ o.charged_members|length }} {% trans "client(s)" %}</span><br><span class="email">{{ o.comments|truncatewords:15 }}</span></td>
+                            <td class="title"><a href="/service/{{ service.id }}/group/{{ o.id }}/form/" title="{{ o }}">{{ o }}</a><br>{{ o.comments|truncatewords:15 }}</td>
+                            <td><span class="phone">{{ o.charged_members|length }} {% trans "client(s)" %}</span><br><span class="email">{% if not o.active %}{% trans "Deactivated" %}{% endif %}</span></td>
                         </tr>
                         {% endfor %}
                     </tbody>

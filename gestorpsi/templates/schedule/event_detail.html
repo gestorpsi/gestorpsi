@@ -31,6 +31,11 @@ GNU General Public License for more details.
 {% block core %}
 
 <div class="registers_available">
+    <h2 class="title_schedule title">{% if event.referralgroup_set.all %}<a href="/service/group/{{ event.referralgroup_set.all.0.id }}/form/">{{ event.group_name }}</a>{% else %}{{ event.client.all.0 }}{% endif %} - {{ event.service }}</h2>
+    <p class="description"><a href="/careprofessional/{{ event.professional.all.0.id }}/">{{ event.professional.all.0 }}</a></p>
+
+    <div class="main_area contact">
+
     {% if event.errors %}
         <div class="msg_area error">
         {% trans "Some occurrences could not be registered due to conflict errors." %}<br />
@@ -40,19 +45,14 @@ GNU General Public License for more details.
             <li>{{ i.start_time|date:"r"|slice:":-9" }} - {{ i.end_time|date:"H:i" }}hs<br /><small> {{ i.error_message|join:". " }}</small></li>
             {% endfor %}
         </ul>
-        <br />{% trans "Note: Occurrences listed below was registered successfully" %}
+        <br />
+        <a href="" style="color:black; font-weight:bold;">{% trans "Schedule on another day?" %}</a><br />
+        <a href="/schedule/" style="color:black;font-weight:bold;">{% trans "Go back to schedule" %}</a><br />
+        {% if event.upcoming_occurrences %}<br />{% trans "Note: Occurrences listed below was registered successfully" %}{% endif %}
         </div>
     {% endif %}
-    <h2 class="title_schedule title">{% if event.referralgroup_set.all %}<a href="/service/group/{{ event.referralgroup_set.all.0.id }}/form/">{{ event.group_name }}</a>{% else %}{{ event.client.all.0 }}{% endif %} - {{ event.service }}</h2>
-    <p class="description"><a href="/careprofessional/{{ event.professional.all.0.id }}/">{{ event.professional.all.0 }}</a></p>
 
-    <div class="main_area contact">
-
-    {% if not event.upcoming_occurrences %}
-        <div id="msg_area" class="alert no_registers_available">
-            {% trans "There is no registers available." %}<br />
-        </div>
-    {% else %}
+    {% if event.upcoming_occurrences %}
         <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
         <thead> 
                 <tr> 

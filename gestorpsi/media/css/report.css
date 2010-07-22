@@ -77,6 +77,8 @@ div.client_dialog .close_dialog, div.saved_table .close_dialog {float:right; }
 div.client_dialog .date_range { font-size: 11px; color: #666666; text-align:left; padding-right: 0px; margin-bottom: 20px;}
 div.client_dialog small, div.saved_table small { color: #666;}
 
+.saved_successfully {text-align:center;}
+
 /**
 * utils
 */

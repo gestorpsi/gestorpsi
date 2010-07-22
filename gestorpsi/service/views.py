@@ -71,7 +71,7 @@ def _can_write_group(request, service):
 
 def _group_list(request, service = None):
     # filter only groups that request user have permission to read them clients
-    group_list = ServiceGroup.objects.filter(service__referral__client__id__in = [i.id for i in _service_clients(request, service)]).distinct()
+    group_list = ServiceGroup.objects.filter(service=service, service__referral__client__id__in = [i.id for i in _service_clients(request, service)]).distinct()
 
     return group_list
 
@@ -134,7 +134,8 @@ def list(request, page = 1, deactive = False):
             'is_group': False if not o.is_group else True,
             'description': u'%s' % o.description,
             'email': '',
-            'have_client_to_list': False if not len(_group_list(request, o)) else True,
+            #'have_client_to_list': False if not len(_group_list(request, o)) else True,
+            'have_client_to_list': True,
             'can_add_group': False if not _can_write_group(request, o) else True,
         }
         i = i + 1

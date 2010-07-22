@@ -93,18 +93,21 @@ def add_event(
             if not request.POST.get('group'): # booking single client
                 referral = get_object_or_404(Referral, pk=request.POST.get('referral'), service__organization=request.user.get_profile().org_active)
                 event = recurrence_form.save(referral)
-                redirect_to = redirect_to or '/schedule/events/%s/' % event.id
             else: # booking a group
                 group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active, active=True)
                 if group.charged_members(): # this check is already done in template. just to prevent empty groups
-                    for f in group.charged_members():
-                        referral = get_object_or_404(Referral, pk=f.referral.id, service__organization=request.user.get_profile().org_active)
-                        event = recurrence_form.save(referral)
-                redirect_to = redirect_to or ('/schedule/events/group/%s/occurrence/%s/' % (group.id, event.occurrence_set.all()[0].id))
+                    first = True
+                    for group_member in group.charged_members():
+                        if first:
+                            event = recurrence_form.save(group_member.referral)
+                            first = False
+                        else:
+                            if not event.errors:
+                                event = recurrence_form.save(group_member.referral, True) # ignore busy check
     
             if not event.errors:
                 request.user.message_set.create(message=_('Schedule saved successfully'))
-                return http.HttpResponseRedirect(redirect_to)
+                return http.HttpResponseRedirect(redirect_to or '/schedule/')
             else:
                 return render_to_response(
                     'schedule/event_detail.html', 
@@ -307,7 +310,7 @@ def occurrence_group(
 
     group = get_object_or_404(ServiceGroup, pk=group_id, service__organization = request.user.get_profile().org_active, active=True)
     occurrence = get_object_or_404(ScheduleOccurrence, pk=occurrence_id, event__referral__service__organization=request.user.get_profile().org_active)
-    group_occurrences = ScheduleOccurrence.objects.filter(start_time=occurrence.start_time, end_time=occurrence.end_time)
+    group_occurrences = ScheduleOccurrence.objects.filter(start_time=occurrence.start_time, end_time=occurrence.end_time).order_by('occurrenceconfirmation', 'event__referral__client')
     event = occurrence.event.referral
     
     return render_to_response(

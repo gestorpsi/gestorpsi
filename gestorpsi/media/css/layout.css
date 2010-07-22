@@ -36,7 +36,7 @@ a:hover {
 }
 
 #bar {
-        background: #005A7D url(../img/logo_gestorpsi_peq.gif) no-repeat;
+        background: #005A7D url(/media/img/logo_gestorpsi_peq.gif) no-repeat;
         height: 18px;
 }
 #bar h1 {
@@ -148,20 +148,20 @@ div#logotype span{
         display: none;
 }
 #start {
-        background-image: url(../img/16/user-desktop.png);
+        background-image: url(/media/img/16/user-desktop.png);
         }
 #schedule {
-        background-image: url(../img/16/office-calendar.png);
+        background-image: url(/media/img/16/office-calendar.png);
         }
 #contacts {
-        background-image: url(../img/16/address-book-new.png);
+        background-image: url(/media/img/16/address-book-new.png);
         }
 #customers {
-        background-image: url(../img/16/people-clients.png);
+        background-image: url(/media/img/16/people-clients.png);
         }
-#report { background: url(../img/16/report.png); }
+#report { background: url(/media/img/16/report.png); }
 #myoffice {
-        background-image: url(../img/16/go-home.png);
+        background-image: url(/media/img/16/go-home.png);
         }
 
 #sub_menu {
@@ -235,15 +235,15 @@ ul.myoffice li a:hover { -moz-border-radius: 0px !important; background-color:#F
 }
 
 
-#main_menu a#organization {background: url(../img/16/go-home.png) no-repeat 25px 4px;}
-#main_menu a#places {background: url(../img/16/office.png) no-repeat 25px 4px;}
-#main_menu a#rooms{background: url(../img/16/room.png) no-repeat 25px 4px;}
-#main_menu a#employees {background: url(../img/16/people-employee.png) no-repeat 25px 4px;}
-#main_menu a#services {background: url(../img/16/services.png) no-repeat 25px 4px;}
-#main_menu a#devices {background: url(../img/16/stuff.png) no-repeat 25px 4px;}
-#main_menu a#careprofessional {background: url(../img/16/people-professional.png) no-repeat 25px 4px;}
-#main_menu a#student {background: url(../img/16/people-student.png) no-repeat 25px 4px;}
-#main_menu a#users {background: url(../img/16/system-users.png) no-repeat 25px 4px;}
+#main_menu a#organization {background: url(/media/img/16/go-home.png) no-repeat 25px 4px;}
+#main_menu a#places {background: url(/media/img/16/office.png) no-repeat 25px 4px;}
+#main_menu a#rooms{background: url(/media/img/16/room.png) no-repeat 25px 4px;}
+#main_menu a#employees {background: url(/media/img/16/people-employee.png) no-repeat 25px 4px;}
+#main_menu a#services {background: url(/media/img/16/services.png) no-repeat 25px 4px;}
+#main_menu a#devices {background: url(/media/img/16/stuff.png) no-repeat 25px 4px;}
+#main_menu a#careprofessional {background: url(/media/img/16/people-professional.png) no-repeat 25px 4px;}
+#main_menu a#student {background: url(/media/img/16/people-student.png) no-repeat 25px 4px;}
+#main_menu a#users {background: url(/media/img/16/system-users.png) no-repeat 25px 4px;}
 
 #main_menu ul li {
         position: relative;
@@ -321,7 +321,7 @@ ul.myoffice li a:hover { -moz-border-radius: 0px !important; background-color:#F
 .close {
         height: 16px;
         width: 16px;
-        background: #FFFFFF url(../img/close.gif) no-repeat 1px 0;
+        background: #FFFFFF url(/media/img/close.gif) no-repeat 1px 0;
         margin-left: 5px;
         margin-top: -7px;
 }
@@ -331,7 +331,7 @@ ul.myoffice li a:hover { -moz-border-radius: 0px !important; background-color:#F
 }
 
 #sub_menu ul.opened_tabs li .active a:hover.close {
-        background: #FFFFFF url(../img/closeOn.gif) no-repeat 1px 0
+        background: #FFFFFF url(/media/img/closeOn.gif) no-repeat 1px 0
 }
 
 #content {
@@ -368,21 +368,21 @@ div.main_area h1 {
 #content a {
         font-weight: normal;
 }
-#content h2.title_clients {background: url(../img/42/people-clients.png) no-repeat 20px 15px;}
-#content h2.title_employee {background: url(../img/42/people-employee.png) no-repeat 20px 15px;}
-#content h2.title_professional {background: url(../img/42/people-professional.png) no-repeat 20px 15px;}
-#content h2.title_student {background: url(../img/42/student.png) no-repeat 20px 15px;}
+#content h2.title_clients {background: url(/media/img/42/people-clients.png) no-repeat 20px 15px;}
+#content h2.title_employee {background: url(/media/img/42/people-employee.png) no-repeat 20px 15px;}
+#content h2.title_professional {background: url(/media/img/42/people-professional.png) no-repeat 20px 15px;}
+#content h2.title_student {background: url(/media/img/42/student.png) no-repeat 20px 15px;}
 
-#content h2.title_schedule {background: url(../img/42/office-calendar.png) no-repeat 20px 15px;}
-#content h2.title_contacts {background: url(../img/42/address-book-new.png) no-repeat 20px 15px;}
-#content h2.title_myoffice {background: url(../img/42/go-home.png) no-repeat 20px 15px;}
-#content h2.title_device {background: url(../img/42/stuff.png) no-repeat 20px 15px;}
-#content h2.title_services {background: url(../img/42/services.png) no-repeat 20px 15px;}
-#content h2.title_places {background: url(../img/42/office.png) no-repeat 20px 15px;}
-#content h2.title_rooms{background: url(../img/42/room.png) no-repeat 20px 15px;}
-#content h2.title_organization {background: url(../img/42/go-home.png) no-repeat 20px 15px;}
-#content h2.title_fronted {background: url(../img/42/user-desktop.png) no-repeat 20px 15px;}
-#content h2.title_report {background: url(../img/42/report.png) no-repeat 20px 15px;}
+#content h2.title_schedule {background: url(/media/img/42/office-calendar.png) no-repeat 20px 15px;}
+#content h2.title_contacts {background: url(/media/img/42/address-book-new.png) no-repeat 20px 15px;}
+#content h2.title_myoffice {background: url(/media/img/42/go-home.png) no-repeat 20px 15px;}
+#content h2.title_device {background: url(/media/img/42/stuff.png) no-repeat 20px 15px;}
+#content h2.title_services {background: url(/media/img/42/services.png) no-repeat 20px 15px;}
+#content h2.title_places {background: url(/media/img/42/office.png) no-repeat 20px 15px;}
+#content h2.title_rooms{background: url(/media/img/42/room.png) no-repeat 20px 15px;}
+#content h2.title_organization {background: url(/media/img/42/go-home.png) no-repeat 20px 15px;}
+#content h2.title_fronted {background: url(/media/img/42/user-desktop.png) no-repeat 20px 15px;}
+#content h2.title_report {background: url(/media/img/42/report.png) no-repeat 20px 15px;}
 
 #content p.description {
         font-size: 9px;
@@ -402,18 +402,23 @@ div.main_area h1 {
         height: 45px;
 }
 #msg_area, .msg_area {
-        padding: 15px 20px;
-        margin: 10px 20px;
+        padding: 8px 20px;
         background: #CCCCCC;
-        border: 2px solid #999999;
+        text-align:center;
+        font-size: 14px;
 }
+
+#core #msg_area, #core .msg_area { margin:20px;}
+#core #msg_area, .main_area .msg_area, .main_area #msg_area { text-align:left; font-size: 12px; padding: 15px;}
+.main_area .msg_area.error { border: 2px solid #FF0000; }
+#core #msg_area, .main_area #msg_area.alert,.main_area .msg_area.alert {border: 2px solid #FFFF00; }
+
+#msg_area a.close_link { float:right; margin-top:5px;}
 #msg_area.alert, #helping, .msg_area.alert {
         background:#FFFFCC;
-        border: 2px solid #FFFF00;
 }
 #msg_area.error, .msg_area.error {
         background:#FFCCCC;
-        border: 2px solid #FF0000;
 }
 
 #msg_area ul, .msg_area ul {
@@ -446,7 +451,7 @@ div.main_area h1 {
         color: #000000;
         text-decoration: none;
         padding-left: 20px;
-        background: url(../img/bg_options.gif) no-repeat;
+        background: url(/media/img/bg_options.gif) no-repeat;
         cursor: pointer;
 }
 .main_area h2.red {
@@ -470,7 +475,7 @@ div.main_area h1 {
         float: right;
         width: 16px;
         height: 16px;
-        background: url(../img/bg_help.gif) no-repeat;
+        background: url(/media/img/bg_help.gif) no-repeat;
         margin: 2px;
         text-decoration: none;
 }
@@ -508,7 +513,7 @@ div.photo a span {
 
 a.delete {
         display: block;
-        background: url(../img/ico_edit-delete.png) no-repeat;
+        background: url(/media/img/ico_edit-delete.png) no-repeat;
         width: 16px;
         height: 16px;
         padding-top: 2px;
@@ -516,14 +521,14 @@ a.delete {
 
 a.edit {
         display: block;
-        background: url(../img/ico_edit.png) no-repeat;
+        background: url(/media/img/ico_edit.png) no-repeat;
         width: 16px;
         height: 16px;
         padding-top: 2px;
 }
 
 a.add {
-        background: url(../img/16/list-add.png) no-repeat 0 3px;
+        background: url(/media/img/16/list-add.png) no-repeat 0 3px;
         padding-right: 22px;
         padding-bottom: 22px;
         width: 6px;
@@ -540,24 +545,24 @@ fieldset a.add_to_form span {
 }
 
 a.list {
-        background: url(../img/16/filetype_small_dir.gif) no-repeat 0 3px;
+        background: url(/media/img/16/filetype_small_dir.gif) no-repeat 0 3px;
 }
 
 
 a.group {
-        background: url(../img/16/people-clients.png) no-repeat 0 3px;
+        background: url(/media/img/16/people-clients.png) no-repeat 0 3px;
 }
 
 a.group_add {
-        background: url(../img/16/group_add.png) no-repeat 0 3px;
+        background: url(/media/img/16/group_add.png) no-repeat 0 3px;
 }
 
 a.queue {
-        background: url(../img/16/filetype_small_rar.gif) no-repeat 0 3px;
+        background: url(/media/img/16/filetype_small_rar.gif) no-repeat 0 3px;
 }
 
 a.document {
-        background: url(../img/16/attachment.png) no-repeat 0 3px;
+        background: url(/media/img/16/attachment.png) no-repeat 0 3px;
 }
 
 
@@ -806,74 +811,74 @@ select.high {
 }
 
 li a.add {
-        background: url(../img/16/list-add.png) no-repeat 0 3px;
+        background: url(/media/img/16/list-add.png) no-repeat 0 3px;
 }
 
 li a.list {
-        background: url(../img/16/filetype_small_dir.gif) no-repeat 0 3px;
+        background: url(/media/img/16/filetype_small_dir.gif) no-repeat 0 3px;
 }
 .sidebar li .client_home {
-        /*background: url(../img/16/go-home.png) no-repeat 0 3px;*/
+        /*background: url(/media/img/16/go-home.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_form {
-        /*background: url(../img/16/people-clients.png) no-repeat 0 3px;*/
+        /*background: url(/media/img/16/people-clients.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_admit_form {
-        /*background: url(../img/ico_reg.png) no-repeat 0 3px;*/
+        /*background: url(/media/img/ico_reg.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .referral_edit, .edit_generic {
-        /*background: url(../img/ico_edit.png) no-repeat 0 6px;*/
+        /*background: url(/media/img/ico_edit.png) no-repeat 0 6px;*/
 }
 
 .sidebar li .client_referral_list {
-        /*background: url(../img/16/referral.png) no-repeat 0 3px;*/
+        /*background: url(/media/img/16/referral.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_services {
-        /*background: url(../img/16/services.png) no-repeat 0 3px;*/
+        /*background: url(/media/img/16/services.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_calendar {
-        /*background: url(../img/16/office-calendar.png) no-repeat 0 3px;*/
+        /*background: url(/media/img/16/office-calendar.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_messages {
-        /*background: url(../img/16/internet-mail.png) no-repeat 0 3px;*/
+        /*background: url(/media/img/16/internet-mail.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_referral_discharge {
-        /*background: url(../img/16/system-log-out.png) no-repeat 0 3px;*/
+        /*background: url(/media/img/16/system-log-out.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_referral_form {
-        /*background: url(../img/16/list-add.png) no-repeat 0 3px;*/
+        /*background: url(/media/img/16/list-add.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_user_form {
-        /*background: url(../img/16/system-users.png) no-repeat 0 3px;*/
+        /*background: url(/media/img/16/system-users.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_order {
-        /*background: url(../img/16/edit-delete.png) no-repeat 0 3px;*/
+        /*background: url(/media/img/16/edit-delete.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .client_family {
-        /*background: url(../img/16/client_family.png) no-repeat 0 3px;*/
+        /*background: url(/media/img/16/client_family.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .contact_order {
-        /*background: url(../img/16/edit-delete.png) no-repeat 0 3px;*/
+        /*background: url(/media/img/16/edit-delete.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .print {
-        /*background: url(../img/16/print.png) no-repeat 0 3px;*/
+        /*background: url(/media/img/16/print.png) no-repeat 0 3px;*/
 }
 
 .sidebar li .occurrence_confirmation {
-        /*background: url(../img/16/internet-news-reader.png) no-repeat 0 3px;*/
+        /*background: url(/media/img/16/internet-news-reader.png) no-repeat 0 3px;*/
 }
 
 .sidebar input.save_button {
@@ -1003,7 +1008,7 @@ hr {
         color: #999999;
 }
 #documents table span.pdf {
-        background: url(../img/16/filetype_small_pdf.gif) no-repeat 0 2px;
+        background: url(/media/img/16/filetype_small_pdf.gif) no-repeat 0 2px;
         padding: 5px 5px 5px 20px;
 }
 .sidebar #status {
@@ -1026,7 +1031,7 @@ hr {
 }
 #content .documents_form p, #loading p {
         padding: 20px 45px;
-        background: url(../img/16/ajax_load.gif) no-repeat 20px 18px;
+        background: url(/media/img/16/ajax_load.gif) no-repeat 20px 18px;
         font-weight: bold;
         color: #999999;
 }
@@ -1080,7 +1085,7 @@ div.schedule #search_header {
 }
 
 .contact #search_header a.quick_search {
-        background: #FFFFFF url(../img/22/search.png) no-repeat 98% 3px;
+        background: #FFFFFF url(/media/img/22/search.png) no-repeat 98% 3px;
         padding: 15px 12px 15px 14px;
         margin-top: 7px;
         float: left;
@@ -1096,7 +1101,7 @@ div.schedule #search_header {
         float: left;
         width: 26px;
         height: 48px;
-        background: url(../img/22/cleanup.png) 5px 12px no-repeat;
+        background: url(/media/img/22/cleanup.png) 5px 12px no-repeat;
 }
 #letter_menu {
         margin-top: 15px;
@@ -1128,20 +1133,20 @@ div.schedule #search_header {
 }
 #letter_back {
         padding: 32px 26px 0 6px;
-        background: url(../img/arrow_back.png) no-repeat;
+        background: url(/media/img/arrow_back.png) no-repeat;
 }
-#letter_back.disable {background: url(../img/arrow_back_disable.png)}
+#letter_back.disable {background: url(/media/img/arrow_back_disable.png)}
 #letter_back:hover {
-        background: url(../img/arrow_back_on.png);
+        background: url(/media/img/arrow_back_on.png);
         text-decoration: none;
 }
 #letter_fwd {
         padding: 32px 0 0 32px;
-        background: url(../img/arrow_fwd.png) no-repeat;
+        background: url(/media/img/arrow_fwd.png) no-repeat;
 }
-#letter_fwd.disable {background: url(../img/arrow_fwd_disable.png) no-repeat;}
+#letter_fwd.disable {background: url(/media/img/arrow_fwd_disable.png) no-repeat;}
 #letter_fwd:hover {
-        background: url(../img/arrow_fwd_on.png);
+        background: url(/media/img/arrow_fwd_on.png);
         text-decoration: none;
 }
 #search_results {
@@ -1179,10 +1184,10 @@ div.schedule #search_header {
         color: inherit;
 }
 
-#search_results tr.person, #search_results tr.person:hover { background-image: url(../img/16/proffessional.png); background-repeat: no-repeat; background-position: 98% 10px; }
-#search_results tr.clinic,  #search_results tr.clinic:hover {background-image: url(../img/16/go-home.png); background-repeat: no-repeat; background-position: 98% 10px;}
-#search_results tr.person.gestorpsi,  #search_results tr.person.gestorpsi:hover { background-image: url(../img/16/proffessional_gestor.png); background-repeat: no-repeat; background-position: 98% 10px; }
-#search_results tr.clinic.gestorpsi,  #search_results tr.clinic.gestorpsi:hover {background-image: url(../img/16/go-home_gestor.png); background-repeat: no-repeat; background-position: 98% 10px;}
+#search_results tr.person, #search_results tr.person:hover { background-image: url(/media/img/16/proffessional.png); background-repeat: no-repeat; background-position: 98% 10px; }
+#search_results tr.clinic,  #search_results tr.clinic:hover {background-image: url(/media/img/16/go-home.png); background-repeat: no-repeat; background-position: 98% 10px;}
+#search_results tr.person.gestorpsi,  #search_results tr.person.gestorpsi:hover { background-image: url(/media/img/16/proffessional_gestor.png); background-repeat: no-repeat; background-position: 98% 10px; }
+#search_results tr.clinic.gestorpsi,  #search_results tr.clinic.gestorpsi:hover {background-image: url(/media/img/16/go-home_gestor.png); background-repeat: no-repeat; background-position: 98% 10px;}
 
 
 #legend div {
@@ -1284,7 +1289,7 @@ select.country {
 fieldset a.add_to_form {
         display:block;
         clear: both;
-        background: url(../img/22/list-add.png) no-repeat;
+        background: url(/media/img/22/list-add.png) no-repeat;
         padding-right: 22px;
         padding-bottom: 22px;
         margin: 80px 0 0 8px;
@@ -1298,7 +1303,7 @@ fieldset a.add_to_form span {
 label a.remove_from_form {
         clear: both;
         display: block;
-        background: url(../img/22/list-remove.png) no-repeat;
+        background: url(/media/img/22/list-remove.png) no-repeat;
         padding-right: 22px;
         padding-top: 22px;
         margin-top: 5px;
@@ -1391,7 +1396,8 @@ div.form_mini input[type=text], div.form_mini_noinsert input[type=text] {
 
 div.main_area.home p {
         font-size: 14px;
-        line-height: 18px !important;
+        line-height: 20px !important;
+color: #303030 !important;
 }
 
 div.main_area.home p a {
@@ -1399,7 +1405,8 @@ div.main_area.home p a {
 }
 
 div.main_area.home p small {
-        line-height: 10px;
+        line-height: 13px;
+        color: #444444;
 }
 
 div.main_area.home h1 {
@@ -1479,10 +1486,10 @@ body .main_area.login form fieldset {
         border: 1px solid #838383;
 }
 body .main_area.login form fieldset.orgField {
-        background: #D3E7E7 url(../img/22/go-home.png) no-repeat 5px 5px;
+        background: #D3E7E7 url(/media/img/22/go-home.png) no-repeat 5px 5px;
 }
 body .main_area.login form fieldset.userField {
-        background:#ECECEC url(../img/22/people-professional.png) no-repeat 5px 5px;
+        background:#ECECEC url(/media/img/22/people-professional.png) no-repeat 5px 5px;
 }
 form p {
     font-size: 10px;

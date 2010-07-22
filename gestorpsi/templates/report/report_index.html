@@ -30,10 +30,6 @@ GNU General Public License for more details.
 <script type="text/javascript" src="/media/js/gestorpsi.report.js"></script>
 <script type="text/javascript" src="/media/js/gestorpsi.report.forms.js"></script>
 
-<div id="msg_area" class="alert saved_successfully" style="display:none;">
-    {% trans "Report saved successfully with label" %} <b></b>
-</div>
-
 <h2 class="title_report title">{% trans "Report for" %} {{ user.get_profile.org_active }}</h2>
 
 <!-- save report form  -->
@@ -75,7 +71,11 @@ GNU General Public License for more details.
             <!-- referral filters goes here! -->
         </form>
         </div>
-        
+
+    <div class="alert saved_successfully" style="display:none;">
+        {% trans "Report saved successfully with label" %} <b></b>
+    </div>
+
         <div class="dashboard_overview">
             <div class="loaded_report_title hidden">
                 <h4></h4>

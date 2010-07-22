@@ -123,7 +123,7 @@ class ServiceGroup(models.Model):
         return u'%s' % (self.description)
 
     class Meta:
-        ordering = ['service__name', 'description']
+        ordering = ['-active', 'service__name', 'description']
 
     def charged_members(self):
         from gestorpsi.referral.models import ReferralDischarge

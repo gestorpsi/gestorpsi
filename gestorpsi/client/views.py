@@ -442,7 +442,7 @@ def referral_save(request, object_id = None, referral_id = None):
                     indication.referral = Referral.objects.get(pk = object)
                     indication.save()
                 ''' if asked, add referral and client to some existing group ''' 
-                if request.POST.get('group'):
+                if object.service.is_group:
                     group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active)
                     for c in request.POST.getlist('client'):
                         gm = GroupMembers(group=group, client=Client.objects.get(pk = object_id, person__organization=request.user.get_profile().org_active), referral=object)

@@ -111,7 +111,7 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
     class Meta:
         model = ScheduleOccurrence
 
-    def save(self, event):
+    def save(self, event, disable_check_busy = False):
         if self.cleaned_data['repeats'] == 'no':
             params = {}
         else:
@@ -127,6 +127,7 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
             self.cleaned_data['device'],
             self.cleaned_data['annotation'],
             self.cleaned_data['is_online'],
+            disable_check_busy,
             **params
         )
 

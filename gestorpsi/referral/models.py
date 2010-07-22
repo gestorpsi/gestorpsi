@@ -156,21 +156,22 @@ class Referral(Event):
         try: self.event_type = EventType.objects.all()[0]
         except: self.event_type = EventType.objects.create(abbr='')
 
-    def add_occurrences(self, start_time, end_time, room, device, annotation, is_online, **rrule_params):
+    def add_occurrences(self, start_time, end_time, room, device, annotation, is_online, disable_check_busy = False, **rrule_params):
         rrule_params.setdefault('freq', rrule.DAILY)
         error_list = []
         group = None
         if 'count' not in rrule_params and 'until' not in rrule_params:
-            adding_to_existing_group = False
-            try: # this try function is used to book a group. verify if the occurrence inserted is part from the same group
-                occurrence = ScheduleOccurrence.objects.filter(start_time=ev, end_time=ev + delta, room=Room.objects.get(pk=room))[0]
-                if occurrence.scheduleoccurrence.event.referral.group and occurrence.scheduleoccurrence.event.referral.group == self.group:
-                    adding_to_existing_group = True
-            except:
-                adding_to_existing_group = False
+            #adding_to_existing_group = False
+            #try: # this try function is used to book a group. verify if the occurrence inserted is part from the same group
+                #occurrence = ScheduleOccurrence.objects.filter(start_time=ev, end_time=ev + delta, room=Room.objects.get(pk=room))[0]
+                #if occurrence.scheduleoccurrence.event.referral.group and occurrence.scheduleoccurrence.event.referral.group == self.group:
+                    #adding_to_existing_group = True
+            #except:
+                #adding_to_existing_group = False
 
             is_busy = self.check_busy(start_time, end_time, room)
-            if not is_busy or adding_to_existing_group:
+            #if not is_busy or adding_to_existing_group:
+            if not is_busy or disable_check_busy:
                 o = ScheduleOccurrence.objects.create(event=self, start_time=start_time, end_time=end_time, room_id=room, annotation=annotation)
                 o.device = device
                 o.is_online = is_online
@@ -180,16 +181,17 @@ class Referral(Event):
         else:
             delta = end_time - start_time
             for ev in rrule.rrule(dtstart=start_time, **rrule_params):
-                adding_to_existing_group = False
-                try: # this try function is used to book a group. verify if the occurrence inserted is part from the same group
-                    occurrence = ScheduleOccurrence.objects.filter(start_time=ev, end_time=ev + delta, room=Room.objects.get(pk=room))[0]
-                    if occurrence.scheduleoccurrence.event.referral.group and occurrence.scheduleoccurrence.event.referral.group == self.group:
-                        adding_to_existing_group = True
-                except:
-                    adding_to_existing_group = False
+                #adding_to_existing_group = False
+                #try: # this try function is used to book a group. verify if the occurrence inserted is part from the same group
+                    #occurrence = ScheduleOccurrence.objects.filter(start_time=ev, end_time=ev + delta, room=Room.objects.get(pk=room))[0]
+                    #if occurrence.scheduleoccurrence.event.referral.group and occurrence.scheduleoccurrence.event.referral.group == self.group:
+                        #adding_to_existing_group = True
+                #except:
+                    #adding_to_existing_group = False
                 
                 is_busy = self.check_busy(ev, (ev + delta), room)
-                if not is_busy or adding_to_existing_group:
+                #if not is_busy or adding_to_existing_group:
+                if not is_busy or disable_check_busy:
                     o = ScheduleOccurrence.objects.create(event=self, start_time=ev, end_time=ev + delta, room_id=room, annotation=annotation)
                     o.device = device
                     o.is_online = is_online

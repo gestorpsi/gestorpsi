@@ -55,7 +55,7 @@ GNU General Public License for more details.
             <p>
                 <a href="/client/{{ object.id}}/referral/{{ i.id }}/">{{ i.service }}</a>{% for g in i.service.servicegroup_set.all %}{% for cl in g.client.all %}{% ifequal cl object %} ({{ g }}){% endifequal %}{% endfor %}{% endfor %} {% if i.upcoming_occurrences %} {% trans "with" %} {{ i.upcoming_occurrences|length }} {% trans "occurrences remaining" %}{% endif %}<br />
                 {% for p in i.professional.all %}
-                <b>{{ p }}</b> {{ p.professionalIdentification.profession }} - {{ p.professionalIdentification.profession.symbol }}&nbsp;{{ p.professionalIdentification }} <br />
+                <b>{{ p }}</b> {{ p.professionalIdentification.profession }}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %} - {% if p.professionalIdentification.profession.symbol %}{{ p.professionalIdentification.profession.symbol }}{% endif %}&nbsp;{% if p.professionalIdentification.registerNumber %}{{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %} <br />
                 {% endfor %}
                     {% if i.next_occurrence %}
                         {% trans "Next occurrence" %}:

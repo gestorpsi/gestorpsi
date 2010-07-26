@@ -71,7 +71,10 @@ def _can_write_group(request, service):
 
 def _group_list(request, service = None):
     # filter only groups that request user have permission to read them clients
-    group_list = ServiceGroup.objects.filter(service=service, service__referral__client__id__in = [i.id for i in _service_clients(request, service)]).distinct()
+    if request.user.groups.filter(name='administrator') or request.user.groups.filter(name='secretary'):
+        group_list = ServiceGroup.objects.filter(service=service).distinct()
+    else:
+        group_list = ServiceGroup.objects.filter(service=service, service__referral__client__id__in = [i.id for i in _service_clients(request, service)]).distinct()
 
     return group_list
 

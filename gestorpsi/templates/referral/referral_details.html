@@ -102,7 +102,7 @@ GNU General Public License for more details.
                 {% endif %}
             {% else %}
                 {% for p in referral.professional.all %}
-                    {{ p }} {{ p.professionalIdentification.profession }} - {{ p.professionalIdentification.profession.symbol }}&nbsp;{{ p.professionalIdentification }} <br />
+                    {{ p }} {{ p.professionalIdentification.profession }}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %} - {% if p.professionalIdentification.profession.symbol %}{{ p.professionalIdentification.profession.symbol }}{% endif %}&nbsp;{% if p.professionalIdentification.registerNumber %}{{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %} <br />
                 {% endfor %}
             {% endif %}
             <br>

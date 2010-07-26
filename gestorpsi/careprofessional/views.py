@@ -78,6 +78,10 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
 
     if is_student:
         student_form = StudentProfileForm(instance=object.studentprofile) if object_id else StudentProfileForm()
+        ServiceTypes = Service.objects.filter( active=True, organization=request.user.get_profile().org_active, academic_related=True )
+    else:
+        ServiceTypes = Service.objects.filter( active=True, organization=request.user.get_profile().org_active)
+    
 
     return render_to_response(template_name, {
                                     'clss':request.GET.get('clss'),
@@ -102,7 +106,7 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
                                     'States': State.objects.all(),
                                     'MaritalStatusTypes': MaritalStatus.objects.all(),
                                     'PlaceTypes': PlaceType.objects.all(),
-                                    'ServiceTypes': Service.objects.filter( active=True, organization=request.user.get_profile().org_active ),
+                                    'ServiceTypes': ServiceTypes,
                                     'Cities': cities,
                                     },
                               context_instance=RequestContext(request)
@@ -193,6 +197,12 @@ def save_careprof(request, object_id, save_person, is_student=False):
 
 @permission_required_with_403('careprofessional.careprofessional_write')
 def save(request, object_id=None, save_person=True, is_student=False):
+    
+    if is_student: # verify if student can join in service
+        for ps in request.POST.getlist('professional_service'):
+            if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active, academic_related=True, pk=ps):
+                return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
     object = save_careprof(request, object_id, save_person, is_student)
     clss = request.GET.get('clss')
     exist_referral = object[1]

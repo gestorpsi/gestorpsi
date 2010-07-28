@@ -86,7 +86,7 @@ function updateUser(url, deactive, app) {
         });
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
-        buildPaginator(app, json['paginator'], json['util'], 'div#list');
+        buildPaginator(app, json['paginator'], json['util'], 'div#list', deactive);
         $("ul.paginator a").unbind().click(function(){
             updateUser($(this).attr('href'), deactive, app);
             return false;
@@ -121,7 +121,7 @@ function updateEmployee(url, deactive, app) {
         });
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
-        buildPaginator(app, json['paginator'], json['util'], 'div#list');
+        buildPaginator(app, json['paginator'], json['util'], 'div#list', deactive);
         $("ul.paginator a").unbind().click(function(){
             updateEmployee($(this).attr('href'), deactive, app);
             return false;
@@ -176,7 +176,7 @@ function updateContact(url, deactive, app) {
         });
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
-        buildPaginator(app, json['paginator'], json['util'], 'div#list');
+        buildPaginator(app, json['paginator'], json['util'], 'div#list', deactive);
         $('div.registers_available span.object_length span').text(json['util']['object_length']);
         $('div.registers_available span.organizations_length span').text(json['util']['organizations_length']);
         $('div.registers_available span.professionals_length span').text(json['util']['professionals_length']);
@@ -211,7 +211,7 @@ function updateRoom(url, deactive, app) {
         });
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
-        buildPaginator(app, json['paginator'], json['util'], 'div#list');
+        buildPaginator(app, json['paginator'], json['util'], 'div#list', deactive);
         $("ul.paginator a").unbind().click(function(){
             updateRoom($(this).attr('href'), deactive, app);
             return false;
@@ -247,7 +247,7 @@ function updatePlace(url, deactive, app) {
         });
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
-        buildPaginator(app, json['paginator'], json['util'], 'div#list');
+        buildPaginator(app, json['paginator'], json['util'], 'div#list', deactive);
         $("ul.paginator a").unbind().click(function(){
             updatePlace($(this).attr('href'), deactive, app);
             return false;
@@ -283,7 +283,7 @@ function updateDevice(url, deactive, app) {
         });
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
-        buildPaginator(app, json['paginator'], json['util'], 'div#list');
+        buildPaginator(app, json['paginator'], json['util'], 'div#list', deactive);
         $("ul.paginator a").unbind().click(function(){
             updateDevice($(this).attr('href'), deactive, app);
             return false;
@@ -364,7 +364,7 @@ function updateService(url, deactive, app) {
         });
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
-        buildPaginator(app, json['paginator'], json['util'], 'div#list');
+        buildPaginator(app, json['paginator'], json['util'], 'div#list', deactive);
         $("ul.paginator a").unbind().click(function(){
             updateService($(this).attr('href'), deactive, app)
             return false;

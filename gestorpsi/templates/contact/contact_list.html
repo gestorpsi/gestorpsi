@@ -23,9 +23,10 @@ GNU General Public License for more details.
 
 {% block submenu %}
     <ul>
-        <li><a class="first active" href="/contact/">{% trans "all" %}</a></li>
+        <li><a class="first{% if not deactive %} active{% endif %}" href="/contact/">{% trans "all" %}</a></li>
         <li><a href="/contact/form/organization/">{% trans "add organization" %}</a></li>
         <li><a href="/contact/form/professional/">{% trans "add professional" %}</a></li>
+        <li><a class="{% if deactive %}active{% endif %}" href="/contact/deactive/">{% trans "all Deactive" %}</a></li>
 
     </ul>
 {% endblock %}
@@ -34,11 +35,15 @@ GNU General Public License for more details.
 
 <div class="registers_available">
 
-	<h2 class="title_contacts">{% trans "All Contacts" %}</h2>
+    {% if deactive %}
+        <h2 class="title_clients">{% trans "All Contacts Deactive" %}<span class="hidden"> {% trans "with filter" %}<span></span></span></h2>
+    {% else %}
+        <h2 class="title_clients">{% trans "All Contacts" %}<span class="hidden"> {% trans "with filter" %}<span></span></span></h2>
+    {% endif %}
 	<p class="description">{% trans "Displaying" %} <span class="object_length"><span></span> {% trans " general contact(s), " %} </span>, <span class="organizations_length"> <span></span> {% trans " organization(s) and " %} </span> <span class="professionals_length"> <span></span> {% trans " professionals(s)" %}</span>.{% trans "Page" %} <b></b> {% trans "of" %} <b></b></p>
 
 	<div class="main_area contact">
-        <div id="search_header" class="contact_search">
+        <div id="search_header" class="contact_search {% if deactive %} deactive {% else %} active {% endif %}">
             {% include "tags/search_header.html" %}
         </div>
 
@@ -56,7 +61,12 @@ GNU General Public License for more details.
             </thead>
             <tbody>
             <script>
-            updateContact('/contact/page1');
+            {% if deactive %}
+                updateContact('/contact/page1/deactive/', true);
+            {% else %}
+                updateContact('/contact/page1');
+            {% endif %}
+            
             </script>
             </tbody>
         </table>

@@ -22,24 +22,48 @@ $(function() {
      * contact quick filter
      */
 
-    $('div#search_header.contact_search table#letter_menu tr td a, div#search_header.contact_search a#letter_back, div#search_header.contact_search a#letter_fwd').click(function() {
+    $('div#search_header.contact_search.active table#letter_menu tr td a, div#search_header.contact_search a#letter_back, div#search_header.contact_search a#letter_fwd').click(function() {
         updateContact('/contact/initial/' + $(this).attr('initial') + '/page1/', false, 'contact/initial/'+$(this).attr('initial'));
+    });
+
+    /**
+     * contact quick filter deactive
+     */
+
+    $('div#search_header.contact_search.deactive table#letter_menu tr td a, div#search_header.contact_search a#letter_back, div#search_header.contact_search a#letter_fwd').click(function() {
+        updateContact('/contact/initial/' + $(this).attr('initial') + '/page1/deactive/', true, 'contact/initial/'+$(this).attr('initial'));
     });
 
     /**
     * contact quick search
     */
 
-    $('div#search_header.contact_search a.quick_search').click(function() {
+    $('div#search_header.contact_search.active a.quick_search').click(function() {
         ($(this).prev().val().length >= 1) ? updateContact('/contact/filter/' + $(this).prev().val() + '/page1/', false, 'contact/filter/' + $(this).prev().val()) : updateContact('/contact/page1');
+    });
+
+    /**
+    * contact quick search deactive
+    */
+
+    $('div#search_header.contact_search.deactive a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateContact('/contact/filter/' + $(this).prev().val() + '/page1/deactive/', true, 'contact/filter/' + $(this).prev().val()) : updateContact('/contact/page1');
     });
 
     /**
      * contact clean up
      */
 
-    $('div#search_header.contact_search a#cleanup').click(function() {
+    $('div#search_header.contact_search.active a#cleanup').click(function() {
         updateContact('/contact/page1');
+    });
+
+    /**
+     * contact clean up deactive
+     */
+
+    $('div#search_header.contact_search.deactive a#cleanup').click(function() {
+        updateContact('/contact/page1/deactive/', true);
     });
 
     /**

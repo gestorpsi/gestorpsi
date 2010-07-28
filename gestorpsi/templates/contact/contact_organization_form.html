@@ -25,7 +25,7 @@ GNU General Public License for more details.
         <li><a class="first" href="/contact/">{% trans "all" %}</a></li>
                 <li><a class="{% if not object.id %}active{% endif %}" href="/contact/form/organization/">{% trans "add organization" %}</a></li>
         <li><a class="" href="/contact/form/professional/">{% trans "add professional" %}</a></li>
-
+        <li><a class="{% if deactive %}active{% endif %}" href="/contact/deactive/">{% trans "all Deactive" %}</a></li>
         {% if object.id %}<li><a class="active">{{ object }}</a></li>{% endif %}
     </ul>
 {% endblock %}
@@ -85,7 +85,7 @@ GNU General Public License for more details.
             <div class="contact_actions">	
             <h3>{% trans 'Object Actions' %}</h3>
             <ul>
-                <li><a href="/contact/organization/order/{{ object.id }}/" class="contact_order" title="{{ object.name }}">{% if object.active %}{% trans "Deactivate" %}{% else %}{% trans "Activate" %}{% endif %} </a></li>
+                <li><a href="/contact/organization/order/{{ object.id }}/" class="contact_order" {% if object.active %}onclick="if(!confirm('{% trans "Disabling an organization, all related professionals will also be disabled. Continue?" %}')) { return false; }"{% endif %} title="{{ object.name }}">{% if object.active %}{% trans "Deactivate" %}{% else %}{% trans "Activate" %}{% endif %} </a></li>
             </ul>
             </div>
         {% endif %}

@@ -25,6 +25,7 @@ GNU General Public License for more details.
         <li><a class="first" href="/contact/">{% trans "all" %}</a></li>
         <li><a class="" href="/contact/form/organization/">{% trans "add organization" %}</a></li>
         <li><a class="{% if not object.id %}active{% endif %}" href="/contact/form/professional/">{% trans "add professional" %}</a></li>
+        <li><a class="{% if deactive %}active{% endif %}" href="/contact/deactive/">{% trans "all Deactive" %}</a></li>
         {% if object.id %}<li><a class="active">{{ object }}</a></li>{% endif %}
     </ul>
 {% endblock %}
@@ -61,7 +62,7 @@ GNU General Public License for more details.
 <fieldset class="professional contact">
 <legend>{% trans "Professional Organization" %}</legend>
 		<label>{% trans "Select Professional Organization, or"%} <a class="form_mini" display="organization_mini">{% trans "add a new one" %}</a><br />
-		<select name="organization" class="extrabig asm">
+		<select name="organization" class="extrabig asm"{% if not object.active %} disabled{% endif%}>
 			{% for o in organizations %}
                <option value="{{ o.id }}"{% ifequal object.person.organization.all.0.id o.id %} selected{% endifequal %}>{{ o.name }}</option>
 			{% endfor %}

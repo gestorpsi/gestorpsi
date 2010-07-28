@@ -43,7 +43,7 @@ class ContactManager(object):
         person_id = request.user.get_profile().person.id, 
         filter_name = 'elvis presley',
         filter_type = 1, # where 1 = org, 2 = professional
-        active = True # True or False
+        deactive = False # True or False
         )
     """
 
@@ -86,21 +86,21 @@ class ContactManager(object):
         cursor.execute(query, [ \
             kwargs.get('org_id') or '%', \
             kwargs.get('filter_name') or '%', \
-            kwargs.get('active') or True, \
+            False if kwargs.get('deactive') else True, \
             kwargs.get('org_id') or '%', \
             kwargs.get('person_id') or '%', \
             kwargs.get('filter_name') or '%', \
-            kwargs.get('active') or True, \
+            False if kwargs.get('deactive') else True, \
             kwargs.get('org_id') or '%', \
             kwargs.get('person_id') or '%', \
             kwargs.get('filter_name') or '%', \
-            kwargs.get('active') or True, \
+            False if kwargs.get('deactive') else True, \
             kwargs.get('org_id') or '%', \
             kwargs.get('filter_name') or '%', \
             kwargs.get('filter_name') or '%', \
-            kwargs.get('active') or True, \
+            False if kwargs.get('deactive') else True, \
             ])
-
+        print connection.queries
         return cursor_to_list(cursor.fetchall(), kwargs.get('filter_type') or None)
 
 class Contact(object):

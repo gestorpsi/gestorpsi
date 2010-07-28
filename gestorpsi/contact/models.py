@@ -82,7 +82,7 @@ class ContactManager(object):
             ) AND careprofessional_careprofessional.active=%s  ORDER BY name'
         
         cursor = connection.cursor()
-        
+
         cursor.execute(query, [ \
             kwargs.get('org_id') or '%', \
             kwargs.get('filter_name') or '%', \
@@ -100,7 +100,7 @@ class ContactManager(object):
             kwargs.get('filter_name') or '%', \
             False if kwargs.get('deactive') else True, \
             ])
-        print connection.queries
+
         return cursor_to_list(cursor.fetchall(), kwargs.get('filter_type') or None)
 
 class Contact(object):

@@ -56,7 +56,7 @@ GNU General Public License for more details.
                 {% if not o.was_confirmed %}
                 <a href="/schedule/events/{{ o.id }}/confirmation/">{% trans "Confirm occurrence for this client" %}</a>
                 {% else %}
-                {% trans "Occurrence already confirmed" %} - <a href="/client/{{ o.event.referral.client.all.0.id }}/occurence/{{ o.id }}/">{{ o.occurrenceconfirmation }}</a>
+                {% trans "Occurrence already confirmed" %} - <a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.occurrenceconfirmation }}</a>
                 {% endif %}
                 </td>
                 <td></td>

@@ -397,7 +397,7 @@ table {
             <tr class="zebra_1">
                 <td class="first">{% trans "Group" %}</td>
                 <td>
-                {% if not i.referralgroup_set.all %}{% trans "No"%}{% else%}{{ i.referralgroup_set.all|join:", " }}{% endif %}</td>
+                {% if not i.group %}{% trans "No"%}{% else%}{{ i.group }}{% endif %}</td>
             </tr>
             <tr>
                 <td class="first">{% trans "Status" %}</td>

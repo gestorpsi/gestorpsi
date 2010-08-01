@@ -34,9 +34,9 @@ class Ticket(models.Model):
     """
     id= UuidField(primary_key=True)
     user = models.ForeignKey(Person, null=True)
-    contact_name = models.CharField(max_length=100)
-    contact_email = models.CharField(max_length=100)
-    contact_phone = models.CharField(max_length=20)
+    contact_name = models.CharField(max_length=255)
+    contact_email = models.CharField(max_length=255)
+    contact_phone = models.CharField(max_length=255)
     ticket_id = models.IntegerField(max_length=8)
     question = models.TextField()
     status = models.IntegerField( max_length=1, choices=STATUS, default = 1)

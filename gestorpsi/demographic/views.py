@@ -32,7 +32,7 @@ from gestorpsi.client.views import _access_check
 def home(request, object_id):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
     # check access by requested user
-    if not _access_check(request, object):
+    if not _access_check(request, object) or object.is_company():
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     return render_to_response('demographic/demographic_home.html', {
@@ -44,7 +44,7 @@ def home(request, object_id):
 def education(request, object_id):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
     # check access by requested user
-    if not _access_check(request, object):
+    if not _access_check(request, object) or object.is_company():
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     if hasattr(object, 'educationallevel'):
@@ -62,7 +62,7 @@ def education(request, object_id):
 def education_save(request, object_id):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
     # check access by requested user
-    if not _access_check(request, object):
+    if not _access_check(request, object) or object.is_company():
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     if hasattr(object, 'educationallevel'):
@@ -84,7 +84,7 @@ def occupation(request, object_id, occupation_id=0):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
 
     # check access by requested user
-    if not _access_check(request, object):
+    if not _access_check(request, object) or object.is_company():
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     occupation_object = get_object_or_None(Profession, id=occupation_id) or Profession()
@@ -104,7 +104,7 @@ def occupation(request, object_id, occupation_id=0):
 def occupation_save(request, object_id, occupation_id=0):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
     # check access by requested user
-    if not _access_check(request, object):
+    if not _access_check(request, object) or object.is_company():
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     occupation_object = get_object_or_None(Profession, id=occupation_id) or Profession()

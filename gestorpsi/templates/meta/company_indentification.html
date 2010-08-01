@@ -18,8 +18,6 @@ GNU General Public License for more details.
 
 <div class="photo">
         <img class="img_people" organization="{{ user.get_profile.org_active.id }}" src="{% if object.person.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
-        <a class="male notajax gender{% ifequal object.person.gender '2' %} active{% endifequal %}" value="2"><span>{% trans "Male" %}</span></a>
-        <a class="female notajax gender{% ifequal object.person.gender '1' %} active{% endifequal %}" value="1"><span>{% trans "Female" %}</span></a>
 
         <a class="clips notajax">{% trans "Photo" %}</a>
         <input type="hidden" name="photo" value="{{ object.person.photo }}" class="photo" />

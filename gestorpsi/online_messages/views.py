@@ -90,7 +90,7 @@ def _referral_messages(request, referral_id, object_id, template_name="messages/
 
     if not request.user.get_profile().person.is_client():
         # check if professional can read it
-        if not _access_check(request, object) and not _access_check_referral_write(request, referral):
+        if not _access_check(request, object) and not _access_check_referral_write(request, referral) or object.is_company():
             return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
         if not referral.topics.all():
@@ -108,7 +108,7 @@ def _topic_messages(request, referral_id, topic_id, object_id, template_name="me
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
     referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active)
 
-    if not _access_check(request, object) and not _access_check_referral_write(request, referral):
+    if not _access_check(request, object) and not _access_check_referral_write(request, referral) or object.is_company():
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     messagetopic = MessageTopic.objects.get(pk=topic_id)
@@ -140,7 +140,7 @@ def _new_topic_message(request, referral_id, topic_id, object_id, redirect_to=No
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
     referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active)
 
-    if not _access_check_referral_write(request, referral):
+    if not _access_check_referral_write(request, referral) or object.is_company():
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     messagetopic = MessageTopic.objects.get(pk=topic_id)
@@ -168,7 +168,7 @@ def new_message_topic(request, referral_id, object_id, template_name="messages/m
     referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active)
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
 
-    if not _access_check_referral_write(request, referral):
+    if not _access_check_referral_write(request, referral) or object.is_company():
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     if not request.POST:

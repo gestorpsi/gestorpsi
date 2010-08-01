@@ -138,7 +138,14 @@ table {
 </tbody>
 </table>
 <br />
-<b>{% trans "Document" %}</b><hr />
+
+{% if object.is_company and object.person.company.cnae_class %}
+<strong>{% trans "Cnae" %}</strong><hr />
+{{ object.person.company.cnae_class }} - {{ object.person.company.cnae_class_name }}
+<br /><br />
+{% endif %}
+
+<strong>{% trans "Document" %}</strong><hr />
 {% if not object.person.document.all %}
     {% trans "Not Informed" %}
 {% else %}
@@ -214,7 +221,7 @@ table {
         {% trans "There is no related client information" %}
     {% else %}
     {% for i in company_related_clients %}
-        {{ i }} ({% if i.active %}{% trans "Active" %}{% else %}{% trans "Deactive" %}{% endif %}) {% if i.responsible %} - {% trans "Responsible" %}{% endif %}
+        {{ i.client }} ({% if i.active %}{% trans "Active" %}{% else %}{% trans "Deactive" %}{% endif %}) {% if i.responsible %} - {% trans "Responsible" %}{% endif %}
     {% if not forloop.last %},{% endif %}
     {% endfor %}
     {% endif %}

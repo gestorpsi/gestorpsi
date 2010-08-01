@@ -608,7 +608,11 @@ def client_print(request, object_id = None):
         print_schedule = None if not request.POST.get('schedule') else True
         print_demographic = None if not request.POST.get('demographic') else True
         print_ehr = None if not request.POST.get('ehr') else True
-        company_related_clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active) if object.is_company else None
+        #company_related_clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active) if object.is_company else None
+        company_related_clients = []
+        if object.is_company():
+            company_related_clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active)
+    
         dict = {
             'referral': referral,
             'print_schedule': print_schedule,

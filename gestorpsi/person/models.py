@@ -24,6 +24,7 @@ from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util.first_capitalized import first_capitalized
+from gestorpsi.util.models import Cnae
    
 Gender = (
     ('0','No Information'),
@@ -234,6 +235,13 @@ class Company(models.Model):
 
     def __unicode__(self):
         return u'%s' % self.person.name
+    
+    def _cnae_class_name(self):
+        c = Cnae.objects.filter(id=self.cnae_class)
+        if len(c):
+            return c[0].cnae_class
+        return None
+    cnae_class_name = property(_cnae_class_name)
 
 reversion.register(Company, follow=['person','client'])
 reversion.register(CompanyClient)

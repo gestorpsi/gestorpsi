@@ -89,19 +89,15 @@ def add(request):
                             'clss':request.GET.get('clss'),
                             }, context_instance=RequestContext(request))
 
-# WILL BE DELETED SOON
-#@permission_required_with_403('users.users_read')
-#def form_new_user(request, object_id):
-#    profile = Profile()
-#    profile.person = get_object_or_404(Person, pk=object_id, organization=request.user.get_profile().org_active)
-#    profile.user = User(username=slugify(profile.person.name))
-#    return render_to_response('users/users_form.html', {
-#                                'profile': profile,
-#                                'emails': profile.person.emails.all(), },
-#                                context_instance=RequestContext(request))
-
 @permission_required_with_403('users.users_write')
 def create_user(request):
+    if not request.method == 'POST':
+        raise Http404
+
+    if User.objects.filter(username=request.POST.get('username').strip().lower()):
+        request.user.message_set.create(message=_('Error adding user <b>%s</b>: Username already exists.') % request.POST.get('username').strip().lower())
+        return HttpResponseRedirect('/user/add/?clss=error')
+        
     person = get_object_or_404(Person, pk=request.POST.get('id_person'), organization=request.user.get_profile().org_active)
     organization = request.user.get_profile().org_active
     username = request.POST.get('username').strip().lower()

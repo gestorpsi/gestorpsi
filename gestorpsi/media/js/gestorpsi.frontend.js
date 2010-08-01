@@ -128,8 +128,8 @@ $(function(){
          * close message box 
          */
 
-        $('#msg_area').effect('highlight', {}, 1000);
-        $('#msg_area a.close_link').click(function() {
+        $('.msg_area_top').effect('highlight', {}, 1000);
+        $('.msg_area_top a.close_link').click(function() {
             $(this).parent('#msg_area').effect('blind');
             $('a.prev_day, a.next_day').removeClass('margin_top_fix');
         });

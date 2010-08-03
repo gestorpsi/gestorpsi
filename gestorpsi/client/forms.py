@@ -25,8 +25,8 @@ class FamilyForm(forms.ModelForm):
 
     class Meta:
         model = Family
-        fields = ('name', 'relation_level', 'responsible', 'active')
-        
+        fields = ('name', 'relation_level', 'responsible', 'active', 'comment')
+    
     def save(self, request, client, *args, **kwargs):
         family = super(FamilyForm, self).save(*args, **kwargs)
         family.client = client
@@ -41,6 +41,5 @@ class FamilyForm(forms.ModelForm):
 
         family.client_related = client_related
         family.save()
-        
         return family
 

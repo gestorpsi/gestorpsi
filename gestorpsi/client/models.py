@@ -71,6 +71,7 @@ class Family(models.Model):
     relation_level = models.IntegerField(choices = FAMILY_RELATION, max_length=2, null=True, blank=True)
     responsible = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
+    comment = models.TextField(_('Comments'), blank=True, null=True)
 
     def __unicode__(self):
         return u"%s" % self.get_relation_level_display()
@@ -241,7 +242,7 @@ class Client(models.Model):
                 if i.responsible: responsable = True
                 relation_level = i.get_relation_level_display()
 
-            family_list.append([id, name, relation_level, responsable, i.id, i.active]) # id = client selected id, i.id = family relation id 
+            family_list.append([id, name, relation_level, responsable, i.id, i.active, i.comment]) # id = client selected id, i.id = family relation id 
         
         return family_list
     

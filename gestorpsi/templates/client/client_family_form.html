@@ -108,9 +108,15 @@ $(function() {
                         {% endif %}
                     </label>
                     
-                    {% if form.instance.id %}
-                    <label>{% trans "Is Active?" %}<br />
+                    
+                    <label{% if not form.instance.id %} style="display:none;"{% endif %}>{% trans "Is Active?" %}<br />
                     {{ form.active }}
+                    </label>
+                    
+                    {% if form.instance.id %}
+                    <div style="clear:both;"></div>
+                    <label>{{ form.comment.label }}<br />
+                    {{ form.comment }}
                     </label>
                     {% endif %}
 

@@ -145,70 +145,58 @@ table {
 <br /><br />
 {% endif %}
 
+{% if object.person.document.all %}
 <strong>{% trans "Document" %}</strong><hr />
-{% if not object.person.document.all %}
-    {% trans "Not Informed" %}
-{% else %}
 {{ object.person.document.all|join:"<br /> " }}
-{% endif %}
 <br /><br />
+{% endif %}
 
+{% if object.person.phones.all %}
 <strong>{% trans "Phone" %}</strong><hr />
-{% if not object.person.phones.all %}
-    {% trans "Not Informed" %}
-{% else %}
 {{ object.person.phones.all|join:", "}}
-{% endif %}
 <br /><br />
+{% endif %}
 
+{% if object.person.address.all %}
 <strong>{% trans "Address" %}</strong><hr />
-{% if not object.person.address.all %}
-    {% trans "Not Informed" %}
-{% else %}
 {% for i in object.person.address.all%}
     {{ i|safe }}
     {% if not forloop.last %}<br /><br />{% endif %}
 {% endfor %}
-{% endif %}
 <br /><br />
+{% endif %}
 
+{% if object.person.emails.all %}
 <strong>{% trans "Email" %}</strong><hr />
-{% if not object.person.emails.all %}
-    {% trans "Not Informed" %}
-{% else %}
 {% for i in object.person.emails.all %}
     {{ i.email }} ({{ i.email_type }})
     {% if not forloop.last %}, {% endif %}
 {% endfor %}
-{% endif %}
 <br /><br />
+{% endif %}
 
+{% if object.person.sites.all %}
 <strong>{% trans "Website" %}</strong><hr />
-{% if not object.person.sites.all %}
-    {% trans "Not Informed" %}
-{% else %}
 {% for i in object.person.sites.all %}
     {{ i.site }} {% if i.description %}({{ i.description }}){% endif %}
     {% if not forloop.last %}, {% endif %}
 {% endfor %}
-{% endif %}
 <br /><br />
+{% endif %}
 
+{% if object.person.instantMessengers.all %}
 <strong>{% trans "Instant Messenger" %}</strong><hr />
-{% if not object.person.instantMessengers.all %}
-    {% trans "Not Informed" %}
-{% else %}
 {{ object.person.instantMessengers.all|join:", " }}
-{% endif %}
 <br /><br />
+{% endif %}
 
-<strong>{% trans "Comments" %}</strong><hr />
+
 {% if not object.person.comments.all %}
-    {% trans "Not Informed" %}
-{% else %}
+<strong>
 {{ object.person.comments|safe }}
-{% endif %}
+</strong>
 <br /><br />
+{% endif %}
 
 
 <strong>
@@ -230,8 +218,7 @@ table {
         {% trans "There is no family members information" %}
     {% else %}
     {% for i in object.family_members_active %}
-    {{ i.1 }} ({{ i.2 }})
-    {% if not forloop.last %},{% endif %}
+    {{ i.1 }} - {{ i.2 }} {% if i.6 %}<br /><small>{{ i.6 }}</small>{% endif %}<br />
     {% endfor %}
     {% endif %}
 {% endif %}

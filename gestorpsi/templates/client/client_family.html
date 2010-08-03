@@ -76,7 +76,7 @@ $(function() {
         {% for i in object.family_members %}
             <tr class="zebra_{% cycle '0' '1' %}">
                 <td class="title"><a href="/client/{{ i.0 }}/home/">{{ i.1 }}</a><br></td>
-                <td><span class="phone">{% if i.5 %}{% trans "Active" %}{% else %}{% trans "Deactive" %}{% endif %}{% if i.3 %}, {% trans "Responsible" %}{% endif %}</span><br><span class="email">{{ i.6 }}<br /><a href="/client/{{ object.id }}/family/{{ i.4 }}/form/" class="edit"><span>{% trans "edit" %}]</span></a></span></td>
+                <td><span class="phone">{% if i.5 %}{% trans "Active" %}{% else %}{% trans "Deactive" %}{% endif %}{% if i.3 %}, {% trans "Responsible" %}{% endif %}</span><br><span class="email">{% if i.6 %}{{ i.6 }}{% endif %}<br /><a href="/client/{{ object.id }}/family/{{ i.4 }}/form/" class="edit"><span>{% trans "edit" %}]</span></a></span></td>
             </tr>
             
         {% endfor %}

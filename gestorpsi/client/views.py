@@ -923,6 +923,7 @@ def family_form(request, object_id = None, relation_id=None):
                 relation.responsible = True if request.POST.get('responsible') else False
                 relation.relation_level = None if not request.POST.get('relation_level') else request.POST.get('relation_level')
                 relation.active = True if request.POST.get('active') else False
+                relation.comment = request.POST.get('comment') or ''
                 relation.save()
             request.user.message_set.create(message=_('Family member added successfully'))
             return HttpResponseRedirect('/client/%s/family/' % object.id)

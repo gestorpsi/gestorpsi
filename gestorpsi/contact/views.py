@@ -304,18 +304,15 @@ def contact_professional_save(request, object_id = None):
 def save_mini(request):
     user = request.user
     object = Organization()
-    object.name = request.POST.get('label') # adding by mini form
-    object.short_name = slugify(request.POST.get('label'))
-    object.organization = user.get_profile().org_active
-    object.contact_owner = user.get_profile().person
-
-    from django.db import IntegrityError
-    try:
+    if request.POST.get('label'):
+        object.name = request.POST.get('label') # adding by mini form
+        object.short_name = slugify(request.POST.get('label'))
+        object.organization = user.get_profile().org_active
+        object.contact_owner = user.get_profile().person
         object.save()
-    except IntegrityError:
-        return HttpResponse("IntegrityError")
+        return HttpResponse("%s" % (object.id))
 
-    return HttpResponse("%s" % (object.id))
+    return HttpResponse("IntegrityError")
 
 @permission_required_with_403('contact.contact_write')
 def save_mini_professional(request):

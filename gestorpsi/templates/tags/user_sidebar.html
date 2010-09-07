@@ -24,7 +24,7 @@ GNU General Public License for more details.
                 {% ifequal show "True" %}    
                     {% trans "Impossible deactive this user." %}
                 {% else %}
-                    <li><a href="/user/{{ profile.id }}/order/" class="client_order" title="{{ profile.person.name }}">{% if profile.user.is_active %} {% trans "Inactive" %} {% else %} {% trans "Active" %} {% endif %} </a></li>
+                    <li><a href="/user/{{ profile.id }}/order/" class="client_order" title="{{ profile.person.name }}">{% if profile.user.is_active %} {% trans "Disable" %} {% else %} {% trans "Enable" %} {% endif %} </a></li>
                 {% endifequal %}
         {% endif %}
     </ul>

@@ -43,7 +43,7 @@ GNU General Public License for more details.
                     <li><a href="/service/{% if object.referral.service.id %}{{ object.referral.service.id }}{% else %}{{ object.id }}{% endif %}/group/add/">{% trans "Add group on this service" %}</a></li> 
                 {% endif %}
                 {% if perms.service.service_write %}
-                <li><a href="/service/{{ object.id }}/order/" title="{{ object.name }}">{% if object.active %} {% trans "Inactive" %} {% else %} {% trans "Active" %} {% endif %} </a></li> 
+                <li><a href="/service/{{ object.id }}/order/" title="{{ object.name }}">{% if object.active %} {% trans "Disable" %} {% else %} {% trans "Enable" %} {% endif %} </a></li> 
                 {% endif %}
             </ul> 
         </div> 

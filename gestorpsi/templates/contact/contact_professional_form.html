@@ -121,7 +121,7 @@ GNU General Public License for more details.
             <div class="contact_actions">	
             <h3>{% trans 'Object Actions' %}</h3>
             <ul>
-                <li><a href="/contact/professional/order/{{ object.id }}/" class="contact_order" title="{{ object.name }}">{% if object.active %}{% trans "Deactivate" %}{% else %}{% trans "Activate" %}{% endif %} </a></li>
+                <li><a href="/contact/professional/order/{{ object.id }}/" class="contact_order" title="{{ object.name }}">{% if object.active %}{% trans "Disable" %}{% else %}{% trans "Enable" %}{% endif %} </a></li>
             </ul>
             </div>
         {% endif %}

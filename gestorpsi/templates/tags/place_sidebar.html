@@ -20,7 +20,7 @@ GNU General Public License for more details.
 <h3>{% trans 'Object Actions' %}</h3>
 <ul>
     
-    <li><a href="/place/{{ object.id }}/order/" class="place_order" title="{{ object.name }}">{% if object.active %} {% trans "Deactivate" %} {% else %} {% trans "Activate" %} {% endif %} </a></li>
+    <li><a href="/place/{{ object.id }}/order/" class="place_order" title="{{ object.name }}">{% if object.active %} {% trans "Disable" %} {% else %} {% trans "Enable" %} {% endif %} </a></li>
     <!-- <li><a class="print" href="/client/{{ object.id }}/print/" title="{{ object.person.name }}">{% trans "Print Record" %}</a></li> -->
 
 </ul>

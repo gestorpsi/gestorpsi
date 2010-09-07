@@ -86,7 +86,7 @@ GNU General Public License for more details.
     {% endif %}
 
 
-    <li><a href="/client/{{ object.id }}/order/" class="client_order" title="{{ object.person.name }}">{% ifequal object.clientStatus "1" %} {% trans "Inactive" %} {% else %} {% trans "Active" %} {% endifequal %} </a></li>
+    <li><a href="/client/{{ object.id }}/order/" class="client_order" title="{{ object.person.name }}">{% ifequal object.clientStatus "1" %} {% trans "Disable" %} {% else %} {% trans "Enable" %} {% endifequal %} </a></li>
 
     <li><a class="print" href="/client/{{ object.id }}/print/" title="{{ object.person.name }}">{% trans "Print Record" %}</a></li>
     {# <li><a class="client_messages" href="/client/{{ object.id }}/messages/" title="{{ object.person.name }}">{% trans "Messages" %}</a></li> #}

@@ -25,7 +25,7 @@ GNU General Public License for more details.
 
     <ul>
     {% if object.id %}
-        <li><a href="/employee/{{ object.id }}/order/" class="client_order" title="{{ object.person.name }}">{% if object.active %} {% trans "Inactive" %} {% else %} {% trans "Active" %} {% endif %} </a></li>
+        <li><a href="/employee/{{ object.id }}/order/" class="client_order" title="{{ object.person.name }}">{% if object.active %} {% trans "Disable" %} {% else %} {% trans "Enable" %} {% endif %} </a></li>
         {% if perms.users.users_read %}<li><a href="/user/{{ object.person.id }}/" class="client_form" title="{% trans "User" %}">{% trans "User" %}</a></li>{% endif %}
     {% endif %}
     </ul>

@@ -26,7 +26,7 @@ GNU General Public License for more details.
     <h3>{% trans 'Clients' %}</h3>
     <ul>
      {% for c in occurrence.event.referral.client.all %}
-       <li><a class="customers" href="/client/{{c.id}}/">{{ c }}</a><br /></li>
+       <li><a class="customers" href="/client/{{c.id}}/referral/{{ occurrence.event.id }}/">{{ c }}</a><br /></li>
      {% endfor %}
     </ul>
 

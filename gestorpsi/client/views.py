@@ -423,7 +423,7 @@ def referral_save(request, object_id = None, referral_id = None):
     if request.method == 'POST':
         try:
             referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active, referraldischarge__isnull=True)
-            if not _access_check_referral_write(request, referral) or object.is_company():
+            if not _access_check_referral_write(request, referral):
                 return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
             form = ReferralForm(request.POST, instance = referral)
         except:

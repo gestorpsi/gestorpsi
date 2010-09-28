@@ -738,7 +738,7 @@ $(function() {
                 });
                 $('label.referral_group').effect('blind', {'mode':'show'});
             } else {
-                $('label.referral_group').effect('blind', {'mode':'hide'});
+                $('label.referral_group').hide();
             }
         }
     });

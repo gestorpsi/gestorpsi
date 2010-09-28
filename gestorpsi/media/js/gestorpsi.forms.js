@@ -729,14 +729,16 @@ $(function() {
             });
             
             // is group
+            $('select[name=group] option').remove();
             if($(this).children(':selected').attr('is_group')=='True') {
-                // filter only groups from selected service
-                $('select[name=group] option').hide();
-                $('select[name=group] option[service='+$(this).val()+']').show();
+                $.getJSON("/service/" + $(this).attr("value") + "/group/json/", function(json) {
+                    jQuery.each(json,  function(){
+                        $('select[name=group]').append(new Option(this.name, this.id));
+                    });
+                });
                 $('label.referral_group').effect('blind', {'mode':'show'});
-                $('select[name=group] option:visible:first').attr('selected', 'selected');
             } else {
-                $('label.referral_group').hide();
+                $('label.referral_group').effect('blind', {'mode':'hide'});
             }
         }
     });

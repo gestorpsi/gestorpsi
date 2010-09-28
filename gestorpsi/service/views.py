@@ -433,13 +433,24 @@ def client_list_index(request, object_id = None):
 
 # list referral groups
 @permission_required_with_403('service.service_list')
-def group_list(request, object_id=None):
+def group_list(request, object_id=None, return_json=False):
     service = get_object_or_404(Service, pk=object_id, organization = request.user.get_profile().org_active)
     object = _group_list(request, service)
 
     if hasattr(request.user.profile.person, 'careprofessional') and request.user.profile.person.careprofessional.is_student:
         return render_to_response('403.html', {'object': _("Sorry! Students have no access to this service!"), }, context_instance=RequestContext(request))
 
+    if return_json:
+        i = 0
+        array = {} #JSON
+        for o in object:
+            array[i] = {
+                    'name': '%s' % o.description,
+                    'id': o.id,
+            }
+            i = i + 1
+
+        return HttpResponse(simplejson.dumps(array), mimetype='application/json')
 
     return render_to_response('service/service_group_list.html',
                               { 'object': object, 

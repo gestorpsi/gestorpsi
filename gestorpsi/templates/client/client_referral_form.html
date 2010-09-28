@@ -110,9 +110,6 @@ GNU General Public License for more details.
             
             <label class="referral_group" style="display:none;">{% trans "Subscribe this customer in a group" %}<br />
                 <select name="group" class="extrabig">
-                    {% for g in groups %}
-                    <option value="{{ g.id }}" service="{{ g.service.id }}"> {{ g }} </option>
-                    {% endfor %}
                 </select>
             </label>
             

@@ -310,7 +310,7 @@ def occurrence_group(
 
     group = get_object_or_404(ServiceGroup, pk=group_id, service__organization = request.user.get_profile().org_active, active=True)
     occurrence = get_object_or_404(ScheduleOccurrence, pk=occurrence_id, event__referral__service__organization=request.user.get_profile().org_active)
-    group_occurrences = ScheduleOccurrence.objects.filter(start_time=occurrence.start_time, end_time=occurrence.end_time
+    group_occurrences = ScheduleOccurrence.objects.filter(start_time=occurrence.start_time, end_time=occurrence.end_time, room=occurrence.room
             ).exclude(occurrenceconfirmation__presence = 4 # unmarked's
             ).exclude(occurrenceconfirmation__presence = 5 # remarked
             ).order_by('occurrenceconfirmation', 'event__referral__client')

@@ -51,7 +51,7 @@ class Place( models.Model ):
     phones = generic.GenericRelation(Phone)
     place_type = models.ForeignKey(PlaceType)
     organization = models.ForeignKey(Organization, null= True, blank= True)
-    comments = models.TextField(blank=True)
+    comments = models.TextField(blank=True, null=True)
     
     objects = PlaceManager()
     

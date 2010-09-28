@@ -25,7 +25,7 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.db.models import Q
 from swingtime.utils import create_timeslot_table
-from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation, OccurrenceFamily
+from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation, OccurrenceFamily, OccurrenceEmployees
 from gestorpsi.referral.models import Referral
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.place.models import Place, Room
@@ -517,5 +517,35 @@ def occurrence_family_form(request, occurence_id = None, template=None):
         
         request.user.message_set.create(message=_('Family members added successfully'))
         return http.HttpResponseRedirect('/schedule/events/%s/family/form/' % occurrence.id)
+
+    return render_to_response(template, locals(), context_instance=RequestContext(request))
+
+@permission_required_with_403('schedule.schedule_write')
+def occurrence_employee_form(request, occurence_id = None, template=None):
+    occurrence = get_object_or_404(ScheduleOccurrence, pk=occurence_id, event__referral__service__organization=request.user.get_profile().org_active)
+
+    # check if requested user have perms to read it
+    if not _access_check_by_occurrence(request, occurrence):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    if request.POST:
+        if not request.POST.getlist('company_employees'):
+            request.user.message_set.create(message=_('No company employees selected'))
+            return render_to_response(template, locals(), context_instance=RequestContext(request))
+        
+        if not hasattr(occurrence, 'occurrenceemployees'):
+            """ new register """
+            f = OccurrenceEmployees()
+            f.occurrence_id = occurrence.id
+            f.save()
+        else:
+            f = OccurrenceEmployees.objects.get(occurrence=occurrence)
+        
+        for c in request.POST.getlist('company_employees'):
+            if c not in [x.id for x in f.client.all()]:
+                f.client.add(c)
+        
+        request.user.message_set.create(message=_('Company employee(s) added successfully'))
+        return http.HttpResponseRedirect('/schedule/events/%s/employee/form/' % occurrence.id)
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))

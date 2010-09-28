@@ -136,6 +136,7 @@ $(function() {
         $('ul#sub_report li a').removeClass('active');
         $('ul#sub_report li a:first').addClass('active');
         $('.tab_content').hide();
+        $('div.saved_successfully').hide();
         $('div.dashboard').show();
         $('div.loaded_report_title h4').text($(this).attr('title'));
         $('div.loaded_report_title small span').text($(this).attr('date'));

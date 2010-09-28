@@ -83,6 +83,13 @@ class ScheduleOccurrence(Occurrence):
     def __unicode__(self):
         return u"%s - %s" % (datetime.strftime(self.start_time, '%d/%m/%Y %H:%M'), datetime.strftime(self.end_time, '%H:%M'))
 
+    def have_company(self):
+        have_company = False
+        for i in self.event.referral.client.all():
+            if i.person.is_company():
+                have_company = True
+        return have_company
+
     class Meta:
         ordering = ('start_time',)
 
@@ -104,8 +111,16 @@ class OccurrenceFamily(models.Model):
     def __unicode__(self):
         return u'%s: %s' % (self.occurrence, ", ".join([ c.person.name for c in self.client.all()]))
 
+class OccurrenceEmployees(models.Model):
+    occurrence = models.OneToOneField(ScheduleOccurrence)
+    client = models.ManyToManyField(Client, null=False, blank=False)
+
+    def __unicode__(self):
+        return u'%s: %s' % (self.occurrence, ", ".join([ c.person.name for c in self.client.all()]))
+
 reversion.register(Occurrence)
 reversion.register(ScheduleOccurrence, follow=['occurrence_ptr'])
 reversion.register(OccurrenceConfirmation, follow=['occurrence'])
 reversion.register(OccurrenceFamily)
+reversion.register(OccurrenceEmployees)
 

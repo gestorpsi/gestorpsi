@@ -227,6 +227,10 @@ class Client(models.Model):
     def referrals_discharged(self):
         return self.referral_set.discharged().filter(client=self)
     
+    def employees(self):
+        from gestorpsi.person.models import Person, CompanyClient
+        return CompanyClient.objects.filter(company__person__client = self).filter(client__clientStatus="1")
+    
     def family_members(self):
         family_list = []
         for i in Family.objects.filter(Q(client=self) | Q(client_related=self)).order_by('-active', '-responsible', 'relation_level','client__person__name', 'client_related__person__name'):

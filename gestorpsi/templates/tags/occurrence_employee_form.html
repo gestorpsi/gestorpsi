@@ -1,0 +1,62 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<h2 class="title_schedule title">{% if occurrence.event.referral.referralgroup_set.all %}<a href="/service/group/{{ occurrence.event.referral.referralgroup_set.all.0.id }}/form/">{{ occurrence.event.referral.group_name }}</a>{% else %}{{ occurrence.event.referral.client.all.0 }}{% endif %} - {{ occurrence.event.referral.service }} - {% trans "Employees" %}</h2>
+<p class="description">{{ occurrence.start_time|date:"d" }} {% trans "of" %} {{ occurrence.start_time|date:"F" }} {% trans "of" %} {{ occurrence.start_time|date:"Y" }}
+
+{% if not occurrence.occurrenceemployees %}
+<form method="post">
+<div class="main_area">
+    <fieldset>
+    <legend>{% trans "Occurrence Company Employees Form" %}</legend>
+    
+    {% for c in occurrence.event.referral.client.all %}
+    <h2 class="red">{% trans "Actives employees for" %} {{ c }}</h2>
+    {% if not c.employees %}
+        <p>
+        {% trans "The company have no employees registered." %} <a href="/client/{{ c.id }}/employee/form/">{% trans "Add a new one?" %}</a>
+        </p>
+    {% else %}
+        <p>
+        {% for f in c.employees %}
+            {% if f.active %}
+            <input type="checkbox" name="company_employees" value="{{ f.client.id }}" />&nbsp;{{ f.client }}<br />
+            {% endif %}
+        {% endfor %}
+        </p>
+    {% endif %}
+    {% endfor %}
+      
+    </fieldset>
+  <br />
+</div>
+{% else %}
+
+<div class="main_area contact">
+        <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+            {% for f in occurrence.occurrenceemployees.client.all %}
+            <tr class="zebra_{% cycle '0' '1' %}">
+                <td class="title"><a href="/client/{{ f.id }}/" title="{{ f }}">{{ f }}</a><br></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        {# {% include "tags/paginator.html" %} #}
+</div>
+{% endif %}

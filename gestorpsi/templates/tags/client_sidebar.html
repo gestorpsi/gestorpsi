@@ -24,7 +24,7 @@ GNU General Public License for more details.
 
     {% ifequal object.clientStatus "1" %} 
         <li><a href="/client/{{ object.id }}/" class="client_form" title="{% trans "Record Data" %}">{% trans "Record Data" %}</a></li>
-        {% if not object.is_company %}
+        {% if not object.is_company %} 
         <li><a href="/client/{{ object.id }}/demographic/" class="client_form" title="{% trans "Demographic Data" %}">{% trans "Demographic Data" %}</a></li>
         {% endif %}
 
@@ -40,7 +40,7 @@ GNU General Public License for more details.
 
         {# <li><a href="/client/{{ object.id }}/socioeconomic/" class="client_form" title="{% trans "Socio-economic" %}">{% trans "Socio-economic" %}</a></li> #}
 
-        {% if object.referral_set.all and not object.is_company %}
+        {% if object.referral_set.all %}
            <li><a href="/client/{{ object.id }}/referral/" class="client_referral_list" title="{% trans "Subscribed Services" %}">{% trans "Subscribed Services" %}</a></li>
            <li><a href="/client/{{ object.id }}/referral/discharged/" class="client_referral_discharge" title="{% trans "Discharged Services" %}">{% trans "Discharged Services" %}</a></li>
         {% endif %}
@@ -75,7 +75,7 @@ GNU General Public License for more details.
 
     <h3>{% trans 'Client Actions' %}</h3>
     <ul>
-    {% if perms.referral.referral_write and not object.is_company %}
+    {% if perms.referral.referral_write %}
         <li><a href="/client/{{ object.id }}/referral/form/" class="client_referral_form" title="{{ object.person.name }}">{% trans "New Subscription" %}</a></li>
     {% endif %}
 

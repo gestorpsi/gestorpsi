@@ -55,28 +55,28 @@ GNU General Public License for more details.
 
 <fieldset>
         <legend>{% trans "Service print options" %}</legend> 
+        <label><b>{% trans "Print subscribed services option" %}</b><br /></label>
+        <div class="label">
+        {% for i in object.referral_set.all %}
+            <input type="checkbox" name="referral" value="{{ i.id }}" checked />&nbsp;{{ i }}{% if i.professional.all %} - {{ i.professional.all|join:", " }}{% endif %} {% if i.referraldischarge_set.all %}<b>({% trans "Referral is discharged" %})</b>{% endif %}<br />
+        {% endfor %}
+        </div>
+        <div style="clear:both;"></div>
+        <label><input type="checkbox" name="schedule" value="True" checked />&nbsp; <b>
+        {% trans "Print service schedule occurrence option" %}</b>
+            <small>({% trans "if selected will print occurrences for selected services" %})</small>
+        </label>
         {% if not object.is_company %}
-            <label><b>{% trans "Print subscribed services option" %}</b><br /></label>
-            <div class="label">
-            {% for i in object.referral_set.all %}
-                <input type="checkbox" name="referral" value="{{ i.id }}" checked />&nbsp;{{ i }}{% if i.professional.all %} - {{ i.professional.all|join:", " }}{% endif %} {% if i.referraldischarge_set.all %}<b>({% trans "Referral is discharged" %})</b>{% endif %}<br />
-            {% endfor %}
-            </div>
-            <div style="clear:both;"></div>
-            <label><input type="checkbox" name="schedule" value="True" checked />&nbsp; <b>
-            {% trans "Print service schedule occurrence option" %}</b>
-                <small>({% trans "if selected will print occurrences for selected services" %})</small>
-            </label>
-            <label><input type="checkbox" name="demographic" value="True" checked />&nbsp; <b>
-            {% trans "Print demographic data" %}</b>
-                <small>({% trans "if selected will print client demographic data" %})</small>
-            </label>
-            {% if have_ehr_read_perms %}
-            <label><input type="checkbox" name="ehr" value="True" checked />&nbsp; <b>
-            {% trans "Print EHR data" %}</b>
-                <small>({% trans "if selected will print client EHR data" %})</small>
-            </label>
-            {% endif %}
+        <label><input type="checkbox" name="demographic" value="True" checked />&nbsp; <b>
+        {% trans "Print demographic data" %}</b>
+            <small>({% trans "if selected will print client demographic data" %})</small>
+        </label>
+        {% endif %}
+        {% if have_ehr_read_perms %}
+        <label><input type="checkbox" name="ehr" value="True" checked />&nbsp; <b>
+        {% trans "Print EHR data" %}</b>
+            <small>({% trans "if selected will print client EHR data" %})</small>
+        </label>
         {% endif %}
         <div style="clear:both"></div>
         <label><b>{% trans "Print output format" %}</b><br /></label>

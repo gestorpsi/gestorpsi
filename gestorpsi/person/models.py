@@ -223,7 +223,7 @@ class CompanyClient(models.Model):
         return '%s' % (self.client)
 
     class Meta:
-        ordering = ['-client__clientStatus', '-responsible', 'client']
+        ordering = ['-active', '-responsible', 'client']
         unique_together = (('client', 'company'),)
 
 class Company(models.Model):

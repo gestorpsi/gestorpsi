@@ -1,4 +1,4 @@
-{% comment %}
+    {% comment %}
 
 Copyright (C) 2008 GestorPsi
 
@@ -18,7 +18,6 @@ GNU General Public License for more details.
 
 <div class="photo">
         <img class="img_people" organization="{{ user.get_profile.org_active.id }}" src="{% if object.person.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
-
         <a class="clips notajax">{% trans "Photo" %}</a>
         <input type="hidden" name="photo" value="{{ object.person.photo }}" class="photo" />
         <a class="notajax delete" title="delete" onclick="$(this).siblings('input.photo').val(''); $(this).siblings('img.img_people').attr('src', '/media/img/generic_photo.gif');"><span>{% trans "Delete" %}</span></a>

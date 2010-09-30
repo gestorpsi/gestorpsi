@@ -578,7 +578,11 @@ def save(request, object_id=None, is_company = False):
     automatic admit client
     '''
     
-    a = AdmissionReferral()
+    if not object.admissionreferral_set.all():
+        a = AdmissionReferral()
+    else:
+        a = object.admissionreferral_set.all()[0]
+
     a.referral_choice_id = AdmissionChoice.objects.all().order_by('weight')[0].id
     object.admissionreferral_set.add(a)
     

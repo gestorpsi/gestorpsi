@@ -38,7 +38,12 @@ GNU General Public License for more details.
         <tbody>
             {% for o in occurrences %}
                 <tr class="zebra_{% cycle 0 1 %}">
-                <td><a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"l, d" }} {% trans "of" %} {{ o.start_time|date:"F" }} {% trans "of" %} {{ o.start_time|date:"Y" }}</a></td>
+                <td><a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"l, d" }} {% trans "of" %} {{ o.start_time|date:"F" }} {% trans "of" %} {{ o.start_time|date:"Y" }}</a>
+                {% if o.scheduleoccurrence.employees_active %}<br />
+                 {% for e in o.scheduleoccurrence.employees_active %}
+                     <a href="/client/{{e.id }}/home/">{{ e }}</a>{% if not forloop.last %}, {% endif%}
+                 {% endfor %}
+                {% endif %}</td>
                 <td>{{ o.start_time|date:"H:i" }} - {{ o.end_time|date:"H:i" }} hs<br />{{ o.scheduleoccurrence.room }}</td>
                 <td></td>
                 </tr>

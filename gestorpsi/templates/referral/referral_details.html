@@ -30,7 +30,7 @@ GNU General Public License for more details.
 {% endif %}
         <br /></p>
 
-
+{% comment %}
 <div class="main_area home">
 	<!-- <a href="" id="help">&nbsp;</a> -->
 	<!-- DataTypes form menu -->
@@ -76,7 +76,7 @@ GNU General Public License for more details.
 <br />	
 
 </div>
-
+{% endcomment %}
 <div class="main_area home">
 	<!-- <a href="" id="help">&nbsp;</a> -->
 	<!-- DataTypes form menu -->
@@ -273,6 +273,13 @@ GNU General Public License for more details.
         {% for i in referral.online_and_active_occurrences|slice:":5" %}
                 <p>
              {{ i.start_time|date:"r"|slice:"-9" }} hs - {{ i.scheduleoccurrence.room }}
+             {% if i.scheduleoccurrence.employees_active %}<br />
+                 {% trans "Employees:" %}
+                 {% for e in i.scheduleoccurrence.employees_active %}
+                     <a href="/client/{{e.id }}/home/">{{ e }}</a>{% if not forloop.last %}, {% endif%}
+                 {% endfor %}
+             {% endif %}
+
                 - <i>({% trans "online and active event" %})</i> 
                 - <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}messages/chat/{{i.scheduleoccurrence.id}}">{% trans "Enter chat" %}</a>
                 - ({% firstof i.scheduleoccurrence.online_users "0" %} {% trans "online users" %})
@@ -283,6 +290,12 @@ GNU General Public License for more details.
         {% for i in referral.upcoming_occurrences|slice:":5" %}
                 <p>
              {{ i.start_time|date:"r"|slice:"-9" }} hs - {{ i.scheduleoccurrence.room }}
+             {% if i.scheduleoccurrence.employees_active %}<br />
+                 {% trans "Employees:" %}
+                 {% for e in i.scheduleoccurrence.employees_active %}
+                     <a href="/client/{{e.id }}/home/">{{ e }}</a>{% if not forloop.last %}, {% endif%}
+                 {% endfor %}
+             {% endif %}
              {% if i.scheduleoccurrence.is_online %} 
                 - <i>({% trans "online event" %})</i>
                 - <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}messages/chat/{{i.scheduleoccurrence.id}}">{% trans "Enter chat" %}</a>
@@ -306,21 +319,26 @@ GNU General Public License for more details.
     {% else %}
         {% for i in referral.past_occurrences_all|slice:":5" %}
             <p>{{ i.start_time|date:"r"|slice:"-9" }} hs
-
             {% if i.scheduleoccurrence.is_online %}
             <i>(online)</i>
             {% ifnotequal i.scheduleoccurrence.messagetopic_set.count 0 %}
             - <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}referral/{{referral.id}}/messages/chat/{{i.scheduleoccurrence.id}}">{% trans "View chat history" %}</a>
             {% else %}
-            - NÃ£o hÃ¡ sessÃ£o de chat armazenada
+            - {% trans "There is no chat messages" %}
             {% endifnotequal %}
             - <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}messages/chat/{{i.scheduleoccurrence.id}}">{% trans "Enter chat" %}</a>
             - ({% firstof i.scheduleoccurrence.online_users "0" %} {% trans "online users" %})
             {% endif %}
 
             <small>
-            <br>
             {{ i.scheduleoccurrence.room }} 
+             {% if i.scheduleoccurrence.employees_active %}<br />
+                 {% trans "Employees:" %}
+                 {% for e in i.scheduleoccurrence.employees_active %}
+                     <a href="/client/{{e.id }}/home/">{{ e }}</a>{% if not forloop.last %}, {% endif%}
+                 {% endfor %}
+             {% endif %}
+             <br />
             {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
                 <a href="/client/{{ object.id }}/occurence/{{ i.id }}/">
             {% endif %}

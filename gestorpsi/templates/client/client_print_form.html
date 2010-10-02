@@ -54,7 +54,11 @@ GNU General Public License for more details.
 
 
 <fieldset>
-        <legend>{% trans "Service print options" %}</legend> 
+        <legend>{% trans "Service print options" %}</legend>
+        <label><input type="checkbox" name="demographic" value="True" checked />&nbsp; <b>
+        {% trans "Print demographic and record data" %}</b>
+            <small>({% trans "if selected will print demographic (if client is not a company) and client record data" %})</small>
+        </label>
         <label><b>{% trans "Print subscribed services option" %}</b><br /></label>
         <div class="label">
         {% for i in object.referral_set.all %}
@@ -66,19 +70,27 @@ GNU General Public License for more details.
         {% trans "Print service schedule occurrence option" %}</b>
             <small>({% trans "if selected will print occurrences for selected services" %})</small>
         </label>
-        {% if not object.is_company %}
-        <label><input type="checkbox" name="demographic" value="True" checked />&nbsp; <b>
-        {% trans "Print demographic data" %}</b>
-            <small>({% trans "if selected will print client demographic data" %})</small>
-        </label>
-        {% endif %}
         {% if have_ehr_read_perms %}
         <label><input type="checkbox" name="ehr" value="True" checked />&nbsp; <b>
         {% trans "Print EHR data" %}</b>
             <small>({% trans "if selected will print client EHR data" %})</small>
         </label>
         {% endif %}
+    
         <div style="clear:both"></div>
+        <label><b>{% trans "Signed by" %}</b><br /></label>
+        <div style="clear:both"></div>
+        <label><input type="checkbox" name="signed_professionals" value="True" checked />&nbsp; <b>
+        {% trans "Professionals from referral" %}</b>
+        </label>
+        <label><input type="checkbox" name="signed_professional_responsible" value="True" />&nbsp; <b>
+        {% trans "Responsible Professionals from Service" %}</b>
+        </label>
+        <label><input type="checkbox" name="signed_organization_reponsibles" value="True" />&nbsp; <b>
+        {% trans "Organization Responsibles" %}</b>
+        </label>
+
+        <div style="clear:both"></div><br />
         <label><b>{% trans "Print output format" %}</b><br /></label>
         <div class="label">
             <input type="radio" name="output" value="pdf" checked />&nbsp;PDF</span>

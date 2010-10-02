@@ -255,6 +255,27 @@ class Referral(Event):
         '''
         return self.occurrence_set.filter(start_time__lt=datetime.now()).order_by('-id')
 
+    def confirmed_occurrences(self):
+        return self.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=False)
+
+    def unconfirmed_occurrences(self):
+        return self.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=True)
+
+    def confirmed_arrive_ontime(self):
+        return self.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=False, scheduleoccurrence__occurrenceconfirmation__presence=1)
+
+    def confirmed_arrive_late(self):
+        return self.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=False, scheduleoccurrence__occurrenceconfirmation__presence=2)
+
+    def confirmed_not_arrived(self):
+        return self.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=False, scheduleoccurrence__occurrenceconfirmation__presence=3)
+
+    def confirmed_unmarked(self):
+        return self.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=False, scheduleoccurrence__occurrenceconfirmation__presence=4)
+
+    def confirmed_rescheduled(self):
+        return self.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=False, scheduleoccurrence__occurrenceconfirmation__presence=5)
+
     def online_and_active_occurrences(self):
         '''
         Return all occurrences that are active and that are online

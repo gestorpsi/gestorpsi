@@ -69,9 +69,6 @@ def _access_check(request, object=None):
     this method checks if logged professional have rights to read client data
     @object: client
     """
-
-    if not object:
-        return False
         
     # check if user is professional and not admin or secretary. 
     if request.user.groups.filter(name='administrator') or request.user.groups.filter(name='secretary'):
@@ -102,9 +99,6 @@ def _access_check_referral_write(request, referral=None):
     this method checks professional as users when accessing clients
     @referral: referral object
     """
-
-    if not referral:
-        return False
 
     # check if user is professional and not admin or secretary. if it's true, check if professional has referral with this customer
     if request.user.groups.filter(name='administrator') or request.user.groups.filter(name='secretary'):
@@ -607,6 +601,9 @@ def client_print(request, object_id = None):
         print_schedule = None if not request.POST.get('schedule') else True
         print_demographic = None if not request.POST.get('demographic') else True
         print_ehr = None if not request.POST.get('ehr') else True
+        signed_professional_responsible = None if not request.POST.get('signed_professional_responsible') else True
+        signed_professionals = None if not request.POST.get('signed_professionals') else True
+        signed_organization_reponsibles = None if not request.POST.get('signed_organization_reponsibles') else True
         #company_related_clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active) if object.is_company else None
         company_related_clients = []
         if object.is_company():
@@ -616,6 +613,9 @@ def client_print(request, object_id = None):
             'referral': referral,
             'print_schedule': print_schedule,
             'print_demographic': print_demographic,
+            'signed_professional_responsible': signed_professional_responsible,
+            'signed_professionals': signed_professionals,
+            'signed_organization_reponsibles': signed_organization_reponsibles,
             'print_ehr': print_ehr,
             'pagesize' : 'A4',
             'object': object, 
@@ -832,7 +832,7 @@ def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id =
     queues = Queue.objects.filter(referral=referral_id)
 
     request.user.message_set.create(message=_('Client removed from queue successfully'))
-    return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))
+    return HttpResponseRedirect('/client/%s/referral/%s/' % (object.id, referral.id))
 
 @permission_required_with_403('referral.referral_read')
 def referral_ext_form(request, object_id ='', referral_id=''):

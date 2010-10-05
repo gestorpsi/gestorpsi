@@ -350,7 +350,7 @@ def queue(request, object_id=None):
 
 def _service_clients(request, service):
     # select clients by service and organization
-    client_list = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, referral__service=service).distinct()
+    client_list = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, referral__service=service, referral__referraldischarge__isnull=True).distinct()
 
     # check if user have at least one referral charged on selected service
     is_client_charged = []

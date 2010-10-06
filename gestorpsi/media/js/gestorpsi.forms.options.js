@@ -15,29 +15,6 @@ GNU General Public License for more details.
 */
 
 /**
- * user form options
- */
-var form_user_options_mini = {
-    beforeSubmit: function() {
-        if($("#edit_form div.pwd_mini form input[name=password_mini]").val() != $("#edit_form div.pwd_mini form input[name=password_mini_conf]").val()) {
-            $("#edit_form div.pwd_mini div#msg_area").show();
-            return false;
-        }
-    },
-
-    success: function(response, request, form) {
-        $(form).parent('div').hide();
-        formSuccess('Senha alterada com sucesso');
-    },
-
-    error: function() {
-        formError();
-    }
-};
-
-
-
-/**
  * mini forms to quick add options
  */
 

@@ -133,6 +133,16 @@ $(function(){
             $(this).parent('#msg_area').effect('blind');
             $('a.prev_day, a.next_day').removeClass('margin_top_fix');
         });
+        
+        /**
+         * confirm dialog
+         */
+        
+        $('a.confirm').click(function() {
+                if(!confirm($(this).attr('msg'))) {
+                    return false;
+                }
+        });
 
 });
 

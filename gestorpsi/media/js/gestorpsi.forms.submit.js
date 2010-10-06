@@ -22,17 +22,6 @@ GNU General Public License for more details.
 
 $(function() {
 
-    $('form.record_chpass').validate({
-        rules: {
-            c_pass: "required",
-            n_pass: "required",
-            n_pass0: "required"
-        },
-        messages: {
-            name: 'Preenchimento Necessário'
-        }
-    });
-
      /**
       *
       * generic people post form

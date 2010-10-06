@@ -740,7 +740,7 @@ $(function() {
                 // RETURN ALL HREF THE NORMAL STATUS
                 $("div#edit_form div.edit_form div.client_referral_list div.button_disable a").show();
                 $("div#edit_form div.edit_form div.client_referral_list div.confirm_disable").hide();
-                formSuccess("Cliente desligado com sucesso!");
+                alert("Cliente desligado com sucesso!");
         }); 
     });
      

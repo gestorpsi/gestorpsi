@@ -26,6 +26,7 @@ from gestorpsi.person.models import Person
 from django.utils import simplejson
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.person.views import person_json_list
+from django.contrib import messages
 
 @permission_required_with_403('users.users_list')
 def index(request, deactive = False):
@@ -180,13 +181,22 @@ def update_user(request, object_id):
 
 @permission_required_with_403('users.users_write')
 def update_pwd(request, object_id=0):
+    if not request.POST.get('password_mini') or not request.POST.get('password_mini_conf'):
+        messages.error(request, _('All fields are required'))
+        return HttpResponseRedirect('/user/%s/' % object_id)
+        
+    if request.POST.get('password_mini') != request.POST.get('password_mini_conf'):
+        messages.error(request, _('Password confirmation does not match. Please try again'))
+        return HttpResponseRedirect('/user/%s/' % object_id)
+
     user = Profile.objects.get(person = object_id, person__organization=request.user.get_profile().org_active).user
     user.set_password(request.POST.get('password_mini'))
     user.profile.temp = request.POST.get('password_mini')    # temporary field (LDAP)
     user.profile.save()
     user.save(force_update=True)
 
-    return HttpResponse(user.profile.id)
+    messages.success(request, _('Password updated successfully!'))
+    return HttpResponseRedirect('/user/%s/' % object_id)
 
 @permission_required_with_403('users.users_write')
 def set_form_user(request, object_id=0):
@@ -215,6 +225,17 @@ def order(request, profile_id = None):
         request.user.message_set.create(message=('%s' % (_('User activated successfully') if object.user.is_active else _('User deactivated successfully'))))
     
     return HttpResponseRedirect('/user/%s/' % object.person.id)
+
+@permission_required_with_403('users.users_write')
+def delete(request, profile_id = None):
+    object = Profile.objects.get(pk = profile_id, person__organization=request.user.get_profile().org_active)
+    if request.user.get_profile() == object:
+        request.user.message_set.create(message=('Sorry, you can not delete yourself!'))
+    else:
+        object.user.delete()
+        request.user.message_set.create(message=('%s' % (_('User removed successfully'))))
+    
+    return HttpResponseRedirect('/user/')
 
 @permission_required_with_403('organization.organization_read')
 def username_is_available(request, user):

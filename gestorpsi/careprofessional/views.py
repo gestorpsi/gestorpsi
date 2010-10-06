@@ -35,6 +35,7 @@ from gestorpsi.util.views import get_object_or_None
 from gestorpsi.authentication.models import Profile, Role
 from gestorpsi.careprofessional.forms import StudentProfileForm
 from django.contrib.auth.models import User, Group
+from django.contrib import messages
 
 @permission_required_with_403('careprofessional.careprofessional_list')
 def index(request, template_name='careprofessional/careprofessional_list.html', deactive = False):
@@ -224,8 +225,12 @@ def save(request, object_id=None, save_person=True, is_student=False):
 @permission_required_with_403('careprofessional.careprofessional_write')
 def order(request, object_id=None, is_student=False):
     object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
-
     if (object.active == True):
+        if object.resp_services.filter(active=True):
+            messages.error(request, _('Sorry, you can not disable a responsible professional with active service(s)'))
+            messages.error(request, _('<br />Active services: <b>%s</b>') % ', '.join([ i.name for i in object.resp_services.filter(active=True)] ))
+            
+            return HttpResponseRedirect('/careprofessional/%s/' % object.id)
         object.active = False
     else:
         object.active = True

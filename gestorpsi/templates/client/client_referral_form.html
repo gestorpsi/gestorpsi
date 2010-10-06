@@ -40,7 +40,7 @@ GNU General Public License for more details.
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
 
-<form action="/client/{{ object.id }}/referral/{% if referral.id %}{{ referral.id }}/{% endif %}save/" method="post" id="client_referral_form" class="{% if not referral.id %}client_referral{% endif %}">
+<form action="/client/{{ object.id }}/referral/{% if referral.id %}{{ referral.id }}/{% endif %}form/" method="post" id="client_referral_form" class="{% if not referral.id %}client_referral{% endif %}">
 <input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
 <div class="main_area home">
     <a href="" id=help>&nbsp;</a>
@@ -53,7 +53,7 @@ GNU General Public License for more details.
          <fieldset>
           <legend>{% trans "Indications" %}</legend>
            <label>{% trans "Indication done by" %}<br />
-                <select name="indication" class="big toggle_parent_label" {% if referral %}disabled="disabled"{% endif %}>
+                <select name="indication" class="big toggle_parent_label">
                         {% for o in IndicationsChoices %}
                                 <option value="{{ o.id }}" label="{{ o.nick }}" {% ifequal o.id referral.indication_set.all.0.indication_choice_id %} selected{% endifequal %}>{{ o }}</option>
                         {% endfor %}
@@ -62,7 +62,7 @@ GNU General Public License for more details.
 
         <div class="admission_ind_org" {% ifnotequal referral.indication_set.all.0.indication_choice_id 3 %} style="display:none;" {% endifnotequal %} >
          <label class="organization">{% trans "Select Organization" %} {% if not referral %}, {% trans "or" %} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a>{% endif %}<br />
-          <select name="indication_organization" class="select extrabig asm" {% if referral %}disabled="disabled"{% endif %}>
+          <select name="indication_organization" class="select extrabig asm">
                 <option>Escolha...</option>
                 {% for org in contact_organizations %}
                     <option value="{{ org.id }}" {% ifequal org.id referral.indication_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org }}</option>
@@ -73,7 +73,7 @@ GNU General Public License for more details.
 
         <div class="admission_ind_prof" {% ifnotequal referral.indication_set.all.0.indication_choice_id 4 %} style="display:none;" {% endifnotequal %} >
          <label class="professional">{% trans "Select Professional" %} {% if not referral %}, {% trans "or" %} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a>{% endif %}<br />
-          <select name="indication_professional" class="select extrabig asm" {% if referral %}disabled="disabled"{% endif %}>
+          <select name="indication_professional" class="select extrabig asm">
                 <option>Escolha...</option>
                 {% for prof in contact_professionals %}
                     <option value="{{ prof.id }}" {% ifequal prof.id referral.indication_set.all.0.referral_professional_id %} selected {% endifequal %}>{{ prof }}</option>
@@ -98,9 +98,11 @@ GNU General Public License for more details.
                     {% endfor %}
                 </select>
             </label>
-
-            <label{% if referral %} style="display:none"{% endif %}>{% trans "To Service" %}<br />
-                <select id="id_service" class="extrabig asm" name="service">
+            
+            <input type="hidden" name="message_referral_changing" value="{% trans "This operation will change ALL schedule occurrences. Do you really want to continue?" %}" />
+            
+            <label>{% trans "To Service" %}<br />
+                <select id="id_service" class="extrabig asm{% if referral.id %} check_change{% endif %}" name="service" original_state="{{ referral.service.id }}">
                     <option value="">---------</option>
                     {% for s in services %}
                     <option{% if referral %}{% ifequal referral.service s %} selected {% endifequal %}{% endif %} value="{{ s.id }}" is_group="{% if s.is_group %}True{% else %}False{% endif %}"{% if s.is_group and not s.servicegroup_set.all %} disabled{% endif %}>{{ s }}{% if s.is_group and not s.servicegroup_set.all %} ({% trans "Empty" %}){% endif %}</option>
@@ -108,45 +110,21 @@ GNU General Public License for more details.
                 </select>
             </label>
             
-            <label class="referral_group" style="display:none;">{% trans "Subscribe this customer in a group" %}<br />
-                <select name="group" class="extrabig">
-                </select>
+            <label class="referral_group{% if referral.id %} check_change{% endif %}"{% if not referral.service.is_group %} style="display:none;"{% endif %}>{% trans "Subscribe this customer in a group" %}<br />
+                {{ referral_form.group }}
             </label>
             
-            {% if not referral or not referral.professional.all %}
+            <div style="clear:both;"></div>
             <label>{% trans "Professionals" %}<br />
-                <select name="professional" class="extrabig multiple asm" id="id_professional" multiple="multiple">
-                {% for prof in referral.service.professionals.all %}
-                        <option value="{{ prof.id }}" {% ifequal referral.professional.all.0 prof %} selected {% endifequal %}> {{ prof }} </option>
-                   {% endfor %}
-               </select>
+                <div class="overflow referral_form_professional{% if referral.id %} check_change{% endif %}{% if not referral.id %} hide_on_first{% endif %}">
+                    {{ referral_form.professional }}
+                </div> 
             </label>
-            {% else %}
-                <h2 class="red">{% trans "Referral Professionals" %}</h2>
-                <p>{{ referral.professional.all|join:", " }}</p>
-            {% endif %}
 
         <label style="display:none">{% trans "Clients" %}<br />
         {{ referral_form.client }}
         </label>
     </fieldset>
-
-         {% comment %}
-         <div class="attach">
-         <fieldset>
-          <legend>{% trans "Attach document" %}</legend>
-           <label>{% trans "File" %}<br />
-             <a class="clips_attach notajax">{% trans "Document" %}</a>
-              <input type="hidden" name="attach" class="attach" />
-           </label>
-
-              <label> {% trans "Description" %}<br />
-                <textarea name="description" cols="40" rows="3"/></textarea>
-              </label>
-
-          </fieldset>
-         </div>
-         {% endcomment %}
 
     <fieldset>
     <legend>{% trans "Referral Additional Infos" %}</legend>

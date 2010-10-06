@@ -330,32 +330,75 @@ def referral_plus_form(request, object_id=None, referral_id=None):
 @permission_required_with_403('referral.referral_read')
 def referral_form(request, object_id = None, referral_id = None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
-
     # check access by requested user
     if not _access_check(request, object):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
-    data = {'client': [object.id]}
-
-    try:
-        referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active)
-        # check access by requested user
+    if referral_id:
+        referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active, referraldischarge__isnull=True)
         if not _access_check_referral_write(request, referral):
             return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+    else:
+        referral = Referral()
+    
+    if request.method == 'POST':
+        form = ReferralForm(request.POST, instance = referral)
 
+        if form.is_valid():
+            data = form.save(commit=False)
+            
+            data.organization = request.user.get_profile().org_active
+            data.status = '01'
+            if data.service.active:
+                data.save()
+                #save professionals
+                form.save_m2m()
+                # add client(s)
+                data.client.add(object)
+                ''' Indication  Section '''
+                if request.POST.get('indication'):
+                    referral.indication_set.all().delete()
+                    indication = Indication()
+                    indication.indication_choice = IndicationChoice.objects.get(pk=request.POST.get('indication'))
+                    indication.referral_organization = get_object_or_None(Organization, id=request.POST.get('indication_organization'))
+                    indication.referral_professional = get_object_or_None(CareProfessional, id=request.POST.get('indication_professional'))
+                    # indication.client = Client.objects.get(pk = object_id)
+                    indication.referral = Referral.objects.get(pk = data)
+                    indication.save()
+                ''' if asked, add referral and client to some existing group ''' 
+                
+                GroupMembers.objects.filter(client=Client.objects.get(pk = object_id, person__organization=request.user.get_profile().org_active), referral=data).delete()
+                if data.service.is_group:
+                    group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active)
+                    gm = GroupMembers(group=group, client=object, referral=data)
+                    gm.save()
+                
+                url = '/client/%s/referral/%s/'
+                msg = _('Referral saved successfully')
+                request.user.message_set.create(message=_(msg))
+                return HttpResponseRedirect(url % (object_id, data.id))
+    else:
         referral_form = ReferralForm(instance = referral)
-        referral_list = None
-        referral_form.fields['professional'].queryset = CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)
-    except:
-        # new referral
-        referral = ''
-        referral_form = ReferralForm(data)
+
+
+    referral_form = ReferralForm(instance = referral)
 
     referral_form.fields['referral'].queryset = Referral.objects.filter(client=object)
     referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
     referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
+    if hasattr(referral.service, 'professionals'):
+        referral_form.fields['professional'].choices = [(i.id, i) for i in referral.service.professionals.all()]
+        
     total_service = Referral.objects.filter(client=object).count()
     referral_list = Referral.objects.filter(client=object, status='01')
+    
+    
+    if referral.group:
+        referral_form.fields['group'].initial = referral.group.id
+        referral_form.fields['group'].queryset = ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active).filter(service=referral.service)
+    else:
+        referral_form.fields['group'].queryset = ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active)
+        
 
     return render_to_response('client/client_referral_form.html',
                               { 'object': object, 
@@ -423,11 +466,12 @@ def referral_save(request, object_id = None, referral_id = None):
             object.status = '01'
             if object.service.active:
                 object.save()
-                ''' just save professionals one time '''
-                if not object.professional.all():
-                    form.save_m2m()
+                #''' just save professionals one time '''
+                #if not object.professional.all():
+                form.save_m2m()
                 ''' Indication  Section '''
                 if request.POST.get('indication'):
+                    referral.indication_set.all().delete()
                     indication = Indication()
                     indication.indication_choice = IndicationChoice.objects.get(pk=request.POST.get('indication'))
                     indication.referral_organization = get_object_or_None(Organization, id=request.POST.get('indication_organization'))

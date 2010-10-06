@@ -128,6 +128,36 @@ function bindMask() {
     });
 }
 
+    /**
+     * referral new. Show professional subscription when change service.
+     **/
+
+function referral_edit(select_field) {
+    // REMOVE ALL PROFESSIONAL FROM SELECT
+    $('div.referral_form_professional li').hide();
+    if (select_field.val() != ''){
+        $.getJSON("/service/" + select_field.val() + "/listprofessional/", function(json) {
+            jQuery.each(json,  function(){
+                $('div.referral_form_professional ul input[value='+this.id+']').parents('li:first').show();
+                $('div.referral_form_professional ul input[value='+this.id+']').attr('checked','');
+            });
+        });
+        
+        // is group
+        $('select[name=group] option').remove();
+        if(select_field.children(':selected').attr('is_group')=='True') {
+            $.getJSON("/service/" + select_field.val() + "/group/json/", function(json) {
+                jQuery.each(json,  function(){
+                    $('select[name=group]').append(new Option(this.name, this.id));
+                });
+            });
+            $('label.referral_group').effect('blind', {'mode':'show'});
+        } else {
+            $('label.referral_group').hide();
+        }
+    }
+
+}
 
 $(function() {
     
@@ -714,33 +744,34 @@ $(function() {
         }); 
     });
      
-    /**
-     * referral new. Show professional subscription when change service.
-     **/
 
-    $('form#client_referral_form select[name=service]').unbind().change(function(){
-        // REMOVE ALL PROFESSIONAL FROM SELECT
-        $('select[name=professional] option').remove();
-        if (this.value != ''){
-            $.getJSON("/service/" + $(this).attr("value") + "/listprofessional/", function(json) {
-                jQuery.each(json,  function(){
-                    $('select[name=professional]').append(new Option(this.name, this.id));
-                });
-            });
+    
+    $('div.hide_on_first li').hide();
+    $('form#client_referral_form select[name=service]:not(.check_change select, select.check_change)').change(function(){
+        referral_edit($(this));
+    });
+    
+    /**
+     * check if combo state has been changed, then bind save button
+     */
+    
+    
+    $('select.check_change, .check_change select').change(function () {
+        if(!confirm($('input[name=message_referral_changing]').val())) { 
+            // reset to original state
+            $(this).children('option').attr('selected', '');
+            $(this).children('option[value='+$(this).attr('original_state')+']').attr('selected', 'selected');
             
-            // is group
-            $('select[name=group] option').remove();
-            if($(this).children(':selected').attr('is_group')=='True') {
-                $.getJSON("/service/" + $(this).attr("value") + "/group/json/", function(json) {
-                    jQuery.each(json,  function(){
-                        $('select[name=group]').append(new Option(this.name, this.id));
-                    });
-                });
-                $('label.referral_group').effect('blind', {'mode':'show'});
-            } else {
-                $('label.referral_group').hide();
+            return false; 
+        } else {
+            if($(this).attr('name') == 'service') {
+                referral_edit($(this));
             }
         }
+    });
+
+    $('.check_change input[type=checkbox]').click(function () {
+            if(!confirm($('input[name=message_referral_changing]').val())) { return false; }
     });
 
 

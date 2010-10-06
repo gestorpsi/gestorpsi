@@ -18,13 +18,16 @@ from django import forms
 from gestorpsi.referral.models import Referral, ReferralPriority, ReferralImpact, ReferralDischarge, Queue, ReferralExternal
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client 
-from gestorpsi.service.models import Service
+from gestorpsi.service.models import Service, ServiceGroup
 
 class ReferralForm(forms.ModelForm):
     referral = forms.ModelChoiceField(queryset=Referral.objects.all(), required = False, widget=forms.Select(attrs={'class':'extrabig asm', }))
     service = forms.ModelChoiceField(queryset=Service.objects.all(), widget=forms.Select(attrs={'class':'extrabig asm', }))
-    professional = forms.ModelMultipleChoiceField(queryset=CareProfessional.objects.all(), required = False, widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
-    client = forms.ModelMultipleChoiceField(queryset=Client.objects.all(),  widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
+    group = forms.ModelChoiceField(queryset=ServiceGroup.objects.all(), required=False, widget=forms.Select(attrs={'class':'extrabig asm', }))
+    professional = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, choices = (
+        [(i.id, i) for i in CareProfessional.objects.all()]
+    ))    
+    client = forms.ModelMultipleChoiceField(queryset=Client.objects.all(), required=False,  widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
     annotation = forms.CharField(widget=forms.Textarea(), required = False)
     referral_reason = forms.CharField(widget=forms.Textarea(), required = False)
     available_time = forms.CharField(widget=forms.Textarea(), required = False)
@@ -34,7 +37,13 @@ class ReferralForm(forms.ModelForm):
     class Meta:
         fields = ('client', 'service', 'professional', 'annotation', 'referral', 'annotation', 'referral_reason', 'available_time', 'priority', 'impact')
         model = Referral
-
+    
+    def __init__(self, *args, **kwargs):
+        super(ReferralForm, self).__init__(*args, **kwargs)
+        if hasattr(self,'instance') and self.instance.id:
+            if self.instance.service.is_group:
+                self.fields['group'].widget.attrs = {'class':'extrabig asm', 'original_state':self.instance.group.id}
+        
 class ReferralDischargeForm(forms.ModelForm):
     details = forms.CharField(widget = forms.Textarea(attrs={'class':'giant'}), required = False)
     description = forms.CharField(widget = forms.Textarea(attrs={'class':'giant'}), required = False)

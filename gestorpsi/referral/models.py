@@ -308,7 +308,7 @@ class Referral(Event):
 
     def _group(self):
         from gestorpsi.service.models import GroupMembers
-        if not self.service.is_group:
+        if not hasattr(self.service,'is_group') or not self.service.is_group:
             return None
         else:
             g = GroupMembers.objects.filter(referral=self)[0]

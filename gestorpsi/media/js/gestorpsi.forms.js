@@ -943,7 +943,7 @@ $(function() {
     }
 
 $('.form_client.autocomplete input[name=name]').result(function(event, data, formatted) {
-        url = '/client/'+data.id+'/home/';
+        url = '/client/'+data.id+'/';
         window.location.replace(url);
         return false;
 	});

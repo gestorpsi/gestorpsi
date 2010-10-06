@@ -923,6 +923,31 @@ $(function() {
             }
         });    
 
+    /**
+     * load client list when insert new register
+     */
+
+    if($('.form_client.autocomplete').html()) {
+        $.getJSON("/client/organization_clients/?q=&", function(json_data) {
+            var names = json_data['results']
+            $('.form_client.autocomplete input[name=name]').click().autocomplete(names, {
+                minChars: 0,
+                width: 355,
+                matchContains: "word",
+                autoFill: false,
+                formatItem: function(row, i, max) {
+                    return row.name
+                }
+            });
+        });
+    }
+
+$('.form_client.autocomplete input[name=name]').result(function(event, data, formatted) {
+        url = '/client/'+data.id+'/home/';
+        window.location.replace(url);
+        return false;
+	});
+    
 
 /* MAIN FUNCTION */ 
 });

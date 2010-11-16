@@ -682,7 +682,10 @@ def organization_clients(request):
        organization_clients: return json with all clients from logged organization
     """
     user = request.user
-    clients = Client.objects.filter(person__organization = user.get_profile().org_active.id, clientStatus = '1', person__name__istartswith=request.GET.get('q') ).order_by('person__name')
+    clients = Client.objects.filter(person__organization = user.get_profile().org_active.id, person__name__istartswith=request.GET.get('q') ).order_by('person__name')
+
+    if not request.GET.get('include_deactivated'):
+        clients = clients.filter(clientStatus = '1')
 
     if not user.groups.filter(name='administrator') and not user.groups.filter(name='secretary'):
         added_by_me = [] # registers added by me, got by django-reversion
@@ -702,7 +705,7 @@ def organization_clients(request):
     for o in clients:
         c = {
             'id': o.id,
-            'name': u'%s%s' % (o.person.name, '' if not o.person.is_company() else _(' (Company)')),
+            'name': u'%s%s%s' % (o.person.name, '' if not o.person.is_company() else _(' (Company)'), '' if o.clientStatus == '1' else _(' (Disabled)')),
         }
         array.append(c)
 

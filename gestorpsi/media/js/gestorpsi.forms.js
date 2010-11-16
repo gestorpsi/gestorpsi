@@ -928,7 +928,7 @@ $(function() {
      */
 
     if($('.form_client.autocomplete').html()) {
-        $.getJSON("/client/organization_clients/?q=&", function(json_data) {
+        $.getJSON("/client/organization_clients/?include_deactivated=True&q=&", function(json_data) {
             var names = json_data['results']
             $('.form_client.autocomplete input[name=name]').click().autocomplete(names, {
                 minChars: 0,

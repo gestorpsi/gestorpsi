@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-05 00:37-0300\n"
-"PO-Revision-Date: 2010-10-05 00:54\n"
+"PO-Revision-Date: 2010-10-08 21:32\n"
 "Last-Translator: <webmaster@gestorpsi.com.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2105,11 +2105,11 @@ msgstr "Cliente não compareceu"
 
 #: schedule/models.py:32
 msgid "Occurrence unmarked"
-msgstr "Sessão desmarcada"
+msgstr "Evento desmarcado"
 
 #: schedule/models.py:33
 msgid "Occurrence rescheduled"
-msgstr "Sessão remarcada"
+msgstr "Evento remarcado"
 
 #: schedule/models.py:101
 msgid "Occurrence Date Started"
@@ -2743,7 +2743,7 @@ msgstr "Indicações"
 #: templates/admission/admission_form.html:140
 #: templates/client/client_print.html:119
 msgid "Signed by the client"
-msgstr "Assinado pelo cliente "
+msgstr "Assinado pelo cliente (TCLE)"
 
 #: templates/admission/admission_form.html:168
 msgid "Media"
@@ -3368,11 +3368,11 @@ msgstr "ocorrências futuras"
 
 #: templates/client/client_home.html:61
 msgid "Next occurrence"
-msgstr "Próxima ocorrência"
+msgstr "Próximo evento"
 
 #: templates/client/client_home.html:64
 msgid "There is no upcoming occurrences for this service"
-msgstr "Sem eventos futuros para este serviço"
+msgstr "Sem eventos futuros"
 
 #: templates/client/client_home.html:64
 msgid "book it now?"
@@ -3494,7 +3494,7 @@ msgstr "Número de Prontuário"
 
 #: templates/client/client_print.html:107
 msgid "Subscribed since"
-msgstr "Inscrito desde"
+msgstr "Data de Admissão"
 
 #: templates/client/client_print.html:108
 msgid "Legacy record"
@@ -3593,11 +3593,11 @@ msgstr "Inativo na ocupação"
 
 #: templates/client/client_print.html:272
 msgid "Statement of Service"
-msgstr "Termos de Serviço"
+msgstr "Detalhes da Inscrição"
 
 #: templates/client/client_print.html:274
 msgid "Admission"
-msgstr "Admissão"
+msgstr "Data da Inscrição"
 
 #: templates/client/client_print.html:277
 #: templates/client/client_print_form.html:65
@@ -3692,15 +3692,15 @@ msgstr "Cliente não compareceu"
 
 #: templates/client/client_print.html:346
 msgid "Occurrence confirmed unmarked"
-msgstr "Sessão desmarcada"
+msgstr "Evento desmarcado"
 
 #: templates/client/client_print.html:347
 msgid "Occurrence confirmed rescheduled"
-msgstr "Sessão remarcada"
+msgstr "Evento remarcado"
 
 #: templates/client/client_print.html:351
 msgid "Service Occurrences"
-msgstr "Sessões do serviço"
+msgstr "Eventos"
 
 #: templates/client/client_print.html:354
 msgid "This referral have no occurrence"
@@ -3708,7 +3708,7 @@ msgstr "Sem eventos futuros"
 
 #: templates/client/client_print.html:358
 msgid "Occurrence"
-msgstr "Sessão"
+msgstr "Evento"
 
 #: templates/client/client_print.html:359
 #: templates/client/client_print.html:399
@@ -3749,7 +3749,7 @@ msgstr "Hora início / término"
 
 #: templates/client/client_print.html:366
 msgid "Confirmation Reason"
-msgstr "Confirmação de Sessão"
+msgstr "Confirmação de evento"
 
 #: templates/client/client_print.html:369
 msgid "Utilized Devices"
@@ -3769,7 +3769,7 @@ msgstr "Materiais Agendados"
 
 #: templates/client/client_print.html:392
 msgid "Referral Sessions"
-msgstr "Registro dos atendimentos"
+msgstr "Registro de Atendimentos"
 
 #: templates/client/client_print.html:394
 msgid "This referral have no session registered yet"
@@ -3785,7 +3785,7 @@ msgstr "Atendimento"
 
 #: templates/client/client_print.html:400
 msgid "Goals"
-msgstr "Total"
+msgstr "Objetivo"
 
 #: templates/client/client_print.html:413
 msgid "Referral Demands"
@@ -3865,27 +3865,27 @@ msgstr "Imprime eventos dos serviços selecionados"
 
 #: templates/client/client_print_form.html:75
 msgid "Print EHR data"
-msgstr "Imprimir Prontuário Eletrônico"
+msgstr "Imprimir Prontuário Técnico"
 
 #: templates/client/client_print_form.html:76
 msgid "if selected will print client EHR data"
-msgstr "Imprime Prontuário Eletrônico do cliente"
+msgstr "Imprime informações inseridas pelos profissionais"
 
 #: templates/client/client_print_form.html:81
 msgid "Signed by"
-msgstr "Assinar por"
+msgstr "Assinaturas:"
 
 #: templates/client/client_print_form.html:84
 msgid "Professionals from referral"
-msgstr "Profissionais do Encaminhamento"
+msgstr "Profissionais ou estagiários"
 
 #: templates/client/client_print_form.html:87
 msgid "Responsible Professionals from Service"
-msgstr "Nome do profissional responsável"
+msgstr "Responsável pelo serviço ou supervisor"
 
 #: templates/client/client_print_form.html:90
 msgid "Organization Responsibles"
-msgstr "Responsáveis do Estabelecimento"
+msgstr "Responsáveis técnicos do estabelecimento"
 
 #: templates/client/client_print_form.html:94
 msgid "Print output format"
@@ -5696,7 +5696,7 @@ msgstr "Profissionais"
 
 #: templates/service/service_client_list.html:67
 msgid "all past occurrences (inclunding unmarked e remarked)"
-msgstr ""
+msgstr "Eventos marcados (inclui desmarcados e remarcados)"
 
 #: templates/service/service_form.html:45
 msgid "Inform the service details then click on Save button"
@@ -6341,7 +6341,7 @@ msgstr "Empregados"
 
 #: templates/tags/schedule_sidebar.html:42
 msgid "Schedule employee on this occurrence"
-msgstr "Agendar funcionário(s) nesta Sessão"
+msgstr "Agendar funcionário(s) neste evento"
 
 #: templates/tags/service_sidebar.html:22
 msgid "Details"

@@ -67,7 +67,7 @@ GNU General Public License for more details.
                             {% if rc.service == object %}
                             <br />
                             {% trans "Referral ID" %}: <b><a href="/client/{{ i.id }}/referral/{{ rc.pk }}/">#{{ rc.pk }}</a></b>
-                            <br />{% trans "Professionals" %}:</b> {% for p in rc.professional.all %}<a href="/careprofessional/{{ p.id }}/">{{ p }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
+                            {% if rc.professional.all %}<br />{% trans "Professionals" %}:</b> {% for p in rc.professional.all %}<a href="/careprofessional/{{ p.id }}/">{{ p }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}
                             <br />{% trans "all past occurrences (inclunding unmarked e remarked)" %}:</b> {{ rc.past_occurrences_all|length }}
                             <br />
                             {% endif %}

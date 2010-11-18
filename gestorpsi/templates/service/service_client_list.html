@@ -62,10 +62,18 @@ GNU General Public License for more details.
                 <tbody>
                     {% for i in client_list %}
                         <tr class="zebra_{% cycle 0,1 %}">
-                        <td class="title"><a href="/client/{{i.id}}/home/">{{ i }}</a>
-                        <br><b>{% trans "service professionals" %}:</b> {% for rc in i.referrals_charged %}{% if rc.service == object %}{% for p in rc.professional.all %}<a href="/careprofessional/{{ p.id }}/">{{ p }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}{% endfor %}<br> 
-                        <b>{% trans "all past occurrences (inclunding unmarked e remarked)" %}:</b> {% for rc in i.referrals_charged %}{% if rc.service == object %}{{ rc.past_occurrences_all|length }}{% endif %}{% endfor %}</td>
-                        <td>{% if not i.clientStatus %}{% trans "deactivated" %}{% endif %}</td>
+                        <td class="title"><a href="/client/{{i.id}}/home/">{{ i }}</a> {% if not i.clientStatus %}({% trans "deactivated" %}){% endif %}
+                        {% for rc in i.referrals_charged %}
+                            {% if rc.service == object %}
+                            <br />
+                            {% trans "Referral ID" %}: <b><a href="/client/{{ i.id }}/referral/{{ rc.pk }}/">#{{ rc.pk }}</a></b>
+                            <br />{% trans "Professionals" %}:</b> {% for p in rc.professional.all %}<a href="/careprofessional/{{ p.id }}/">{{ p }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
+                            <br />{% trans "all past occurrences (inclunding unmarked e remarked)" %}:</b> {{ rc.past_occurrences_all|length }}
+                            <br />
+                            {% endif %}
+                        {% endfor %}
+                        </td>
+                        <td>&nbsp;</td>
                         </tr>
                     {% endfor%}
                 </table>

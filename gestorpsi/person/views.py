@@ -177,7 +177,7 @@ def person_json_list(request, object, perm, page, no_paging = False, with_client
         array[i] = {
             'id': c.id,
             'person_id': c.person.id,
-            'name': c.person.name,
+            'name': c.person.name.title(),
             'phone': u'%s' % c.person.get_first_phone(),
             'email': u'%s' % c.person.get_first_email(),
             'username': username,

@@ -71,7 +71,7 @@ class Person(models.Model):
     birthForeignCountry = models.IntegerField(max_length=4, null=True)
         
     def __unicode__(self):
-        return (u"%s (%s)" % (self.name, _('Company'))) if self.is_company() else (u"%s" % (self.name))
+        return (u"%s (%s)" % (self.name.title(), _('Company'))) if self.is_company() else (u"%s" % (self.name.title()))
 
     """ function used only in reports.py waiting a fix in Geraldo SubReport"""
     def get_documents(self):

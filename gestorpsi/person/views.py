@@ -186,7 +186,7 @@ def person_json_list(request, object, perm, page, no_paging = False, with_client
         if with_client_services:
             html = ''
             for r in c.referrals_charged():
-                html += "<a title='%s' href='/client/%s/referral/%s/'><div class='service_name_html color%s'>&nbsp;</div></a>" % (r, c.pk, r.pk, r.service.css_color_class)
+                html += u"<a title='%s' href='/client/%s/referral/%s/'><div class='service_name_html color%s'>&nbsp;</div></a>" % (r, c.pk, r.pk, r.service.css_color_class)
             
             array[i]['services_html'] = html
         

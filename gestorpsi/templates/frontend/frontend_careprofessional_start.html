@@ -39,8 +39,10 @@ GNU General Public License for more details.
             {% for service in object.prof_services.all %}
                 <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
                     <td class="title">
-                        <a href="/service/form/{{ service.id }}/" title="{{ service.name }}">{{ service.name }}</a><br />
-                        {{ service.description }}<br />
+                        <a class="title" href="/service/form/{{ service.id }}/" title="{{ service.name }}">{{ service.name_html|safe }}</a><br />
+                        <div style="margin-left:26px;">
+                        <i>{{ service.description }}</i>
+                        </div>
                     </td>
                     <td><span class="phone"></span><br />
                     <span class="email"></span></td>
@@ -115,16 +117,19 @@ GNU General Public License for more details.
             {% for referral in referrals %}
                 <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
                     <td class="title">
+                        {{ referral.service_name_html|safe }}
+                        <br />
+                        <div style="margin-left:25px;">
                         {% for client in referral.client.all %}
-                            <a href="/client/{{ client.id }}/referral/{{ referral.id }}/">{{ client }}</a>
+                            <a href="/client/{{ client.id }}/referral/{{ referral.id }}/"><i>{{ client }}</i></a>
                            {% if not forloop.last %}, {% endif %}
                         {% endfor %}
-                        <br />
-                        {{ referral }}<br />
+                        </div>
                     </td>
-                    <td><span class="phone"></span><br />
+                    <td><span class="phone">{{ referral.date|date:"d/m/Y" }}</span><br />
                     <span class="email"></span></td>
-                    <td>{{ referral.date|date:"d/m/Y H:i" }}<br />
+                    <td><br />
+                    
                     </td>
                 </tr>
             {% endfor %}

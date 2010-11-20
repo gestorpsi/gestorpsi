@@ -293,6 +293,24 @@ $(function() {
 
     /**
      *
+     * admission form
+     *
+     * _description:
+     * validate admission form.
+     *
+     */
+
+    $('form.form_admission').validate({
+        rules: {
+            admission_date: "required"//,
+        },
+        messages: {
+            admission_date: 'Preenchimento Necessário'
+        }
+    });
+
+    /**
+     *
      * referral form
      *
      * _description:

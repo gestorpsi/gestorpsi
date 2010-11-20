@@ -948,6 +948,12 @@ $('.form_client.autocomplete input[name=name]').result(function(event, data, for
         return false;
 	});
     
-
+    /**
+     * datePicker UI calendar
+     */
+    
+    $('input.calendar').datepicker({ dateFormat: 'dd/mm/yy' });
+    
+    
 /* MAIN FUNCTION */ 
 });

@@ -39,7 +39,7 @@ GNU General Public License for more details.
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
 
-<form action="/admission/{{ object.id }}/save/" method="post" id="client_admission_form" class="ajax form_admission form_client">
+<form action="/admission/{{ object.id }}/save/" method="post" id="client_admission_form" class="form_admission">
 <input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
 <div class="main_area">
         <!-- <a href="" id=help>&nbsp;</a> -->
@@ -61,7 +61,7 @@ GNU General Public License for more details.
         <label>{% trans "Legacy Record" %}<br />
         <input name="legacyRecord" maxlength="15" type="text" class="medium" value="{{ object.legacyRecord }}" /></label>
         <label>{% trans "Admission Date" %}<br />
-        <input name="admission_date" type="text" class="medium" value="{% if not object.admission_date %}{% now "d/m/Y" %}{% else %}{{ object.admission_date|date:"d/m/Y" }}{% endif %}" mask="99/99/9999" /></label>
+        <input name="admission_date" type="text" class="medium calendar" value="{% if not object.admission_date %}{% now "d/m/Y" %}{% else %}{{ object.admission_date|date:"d/m/Y" }}{% endif %}" mask="99/99/9999" /></label>
         </fieldset>
         <!-- How the client heard about this organization -->
         <div class="admission_referral">

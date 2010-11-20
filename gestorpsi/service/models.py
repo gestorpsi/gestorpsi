@@ -105,11 +105,11 @@ class Service(models.Model):
         return u
     
     def _name_html(self):
-        return " <div class='service_name_html color%s'>&nbsp;</div> %s" % (self.css_color_class, self.name)
+        return u"<div class='service_name_html color%s'>&nbsp;</div> %s" % (self.css_color_class, self.name)
     name_html = property(_name_html)
 
     def _name_html_inline(self):
-        return "%s <div class='service_name_html_inline color%s'>&nbsp;</div>" % (self.name, self.css_color_class)
+        return u"%s <div class='service_name_html_inline color%s'>&nbsp;</div>" % (self.name, self.css_color_class)
     name_html_inline = property(_name_html_inline)
 
     class Meta:

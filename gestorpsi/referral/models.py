@@ -234,11 +234,11 @@ class Referral(Event):
         return u"%s #%s" % (self.service, self.id)
 
     def _service_name_html(self):
-        return "<div class='service_name_html color%s'>&nbsp;</div> %s #%s" % (self.service.css_color_class, self.service.name, self.id)
+        return u"<div class='service_name_html color%s'>&nbsp;</div> %s #%s" % (self.service.css_color_class, self.service.name, self.id)
     service_name_html = property(_service_name_html)
 
     def _service_name_html_inline(self):
-        return "%s #%s <div class='service_name_html_inline color%s'>&nbsp;</div>" % (self.service.name, self.id, self.service.css_color_class)
+        return u"%s #%s <div class='service_name_html_inline color%s'>&nbsp;</div>" % (self.service.name, self.id, self.service.css_color_class)
     service_name_html_inline = property(_service_name_html_inline)
 
     def revision(self):

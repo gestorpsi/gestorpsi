@@ -37,10 +37,10 @@ GNU General Public License for more details.
 <h2 id="title_addressbook" style="display:none"></h2>
 
 {% if not group.id %}
-	<h2 class="title_clients title">{% trans "adding group" %}</h2>
+	<h2 class="title_clients title">{% trans "adding group" %} - {{ object.name_html_inline|safe }}</h2>
 	<p class="description">{% trans "Inform the group details then click on Save button" %}</p>
 {% else %}
-	<h2 class="title_clients title">{{ group }}</h2>
+	<h2 class="title_clients title">{{ group }} - {{ group.service.name_html_inline|safe }}</h2>
 	<p class="description">{% trans "Editing group informations" %}</p>
 {% endif %}
 

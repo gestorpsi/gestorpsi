@@ -52,18 +52,24 @@ GNU General Public License for more details.
     {% else %}
         
             {% for i in referrals %}
-            <p>
-                <a href="/client/{{ object.id}}/referral/{{ i.id }}/">{{ i.service }}</a>{% for g in i.service.servicegroup_set.all %}{% for cl in g.client.all %}{% ifequal cl object %} ({{ g }}){% endifequal %}{% endfor %}{% endfor %} {% if i.upcoming_occurrences %} {% trans "with" %} {{ i.upcoming_occurrences|length }} {% trans "occurrences remaining" %}{% endif %}<br />
-                {% for p in i.professional.all %}
-                <b>{{ p }}</b> {{ p.professionalIdentification.profession }}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %} - {% if p.professionalIdentification.profession.symbol %}{{ p.professionalIdentification.profession.symbol }}{% endif %}&nbsp;{% if p.professionalIdentification.registerNumber %}{{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %} <br />
-                {% endfor %}
+                <div class="referral_box">
+                <a class="service_title" href="/client/{{ object.id}}/referral/{{ i.id }}/">{{ i.service_name_html|safe }}</a>{% for g in i.service.servicegroup_set.all %}{% for cl in g.client.all %}{% ifequal cl object %} ({{ g }}){% endifequal %}{% endfor %}{% endfor %} {% if i.upcoming_occurrences %} {% trans "with" %} {{ i.upcoming_occurrences|length }} {% trans "occurrences remaining" %}{% endif %}
+
+                <div style="clear:both;"></div>
+                    <div style="margin-left:39px;">
+                    {% for p in i.professional.all %}
+                        <i><a href="/careprofessional/{{ p.pk }}/">{{ p }}</a> {{ p.professionalIdentification.profession }}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %} - {% if p.professionalIdentification.profession.symbol %}{{ p.professionalIdentification.profession.symbol }}{% endif %}&nbsp;{% if p.professionalIdentification.registerNumber %}{{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</i>
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    <div style="clear:both;"></div>
                     {% if i.next_occurrence %}
                         {% trans "Next occurrence" %}:
                         {{ i.next_occurrence.start_time|date:"l, d" }} {% trans "of" %} {{ i.next_occurrence.start_time|date:"F" }} {% trans "of" %} {{ i.next_occurrence.start_time|date:"Y" }} {{ i.next_occurrence.start_time|date:"H:i" }} - {{ i.next_occurrence.end_time|date:"H:i" }}
                     {% else %}
                         {% trans "There is no upcoming occurrences for this service" %} <a href="/client/schedule/daily/?referral={{ i.id }}&client={{ object.id }}" class="small">{% trans "book it now?" %}</a>
                     {% endif %}
-            </p>        
+                    </div>
+                </div>
             {% endfor %}
         <p>
         {% if perms.service.service_write %}
@@ -116,17 +122,25 @@ GNU General Public License for more details.
 	<h3><span>{% trans "Referral Discharged" %}</span></h3>
     {% if referrals_discharged %}
             {% for referral in referrals_discharged %}
-               <p>
-                   <a href="/client/{{ object.id }}/referral/{{ referral.referral.id }}/" title="{{ referral }}">{{ referral.referral.service }}</a><br />
-                   {% if referral.professional.all.0 %}{{ referral.professional.all.0 }}&nbsp;-&nbsp;{% endif %}{% trans "subscribed at" %} <b>{{ referral.date|date:"d/m/Y" }}</b> <br>
-               </p>
+               <div class="referral_box">
+                   <a class="service_title" href="/client/{{ object.id }}/referral/{{ referral.referral.id }}/" title="{{ referral }}">{{ referral.referral.service_name_html|safe }}</a><br />
+                    
+                    <div style="margin-left:39px;">
+                    {% for p in referral.referral.professional.all %}
+                        <i><a href="/careprofessional/{{ p.pk }}/">{{ p }}</a> {{ p.professionalIdentification.profession }}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %} - {% if p.professionalIdentification.profession.symbol %}{{ p.professionalIdentification.profession.symbol }}{% endif %}&nbsp;{% if p.professionalIdentification.registerNumber %}{{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</i>
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                   
+               <br />{% trans "Date discharge" %}:&nbsp;{{ referral.referral.referraldischarge_set.all.0.date|date:"d/m/Y" }}
+               {% if referral.reason %}<br />{{ referral.get_reason_display }}{% endif %}
+               <br />{% trans "Discharge was discussed with client" %}:&nbsp;{% if referral.was_discussed_with_client %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
+               {% if referral.details %}<br />{{ referral.details }}{% endif %}
                
-               {# {% if referral.date %}<p>{% trans "Date discharge" %}:&nbsp;{{ referral.referraldischarge_set.all.0.date }}</p>{% endif %} #}
-               {% if referral.reason %}<p>{% trans "Discharge Reason" %}:&nbsp;<b>{{ referral.get_reason_display }}</b></p>{% endif %}
-               <p>{% trans "Discharge was discussed with client" %}:&nbsp;<b>{% if referral.was_discussed_with_client %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</b></p>
-               {% if referral.details %}<p>{% trans "Discharge Details" %}:&nbsp;<b>{{ referral.details }}</b></p>{% endif %}
-               <p>{% trans "Referral discharge status" %}:&nbsp;<b>{% if not referral.status %}{% trans "Not informed" %}{% else %}{{ referral.status }}{% endif %}</b></p>
-               {% if referral.description %}<p>{% trans "Referral discharge description" %}:&nbsp;<b>{{ referral.description }}</b></p>{% endif %}
+               {% if referral.description %}{% trans "Referral discharge description" %}:&nbsp;{{ referral.description }}{% endif %}
+               <div style="clear"></div>
+               <a href="/client/ef66c7dd-350a-4db5-a73f-063d262aadf6/referral/8/edit/">{% trans "edit" %}</a>
+                    </div>
+               </div>
             {% endfor %}
     {% else %}    
             <p class="empty">

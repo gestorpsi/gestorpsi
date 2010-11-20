@@ -133,7 +133,7 @@ def list(request, page = 1, deactive = False):
             name += " (%s)" % _('Group')
         array[i] = {
             'id': o.id,
-            'name': name,
+            'name': o.name_html,
             'is_group': False if not o.is_group else True,
             'description': u'%s' % o.description,
             'email': '',

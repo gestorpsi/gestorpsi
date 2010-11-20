@@ -38,7 +38,7 @@ GNU General Public License for more details.
 {% block core %}
 
 {% if object.id %}
-	<h2 class="title_services title">{{ object.name }}</h2>
+	<h2 class="title_services title">{{ object.name_html_inline|safe }}</h2>
 	<p class="description">{{ object.description }}<br />	
 {% else %}
 	<h2 class="title_services title">{% trans "Adding New Service" %}</h2>

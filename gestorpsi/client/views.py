@@ -201,7 +201,7 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
     if filter:
         object_list = object_list.filter(person__name__icontains = filter)
 
-    return HttpResponse(simplejson.dumps(person_json_list(request, object_list, 'client.client_read', page, no_paging), sort_keys=True),
+    return HttpResponse(simplejson.dumps(person_json_list(request, object_list, 'client.client_read', page, no_paging, True), sort_keys=True),
                             mimetype='application/json')
 
 # edit form

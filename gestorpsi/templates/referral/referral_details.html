@@ -82,7 +82,7 @@ GNU General Public License for more details.
 	<!-- DataTypes form menu -->
 	<h3><span>{% trans "Service Details" %}</span></h3>
 
-    <h2 class="red">{{ referral }}</h2>
+    <h2 class="red">{{ referral.service_name_html_inline|safe }}</h2>
         <p><small>{{ referral.service.description }}</small></p>
         <p>
         {% if referral.group %}

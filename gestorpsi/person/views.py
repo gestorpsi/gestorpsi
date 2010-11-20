@@ -15,6 +15,7 @@ GNU General Public License for more details.
 
 from django.core.paginator import Paginator
 from django.conf import settings
+from django.utils.translation import ugettext as _
 from gestorpsi.address.models import City
 from gestorpsi.address.views import address_save
 from gestorpsi.document.views import document_save
@@ -128,7 +129,7 @@ def person_type_url(person):
     except:
         pass
 
-def person_json_list(request, object, perm, page, no_paging = False):
+def person_json_list(request, object, perm, page, no_paging = False, with_client_services = False):
     object_length = len(object)
     
     array = {} #json
@@ -181,6 +182,14 @@ def person_json_list(request, object, perm, page, no_paging = False):
             'email': u'%s' % c.person.get_first_email(),
             'username': username,
         }
+        
+        if with_client_services:
+            html = ''
+            for r in c.referrals_charged():
+                html += "<a title='%s' href='/client/%s/referral/%s/'><div class='service_name_html color%s'>&nbsp;</div></a>" % (r, c.pk, r.pk, r.service.css_color_class)
+            
+            array[i]['services_html'] = html
+        
         i = i + 1
 
     return array

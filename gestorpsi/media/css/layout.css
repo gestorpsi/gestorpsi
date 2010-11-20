@@ -1189,6 +1189,7 @@ div.schedule #search_header {
 #search_results tr.person.gestorpsi,  #search_results tr.person.gestorpsi:hover { background-image: url(/media/img/16/proffessional_gestor.png); background-repeat: no-repeat; background-position: 98% 10px; }
 #search_results tr.clinic.gestorpsi,  #search_results tr.clinic.gestorpsi:hover {background-image: url(/media/img/16/go-home_gestor.png); background-repeat: no-repeat; background-position: 98% 10px;}
 
+#search_results .service_name_html { padding: 0 10px 0 0;}
 
 #legend div {
 	float: left;
@@ -1633,6 +1634,26 @@ div.overflow ul li { clear:both; display:block; padding:0px; margin:0px !importa
 div.overflow label { padding: 2px 0 0 10px; margin:0 0 0 0}
 
 label.error { color: red; float: right;}
+
+/**
+ * service color
+ */
+
+div.service_name_html, div.service_name_html_inline { border: 1px solid white; }
+div.service_name_html { display:inline; padding-right: 20px; margin-right:6px;}
+div.service_name_html_inline {float:none; display:inline; padding-right: 20px; margin-left:6px;}
+
+/**
+ * client referral box
+ */
+
+div.referral_box { margin: 12px  0 10px 30px;  }
+div.referral_box a { margin-left: 0px !important;}
+
+div.referral_box .service_name_html { margin:0px; padding:0 20px 8px 0px; }
+
+div.referral_box a.service_title {margin-left:6px !important; font-size:16px; }
+div.referral_box a { font-size:12px;}
 
 /**
 *  utils

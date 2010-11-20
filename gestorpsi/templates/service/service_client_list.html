@@ -35,7 +35,7 @@ GNU General Public License for more details.
 {% block core %}
 
 <div class="registers_available">
-        <h2 class="title_clients">{% trans "Client list" %}&nbsp;-&nbsp;{{ object }}</h2>
+        <h2 class="title_clients">{% trans "Client list" %}&nbsp;-&nbsp;{{ object.name_html_inline|safe }}</h2>
         <p class="description">{% trans "Displaying" %} <span id="object_length">{{ client_list|length }}</span> {% trans "clients(s)" %}.</p>
         
         <div class="main_area contact">

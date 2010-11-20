@@ -40,20 +40,10 @@ def client_referrals(request, object_id = None):
     i = 0
     
     for o in referral:
+        priority = ("%s" % o.priority).decode('utf-8')
+        impact = ("%s" % o.impact).decode('utf-8')
+        service_name = u'%s' % o
 
-        if o.priority == None:
-            priority = ""
-        else:
-            priority = ("%s" % o.priority).decode('utf-8')
-
-        if o.impact == None:
-            impact = ""
-        else:
-            impact = ("%s" % o.impact).decode('utf-8')
-        try:
-            service_name = o.service.name
-        except:
-            service_name = ''
         array[i] = {
             'id': o.id,
             'status': o.status,

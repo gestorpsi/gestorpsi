@@ -47,7 +47,7 @@ GNU General Public License for more details.
     {% else %}
 
     <div class="registers_available">
-            <h2 class="title_services">{{ service.name }} {% trans "groups" %}</h2>
+            <h2 class="title_services">{% trans "groups of" %} {{ service.name_html_inline|safe }}</h2>
             <p class="description">{% trans "Displaying" %} <a href="/service/{{ object.0.referral.service.id }}/group/"><span id="object_length">{{ object|length }}</span> {% trans "groups(s)" %}</a>. </p>
             
             <div class="main_area contact">

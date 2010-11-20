@@ -36,11 +36,13 @@ function updateClient(url, deactive, app) {
             if(this.id) {
                 tableTR += '<tr id="' + this.id + '"><td class="title">';
                 tableTR += '<a href="/client/' + this.id + '/home/" title="' + this.name + '">' + this.name + '</a>';
+                tableTR += '<br /><i>' +  this.phone + '</i>';
+                if(this.email) tableTR += ' - <i><a href="mailto:'+this.email+'">' + this.email + '</a></i>';
                 tableTR += '</td>';
-                tableTR += '<td><span class="phone">' + this.phone + '</span><br />';
-                tableTR += '<span class="email">' + this.email + '</span></td>';
+                tableTR += '<td><span class="phone">' + this.services_html + '</span><br />';
+                tableTR += '<span class="email"></span></td>';
                 tableTR += '<td>';
-                tableTR += '<a class="admit" href="/admission/' + this.id + '/" title="' + this.name + '"><img src="/media/img/22/ico_reg.png"></a>';
+                tableTR += '<a class="admit" href="/admission/' + this.id + '/" title="Dados da admissão"><img src="/media/img/22/ico_reg.png"></a>';
                 tableTR += '</td>';
                 tableTR += '</tr>';
             }

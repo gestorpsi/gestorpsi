@@ -309,19 +309,28 @@ GNU General Public License for more details.
 
         {% for i in referral.upcoming_occurrences|slice:":5" %}
                 <p>
-             {{ i.start_time|date:"r"|slice:"-9" }} hs - {{ i.scheduleoccurrence.room }}
+             <a href="/schedule/events/{{i.pk}}/confirmation/">{{ i.start_time|date:"r"|slice:"-9" }} hs </a> 
+            <br /><small><b>{{ i.scheduleoccurrence.room }}</b>
+            {% if i.scheduleoccurrence.occurrencefamily.client.all %}
+                    <br />
+                    {% trans "Family members scheduled:" %}
+                        {% for e in i.scheduleoccurrence.occurrencefamily.client.all %}
+                             <i><a href="/client/{{e.id }}/home/">{{ e }}</a>{% if not forloop.last %}, {% endif%}</i>
+                         {% endfor %}
+            {% endif %}
+                
              {% if i.scheduleoccurrence.employees_active %}<br />
-                 {% trans "Employees:" %}
-                 {% for e in i.scheduleoccurrence.employees_active %}
-                     <a href="/client/{{e.id }}/home/">{{ e }}</a>{% if not forloop.last %}, {% endif%}
-                 {% endfor %}
+                     {% trans "Employees:" %}
+                     {% for e in i.scheduleoccurrence.employees_active %}
+                         <a href="/client/{{e.id }}/home/">{{ e }}</a>{% if not forloop.last %}, {% endif%}
+                     {% endfor %}
              {% endif %}
              {% if i.scheduleoccurrence.is_online %} 
                 - <i>({% trans "online event" %})</i>
                 - <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}messages/chat/{{i.scheduleoccurrence.id}}">{% trans "Enter chat" %}</a>
                 - ({% firstof i.scheduleoccurrence.online_users "0" %} {% trans "online users" %})
              {% endif %}
-
+                </small>
              </p>
         {% endfor %}
     <p>
@@ -338,7 +347,10 @@ GNU General Public License for more details.
             {% trans "This customer has no past schedules!" %}
     {% else %}
         {% for i in referral.past_occurrences_all|slice:":5" %}
-            <p>{{ i.start_time|date:"r"|slice:"-9" }} hs
+            <p>
+            <a href="/schedule/events/{{i.pk}}/confirmation/">{{ i.start_time|date:"r"|slice:"-9" }} hs</a>
+            <br />
+            <small>
             {% if i.scheduleoccurrence.is_online %}
             <i>(online)</i>
             {% ifnotequal i.scheduleoccurrence.messagetopic_set.count 0 %}
@@ -350,10 +362,16 @@ GNU General Public License for more details.
             - ({% firstof i.scheduleoccurrence.online_users "0" %} {% trans "online users" %})
             {% endif %}
 
-            <small>
-            {{ i.scheduleoccurrence.room }} 
+            <b>{{ i.scheduleoccurrence.room }}</b>
+            {% if i.scheduleoccurrence.occurrencefamily.client.all %}
+                    <br />
+                    {% trans "Family members scheduled:" %}
+                        {% for e in i.scheduleoccurrence.occurrencefamily.client.all %}
+                             <i><a href="/client/{{e.id }}/home/">{{ e }}</a>{% if not forloop.last %}, {% endif%}</i>
+                         {% endfor %}
+            {% endif %}
              {% if i.scheduleoccurrence.employees_active %}<br />
-                 {% trans "Employees:" %}
+                 {% trans "Employees scheduled:" %}
                  {% for e in i.scheduleoccurrence.employees_active %}
                      <a href="/client/{{e.id }}/home/">{{ e }}</a>{% if not forloop.last %}, {% endif%}
                  {% endfor %}

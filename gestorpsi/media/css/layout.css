@@ -567,13 +567,13 @@ a.document {
 
 
 a.clips {
-        background:url(../img/ico_clips.gif) no-repeat 98% 0;
+        background:url(/media/img/ico_clips.gif) no-repeat 98% 0;
         text-align: right;
         padding-right: 20px;
         padding-top: 5px;
 }
 a.prase_edit {
-        background:url(../img/ico_edit.png) no-repeat 98% -2px;
+        background:url(/media/img/ico_edit.png) no-repeat 98% -2px;
         text-align: right;
         padding-right: 20px !important;
         padding-top: 5px;
@@ -585,6 +585,11 @@ a.prase_edit {
         background-position: 0 -18px;
         color: #005A7D;
 }
+
+.go-next, .go-previous { margin: 0px 0 4px 0; padding: 0 0 4px 25px; }
+.go-next { padding: 0 0 2px 25px; background:url(/media/img/16/go-next.png) no-repeat;}
+.go-previous { padding: 0 0 2px 25px; background:url(/media/img/16/go-previous.png) no-repeat;}
+
 #content a.clips:hover, #content a.prase_edit:hover {
         background-position: 98% -20px;
 }
@@ -1436,7 +1441,7 @@ div.main_area.home ul li a {
 }
 
 div.main_area.home a {
-        margin-left: 20px;
+        /* margin-left: 20px; */
 }
 
 div.main_area.home span.big {
@@ -1643,6 +1648,16 @@ div.service_name_html, div.service_name_html_inline { border: 1px solid white; }
 div.service_name_html { display:inline; padding-right: 20px; margin-right:6px;}
 div.service_name_html_inline {float:none; display:inline; padding-right: 20px; margin-left:6px;}
 
+table a.title, table td.title .title { font-weight:bold !important;}
+
+.color_palette { margin: 0px 0 0 106px;position:absolute;  background:white; padding:10px; border: 1px solid #CCC; }
+
+.color_palette { width:122px;}
+.color_palette li { float:left; margin-left:2px;}
+.color_palette li a {padding:0px 8px}
+
+.color_switch div { margin-left: 12px; }
+
 /**
  * client referral box
  */
@@ -1674,6 +1689,8 @@ a.pointer {
 .float_right {
     float:right;
 }
+
+.clear_both { clear:both; }
 
 /**
 * jquery dialog

@@ -219,14 +219,17 @@ def save(request, object_id=''):
       object.area = Area.objects.get(pk=request.POST.get('service_area'))
       object.service_type = ServiceType.objects.get(pk=request.POST.get('service_type'))
 
-    """ chose one css color to this service """
-    if not request.user.get_profile().org_active.service_set.all():
-        object.css_color_class = 1
+    if not request.POST.get('service_css_color_class'):
+        """ chose one css color to this service """
+        if not request.user.get_profile().org_active.service_set.all():
+            object.css_color_class = 1
+        else:
+            if not object.css_color_class:
+                object.css_color_class = (int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) + 1) \
+                                    if int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) <=24 \
+                                    else 1
     else:
-        if not object.css_color_class:
-            object.css_color_class = (int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) + 1) \
-                                if int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) <=24 \
-                                else 1
+        object.css_color_class = request.POST.get('service_css_color_class')
 
     object.save()
 

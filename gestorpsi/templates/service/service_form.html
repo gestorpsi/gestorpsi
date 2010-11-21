@@ -66,6 +66,21 @@ GNU General Public License for more details.
 			<label>{% trans "Keywords (separated by ;)" %}<br />
 			<input type="text" maxlength="100" name="service_keywords" class="giant" value="{{ object.keywords }}" />
 			</label>
+			<label>{% trans "Service Color" %} <a class="color_switch pointer"><div class='service_name_html color{{ object.css_color_class }}'>&nbsp;</div></a><br />
+			<div class="clear_both"></div>
+			<div class="color_palette hidden">
+			    <ul>
+				{% load num_range %}
+				{% num_range 25 as css_color_range %}
+				{% for i in css_color_range %}
+				    <li class="color{{ i }}"><a class="pointer pick_color" color="{{ i }}"></a></li>
+				{% endfor %}
+			    </ul>
+			    <div class="clear_both"></div>
+			    <a class="pointer close_palette">{% trans "close" %}</a>
+			</div>
+			<input type="hidden" maxlength="2" name="service_css_color_class" value="{{ object.css_color_class }}" />
+			</label>
     </fieldset>
     <fieldset>
 		<legend>{% trans "Academic Related" %}</legend>

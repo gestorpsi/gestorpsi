@@ -308,10 +308,7 @@ def referral_plus_form(request, object_id=None, referral_id=None):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     referral_form = ReferralForm(data)
-    #referral_form.fields['professional'].queryset = CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)
-    #referral_form.fields['professional'].choices = CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)
-    #[ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else '(student)')) for p in CareProfessional.objects.all()]
-
+    referral_form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('Student'))) for p in CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)]
     referral_form.fields['referral'].queryset = Referral.objects.filter(client=object)
     referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
     referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')

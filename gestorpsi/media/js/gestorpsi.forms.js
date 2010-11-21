@@ -954,6 +954,25 @@ $('.form_client.autocomplete input[name=name]').result(function(event, data, for
     
     $('input.calendar').datepicker({ dateFormat: 'dd/mm/yy' });
     
+    /**
+     * color pallete
+     */
+    
+    $('a.pick_color').click(function() {
+        $('input[name=service_css_color_class]').val($(this).attr('color'));
+        $('a.color_switch div').remove();
+        $('a.color_switch').html('<div class="service_name_html color' + $(this).attr('color') + '">&nbsp;</div>');
+        $('.color_palette').effect('slide', {'direction':'up', 'mode':'hide'});
+    });
+    
+    $('a.color_switch').live('click', function() {
+        $('.color_palette').effect('slide', {'direction':'up'});
+    });
+    
+    $('a.close_palette').click(function() {
+        $('.color_palette').hide();
+    });
+    
     
 /* MAIN FUNCTION */ 
 });

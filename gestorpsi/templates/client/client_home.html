@@ -126,12 +126,15 @@ GNU General Public License for more details.
                    <a class="service_title" href="/client/{{ object.id }}/referral/{{ referral.referral.id }}/" title="{{ referral }}">{{ referral.referral.service_name_html|safe }}</a><br />
                     
                     <div style="margin-left:39px;">
-                    {% for p in referral.referral.professional.all %}
-                        <i><a href="/careprofessional/{{ p.pk }}/">{{ p }}</a> {{ p.professionalIdentification.profession }}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %} - {% if p.professionalIdentification.profession.symbol %}{{ p.professionalIdentification.profession.symbol }}{% endif %}&nbsp;{% if p.professionalIdentification.registerNumber %}{{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</i>
-                        {% if not forloop.last %}, {% endif %}
-                    {% endfor %}
+                    {% if referral.referral.professional.all %}
+                        {% for p in referral.referral.professional.all %}
+                            <i><a href="/careprofessional/{{ p.pk }}/">{{ p }}</a> {{ p.professionalIdentification.profession }}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %} - {% if p.professionalIdentification.profession.symbol %}{{ p.professionalIdentification.profession.symbol }}{% endif %}&nbsp;{% if p.professionalIdentification.registerNumber %}{{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</i>
+                            {% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                        <br />
+                    {% endif %}
                    
-               <br />{% trans "Date discharge" %}:&nbsp;{{ referral.referral.referraldischarge_set.all.0.date|date:"d/m/Y" }}
+               {% trans "Date discharge" %}:&nbsp;{{ referral.referral.referraldischarge_set.all.0.date|date:"d/m/Y" }}
                {% if referral.reason %}<br />{{ referral.reason }}{% endif %}
                <br />{% trans "Discharge was discussed with client" %}:&nbsp;{% if referral.was_discussed_with_client %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
                {% if referral.details %}<br />{{ referral.details }}{% endif %}

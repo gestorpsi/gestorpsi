@@ -102,7 +102,7 @@ GNU General Public License for more details.
                 {% endif %}
             {% else %}
                 {% for p in referral.professional.all %}
-                    {{ p }} {{ p.professionalIdentification.profession }}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %} - {% if p.professionalIdentification.profession.symbol %}{{ p.professionalIdentification.profession.symbol }}{% endif %}&nbsp;{% if p.professionalIdentification.registerNumber %}{{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %} <br />
+                    <i><a href="/careprofessional/{{ p.pk }}/">{{ p }}</a> {{ p.professionalIdentification.profession }}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %} - {% if p.professionalIdentification.profession.symbol %}{{ p.professionalIdentification.profession.symbol }}{% endif %}&nbsp;{% if p.professionalIdentification.registerNumber %}{{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</i> <br />
                 {% endfor %}
             {% endif %}
             <br>
@@ -162,9 +162,28 @@ GNU General Public License for more details.
 	<h3><span>{% trans "Queue" %}</span></h3>
     
             {% for a in queues %}
-                <h2 class="red">{{ a.referral }} </h2>
-                    <p><small>{{ referral.service.description }}</small></p>
+
+    <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+                <tr class="zebra_{% cycle 0 1 %}">
+                    <td class="title">
+                        <div class="go-next title">{{ a.date_in|date:"d/m/Y" }}</div>
+                        {% if not a.date_out %}
+                            <div style="margin-left:25px;">
+                            <a href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/{{ a.id }}/remove/" title="{{ object.person.name }}">{% trans "Remove from queue" %}</a> 
+                            </div>
+                        {% else %}
+                            <div class="go-previous title">{{ a.date_out|date:"d/m/Y" }}</div>
+                        {% endif %}
+                    </td>
+                    <td><span class="phone">{{ a.get_priority_display }}</span><br />
+                    <span class="email">{{ a.comments }}</span></td>
+                    <td><br />
                     
+                    </td>
+                </tr>
+    </table>
+
+            {% comment %}
                     <p>
                         <b />{% trans "Date in" %}</b>&nbsp;
                             {{ a.date_in|date:"d/m/Y" }}
@@ -193,6 +212,7 @@ GNU General Public License for more details.
                       <a href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/{{ a.id }}/remove/" title="{{ object.person.name }}">{% trans "Remove" %}</a> 
                     {% endif %}
                     </p>
+            {% endcomment %}
         {% endfor %}
 </div>
 {% endif %}

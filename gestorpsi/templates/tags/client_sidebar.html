@@ -75,16 +75,17 @@ GNU General Public License for more details.
 
     <h3>{% trans 'Client Actions' %}</h3>
     <ul>
-    {% if perms.referral.referral_write %}
-        <li><a href="/client/{{ object.id }}/referral/form/" class="client_referral_form" title="{{ object.person.name }}">{% trans "New Subscription" %}</a></li>
-    {% endif %}
+    {% if object.is_active %}
+        {% if perms.referral.referral_write %}
+            <li><a href="/client/{{ object.id }}/referral/form/" class="client_referral_form" title="{{ object.person.name }}">{% trans "New Subscription" %}</a></li>
+        {% endif %}
 
-    {% if object.is_company %}
-        <li><a href="/client/{{ object.id }}/company_clients/form/" class="add_company_clients" title="{% trans "Add Related Client" %}">{% trans "Add Related Client" %}</a></li>
-    {% else %}
-        <li><a href="/client/{{ object.id }}/family/form/" class="client_family" title="{% trans "Add Family Member" %}">{% trans "Add Family Member" %}</a></li>
+        {% if object.is_company %}
+            <li><a href="/client/{{ object.id }}/company_clients/form/" class="add_company_clients" title="{% trans "Add Related Client" %}">{% trans "Add Related Client" %}</a></li>
+        {% else %}
+            <li><a href="/client/{{ object.id }}/family/form/" class="client_family" title="{% trans "Add Family Member" %}">{% trans "Add Family Member" %}</a></li>
+        {% endif %}
     {% endif %}
-
 
     <li><a href="/client/{{ object.id }}/order/" class="client_order" title="{{ object.person.name }}">{% ifequal object.clientStatus "1" %} {% trans "Disable" %} {% else %} {% trans "Enable" %} {% endifequal %} </a></li>
 

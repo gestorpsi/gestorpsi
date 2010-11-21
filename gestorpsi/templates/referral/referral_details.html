@@ -89,11 +89,14 @@ GNU General Public License for more details.
             {% trans "Group" %}: <a href="/service/{{ referral.service.id}}/group/{{ referral.group.id }}/form/">{{ referral.group }}</a><br />
             {% if referral.group.comments %}<small>{{ referral.group.comments }}</small><br /><br />{% endif %}
         {% endif %}
-        {% trans "Area" %}: {{ referral.service.area }}
+        <b>{% trans "Area" %}:</b> {{ referral.service.area }}
             {% if referral.service.modalities.all %}
             <br>{% trans "Modalities" %}:  {{ referral.service.modalities.all|safeseq|join:", " }}
             {% endif %}
-            
+            {% if referral.priority %}
+            <br /><b>{% trans "prority" %}: </b>
+                {{ referral.priority }}
+            {% endif %}
             <br>
             {% if not referral.professional.all %}
                 {% trans "There is no professional in this referral." %}
@@ -102,57 +105,48 @@ GNU General Public License for more details.
                 {% endif %}
             {% else %}
                 {% for p in referral.professional.all %}
-                    <i><a href="/careprofessional/{{ p.pk }}/">{{ p }}</a> {{ p.professionalIdentification.profession }}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %} - {% if p.professionalIdentification.profession.symbol %}{{ p.professionalIdentification.profession.symbol }}{% endif %}&nbsp;{% if p.professionalIdentification.registerNumber %}{{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</i> <br />
+                    <i><a href="/careprofessional/{{ p.pk }}/">{{ p }}</a>{% if p.professionalIdentification.profession %} {{ p.professionalIdentification.profession }}{% endif %}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %} - {% if p.professionalIdentification.profession.symbol %}{{ p.professionalIdentification.profession.symbol }}{% endif %}&nbsp;{% if p.professionalIdentification.registerNumber %}{{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</i>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
             {% endif %}
+            
+            
             <br>
             {% for g in referral.service.servicegroup_set.all %}{% for cl in g.client.all %}{% ifequal cl object %} {% trans "Group" %}: <a href="/service/{{ referral.service.id}}/group/{{ g.id }}/form/">{{ g }}</a><br />{% endifequal %}{% endfor %}{% endfor %}
-            {% trans "Client subscribed on this service since" %} {{ referral.revision_created.date_created|date:"d/m/Y" }}
-        </p>
-
-        <p>
-            {% if referral.referral %}
-            <b />{% trans "Referral" %}</b><br />
-                {{ referral.referral }}
-            {% endif %}
+            
         </p>
         <p>
-            {% if indication %}
-            <b />{% trans "Indication" %}</b><br />
-                {{ indication }}
-            {% endif %}
-        </p>
-        <p>
+        <small>
+            <i>
+        
             {% if referral.impact %}
-            <b />{% trans "Impact" %}</b><br />
-                {{ referral.impact }}
+            {% trans "Impact" %}
+                {{ referral.impact }}<br />
             {% endif %}
-        </p>
-        <p>
-            {% if referral.priority%}
-            <b />{% trans "prority" %}</b><br />
-                {{ referral.priority }}
-            {% endif %}
-        </p>
-        <p>
+        
             {% if referral.referral_reason %}
-            <b />{% trans "Reason" %}</b><br />
-                {{ referral.referral_reason }}
+            <b>{% trans "Reason" %}:</b>
+                {{ referral.referral_reason }}.
             {% endif %}
-        </p>
-        <p>
+        
+        
             {% if referral.available_time%}
-            <b />{% trans "Available Time" %}</b><br />
+            <b>{% trans "Available Time" %}: </b>
                 {{ referral.available_time }}
             {% endif %}
-        </p>
-        <p>
+        
+            {% if referral.indication_set.all %}
+            <br />
+            <b>{% trans "Indication" %}:</b>
+                {{ referral.indication_set.all|join:", " }}
+            {% endif %}
 
-            {% if referral.annotation %}
-            <b />{% trans "Annotation" %}</b><br />
+            {% if referral.annotation %}<br />
                 {{ referral.annotation }}
             {% endif %}
-        </p>
+            </i>
+        <br />
+        {% trans "Client subscribed on this service since" %} {{ referral.revision_created.date_created|date:"d/m/Y" }}
+       </small>
 
 <br />	
 </div>

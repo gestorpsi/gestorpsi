@@ -24,7 +24,7 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.template.defaultfilters import slugify
 from django.db.models import Q
-
+from django.contrib import messages
 from gestorpsi.settings import DEBUG, MEDIA_URL, MEDIA_ROOT
 from gestorpsi.address.models import Country, State, AddressType, City
 from gestorpsi.authentication.models import Profile
@@ -147,6 +147,8 @@ def home(request, object_id=None):
     for x in (Referral.objects.filter(client=object)):
         c += x.past_occurrences().count()
 
+    if not object.is_active():
+        messages.info(request, _('This client is not enabled. Do you want to %senable it%s now?') % ('<a href="/client/'+object.pk+'/order/">', '</a>'))
     return render_to_response('client/client_home.html',
                                         {
                                         'object': object,
@@ -333,6 +335,9 @@ def referral_form(request, object_id = None, referral_id = None):
     # check access by requested user
     if not _access_check(request, object):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+    
+    if object.clientStatus == '0':
+        return render_to_response('403.html', {'object': _("Sorry! You can not save referral for disabled clients!"), }, context_instance=RequestContext(request))
 
     if referral_id:
         referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active, referraldischarge__isnull=True)
@@ -723,22 +728,20 @@ def order(request, object_id = ''):
     if not _access_check(request, object):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
-    url = '/client/%s/'
+    url = '/client/%s/home/'
 
-    if Referral.objects.charged().filter(client = object).count() == 0:
-        if (object.clientStatus == "1" ):
+    if not object.is_active():
+        object.clientStatus = "1"
+        request.user.message_set.create(message=_('User activated successfully'))
+        object.save(force_update=True)
+    else:
+        if Referral.objects.charged().filter(client = object).count() == 0:
             object.clientStatus  = "0"
             request.user.message_set.create(message=_('User deactivated successfully'))
-        else:
-            object.clientStatus = "1"
-            request.user.message_set.create(message=_('User activated successfully'))
             object.save(force_update=True)
-
-        object.save(force_update=True)
-    
-    else:
-        request.user.message_set.create(message=_('Sorry, you can not deactivate a client with registered referral'))
-        url += '?clss=error'
+        else:
+            request.user.message_set.create(message=_('Sorry, you can not deactivate a client with registered referral'))
+            url += '?clss=error'
         
     return HttpResponseRedirect(url % object.id)
 

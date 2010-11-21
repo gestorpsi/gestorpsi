@@ -260,6 +260,9 @@ class Client(models.Model):
     def is_company(self):
         return True if hasattr(self.person, 'company') else False
 
+    def is_active(self):
+        return True if self.clientStatus == '1' else False
+
     def is_busy(self, start_time, end_time):
         ''' 
         check if client is busy in schedule for selected range

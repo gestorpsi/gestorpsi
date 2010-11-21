@@ -73,27 +73,6 @@ REFERRAL_STATUS = (
     ('03', _('Unknown')),
 )
 
-REFERRAL_DISCHARGE_TYPE = (
-    ('1', _('Abandonment of service ')),
-    ('2', _('Withdrawal of service - Tried the other type of treatment')),
-    ('3', _('Withdrawal of service - The shutdown was reported by the ')),
-    ('4', _('Withdrawal of service - The incompatibility of schedule ')),
-    ('5', _('Unable to contact the customer')),
-    ('6', _('Abandonment / withdrawal from the (a) professional')),
-    ('7', _('High * (end of the process without the professional)')),
-    ('8', _('Referral to external continuity of treatment ')),
-    ('9', _('Death of the Client ')),
-    ('10', _('Death of the professional ')),
-    ('11', _('Default/Neglect')),
-    ('12', _('Change of city/address ')),
-    ('13', _('Do not attended the first consultation')),
-    ('14', _('Not informed')),
-    ('15', _('End stage - the case was closed')),
-    ('16', _('Treatment / Service terminated by court order')),
-    ('17', _('Internal referral')),
-    ('18', _('Other')),
-)
-
 REFERRAL_DISCHARGE_STATUS = (
     ('1', _('Authorization')),
     ('2', _('List of expected')),
@@ -330,7 +309,8 @@ class ReferralDischarge(models.Model):
     client = models.ForeignKey(Client, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     was_discussed_with_client =  models.BooleanField(_('Was Discussed With Client'), default=False)
-    reason = models.CharField(_('Discharge Reason'), max_length=2, blank=True, null=True, choices=REFERRAL_DISCHARGE_TYPE)
+    #reason = models.CharField(_('Discharge Reason'), max_length=2, blank=True, null=True, choices=REFERRAL_DISCHARGE_TYPE)
+    reason = models.ForeignKey('ReferralDischargeReason', verbose_name=('Discharge Reason'), blank=True, null=True)
     details = models.TextField(_('Discharge Details'), blank=True)
     status = models.CharField(_('Status'), max_length=2, blank=True, null=True, choices=REFERRAL_DISCHARGE_STATUS)
     description = models.TextField(_('Comments'), blank=True)
@@ -344,6 +324,15 @@ class ReferralDischarge(models.Model):
 reversion.register(Event)
 reversion.register(ReferralDischarge, follow=['referral'])
 reversion.register(Referral, follow=['event_ptr'])
+
+class ReferralDischargeReason(models.Model):
+    name = models.CharField(max_length=255)
+    
+    def __unicode__(self):
+        return u'%s' % self.name
+    
+    class Meta:
+        ordering = ['name',]
 
 class IndicationChoice(models.Model):
     description = models.CharField(max_length=250)

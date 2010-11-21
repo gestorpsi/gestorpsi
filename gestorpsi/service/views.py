@@ -283,8 +283,9 @@ def list_professional(request, object_id):
     i = 0
     array = {} #JSON
     for o in list_prof:
+        name = o if not o.is_student else '%s (%s)' % (o, _('Student'))
         array[i] = {
-                'name': '%s' % o,
+                'name': '%s' % name,
                 'id': o.id,
         }
         i = i + 1

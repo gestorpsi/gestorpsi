@@ -60,7 +60,7 @@ def client_referrals(request, object_id = None):
         sub_count = 0
         array[i]['professional'] = {}
         for p in o.professional.all():
-            array[i]['professional'][sub_count] = ({'id':p.id, 'name':p.person.name})
+            array[i]['professional'][sub_count] = ({'id':p.id, 'name': '%s %s' % (p.person.name, '' if not p.is_student else _(' - Student')),})
             sub_count = sub_count + 1
         
         i = i + 1

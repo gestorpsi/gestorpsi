@@ -182,6 +182,16 @@ def form(request, object_id=None):
        form_area.fields['service_type'].widget.attrs = {'class':'giant asm', 'disabled':'disabled'} 
        form_area.fields['modalities'].widget.attrs = {'class':'giant multiple asm', 'disabled':'disabled'}
 
+    # select a next color when new register
+    if not object.pk:
+        if not request.user.get_profile().org_active.service_set.all():
+            object.css_color_class = 1
+        else:
+            if not object.css_color_class:
+                object.css_color_class = (int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) + 1) \
+                                    if int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) <=24 \
+                                    else 1
+
     return render_to_response('service/service_form.html', {
         'object': object,
         'Agreements': Agreement.objects.all(),
@@ -219,15 +229,15 @@ def save(request, object_id=''):
       object.area = Area.objects.get(pk=request.POST.get('service_area'))
       object.service_type = ServiceType.objects.get(pk=request.POST.get('service_type'))
 
-    if not request.POST.get('service_css_color_class'):
-        """ chose one css color to this service """
-        if not request.user.get_profile().org_active.service_set.all():
-            object.css_color_class = 1
-        else:
-            if not object.css_color_class:
-                object.css_color_class = (int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) + 1) \
-                                    if int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) <=24 \
-                                    else 1
+    #if not request.POST.get('service_css_color_class'):
+        #""" chose one css color to this service """
+        #if not request.user.get_profile().org_active.service_set.all():
+            #object.css_color_class = 1
+        #else:
+            #if not object.css_color_class:
+                #object.css_color_class = (int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) + 1) \
+                                    #if int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) <=24 \
+                                    #else 1
     else:
         object.css_color_class = request.POST.get('service_css_color_class')
 

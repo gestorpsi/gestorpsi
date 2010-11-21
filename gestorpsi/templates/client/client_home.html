@@ -132,7 +132,7 @@ GNU General Public License for more details.
                     {% endfor %}
                    
                <br />{% trans "Date discharge" %}:&nbsp;{{ referral.referral.referraldischarge_set.all.0.date|date:"d/m/Y" }}
-               {% if referral.reason %}<br />{{ referral.get_reason_display }}{% endif %}
+               {% if referral.reason %}<br />{{ referral.reason }}{% endif %}
                <br />{% trans "Discharge was discussed with client" %}:&nbsp;{% if referral.was_discussed_with_client %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
                {% if referral.details %}<br />{{ referral.details }}{% endif %}
                

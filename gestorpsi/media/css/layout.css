@@ -1212,7 +1212,7 @@ div.schedule #search_header {
 
 div.photo_form_upload {
         position: fixed;
-        margin-top: 0px;
+        margin-top: -410px;
         margin-left: 350px;
         _margin-left: -350px;
         _margin-top: -100px;

@@ -86,16 +86,26 @@ GNU General Public License for more details.
             </select>
         </label>
 
-        {% if not referral %}
+
+            <div style="clear:both;"></div>
             <label>{% trans "Professionals" %}<br />
-                <select name="professional" class="extrabig multiple asm" id="id_professional" multiple="multiple">
-                </select>
+                <div class="overflow referral_form_professional{% if not referral.id %} hide_on_first{% endif %}">
+                    {{ referral_form.professional }}
+                </div> 
             </label>
-        {% else %}
-            <label>{% trans "Professionals" %}<br />
-                {{ referral_form.professional }}
-            </label>            
-        {% endif %}
+
+        {% comment %}
+            {% if not referral %}
+                <label>{% trans "Professionals" %}<br />
+                    <select name="professional" class="extrabig multiple asm" id="id_professional" multiple="multiple">
+                    </select>
+                </label>
+            {% else %}
+                <label>{% trans "Professionals" %}<br />
+                    {{ referral_form.professional }}
+                </label>            
+            {% endif %}
+        {% endcomment %}
 
         <label style="display:none">{% trans "Clients" %}<br />
         {{ referral_form.client }}

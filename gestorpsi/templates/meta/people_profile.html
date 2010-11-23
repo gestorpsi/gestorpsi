@@ -32,7 +32,7 @@ People Personal Profile Form
 
 
         <label> {% trans "Age" %} <br />
-            <input class="calendar" type="text" name="Years" id="Years" onchange="displayAge();" value="{% if object.person.birthDate %}{{ object.person.birthDate|age }}{% endif %}"/>
+            <input class="small" type="text" name="Years" id="Years" onchange="displayAge();" value="{% if object.person.birthDate %}{{ object.person.birthDate|age }}{% endif %}"/>
         </label>
         
          <br />

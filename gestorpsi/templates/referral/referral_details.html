@@ -83,21 +83,26 @@ GNU General Public License for more details.
 	<h3><span>{% trans "Service Details" %}</span></h3>
 
     <h2 class="red">{{ referral.service_name_html_inline|safe }}</h2>
+        {% if referral.service.description %}
         <p><small>{{ referral.service.description }}</small></p>
+        {% endif %}
         <p>
         {% if referral.group %}
             {% trans "Group" %}: <a href="/service/{{ referral.service.id}}/group/{{ referral.group.id }}/form/">{{ referral.group }}</a><br />
             {% if referral.group.comments %}<small>{{ referral.group.comments }}</small><br /><br />{% endif %}
         {% endif %}
-        <b>{% trans "Area" %}:</b> {{ referral.service.area }}
             {% if referral.service.modalities.all %}
-            <br>{% trans "Modalities" %}:  {{ referral.service.modalities.all|safeseq|join:", " }}
+            {% trans "Modalities" %}:  {{ referral.service.modalities.all|safeseq|join:", " }}<br />
             {% endif %}
             {% if referral.priority %}
-            <br /><b>{% trans "prority" %}: </b>
-                {{ referral.priority }}
+            <b>{% trans "prority" %}: </b>
+                {{ referral.priority }}<br />
             {% endif %}
-            <br>
+            
+            {% if referral.referral %}
+                <i>{% trans "Internal referral from" %} <a href="/client/{{ object.id }}/referral/{{ referral.referral.pk }}/">{{ referral.referral }}</a></i>
+                <br />
+            {% endif %} 
             {% if not referral.professional.all %}
                 {% trans "There is no professional in this referral." %}
                 {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator or user.get_profile.person.is_careprofessional %}
@@ -105,7 +110,7 @@ GNU General Public License for more details.
                 {% endif %}
             {% else %}
                 {% for p in referral.professional.all %}
-                    <i><a href="/careprofessional/{{ p.pk }}/">{{ p }}</a>{% if p.professionalIdentification.profession %} {{ p.professionalIdentification.profession }}{% endif %}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %} - {% if p.professionalIdentification.profession.symbol %}{{ p.professionalIdentification.profession.symbol }}{% endif %}&nbsp;{% if p.professionalIdentification.registerNumber %}{{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</i>{% if not forloop.last %}, {% endif %}
+                    <i><a href="/careprofessional/{{ p.pk }}/">{{ p }}</a><small>{% if p.professionalIdentification.profession %} {{ p.professionalIdentification.profession }}{% endif %}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %}{% if p.professionalIdentification.profession.symbol %} - {{ p.professionalIdentification.profession.symbol }}{% endif %}{% if p.professionalIdentification.registerNumber %} {{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</small></i>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
             {% endif %}
             
@@ -144,7 +149,7 @@ GNU General Public License for more details.
                 {{ referral.annotation }}
             {% endif %}
             </i>
-        <br />
+        <br /><br />
         {% trans "Client subscribed on this service since" %} {{ referral.revision_created.date_created|date:"d/m/Y" }}
        </small>
 

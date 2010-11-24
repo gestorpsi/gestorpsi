@@ -625,7 +625,7 @@ a.prase_edit {
         letter-spacing: 0.05em;
 }
 
-input[type=submit].mini {
+input[type=submit].mini, a.submit {
         padding: 2px 20px 6px 15px;
         margin: 0 0 0 10px;
         cursor: pointer;
@@ -1374,7 +1374,7 @@ div.form_mini, div.form_mini_noinsert {
 div.form_mini legend, div.form_mini_noinsert legend { font-size: 20px;}
 
 div.form_mini fieldset, div.form_mini_noinsert fieldset { border: 0px; }
-div.form_mini input[type=submit], div.form_mini_noinsert input[type=submit] {
+a.submit, div.form_mini input[type=submit], div.form_mini_noinsert input[type=submit] {
         background-color: #ecedee;
         margin: 0px 0 0 0;
         border: 1px solid #999999;
@@ -1383,6 +1383,8 @@ div.form_mini input[type=submit], div.form_mini_noinsert input[type=submit] {
         color: #666;
         font-size: 13px;
 }
+
+a.submit { padding-top: 3px; padding-bottom:8px; text-decoration:none;}
 
 div.form_mini select, div.form_mini input[type=text], div.form_mini input[type=password],
 div.form_mini_noinsert select, div.form_mini_noinsert input[type=text], div.form_mini_noinsert input[type=password] {

@@ -23,12 +23,14 @@ GNU General Public License for more details.
 {% block submenu %}
  <ul id="sub_schedule">
     <li><a class="first" href="/schedule/">{% trans "daily" %}</a></li>
+    <li><a class="" href="/schedule/week/">{% trans "Weekly" %}</a></li>
     <li><a class="active" href="/schedule/events/">{% trans "events" %}</a></li>
 </ul>
 {% endblock %}
 
 {% block core %}
 <script type="text/javascript" src="/media/js/gestorpsi.schedule.js"></script>
+<script type="text/javascript" src="/media/js/gestorpsi.schedule.filter.js"></script>
 <div class="schedule">
     <a id="calendar_link" href="#"></a>
     <div id="mini_calendar" style="display:none;"></div>

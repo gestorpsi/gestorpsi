@@ -41,17 +41,17 @@ GNU General Public License for more details.
 	text-decoration: none; 
 }
 
-table.schedule_results.daily th {
+table.schedule_results.daily th, table.schedule_results.weekly th {
 	width: 190px;
     padding: 2px 4px;
     border-bottom: 2px solid #FFFFFF;
     border-left: 1px solid #FFFFFF;
 
 }
-table.schedule_results.daily th.schedule {
+table.schedule_results.daily th.schedule, table.schedule_results.weekly th.schedule {
 	width: 40px;
 }
-table.schedule_results.daily td {
+table.schedule_results.daily td, table.schedule_results.weekly td {
 	border-left: 1px solid #FFFFFF;
     border-bottom: 1px solid #FFFFFF;
 }
@@ -276,3 +276,14 @@ div.sidebar_client_schedule {
 }
 
 .margin_top_fix { margin-top: 45px; }
+
+#schedule_week td {  background:#efefef; }
+#schedule_week td.weekly_occurrences  { vertical-align:top;height: 500px;}
+#schedule_week td div { margin-top:0px; border:1px solid white;}
+td.no_events { text-align:center; padding:20px; color: #777;}
+
+/**
+ * rounded borders
+ */
+
+div.schedule table .clean { -moz-border-radius: 6px; -webkit-border-radius: 6px;}

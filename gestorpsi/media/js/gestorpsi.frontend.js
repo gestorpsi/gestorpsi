@@ -144,6 +144,12 @@ $(function(){
                 }
         });
 
+        // open mini-calendar
+        $('a#calendar_link').click(function() {
+            $("div#mini_calendar").toggle();
+        });
+
+
 });
 
 

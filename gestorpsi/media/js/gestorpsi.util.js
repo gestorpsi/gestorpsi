@@ -34,6 +34,13 @@ function personInLine(list) {
 }
 
 
+$(document).ready(function() {
+    $('a.load_html').live('click', function() {
+        var element = $(this).attr('element');
+        $(element).load($(this).attr('href'));
+        return false;
+    });
+});
 
 /**
  * calula idade

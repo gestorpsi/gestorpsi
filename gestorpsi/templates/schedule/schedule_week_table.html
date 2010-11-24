@@ -1,0 +1,65 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<p class="description">{% trans "This week have" %} <span id="occurrences_total">{{ occurrences_length }}</span> {% trans "occurrences(s)." %}</p>
+<a id="nav_back" class="load_html" element="#schedule_week" href="/schedule/week/{{ previous_week|date:"Y" }}/{{ previous_week|date:"m" }}/{{ previous_week|date:"d" }}/"></a>
+<a id="nav_fwd" class="load_html" element="#schedule_week" href="/schedule/week/{{ next_week|date:"Y" }}/{{ next_week|date:"m" }}/{{ next_week|date:"d" }}/"></a>
+<div id="search_header">
+    <h2><span class="date_selected">{% trans "From" %} {{ first_week_day|date:"d" }} {% trans "to" %} {{ last_week_day|date:"d" }} {{ today|date:"F" }} {% trans "of" %} {{ today|date:"Y" }} </span></h2>	
+</div>
+
+
+
+
+
+<table class="zebra schedule_results weekly" border="0" cellspacing="0" cellpadding="0">
+        <tr class="zebra_1">
+            {% for day in week %}
+                <th>{{ day|date:"d/m D"}}</th>
+            {% endfor %}
+        </tr>
+        {% if not occurrences_length %}        
+            <tr><td colspan="7" class="no_events" style="height:200px;">{% trans "There is no occurrence on this week" %}</td></tr>
+        {% else %}
+        <tr>
+            {% for day in occurrences %}
+            <td class="weekly_occurrences">
+                {% for o in day %}
+                <div class="clean place_{{o.room.place.pk}} room_{{o.room.pk}} {% for p in o.event.referral.professional.all %} professional_{{ p.pk }}{%endfor%} color{{ o.event.referral.service.css_color_class }} service_{{ o.event.referral.service.pk }}" room="{{ o.room.pk }}" place="{{ o.room.place.pk }}">
+                    <a title="{{o.room}} - {{ o.event.referral.client.all|join:", "}} - {{ o }}" href="/schedule/events/{{ o.pk }}/confirmation/" class="booked">
+                    <b>{{ o.room }} - {{ o.room.place }}</b><br />
+                    {{ o.event.referral.client.all|join:", "}}<br>&gt;&gt;{{ o.event.referral }} <br>{{ o.event.referral.professional.all|join:", "}}<br></a>
+                </div>
+                {% endfor %}
+            </td>
+            {% endfor %}
+        </tr>
+{% endif %}
+        <tr>
+        {% for day in week %}
+                <td class="no_events">
+                    <a title="{{ day|date:"d/m/Y" }}" href="/schedule/events/add/?dtstart={{ day|date:"Y-m-d" }}T{{ day|date:"H:i:s" }}" class="book form_mini choose_room" display="schedule_room_mini">{% trans "Book on this day" %}</a>
+                </td>
+        {% endfor %}
+        </tr>
+</table>
+
+
+
+            
+

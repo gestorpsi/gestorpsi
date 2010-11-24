@@ -21,7 +21,7 @@ GNU General Public License for more details.
     {% include "schedule/schedule_filter.html" %}
 </h2>
 
-<p class="description">O dia de hoje possui <span id="occurrences_total"></span> consulta(s).</p>
+<p class="description">{% trans "O dia de hoje possui" %} <span id="occurrences_total"></span> {% trans "consulta(s)." %}</p>
 <a class="json_ocorrences prev_day{% if messages%} margin_top_fix{% endif %}" id="nav_back"></a>
 <a class="json_ocorrences next_day{% if messages%} margin_top_fix{% endif %}" id="nav_fwd"></a>
 <div id="search_header">

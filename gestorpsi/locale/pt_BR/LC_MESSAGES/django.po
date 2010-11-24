@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-16 11:15-0200\n"
+"POT-Creation-Date: 2010-11-24 13:42-0200\n"
 "PO-Revision-Date: 2010-10-08 21:32\n"
 "Last-Translator: <webmaster@gestorpsi.com.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,24 +31,24 @@ msgstr "Termo de Consentimento Livre e Esclarecido (TCLE)"
 
 #: admission/views.py:41 admission/views.py:78 admission/views.py:106
 #: careprofessional/views.py:71 careprofessional/views.py:205
-#: client/views.py:141 client/views.py:214 client/views.py:308
-#: client/views.py:335 client/views.py:340 client/views.py:459
-#: client/views.py:507 client/views.py:546 client/views.py:566
-#: client/views.py:587 client/views.py:637 client/views.py:723
-#: client/views.py:756 client/views.py:771 client/views.py:794
-#: client/views.py:804 client/views.py:809 client/views.py:828
-#: client/views.py:871 client/views.py:891 client/views.py:909
-#: client/views.py:934 client/views.py:944 client/views.py:996
-#: client/views.py:1008 demographic/views.py:36 demographic/views.py:48
+#: client/views.py:141 client/views.py:216 client/views.py:310
+#: client/views.py:337 client/views.py:345 client/views.py:465
+#: client/views.py:513 client/views.py:565 client/views.py:585
+#: client/views.py:606 client/views.py:656 client/views.py:742
+#: client/views.py:773 client/views.py:788 client/views.py:811
+#: client/views.py:821 client/views.py:826 client/views.py:845
+#: client/views.py:888 client/views.py:908 client/views.py:926
+#: client/views.py:951 client/views.py:961 client/views.py:1013
+#: client/views.py:1025 demographic/views.py:36 demographic/views.py:48
 #: demographic/views.py:66 demographic/views.py:88 demographic/views.py:108
 #: ehr/views.py:101 ehr/views.py:118 ehr/views.py:153 ehr/views.py:213
 #: ehr/views.py:230 ehr/views.py:258 ehr/views.py:291 ehr/views.py:308
 #: ehr/views.py:334 employee/views.py:83 online_messages/views.py:94
 #: online_messages/views.py:112 online_messages/views.py:144
 #: online_messages/views.py:172 place/views.py:95 place/views.py:224
-#: schedule/views.py:242 schedule/views.py:259 schedule/views.py:499
-#: schedule/views.py:529 service/views.py:476 service/views.py:489
-#: service/views.py:493 upload/views.py:102 upload/views.py:117
+#: schedule/views.py:242 schedule/views.py:259 schedule/views.py:540
+#: schedule/views.py:570 service/views.py:490 service/views.py:503
+#: service/views.py:507 upload/views.py:102 upload/views.py:117
 #: util/decorators.py:43
 msgid "Oops! You don't have access for this service!"
 msgstr "Oops! Você não tem acesso a este serviço!"
@@ -65,7 +65,7 @@ msgstr "Admissão salva com sucesso"
 #: templates/contact/contact_professional_form.html:76
 #: templates/device/device_type_form.html:57
 #: templates/meta/people_indentification.html:37
-#: templates/service/service_form.html:85
+#: templates/service/service_form.html:100
 #: templates/tags/address_book_organization_mini.html:24
 #: templates/tags/address_book_professional_mini.html:35
 #: templates/tags/careprofessional_mini.html:23
@@ -120,7 +120,7 @@ msgstr ""
 
 #: authentication/forms.py:37 gcm/forms/invoice.py:23
 #: templates/contact/contact_organization_form.html:47
-#: templates/referral/referral_details.html:216
+#: templates/referral/referral_details.html:235
 msgid "Organization"
 msgstr "Estabelecimento"
 
@@ -212,15 +212,16 @@ msgstr ""
 msgid "<br />Active services: <b>%s</b>"
 msgstr ""
 
-#: careprofessional/views.py:241 templates/service/service_form.html:156
-#: templates/users/users_form.html:168 templates/users/users_form.html:182
+#: careprofessional/views.py:241 client/views.py:313 service/views.py:299
+#: templates/service/service_form.html:171 templates/users/users_form.html:168
+#: templates/users/users_form.html:182
 msgid "Student"
 msgstr "Estagiário"
 
 #: careprofessional/views.py:241
 #: templates/contact/contact_professional_form.html:46
-#: templates/referral/referral_details.html:213
-#: templates/service/service_form.html:153 templates/users/users_form.html:160
+#: templates/referral/referral_details.html:232
+#: templates/service/service_form.html:168 templates/users/users_form.html:160
 #: templates/users/users_form.html:181
 msgid "Professional"
 msgstr "Profissional"
@@ -229,7 +230,7 @@ msgstr "Profissional"
 msgid "activated"
 msgstr "Ativado"
 
-#: careprofessional/views.py:242 templates/service/service_client_list.html:68
+#: careprofessional/views.py:242 templates/service/service_client_list.html:65
 msgid "deactivated"
 msgstr "Desativado"
 
@@ -291,7 +292,7 @@ msgid "Others"
 msgstr "Outros"
 
 #: client/models.py:74 demographic/forms.py:28 demographic/forms.py:36
-#: ehr/forms.py:39 ehr/forms.py:56 ehr/forms.py:65 referral/models.py:328
+#: ehr/forms.py:39 ehr/forms.py:56 ehr/forms.py:65 referral/models.py:316
 #: templates/admission/admission_form.html:134
 #: templates/careprofessional/careprofessional_form.html:147
 #: templates/careprofessional/student_form.html:114
@@ -300,34 +301,48 @@ msgstr "Outros"
 #: templates/client/client_form_company.html:72
 #: templates/client/client_referral_ext.html:72
 #: templates/client/client_referral_form.html:143
-#: templates/client/client_referral_plus_form.html:119
+#: templates/client/client_referral_plus_form.html:129
 #: templates/device/device_form.html:87
 #: templates/employee/employee_form.html:82 templates/meta/people.html:27
 #: templates/meta/people.html.py:28
 #: templates/organization/organization_form.html:257
 #: templates/place/place_form.html:111 templates/place/place_form.html:112
 #: templates/place/place_room_form.html:92
-#: templates/referral/referral_details.html:210
-#: templates/service/service_form.html:179
+#: templates/referral/referral_details.html:229
+#: templates/service/service_form.html:194
 msgid "Comments"
 msgstr "Comentários"
 
-#: client/views.py:164
+#: client/views.py:151
+#, fuzzy
+msgid "This client is not enabled."
+msgstr "Nenhum familiar vinculado"
+
+#: client/views.py:166
 msgid ""
 "There's no Service created yet. Please, create one before access Client."
 msgstr ""
 "Nenhum \"Serviço\" foi criado até o momento. Por favor, crie um antes de "
 "acessar \"Clientes\"."
 
-#: client/views.py:377 client/views.py:448 client/views.py:490
+#: client/views.py:340
+msgid "Sorry! You can not save referral for disabled clients!"
+msgstr ""
+
+#: client/views.py:382 client/views.py:454 client/views.py:496
 msgid "Referral saved successfully"
 msgstr "Operação efetuada com sucesso."
 
-#: client/views.py:493
+#: client/views.py:395 client/views.py:397
+#, fuzzy
+msgid "(Student)"
+msgstr "Estagiário"
+
+#: client/views.py:499
 msgid "Service is deactive. Impossible register a referral."
 msgstr "Este serviço está desativado. Impossível registrar uma inscrição."
 
-#: client/views.py:510
+#: client/views.py:516
 msgid ""
 "Sorry, you can not discharge a queued referral. Remove it from queue first "
 "before to continue"
@@ -335,48 +350,49 @@ msgstr ""
 "Desculpe, impossível desligar um serviço com fila de espera. Remova da fila "
 "para continuar."
 
-#: client/views.py:514
-msgid "Sorry, this referral is already discharged"
-msgstr "Este serviço já está desligado."
-
-#: client/views.py:526
+#: client/views.py:540
 msgid "Client discharged successfully"
 msgstr "Cliente desligado com sucesso."
 
-#: client/views.py:529
+#: client/views.py:542
+#, fuzzy
+msgid "Referral discharge updated successfully"
+msgstr "Operação efetuada com sucesso."
+
+#: client/views.py:545
 msgid "Form Error"
 msgstr "Erro"
 
-#: client/views.py:537
+#: client/views.py:556
 msgid "Registered have hour in the schedule"
 msgstr "Este registro possui agendamentos."
 
-#: client/views.py:627
+#: client/views.py:646
 msgid "Client saved successfully"
 msgstr "Cliente salvo com sucesso."
 
-#: client/views.py:708
+#: client/views.py:727
 msgid " (Company)"
 msgstr "Razão Social"
 
-#: client/views.py:708
+#: client/views.py:727
 #, fuzzy
 msgid " (Disabled)"
 msgstr "Desativar"
 
-#: client/views.py:730 users/views.py:225
-msgid "User deactivated successfully"
-msgstr "Usuário desativado com sucesso."
-
-#: client/views.py:733 users/views.py:225
+#: client/views.py:748 users/views.py:225
 msgid "User activated successfully"
 msgstr "Usuário ativado com sucesso."
 
-#: client/views.py:739
+#: client/views.py:753 users/views.py:225
+msgid "User deactivated successfully"
+msgstr "Usuário desativado com sucesso."
+
+#: client/views.py:756
 msgid "Sorry, you can not deactivate a client with registered referral"
 msgstr "Você não pode desativar um cliente com inscrições em serviços."
 
-#: client/views.py:759
+#: client/views.py:776
 msgid ""
 "Sorry, you can not book a queued client. Remove it first from queue before "
 "continue"
@@ -384,41 +400,41 @@ msgstr ""
 "Desculpe, você não pode agendar um cliente que está na lista de espera. "
 "Remova-o da fila antes de continuar."
 
-#: client/views.py:812 client/views.py:833
+#: client/views.py:829 client/views.py:850
 msgid "Error adding to queue! Referral is already queued"
 msgstr ""
 "Erro ao adicionar à fila de espera! Cliente já está na lista de espera deste "
 "serviço."
 
-#: client/views.py:816
+#: client/views.py:833
 msgid "Error adding to queue! Referral have upcoming occurrences"
 msgstr ""
 "Erro ao adicionar à fila de espera! Existem eventos futuros cadastrados."
 
-#: client/views.py:837
+#: client/views.py:854
 msgid ""
 "Subscript in the queue not is possible. Referral have upcoming occurrences"
 msgstr ""
 "Inscrição na fila de espera não é possível! Existem eventos futuros "
 "cadastrados."
 
-#: client/views.py:860
+#: client/views.py:877
 msgid "Referral added to queue successfully"
 msgstr "Cliente adicionado à lista de espera com sucesso."
 
-#: client/views.py:881
+#: client/views.py:898
 msgid "Client removed from queue successfully"
 msgstr "Cliente removido da lista de espera com sucesso"
 
-#: client/views.py:925
+#: client/views.py:942
 msgid "External Referral saved successfully"
 msgstr "Encaminhamento externo salvo com sucesso."
 
-#: client/views.py:965
+#: client/views.py:982
 msgid "Family member added successfully"
 msgstr "Familiar adicionado com sucesso."
 
-#: client/views.py:1032
+#: client/views.py:1049
 msgid "Related client added successfully to this company"
 msgstr "Funcionário adicionado com sucesso para essa Pessoa Jurídica"
 
@@ -491,13 +507,12 @@ msgstr "Estagiário"
 msgid "Not working"
 msgstr "Não trabalha"
 
-#: demographic/choices.py:45 referral/models.py:94
-#: socioeconomic/choices.py:122 socioeconomic/choices.py:129
-#: socioeconomic/choices.py:137 socioeconomic/choices.py:147
-#: socioeconomic/choices.py:158 socioeconomic/choices.py:165
-#: socioeconomic/choices.py:180 socioeconomic/choices.py:193
-#: socioeconomic/choices.py:203 socioeconomic/choices.py:213
-#: socioeconomic/choices.py:224
+#: demographic/choices.py:45 socioeconomic/choices.py:122
+#: socioeconomic/choices.py:129 socioeconomic/choices.py:137
+#: socioeconomic/choices.py:147 socioeconomic/choices.py:158
+#: socioeconomic/choices.py:165 socioeconomic/choices.py:180
+#: socioeconomic/choices.py:193 socioeconomic/choices.py:203
+#: socioeconomic/choices.py:213 socioeconomic/choices.py:224
 msgid "Other"
 msgstr "Outro"
 
@@ -606,7 +621,7 @@ msgid "Demand"
 msgstr "Problema"
 
 #: ehr/forms.py:33 templates/client/client_print.html:458
-#: templates/referral/referral_details.html:180 templates/tags/room.html:22
+#: templates/referral/referral_details.html:198 templates/tags/room.html:22
 #: templates/tags/website.html:24
 msgid "Description"
 msgstr "Descrição"
@@ -938,7 +953,7 @@ msgid "Organizacao"
 msgstr "Organização"
 
 #: gcm/models/invoice.py:20 gcm/templates/gcm/invoice_list.html:16
-#: gcm/templates/gcm/org_form.html:116 referral/models.py:389
+#: gcm/templates/gcm/org_form.html:116 referral/models.py:386
 msgid "Data"
 msgstr "Data"
 
@@ -1615,7 +1630,7 @@ msgstr "Mensagem"
 
 #: online_messages/models.py:103
 #: templates/profile/client/referral_sidebar.html:27
-#: templates/tags/client_sidebar.html:132
+#: templates/tags/client_sidebar.html:133
 msgid "Messages"
 msgstr "Mensagens"
 
@@ -1625,7 +1640,6 @@ msgid "Subject"
 msgstr "Assunto"
 
 #: online_messages/models.py:112 templates/messages/messages_user.html:28
-#: templates/referral/referral_details.html:115
 msgid "Referral"
 msgstr "Encaminhamento interno"
 
@@ -1776,13 +1790,13 @@ msgid "Parecer"
 msgstr "Parecer"
 
 #: referral/models.py:71 templates/client/client_company_related.html:56
-#: templates/client/client_family.html:79 templates/client/client_home.html:89
+#: templates/client/client_family.html:79 templates/client/client_home.html:98
 #: templates/client/client_print.html:227
 #: templates/demographic/demographic_occupation.html:48
 msgid "Active"
 msgstr "Ativo"
 
-#: referral/models.py:72 referral/models.py:103
+#: referral/models.py:72 referral/models.py:82
 #: templates/demographic/demographic_occupation.html:48
 msgid "Inactive"
 msgstr "Inativo"
@@ -1792,96 +1806,22 @@ msgid "Unknown"
 msgstr "Desconhecido"
 
 #: referral/models.py:77
-msgid "Abandonment of service "
-msgstr "Abandono do Serviço"
-
-#: referral/models.py:78
-msgid "Withdrawal of service - Tried the other type of treatment"
-msgstr "Desistência do serviço - Procurou outro tipo de tratamento "
-
-#: referral/models.py:79
-msgid "Withdrawal of service - The shutdown was reported by the "
-msgstr ""
-"Desistência do serviço - O desligamento foi comunicado pelo cliente ou por "
-"terceiros "
-
-#: referral/models.py:80
-msgid "Withdrawal of service - The incompatibility of schedule "
-msgstr "Desistência do serviço - Incompatibilidade de horários"
-
-#: referral/models.py:81
-msgid "Unable to contact the customer"
-msgstr "Impossibilidade de contato com o cliente"
-
-#: referral/models.py:82
-msgid "Abandonment / withdrawal from the (a) professional"
-msgstr "Abandono / desistência por parte do(a) profissional "
-
-#: referral/models.py:83
-msgid "High * (end of the process without the professional)"
-msgstr "Alta (término do processo com consentimento profissional) "
-
-#: referral/models.py:84
-msgid "Referral to external continuity of treatment "
-msgstr "Encaminhamento externo para continuidade do tratamento "
-
-#: referral/models.py:85
-msgid "Death of the Client "
-msgstr "Falecimento do cliente "
-
-#: referral/models.py:86
-msgid "Death of the professional "
-msgstr "Falecimento do profissional "
-
-#: referral/models.py:87
-msgid "Default/Neglect"
-msgstr "Inadimplência "
-
-#: referral/models.py:88
-msgid "Change of city/address "
-msgstr "Mudança de cidade / endereço "
-
-#: referral/models.py:89
-msgid "Do not attended the first consultation"
-msgstr "Não compareceu ao primeiro atendimento "
-
-#: referral/models.py:90 templates/client/client_home.html:128
-#: templates/client/client_print.html:310
-#: templates/client/client_print.html:311
-#: templates/client/client_print.html:312
-#: templates/client/client_print.html:332
-msgid "Not informed"
-msgstr "Não informado"
-
-#: referral/models.py:91
-msgid "End stage - the case was closed"
-msgstr "Término do estágio - O processo foi encerrado "
-
-#: referral/models.py:92
-msgid "Treatment / Service terminated by court order"
-msgstr "Tratamento / Serviço encerrado por ordem judicial "
-
-#: referral/models.py:93
-msgid "Internal referral"
-msgstr "Encaminhamento interno"
-
-#: referral/models.py:98
 msgid "Authorization"
 msgstr "Admitido"
 
-#: referral/models.py:99
+#: referral/models.py:78
 msgid "List of expected"
 msgstr "Lista de espera "
 
-#: referral/models.py:100
+#: referral/models.py:79
 msgid "Scheduled"
 msgstr "Agendado"
 
-#: referral/models.py:101
+#: referral/models.py:80
 msgid "In attendance (active)"
 msgstr "Em atendimento (ativo) "
 
-#: referral/models.py:102
+#: referral/models.py:81
 msgid ""
 "Forwarded to external service and remains in attendance at the clinic "
 "(active)"
@@ -1889,68 +1829,67 @@ msgstr ""
 "Encaminhado para atendimento externo e continua em atendimento na clínica "
 "(ativo)"
 
-#: referral/models.py:104
+#: referral/models.py:83
 msgid "Off"
 msgstr "Desligado"
 
-#: referral/models.py:115 referral/models.py:388
+#: referral/models.py:94 referral/models.py:385
 msgid "comments"
 msgstr "Comentários"
 
-#: referral/models.py:116
+#: referral/models.py:95
 msgid "Data In"
 msgstr "Data de início"
 
-#: referral/models.py:117
+#: referral/models.py:96
 msgid "Data Out"
 msgstr "Data de término"
 
-#: referral/models.py:118 templates/client/client_print.html:311
+#: referral/models.py:97 templates/client/client_print.html:311
 #: templates/client/client_referral_form.html:134
-#: templates/client/client_referral_plus_form.html:110
+#: templates/client/client_referral_plus_form.html:120
 #: templates/client/client_referral_queue.html:59
-#: templates/frontend/frontend_careprofessional_start.html:158
-#: templates/referral/referral_details.html:174
+#: templates/frontend/frontend_careprofessional_start.html:163
+#: templates/referral/referral_details.html:192
 #: templates/service/service_queue.html:71
 msgid "Priority"
 msgstr "Prioridade"
 
-#: referral/models.py:209
+#: referral/models.py:188
 #, python-format
 msgid "%s is busy in this range"
 msgstr "%s está ocupado nesse intervalo"
 
-#: referral/models.py:213
+#: referral/models.py:192
 #, python-format
 msgid "Professional %s is busy in this range"
 msgstr "Profissional %s está ocupado nesse intervalo"
 
-#: referral/models.py:217
+#: referral/models.py:196
 #, python-format
 msgid "Client %s is busy in this range"
 msgstr "Cliente %s está ocupado nesse intervalo"
 
-#: referral/models.py:324
+#: referral/models.py:311
 msgid "Was Discussed With Client"
 msgstr "Término do serviço foi discutido junto ao cliente"
 
-#: referral/models.py:325 templates/client/client_home.html:125
-#: templates/client/client_print.html:332
-msgid "Discharge Reason"
-msgstr "Motivo do desligamento"
-
-#: referral/models.py:326 templates/client/client_home.html:127
-#: templates/client/client_print.html:334
+#: referral/models.py:314 templates/client/client_print.html:334
 msgid "Discharge Details"
 msgstr "Detalhes do Desligamento"
 
-#: referral/models.py:327 templates/client/client_print.html:264
+#: referral/models.py:315 templates/client/client_print.html:264
 #: templates/client/client_print.html:275
 #: templates/client/client_print.html:421
 #: templates/client/client_print.html:453
 #: templates/service/service_group_form.html:74
 msgid "Status"
 msgstr "Status"
+
+#: referral/views.py:63
+#, fuzzy
+msgid " - Student"
+msgstr "Estagiário"
 
 #: registration/forms.py:36
 msgid "username"
@@ -2242,22 +2181,23 @@ msgstr "Atualização salva com sucesso."
 msgid "Occurrence confirmation updated successfully"
 msgstr "Confirmação de evento realizada com sucesso."
 
-#: schedule/views.py:423
+#: schedule/views.py:464
 #: templates/careprofessional/careprofessional_list.html:49
 #: templates/careprofessional/student_list.html:48
-#: templates/client/client_home.html:62 templates/client/client_list.html:43
+#: templates/client/client_home.html:70 templates/client/client_list.html:43
 #: templates/client/client_search.html:29
 #: templates/contact/contact_list.html:43 templates/device/device_list.html:38
 #: templates/device/device_type_list.html:37
 #: templates/employee/employee_list.html:46 templates/place/place_list.html:39
 #: templates/place/place_room_list.html:39
-#: templates/referral/referral_details.html:255
-#: templates/referral/referral_details.html:260
+#: templates/referral/referral_details.html:274
+#: templates/referral/referral_details.html:279
 #: templates/referral/referral_occurrences.html:41
 #: templates/schedule/event_detail.html:67
 #: templates/schedule/schedule_occurrence_form.html:45
 #: templates/schedule/schedule_occurrence_form.html:74
 #: templates/schedule/schedule_occurrence_group.html:35
+#: templates/schedule/schedule_week_table.html:23
 #: templates/service/service_list.html:39
 #: templates/tags/occurrence_confirmation_form.html:20
 #: templates/tags/occurrence_employee_form.html:20
@@ -2267,27 +2207,27 @@ msgstr "Confirmação de evento realizada com sucesso."
 msgid "of"
 msgstr "de"
 
-#: schedule/views.py:448 service/models.py:104 service/views.py:133
+#: schedule/views.py:489 service/models.py:104 service/views.py:133
 #: templates/client/client_print.html:309
-#: templates/referral/referral_details.html:89
-#: templates/referral/referral_details.html:109
+#: templates/referral/referral_details.html:91
+#: templates/referral/referral_details.html:119
 #: templates/tags/schedule_form.html:80
 msgid "Group"
 msgstr "Grupo"
 
-#: schedule/views.py:503
+#: schedule/views.py:544
 msgid "No member family selected"
 msgstr "Nenhum familiar selecionado"
 
-#: schedule/views.py:518
+#: schedule/views.py:559
 msgid "Family members added successfully"
 msgstr "Familiar adicionado com sucesso."
 
-#: schedule/views.py:533
+#: schedule/views.py:574
 msgid "No company employees selected"
 msgstr "Empregados"
 
-#: schedule/views.py:548
+#: schedule/views.py:589
 msgid "Company employee(s) added successfully"
 msgstr "Funcionário salvo com sucesso."
 
@@ -2296,7 +2236,7 @@ msgid "Service Type"
 msgstr "Tipo do Serviço"
 
 #: service/forms.py:26 service/forms.py:35 service/forms.py:44
-#: templates/referral/referral_details.html:94
+#: templates/referral/referral_details.html:95
 msgid "Modalities"
 msgstr "Modalidade"
 
@@ -2327,36 +2267,36 @@ msgstr "Código de Área"
 msgid "Academic (supervised) related service"
 msgstr "Estágio supervisionado"
 
-#: service/views.py:274
+#: service/views.py:287
 msgid "Service saved successfully"
 msgstr "Serviço salvo com sucesso."
 
-#: service/views.py:303
+#: service/views.py:317
 msgid "Service deactive successfully"
 msgstr "Serviço desativado com sucesso."
 
-#: service/views.py:306
+#: service/views.py:320
 msgid "Service active successfully"
 msgstr "Serviço ativado com sucesso."
 
-#: service/views.py:311
+#: service/views.py:325
 msgid "You can not disable a service with clients in the queue"
 msgstr "Você não pode desativar um serviço com clientes na fila de espera."
 
-#: service/views.py:314
+#: service/views.py:328
 msgid "You can not disable a service with clients registered in the referral"
 msgstr "Você não pode desativar um serviço com clientes inscritos."
 
-#: service/views.py:378 service/views.py:441
+#: service/views.py:392 service/views.py:455
 msgid "Sorry! Students have no access to this service!"
 msgstr "Oops! Você não tem acesso a este serviço!"
 
-#: service/views.py:470 templates/service/service_group_form.html:53
+#: service/views.py:484 templates/service/service_group_form.html:53
 #: templates/service/service_group_list.html:39
 msgid "Sorry, this service was configured without group support."
 msgstr "Desculpe, não existe grupo para esse serviço."
 
-#: service/views.py:483
+#: service/views.py:497
 msgid "Group saved successfully"
 msgstr "Grupo salvo com sucesso."
 
@@ -2876,10 +2816,12 @@ msgstr "Enviar arquivo"
 #: templates/careprofessional/careprofessional_list.html:23
 #: templates/client/client_print.html:285
 #: templates/client/client_referral_form.html:118
-#: templates/client/client_referral_plus_form.html:90
-#: templates/client/client_referral_plus_form.html:95
+#: templates/client/client_referral_plus_form.html:91
+#: templates/client/client_referral_plus_form.html:99
+#: templates/client/client_referral_plus_form.html:104
 #: templates/contact/contact_list.html:75 templates/core/main.html:160
-#: templates/schedule/schedule_filter.html:81
+#: templates/schedule/schedule_filter.html:83
+#: templates/service/service_client_list.html:70
 #: templates/service/service_queue.html:64
 msgid "Professionals"
 msgstr "Profissionais"
@@ -2933,7 +2875,7 @@ msgstr "Todos"
 #: templates/employee/employee_list.html:29 templates/place/place_form.html:29
 #: templates/place/place_list.html:29 templates/place/place_room_form.html:29
 #: templates/place/place_room_list.html:29
-#: templates/schedule/schedule_form.html:27
+#: templates/schedule/schedule_form.html:28
 #: templates/service/select_area.html:28
 #: templates/service/service_list.html:29
 msgid "add"
@@ -2969,7 +2911,7 @@ msgstr "Identificação Profissional"
 #: templates/contact/contact_professional_form.html:80
 #: templates/demographic/demographic_home.html:58
 #: templates/profile/profile_careprofessional.html:58
-#: templates/service/service_form.html:121 templates/tags/professional.html:26
+#: templates/service/service_form.html:136 templates/tags/professional.html:26
 msgid "Profession"
 msgstr "Profissão"
 
@@ -3002,9 +2944,9 @@ msgstr "Data do Início das Atividades"
 #: templates/careprofessional/careprofessional_form.html:97
 #: templates/client/client_print.html:314
 #: templates/client/client_referral_form.html:140
-#: templates/client/client_referral_plus_form.html:116
+#: templates/client/client_referral_plus_form.html:126
 #: templates/profile/profile_careprofessional.html:80
-#: templates/referral/referral_details.html:145
+#: templates/referral/referral_details.html:138
 msgid "Available Time"
 msgstr "Horários disponíveis"
 
@@ -3015,7 +2957,7 @@ msgstr "Convênios atendidos por este profissional"
 
 #: templates/careprofessional/careprofessional_form.html:105
 #: templates/profile/profile_careprofessional.html:88
-#: templates/service/service_form.html:139
+#: templates/service/service_form.html:154
 msgid "Agreements"
 msgstr "Convênios"
 
@@ -3047,7 +2989,7 @@ msgstr "Serviços prestados por este profissional"
 #: templates/careprofessional/student_form.html:98
 #: templates/core/main.html:159
 #: templates/profile/profile_careprofessional.html:116
-#: templates/schedule/schedule_filter.html:60
+#: templates/schedule/schedule_filter.html:62
 #: templates/service/select_area.html:23
 #: templates/service/service_form.html:23
 #: templates/service/service_group_form.html:23
@@ -3067,7 +3009,7 @@ msgid "All Professionals Deactive"
 msgstr "Profissionais desativados"
 
 #: templates/careprofessional/careprofessional_list.html:46
-#: templates/schedule/schedule_filter.html:93
+#: templates/schedule/schedule_filter.html:95
 msgid "All Professionals"
 msgstr "Profissionais"
 
@@ -3251,8 +3193,8 @@ msgid "There is no related clients."
 msgstr "Não há funcionários cadastrados"
 
 #: templates/client/client_company_related.html:56
-#: templates/client/client_family.html:79 templates/client/client_home.html:89
-#: templates/client/client_home.html:107
+#: templates/client/client_family.html:79 templates/client/client_home.html:98
+#: templates/client/client_home.html:116
 #: templates/client/client_print.html:227
 msgid "Deactive"
 msgstr "Inativo"
@@ -3337,6 +3279,7 @@ msgid "This client have no family member yet."
 msgstr "Nenhum familiar vinculado"
 
 #: templates/client/client_family.html:79
+#: templates/client/client_home.html:149
 #: templates/referral/referral_details.html:67
 #: templates/referral/referral_details.html:70
 #: templates/referral/referral_details.html:73
@@ -3479,61 +3422,65 @@ msgstr "com"
 msgid "occurrences remaining"
 msgstr "ocorrências futuras"
 
-#: templates/client/client_home.html:61
+#: templates/client/client_home.html:61 templates/client/client_home.html:132
+#: templates/referral/referral_details.html:103
+#, fuzzy
+msgid "Internal referral from"
+msgstr "Encaminhamento interno"
+
+#: templates/client/client_home.html:69
 msgid "Next occurrence"
 msgstr "Próximo evento"
 
-#: templates/client/client_home.html:64
+#: templates/client/client_home.html:72
 msgid "There is no upcoming occurrences for this service"
 msgstr "Sem eventos futuros"
 
-#: templates/client/client_home.html:64
+#: templates/client/client_home.html:72
 msgid "book it now?"
 msgstr "Agendar agora?"
 
-#: templates/client/client_home.html:70
+#: templates/client/client_home.html:79
 msgid "New subscribe"
 msgstr "Nova inscrição"
 
-#: templates/client/client_home.html:80
+#: templates/client/client_home.html:89
 msgid "Company Employees"
 msgstr "Empregados"
 
-#: templates/client/client_home.html:81
+#: templates/client/client_home.html:90
 msgid "Subscribed Employees"
 msgstr "Empregados Inscritos"
 
-#: templates/client/client_home.html:83
+#: templates/client/client_home.html:92
 msgid "This company have no subscribed employees yet!"
 msgstr "Essa empresa ainda não possui nenhum funcionário cadastrado"
 
-#: templates/client/client_home.html:89
+#: templates/client/client_home.html:98
 msgid "/Responsible"
 msgstr "Responsável"
 
-#: templates/client/client_home.html:96
+#: templates/client/client_home.html:105
 msgid "Subscribe new employee .."
 msgstr ""
 
-#: templates/client/client_home.html:103 templates/client/client_home.html:104
+#: templates/client/client_home.html:112 templates/client/client_home.html:113
 msgid "Client Companies Subscribed"
 msgstr "Cliente inscrito em"
 
-#: templates/client/client_home.html:116
+#: templates/client/client_home.html:125
 msgid "Referral Discharged"
 msgstr "Serviço Desligado"
 
-#: templates/client/client_home.html:121
-#: templates/client/client_referral_list.html:49
-#: templates/profile/client/referral_list.html:48
-msgid "subscribed at"
-msgstr "Inscrito em"
+#: templates/client/client_home.html:142
+msgid "Date discharge"
+msgstr "Data do desligamento"
 
-#: templates/client/client_home.html:126
+#: templates/client/client_home.html:144
 msgid "Discharge was discussed with client"
 msgstr "Término do serviço foi discutido junto ao cliente"
 
-#: templates/client/client_home.html:126
+#: templates/client/client_home.html:144
 #: templates/client/client_print.html:119
 #: templates/client/client_print.html:284
 #: templates/client/client_print.html:333
@@ -3541,7 +3488,7 @@ msgstr "Término do serviço foi discutido junto ao cliente"
 msgid "Yes"
 msgstr "Sim"
 
-#: templates/client/client_home.html:126
+#: templates/client/client_home.html:144
 #: templates/client/client_print.html:119
 #: templates/client/client_print.html:284
 #: templates/client/client_print.html:333
@@ -3549,15 +3496,11 @@ msgstr "Sim"
 msgid "No"
 msgstr "Não"
 
-#: templates/client/client_home.html:128
-msgid "Referral discharge status"
-msgstr "Status do desligamento"
-
-#: templates/client/client_home.html:129
+#: templates/client/client_home.html:147
 msgid "Referral discharge description"
 msgstr "Descrição do desligamento"
 
-#: templates/client/client_home.html:133
+#: templates/client/client_home.html:155
 msgid "There is no referral discharged"
 msgstr "Não existe serviço desligado"
 
@@ -3724,7 +3667,7 @@ msgid "Service is academic related"
 msgstr "Este serviço é acadêmico"
 
 #: templates/client/client_print.html:297
-#: templates/service/service_form.html:162
+#: templates/service/service_form.html:177
 msgid "Professionals Responsible"
 msgstr "Profissional responsável"
 
@@ -3737,13 +3680,20 @@ msgid "Referral Source"
 msgstr "Encaminhamento interno"
 
 #: templates/client/client_print.html:310
-#: templates/referral/referral_details.html:139
+#: templates/referral/referral_details.html:132
 msgid "Reason"
 msgstr "Motivo"
 
+#: templates/client/client_print.html:310
+#: templates/client/client_print.html:311
+#: templates/client/client_print.html:312
+#: templates/client/client_print.html:332
+msgid "Not informed"
+msgstr "Não informado"
+
 #: templates/client/client_print.html:312
 #: templates/client/client_referral_form.html:137
-#: templates/client/client_referral_plus_form.html:113
+#: templates/client/client_referral_plus_form.html:123
 #: templates/referral/referral_details.html:127
 msgid "Impact"
 msgstr "Impacto"
@@ -3768,6 +3718,10 @@ msgstr "Continua na fila de espera"
 #: templates/client/client_print.html:331
 msgid "Discharge Date"
 msgstr "Data do Desligamento"
+
+#: templates/client/client_print.html:332
+msgid "Discharge Reason"
+msgstr "Motivo do desligamento"
 
 #: templates/client/client_print.html:333
 msgid "Was discussed with client"
@@ -3825,7 +3779,7 @@ msgstr "Evento"
 #: templates/client/client_print.html:399
 #: templates/client/client_print.html:420 templates/messages/trash.html:24
 #: templates/messages/view.html:27
-#: templates/referral/referral_details.html:207
+#: templates/referral/referral_details.html:226
 msgid "Date"
 msgstr "Data"
 
@@ -3840,7 +3794,7 @@ msgstr "h"
 
 #: templates/client/client_print.html:360
 #: templates/device/device_form.html:163
-#: templates/schedule/schedule_events.html:46
+#: templates/schedule/schedule_events.html:48
 #: templates/schedule/schedule_occurrence_form.html:53
 msgid "Room"
 msgstr "Salas"
@@ -4019,7 +3973,7 @@ msgstr "Imprimir"
 #: templates/client/client_referral_plus_form.html:51
 #: templates/client/client_referral_queue.html:33
 #: templates/profile/client/referral_sidebar.html:21
-#: templates/tags/client_sidebar.html:110
+#: templates/tags/client_sidebar.html:111
 msgid "Referral Details"
 msgstr "Detalhes do Serviço"
 
@@ -4036,8 +3990,8 @@ msgid "Discharge Form Details"
 msgstr "Detalhes do Desligamento"
 
 #: templates/client/client_referral_ext.html:49
-#: templates/referral/referral_details.html:202
-#: templates/tags/client_sidebar.html:127
+#: templates/referral/referral_details.html:221
+#: templates/tags/client_sidebar.html:128
 msgid "External Referral"
 msgstr "Encaminhamento externo"
 
@@ -4099,18 +4053,18 @@ msgid "Subscribe this customer in a group"
 msgstr "Inscreva o cliente em um grupo"
 
 #: templates/client/client_referral_form.html:124
-#: templates/client/client_referral_plus_form.html:100
+#: templates/client/client_referral_plus_form.html:110
 #: templates/tags/schedule_sidebar.html:26
 msgid "Clients"
 msgstr "Clientes"
 
 #: templates/client/client_referral_form.html:130
-#: templates/client/client_referral_plus_form.html:106
+#: templates/client/client_referral_plus_form.html:116
 msgid "Referral Additional Infos"
 msgstr "Informações adicionais"
 
 #: templates/client/client_referral_form.html:131
-#: templates/client/client_referral_plus_form.html:107
+#: templates/client/client_referral_plus_form.html:117
 msgid "Referral Reason"
 msgstr "Motivo da procura"
 
@@ -4127,6 +4081,11 @@ msgstr "Serviços Desligados de"
 #: templates/profile/client/referral_list.html:34
 msgid "referral(s)"
 msgstr "Encaminhamento(s)"
+
+#: templates/client/client_referral_list.html:49
+#: templates/profile/client/referral_list.html:48
+msgid "subscribed at"
+msgstr "Inscrito em"
 
 #: templates/client/client_referral_plus_form.html:69
 msgid "This fields is required."
@@ -4241,7 +4200,7 @@ msgstr ""
 #: templates/contact/contact_organization_form.html:88
 #: templates/contact/contact_professional_form.html:124
 #: templates/tags/careprofessional_sidebar.html:28
-#: templates/tags/client_sidebar.html:89
+#: templates/tags/client_sidebar.html:90
 #: templates/tags/contact_sidebar.html:23
 #: templates/tags/device_sidebar.html:22
 #: templates/tags/employee_sidebar.html:28
@@ -4253,7 +4212,7 @@ msgstr "Desativar"
 #: templates/contact/contact_organization_form.html:88
 #: templates/contact/contact_professional_form.html:124
 #: templates/tags/careprofessional_sidebar.html:28
-#: templates/tags/client_sidebar.html:89
+#: templates/tags/client_sidebar.html:90
 #: templates/tags/contact_sidebar.html:23
 #: templates/tags/device_sidebar.html:22
 #: templates/tags/employee_sidebar.html:28
@@ -4638,45 +4597,45 @@ msgstr "Bem Vindo ao GestorPsi!"
 msgid "My services"
 msgstr "Meus Serviços"
 
-#: templates/frontend/frontend_careprofessional_start.html:50
+#: templates/frontend/frontend_careprofessional_start.html:52
 msgid "List groups in this service"
 msgstr "Listar grupos"
 
-#: templates/frontend/frontend_careprofessional_start.html:51
+#: templates/frontend/frontend_careprofessional_start.html:53
 msgid "Add group in this service"
 msgstr "Adicionar grupo"
 
-#: templates/frontend/frontend_careprofessional_start.html:59
+#: templates/frontend/frontend_careprofessional_start.html:61
 msgid "You don't have services"
 msgstr "Sem serviços cadastrados"
 
-#: templates/frontend/frontend_careprofessional_start.html:68
+#: templates/frontend/frontend_careprofessional_start.html:70
 msgid "My today's schedule"
 msgstr "Minha agenda"
 
-#: templates/frontend/frontend_careprofessional_start.html:95
+#: templates/frontend/frontend_careprofessional_start.html:97
 msgid "There is no events today"
 msgstr "Nenhum evento hoje"
 
-#: templates/frontend/frontend_careprofessional_start.html:103
+#: templates/frontend/frontend_careprofessional_start.html:105
 msgid "My recent referrals"
 msgstr "Inscrições recentes"
 
-#: templates/frontend/frontend_careprofessional_start.html:134
+#: templates/frontend/frontend_careprofessional_start.html:139
 msgid "There is no referral"
 msgstr "Sem inscrições recentes"
 
-#: templates/frontend/frontend_careprofessional_start.html:142
+#: templates/frontend/frontend_careprofessional_start.html:147
 msgid "My clients in queue"
 msgstr "Minha fila de espera"
 
-#: templates/frontend/frontend_careprofessional_start.html:159
-#: templates/referral/referral_details.html:169
+#: templates/frontend/frontend_careprofessional_start.html:164
+#: templates/referral/referral_details.html:187
 #: templates/service/service_queue.html:71
 msgid "Date in"
 msgstr "Data de inclusão"
 
-#: templates/frontend/frontend_careprofessional_start.html:170
+#: templates/frontend/frontend_careprofessional_start.html:175
 msgid "There is no queue"
 msgstr "Sem clientes na fila de espera"
 
@@ -5161,7 +5120,7 @@ msgid "Furniture"
 msgstr "Mobília"
 
 #: templates/place/place_room_list.html:38
-#: templates/schedule/schedule_filter.html:52
+#: templates/schedule/schedule_filter.html:54
 msgid "All Rooms"
 msgstr "Salas"
 
@@ -5203,18 +5162,18 @@ msgid "Personal profile"
 msgstr "Perfil Pessoal"
 
 #: templates/profile/client/referral_sidebar.html:23
-#: templates/tags/client_sidebar.html:112
+#: templates/tags/client_sidebar.html:113
 msgid "Referral Home"
 msgstr "Resumo da inscrição"
 
 #: templates/profile/client/referral_sidebar.html:25
 #: templates/schedule/schedule_occurrence_form.html:70
-#: templates/tags/client_sidebar.html:118
+#: templates/tags/client_sidebar.html:119
 msgid "Upcoming Occurrences"
 msgstr "Eventos futuros"
 
 #: templates/profile/client/referral_sidebar.html:26
-#: templates/tags/client_sidebar.html:119
+#: templates/tags/client_sidebar.html:120
 msgid "Past Occurrences"
 msgstr "Eventos passados"
 
@@ -5231,141 +5190,146 @@ msgstr "anos"
 msgid "Service Details"
 msgstr "Detalhes do Serviço"
 
-#: templates/referral/referral_details.html:92
-#: templates/tags/careprofessional_mini.html:26 templates/tags/phone.html:22
-msgid "Area"
-msgstr "Área"
-
-#: templates/referral/referral_details.html:99
-msgid "There is no professional in this referral."
-msgstr "Não há profissional registrado"
-
-#: templates/referral/referral_details.html:101
-msgid "Add one now?"
-msgstr "Adicionar?"
-
-#: templates/referral/referral_details.html:110
-msgid "Client subscribed on this service since"
-msgstr "Cliente inscrito no serviço desde"
-
-#: templates/referral/referral_details.html:121
-msgid "Indication"
-msgstr "Indicação"
-
-#: templates/referral/referral_details.html:133
+#: templates/referral/referral_details.html:98
 msgid "prority"
 msgstr "Prioridade"
 
-#: templates/referral/referral_details.html:152
-msgid "Annotation"
-msgstr "Notas"
+#: templates/referral/referral_details.html:107
+msgid "There is no professional in this referral."
+msgstr "Não há profissional registrado"
 
-#: templates/referral/referral_details.html:162
+#: templates/referral/referral_details.html:109
+msgid "Add one now?"
+msgstr "Adicionar?"
+
+#: templates/referral/referral_details.html:144
+msgid "Indication"
+msgstr "Indicação"
+
+#: templates/referral/referral_details.html:153
+msgid "Client subscribed on this service since"
+msgstr "Cliente inscrito no serviço desde"
+
+#: templates/referral/referral_details.html:161
 #: templates/tags/service_sidebar.html:28
 msgid "Queue"
 msgstr "Fila de espera"
 
-#: templates/referral/referral_details.html:187
+#: templates/referral/referral_details.html:171
+msgid "Remove from queue"
+msgstr ""
+
+#: templates/referral/referral_details.html:205
 msgid "Date out"
 msgstr "Data de Término"
 
-#: templates/referral/referral_details.html:193
+#: templates/referral/referral_details.html:211
 msgid "Remove"
 msgstr "Excluir"
 
-#: templates/referral/referral_details.html:226
+#: templates/referral/referral_details.html:245
 msgid "Attach"
 msgstr "Anexo"
 
-#: templates/referral/referral_details.html:248
+#: templates/referral/referral_details.html:267
 #: templates/tags/schedule_form.html:95
 msgid "Schedule Details"
 msgstr "Detalhes da Agenda"
 
-#: templates/referral/referral_details.html:251
+#: templates/referral/referral_details.html:270
 msgid "This referral has"
 msgstr "Esta inscrição tem"
 
-#: templates/referral/referral_details.html:251
+#: templates/referral/referral_details.html:270
 msgid "upcoming event(s) and"
 msgstr "evento(s) futuro(s) e "
 
-#: templates/referral/referral_details.html:251
+#: templates/referral/referral_details.html:270
 msgid "past events"
 msgstr "evento(s) passado(s)"
 
-#: templates/referral/referral_details.html:254
+#: templates/referral/referral_details.html:273
 msgid "Next occurrence at"
 msgstr "Próximo evento em"
 
-#: templates/referral/referral_details.html:259
+#: templates/referral/referral_details.html:278
 msgid "Last occurrence"
 msgstr "Última ocorrência"
 
-#: templates/referral/referral_details.html:265
+#: templates/referral/referral_details.html:284
 msgid "Upcoming schedules for this service"
 msgstr "Eventos futuros"
 
-#: templates/referral/referral_details.html:268
+#: templates/referral/referral_details.html:287
 msgid "This customer has no upcoming schedules yet!"
 msgstr "Nenhum evento futuro"
 
-#: templates/referral/referral_details.html:270
+#: templates/referral/referral_details.html:289
 msgid "Book it now?"
 msgstr "Agendar agora?"
 
-#: templates/referral/referral_details.html:277
-#: templates/referral/referral_details.html:294
-#: templates/referral/referral_details.html:336
+#: templates/referral/referral_details.html:296
+#: templates/referral/referral_details.html:322
 msgid "Employees:"
 msgstr "Funcionários"
 
-#: templates/referral/referral_details.html:283
+#: templates/referral/referral_details.html:302
 msgid "online and active event"
 msgstr "Evento online ativo"
 
-#: templates/referral/referral_details.html:284
-#: templates/referral/referral_details.html:301
+#: templates/referral/referral_details.html:303
 #: templates/referral/referral_details.html:329
+#: templates/referral/referral_details.html:360
 msgid "Enter chat"
 msgstr "Entrar no chat"
 
-#: templates/referral/referral_details.html:285
-#: templates/referral/referral_details.html:302
+#: templates/referral/referral_details.html:304
 #: templates/referral/referral_details.html:330
+#: templates/referral/referral_details.html:361
 msgid "online users"
 msgstr "Usuários online"
 
-#: templates/referral/referral_details.html:300
+#: templates/referral/referral_details.html:315
+#: templates/referral/referral_details.html:367
+#, fuzzy
+msgid "Family members scheduled:"
+msgstr "Familiares Agendados"
+
+#: templates/referral/referral_details.html:328
 msgid "online event"
 msgstr "Evento online"
 
-#: templates/referral/referral_details.html:308
-#: templates/referral/referral_details.html:357
+#: templates/referral/referral_details.html:336
+#: templates/referral/referral_details.html:394
 msgid "See all"
 msgstr "Ver todos"
 
-#: templates/referral/referral_details.html:310
+#: templates/referral/referral_details.html:338
 msgid "Book new"
 msgstr "Agendar novo"
 
-#: templates/referral/referral_details.html:315
+#: templates/referral/referral_details.html:343
 msgid "Past schedules for this service"
 msgstr "Eventos passados"
 
-#: templates/referral/referral_details.html:318
+#: templates/referral/referral_details.html:346
 msgid "This customer has no past schedules!"
 msgstr "Nenhum evento passado"
 
-#: templates/referral/referral_details.html:325
+#: templates/referral/referral_details.html:356
 msgid "View chat history"
 msgstr "Verificar histórico do chat"
 
-#: templates/referral/referral_details.html:327
+#: templates/referral/referral_details.html:358
 msgid "There is no chat messages"
 msgstr "Não há mensagens"
 
-#: templates/referral/referral_details.html:348
+#: templates/referral/referral_details.html:373
+#, fuzzy
+msgid "Employees scheduled:"
+msgstr "Funcionários Agendados"
+
+#: templates/referral/referral_details.html:385
 msgid "This occurrence has not been confirmed yet"
 msgstr "Evento não confirmado"
 
@@ -5587,6 +5551,7 @@ msgid "Please choice a name to this report"
 msgstr "Escolha um nome para o relatório."
 
 #: templates/report/report_admission_save.html:29
+#: templates/schedule/schedule_week.html:72
 #: templates/support/ticket_form.html:51
 #: templates/tags/address_book_organization_mini.html:31
 #: templates/tags/address_book_professional_mini.html:41
@@ -5713,18 +5678,20 @@ msgstr "Esvaziar Lixeira"
 #: templates/schedule/schedule_occurrence_family_form.html:25
 #: templates/schedule/schedule_occurrence_form.html:25
 #: templates/schedule/schedule_occurrence_group.html:25
+#: templates/schedule/schedule_week.html:25
 msgid "daily"
 msgstr "Diária"
 
 #: templates/schedule/event_detail.html:26
-#: templates/schedule/schedule_daily.html:26
-#: templates/schedule/schedule_events.html:26
-#: templates/schedule/schedule_form.html:26
-#: templates/schedule/schedule_occurrence_confirmation_form.html:26
+#: templates/schedule/schedule_daily.html:27
+#: templates/schedule/schedule_events.html:27
+#: templates/schedule/schedule_form.html:27
+#: templates/schedule/schedule_occurrence_confirmation_form.html:27
 #: templates/schedule/schedule_occurrence_employee_form.html:26
 #: templates/schedule/schedule_occurrence_family_form.html:26
 #: templates/schedule/schedule_occurrence_form.html:26
 #: templates/schedule/schedule_occurrence_group.html:26
+#: templates/schedule/schedule_week.html:27
 msgid "events"
 msgstr "Eventos"
 
@@ -5749,19 +5716,28 @@ msgstr "Minha Agenda"
 msgid "Note: Occurrences listed below was registered successfully"
 msgstr "Nota: ocorrências listadas abaixo foram registradas com sucesso."
 
-#: templates/schedule/schedule_events.html:44
+#: templates/schedule/schedule_daily.html:26
+#: templates/schedule/schedule_events.html:26
+#: templates/schedule/schedule_form.html:26
+#: templates/schedule/schedule_occurrence_confirmation_form.html:26
+#: templates/schedule/schedule_week.html:26
+#, fuzzy
+msgid "Weekly"
+msgstr "Semana(s)"
+
+#: templates/schedule/schedule_events.html:46
 msgid "There is no events for this day."
 msgstr "Não há eventos para este dia"
 
-#: templates/schedule/schedule_events.html:47
+#: templates/schedule/schedule_events.html:49
 msgid "Hour"
 msgstr "Hora"
 
-#: templates/schedule/schedule_events.html:48
+#: templates/schedule/schedule_events.html:50
 msgid "Event Details"
 msgstr "Detalhes do Evento"
 
-#: templates/schedule/schedule_filter.html:73
+#: templates/schedule/schedule_filter.html:75
 #: templates/service/service_group_list.html:27
 #: templates/service/service_list.html:38
 msgid "All Services"
@@ -5770,6 +5746,15 @@ msgstr "Serviços"
 #: templates/schedule/schedule_header.html:20
 msgid "Daily view"
 msgstr "Visualização diária"
+
+#: templates/schedule/schedule_header.html:24
+msgid "O dia de hoje possui"
+msgstr ""
+
+#: templates/schedule/schedule_header.html:24
+#, fuzzy
+msgid "consulta(s)."
+msgstr "Minuto(s)"
 
 #: templates/schedule/schedule_occurrence_form.html:34
 msgid "Occurrences"
@@ -5828,6 +5813,58 @@ msgstr ""
 "Nenhuma inscrição foi realizada até o momento. Por favor, inscreva um "
 "cliente antes de acessar a Agenda."
 
+#: templates/schedule/schedule_week.html:40
+#, fuzzy
+msgid "Weekly view"
+msgstr "Visualização diária"
+
+#: templates/schedule/schedule_week.html:58
+#, fuzzy
+msgid "Room Selection"
+msgstr "Identificação da Sala"
+
+#: templates/schedule/schedule_week.html:59
+#, fuzzy
+msgid "Please, choose one room to book"
+msgstr "Escolha um nome para o relatório."
+
+#: templates/schedule/schedule_week.html:67
+msgid "Selecione uma sala antes de continuar"
+msgstr ""
+
+#: templates/schedule/schedule_week.html:71
+#: templates/support/ticket_sent.html:27
+msgid "Continue"
+msgstr "Continue"
+
+#: templates/schedule/schedule_week_table.html:19
+#, fuzzy
+msgid "This week have"
+msgstr "Esta inscrição tem"
+
+#: templates/schedule/schedule_week_table.html:19
+#, fuzzy
+msgid "occurrences(s)."
+msgstr "Eventos"
+
+#: templates/schedule/schedule_week_table.html:23
+#, fuzzy
+msgid "From"
+msgstr "de"
+
+#: templates/schedule/schedule_week_table.html:23
+msgid "to"
+msgstr ""
+
+#: templates/schedule/schedule_week_table.html:37
+#, fuzzy
+msgid "There is no occurrence on this week"
+msgstr "Sem eventos futuros"
+
+#: templates/schedule/schedule_week_table.html:56
+msgid "Book on this day"
+msgstr ""
+
 #: templates/service/select_area.html:40
 #: templates/service/service_form.html:44
 msgid "Adding New Service"
@@ -5871,11 +5908,12 @@ msgstr "Lista de Clientes"
 msgid "There is no client subscribed in this service."
 msgstr "Não há cliente inscrito neste serviço."
 
-#: templates/service/service_client_list.html:66
-msgid "service professionals"
-msgstr "Profissionais"
+#: templates/service/service_client_list.html:69
+#, fuzzy
+msgid "Referral ID"
+msgstr "Encaminhamento interno"
 
-#: templates/service/service_client_list.html:67
+#: templates/service/service_client_list.html:71
 msgid "all past occurrences (inclunding unmarked e remarked)"
 msgstr "Eventos marcados (inclui desmarcados e remarcados)"
 
@@ -5899,47 +5937,57 @@ msgstr "Descrição do Serviço"
 msgid "Keywords (separated by ;)"
 msgstr "Palavras-chave (separadas por ;)"
 
-#: templates/service/service_form.html:71
+#: templates/service/service_form.html:69
+#, fuzzy
+msgid "Service Color"
+msgstr "Perfil do Serviço"
+
+#: templates/service/service_form.html:80
+#, fuzzy
+msgid "close"
+msgstr "Fechado"
+
+#: templates/service/service_form.html:86
 msgid "Academic Related"
 msgstr "Serviço acadêmico"
 
-#: templates/service/service_form.html:74
+#: templates/service/service_form.html:89
 msgid "This service is academic (supervised) related."
 msgstr "Serviço acadêmico (estágio supervisionado)"
 
-#: templates/service/service_form.html:78
+#: templates/service/service_form.html:93
 msgid "Research Project"
 msgstr "Projeto de Pesquisa"
 
-#: templates/service/service_form.html:81
+#: templates/service/service_form.html:96
 msgid "This service is linked with a research project"
 msgstr "Este serviço está vinculado a um projeto de pesquisa."
 
-#: templates/service/service_form.html:92
+#: templates/service/service_form.html:107
 msgid "Service Group Support"
 msgstr "Serviço para Grupos"
 
-#: templates/service/service_form.html:95
+#: templates/service/service_form.html:110
 msgid "If checked, this service will accept group members."
 msgstr "Aceita grupos"
 
-#: templates/service/service_form.html:100
+#: templates/service/service_form.html:115
 msgid "On-line Service"
 msgstr "Serviço on-line"
 
-#: templates/service/service_form.html:103
+#: templates/service/service_form.html:118
 msgid "If checked, this service will accept on-line chat and messages."
 msgstr "Aceita chat e mensagens on-line"
 
-#: templates/service/service_form.html:114
+#: templates/service/service_form.html:129
 msgid "Service Profile"
 msgstr "Perfil do Serviço"
 
-#: templates/service/service_form.html:137
+#: templates/service/service_form.html:152
 msgid "Service Relations"
 msgstr "Convênios e Profissionais"
 
-#: templates/service/service_form.html:149
+#: templates/service/service_form.html:164
 msgid "Related Professionals"
 msgstr "Profissionais que prestam este serviço"
 
@@ -5988,12 +6036,9 @@ msgstr ""
 "serviço"
 
 #: templates/service/service_group_list.html:31
+#: templates/service/service_group_list.html:50
 msgid "groups of"
 msgstr "Grupos de"
-
-#: templates/service/service_group_list.html:50
-msgid "groups"
-msgstr "Grupos"
 
 #: templates/service/service_group_list.html:51
 msgid "groups(s)"
@@ -6113,10 +6158,6 @@ msgstr "Pedido de suporte enviado"
 msgid "Thank you! Your ticket support has been sent successfully!!"
 msgstr "Seu pedido de suporte foi enviado com sucesso!"
 
-#: templates/support/ticket_sent.html:27
-msgid "Continue"
-msgstr "Continue"
-
 #: templates/tags/address.html:21
 msgid "Prefix"
 msgstr "Tipo"
@@ -6150,6 +6191,10 @@ msgstr "Adicionar Profissional"
 #: templates/tags/address_book_professional_mini.html:34
 msgid "Professional Details"
 msgstr "Detalhes do Profissional"
+
+#: templates/tags/careprofessional_mini.html:26 templates/tags/phone.html:22
+msgid "Area"
+msgstr "Área"
 
 #: templates/tags/careprofessional_sidebar.html:29
 #: templates/tags/client_sidebar.html:48
@@ -6185,60 +6230,60 @@ msgstr "Transporte"
 msgid "Client Actions"
 msgstr "Ações para o Cliente"
 
-#: templates/tags/client_sidebar.html:79
+#: templates/tags/client_sidebar.html:80
 msgid "New Subscription"
 msgstr "Nova Inscrição"
 
-#: templates/tags/client_sidebar.html:83
+#: templates/tags/client_sidebar.html:84
 msgid "Add Related Client"
 msgstr "Adicionar funcionário"
 
-#: templates/tags/client_sidebar.html:85
+#: templates/tags/client_sidebar.html:86
 msgid "Add Family Member"
 msgstr "Adicionar Familiar"
 
-#: templates/tags/client_sidebar.html:91
+#: templates/tags/client_sidebar.html:92
 #: templates/tags/contact_sidebar.html:24
 #: templates/tags/device_sidebar.html:23 templates/tags/place_sidebar.html:24
 #: templates/tags/profile_sidebar.html:26 templates/tags/room_sidebar.html:24
 msgid "Print Record"
 msgstr "Imprimir Registro"
 
-#: templates/tags/client_sidebar.html:95 templates/tags/client_sidebar.html:98
+#: templates/tags/client_sidebar.html:96 templates/tags/client_sidebar.html:99
 #: templates/tags/employee_sidebar.html:41
 msgid "Manage User"
 msgstr "Gerenciar usuário"
 
-#: templates/tags/client_sidebar.html:100
+#: templates/tags/client_sidebar.html:101
 #: templates/tags/employee_sidebar.html:43
 msgid "Create User"
 msgstr "Criar usuário"
 
-#: templates/tags/client_sidebar.html:114
+#: templates/tags/client_sidebar.html:115
 msgid "Change Referral"
 msgstr "Editar inscrição"
 
-#: templates/tags/client_sidebar.html:122
+#: templates/tags/client_sidebar.html:123
 msgid "Referral Actions"
 msgstr "Ações do Serviço"
 
-#: templates/tags/client_sidebar.html:124
+#: templates/tags/client_sidebar.html:125
 msgid "Schedule Client"
 msgstr "Agendar"
 
-#: templates/tags/client_sidebar.html:126
+#: templates/tags/client_sidebar.html:127
 msgid "Internal Referral"
 msgstr "Encaminhamento interno"
 
-#: templates/tags/client_sidebar.html:130
+#: templates/tags/client_sidebar.html:131
 msgid "Service Discharge"
 msgstr "Desligar do serviço"
 
-#: templates/tags/client_sidebar.html:133
+#: templates/tags/client_sidebar.html:134
 msgid "Attach Document"
 msgstr "Anexar Documento"
 
-#: templates/tags/client_sidebar.html:135
+#: templates/tags/client_sidebar.html:136
 msgid "Queue (add/remove)"
 msgstr "Fila de Espera (adicionar / remover)"
 
@@ -6750,14 +6795,73 @@ msgstr "Senha atualizada com sucesso."
 msgid "User removed successfully"
 msgstr "Usuário cadastrado com sucesso."
 
+#~ msgid "Sorry, this referral is already discharged"
+#~ msgstr "Este serviço já está desligado."
+
+#~ msgid "Abandonment of service "
+#~ msgstr "Abandono do Serviço"
+
+#~ msgid "Withdrawal of service - Tried the other type of treatment"
+#~ msgstr "Desistência do serviço - Procurou outro tipo de tratamento "
+
+#~ msgid "Withdrawal of service - The shutdown was reported by the "
+#~ msgstr ""
+#~ "Desistência do serviço - O desligamento foi comunicado pelo cliente ou "
+#~ "por terceiros "
+
+#~ msgid "Withdrawal of service - The incompatibility of schedule "
+#~ msgstr "Desistência do serviço - Incompatibilidade de horários"
+
+#~ msgid "Unable to contact the customer"
+#~ msgstr "Impossibilidade de contato com o cliente"
+
+#~ msgid "Abandonment / withdrawal from the (a) professional"
+#~ msgstr "Abandono / desistência por parte do(a) profissional "
+
+#~ msgid "High * (end of the process without the professional)"
+#~ msgstr "Alta (término do processo com consentimento profissional) "
+
+#~ msgid "Referral to external continuity of treatment "
+#~ msgstr "Encaminhamento externo para continuidade do tratamento "
+
+#~ msgid "Death of the Client "
+#~ msgstr "Falecimento do cliente "
+
+#~ msgid "Death of the professional "
+#~ msgstr "Falecimento do profissional "
+
+#~ msgid "Default/Neglect"
+#~ msgstr "Inadimplência "
+
+#~ msgid "Change of city/address "
+#~ msgstr "Mudança de cidade / endereço "
+
+#~ msgid "Do not attended the first consultation"
+#~ msgstr "Não compareceu ao primeiro atendimento "
+
+#~ msgid "End stage - the case was closed"
+#~ msgstr "Término do estágio - O processo foi encerrado "
+
+#~ msgid "Treatment / Service terminated by court order"
+#~ msgstr "Tratamento / Serviço encerrado por ordem judicial "
+
+#~ msgid "Referral discharge status"
+#~ msgstr "Status do desligamento"
+
+#~ msgid "Annotation"
+#~ msgstr "Notas"
+
+#~ msgid "service professionals"
+#~ msgstr "Profissionais"
+
+#~ msgid "groups"
+#~ msgstr "Grupos"
+
 #~ msgid "Referral Professionals"
 #~ msgstr "Profissionais que prestam este serviço"
 
 #~ msgid "Attach document"
 #~ msgstr "Anexar Documento"
-
-#~ msgid "Date discharge"
-#~ msgstr "Data do desligamento"
 
 #~ msgid "Not Informed"
 #~ msgstr "Não informado"

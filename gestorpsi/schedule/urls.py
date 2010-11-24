@@ -27,6 +27,8 @@ from gestorpsi.schedule.views import today_occurrences
 from gestorpsi.schedule.views import occurrence_confirmation_form
 from gestorpsi.schedule.views import occurrence_family_form, occurrence_employee_form
 from gestorpsi.schedule.views import occurrence_group
+from gestorpsi.schedule.views import week_view
+from gestorpsi.schedule.views import week_view_table
 
 urlpatterns = patterns('',
      url(
@@ -78,6 +80,16 @@ urlpatterns = patterns('',
          'form_class': ScheduleSingleOccurrenceForm,
         },
         name='swingtime-occurrence'
+    ),
+    url(
+        r'^week/$', 
+        week_view,
+        name='swingtime-week'
+    ),
+    url(
+        r'^week/(\d{4})/(0?[1-9]|1[012])/([0-3]?\d)/$', 
+        week_view_table,
+        name='swingtime-week-table'
     ),
     url(
         r'^events/(\d+)/confirmation/$', 

@@ -35,7 +35,8 @@ function updateClient(url, deactive, app) {
         jQuery.each(json,  function(){
             if(this.id) {
                 tableTR += '<tr id="' + this.id + '"><td class="title">';
-                tableTR += '<a href="/client/' + this.id + '/home/" title="' + this.name + '">' + this.name + '</a>';
+                if(this.age) { age = '<span style="font-weight:normal;">(' + this.age + ' anos)</span>' } else { age = ''}
+                tableTR += '<a href="/client/' + this.id + '/home/" title="' + this.name + '">' + this.name + '</a> '+age;
                 tableTR += '<br /><i>' +  this.phone + '</i>';
                 if(this.email) tableTR += ' - <i><a href="mailto:'+this.email+'">' + this.email + '</a></i>';
                 tableTR += '</td>';

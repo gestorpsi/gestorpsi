@@ -182,6 +182,9 @@ class CareProfessionalManager(models.Manager):
     def active(self, organization):
         return super(CareProfessionalManager, self).get_query_set().filter(active=True, studentprofile__id__isnull=True, person__organization = organization).order_by('person__name')
 
+    def active_all(self, organization):
+        return super(CareProfessionalManager, self).get_query_set().filter(active=True, person__organization = organization).order_by('person__name')
+
     def deactive(self, organization):
         return super(CareProfessionalManager, self).get_query_set().filter(active=False, studentprofile__id__isnull=True, person__organization = organization).order_by('person__name')
 

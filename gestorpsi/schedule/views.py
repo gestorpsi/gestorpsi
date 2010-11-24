@@ -355,7 +355,7 @@ def _datetime_view(
         timeslots=timeslot_factory(dt, items, **params),
         places = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
         services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
-        professionals = CareProfessional.objects.filter(person__organization=request.user.get_profile().org_active.id),
+        professionals = CareProfessional.objects.active_all(request.user.get_profile().org_active.id),
         referral = referral,
         object = object,
     )
@@ -379,6 +379,47 @@ def schedule_index(request,
         return render_to_response('schedule/schedule_referral_alert.html', context_instance=RequestContext(request))    
 
     return _datetime_view(request, template, datetime(int(year), int(month), int(day)), **params)
+
+def week_view(request,
+    year = datetime.now().strftime("%Y"), 
+    month = datetime.now().strftime("%m"), 
+    day = datetime.now().strftime("%d"), ):
+
+    return render_to_response('schedule/schedule_week.html',         dict(
+            places = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
+            rooms = Room.objects.active().filter(place__organization=request.user.get_profile().org_active.id),
+            services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
+            professionals = CareProfessional.objects.active_all(request.user.get_profile().org_active.id)
+            ), context_instance=RequestContext(request))
+
+def week_view_table(request,
+    year = datetime.now().strftime("%Y"), 
+    month = datetime.now().strftime("%m"), 
+    day = datetime.now().strftime("%d"), ):
+
+    if not year or not month or not day:
+        today = datetime.now()
+    else:
+        today = datetime(year=int(year),month=int(month),day=int(day))
+    
+    first_week_day = today - timedelta(days=today.weekday())
+
+    week = []
+    occurrences = []
+    occurrences_length = 0
+    
+    for i in range(7):
+        week_day = first_week_day+timedelta(i)
+        week.append(week_day)
+        so = schedule_occurrences(request, week_day.strftime('%Y'), week_day.strftime('%m'), week_day.strftime('%d'))
+        occurrences.append(so)
+        occurrences_length += so.count()
+
+    previous_week = today-timedelta(weeks=1)
+    next_week = today+timedelta(weeks=1)
+    last_week_day = first_week_day+timedelta(days=6)
+    
+    return render_to_response('schedule/schedule_week_table.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('schedule.schedule_list')
 def today_occurrences(request):

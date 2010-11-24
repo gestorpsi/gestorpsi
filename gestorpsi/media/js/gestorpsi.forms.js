@@ -542,25 +542,39 @@ $(function() {
      
      });
      
-     $('a.form_mini').unbind().click(function() {
-          var form_mini = $(this).parents('form').parents('div').children('div.'+$(this).attr('display')).effect('slide', {'direction':'up'});
-          $.form_mini_link = $(this);
-          $(form_mini).children('form').validate({
-               event:"submit",
-               rules: {
-                    label: {
-                            required: true
-                    }
-               },
-               messages: {
-                    label: 'Este campo é obrigatório'
-               },
-               submitHandler: function(form) {
-                    $(form).ajaxSubmit(form_mini_options);
-               }
-          });
+     $('a.form_mini').live('click', function() {
+          var form_mini = $('div.'+$(this).attr('display')).effect('slide', {'direction':'up'});
+          
+          if(!$(this).hasClass('choose_room')) {
+              $.form_mini_link = $(this);
+              $(form_mini).children('form').validate({
+                   event:"submit",
+                   rules: {
+                        label: {
+                                required: true
+                        }
+                   },
+                   messages: {
+                        label: 'Este campo é obrigatório'
+                   },
+                   submitHandler: function(form) {
+                        $(form).ajaxSubmit(form_mini_options);
+                   }
+              });
+          } else {
+              $('a#schedule_room_href').attr('href_base', $(this).attr('href'));
+              $('select[name=choose_room]').change(function() {
+                    $('a#schedule_room_href').attr('href', $('a#schedule_room_href').attr('href_base') + '&room=' + $(this).val());
+                    $('a#schedule_room_href').unbind();
+            });
+          }
           return false;
      });
+
+    $('a#schedule_room_href').click(function() {
+        $('.room_required').show();
+        return false;
+    });
      
      $('a.form_mini_noinsert').unbind().click(function() {
           $(this).parents('form').parents('div').children('div.'+$(this).attr('display')).effect('slide', {'direction':'up'});

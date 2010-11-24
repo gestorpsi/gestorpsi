@@ -148,7 +148,7 @@ def home(request, object_id=None):
         c += x.past_occurrences().count()
 
     if not object.is_active():
-        messages.info(request, _('This client is not enabled. Do you want to %senable it%s now?') % ('<a href="/client/'+object.pk+'/order/">', '</a>'))
+        request.user.message_set.create(message= _('This client is not enabled.'))
     return render_to_response('client/client_home.html',
                                         {
                                         'object': object,
@@ -536,8 +536,10 @@ def referral_discharge_form(request, object_id = None, referral_id = None, disch
                 data.client = object
                 data.referral = referral
                 data.save()
-
-                request.user.message_set.create(message=_('Client discharged successfully'))
+                if not instance:
+                    request.user.message_set.create(message=_('Client discharged successfully'))
+                else:
+                    request.user.message_set.create(message=_('Referral discharge updated successfully'))
                 return HttpResponseRedirect('/client/%s/home/' % (object.id))
             else:
                 request.user.message_set.create(message=_('Form Error'))

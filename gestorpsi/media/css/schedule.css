@@ -139,6 +139,14 @@ a.book, a.book:visited, a.book:hover {
     text-decoration: none;
 }
 
+a.booked { text-decoration:none;}
+td.clean:hover, div.clean:hover, table.events td:hover  { 
+	filter:alpha(opacity=90);
+	-moz-opacity:0.9;
+	-khtml-opacity: 0.9;
+	opacity: 0.9;
+}
+
 div.filter {
     background: #FFFFFF;
     padding: 5px;

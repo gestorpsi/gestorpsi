@@ -115,6 +115,7 @@ class ReferralAttach(models.Model):
 
 class Referral(Event):
     #id = UuidField(primary_key=True)
+    seq = models.IntegerField(null=True, blank=True, max_length=5, default=0)
     client = models.ManyToManyField(Client, null=True, blank=True)
     professional = models.ManyToManyField(CareProfessional, null=True)
     service = models.ForeignKey(Service, null=True)
@@ -134,6 +135,14 @@ class Referral(Event):
         super(Referral, self).__init__(*args, **kwargs)
         try: self.event_type = EventType.objects.all()[0]
         except: self.event_type = EventType.objects.create(abbr='')
+    
+    def save(self, *args, **kwargs):
+        is_new = True if not self.id else False
+        super(Referral, self).save(*args, **kwargs)
+
+        if is_new:
+            self.seq = int(Referral.objects.filter(organization=self.organization).latest('seq').seq)+1
+            self.save()
 
     def add_occurrences(self, start_time, end_time, room, device, annotation, is_online, disable_check_busy = False, **rrule_params):
         rrule_params.setdefault('freq', rrule.DAILY)
@@ -210,14 +219,14 @@ class Referral(Event):
         ordering = ('title', )
 
     def __unicode__(self):
-        return u"%s #%s" % (self.service, self.id)
+        return u"%s #%s" % (self.service, self.seq)
 
     def _service_name_html(self):
-        return u"<div class='service_name_html color%s'>&nbsp;</div> %s #%s" % (self.service.css_color_class, self.service.name, self.id)
+        return u"<div class='service_name_html color%s'>&nbsp;</div> %s #%s" % (self.service.css_color_class, self.service.name, self.seq)
     service_name_html = property(_service_name_html)
 
     def _service_name_html_inline(self):
-        return u"%s #%s <div class='service_name_html_inline color%s'>&nbsp;</div>" % (self.service.name, self.id, self.service.css_color_class)
+        return u"%s #%s <div class='service_name_html_inline color%s'>&nbsp;</div>" % (self.service.name, self.seq, self.service.css_color_class)
     service_name_html_inline = property(_service_name_html_inline)
 
     def revision(self):

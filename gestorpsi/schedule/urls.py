@@ -15,6 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
+from gestorpsi.authentication.views import login_check
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm, OccurrenceConfirmationForm
 from gestorpsi.schedule.views import occurrence_view
@@ -33,28 +34,28 @@ from gestorpsi.schedule.views import week_view_table
 urlpatterns = patterns('',
      url(
         r'^(?:calendar/)?$', 
-        schedule_index, 
+        login_check(schedule_index), 
         name='schedule-index'
     ),
     url(
         r'^occurrences/(\d{4})/(0?[1-9]|1[012])/([0-3]?\d)/$', 
-        daily_occurrences,
+        login_check(daily_occurrences),
         name='schedule-daily-occurrences'
     ),
     url(
         r'^occurrences/$', 
-        today_occurrences,
+        login_check(today_occurrences),
         name='schedule-today-occurrences'
     ),
     url(
         r'^events/$',
-        schedule_occurrence_listing_today,
+        login_check(schedule_occurrence_listing_today),
         { 'template': 'schedule/schedule_events.html', },
         name='schedule-events-today'
     ),
     url(
         r'^events/add/$', 
-        add_event, 
+        login_check(add_event), 
         {
             'event_form_class': ReferralForm ,
             'recurrence_form_class': ScheduleOccurrenceForm ,
@@ -65,7 +66,7 @@ urlpatterns = patterns('',
     ),
     url(
         r'^events/(\d+)/$', 
-        event_view,
+        login_check(event_view),
         {
             'event_form_class': ReferralForm ,
             'recurrence_form_class': ScheduleOccurrenceForm ,
@@ -75,7 +76,7 @@ urlpatterns = patterns('',
     ),
     url(
         r'^events/(\d+)/(\d+)/$',
-        occurrence_view,
+        login_check(occurrence_view),
         {'template':'schedule/schedule_occurrence_form.html',
          'form_class': ScheduleSingleOccurrenceForm,
         },
@@ -83,17 +84,22 @@ urlpatterns = patterns('',
     ),
     url(
         r'^week/$', 
-        week_view,
+        login_check(week_view),
         name='swingtime-week'
     ),
     url(
         r'^week/(\d{4})/(0?[1-9]|1[012])/([0-3]?\d)/$', 
-        week_view_table,
+        login_check(week_view_table),
+        name='swingtime-week-table'
+    ),
+    url(
+        r'^week/today/$', 
+        login_check(week_view_table),
         name='swingtime-week-table'
     ),
     url(
         r'^events/(\d+)/confirmation/$', 
-        occurrence_confirmation_form, 
+        login_check(occurrence_confirmation_form), 
         {'template':'schedule/schedule_occurrence_confirmation_form.html',
          'form_class': OccurrenceConfirmationForm,
         },
@@ -101,7 +107,7 @@ urlpatterns = patterns('',
     ),
     url(
         r'^events/group/(?P<group_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/occurrence/(?P<occurrence_id>\d+)/$', 
-        occurrence_group, 
+        login_check(occurrence_group), 
         {'template':'schedule/schedule_occurrence_group.html',
          #'form_class': OccurrenceConfirmationForm,
         },
@@ -109,7 +115,7 @@ urlpatterns = patterns('',
     ),
     url(
         r'^events/(\d+)/family/form/$', 
-        occurrence_family_form, 
+        login_check(occurrence_family_form), 
         {'template':'schedule/schedule_occurrence_family_form.html',
          #'form_class': OccurrenceConfirmationForm,
         },
@@ -117,7 +123,7 @@ urlpatterns = patterns('',
     ),
     url(
         r'^events/(\d+)/employee/form/$', 
-        occurrence_employee_form, 
+        login_check(occurrence_employee_form), 
         {'template':'schedule/schedule_occurrence_employee_form.html',
          #'form_class': OccurrenceConfirmationForm,
         },

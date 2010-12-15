@@ -362,7 +362,10 @@ class Indication(models.Model):
     referral_professional = models.ForeignKey(CareProfessional, null=True)
 
     def __unicode__(self):
-        return u"%s" % self.indication_choice
+        try:
+            return u"%s" % self.indication_choice
+        except:
+            return ''
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

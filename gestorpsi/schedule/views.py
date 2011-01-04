@@ -425,7 +425,6 @@ def week_view_table(request,
 def today_occurrences(request):
     return daily_occurrences(request, datetime.now().strftime("%Y"), datetime.now().strftime("%m"), datetime.now().strftime("%d"))
 
-@permission_required_with_403('schedule.schedule_list')
 def schedule_occurrences(request, year = 1, month = 1, day = None):
     if day:
         date_start = datetime.strptime("%s%s%s" % (year, month, day),"%Y%m%d")

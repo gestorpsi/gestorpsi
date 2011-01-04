@@ -708,7 +708,7 @@ def organization_clients(request):
 
     if not user.groups.filter(name='administrator') and not user.groups.filter(name='secretary'):
         added_by_me = [] # registers added by me, got by django-reversion
-        for c in Client.objects.all():
+        for c in clients:
             if c.revision().user == request.user:
                 added_by_me.append(c.id)
 

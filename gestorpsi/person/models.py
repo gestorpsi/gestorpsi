@@ -17,6 +17,8 @@ import reversion
 from django.db import models
 from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User
+from gestorpsi.middleware import threadlocals
 from gestorpsi.phone.models import Phone
 from gestorpsi.address.models import City, Address, Country
 from gestorpsi.document.models import Document
@@ -25,7 +27,7 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util.first_capitalized import first_capitalized
 from gestorpsi.util.models import Cnae
-   
+
 Gender = (
     ('0','No Information'),
     ('1','Female'),
@@ -47,6 +49,7 @@ class MaritalStatus(models.Model):
 
 class Person(models.Model):
     id = UuidField(primary_key=True)
+    user = models.OneToOneField(User, editable=False, default=threadlocals.get_current_user)
     name = models.CharField(max_length=50)
     nickname = models.CharField(max_length=50, null=True, blank=True)
     photo = models.CharField(max_length=100)

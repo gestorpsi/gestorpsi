@@ -127,13 +127,8 @@ class ClientManager(models.Manager):
             object_list = object_list.filter(clientStatus = status)
         
         if not user.groups.filter(name='administrator') and not user.groups.filter(name='secretary'):
-            added_by_me = [] # registers added by me, got by django-reversion
-            for c in object_list:
-                if c.revision().user == user:
-                    added_by_me.append(c.id)
-
             object_list = object_list.filter(Q(referral__professional = user.profile.person.careprofessional.id) \
-                            | Q(pk__in=added_by_me) \
+                            | Q(person__user=user) \
                             | Q(referral__service__responsibles=user.profile.person.careprofessional) \
                             ).distinct().order_by('person__name')
         

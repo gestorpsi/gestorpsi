@@ -706,17 +706,11 @@ def organization_clients(request):
     if not request.GET.get('include_deactivated'):
         clients = clients.filter(clientStatus = '1')
 
-    if not user.groups.filter(name='administrator') and not user.groups.filter(name='secretary'):
-        added_by_me = [] # registers added by me, got by django-reversion
-        for c in clients:
-            if c.revision().user == request.user:
-                added_by_me.append(c.id)
-
-        clients = clients.filter(Q(referral__professional = user.profile.person.careprofessional.id) \
-                        | Q(pk__in=added_by_me) \
-                        | Q(referral__service__responsibles=request.user.profile.person.careprofessional) \
-                        ).distinct().order_by('person__name')
-
+    if not request.GET.get('include_deactivated'):
+        clients = Client.objects.from_user(request.user, 'active')
+    else:
+        clients = Client.objects.from_user(request.user)
+    
     dict = {}
     array = [] #json
     i = 0

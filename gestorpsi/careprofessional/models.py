@@ -194,6 +194,23 @@ class CareProfessionalManager(models.Manager):
     def students_deactive(self, organization):
         return super(CareProfessionalManager, self).get_query_set().filter(active=False, studentprofile__id__isnull=False, person__organization = organization).order_by('person__name')
 
+    def from_organization(self, organization, query_pk_in=None):
+        
+        """
+        return clients list from logged organization
+        and/or with a pk range filter
+        ...
+        actually used in report app
+        """
+        
+        query = super(CareProfessionalManager, self).get_query_set().filter(person__organization = organization)
+
+        if query_pk_in:
+            query = query.filter(pk__in=[ i.careprofessional.id for i in query_pk_in])
+        query = query.order_by('person__name')
+
+        return query
+
 class CareProfessional(models.Model):
     """
     This class represents a careprofessional 

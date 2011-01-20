@@ -364,7 +364,6 @@ class ReportReferralManager(models.Manager):
         data.append({'name': _('Subscriptions Discharged Discussed with Client'), 'total': discharged_discussed_with_client, 'percentage': percentage(discharged_discussed_with_client, discharged), 'url':reverse('referral_client_overview_discharged_discussed'), })
         data.append({'name': _('Internal Referrals'), 'total': referral_internal, 'percentage': percentage(referral_internal, total), 'url':reverse('referral_client_overview_internal'), })
         data.append({'name': _('External Referrals'), 'total': referral_external, 'percentage': percentage(referral_external, total), 'url':reverse('referral_client_overview_external'), })
-        data.append({'name': _('Subscriptions Total'), 'total': total, 'percentage': '', 'url':reverse('referral_client_overview_total'), })
         
         return data
 

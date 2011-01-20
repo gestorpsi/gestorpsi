@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-11-24 13:42-0200\n"
-"PO-Revision-Date: 2011-01-11 12:31\n"
+"PO-Revision-Date: 2011-01-12 12:07\n"
 "Last-Translator: <webmaster@gestorpsi.com.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -5624,9 +5624,8 @@ msgstr "Nota: ocorrências listadas abaixo foram registradas com sucesso."
 #: templates/schedule/schedule_form.html:26
 #: templates/schedule/schedule_occurrence_confirmation_form.html:26
 #: templates/schedule/schedule_week.html:26
-#, fuzzy
 msgid "Weekly"
-msgstr "Semana(s)"
+msgstr "Semanal"
 
 #: templates/schedule/schedule_events.html:46
 msgid "There is no events for this day."
@@ -5713,17 +5712,14 @@ msgid "There is no client referral created yet. Please <a href='/client/'>create
 msgstr "Nenhuma inscrição foi realizada até o momento. Por favor, inscreva um cliente antes de acessar a Agenda."
 
 #: templates/schedule/schedule_week.html:40
-#, fuzzy
 msgid "Weekly view"
 msgstr "Visualização diária"
 
 #: templates/schedule/schedule_week.html:58
-#, fuzzy
 msgid "Room Selection"
 msgstr "Identificação da Sala"
 
 #: templates/schedule/schedule_week.html:59
-#, fuzzy
 msgid "Please, choose one room to book"
 msgstr "Escolha um nome para o relatório."
 
@@ -5737,17 +5733,14 @@ msgid "Continue"
 msgstr "Continue"
 
 #: templates/schedule/schedule_week_table.html:19
-#, fuzzy
 msgid "This week have"
-msgstr "Esta inscrição tem"
+msgstr "Esta semana possue"
 
 #: templates/schedule/schedule_week_table.html:19
-#, fuzzy
 msgid "occurrences(s)."
-msgstr "Eventos"
+msgstr "agendamentos"
 
 #: templates/schedule/schedule_week_table.html:23
-#, fuzzy
 msgid "From"
 msgstr "de"
 
@@ -5756,9 +5749,8 @@ msgid "to"
 msgstr "até"
 
 #: templates/schedule/schedule_week_table.html:37
-#, fuzzy
 msgid "There is no occurrence on this week"
-msgstr "Sem eventos futuros"
+msgstr "Sem agendamentos para esta semana"
 
 #: templates/schedule/schedule_week_table.html:56
 msgid "Book on this day"

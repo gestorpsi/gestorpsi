@@ -179,7 +179,11 @@ $(function() {
      */
     
     $('a.report_filter').click(function() {
-        updateAdmission($(this).attr('data'));
+        if($('form#report_filter select[name=view]').val() == 1) // admission
+            updateAdmission('view=admission' + $(this).attr('data'));
+        if($('form#report_filter select[name=view]').val() == 2) // referral
+            updateReferral('view=referral' + $(this).attr('data'));
+
         $('div.loaded_report_title').hide();
         return false;
     });

@@ -109,7 +109,7 @@ GNU General Public License for more details.
     <h3>{% trans "Report filters" %}</h3>
     <ul>
         {% for f in filters %}
-        <li><a class="pointer report_filter" data="view=admission&date_start={{f.date_start|date:"d/m/Y"}}&date_end={{f.date_end|date:"d/m/Y"}}">{{ f.name }}</a></li>
+        <li><a class="pointer report_filter" data="&date_start={{f.date_start|date:"d/m/Y"}}&date_end={{f.date_end|date:"d/m/Y"}}">{{ f.name }}</a></li>
         {% endfor %}
     </ul>
 </div>

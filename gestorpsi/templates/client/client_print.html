@@ -5,9 +5,8 @@
 {% load calculate_age %}
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <style>
-
 @page {
-  size: {{ pagesize }} portrait;
+  size: A4 portrait;
   margin: 1cm;
 } 
 
@@ -29,6 +28,9 @@ td {
     padding: 4px 4px 0px 4px;
 }
 
+h1 {border-bottom:1px solid black; margin: 15px 0 10px 0; padding:0px; font-size:16px;}
+h1.nome {border-bottom:0px; font-size:30px;}
+h2 { margin: 20px 0 10px 0; padding:0px; font-size:13px; font-weight:bold; font-size:15px;}
 
 tr.title{
     background: #e6e6e6;
@@ -65,6 +67,8 @@ table {
 }
 */
 
+
+
 </style>
 <title>{{ object.person.name }}</title></head>
 <body>
@@ -94,15 +98,12 @@ table {
     </tr>
 </table>
 
-<hr />
-
 <br>
-
 <table>
 <tr>
 <td style="width: 626px; vertical-align: top; padding: 0px;">
       
-      <h2>{{ object.person.name }}</h2>
+      <h1 class="nome">{{ object.person.name|title }}</h1>
       <strong>{% trans "ID record" %}: </strong>{{ object.idRecord }}<br />
       <strong>{% trans "Subscribed since" %}:</strong> {{ object.admission_date|date:"d/m/Y" }}<br />
       {% if object.legacyRecord %}<strong>{% trans "Legacy record" %}: </strong>{{ object.legacyRecord }}<br />{% endif %}
@@ -240,38 +241,37 @@ table {
     {% if object.person.comments %}
     <br /><small>{{ object.person.comments|safe }}</small>
     {% endif %}
-
+<br />
 {% endif %}
 
 {% if print_demographic and not object.is_company %}
-    <h1>{% trans "Demographic Data" %}</h1>
-    {% if object.educationallevel %}
-    <strong>{% trans "Education Level" %}</strong>
+    {% if object.educationallevel or object.profession_set.all %}
+        <h1>{% trans "Demographic Data" %}</h1>
+        {% if object.educationallevel %}
+        <strong>{% trans "Education Level" %}</strong>
 
-    <strong>{% trans "School Grade" %}: </strong> {{ object.educationallevel.get_school_grade_display }} {% if object.educationallevel.comments %}({{ object.educationallevel.comments }}){% endif %}
+        <strong>{% trans "School Grade" %}: </strong> {{ object.educationallevel.get_school_grade_display }} {% if object.educationallevel.comments %}({{ object.educationallevel.comments }}){% endif %}
+        {% endif %}
+
+        {% for p in object.profession_set.all %}
+            <br /><br />
+            <strong>{% trans "Occupation" %} #{{ forloop.counter }}:</strong>
+            <br />
+            <strong>{% trans "Profession" %}:</strong> {{ p.profession }}<br />
+            <strong>{% trans "Labor Market Status" %}:</strong> {{ p.get_labor_market_status_display }}<br />
+            <strong>{% trans "Workplace" %}:</strong> {{ p.workplace }}<br />
+            <strong>{% trans "Working Hours" %}:</strong> {{ p.working_hours }}<br />
+            <strong>{% trans "Status" %}:</strong> {% if not p.status %}{% trans "Do not active in this occupation" %}{% else %}{% trans "Still active in this occupation" %}{% endif %}<br />
+            <br />
+            {{ p.comments }}
+        {% endfor %}
     {% endif %}
-
-    <br />
-
-    {% for p in object.profession_set.all %}
-        <br />
-        <strong>{% trans "Occupation" %} #{{ forloop.counter }}:</strong>
-        <br />
-        <strong>{% trans "Profession" %}:</strong> {{ p.profession }}<br />
-        <strong>{% trans "Labor Market Status" %}:</strong> {{ p.get_labor_market_status_display }}<br />
-        <strong>{% trans "Workplace" %}:</strong> {{ p.workplace }}<br />
-        <strong>{% trans "Working Hours" %}:</strong> {{ p.working_hours }}<br />
-        <strong>{% trans "Status" %}:</strong> {% if not p.status %}{% trans "Do not active in this occupation" %}{% else %}{% trans "Still active in this occupation" %}{% endif %}<br />
-        <br />
-        {{ p.comments }}
-    {% endfor %}
 {% endif %}
 
 
     {% for i in referral %}
-        <h1>{{ i.service }} ({% trans "Statement of Service" %})</h1>
-        
-        <strong>{% trans "Admission" %}: </strong>{{ i.date|date:"d/m/Y" }}<br />
+        <h1>{{ i }}</h1>
+
         <strong>{% trans "Status" %}: </strong>
                 {% if i.referraldischarge_set.all %}
                     {% trans "Referral is discharged" %}
@@ -280,7 +280,20 @@ table {
                 {% endif %}
             
             <br />
+        {% if i.referraldischarge_set.all %}
+        {% for d in i.referraldischarge_set.all %}
+            <strong>{% trans "Discharge Date" %} #{{ forloop.counter }}: </strong> {{ d.date|date:"d/m/Y" }}<br />
+            <strong>{% trans "Discharge Reason" %} #{{ forloop.counter }}: </strong> {% if not d.reason %}{% trans "Not informed" %}{% else %}{{ d.get_reason_display }}{% endif %}<br />
+            <strong>{% trans "Was discussed with client" %} #{{ forloop.counter }}: </strong> {% if not d.was_discussed_with_client %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}<br />
+            {% if d.details %}<strong>{% trans "Discharge Details" %} #{{ forloop.counter }}: </strong>{{ d.details }}<br />{% endif %}
+            {% if d.description %}<strong>{% trans "Discharge Description" %} #{{ forloop.counter }}: </strong> {{ d.description }}<br />{% endif %}
+        {% endfor %}
+        <br />
+        {% endif %}
 
+        <strong>{% trans "Admission" %}: </strong>{{ i.date|date:"d/m/Y" }}<br />
+        {% if i.referral %}<strong>{% trans "Referral Source" %}: </strong>{{ i.referral }}<br />{% endif %}
+        {% if i.referralexternal_set.all %}<strong>{% trans "External Referrals" %}: </strong>{{ i.referralexternal_set.all|join:", " }}<br />{% endif %}
         <strong>{% trans "Service is academic related" %}: </strong>{% if i.service.academic_related %} {% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}<br />
         <strong>{% trans "Professionals" %}: </strong>
                 {% if not i.professional.all %}&nbsp;{% else %}
@@ -305,8 +318,9 @@ table {
                     
                     {% endif %}
                 <br />
-        <strong>{% trans "Referral Source" %}: </strong>{% if not i.referral %}&nbsp;{% else %}{{ i.referral }}{% endif %}<br />
+        
         {% if i.group %}<strong>{% trans "Group" %}: {{ i.group }}</strong><br />{% endif %}
+        <br />
         <strong>{% trans "Reason" %}: </strong>{% if not i.referral_reason %}{% trans "Not informed" %}{% else %}{{ i.referral_reason }}{% endif %}<br />
         <strong>{% trans "Priority" %}: </strong>{% if not i.priority %}{% trans "Not informed" %}{% else %}{{ i.priority }}{% endif %}<br />
         <strong>{% trans "Impact" %}: </strong>{% if not i.impact %}{% trans "Not informed" %}{% else %}{{ i.impact }}{% endif %}<br />
@@ -317,6 +331,7 @@ table {
         <br />{{ i.annotation }}
         {% endif %}
         
+        <br />
         {% for q in i.queue_set.all %}
         <strong>{% trans "Queue Details" %}#{{ forloop.counter }}: </strong>
                 
@@ -326,17 +341,12 @@ table {
                     {% if not forloop.last %}<br />{% endif %}
                 {% endfor %}
 
-            {% if i.referraldischarge_set.all %}
-            {% for d in i.referraldischarge_set.all %}
-                <strong>{% trans "Discharge Date" %} #{{ forloop.counter }}: </strong> {{ d.date|date:"d/m/Y" }}<br />
-                <strong>{% trans "Discharge Reason" %} #{{ forloop.counter }}: </strong> {% if not d.reason %}{% trans "Not informed" %}{% else %}{{ d.get_reason_display }}{% endif %}<br />
-                <strong>{% trans "Was discussed with client" %} #{{ forloop.counter }}: </strong> {% if not d.was_discussed_with_client %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}<br />
-                {% if d.details %}<strong>{% trans "Discharge Details" %} #{{ forloop.counter }}: </strong>{{ d.details }}<br />{% endif %}
-                {% if d.description %}<strong>{% trans "Discharge Description" %} #{{ forloop.counter }}: </strong> {{ d.description }}<br />{% endif %}
-            {% endfor %}
-            {% endif %}
-
-            {% if i.occurrence_set.all %}
+        
+        {% if print_schedule %}
+            <h2>{% trans "Service Occurrences" %}</h2>
+            {% if not i.occurrence_set.all %}
+                 {% trans "This referral have no occurrence" %}
+            {% else %}
             <strong>{% trans "Referral total occurrences" %}: </strong>{{ i.occurrence_set.all|length }}<br />
             <strong>{% trans "Confirmed occurrences" %}: </strong>{{ i.confirmed_occurrences|length }}<br />
             <strong>{% trans "Unconfirmed occurrences" %}: </strong>{{ i.unconfirmed_occurrences|length }}<br />
@@ -345,14 +355,7 @@ table {
             <strong>{% trans "Occurrence confirmed not arrived" %}: </strong>{{ i.confirmed_not_arrived|length }}<br />
             <strong>{% trans "Occurrence confirmed unmarked" %}: </strong>{{ i.confirmed_unmarked|length }}<br />
             <strong>{% trans "Occurrence confirmed rescheduled" %}: </strong>{{ i.confirmed_rescheduled|length }}<br />
-            {% endif %}
-        
-        {% if print_schedule %}
-            <h1>{{ i.service }} ({% trans "Service Occurrences" %})</h1>
-            
-            {% if not i.occurrence_set.all %}
-                 <br />{% trans "This referral have no occurrence" %}
-            {% else %}
+
                 {% for o in i.occurrence_set.all %}
                     <p>
                     <strong>{% trans "Occurrence" %} #{{ forloop.counter }}</strong><br />
@@ -387,9 +390,8 @@ table {
             {% endif %}
         {% endif %}
 
-        <br />
         {% if print_ehr and have_ehr_read_perms %}
-            <h1>{{ i.service }} ({% trans "Referral Sessions" %})</h1>
+            <h2>{% trans "Referral Sessions" %}</h2>
             {% if not i.session_set.all %}
                 {% trans "This referral have no session registered yet" %}
             {% else %}
@@ -407,10 +409,8 @@ table {
             {% endif %}
         {% endif %}
 
-        <br />
         {% if print_ehr and have_ehr_read_perms %}
-
-            <h1>{{ i.service }} ({% trans "Referral Demands" %})</h1>
+            <h2>{% trans "Referral Demands" %}</h2>
             {% if not i.demand_set.all %}
                 {% trans "This referral have no demand registered yet" %}
             {% else %}
@@ -438,10 +438,9 @@ table {
             
         {% endif %}
 
-        <br />
         {% if print_ehr and have_ehr_read_perms %}
 
-        <h1>{{ i.service }} ({% trans "Referral Diagnosis" %})</h1>
+        <h2>{% trans "Referral Diagnosis" %}</h2>
         {% if not i.diagnosis_set.all %}
             {% trans "This referral have no diagnosis registered yet" %}
         {% else %}
@@ -468,7 +467,6 @@ table {
 
         
     {% endif %}
-
 <br />
         {% if i.service.responsibles.all and signed_professional_responsible %}
         <br /><br />

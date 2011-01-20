@@ -102,6 +102,8 @@ def demand_list(request, client_id, referral_id):
 
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
     demands = referral.demand_set.all()
+    if not demands:
+        return HttpResponseRedirect('/client/%s/%s/demand/add/' % (client.id, referral.id))
     return render_to_response('ehr/ehr_demand_list.html', {
                                     'object': client,
                                     'referral': referral,
@@ -214,6 +216,8 @@ def diagnosis_list(request, client_id, referral_id):
 
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
     diagnoses = referral.diagnosis_set.all()
+    if not diagnoses:
+        return HttpResponseRedirect('/client/%s/%s/diagnosis/add/' % (client.id, referral.id))
     return render_to_response('ehr/ehr_diagnosis_list.html', {
                                     'object': client,
                                     'referral': referral,
@@ -292,6 +296,9 @@ def session_list(request, client_id, referral_id):
 
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
     sessions = referral.session_set.all()
+    if not sessions:
+        return HttpResponseRedirect('/client/%s/%s/session/add/' % (client.id, referral.id))
+
     return render_to_response('ehr/ehr_session_list.html', {
                                     'object': client,
                                     'referral': referral,

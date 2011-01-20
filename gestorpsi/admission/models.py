@@ -57,7 +57,7 @@ class AdmissionManager(models.Manager):
 
         inrange = []
         for a in super(AdmissionManager, self).get_query_set().filter(client__person__organization=organization):
-            if a.created() >= datetime_start and a.created() <= datetime_end:
+            if a.created >= datetime_start and a.created <= datetime_end:
                 inrange.append(a.id)
 
         return AdmissionReferral.objects.filter(pk__in=inrange)
@@ -90,12 +90,13 @@ class AdmissionReferral(models.Model):
     referral_professional = models.ForeignKey(CareProfessional, null=True)
     signed_bythe_client = models.BooleanField(default=False)
     client = models.ForeignKey(Client)
+    date = models.DateTimeField(auto_now_add=True)
     
     objects = AdmissionManager()
     objects_inrange = AdmissionInRangeManager()
     
     def __unicode__(self):
-        return u"%s - %s" % (self.client, self.referral_choice)
+        return u'%s' % self.client
     
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
@@ -103,8 +104,12 @@ class AdmissionReferral(models.Model):
     def revision_created(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
 
-    def created(self):
+    def created_revision(self):
         return self.revision_created().date_created
+
+    def _created(self):
+        return self.date
+    created = property(_created)
 
 reversion.register(AdmissionReferral, follow=['client'])
 

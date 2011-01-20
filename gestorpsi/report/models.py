@@ -14,6 +14,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+"""
+@Autor: Fabio A. Martins
+"""
+
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from django.db import models
@@ -22,15 +26,19 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.core.urlresolvers import reverse
 from gestorpsi.util.views import get_object_or_None
-from gestorpsi.admission.models import AdmissionReferral, ReferralChoice
+from gestorpsi.admission.models import AdmissionReferral, ReferralChoice as AdmissionIndication
 from gestorpsi.client.models import Client
+from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.organization.models import Organization
+from gestorpsi.service.models import Service
+from gestorpsi.referral.models import Referral, Indication as ReferralIndication, IndicationChoice as ReferralIndicationChoice
 from gestorpsi.util.views import percentage
 
 
 VIEWS_CHOICES = (
     (1, _('Admisssions')),
-    #(2, _('Referrals')),
+    (2, _('Referrals')),
+    #(3, _('Schedules')),
 )
 
 class Report(models.Model):
@@ -77,6 +85,36 @@ class Report(models.Model):
         
         return None, None, None
 
+    def get_referral_range(self, organization, date_start, date_end):
+        """
+        get referral 'universe'
+        all referrals that could be find in range
+        """
+        date_start,date_end = self.set_date(organization, date_start, date_end)
+        range = Referral.objects_inrange.all(organization, date_start, date_end)
+        
+        if range:
+            data = ReportReferral.objects.all(range, organization)
+            
+            return data,date_start,date_end
+        
+        return [], None, None
+
+    #def get_schedule_range(self, organization, date_start, date_end):
+        #"""
+        #get schedule 'universe'
+        #all schedules that could be find in range
+        #"""
+        #date_start,date_end = self.set_date(organization, date_start, date_end)
+        #range = ScheduleOccurrence.objects_inrange.all(organization, date_start, date_end)
+        
+        #if range:
+            #data = ReportReferral.objects.all(range, organization)
+            
+            #return data,date_start,date_end
+        
+        #return None, None, None
+
     def chart_coordinates(self, objects_range, date_start = None, date_end = None):
         """
         return x and y coordinates in objects range
@@ -89,7 +127,7 @@ class Report(models.Model):
             next_month = start_tmp+relativedelta(months=+1)
             pks = []
             for a in range:
-                if a.created() >= start_tmp and a.created() < next_month:
+                if a.created >= start_tmp and a.created < next_month:
                     pks.append(a.id)
             dots.append((start_tmp.strftime("%m/%Y"), range.filter(pk__in=pks).count())) # coordinates here: x, y
         
@@ -97,6 +135,9 @@ class Report(models.Model):
         return dots
 
 class ReportsSavedManager(models.Manager):
+    def from_user(self, user, organization):
+        return super(ReportsSavedManager, self).get_query_set().filter(user=user, organization=organization, trash=False)
+
     def admission(self, user, organization):
         return super(ReportsSavedManager, self).get_query_set().filter(user=user, organization=organization, view=1, trash=False)
     
@@ -121,7 +162,7 @@ class ReportsSaved(models.Model):
         return '%s' % (self.label)
 
 class ReportAdmissionManager(models.Manager):
-    def chart(self, admissions_range, date_start = None, date_end = None):
+    def chart(self, range, date_start = None, date_end = None, lines=True, bars=False, points=False):
 
         """
         return coordinates to plot graph
@@ -130,14 +171,22 @@ class ReportAdmissionManager(models.Manager):
         """
 
         graphs = []
+        if not lines and not bars and not points: # the default graph type
+            lines = 'true'
 
-        graphs.append({'title':_('All admissions'), 'data': Report().chart_coordinates(admissions_range, date_start, date_end), 'lines':'true'})
-        graphs.append({'title':_('Individuals'), 'data': Report().chart_coordinates(admissions_range.filter(client__person__company__isnull=True), date_start, date_end), 'lines':'true'})
-        graphs.append({'title':_('Companies'), 'data': Report().chart_coordinates(admissions_range.filter(client__person__company__isnull=False), date_start, date_end), 'lines':'true', })
+        graph_types = {
+            'lines':'false' if not lines or 'true' not in lines else 'true',
+            'bars':'false' if not bars or 'true' not in bars else 'true',
+            'points':'false' if not points or 'true' not in points else 'true',
+        }
+        
+        graphs.append({'title':_('All admissions'), 'data': Report().chart_coordinates(range, date_start, date_end), 'type': graph_types})
+        graphs.append({'title':_('Individuals'), 'data': Report().chart_coordinates(range.filter(client__person__company__isnull=True), date_start, date_end), 'type': graph_types, })
+        graphs.append({'title':_('Companies'), 'data': Report().chart_coordinates(range.filter(client__person__company__isnull=False), date_start, date_end), 'type': graph_types })
 
         return simplejson.dumps(graphs, sort_keys=True)
 
-    def overview(self, admissions_range):
+    def overview(self, range):
 
         """
         return a list with admission overview data splited
@@ -145,9 +194,9 @@ class ReportAdmissionManager(models.Manager):
         """
 
         data = []
-        total = len(admissions_range)
-        individuals = admissions_range.filter(client__person__company__isnull=True).count()
-        companies = admissions_range.filter(client__person__company__isnull=False).count()
+        total = len(range)
+        individuals = range.filter(client__person__company__isnull=True).count()
+        companies = range.filter(client__person__company__isnull=False).count()
         
         data.append({'name': _('Individuals'), 'total': individuals, 'percentage': percentage(individuals, total), 'url':reverse('admission_client_overview_individuals'), })
         data.append({'name': _('Companies'), 'total': companies, 'percentage': percentage(companies, total), 'url':reverse('admission_client_overview_companies'), })
@@ -155,7 +204,7 @@ class ReportAdmissionManager(models.Manager):
         
         return data
 
-    def signed(self, admissions_range):
+    def signed(self, range):
     
         """
         return a list with relation between client that have 'signed by client'
@@ -163,47 +212,47 @@ class ReportAdmissionManager(models.Manager):
         """
 
         data = []
-        total = len(admissions_range)
-        signed = admissions_range.filter(signed_bythe_client=True).count()
-        not_signed = admissions_range.filter(signed_bythe_client=False).count()
+        total = len(range)
+        signed = range.filter(signed_bythe_client=True).count()
+        not_signed = range.filter(signed_bythe_client=False).count()
         
         data.append({'name': _('Signed'), 'total': signed, 'percentage': percentage(signed, total), 'url':reverse('admission_client_signed_signed'), })
         data.append({'name': _('Not Signed'), 'total': not_signed, 'percentage': percentage(not_signed, total), 'url':reverse('admission_client_signed_notsigned'), })
         
         return data
 
-    def knowledge(self, admissions_range):
+    def knowledge(self, range):
 
         """
         return a list of clients x knowledge marked in admission form
         list sorted by ranking
         """
 
-        qknowledge = ReferralChoice.objects.filter(id__gt = 0)
+        qknowledge = AdmissionIndication.objects.filter(id__gt = 0)
         data = []
 
         tosort = []
         for i in qknowledge: # order reverse
-            tosort.append((i.pk, admissions_range.filter(referral_choice=i).count()))
+            tosort.append((i.pk, range.filter(referral_choice=i).count()))
 
         ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
 
         for id,total in ids_ordered:
-            i = ReferralChoice.objects.get(pk=id)
-            count = admissions_range.filter(referral_choice=i).count()
-            data.append({'name': i.description, 'total': count, 'percentage': percentage(count, admissions_range.count()), 'url':reverse('admission_client_knowledge', args=[i.pk]), })
+            i = AdmissionIndication.objects.get(pk=id)
+            count = range.filter(referral_choice=i).count()
+            data.append({'name': i.description, 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('admission_client_knowledge', args=[i.pk]), })
 
         return data
 
-    def all(self, admissions_range):
+    def all(self, range):
         """
         return a list with all table data above
         """
         data = []
         
-        data.append({'title': _('Admission Overview'), 'data': ReportAdmission.objects.overview(admissions_range)})
-        data.append({'title': _('Admission Signed'), 'data': ReportAdmission.objects.signed(admissions_range)})
-        data.append({'title': _('Admission Knowledge'), 'data': ReportAdmission.objects.knowledge(admissions_range)})
+        data.append({'title': _('Admission Overview'), 'data': ReportAdmission.objects.overview(range)})
+        data.append({'title': _('Admission Signed'), 'data': ReportAdmission.objects.signed(range)})
+        data.append({'title': _('Admission Knowledge'), 'data': ReportAdmission.objects.knowledge(range)})
 
         return data
 
@@ -239,12 +288,12 @@ class ReportAdmissionManager(models.Manager):
             
         if 'knowledge' in view:
             query = query.filter(referral_choice=filter)
-            obj = get_object_or_None(ReferralChoice, pk=filter)
+            obj = get_object_or_None(AdmissionIndication, pk=filter)
             verbose_name = _('Admission report - Knowledge - %s' % (obj.description))
         json = []
 
         if query:
-            return verbose_name,Client.objects.from_user(user, None, query), Client.objects.from_organization(user.get_profile().org_active, query)
+            return verbose_name,Client.objects.from_user(user, None, [i.client.id for i in query]), Client.objects.from_organization(user.get_profile().org_active, query)
         
         return verbose_name,None
 
@@ -260,8 +309,343 @@ class ReportAdmissionManager(models.Manager):
         clients_reports.append(self.clients(user, date_start, date_end, 'overview', 'companies'))
         clients_reports.append(self.clients(user, date_start, date_end, 'signed', 'signed'))
         clients_reports.append(self.clients(user, date_start, date_end, 'signed', 'notsigned'))
-        for i in ReferralChoice.objects.all():
+        for i in AdmissionIndication.objects.all():
             clients_reports.append(self.clients(user, date_start, date_end, 'knowledge', i.id))
+        
+        return clients_reports
+
+class ReportReferralManager(models.Manager):
+    def chart(self, range, date_start = None, date_end = None, lines=True, bars=False, points=False):
+
+        """
+        return coordinates to plot graph
+        note: graph_type here can be: lines, bars or points
+        and can be mixed like this: {'lines':'true', 'points':'true'}
+        """
+
+        graphs = []
+        if not lines and not bars and not points: # the default graph type
+            lines = 'true'
+
+        graph_types = {
+            'lines':'false' if not lines or 'true' not in lines else 'true',
+            'bars':'false' if not bars or 'true' not in bars else 'true',
+            'points':'false' if not points or 'true' not in points else 'true',
+        }
+        
+        graphs.append({'title':_('Charged'), 'data': Report().chart_coordinates(range.filter(referraldischarge__isnull=True), date_start, date_end), 'type': graph_types, })
+        graphs.append({'title':_('Discharged'), 'data': Report().chart_coordinates(range.filter(referraldischarge__isnull=False), date_start, date_end), 'type': graph_types })
+        graphs.append({'title':_('Discharged Discussed'), 'data': Report().chart_coordinates(range.filter(referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True), date_start, date_end), 'type': graph_types })
+        graphs.append({'title':_('Internals'), 'data': Report().chart_coordinates(range.filter(referral__isnull=False), date_start, date_end), 'type': graph_types })
+        graphs.append({'title':_('Externals'), 'data': Report().chart_coordinates(range.filter(referralexternal__isnull=False), date_start, date_end), 'type': graph_types })
+        
+
+        return simplejson.dumps(graphs, sort_keys=True)
+
+    def overview(self, range):
+
+        """
+        return a list with admission overview data splited
+        in individuals and companies clients type
+        """
+
+        data = []
+
+        total = len(range)
+
+        charged = range.filter(referraldischarge__isnull=True).count()
+        discharged = range.filter(referraldischarge__isnull=False).count()
+        discharged_discussed_with_client = range.filter(referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True).count()
+        referral_internal = range.filter(referral__isnull=False).count()
+        referral_external = range.filter(referralexternal__isnull=False).count()
+
+        data.append({'name': _('Subscriptions Charged'), 'total': charged, 'percentage': percentage(charged, total), 'url':reverse('referral_client_overview_charged'), })
+        data.append({'name': _('Subscriptions Discharged'), 'total': discharged, 'percentage': percentage(discharged, total), 'url':reverse('referral_client_overview_discharged'), })
+        data.append({'name': _('Subscriptions Discharged Discussed with Client'), 'total': discharged_discussed_with_client, 'percentage': percentage(discharged_discussed_with_client, discharged), 'url':reverse('referral_client_overview_discharged_discussed'), })
+        data.append({'name': _('Internal Referrals'), 'total': referral_internal, 'percentage': percentage(referral_internal, total), 'url':reverse('referral_client_overview_internal'), })
+        data.append({'name': _('External Referrals'), 'total': referral_external, 'percentage': percentage(referral_external, total), 'url':reverse('referral_client_overview_external'), })
+        data.append({'name': _('Subscriptions Total'), 'total': total, 'percentage': '', 'url':reverse('referral_client_overview_total'), })
+        
+        return data
+
+    def knowledge(self, range):
+        
+        """
+        return a list of clients x knowledge marked in admission form
+        list sorted by ranking
+        """
+
+        qknowledge = ReferralIndicationChoice.objects.filter(id__gt = 0)
+        data = []
+
+        tosort = []
+        for i in qknowledge: # order reverse
+            tosort.append((i.pk, range.filter(indication__indication_choice=i).count()))
+
+        ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
+
+        for id,total in ids_ordered:
+            count = range.filter(indication__indication_choice=id).count()
+            data.append({'name': ReferralIndicationChoice.objects.get(pk=id).description, 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_knowledge', args=[id]), })
+        
+        return data
+
+    def services(self, range, organization):
+
+        services = organization.service_set.all()
+        data = []
+
+        tosort = []
+        for i in services: # order reverse
+            tosort.append((i.pk, range.filter(service=i).count()))
+
+        ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
+
+        for id,total in ids_ordered:
+            count = range.filter(service__pk=id).count()
+            
+            if count:
+                data.append({'name': services.get(pk=id), 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_services', args=[id]), })
+        
+        return data
+
+    def referral_internal(self, range, organization, from_service=None):
+
+        services = organization.service_set.all()
+        data = []
+
+        tosort = []
+        for i in services: # order reverse
+            if not from_service:
+                tosort.append((i.pk, range.filter(service=i, referral__isnull=False).count()))
+            else:
+                tosort.append((i.pk, range.filter(referral__service=i, referral__isnull=False).count()))
+
+        ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
+
+        for id,total in ids_ordered:
+            if not from_service:
+                count = range.filter(service__pk=id, referral__isnull=False).count()
+            else:
+                count = range.filter(referral__service__pk=id, referral__isnull=False).count()
+            
+            if count:
+                url = 'referral_client_internal' if not from_service else 'referral_client_internal_from'
+                data.append({'name': services.get(pk=id), 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse(url, args=[id]), })
+        
+        return data
+
+    def referral_external(self, range, organization):
+
+        services = organization.service_set.all()
+        data = []
+
+        tosort = []
+        for i in services: # order reverse
+            tosort.append((i.pk, range.filter(service=i, referralexternal__isnull=False).count()))
+
+        ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
+
+        for id,total in ids_ordered:
+            count = range.filter(service__pk=id, referralexternal__isnull=False).count()
+            
+            if count:
+                data.append({'name': services.get(pk=id), 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_external', args=[id]), })
+        
+        return data
+
+    def service_discharges(self, range, organization, discussed_with_client=None):
+
+        services = organization.service_set.all()
+        data = []
+
+        tosort = []
+        for i in services: # order reverse
+            if not discussed_with_client:
+                qs = range.filter(service=i, referraldischarge__isnull=False)
+            else:
+                qs = range.filter(service=i, referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True)
+            
+            tosort.append((i.pk, qs.count()))
+
+        ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
+
+        for id,total in ids_ordered:
+            if not discussed_with_client:
+                count = range.filter(service__pk=id, referraldischarge__isnull=False).count()
+            else:
+                count = range.filter(service__pk=id, referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True).count()
+            
+            if count:
+                url = 'referral_client_discharge' if not discussed_with_client else 'referral_client_discharge_discussed'
+                data.append({'name': services.get(pk=id), 'total': count, 'percentage': percentage(count, range.filter(referraldischarge__isnull=False).count()), 'url':reverse(url, args=[id]), })
+        
+        return data
+
+    def professionals(self, range, organization, from_professional=None):
+
+        list = CareProfessional.objects.from_organization(organization)
+        data = []
+
+        tosort = []
+        for i in list: # order reverse
+            tosort.append((i.pk, range.filter(professional=i).count()))
+
+        ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
+
+        for id,total in ids_ordered:
+            count = range.filter(professional=id).count()
+            
+            if count:
+                data.append({'name': list.get(pk=id), 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_professional', args=[id]), })
+        
+        return data
+
+    def all(self, range, organization=None):
+        """
+        return a list with all table data above
+        """
+        data = []
+        
+        data.append({'title': _('Subscriptions Overview'), 'data': ReportReferral.objects.overview(range)})
+        data.append({'title': _('Subscriptions Indications'), 'data': ReportReferral.objects.knowledge(range)})
+        data.append({'title': _('Service Subscriptions'), 'data': ReportReferral.objects.services(range, organization)})
+        data.append({'title': _('Internal Referrals to Services'), 'data': ReportReferral.objects.referral_internal(range, organization)})
+        data.append({'title': _('Internal Referrals from Services'), 'data': ReportReferral.objects.referral_internal(range, organization, True)})
+        data.append({'title': _('Externals Referrals from Services'), 'data': ReportReferral.objects.referral_external(range, organization)})
+        data.append({'title': _('Discharges from Services'), 'data': ReportReferral.objects.service_discharges(range, organization)})
+        data.append({'title': _('Discharges Discussed with Client'), 'data': ReportReferral.objects.service_discharges(range, organization, True)})
+        data.append({'title': _('Professional Subscriptions'), 'data': ReportReferral.objects.professionals(range, organization)})
+
+        return data
+
+    def clients(self,  user,  date_start, date_end, view, filter):
+        """
+        return a list of clients from selected report and selected range
+        """
+        
+        """ admissions range """
+        organization = user.get_profile().org_active
+        query = Referral.objects_inrange.all(organization, date_start, date_end)
+        service_pks = [s.pk for s in organization.service_set.all()]
+        professional_pks = [p.pk for p in CareProfessional.objects.from_organization(organization)]
+
+        if view == 'overview':
+
+            if filter == 'total':
+                verbose_name = _('Referral Total')
+
+            if filter == 'charged':
+                query = query.filter(referraldischarge__isnull=True)
+                verbose_name = _('Referral Charged')
+
+            if filter == 'discharged':
+                query = query.filter(referraldischarge__isnull=False)
+                verbose_name = _('Referral Discharged')
+
+            if filter == 'discharged_discussed':
+                query = query.filter(referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True)
+                verbose_name = _('Referral Discharged Discussed')
+
+            if filter == 'internal':
+                query = query.filter(referral__isnull=False)
+                verbose_name = _('Referral Internals')
+
+            if filter == 'external':
+                query = query.filter(referralexternal__isnull=False)
+                verbose_name = _('Referral Externals')
+            
+        if view == 'knowledge':
+            query = query.filter(indication__indication_choice=filter)
+            obj = get_object_or_None(ReferralIndicationChoice, pk=filter)
+            verbose_name = _('Referral Knowledge - %s' % (obj.description))
+            
+        if view == 'services':
+            query = query.filter(service=filter, service__pk__in=service_pks)
+            obj = get_object_or_None(Service, pk=filter, pk__in=service_pks )
+            verbose_name = _(u'Referral Service - %s' % (obj))
+            
+        if view == 'internal':
+            query = query.filter(service=filter, referral__isnull=False, service__pk__in=service_pks)
+            obj = get_object_or_None(Service, pk=filter, pk__in=service_pks )
+            verbose_name = _(u'Referral Internal to Service %s' % (obj))
+            
+        if view == 'internal_from':
+            query = query.filter(referral__service=filter, referral__isnull=False, service__pk__in=service_pks)
+            obj = get_object_or_None(Service, pk=filter, pk__in=service_pks )
+            verbose_name = _(u'Referral Internal from Service %s' % (obj))
+            
+        if view == 'external':
+            query = query.filter(service=filter, referralexternal__isnull=False, service__pk__in=service_pks)
+            obj = get_object_or_None(Service, pk=filter, pk__in=service_pks )
+            verbose_name = _(u'Referral External from Service %s' % (obj))
+        
+        if view == 'discharge':
+            query = query.filter(service=filter, referraldischarge__isnull=False, service__pk__in=service_pks)
+            obj = get_object_or_None(Service, pk=filter, pk__in=service_pks )
+            verbose_name = _(u'Discharges from Service %s' % (obj))
+        
+        if view == 'discharge_discussed':
+            query = query.filter(service=filter, referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True, service__pk__in=service_pks)
+            obj = get_object_or_None(Service, pk=filter, pk__in=service_pks )
+            verbose_name = _(u'Discharges discussed from Service %s' % (obj))
+
+        if view == 'professional':
+            query = query.filter(professional=filter, professional__pk__in=professional_pks)
+            obj = get_object_or_None(CareProfessional, pk=filter, pk__in=professional_pks )
+            verbose_name = _(u'Subscriptions to professional %s' % (obj))
+
+        if query:
+            pk_in = []
+            for i in query:
+                for c in i.client.all():
+                    if c.id not in pk_in:
+                        pk_in.append(c.id)
+
+            return verbose_name,Client.objects.from_user(user, None, pk_in), Client.objects.from_organization(user.get_profile().org_active, query)
+        
+        return verbose_name,[], []
+
+    def clients_all(self, user, date_start, date_end):
+        """
+        return a list of clients from ALL reports
+        used to list clients when exporting data
+        """
+
+        organization = user.get_profile().org_active
+        services = organization.service_set.all()
+        professionals = CareProfessional.objects.from_organization(organization)
+
+        clients_reports = []
+        date_start,date_end = Report().set_date(user, date_start, date_end)
+        clients_reports.append(self.clients(user, date_start, date_end, 'overview', 'charged'))
+        clients_reports.append(self.clients(user, date_start, date_end, 'overview', 'discharged'))
+        clients_reports.append(self.clients(user, date_start, date_end, 'overview', 'discharged_discussed'))
+        clients_reports.append(self.clients(user, date_start, date_end, 'overview', 'internal'))
+        clients_reports.append(self.clients(user, date_start, date_end, 'overview', 'external'))
+        for i in ReferralIndicationChoice.objects.all():
+            clients_reports.append(self.clients(user, date_start, date_end, 'knowledge', i.id))
+        
+        for i in services:
+            clients_reports.append(self.clients(user, date_start, date_end, 'services', i.id))
+        
+        for i in services:
+            clients_reports.append(self.clients(user, date_start, date_end, 'internal', i.id))
+        
+        for i in services:
+            clients_reports.append(self.clients(user, date_start, date_end, 'internal_from', i.id))
+        
+        for i in services:
+            clients_reports.append(self.clients(user, date_start, date_end, 'external', i.id))
+        
+        for i in services:
+            clients_reports.append(self.clients(user, date_start, date_end, 'discharge', i.id))
+
+        for i in services:
+            clients_reports.append(self.clients(user, date_start, date_end, 'discharge_discussed', i.id))
+
+        for i in professionals:
+            clients_reports.append(self.clients(user, date_start, date_end, 'professional', i.id))
         
         return clients_reports
 
@@ -315,6 +699,13 @@ class ReportAdmission(object):
 
     objects = ReportAdmissionManager()
     objects_demographic = ReportDemographicManager()
+    
+
+class ReportReferral(object):
+    class Meta:
+        abstract = True
+
+    objects = ReportReferralManager()
 
 
 #>>> for m in MaritalStatus.objects.all():

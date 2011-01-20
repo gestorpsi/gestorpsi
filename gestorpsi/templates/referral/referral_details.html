@@ -159,59 +159,26 @@ GNU General Public License for more details.
 {% if queues %}
 <div class="main_area home">
 	<h3><span>{% trans "Queue" %}</span></h3>
-    
             {% for a in queues %}
-
-    <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-                <tr class="zebra_{% cycle 0 1 %}">
-                    <td class="title">
-                        <div class="go-next title">{{ a.date_in|date:"d/m/Y" }}</div>
-                        {% if not a.date_out %}
-                            <div style="margin-left:25px;">
-                            <a href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/{{ a.id }}/remove/" title="{{ object.person.name }}">{% trans "Remove from queue" %}</a> 
-                            </div>
-                        {% else %}
-                            <div class="go-previous title">{{ a.date_out|date:"d/m/Y" }}</div>
-                        {% endif %}
-                    </td>
-                    <td><span class="phone">{{ a.get_priority_display }}</span><br />
-                    <span class="email">{{ a.comments }}</span></td>
-                    <td><br />
-                    
-                    </td>
-                </tr>
-    </table>
-
-            {% comment %}
-                    <p>
-                        <b />{% trans "Date in" %}</b>&nbsp;
-                            {{ a.date_in|date:"d/m/Y" }}
-                    </p>
-
-                    <p>
-                        <b />{% trans "Priority" %}</b>&nbsp;
-                        {{ a.get_priority_display }}
-                    </p>
-
-                    <p>
-                        {% if a.comments %}
-                        <b />{% trans "Description" %}</b>&nbsp;
-                            {{ a.comments }}
-                        {% endif %}
-                    </p>
-
-                    <p>
-                        {% if a.date_out %}
-                        <b />{% trans "Date out" %}</b>&nbsp;
-                            {{ a.date_out|date:"d/m/Y" }}
-                        {% endif %}
-                    </p>
-                    <p>
-                    {% if not a.date_out %}
-                      <a href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/{{ a.id }}/remove/" title="{{ object.person.name }}">{% trans "Remove" %}</a> 
-                    {% endif %}
-                    </p>
-            {% endcomment %}
+                <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+                    <tr class="zebra_{% cycle 0 1 %}">
+                        <td class="title">
+                            <div class="go-next title">{{ a.date_in|date:"d/m/Y" }}</div>
+                            {% if not a.date_out %}
+                                <div style="margin-left:25px;">
+                                <a href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/{{ a.id }}/remove/" title="{{ object.person.name }}">{% trans "Remove from queue" %}</a> 
+                                </div>
+                            {% else %}
+                                <div class="go-previous title">{{ a.date_out|date:"d/m/Y" }}</div>
+                            {% endif %}
+                        </td>
+                        <td><span class="phone">{{ a.get_priority_display }}</span><br />
+                        <span class="email">{{ a.comments }}</span></td>
+                        <td><br />
+                        
+                        </td>
+                    </tr>
+                </table>
         {% endfor %}
 </div>
 {% endif %}
@@ -220,10 +187,29 @@ GNU General Public License for more details.
 <div class="main_area home">
 	<h3><span>{% trans "External Referral" %}</span></h3>
             {% for a in referrals %}
-                <label> {{ a.referral }} - {{ a.referral.priority }}
-                <table class="nozebra">
+                <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+                    <tr class="zebra_{% cycle 0 1 %}">
+                        <td class="title">
+                            <div>
+                            <strong>{% trans "From" %}</strong> <a href="/client/{{ object.id }}/referral/{{ referral.id }}/">{{ a.referral }}</a> {% if a.referral.priority %}<b>{{ a.referral.priority }}</b>{% endif %}
+                            <br />
+                            <strong>{% trans "To" %}</strong> <a href="/contact/form/organization/{{ a.organization.id }}/">{{ a.organization }}</a>
+                            {% if a.professional %}(<a href="/contact/form/professional/{{ a.professional.id }}/">{{ a.professional }}</a>){% endif %}
+                            <br /><strong>{% trans "Date" %}</strong> {{ a.date|date:"d/m/Y" }}
+                            
+                            </div>
+                        </td>
+                        <td><br />
+                        <span class="email">{{ a.comments }}</span></td>
+                        <td><br />
+                        
+                        </td>
+                    </tr>
+                </table>
+{% comment %}
+                <tr class="zebra_{% cycle 0 1 %}">
                         <tr>
-                                <td nowrap="nowrap"><span class="date"> {% trans "Date" %} {{ a.date|date:"d-m-Y" }} - {{ a.date_in|date:"P" }}</span></td>
+                                <td nowrap="nowrap"><span class="date">{{ a.date|date:"d/m/Y" }}</span></td>
                         </tr>
                         <tr>
                                 <td><span>{% trans "Comments" %}{{ a.comments }}</span> </td>
@@ -234,9 +220,11 @@ GNU General Public License for more details.
                         <tr>
                                 <td><span>{% trans "Organization" %} {{ a.organization }}</span> </td>
                         </tr>
+                    </tr>
                 </table>
-                </label>
+            {% endcomment %}
         {% endfor %}
+
 </div>
 {% endif %}
 

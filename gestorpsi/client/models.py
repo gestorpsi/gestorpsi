@@ -100,7 +100,7 @@ class ClientManager(models.Manager):
     def deactive(self, organization):
         return super(Client, self).get_query_set().filter(active=False, person__organization = organization).order_by('person__name')
     
-    def from_organization(self, organization, query_pk_in=None):
+    def from_organization(self, organization, pk_in=None):
         
         """
         return clients list from logged organization
@@ -111,8 +111,8 @@ class ClientManager(models.Manager):
         
         query = super(ClientManager, self).get_query_set().filter(person__organization = organization)
 
-        if query_pk_in:
-            query = query.filter(pk__in=[ i.client.id for i in query_pk_in])
+        if pk_in:
+            query = query.filter(pk__in=pk_in)
         query = query.order_by('person__name')
 
         return query

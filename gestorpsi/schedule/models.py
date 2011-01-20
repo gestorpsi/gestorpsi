@@ -46,6 +46,21 @@ class ScheduleOccurrenceManager(models.Manager):
     def not_unmarked(self):
         return super(ScheduleOccurrenceManager, self).get_query_set().exclude(occurrenceconfirmation__presence=4).exclude(occurrenceconfirmation__presence=5)
 
+class ScheduleOccurrenceRangeManager(models.Manager):
+    """
+    this manager has been created as a help
+    to provide data to use in 'report' app
+    """
+    
+    def all(self, organization, datetime_start=None, datetime_end=None):
+        return ScheduleOccurrence.objects.filter(room__place__organization=organization, date__gte=datetime_start, date__lt=datetime_end)
+    
+    def in_place(self, place, datetime_start=None, datetime_end=None):
+        return ScheduleOccurrence.objects.filter(room__place=place, date__gte=datetime_start, date__lt=datetime_end)
+    
+    def in_room(self, room, datetime_start=None, datetime_end=None):
+        return ScheduleOccurrence.objects.filter(room=room, date__gte=datetime_start, date__lt=datetime_end)
+
 class ScheduleOccurrence(Occurrence):
     """
     This class represents a "Scheduled Event". It can optionally relate a room,
@@ -61,6 +76,7 @@ class ScheduleOccurrence(Occurrence):
     is_online = models.BooleanField(default=False)
 
     objects = ScheduleOccurrenceManager()
+    objects_inrange = ScheduleOccurrenceRangeManager()
 
     def is_past(self):
         return True if self.start_time < datetime.now() else False

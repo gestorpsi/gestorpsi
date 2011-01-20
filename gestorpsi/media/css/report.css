@@ -21,7 +21,7 @@ div.report_main { width: 715px; margin: 0 0 10px 20px; float: left; position: re
 * report tables
 */
 
-table.report { width: 330px; margin: 15px 20px 2px 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; border: 2px solid #aaaaaa; padding: 0px 10px 20px 10px; }
+table.report { width: 680px; margin: 15px 20px 2px 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; border: 2px solid #aaaaaa; padding: 0px 10px 20px 10px; }
 table.report tr.title { text-align:left; height: 30px;}
 table.report tr.odd, ul li.odd { background-color: #ececec; }
 table.report tr.legend td { text-align:center; }
@@ -43,7 +43,8 @@ div.loaded_report_title { padding: 0px 0px 0px 15px; color: #444444;}
 * report forms
 */
 
-div.report_main select, div.report_main input { border: 1px solid #ccc; height: 20px; font-size: 13px; -moz-border-radius: 2px; -webkit-border-radius:2px;}
+div.report_main input { border: 1px solid #ccc; height: 20px; font-size: 13px; -moz-border-radius: 2px; -webkit-border-radius:2px;}
+div.report_main select { font-size: 13px; -moz-border-radius: 2px; -webkit-border-radius:2px;}
 div.report_main input#id_date_start, div.report_main input#id_date_end { width: 90px; text-align:center;}
 div.report_filter_nav {color: #999999; padding: 10px;}
 div.report_main button { border: 1px solid #999999; padding: 4px 10px 4px 10px; color: #444444;margin-right: 8px; -moz-border-radius: 15px; -webkit-border-radius:15px; cursor:pointer; }
@@ -63,6 +64,7 @@ div.client_dialog {
         background:  url("/media/img/transp75.png") white;
         z-index: 6;
         margin-left: 120px; 
+        width: 520px;
 }
 
 div.saved_table { width: 645px; margin-left: 15px; margin-top:20px;}
@@ -70,7 +72,7 @@ div.saved_table ul { overflow:auto;  height: 200px; width: 640px; margin-bottom:
 div.saved_table span.tools { float:right;}
 
 div.client_dialog, div.saved_table { padding: 15px 15px 20px 15px;}
-div.client_dialog ul { overflow:auto;  height: 300px; width: 440px; margin-bottom: 20px; }
+div.client_dialog ul { overflow:auto;  height: 500px; width: 510px; margin-bottom: 20px; }
 div.client_dialog h1, div.saved_table h1 { font-size: 15px;float:left; padding-bottom:0px; padding-right: 10px;}
 div.client_dialog ul li, div.saved_table ul li { margin-right: 10px; padding: 5px 3px 5px 13px; }
 div.client_dialog .close_dialog, div.saved_table .close_dialog {float:right; }
@@ -78,6 +80,8 @@ div.client_dialog .date_range { font-size: 11px; color: #666666; text-align:left
 div.client_dialog small, div.saved_table small { color: #666;}
 
 .saved_successfully {text-align:center;}
+
+div#chart_type { text-align:right; margin-right:25px;}
 
 /**
 * utils

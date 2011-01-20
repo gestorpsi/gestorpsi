@@ -14,7 +14,23 @@ GNU General Public License for more details.
 
 */
 
-function updateAdmissionChart(json) {
+var json_data = [];
+
+/**
+ * a little helper to read chart type choices
+ * then convert it to a url string parameter
+ */
+
+function chart_type_to_url() {
+    url = '';
+    $('input[type=radio][name=chart_type]').each(function() {
+        url += '&' + $(this).val() + '='  + $(this).attr('checked');
+    });
+    return url;
+}
+
+
+function updateChart(json, force_type) {
 
     /**
      * update chart
@@ -26,46 +42,61 @@ function updateAdmissionChart(json) {
     if(!json) {
         $('#report_chart').hide();
     } else {
-    
-    for (var i in json) {
-        i = parseInt(i);
-        var plot_ticks = new Array();
-        var plot_data = new Array();
 
-        for (var col in json[i]['data']) {
-            col = parseInt(col);
-            axis_x = json[i]['data'][col][0];
-            axis_y = json[i]['data'][col][1];
-            plot_ticks.push([col+0.5, axis_x]);
-            plot_data.push([col, axis_y]);
+        /**
+         * chart type fetch by json, or forced by jquery without request
+         */
+
+        lines_show = false;
+        bars_show = false;
+        points_show = false;
+        
+        if (!force_type) {
+            if(json[0]['type']['lines'] == 'true') lines_show = true;
+            if(json[0]['type']['bars'] == 'true') bars_show = true;
+            if(json[0]['type']['points'] == 'true') points_show = true;
+        } else {
+            if(force_type['lines']) lines_show = true;
+            if(force_type['bars']) bars_show = true;
+            if(force_type['points']) points_show = true;
         }
         
-        
-        lines_show = (json[i]['lines'])?true:false;
-        bars_show = (json[i]['bars'])?true:false;
-        points_show = (json[i]['points'])?true:false;
+        for (var i in json) {
+            i = parseInt(i);
+            var plot_ticks = new Array();
+            var plot_data = new Array();
 
-        graphs[i] = {
-                     label: json[i]['title'], 
-                     data: plot_data,
-                     lines: { 'show': lines_show },
-                     bars: { 'show': bars_show },
-                     points: { 'show': points_show }
-        };
-    }
+            for (var col in json[i]['data']) {
+                col = parseInt(col);
+                axis_x = json[i]['data'][col][0];
+                axis_y = json[i]['data'][col][1];
+                if(bars_show)
+                    plot_ticks.push([col+0.5, axis_x]);
+                else
+                    plot_ticks.push([col, axis_x]);
+                plot_data.push([col, axis_y]);
+            }
 
-    $.plot($("#report_chart"),
-        graphs, 
-        { 
-             xaxis: { 
-               ticks: plot_ticks 
-            } 
-         } 
-     );
-        $('#report_chart').show();
+            graphs[i] = {
+                 label: json[i]['title'], 
+                 data: plot_data,
+                 lines: { 'show': lines_show },
+                 bars: { 'show': bars_show },
+                 points: { 'show': points_show }
+            };
+        }
+
+        $.plot($("#report_chart"),
+            graphs, 
+            { 
+                 xaxis: { 
+                   ticks: plot_ticks 
+                } 
+             } 
+         );
+            $('#report_chart').show();
     }
 }
-
 
 function updateAdmission(data) {
 
@@ -74,20 +105,27 @@ function updateAdmission(data) {
      */
 
     if(!data) data = '';
+    
+    /**
+     * append chart types view to url
+     */
+
+    data += chart_type_to_url();
 
     /**
      * updated chart
      */
 
     $.getJSON('/report/admission/chart/?' + data, function(json) { 
-        updateAdmissionChart(json);
+        updateChart(json);
+        json_data = json; // save json callback in a global variable
     });
 
     /**
      * update admission data
      */
 
-    $('div#admission_table').load('/report/admission/?'+data);
+    $('div#report_table').load('/report/admission/?'+data);
 
     /**
      * update demographic data
@@ -101,6 +139,58 @@ function updateAdmission(data) {
      */
 
     $('div#save_form').load('/report/admission/save/?'+data)
+    
+    /**
+     * get date then update form fields
+     */
+    
+    $.getJSON('/report/date/?'+data, function(json) {
+        $('.report_main [name=date_start]').val(json['date_start']);
+        $('.report_main [name=date_end]').val(json['date_end']);
+    });
+}
+
+function updateReferral(data) {
+
+    /**
+     * update all admission data
+     */
+
+    if(!data) data = '';
+    
+    /**
+     * append chart types view to url
+     */
+
+    data += chart_type_to_url();
+
+    /**
+     * updated chart
+     */
+
+    $.getJSON('/report/referral/chart/?' + data, function(json) { 
+        updateChart(json);
+        json_data = json; // save json callback in a global variable
+    });
+
+    /**
+     * update admission data
+     */
+
+    $('div#report_table').load('/report/referral/?'+data);
+
+    /**
+     * update demographic data
+     */
+    
+    //$('div#admission_demographic_data').load('/report/admission/demographic/?'+data);
+        
+
+    /**
+     * update save form
+     */
+
+    $('div#save_form').load('/report/referral/save/?'+data)
     
     /**
      * get date then update form fields

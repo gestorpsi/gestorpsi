@@ -46,8 +46,7 @@ a { color: black; text-decoration:none;}
 
 table.report {
      border: 0px;
-    width: 40%;
-    float: left;
+    width: 680px;
     margin: 30px 20px 20px 20px;
 }
 
@@ -110,7 +109,7 @@ table {
 <link rel="stylesheet" type="text/css" href="/media/css/report.css" media="print"/>
 -->
 
-<title>{% trans "Admission Report" %}</title></head>
+<title>{{ title }}</title></head>
 <body>
 <table width="100%">
     <tr>
@@ -131,7 +130,7 @@ table {
             {% if org_active.phones.all %} {{ org_active.phones.all|join:", "}} {% endif %}<br>
         </td>
         <td style="text-align:right;font-size: 12px;">
-                <b>{% trans "Admission Report" %}</b><br>
+                <b>{{ title }} {% trans "Report" %}</b><br>
         {% trans "generated at" %} {% now "d/m/Y H:i" %} hs<br>
         {% trans "by " %} {{ user.get_profile.person.name }}<br>
         </td>
@@ -142,26 +141,26 @@ table {
 
 <br>
 
-<h2>{% trans "Organization Admissions between" %} {{ date_start|date:"d/m/Y" }} {% trans "and" %} {{ date_end|date:"d/m/Y" }}</h2>
+<h2>{{ title }} {% trans "between" %} {{ date_start|date:"d/m/Y" }} {% trans "and" %} {{ date_end|date:"d/m/Y" }}</h2>
 
 <!-- chart -->
 <div id="report_chart" style="width:700px;height:300px;">
 </div>
 <script>
 $(function() {
-    $.getJSON('/report/admission/chart/?date_start={{ date_start|date:"d/m/Y" }}&date_end={{ date_end|date:"d/m/Y" }}', function(json) {
-        updateAdmissionChart(json);
+    $.getJSON('/report/{{ view }}/chart/?date_start={{ date_start|date:"d/m/Y" }}&date_end={{ date_end|date:"d/m/Y" }}&{{ export_graph_type }}=true', function(json) {
+        updateChart(json);
     });
 });
 </script>
 
-{% include "report/report_admission_table.html" %}
+{% include "report/report_table.html" %}
 
 <div style="clear:both"></div>
 
-{% if report_admission_clients %}
+{% if report_clients %}
     <h2>{% trans "List of clients between" %} {{ date_start|date:"d/m/Y" }} {% trans "and" %} {{ date_end|date:"d/m/Y" }}</h2>
-    {% for i in report_admission_clients %}
+    {% for i in report_clients %}
         <table class="report">
         {% with i.0 as report_title %}
             <tr class="title"><th>{{ report_title }}</th></tr>

@@ -18,7 +18,7 @@ GNU General Public License for more details.
 
 <!-- dialog -->
 <div class="client_dialog dialog">
-    <h1 class="pointer">{{ verbose_name }}</h1><a class="close_dialog">x</a>
+    <h1 class="pointer">{{ verbose_name }}</h1<a class="close_dialog">x</a>
     <div style="clear:both;"></div>
     <div class="date_range">{% trans "Client list between" %} {{ date_start|date:"d/m/Y" }} {% trans "and" %} {{ date_end|date:"d/m/Y" }}*</div>
     <ul id="client_dialog" class="">
@@ -28,6 +28,8 @@ GNU General Public License for more details.
     </ul>
     <small>{% trans "Total" %} {{ object_list|length }}</small>
     {% if not_diplay_count %}<br /><br />
-    <small>*{{ not_diplay_count }} {% trans "client names will not displayed due to access privacy restrictions"%}</small>
+    
+    <small>* {% trans "Some customers will not be listed due to restriction permissions."%}</small><br />
+    <small>** {% trans "Customers in more than one referral will be listed only one time."%}</small>
     {% endif %}
 </div>

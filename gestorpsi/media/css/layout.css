@@ -16,7 +16,7 @@ GNU General Public License for more details.
 */
 
 * {
-        margin: 0; padding: 0; border: 0; letter-spacing: inherit;
+        margin: 0; padding: 0;  letter-spacing: inherit;
 }
 
 body {
@@ -24,6 +24,7 @@ body {
         font-size: 12px;
         min-width: 1000px;
 }
+img { border:0px;}
 a, a:visited {
         text-decoration: none;
         color: #2688AE;
@@ -704,7 +705,7 @@ textarea.extrabig {
 }
 
 select {
-        height: 32px;
+padding: 3px 7px 3px 3px;
         font-size:16px;
 }
 select.small {
@@ -736,11 +737,6 @@ select.multiple.small {
 
 select.state {
         width: 55px;
-}
-
-select:focus {
-        background: #fff6d5;
-        border: 2px solid #2688ae;
 }
 
 select.high {

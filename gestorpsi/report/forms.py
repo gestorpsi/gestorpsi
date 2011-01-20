@@ -24,6 +24,12 @@ EXPORT_FORMATS = (
     (2, 'PDF'),
 )
 
+GRAPH_TYPE = (
+    ('lines', 'Lines'),
+    ('bars', 'Bars'),
+    ('points', 'Points'),
+)
+
 class ReportForm(forms.ModelForm):
     """
     form used to filter results
@@ -33,6 +39,7 @@ class ReportForm(forms.ModelForm):
     date_end = forms.CharField()
     format = forms.ChoiceField(label=_('Export format'), choices=EXPORT_FORMATS, help_text=_('Here you can choose which format you want to export the data. For printing graphics please use HTML format'))
     clients = forms.BooleanField(label=_('Include client list'), help_text=_('If selected will a list of clients for each report sub-item'))
+    export_graph_type = forms.ChoiceField(label=_('Graph Type format'), choices=GRAPH_TYPE, help_text=_('Here you can choose which type of graph you need. Note: only for HTML format'))
 
     class Meta:
         model = Report
@@ -74,6 +81,27 @@ class ReportSaveAdmissionForm(ReportSaveForm):
     def save(self, user, organization, *args, **kwargs):
         data = super(ReportSaveAdmissionForm, self).save(commit=False, *args, **kwargs)
         data.view = 1 # admission
+        data.user = user
+        data.organization = organization
+        data.save()
+        return data
+
+class ReportSaveReferralForm(ReportSaveForm):
+    """
+    admission form save report view
+    'save reports' function
+    """
+    def __init__(self, *args, **kwargs):
+        date_start = kwargs.pop('date_start', None)
+        date_end = kwargs.pop('date_end', None)
+        super(ReportSaveReferralForm, self).__init__(*args, **kwargs)
+        if date_start and date_end:
+            self.fields['label'].initial = '%s %s %s %s' % (_('Referrals between'), date_start.strftime("%d/%m/%Y"),  _('and'), date_end.strftime("%d/%m/%Y"))
+            self.fields['data'].initial = 'view=referral&date_start=%s&date_end=%s'% (date_start.strftime("%d/%m/%Y"), date_end.strftime("%d/%m/%Y"))
+
+    def save(self, user, organization, *args, **kwargs):
+        data = super(ReportSaveReferralForm, self).save(commit=False, *args, **kwargs)
+        data.view = 2 # referral
         data.user = user
         data.organization = organization
         data.save()

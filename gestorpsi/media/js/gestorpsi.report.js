@@ -28,6 +28,20 @@ $(function() {
 
     updateSavedReports();
     
+    /**
+     * chart type changing
+     * update chart image
+     */
+    
+
+    $('input[type=radio][name=chart_type]').click(function() {
+        types = []
+        $('input[type=radio][name=chart_type]').each(function() {
+            types[$(this).val()] = $(this).attr('checked');
+        });
+        updateChart(json_data, types);
+       
+    });
 
     /**
      * bind any click to hide message are if exists
@@ -87,7 +101,8 @@ $(function() {
         
         var data = 'date_start=' + date_start + '&date_end=' + date_end;
         
-        updateAdmission(data);
+        if($('#report_filter [name = view]').val() == 1) updateAdmission(data);
+        if($('#report_filter [name = view]').val() == 2) updateReferral(data);
 
         return false;
     }); 
@@ -127,7 +142,7 @@ $(function() {
      * load admission saved report
      */
     
-    $('.saved_table a.report_load_admission').live('click', function() {
+    $('.saved_table a.report_load').live('click', function() {
 
         /**
          * select dashboard tab
@@ -145,8 +160,16 @@ $(function() {
         /**
          * update admission
          */
-                    
-        updateAdmission($(this).attr('data'));
+        
+        if($(this).attr('view')==1) { // admission
+            updateAdmission($(this).attr('data'));
+            $('form#report_filter select[name=view]').val('1');
+        }
+
+        if($(this).attr('view')==2) { // referral
+            updateReferral($(this).attr('data'));
+            $('form#report_filter select[name=view]').val('2');
+        }
         
         return false;
     });

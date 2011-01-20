@@ -17,6 +17,7 @@ GNU General Public License for more details.
 from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
+from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.shortcuts import get_object_or_404
@@ -24,7 +25,8 @@ from django.template.defaultfilters import slugify
 from django.utils import simplejson
 from gestorpsi.admission.models import AdmissionReferral
 from gestorpsi.report.forms import ReportForm, ReportSaveAdmissionForm
-from gestorpsi.report.models import ReportAdmission, ReportsSaved, Report
+from gestorpsi.report.models import ReportAdmission, ReportsSaved, Report, ReportReferral
+from gestorpsi.referral.models import Referral
 from gestorpsi.settings import MEDIA_URL, MEDIA_ROOT
 from gestorpsi.util.views import write_pdf
 from gestorpsi.util.decorators import permission_required_with_403
@@ -61,24 +63,41 @@ def chart(request, view='admission'):
     if 'admission' in view:
         range = AdmissionReferral.objects_inrange.all(organization, date_start, date_end)
         if range:
-            chart_json = ReportAdmission.objects.chart(range, date_start, date_end)
+            chart_json = ReportAdmission.objects.chart(range, date_start, date_end, request.GET.get('lines'), request.GET.get('bars'), request.GET.get('points'))
+    
+            return HttpResponse(chart_json)
+
+    if 'referral' in view:
+        range = Referral.objects_inrange.all(organization, date_start, date_end)
+        if range:
+            chart_json = ReportReferral.objects.chart(range, date_start, date_end, request.GET.get('lines'), request.GET.get('bars'), request.GET.get('points'))
     
             return HttpResponse(chart_json)
     
     return HttpResponse()
 
 @permission_required_with_403('report.report_list')
-def admission_data(request):
+def admission_data(request, template='report/report_table.html'):
     """
     load admission dashboard reports
     """
     
-    admission,date_start,date_end = Report().get_admissions_range(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'))
+    data,date_start,date_end = Report().get_admissions_range(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'))
 
-    return render_to_response('report/report_admission_table.html', locals(), context_instance=RequestContext(request))
+    return render_to_response(template, locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('report.report_list')
-def admission_client_report(request, view, filter):
+def referral_data(request, template='report/report_table.html'):
+    """
+    load admission dashboard reports
+    """
+    
+    data,date_start,date_end = Report().get_referral_range(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'))
+
+    return render_to_response(template, locals(), context_instance=RequestContext(request))
+
+@permission_required_with_403('report.report_list')
+def report_client_list(request, report_class, view, filter):
     """
     fetch client list from selected admission report
     """
@@ -87,7 +106,7 @@ def admission_client_report(request, view, filter):
     report = Report()
     date_start,date_end = report.set_date(organization, request.GET.get('date_start'), request.GET.get('date_end'))
 
-    verbose_name, object_list, organization_total = ReportAdmission.objects.clients(request.user, date_start, date_end, view, filter)
+    verbose_name, object_list, organization_total = report_class.objects.clients(request.user, date_start, date_end, view, filter)
 
     not_diplay_count = int(len(organization_total))-int(len(object_list))
 
@@ -107,7 +126,7 @@ def demographic_data(request, view='admission'):
     return render_to_response('report/report_demographic_table.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('report.report_write')
-def report_save(request, form_class=ReportSaveAdmissionForm, view='admission', template='report/report_admission_save.html'):
+def report_save(request, form_class=ReportSaveAdmissionForm, view='admission', template='report/report_save_form.html'):
     """
     save new report
     """
@@ -124,6 +143,8 @@ def report_save(request, form_class=ReportSaveAdmissionForm, view='admission', t
     date_start,date_end = report.set_date(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'))
     form = form_class(date_start=date_start, date_end=date_end)
     
+    url_post = reverse('report_%s_save' % view) # url to post form
+    
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('report.report_write')
@@ -132,8 +153,9 @@ def reports_saved(request, view='admission'):
     list saved reports
     """
     organization = request.user.get_profile().org_active
-    admissions = ReportsSaved.objects.admission(request.user, organization)
-    referrals = ReportsSaved.objects.referral(request.user, organization)
+    #admissions = ReportsSaved.objects.admission(request.user, organization)
+    #referrals = ReportsSaved.objects.referral(request.user, organization)
+    reports = ReportsSaved.objects.from_user(request.user, organization)
     trash = ReportsSaved.objects.trash(request.user, organization)
     
     return render_to_response('report/report_saved.html', locals(), context_instance=RequestContext(request))
@@ -158,7 +180,7 @@ def report_empty(request):
     return HttpResponse(True)
 
 @permission_required_with_403('report.report_list')
-def admission_export(request):
+def report_export(request):
     """
     export admission data in html or pdf
     """
@@ -167,17 +189,31 @@ def admission_export(request):
         org_active = request.user.get_profile().org_active
         
         # admission statistcs data
-        admission,date_start,date_end = Report().get_admissions_range(org_active, request.POST.get('date_start'), request.POST.get('date_end'))
+        if request.POST.get('view') == '1': # admission
+            title = _('Admission Report')
+            view = 'admission'
+            data = Report().get_admissions_range(org_active, request.POST.get('date_start'), request.POST.get('date_end'))
 
-        # list of clients in admissions stats
-        if request.POST.get('clients'):
-            report_admission_clients = ReportAdmission.objects.clients_all(request.user, request.POST.get('date_start'), request.POST.get('date_end'))
+            if request.POST.get('clients'):
+                report_clients = ReportAdmission.objects.clients_all(request.user, request.POST.get('date_start'), request.POST.get('date_end'))
+
+        if request.POST.get('view') == '2': # referral
+            title = _('Referral Report')
+            view = 'referral'
+            data = Report().get_referral_range(org_active, request.POST.get('date_start'), request.POST.get('date_end'))
+
+            if request.POST.get('clients'):
+                report_clients = ReportReferral.objects.clients_all(request.user, request.POST.get('date_start'), request.POST.get('date_end'))
         
+        data,date_start,date_end = data
+
         IMG_PREFIX = '/media/' if int(request.POST.get('format')) == 1 else MEDIA_ROOT.replace('\\','/') + '/' # this a path bug fix. format == 1 (html)
 
         if int(request.POST.get('format')) == 2: # pdf print
             user = request.user
-            return write_pdf('report/report_admission_export.html', locals(), '%s.pdf' % slugify(_('admission-report')))
+            return write_pdf('report/report_export.html', locals(), ('%s-%s-%s-%s-%s.pdf' % (view, slugify(_('report-between')), request.POST.get('date_start').replace('/','-'), _('and'), request.POST.get('date_end').replace('/','-'))))
 
         remove_links = True
-        return render_to_response('report/report_admission_export.html', locals(), context_instance=RequestContext(request))
+        export_graph_type = request.POST.get('export_graph_type')
+        return render_to_response('report/report_export.html', locals(), context_instance=RequestContext(request))
+

@@ -113,6 +113,15 @@ class ReferralAttach(models.Model):
     def __unicode__(self):
         return u'%s' % (self.file)
 
+class ReferralInRangeManager(models.Manager):
+    """
+    this manager has been created as a help
+    to provide data to use in 'report' app
+    """
+    
+    def all(self, organization, datetime_start=None, datetime_end=None):
+        return Referral.objects.filter(service__organization=organization, date__gte=datetime_start, date__lt=datetime_end)
+
 class Referral(Event):
     #id = UuidField(primary_key=True)
     seq = models.IntegerField(null=True, blank=True, max_length=5, default=0)
@@ -130,6 +139,7 @@ class Referral(Event):
     status = models.CharField(max_length=2, blank=True, null=True, choices=REFERRAL_STATUS)
 
     objects = ReferralManager()
+    objects_inrange = ReferralInRangeManager()
 
     def __init__(self, *args, **kwargs):
         super(Referral, self).__init__(*args, **kwargs)
@@ -143,6 +153,13 @@ class Referral(Event):
         if is_new:
             self.seq = int(Referral.objects.filter(organization=self.organization).latest('seq').seq)+1
             self.save()
+    
+    def created_revision(self):
+        return self.revision_created().date_created
+
+    def _created(self):
+        return self.date
+    created = property(_created)
 
     def add_occurrences(self, start_time, end_time, room, device, annotation, is_online, disable_check_busy = False, **rrule_params):
         rrule_params.setdefault('freq', rrule.DAILY)
@@ -399,3 +416,9 @@ class ReferralExternal(models.Model):
     referral = models.ForeignKey('Referral')
     organization = models.ForeignKey(Organization, null=True)
     professional = models.ForeignKey(CareProfessional, null=True)
+    
+    def __unicode__(self):
+        if self.professional:
+            return u'%s - %s (%s)' % (self.date.strftime('%d/%m/%Y'), self.organization, self.professional)
+
+        return u'%s - %s' % (self.date.strftime('%d/%m/%Y'), self.organization)

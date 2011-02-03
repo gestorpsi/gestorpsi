@@ -197,6 +197,9 @@ PAGE_RESULTS = 8
 
 SWINGTIME_SETTINGS_MODULE = 'gestorpsi.schedule.settings'
 
+# a workaround to exclude referrals discharged reason == canceled to use in referral reports
+REFERRAL_DISCHARGE_REASON_CANCELED = 20
+
 # registration
 ACCOUNT_ACTIVATION_DAYS=7
 EMAIL_HOST=''

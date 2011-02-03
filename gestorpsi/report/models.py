@@ -33,6 +33,7 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, Indication as ReferralIndication, IndicationChoice as ReferralIndicationChoice, ReferralDischargeReason
 from gestorpsi.util.views import percentage
+from gestorpsi.settings import REFERRAL_DISCHARGE_REASON_CANCELED
 
 
 VIEWS_CHOICES = (
@@ -396,12 +397,12 @@ class ReportReferralManager(models.Manager):
 
         tosort = []
         for i in services: # order reverse
-            tosort.append((i.pk, range.filter(service=i).count()))
+            tosort.append((i.pk, range.filter(service=i).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()))
 
         ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
 
         for id,total in ids_ordered:
-            count = range.filter(service__pk=id).count()
+            count = range.filter(service__pk=id).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()
             
             if count:
                 data.append({'name': services.get(pk=id), 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_services', args=[id]), })
@@ -416,17 +417,17 @@ class ReportReferralManager(models.Manager):
         tosort = []
         for i in services: # order reverse
             if not from_service:
-                tosort.append((i.pk, range.filter(service=i, referral__isnull=False).count()))
+                tosort.append((i.pk, range.filter(service=i, referral__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()))
             else:
-                tosort.append((i.pk, range.filter(referral__service=i, referral__isnull=False).count()))
+                tosort.append((i.pk, range.filter(referral__service=i, referral__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()))
 
         ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
 
         for id,total in ids_ordered:
             if not from_service:
-                count = range.filter(service__pk=id, referral__isnull=False).count()
+                count = range.filter(service__pk=id, referral__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()
             else:
-                count = range.filter(referral__service__pk=id, referral__isnull=False).count()
+                count = range.filter(referral__service__pk=id, referral__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()
             
             if count:
                 url = 'referral_client_internal' if not from_service else 'referral_client_internal_from'
@@ -441,12 +442,12 @@ class ReportReferralManager(models.Manager):
 
         tosort = []
         for i in services: # order reverse
-            tosort.append((i.pk, range.filter(service=i, referralexternal__isnull=False).count()))
+            tosort.append((i.pk, range.filter(service=i, referralexternal__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()))
 
         ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
 
         for id,total in ids_ordered:
-            count = range.filter(service__pk=id, referralexternal__isnull=False).count()
+            count = range.filter(service__pk=id, referralexternal__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()
             
             if count:
                 data.append({'name': services.get(pk=id), 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_external', args=[id]), })
@@ -461,9 +462,9 @@ class ReportReferralManager(models.Manager):
         tosort = []
         for i in services: # order reverse
             if not discussed_with_client:
-                qs = range.filter(service=i, referraldischarge__isnull=False)
+                qs = range.filter(service=i, referraldischarge__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED)
             else:
-                qs = range.filter(service=i, referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True)
+                qs = range.filter(service=i, referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED)
             
             tosort.append((i.pk, qs.count()))
 
@@ -471,9 +472,9 @@ class ReportReferralManager(models.Manager):
 
         for id,total in ids_ordered:
             if not discussed_with_client:
-                count = range.filter(service__pk=id, referraldischarge__isnull=False).count()
+                count = range.filter(service__pk=id, referraldischarge__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()
             else:
-                count = range.filter(service__pk=id, referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True).count()
+                count = range.filter(service__pk=id, referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()
             
             if count:
                 url = 'referral_client_discharge' if not discussed_with_client else 'referral_client_discharge_discussed'
@@ -510,12 +511,12 @@ class ReportReferralManager(models.Manager):
 
         tosort = []
         for i in list: # order reverse
-            tosort.append((i.pk, range.filter(professional=i).count()))
+            tosort.append((i.pk, range.filter(professional=i).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()))
 
         ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
 
         for id,total in ids_ordered:
-            count = range.filter(professional=id).count()
+            count = range.filter(professional=id).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()
             
             if count:
                 data.append({'name': list.get(pk=id), 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_professional', args=[id]), })

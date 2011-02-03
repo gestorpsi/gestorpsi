@@ -31,7 +31,7 @@ from gestorpsi.client.models import Client
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.organization.models import Organization
 from gestorpsi.service.models import Service
-from gestorpsi.referral.models import Referral, Indication as ReferralIndication, IndicationChoice as ReferralIndicationChoice
+from gestorpsi.referral.models import Referral, Indication as ReferralIndication, IndicationChoice as ReferralIndicationChoice, ReferralDischargeReason
 from gestorpsi.util.views import percentage
 
 
@@ -481,6 +481,28 @@ class ReportReferralManager(models.Manager):
         
         return data
 
+    def service_discharge_reason(self, range):
+        
+        """
+        return a list of reason discharges with a total of occurrences
+        """
+
+        qknowledge = ReferralDischargeReason.objects.filter(id__gt = 0)
+        data = []
+
+        tosort = []
+        for i in qknowledge: # order reverse
+            tosort.append((i.pk, range.filter(referraldischarge__reason=i).count()))
+
+        ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
+
+        for id,total in ids_ordered:
+            count = range.filter(referraldischarge__reason=id).count()
+            if count:
+                data.append({'name': ReferralDischargeReason.objects.get(pk=id).name, 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_discharge_reason', args=[id]), })
+        
+        return data
+
     def professionals(self, range, organization, from_professional=None):
 
         list = CareProfessional.objects.from_organization(organization)
@@ -513,6 +535,7 @@ class ReportReferralManager(models.Manager):
         data.append({'title': _('Internal Referrals from Services'), 'data': ReportReferral.objects.referral_internal(range, organization, True)})
         data.append({'title': _('Externals Referrals from Services'), 'data': ReportReferral.objects.referral_external(range, organization)})
         data.append({'title': _('Discharges from Services'), 'data': ReportReferral.objects.service_discharges(range, organization)})
+        data.append({'title': _('Discharges Reason'), 'data': ReportReferral.objects.service_discharge_reason(range)})
         data.append({'title': _('Discharges Discussed with Client'), 'data': ReportReferral.objects.service_discharges(range, organization, True)})
         data.append({'title': _('Professional Subscriptions'), 'data': ReportReferral.objects.professionals(range, organization)})
 
@@ -538,6 +561,10 @@ class ReportReferralManager(models.Manager):
                 query = query.filter(referraldischarge__isnull=True)
                 verbose_name = _('Referral Charged')
 
+            if filter == 'discharged':
+                query = query.filter(referraldischarge__isnull=False)
+                verbose_name = _('Referral Discharged')
+            
             if filter == 'discharged':
                 query = query.filter(referraldischarge__isnull=False)
                 verbose_name = _('Referral Discharged')
@@ -583,6 +610,11 @@ class ReportReferralManager(models.Manager):
             query = query.filter(service=filter, referraldischarge__isnull=False, service__pk__in=service_pks)
             obj = get_object_or_None(Service, pk=filter, pk__in=service_pks )
             verbose_name = _(u'Discharges from Service %s' % (obj))
+        
+        if view == 'discharge_reason':
+            query = query.filter(referraldischarge__isnull=False, referraldischarge__reason=filter)
+            obj = get_object_or_None(ReferralDischargeReason, pk=filter)
+            verbose_name = _(u'Discharged by reason %s' % (obj))
         
         if view == 'discharge_discussed':
             query = query.filter(service=filter, referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True, service__pk__in=service_pks)

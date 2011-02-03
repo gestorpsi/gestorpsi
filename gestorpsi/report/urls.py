@@ -64,6 +64,7 @@ urlpatterns = patterns('',
     url(r'^referral/client/internal_from/(?P<filter>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(report_client_list), {'report_class': ReportReferral, 'view':'internal_from', }, name='referral_client_internal_from'),
     url(r'^referral/client/external/(?P<filter>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(report_client_list), {'report_class': ReportReferral, 'view':'external', }, name='referral_client_external'),
     url(r'^referral/client/discharge/(?P<filter>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(report_client_list), {'report_class': ReportReferral, 'view':'discharge', }, name='referral_client_discharge'),
+    url(r'^referral/client/discharge_reason/(?P<filter>[0-9]*)/$', login_check(report_client_list), {'report_class': ReportReferral, 'view':'discharge_reason', }, name='referral_client_discharge_reason'),
     url(r'^referral/client/discharge_discussed/(?P<filter>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(report_client_list), {'report_class': ReportReferral, 'view':'discharge_discussed', }, name='referral_client_discharge_discussed'),
     url(r'^referral/client/professional/(?P<filter>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(report_client_list), {'report_class': ReportReferral, 'view':'professional', }, name='referral_client_professional'),
 

@@ -738,14 +738,12 @@ def order(request, object_id = ''):
     url = '/client/%s/home/'
 
     if not object.is_active():
-        object.clientStatus = "1"
         request.user.message_set.create(message=_('User activated successfully'))
-        object.save(force_update=True)
+        object.set_active()
     else:
         if Referral.objects.charged().filter(client = object).count() == 0:
-            object.clientStatus  = "0"
+            object.set_deactive()
             request.user.message_set.create(message=_('User deactivated successfully'))
-            object.save(force_update=True)
         else:
             request.user.message_set.create(message=_('Sorry, you can not deactivate a client with registered referral'))
             url += '?clss=error'

@@ -279,6 +279,15 @@ class Client(models.Model):
             queryset.filter(start_time__gte = start_time, end_time__lte = end_time) \
             else False
 
+    def set_active(self):
+        self.clientStatus = '1'
+        self.save()
+
+    def set_deactive(self):
+        self.clientStatus = '0'
+        self.save()
+
+
 reversion.register(Client, follow=['person', ])
 reversion.register(Family)
 

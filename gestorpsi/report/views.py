@@ -27,6 +27,7 @@ from gestorpsi.admission.models import AdmissionReferral
 from gestorpsi.report.forms import ReportForm, ReportSaveAdmissionForm
 from gestorpsi.report.models import ReportAdmission, ReportsSaved, Report, ReportReferral
 from gestorpsi.referral.models import Referral
+from gestorpsi.service.models import Service
 from gestorpsi.settings import MEDIA_URL, MEDIA_ROOT
 from gestorpsi.util.views import write_pdf
 from gestorpsi.util.decorators import permission_required_with_403
@@ -37,7 +38,7 @@ def index(request):
     display initial templates
     """
 
-    form = ReportForm(request.user.get_profile().org_active.created(), datetime.now())
+    form = ReportForm(request.user.get_profile().org_active.created(), datetime.now(), request.user.get_profile().org_active)
     
     """
     pass filter itens in right bar
@@ -89,10 +90,10 @@ def admission_data(request, template='report/report_table.html'):
 @permission_required_with_403('report.report_list')
 def referral_data(request, template='report/report_table.html'):
     """
-    load admission dashboard reports
+    load referral dashboard reports
     """
     
-    data,date_start,date_end = Report().get_referral_range(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'))
+    data,date_start,date_end,service = Report().get_referral_range(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('service'))
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 
@@ -106,7 +107,7 @@ def report_client_list(request, report_class, view, filter):
     report = Report()
     date_start,date_end = report.set_date(organization, request.GET.get('date_start'), request.GET.get('date_end'))
 
-    verbose_name, object_list, organization_total = report_class.objects.clients(request.user, date_start, date_end, view, filter)
+    verbose_name, object_list, organization_total = report_class.objects.clients(request.user, date_start, date_end, view, filter, request.GET.get('service'))
 
     not_diplay_count = int(len(organization_total))-int(len(object_list))
 
@@ -141,7 +142,7 @@ def report_save(request, form_class=ReportSaveAdmissionForm, view='admission', t
 
     report = Report()
     date_start,date_end = report.set_date(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'))
-    form = form_class(date_start=date_start, date_end=date_end)
+    form = form_class(date_start=date_start, date_end=date_end, service=Service.objects.get(organization = request.user.get_profile().org_active, pk=request.GET.get('service')) if request.GET.get('service') else None)
     
     url_post = reverse('report_%s_save' % view) # url to post form
     
@@ -199,13 +200,15 @@ def report_export(request):
 
         if request.POST.get('view') == '2': # referral
             title = _('Referral Report')
+            if request.POST.get('service'):
+                sub_title = u'%s %s' % (_('Service'), Service.objects.get(organization=request.user.get_profile().org_active, pk=request.POST.get('service')))
             view = 'referral'
-            data = Report().get_referral_range(org_active, request.POST.get('date_start'), request.POST.get('date_end'))
+            data = Report().get_referral_range(org_active, request.POST.get('date_start'), request.POST.get('date_end'), request.POST.get('service'))
 
             if request.POST.get('clients'):
                 report_clients = ReportReferral.objects.clients_all(request.user, request.POST.get('date_start'), request.POST.get('date_end'))
         
-        data,date_start,date_end = data
+        data,date_start,date_end, service = data
 
         IMG_PREFIX = '/media/' if int(request.POST.get('format')) == 1 else MEDIA_ROOT.replace('\\','/') + '/' # this a path bug fix. format == 1 (html)
 

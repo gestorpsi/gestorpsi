@@ -27,7 +27,19 @@ $(function() {
      */
 
     updateSavedReports();
+
+    /**
+     * hide/display subscription report filter
+     */
     
+    $('#report_filter select[name=view]').change(function() {
+        if($(this).val()==2) {
+            $('div.subscription_filter').fadeIn();
+        } else {
+            $('div.subscription_filter').hide();
+        }
+    });
+
     /**
      * chart type changing
      * update chart image
@@ -95,14 +107,17 @@ $(function() {
     $('#report_filter [name=update]').click(function() {
         $('div.loaded_report_title').hide();
         
-        var form = $(this).parents('form:first');
-        var date_start =form.children('[name=date_start]').val();
-        var date_end =form.children('[name=date_end]').val();
+        var date_start =$('form#report_filter [name=date_start]').val();
+        var date_end =$('form#report_filter [name=date_end]').val();
         
         var data = 'date_start=' + date_start + '&date_end=' + date_end;
         
         if($('#report_filter [name = view]').val() == 1) updateAdmission(data);
-        if($('#report_filter [name = view]').val() == 2) updateReferral(data);
+        if($('#report_filter [name = view]').val() == 2) {
+            var service =$('#report_filter [name=service]').val();
+            data += '&service=' + service;
+            updateReferral(data);
+        }
 
         return false;
     }); 
@@ -139,6 +154,15 @@ $(function() {
     });
     
     /**
+     * hide notification area
+     */
+    
+    $('#sub_report a').live('click', function() {
+        $('div.saved_successfully').hide();
+    
+    });
+    
+    /**
      * load admission saved report
      */
     
@@ -151,7 +175,6 @@ $(function() {
         $('ul#sub_report li a').removeClass('active');
         $('ul#sub_report li a:first').addClass('active');
         $('.tab_content').hide();
-        $('div.saved_successfully').hide();
         $('div.dashboard').show();
         $('div.loaded_report_title h4').text($(this).attr('title'));
         $('div.loaded_report_title small span').text($(this).attr('date'));
@@ -182,7 +205,7 @@ $(function() {
         if($('form#report_filter select[name=view]').val() == 1) // admission
             updateAdmission('view=admission' + $(this).attr('data'));
         if($('form#report_filter select[name=view]').val() == 2) // referral
-            updateReferral('view=referral' + $(this).attr('data'));
+            updateReferral('view=referral' + $(this).attr('data') + '&service=' + $('#report_filter [name=service]').val());
 
         $('div.loaded_report_title').hide();
         return false;

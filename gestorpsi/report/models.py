@@ -33,8 +33,6 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, Indication as ReferralIndication, IndicationChoice as ReferralIndicationChoice, ReferralDischargeReason
 from gestorpsi.util.views import percentage
-from gestorpsi.settings import REFERRAL_DISCHARGE_REASON_CANCELED
-
 
 VIEWS_CHOICES = (
     (1, _('Admisssions')),
@@ -76,7 +74,16 @@ class Report(models.Model):
         get admission universe
         all admissions that could be find in range
         """
+        
+        """
+        Simple helper to set/get date
+        """
+        
         date_start,date_end = self.set_date(organization, date_start, date_end)
+        
+        """
+        get admission range in organization between dates
+        """
         range = AdmissionReferral.objects_inrange.all(organization, date_start, date_end)
         
         if range:
@@ -86,20 +93,30 @@ class Report(models.Model):
         
         return None, None, None
 
-    def get_referral_range(self, organization, date_start, date_end):
+    def get_referral_range(self, organization, date_start, date_end, service):
         """
         get referral 'universe'
         all referrals that could be find in range
         """
+        
+        """
+        Simple helper to set/get date
+        """
+
         date_start,date_end = self.set_date(organization, date_start, date_end)
-        range = Referral.objects_inrange.all(organization, date_start, date_end)
+        
+        """
+        get referral range in organization between dates
+        """
+        
+        range = Referral.objects_inrange.all(organization, date_start, date_end, service)
         
         if range:
-            data = ReportReferral.objects.all(range, organization)
+            data = ReportReferral.objects.all(range, organization, service)
             
-            return data,date_start,date_end
+            return data,date_start,date_end, service
         
-        return [], None, None
+        return [], None, None, None
 
     #def get_schedule_range(self, organization, date_start, date_end):
         #"""
@@ -397,12 +414,12 @@ class ReportReferralManager(models.Manager):
 
         tosort = []
         for i in services: # order reverse
-            tosort.append((i.pk, range.filter(service=i).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()))
+            tosort.append((i.pk, range.filter(service=i).count()))
 
         ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
 
         for id,total in ids_ordered:
-            count = range.filter(service__pk=id).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()
+            count = range.filter(service__pk=id).count()
             
             if count:
                 data.append({'name': services.get(pk=id), 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_services', args=[id]), })
@@ -417,17 +434,17 @@ class ReportReferralManager(models.Manager):
         tosort = []
         for i in services: # order reverse
             if not from_service:
-                tosort.append((i.pk, range.filter(service=i, referral__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()))
+                tosort.append((i.pk, range.filter(service=i, referral__isnull=False).count()))
             else:
-                tosort.append((i.pk, range.filter(referral__service=i, referral__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()))
+                tosort.append((i.pk, range.filter(referral__service=i, referral__isnull=False).count()))
 
         ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
 
         for id,total in ids_ordered:
             if not from_service:
-                count = range.filter(service__pk=id, referral__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()
+                count = range.filter(service__pk=id, referral__isnull=False).count()
             else:
-                count = range.filter(referral__service__pk=id, referral__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()
+                count = range.filter(referral__service__pk=id, referral__isnull=False).count()
             
             if count:
                 url = 'referral_client_internal' if not from_service else 'referral_client_internal_from'
@@ -442,12 +459,12 @@ class ReportReferralManager(models.Manager):
 
         tosort = []
         for i in services: # order reverse
-            tosort.append((i.pk, range.filter(service=i, referralexternal__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()))
+            tosort.append((i.pk, range.filter(service=i, referralexternal__isnull=False).count()))
 
         ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
 
         for id,total in ids_ordered:
-            count = range.filter(service__pk=id, referralexternal__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()
+            count = range.filter(service__pk=id, referralexternal__isnull=False).count()
             
             if count:
                 data.append({'name': services.get(pk=id), 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_external', args=[id]), })
@@ -462,9 +479,9 @@ class ReportReferralManager(models.Manager):
         tosort = []
         for i in services: # order reverse
             if not discussed_with_client:
-                qs = range.filter(service=i, referraldischarge__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED)
+                qs = range.filter(service=i, referraldischarge__isnull=False)
             else:
-                qs = range.filter(service=i, referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED)
+                qs = range.filter(service=i, referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True)
             
             tosort.append((i.pk, qs.count()))
 
@@ -472,9 +489,9 @@ class ReportReferralManager(models.Manager):
 
         for id,total in ids_ordered:
             if not discussed_with_client:
-                count = range.filter(service__pk=id, referraldischarge__isnull=False).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()
+                count = range.filter(service__pk=id, referraldischarge__isnull=False).count()
             else:
-                count = range.filter(service__pk=id, referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()
+                count = range.filter(service__pk=id, referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True).count()
             
             if count:
                 url = 'referral_client_discharge' if not discussed_with_client else 'referral_client_discharge_discussed'
@@ -511,38 +528,54 @@ class ReportReferralManager(models.Manager):
 
         tosort = []
         for i in list: # order reverse
-            tosort.append((i.pk, range.filter(professional=i).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()))
+            tosort.append((i.pk, range.filter(professional=i).count()))
 
         ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
 
         for id,total in ids_ordered:
-            count = range.filter(professional=id).exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED).count()
+            count = range.filter(professional=id).count()
             
             if count:
                 data.append({'name': list.get(pk=id), 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_professional', args=[id]), })
         
         return data
 
-    def all(self, range, organization=None):
+    def all(self, range, organization=None, service=None):
         """
         return a list with all table data above
         """
         data = []
+
+        if service:
+            in_service_range = range.filter(service__pk=service)
+            to_service_range = range.filter(referral__service__pk=service).exclude(service__pk=service)
+            from_service_range = range.filter(service__pk=service, referral__service__isnull=False).exclude(referral__service__pk=service)
+            range = in_service_range
         
-        data.append({'title': _('Subscriptions Overview'), 'data': ReportReferral.objects.overview(range)})
-        data.append({'title': _('Subscriptions Indications'), 'data': ReportReferral.objects.knowledge(range)})
-        data.append({'title': _('Service Subscriptions'), 'data': ReportReferral.objects.services(range, organization)})
-        data.append({'title': _('Internal Referrals to Services'), 'data': ReportReferral.objects.referral_internal(range, organization)})
-        data.append({'title': _('Internal Referrals from Services'), 'data': ReportReferral.objects.referral_internal(range, organization, True)})
-        data.append({'title': _('Externals Referrals from Services'), 'data': ReportReferral.objects.referral_external(range, organization)})
-        data.append({'title': _('Discharges from Services'), 'data': ReportReferral.objects.service_discharges(range, organization)})
+        data.append({'title': _('Subscriptions Overview'), 'data': ReportReferral.objects.overview(range if not service else in_service_range)})
+        data.append({'title': _('Subscriptions Indications'), 'data': ReportReferral.objects.knowledge(range if not service else in_service_range)})
+
+        if not service:
+            data.append({'title': _('Service Subscriptions'), 'data': ReportReferral.objects.services(range, organization)})
+            data.append({'title': _('Discharges from Services'), 'data': ReportReferral.objects.service_discharges(range, organization)})
+
+        
+        data.append({'title': _('Internal Referrals to Services'), 'data': ReportReferral.objects.referral_internal(range if not service else to_service_range, organization)})
+        data.append({'title': _('Internal Referrals from Services'), 'data': ReportReferral.objects.referral_internal(from_service_range, organization, True)})
+
+        if not service:
+            data.append({'title': _('Externals Referrals from Services'), 'data': ReportReferral.objects.referral_external(range, organization)})
+
         data.append({'title': _('Discharges Reason'), 'data': ReportReferral.objects.service_discharge_reason(range)})
-        data.append({'title': _('Discharges Discussed with Client'), 'data': ReportReferral.objects.service_discharges(range, organization, True)})
+
+        if not service:
+            data.append({'title': _('Discharges Discussed with Client'), 'data': ReportReferral.objects.service_discharges(range, organization, True)})
+
         data.append({'title': _('Professional Subscriptions'), 'data': ReportReferral.objects.professionals(range, organization)})
 
         return data
 
-    def clients(self,  user,  date_start, date_end, view, filter):
+    def clients(self,  user,  date_start, date_end, view, filter, service=None):
         """
         return a list of clients from selected report and selected range
         """
@@ -550,8 +583,11 @@ class ReportReferralManager(models.Manager):
         """ admissions range """
         organization = user.get_profile().org_active
         query = Referral.objects_inrange.all(organization, date_start, date_end)
+        query_full = query
         service_pks = [s.pk for s in organization.service_set.all()]
         professional_pks = [p.pk for p in CareProfessional.objects.from_organization(organization)]
+        if service:
+            query = query.filter(service__pk=service)
 
         if view == 'overview':
 
@@ -593,7 +629,10 @@ class ReportReferralManager(models.Manager):
             verbose_name = _(u'Referral Service - %s' % (obj))
             
         if view == 'internal':
-            query = query.filter(service=filter, referral__isnull=False, service__pk__in=service_pks)
+            if not service:
+                query = query.filter(service=filter, referral__isnull=False, service__pk__in=service_pks)
+            else:
+                query = query_full.filter(service=filter, referral__isnull=False, service__pk__in=service_pks)
             obj = get_object_or_None(Service, pk=filter, pk__in=service_pks )
             verbose_name = _(u'Referral Internal to Service %s' % (obj))
             

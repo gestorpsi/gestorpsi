@@ -109,7 +109,7 @@ table {
 <link rel="stylesheet" type="text/css" href="/media/css/report.css" media="print"/>
 -->
 
-<title>{{ title }}</title></head>
+<title>{{ title }}{% if sub_title %} - {{sub_title }}{% endif %}</title></head>
 <body>
 <table width="100%">
     <tr>
@@ -142,6 +142,7 @@ table {
 <br>
 
 <h2>{{ title }} {% trans "between" %} {{ date_start|date:"d/m/Y" }} {% trans "and" %} {{ date_end|date:"d/m/Y" }}</h2>
+{% if sub_title %}<h3>{{ sub_title }}</h3>{% endif %}
 
 <!-- chart -->
 <div id="report_chart" style="width:700px;height:300px;">
@@ -161,22 +162,16 @@ $(function() {
 {% if report_clients %}
     <h2>{% trans "List of clients between" %} {{ date_start|date:"d/m/Y" }} {% trans "and" %} {{ date_end|date:"d/m/Y" }}</h2>
     {% for i in report_clients %}
-        <table class="report">
         {% with i.0 as report_title %}
+        {% if i.1 %}
+        <table class="report">
             <tr class="title"><th>{{ report_title }}</th></tr>
-                {% if not i.1 %}
-                    <tr class="">
-                        <td class="left">{% trans "No results" %}</td>
-                    </tr>
-                {% else %}
-                    {% for client in i.1 %}
-                    <tr class="{% cycle odd,even %}">
-                        <td class="left">{{ client }}</td>
-                    </tr>
-                    {% endfor %}
-                {% endif %}
-        {% endwith %}
+                {% for client in i.1 %}
+                <tr class="{% cycle odd,even %}"><td class="left">{{ client }}</td></tr>
+                {% endfor %}
         </table>
+        {% endif %}
+        {% endwith %}
     {% endfor %}
 {% endif %} 
 </body></html>

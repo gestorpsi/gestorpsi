@@ -82,7 +82,7 @@ div.client_dialog small, div.saved_table small { color: #666;}
 .saved_successfully {text-align:center;}
 
 div#chart_type { text-align:right; margin-right:25px;}
-
+div.subscription_filter { margin-top: 10px;}
 /**
 * utils
 */

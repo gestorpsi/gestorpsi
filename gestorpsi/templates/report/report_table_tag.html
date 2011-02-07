@@ -22,7 +22,7 @@ GNU General Public License for more details.
 </tr>
 {% for i in table_data %}
 <tr class="{% cycle 'odd' 'even' %}">
-    <td class="left">{% if not remove_links %}<a class="pointer report_clients"{% if i.url and i.total %} href="{{ i.url }}?date_start={{date_start|date:"d/m/Y"}}&date_end={{date_end|date:"d/m/Y"}}"{% endif %}>{% endif %}{{ i.name|title }}{% if not remove_links %}</a>{% endif %}</td>
+    <td class="left">{% if not remove_links %}<a class="pointer report_clients"{% if i.url and i.total %} href="{{ i.url }}?date_start={{date_start|date:"d/m/Y"}}&date_end={{date_end|date:"d/m/Y"}}&service={{service}}"{% endif %}>{% endif %}{{ i.name|title }}{% if not remove_links %}</a>{% endif %}</td>
     <td>{{ i.total }}</td>
     <td>{{ i.percentage }}</td>
 </tr>

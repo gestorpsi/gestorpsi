@@ -30,6 +30,7 @@ from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.place.models import Room
+from gestorpsi.settings import REFERRAL_DISCHARGE_REASON_CANCELED
 
 fs = FileSystemStorage(location='/tmp')
 
@@ -119,8 +120,14 @@ class ReferralInRangeManager(models.Manager):
     to provide data to use in 'report' app
     """
     
-    def all(self, organization, datetime_start=None, datetime_end=None):
-        return Referral.objects.filter(service__organization=organization, date__gte=datetime_start, date__lt=datetime_end)
+    def all(self, organization, datetime_start=None, datetime_end=None, service=None):
+        r = Referral.objects.filter(service__organization=organization, date__gte=datetime_start, date__lt=datetime_end) \
+            .exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED)
+
+        if service:
+            r = r.filter(Q(service__pk=service) | Q(referral__service__pk=service))
+
+        return r
 
 class Referral(Event):
     #id = UuidField(primary_key=True)

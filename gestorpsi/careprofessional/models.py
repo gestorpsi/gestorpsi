@@ -18,6 +18,7 @@ import reversion
 from django.db import models
 from django.db.models import Q 
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
 from gestorpsi.person.models import Person
 from gestorpsi.place.models import Place
 from gestorpsi.util.uuid_field import UuidField
@@ -262,6 +263,11 @@ class CareProfessional(models.Model):
             queryset.filter(start_time__gte = start_time, end_time__lte = end_time) \
             else False
 
+    def _url_form(self):
+        if hasattr(self, 'studentprofile'):
+            return reverse('student_form', args=[self.pk])
+        return reverse('professional_form', args=[self.pk])
+    url_form = property(_url_form)
 
     is_student = property(_is_student)
 reversion.register(CareProfessional, follow=['person', 'professionalIdentification', 'professionalProfile'])

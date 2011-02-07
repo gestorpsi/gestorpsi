@@ -62,7 +62,7 @@ GNU General Public License for more details.
                         <br />
                     {% endif %}
                     {% for p in i.professional.all %}
-                        <i><a href="/careprofessional/{{ p.pk }}/">{{ p }}</a><small>{% if p.professionalIdentification.profession %} {{ p.professionalIdentification.profession }}{% endif %}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %}{% if p.professionalIdentification.profession.symbol %} {{ p.professionalIdentification.profession.symbol }}{% endif %}{% if p.professionalIdentification.registerNumber %} {{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</small></i>{% if not forloop.last %}, {% endif %}
+                        <i><a href="{{ p.url_form }}">{{ p }}</a><small>{% if p.professionalIdentification.profession %} {{ p.professionalIdentification.profession }}{% endif %}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %}{% if p.professionalIdentification.profession.symbol %} {{ p.professionalIdentification.profession.symbol }}{% endif %}{% if p.professionalIdentification.registerNumber %} {{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</small></i>{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                     <div style="clear:both;"></div>
                     {% if i.next_occurrence %}

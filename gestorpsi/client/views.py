@@ -449,8 +449,8 @@ def referral_plus_save(request, object_id=None):
                 for c in request.POST.getlist('client'):
                     gm = GroupMembers(group=group, client=Client.objects.get(pk = object_id, person__organization=request.user.get_profile().org_active), referral=object)
                     gm.save()
-        else:
-            print form.errors
+        #else:
+            #print form.errors
     request.user.message_set.create(message=_('Referral saved successfully'))
 
     return HttpResponseRedirect('/client/%s/referral/' % (request.POST.get('client_id')))
@@ -1019,7 +1019,6 @@ def company_related_form(request, object_id = None, company_client_id=None):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     form = CompanyClientForm()
-
     if company_client_id:
         company_client = get_object_or_404(CompanyClient, \
             pk=company_client_id, \
@@ -1033,6 +1032,10 @@ def company_related_form(request, object_id = None, company_client_id=None):
         form.fields['name'].initial = company_client.client
 
     if request.method == 'POST':
+        if request.POST.get('client_id') in [i.client.pk for i in object.employees()]:
+            request.user.message_set.create(message=_('Employee already registered on this company'))
+            return HttpResponseRedirect('/client/%s/company_clients/' % object.id)
+
         if company_client_id:
             form = CompanyClientForm(request.POST, instance=company_client)
         else:

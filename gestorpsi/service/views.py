@@ -482,6 +482,9 @@ def group_form(request, object_id=None, group_id=None):
     
     if not object.is_group:
         return render_to_response('403.html', {'object':_('Sorry, this service was configured without group support.')})
+    
+    if not object.active:
+        return render_to_response('403.html', {'object':_('Sorry, this you can not add groups in disabled services.')})
 
     group = get_object_or_None(ServiceGroup, pk=group_id, service__organization = request.user.get_profile().org_active)
 

@@ -39,7 +39,7 @@ GNU General Public License for more details.
         <div class="service_actions"> 
             <h3>{% trans 'Actions' %}</h3> 
             <ul>
-                {% if object.is_group %}
+                {% if object.is_group and object.active %}
                     <li><a href="/service/{% if object.referral.service.id %}{{ object.referral.service.id }}{% else %}{{ object.id }}{% endif %}/group/add/">{% trans "Add group on this service" %}</a></li> 
                 {% endif %}
                 {% if perms.service.service_write %}

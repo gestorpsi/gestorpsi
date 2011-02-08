@@ -284,6 +284,6 @@ class Client(models.Model):
         self.save()
 
 
-reversion.register(Client, follow=['person', ])
+reversion.register(Client)
 reversion.register(Family)
 

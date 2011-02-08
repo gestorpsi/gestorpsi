@@ -700,16 +700,14 @@ def organization_clients(request):
     """
        organization_clients: return json with all clients from logged organization
     """
-    user = request.user
-    clients = Client.objects.filter(person__organization = user.get_profile().org_active.id, person__name__istartswith=request.GET.get('q') ).order_by('person__name')
 
     if not request.GET.get('include_deactivated'):
-        clients = clients.filter(active = True)
-
-    if not request.GET.get('include_deactivated'):
-        clients = Client.objects.from_user(request.user, 'active')
+        clients = Client.objects.from_user(request.user, 'active').order_by('person__name')
     else:
-        clients = Client.objects.from_user(request.user)
+        clients = Client.objects.from_user(request.user).order_by('person__name')
+    
+    if request.GET.get('q'):
+        clients = clients.filter(person__name__istartswith=request.GET.get('q'))
     
     dict = {}
     array = [] #json
@@ -725,7 +723,8 @@ def organization_clients(request):
     dict['results'] = array
     array = simplejson.dumps(dict, encoding = 'iso8859-1')
 
-    return HttpResponse(array, mimetype='application/json')
+    #return HttpResponse(array, mimetype='application/json')
+    return HttpResponse(array)
 
 @permission_required_with_403('client.client_write')
 def order(request, object_id = ''):

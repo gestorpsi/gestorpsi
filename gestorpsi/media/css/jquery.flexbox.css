@@ -1,4 +1,5 @@
 /* Input textbox - do not specify a width here, it will be overwritten */
+
 .ffb-input {
 	float:left;
 	color:#000; /* must specify along with watermark color */
@@ -65,14 +66,16 @@ background: #fff6d5 !important;
 .ffb .content {
 	overflow:auto;
 	margin-left: 2px !important;
+        padding-bottom: 250px !important;
 }
+
 .ffb .content .row {
 	border-bottom:1px solid #F9F9F9;
 	color:#555;
 	height:24px;
 	clear:both;
 	margin-left: 0px !important;
-	font-size: 16px;
+	font-size: 14px;
 	background: #fff6d5 !important;
 }
 

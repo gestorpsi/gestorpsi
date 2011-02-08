@@ -256,7 +256,7 @@ class Organization(models.Model):
         return text
 
     def clients(self):
-        return self.person_set.filter(client__isnull = False, client__clientStatus = '1')
+        return self.person_set.filter(client__isnull = False, client__active = True)
 
     def care_professionals(self):
         return self.person_set.filter(careprofessional__isnull = False, careprofessional__active = True)

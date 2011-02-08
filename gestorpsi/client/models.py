@@ -23,8 +23,6 @@ from django.db.models import Q
 from gestorpsi.person.models import Person
 from gestorpsi.util.uuid_field import UuidField
 
-CLIENT_STATUS = ( ('0','Inativo'),('1','Ativo'))
-
 FAMILY_RELATION = ( 
     (1, _('Parents')),
     (2, _('Children')),
@@ -122,9 +120,7 @@ class ClientManager(models.Manager):
         object_list = Client.objects.from_organization(user.get_profile().org_active, query_pk_in)
         
         if status:
-            if status == 'deactive' : status = '0'
-            else:  status = '1'
-            object_list = object_list.filter(clientStatus = status)
+            object_list = object_list.filter(active = False if status == 'deactive' else True)
         
         if not user.groups.filter(name='administrator') and not user.groups.filter(name='secretary'):
             object_list = object_list.filter(Q(referral__professional = user.profile.person.careprofessional.id) \
@@ -200,7 +196,7 @@ class Client(models.Model):
     idRecord = models.PositiveIntegerField()
     legacyRecord = models.CharField(max_length=15)
     admission_date = models.DateField(null=True)
-    clientStatus = models.CharField(max_length=1, default='1', choices=CLIENT_STATUS)
+    active = models.BooleanField(default=True)
     comments = models.TextField(blank=True)
     objects = ClientManager()
 
@@ -224,7 +220,7 @@ class Client(models.Model):
     
     def employees(self):
         from gestorpsi.person.models import Person, CompanyClient
-        return CompanyClient.objects.filter(company__person__client = self).filter(client__clientStatus="1")
+        return CompanyClient.objects.filter(company__person__client = self).filter(client__active=True)
     
     def family_members(self):
         family_list = []
@@ -256,7 +252,7 @@ class Client(models.Model):
         return True if hasattr(self.person, 'company') else False
 
     def is_active(self):
-        return True if self.clientStatus == '1' else False
+        return True if self.active else False
 
     def is_busy(self, start_time, end_time):
         ''' 
@@ -280,11 +276,11 @@ class Client(models.Model):
             else False
 
     def set_active(self):
-        self.clientStatus = '1'
+        self.active = True
         self.save()
 
     def set_deactive(self):
-        self.clientStatus = '0'
+        self.active = False
         self.save()
 
 

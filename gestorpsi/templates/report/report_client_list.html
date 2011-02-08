@@ -23,7 +23,7 @@ GNU General Public License for more details.
     <div class="date_range">{% trans "Client list between" %} {{ date_start|date:"d/m/Y" }} {% trans "and" %} {{ date_end|date:"d/m/Y" }}*</div>
     <ul id="client_dialog" class="">
         {% for i in object_list %}
-        <li class="{% cycle 'odd' 'even' %}"><a href="/client/{{ i.id }}/home/">{{ i }}</a> <small style="float:right; padding-right: 10px;">{{ i.get_clientStatus_display }}</small></li>
+        <li class="{% cycle 'odd' 'even' %}"><a href="/client/{{ i.id }}/home/">{{ i }}</a> <small style="float:right; padding-right: 10px;">{% if i.active %}{% trans "Active" %}{% else %}{% trans "Deactive" %}{% endif %}</small></li>
         {% endfor %}
     </ul>
     <small>{% trans "Total" %} {{ object_list|length }}</small>

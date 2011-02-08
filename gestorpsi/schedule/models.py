@@ -110,7 +110,7 @@ class ScheduleOccurrence(Occurrence):
         ordering = ('start_time',)
     
     def employees_active(self):
-        return self.occurrenceemployees.client.filter(clientStatus='1')
+        return self.occurrenceemployees.client.filter(active=True)
 
 class OccurrenceConfirmation(models.Model):
     occurrence = models.OneToOneField(ScheduleOccurrence)

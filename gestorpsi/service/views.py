@@ -382,7 +382,7 @@ def _service_clients(request, service):
         client_list = client_list.filter(Q(referral__professional = request.user.profile.person.careprofessional.id) \
                         | Q(pk__in=added_by_me) \
                         | Q(referral__service__responsibles=request.user.profile.person.careprofessional) \
-                        ).distinct().order_by('clientStatus', 'person__name')
+                        ).distinct().order_by('-active', 'person__name')
     return client_list
 
 @permission_required_with_403('client.client_list')

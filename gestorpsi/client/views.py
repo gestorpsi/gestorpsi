@@ -313,7 +313,7 @@ def referral_plus_form(request, object_id=None, referral_id=None):
     referral_form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('Student'))) for p in CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)]
     referral_form.fields['referral'].queryset = Referral.objects.filter(client=object)
     referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
-    referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
+    referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, active = True)
 
     total_service = Referral.objects.filter(client=object).count()
 
@@ -336,7 +336,7 @@ def referral_form(request, object_id = None, referral_id = None):
     if not _access_check(request, object):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
     
-    if object.clientStatus == '0':
+    if not object.active:
         return render_to_response('403.html', {'object': _("Sorry! You can not save referral for disabled clients!"), }, context_instance=RequestContext(request))
 
     if referral_id:
@@ -390,7 +390,7 @@ def referral_form(request, object_id = None, referral_id = None):
 
     referral_form.fields['referral'].queryset = Referral.objects.filter(client=object)
     referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
-    referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, clientStatus = '1')
+    referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, active = True)
     if hasattr(referral.service, 'professionals'):
         referral_form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('(Student)'))) for p in referral.service.professionals.all()]
     else:
@@ -704,7 +704,7 @@ def organization_clients(request):
     clients = Client.objects.filter(person__organization = user.get_profile().org_active.id, person__name__istartswith=request.GET.get('q') ).order_by('person__name')
 
     if not request.GET.get('include_deactivated'):
-        clients = clients.filter(clientStatus = '1')
+        clients = clients.filter(active = True)
 
     if not request.GET.get('include_deactivated'):
         clients = Client.objects.from_user(request.user, 'active')
@@ -718,7 +718,7 @@ def organization_clients(request):
     for o in clients:
         c = {
             'id': o.id,
-            'name': u'%s%s%s' % (o.person.name, '' if not o.person.is_company() else _(' (Company)'), '' if o.clientStatus == '1' else _(' (Disabled)')),
+            'name': u'%s%s%s' % (o.person.name, '' if not o.person.is_company() else _(' (Company)'), '' if o.active == True else _(' (Disabled)')),
         }
         array.append(c)
 

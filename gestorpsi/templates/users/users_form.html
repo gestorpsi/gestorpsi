@@ -189,7 +189,24 @@ GNU General Public License for more details.
 </div>
 
 <div id="sidebar" class="sidebar">
-    {% if perms.users.users_write %}<div class="bg_blue">{% include "tags/save.html" %}</div>{% endif %}
+    {% if perms.users.users_write %}<div class="bg_blue">
+    <input class="save_button" name="save" type="submit" value="{% trans 'Save' %}" />
+    <input class="save_button" name="cancel" id="cancel_button" type="button" value="{% trans 'Back' %}" onclick="javascript:history.go(-1)" />
+
+    <div id="msg_info">
+        <p>
+            <span>
+        {% if not profile.user.date_joined %}
+                {% trans "This register are not saved yet. Click Save to register it." %}
+            {% else %}
+            {% trans 'User created at' %} 
+            {{ profile.user.date_joined|date:"r"|slice:":-9"}}&nbsp;hs
+            {% endif %}
+            </span>
+        </p>
+    </div>    
+    
+    </div>{% endif %}
     {% include "tags/user_sidebar.html" %}
 </div>
 

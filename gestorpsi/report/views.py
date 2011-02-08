@@ -197,7 +197,7 @@ def report_export(request):
 
             if request.POST.get('clients'):
                 report_clients = ReportAdmission.objects.clients_all(request.user, request.POST.get('date_start'), request.POST.get('date_end'))
-
+            data,date_start,date_end = data
         if request.POST.get('view') == '2': # referral
             title = _('Referral Report')
             if request.POST.get('service'):
@@ -207,8 +207,9 @@ def report_export(request):
 
             if request.POST.get('clients'):
                 report_clients = ReportReferral.objects.clients_all(request.user, request.POST.get('date_start'), request.POST.get('date_end'))
+            
+            data,date_start,date_end, service = data
         
-        data,date_start,date_end, service = data
 
         IMG_PREFIX = '/media/' if int(request.POST.get('format')) == 1 else MEDIA_ROOT.replace('\\','/') + '/' # this a path bug fix. format == 1 (html)
 

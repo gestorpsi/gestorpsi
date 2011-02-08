@@ -561,7 +561,7 @@ class ReportReferralManager(models.Manager):
 
         
         data.append({'title': _('Internal Referrals to Services'), 'data': ReportReferral.objects.referral_internal(range if not service else to_service_range, organization)})
-        data.append({'title': _('Internal Referrals from Services'), 'data': ReportReferral.objects.referral_internal(from_service_range, organization, True)})
+        data.append({'title': _('Internal Referrals from Services'), 'data': ReportReferral.objects.referral_internal(range if not service else from_service_range, organization, True)})
 
         if not service:
             data.append({'title': _('Externals Referrals from Services'), 'data': ReportReferral.objects.referral_external(range, organization)})

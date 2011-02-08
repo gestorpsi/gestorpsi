@@ -15,6 +15,7 @@ GNU General Public License for more details.
 """
 
 import reversion
+from datetime import datetime
 from django.db import models
 from gestorpsi.address.models import Address
 from gestorpsi.phone.models import Phone
@@ -63,6 +64,13 @@ class Place( models.Model ):
          return self.phones.all()[0]
        else:
          return ''
+
+    def occurrences(self):
+        o = []
+        for room in self.room_set.filter(active=True):
+            for i in room.scheduleoccurrence_set.filter(start_time__gte = datetime.now()).exclude(occurrenceconfirmation__presence=4).exclude(occurrenceconfirmation__presence=5):
+                o.append(i)
+        return o
 
     class Meta:
         ordering = ['label']
@@ -133,5 +141,11 @@ class Room( models.Model ):
             queryset.filter(start_time__lt = end_time, end_time__gte = end_time) or \
             queryset.filter(start_time__gte = start_time, end_time__lte = end_time) \
             else False
+    
+    def occurrences(self):
+        o = []
+        for i in self.scheduleoccurrence_set.filter(start_time__gte = datetime.now()).exclude(occurrenceconfirmation__presence=4).exclude(occurrenceconfirmation__presence=5):
+            o.append(i)
+        return o
 
 reversion.register(Room)

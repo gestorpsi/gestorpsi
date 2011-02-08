@@ -423,13 +423,19 @@ div.main_area h1 {
 }
 
 #msg_area ul, .msg_area ul {
-        margin: 10px 0 0 0px;
+        margin: 20px 50px 20px 50px;
+        background: #f9f9f9;
+        padding: 20px;
+        border: 1px solid #d8d8d8;
 }
 
 #msg_area li, .msg_area li {
-        margin: 5px 0 0 25px;
+        margin: 2px 0 0 25px;
+        list-style:none;
+        text-align:left;
 }
 
+#msg_area li a { font-weight:normal; font-size:1em; }
 
 .main_area {
         width: 715px;

@@ -243,7 +243,14 @@ def place_order(request, object_id = None):
     object = get_object_or_404(Place, pk=object_id, organization=request.user.get_profile().org_active)
 
     if object.active == True:
-        object.active = False
+        if object.occurrences():
+            occurence_list_html = ''
+            for i in object.occurrences():
+                occurence_list_html += u'<li><a href="/schedule/events/%s/confirmation/">%s - %s</a></li>' % (i.pk, i, i.event.referral)
+                request.user.message_set.create(message=(_('You can not disable a place with upcomming occurrences <ul>%s</ul>') % occurence_list_html))
+                return HttpResponseRedirect('/place/%s/' % object.id)
+        else:
+            object.active = False
     else:
         object.active = True
 
@@ -256,7 +263,14 @@ def room_order(request, object_id = None):
     object = get_object_or_404(Room, pk=object_id, place__organization=request.user.get_profile().org_active)
 
     if object.active == True:
-        object.active = False
+        if object.occurrences():
+            occurence_list_html = ''
+            for i in object.occurrences():
+                occurence_list_html += u'<li><a href="/schedule/events/%s/confirmation/">%s - %s</a></li>' % (i.pk, i, i.event.referral)
+            request.user.message_set.create(message=(_('You can not disable a room with upcomming occurrences <ul>%s</ul>') % occurence_list_html))
+            return HttpResponseRedirect('/place/room/%s/' % object.id)
+        else:
+            object.active = False
     else:
         object.active = True
 

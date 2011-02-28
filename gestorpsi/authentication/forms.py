@@ -64,7 +64,7 @@ class RegistrationForm(RegistrationForm):
             room_type=RoomType.objects.all()[0],
         )
 
-        person = Person.objects.create(name=self.cleaned_data['name']) #, organization=organization)
+        person = Person.objects.create(name=self.cleaned_data['name'], user=user) #, organization=organization)
         person.organization.add(organization)
         profile.org_active = organization                  #set org as active
         profile.temp = self.cleaned_data['password1']      # temporary field (LDAP)

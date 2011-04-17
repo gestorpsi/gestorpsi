@@ -22,10 +22,17 @@ from gestorpsi.contact.views import contact_organization_order, contact_professi
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
+    # local contacts
     (r'^$', login_check(index)),
-    (r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
-    (r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
-    (r'^filter/(?P<filter>[a-zA-Z ]+)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
+    url(r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
+    url(r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
+    url(r'^filter/(?P<filter>[a-zA-Z ]+)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
+    
+    # external contacts
+    url(r'^external/$', login_check(index), {'template':'contact/contact_list_external.html'}),
+    url(r'^external/page(?P<page>(\d)+)$', login_check(list), {'filter_type':'external'}), #list objects
+    url(r'^external/initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list), {'filter_type':'external'}), # quick filter
+    url(r'^external/filter/(?P<filter>[a-zA-Z ]+)/page(?P<page>(\d)+)/$', login_check(list), {'filter_type':'external'}), # quick search
     
     # deactivated contacts
     (r'^deactive/$', login_check(index), {'deactive':True}), # list objects deactive

@@ -67,6 +67,30 @@ $(function() {
     });
 
     /**
+     * contact external quick filter
+     */
+
+    $('div#search_header.contact_external_search.active table#letter_menu tr td a, div#search_header.contact_external_search a#letter_back, div#search_header.contact_external_search a#letter_fwd').click(function() {
+        updateContact('/contact/external/initial/' + $(this).attr('initial') + '/page1/', false, 'contact_external/initial/'+$(this).attr('initial'));
+    });
+
+    /**
+    * contact external quick search
+    */
+
+    $('div#search_header.contact_external_search.active a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateContact('/contact/external/filter/' + $(this).prev().val() + '/page1/', false, 'contact_external/filter/' + $(this).prev().val()) : updateContact('/contact/external/page1');
+    });
+
+    /**
+     * contact external clean up
+     */
+
+    $('div#search_header.contact_external_search.active a#cleanup').click(function() {
+        updateContact('/contact/external/page1');
+    });
+
+    /**
      * client quick filter active
      */
 

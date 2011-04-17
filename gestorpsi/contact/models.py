@@ -103,6 +103,71 @@ class ContactManager(object):
 
         return cursor_to_list(cursor.fetchall(), kwargs.get('filter_type') or None)
 
+    def filter_internal(self, *args, **kwargs):
+
+        """ Local Organizations """
+        query = \
+            'SELECT o1.id, o1.name, 1 as type, 1 as org_type_id FROM organization_organization o1 ' \
+            'WHERE o1.organization_id LIKE %s AND o1.contact_owner_id LIKE %s AND LOWER(o1.name) LIKE LOWER(%s) AND o1.active=%s '
+
+        """ Local Professionals """
+        query += \
+            'UNION SELECT c.id, p.name, 2 as type, 1 as org_type_id FROM careprofessional_careprofessional c '\
+            'INNER JOIN person_person p ON (c.person_id = p.id) INNER JOIN person_person_organization po ON (p.id = po.person_id) '\
+            'INNER JOIN organization_organization o ON (po.organization_id = o.id) '\
+            'WHERE o.organization_id LIKE %s AND o.contact_owner_id LIKE %s AND LOWER(p.name) LIKE LOWER(%s) AND c.active=%s ORDER BY name'
+
+        cursor = connection.cursor()
+
+        cursor.execute(query, [ \
+            kwargs.get('org_id') or '%', \
+            kwargs.get('person_id') or '%', \
+            kwargs.get('filter_name') or '%', \
+            False if kwargs.get('deactive') else True, \
+            kwargs.get('org_id') or '%', \
+            kwargs.get('person_id') or '%', \
+            kwargs.get('filter_name') or '%', \
+            False if kwargs.get('deactive') else True, \
+            ])
+
+        return cursor_to_list(cursor.fetchall(), kwargs.get('filter_type') or None)
+
+    def filter_external(self, *args, **kwargs):
+         
+        """ GestorPSI Organizations """
+        query = \
+            'SELECT o1.id, o1.name, 1 as type, 2 as org_type_id FROM organization_organization o1  LEFT OUTER JOIN ' \
+            'organization_organization o2 ON (o1.organization_id = o2.id) WHERE ' \
+            '(o1.active = true AND o2.id IS NULL AND o1.visible = true ' \
+            'AND NOT (o1.id = %s )) AND LOWER(o1.name) LIKE LOWER(%s) AND o1.active=%s '
+
+        """ GestorPsi Professionals, excluding me """
+        query += \
+            'UNION SELECT careprofessional_careprofessional.id, person_person.name, 2 as type, 2 as org_type_id FROM careprofessional_careprofessional ' \
+            'INNER JOIN person_person ON (careprofessional_careprofessional.person_id = person_person.id) ' \
+            'LEFT OUTER JOIN person_person_organization ON (person_person.id = person_person_organization.person_id) ' \
+            'LEFT OUTER JOIN organization_organization ON (person_person_organization.organization_id = organization_organization.id) ' \
+            'LEFT OUTER JOIN organization_organization T5 ON (organization_organization.organization_id = T5.id) '\
+            'WHERE (organization_organization.active = true AND organization_organization.visible = true  AND T5.id IS NULL ' \
+            'AND NOT (careprofessional_careprofessional.person_id IN (SELECT U2.person_id FROM person_person_organization U2 ' \
+            'WHERE U2.organization_id = %s ) AND careprofessional_careprofessional.person_id IS NOT NULL) '\
+            'AND (LOWER(organization_organization.name) LIKE LOWER(%s) OR LOWER(person_person.name) LIKE LOWER(%s)) \
+            ) AND careprofessional_careprofessional.active=%s  ORDER BY name'
+        
+        cursor = connection.cursor()
+
+        cursor.execute(query, [ \
+            kwargs.get('org_id') or '%', \
+            kwargs.get('filter_name') or '%', \
+            False if kwargs.get('deactive') else True, \
+            kwargs.get('org_id') or '%', \
+            kwargs.get('filter_name') or '%', \
+            kwargs.get('filter_name') or '%', \
+            False if kwargs.get('deactive') else True, \
+            ])
+
+        return cursor_to_list(cursor.fetchall(), kwargs.get('filter_type') or None)
+
 class Contact(object):
     objects = ContactManager()
     

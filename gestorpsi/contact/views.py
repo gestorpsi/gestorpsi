@@ -68,11 +68,11 @@ def extra_data_save(request, object = None):
     return object
 
 @permission_required_with_403('contact.contact_list')
-def index(request, deactive = False):
-    return render_to_response('contact/contact_list.html', locals(), context_instance=RequestContext(request))
+def index(request, deactive = False, template='contact/contact_list.html'):
+    return render_to_response(template, locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('contact.contact_list')
-def list(request, page = 1, initial = None, filter = None, deactive=False):
+def list(request, page = 1, initial = None, filter = None, deactive=False, filter_type='internal'):
     user = request.user
     org = user.get_profile().org_active
 
@@ -84,20 +84,27 @@ def list(request, page = 1, initial = None, filter = None, deactive=False):
     if filter:
         filter_name = '%' + filter + '%'
 
-    list = Contact.objects.filter(
+    if filter_type == 'internal':
+        search_method = Contact.objects.filter_internal
+    elif filter_type == 'external':
+        search_method = Contact.objects.filter_external
+    else:
+        search_method = Contact.objects.filter
+
+    list = search_method(
         org_id = request.user.get_profile().org_active.id, 
         filter_name = filter_name,
         deactive=deactive,
         )
 
-    organizations_count = len(Contact.objects.filter(
+    organizations_count = len(search_method(
         org_id = request.user.get_profile().org_active.id, 
         filter_name = None,
         filter_type = 1,
         deactive=deactive,
     ))
 
-    professionals_count = len(Contact.objects.filter(
+    professionals_count = len(search_method(
         org_id = request.user.get_profile().org_active.id, 
         filter_name = None,
         filter_type = 2,

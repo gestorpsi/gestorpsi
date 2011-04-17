@@ -96,7 +96,7 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
                                     'ims' : None if not hasattr(object, 'person') else object.person.instantMessengers.all(),
                                     'PROFESSIONAL_AREAS': Profession.objects.all(),
                                     'AgreementTypes': Agreement.objects.all(),
-                                    'WorkPlacesTypes': Place.objects.filter(organization = request.user.get_profile().org_active.id),
+                                    'WorkPlacesTypes': Place.objects.active().filter(organization = request.user.get_profile().org_active.id),
                                     'countries': Country.objects.all(),
                                     'PhoneTypes': PhoneType.objects.all(),
                                     'AddressTypes': AddressType.objects.all(),

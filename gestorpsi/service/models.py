@@ -152,6 +152,6 @@ class GroupMembers(models.Model):
     def __unicode__(self):
         return u'%s' % (self.client)
 
-reversion.register(Service, follow=['modalities', 'agreements', 'professions', 'responsibles', 'professionals' ])
+reversion.register(Service)
 reversion.register(Modality)
 reversion.register(Agreement)

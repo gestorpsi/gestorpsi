@@ -228,16 +228,6 @@ def save(request, object_id=''):
       object.is_online = request.POST.get('is_online') or False
       object.area = Area.objects.get(pk=request.POST.get('service_area'))
       object.service_type = ServiceType.objects.get(pk=request.POST.get('service_type'))
-
-    #if not request.POST.get('service_css_color_class'):
-        #""" chose one css color to this service """
-        #if not request.user.get_profile().org_active.service_set.all():
-            #object.css_color_class = 1
-        #else:
-            #if not object.css_color_class:
-                #object.css_color_class = (int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) + 1) \
-                                    #if int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) <=24 \
-                                    #else 1
     else:
         object.css_color_class = request.POST.get('service_css_color_class')
 
@@ -374,15 +364,11 @@ def _service_clients(request, service):
     client_list = client_list.filter(pk__in = is_client_charged)
     
     if not request.user.groups.filter(name='administrator') and not request.user.groups.filter(name='secretary'):
-        added_by_me = [] # registers added by me, got by django-reversion
-        for c in Client.objects.all():
-            if c.revision().user == request.user:
-                added_by_me.append(c.id)
-
         client_list = client_list.filter(Q(referral__professional = request.user.profile.person.careprofessional.id) \
-                        | Q(pk__in=added_by_me) \
+                        | Q(person__user__id=request.user.id) \
                         | Q(referral__service__responsibles=request.user.profile.person.careprofessional) \
                         ).distinct().order_by('-active', 'person__name')
+
     return client_list
 
 @permission_required_with_403('client.client_list')

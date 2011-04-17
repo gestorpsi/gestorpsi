@@ -201,12 +201,10 @@ def update_pwd(request, object_id=0):
 @permission_required_with_403('users.users_write')
 def set_form_user(request, object_id=0):
     array = {} #json
-    try: 
-        person = Person.objects.get(pk = object_id, organization=request.user.get_profile().org_active)
-        array[0] = slugify(person.name)
-        array[1] = u'%s' % person.get_first_email()
-    except:
-        pass
+    
+    person = get_object_or_404(Person, pk = object_id, organization=request.user.get_profile().org_active)
+    array[0] = slugify(person.name)
+    array[1] = u'%s' % person.get_first_email()
     
     return HttpResponse(simplejson.dumps(array), mimetype='application/json')
 
@@ -220,6 +218,9 @@ def order(request, profile_id = None):
             object.user.is_active = False
         else:
             object.user.is_active = True
+            for i in object.user.registrationprofile_set.exclude(activation_key='ALREADY_ACTIVATED'):
+                i.activation_key = 'ALREADY_ACTIVATED'
+                i.save()
 
         object.user.save(force_update=True)
         request.user.message_set.create(message=('%s' % (_('User activated successfully') if object.user.is_active else _('User deactivated successfully'))))

@@ -219,11 +219,11 @@ def save(request, object_id=''):
     object.description = request.POST.get('service_description')
     object.keywords = request.POST.get('service_keywords')
     object.comments = request.POST.get('comments')
-
+    object.academic_related = request.POST.get('academic_related') or False
+    
     if not object_id:
       object.research_project = request.POST.get('research_project') or False
       object.research_project_name = request.POST.get('research_project_name')
-      object.academic_related = request.POST.get('academic_related') or False
       object.is_group = request.POST.get('is_group') or False
       object.is_online = request.POST.get('is_online') or False
       object.area = Area.objects.get(pk=request.POST.get('service_area'))

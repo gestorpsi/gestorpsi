@@ -85,7 +85,7 @@ GNU General Public License for more details.
     <fieldset>
 		<legend>{% trans "Academic Related" %}</legend>
             <label>
-                <input type="checkbox" name="academic_related" {% if object.id %}disabled="disabled"{% endif %}{% if object.academic_related %} checked{% endif %} />&nbsp;
+                <input type="checkbox" name="academic_related" {% if object.academic_related %} checked{% endif %} />&nbsp;
                 {% trans "This service is academic (supervised) related." %} 
             </label>
 	</fieldset>
@@ -98,7 +98,7 @@ GNU General Public License for more details.
                 <div class="research_project_name" {% if object.research_project_name %} style="display:block;" {% else %} style="display:none;" {% endif %}>
                     <label> 
                         {% trans "Name" %}
-			            <input type="text" maxlength="100" name="research_project_name" {% if object.id %}disabled="disabled"{% endif %} class="giant" value="{{ object.research_project_name }}" />
+			            <input type="text" maxlength="100" name="research_project_name" {% if object.id %}disabled="disabled"{% endif %} class="giant" value="{% if object.research_project_name %}{{ object.research_project_name }}{% endif %}" />
                     </label>
                 </div>
 	</fieldset>

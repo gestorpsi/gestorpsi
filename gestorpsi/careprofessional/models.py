@@ -270,6 +270,21 @@ class CareProfessional(models.Model):
     url_form = property(_url_form)
 
     is_student = property(_is_student)
+    
+    def referrals_charged(self):
+        return self.referral_set.filter(referraldischarge__isnull=True)
+
+    def have_referral_charged(self):
+        if self.referrals_charged():
+            return True
+        return False
+
+    def upcoming_occurrences(self):
+        a = []
+        for i in self.referrals_charged():
+            for n in i.upcoming_occurrences():
+                a.append(n)
+        return a
 
 reversion.register(CareProfessional)
 

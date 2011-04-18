@@ -632,7 +632,7 @@ a.prase_edit {
         letter-spacing: 0.05em;
 }
 
-input[type=submit].mini, a.submit {
+input[type=submit].mini, a.submit,button.submit {
         padding: 2px 20px 6px 15px;
         margin: 0 0 0 10px;
         cursor: pointer;
@@ -643,7 +643,7 @@ input[type=submit].mini, a.submit {
         background: #fff6d5;
 }
 
-form input.submit {
+form input.submit, button.submit {
         padding: 5px 10px 5px 10px;
         border: 1px solid #aaaaaa;
         color: #808080;
@@ -1700,14 +1700,21 @@ a.pointer {
 * jquery dialog
 */
 
-div#dialog h1 {
-    font-size: 16px;
-}
-
+div#dialog { z-index:3000; padding:20px; position:absolute; width: 710px; top:80px;left: 100px; background:#fff; border: 6px solid #ccc; border-top: 25px solid #ccc;}
+div#dialog label { font-size:18px; margin-top:15px;}
+div#dialog textarea, div#dialog label {  display:Block; }
+#dialog textarea { border:2px solid #ccc; width: 700px; height: 100px;}
 div#dialog h2 {
-    font-size: 14px;
-    padding-top: 10px;
+    font-size: 18px text-align:left; padding:0px 20px 0px 20px; color:#000;
 }
+div#dialog h3 { margin-left:24px; font-size: 16px; padding: 10px 0 10px 0;}
+
+div#dialog p { font-size:15px; line-height: 1.3em; color:#333;}
+div#dialog ul { margin-left: 5%; margin-top:20px; background: #eee; width:600px; padding: 10px;}
+div#dialog ul a { font-size: 14px; color:#222;}
+div#dialog ul li { margin-left: 30px; margin-top: 3px;}
+
+
 ul.developingList {
         margin: 10px 60px;
         width: 170px;

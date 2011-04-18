@@ -162,4 +162,38 @@ GNU General Public License for more details.
 {% include "tags/upload.html" %}
 {% include "tags/place_mini.html" %}
 
+<div id="dialog" class="hidden">
+    <h2>Este profissional possue encaminhamentos ativos.</h2>
+    <p>
+    Ao desativar este profissional, ele também será excluído de <b>{{ object.referrals_charged|length }} encaminhamentos</b> ativos{% if object.upcoming_occurrences%}, e <b>{{ object.upcoming_occurrences|length }} agendamentos</b> serão <b>desmacados</b>{% endif %}.
+    </p>
+    <ul>
+    {% for i in object.referrals_charged %}
+	<li><a href="/client/{{ i.client.all.0.pk}}/referral/{{ i.pk }}/">{{ i }} {{ i.client.all.0 }}</a></li>
+    {% endfor %}
+    </ul>
+    <p>
+    <h3>Caso esse profissional seja o único, o encaminhamento será <b>desativado</b>.</h3>
+    </p>
+    <p>
+    Para continuar, selecione o motivo do desligamento e clique em <b>Continuar</b>, ou então clique em <b>Cancelar</b> para fechar esta caixa e não realizar alteração nenhuma.
+    </p>
+    <br />
+    <form action="/careprofessional/{{ object.pk }}/order/" method="post">
+    <select name="reason">
+    {% for i in ReferralDischargeReason %}
+	<option value="{{ i.pk }}">{{ i }}</option>
+    {% endfor %}
+    </select>
+    <label>{% trans "Discharge Details" %}
+    <textarea name="details"></textarea>
+    </label>
+    <div style="clear:both"></div>
+    <div class="float_right">
+	<button class="submit" onclick="$('div#dialog, #over').hide();return false;">{% trans "Cancel" %}</button>
+	<input type="submit" name="submit" class="submit" value="{% trans "Continue" %}" />
+    </div>
+    </form>
+</div>
+
 {% endblock %}

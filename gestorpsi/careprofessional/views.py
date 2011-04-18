@@ -29,13 +29,14 @@ from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.place.models import Place, PlaceType
 from gestorpsi.service.models import Service
-from gestorpsi.referral.models import Referral
+from gestorpsi.referral.models import Referral, ReferralDischargeReason, ReferralDischarge
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.authentication.models import Profile, Role
 from gestorpsi.careprofessional.forms import StudentProfileForm
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
+from gestorpsi.schedule.models import OccurrenceConfirmation
 
 @permission_required_with_403('careprofessional.careprofessional_list')
 def index(request, template_name='careprofessional/careprofessional_list.html', deactive = False):
@@ -82,7 +83,9 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
         ServiceTypes = Service.objects.filter( active=True, organization=request.user.get_profile().org_active, academic_related=True )
     else:
         ServiceTypes = Service.objects.filter( active=True, organization=request.user.get_profile().org_active)
-    
+
+    if not object.active:
+        request.user.message_set.create(message= _('This professional is not enabled.'))
 
     return render_to_response(template_name, {
                                     'clss':request.GET.get('clss'),
@@ -109,6 +112,7 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
                                     'PlaceTypes': PlaceType.objects.all(),
                                     'ServiceTypes': ServiceTypes,
                                     'Cities': cities,
+                                    'ReferralDischargeReason': None if not object.have_referral_charged else ReferralDischargeReason.objects.all(),
                                     },
                               context_instance=RequestContext(request)
                               )
@@ -231,7 +235,36 @@ def order(request, object_id=None, is_student=False):
             messages.error(request, _('<br />Active services: <b>%s</b>') % ', '.join([ i.name for i in object.resp_services.filter(active=True)] ))
             
             return HttpResponseRedirect('/careprofessional/%s/' % object.id)
-        object.active = False
+        
+        if not object.have_referral_charged():
+            object.active = False
+        else:
+            if request.method == 'POST':
+                ## set all upcoming occurrence as unmarked
+                for i in object.upcoming_occurrences():
+                    print i
+                    o = OccurrenceConfirmation()
+                    o.occurrence_id = i.id
+                    o.presence = 4 # unmarked
+                    o.save()
+
+                # discharge all active 
+                reason = get_object_or_404(ReferralDischargeReason, pk=request.POST.get('reason'))
+                for r in object.referrals_charged():
+                    if r.professional.all().count() > 1:
+                        # there is another professional on same referral
+                        # just remove it
+                        r.professional.filter(pk=object.pk).delete()
+                    else:
+                        # deative referral
+                        for c in r.client.all():
+                            rd = ReferralDischarge()
+                            rd.referral_id = r.pk
+                            rd.client_id = c.pk
+                            rd.reason_id = reason.pk
+                            rd.details = request.POST.get('details')
+                            rd.save()
+                object.active = False
     else:
         object.active = True
 

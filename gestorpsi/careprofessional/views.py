@@ -242,7 +242,6 @@ def order(request, object_id=None, is_student=False):
             if request.method == 'POST':
                 ## set all upcoming occurrence as unmarked
                 for i in object.upcoming_occurrences():
-                    print i
                     o = OccurrenceConfirmation()
                     o.occurrence_id = i.id
                     o.presence = 4 # unmarked

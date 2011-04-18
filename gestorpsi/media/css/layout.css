@@ -652,8 +652,6 @@ form input.submit {
         cursor: pointer;
 }
 
-
-
 .btn {
     padding: 5px 20px;
     margin-top: 22px;
@@ -1622,16 +1620,18 @@ div.login ul.errorlist li {
     margin-left: 0px;
 }
 
-div.form_as_ul li label {
+form li label {
     clear: both;
     display:block !important;
-    margin: 1px !important;
     margin-top: 5px !important;
     padding: 0px;
+   
 }
-div.form_as_ul li {
+form fieldset li {
     list-style: none;
-    margin: 3px !important;
+
+    float: left;
+    padding-left:5px;
 }
 
 div.read-only {

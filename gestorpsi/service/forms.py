@@ -23,8 +23,8 @@ from gestorpsi.organization.models import AgeGroup, EducationLevel, Hierarchical
 GENERIC_AREA = ('clinic', 'hospital', 'sport', 'forensic', 'legal', 'neuropsyc', 'social', 'traffic', 'psychomotor')
 class GenericAreaForm(forms.ModelForm):
     service_type = forms.ModelMultipleChoiceField(label=_("Service Type"), queryset=ServiceType.objects.all(), required=False, widget=forms.Select(attrs={'class':'giant asm'}))
-    modalities   = forms.ModelMultipleChoiceField(label=_("Modalities"), queryset=Modality.objects.all(), required=False, widget=forms.SelectMultiple(attrs={'class':'giant multiple asm'}))
-    age_group    = forms.ModelMultipleChoiceField(label=_("Age Group"), queryset=AgeGroup.objects.all(), required=False, widget=forms.SelectMultiple(attrs={'class':'giant multiple asm'}))
+    modalities   = forms.ModelMultipleChoiceField(label=_("Modalities"), queryset=Modality.objects.all(), required=False, widget=forms.CheckboxSelectMultiple())
+    age_group    = forms.ModelMultipleChoiceField(label=_("Age Group"), queryset=AgeGroup.objects.all(), required=False, widget=forms.CheckboxSelectMultiple())
 
     class Meta:
         model = Area
@@ -32,8 +32,8 @@ class GenericAreaForm(forms.ModelForm):
 
 class SchoolAreaForm(forms.ModelForm):
     service_type    = forms.ModelMultipleChoiceField(label=_("Service Type"), queryset=ServiceType.objects.all(), required=False, widget=forms.Select(attrs={'class':'giant asm'}))
-    modalities      = forms.ModelMultipleChoiceField(label=_("Modalities"), queryset=Modality.objects.all(), required=False, widget=forms.SelectMultiple(attrs={'class':'giant multiple asm'}))
-    education_level = forms.ModelMultipleChoiceField(label=_("Education Level"), queryset=EducationLevel.objects.all(), required=False, widget=forms.SelectMultiple(attrs={'class':'giant multiple asm'}))
+    modalities      = forms.ModelMultipleChoiceField(label=_("Modalities"), queryset=Modality.objects.all(), required=False, widget=forms.CheckboxSelectMultiple())
+    education_level = forms.ModelMultipleChoiceField(label=_("Education Level"), queryset=EducationLevel.objects.all(), required=False, widget=forms.CheckboxSelectMultiple())
     
     class Meta:
         model = Area
@@ -41,8 +41,8 @@ class SchoolAreaForm(forms.ModelForm):
 
 class OrganizationalAreaForm(forms.ModelForm):
     service_type       = forms.ModelMultipleChoiceField(label=_("Service Type"), queryset=ServiceType.objects.all(), required=False, widget=forms.Select(attrs={'class':'giant asm'}))
-    modalities         = forms.ModelMultipleChoiceField(label=_("Modalities"), queryset=Modality.objects.all(), required=False, widget=forms.SelectMultiple(attrs={'class':'giant multiple asm'}))
-    hierarchical_level = forms.ModelMultipleChoiceField(label=_("Hierarchical Level"), queryset=HierarchicalLevel.objects.all(), required=False, widget=forms.SelectMultiple(attrs={'class':'giant multiple asm'}))
+    modalities         = forms.ModelMultipleChoiceField(label=_("Modalities"), queryset=Modality.objects.all(), required=False, widget=forms.CheckboxSelectMultiple())
+    hierarchical_level = forms.ModelMultipleChoiceField(label=_("Hierarchical Level"), queryset=HierarchicalLevel.objects.all(), required=False, widget=forms.CheckboxSelectMultiple())
     
     class Meta:
         model = Area

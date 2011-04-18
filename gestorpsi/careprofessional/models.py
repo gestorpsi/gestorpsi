@@ -270,6 +270,7 @@ class CareProfessional(models.Model):
     url_form = property(_url_form)
 
     is_student = property(_is_student)
-reversion.register(CareProfessional, follow=['person', 'professionalIdentification', 'professionalProfile'])
+
+reversion.register(CareProfessional)
 
 

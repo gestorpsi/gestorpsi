@@ -129,18 +129,15 @@ GNU General Public License for more details.
 		<legend>{% trans "Service Profile" %}</legend>
         <label>{{area.area_name}} {#[ <a href="/service/add/{% if object.id %}{{ object.id }}/{% endif %}">Change Area</a> ]#}</label><br />
 
-        <div class="form_as_ul">
-            {{ form_area.as_ul }}
-        </div>
+		{{ form_area.as_ul }}
 
-		<label>{% trans "Profession" %}<br />
-		<select name="service_profession" multiple="multiple" {% if object.id %}disabled="disabled"{% endif %} class="high multiple giant">
-			{% for p in Professions %}
-				<option value="{{ p.id }}"{% for op in object.professions.all %}{% ifequal op.id p.id %} selected="selected"{% endifequal %}{% endfor %}>{{ p }}</option>
-			{% endfor %}			
-		</select>
-		</label>
-
+		<div style="clear:both;"></div>	
+		<li><label>{% trans "Profession" %}</label></li><br />
+		<ul>
+		{% for p in Professions %}
+		    <li><label><input{% if object.id %} disabled{% endif %}{% for op in object.professions.all %}{% ifequal op.id p.id %} checked{% endifequal %}{%endfor%} value="{{ p.pk }}" type="checkbox" name="service_profession" /> {{ p }}</label></li>
+		{% endfor %}
+		</ul>
     </fieldset>
 
 	
@@ -150,40 +147,37 @@ GNU General Public License for more details.
 	
 	<fieldset>
 		<legend>{% trans "Service Relations" %}</legend>
-	
-			<label>{% trans "Agreements" %}<br />
-			<span>
-			<select multiple="multiple" name="service_agreements" class="select multiple extrabig asm high">
-				{% for l in Agreements %}
-				<option value="{{ l.id }}"{% for oa in object.agreements.values_list %}{% ifequal oa.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{{ l }}</option>
-				{% endfor %}
-			</select>
-			</span>
-			</label>
-	
-			<label>{% trans "Related Professionals" %}<br />
-			<span>
-			<select multiple="multiple" name="service_professionals" class="select multiple extrabig asm high">
-				{% for l in CareProfessionals %}
-				<option value="{{ l.id }}"{% for or in object.professionals.values_list %}{% ifequal or.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{% trans "Professional" %} - {{ l }}{% if l.professionalIdentification.profession %} ({{ l.professionalIdentification.profession }}){% endif %}</option>
-				{% endfor %}
-				{% for l in Students %}
-				<option value="{{ l.id }}"{% for or in object.professionals.values_list %}{% ifequal or.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{% trans "Student" %} - {{ l }}{% if l.studentprofile.lecture_class.academic_name %} ({{ l.studentprofile.lecture_class.academic_name }}){% endif %}</option>
-				{% endfor %}
-			</select>
-			</span>
-			</label>
 
-			<label>{% trans "Professionals Responsible" %}<br />
-			<span>
-			<select multiple="multiple" name="service_responsibles" {% if object.id %}disabled="disabled"{% endif %} class="select multiple extrabig asm high">
-				{% for l in CareProfessionals %}
-				<option value="{{ l.id }}"{% for or in object.responsibles.values_list %}{% ifequal or.0 l.id %} selected="selected"{% endifequal %}{% endfor %}>{{ l }}{% if l.professionalIdentification.profession %} ({{ l.professionalIdentification.profession }}){% endif %}</option>
-				{% endfor %}
-			</select>
-			</span>
-			</label>
+		<div style="clear:both;"></div>	
+		<li><label>{% trans "Agreements" %}</label></li><br />
+		<ul>
+		{% for l in Agreements %}
+		    <li><label><input{% for oa in object.agreements.values_list %}{% ifequal oa.0 l.id %} checked{% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_agreements" /> {{ l }}</label></li>
+		{% endfor %}
+		</ul>
 		
+		<div style="clear:both;"></div>	
+		<li><label>{% trans "Related Professionals" %}</label></li><br />
+		<div class="overflow">
+		<ul>
+		{% for l in CareProfessionals %}
+		    <li><label><input{% for or in object.professionals.values_list %}{% ifequal or.0 l.id %} checked{% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_professionals" />{{ l }}{% if l.professionalIdentification.profession %} ({{ l.professionalIdentification.profession }}){% endif %}</label></li>
+		{% endfor %}
+		{% for l in Students %}
+		    <li><label><input{% for or in object.professionals.values_list %}{% ifequal or.0 l.id %} checked{% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_professionals" />{{ l }}{% if l.studentprofile.lecture_class.academic_name %} ({{ l.studentprofile.lecture_class.academic_name }}) - {% trans "Student" %}{% endif %}</label></li>
+		{% endfor %}
+		</ul>
+		</div>
+		
+		<div style="clear:both;"></div>	
+		<li><label>{% trans "Professionals Responsible" %}</label></li><br />
+		<div class="overflow">
+		<ul>
+		{% for l in CareProfessionals %}
+		    <li><label><input{% if object.id %} disabled{% endif %}{% for or in object.responsibles.values_list %}{% ifequal or.0 l.id %} checked{% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_responsibles" />{{ l }}{% if l.professionalIdentification.profession %} ({{ l.professionalIdentification.profession }}){% endif %}</label></li>
+		{% endfor %}
+		</ul>
+		</div>
 	</fieldset>	
 	
 	<!--

@@ -254,7 +254,7 @@ def order(request, object_id=None, is_student=False):
                     if r.professional.all().count() > 1:
                         # there is another professional on same referral
                         # just remove it
-                        r.professional.filter(pk=object.pk).delete()
+                        r.professional.remove(object)
                     else:
                         # deative referral
                         for c in r.client.all():

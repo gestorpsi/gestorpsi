@@ -55,7 +55,7 @@ GNU General Public License for more details.
            <label>{% trans "Indication done by" %}<br />
                 <select name="indication" class="big toggle_parent_label">
                         {% for o in IndicationsChoices %}
-                                <option value="{{ o.id }}" {% ifequal o.id referral.indication_set.all.0.indication_choice_id %} selected{% endifequal %}>{{ o }}</option>
+                                <option value="{{ o.id }}" nick={{ o.nick }} {% ifequal o.id referral.indication_set.all.0.indication_choice_id %} selected{% endifequal %}>{{ o }}</option>
                         {% endfor %}
                 </select>
            </label>

@@ -586,8 +586,8 @@ $(function() {
          $(select).parents('fieldset').children('label.hidden').hide();
          $(this).children('option').each(function() {
              if($(this).attr('selected')) {
-                 if($(this).attr('label')) {
-                     var class_name = $(this).attr('label');
+                 if($(this).attr('nick')) {
+                     var class_name = $(this).attr('nick');
                      $(select).parents('fieldset').children('label.'+class_name).show();
                  }
              }

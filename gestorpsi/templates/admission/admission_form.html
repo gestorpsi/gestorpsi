@@ -70,7 +70,7 @@ GNU General Public License for more details.
         <label>{% trans "How the client heard about this organization?" %}<br />
                 <select name="referral" class="big toggle_parent_label">
                         {% for o in ReferralChoices %}
-                                <option value="{{ o.id }}" label="{{ o.nick }}" {% ifequal o.id object.admissionreferral_set.all.0.referral_choice_id %} selected{% endifequal %}>{{ o }}</option>
+                                <option value="{{ o.id }}" {% ifequal o.id object.admissionreferral_set.all.0.referral_choice_id %} selected{% endifequal %}>{{ o }}</option>
                         {% endfor %}
                 </select>
         </label>

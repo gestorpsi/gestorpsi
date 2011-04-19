@@ -710,8 +710,11 @@ textarea.extrabig {
 
 select {
 padding: 3px 7px 3px 3px;
-        font-size:16px;
+        font-size:14px;
 }
+select option { margin: 2px 0 2px 10px; border-bottom: 1px solid #ddd; }
+select optgroup { margin: 5px 0px 10px 5px;}
+
 select.small {
         width: 85px;
 }

@@ -55,7 +55,7 @@ GNU General Public License for more details.
            <label>{% trans "Indication done by" %}<br />
                 <select name="indication" class="big toggle_parent_label">
                         {% for o in IndicationsChoices %}
-                                <option value="{{ o.id }}" label="{{ o.nick }}" {% ifequal o.id referral.indication_set.all.0.indication_choice_id %} selected{% endifequal %}>{{ o }}</option>
+                                <option value="{{ o.id }}" {% ifequal o.id referral.indication_set.all.0.indication_choice_id %} selected{% endifequal %}>{{ o }}</option>
                         {% endfor %}
                 </select>
            </label>
@@ -63,10 +63,17 @@ GNU General Public License for more details.
         <div class="admission_ind_org" {% ifnotequal referral.indication_set.all.0.indication_choice_id 3 %} style="display:none;" {% endifnotequal %} >
          <label class="organization">{% trans "Select Organization" %} {% if not referral %}, {% trans "or" %} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a>{% endif %}<br />
           <select name="indication_organization" class="select extrabig asm">
-                <option>Escolha...</option>
+               <option>{% trans "Select Organization"%}...</option>
+               <optgroup label="{% trans "Local Contacts" %}">
                 {% for org in contact_organizations %}
                     <option value="{{ org.id }}" {% ifequal org.id referral.indication_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org }}</option>
                 {% endfor %}
+                </optgroup>
+                <optgroup label="{% trans "External Contacts" %}">
+                {% for org in contact_organizations_external %}
+                    <option value="{{ org.id }}" {% ifequal org.id referral.indication_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org|upper }}</option>
+                {% endfor %}
+                </optgroup>
           </select>
          </label>
         </div>
@@ -74,10 +81,17 @@ GNU General Public License for more details.
         <div class="admission_ind_prof" {% ifnotequal referral.indication_set.all.0.indication_choice_id 4 %} style="display:none;" {% endifnotequal %} >
          <label class="professional">{% trans "Select Professional" %} {% if not referral %}, {% trans "or" %} <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a>{% endif %}<br />
           <select name="indication_professional" class="select extrabig asm">
-                <option>Escolha...</option>
+               <option>{% trans "Select Professional"%}...</option>
+               <optgroup label="{% trans "Local Contacts" %}">
                 {% for prof in contact_professionals %}
                     <option value="{{ prof.id }}" {% ifequal prof.id referral.indication_set.all.0.referral_professional_id %} selected {% endifequal %}>{{ prof }}</option>
                 {% endfor %}
+                </optgroup>
+                <optgroup label="{% trans "External Contacts" %}">
+                {% for prof in contact_professionals_external %}
+                    <option value="{{ prof.id }}" {% ifequal prof.id referral.indication_set.all.0.referral_professional_id %} selected {% endifequal %}>{{ prof|upper }}</option>
+                {% endfor %}
+                </optgroup>
           </select>
          </label>
         </div>

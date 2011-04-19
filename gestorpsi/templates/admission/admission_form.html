@@ -81,10 +81,17 @@ GNU General Public License for more details.
         <label 	class="organization"> {% trans "Select Organization, or"%}
              <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a><br />
               <select name="referral_organization" class="select extrabig asm">
-               <option>Escolha...</option>
+               <option>{% trans "Select Organization"%}...</option>
+               <optgroup label="{% trans "Local Contacts" %}">
                 {% for org in contact_organizations %}
                     <option value="{{ org.id }}" {% ifequal org.id object.admissionreferral_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org }}</option>
                 {% endfor %}
+                </optgroup>
+                <optgroup label="{% trans "External Contacts" %}">
+                {% for org in contact_organizations_external %}
+                    <option value="{{ org.id }}" {% ifequal org.id object.admissionreferral_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org|upper }}</option>
+                {% endfor %}
+                </optgroup>
               </select>
         </label>
         </div>
@@ -93,10 +100,17 @@ GNU General Public License for more details.
         <label 	class="professional"> {% trans "Select Professional, or"%}
              <a class="form_mini" display="address_book_professional_mini">{% trans "add a new one" %}</a><br />
               <select name="referral_professional" class="select extrabig asm">
-               <option>Escolha...</option>
+               <option>{% trans "Select Professional"%}...</option>
+               <optgroup label="{% trans "Local Contacts" %}">
                 {% for prof in contact_professionals %}
                     <option value="{{ prof.id }}" {% ifequal prof.id object.admissionreferral_set.all.0.referral_professional_id %} selected {% endifequal %}>{{ prof }}</option>
                 {% endfor %}
+                </optgroup>
+                <optgroup label="{% trans "External Contacts" %}">
+                {% for prof in contact_professionals_external %}
+                    <option value="{{ prof.id }}" {% ifequal prof.id object.admissionreferral_set.all.0.referral_professional_id %} selected {% endifequal %}>{{ prof|upper }}</option>
+                {% endfor %}
+                </optgroup>
               </select>
         </label>
         </div>

@@ -47,13 +47,25 @@ def form(request, object_id=''):
         'types': ATTACH_TYPE,
         'attachs': attachs,
         'org_id': request.user.get_profile().org_active.id,
-        'contact_organizations':  Contact.objects.filter(
+        'contact_organizations':  Contact.objects.filter_internal(
                         org_id = request.user.get_profile().org_active.id, 
                         person_id = request.user.get_profile().person.id, 
                         filter_name = None,
                         filter_type = 1
                     ),
-        'contact_professionals': Contact.objects.filter(
+        'contact_professionals': Contact.objects.filter_internal(
+                        org_id = request.user.get_profile().org_active.id, 
+                        person_id = request.user.get_profile().person.id, 
+                        filter_name = None,
+                        filter_type = 2
+                    ),
+        'contact_organizations_external':  Contact.objects.filter_external(
+                        org_id = request.user.get_profile().org_active.id, 
+                        person_id = request.user.get_profile().person.id, 
+                        filter_name = None,
+                        filter_type = 1
+                    ),
+        'contact_professionals_external': Contact.objects.filter_external(
                         org_id = request.user.get_profile().org_active.id, 
                         person_id = request.user.get_profile().person.id, 
                         filter_name = None,

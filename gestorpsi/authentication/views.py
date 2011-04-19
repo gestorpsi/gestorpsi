@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -29,7 +29,7 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.views import login as django_login
 from gestorpsi.settings import SITE_DISABLED
 from gestorpsi.organization.models import Organization
-from gestorpsi.settings import DEBUG
+from gestorpsi.settings import DEBUG, ADMIN_URL
 from gestorpsi.authentication.forms import RegistrationForm
 
 # login_check decorator
@@ -61,6 +61,9 @@ def user_authentication(request):
             set_trylogin(username)
             form_messages = _('Invalid username or password')
             return render_to_response('registration/login.html', {'form': form, 'form_messages': form_messages })
+
+        if user.is_staff or user.is_superuser:
+            return HttpResponseRedirect(ADMIN_URL)
         
         # user has not confirmed registration yet
         if user.registrationprofile_set.all()[0].activation_key != 'ALREADY_ACTIVATED':
@@ -162,18 +165,18 @@ def change_password(user,current_password, new_password):
         user.save()
         user.get_profile().org_active = org       
     
-def unblocked_user(user):
-    filtered_user = User.objects.filter(username=user)
-    if(len(filtered_user)):
-        found_user = filtered_user[0]
-        profile = found_user.get_profile()
-        value = profile.try_login
-        if (value >= settings.PASSWORD_RETIRES):            
-            return False
-        else:            
-            return True
-    else:
+def unblocked_user(username):
+    user = get_object_or_404(User, username=username)
+    
+    if user.is_staff or user.is_superuser:
         return True
+    
+    profile = user.get_profile()
+    value = profile.try_login
+    if (value >= settings.PASSWORD_RETIRES):            
+        return False
+    
+    return True
 
 '''
 from django-registration

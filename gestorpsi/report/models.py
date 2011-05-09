@@ -274,7 +274,7 @@ class ReportAdmissionManager(models.Manager):
 
         return data
 
-    def clients(self,  user,  date_start, date_end, view, filter):
+    def clients(self,  user,  date_start, date_end, view, filter, service=None):
         """
         return a list of clients from selected report and selected range
         """

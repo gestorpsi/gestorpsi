@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from datetime import datetime
 from django import forms
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template import RequestContext
@@ -126,6 +126,9 @@ def demand_form(request, client_id, referral_id, demand_id=0):
 
     demand = get_object_or_None(Demand, pk=demand_id) or Demand()
 
+    if demand.pk and demand.referral.service.organization != request.user.get_profile().org_active:
+        raise Http404
+
     demand_form = DemandForm(instance=demand)
     demand_form.fields['occurrence'].queryset = referral.occurrences()
     
@@ -155,6 +158,10 @@ def demand_save(request, client_id, referral_id, demand_id=0):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     demand = get_object_or_None(Demand, pk=demand_id) or Demand()
+
+    if demand.pk and demand.referral.service.organization != request.user.get_profile().org_active:
+        raise Http404
+
     if demand.edit_status in ('2', '4'):
         request.user.message_set.create(message=_("You cannot change a confirmed demand."))
         return HttpResponseRedirect('/client/%s/%s/demand/%s/?clss=error' % (client_id, referral_id, demand.id))
@@ -240,6 +247,9 @@ def diagnosis_form(request, client_id, referral_id, diagnosis_id=0):
 
     diagnosis = get_object_or_None(Diagnosis, pk=diagnosis_id) or Diagnosis()
 
+    if diagnosis.pk and diagnosis.referral.service.organization != request.user.get_profile().org_active:
+        raise Http404
+
     diagnosis_form = DiagnosisForm(instance=diagnosis, label_suffix='')
     if not diagnosis.diagnosis_date:
         diagnosis_form.initial = {'diagnosis_date': datetime.strftime(datetime.now(), "%d/%m/%Y")}
@@ -262,6 +272,10 @@ def diagnosis_save(request, client_id, referral_id, diagnosis_id=0):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     diagnosis = get_object_or_None(Diagnosis, pk=diagnosis_id) or Diagnosis()
+
+    if diagnosis.pk and diagnosis.referral.service.organization != request.user.get_profile().org_active:
+        raise Http404
+
     if diagnosis.edit_status in ('2', '4'):
         request.user.message_set.create(message=_("You cannot change a confirmed diagnosis."))
         return HttpResponseRedirect('/client/%s/%s/diagnosis/%s/?clss=error' % (client_id, referral_id, diagnosis.id))
@@ -295,9 +309,9 @@ def session_list(request, client_id, referral_id):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
-    sessions = referral.session_set.all()
-    if not sessions:
-        return HttpResponseRedirect('/client/%s/%s/session/add/' % (client.id, referral.id))
+    sessions = referral.session_set.all().order_by('occurrence__start_time')
+    #if not sessions:
+        #return HttpResponseRedirect('/client/%s/%s/session/add/' % (client.id, referral.id))
 
     return render_to_response('ehr/ehr_session_list.html', {
                                     'object': client,
@@ -321,8 +335,16 @@ def session_form(request, client_id, referral_id, session_id=0):
 
     session = get_object_or_None(Session, pk=session_id) or Session()
 
+    if session.pk and session.referral.service.organization != request.user.get_profile().org_active:
+        raise Http404
+
     session_form = SessionForm(instance=session)
-    session_form.fields['occurrence'].queryset = referral.occurrences().filter(session=None) if session_id==0 else referral.occurrences()
+    if not request.GET.get('o'):
+        session_form.fields['occurrence'].queryset = referral.occurrences().filter(session=None) if session_id==0 else referral.occurrences()
+    else:
+        session_form.fields['occurrence'].queryset = referral.occurrences().filter(pk=request.GET.get('o'))
+        session_form.fields['occurrence'].initial = request.GET.get('o')
+        
     return render_to_response('ehr/ehr_session_form.html', {
                                     'object': client,
                                     'referral': referral,
@@ -341,6 +363,10 @@ def session_save(request, client_id, referral_id, session_id=0):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     session = get_object_or_None(Session, pk=session_id) or Session()
+
+    if session.pk and session.referral.service.organization != request.user.get_profile().org_active:
+        raise Http404
+
     if session.edit_status in ('2', '4'):
         request.user.message_set.create(message=_("You cannot change a confirmed session."))
         return HttpResponseRedirect('/client/%s/%s/session/%s/?clss=error' % (client_id, referral_id, session.id))

@@ -73,7 +73,7 @@ class AcademicResume(models.Model):
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
-reversion.register(AcademicResume, follow='institutionType')
+reversion.register(AcademicResume)
 
 class Profession(models.Model):
     """    
@@ -128,7 +128,7 @@ class ProfessionalProfile(models.Model):
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
-reversion.register(ProfessionalProfile, follow=['academicResume', 'agreement', 'profession', 'workplace'])
+reversion.register(ProfessionalProfile)
 
 class LicenceBoard(models.Model):
     """

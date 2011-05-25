@@ -246,6 +246,6 @@ class Company(models.Model):
         return None
     cnae_class_name = property(_cnae_class_name)
 
-reversion.register(Company, follow=['person','client'])
+reversion.register(Company)
 reversion.register(CompanyClient)
-reversion.register(Person, follow=['phones','address', 'emails', 'sites', 'instantMessengers'])
+#reversion.register(Person)

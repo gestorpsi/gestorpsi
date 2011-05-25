@@ -51,7 +51,10 @@ for g in Group.objects.all():
 print "Installing system groups..."
 
 for appname in appnames:
-    print "app %s " % appname
+    print "%s_list" % appname
+    print "%s_read" % appname
+    print "%s_write" % appname
+    
     ct, created = ContentType.objects.get_or_create(model='', app_label=appname, defaults={'name': appname})
     Permission.objects.get_or_create(codename='%s_list' % appname, name='%s List' % appname.capitalize(), content_type=ct)
     Permission.objects.get_or_create(codename='%s_read' % appname, name='%s Read' % appname.capitalize(), content_type=ct)

@@ -20,7 +20,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template import RequestContext
-
+from django.utils import simplejson
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.ehr.forms import DemandForm, DiagnosisForm, TimeUnitForm, SessionForm
@@ -28,6 +28,7 @@ from gestorpsi.ehr.models import Demand, Diagnosis, TimeUnit, Session
 from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.client.models import Client
 from gestorpsi.referral.models import Referral
+from gestorpsi import settings
 
 def _access_ehr_check_read(request, object=None):
     """
@@ -309,18 +310,36 @@ def session_list(request, client_id, referral_id):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
-    sessions = referral.session_set.all().order_by('occurrence__start_time')
+    #sessions = referral.session_set.all().order_by('occurrence__start_time')
     #if not sessions:
         #return HttpResponseRedirect('/client/%s/%s/session/add/' % (client.id, referral.id))
 
     return render_to_response('ehr/ehr_session_list.html', {
                                     'object': client,
                                     'referral': referral,
-                                    'sessions': sessions,                              
                                     }, context_instance=RequestContext(request))
 
-@permission_required_with_403('ehr.ehr_read')
+@permission_required_with_403('ehr.ehr_list')
+def session_item_html(request, client_id, referral_id, session_id):
+    client = get_object_or_404(Client, pk=client_id, person__organization=request.user.get_profile().org_active)
+
+    # check if logged user can read it
+    if not _access_ehr_check_read(request, client):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
+    occurrence = referral.session_set.get(pk=session_id).occurrence
+
+    return render_to_response('ehr/ehr_session_list_item.html', {
+                                    'occurrence': occurrence,
+                                    'object': client,
+                                    'referral': referral,
+                                    }, context_instance=RequestContext(request))
+
+@permission_required_with_403('ehr.ehr_write')
 def session_form(request, client_id, referral_id, session_id=0):
+    if not settings.DEBUG and not request.is_ajax(): raise Http404
+
     client = get_object_or_404(Client, pk=client_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
 
@@ -337,56 +356,105 @@ def session_form(request, client_id, referral_id, session_id=0):
 
     if session.pk and session.referral.service.organization != request.user.get_profile().org_active:
         raise Http404
+    
+    if request.method == 'POST':
+        if session.edit_status in ('2', '4'):
+            request.user.message_set.create(message=_("You cannot change a confirmed session."))
+            return HttpResponseRedirect('/client/%s/%s/session/%s/?clss=error' % (client_id, referral_id, session.id))
 
-    session_form = SessionForm(instance=session)
-    if not request.GET.get('o'):
-        session_form.fields['occurrence'].queryset = referral.occurrences().filter(session=None) if session_id==0 else referral.occurrences()
-    else:
-        session_form.fields['occurrence'].queryset = referral.occurrences().filter(pk=request.GET.get('o'))
-        session_form.fields['occurrence'].initial = request.GET.get('o')
-        
-    return render_to_response('ehr/ehr_session_form.html', {
-                                    'object': client,
-                                    'referral': referral,
-                                    'session_form': session_form,
-                                    'clss':request.GET.get('clss'),
-                                    'have_perms_to_write': have_perms_to_write,
-                                    }, context_instance=RequestContext(request))
+        form = SessionForm(request.POST, instance=session, initial={'occurrence':request.POST.get('occurrence')})
+        form.fields['occurrence'].queryset = referral.occurrences().filter(session=None) if session_id==0 else referral.occurrences()
+        form.fields['occurrence'].widget = forms.HiddenInput()
+        if not form.is_valid():
+            return render_to_response('ehr/ehr_session_form.html', {
+                                            'object': client,
+                                            'referral': referral,
+                                            'session': session,
+                                            'form': form,
+                                            'clss':request.GET.get('clss'),
+                                            'have_perms_to_write': have_perms_to_write,
+                                            }, context_instance=RequestContext(request))
 
-@permission_required_with_403('ehr.ehr_write')
-def session_save(request, client_id, referral_id, session_id=0):
-    client = get_object_or_404(Client, pk=client_id, person__organization=request.user.get_profile().org_active)
-    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
+        else:
+            session = form.save(commit=False)
+            session.client_id = client.id
+            session.referral_id = referral.id
+            session.occurrence_id = ScheduleOccurrence.objects.get(pk=request.POST.get('occurrence')).id
 
-    # check if logged user can write it
-    if not _access_ehr_check_write(request, referral):
-        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+            """ need check who saved the session: professional or student """
+            if 1==1:    # <- if professional
+                session.edit_status = '3' if request.POST.get('draft') == 'is_draft' else '4'
+            else:       # <- if student
+                session.edit_status = '1' if request.POST.get('draft') == 'is_draft' else '2'
 
-    session = get_object_or_None(Session, pk=session_id) or Session()
+            session.save()
+            #request.user.message_set.create(message=_('Session saved successfully'))
+            url = '/client/%s/%s/session/%s/item/' % (client_id, referral_id, session.pk)
+            return HttpResponse(simplejson.dumps({'occurrence_pk':request.POST.get('occurrence'), 'url':url}))
 
-    if session.pk and session.referral.service.organization != request.user.get_profile().org_active:
-        raise Http404
+    else: # NO POST 
+        if request.GET.get('o') or session.pk:
+            occurrence_pk = session.occurrence if session.pk else request.GET.get('o')
+            form = SessionForm(instance=session, initial={'occurrence':occurrence_pk})
+        else:
+            form = SessionForm(instance=session)
+            
+        form.fields['occurrence'].queryset = referral.occurrences().filter(session=None) if session_id==0 else referral.occurrences()
+        form.fields['occurrence'].widget = forms.HiddenInput()
+            
+        return render_to_response('ehr/ehr_session_form.html', {
+                                        'object': client,
+                                        'referral': referral,
+                                        'session': session,
+                                        'form': form,
+                                        'clss':request.GET.get('clss'),
+                                        'have_perms_to_write': have_perms_to_write,
+                                        }, context_instance=RequestContext(request))
 
-    if session.edit_status in ('2', '4'):
-        request.user.message_set.create(message=_("You cannot change a confirmed session."))
-        return HttpResponseRedirect('/client/%s/%s/session/%s/?clss=error' % (client_id, referral_id, session.id))
+#@permission_required_with_403('ehr.ehr_write')
+#def session_save(request, client_id, referral_id, session_id=0):
+    #client = get_object_or_404(Client, pk=client_id, person__organization=request.user.get_profile().org_active)
+    #referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
 
-    session_form = SessionForm(request.POST, instance=session)
-    if not session_form.is_valid():
-        request.user.message_set.create(message=_('Choosen occurence already in use by another session.')) if session_form.errors.get('occurrence') else request.user.message_set.create(message=_("There's been an error in session form."))
-        return HttpResponseRedirect('/client/%s/%s/session/%s/?clss=error' % (client_id, referral_id, session.id)) if session.id else HttpResponseRedirect('/client/%s/%s/session/add/?clss=error' % (client_id, referral_id))
+    ## check if logged user can write it
+    #if not _access_ehr_check_write(request, referral):
+        #return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+    #else:
+        #have_perms_to_write = True
 
-    session = session_form.save(commit=False)
-    session.client_id = client.id
-    session.referral_id = referral.id
-    session.occurrence_id = ScheduleOccurrence.objects.get(pk=request.POST.get('occurrence')).id
+    #session = get_object_or_None(Session, pk=session_id) or Session()
 
-    """ need check who saved the session: professional or student """
-    if 1==1:    # <- if professional
-        session.edit_status = '3' if request.POST.get('draft') == 'is_draft' else '4'
-    else:       # <- if student
-        session.edit_status = '1' if request.POST.get('draft') == 'is_draft' else '2'
+    #if session.pk and session.referral.service.organization != request.user.get_profile().org_active:
+        #raise Http404
 
-    session.save()
-    request.user.message_set.create(message=_('Session saved successfully'))
-    return HttpResponseRedirect('/client/%s/%s/session/%s/' % (client_id, referral_id, session.id))
+    #if session.edit_status in ('2', '4'):
+        #request.user.message_set.create(message=_("You cannot change a confirmed session."))
+        #return HttpResponseRedirect('/client/%s/%s/session/%s/?clss=error' % (client_id, referral_id, session.id))
+
+    #form = SessionForm(request.POST, instance=session)
+    #if not form.is_valid():
+        #return render_to_response('ehr/ehr_session_form.html', {
+                                        #'object': client,
+                                        #'referral': referral,
+                                        #'session': session,
+                                        #'form': form,
+                                        #'clss':request.GET.get('clss'),
+                                        #'have_perms_to_write': have_perms_to_write,
+                                        #}, context_instance=RequestContext(request))
+        ##request.user.message_set.create(message=_('Choosen occurence already in use by another session.')) if form.errors.get('occurrence') else request.user.message_set.create(message=_("There's been an error in session form."))
+        ##return HttpResponseRedirect('/client/%s/%s/session/%s/?clss=error' % (client_id, referral_id, session.id)) if session.id else HttpResponseRedirect('/client/%s/%s/session/add/?clss=error' % (client_id, referral_id))
+
+    #session = form.save(commit=False)
+    #session.client_id = client.id
+    #session.referral_id = referral.id
+    #session.occurrence_id = ScheduleOccurrence.objects.get(pk=request.POST.get('occurrence')).id
+
+    #""" need check who saved the session: professional or student """
+    #if 1==1:    # <- if professional
+        #session.edit_status = '3' if request.POST.get('draft') == 'is_draft' else '4'
+    #else:       # <- if student
+        #session.edit_status = '1' if request.POST.get('draft') == 'is_draft' else '2'
+
+    #session.save()
+    #request.user.message_set.create(message=_('Session saved successfully'))
+    #return HttpResponse('/client/%s/%s/session/%s/item/' % (client_id, referral_id, session_id))

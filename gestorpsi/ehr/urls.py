@@ -17,17 +17,16 @@ GNU General Public License for more details.
 from django.conf.urls.defaults import *
 from django.contrib.auth.decorators import login_required
 from gestorpsi.authentication.views import login_check
-from gestorpsi.ehr.views import session_list, session_form, session_save, \
+from gestorpsi.ehr.views import session_list, session_form, \
                                 diagnosis_list, diagnosis_form, diagnosis_save, \
-                                demand_list, demand_form, demand_save
+                                demand_list, demand_form, demand_save, session_item_html
 
 urlpatterns = patterns('',
     # Session's URL
     (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/session/$', login_check(session_list)),
+    (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/session/(?P<session_id>\d+)/item/$', login_check(session_item_html)),
     (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/session/add/$', login_check(session_form)),
     (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/session/(?P<session_id>\d+)/$', login_check(session_form)),
-    (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/session/save/$', login_check(session_save)),
-    (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/session/(?P<session_id>\d+)/save/$', login_check(session_save)),
 
     # Diagnosis's URL
     (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/diagnosis/$', login_check(diagnosis_list)),

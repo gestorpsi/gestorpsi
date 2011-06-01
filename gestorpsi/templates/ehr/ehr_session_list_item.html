@@ -1,0 +1,32 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% with occurrence as i %}
+{% if not i.have_session %}
+    {{ i }} <small>{{ i.occurrenceconfirmation.get_presence_display }}</small><a class="load" element="#dialog" href="/client/{{ object.pk }}/{{ referral.pk }}/session/add/?o={{ i.pk }}">{% trans "Register Session" %}</a>
+{% else %}
+    {{ i }}<small><b>{{ i.session.get_session_goals_display }}</b> - {{ i.session.get_edit_status_display }}</small><a class="item_description pointer">{% trans "View" %}</a>{% if i.session.edit_status != '4' %}<a class="load" element="#dialog" href="/client/{{ object.id }}/{{ referral.id }}/session/{{ i.session.id }}/">{% trans "Edit" %}</a>{% endif %}
+        <div class="description hidden">
+            <div class="quote">
+                <p>{{ i.session.descriptive }}</p>
+                <p class="comments">{{ i.session.comments }}</p>
+            </div>
+        </div>
+{% endif %}
+{% endwith %}
+

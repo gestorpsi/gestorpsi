@@ -335,6 +335,15 @@ class Referral(Event):
             return g.group if g else None
     
     group = property(_group)
+    
+    def occurrences_without_session(self):
+        return self.occurrences().exclude(session__isnull=False).order_by('-start_time')
+
+    def occurrences_without_demand(self):
+        return self.occurrences().exclude(demand__isnull=False)
+
+    def occurrences_without_diagnosis(self):
+        return self.occurrences().exclude(diagnosis__isnull=False).order_by('-start_time')
 
 class ReferralDischarge(models.Model):
     id = UuidField(primary_key=True)

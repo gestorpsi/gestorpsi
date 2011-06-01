@@ -40,6 +40,18 @@ $(document).ready(function() {
         $(element).load($(this).attr('href'));
         return false;
     });
+    
+    
+    /**
+     * generic metho to load href into DOM element
+     */
+    
+    $('a.load').live('click', function() {
+        $($(this).attr('element')).load($(this).attr('href'));
+        $($(this).attr('element')).show();
+        $.scrollTo(0,0, {duration:300});
+        return false;
+    });
 });
 
 /**

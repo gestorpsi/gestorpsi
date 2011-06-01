@@ -1,0 +1,50 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+
+{# need to check who saved: professional or student #}
+{% if not form.instance.id %}
+    <label>
+    <input type="radio" name="draft" value="is_draft" checked="checked" /> {% trans "Save as draft" %}
+    </label>
+    <label>
+    <input type="radio" name="draft" value="not_draft"  /> {% trans "Save and finish" %}
+    </label>
+{% endif %}
+{% ifequal form.instance.edit_status '3' %}
+    <label>
+    <input type="radio" name="draft" value="is_draft" checked="checked" />&nbsp;{% trans "Save as draft" %}
+    </label>
+    <label>
+    <input type="radio" name="draft" value="not_draft"  />&nbsp;{% trans "Save and finish" %}
+    </label>
+{% else %}
+    {{ form.instance.get_edit_status_display }}
+{% endifequal %}
+
+<div style="clear:both"></div>
+<div class="float_right">
+<button class="submit" onclick="$('div#dialog, #over').hide();return false;">{% trans "Cancel" %}</button>
+{% if perms.ehr.ehr_write and have_perms_to_write %}
+
+{# need to check who saved: professional or student #}
+{% if form.instance.edit_status == '3' or not form.instance.id %}
+<input type="submit" name="submit" class="submit" value="{% trans "Save" %}" />
+{% endif %}
+{% endif %}
+</div>

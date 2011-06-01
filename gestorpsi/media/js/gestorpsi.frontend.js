@@ -149,6 +149,25 @@ $(function(){
             $("div#mini_calendar").toggle();
         });
 
+        /**
+         * display hide items in ehr
+         */
+
+        $('a.item_description').live('click', function() {
+            $(this).parent('li').children('div.description:hidden').effect('blind', {'mode':'show'}, 100);
+            $(this).parent('li').children('div.description:not(hidden)').hide();
+        });
+
+        $('a.item_description_all').click(function() {
+            if(!$(this).hasClass('opened')) {
+                $('li div.description').effect('blind', {'mode':'show'}, 300);
+                $(this).addClass('opened');
+            } else {
+                $('li div.description').hide();
+                $(this).removeClass('opened');                
+            }
+        });
+
 
 });
 

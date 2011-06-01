@@ -97,7 +97,7 @@ class ScheduleOccurrence(Occurrence):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
     def __unicode__(self):
-        return u"%s - %s" % (datetime.strftime(self.start_time, '%d/%m/%Y %H:%M'), datetime.strftime(self.end_time, '%H:%M'))
+        return u"%s" % (datetime.strftime(self.start_time, '%d/%m/%Y %H:%M'))
 
     def have_company(self):
         have_company = False
@@ -111,6 +111,21 @@ class ScheduleOccurrence(Occurrence):
     
     def employees_active(self):
         return self.occurrenceemployees.client.filter(active=True)
+    
+    def have_session(self):
+        if hasattr(self, 'session'):
+            return True
+        return False
+    
+    def have_demand(self):
+        if hasattr(self, 'demand'):
+            return True
+        return False
+    
+    def have_diagnosis(self):
+        if hasattr(self, 'diagnosis'):
+            return True
+        return False
 
 class OccurrenceConfirmation(models.Model):
     occurrence = models.OneToOneField(ScheduleOccurrence)

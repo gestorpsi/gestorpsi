@@ -1,4 +1,3 @@
-{% extends "core/main.html" %}
 
 {% comment %}
 
@@ -18,50 +17,29 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-{% block menu_client %}active{% endblock %}
-
-{% block submenu %}
-    {% include "client/client_menu.html" %}
-{% endblock %}
-
-{% block core %}
-<input type="hidden" name="object_id" value="{{ object.id }}" />
-
-<h2 id="title_addressbook" style="display:none"></h2>
-
-<h2 class="title_clients title">{{ object.person.name }}</h2>
-
-</p>
-<h2 id="title_contacts" style="display:none"></h2>
-<h2 id="title_myoffice" style="display:none"></h2>
-
-<form action="/client/{{ object.id }}/{{ referral.id }}/session/{% if session_form.instance.id %}{{ session_form.instance.id }}/{% endif %}save/" method="post" class="form_session">
-
-<div class="main_area home">
-<h3><span id="client_add_infotypes">{% trans "Session" %}</span></h3>
-<p>
-
-<fieldset>
-    <legend>{% trans "Session" %}</legend>
-    <div class="form_as_ul">
-        {{ session_form.as_ul }}
-    </div>
-</fieldset>
-</p>
-<p></p>
-</div>
-
-<div id="sidebar" class="sidebar">
-    {% if perms.ehr.ehr_write and have_perms_to_write %}
-        <div class="bg_blue">
-            {% include "ehr/ehr_session_save.html" %}
-        </div>    
-    {% endif %}
-
-    {% if object.id %}
-        {% include "tags/client_sidebar.html" %}
-    {% endif %}
-</div>
+<form class="form_ajax" action="/client/{{ object.id }}/{{ referral.id }}/session/{% if form.instance.id %}{{ form.instance.id }}{% else %}add{% endif %}/" method="post">
+    <h2>{% trans "Editing Session" %}</h2>
+    {% for field in form %}
+        {% include "tags/dialog_form.html" %}
+    {% endfor %}
+    {% include "ehr/ehr_save_button.html" %}
 </form>
 
-{% endblock %}
+<script>
+function processJson(data) {
+    $('li#occurrence_'+data.occurrence_pk).load(data.url);
+    $('div#dialog').hide();
+    $('li#occurrence_'+data.occurrence_pk).hide();
+    $('li#occurrence_'+data.occurrence_pk).fadeIn();
+}
+
+$(function() {
+    $('form.form_ajax').ajaxForm({ 
+        target: 'div#dialog',
+        dataType:  'json',
+        success:   processJson
+    });
+    return false;
+});
+</script>
+

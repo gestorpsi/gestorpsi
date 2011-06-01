@@ -27,22 +27,6 @@ GNU General Public License for more details.
 
 <input class="save_button" name="cancel" id="cancel_button" type="button" value="{% trans 'Back' %}" onclick="javascript:history.go(-1)" />
 
-{% comment %}
-<div id="msg_info">
-    <p>
-        {# need to check who saved the session: professional or student #}
-        {% if not session_form.instance.id %}
-            <span><input type="checkbox" name="draft" checked />  {% trans "Save Draft" %}</span>
-        {% endif %}
-        {% ifequal session_form.instance.edit_status '3' %}
-            <span><input type="checkbox" name="draft" checked />  {% trans "Save Draft" %}</span>
-        {% else %}
-            <span>{{ session_form.instance.get_edit_status_display }}</span>
-        {% endifequal %}
-	</p>
-</div>
-{% endcomment %}
-
 <div id="msg_info">
     <p>
         {# need to check who saved the session: professional or student #}

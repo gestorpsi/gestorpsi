@@ -53,9 +53,11 @@ GNU General Public License for more details.
         <p class="comments">{{ i.comments }}</p>
         {% endif %}
         
+        {% if i.occurrence %}
         <p class="comments">
         {% trans "registered in" %} {{ i.occurrence.start_time|date:"d/m/Y" }}
         </p>
+        {% endif %}
     </div>
 </div>
 

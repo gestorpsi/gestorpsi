@@ -1678,6 +1678,21 @@ div.referral_box a.service_title {margin-left:6px !important; font-size:16px; }
 div.referral_box a { font-size:12px;}
 
 /**
+ * big list - list with big fonts
+ */
+
+div.list_big h1 { margin-left:0px; padding: 10px 0 10px 0;}
+div.list_big ul { margin-left:10px;}
+div.list_big li { border-bottom:1px solid #eee; list-style:none; padding:6px 6px 6px 0px; font-size:16px;}
+div.list_big li small { font-size:10px; margin-left:10px; color:#555;}
+div.list_big li.last {border-bottom:0px;}
+div.list_big li a { float:right; margin-left:10px; font-size:11px;}
+div.list_big .description { padding:0px;}
+div.list_big .description p {margin-left:0px !important; line-height: 170% !important; }
+div.list_big .description h4 { padding-bottom:6px;}
+div.list_big .comments { color:#333 !important; font-size:12px; }
+div.list_big .quote { margin-top:10px; margin-bottom:20px; margin-left:20px;border-left:1px solid #ddd; }
+/**
 *  utils
 */
 
@@ -1697,18 +1712,27 @@ a.pointer {
     float:right;
 }
 
+
+
 .clear_both { clear:both; }
 
 /**
 * jquery dialog
 */
 
-div#dialog { z-index:3000; padding:20px; position:absolute; width: 710px; top:80px;left: 100px; background:#fff; border: 6px solid #ccc; border-top: 25px solid #ccc;}
+div#dialog { -moz-box-shadow: 8px 10px 10px #888; -webkit-box-shadow: 10px 10px 5px #888; box-shadow: 10px 10px 5px #888;z-index:3000; padding:20px 20px 70px 20px; position:absolute; width: 710px; top:80px;left: 100px; background:#fff; border: 2px solid #ccc; border-top: 25px solid #ccc;}
 div#dialog label { font-size:18px; margin-top:15px;}
 div#dialog textarea, div#dialog label {  display:Block; }
-#dialog textarea { border:2px solid #ccc; width: 700px; height: 100px;}
+#dialog input[type=text] { padding:5px; font-size:17px;}
+#dialog .submit { margin-right:50px; }
+#dialog textarea,#dialog input[type=text] { border:2px solid #ccc; }
+#dialog textarea { height: 100px;}
+#dialog input[type=text]:focus, #dialog textarea:focus {
+        border: 2px solid #2688ae;
+        background: #fff6d5;
+}
 div#dialog h2 {
-    font-size: 18px text-align:left; padding:0px 20px 0px 20px; color:#000;
+    font-size: 32px; text-align:left; padding:0px 20px 0px 0px; color:#000;
 }
 div#dialog h3 { margin-left:24px; font-size: 16px; padding: 10px 0 10px 0;}
 
@@ -1716,6 +1740,11 @@ div#dialog p { font-size:15px; line-height: 1.3em; color:#333;}
 div#dialog ul { margin-left: 5%; margin-top:20px; background: #eee; width:600px; padding: 10px;}
 div#dialog ul a { font-size: 14px; color:#222;}
 div#dialog ul li { margin-left: 30px; margin-top: 3px;}
+div#dialog .cancel_button a { float:right; margin: 28px 10px 0 30px; font-size:14px;}
+div#dialog input.submit { padding:10px 40px 10px 40px;}
+div#dialog form ul.errorlist { margin-left: 0; margin-bottom:10px; margin-top:20px; background: red; width:600px; padding: 10px;}
+div#dialog form ul.errorlist a { font-size: 14px; color:#222;}
+div#dialog form ul.errorlist li { margin-left: 5px; margin-top: 3px; color:#fff; font-size:14px; }
 
 
 ul.developingList {

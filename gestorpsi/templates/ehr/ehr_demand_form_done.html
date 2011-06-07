@@ -1,0 +1,36 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+<script>
+$(function() {
+    var url = '/client/{{ client.pk }}/{{ referral.pk }}/demand/{{ demand.pk }}/item/';
+    if($('li#occurrence_'+{{ demand.pk }}).html()) {
+        $('li#occurrence_'+{{ demand.pk }}).load(url);
+    } else {
+        $.get(url, function(data) {
+            $('li.add_new').before('<li id="occurrence_'+{{ demand.pk }}+'">' + data + '</li>');
+        });
+    }
+    $('div#dialog').hide();
+    $.scrollTo($('li#occurrence_'+{{ demand.pk }}),100);
+    $('li#occurrence_'+{{ demand.pk }}).hide();
+    $('li#occurrence_'+{{ demand.pk }}).fadeIn(1000);
+    $('p.no_registers').hide();
+    return false;
+});
+</script>
+
+

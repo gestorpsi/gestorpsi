@@ -17,9 +17,7 @@ GNU General Public License for more details.
 from django.conf.urls.defaults import *
 from django.contrib.auth.decorators import login_required
 from gestorpsi.authentication.views import login_check
-from gestorpsi.ehr.views import session_list, session_form, \
-                                diagnosis_list, diagnosis_form, diagnosis_save, \
-                                demand_list, demand_form, demand_save, session_item_html
+from gestorpsi.ehr.views import *
 
 urlpatterns = patterns('',
     # Session's URL
@@ -30,15 +28,13 @@ urlpatterns = patterns('',
 
     # Diagnosis's URL
     (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/diagnosis/$', login_check(diagnosis_list)),
+    (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/diagnosis/(?P<diagnosis_id>\d+)/item/$', login_check(diagnosis_item_html)),
     (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/diagnosis/add/$', login_check(diagnosis_form)),
     (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/diagnosis/(?P<diagnosis_id>\d+)/$', login_check(diagnosis_form)),
-    (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/diagnosis/save/$', login_check(diagnosis_save)),
-    (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/diagnosis/(?P<diagnosis_id>\d+)/save/$', login_check(diagnosis_save)),
     
     # Demand's URL
     (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/demand/$', login_check(demand_list)),
+    (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/demand/(?P<demand_id>\d+)/item/$', login_check(demand_item_html)),
     (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/demand/add/$', login_check(demand_form)),
     (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/demand/(?P<demand_id>\d+)/$', login_check(demand_form)),
-    (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/demand/save/$', login_check(demand_save)),
-    (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<referral_id>\d+)/demand/(?P<demand_id>\d+)/save/$', login_check(demand_save)),    
 )

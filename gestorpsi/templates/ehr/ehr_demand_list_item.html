@@ -1,0 +1,61 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{{ i }}<small><b>{% if i.severity %}{{ i.get_severity_display }} - {% endif %}{{ i.get_demand_status_display }} {% if i.demand_resolution and i.demand_status == '3' %} {% trans "on" %} {{ i.demand_resolution|date:"d/m/Y" }}{% endif %}</b></small><a class="item_description pointer">{% trans "View" %}</a>{% if i.edit_status != '4' and i.edit_status != '2' %}<a class="load" element="#dialog" href="/client/{{ object.id }}/{{ referral.id }}/demand/{{ i.pk }}/">{% trans "Edit" %}</a>{% endif %}
+<div class="description hidden">
+    <div class="quote">
+        <p class="comments">
+        {% if i.initial_complaint %}
+            <strong>{% trans "Initial Complaint" %}</strong>.
+        {% endif %}
+        
+        {% if i.how_long_it_happens.unit %}
+            {% trans "Has been happening for" %} {{ i.how_long_it_happens.unit }} <strong>{{ i.how_long_it_happens.get_time_display }}</strong>.
+        {% endif %}
+        {% if i.frequency %}
+            {% trans "Repeated every" %} <strong>{{ i.frequency.unit }} {{ i.frequency.get_time_display }}</strong>.
+        {% endif %}
+        {% if i.duration %}
+            {% trans "Duration" %} <strong>{{ i.duration.unit }} {{ i.duration.get_time_display }}</strong>.
+        {% endif %}
+        </p>
+        {% if i.description %}
+            <p>{{ i.description }}</p>
+        {% endif %}
+        
+        {% if i.bibliography %}
+            <p class="comments">
+                <strong>{% trans "Bibliography" %}</strong><br />{{ i.bibliography }}
+            </p>
+        {% endif %}
+        {% if i.related_sites %}
+            <p class="comments">
+                <strong>{% trans "Related Sites" %}</strong><br />{{ i.related_sites }}
+            </p>
+        {% endif %}
+
+        {% if i.comments %}
+        <p class="comments">{{ i.comments }}</p>
+        {% endif %}
+        
+        <p class="comments">
+        {% trans "registered in" %} {{ i.occurrence.start_time|date:"d/m/Y" }}
+        </p>
+    </div>
+</div>
+

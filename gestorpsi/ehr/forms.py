@@ -33,7 +33,7 @@ class DemandForm(forms.ModelForm):
     description = forms.CharField(label=_('Description'), required=False, widget=forms.Textarea(attrs={'class':'giant asm'}))
     severity = forms.ChoiceField(choices=SEVERITY, label=_('Severity'), widget=forms.Select(attrs={'class':'giant asm'}))
     demand_status = forms.ChoiceField(choices=DEMAND_STATUS, label=_('Demand status'), widget=forms.Select(attrs={'class':'giant asm'}))
-    demand_resolution = forms.DateField(label=_('Demand resolution'), required=False, input_formats=('%d/%m/%Y',), widget=forms.DateInput(attrs={'class':'giant asm', 'mask':'99/99/9999'}, format='%d/%m/%Y'))
+    demand_resolution = forms.DateField(label=_('Demand resolution'), required=False, input_formats=('%d/%m/%Y',), widget=forms.DateInput(attrs={'class':'giant', 'mask':'99/99/9999'}, format='%d/%m/%Y'))
     bibliography = forms.CharField(label=_('Bibliography'), required=False, widget=forms.Textarea(attrs={'class':'giant asm'}))
     related_sites = forms.CharField(label=_('Related Sites'), required=False, widget=forms.Textarea(attrs={'class':'giant asm'}))
     comments = forms.CharField(label=_('Comments'), required=False, widget=forms.Textarea(attrs={'class':'giant asm'}))

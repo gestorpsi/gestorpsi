@@ -1,0 +1,67 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{{ i }}<small><b>{% if i.severity %}{{ i.get_severity_display }} - {% endif %}{{ i.get_diagnosis_status_display }} {{ i.get_diagnosis_status2_display }}</b></small><a class="item_description pointer">{% trans "View" %}</a>{% if i.edit_status != '4' and i.edit_status != '2' %}<a class="load" element="#dialog" href="/client/{{ object.id }}/{{ referral.id }}/diagnosis/{{ i.pk }}/">{% trans "Edit" %}</a>{% endif %}
+<div class="description hidden">
+    <div class="quote">
+        <p class="comments">
+        
+        {% if i.diagnosis_date %}
+            {% trans "Diagnosis Date" %} <strong>{{ i.diagnosis_date|date:"d/m/Y" }}</strong>.
+        {% endif %}
+        {% if i.diagnosis_resolution %}
+            {% trans "Resolution" %} <strong>{{ i.diagnosis_resolution|date:"d/m/Y" }}</strong>.
+        {% endif %}
+        
+        {% if i.occurrence %}
+            {% trans "Occurrence" %} <strong>{{ i.occurrence }}</strong>.
+        {% endif %}
+
+        </p>
+        
+        {% if i.clinical_description %}
+            <p class="comments"><strong>{% trans "Clinical Description" %}</strong><br />{{ i.clinical_description }}</p>
+        {% endif %}
+        {% if i.treatment_indicated %}
+            <p class="comments"><strong>{% trans "Treatment Indicated" %}</strong><br />{{ i.treatment_indicated }}</p>
+        {% endif %}
+        {% if i.treatment_indicated %}
+            <p class="comments"><strong>{% trans "Treatment Indicated" %}</strong><br />{{ i.treatment_indicated }}</p>
+        {% endif %}
+        
+        {% if i.bibliography %}
+            <p class="comments">
+                <strong>{% trans "Bibliography" %}</strong><br />{{ i.bibliography }}
+            </p>
+        {% endif %}
+        {% if i.related_sites %}
+            <p class="comments">
+                <strong>{% trans "Related Sites" %}</strong><br />{{ i.related_sites }}
+            </p>
+        {% endif %}
+
+        {% if i.comments %}
+            <p class="comments">{{ i.comments }}</p>
+        {% endif %}
+        
+        <p class="comments">
+        {% trans "registered in" %} {{ i.occurrence.start_time|date:"d/m/Y" }}
+        </p>
+    </div>
+</div>
+

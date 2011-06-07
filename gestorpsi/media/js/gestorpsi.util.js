@@ -52,7 +52,19 @@ $(document).ready(function() {
         $.scrollTo(0,0, {duration:300});
         return false;
     });
+    
+    /**
+     * cancel_button in dialog box
+     */
+    
+    $('#dialog #cancel_button').live('click', function() {
+        alert('ae');
+        $.scrollTo(0,0, {duration:300});
+        return false;
+    });
+    
 });
+
 
 /**
  * calula idade

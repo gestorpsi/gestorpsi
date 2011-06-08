@@ -16,7 +16,8 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-{{ i }}<small><b>{% if i.severity %}{{ i.get_severity_display }} - {% endif %}{{ i.get_diagnosis_status_display }} {{ i.get_diagnosis_status2_display }}</b></small><a class="item_description pointer">{% trans "View" %}</a>{% if i.edit_status != '4' and i.edit_status != '2' %}<a class="load" element="#dialog" href="/client/{{ object.id }}/{{ referral.id }}/diagnosis/{{ i.pk }}/">{% trans "Edit" %}</a>{% endif %}
+{{ i }}<small><b>{% if i.severity %}{{ i.get_severity_display }} - {% endif %}{{ i.get_diagnosis_status_display }} {{ i.get_diagnosis_status2_display }}</b></small>
+<a class="item_description pointer">{% trans "View" %}</a>{% if i.edit_status != '4' %}<a class="load" element="#dialog" href="/client/{{ object.id }}/{{ referral.id }}/diagnosis/{{ i.pk }}/">{% trans "Edit" %}</a>{% endif %}
 <div class="description hidden">
     <div class="quote">
         <p class="comments">

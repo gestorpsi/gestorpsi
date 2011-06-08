@@ -69,6 +69,7 @@ EDIT_STATUS = (
     ('2', _("Pending supervisor's confirmation")),
     ('3', _("Pending professional's confirmation")),
     ('4', _("Confirmed by the professional")),
+    ('99', _("Unknown")),
 )
 
 class TimeUnit(models.Model):

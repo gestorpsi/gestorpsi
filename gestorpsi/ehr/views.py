@@ -65,7 +65,7 @@ def _access_ehr_check_read(request, object=None):
 
 def _access_ehr_check_write(request, referral=None):
     """
-    this method checks if professional have rights to read client ehr
+    this method checks if professional have rights to write client ehr
     in others words, check if client is referred by logged professional
     @referral: referral
     """
@@ -89,6 +89,48 @@ def _access_ehr_check_write(request, referral=None):
             professional_is_responsible_for_service = True
 
         if professional_referral_with_client or professional_is_responsible_for_service:
+            return True
+
+    return False
+    
+def _ehr_set_edit_status(request):
+    """
+    this method checks if professional have rights to write a ehr object
+    @request: request
+    """
+    
+    status = 99 # unknown
+    
+    if 'professional' in [i.name for i in request.user.groups.all()]:
+        if request.POST.get('draft') == 'true':
+            status = 3
+        else:
+            status = 4
+    elif 'student' in [i.name for i in request.user.groups.all()]:
+        if request.POST.get('draft') == 'true':
+            status = 1
+        else:
+            status = 2
+    
+    return status
+
+def _ehr_can_save(request, object):
+    """
+    this method checks if professional have rights to save (display save button in form)
+    @request: request
+    @object: session, demand, diagnosis
+    """
+    
+    status = 99 # unknown
+    
+    if not object.pk: # adding new
+        return True
+    
+    if 'professional' in [i.name for i in request.user.groups.all()]:
+        if object.edit_status == '3' or object.edit_status == '2': # is professional and is draft
+            return True
+    if 'student' in [i.name for i in request.user.groups.all()]:
+        if object.edit_status == '1': # is student and is draft
             return True
 
     return False
@@ -121,12 +163,15 @@ def demand_form(request, client_id, referral_id, demand_id=0):
     if not _access_ehr_check_read(request, client):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
-    have_perms_to_write = None
-
     demand = get_object_or_None(Demand, pk=demand_id) or Demand()
-
+    
     if demand.pk and demand.referral.service.organization != request.user.get_profile().org_active:
         raise Http404
+
+    have_perms_to_write = None
+    # check if logged user can write on it, just to hide save button on template, is verified by post method also
+    if _ehr_can_save(request, demand):
+        have_perms_to_write = True
 
     """ need pass to template time unit forms """
     howlong_form = TimeUnitForm(instance=demand.how_long_it_happens, prefix="howlong")
@@ -136,16 +181,11 @@ def demand_form(request, client_id, referral_id, demand_id=0):
     if request.method == 'POST':
         if not _access_ehr_check_write(request, referral):
             return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
-        else:
-            have_perms_to_write = True
 
         form = DemandForm(request.POST, instance=demand)
         form.fields['occurrence'].queryset = referral.occurrences()
 
-        if demand.edit_status in ('2', '4'):
-            form._errors["demand"] = _("You cannot change a confirmed demand.")
-        
-        if not form.is_valid():
+        if not form.is_valid() or demand.pk and not _ehr_can_save(request, demand):
             return render_to_response('ehr/ehr_demand_form.html', {
                                 'object': client,
                                 'referral': referral,
@@ -162,14 +202,8 @@ def demand_form(request, client_id, referral_id, demand_id=0):
             demand.referral_id = referral.id
             demand.occurrence = get_object_or_None(ScheduleOccurrence, pk=request.POST.get('occurrence')) if request.POST.get('occurrence') else None
             
-            """ need check who saved the demand: professional or student """
-            if 'professional' in [i.name for i in request.user.groups.all()]:
-                demand.edit_status = '3' if request.POST.get('draft') == 'is_draft' else '4'
-            elif 'student' in [i.name for i in request.user.groups.all()]:       # <- if student
-                demand.edit_status = '1' if request.POST.get('draft') == 'is_draft' else '2'
-            else:
-                return render_to_response('403.html', {'object': _("Sorry! This action is only for students or professional!"), }, context_instance=RequestContext(request))
-
+            demand.edit_status = _ehr_set_edit_status(request)
+            
             if request.POST.get('howlong-unit'):
                 howlong_form = TimeUnitForm(request.POST, instance=demand.how_long_it_happens if demand.how_long_it_happens else TimeUnit(), prefix="howlong")
                 if not howlong_form.is_valid():
@@ -205,10 +239,6 @@ def demand_form(request, client_id, referral_id, demand_id=0):
                                 }, context_instance=RequestContext(request))
 
     else:
-        # check if logged user can write on it, just to hide save button on template, is verified by post method also
-        if _access_ehr_check_write(request, referral):
-            have_perms_to_write = True
-
         form = DemandForm(instance=demand)
         form.fields['occurrence'].queryset = referral.occurrences()
         
@@ -298,6 +328,9 @@ def diagnosis_form(request, client_id, referral_id, diagnosis_id=0):
         raise Http404
 
     have_perms_to_write = None
+    # check if logged user can write on it, just to hide save button on template, is verified by post method also
+    if _ehr_can_save(request, diagnosis):
+        have_perms_to_write = True
     
     if request.method == 'POST':
         # check if logged user can write it
@@ -306,11 +339,12 @@ def diagnosis_form(request, client_id, referral_id, diagnosis_id=0):
         else:
             have_perms_to_write = True
 
-        if diagnosis.edit_status in ('2', '4'):
-            form._errors["demand"] = _("You cannot change a confirmed demand.")
-
         form = DiagnosisForm(request.POST, instance=diagnosis)
-        if not form.is_valid():
+        
+        if diagnosis.edit_status == '4':
+            form._errors["demand"] = _("You cannot change a confirmed demand.")
+        
+        if not form.is_valid() or diagnosis.pk and not _ehr_can_save(request, diagnosis):
             return render_to_response('ehr/ehr_diagnosis_form.html', {
                                             'object': client,
                                             'referral': referral,
@@ -323,13 +357,7 @@ def diagnosis_form(request, client_id, referral_id, diagnosis_id=0):
             diagnosis.referral_id = referral.id
             diagnosis.occurrence = get_object_or_None(ScheduleOccurrence, pk=request.POST.get('occurrence')) if request.POST.get('occurrence') else None
 
-            if 'professional' in [i.name for i in request.user.groups.all()]:
-                diagnosis.edit_status = '3' if request.POST.get('draft') == 'is_draft' else '4'
-            elif 'student' in [i.name for i in request.user.groups.all()]:       # <- if student
-                diagnosis.edit_status = '1' if request.POST.get('draft') == 'is_draft' else '2'
-            else:
-                return render_to_response('403.html', {'object': _("Sorry! This action is only for students or professional!"), }, context_instance=RequestContext(request))
-
+            diagnosis.edit_status = _ehr_set_edit_status(request)
 
             diagnosis.save()
             return render_to_response('ehr/ehr_diagnosis_form_done.html', {
@@ -402,12 +430,12 @@ def session_form(request, client_id, referral_id, session_id=0):
     if not _access_ehr_check_read(request, client):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
+    session = get_object_or_None(Session, pk=session_id) or Session()
+
     have_perms_to_write = None
     # check if logged user can write on it
-    if _access_ehr_check_write(request, referral):
+    if _ehr_can_save(request, session):
         have_perms_to_write = True
-
-    session = get_object_or_None(Session, pk=session_id) or Session()
 
     if session.pk and session.referral.service.organization != request.user.get_profile().org_active:
         raise Http404
@@ -415,15 +443,13 @@ def session_form(request, client_id, referral_id, session_id=0):
     if request.method == 'POST':
         if not _access_ehr_check_write(request, referral):
             return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
-
-        if session.edit_status in ('2', '4'):
-            request.user.message_set.create(message=_("You cannot change a confirmed session."))
-            return HttpResponseRedirect('/client/%s/%s/session/%s/?clss=error' % (client_id, referral_id, session.id))
-
+        
         form = SessionForm(request.POST, instance=session, initial={'occurrence':request.POST.get('occurrence')})
+
         form.fields['occurrence'].queryset = referral.occurrences().filter(session=None) if session_id==0 else referral.occurrences()
         form.fields['occurrence'].widget = forms.HiddenInput()
-        if not form.is_valid():
+
+        if not form.is_valid() or session.pk and not _ehr_can_save(request, session):
             return render_to_response('ehr/ehr_session_form.html', {
                                             'object': client,
                                             'referral': referral,
@@ -439,11 +465,7 @@ def session_form(request, client_id, referral_id, session_id=0):
             session.referral_id = referral.id
             session.occurrence_id = ScheduleOccurrence.objects.get(pk=request.POST.get('occurrence')).id
 
-            """ need check who saved the demand: professional or student """
-            if 'professional' in [i.name for i in request.user.groups.all()]:
-                session.edit_status = '3' if request.POST.get('draft') == 'is_draft' else '4'
-            elif 'student' in [i.name for i in request.user.groups.all()]:       # <- if student
-                session.edit_status = '1' if request.POST.get('draft') == 'is_draft' else '2'
+            session.edit_status = _ehr_set_edit_status(request)
 
             session.save()
 

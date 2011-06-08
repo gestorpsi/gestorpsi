@@ -16,30 +16,24 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
+{% if have_perms_to_write %}
 
-{# need to check who saved: professional or student #}
-{% if not form.instance.id or form.instance.edit_status == '3' %}
-    <label>
-    <input type="radio" name="draft" value="is_draft" checked="checked" />&nbsp;{% trans "Save as draft" %}
-    </label>
-    <label>
-    <input type="radio" name="draft" value="not_draft"  />&nbsp;{% trans "Save and finish" %}
-    </label>
-{% else %}
-    {{ form.instance.get_edit_status_display }}
-{% endif %}
+<label>
+<input type="radio" name="draft" value="true" checked="checked" />&nbsp;{% trans "Save as draft" %}
+</label>
+<label>
+<input type="radio" name="draft" value="false"  />&nbsp;{% trans "Save and finish" %}
+</label>
 
 <div style="clear:both"></div>
 <div class="float_right">
 
-{% if perms.ehr.ehr_write and have_perms_to_write %}
-
-{# need to check who saved: professional or student #}
-{% if form.instance.edit_status == '3' or not form.instance.id %}
 <input type="submit" name="submit" class="submit" value="{% trans "Save" %}" />
-{% endif %}
-{% endif %}
 </div>
+{% else %}
+<p>{{ form.instance.get_edit_status_display }}</p>
+{% endif %}
+
 
 <div class="cancel_button">
     <a class="pointer" onclick="$('div#dialog, #over').hide();$.scrollTo(0, 200);return false;">{% trans "Cancel" %}</a>

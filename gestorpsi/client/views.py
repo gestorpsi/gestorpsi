@@ -382,6 +382,44 @@ def referral_form(request, object_id = None, referral_id = None):
                 msg = _('Referral saved successfully')
                 request.user.message_set.create(message=_(msg))
                 return HttpResponseRedirect(url % (object_id, data.id))
+        else:
+            return render_to_response('client/client_referral_form.html',
+                          { 'object': object, 
+                            'referral': referral,
+                            'referral_form': referral_form,
+                            'referral_list': referral_list,
+                            'services': Service.objects.filter(active=True, organization=request.user.get_profile().org_active),
+                            'referrals': Referral.objects.filter(client = object),
+                            'groups': ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active, active=True),
+                            'IndicationsChoices': IndicationChoice.objects.all(),
+                            'contact_organizations': Contact.objects.filter_internal(
+                                            org_id = request.user.get_profile().org_active.id, 
+                                            person_id = request.user.get_profile().person.id, 
+                                            filter_name = None,
+                                            filter_type = 1
+                                        ),
+                            'contact_professionals': Contact.objects.filter_internal(
+                                            org_id = request.user.get_profile().org_active.id, 
+                                            person_id = request.user.get_profile().person.id, 
+                                            filter_name = None,
+                                            filter_type = 2
+                                        ),
+                            'contact_organizations_external': Contact.objects.filter_external(
+                                            org_id = request.user.get_profile().org_active.id, 
+                                            person_id = request.user.get_profile().person.id, 
+                                            filter_name = None,
+                                            filter_type = 1
+                                        ),
+                            'contact_professionals_external': Contact.objects.filter_external(
+                                            org_id = request.user.get_profile().org_active.id, 
+                                            person_id = request.user.get_profile().person.id, 
+                                            filter_name = None,
+                                            filter_type = 2
+                                        ),
+                            'AttachTypes': REFERRAL_ATTACH_TYPE,
+                           },
+                          context_instance=RequestContext(request)
+                          )
     else:
         referral_form = ReferralForm(instance = referral)
 

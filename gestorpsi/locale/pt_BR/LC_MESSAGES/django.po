@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-02-07 19:30-0200\n"
-"PO-Revision-Date: 2011-02-07 19:36\n"
+"PO-Revision-Date: 2011-06-13 15:17\n"
 "Last-Translator: <webmaster@gestorpsi.com.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -6717,9 +6717,8 @@ msgid "Password updated successfully!"
 msgstr "Senha atualizada com sucesso."
 
 #: users/views.py:236
-#, fuzzy
 msgid "User removed successfully"
-msgstr "Usuário cadastrado com sucesso."
+msgstr "Usuário removido com sucesso."
 
 #~ msgid "Abandonment of service "
 #~ msgstr "Abandono do Serviço"

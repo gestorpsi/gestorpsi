@@ -53,16 +53,8 @@ GNU General Public License for more details.
             <label class="referral_type_referral">{% trans "Last Referral" %}<br />
                 <select name="referral" class="extrabig asm referral_list" {% if object.id %} id="id_referral" {% endif %} >
                         <option value="{{ referral.id }}"> {{ referral }} 
-                            {% if referral.professional.all.0 %}
-                                ( {{ referral.professional.all.0 }} )
-                            {% endif %}
-
-                            {% if referral.professional.all.1 %}
-                                ( {{ referral.professional.all.1 }})
-                            {% endif %}
-
-                            {% if referral.professional.all.2 %}
-                                ({{ referral.professional.all.2 }} )
+                            {% if referral.professional.all %}
+                                ( {{ referral.professional.all|join:"," }} )
                             {% endif %}
                         </option>
                 </select>

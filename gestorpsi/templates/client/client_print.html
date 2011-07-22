@@ -178,7 +178,8 @@ table {
         {% if object.family_members_active %}
             <h1>{% trans "Members Family" %}</h1>
             {% for i in object.family_members_active %}
-                <h3>{{ i.1 }} - {{ i.2 }}{% if i.4 %} ({% trans "Responsible" %}){% endif %}</h3> 
+                <h3>{{ i.1 }}</h3> 
+                
                 <div style="margin-left:20px;">
                     <strong>{% trans "Active" %}: </strong> {% if i.5 %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
                     <br />

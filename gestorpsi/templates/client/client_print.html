@@ -303,6 +303,60 @@ table {
                     {% if not forloop.last %}<br />{% endif %}
                 {% endfor %}
 
+        {% if print_ehr and have_ehr_read_perms %}
+            <h2>{% trans "Referral Demands" %}</h2>
+            {% if not i.demand_set.all %}
+                {% trans "This referral have no demand registered yet" %}
+            {% else %}
+                {% for o in i.demand_set.reverse %}
+                    <p>
+                    <strong>{% trans "Demand" %} #{{ forloop.counter }}</strong> <br />
+                    {% if o.occurrence.start_time %}<strong>{% trans "Date" %}: </strong>{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "hs" %}<br />{% endif %}
+                    <strong>{% trans "Status" %}: </strong>{{ o.get_demand_status_display }}<br />
+                    <strong>{% trans "Demand" %}: </strong>{{ o.demand }}<br />
+                    <strong>{% trans "Initial complaint" %}: </strong>{% if not o.initial_complaint %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}<br />
+                    {% if o.how_long_it_happens %}<strong>{% trans "How long it happens" %}: </strong>{{ o.how_long_it_happens.unit }} {{ o.how_long_it_happens.get_time_display }}<br />{% endif %}
+                    {% if o.frequency.get_time_display %}<strong>{% trans "Frequency" %} </strong>{{ o.frequency.unit }} {{ o.frequency.get_time_display }}<br />{% endif %}
+                    <strong>{% trans "Severity" %}: </strong>{{ o.get_severity_display }}<br />
+                    {% if o.duration.get_time_display %}<strong>{% trans "Duration" %}: </strong>{{ o.duration.unit }} {{ o.duration.get_time_display }}<br />{% endif %}
+                    {% if o.demand_resolution %}<strong>{% trans "Resolution" %}: </strong>{{ o.demand_resolution|date:"d/m/Y" }}<br />{% endif %}
+                    {% if o.bibliography %}<strong>{% trans "Bibliography" %}: </strong>{{ o.bibliography }}<br />{% endif %}
+                    {% if o.related_sites %}<strong>{% trans "Related Sites" %}: </strong>{{ o.related_sites }}<br />{% endif %}
+                    
+                    {% if o.comments %}
+                        <small>{{ o.comments }}</small>
+                    {% endif %}
+                    </p>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+
+        {% if print_ehr and have_ehr_read_perms %}
+            <h2>{% trans "Referral Diagnosis" %}</h2>
+            {% if not i.diagnosis_set.all %}
+                {% trans "This referral have no diagnosis registered yet" %}
+            {% else %}
+                {% for o in i.diagnosis_set.reverse %}
+                    <p>
+                    <strong>{% trans "Diagnosis" %} #{{ forloop.counter }}</strong> <br />
+                    {% if o.occurrence.start_time %}<strong>{% trans "Session Date" %}: </strong>{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "hs" %}<br />{% endif %}
+                    <strong>{% trans "Diagnosis Date" %}: </strong>{{ o.diagnosis_date|date:"d/m/Y" }}<br />
+                    {% if o.diagnosis_status %}<strong>{% trans "Status" %}: </strong>{{ o.get_diagnosis_status_display }} {{ o.get_diagnosis_status2_display }}<br />{% endif %}
+                    {% if o.diagnosis_resolution %}<strong>{% trans "Resolution" %}: </strong>{{ o.diagnosis_resolution|date:"d/m/Y" }}<br />{% endif %}
+                    {% if o.diagnosis %}<strong>{% trans "Diagnosis" %}: </strong>{{ o.diagnosis }}<br />{% endif %}
+                    {% if o.severity %}<strong>{% trans "Severity" %}: </strong>{{ o.get_severity_display }}<br />{% endif %}
+                    
+                    {% if o.clinical_description %}<strong>{% trans "Description" %}: </strong>{{ o.clinical_description }}<br />{% endif %}
+                    {% if o.treatment_indicated %}<strong>{% trans "Treatment Indicated" %}: </strong>{{ o.treatment_indicated }}<br />{% endif %}
+                    {% if o.bibliography %}<strong>{% trans "Bibliography" %}: </strong>{{ o.bibliography }}<br />{% endif %}
+                    {% if o.related_sites %}<strong>{% trans "Related Sites" %}: </strong>{{ o.related_sites }}<br />{% endif %}
+                    {% if o.comments %}
+                        <small>{{ o.comments }}</small>
+                    {% endif %}
+                    </p>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
         
         {% if print_schedule %}
             <h2>{% trans "Service Occurrences" %}</h2>
@@ -370,65 +424,6 @@ table {
                 {% endfor %}
             {% endif %}
         {% endif %}
-
-        {% if print_ehr and have_ehr_read_perms %}
-            <h2>{% trans "Referral Demands" %}</h2>
-            {% if not i.demand_set.all %}
-                {% trans "This referral have no demand registered yet" %}
-            {% else %}
-                {% for o in i.demand_set.reverse %}
-                    <p>
-                    <strong>{% trans "Demand" %} #{{ forloop.counter }}</strong> <br />
-                    {% if o.occurrence.start_time %}<strong>{% trans "Date" %}: </strong>{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "hs" %}<br />{% endif %}
-                    <strong>{% trans "Status" %}: </strong>{{ o.get_demand_status_display }}<br />
-                    <strong>{% trans "Demand" %}: </strong>{{ o.demand }}<br />
-                    <strong>{% trans "Initial complaint" %}: </strong>{% if not o.initial_complaint %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}<br />
-                    {% if o.how_long_it_happens %}<strong>{% trans "How long it happens" %}: </strong>{{ o.how_long_it_happens.unit }} {{ o.how_long_it_happens.get_time_display }}<br />{% endif %}
-                    {% if o.frequency.get_time_display %}<strong>{% trans "Frequency" %} </strong>{{ o.frequency.unit }} {{ o.frequency.get_time_display }}<br />{% endif %}
-                    <strong>{% trans "Severity" %}: </strong>{{ o.get_severity_display }}<br />
-                    {% if o.duration.get_time_display %}<strong>{% trans "Duration" %}: </strong>{{ o.duration.unit }} {{ o.duration.get_time_display }}<br />{% endif %}
-                    {% if o.demand_resolution %}<strong>{% trans "Resolution" %}: </strong>{{ o.demand_resolution|date:"d/m/Y" }}<br />{% endif %}
-                    {% if o.bibliography %}<strong>{% trans "Bibliography" %}: </strong>{{ o.bibliography }}<br />{% endif %}
-                    {% if o.related_sites %}<strong>{% trans "Related Sites" %}: </strong>{{ o.related_sites }}<br />{% endif %}
-                    
-                    {% if o.comments %}
-                        <small>{{ o.comments }}</small>
-                    {% endif %}
-                    </p>
-                {% endfor %}
-            {% endif %}
-            
-        {% endif %}
-
-        {% if print_ehr and have_ehr_read_perms %}
-
-        <h2>{% trans "Referral Diagnosis" %}</h2>
-        {% if not i.diagnosis_set.all %}
-            {% trans "This referral have no diagnosis registered yet" %}
-        {% else %}
-            {% for o in i.diagnosis_set.reverse %}
-                <p>
-                <strong>{% trans "Diagnosis" %} #{{ forloop.counter }}</strong> <br />
-                {% if o.occurrence.start_time %}<strong>{% trans "Session Date" %}: </strong>{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "hs" %}<br />{% endif %}
-                <strong>{% trans "Diagnosis Date" %}: </strong>{{ o.diagnosis_date|date:"d/m/Y" }}<br />
-                {% if o.diagnosis_status %}<strong>{% trans "Status" %}: </strong>{{ o.get_diagnosis_status_display }} {{ o.get_diagnosis_status2_display }}<br />{% endif %}
-                {% if o.diagnosis_resolution %}<strong>{% trans "Resolution" %}: </strong>{{ o.diagnosis_resolution|date:"d/m/Y" }}<br />{% endif %}
-                {% if o.diagnosis %}<strong>{% trans "Diagnosis" %}: </strong>{{ o.diagnosis }}<br />{% endif %}
-                {% if o.severity %}<strong>{% trans "Severity" %}: </strong>{{ o.get_severity_display }}<br />{% endif %}
-                
-                {% if o.clinical_description %}<strong>{% trans "Description" %}: </strong>{{ o.clinical_description }}<br />{% endif %}
-                {% if o.treatment_indicated %}<strong>{% trans "Treatment Indicated" %}: </strong>{{ o.treatment_indicated }}<br />{% endif %}
-                {% if o.bibliography %}<strong>{% trans "Bibliography" %}: </strong>{{ o.bibliography }}<br />{% endif %}
-                {% if o.related_sites %}<strong>{% trans "Related Sites" %}: </strong>{{ o.related_sites }}<br />{% endif %}
-                {% if o.comments %}
-                    <small>{{ o.comments }}</small>
-                {% endif %}
-                </p>
-            {% endfor %}
-        {% endif %}
-
-        
-    {% endif %}
 <br />
         {% if i.service.responsibles.all and signed_professional_responsible %}
         <br /><br />

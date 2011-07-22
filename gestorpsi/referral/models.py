@@ -273,7 +273,7 @@ class Referral(Event):
         '''
         Return all occurrences
         '''
-        return self.occurrence_set.filter(start_time__lt=datetime.now()).order_by('-id')
+        return self.occurrence_set.filter(start_time__lt=datetime.now()).order_by('-start_time')
 
     def confirmed_occurrences(self):
         return self.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=False)

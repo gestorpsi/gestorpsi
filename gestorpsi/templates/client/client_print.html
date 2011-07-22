@@ -152,89 +152,50 @@ table {
 {% if print_demographic %}
 <h1>{% trans "Record Data" %}</h1>
 
-    {% if not object.is_company %} 
-            {% if object.person.gender %}
-                <strong>{% trans "Gender" %}: </strong>
-                {% ifequal object.person.gender '1' %} {% trans "Female" %} {% endifequal %}   
-                {% ifequal object.person.gender '2' %} {% trans "Male" %} {% endifequal %}   
-            <br>{% endif %}
-        {% if object.person.birthDate %}<strong>{% trans "Birthdate" %}:</strong> {% if not object.person.birthDateSupposed %}{{ object.person.birthDate|date:"d/m/Y" }}{% endif %} ({{ object.person.birthDate|age }} {% trans "years old" %}) {% if object.person.birthDateSupposed %}<b>{% trans "Birthdate is supposed" %}</b>{% endif %}<br>{% endif %} 
-        {% if object.person.maritalStatus %}<strong>{% trans "Marital Status" %}:</strong> {{ object.person.maritalStatus }}<br>{% endif %}
-
-        {% if object.person.birthPlace or object.person.birthForeignCity or object.person.birthForeignState or object.person.birthForeignCountry %}
-        <strong>{% trans "Birth Place" %}: </strong>
-                {% if object.person.birthPlace %}
-                    {{ object.person.birthPlace|title }} {{ object.person.birthPlace.state.shortName }} {{ object.person.birthPlace.state.country }}
-                {% else %}
-                    {{ object.person.birthForeignCity }} {{ object.person.birthForeignState }} {{ object.person.get_birth_country }}
-                {% endif %}
-            <br>{% endif %}
-    {% endif %}
-
-    {% if object.is_company and object.person.company.cnae_class %}
-    <strong>{% trans "Cnae" %}</strong>
-    {{ object.person.company.cnae_class }} - {{ object.person.company.cnae_class_name }}
-    <br />
-    {% endif %}
-
-    {% if object.person.document.all %}
-    <strong>{% trans "Document" %}:</strong> {{ object.person.document.all|join:", " }}
-    <br />
-    {% endif %}
-
-    {% if object.person.phones.all %}
-    <strong>{% trans "Phone" %}: </strong> {{ object.person.phones.all|join:", "}}
-    <br />
-    {% endif %}
-
-    {% if object.person.address.all %}
-    <strong>{% trans "Address" %}:</strong>
-    {% for i in object.person.address.all%}
-    <br />
-        {{ i|safe }}
-        {% if not forloop.last %}<br /><br />{% endif %}
-    {% endfor %}
-    <br />
-    {% endif %}
-
-    {% if object.person.emails.all %}
-    <strong>{% trans "Email" %}:</strong>
-    {% for i in object.person.emails.all %}
-        {{ i.email }} ({{ i.email_type }})
-        {% if not forloop.last %}, {% endif %}
-    {% endfor %}
-    <br />
-    {% endif %}
-
-    {% if object.person.sites.all %}
-    <strong>{% trans "Website" %}:</strong>
-    {% for i in object.person.sites.all %}
-        {{ i.site }} {% if i.description %}({{ i.description }}){% endif %}
-        {% if not forloop.last %}, {% endif %}
-    {% endfor %}
-    <br />
-    {% endif %}
-
-    {% if object.person.instantMessengers.all %}
-    <strong>{% trans "Instant Messenger" %}: </strong>
-    {{ object.person.instantMessengers.all|join:", " }}
-    <br />
-    {% endif %}
+    {% with object as item %}
+        {% include "client/client_print_record_data_tag.html" %}
+    {% endwith %}
 
     {% if object.is_company %}
         {% if company_related_clients %}
-        <strong>{% trans "Employees Related" %}: </strong>
+        <h1>{% trans "Employees Related" %}: </h1>
         {% for i in company_related_clients %}
-            {{ i.client }} ({% if i.active %}{% trans "Active" %}{% else %}{% trans "Deactive" %}{% endif %}) {% if i.responsible %} - {% trans "Responsible" %}{% endif %}
-        {% if not forloop.last %},{% endif %}
+            <h3>{{ i.client }}</h3> 
+            
+            <div style="margin-left:20px;">
+                {% with i.client as item %}
+                    <strong>{% trans "Active" %}: </strong> {% if i.active %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
+                    <br />
+                    <strong>{% trans "Responsible" %}: </strong> {% if i.responsible %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
+                    <br />
+                    {% include "client/client_print_record_data_tag.html" %}
+                {% endwith %}
+            </div>
+
         {% endfor %}
         {% endif %}
     {% else%}
         {% if object.family_members_active %}
-        <strong>{% trans "Members Family" %}: </strong>
-        {% for i in object.family_members_active %}
-        {{ i.2 }}: {{ i.1 }} {% if i.6 %} <small>({{ i.6 }})</small>{% endif %}{% if not forloop.last %}, {% endif %}
-        {% endfor %}
+            <h1>{% trans "Members Family" %}</h1>
+            {% for i in object.family_members_active %}
+                <h3>{{ i.1 }} - {{ i.2 }}{% if i.4 %} ({% trans "Responsible" %}){% endif %}</h3> 
+                <div style="margin-left:20px;">
+                    <strong>{% trans "Active" %}: </strong> {% if i.5 %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
+                    <br />
+                    <strong>{% trans "Family Relation" %}: </strong> {{ i.2 }}
+                    <br />
+                    <strong>{% trans "Responsible" %}: </strong> {% if i.3 %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
+                    <br />
+                    {% with i.1 as item %}
+                        {% include "client/client_print_record_data_tag.html" %}
+                    {% endwith %}
+                    {% if i.6 %}
+                    {{ i.6 }}
+                    <br />
+                    {% endif %}
+
+                </div>
+            {% endfor %}
         {% endif %}
     {% endif %}
 

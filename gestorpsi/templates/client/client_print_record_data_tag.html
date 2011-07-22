@@ -1,0 +1,71 @@
+{% load i18n %}
+{% load calculate_age %}
+
+{% if not item.is_company %} 
+        {% if item.person.gender %}
+            <strong>{% trans "Gender" %}: </strong>
+            {% ifequal item.person.gender '1' %} {% trans "Female" %} {% endifequal %}   
+            {% ifequal item.person.gender '2' %} {% trans "Male" %} {% endifequal %}   
+        <br>{% endif %}
+    {% if item.person.birthDate %}<strong>{% trans "Birthdate" %}:</strong> {% if not item.person.birthDateSupposed %}{{ item.person.birthDate|date:"d/m/Y" }}{% endif %} ({{ item.person.birthDate|age }} {% trans "years old" %}) {% if item.person.birthDateSupposed %}<b>{% trans "Birthdate is supposed" %}</b>{% endif %}<br>{% endif %} 
+    {% if item.person.maritalStatus %}<strong>{% trans "Marital Status" %}:</strong> {{ item.person.maritalStatus }}<br>{% endif %}
+
+    {% if item.person.birthPlace or item.person.birthForeignCity or item.person.birthForeignState or item.person.birthForeignCountry %}
+    <strong>{% trans "Birth Place" %}: </strong>
+            {% if item.person.birthPlace %}
+                {{ item.person.birthPlace|title }} {{ item.person.birthPlace.state.shortName }} {{ item.person.birthPlace.state.country }}
+            {% else %}
+                {{ item.person.birthForeignCity }} {{ item.person.birthForeignState }} {{ item.person.get_birth_country }}
+            {% endif %}
+        <br>{% endif %}
+{% endif %}
+
+{% if item.is_company and item.person.company.cnae_class %}
+<strong>{% trans "Cnae" %}</strong>
+{{ item.person.company.cnae_class }} - {{ item.person.company.cnae_class_name }}
+<br />
+{% endif %}
+
+{% if item.person.document.all %}
+<strong>{% trans "Document" %}:</strong> {{ item.person.document.all|join:", " }}
+<br />
+{% endif %}
+
+{% if item.person.phones.all %}
+<strong>{% trans "Phone" %}: </strong> {{ item.person.phones.all|join:", "}}
+<br />
+{% endif %}
+
+{% if item.person.address.all %}
+<strong>{% trans "Address" %}:</strong>
+{% for i in item.person.address.all%}
+<br />
+    {{ i|safe }}
+    {% if not forloop.last %}<br /><br />{% endif %}
+{% endfor %}
+<br />
+{% endif %}
+
+{% if item.person.emails.all %}
+<strong>{% trans "Email" %}:</strong>
+{% for i in item.person.emails.all %}
+    {{ i.email }} ({{ i.email_type }})
+    {% if not forloop.last %}, {% endif %}
+{% endfor %}
+<br />
+{% endif %}
+
+{% if item.person.sites.all %}
+<strong>{% trans "Website" %}:</strong>
+{% for i in item.person.sites.all %}
+    {{ i.site }} {% if i.description %}({{ i.description }}){% endif %}
+    {% if not forloop.last %}, {% endif %}
+{% endfor %}
+<br />
+{% endif %}
+
+{% if item.person.instantMessengers.all %}
+<strong>{% trans "Instant Messenger" %}: </strong>
+{{ item.person.instantMessengers.all|join:", " }}
+<br />
+{% endif %}

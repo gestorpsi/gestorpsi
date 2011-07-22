@@ -94,7 +94,7 @@ class Demand(models.Model):
     comments = models.TextField(blank=True)
     client = models.ForeignKey(Client)
     referral = models.ForeignKey(Referral)
-    occurrence = models.OneToOneField(ScheduleOccurrence, null=True)
+    occurrence = models.ForeignKey(ScheduleOccurrence, null=True)
     #related_terminology -> terminologias
     #attached_files -> upload generico
 
@@ -121,7 +121,7 @@ class Diagnosis(models.Model):
     comments = models.TextField(blank=True)
     client = models.ForeignKey(Client)
     referral = models.ForeignKey(Referral)
-    occurrence = models.OneToOneField(ScheduleOccurrence, null=True)
+    occurrence = models.ForeignKey(ScheduleOccurrence, null=True)
     #related_demand = models.ManyToMany(Demand, null=True)
     #diagnosis -> terminologias
     #comorbity -> terminologias

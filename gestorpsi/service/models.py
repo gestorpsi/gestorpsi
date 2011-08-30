@@ -17,7 +17,7 @@ GNU General Public License for more details.
 import reversion
 from django.db import models
 from django.utils.translation import ugettext as _
-from gestorpsi.organization.models import Organization, Agreement, AgeGroup, EducationLevel, HierarchicalLevel, Procedure
+from gestorpsi.organization.models import Organization, Agreement, AgeGroup, EducationLevel, HierarchicalLevel
 from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.client.models import Client
 from gestorpsi.util.uuid_field import UuidField 
@@ -82,7 +82,6 @@ class Service(models.Model):
     education_level = models.ManyToManyField(EducationLevel, null=True, blank=True)
     hierarchical_level = models.ManyToManyField(HierarchicalLevel, null=True, blank=True)
     
-    agreements= models.ManyToManyField(Agreement)
     professions = models.ManyToManyField(Profession)
     research_project = models.BooleanField(default=False) 
     research_project_name = models.CharField(max_length=500)
@@ -94,7 +93,6 @@ class Service(models.Model):
     comments = models.TextField(blank=True)
     academic_related = models.BooleanField(_('Academic (supervised) related service'), default=False)
     is_online = models.BooleanField(default=False)
-    procedures = models.ManyToManyField(Procedure)
     
     objects = ServiceManager()
 
@@ -154,4 +152,3 @@ class GroupMembers(models.Model):
 
 reversion.register(Service)
 reversion.register(Modality)
-reversion.register(Agreement)

@@ -485,7 +485,7 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
                 'service_id':o.event.referral.service.id,
                 'group': ("%s" % '' if not hasattr(o.event.referral.group, 'id') else o.event.referral.group.description),
                 'group_id': '' if not hasattr(o.event.referral.group, 'id') else o.event.referral.group.id,
-                'service': "%s %s" % (o.event.referral, '' if not hasattr(o.event.referral.group, 'id') else '(' + _('Group') + ')'),
+                'service': u"%s %s" % (o.event.referral, '' if not hasattr(o.event.referral.group, 'id') else '(' + _('Group') + ')'),
                 'css_color_class':o.event.referral.service.css_color_class,
                 'start_time': o.start_time.strftime('%H:%M:%S'),
                 'end_time': o.end_time.strftime('%H:%M:%S'),

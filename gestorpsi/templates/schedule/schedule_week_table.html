@@ -39,7 +39,7 @@ GNU General Public License for more details.
                 {% with dict.data as o %}
                 <div class="clean place_{{o.room.place.pk}} room_{{o.room.pk}} {% for p in o.event.referral.professional.all %} professional_{{ p.pk }}{%endfor%} color{{ o.event.referral.service.css_color_class }} service_{{ o.event.referral.service.pk }}" room="{{ o.room.pk }}" place="{{ o.room.place.pk }}">
                     {% if dict.is_group %}
-                        <a title="{{ o.start_time|date:"H:i" }}hs - {{o.room}} - {{ o.room.place }} - {{ o.event.referral.client.all|join:", "}} - {{ dict.group_name }}" href="http://localhost:8000/schedule/events/group/{{ dict.group_pk }}/occurrence/{{ o.pk }}/" class="booked">
+                        <a title="{{ o.start_time|date:"H:i" }}hs - {{o.room}} - {{ o.room.place }} - {{ o.event.referral.client.all|join:", "}} - {{ dict.group_name }}" href="/schedule/events/group/{{ dict.group_pk }}/occurrence/{{ o.pk }}/" class="booked">
                     {% else %}
                         <a title="{{ o.start_time|date:"H:i" }}hs - {{o.room}} - {{ o.room.place }} - {{ o.event.referral.client.all|join:", "}} - {{ o }}" href="/schedule/events/{{ o.pk }}/confirmation/" class="booked">
                     {% endif %}

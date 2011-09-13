@@ -126,6 +126,11 @@ class ScheduleOccurrence(Occurrence):
         if hasattr(self, 'diagnosis'):
             return True
         return False
+    
+    def is_group(self):
+        if self.event.referral.group:
+            return True
+        return False
 
 class OccurrenceConfirmation(models.Model):
     occurrence = models.OneToOneField(ScheduleOccurrence)

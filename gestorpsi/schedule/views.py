@@ -409,11 +409,30 @@ def week_view_table(request,
     occurrences_length = 0
     
     for i in range(7):
+        occurrences_daily = []
         week_day = first_week_day+timedelta(i)
         week.append(week_day)
-        so = schedule_occurrences(request, week_day.strftime('%Y'), week_day.strftime('%m'), week_day.strftime('%d'))
-        occurrences.append(so)
-        occurrences_length += so.count()
+        groups = []
+        for s in schedule_occurrences(request, week_day.strftime('%Y'), week_day.strftime('%m'), week_day.strftime('%d')):
+            if s.is_group():
+                if s.event.referral.group.pk not in groups:
+                    occurrences_daily.append({
+                        'is_group': True,
+                        'group_name': u'%s' % s.event.referral.group,
+                        'group_pk': s.event.referral.group.pk,
+                        'data': s,
+                    })
+                    groups.append(s.event.referral.group.pk)
+                    occurrences_length += 1
+                    
+            else:
+                occurrences_daily.append({
+                    'is_group': False,
+                    'data': s,
+                })
+                occurrences_length += 1
+        
+        occurrences.append(occurrences_daily)
 
     previous_week = today-timedelta(weeks=1)
     next_week = today+timedelta(weeks=1)
@@ -439,8 +458,8 @@ def schedule_occurrences(request, year = 1, month = 1, day = None):
             event__referral__organization=request.user.get_profile().org_active.id
             ).exclude(occurrenceconfirmation__presence = 4 # unmarked's
             ).exclude(occurrenceconfirmation__presence = 5 # remarked
-            ).exclude(room__place__active = False # not actived places
-            ).exclude(room__active = False) # not actived rooms
+            ).exclude(room__place__active = False # exclude not active places
+            ).exclude(room__active = False) # exclude not active rooms
 
     return objs
     
@@ -481,9 +500,9 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
                 'event_id': o.event.id,
                 'room': o.room_id,
                 'place': o.room.place_id,
-                'room_name': ("%s" % o.room),
+                'room_name': (u"%s" % o.room),
                 'service_id':o.event.referral.service.id,
-                'group': ("%s" % '' if not hasattr(o.event.referral.group, 'id') else o.event.referral.group.description),
+                'group': (u"%s" % '' if not hasattr(o.event.referral.group, 'id') else o.event.referral.group.description),
                 'group_id': '' if not hasattr(o.event.referral.group, 'id') else o.event.referral.group.id,
                 'service': u"%s %s" % (o.event.referral, '' if not hasattr(o.event.referral.group, 'id') else '(' + _('Group') + ')'),
                 'css_color_class':o.event.referral.service.css_color_class,

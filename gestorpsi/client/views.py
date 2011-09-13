@@ -576,9 +576,6 @@ def referral_discharge_form(request, object_id = None, referral_id = None, disch
 
     if referral.upcoming_occurrences().count() == 0 or instance:
         if request.method == 'POST':
-            if referral.referraldischarge_set.all():
-                return render_to_response('403.html', {'object': _("Oops! This referral is already discharged!"), }, context_instance=RequestContext(request))
-
             if not instance:
                 form = ReferralDischargeForm(request.POST, initial=dict(client=object, referral=referral))
             else:

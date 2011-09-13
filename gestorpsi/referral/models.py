@@ -331,8 +331,10 @@ class Referral(Event):
         if not hasattr(self.service,'is_group') or not self.service.is_group:
             return None
         else:
-            g = GroupMembers.objects.filter(referral=self)[0]
-            return g.group if g else None
+            if GroupMembers.objects.filter(referral=self):
+                g = GroupMembers.objects.filter(referral=self)[0]
+                return g.group if g else None
+        return None
     
     group = property(_group)
     

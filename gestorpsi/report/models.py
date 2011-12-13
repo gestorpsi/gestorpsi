@@ -270,7 +270,7 @@ class ReportAdmissionManager(models.Manager):
         if return_chart_url:
             chart = PieChart3D(PIE_CHART_WIDTH, PIE_CHART_HEIGHT)
             chart.add_data([Decimal(percentage(signed, total)), Decimal(percentage(not_signed, total))])
-            chart.set_pie_labels([_('Signed'), _('Not Signed')])
+            chart.set_pie_labels([_('Signed'), _('Not')])
             return chart.get_url()
         
         data.append({'name': _('Signed'), 'total': signed, 'percentage': percentage(signed, total), 'url':reverse('admission_client_signed_signed'), })

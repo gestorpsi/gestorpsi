@@ -69,9 +69,9 @@ def chart(request, view='admission'):
             return HttpResponse(chart_json)
 
     if 'referral' in view:
-        range = Referral.objects_inrange.all(organization, date_start, date_end)
+        range = Referral.objects_inrange.all(organization, date_start, date_end, request.GET.get('service'))
         if range:
-            chart_json = ReportReferral.objects.chart(range, date_start, date_end, request.GET.get('lines'), request.GET.get('bars'), request.GET.get('points'))
+            chart_json = ReportReferral.objects.chart(range, date_start, date_end, request.GET.get('lines'), request.GET.get('bars'), request.GET.get('points'), request.GET.get('service'))
     
             return HttpResponse(chart_json)
     
@@ -93,7 +93,7 @@ def referral_data(request, template='report/report_table.html'):
     load referral dashboard reports
     """
     
-    data,date_start,date_end,service = Report().get_referral_range(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('service'))
+    data, date_start,date_end,service = Report().get_referral_range(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('service'))
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 

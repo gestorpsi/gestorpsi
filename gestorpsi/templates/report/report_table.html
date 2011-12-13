@@ -17,12 +17,15 @@ GNU General Public License for more details.
 {% load i18n %}
 
 {% if not data %}
+
     <p>{% trans "There is no data report in this range" %}</p>
 {% else %}
     {% for d in data %}
+
     <table class="report">
         <tr class="title"><th colspan="2">{{ d.title }}</th><th class="close_report"><a href="#">x</a></th></tr>
-        {% if not d.data %}
+        
+        {% if not d %}
             <tr><td colspan="3" style="text-align:left;">
             {% trans "No data founded" %}
             </td></tr>

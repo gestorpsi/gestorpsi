@@ -83,5 +83,5 @@ def write_pdf(template_src, context_dict, filename='output.pdf'):
 def percentage(number, total):
     if not total:
         return 0
-    return "%.1f" % ((int(number)*100.0)/int(total))
+    return "%.1f" % ((int(number)*100)/int(total))
 

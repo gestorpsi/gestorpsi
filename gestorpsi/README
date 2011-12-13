@@ -94,6 +94,9 @@ Python packages:
 
 - html5lib (>= 0.11.1-1)
   debian/ubuntu: sudo apt-get install python-html5lib
+  
+- pygooglechart (revision 67)
+  http://pygooglechart.slowchop.com/
 
 - Firefox Web Browser (>=3.0.5)
   maintainer: http://www.mozilla.com/firefox/

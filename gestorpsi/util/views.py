@@ -17,6 +17,7 @@ GNU General Public License for more details.
 import ho.pisa as pisa
 import cStringIO as StringIO
 import cgi
+import random
 from django import http
 from django.http import HttpResponse
 from django.utils import simplejson
@@ -84,4 +85,9 @@ def percentage(number, total):
     if not total:
         return 0
     return "%.1f" % ((int(number)*100.0)/int(total))
+
+def color_rand():
+    # generate a random color in hexaformat: DDEE44
+    return "%x" % random.randint(0, 16777215)
+    
 

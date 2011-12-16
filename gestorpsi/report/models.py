@@ -27,7 +27,7 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.core.urlresolvers import reverse
 from pygooglechart import PieChart3D
-from gestorpsi.util.views import get_object_or_None
+from gestorpsi.util.views import get_object_or_None, color_rand
 from gestorpsi.admission.models import AdmissionReferral, ReferralChoice as AdmissionIndication
 from gestorpsi.client.models import Client
 from gestorpsi.careprofessional.models import CareProfessional
@@ -218,15 +218,15 @@ class ReportAdmissionManager(models.Manager):
         
         graphs.append({
             'title':_('All admissions'), 
-            'data': Report().chart_coordinates(range, date_start, date_end, AdmissionReferral.objects.filter(date__lt=date_start).count()), 
+            'data': Report().chart_coordinates(range, date_start, date_end), 
             'type': graph_types})
         graphs.append({
             'title':_('Individuals'), 
-            'data': Report().chart_coordinates(range.filter(client__person__company__isnull=True), date_start, date_end, AdmissionReferral.objects.filter(date__lt=date_start, client__person__company__isnull=True).count()), 
+            'data': Report().chart_coordinates(range.filter(client__person__company__isnull=True), date_start, date_end), 
             'type': graph_types, })
         graphs.append({
             'title':_('Companies'), 
-            'data': Report().chart_coordinates(range.filter(client__person__company__isnull=False), date_start, date_end, AdmissionReferral.objects.filter(date__lt=date_start, client__person__company__isnull=False).count()), 
+            'data': Report().chart_coordinates(range.filter(client__person__company__isnull=False), date_start, date_end), 
             'type': graph_types })
 
         return simplejson.dumps(graphs, sort_keys=True)
@@ -246,11 +246,12 @@ class ReportAdmissionManager(models.Manager):
         if return_chart_url:
             chart = PieChart3D(PIE_CHART_WIDTH, PIE_CHART_HEIGHT)
             chart.add_data([Decimal(percentage(individuals, total)), Decimal(percentage(companies, total))])
+            chart.set_colours(['0000ff','ffa542']) # blue, orange
             chart.set_pie_labels([_('Individuals'), _('Companies')])
             return chart.get_url()
         
-        data.append({'name': _('Individuals'), 'total': individuals, 'percentage': percentage(individuals, total), 'url':reverse('admission_client_overview_individuals'), })
-        data.append({'name': _('Companies'), 'total': companies, 'percentage': percentage(companies, total), 'url':reverse('admission_client_overview_companies'), })
+        data.append({'name': _('Individuals'), 'total': individuals, 'percentage': percentage(individuals, total), 'url':reverse('admission_client_overview_individuals'), 'color':'0000ff' })
+        data.append({'name': _('Companies'), 'total': companies, 'percentage': percentage(companies, total), 'url':reverse('admission_client_overview_companies'), 'color':'ffa542'})
         data.append({'name': _('Total'), 'total': total, 'percentage': '', 'url':reverse('admission_client_overview_total'), })
         
         return data
@@ -271,10 +272,11 @@ class ReportAdmissionManager(models.Manager):
             chart = PieChart3D(PIE_CHART_WIDTH, PIE_CHART_HEIGHT)
             chart.add_data([Decimal(percentage(signed, total)), Decimal(percentage(not_signed, total))])
             chart.set_pie_labels([_('Signed'), _('Not')])
+            chart.set_colours(['00ff00','ff0000']) # red, green
             return chart.get_url()
         
-        data.append({'name': _('Signed'), 'total': signed, 'percentage': percentage(signed, total), 'url':reverse('admission_client_signed_signed'), })
-        data.append({'name': _('Not Signed'), 'total': not_signed, 'percentage': percentage(not_signed, total), 'url':reverse('admission_client_signed_notsigned'), })
+        data.append({'name': _('Signed'), 'total': signed, 'percentage': percentage(signed, total), 'url':reverse('admission_client_signed_signed'), 'color':'00ff00' })
+        data.append({'name': _('Not Signed'), 'total': not_signed, 'percentage': percentage(not_signed, total), 'url':reverse('admission_client_signed_notsigned'), 'color': 'ff0000' })
         
         return data
 
@@ -292,6 +294,14 @@ class ReportAdmissionManager(models.Manager):
             chart = PieChart3D(PIE_CHART_WIDTH, PIE_CHART_HEIGHT)
             chart_add_data = []
             chart_set_pie_labels = []
+            for i in qknowledge:
+                count = range.filter(referral_choice=i).count()
+                chart_add_data.append(Decimal(percentage(count, range.count())))
+                chart_set_pie_labels.append(i.description.encode('UTF-8'))
+            
+            chart.add_data(chart_add_data)
+            chart.set_pie_labels(chart_set_pie_labels)
+            return chart.get_url()
 
         tosort = []
         for i in qknowledge: # order reverse
@@ -302,17 +312,7 @@ class ReportAdmissionManager(models.Manager):
         for id,total in ids_ordered:
             i = AdmissionIndication.objects.get(pk=id)
             count = range.filter(referral_choice=i).count()
-
-            if return_chart_url:
-                chart_add_data.append(Decimal(percentage(count, range.count())))
-                chart_set_pie_labels.append(i.description.encode('UTF-8'))
-            else:
-                data.append({'name': i.description, 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('admission_client_knowledge', args=[i.pk]), })
-
-        if return_chart_url:
-            chart.add_data(chart_add_data)
-            chart.set_pie_labels(chart_set_pie_labels)
-            return chart.get_url()
+            data.append({'name': i.description, 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('admission_client_knowledge', args=[i.pk]), })
 
         return data
 
@@ -405,29 +405,24 @@ class ReportReferralManager(models.Manager):
             'points':'false' if not points or 'true' not in points else 'true',
         }
         
-        referrals_starts_with = Referral.objects.filter(date__lt = date_start).distinct().count() if not service else Referral.objects.filter(date__lt = date_start, service=service).distinct().count()
         graphs.append({
-            'title':_('Charged'), 'data': Report().chart_coordinates(range, date_start, date_end, referrals_starts_with),
+            'title':_('Charged'), 'data': Report().chart_coordinates(range, date_start, date_end),
             'type': graph_types, })
 
-        referrals_starts_with = Referral.objects.filter(date__lt = date_start, referraldischarge__isnull=False).distinct().count() if not service else Referral.objects.filter(date__lt = date_start, referraldischarge__isnull=False, service=service).distinct().count()
         graphs.append({
-            'title':_('Discharged'), 'data': Report().chart_coordinates(range.filter(referraldischarge__isnull=False), date_start, date_end, referrals_starts_with),
+            'title':_('Discharged'), 'data': Report().chart_coordinates(range.filter(referraldischarge__isnull=False), date_start, date_end),
             'type': graph_types })
             
-        referrals_starts_with = Referral.objects.filter(date__lt = date_start, referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True).count() if not service else Referral.objects.filter(date__lt = date_start, referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True, service=service).count()
         graphs.append({
-            'title':_('Discharged Discussed'), 'data': Report().chart_coordinates(range.filter(referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True), date_start, date_end, referrals_starts_with),
+            'title':_('Discharged Discussed'), 'data': Report().chart_coordinates(range.filter(referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True), date_start, date_end),
             'type': graph_types })
         
-        referrals_starts_with = Referral.objects.filter(date__lt = date_start, referral__isnull=False).count() if not service else Referral.objects.filter(date__lt = date_start, referral__isnull=False, service=service).count()
         graphs.append({
-            'title':_('Internals'), 'data': Report().chart_coordinates(range.filter(referral__isnull=False), date_start, date_end, referrals_starts_with),
+            'title':_('Internals'), 'data': Report().chart_coordinates(range.filter(referral__isnull=False), date_start, date_end),
             'type': graph_types })
 
-        referrals_starts_with = Referral.objects.filter(date__lt = date_start, referralexternal__isnull=False).count() if not service else Referral.objects.filter(date__lt = date_start, referralexternal__isnull=False, service=service).count()
         graphs.append({
-            'title':_('Externals'), 'data': Report().chart_coordinates(range.filter(referralexternal__isnull=False), date_start, date_end, referrals_starts_with),
+            'title':_('Externals'), 'data': Report().chart_coordinates(range.filter(referralexternal__isnull=False), date_start, date_end),
             'type': graph_types })
         
 

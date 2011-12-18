@@ -24,8 +24,6 @@ GNU General Public License for more details.
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <script type="text/javascript" src="/media/js/jquery-1.4.2.min.js"></script> <!-- JQuery Core Library -->
 <script type="text/javascript" src="/media/js/jquery-ui-1.8.1.custom.min.js"></script> <!-- JQuery UI with Draggable -->
-<script type="text/javascript" src="/media/js/jquery.flot.min.js"></script>
-<script type="text/javascript" src="/media/js/gestorpsi.report.lib.js"></script>
 <style media="all">
 @page {
   size:  portrait;
@@ -143,17 +141,6 @@ table {
 
 <h2>{{ title }} {% trans "between" %} {{ date_start|date:"d/m/Y" }} {% trans "and" %} {{ date_end|date:"d/m/Y" }}</h2>
 {% if sub_title %}<h3>{{ sub_title }}</h3>{% endif %}
-
-<!-- chart -->
-<div id="report_chart" style="width:700px;height:300px;">
-</div>
-<script>
-$(function() {
-    $.getJSON('/report/{{ view }}/chart/?date_start={{ date_start|date:"d/m/Y" }}&date_end={{ date_end|date:"d/m/Y" }}&{{ export_graph_type }}=true', function(json) {
-        updateChart(json);
-    });
-});
-</script>
 
 {% include "report/report_table.html" %}
 

@@ -58,7 +58,6 @@ $(document).ready(function() {
      */
     
     $('#dialog #cancel_button').live('click', function() {
-        alert('ae');
         $.scrollTo(0,0, {duration:300});
         return false;
     });

@@ -27,10 +27,10 @@ GNU General Public License for more details.
 </tr>
 {% for i in table_data %}
 <tr class="{% cycle 'odd' 'even' %}">
-    <td class="left">{% if i.color %}<span style="background-color:#{{ i.color }};float:left;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;{% endif %}{% if not remove_links %}<a class="pointer report_clients"{% if i.url and i.total %} href="{{ i.url }}?date_start={{date_start|date:"d/m/Y"}}&date_end={{date_end|date:"d/m/Y"}}&service={{service}}"{% endif %}>{% endif %}{{ i.name|title }}{% if not remove_links %}</a>{% endif %}</td>
-    <td>{{ i.total }}</td>
+    <td class="left" width="80%">{% if i.color %}<span style="background-color:#{{ i.color }};float:left;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;{% endif %}{% if not remove_links %}<a class="pointer report_clients"{% if i.url and i.total %} href="{{ i.url }}?date_start={{date_start|date:"d/m/Y"}}&date_end={{date_end|date:"d/m/Y"}}&service={{service}}"{% endif %}>{% endif %}{{ i.name|title }}{% if not remove_links %}</a>{% endif %}</td>
+    <td width="10%">{{ i.total }}</td>
     {% if not d.without_percentage %}
-    <td>{{ i.percentage }}</td>
+    <td width="10%">{{ i.percentage }}</td>
     {% endif %}
 </tr>
 

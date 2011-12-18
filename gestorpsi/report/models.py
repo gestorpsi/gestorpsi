@@ -694,17 +694,34 @@ class ReportReferralManager(models.Manager):
         if return_chart_url:
             data = []
             service_colors = []
-            for i in services: # order reverse
-                if not discussed_with_client:
-                    results = range.filter(service=i)
-                else:
+            if discussed_with_client:
+                total = range.filter(referraldischarge__was_discussed_with_client=True).count()
+                # PIE CHART
+                chart = PieChart3D(PIE_CHART_WIDTH, PIE_CHART_HEIGHT)
+                chart_add_data = []
+                chart_set_colours = []
+                
+                for i in services: # order reverse
                     results = range.filter(service=i, referraldischarge__was_discussed_with_client=True)
+                    if results:
+                        chart_add_data.append(Decimal(percentage(results.count(), total)))
+                        chart_set_colours.append(i.color or '000000')
+                chart.add_data(chart_add_data)
+                chart.set_colours(chart_set_colours)
+                return chart.get_url()
+            else:
+                # LINE CHART
+                for i in services: # order reverse
+                    if not discussed_with_client:
+                        results = range.filter(service=i)
+                    else:
+                        results = range.filter(service=i, referraldischarge__was_discussed_with_client=True)
 
-                if results:
-                    data.append(Report().chart_dots_by_period(results, date_start, date_end))
-                    service_colors.append(i.color or '000000')
+                    if results:
+                        data.append(Report().chart_dots_by_period(results, date_start, date_end))
+                        service_colors.append(i.color or '000000')
 
-            return Report().get_chart(data, date_start, date_end, service_colors)
+                return Report().get_chart(data, date_start, date_end, service_colors)
 
         tosort = []
         for i in services: # order reverse

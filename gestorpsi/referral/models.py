@@ -127,6 +127,9 @@ class ReferralInRangeManager(models.Manager):
         if service:
             r = r.filter(Q(service__pk=service) | Q(referral__service__pk=service))
 
+        #if service:
+            #r = r.filter(service__pk=service)
+
         return r
 
 class Referral(Event):
@@ -246,11 +249,11 @@ class Referral(Event):
         return u"%s #%s" % (self.service, self.seq)
 
     def _service_name_html(self):
-        return u"<div class='service_name_html color%s'>&nbsp;</div> %s #%s" % (self.service.css_color_class, self.service.name, self.seq)
+        return u"<div class='service_name_html' style='background-color:#%s'>&nbsp;</div> %s #%s" % (self.service.color, self.service.name, self.seq)
     service_name_html = property(_service_name_html)
 
     def _service_name_html_inline(self):
-        return u"%s #%s <div class='service_name_html_inline color%s'>&nbsp;</div>" % (self.service.name, self.seq, self.service.css_color_class)
+        return u"%s #%s <div class='service_name_html_inline' style='background-color:#%s'>&nbsp;</div>" % (self.service.name, self.seq, self.service.color)
     service_name_html_inline = property(_service_name_html_inline)
 
     def revision(self):
@@ -371,6 +374,7 @@ reversion.register(Referral, follow=['event_ptr'])
 
 class ReferralDischargeReason(models.Model):
     name = models.CharField(max_length=255)
+    color = models.CharField(_('Color'), max_length=6, null=True, help_text=_('Color in HEX Format. Ex: 662393'))
     
     def __unicode__(self):
         return u'%s' % self.name
@@ -382,6 +386,7 @@ class IndicationChoice(models.Model):
     description = models.CharField(max_length=250)
     nick = models.CharField(max_length=50, blank=True)
     weight = models.IntegerField(blank=True, null=True)
+    color = models.CharField(_('Color'), max_length=6, null=True, help_text=_('Color in HEX Format. Ex: 662393'))
 
     def __unicode__(self):
         return u"%s" % self.description

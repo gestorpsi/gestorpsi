@@ -54,28 +54,28 @@ def report_date(request):
     date_start,date_end = Report().set_date(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'))
     return HttpResponse(simplejson.dumps({'date_start':date_start.strftime('%d/%m/%Y'), 'date_end':date_end.strftime('%d/%m/%Y')}))
 
-@permission_required_with_403('report.report_list')
-def chart(request, view='admission'):
-    organization = request.user.get_profile().org_active
-    report = Report()
+#@permission_required_with_403('report.report_list')
+#def chart(request, view='admission'):
+    #organization = request.user.get_profile().org_active
+    #report = Report()
     
-    date_start,date_end = report.set_date(organization, request.GET.get('date_start'), request.GET.get('date_end'))
+    #date_start,date_end = report.set_date(organization, request.GET.get('date_start'), request.GET.get('date_end'))
 
-    if 'admission' in view:
-        range = AdmissionReferral.objects_inrange.all(organization, date_start, date_end)
-        if range:
-            chart_json = ReportAdmission.objects.chart(range, date_start, date_end, request.GET.get('lines'), request.GET.get('bars'), request.GET.get('points'))
+    #if 'admission' in view:
+        #range = AdmissionReferral.objects_inrange.all(organization, date_start, date_end)
+        #if range:
+            #chart_json = ReportAdmission.objects.chart(range, date_start, date_end, request.GET.get('lines'), request.GET.get('bars'), request.GET.get('points'))
     
-            return HttpResponse(chart_json)
+            #return HttpResponse(chart_json)
 
-    if 'referral' in view:
-        range = Referral.objects_inrange.all(organization, date_start, date_end, request.GET.get('service'))
-        if range:
-            chart_json = ReportReferral.objects.chart(range, date_start, date_end, request.GET.get('lines'), request.GET.get('bars'), request.GET.get('points'), request.GET.get('service'))
+    #if 'referral' in view:
+        #range = Referral.objects_inrange.all(organization, date_start, date_end, request.GET.get('service'))
+        #if range:
+            #chart_json = ReportReferral.objects.chart(range, date_start, date_end, request.GET.get('lines'), request.GET.get('bars'), request.GET.get('points'), request.GET.get('service'))
     
-            return HttpResponse(chart_json)
+            #return HttpResponse(chart_json)
     
-    return HttpResponse()
+    #return HttpResponse()
 
 @permission_required_with_403('report.report_list')
 def admission_data(request, template='report/report_table.html'):

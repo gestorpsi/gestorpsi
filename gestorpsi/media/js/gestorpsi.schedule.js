@@ -166,7 +166,8 @@ function updateGrid(url) {
                  */
                 
                 col.addClass('clean'); // required
-                col.addClass('color' + this.css_color_class); // service color
+                col.addClass('tag'); // required
+                col.css('background-color', '#' + this.color); // service color
                 col.addClass('service_' + this.service_id); // service from cell
                 
                 // for occurrences greater than half-hour, change table rowspan
@@ -184,9 +185,9 @@ function updateGrid(url) {
                 url = (this.group != '')?'/schedule/events/group/' +  this.group_id + '/occurrence/' + this.id + '/':'/schedule/events/' + this.id + '/confirmation/';
                 
                 if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {
-                    $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" href="' + url + '" class="booked">' + label + '</a>'); // show booked event
+                    $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" href="' + url + '" class="booked" style="color:#'+this.font_color+'">' + label + '</a>'); // show booked event
                 } else {
-                    $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a class="booked">' + label + '</a>'); // show booked event in Client View
+                    $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a class="booked" style="color:#'+this.font_color+'">' + label + '</a>'); // show booked event in Client View
                 }
                 
 
@@ -194,11 +195,12 @@ function updateGrid(url) {
                  * populate events view
                  */
                 
-                event.children('td').children('div').addClass('color' + this.css_color_class); // service color
+                event.children('td').children('div').css('background-color', '#' + this.color); // service color
+                event.children('td').children('div').addClass('tag'); // tag styles
                 event.addClass('room_' + this.room); // service color
                 event.addClass('place_' + this.place); // service color
                 event.addClass('service_' + this.service_id); // service from cell
-                $(event).children('td').children('div').html('<a title="'+json['util']['str_date']+'" href="' + url + '" class="booked">' + label_inline + '</a>');
+                $(event).children('td').children('div').html('<a title="'+json['util']['str_date']+'" href="' + url + '" class="booked" style="color:#'+this.font_color+'">' + label_inline + '</a>');
                 $('table.zebra tr:odd').addClass('zebra_0');
                 $('table.zebra tr:even').addClass('zebra_1');
                 }

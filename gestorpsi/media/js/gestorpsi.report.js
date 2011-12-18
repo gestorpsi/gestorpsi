@@ -15,7 +15,7 @@ GNU General Public License for more details.
 */
 
 $(function() {
-    
+
     /**
      * load first data
      */
@@ -46,14 +46,14 @@ $(function() {
      */
     
 
-    $('input[type=radio][name=chart_type]').click(function() {
-        types = []
-        $('input[type=radio][name=chart_type]').each(function() {
-            types[$(this).val()] = $(this).attr('checked');
-        });
-        updateChart(json_data, types);
+    //$('input[type=radio][name=chart_type]').click(function() {
+        //types = []
+        //$('input[type=radio][name=chart_type]').each(function() {
+            //types[$(this).val()] = $(this).attr('checked');
+        //});
+        //updateChart(json_data, types);
        
-    });
+    //});
 
     /**
      * bind any click to hide message are if exists

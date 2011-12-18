@@ -88,6 +88,8 @@ def percentage(number, total):
 
 def color_rand():
     # generate a random color in hexaformat: DDEE44
-    return "%x" % random.randint(0, 16777215)
+    a = "%x" % random.randint(0, 16777215)
+    a = '%s0' % a
+    return a[:6]
     
 

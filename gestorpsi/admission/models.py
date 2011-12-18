@@ -36,6 +36,7 @@ class ReferralChoice(models.Model):
     description = models.CharField(max_length=250)
     nick = models.CharField(max_length=50, blank=True)
     weight = models.IntegerField(blank=True, null=True)
+    color = models.CharField(_('Color'), max_length=6, null=True, help_text=_('Color in HEX Format. Ex: 662393'))
 
     def __unicode__(self):
         return u"%s" % self.description

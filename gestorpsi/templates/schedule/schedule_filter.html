@@ -22,7 +22,7 @@ GNU General Public License for more details.
             {% for o in places %}
             <tr>
                 <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
-                <td><span class="color{{ o.css_color_class }}">&nbsp;&nbsp;</span></td>
+                <td><span style="background-color:#{{ o.color }};">&nbsp;&nbsp;</span></td>
             </tr>
             {% endfor %}
             <tr>
@@ -43,7 +43,7 @@ GNU General Public License for more details.
             {% if o.active %}
             <tr place="{{ place.id }}" class="room_itens">
                 <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="room" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
-                <td><span class="color{{ o.css_color_class }}">&nbsp;&nbsp;</span></td>
+                <td><span style="background-color: #{{ o.color }};">&nbsp;&nbsp;</span></td>
             </tr>
             {% endif %}
             {% endfor %}{% endfor %}
@@ -65,7 +65,7 @@ GNU General Public License for more details.
             {% for o in services %}
             <tr>
                 <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="service" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
-                <td><span class="color{{ o.css_color_class }}">&nbsp;&nbsp;</span></td>
+                <td><span style="background-color: #{{ o.color }};">&nbsp;&nbsp;</span></td>
             </tr>
             {% endfor %}
             <tr>

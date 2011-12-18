@@ -37,8 +37,8 @@ urlpatterns = patterns('',
     # statistics views
     url(r'^admission/$', login_check(admission_data), {'template':'report/report_table.html'}),
     url(r'^admission/demographic/$', login_check(demographic_data), {'view':'admission'}),
-    url(r'^admission/chart/$', login_check(chart), {'view':'admission'}),
-    url(r'^referral/chart/$', login_check(chart), {'view':'referral'}),
+    #url(r'^admission/chart/$', login_check(chart), {'view':'admission'}),
+    #url(r'^referral/chart/$', login_check(chart), {'view':'referral'}),
     url(r'^referral/$', login_check(referral_data), {'template':'report/report_table.html'}),
 
     ## list of clients from admissions

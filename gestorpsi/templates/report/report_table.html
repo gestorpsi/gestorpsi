@@ -25,8 +25,8 @@ GNU General Public License for more details.
     <table class="report">
         <tr class="title"><th colspan="2">{{ d.title }}</th><th class="close_report"><a href="#">x</a></th></tr>
         
-        {% if not d %}
-            <tr><td colspan="3" style="text-align:left;">
+        {% if not d.data %}
+            <tr><td colspan="{% if not without_percentage %}3{% else %}2{% endif %}" style="text-align:left;">
             {% trans "No data founded" %}
             </td></tr>
         {% else %}

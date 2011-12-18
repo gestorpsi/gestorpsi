@@ -1039,17 +1039,22 @@ hr {
 }
 #content .documents_form p, #loading p {
         padding: 20px 45px;
-        background: url(/media/img/16/ajax_load.gif) no-repeat 20px 18px;
+        background: url(/media/img/ajax-loader.gif) no-repeat 40px 40px;
         font-weight: bold;
         color: #999999;
 }
 
-#loading p {
+#loading {
         position: absolute;
-        top: 90px;
-        right: 0px;
-        display:none;
-        z-index: 2;
+       z-index: 2000;
+	left: 30%;
+	top:30%;
+	background-color: #fff;
+	border: 6px solid #888;
+	padding: 50px 100px 80px 100px;
+	font-size: 16px;
+    display:none;
+
 }
 
 #search_header {
@@ -1234,7 +1239,7 @@ div.photo_form_upload {
         margin: -55px 0 75px -22px;
         background:  url("/media/img/transp75.png");
         z-index: 6;
-        min-height: 800px;
+        min-height: 1080px;
 }
 
 #disable_menu {

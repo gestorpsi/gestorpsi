@@ -99,7 +99,7 @@ function updateChart(json, force_type) {
 }
 
 function updateAdmission(data) {
-
+    
     /**
      * update all admission data
      */
@@ -114,12 +114,13 @@ function updateAdmission(data) {
 
     /**
      * updated chart
+     * note: moved to google API chart (server side)
      */
 
-    $.getJSON('/report/admission/chart/?' + data, function(json) { 
-        updateChart(json);
-        json_data = json; // save json callback in a global variable
-    });
+    //$.getJSON('/report/admission/chart/?' + data, function(json) { 
+        //updateChart(json);
+        //json_data = json; // save json callback in a global variable
+    //});
 
     /**
      * update admission data
@@ -165,13 +166,14 @@ function updateReferral(data) {
     data += chart_type_to_url();
 
     /**
-     * updated chart
+     * updated chart 
+     * note: moved to google API chart (server side)
      */
 
-    $.getJSON('/report/referral/chart/?' + data, function(json) { 
-        updateChart(json);
-        json_data = json; // save json callback in a global variable
-    });
+    //$.getJSON('/report/referral/chart/?' + data, function(json) { 
+        //updateChart(json);
+        //json_data = json; // save json callback in a global variable
+    //});
 
     /**
      * update admission data

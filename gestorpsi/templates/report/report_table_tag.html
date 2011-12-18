@@ -23,13 +23,16 @@ GNU General Public License for more details.
 <tr class="legend">
     <td>&nbsp;</td>
     <td>N</td>
-    <td>%</td>
+    {% if not d.without_percentage %}<td>%</td>{% endif %}
 </tr>
 {% for i in table_data %}
 <tr class="{% cycle 'odd' 'even' %}">
-    <td class="left"{% if not i.percentage %} style="text-align:right;"{% endif %}>{% if i.color %}<div style="background-color:#{{ i.color }};float:left; padding:0 10px 16px 10px; margin-right:6px;"></div>{% endif %}{% if not remove_links %}<a class="pointer report_clients"{% if i.url and i.total %} href="{{ i.url }}?date_start={{date_start|date:"d/m/Y"}}&date_end={{date_end|date:"d/m/Y"}}&service={{service}}"{% endif %}>{% endif %}{{ i.name|title }}{% if not remove_links %}</a>{% endif %}</td>
+    <td class="left">{% if i.color %}<span style="background-color:#{{ i.color }};float:left;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;{% endif %}{% if not remove_links %}<a class="pointer report_clients"{% if i.url and i.total %} href="{{ i.url }}?date_start={{date_start|date:"d/m/Y"}}&date_end={{date_end|date:"d/m/Y"}}&service={{service}}"{% endif %}>{% endif %}{{ i.name|title }}{% if not remove_links %}</a>{% endif %}</td>
     <td>{{ i.total }}</td>
+    {% if not d.without_percentage %}
     <td>{{ i.percentage }}</td>
+    {% endif %}
 </tr>
+
 {% endfor %}
 

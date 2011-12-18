@@ -30,7 +30,7 @@ from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.referral.models import Queue, Referral
 from django.utils import simplejson
 from gestorpsi.util.decorators import permission_required_with_403
-from gestorpsi.util.views import get_object_or_None
+from gestorpsi.util.views import get_object_or_None, color_rand
 from gestorpsi.organization.models import AgeGroup, EducationLevel, HierarchicalLevel
 from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.service.models import Service, Area, ServiceType, Modality, ServiceGroup
@@ -174,13 +174,14 @@ def form(request, object_id=None):
 
     # select a next color when new register
     if not object.pk:
-        if not request.user.get_profile().org_active.service_set.all():
-            object.css_color_class = 1
-        else:
-            if not object.css_color_class:
-                object.css_color_class = (int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) + 1) \
-                                    if int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) <=24 \
-                                    else 1
+        object.color = color_rand()
+        #if not request.user.get_profile().org_active.service_set.all():
+            #object.css_color_class = 1
+        #else:
+            #if not object.css_color_class:
+                #object.css_color_class = (int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) + 1) \
+                                    #if int(Service.objects.filter(organization=request.user.get_profile().org_active).latest('date').css_color_class) <=24 \
+                                    #else 1
 
     return render_to_response('service/service_form.html', {
         'object': object,
@@ -219,6 +220,8 @@ def save(request, object_id=''):
       object.area = Area.objects.get(pk=request.POST.get('service_area'))
     else:
         object.css_color_class = request.POST.get('service_css_color_class')
+    
+    object.color = request.POST.get('service_color')
 
     object.save()
 

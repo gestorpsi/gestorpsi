@@ -88,11 +88,11 @@ class Service(models.Model):
     organization = models.ForeignKey(Organization, null=True)
     responsibles = models.ManyToManyField( CareProfessional, related_name="resp_services" )
     professionals = models.ManyToManyField( CareProfessional, related_name="prof_services" )
-    css_color_class = models.IntegerField(max_length=2, blank=True, null=True, default=0)
     date = models.DateTimeField(auto_now_add=True)
     comments = models.TextField(blank=True)
     academic_related = models.BooleanField(_('Academic (supervised) related service'), default=False)
     is_online = models.BooleanField(default=False)
+    color = models.CharField(_('Color'), max_length=6, null=True, help_text=_('Color in HEX Format. Ex: 662393'))
     
     objects = ServiceManager()
 
@@ -103,12 +103,18 @@ class Service(models.Model):
         return u
     
     def _name_html(self):
-        return u"<div class='service_name_html color%s'>&nbsp;</div> %s" % (self.css_color_class, self.name)
+        return u"<div class='service_name_html' style='background-color:#%s;'>&nbsp;</div> %s" % (self.color, self.name)
     name_html = property(_name_html)
 
     def _name_html_inline(self):
-        return u"%s <div class='service_name_html_inline color%s'>&nbsp;</div>" % (self.name, self.css_color_class)
+        return u"%s <div class='service_name_html_inline' style='background-color:#%s;'>&nbsp;</div>" % (self.name, self.color)
     name_html_inline = property(_name_html_inline)
+
+    def _font_color(self):
+        if int(self.color, 16) < int(8388607):
+            return 'eeeeee'
+        return '222222'
+    font_color = property(_font_color)
 
     class Meta:
         ordering = ['name']

@@ -325,9 +325,10 @@ class ReportAdmissionManager(models.Manager):
             chart_set_colours = []
             for i in qknowledge:
                 count = range.filter(referral_choice=i).count()
-                chart_add_data.append(Decimal(percentage(count, range.count())))
-                #chart_set_pie_labels.append(i.description.encode('UTF-8'))
-                chart_set_colours.append(i.color) # red, green
+                if count:
+                    chart_add_data.append(Decimal(percentage(count, range.count())))
+                    #chart_set_pie_labels.append(i.description.encode('UTF-8'))
+                    chart_set_colours.append(i.color or '000000') # red, green
 
             chart.add_data(chart_add_data)
             #chart.set_pie_labels(chart_set_pie_labels)
@@ -344,7 +345,7 @@ class ReportAdmissionManager(models.Manager):
             i = AdmissionIndication.objects.get(pk=id)
             count = range.filter(referral_choice=i).count()
             if count > 0:
-                data.append({'name': i.description, 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('admission_client_knowledge', args=[i.pk]), 'color':i.color})
+                data.append({'name': i.description, 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('admission_client_knowledge', args=[i.pk]), 'color':i.color  or '000000'})
 
         return data
 
@@ -543,7 +544,7 @@ class ReportReferralManager(models.Manager):
                 if count:
                     chart_add_data.append(Decimal(percentage(count, range.count())))
                     #chart_set_pie_labels.append(i.description.encode('UTF-8'))
-                    chart_set_colours.append(i.color)
+                    chart_set_colours.append(i.color or '000000')
                 
             chart.add_data(chart_add_data)
             #chart.set_pie_labels(chart_set_pie_labels)
@@ -560,8 +561,9 @@ class ReportReferralManager(models.Manager):
 
         for id,total in ids_ordered:
             count = range.filter(indication__indication_choice=id).count()
-            i = ReferralIndicationChoice.objects.get(pk=id)
-            data.append({'name': ReferralIndicationChoice.objects.get(pk=id).description, 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_knowledge', args=[id]), 'color': i.color,})
+            if count:
+                i = ReferralIndicationChoice.objects.get(pk=id)
+                data.append({'name': ReferralIndicationChoice.objects.get(pk=id).description, 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_knowledge', args=[id]), 'color': i.color or '000000',})
         
         return data
 
@@ -576,7 +578,7 @@ class ReportReferralManager(models.Manager):
                 results = range.filter(service=i)
                 if results:
                     data.append(Report().chart_dots_by_period(results, date_start, date_end))
-                    service_colors.append(i.color)
+                    service_colors.append(i.color or '000000')
 
             return Report().get_chart(data, date_start, date_end, service_colors)
 
@@ -593,7 +595,7 @@ class ReportReferralManager(models.Manager):
             count = range.filter(service__pk=id).count()
             
             if count:
-                data.append({'name': u'%s' % s.name, 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_services', args=[id]), 'color':s.color})
+                data.append({'name': u'%s' % s.name, 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_services', args=[id]), 'color':s.color or '000000'})
         
         return data
 
@@ -663,7 +665,7 @@ class ReportReferralManager(models.Manager):
                 results = range.filter(service=i, referralexternal__isnull=False).count()
                 if results:
                     chart_add_data.append(Decimal(percentage(results, total)))
-                    chart_set_colours.append(i.color)
+                    chart_set_colours.append(i.color or '000000')
             chart.add_data(chart_add_data)
             chart.set_colours(chart_set_colours)
             return chart.get_url()
@@ -700,7 +702,7 @@ class ReportReferralManager(models.Manager):
 
                 if results:
                     data.append(Report().chart_dots_by_period(results, date_start, date_end))
-                    service_colors.append(i.color)
+                    service_colors.append(i.color or '000000')
 
             return Report().get_chart(data, date_start, date_end, service_colors)
 
@@ -748,7 +750,7 @@ class ReportReferralManager(models.Manager):
                 if count:
                     chart_add_data.append(Decimal(percentage(count, range.count())))
                     #chart_set_pie_labels.append(i.name.encode('UTF-8'))
-                    chart_set_colours.append(i.color)
+                    chart_set_colours.append(i.color or '000000')
                 
             chart.add_data(chart_add_data)
             chart.set_pie_labels(chart_set_pie_labels)

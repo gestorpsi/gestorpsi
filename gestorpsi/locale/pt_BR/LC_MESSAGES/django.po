@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-06-17 12:21-0300\n"
-"PO-Revision-Date: 2011-06-21 16:19\n"
+"PO-Revision-Date: 2011-10-05 11:59\n"
 "Last-Translator: <webmaster@gestorpsi.com.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2882,7 +2882,7 @@ msgstr "Indicações"
 #: templates/admission/admission_form.html:154
 #: templates/client/client_print.html:120
 msgid "Signed by the client"
-msgstr "Assinado pelo cliente (TCLE)"
+msgstr "TCLE assinado"
 
 #: templates/admission/admission_form.html:182
 msgid "Media"

@@ -472,29 +472,24 @@ class ReportReferralManager(models.Manager):
 
         total = len(range)
 
-        charged_range = range
+        subscriptions = range.filter(referral__isnull=True)
         discharged_range = range.filter(referraldischarge__isnull=False)
         referral_internal_range = range.filter(referral__isnull=False)
         referral_external_range = range.filter(referralexternal__isnull=False)
 
         if return_chart_url:
             data = []
-            data.append(Report().chart_dots_by_period(range, date_start, date_end))
+            data.append(Report().chart_dots_by_period(subscriptions, date_start, date_end))
             data.append(Report().chart_dots_by_period(discharged_range, date_start, date_end))
             data.append(Report().chart_dots_by_period(referral_internal_range, date_start, date_end))
             data.append(Report().chart_dots_by_period(referral_external_range, date_start, date_end))
 
             return Report().get_chart(data, date_start, date_end, ['000000', '0000ff', '557700', 'aa88aa' ])
-        
-        charged = charged_range.count()
-        discharged = discharged_range.count()
-        referral_internal = referral_internal_range.count()
-        referral_external = referral_external_range.count()
 
-        data.append({'name': _('Subscriptions'), 'total': charged, 'url':reverse('referral_client_overview_charged'), 'color':'000000', })
-        data.append({'name': _('Subscriptions Discharged'), 'total': discharged, 'url':reverse('referral_client_overview_discharged'), 'color':'0000ff' })
-        data.append({'name': _('Internal Referrals'), 'total': referral_internal, 'url':reverse('referral_client_overview_internal'), 'color':'557700'})
-        data.append({'name': _('External Referrals'), 'total': referral_external, 'url':reverse('referral_client_overview_external'), 'color':'aa88aa'})
+        data.append({'name': _('Subscriptions'), 'total': subscriptions.count(), 'url':reverse('referral_client_overview_charged'), 'color':'000000', })
+        data.append({'name': _('Subscriptions Discharged'), 'total': discharged_range.count(), 'url':reverse('referral_client_overview_discharged'), 'color':'0000ff' })
+        data.append({'name': _('Internal Referrals'), 'total': referral_internal_range.count(), 'url':reverse('referral_client_overview_internal'), 'color':'557700'})
+        data.append({'name': _('External Referrals'), 'total': referral_external_range.count(), 'url':reverse('referral_client_overview_external'), 'color':'aa88aa'})
         
         return data
 
@@ -540,7 +535,7 @@ class ReportReferralManager(models.Manager):
             chart_set_colours = []
             
             for i in qknowledge:
-                count = range.filter(indication__indication_choice=i.pk).count()
+                count = range.filter(indication__indication_choice=i.pk, referral__isnull=True).count()
                 if count:
                     chart_add_data.append(Decimal(percentage(count, range.count())))
                     #chart_set_pie_labels.append(i.description.encode('UTF-8'))
@@ -555,12 +550,12 @@ class ReportReferralManager(models.Manager):
 
         tosort = []
         for i in qknowledge: # order reverse
-            tosort.append((i.pk, range.filter(indication__indication_choice=i).count()))
+            tosort.append((i.pk, range.filter(indication__indication_choice=i, referral__isnull=True).count()))
 
         ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
 
         for id,total in ids_ordered:
-            count = range.filter(indication__indication_choice=id).count()
+            count = range.filter(indication__indication_choice=id, referral__isnull=True).count()
             if count:
                 i = ReferralIndicationChoice.objects.get(pk=id)
                 data.append({'name': ReferralIndicationChoice.objects.get(pk=id).description, 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_knowledge', args=[id]), 'color': i.color or '000000',})
@@ -575,7 +570,7 @@ class ReportReferralManager(models.Manager):
             data = []
             service_colors = []
             for i in services: # order reverse
-                results = range.filter(service=i)
+                results = range.filter(service=i, referral__isnull=True)
                 if results:
                     data.append(Report().chart_dots_by_period(results, date_start, date_end))
                     service_colors.append(i.color or '000000')
@@ -586,13 +581,13 @@ class ReportReferralManager(models.Manager):
 
         tosort = []
         for i in services: # order reverse
-            tosort.append((i.pk, range.filter(service=i).count()))
+            tosort.append((i.pk, range.filter(service=i, referral__isnull=True).count()))
 
         ids_ordered = sorted(tosort, key=lambda total: total[1], reverse=True)
 
         for id,total in ids_ordered:
             s = services.get(pk=id)
-            count = range.filter(service__pk=id).count()
+            count = range.filter(service__pk=id, referral__isnull=True).count()
             
             if count:
                 data.append({'name': u'%s' % s.name, 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_services', args=[id]), 'color':s.color or '000000'})

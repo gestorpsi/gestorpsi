@@ -860,17 +860,13 @@ class ReportReferralManager(models.Manager):
                 verbose_name = _('Referral Total')
 
             if filter == 'charged':
-                query = query.filter(referraldischarge__isnull=True)
+                query = query.filter(referraldischarge__isnull=True, referral__isnull=True)
                 verbose_name = _('Referral Charged')
 
             if filter == 'discharged':
                 query = query.filter(referraldischarge__isnull=False)
                 verbose_name = _('Referral Discharged')
             
-            if filter == 'discharged':
-                query = query.filter(referraldischarge__isnull=False)
-                verbose_name = _('Referral Discharged')
-
             if filter == 'discharged_discussed':
                 query = query.filter(referraldischarge__isnull=False, referraldischarge__was_discussed_with_client=True)
                 verbose_name = _('Referral Discharged Discussed')
@@ -894,7 +890,7 @@ class ReportReferralManager(models.Manager):
             
         if view == 'services':
             query = query.filter(service=filter, service__pk__in=service_pks)
-            obj = get_object_or_None(Service, pk=filter, pk__in=service_pks )
+            obj = get_object_or_None(Service, pk=filter, pk__in=service_pks)
             verbose_name = _(u'Referral Service - %s' % (obj))
             
         if view == 'internal':

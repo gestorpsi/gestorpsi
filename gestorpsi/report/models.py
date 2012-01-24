@@ -523,7 +523,6 @@ class ReportReferralManager(models.Manager):
             count = range.filter(indication__indication_choice=id).count()
             if count:
                 i = ReferralIndicationChoice.objects.get(pk=id)
-                print ReferralIndicationChoice.objects.get(pk=id).description, count, range.count()
                 data.append({'name': ReferralIndicationChoice.objects.get(pk=id).description, 'total': count, 'percentage': percentage(count, range.count()), 'url':reverse('referral_client_knowledge', args=[id]), 'color': i.color or '000000',})
         
         return data

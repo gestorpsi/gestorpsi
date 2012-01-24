@@ -280,11 +280,11 @@ class ReportAdmissionManager(models.Manager):
         individuals_range = range.filter(client__person__company__isnull=True)
         companies_range = range.filter(client__person__company__isnull=False)
         
-        data = []
-        data.append(Report().chart_dots_by_period(individuals_range, date_start, date_end))
-        data.append(Report().chart_dots_by_period(companies_range, date_start, date_end))
-        data.append(Report().chart_dots_by_period(range, date_start, date_end))
-        chart_url = Report().get_chart(data, date_start, date_end, ['0000ff','ffa542', '000000'])
+        chart_data = []
+        chart_data.append(Report().chart_dots_by_period(individuals_range, date_start, date_end))
+        chart_data.append(Report().chart_dots_by_period(companies_range, date_start, date_end))
+        chart_data.append(Report().chart_dots_by_period(range, date_start, date_end))
+        chart_url = Report().get_chart(chart_data, date_start, date_end, ['0000ff','ffa542', '000000'])
         
         data.append({'name': _('Individuals'), 'total': individuals_range.count(), 'percentage': percentage(individuals_range.count(), total), 'url':reverse('admission_client_overview_individuals'), 'color':'0000ff' })
         data.append({'name': _('Companies'), 'total': companies_range.count(), 'percentage': percentage(companies_range.count(), total), 'url':reverse('admission_client_overview_companies'), 'color':'ffa542'})

@@ -100,7 +100,7 @@ class Report(models.Model):
             
             return admission, chart_url, date_start,date_end
         
-        return None, None, None
+        return None, None, None, None
 
     def get_referral_range(self, organization, date_start, date_end, service):
         """

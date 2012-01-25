@@ -423,7 +423,7 @@ class ReportAdmissionManager(models.Manager):
         return clients_reports
 
 class ReportReferralManager(models.Manager):
-    def overview(self, range, date_start, date_end, return_chart_url=False, organization=None):
+    def overview(self, range, date_start, date_end, return_chart_url=False, organization=None, service=None):
 
         """
         return a list with admission overview data splited
@@ -435,8 +435,11 @@ class ReportReferralManager(models.Manager):
         total = len(range)
 
         subscriptions = range
-        #discharged_range = range.filter(referraldischarge__isnull=False)
         discharged_range = Referral.objects.filter(service__organization=organization, referraldischarge__date__gte=date_start, referraldischarge__date__lt=date_end)
+
+        if service:
+            discharged_range = discharged_range.filter(service=service)
+
         referral_internal_range = range.filter(referral__isnull=False)
         referral_external_range = range.filter(referralexternal__isnull=False)
 
@@ -456,7 +459,7 @@ class ReportReferralManager(models.Manager):
         
         return data
 
-    def discussed(self, range, organization, date_start, date_end, return_chart_url=False):
+    def discussed(self, range, organization, date_start, date_end, return_chart_url=False, service=None):
 
         """
         return a list with referral discussed or not with client
@@ -465,6 +468,9 @@ class ReportReferralManager(models.Manager):
         data = []
 
         range = Referral.objects.filter(service__organization=organization, referraldischarge__date__gte=date_start, referraldischarge__date__lt=date_end)
+        
+        if service:
+            range = range.filter(service=service)
 
         total = len(range)
 
@@ -644,12 +650,15 @@ class ReportReferralManager(models.Manager):
         
         return data
 
-    def service_discharges(self, range, organization, date_start, date_end, discussed_with_client=None, return_chart_url=False):
+    def service_discharges(self, range, organization, date_start, date_end, discussed_with_client=None, return_chart_url=False, service=None):
 
         services = organization.service_set.all()
         data = []
 
         range = Referral.objects.filter(service__organization=organization, referraldischarge__date__gte=date_start, referraldischarge__date__lt=date_end)
+
+        if service:
+            range = range.filter(service=service)
 
         if return_chart_url:
             data = []
@@ -707,15 +716,18 @@ class ReportReferralManager(models.Manager):
         
         return data
 
-    def service_discharge_reason(self, range, organization, date_start, date_end, return_chart_url=False):
+    def service_discharge_reason(self, range, organization, date_start, date_end, return_chart_url=False, service=None):
         
         """
         return a list of reason discharges with a total of occurrences
         """
 
         qknowledge = ReferralDischargeReason.objects.filter(id__gt = 0)
-        #range = range.filter(referraldischarge__reason__isnull=False)
+
         range = Referral.objects.filter(service__organization=organization, referraldischarge__date__gte=date_start, referraldischarge__date__lt=date_end)
+
+        if service:
+            range = range.filter(service=service)
 
         if return_chart_url:
             chart = PieChart3D(PIE_CHART_WIDTH, PIE_CHART_HEIGHT)
@@ -782,13 +794,13 @@ class ReportReferralManager(models.Manager):
             from_service_range = range.filter(service__pk=service, referral__service__isnull=False).exclude(referral__service__pk=service)
             range = in_service_range
         
-        data.append({'title': _('Subscriptions Overview'), 'data': ReportReferral.objects.overview(range if not service else in_service_range, date_start, date_end, False, organization), 'chart_url': ReportReferral.objects.overview(range if not service else in_service_range, date_start, date_end, True, organization), 'without_percentage':True })
+        data.append({'title': _('Subscriptions Overview'), 'data': ReportReferral.objects.overview(range if not service else in_service_range, date_start, date_end, False, organization, service), 'chart_url': ReportReferral.objects.overview(range if not service else in_service_range, date_start, date_end, True, organization, service), 'without_percentage':True })
 
         if not service:
             data.append({'title': _('Service Subscriptions'), 'data': ReportReferral.objects.services(range, organization, date_start, date_end), 'chart_url':ReportReferral.objects.services(range, organization, date_start, date_end, True)})
             data.append({'title': _('Discharges from Services'), 'data': ReportReferral.objects.service_discharges(range, organization, date_start, date_end), 'chart_url':ReportReferral.objects.service_discharges(range, organization, date_start, date_end, None, True)})
 
-        data.append({'title': _('Subscriptions Discharged Discussed'), 'data': ReportReferral.objects.discussed(range if not service else in_service_range, organization, date_start, date_end, False), 'chart_url': ReportReferral.objects.discussed(range if not service else in_service_range, organization, date_start, date_end, True)})
+        data.append({'title': _('Subscriptions Discharged Discussed'), 'data': ReportReferral.objects.discussed(range if not service else in_service_range, organization, date_start, date_end, False, service), 'chart_url': ReportReferral.objects.discussed(range if not service else in_service_range, organization, date_start, date_end, True, service)})
         data.append({'title': u'%s (%s)' % (_('Subscriptions Indications'), _('Excluding internal referrals')), 'data': ReportReferral.objects.knowledge(range if not service else in_service_range), 'chart_url': ReportReferral.objects.knowledge(range if not service else in_service_range, True)})
 
         data.append({'title': _('Internal Referrals to Services'), 'data': ReportReferral.objects.referral_internal(range if not service else to_service_range, organization), 'chart_url':ReportReferral.objects.referral_internal(range if not service else to_service_range, organization, None, True)})
@@ -797,10 +809,10 @@ class ReportReferralManager(models.Manager):
         if not service:
             data.append({'title': _('Externals Referrals from Services'), 'data': ReportReferral.objects.referral_external(range, organization), 'chart_url':ReportReferral.objects.referral_external(range, organization, True)})
 
-        data.append({'title': _('Discharges Reason'), 'data': ReportReferral.objects.service_discharge_reason(range, organization, date_start, date_end, False), 'chart_url': ReportReferral.objects.service_discharge_reason(range, organization, date_start, date_end, True)})
+        data.append({'title': _('Discharges Reason'), 'data': ReportReferral.objects.service_discharge_reason(range, organization, date_start, date_end, False, service), 'chart_url': ReportReferral.objects.service_discharge_reason(range, organization, date_start, date_end, True, service)})
 
         if not service:
-            data.append({'title': _('Discharges Discussed with Client'), 'data': ReportReferral.objects.service_discharges(range, organization, date_start, date_end, True), 'chart_url': ReportReferral.objects.service_discharges(range, organization, date_start, date_end, True, True)})
+            data.append({'title': _('Discharges Discussed with Client'), 'data': ReportReferral.objects.service_discharges(range, organization, date_start, date_end, True, False, service), 'chart_url': ReportReferral.objects.service_discharges(range, organization, date_start, date_end, True, True, service)})
 
         data.append({'title': _('Professional Subscriptions'), 'data': ReportReferral.objects.professionals(range, organization)})
 

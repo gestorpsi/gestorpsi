@@ -171,17 +171,17 @@ def report_export(request):
         if request.POST.get('view') == '1': # admission
             title = _('Admission Report')
             view = 'admission'
-            data = Report().get_admissions_range(org_active, request.POST.get('date_start'), request.POST.get('date_end'))
+            data = Report().get_admissions_range(org_active, request.POST.get('date_start'), request.POST.get('date_end'), request.POST.get('accumulated'))
 
             if request.POST.get('clients'):
                 report_clients = ReportAdmission.objects.clients_all(request.user, request.POST.get('date_start'), request.POST.get('date_end'))
-            data,date_start,date_end = data
+            data, chart_url, date_start,date_end = data
         if request.POST.get('view') == '2': # referral
             title = _('Referral Report')
             if request.POST.get('service'):
                 sub_title = u'%s %s' % (_('Service'), Service.objects.get(organization=request.user.get_profile().org_active, pk=request.POST.get('service')))
             view = 'referral'
-            data = Report().get_referral_range(org_active, request.POST.get('date_start'), request.POST.get('date_end'), request.POST.get('service'))
+            data = Report().get_referral_range(org_active, request.POST.get('date_start'), request.POST.get('date_end'), request.POST.get('service'), request.POST.get('accumulated'))
 
             if request.POST.get('clients'):
                 report_clients = ReportReferral.objects.clients_all(request.user, request.POST.get('date_start'), request.POST.get('date_end'))

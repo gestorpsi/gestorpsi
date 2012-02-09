@@ -20,13 +20,13 @@ $(function() {
      * load first data
      */
     
-    updateAdmission();
+    updateAdmission('accumulated=True');
 
     /**
      * load report saved list
      */
 
-    updateSavedReports();
+    updateSavedReports('accumulated=True');
 
     /**
      * hide/display subscription report filter

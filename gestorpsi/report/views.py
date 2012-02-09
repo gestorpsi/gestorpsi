@@ -52,7 +52,8 @@ def index(request):
 @permission_required_with_403('report.report_list')
 def report_date(request):
     date_start,date_end = Report().set_date(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'))
-    return HttpResponse(simplejson.dumps({'date_start':date_start.strftime('%d/%m/%Y'), 'date_end':date_end.strftime('%d/%m/%Y')}))
+    accumulated = request.GET.get('accumulated')
+    return HttpResponse(simplejson.dumps({'date_start':date_start.strftime('%d/%m/%Y'), 'date_end':date_end.strftime('%d/%m/%Y'), 'accumulated': accumulated}))
 
 @permission_required_with_403('report.report_list')
 def admission_data(request, template='report/report_table.html'):
@@ -60,7 +61,7 @@ def admission_data(request, template='report/report_table.html'):
     load admission dashboard reports
     """
     
-    data, chart_url, date_start,date_end = Report().get_admissions_range(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'))
+    data, chart_url, date_start,date_end = Report().get_admissions_range(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('accumulated'))
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 
@@ -70,7 +71,7 @@ def referral_data(request, template='report/report_table.html'):
     load referral dashboard reports
     """
     
-    data, date_start,date_end,service = Report().get_referral_range(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('service'))
+    data, date_start,date_end,service = Report().get_referral_range(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('service'), request.GET.get('accumulated'))
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 
@@ -119,7 +120,7 @@ def report_save(request, form_class=ReportSaveAdmissionForm, view='admission', t
 
     report = Report()
     date_start,date_end = report.set_date(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'))
-    form = form_class(date_start=date_start, date_end=date_end, service=Service.objects.get(organization = request.user.get_profile().org_active, pk=request.GET.get('service')) if request.GET.get('service') else None)
+    form = form_class(date_start=date_start, date_end=date_end, service=Service.objects.get(organization = request.user.get_profile().org_active, pk=request.GET.get('service')) if request.GET.get('service') else None, accumulated=request.GET.get('accumulated'))
     
     url_post = reverse('report_%s_save' % view) # url to post form
     

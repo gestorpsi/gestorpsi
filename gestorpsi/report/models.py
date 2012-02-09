@@ -78,7 +78,7 @@ class Report(models.Model):
         
         return f
 
-    def get_admissions_range(self, organization, date_start, date_end):
+    def get_admissions_range(self, organization, date_start, date_end, accumulated):
         """
         get admission universe
         all admissions that could be find in range
@@ -96,13 +96,13 @@ class Report(models.Model):
         range = AdmissionReferral.objects_inrange.all(organization, date_start, date_end)
         
         if range:
-            admission, chart_url = ReportAdmission.objects.all(range, date_start, date_end)
+            admission, chart_url = ReportAdmission.objects.all(range, date_start, date_end, accumulated)
             
             return admission, chart_url, date_start,date_end
         
         return None, None, None, None
 
-    def get_referral_range(self, organization, date_start, date_end, service):
+    def get_referral_range(self, organization, date_start, date_end, service, accumulated):
         """
         get referral 'universe'
         all referrals that could be find in range
@@ -121,7 +121,7 @@ class Report(models.Model):
         range = Referral.objects_inrange.all(organization, date_start, date_end, service)
         
         if range:
-            data = ReportReferral.objects.all(range, date_start, date_end, organization, service)
+            data = ReportReferral.objects.all(range, date_start, date_end, organization, service, accumulated)
             
             return data,date_start,date_end, service
         
@@ -150,20 +150,20 @@ class Report(models.Model):
             start_tmp = start_tmp+scale
         return dots
 
-    def chart_dots_by_period(self, objects_range, date_start = None, date_end = None, accumulated=None, referral_discharged=False):
+    def chart_dots_by_period(self, objects_range, date_start = None, date_end = None, accumulated=None, referral_discharged=False, accumulated_each_period=True):
         """
         return x and y coordinates in objects range
         note: object must have created() attribute
         """
         dots = []
         start_tmp = date_start
+        registers_in_period_last = 0
 
         """
         start chart with actual count of registers
         """
 
-        if accumulated:
-            accumulated_increase = accumulated
+        accumulated_increase = 0 if not accumulated else accumulated
 
         period = date_end-date_start
         if period.days <= 45: # daily X axis
@@ -182,11 +182,13 @@ class Report(models.Model):
             else:
                 registers_in_period = range.filter(referraldischarge__date__gte=start_tmp, referraldischarge__date__lte=next_period).count()
 
+            dots.append(registers_in_period + registers_in_period_last + accumulated_increase) # coordinates here: x, y
+            
+            if accumulated_each_period == 'True': # start point from the last loop
+                registers_in_period_last = registers_in_period + registers_in_period_last
+            
             if accumulated: # start graph with initials Y values
-                dots.append(admission_in_period + accumulated_increase) # coordinates here: x, y
                 accumulated_increase = registers_in_period + accumulated_increase
-            else:
-                dots.append(registers_in_period) # coordinates here: x, y
         
             start_tmp = start_tmp+scale
             
@@ -268,7 +270,7 @@ class ReportsSaved(models.Model):
         return '%s' % (self.label)
 
 class ReportAdmissionManager(models.Manager):
-    def overview(self, range, date_start, date_end):
+    def overview(self, range, date_start, date_end, accumulated=True):
 
         """
         return a list with admission overview data splited
@@ -281,9 +283,9 @@ class ReportAdmissionManager(models.Manager):
         companies_range = range.filter(client__person__company__isnull=False)
         
         chart_data = []
-        chart_data.append(Report().chart_dots_by_period(individuals_range, date_start, date_end))
-        chart_data.append(Report().chart_dots_by_period(companies_range, date_start, date_end))
-        chart_data.append(Report().chart_dots_by_period(range, date_start, date_end))
+        chart_data.append(Report().chart_dots_by_period(individuals_range, date_start, date_end, None, False, accumulated))
+        chart_data.append(Report().chart_dots_by_period(companies_range, date_start, date_end, None, False, accumulated))
+        chart_data.append(Report().chart_dots_by_period(range, date_start, date_end, None, False, accumulated))
         chart_url = Report().get_chart(chart_data, date_start, date_end, ['0000ff','ffa542', '000000'])
         
         data.append({'name': _('Individuals'), 'total': individuals_range.count(), 'percentage': percentage(individuals_range.count(), total), 'url':reverse('admission_client_overview_individuals'), 'color':'0000ff' })
@@ -347,13 +349,13 @@ class ReportAdmissionManager(models.Manager):
             
         return data, chart.get_url()
 
-    def all(self, range, date_start, date_end):
+    def all(self, range, date_start, date_end, accumulated=True):
         """
         return a list with all table data above
         """
         data = []
         
-        table_data, chart_url = ReportAdmission.objects.overview(range, date_start, date_end)
+        table_data, chart_url = ReportAdmission.objects.overview(range, date_start, date_end, accumulated)
         data.append({'title': _('Admission Overview'), 'data': table_data, 'chart_url': chart_url })
         
         table_data, chart_url = ReportAdmission.objects.signed(range)
@@ -423,7 +425,7 @@ class ReportAdmissionManager(models.Manager):
         return clients_reports
 
 class ReportReferralManager(models.Manager):
-    def overview(self, range, date_start, date_end, return_chart_url=False, organization=None, service=None):
+    def overview(self, range, date_start, date_end, return_chart_url=False, organization=None, service=None, accumulated=True):
 
         """
         return a list with admission overview data splited
@@ -445,10 +447,10 @@ class ReportReferralManager(models.Manager):
 
         if return_chart_url:
             data = []
-            data.append(Report().chart_dots_by_period(subscriptions, date_start, date_end))
-            data.append(Report().chart_dots_by_period(ReferralDischarge.objects.filter(referral__in=discharged_range), date_start, date_end))
-            data.append(Report().chart_dots_by_period(referral_internal_range, date_start, date_end))
-            data.append(Report().chart_dots_by_period(referral_external_range, date_start, date_end))
+            data.append(Report().chart_dots_by_period(subscriptions, date_start, date_end, None, False, accumulated))
+            data.append(Report().chart_dots_by_period(ReferralDischarge.objects.filter(referral__in=discharged_range), date_start, date_end, None, False, accumulated))
+            data.append(Report().chart_dots_by_period(referral_internal_range, date_start, date_end, None, False, accumulated))
+            data.append(Report().chart_dots_by_period(referral_external_range, date_start, date_end, None, False, accumulated))
 
             return Report().get_chart(data, date_start, date_end, ['000000', '0000ff', '557700', 'aa88aa' ])
 
@@ -533,7 +535,7 @@ class ReportReferralManager(models.Manager):
         
         return data
 
-    def services(self, range, organization, date_start, date_end, return_chart_url=False):
+    def services(self, range, organization, date_start, date_end, return_chart_url=False, accumulated=True):
 
         services = organization.service_set.all()
 
@@ -543,7 +545,7 @@ class ReportReferralManager(models.Manager):
             for i in services: # order reverse
                 results = range.filter(service=i)
                 if results:
-                    data.append(Report().chart_dots_by_period(results, date_start, date_end))
+                    data.append(Report().chart_dots_by_period(results, date_start, date_end, None, False, accumulated))
                     service_colors.append(i.color or '000000')
 
             return Report().get_chart(data, date_start, date_end, service_colors)
@@ -650,7 +652,7 @@ class ReportReferralManager(models.Manager):
         
         return data
 
-    def service_discharges(self, range, organization, date_start, date_end, discussed_with_client=None, return_chart_url=False, service=None):
+    def service_discharges(self, range, organization, date_start, date_end, discussed_with_client=None, return_chart_url=False, service=None, accumulated=True):
 
         services = organization.service_set.all()
         data = []
@@ -687,7 +689,7 @@ class ReportReferralManager(models.Manager):
                         results = range.filter(service=i, referraldischarge__was_discussed_with_client=True)
 
                     if results:
-                        data.append(Report().chart_dots_by_period(results, date_start, date_end, False, True))
+                        data.append(Report().chart_dots_by_period(results, date_start, date_end, False, True, accumulated))
                         service_colors.append(i.color or '000000')
 
                 return Report().get_chart(data, date_start, date_end, service_colors)
@@ -782,7 +784,7 @@ class ReportReferralManager(models.Manager):
         
         return data
 
-    def all(self, range, date_start, date_end, organization=None, service=None):
+    def all(self, range, date_start, date_end, organization=None, service=None, accumulated=True):
         """
         return a list with all table data above
         """
@@ -794,11 +796,11 @@ class ReportReferralManager(models.Manager):
             from_service_range = range.filter(service__pk=service, referral__service__isnull=False).exclude(referral__service__pk=service)
             range = in_service_range
         
-        data.append({'title': _('Subscriptions Overview'), 'data': ReportReferral.objects.overview(range if not service else in_service_range, date_start, date_end, False, organization, service), 'chart_url': ReportReferral.objects.overview(range if not service else in_service_range, date_start, date_end, True, organization, service), 'without_percentage':True })
+        data.append({'title': _('Subscriptions Overview'), 'data': ReportReferral.objects.overview(range if not service else in_service_range, date_start, date_end, False, organization, service, accumulated), 'chart_url': ReportReferral.objects.overview(range if not service else in_service_range, date_start, date_end, True, organization, service, accumulated), 'without_percentage':True })
 
         if not service:
-            data.append({'title': _('Service Subscriptions'), 'data': ReportReferral.objects.services(range, organization, date_start, date_end), 'chart_url':ReportReferral.objects.services(range, organization, date_start, date_end, True)})
-            data.append({'title': _('Discharges from Services'), 'data': ReportReferral.objects.service_discharges(range, organization, date_start, date_end), 'chart_url':ReportReferral.objects.service_discharges(range, organization, date_start, date_end, None, True)})
+            data.append({'title': _('Service Subscriptions'), 'data': ReportReferral.objects.services(range, organization, date_start, date_end, False, accumulated), 'chart_url':ReportReferral.objects.services(range, organization, date_start, date_end, True, accumulated)})
+            data.append({'title': _('Discharges from Services'), 'data': ReportReferral.objects.service_discharges(range, organization, date_start, date_end), 'chart_url':ReportReferral.objects.service_discharges(range, organization, date_start, date_end, None, True, None, accumulated)})
 
         data.append({'title': _('Subscriptions Discharged Discussed'), 'data': ReportReferral.objects.discussed(range if not service else in_service_range, organization, date_start, date_end, False, service), 'chart_url': ReportReferral.objects.discussed(range if not service else in_service_range, organization, date_start, date_end, True, service)})
         data.append({'title': u'%s (%s)' % (_('Subscriptions Indications'), _('Excluding internal referrals')), 'data': ReportReferral.objects.knowledge(range if not service else in_service_range), 'chart_url': ReportReferral.objects.knowledge(range if not service else in_service_range, True)})

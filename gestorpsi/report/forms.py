@@ -31,6 +31,11 @@ GRAPH_TYPE = (
     ('points', 'Points'),
 )
 
+GRAPH_ACCUMULATED = (
+    (True, _('Accumulated Graph')),
+    (False, _('Not accumulated Graph')),
+)
+
 class ReportForm(forms.ModelForm):
     """
     form used to filter results
@@ -41,6 +46,7 @@ class ReportForm(forms.ModelForm):
     service = forms.ChoiceField(label=_('Service'))
     format = forms.ChoiceField(label=_('Export format'), choices=EXPORT_FORMATS, help_text=_('Here you can choose which format you want to export the data. For printing graphics please use HTML format'))
     clients = forms.BooleanField(label=_('Include client list'), help_text=_('If selected will a list of clients for each report sub-item'))
+    accumulated = forms.ChoiceField(label=_('Accumulated Graph'), choices=GRAPH_ACCUMULATED, help_text=_('Acummulated graph?'))
     export_graph_type = forms.ChoiceField(label=_('Graph Type format'), choices=GRAPH_TYPE, help_text=_('Here you can choose which type of graph you need. Note: only for HTML format'))
 
     class Meta:
@@ -49,6 +55,7 @@ class ReportForm(forms.ModelForm):
     def __init__(self, date_start, date_end, organization, *args, **kwargs):
         super(ReportForm, self).__init__(*args, **kwargs)
         self.fields['view'].initial = 1 # admission view as default
+        self.fields['accumulated'].initial = True # acummulated graph as default
         self.fields['date_start'].initial = date_start.strftime('%d/%m/%Y')
         self.fields['date_end'].initial = date_end.strftime('%d/%m/%Y')
         choices = [('',_('------ All Services ------'))]
@@ -80,10 +87,11 @@ class ReportSaveAdmissionForm(ReportSaveForm):
         date_start = kwargs.pop('date_start', None)
         date_end = kwargs.pop('date_end', None)
         service = kwargs.pop('service', None)
+        accumulated = kwargs.pop('accumulated', None)
         super(ReportSaveAdmissionForm, self).__init__(*args, **kwargs)
         if date_start and date_end:
             self.fields['label'].initial = '%s %s %s %s' % (_('Admission between'), date_start.strftime("%d/%m/%Y"),  _('and'), date_end.strftime("%d/%m/%Y"))
-            self.fields['data'].initial = 'view=admission&date_start=%s&date_end=%s'% (date_start.strftime("%d/%m/%Y"), date_end.strftime("%d/%m/%Y"))
+            self.fields['data'].initial = 'view=admission&date_start=%s&date_end=%s&accumulated=%s'% (date_start.strftime("%d/%m/%Y"), date_end.strftime("%d/%m/%Y"), accumulated)
 
     def save(self, user, organization, *args, **kwargs):
         data = super(ReportSaveAdmissionForm, self).save(commit=False, *args, **kwargs)
@@ -102,10 +110,11 @@ class ReportSaveReferralForm(ReportSaveForm):
         date_start = kwargs.pop('date_start', None)
         date_end = kwargs.pop('date_end', None)
         service = kwargs.pop('service', None)
+        accumulated = kwargs.pop('accumulated', None)
         super(ReportSaveReferralForm, self).__init__(*args, **kwargs)
         if date_start and date_end:
             self.fields['label'].initial = u'%s%s %s %s %s' % ('' if not service else (u'%s - ' % service), _('Referrals between'), date_start.strftime("%d/%m/%Y"),  _('and'), date_end.strftime("%d/%m/%Y"))
-            self.fields['data'].initial = 'view=referral&date_start=%s&date_end=%s'% (date_start.strftime("%d/%m/%Y"), date_end.strftime("%d/%m/%Y"))
+            self.fields['data'].initial = 'view=referral&date_start=%s&date_end=%s&service=%s&accumulated=%s'% (date_start.strftime("%d/%m/%Y"), date_end.strftime("%d/%m/%Y"), '' if not service else service.pk, accumulated)
 
     def save(self, user, organization, *args, **kwargs):
         data = super(ReportSaveReferralForm, self).save(commit=False, *args, **kwargs)

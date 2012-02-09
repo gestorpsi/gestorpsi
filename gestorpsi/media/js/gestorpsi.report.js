@@ -109,8 +109,9 @@ $(function() {
         
         var date_start =$('form#report_filter [name=date_start]').val();
         var date_end =$('form#report_filter [name=date_end]').val();
+        var accumulated =$('form#report_filter [name=accumulated]').val();
         
-        var data = 'date_start=' + date_start + '&date_end=' + date_end;
+        var data = 'date_start=' + date_start + '&date_end=' + date_end + '&accumulated=' + accumulated;
         
         if($('#report_filter [name = view]').val() == 1) updateAdmission(data);
         if($('#report_filter [name = view]').val() == 2) {
@@ -203,9 +204,9 @@ $(function() {
     
     $('a.report_filter').click(function() {
         if($('form#report_filter select[name=view]').val() == 1) // admission
-            updateAdmission('view=admission' + $(this).attr('data'));
+            updateAdmission('view=admission' + $(this).attr('data') + '&accumulated=' +$('#report_filter [name=accumulated]').val());
         if($('form#report_filter select[name=view]').val() == 2) // referral
-            updateReferral('view=referral' + $(this).attr('data') + '&service=' + $('#report_filter [name=service]').val());
+            updateReferral('view=referral' + $(this).attr('data') + '&service=' + $('#report_filter [name=service]').val() + '&accumulated=' +$('#report_filter [name=accumulated]').val());
 
         $('div.loaded_report_title').hide();
         return false;

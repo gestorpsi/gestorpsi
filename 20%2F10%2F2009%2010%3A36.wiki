@@ -1,0 +1,4 @@
+
+
+= Atualização na versão Demo =
+Foi atualizado o Demo do GestorPsi para a versão r1297.

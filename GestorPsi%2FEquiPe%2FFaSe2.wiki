@@ -1,0 +1,155 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+= Equipe da Fase 2 do Projeto: =
+----
+Clique [wiki:"GestorPsi/EquiPe/FaSe1" aqui] para conhecer a equipe da Fase 1 do Projeto.
+
+[[BR]]'''Oliver Zancul Prado''' – Coordenador
+
+[mailto:ozp@gestorpsi.com.br]
+
+- Mestre em Psicologia Clínica - USP
+
+- Professor da UNIP Araraquara
+
+- Sócio Proprietário do Instituto de Psicologia Comportamental de São Carlos  '
+
+----
+== '''Pesquisadores na área de Psicologia''' ==
+'''Eduardo Neves Pedrosa de Cillo''' -
+
+[mailto:edcillo@yahoo.com]
+
+- Mestre em Psicologia Experimental PUC-SP
+
+- Professor da PUC-MG
+
+- Atuação na área de psicologia do esporte
+
+'''Emilio Takase''' – Pesquisador Colaborador
+
+[mailto:takase@cfh.ufsc.br]
+
+-Doutor em Psicologia Experimental - USP
+
+-Professor do Departamento de Psicologia – UFSC
+
+-Consultor técnico-científica do projeto na área de psicologia do esporte e neuropsicologia
+
+'''Juliana Cristina Donadone''' - Pesquisador Colaborador
+
+[mailto:judonado@terra.com.br]
+
+- Doutoranda em Psicologia Clínica - USP
+
+- Professora da UNIP Ribeirão Preto
+
+'''Yuristella Yano''' – Pesquisador Colaborador
+
+[mailto:yuristella@hotmail.com]
+
+- Doutora em Psicologia Clínica - USP
+
+- Coordenadora do Curso de Psicologia da Faculdade Paulistana de Ciências e Letras – São Paulo/SP
+
+- Professora Adjunta da Universidade Paulista - São Paulo/SP
+
+- Consultora técnico-científica do projeto
+
+'''Sonia Beatriz Meyer''' – Pesquisador Colaborador
+
+[mailto:sbmeyer@usp.br]
+
+- Doutora em Psicologia Experimental – USP
+
+- Professora do Departamento de Psicologia Clínica da USP
+
+- Larga experiência com pesquisa em psicologia clínica.
+
+- Projeto de pesquisa atual ligado à intercâmbio de dados entre clínicas escolas de psicologia
+
+----
+== Pesquisadores na área de Computação ==
+'''Rosana Teresinha Vaccare Braga''' – Pesquisador Colaborador
+
+[mailto:rtvb@icmc.usp.br]
+
+- Doutora em Ciências de Computação
+
+- Professora e pesquisadora na área de Engenharia de Software do ICMC-USP
+
+- Consultora técnico científica do projeto e orientadora dos bolsistas de computação
+
+'''Rosângela Aparecida Dellosso Penteado''' – Pesquisador Colaborador
+
+[mailto:rosangel@dc.ufscar.br]
+
+-Doutora em Física Computacional. IFSC-USP
+
+-Professora do Departamento de Computação da UFSCar
+
+-Consultora técnico-científica do projeto na área de engenharia de software e desenvolvimento
+
+[[BR]]'''Fernão S. R. Germano - '''Pesquisador Colaborador
+
+fernao@icmc.usp.br
+
+-Consultoria técnico-científica do projeto na área de documentação
+
+----
+
+== Bolsistas de Treinamento Técnico ==
+[[BR]]
+
+'''Fabio Martins - '''Adminstrador de Sistemas, Desenvolvedor, Programador Estrutural
+
+[mailto:czd@gestorpsi.com.br]
+
+- Graduação em Processamento de Dados FATEC/TQ
+
+- Conhecimento e experiência em sistemas GPL/!OpenSource (Linux, FreeBSD, OpenBSD), linguagens de programação PHP (PEAR, CakePHP), Python (Django), Bash, Perl, C, Pascal, HTML, CSS, Javascript (Prototype, JQuery) e Banco de Dados MySQL, PostgreSQL, MSSQL.
+
+[[BR]]
+
+'''Sergio Durand - '''Gerente de Projeto e Desenvolvedor
+
+[mailto:sergio@gestorpsi.com.br]
+
+- Graduação em Processamento de Dados FATEC/TQ
+
+- Pós-Graduação em Banco de Dados (com ênfase em Oracle) - AESO
+
+- Experiência em desenvolvimento de sistemas Desktop (Java, Delphi) e Web (Python (Django), Java e PHP).
+
+- Experiência em configuração e gerenciamento de servidores Linux.[[BR]]
+
+[[BR]]
+'''Fernanda Pallone''' - Psicóloga[[BR]]
+
+[mailto:fer@gestorpsi.com.br][[BR]]
+
+- Graduação em Psicologia[[BR]]
+
+- Especialização em Psicologia Clínica[[BR]]
+[[BR]][[BR]]
+
+'''Tiago de Souza Moraes''' - Desenvolvedor Estrutural[[BR]]
+
+[mailto:tiago@gestorpsi.com.br][[BR]]
+
+- Graduação em Ciência da Computação (2004)[[BR]]
+
+- Adminstrador de rede e progamação em ambiente Linux[[BR]]
+
+- Há 12 anos na área da computação[[BR]]
+
+
+[[BR]]
+[[BR]]
+
+
+[wiki:"GestorPsi/EquiPe/FaSe2/InaTivos Bolsistas Inativos]

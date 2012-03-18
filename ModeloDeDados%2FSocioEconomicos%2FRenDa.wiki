@@ -1,0 +1,27 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Renda'''[[BR]]
+[[BR]]
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Renda individual total||[wiki:ModeloDeDados/TerminoLogias/RenDa Renda]||x||||
+||Renda familiar total||[wiki:ModeloDeDados/TerminoLogias/RenDa Renda]||x||||
+||Fontes de renda||[wiki:ModeloDeDados/TerminoLogias/FontedeRenda Fonte de Renda]||x||x||
+||Comentários||||||x||
+
+
+[[BR]]
+
+----
+'''Income'''[[BR]]
+[[BR]]
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Total individual earnings ||[wiki:ModeloDeDados/TerminoLogias/RenDa Income]||x||||
+||Total household income||[wiki:ModeloDeDados/TerminoLogias/RenDa Income]||x||||
+||Income sources||[wiki:ModeloDeDados/TerminoLogias/FontedeRenda Income sources]||x||x||
+||Comments||||||x||
+

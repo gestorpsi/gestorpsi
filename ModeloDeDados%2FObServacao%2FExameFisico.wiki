@@ -1,0 +1,22 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Exame Físico'''[[BR]]
+[[BR]]
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Tipo de exame||||||x||
+||Resultados||||||x||
+||Comentários||||||x||
+[[BR]]
+
+----
+'''Physical Examination'''[[BR]]
+[[BR]]
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Examination type||text||||x||
+||Results||text||||x||
+||Comments||||||x||
+[[BR]]

@@ -1,0 +1,44 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+= '''Caso de Uso: Gerenciar materiais''' =
+'''Ator'''
+
+  Secretária
+
+'''Descrição resumida'''
+
+  A Secretária pode incluir, editar e excluir novos materiais e todas essas alterações ficarão disponíveis para a clínica associada a secretária. Um material jamais será totalmente excluído do sistema, apesar de após a operação de exclusão ele não aparecer mais para os usuários, um registro dele será mantido.
+
+'''Pré-condição'''
+
+ 1. A secretária já deve estar cadastrada e autenticada no sistema (UC - Cadastro)
+
+'''Fluxo básico '''
+
+ 1. A secretária seleciona a opção de inclusão de um novo material.
+ 1. A secretária fornece os dados (nome, marca, modelo, nº patrimônio) sobre o novo material.
+ 1. A secretária conclui a ação e confirma os dados.
+ 1. O novo material fica disponível no sistema para a clínica associada a secretária.
+
+'''Fluxos alternativos'''
+
+1a. A secretária seleciona a opção de edição de um material.
+
+ 1. A secretária seleciona o material que deseja editar.
+ 1. A secretária edita as informações que deseja.
+ 1. A secretária conclui a ação e confirma as alterações.
+ 1. A edição fica disponível para a clínica associada a secretária.
+
+1b. A secretária seleciona a opção de exclusão de um material.
+
+ 1. A secretária seleciona o material que deseja excluir.
+ 1. A secretária conclui a ação e confirma a exclusão.
+ 1. A exclusão fica disponível para a clínica associada a secretária.
+
+'''Pós-condições'''
+
+'''Informações Relevantes:'''

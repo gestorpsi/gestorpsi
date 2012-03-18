@@ -1,0 +1,11 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Interrupção da Amamentação'''[[BR]]
+[[BR]]
+- Gradual;[[BR]]
+- Abrupta.

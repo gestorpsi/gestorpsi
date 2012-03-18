@@ -1,0 +1,23 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Encaminhamento'''
+
+||'''Detalhes do Encaminhamento'''||
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Cliente encaminhado||texto||||||
+||Data em que foi encaminhado||data||||||
+||Encaminhado de||[wiki:ModeloDeDados/AdministraTivo/ServiCos Serviços] / [wiki:ModeloDeDados/DemoGrafico Contatos]||||||
+||Encaminhado para||[wiki:ModeloDeDados/AdministraTivo/ServiCos Serviços] / [wiki:ModeloDeDados/DemoGrafico Contatos]||||||
+||Motivo do encaminhamento||texto||||||
+||Documento digitalizado||imagem||||x||
+||Tipo de documento||[wiki:ModeloDeDados/ObServacao/DocumentosAnexados Documento Anexado]||||x||
+||Assunto||texto||||x||
+||Data do upload||data||||x||
+||Dias e horários disponíveis para atendimento||data / hora||x||||
+||Prioridade||[wiki:ModeloDeDados/TerminoLogias/PrioriDade Prioridade]||x||||
+||Impacto||[wiki:ModeloDeDados/TerminoLogias/ImpaCto Impacto]||x||||
+||Comentários||||||x||

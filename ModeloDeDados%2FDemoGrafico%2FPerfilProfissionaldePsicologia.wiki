@@ -1,0 +1,16 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Perfil Profissional de Psicologia'''[[BR]]
+[[BR]]
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Referencial teórico||[wiki:ModeloDeDados/TerminoLogias/AborDagens Abordagens]||||||
+||Título de Especialista||[wiki:ModeloDeDados/AdministraTivo/ServicoseProcedimentos Área]||||||
+||Faixa etária||[wiki:ModeloDeDados/TerminoLogias/FaixaEtaria Faixa Etária]||||||
+||Comentários||||||x||
+[[BR]]

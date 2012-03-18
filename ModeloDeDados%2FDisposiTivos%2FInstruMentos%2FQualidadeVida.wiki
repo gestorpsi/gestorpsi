@@ -1,0 +1,73 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Qualidade de Vida'''[[BR]] 
+[[BR]]
+
+||'''Questão¹'''||'''Sim'''||'''Não'''||
+||''Quadrante Social''||||||
+||1. Tenho amigos com os quais socializo em casa||||||
+||2. A maior parte de meus amigos dependem de mim para algo importante||||||
+||3. Gosto de conversar sobre assuntos não relacionados ao meu trabalho||||||
+||4. Há horas em que acho que visitar e receber meus amigos é perda de tempo||||||
+||5. Converso com meus vizinhos||||||
+||6. Sinto-me desconfortável em festas||||||
+||7. Colaboro com alguma instituição de caridade||||||
+||8. Às vezes me esquivo de atender telefonemas de amigos||||||
+||9. Prefiro conversar sobre negócios, mesmo em uma festa||||||
+||10.Gosto de passear sem pressa ou horários||||||
+||''Quadrante Afetivo''||||||
+||1. Tenho um relacionamento afetivo estável – esposa(o)/namorada(o)||||||
+||2. Sou admirado por minhas qualidades além de minha atuação profissional||||||
+||3. Sou comunicativo e alegre com meus colegas||||||
+||4. Minha família está razoavelmente satisfeita com o número de horas que dedico a ela semanalmente||||||
+||5. Recebo afeto||||||
+||6. Dou afeto||||||
+||7. Admiro e gosto de mim mesmo||||||
+||8. Gosto de observar a natureza e o faço sempre||||||
+||9. Às vezes fico lembrando pequenos episódios bons da minha vida||||||
+||10.Comemoro com prazer as datas importantes para mim||||||
+||''Quadrante Profissional''||||||
+||1. Sou competente em meu trabalho||||||
+||2. Tenho metas quanto ao que quero fazer||||||
+||3. Meu trabalho é reconhecido por outros||||||
+||4. Não tenho medo do futuro no que se refere ao trabalho||||||
+||5. Ganho satisfatoriamente||||||
+||6. Se pudesse pararia de trabalhar||||||
+||7. Sinto que contribuo para o sucesso da empresa||||||
+||8. Escolhi a profissão errada para mim||||||
+||9. Meu trabalho me oferece segurança||||||
+||10.Se fosse possível mudaria de emprego||||||
+||''Quadrante Saúde''||||||
+||1. Raramente tenho cefaléias||||||
+||2. Minha pressão arterial está normal||||||
+||3. Não tenho problemas dermatológicos||||||
+||4. É infreqüente ter azia|||||| 
+||5. Faço check-up regularmente||||||
+||6. Vou ao dentista todo ano||||||
+||7. Faço exercícios físicos pelo menos três vezes por semana||||||
+||8. Minha alimentação é saudável||||||
+||9. Utilizo técnicas de relaxamento quando estou tenso||||||
+||10.Consigo me desligar dos problemas para descansar||||||
+||11.Tomo calmantes regularmente||||||
+||12.Tenho estabilidade emocional||||||
+||13.Sofro de ansiedade ou angustia||||||
+||14.Meu peso está dentro da média||||||
+||15.Durmo bem||||||
+[[BR]]
+[[BR]]
+
+
+¹ [wiki:ModeloDeDados/DisposiTivos/InstruMentos/QualidadeVida/CorrecaodoTeste Correção do Teste]
+
+[[BR]]
+[[BR]]
+----
+'''Referências:'''
+[[BR]]
+
+LIPP, Marilda e ROCHA, João Carlos. Stress, hipertensão e qualidade de vida. 2ed. Campinas, SP: Papirus, 1996.
+

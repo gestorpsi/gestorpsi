@@ -1,0 +1,10 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+= Histórico =
+Atualmente não se coloca em dúvida que estamos vivendo um momento de profunda transformação social à medida que os computadores e a informática ocupam cada vez mais um papel central e fundamental em nossas vidas e em nosso trabalho. [[BR]][[BR]] Empresas e instituições de diferentes dimensões e ramos de atuação dependem de sistemas informatizados. Como seria possível existir hoje um aeroporto, um hospital, uma universidade ou uma prefeitura sem a utilização de sistemas para controle e gerenciamento das atividades?[[BR]][[BR]] Porém como os Psicólogos no Brasil, em especial os psicólogos clínicos e da saúde, estão incorporando estas novas tecnologias em seu trabalho para melhorar a qualidade do mesmo? Já é suficiente para nossa profissão utilizar processadores de texto, se conectar à Internet, navegar e enviar e-mails? De que forma a informática vem sendo aplicada para auxiliar na administração e para a avaliar de resultados de intervenções nas instituições que prestam atendimento psicológico?[[BR]][[BR]]Nos últimos anos o Conselho Federal de Psicologia tem prestado maior atenção à informática, principalmente devido ao advento da Internet, realizando de eventos como o I, II e III Psicoinfo em 1998 e 2003 e 2006[[BR]][[BR]] Os Conselhos Regionais e Federal de Psicologia também estão sensíveis às interfaces entre psicologia e informática e as novas possibilidades de oferta de serviços psicológicos e editaram resoluções que regulamenta o atendimento psicológico mediado pelo computador sobre a oferta de produtos e serviços ao público, incluindo especificações para produtos informatizados (versão do software, especificações de hardware, licenças de uso e linguagem de programação).
+
+Além disso tanto o SUS como a ANS estão desenvolvendo projetos para informatização de rotinas e dados sobre tratamento, o que torna ainda mais necessário que a psicologia entre nesse processo

@@ -1,0 +1,53 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+
+
+'''Grau de instrução¹'''[[BR]]
+
+
+1- Analfabeto[[BR]]
+2- Até 4ª série incompleta (5º ano²) do ensino fundamental[[BR]]
+3- Com 4ª série completa (5º ano²) do ensino fundamental[[BR]]
+4- De 5ª à 8ª série incompleta (do 6º ao 9º ano²) do ensino fundamental[[BR]]
+5- Ensino fundamental completo[[BR]]
+6- Ensino médio incompleto[[BR]]
+7- Ensino médio completo[[BR]]
+8- Educação de Jovens e Adultos (EJA)[[BR]]
+9- Curso pré-vestibular[[BR]]
+10- Curso técnico[[BR]]
+11- Curso profissionalizante[[BR]]
+12- Superior incompleto[[BR]]
+13- Superior completo[[BR]]
+14- Especialização[[BR]]
+15- Aprimoramento[[BR]]
+16- Aperfeiçoamento[[BR]]
+17- Mestrado[[BR]]
+18- Doutorado[[BR]]
+19- Pós-doutorado[[BR]]
+
+
+
+[[BR]]
+
+¹ Item computado para o Critério de Classificação Econômica.[[BR]][[BR]]
+
+² De acordo com a Lei 11.274, de 6 de fevereiro de 2006.[[BR]]
+
+
+----
+
+'''Referências:'''
+
+
+Formulário para Cadastramento Único para Programas Sociais do Governo Federal.[[BR]]
+
+
+Disponível em:[[BR]]
+http://www1.caixa.gov.br/gov/gov_social/municipal/distribuicao_servicos_cidadao/cadastramento_unico/documentos_download.asp
+
+[wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas][[BR]]

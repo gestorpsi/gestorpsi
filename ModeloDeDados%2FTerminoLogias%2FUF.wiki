@@ -1,0 +1,47 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Unidade da Federação'''
+
+11 - RO Rondônia[[BR]]
+12 - AC Acre[[BR]]
+13 - AM Amazonas[[BR]]
+14 - RR Roraima[[BR]]
+15 - PA Pará[[BR]]
+16 - AP Amapá[[BR]]
+17 - TO Tocantins[[BR]]
+21 - MA Maranhão[[BR]]
+22 - PI Piauí[[BR]]
+23 - CE Ceará[[BR]]
+24 - RN Rio Grande do Norte[[BR]]
+25 - PB Paraíba[[BR]]
+26 - PE Pernambuco[[BR]]
+27 - AL Alagoas[[BR]]
+28 - SE Sergipe[[BR]]
+29 - BA Bahia[[BR]]
+31 - MG Minas Gerais[[BR]]
+32 - ES Espírito Santo[[BR]]
+33 - RJ Rio de Janeiro[[BR]]
+35 - SP São Paulo[[BR]]
+41 - PR Paraná[[BR]]
+42 - SC Santa Catarina[[BR]]
+43 - RS Rio Grande do Sul[[BR]]
+50 - MS Mato Grosso do Sul[[BR]]
+51 - MT Mato Grosso[[BR]]
+52 - GO Goias[[BR]]
+53 - DF Distrito Federal[[BR]]
+
+
+
+
+----
+'''Referências:'''
+
+Manual Técnico do Cadastro Nacional de Estabelecimentos de Saúde - Versão 2[[BR]]
+
+
+Disponível em: [http://cnes.datasus.gov.br/DownLoad/manual%20de%20preenchimento%20SCNES.zip ]

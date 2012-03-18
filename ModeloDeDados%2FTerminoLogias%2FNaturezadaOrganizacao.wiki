@@ -1,0 +1,32 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Natureza da Organização'''
+
+01 – Administração Direta da Saúde[[BR]]
+02 – Administração Direta de Outros Órgãos[[BR]]
+03 – Administração Indireta/ Autarquia[[BR]]
+04 – Administração Indireta/Fundação[[BR]]
+05 – Administração Indireta/ Empresa Pública[[BR]]
+06 – Administração Indireta/Organização Social[[BR]]
+07 – Empresa[[BR]]
+08 – Fundação Privada[[BR]]
+09 – Cooperativa[[BR]]
+10 – Serviço Social Autônomo[[BR]]
+11 – Entidade Beneficente sem fins lucrativos[[BR]]
+12 – Economia Mista[[BR]]
+13 – Sindicato[[BR]]
+
+
+
+----
+'''Referências:'''
+
+Manual Técnico do Cadastro Nacional de Estabelecimentos de Saúde - Versão 2[[BR]]
+
+Disponível em:
+[http://cnes.datasus.gov.br/DownLoad/manual%20de%20preenchimento%20SCNES.zip ]

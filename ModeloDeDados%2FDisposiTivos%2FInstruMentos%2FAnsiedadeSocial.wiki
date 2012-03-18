@@ -1,0 +1,71 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Escala de Liebowitz para a Ansiedade Social'''[[BR]] 
+[[BR]]
+A escala de Liebowitz para a Ansiedade Social (LSAS) é um questionário cujo objectivo é determinar o leque de interacções sociais e situações de desempenho que indivíduos com fobia social temem ou evitam.[[BR]]
+É também uma ferramenta de avaliação popular usada pelos investigadores, para avaliar a eficácia de vários tratamentos para o distúrbio de ansiedade social, incluindo testes farmacológicos.[[BR]]
+[[BR]]
+O questionário inclui 24 items, cada item consiste numa determinada situação, que deve ser classificada de 0 a 3, em termos da ansiedade que provoca e da frequência do seu evitamento. Deverá responder-se com base no que aconteceu recentemente, e caso a situação não tenha acontecido, deverá imaginar-se o que se teria passado na situação referida.[[BR]]
+[[BR]]
+||||'''Situação'''||'''Ansiedade¹'''||'''Evitamento²'''||
+||1||Telefonar em público. (P)||||||
+||2||Participar em pequenos grupos. (P)||||||
+||3||Comer em locais públicos. (P)||||||
+||4||Beber com outros em locais públicos. (P)||||||
+||5||Falar com pessoas de autoridade. (S)||||||
+||6||Actuar, representar ou discursar em frente a uma audiência. (P)||||||
+||7||Ir a uma festa. (S)||||||
+||8||Trabalhar sendo observado. (P)||||||
+||9||Escrever sendo observado. (P)||||||
+||10||Telefonar a alguém que não conhece muito bem. (S)||||||
+||11||Falar com pessoas que não conhece muito bem. (S)||||||
+||12||Ir a reuniões com estranhos. (S)||||||
+||13||Urinar numa casa de banho pública.||||||
+||14||Entrar numa sala onde estão outras pessoas sentadas. (P)||||||
+||15||Ser o centro das atenções. (S)||||||
+||16||Falar numa reunião. (P)||||||
+||17||Fazer um exame escrito. (P)||||||
+||18||Expressar aprovação ou desaprovação de forma correcta, a pessoas que não conhece bem. (S)||||||
+||19||Olhar nos olhos pessoas que não conhece muito bem. (S)||||||
+||20||Fazer um relatório a um grupo. (P)||||||
+||21||Tentar impressionar alguém do sexo oposto. (P)||||||
+||22||Devolver um produto a uma loja que normalmente aceita produtos devolvidos. (S)||||||
+||23||Organizar uma festa normal. (S)||||||
+||24||Resistir a um vendedor persistente. (S)||||||
+||Comentários||||||
+
+[[BR]]
+'''Legenda:'''[[BR]]
+[[BR]]
+ESCORE TOTAL[[BR]]
+ANSIEDADE DE PERFORMANCE (P)[[BR]]
+ANSIEDADE SOCIAL (S)[[BR]]
+[[BR]]
+
+¹ Escala de ansiedade/medo:[[BR]]
+0 - Nenhuma[[BR]]
+1 - Ligeira[[BR]]
+2 - Moderada[[BR]]
+3 - Muita[[BR]]
+[[BR]]
+² Frequência de evitamento:[[BR]]
+0 - Nunca (0%)[[BR]]
+1 - Raramente (1 - 33%)[[BR]]
+2 - Frequentemente (33 - 66%)[[BR]]
+3 - Quase sempre (66 – 100%)[[BR]]
+[[BR]]
+'''Resultados:'''[[BR]]
+Depois de classificar cada situação em termos de ansiedade/medo e frequência do evitamento da situação, deverá somar o total dos pontos de cada coluna e o total das duas colunas.[[BR]]
+O total de pontos das duas colunas é uma medida da intensidade da sua fobia social no momento presente:[[BR]]
+[[BR]]
+55 – 65: Fobia Social moderada[[BR]]66 – 80: Fobia Social média[[BR]]81 – 95: Fobia Social grave[[BR]]> 95: Fobia Social muito grave[[BR]]
+----
+'''Referências:'''
+[[BR]]
+
+[http://ansiedade.no.sapo.pt/auto-teste_f.htm Escala de Liebowitz para a Ansiedade Social]
+

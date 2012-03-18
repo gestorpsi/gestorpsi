@@ -1,0 +1,16 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Objetivos'''
+
+- Coleta de dados[[BR]]
+- Avaliação / Diagnóstico[[BR]]
+- Intervenção[[BR]]
+- Devolutiva[[BR]]
+- Acompanhamento / Follow up[[BR]]
+- Reunião[[BR]]
+- Observação[[BR]]
+- Supervisão[[BR]]

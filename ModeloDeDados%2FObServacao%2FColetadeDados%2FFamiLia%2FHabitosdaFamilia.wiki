@@ -1,0 +1,21 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Hábitos Familiares'''[[BR]]
+[[BR]]
+- Assistir tv;[[BR]]
+- Ler revistas;[[BR]]
+- Ler livros;[[BR]]
+- Ler jornais;[[BR]]
+- Ouvir música;[[BR]]
+- Frequentar cinemas;[[BR]]
+- Frequentar teatros;[[BR]]
+- Frequentar clubes;[[BR]]
+- Viajar;[[BR]]
+- Fazer visitas;[[BR]]
+- Receber visitas;[[BR]]
+- Outros;[[BR]]

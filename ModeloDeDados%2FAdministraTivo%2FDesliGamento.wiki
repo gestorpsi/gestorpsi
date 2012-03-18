@@ -1,0 +1,18 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Desligamento'''[[BR]] 
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Cliente que será desligado||||||||
+||Data do desligamento||data||||||
+||Serviço do qual será desligado||||||||
+||Profissional que atendia o cliente||||||||
+||Término do serviço foi discutido junto ao cliente||checkbox||||||
+||Tipo de desligamento||[wiki:ModeloDeDados/TerminoLogias/TipodeDesligamento Tipo de Desligamento]||||||
+||Detalhes sobre o desligamento||texto||||||
+||Status||[wiki:ModeloDeDados/TerminoLogias/StaTus Status]||x||||
+||Comentários||||||x||

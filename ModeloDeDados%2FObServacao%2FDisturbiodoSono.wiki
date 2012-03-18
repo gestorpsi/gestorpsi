@@ -1,0 +1,14 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Distúrbios do Sono'''[[BR]]
+[[BR]]
+- Apnéia (interrupções da respiração durante o sono);[[BR]]
+- Insônia;[[BR]]
+- Narcolepsia (sonolência excessiva);[[BR]]
+- Ronco;[[BR]] 
+

@@ -1,0 +1,23 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Condições Médicas'''[[BR]]
+Período Atual, Passado, Específico (Infância, Adolescência, '''[wiki:ModeloDeDados/ObServacao/GraviDez Gravidez]''')[[BR]]
+[[BR]]
+
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||Doenças||[http://www.datasus.gov.br/cid10/v2008/webhelp/cid10.htm CID-10 - Classificação Estatística Internacional de Doenças e Problemas Relacionados à Saúde]||||||
+||Descrição||texto||||||
+||Severidade||[wiki:ModeloDeDados/TerminoLogias/SeVeridade Severidade]||||||
+||Especialidade do profissional||[wiki:ModeloDeDados/TerminoLogias/ProFissao Profissão]||||||
+||Dados para contato||[wiki:ModeloDeDados/TerminoLogias/ProFissionalDaSaude Profissional da Saúde]|||||| 
+||Status||[wiki:ModeloDeDados/TerminoLogias/StatusdoProblema Status do Problema]||||||
+||Comentários||||||||
+[[BR]]
+
+
+

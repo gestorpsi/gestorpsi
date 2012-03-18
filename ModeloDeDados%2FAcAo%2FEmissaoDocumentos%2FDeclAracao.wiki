@@ -1,0 +1,25 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Declaração¹'''[[BR]]
+[[BR]]
+Documento que visa informar a ocorrência de fatos ou situações objetivas relacionados ao atendimento psicológico, com a finalidade de declarar:[[BR]]1.Comparecimentos do atendido e/ou do seu acompanhante, quando necessário;[[BR]]2.Acompanhamento psicológico do atendido;[[BR]]3.Informações sobre as condições do atendimento (tempo de acompanhamento, dias ou horários).[[BR]]
+[[BR]]
+||'''Estrutura'''||'''Dados'''||
+||Identificação do solicitante||||
+||Finalidade do documento²||||
+||Registro de informações solicitadas em relação ao atendimento³||||
+||Comentários||||
+
+[[BR]]
+
+¹ Em papel timbrado ou apresentar na subscrição do documento o carimbo, em que conste nome e sobrenome do psicólogo, acrescido de sua inscrição profissional ("Nome do psicólogo / Nº. da inscrição"), assinatura acima de sua identificação ou carimbo seguido de registro do local e data da expedição da declaração.[[BR]]
+
+² Por exemplo: para fins de comprovação.[[BR]]
+
+³ Por exemplo: se faz acompanhamento psicológico, em quais dias, qual horário.
+

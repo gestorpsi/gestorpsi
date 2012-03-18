@@ -1,0 +1,43 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Escala Hamilton de Depressão (HAM-D)'''[[BR]] 
+[[BR]]
+
+||'''Ítem'''||'''Resposta'''||
+||''1. HUMOR DEPRIMIDO'' (Tristeza, desesperança, desamparo, inutilidade)[[BR]]0. Ausente[[BR]]1.Sentimentos relatados apenas ao ser inquirido[[BR]]2.Sentimentos relatados espontaneamente com palavras[[BR]]3.Comunica os sentimentos não com palavras, isto é, com a expressão facial, a postura, a voz e a tendência ao choro[[BR]]4. Sentimentos deduzidos da comunicação verbal e não-verbal do paciente.||||
+||''2. SENTIMENTOS DE CULPA''[[BR]]0. Ausente[[BR]]1. Auto-recriminação; sente que decepcionou os outros[[BR]]2. Idéias de culpa ou ruminação sobre erros passados ou más ações[[BR]]3. A doença atual é um castigo[[BR]]4. Ouve vozes de acusação ou denúncia e/ou tem alucinações visuais ameaçadoras.||||
+||''3. SUICÍDIO''[[BR]]0. Ausente[[BR]]1. Sente que a vida não vale a pena[[BR]]2. Desejaria estar morto ou pensa na probabilidade de sua própria morte[[BR]]3. Idéias ou gestos suicidas[[BR]]4.Tentativa de suicídio (qualquer tentativa séria, marcar 4).||||
+||''4. INSÔNIA INICIAL''[[BR]]0. Sem dificuldades para conciliar o sono[[BR]]1. Queixa-se de dificuldade ocasional para conciliar o sono, isto é, mais de meia hora[[BR]]2. Queixa-se de dificuldade para conciliar o sono todas as noites.||||
+||''5. INSÔNIA INTERMEDIÁRIA''[[BR]]0. Sem dificuldades[[BR]]1. O paciente se queixa de inquietude e perturbação durante a noite[[BR]]2. Acorda à noite - qualquer saída da cama marcar 2 (exceto p/ urinar)||||
+||''6. INSÔNIA TARDIA''[[BR]]0. Sem dificuldades[[BR]]1. Acorda de madrugada, mas volta a dormir[[BR]]2. Incapaz de voltar a conciliar o sono se deixar a cama||||
+||''7. TRABALHO E ATIVIDADES''[[BR]]0. Sem dificuldades[[BR]]1. Pensamento e sentimentos de incapacidade, fadiga ou fraqueza relacionada a atividades, trabalho ou passatempos[[BR]]2. Perda de interesse por atividades (passatempos ou trabalho) quer diretamente relatada pelo paciente, quer indiretamente por desatenção, indecisão e vacilação (sente que precisa esforçar-se para o trabalho ou atividade)[[BR]]3. Diminuição do tempo gasto em atividades ou queda de produtividade. No hospital, marcar 3 se o paciente não passar ao menos 3 horas por dia em atividades externas (trabalho hospitalar ou passatempo)[[BR]]4. Parou de trabalhar devido à doença atual. No hospital, marcar 4 se o paciente não se ocupar com outras atividades, além de pequenas tarefas do leito, ou for incapaz de realizá-las sem ajuda||||
+||''8. RETARDO'' (lentidão de idéias e fala; dificuldade de concentração; atividade motora diminuída)[[BR]]0. Pensamento e fala normais[[BR]]1. Leve retardo à entrevista[[BR]]2. Retardo óbvio à entrevista[[BR]]3. Entrevista difícil[[BR]]4. Estupor completo||||
+||''9. AGITAÇÃO''[[BR]]0. Nenhuma[[BR]]1. Inquietude[[BR]]2. Brinca com as mãos, com os cabelos,etc[[BR]]3. Mexe-se, não consegue sentar quieto[[BR]]4. Torce as mãos, rói as unhas, puxa os cabelos, morde os lábios.||||
+||''10. ANSIEDADE PSÍQUICA''[[BR]]0.Sem dificuldade[[BR]]1. Tensão e irritabilidade subjetivas[[BR]]2. Preocupação com trivialidades[[BR]]3. Atitude apreensiva aparente no rosto ou na fala[[BR]]4. Medos expressos sem serem inquiridos.||||
+||''11.ANSIEDADE SOMÁTICA'' (Concomitantes fisiológicos de ansiedade, tais como: Gastrointestinais: boca seca, flatulência, indisgestão, diarréia, cólicas, eructação; Cardiovasculares: palpitações, cefaléia; Respiratórios: hiperventilação, suspiros; Freqüência urinária; Sudorese)[[BR]]0. Ausente[[BR]]1. Leve[[BR]]2. Moderada[[BR]]3. Grave[[BR]]4. Incapacitante||||
+||''12. SINTOMAS SOMÁTICOS GASTRINTESTINAIS''[[BR]]0. Nenhum[[BR]]1. Perda de apetite, mas alimenta-se voluntariamente. Sensações de peso no abdomen[[BR]]2. Dificuldade de comer se não insistirem. Solicita ou exige laxativos ou medicações para os intestinos ou para sintomas digestivos.||||
+||''13. SINTOMAS SOMÁTICOS EM GERAL''[[BR]]0. Nenhum[[BR]]1. Peso nos membros, nas costas ou na cabeça. Dores nas costas, cefaléia, mialgias. Perda de energia e cansaço[[BR]]2. Qualquer sintoma bem caracterizado e nítido, marcar 2.||||
+||''14. SINTOMAS GENITAIS'' (Sintomas como: perda da libido, distúrbios menstruais)[[BR]]0. Ausentes[[BR]]1. Leves[[BR]]2. Intensos||||
+||''15. HIPOCONDRIA''[[BR]]0. Ausente[[BR]]1. Auto-observação aumentada (com relação ao corpo)[[BR]]2. Preocupação com a saúde[[BR]]3. Queixas freqüentes, pedidos de ajuda,etc.[[BR]]4. Idéias delirantes hipocondríacas[[BR]]||||
+||''16. PERDA DE PESO'' (Marcar A ou B)[[BR]]A - Quando avaliada pela história clínica[[BR]]0. Sem perda de peso[[BR]]1. Provável perda de peso associada à moléstia atual[[BR]]2. Perda de peso definida (de acordo com o paciente)[[BR]]3. Não avaliada[[BR]]B - Avaliada semanalmente pelo psiquiatra responsável, quando são medidas alterações reais de peso[[BR]]0. Menos de 0,5 Kg de perda por semana[[BR]]1. Mais de 0,5 Kg de perda por semana[[BR]]2. Mais de 1 Kg de perda por semana[[BR]]3. Não avaliada||||
+||''17. CONSCIÊNCIA''[[BR]]0. Reconhece que está deprimido e doente[[BR]]1. Reconhece a doença mas atribui-lhe a causa à má alimentação, ao clima, ao excesso de trabalho, a vírus, à necessidade de repouso, etc.[[BR]]2. Nega estar doente||||
+||''18. VARIAÇÃO DIURNA''[[BR]]A - Observar se os sintomas são piores pela manhã ou à tarde. Caso NÃO haja variação, marcar "nenhuma"[[BR]]0. Nenhuma[[BR]]1. Pior de manhã[[BR]]2. Pior à tarde[[BR]]B - Quando presente, marcar a gravidade da variação. Marcar "nenhuma" caso NÃO haja variação[[BR]]0. Nenhuma[[BR]]1. Leve[[BR]]2. Grave[[BR]]NOTA: Caso haja variação diurna, só a contagem referente à sua gravidade (1 ou 2 pontos no ítem 18B) é que deve ser incluída na contagem final. O ítem 18 A não deve ser computado.||||
+||''19. DESPERSONALIZAÇÃO E PERDA DE NOÇÃO DE REALIDADE'' (Tais como: sensações de irrealidade, idéias niilistas)[[BR]]0. Ausente[[BR]]1. Leve[[BR]]2. Moderadas[[BR]]3. Graves[[BR]]4. Incapacitantes||||
+||''20. SINTOMAS PARANÓIDES''[[BR]]0. Nenhum[[BR]]1. Desconfiança[[BR]]2. Idéias de referência[[BR]]3. Delírio de referência e perseguição||||
+||''21. SINTOMAS OBSESSIVOS E COMPULSIVOS''[[BR]]0. Nenhum[[BR]]1. Leves[[BR]]2. Graves||||
+[[BR]]
+SOMAR OS PONTOS OBTIDOS EM TODOS OS ÍTENS (EXCETO 18 A)
+
+CONTAGEM TOTAL:[[BR]]
+(0-62)[[BR]]
+
+
+
+----
+'''Referências:'''[[BR]]
+
+[http://www.ufrgs.br/psiq/hamdepr.html Escala de Hamilton de Depressão - FAMED - Universidade Federal do Rio Grande do Sul / HCPA]

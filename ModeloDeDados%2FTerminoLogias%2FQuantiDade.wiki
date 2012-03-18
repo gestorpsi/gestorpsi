@@ -1,0 +1,27 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Quantidade'''[[BR]]
+[[BR]]
+||'''Bebidas'''||'''Concentração de álcool / Gramas de álcool'''||'''Unidades de álcool'''||
+||1 lata de cerveja - 350 ml||5% = 17 gramas de álcool||1,5||
+||1 dose de aguardente - 50 ml||50% = 25 gramas de álcool||2,5||
+||1 copo de chope - 200 ml||5% = 10 gramas de álcool||1||
+||1 copo de vinho - 90 ml||12% = 10 gramas de álcool||1||
+||1 garrafa de vinho - 750 ml||12% = 80 gramas de álcool||8||
+||1 dose de destilados (uísque, pinga, vodca etc.) - 50 ml||40%-50% = 20g - 25g de álcool||2-2,5||
+||1 garrafa de destilados - 750 ml||40% - 50%+300g-370 gramas de álcool||30-37||
+
+
+[[BR]]
+
+----
+'''Referências:'''
+
+[wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas][[BR]] 
+
+

@@ -1,0 +1,24 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Conselho Profissional'''
+
+CRAS -    Conselho Regional de Assistência Social[[BR]]
+COREN -   Conselho Federal de Enfermagem[[BR]]
+CRF -     Conselho Regional de Farmácia[[BR]] 
+CRFA -    Conselho Regional de Fonoaudiologia[[BR]] 
+CREFITO - Conselho Regional de Fisioterapia e Terapia Ocupacional[[BR]] 
+CRM -     Conselho Regional de Medicina[[BR]] 
+CRV -     Conselho Regional de Medicina Veterinária[[BR]] 
+CRN -     Conselho Regional de Nutrição[[BR]] 
+CRO -     Conselho Regional de Odontologia[[BR]] 
+CRP -     Conselho Regional de Psicologia[[BR]] 
+OUT -     Outros Conselhos[[BR]]
+
+De acordo com a Tabelas de Domínio da ANS[[BR]]
+
+
+Disponível em: [http://www.furnas.com.br/arcs/pdf/TABELA%20DE%20DOMINIO%20TISS.pdf] D

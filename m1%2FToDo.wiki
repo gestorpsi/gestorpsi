@@ -1,0 +1,164 @@
+Perfil do Estagiário  Lecture class (não aparece no admin p traduzir)[[BR]]
+details e description na página para desligamento de serviço tb não[[BR]]
+online users - aparece no admin, já traduzi, mas continua aparecendo em inglês na página do chat[[BR]]
+
+
+está aparecendo "mídias" em anexar arquivos... não encontro no admin e não sei pq está essa palavra[[BR]]
+
+
+----
+possibilitar confirmar agendamento a partir dos eventos futuros no cadastro do cliente. Nao dá pra clicar no evento.
+
+----
+
+tirar "Nenhuma inscrição realizada. Inscrever agora?" dos dados de registro do cliente. Está aparecendo no lugar errado e tendo inscrições realizadas.[[BR]]
+
+
+----
+
+
+drop down de "Há qto tempo acontece" e "Duração" na demanda devem ser diferentes do drop down "Esse evento se repete"[[BR]]
+
+----
+
+Serviços Desligados de Agatha Christie[[BR]]Exibindo 1 Encaminhamento(s)
+
+Aparecer:[[BR]]Serviços Desligados de Agatha Christie[[BR]]Admissão (data), Serviços inscritos (número), Prontuário (x e y)
+
+----
+
+Fila de espera[[BR]]sem serviço na fila (apagar... se não está na fila do serviço fica em branco ou some)[[BR]]Apagar nome do serviço da fila de espera... já está na página do serviço, não precisa aparecer o nome[[BR]]
+
+
+ENC interno[[BR]](se não teve encaminhamento não aparece ou fica em branco)[[BR]]
+
+Enc Externo[[BR]]sem serviço na fila (apagar... se não foi encaminhado não aparece ou fica em branco)[[BR]]
+
+----
+
+'''serviços inscritos''' - falta o link para o cadastro do profissional[[BR]]
+
+----
+
+'''Locais''' - tem 2X cliente externo e 2X filial no tipo de local[[BR]]
+
+----
+'''Salas''' e  '''Locais''' - não devem ser desativados qdo tiverem cadastros[[BR]]É possível desativar salas, locais e equipamentos q estão agendados. 
+Mesmo depois de serem desativados podem ser vinculados a profissionais e atendimentos
+
+----
+No cadastro do cliente (na fichinha q aparece na página inicial) está aparecendo '''20 anos''' no Demo, mas no Beta está aparecendo '''20 Idade'''[[BR]]
+
+
+----
+
+'''serviços desligados'''[[BR]]
+ * Aparecer anotação na página do serviço desligado dizendo q o cliente não está mais ativo naquele serviço e motivo: na parte inferior da página inicial do cliente está constando o motivo do desligamento, etc... mas qdo clica no link do serviço desligado, ainda não tem essas informações... parece q está ativo ainda[[BR]]
+ * retirar link "agendar agora" e "adicionar?" (profissional) da página de serviços desligados do cliente[[BR]]
+ * Desliguei duas vezes o cliente do msm serviço[[BR]]
+
+----
+
+'''Isso deve estar em todas as páginas (que não contenha nenhum detalhe do cliente) abaixo do nome dele e não apenas na página inicial'''[[BR]]
+Admissão (data), Serviços inscritos (nº), Atendimentos Realizados (número), Prontuário x (do sist.) e y (legado) [[BR]]
+
+----
+
+'''clientes desativados'''[[BR]]
+retirar links: "Agendar agora" e "nova inscrição"[[BR]]
+
+----
+
+'''Conselhos profissionais''' - ainda está errado (CFISIO ao invés de CREFITO, por exemplo...)
+
+----
+
+'''Inscrição e Admissão'''[[BR]]
+Ainda não mudou os drop down "Indicação" e "Como tomou conhecimento do estabelecimento"[[BR]]
+'''Inscrição'''[[BR]]''Formas de Indicação:''[[BR]]Espontâneo[[BR]]Família[[BR]]Amigo[[BR]]Escola[[BR]]Trabalho[[BR]]Profissional[[BR]]Estabelecimento[[BR]]
+[[BR]]
+'''Admissão'''[[BR]]''Como tomou conhecimento do estabelecimento''[[BR]]Publicidade (jornal, rádio, TV, revista, folder)[[BR]]Busca (site, lista telefônica)[[BR]]Família[[BR]]Amigo[[BR]]Escola[[BR]]Trabalho[[BR]]Profissional[[BR]]
+Estabelecimento[[BR]]
+
+----
+
+'''Fila de espera:'''
+  * está desordenado. Deve ser ordenada do mais antigo para o mais novo e tb por prioridade.[[BR]]
+  * quando  o cliente entra na fila mais de uma vez, fica aparecendo na fila do serviço a data da primeira vez q entrou. A data q deve aparecer é a atual.[[BR]]
+  * Adicionar nos dados dos clientes q aparecem na lista de epera a '''faixa etária'''.[[BR]]
+
+----
+
+Serviço desligado permite agendamento na tela do cliente de serviço desligado.remover link "Agendar agora?"
+
+----
+
+
+Cliente desativado ainda aparece link para inscrever em serviço. remover link "inscrever agora?"
+ 
+----
+
+'''List client''' tela fica em branco... não aparece lista de clientes[[BR]]
+
+----
+
+'''Serviços desligados:'''
+
+ * aparecer motivo do desligamento
+ * Aparecer anotação na página do serviço desligado dizendo q o cliente não está mais ativo naquele serviço e motivo...
+ * impedir agendamento para cliente desligado do serviço
+
+----
+
+Ainda tem 2x psicólogo nas profissões... conselhos profissionais estão errados
+{{{
+   Problema com o DEMO, o trunk está correto.
+}}}
+
+----
+
+Add list client na home do profissional, ordenado do mais novo para o mais antigo.
+
+----
+
+'''LISTA VERMELHA'''
+
+Colocar um link para lembrar a senha (usando o registration) (16h) => CZD
+
+----
+
+Tirar o selo do certificado dos print css - ARN
+
+----
+
+Problema na hora de listar os serviços inscritos/desligados dos usuários com permissão de acesso a mais de uma clínica (10h)
+
+----
+
+Colocar na agenda um link para o cliente em seu nome (4h)  Pode existir vários clientes (lista) -> event_sidebar.html)
+
+{{{
+   É mostrado uma lista de clientes no sidebar da confirmação, caso tenha vários clientes.
+   Committed revision 1215.
+   Lista de grupos - descrição à esquerda (abaixo do nome): serviço -> grupo lista (2h)
+}}}
+
+----
+'''LISTA AMARELA'''
+
+Opção para realizar agendamento de familiares[[BR]][[BR]]Cliente pessoa jurídica (+ vinculo pessoa fisica - responsável)[[BR]]- mudança de rótulos[[BR]]- mudança de informações de perfil (com/sem fins lucrativos)[[BR]]- !http://www.cnae.ibge.gov.br/ - Classificação Nacional de Atividades Econômicas [[BR]]- Porte: micro, pequena, média, grande[[BR]][[BR]]- Sócio-demografico, Socioeconômico[[BR]][[BR]]Prontuário[[BR]]- Salvar e Concluir[[BR]]- Permissões: por profissão[[BR]][[BR]]Estágios[[BR]]- Cadastro de estagios e supervisores (estabelecimento, ensino pesquisa)[[BR]]- Estagiários de pós graduação (é profissional e também estagiário)[[BR]]- mais de um supervisor por grupo[[BR]][[BR]]Print e Exportar em PDF - escolha dos dados (cadastro, admissao, encaminhamentos,etc)[[BR]]- Opção de Escolha de encaminhamentos (com eventos)[[BR]]- Opção de prontuário completo ou sintético (a definir)- [[BR]][[BR]]Verificação de profissional e cliente antes de agendar, para evitar conflito[[BR]]ex: o mesmo cliente com dois agendamentos no mesmo dia e mesmo horário.[[BR]][[BR]]Filtrar profissionais que prestam o serviço de acordo com as profissões selecionadas.[[BR]]-> resolver concatenando profissão antes do nome, p/ evitar o filtro.[[BR]][[BR]]Criar novas permissões NEW e EDIT para substituir a permissão WRITE [[BR]]Sistema de permissão real: definir exatamente as ações dos usuários do sistema[[BR]]Colocar a descricao resumida das permissões:[[BR]]  administrador: root[[BR]]  profissional: visualiza e administra seus clientes, visualiza tudo (mas não salva nada),[[BR]]visualiza agenda geral, edita apenas seus clientes na agenda, adiciona[[BR]]contatos (seus), não apaga contatos dos outros[[BR]]  secretária: root até agora[[BR]]  cliente: visualiza apenas seu cadastro, visualiza apenas sua agenda[[BR]][[BR]]Controle Financeiro das Vendas !GestorPsi (via interface de administração do Django)[[BR]]- Número de profissionais cadastrados determinam valores cobrados[[BR]]- Planos mensais, semestrais e anuais[[BR]]- colocar opção read-only para clientes do gestorpsi que estão bloqueados dar a opção de exportar dados (pdf e/ou cvs/xml)[[BR]][[BR]]Criar as telas de Ajuda
+
+----
+'''LISTA CINZA'''
+
+possibilidade de inserção de informações clínicas (restritas) em encaminhamentos.[[BR]] relação dos encaminhamentos com prontuário (precisamos conversar sobre isso)
+
+Colocar a opção de upload de imagem em equipamentos.[[BR]][[BR]]Agenda: colocar filtro por dispositivo - ml2[[BR]][[BR]]Criar subdomínios para as clinicas - !https://<clinica>.psico.net[[BR]]Criar a home-page da clínica (informações públicas)[[BR]][[BR]]Recados Telefonicos[[BR]][[BR]]buscas avançadas -> ml2[[BR]][[BR]]base de dados de terminologias (bvs, decs, ...) -> ml2[[BR]][[BR]]Criar papel Auditor e criar telas para ver modificacoes do sistema, logins, impressoes, acoes, etc...[[BR]][[BR]]Trilha de auditoria (SBIS)[[BR]][[BR]]Pessoas (Cliente, Profissional, Funcionário...) Ter um link direto em ações para a tela de usuários[[BR]][[BR]]-Colocar para verificar a restrição de equipamentos por profissão[[BR]]-Limitar a inclusão de profissionais no serviço respeitando as profissões relacionadas no serviço.[[BR]]Atenção pois a mesma verificação deve ser feita na tela do profissional: só listar os serviços no qual a profissão dele faz parte. [[BR]][[BR]]mantenedoras - ml2[[BR]][[BR]]Mudar a parte dos responsáveis técnicos. Hoje é um campo aberto onde é digitado um nome livremente. Mudar para buscar algum profissional cadastro na clínica.[[BR]][[BR]]Configuração da clínica: poder configurar os horários da agenda para o estabelecimento (das x as y horas) - ml2[[BR]][[BR]]prontuario financeiro - valor pagamento, convenio, baixa pagamento, soma pagamentos - ml3[[BR]][[BR]]Complementar cadastro funcionário (ex: carteira de trabalho)[[BR]][[BR]]forma mais facil de encontrar (não pelo drop down)[[BR]][[BR]]Colocar opção para colocar quantas unidades existem de um determinado equipamento. Para evitar[[BR]]cadastrar n vezes o mesmo equipamento. Isso vai ser útil para materiais de consumo. Já os duráveis provavelmente[[BR]]serão cadastrados um a um devido ao numero de série/tombamento.[[BR]][[BR]]Sistema de[[BR]]- Recados [[BR]]- Telefonicos[[BR]]- Gerais[[BR]]- Para usuários e grupos (de supervisão, de serviços)[[BR]][[BR]][[BR]]home-page dos estabelecimentos (informações publicas)[[BR]]-Informações da área de contatos[[BR]]-Sobre serviços (destaque para serviços on line)[[BR]]-Filtro de buscas (localidades)[[BR]]-Formas de contato[[BR]]-relatórios estatísticos: Cidade/Estado, Serviços, Tipos de estabelecimentos.[[BR]][[BR]]- Agenda: Verificação antes de agendar (equipamento)[[BR]][[BR]]-agendar reuniões e supervisões[[BR]]-notificação de eventos (marcados e desmarcados)[[BR]][[BR]]- Perfil Profissional - dados publicados no TRAC, ~~opcao de um profissional q é contratado (funcionario) pelo estabelecimento~~ ----> ml3[[BR]]- configurar horários de trabalho do profissional (agenda)[[BR]][[BR]]Estágios[[BR]]- Gestão de relatórios e atividades de estágio - registro de horas de estágio e atividades do estagiário aprovadas pelo supervisor.[[BR]]- notificação de pendências (aprovações e validações)[[BR]]- cursos de graduação / pós graduação vinculados ao estágio[[BR]]- limitações do estagiário para agendamento e cancelamento [[BR]][[BR]]Financeiro Admin[[BR]]- código de descontos[[BR]][[BR]]Criança não tem estado civil quando a idade for menor q 12 anos.[[BR]]----> Para que ? se for por questões de estatistica relacionadas a estado civil, dá para realizar os calculos somente nas pessoas acima de 12 anos. [[BR]][[BR]]na agenda, quando marca que é para um grupo, também é possível selecionar um cliente[[BR]]na prática é marcado apenas para o grupo ?[[BR]]aque é melhor esconder ou impedir marcar para cliente quando marca para grupo [[BR]][[BR]]Clientes[[BR]]- base de dados de terminologias (bvs, decs, ...) -> ml2[[BR]]- templates de documentos
+
+----
+'''LISTA AZUL'''
+
+CEP: Ver a possibilidade de colocar algum tipo de verficação do CEP[[BR]][[BR]]- Publicação de notícias[[BR]]- Mala direta para clientes [[BR]]- Filtro de acesso por IP range no estabelecimento[[BR]]- Templates automatizados - (emissão de documentos)[[BR]][[BR]]-Reserva de horários (para serviços e/ou profissionais) - bloqueia agendamentos nos horários reservados[[BR]][[BR]]Financeiro:[[BR]]- prontuario financeiro - valor pagamento, convenio, baixa pagamento, soma pagamentos - ml3[[BR]]- TISS[[BR]]- Financeiro básico (contas, entrada, saída)[[BR]]- Aluguel de salas: Por meio período, periodo inteiro, meia sala, sala inteira, hora avulsa. [[BR]]- Cadastro de convênios[[BR]][[BR]]Equipamentos:[[BR]]- empréstimo de equipamentos[[BR]]- Instrumentos de avaliação - tipo de resultado geral, sub escalas, gráficos, tabelas, etc.[[BR]]- Instrumentos de avaliação - instrumento completo com correção informatizada[[BR]][[BR]]Drop Downs Grandes[[BR]]Include grandes[[BR]][[BR]]Relatórios:[[BR]]- salvar relatorios --- Verificar com o Daniel
+[[BR]]
+
+[wiki:m1/ToDo/ResoLvidos Resolvidos][[BR]]

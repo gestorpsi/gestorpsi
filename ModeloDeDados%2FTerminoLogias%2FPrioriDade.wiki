@@ -1,0 +1,19 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Prioridade'''
+
+[[BR]]
+- Alta[[BR]]
+- Média[[BR]]
+- Baixa[[BR]]
+
+----
+'''Referências:'''
+[[BR]]
+
+[http://www.openehr.org/home.html openEHR]

@@ -1,0 +1,84 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Dados Específicos à Alguns Papéis'''
+
+[[BR]]
+Estes são dados específicos à alguns papéis, como secretária, profissional de saúde, profissional de psicologia, estagiário e cliente. Além desses dados específicos, para realizar esses cadastros, também serão utilizados os [wiki:ModeloDeDados/DemoGrafico/DadosComunsaTodasasPessoas Dados comuns à todas as pessoas]. 
+
+[[BR]]
+
+||'''Identificação Profissional'''||||||||
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||Conselho                         profissional||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/ConselhoProfissional Conselho profissional]||||||
+||Nº                         do registro profissional||texto||||||
+||Comentários||||||||
+[[BR]]
+
+||'''Perfil                         secretária'''||||||||
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||Cursos||texto||||||
+||Data                         de início||data||||||
+||Comentários||||||||
+[[BR]]
+
+||'''Perfil profissional de saúde'''||||||||
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||Profissão||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/ProFissao Profissão]||||||
+||Especialidade||selecionar de uma lista por profissao - [wiki:ModeloDeDados/TerminoLogias/ArEa Área]||||||
+||Serviços                                 oferecidos||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/SerVicoSaude Serviços]||||||
+||Faixa                                 etária||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/FaixaEtaria Faixa etária]||||||
+||Graduação||texto - [wiki:ModeloDeDados/TerminoLogias/IES Instituição de Ensino Superior]||||||
+||Ano                                 de início||numérico||||||
+||Ano                                 de conclusão||numérico||||||
+||Pós-graduação||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/PosGraduacao Pós-graduação][[BR]]e [wiki:ModeloDeDados/TerminoLogias/CursosdePosgraduacao Cursos de Pós-graduação]||||||
+||Área||texto||||||
+||Data                                 de início||data||||||
+||Data                                 término||data||||||
+||Cursos||texto||||||
+||Experiência                                 profissional||texto||||||
+||Ano                                 de início da atividade clínica||numérico||||||
+||Horários                                 disponíveis||texto||||||
+||Convênios||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/Convenios Convênios]||||||
+||Outro                                 local de trabalho||texto||||||
+||Comentários||||||||
+[[BR]]
+
+||'''Perfil                         profissional Psicologia'''||||||||
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||Referencial                         teórico||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/AborDagens Abordagens]||||||
+||Faz                         supervisão||texto||||||
+||Valor                         cobrado por sessão||texto||||||
+||Comentários||||||||
+[[BR]]
+
+||'''Identicação do Estagiário'''||||||||
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||Nº                         de Matrícula||texto||||||
+||Supervisor||texto||||||
+||Comentários||||||||
+[[BR]]
+
+||'''Perfil                         estagiário'''||||||||
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||Curso||texto||||||
+||Período||texto||||||
+||Área                         de estágio||texto||||||
+||Período                         de vigência do estágio||texto||||||
+||Comentários||||||||
+[[BR]]
+
+||'''Identificação                         Cliente'''||||||||
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||Prontuário                         nº||texto||||||
+||Prontuário                         legado nº||texto||||||
+||Cartão                         Nacional de Saúde||texto||||||
+||Comentários||||||||
+[[BR]]
+
+[[BR]]
+[[AddComment]]

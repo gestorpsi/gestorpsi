@@ -1,0 +1,31 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Escoamento Sanitário'''
+
+1- Rede pública[[BR]]
+2- Fossa rudimentar[[BR]]
+3- Fossa séptica[[BR]]
+4- Vala[[BR]]
+5- Céu aberto[[BR]]
+6- Rio, lago, mar[[BR]]
+7- Outro[[BR]]
+
+
+----
+
+'''Referências:'''
+[[BR]]
+
+Formulário para Cadastramento Único para Programas Sociais do Governo Federal.[[BR]]
+
+Disponível em:[[BR]]
+http://www1.caixa.gov.br/gov/gov_social/municipal/distribuicao_servicos_cidadao/cadastramento_unico/documentos_download.asp
+
+[http://www.ibge.gov.br/home/ IBGE] [[BR]]
+
+

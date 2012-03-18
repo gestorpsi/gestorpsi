@@ -1,0 +1,24 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Admissão'''
+
+||'''Detalhes da Admissão'''||
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Data da admissão||data||||||
+||Status||[wiki:ModeloDeDados/TerminoLogias/StaTus Status]||x||||
+||Como tomou conhecimento[[BR]] do estabelecimento||[wiki:ModeloDeDados/TerminoLogias/ComoTomouConhecimentodoEstabelecimento Como tomou conhecimento do Estabelecimento]||||||
+||Indicação||[wiki:ModeloDeDados/TerminoLogias/FormasdeIndicacao Formas de Indicação]||||||
+||Dados autorizados para pesquisa||checkbox||x||||
+||Documento digitalizado¹||imagem||||x||
+||Tipo de documento||[wiki:ModeloDeDados/ObServacao/DocumentosAnexados Documento Anexado]||||x||
+||Assunto||texto||||x||
+||Data²||data||||x||
+||Comentários||||||x||
+
+[[BR]]
+¹ Termo de autorização de dados para pesquisa.[[BR]] 
+² Data em que o documento foi anexado.

@@ -1,0 +1,4 @@
+
+
+= Atualização na versão Demo =
+Foi atualizado o Demo do GestorPsi da versão r1335 para a versão r1365 em 30/10/2009. 

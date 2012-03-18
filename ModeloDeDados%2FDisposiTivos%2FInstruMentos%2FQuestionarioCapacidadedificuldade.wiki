@@ -1,0 +1,91 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Questionário de Capacidades e Dificuldades – Versão de Pais / Professores'''[[BR]] 
+[[BR]]
+
+Pontuando o Questionário de Capacidades e Dificuldades – Versão de Pais / Professores[[BR]]
+[[BR]]
+Os 25 itens do SDQ são compostos de 5 escalas com 5 itens cada. Geralmente é mais fácil pontuar as 5 escalas antes de calcular a pontuação total de dificuldades. Mais ou menos verdadeiro é normalmente calculado como 1, enquanto falso e verdadeiro variam conforme o item, como aparece abaixo, escala por escala. Para cada uma das 5 escalas a pontuação pode variar de 0 a 10 se todos os 5 itens forem completados. O resultado de cada escala pode ser avaliado se ao menos 3 itens foram completados.[[BR]]
+[[BR]]
+
+||'''Escala de Sintomas Emocionais'''||'''Falso'''||'''Mais ou menos verdadeiro'''||'''Verdadeiro'''||
+||Muitas vezes queixa-se de dor de cabeça||0||1||2||
+||Tem muitas preocupações, muitas vezes parece preocupado||0||1||2||
+||Frequentemente parece triste, deprimido ou choroso||0||1||2||
+||Fica nervoso quando enfrenta situações novas||0||1||2||
+||Tem muitos medos, assusta-se facilmente||0||1||2||
+||'''Escala de Problemas de Conduta'''||||||||
+||Frequentemente tem acessos de raiva ou crises de birra||0||1||2||
+||Geralmente é obediente||0||1||2||
+||Frequentemente briga com outras crianças ou as amedronta||0||1||2||
+||Frequentemente mente ou engana||0||1||2||
+||Rouba coisas de casa, da escola ou de outros lugares||0||1||2||
+||'''Escala de Hiperatividade'''||||||||
+||Inquieto/a, hiperativo/a, não consegue ficar parado/a||0||1||2||
+||Está constantemente irrequieto ou agitado||0||1||2||
+||Distrai-se facilmente, perde a concentração||0||1||2||
+||Pensa antes de agir||0||1||2||
+||Completa as tarefas que começa, tem boa concentração||0||1||2||
+||'''Escala de Problemas de Relacionamento com os colegas'''||||||||
+||É solitário, prefere brincar sozinho||0||1||2||
+||Tem pelo menos um bom amigo/a||0||1||2||
+||Em geral, é querido por outras crianças||0||1||2||
+||É perseguido ou atormentado por outras crianças||0||1||2||
+||Relaciona-se melhor com adultos do que com outras crianças||0||1||2||
+||'''Escala de Comportamento Pro-social'''||||||||
+||Tem consideração pelos sentimentos de outras pessoas||0||1||2||
+||Tem boa vontade em compartilhar||0||1||2||
+||Mostra-se prestativo se alguém parece magoado||0||1||2||
+||É gentil com crianças mais novas||0||1||2||
+||Frequentemente se oferece para ajudar outras pessoas||0||1||2||
+||''Pontuação Total de Dificuldades'':[[BR]]É gerada pela soma dos resultados de todas as escalas exceto a escala de sociabilidade. O resultado pode variar de 0 a 40. A pontuação geral pode ser considerada se ao menos 12 dos 20 itens relevantes foram completados.||||||||
+[[BR]]
+[[BR]]
+'''Interpretando a Pontuação dos Sintomas e Definindo “caso”'''[[BR]]
+As bandas provisionais como mostradas abaixo foram escolhidas para que pelo menos 80 % das crianças na comunidade sejam normais, 10% limítrofes e 10% anormais. Em um estudo em que a amostra seja de alto risco, onde os falsos positivos não são a nossa maior preocupação, os “casos” podem ser identificados pela pontuação alta ou limítrofe em uma das quatro escalas de dificuldades. Em estudo em que a amostra seja de baixo risco, onde o mais importante é reduzir a taxa de falsos positivos, os “casos” podem ser identificados através de pontuação
+alta em uma das quatro escalas de dificuldades.
+[[BR]]
+[[BR]]
+
+||'''Completado pelos Pais'''||'''Normal'''||'''Limítrofe'''||'''Anormal'''||
+||Pontuação Total das Dificuldades||0 - 13||14 - 16||17 - 40||
+||Pontuação dos Sintomas Emocionais||0-3||4||5 - 10||
+||Pontuação de Problemas de Conduta||0-2||3||4 - 10||
+||Pontuação para Hiperatividade||0-5||6||7 - 10||
+||Pontuação para Problemas com Colegas||0-2||3||4 - 10||
+||Pontuação para Comportamento Pro-social||6 - 10||5||0-4||
+||'''Completado pelo Professor'''||||||||
+||Pontuação Total das Dificuldades||0 - 11||12 - 15||16 - 40||
+||Pontuação dos Sintomas Emocionais||0-4||5||6 - 10||
+||Pontuação de Problemas de Conduta||0-2||3||4 - 10||
+||Pontuação para Hiperatividade||0-5||6||7 - 10||
+||Pontuação p/ Problemas com Colegas||0-3||4||5 - 10||
+||Pontuação para Comportamento Pro-social||6 – 10||5||0-4||
+[[BR]]
+[[BR]]
+'''Gerando e Interpretando a Pontuação do Suplemento de Impacto'''[[BR]]
+Quando usada a versão do SDQ que inclui o “Suplemento de Impacto”, os itens sobre estresse em geral e prejuízo (perda) em geral poderão ser adicionados para gerar um resultado que varie de 0 a 10 na versão do questionário preenchida pelos pais e de 0 a 6 na versão preenchida pela professor.
+[[BR]]
+[[BR]]
+
+||'''Avaliação dos pais'''||'''Nada'''||'''Um pouco'''||'''Muito'''||'''Extremamente'''||
+||Dificuldades incomodam ou aborrecem a criança||0||0||1||2||
+||Interferem no dia-a-dia em casa||0||0||1||2||
+||Interferem nas amizades||0||0||1||2||
+||Interferem no aprendizado escolar||0||0||1||2||
+||Interferem nas atividades de lazer||0||0||1||2||
+||'''Avaliação do professor'''||||||||||
+||Interferem no dia-a-dia em casa||0||0||1||2||
+||Interferem nas amizades||0||0||1||2||
+||Interferem no aprendizado escolar||0||0||1||2||
+[[BR]]
+[[BR]]
+
+As respostas às questões de cronicidade e peso para os outros não estão incluídas no Suplemento de Impacto. Quando os entrevistados tiverem respondido “não” para a primeira questão no suplemento de impacto (i.e. quando eles não perceberem a si próprios como tendo alguma dificuldade emocional ou de comportamento), eles não terão que responder às questões sobre estresse ou interferência no dia a dia; a pontuação de impacto será automaticamente considerada zero nesta circunstâncias.
+[[BR]]
+[[BR]]
+Quando a pontuação do Suplemento de Impacto for igual ou maior que 2 será considerado anormal, o resultado de 1 é limítrofe e o resultado de 0 é normal.

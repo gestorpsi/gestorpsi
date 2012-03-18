@@ -1,0 +1,12 @@
+[[TracNav]]
+{{{
+#!html
+<div id="pageContent">
+}}}
+= Objetivos =
+O objetivo deste projeto é desenvolver um sistema informatizado que possibilite a adoção de métodos padronizados para:
+
+ * O registro de informações clínicas, administrativas e de serviços psicológicos prestados na área clínica e da saúde;
+ * A avaliação de resultados de serviços psicológicos prestados nas instituições.
+
+Este sistema vai permitir que clinicas-escola, clínicas particulares e instituições públicas e privadas possam ter maior controle sobre serviços prestados, utilizar os registros para realização de pesquisas científicas, avaliar os benefícios obtidos com os serviços prestados a população.[[BR]][[BR]]O sistema possibilitará o intercâmbio de dados padronizados entre diferentes instituições de ensino e pesquisa, criando oportunidade para a realização de estudos na área de “psicoterapia baseada em evidências” que envolve a avaliação de Eficácia, Efetividade, Segurança e Custo.

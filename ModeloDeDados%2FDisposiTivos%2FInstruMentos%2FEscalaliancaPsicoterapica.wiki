@@ -1,0 +1,42 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Escala de Aliança Psicoterápica da Califórnia - Versão do Paciente – (Calpas-P)'''[[BR]]  
+[[BR]]
+
+
+||'''Questão'''||'''Resposta'''||
+||1.  Você se sentiu tentado a interromper a terapia quando foi incomodado ou desapontado com a terapia?||||
+||2.  Você se sentiu pressionado por seu terapeuta a fazer mudanças antes de estar preparado?||||
+||3.  Quando seu terapeuta comentou a respeito de uma situação, isso lhe trouxe à mente outras situações parecidas em sua vida?||||
+||4.  Você sentiu que, mesmo que tivesse tido momentos de dúvida, confusão ou desconfiança, o todo da terapia valia a pena?||||
+||5.  Os comentários de seu terapeuta levaram você a acreditar que ele colocou as necessidades dele antes das suas?||||
+||6.  Quando coisas importantes surgiram na sua mente, com que freqüência você se percebeu mantendo-as para você mesmo em vez de dividi-las com seu terapeuta?||||
+||7.  Você se sentiu aceito/a e respeitado/a por seu terapeuta por aquilo que você é?||||
+||8.  O quanto você conteve seus sentimentos durante essa sessão?||||
+||9.  Você achou que comentários de seu terapeuta não lhe ajudaram, foram confusos, incorretos ou que realmente não se aplicaram a você?||||
+||10. Você sentiu que esteve trabalhando junto com seu terapeuta, que os dois estavam unidos em um só esforço para superar seus problemas?||||
+||11. Quanto você esteve livre para discutir assuntos pessoais que você habitualmente fica envergonhado/a ou com medo de revelar?||||
+||12. Durante essa sessão, quanto você esteve disposto para continuar lutando com seus problemas, mesmo que nem sempre pudesse ver uma solução imediata?||||
+||13. Durante essa sessão, quanto seu terapeuta esteve empenhado a lhe ajudar a superar suas dificuldades?||||
+||14. Você sentiu que discordou do seu terapeuta a respeito do tipo de mudanças que gostaria de fazer em sua terapia?||||
+||15. Quanto você se ressentiu do tempo, dos custos ou de outras exigências de sua terapia?||||
+||16. Você sentiu que seu terapeuta entendeu o que você esperava atingir nesta sessão?||||
+||17. Durante essa sessão, quanto foi importante para você olhar para as maneiras como você poderia estar contribuindo para seus próprios problemas?||||
+||18. Quanto você se encontrou pensando que a terapia não era a melhor maneira de obter ajuda para seus problemas?||||
+||19. O tratamento que você recebeu nesta sessão está em sintonia com suas idéias a respeito do que ajuda as pessoas em terapia?||||
+||20. Você sentiu que esteve trabalhando em desarmonia ao seu terapeuta, que vocês não partilharam a mesma percepção de como proceder a respeito do que poderia ajudá-lo no que deseja?||||
+||21. Quanto você se sentiu confiante de que, por seus próprios esforços e aqueles de seu terapeuta, você terá alívio de seus problemas?||||
+||22. Você teve a impressão de que esteve incapacitado de aprofundar o entendimento do que está incomodando você?||||
+||23. Quanto você discordou de seu terapeuta a respeito de quais questões eram mais importantes trabalhar durante essa sessão?||||
+||24. Quanto seu terapeuta ajudou você a conseguir um aprofundamento da compreensão dos seus problemas?||||
+
+
+[[BR]]
+''Referências:''[[BR]]
+[[BR]]
+[http://www.scielo.br/pdf/rbp/v23n2/5582.pdf Escala de Aliança Psicoterápica da Califórnia na versão do paciente - José Alvaro M. Marcolino e Eduardo Iacoponi]
+

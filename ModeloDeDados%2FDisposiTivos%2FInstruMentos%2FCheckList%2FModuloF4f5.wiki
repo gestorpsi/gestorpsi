@@ -1,0 +1,21 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Módulo F4/F5: Síndromes Neuróticas e Comportamentais''[[BR]] 
+
+||'''Categoria''' / '''Questão'''||'''Resposta'''||
+||* ''Transtornos Neuróticos''||||
+||a) Quais dos seguintes sintomas estão presentes?[[BR]]1. medos[[BR]]2. ataques de pânico[[BR]]3. ansiedade, preocupações, apreensões[[BR]]4. sintomas autonômicos de ansiedade[[BR]]5. pensamentos obsessivos ou atos compulsivos[[BR]]6. exposição a um estressor mental, físico ou social excepcional[[BR]]7. relembrar ou reviver persistentemente o estressor[[BR]]8. evitação de circunstâncias associadas ao estressor[[BR]]9. sintomas de sensibilidade psicológica ou vigilância aumentadas[[BR]]10. sintomas ou estados dissociativos (conversivos)[[BR]]11. queixas físicas múltiplas e variáveis não explicadas por nenhuma doença física[[BR]]12. repetidas consultas médicas e recusas persistentes em aceitar orientação médica[[BR]]13. fadiga mental ou física persistente||||
+||b) Qual a duração da síndrome?[[BR]]•  em semanas[[BR]]•  em meses[[BR]]•  em anos||||
+||c) Quais dos seguintes estados podem ser excluídos?[[BR]]1. sintomas ou transtorno psicótico[[BR]]2. consumo excessivo ou abstinência de drogas[[BR]]3. simulação intencional||||
+||d) Quais dos seguintes estados estão associados?[[BR]]1. sintomas afetivos[[BR]](Caso sim, considerar também Síndrome Afetiva)[[BR]]2. experiências de despersonalização ou desrealização[[BR]](Caso sim, considerar também Síndrome Psicótica)||||
+||e) Qual dos seguintes diagnósticos está presente?[[BR]]1.  fobias (F40.0-F40.2)[[BR]]2.  transtorno de pânico (F41.0)[[BR]]3.  transtorno de ansiedade generalizada (F41.1)[[BR]]4.  transtornos de ansiedade e depressão mistos ou outros transtornos mistos de ansiedade (F41.2-F41.3)[[BR]]5. transtorno obsessivo-compulsivo (F42)[[BR]]6. reação aguda a estresse (F43.0)[[BR]]7. transtorno de estresse pós-traumático (F43.1)[[BR]]8. transtornos de ajustamento (F43.2)[[BR]]9. transtornos dissociativos (ou conversivos) (F44)[[BR]]10. transtornos somatoformes (F45.0-F45.4)[[BR]]11. neurastenia (F48.0)[[BR]](Se algum sim, codificar a categoria F na folha de rosto)||||
+||* ''Síndromes Comportamentais''||||
+||a) Quais dos seguintes sintomas estão presentes?[[BR]]1.  perda de peso significativa e auto-induzida[[BR]]2.  episódios de orgias alimentares[[BR]]3.  pavor de engordar[[BR]]4.  conseqüências endócrinas (amenorréia, impotência)[[BR]]5.  distúrbio da quantidade, qualidade ou horário do sono[[BR]]6.  episódios involuntários de levantar-se da cama durante o sono e caminhar[[BR]]7. episódios de despertar do sono com gritos de pânico e manifestações de ansiedade[[BR]]8. despertar de pesadelos com recordação vívida[[BR]]9. distúrbio de sono causando incômodo marcante ou interferindo nas atividades ou na vida do paciente[[BR]]10. incapacidade freqüente de participar numa relação sexual da maneira como gostaria[[BR]]||||
+||b) Qual a duração da síndrome?[[BR]]•  em semanas[[BR]]•  em meses[[BR]]•  em anos||||
+||c) Quantos episódios houve neste período?||||
+||e) Quais dos seguintes estados estão associados?[[BR]]1. transtorno depressivo[[BR]](Caso sim, considerar Transtorno Afetivo)[[BR]]2. abuso de álcool ou drogas[[BR]](Caso sim, considerar Transtornos de Uso de Substância Psicoativa)[[BR]]3. doença mental orgânica[[BR]](Caso sim, considerar Transtorno Mental Orgânico)||||
+||f) Qual dos seguintes diagnósticos está presente?[[BR]]1. anorexia nervosa (F50.0)[[BR]]2. bulimia nervosa (F50.2)[[BR]]3. transtornos não-orgânicos de sono (F51)[[BR]]4. disfunção sexual não causada por transtorno ou doença orgânica(F52)[[BR]](Se algum sim, codificar categoria F na folha de rosto)||||

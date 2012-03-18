@@ -1,0 +1,34 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Diagnóstico Prévio'''[[BR]] 
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Especialidade do profissional¹||[wiki:ModeloDeDados/TerminoLogias/ProfissaoareaCuidados Profissão (Área de Cuidados)]||||||
+||Dados para contato||[wiki:ModeloDeDados/TerminoLogias/ProFissionalDaSaude Profissional da Saúde]||||||
+||Data||[wiki:ModeloDeDados/TerminoLogias/TempoAproximado Tempo Aproximado]||||||
+||Diagnóstico||texto||||||
+||Terminologia relacionada||[http://www.psi.bvs.br/cgi-bin/wxis.exe/iah/?IsisScript=iah/iah.xic&lang=P&base=TERMINOLOGIA BVS - Terminologia em Psicologia][[BR]][http://decs.bvs.br/ DeCS - Descritores em Ciências da Saúde][[BR]][http://www.datasus.gov.br/cid10/v2008/webhelp/cid10.htm CID-10 - Classificação Estatística Internacional de Doenças e Problemas Relacionados à Saúde][[BR]]- [wiki:ModeloDeDados/TerminoLogias/ListaGestorPsi Lista GestorPsi][[BR]]- DSM IV||x||x||
+||Comorbidade||[http://www.psi.bvs.br/cgi-bin/wxis.exe/iah/?IsisScript=iah/iah.xic&lang=P&base=TERMINOLOGIA BVS - Terminologia em Psicologia][[BR]][http://decs.bvs.br/ DeCS - Descritores em Ciências da Saúde][[BR]][http://www.datasus.gov.br/cid10/v2008/webhelp/cid10.htm CID-10 - Classificação Estatística Internacional de Doenças e Problemas Relacionados à Saúde][[BR]]- [wiki:ModeloDeDados/TerminoLogias/ListaGestorPsi Lista GestorPsi][[BR]]- DSM IV||x||x||
+||Upload de arquivos||||||x||
+||Comentários||||||x||
+
+¹ Profissional que realizou o diagnóstico.[[BR]] 
+
+----
+'''Previous Diagnosis'''[[BR]] 
+
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Professional Specialty ¹||[wiki:ModeloDeDados/TerminoLogias/ProfissaoareaCuidados Care Professional]||||||
+||Contact information||[wiki:ModeloDeDados/TerminoLogias/ProFissionalDaSaude Health Professional]||||||
+||Date||[wiki:ModeloDeDados/TerminoLogias/TempoAproximado Approximate Time]||||||
+||Diagnosis||texto||||||
+||Related Terminology||[http://www.psi.bvs.br/cgi-bin/wxis.exe/iah/?IsisScript=iah/iah.xic&lang=P&base=TERMINOLOGIA BVS - Terminology in Psichology][[BR]][http://decs.bvs.br/ DeCS - Health Sciences Descriptors][[BR]][http://www.datasus.gov.br/cid10/v2008/webhelp/cid10.htm ICD-10 - International Statistical Classification of Diseases and Related Health Problems][[BR]]- [wiki:ModeloDeDados/TerminoLogias/ListaGestorPsi GestorPsi List][[BR]]- DSM IV - Diagnostic and Statistical Manual of Mental Disorders||x||x||
+||Comorbidity||[http://www.psi.bvs.br/cgi-bin/wxis.exe/iah/?IsisScript=iah/iah.xic&lang=P&base=TERMINOLOGIA BVS - Terminology in Psichology][[BR]][http://decs.bvs.br/ DeCS - Health Sciences Descriptors][[BR]][http://www.datasus.gov.br/cid10/v2008/webhelp/cid10.htm ICD-10 - International Statistical Classification of Diseases and Related Health Problems][[BR]]- [wiki:ModeloDeDados/TerminoLogias/ListaGestorPsi GestorPsi List][[BR]]- DSM IV - Diagnostic and Statistical Manual of Mental Disorders||x||x||
+||File Upload||||||x||
+||Comments||||||x||
+
+¹ Professional who diagnosed.[[BR]]

@@ -1,0 +1,23 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Demanda'''
+
+[[BR]]
+[wiki:ModeloDeDados/AvaliAcao/DemaNda Problema][[BR]]
+[wiki:ModeloDeDados/ObServacao/DiagnosticoPrevio Detalhamento do Problema][[BR]]
+[wiki:ModeloDeDados/ObServacao/Tratamentos Histórico de Tratamentos][[BR]]
+
+
+
+[[BR]]
+
+
+----
+'''Referências:'''
+
+[wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas][[BR]] 
+[http://www.openehr.org/home.html openEHR]

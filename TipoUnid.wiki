@@ -1,0 +1,37 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Tipo de Unidade'''
+
+01- Posto de Saúde[[BR]]
+02- Centro de Saúde/Unidade Básica de Saúde[[BR]]
+04- Policlínica[[BR]]
+05- Hospital Geral[[BR]]
+07- Hospital Especializado[[BR]]
+15- Unidade Mista[[BR]]
+20- Pronto Socorro Geral[[BR]]
+21- Pronto Socorro Especializado[[BR]]
+22- Consultório Isolado[[BR]]
+32- Unidade Móvel Fluvial[[BR]]
+36- Clínica Especializada/Amb. Especializado[[BR]]
+39- Unidade de Serviço de Apoio de Diagnose e Terapia[[BR]]
+40- Unidade Móvel Terrestre[[BR]]
+42- Unidade Móvel de Nível Pré-hospitalar na Área de Urgência e Emergência[[BR]]
+43- Farmácia[[BR]]
+50- Unidade de Vigilância em Saúde[[BR]]
+60- Cooperativa[[BR]]
+61- Centro de Parto Normal Isolado[[BR]]
+62- Hospital /Dia- Isolado[[BR]]
+64- Central de Regulação de Serviços de Saúde[[BR]]
+67- Laboratório Central de Saúde Pública - LACEN[[BR]]
+68- Secretaria de Saúde[[BR]]
+
+
+De acordo com o Manual Técnico do Cadastro Nacional de Estabelecimentos de Saúde - Versão 2[[BR]]
+Disponível em:[[BR]]
+[http://cnes.datasus.gov.br/DownLoad/manual%20de%20preenchimento%20SCNES.zip
+] 

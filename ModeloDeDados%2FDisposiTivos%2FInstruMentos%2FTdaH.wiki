@@ -1,0 +1,77 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''TDAH - Transtorno de Déficit de Atenção e Hiperatividade'''[[BR]] 
+[[BR]]
+O guia apresentado abaixo é extraído do Manual de Diagnóstico e Estatística - IV Edição (DSM-IV) da
+Associação Psiquiátrica Americana. Ele é utilizado por profissionais especializados em TDAH para o diagnóstico
+clínico. Conhecendo-o você poderá ter uma idéia de como o diagnóstico é feito e poderá suspeitar do mesmo ao
+"aplicar" os critérios abaixo em alguém que você conhece.[[BR]]
+[[BR]]
+OBS: Lembre-se que o diagnóstico definitivo só pode ser fornecido por um profissional.
+[[BR]]
+[[BR]]
+
+||||'''CRITÉRIO A:'''||''' Nunca ou Raramente'''||'''Pouco'''||'''Bastante'''||'''Quase Sempre'''||
+||#||1- Ele presta pouca atenção em detalhes e faz erros por falta de atenção nos deveres?||||||||||
+||*||2- Ele mexe com as mãos e pés quando está sentado ou se mexe muito na cadeira?||||||||||
+||#||3- Ele tem dificuldade de ficar concentrado nos deveres e também nos jogos?||||||||||
+||*||4- Ele sai do lugar na sala de aula ou em outras situações (ex: mesa de jantar) quando deveria ficar sentado?||||||||||
+||#||5- Ele parece estar prestando atenção em outras coisas quando se fala com ele?||||||||||
+||*||6- Ele corre ou sobe nas coisas quando deveria ficar tranqüilo?||||||||||
+||#||7- Ele tem dificuldade em seguir instruções até o fim ou deixa os deveres sem terminar?||||||||||
+||*||8- Ele tem dificuldade de ficar em silêncio enquanto brinca?||||||||||
+||#||9- Ele é desorganizado com os deveres e outras atividades no dia-a-dia?||||||||||
+||*||10- Ele é "elétrico" e fica "a mil por hora?"||||||||||
+||#||11- Ele evita ou antipatiza com deveres ou atividades que exijam concentração?||||||||||
+||*||12- Ele fala demais?||||||||||
+||#||13- Ele perde material da escola ou coisas do dia-a-dia?||||||||||
+||*||14- Ele responde às perguntas antes dos outros terminarem de falar?||||||||||
+||#||15- Ele se distrai com facilidade com coisas fora daquilo que está fazendo?||||||||||
+||*||16- Ele tem dificuldade de esperar a vez?||||||||
+||#||17- Ele se esquece de coisas que deveria fazer no dia-a-dia?||||||||||
+||*||18- Ele interrompe os outros ou se mete na conversa dos outros?||||||||||
+[[BR]]
+
+
+||'''CRITÉRIO B:'''||'''sim'''||'''não'''||
+||Alguns desses sintomas estavam presentes antes dos 7 anos de idade?||||||
+||'''CRITÉRIO C:'''||||||
+||Existem problemas causados pelos sintomas acima em pelo menos 2 contextos diferentes (por ex., na escola, no trabalho, na vida social e em casa)?||||||
+||'''CRITÉRIO D:'''||||||
+||Há problemas evidentes na vida escolar, social ou familiar por conta dos sintomas?||||||
+||'''CRITÉRIO E:'''||||||
+||Se existe um outro problema (tal como depressão, deficiência mental, psicose, etc.), os sintomas podem ser atribuídos a ele?||||||
+[[BR]]
+[[BR]]
+'''RESPOSTAS:'''[[BR]]
+
+''Como suspeitar do diagnóstico:''
+  1) É necessário haver pelo menos 6 sintomas assinalados na coluna (Bastante) ou (Quase Sempre), no CRITÉRIO A.
+  - Pelo menos 6 sintomas (Símbolo "#") e menos que 6 sintomas (Símbolo "*"): TDAH Tipo Predominantemente Desatento
+  - Pelo menos 6 sintomas (Símbolo "*") e menos que 6 sintomas (Símbolo "#"): TDAH Tipo Predominantemente Hiperativo-Impulsivo
+  - 6 ou mais sintomas (Símbolo "#") e 6 ou mais sintomas (Símbolo "*"): TDAH Tipo Combinado.
+
+  2) Os CRITÉRIOS B, C, D devem obrigatoriamente ter resposta SIM.
+  
+  3) O CRITÉRIO E necessita da avaliação de um especialista, uma vez que os sintomas do Critério A ocorrem em muitos outros transtornos da infância e adolescência.
+
+  Se os critérios A, B, C, D e E estiverem atendidos de acordo com o julgamento de um especialista, o diagnóstico de TDAH é garantido.
+
+''Adultos:''
+  1) É obrigatório ter tido TDAH na infância. Isto pode exigir consultar os pais, parentes mais velhos ou mesmo professores. O TDAH no adulto é meramente a continuação do TDAH da infância e adolescência.
+
+  2) Como é muito comum a existência de depressão, ansiedade, problemas com álcool e drogas nos adultos portadores de TDAH, é importante determinar se os sintomas não são exclusivamente secundários a estes problemas.
+[[BR]]
+
+
+----
+
+''Referências:''[[BR]]
+
+[http://magdavaissman.com.br/pdf/teste1.pdf Clínica da Profª. Drª. Magda Vaissman]
+
+

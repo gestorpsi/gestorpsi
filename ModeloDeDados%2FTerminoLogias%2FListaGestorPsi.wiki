@@ -1,0 +1,50 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+
+'''Lista !GestorPsi'''
+
+||'''Queixa'''||'''Definição'''||
+||Birra||Teima impertinente; a explosão espetacular de pranto, gritos e agitação frenética das per­nas (espernear) de uma criança, em resposta a uma frustração. Tais acessos de birra são natu­rais em crianças de dois ou três anos, e expres­sam agressividade, cólera, raiva e desafio. A criança desenvolve rapidamente - ou gradual­mente - seu acesso de ira: grita, bate os pés, joga os braços, rola no chão, bate em quem se aproximar dela, joga objetos ao seu alcance contra as paredes, morde ou até bate com a cabeça contra paredes ou móveis. Assim, a sua birra assume proporções incontroladas e de­vastadoras, em contraste com as expressões normais de cólera e raiva. As birras são observadas quase rotineiramen­te em crianças de pais excessivamente indulgen­tes, supersolícitos e superprotetores. Embora se originem em desconfortos físicos que aumen­tam a irritabilidade da criança, as birras ou são motivadas por uma tentativa de obter satisfa­ções e de dominar uma família que permite ser controlada por essas zangas, ou são o resultado de imitação de um dos pais ou de algum outro membro da família.||
+||Bullying||O termo BULLYING compreende todas as formas de atitudes agressivas, intencionais e repetidas, que ocorrem sem motivação evidente, adotadas por um ou mais estudantes contra outro(s), causando dor e angústia, e executadas dentro de uma relação desigual de poder. Portanto, os atos repetidos entre iguais (estudantes) e o desequilíbrio de poder são as características essenciais, que tornam possível a intimidação da vítima. Algumas ações que podem estar presentes em casos de Bullying: colocar apelidos, ofender, humilhar, discriminar, excluir, amedrontar, agredir, roubar, quebrar pertences.||
+||Imaturidade||A imaturidade é um padrão comportamental ocasionado pela permanência de um indivíduo em estágios anteriores de desenvolvimento tanto intelectual como moral.||
+||Intolerância||Intolerância é uma atitude mental caracterizada pela falta de habilidade ou vontade em reconhecer e respeitar diferenças em crenças e opiniões. Num sentido político e social, intolerância é a ausência de disposição para aceitar pessoas com pontos-de-vista diferentes. Como um constructo social, isto está aberto a interpretação. Por exemplo, alguém pode definir intolerância como uma atitude expressa, negativa ou hostil, em relação às opiniões de outrem, mesmo que nenhuma ação seja tomada para suprimir tais opiniões divergentes ou calar aqueles que as têm. Tolerância, por contraste, pode significar "discordar pacificamente". A emoção é um fator primário que diferencia intolerância de discordância respeitosa.||
+||Tolerância à Frustração||A capacidade de suportar a tensão resultante de um acúmulo de exigên­cias instintivas que não são imediatamente ali­viadas ou satisfeitas. O desenvolvimento da tolerância à tensão ou frustração é essencial para se conseguir o controle ativo pelo ego; a baixa tolerância à frustração e/ou a necessidade de imediata satisfação instintiva indicam grave imaturidade do ego.||
+||Mães em serviço neonatal||Apoio psicológico a mães que acompanham seus recém-nascidos numa unidade de neonatologia.||
+||Vítimas de maus tratos||Pessoa de qualquer idade ou sexo, submetida a maus tratos.||
+||Redução de danos||Estratégia de saúde pública que busca controlar possíveis consequências adversas ao consumo de psicoativos – lícitos ou ilícitos – sem, necessariamente, interromper esse uso, e buscando inclusão social e cidadania para usuários de drogas.||
+||Crianças super dotadas||Crianças que apresentam traços diferenciados em relação à crianças de sua mesma faixa etária, como amadurecimento no modo de ser, habilidade para perceber a relação entre fatos, rapidez na percepção do mundo e de seu meio, memória acentuada.||
+||Inclusão do portador de necessidades especiais||Processo pelo qual a sociedade se adapta incluindo em seus sistemas pessoas com necessidades especiais através de transformações, pequenas e grandes, nos ambiente físicos (espaços interno e externo, equipamentos, aparelho e utensílio, mobiliário e meios de transporte) e na mentalidade das pessoas, assim como do próprio portador de necessidades especiais que tem assim, a possibilidade de tentar assumir seu papel na sociedade e encontrar um caminho propício para o seu desenvolvimento através de sua educação e qualificação para o trabalho.||
+||Programa anti-tabagismo||Tratamento que oferece suporte para quem quer romper com o vicio e melhorar a qualidade de vida. Esses programas são, na maioria das vezes, realizados por meio de reuniões de grupos terapêuticos e medicamentos prescritos por um médico, assim como gomas de mascar com nicotina ou adesivos anti-tabagismo.||
+||Reinserção social||Apoio a pessoas no retorno ao convívio social após algum tempo excluídas da sociedade.||
+||Outros||||
+||Comentários||
+[[BR]]
+
+
+
+----
+'''Referências:'''
+
+
+[http://www.bullying.com.br/BConceituacao21.htm#OqueE][[BR]]
+
+[http://www.redepsi.com.br/portal/modules/wordbook][[BR]]
+
+[http://pt.wikipedia.org/wiki][[BR]]
+
+[http://www.scielo.oces.mctes.pt/scielo.php?script=sci_arttext&pid=S0871-34132005000200001&nrm=iso&tlng=pt][[BR]]
+
+[http://www.altashabilidades.com.br/altashabilidades/upload/publicacoes_MITOS_12353.doc][[BR]]
+
+[http://www.netpsi.com.br/artigos/050204_reducao_danos.htm][[BR]]
+
+[http://www.pedagobrasil.com.br/educacaoespecial/ainclusaodoportador.htm][[BR]]
+
+
+
+

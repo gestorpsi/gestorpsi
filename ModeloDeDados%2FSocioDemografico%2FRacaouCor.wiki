@@ -1,0 +1,24 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Raça ou Cor'''[[BR]]
+[[BR]]
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Raça ou Cor||[wiki:ModeloDeDados/TerminoLogias/RacaCor Raça ou Cor]||||||
+||Comentários||||||x||
+
+[[BR]]
+
+
+----
+
+'''Race or Color'''[[BR]]
+[[BR]]
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Race or Color||[wiki:ModeloDeDados/TerminoLogias/RacaCor Race or Color]||||||
+||Comments||||||x||
+[[BR]]

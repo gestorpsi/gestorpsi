@@ -1,0 +1,3 @@
+= Coleta de dados da USE UFSCar = 
+Fechamos mais uma parceria agora com a Unidade Saúde Escola da UFSCar que as seguintes áreas de atendimento: Saúde Mental, Atendimento ao Idoso, Atendimento à Mulher, Atendimento a Pessoas Portadoras de Necessidades Especiais, Assistência e Prevenção de Distúrbios Metabólicos, Assistência e Prevenção nos Distúrbios Cardiovasculares e Respiratórios e Atenção à Saúde da Criança.[[BR]]
+Os dados sobre o funcionamento desses serviços irão ampliar as possibilidades de uso do GestorPsi de maneira considerável.

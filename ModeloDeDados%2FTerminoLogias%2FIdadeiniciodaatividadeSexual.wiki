@@ -1,0 +1,22 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Idade de Início da Atividade Sexual'''[[BR]]
+[[BR]]
+- menos de 10 anos[[BR]]
+- 10 anos[[BR]]
+- 11 anos[[BR]]
+- 12 anos[[BR]]
+- 13 anos[[BR]]
+- 14 anos[[BR]]
+- 15 anos[[BR]]
+- 16 anos[[BR]]
+- 17 anos[[BR]]
+- 18 anos[[BR]]
+- 19 anos[[BR]]
+- 20 anos[[BR]]
+- mais de 20 anos[[BR]]

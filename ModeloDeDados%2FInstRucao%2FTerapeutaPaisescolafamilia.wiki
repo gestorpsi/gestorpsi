@@ -1,0 +1,25 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Terapeuta para Pais / Escola / Família'''
+
+[[BR]]
+
+||'''Descrição'''||'''Orientação'''||'''Resultados'''||
+||'''Instrução para ação específica:'''[[BR]]instrução para que pais, escola ou família se comporte da forma indicada em relação ao paciente / cliente em questão com especificação da topografia do comportamento a ser desenvolvido.||texto||texto||
+||'''Instrução para ação genérica:'''[[BR]]instrução para que pais, escola ou família se comporte da forma indicada em relação ao paciente / cliente em questão, porém não indicando a ação que deveria ser executada, e sim qual o resultado a ser atingido com qualquer topografia de comportamento.||texto||texto||
+||'''Instrução para reflexão:'''[[BR]]recomendação para que pais, escola ou família reflitam sobre um tema proposto ou observem suas ações e pensamentos.||texto||texto||
+||'''Instrução para tarefa:'''[[BR]]Instrução para que pais, escola ou família execute uma tarefa em relação ao paciente / cliente em questão.||texto||texto||
+||Comentários||||||
+[[BR]]
+
+
+
+----
+'''Referências:'''[[BR]]
+
+[http://www.teses.usp.br/teses/disponiveis/47/47133/tde-10112004-114425/  Donadone, Juliana Cristina - O uso da orientação em intervenções clínicas por terapeutas comportamentais experientes e pouco experientes]

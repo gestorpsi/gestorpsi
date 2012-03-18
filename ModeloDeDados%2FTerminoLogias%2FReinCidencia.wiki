@@ -1,0 +1,19 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Reincidência'''[[BR]]
+[[BR]]
+||'''Nome do campo'''||'''Descrição'''||
+||Freqüência||||
+||Intensidade||||
+||Duração||||
+||Comentários||||
+
+----
+'''Referências:'''
+
+[http://www.openehr.org/home.html openEHR]

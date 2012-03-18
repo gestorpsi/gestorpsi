@@ -1,0 +1,15 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Amamentação'''[[BR]]
+[[BR]]
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Multiplicidade'''||
+||Dificuldades||[wiki:ModeloDeDados/ObServacao/DificuldadeAmamentacao Dificuldades na Amamentação]||||||
+||Amamentado por||[wiki:ModeloDeDados/ObServacao/AmamenTacao Amamentação]||||||
+||Amamentado até||aa/mm||||||
+||Retirada da amamentação||[wiki:ModeloDeDados/ObServacao/RetiradaAmamentacao Retirada da Amamentação]||||||
+||Comentários||||||||

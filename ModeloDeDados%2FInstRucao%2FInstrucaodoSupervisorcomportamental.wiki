@@ -1,0 +1,20 @@
+
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Instrução do Supervisor Sobre Estratégias de Intervenção Comportamental'''
+
+[[BR]]
+
+
+||'''Intervenções:'''||'''Instrução'''||
+||''Análise de contingências:''[[BR]]- Identificar e operacionalizar, com o cliente, o(s) comportamento(s) problema(s).[[BR]]- Solicitar informações sobre as dimensões do comportamento problema (freqüência, duração, intensidade).[[BR]]- Solicitar informações sobre as contingências relacionadas ao comportamento sob análise (estímulos antecedentes, conseqüentes e operações estabelecedoras).[[BR]]- Fazer levantamento dos estímulos reforçadores para o cliente.[[BR]]-  Reforçar comportamentos adequados.[[BR]]- Perguntas sobre histórico de instalação do problema.||texto||
+||''Análise Funcional:''[[BR]]- antecedente - comportamento - consequência[[BR]]||texto||
+||''Conseqüenciar Comportamentos do Cliente na Sessão:''[[BR]]1) Fortalecimento de comportamentos:[[BR]]- Verbalizações de concordância: expressão de julgamento favorável às ações do cliente – sejam estas relatadas pelo cliente ou observadas pelo terapeuta (reforçamento específico).[[BR]]- Verbalizações que resumam o progresso obtido até o presente atendimento, descrevendo as melhoras e sucessos do cliente.[[BR]][[BR]]2) Enfraquecimento de comportamentos:[[BR]]- Extinção de Comportamento[[BR]]- Bloqueio de Esquiva[[BR]]- Verbalizações de discordância: expressão de julgamento desfavorável sobre ações, avaliações, afirmações, propostas ou características do cliente[[BR]]||texto||
+||Comentários||||
+[[BR]]
+

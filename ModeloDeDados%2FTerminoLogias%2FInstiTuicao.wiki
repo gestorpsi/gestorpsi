@@ -1,0 +1,24 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Instituição'''[[BR]]
+[[BR]]
+
+* Pública[[BR]]
+  - Municipal[[BR]]
+  - Estadual[[BR]]
+  - Federal[[BR]]
+[[BR]]
+* Privada
+  - Com fins lucrativos[[BR]]
+  - Sem fins lucrativos[[BR]]
+[[BR]]
+
+----
+'''Referências:'''[[BR]]
+
+http://www.educacaosuperior.inep.gov.br/tipos_de_instituicao.stm

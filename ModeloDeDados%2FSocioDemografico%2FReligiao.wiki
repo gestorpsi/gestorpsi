@@ -1,0 +1,28 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Religião'''[[BR]]
+[[BR]]
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Religião||[wiki:ModeloDeDados/TerminoLogias/ReliGiao Religião]||||||
+||Frequência de participação[[BR]]em cultos ou reuniões||[wiki:ModeloDeDados/TerminoLogias/FreqUencia Freqüência]||||||
+||Comentários||||||||
+[[BR]]
+
+
+----
+'''Religion'''[[BR]]
+[[BR]]
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Religion||[wiki:ModeloDeDados/TerminoLogias/ReliGiao Religion]||||||
+||Frequency of participation in religious assemblies||[wiki:ModeloDeDados/TerminoLogias/FreqUencia Frequency]||||||
+||Comments||||||||
+[[BR]]
+
+
+
+

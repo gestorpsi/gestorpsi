@@ -1,0 +1,34 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+= '''Caso de Uso: Alugar salas''' =
+'''Ator'''
+
+  Secretária, Usuário (''supervisor, terapeuta, estagiário, co-terapeuta, observador, grupos'')
+
+'''Descrição resumida'''
+
+  Um usuário solicita o aluguel de uma sala utilizando um plano de aluguel por um período de tempo e a secretária a aluga através do sistema.
+
+'''Pré-condição'''
+
+ 1. A secretária já deve estar cadastrada e autenticada no sistema (UC – Cadastro)
+ 1. A sala já deve estar cadastrada no sistema (UC – Gerenciar salas) e associada a um local (UC – Gerenciar locais).
+
+'''Fluxo básico '''
+
+ 1. A secretária inicia a ação de aluguel de sala e informa o identificador da sala e o período desejado.
+ 1. A secretária seleciona o local da clínica.
+ 1. O sistema verifica se a sala estará disponível pelo tempo determinado.
+ 1. A secretária informa ao sistema o tipo de plano do aluguel (horas avulsas, horas fixas, períodos de meio dia, períodos de dia inteiro e integral).
+ 1. A secretária confirma os dados e finaliza a ação.
+ 1. O sistema confirma o aluguel.
+
+'''Fluxos alternativos'''[[BR]][[BR]]3a. A sala já está alugada e não será feito o aluguel.
+
+'''Pós-condições'''
+
+'''Informações Relevantes:'''

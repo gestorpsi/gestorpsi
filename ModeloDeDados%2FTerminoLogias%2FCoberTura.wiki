@@ -1,0 +1,17 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Cobertura'''[[BR]]
+[[BR]]
+- Veículo motorizado[[BR]]
+- Compensação de funcionário[[BR]]
+- Seguro de acidente pessoal[[BR]]
+- Deficiência permanente[[BR]]
+- Seguro de vida[[BR]]
+- Seguro viagem[[BR]]
+- Seguro para terceiros[[BR]]
+- Seguro para veteranos[[BR]

@@ -1,0 +1,41 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Segurança - GestorPsi'''[[BR]]
+
+O sistema GestorPsi está sendo desenvolvido para atender os principais requisitos de segurança descritos no Manual de Certificação para Sistemas de Registro Eletrônico em Saúde, elaborado pela Sociedade Brasileira de Informática em Saúde em conjunto com o Conselho Federal de Medicina.
+
+Dentre os procedimentos de segurança adotados destacam-se:
+
+• Criptografia das senhas dos usuários.
+
+• Utilização de HTTPS (HTTP + SSL) com certificado digital da Equifax
+
+• Bloqueio do usuário após um número configurável de tentativas inválidas de acesso ao sistema.
+
+• Controle de permissão de usuários baseado em papéis.
+
+• Utilização de identificador único (UUID) como chave-primária dos registros.
+
+• Controle de histórico com todas as alterações feitas nos registros
+
+[[BR]][[BR]]
+
+'''Segurança - Servidor e Data Center'''
+
+• Gravações de dados redundantes e backup independente diário
+
+[[BR]][[BR]]
+
+'''Segurança e Conectividade - Data Center'''[[BR]] 
+
+
+ * Servidores hospedados no [http://www.uolhost.com.br/data-center/data-center-uol.html UOL HOST ]
+
+[[BR]]
+[[BR]]
+

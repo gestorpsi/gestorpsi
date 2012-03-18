@@ -1,0 +1,20 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Primeiras Reações do Bebê'''[[BR]]
+[[BR]]
+- Chorou logo[[BR]]
+- Demorou para chorar[[BR]]
+- Ficou roxo[[BR]]
+- Precisou de Oxigênio[[BR]]
+- Precisou de incubadora[[BR]]
+- Sucção deficiente[[BR]]
+- Deglutição deficiente[[BR]]
+- Agitação[[BR]]
+- Rigidez[[BR]]
+- Apatia[[BR]]
+

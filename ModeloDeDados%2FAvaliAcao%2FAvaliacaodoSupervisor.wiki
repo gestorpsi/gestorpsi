@@ -1,0 +1,29 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Avaliação do Supervisor'''
+[[BR]]
+
+||'''Nome do Campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Atendimento||data||||||
+||Problema||[wiki:ModeloDeDados/ObServacao/ProBlema Problema]||x||x||
+||Diagnóstico||[wiki:ModeloDeDados/AvaliAcao/DiaGnostico Diagnóstico]||x||x||
+||Registro Descritivo||texto||||||
+||Comentários||||||x||
+[[BR]]
+
+----
+'''Supervisor Evaluation'''
+[[BR]]
+
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Session||date||||||
+||Problem||[wiki:ModeloDeDados/ObServacao/ProBlema Problem]||x||x||
+||Diagnosis||[wiki:ModeloDeDados/AvaliAcao/DiaGnostico Diagnosis]||x||x||
+||Descriptive record||texto||||||
+||Comments||||||x||
+[[BR]]

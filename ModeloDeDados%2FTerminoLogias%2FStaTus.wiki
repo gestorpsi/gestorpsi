@@ -1,0 +1,20 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Status'''
+
+ * Admitido
+ * Lista de espera
+ * Agendado
+ * Em atendimento (ativo)
+ * Encaminhado para atendimento externo e continua em atendimento na clínica (ativo)
+ * Inativo
+ * Desligado
+
+----
+'''Referências:'''
+
+[wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas]

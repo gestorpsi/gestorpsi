@@ -1,0 +1,16 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Clínicos'''
+
+[[BR]]
+
+
+'''Técnicas Utilizadas'''[[BR]]
+
+
+||'''Categoria'''||'''Descrição'''||
+||técnica||||

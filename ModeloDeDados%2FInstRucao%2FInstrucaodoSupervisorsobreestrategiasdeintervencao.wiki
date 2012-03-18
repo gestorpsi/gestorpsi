@@ -1,0 +1,22 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Instrução do Supervisor Sobre Estratégias de Intervenção do Terapeuta / Estagiário'''
+
+[[BR]]
+
+
+||'''Estratégias de Intervenção do Terapeuta:'''||'''Instrução'''||
+||''Fornecer Informações:''[[BR]]- Sobre os problemas apresentados pelo cliente e relacionadas a determinado assunto em discussão (papel educativo)||texto||
+||''Realizar Interpretações:''[[BR]]- Interligar os problemas identificados com o restante do trabalho terapêutico; demonstrar as incongruências ou a incoerência do discurso do cliente (apontar discrepâncias ou contradições) cuidando para não eliciar reações emocionais aversivas; fazer com que o cliente identifique similaridades entre situações da terapia com a vida cotidiana.||texto||
+||''Uso de Orientação:''[[BR]]- Podem sugerir ações, estratégias, tarefas, reflexões, pensamentos ou mudanças em sentimentos.||texto||
+||''Técnicas específicas:''[[BR]]- Explicar a lógica de técnicas a serem utilizadas ao manejar os problemas (informações, descrições de cada etapa ou regras sobre o funcionamento de determinadas técnicas, estratégias, exercícios ou programas terapêuticos; inclui justificativas de porque usar uma técnica e porque isso tende a ser efetivo).[[BR]]- Aplicar técnicas ou sugerir tarefas que se encaixem na rotina do cliente e que estejam de acordo com seu repertório.[[BR]]- Aplicação adequada das técnicas.[[BR]]- Trabalhar eventuais dificuldades, previstas pelo cliente, na execução da técnica.||texto||
+||Comentários||||
+[[BR]]
+
+
+

@@ -1,0 +1,21 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Endereço'''
+
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Tipo                         de endereço||[wiki:ModeloDeDados/TerminoLogias/TipoEndereco Tipo de endereço]||x||x||
+||Logradouro||[wiki:ModeloDeDados/TerminoLogias/LogradOuro Logradouro]||x||x||
+||nº||texto||x||x||
+||Complemento||texto||x||x||
+||Bairro||texto||x||x||
+||Município||[wiki:ModeloDeDados/TerminoLogias/Municipio Município]||x||x||
+||UF||[wiki:ModeloDeDados/TerminoLogias/UF UF]||x||x||
+||CEP|| ||x||x||
+||Comentários||||||x||
+[[BR]]

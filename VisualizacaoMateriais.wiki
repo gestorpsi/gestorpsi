@@ -1,0 +1,30 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+= '''Caso de Uso: Visualização de materiais''' =
+'''Ator'''
+
+  Usuário (coordenador, supervisor, terapeuta, estagiário, co-terapeuta, observador)
+
+'''Descrição resumida'''
+
+  O usuário deseja visualizar as informações de algum material.
+
+'''Pré-condição'''
+
+ 1. O usuário deve estar cadastrado e autenticado no sistema (UC – Cadastro)
+ 1. Deve haver materiais cadastrados no sistema (UC – Gerenciamento de materiais)
+
+'''Fluxo básico'''
+
+ 1. O usuário inicia a ação para visualizar um material.
+ 1. O sistema apresenta a lista de materiais cadastrados.
+ 1. O usuário seleciona o material desejado.
+ 1. O usuário visualiza as informações disponíveis do material (nome, marca, modelo, nº patrimônio) bem como o seu status (emprestado ou não).
+
+'''Fluxos alternativos '''[[BR]][[BR]]'''Pós-condições'''
+
+'''Informações Relevantes:'''

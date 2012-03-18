@@ -1,0 +1,8 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+= Suporte =
+[[BR]]Tem dúvidas? precisa de ajuda? Encontrou um erro no sistema? [[BR]][[BR]]Você pode enviar um email diretamente pelo sistema, na tela de ajuda e/ou pedir ajuda em nossa comunidade no orkut: http://www.orkut.com.br/Main#Community.aspx?cmm=90082733 [[BR]][[BR]]Para os participantes mais ativos temos as [wiki:GestorPsi/SuPorte/LisTas Listas de discussão] (pesquisadores de psicologia e desenvolvedores de software) e também os [wiki:GestorPsi/SuPorte/InformaTivos Informativos] (Para o público geral)[[BR]][[BR]]

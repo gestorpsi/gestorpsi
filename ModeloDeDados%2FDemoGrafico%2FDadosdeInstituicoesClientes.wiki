@@ -1,0 +1,48 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Dados de Instituições (Clientes)'''
+
+[[BR]]
+Dados referentes à instituição cliente (escolas e demais instituições onde poderá ser realizado serviço psicológico).
+
+[[BR]]
+
+
+
+||'''Identificação                         institucional'''||||||||
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||Razão                         Social||texto||||||
+||Nome Fantasia||texto||||||
+||CNPJ||texto||||||
+||Inscrição                         Estadual||texto||||||
+||Inscrição                         Municipal||texto||||||
+||Técnicos                         responsáveis||texto||||||
+||Comentários||||||||
+[[BR]]
+
+
+
+||'''Perfil                         institucional'''||||||||
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||Personalidade||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/Personalidade Personalidade]||||||
+||Esfera                         administrativa||texto - [wiki:ModeloDeDados/TerminoLogias/EsferaAdministrativa Esfera administrativa]||||||
+||Natureza                         da organização||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/NaturezadaOrganizacao Natureza da organização]||||||
+||Estrutura e funcionamento¹||texto||||||
+||Caracterização da clientela institucional²||texto||||||
+||Comentários||||||||
+[[BR]]
+
+[[BR]]
+[[AddComment]]
+
+
+
+¹ Neste item descrever organograma, equipe, períodos e horário de funcionamento, além do histórico da instituição.[[BR]]
+² Especificar número de pessoas, idade, sexo, nível sócio-econômico e características das atividades.                                                                                                                           
+
+

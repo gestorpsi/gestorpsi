@@ -1,0 +1,40 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Convênios'''
+
+
+
+
+
+||'''Convênios'''||||
+||Tipo de Convênio||1- SUS[[BR]]2- Particular[[BR]]3- Plano/Seguro Próprio[[BR]]4- Plano/Seguro Terceiro[[BR]]5- Plano de Saúde Público¹[[BR]]6- Plano de Saúde Privado²[[BR]] ||
+||Valor pago por procedimento||||
+
+
+¹ Atende apenas servidores da área pública.[[BR]]
+² Neste caso especificar qual é o convênio.
+
+
+----
+
+
+
+
+'''Referências:'''[[BR]]
+
+
+
+
+Manual Técnico do Cadastro Nacional de Estabelecimentos de Saúde - Versão 2[[BR]]
+
+
+Disponível em: [http://cnes.datasus.gov.br/DownLoad/manual%20de%20preenchimento%20SCNES.zip]
+
+
+
+                                                                  

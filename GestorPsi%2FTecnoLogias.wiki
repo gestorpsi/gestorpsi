@@ -1,0 +1,92 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+= Tecnologias =
+'''Servidores'''
+
+{{{
+#!html
+<div class="techLogos">
+<a href="http://www.freebsd.org/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/freebsd.png"></a>
+<a href="http://www.dell.com"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/dell.gif"></a>
+<a href="http://www.locaweb.com.br/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/locaweb.gif"></a>
+</div>
+}}}
+'''Desktops'''
+
+{{{
+#!html
+<div class="techLogos">
+<a href="http://www.ubuntu.com/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/ubuntu.png"></a>
+</div>
+}}}
+'''Softwares'''
+
+{{{
+#!html
+<div class="techLogos">
+<a href="http://www.openoffice.org/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/openoffice.png"></a>
+<a href="http://www.horde.org/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/horde.gif"></a><br><br>
+<a href="http://www.gnu.org/software/mailman/index.html"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/mailman.jpg"></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.phplist.com/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/phplist.jpg"></a>
+</div>
+}}}
+'''Plataforma de desenvolvimento'''
+
+ * Sistema operacional: [http://www.linux.org/ Linux]
+ * '''IDE''' (Integrated Development Environment): [http://www.eclipse.org/ Eclipse] 3.3
+ * Gerenciador de versões: [http://subversion.tigris.org/ SVN]
+ * Controlador "bugs": [http://trac.edgewall.org/ Trac]
+ * [http://argouml.tigris.org/ ArgoUML] ferramenta de modelagem UML
+
+{{{
+#!html
+<div class="techLogos">
+<a href="http://www.linux.org/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/linux.jpg"></a>
+<a href="http://www.eclipse.org/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/eclipse.png"></a>
+<a href="http://subversion.tigris.org/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/svn.png"></a>
+<a href="http://trac.edgewall.org/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/trac.jpg"></a>
+<a href="http://argouml.tigris.org/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/argo.gif"></a>
+</div>
+}}}
+'''Tecnologias usadas no desenvolvimento'''
+
+ * [http://www.djangoproject.com/ Django]: Framework Python de alto-nível para desenvolvimento WEB
+ * [http://jquery.com/ JQuery]: Biblioteca para desenvolvimento !JavaScript
+ * [http://json.org/ JSON] (!JavaScript Object Notation) usado para comunicação assíncrona entre cliente e servidor web (Ajax)
+
+{{{
+#!html
+<div class="techLogos">
+<a href="http://www.djangoproject.com/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/django.png"></a>
+<a href="http://jquery.com/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/jquery.gif"></a>
+<a href="http://json.org/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/json.gif"></a>
+</div>
+}}}
+__Camada de persistência__
+
+ * [http://www.postgresql.org/ PostgreSQL] (SGBD)
+
+{{{
+#!html
+<div class="techLogos">
+<a href="http://www.postgresql.org/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/postgresql.png"></a>
+</div>
+}}}
+__Licenças de Uso__
+
+ * [http://www.fsf.org/ FSF] The Free Software Foundation
+ * [http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt GPLv2] GNU General Public License v2
+ * [http://www.gnu.org/licenses/fdl.txt FDL] GNU Free Documentation License v 1.2
+
+{{{
+#!html
+<div class="techLogos">
+<a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/gnu.png"></a>
+<a href="http://www.fsf.org/"><img src="http://www.gestorpsi.com.br/trac-htdocs/logos/fsf.png"></a>
+<a href="http://www.gnu.org/licenses/fdl.html"><img src="http://upload.wikimedia.org/wikipedia/commons/1/11/Gnu-fdl.png"></a>
+</div>
+}}}

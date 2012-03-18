@@ -1,0 +1,34 @@
+
+
+=== Gestão de serviços em psicologia clínica ===
+5/10/2009
+
+'''Por Claudia Izique'''
+
+'''Agência FAPESP''' – O Instituto de Psicologia Comportamental de São Carlos (IPC), em parceria com pesquisadores das universidades de São Paulo (USP) e Federal de São Carlos (UFSCar), está desenvolvendo um sistema informatizado que permitirá a padronização de registros de informações clínicas e administrativas e dos serviços psicológicos prestados por clínicas e instituições.
+
+A ideia surgiu quando o psicólogo Oliver Zancul Prado começou a trabalhar como supervisor em uma clínica-escola, em São Carlos. “Constatei que não tinha como fazer perguntas ou avaliar os serviços prestados. Era preciso garimpar registros em papel que, por falta de tempo, só eram sistematizados a cada dois anos”, disse.
+
+Intrigado, resolveu avaliar se o problema era comum a outros institutos ou clínicas, investigando a frequência com que essas avaliações apareciam na literatura especializada. Constatou que, em um universo de mais de mil artigos científicos sobre psicoterapia, apenas 50 diziam respeito à eficiência ou resultado dos serviços. “Essa estatística demonstra que a maioria das instituições tem dificuldades de sistematizar informações sobre o atendimento”, disse.
+
+Prado então elaborou um projeto de construção de um software para gestão de serviços a que deu o nome de !GestorPsi. Em 2003, o IPC, do qual ele é sócio, apresentou proposta ao Programa Pesquisa Inovativa em Pequena Empresa (PIPE) da FAPESP, em parceria com pesquisadores na área de psicologia e computação da USP e UFSCar. “Não era apenas um projeto de pesquisa, já que incluía o desenvolvimento de um produto”, justificou.
+
+Na Fase I do projeto, a equipe levantou informações e mapeou o processo em mais de dez clínicas-escolas e em instituições de prestação de serviços em psicologia instaladas em São Carlos, anotando dados sobre registros de atendimento, organização administrativa, tipos de serviços prestados e, no caso das que já utilizavam sistemas informatizados, as suas funções e limitações.
+
+A análise desses dados permitiu que se montasse a arquitetura do !GestorPsi. O software está organizado em dez módulos que incluem desde o cadastro de clientes, familiares, coordenadores, grupos de usuários, secretárias, entre outros, até resultados de testes psicológicos, técnicas de procedimentos e análises, passando por informações administrativas e financeiras e de gestão de recursos humanos. Com o auxílio do Sebrae-SP e de consultorias contratadas, a equipe elaborou seu plano de negócios e iniciou a Fase II do projeto, de construção do software propriamente dito.
+
+O !GestorPsi é um software aberto, construído colaborativamente com várias instituições públicas, explica Prado. Trata-se de uma ferramenta web à qual os interessados têm acesso por meio da compra do serviço.
+
+Foi desenvolvido para atender aos requisitos de segurança descritos no Manual de Certificação para Sistemas de Registro Eletrônico em Saúde, elaborado pela Sociedade Brasileira de Informática em Saúde e pelo Conselho Federal de Medicina: os dados de identificação de pessoas são criptografados, assim como a senha dos usuários; o controle do acesso é baseado em papéis; e o programa utiliza um identificador único como chave primária dos registros.
+
+“O usuário entra na sua conta utilizando uma senha da clínica, instituição ou do consultório, por exemplo, e preenche as informações de cadastro, tudo dentro do mais absoluto sigilo. Há informações administrativas às quais as secretárias podem ter acesso e informações sobre procedimentos que são de uso exclusivo do profissional”, detalhou Prado.
+
+O software cumpre, ainda, outras exigências da Sociedade Brasileira de Informática em Saúde como a que impede que as informações sobre clientes sejam apagadas ou modificadas. “O histórico do paciente permanece guardado para ser utilizado, por exemplo, em caso de auditoria. Toda vez que acontece alguma alteração de informações, o software cria uma nova versão do documento”, disse.
+
+O !GestorPsi está em teste no Instituto de Psicologia Comportamental de São Carlos e na Universidade Paulista (Unip), em ambiente de clínica-escola e de clínica privada.
+
+“O modelo atende a todos os requisitos esperados. A expectativa é iniciar a comercialização dos serviços do software já no fim de outubro. Apesar de ter sido desenvolvido especificamente para a área de psicologia clínica, o programa tem aplicação também para serviços de psicologia em geral, nas áreas de educação, social e de recursos humanos”, disse.
+
+Prado aponta que a gestão eletrônica dos serviços prestados na área de psicologia poderá provocar uma mudança de cultura entre os profissionais. “Acho, no entanto, que ele poderá ter uso também em pesquisa, já que estamos desenvolvendo um módulo de relatório, facilitando a coleta de dados.”
+
+!http://www.agencia.fapesp.br/materia/11160/gestao-de-servicos-em-psicologia-clinica.htm

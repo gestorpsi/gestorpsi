@@ -1,0 +1,22 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Média de Cigarros por Dia'''
+
+- de 1 a 5 cigarros[[BR]]
+- de 6 a 10 cigarros[[BR]]
+- de 11 a 15 cigarros[[BR]]
+- de 16 a 20 cigarros[[BR]]
+- de 21 a 25 cigarros[[BR]]
+- de 26 a 30 cigarros[[BR]]
+- mais de 31 cigarros[[BR]]
+
+
+----
+'''Referências:'''
+
+[http://www.openehr.org/home.html openEHR]

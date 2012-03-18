@@ -1,0 +1,19 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Agendamento'''[[BR]] 
+
+||'''Gerenciar Agenda'''||
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Cliente||||||||
+||Profissional||selecionar de uma lista||||||
+||Serviço||lista de serviços||||||
+||Sala||selecionar de uma lista||x||||
+||Data||data||x||||
+||Horário de início||hh:mm||x||||
+||Horário de término||hh:mm||x||||
+||Material||selecionar de uma lista||x||||
+||Comentários||||||x||

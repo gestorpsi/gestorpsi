@@ -1,0 +1,21 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Identificação Mantenedora'''
+
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Razão                         Social||texto||||||
+||CNPJ||numérico||||||
+||Retenção de Tributos||[wiki:ModeloDeDados/TerminoLogias/RetencaodeTributos Retenção de Tributos]||||||
+||Região de Saúde||numérico||||||
+||Agência||texto||||||
+||Conta Corrente||texto||||||
+
+
+[[BR]]
+

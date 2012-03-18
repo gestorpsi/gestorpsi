@@ -1,0 +1,26 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Avaliação do Supervisor Sobre o Desempenho do Terapeuta / Estagiário'''
+
+[[BR]]
+
+
+||'''Desempenhos relacionados à:'''||'''Avaliação¹'''||
+||''Aliança Terapêutica:''[[BR]]- Postura, voz, expressão facial, gestos, contato visual, alternar entre ouvir e conduzir, verbalizações que indiquem aprovação, atenção, compreensão, entendimento do relato, flexibilidade.||texto||
+||''Postura Profissional:''[[BR]]- Vestir-se adequadamente.[[BR]]- Cumprimentos iniciais e apresentação, encerramento e despedida.[[BR]]- Observações claras, sem hesitações ou reformulações freqüentes e linguagem acessível.[[BR]]- Estruturação (objetivos, contrato, regras, acerto de horários, cumprir o tempo de atendimento).||texto||
+||''Coleta de Dados:''[[BR]]- Uso mínimo de questões fechadas.[[BR]]- Perguntas objetivas, feitas de maneira breve, clara e precisa.[[BR]]- Entremear as perguntas com observações de reflexão, exemplos ilustrativos ou resumos breves.[[BR]]- Investigar qual a queixa do cliente, solicitar informações sobre dados pessoais e familiares do cliente, sobre o estado de saúde geral do cliente, tratamentos anteriores e uso de medicação.[[BR]]- Problema principal não deve ser ignorado.||texto||
+||Comentários||||
+[[BR]]
+
+¹ Legenda:[[BR]]
+
+NA – Não Aplicável (não houve, na sessão avaliada, momento para o terapeuta emitir determinado desempenho)[[BR]]
+IE – Inadequadamente executado (desempenho que o terapeuta emitiu de forma inadequada, faltando-lhe habilidade para desempenhar um comportamento adequado naquela sessão ou no momento adequado)[[BR]]
+PA – Parcialmente Adequado (itens que foram desempenhados de maneira adequada, mas que podem e devem melhorar em algum ponto)[[BR]]
+AE – Adequadamente Executados (itens que descrevem desempenhos realizados com maestria pelo terapeuta)[[BR]]
+

@@ -1,0 +1,32 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Teste de Dependência à Nicotina de Fagertröm - FTND'''[[BR]] 
+[[BR]]
+
+||'''Questão'''||'''Pontuação'''||
+||1. Quanto tempo após acordar você fuma seu primeiro cigarro?[[BR]]a) Dentro de 5 minutos (3 pontos)[[BR]]b) Entre 6-30 minutos (2 pontos)[[BR]]c) Entre 31-60 minutos (1 ponto)[[BR]]d) Após 60 minutos (0 ponto)[[BR]]e) Não fuma||||
+||2. Você acha difícil não fumar em lugares proibidos, como igrejas, ônibus, etc.?[[BR]]a) Sim (1 ponto)[[BR]]b) Não (0 ponto)||||
+||3. Qual cigarro do dia traz mais satisfação?[[BR]]a) O primeiro da manhã (1 ponto)[[BR]]b) Outros (0 ponto)[[BR]]c) Nenhum||||
+||4. Quantos cigarros você fuma por dia?[[BR]]a) Menos de 10 (0 ponto)[[BR]]b) De 11 a 20 (1 ponto)[[BR]]c) De 21 a 30                                  (2 pontos)[[BR]]d) Mais de 31 (3 pontos)[[BR]]e) Não fuma||||
+||5. Você fuma mais freqüentemente pela manhã?[[BR]]a) Sim (1 ponto)[[BR]]b) Não (0 ponto)||||
+||6. Você fuma mesmo doente?[[BR]]a) Sim (1 ponto)[[BR]]b) Não (0 ponto)||||
+[[BR]]
+
+Conclusão sobre o grau de dependência:[[BR]]
+0 - 2 pontos = muito baixo[[BR]]
+3 - 4 pontos = baixo[[BR]]
+5 pontos = médio[[BR]]
+6 -7 pontos = elevado[[BR]]
+8 -10 pontos = muito elevado[[BR]]
+
+Uma soma acima de 6 pontos indica que, provavelmente, o paciente sentirá desconforto (síndrome de abstinência) ao deixar de fumar.[[BR]]
+[[BR]]
+
+----
+''Referências:''
+[[BR]]
+[http://www.seer.ufrgs.br/index.php/hcpa/article/viewPDFInterstitial/461/1647 Utilização do teste de dependência à nicotina de Fagerström como um instrumento de medida do grau de dependência]

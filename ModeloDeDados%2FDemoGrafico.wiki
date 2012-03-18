@@ -1,0 +1,159 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Modelo de Dados Demográficos'''
+
+Para a construção desse modelo de dados foi realizada uma longa pesquisa a partir dos formulários utilizados pelas instituições visitadas na primeira e segunda fase do projeto, além de padrões internacionais utilizados na área de saúde.
+
+----
+
+'''Cadastro de Cliente'''
+
+
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoPessoal Identificação Pessoal][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoCliente Identificação Cliente][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilPessoal Perfil Pessoal][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/EndeReco Endereço][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/TeleFone Telefone][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/InterNet Internet][[BR]]
+
+
+[[BR]]
+
+'''Cadastro Profissional de Saúde'''
+
+
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoPessoal Identificação Pessoal][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilPessoal Perfil Pessoal][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoProfissional Identificação Profissional][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilProfissionaldeSaude Perfil Profissional de Saúde][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/EndeReco Endereço][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/TeleFone Telefone][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/InterNet Internet][[BR]]
+
+[[BR]]
+
+
+'''Cadastro Profissional de Psicologia'''
+
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoPessoal Identificação Pessoal][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilPessoal Perfil Pessoal][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoProfissional Identificação Profissional][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilProfissionaldeSaude Perfil Profissional de Saúde][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilProfissionaldePsicologia Perfil Profissional de Psicologia][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/EndeReco Endereço][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/TeleFone Telefone][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/InterNet Internet][[BR]]
+
+[[BR]]
+
+
+'''Cadastro Estagiário'''
+
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoPessoal Identificação Pessoal][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilPessoal Perfil Pessoal][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoEstagiario Identificação Estagiário][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilEstagiario Perfil Estagiário][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/EndeReco Endereço][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/TeleFone Telefone][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/InterNet Internet][[BR]]
+
+[[BR]]
+
+
+'''Cadastro de Secretária e Funcionários'''
+
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoPessoal Identificação Pessoal][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilPessoal Perfil Pessoal][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/EndeReco Endereço][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/TeleFone Telefone][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/InterNet Internet][[BR]]
+
+[[BR]]
+
+
+'''Cadastro Supervisor'''
+
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoPessoal Identificação Pessoal][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilPessoal Perfil Pessoal][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoProfissional Identificação Profissional][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilProfissionaldeSaude Perfil Profissional de Saúde][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilProfissionaldePsicologia Perfil Profissional de Psicologia]¹ [[BR]] 
+[wiki:ModeloDeDados/DemoGrafico/EndeReco Endereço][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/TeleFone Telefone][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/InterNet Internet][[BR]]
+
+
+[[BR]]
+
+
+'''Cadastro Coordenador'''
+
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoPessoal Identificação Pessoal][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilPessoal Perfil Pessoal][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoProfissional Identificação Profissional][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilProfissionaldeSaude Perfil Profissional de Saúde][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilProfissionaldePsicologia Perfil Profissional de Psicologia]¹ [[BR]] 
+[wiki:ModeloDeDados/DemoGrafico/EndeReco Endereço][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/TeleFone Telefone][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/InterNet Internet][[BR]]
+
+[[BR]]
+
+
+'''Cadastro de Instituição'''
+
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoInstitucional Identificação Institucional][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilInstitucional Perfil Institucional][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/EndeReco Endereço][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/TeleFone Telefone][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/InterNet Internet][[BR]]
+
+[[BR]]
+
+
+
+'''Cadastro de Instituição (Cliente)'''
+
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoInstitucionalCliente Identificação Institucional (Cliente)][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/PerfilInstitucionalCliente Perfil Institucional (Cliente)][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/EndeReco Endereço][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/TeleFone Telefone][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/InterNet Internet][[BR]]
+
+[[BR]]
+
+
+
+'''Cadastro de Mantenedora'''
+
+[wiki:ModeloDeDados/DemoGrafico/IdentificacaoMantenedora Identificação Mantenedora][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/EndeReco Endereço][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/TeleFone Telefone][[BR]]
+[wiki:ModeloDeDados/DemoGrafico/InterNet Internet][[BR]]
+
+[[BR]]
+
+
+
+
+
+
+
+
+¹ Se for Psicólogo.
+
+[[BR]]
+
+
+----
+'''Referências:'''
+[[BR]]
+
+[http://cnes.datasus.gov.br/ CNES][[BR]]
+[http://www.ibge.gov.br/home/ IBGE] [[BR]]
+[wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas][[BR]] Manual de Certificação da [http://www.sbis.org.br/ Sociedade Brasileira de Informática em Saúde][[BR]][http://www.openehr.org/home.html openEHR]
+

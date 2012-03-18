@@ -1,0 +1,111 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Versão Brasileira do Questionário de Qualidade de Vida SF-36'''[[BR]] 
+[[BR]]
+
+||'''Questão'''||'''Excelente'''||'''Muito Boa'''||'''Boa'''||'''Ruim'''||'''Muito Ruim'''||'''Pontos'''||
+||1- Em geral você diria que sua saúde é||1||2||3||4||5||||
+||Total:||||||||||||||
+
+[[BR]]
+
+||||'''Muito Melhor'''||'''Um Pouco Melhor'''||'''Quase a Mesma'''||'''Um Pouco Pior'''||'''Muito Pior'''||'''Pontos'''||
+||2- Comparada há um ano, como você classificaria sua saúde em geral, agora?||1||2||3||4||5||||
+||Total:||||||||||||||
+
+[[BR]]
+
+
+||3- Os seguintes itens são sobre atividades que você poderia fazer atualmente durante um dia comum. De acordo com à sua saúde, você teria dificuldade para fazer estas atividades? Neste caso, quando?[[BR]]''Atividades''||'''Sim, muita dificuldade'''||'''Sim, um pouco de dificuldade'''||'''Sem dificuldade'''||'''Pontos'''||
+||a) Atividades vigorosas, que exigem muito esforço, tais como correr, levantar objetos pesados, participar em esportes intensos.||1||2||3||||
+||b) Atividades moderadas, tais como mover uma mesa, passar aspirador de pó, jogar bola, varrer a casa.||1||2||3||||
+||c) Levantar ou carregar mantimentos||1||2||3||||
+||d) Subir vários  lances de escada||1||2||3||||
+||e) Subir um lance de escada||1||2||3||||
+||f) Curvar-se, ajoelhar-se ou dobrar-se||1||2||3||||
+||g) Andar mais de 1 Km||1||2||3||||
+||h) Andar vários quarteirões||1||2||3||||
+||i) Andar um quarteirão||1||2||3||||
+||j) Tomar banho ou vestir-se||1||2||3||||
+||Total:||||||||||
+
+[[BR]]
+
+||4- Durante as últimas 4 semanas, você teve algum dos seguintes problemas no seu trabalho ou com alguma atividade regular, como conseqüência de sua saúde física? ||'''sim'''||'''não'''||'''Pontos'''||
+||a) Você diminui a quantidade de tempo que se dedicava ao seu trabalho ou a outras atividades?||1||2||||
+||b) Realizou menos tarefas do que você gostaria?||1||2||||
+||c) Esteve limitado no seu tipo de trabalho ou a outras atividades?||1||2||||
+||d) Teve dificuldade de executar seu trabalho ou outras atividades (p. ex. necessitou de um esforço extra)?||1||2||||
+||Total:||||||||||
+
+[[BR]]
+
+||5- Durante as últimas 4 semanas, você teve algum dos seguintes problemas com seu trabalho ou outra atividade regular diária, como conseqüência de algum problema emocional (como sentir-se deprimido ou ansioso)?||'''sim'''||'''não'''||'''Pontos'''||
+||a) Você diminui a quantidade de tempo que dedicava-se ao seu trabalho ou a outras atividades?||1||2||||
+||b) Realizou menos tarefas do que você gostaria?||1||2||||
+||c) Não realizou ou fez qualquer das atividades com tanto cuidado como geralmente faz.||1||2||||
+||Total:||||||||
+[[BR]]
+[[BR]]
+
+||'''Questão'''||'''1'''||'''2'''||'''3'''||'''4'''||'''5'''||'''6'''||'''Pontos'''||
+||6- Durante as últimas 4 semanas, de que maneira sua saúde física ou problemas emocionais interferiram nas suas atividades sociais normais, em relação à família, amigos ou em grupo?||De forma nenhuma||Ligeiramente||Moderadamente||Bastante||Extremamente||||
+||7- Quanta dor no corpo você teve durante as últimas 4 semanas?||Nenhuma||Muito Leve||Leve||Moderada||Grave||Muito Grave||||
+||8- Durante as últimas 4 semanas, quanto a dor interferiu com seu trabalho normal (incluindo o trabalho dentro de casa)?||De maneira alguma||Um pouco||Moderadamente||Bastante||Extremamente||||
+||Total:||||||||||||||||
+[[BR]]
+[[BR]]
+
+
+||9- Para cada questão abaixo, por favor dê uma resposta que mais se aproxime da maneira como você se sente, em relação às últimas 4 semanas.||'''Sempre'''||'''A maior parte do tempo'''||'''Boa parte do tempo'''||'''Às vezes'''||'''Poucas vezes'''||'''Nunca'''||'''Pontos'''||
+||a) Por quanto tempo você se sente cheio de vigor, força, e animado?||1||2||3||4||5||6||||
+||b) Por quanto tempo se sente nervosa(o)?||1||2||3||4||5||6||||
+||c) Por quanto tempo se sente tão deprimido que nada pode animá-lo?||1||2||3||4||5||6||||
+||d) Por quanto tempo se sente calmo ou tranqüilo?||1||2||3||4||5||6||||
+||e) Por quanto tempo se sente com muita energia?||1||2||3||4||5||6||||
+||f) Por quanto tempo se sente desanimado ou abatido?||1||2||3||4||5||6||||
+||g) Por quanto tempo se sente esgotado?||1||2||3||4||5||6||||
+||h) Por quanto tempo se sente uma pessoa feliz?||1||2||3||4||5||6||||
+||i) Por quanto tempo se sente cansado?||1||2||3||4||5||6||||
+||Total:||||||||||||||||
+[[BR]]
+[[BR]]
+
+||'''Questão'''||'''Sempre'''||'''A maior parte do tempo'''||'''Boa parte do tempo'''||'''Poucas vezes'''||'''Nunca'''||'''Pontos'''||
+||10- Durante as últimas 4 semanas, por quanto tempo a sua saúde física ou problemas emocionais interferiram em suas atividades sociais (como visitar amigos, parentes, etc)?||1||2||3||4||5||||
+||Total:||||||||||||||
+[[BR]]
+[[BR]]
+
+||11- O quanto verdadeiro ou falso é cada uma das afirmações para você?||'''Definitivamente verdadeiro'''||'''A maioria das vezes verdadeiro'''||'''Não sei'''||'''A maioria das vezes falso'''||'''Definitivamente falso'''||'''Pontos'''||
+||a) Eu costumo adoecer um pouco mais facilmente que as outras pessoas||1||2||3||4||5||||
+||b) Eu sou tão saudável quanto qualquer pessoa que eu conheça||1||2||3||4||5||||
+||c) Eu acho que a minha saúde vai piorar||1||2||3||4||5||||
+||d) Minha saúde é excelente||1||2||3||4||5||||
+||Total:||||||||||||||
+[[BR]]
+[[BR]]
+[wiki:ModeloDeDados/DisposiTivos/InstruMentos/SF36/ClassiFicacao Classificação][[BR]]
+
+[[BR]]
+
+
+----
+
+''Referências:''[[BR]]
+[[BR]]
+[http://www.cdof.com.br/testes13.htm Versão Brasileira do Questionário de Qualidade de Vida SF-36]
+
+
+   
+  
+
+ 
+
+
+
+  

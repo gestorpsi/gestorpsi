@@ -1,0 +1,18 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+== Demonstração ==
+Recomenda-se utilizar o navegador Firefox.
+
+Versões de demonstração do GestorPsi
+
+ * '''Versão 0.1-CURRENT (Julho/2008)'''
+
+  Características da versão: Nova interface, modelagem de dados completa, chamadas assíncronas, implementação em Python/Django [[BR]][[BR]]Para acessar a demonstração 0.1-CURRENT do sistema de gestão em funcionamento, acesse o link abaixo:[[BR]][[BR]]http://demo.gestorpsi.com.br
+
+  Usuário: demo[[BR]]
+  Senha: demo 
+

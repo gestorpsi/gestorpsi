@@ -1,0 +1,18 @@
+[[TracNav]][[BR]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''WAI - Working Alliance Inventory'''[[BR]] 
+[[BR]]
+[wiki:ModeloDeDados/DisposiTivos/InstruMentos/WAI/VersaoTerapeuta WAI - Versão Terapeuta][[BR]]
+[wiki:ModeloDeDados/DisposiTivos/InstruMentos/WAI/VersaoPaciente WAI - Versão Paciente][[BR]]
+
+
+
+[[BR]]
+
+----
+''Referências:''[[BR]][[BR]]
+A. O. Horvath, 1981, 1984.[[BR]]Versão autorizada para Língua Portuguesa: Paulo Machado e Cristiano Nabuco de Abreu.

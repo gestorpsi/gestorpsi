@@ -1,0 +1,18 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Esfera Administrativa'''
+
+- Estadual[[BR]]
+- Federal[[BR]]
+- Privada[[BR]]
+- Municipal[[BR]]
+
+De acordo com o Manual Técnico do Cadastro Nacional de Estabelecimentos de Saúde - Versão 2[[BR]]
+Disponível em:[[BR]]
+[http://cnes.datasus.gov.br/DownLoad/manual%20de%20preenchimento%20SCNES.zip
+]

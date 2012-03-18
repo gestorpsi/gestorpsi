@@ -1,0 +1,29 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Dispositivos'''
+
+Contém dados sobre salas, equipamentos, materiais utilizados e instrumentos de avaliação.
+
+----
+
+[[BR]]
+
+
+ * [wiki:ModeloDeDados/DisposiTivos/SaLas Salas] - Dados sobre dimensão, capacidade e tipos de salas.[[BR]]
+ * [wiki:ModeloDeDados/DisposiTivos/EquiPamentos Equipamentos] - Dados sobre equipamentos utilizados.[[BR]]
+ * [wiki:ModeloDeDados/DisposiTivos/InstruMentos Instrumentos] - Tabela de instrumentos livres.[[BR]]
+
+[[BR]]
+
+
+
+
+----
+'''Referências:'''
+
+[wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas][[BR]] 
+

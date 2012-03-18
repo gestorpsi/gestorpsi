@@ -1,0 +1,12 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Lista de Problemas'''[[BR]]
+
+||Código||Categoria||Código||Problema||
+||00100||Comportamental||001[[BR]]002[[BR]]003[[BR]]004[[BR]]005[[BR]]006||Agitação[[BR]]Agressividade[[BR]]Arrancar cabelos[[BR]]Assanhamento[[BR]]Birra[[BR]]Brigar em casa||
+||00101||Emocional-afetiva||007[[BR]]008[[BR]]009[[BR]]010[[BR]]011[[BR]]012||Angústia[[BR]]Ansiedade[[BR]]Baixa auto-estima[[BR]]ciúme[[BR]]Dependência[[BR]]Depressão[[BR]]||

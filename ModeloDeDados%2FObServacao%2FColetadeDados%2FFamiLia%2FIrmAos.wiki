@@ -1,0 +1,21 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Desenvolvimento Biopsicossocial'''[[BR]]
+[[BR]]
+||'''Nome do campo'''||'''Tipo'''||
+||Número de irmãos||||
+||Idade de cada um||||
+||Tem irmã(o) gêmea(o)||||
+||Tem irmão(s) adotivo(s)¹||||
+||Algum irmão mora com outras pessoas||||
+||Existem irmãos de outros casamentos dos pais que moram junto||||
+||Algum irmão é falecido||||
+||Comentários||||
+
+[[BR]]
+¹ Uni ou bivitelínico

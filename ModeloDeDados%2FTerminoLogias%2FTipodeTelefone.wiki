@@ -1,0 +1,14 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Tipo de Telefone'''
+
+- Residencial[[BR]]
+- Comercial[[BR]]
+- Fax[[BR]]
+- Celular[[BR]]
+- Para recado[[BR]]

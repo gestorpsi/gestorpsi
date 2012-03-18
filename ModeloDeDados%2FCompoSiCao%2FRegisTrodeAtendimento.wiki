@@ -1,0 +1,24 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Registro de Atendimento'''[[BR]]
+
+||'''Nome do Campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Ação||- [wiki:ModeloDeDados/AcAo/AtenDimento Atendimento][[BR]]- [wiki:ModeloDeDados/AcAo Ação]||||x||
+||Observação||- [wiki:ModeloDeDados/ObServacao Observação]||||x||
+||Avaliação||- [wiki:ModeloDeDados/AvaliAcao Avaliação]||||x||
+||Instrução||- [wiki:ModeloDeDados/InstRucao Instrução]||||x||
+||Comentários||||||x||
+
+----
+'''Session Record'''[[BR]]
+
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Action||- [wiki:ModeloDeDados/AcAo Action][[BR]]- [wiki:ModeloDeDados/AcAo/AtenDimento Session]||||x||
+||Observation||- [wiki:ModeloDeDados/ObServacao Observation]||||x||
+||Evaluation||- [wiki:ModeloDeDados/AvaliAcao Evaluation]||||x||
+||Instruction||- [wiki:ModeloDeDados/InstRucao Instruction]||||x||
+||Comments||||||x||

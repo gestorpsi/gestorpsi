@@ -1,0 +1,116 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Escolaridade'''[[BR]] 
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Grau de instrução||[wiki:ModeloDeDados/TerminoLogias/GraudeInstrucao Grau de Instrução]||x||||
+||Comentários||||||x||
+[[BR]]
+
+''Até Ensino Médio''[[BR]] 
+
+||'''Dados da instituição de ensino'''||
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Série escolar||[wiki:ModeloDeDados/TerminoLogias/SerieEscolar Série Escolar]||x||||
+||Cursando||checkbox||x||||
+||Tipo de instituição de ensino||[wiki:ModeloDeDados/TerminoLogias/TipodeInstituicaodeEnsino Tipo de Instituição de Ensino]||x||||
+||Nome ¹||texto||x||||
+||Endereço||[wiki:ModeloDeDados/DemoGrafico/EndeReco Endereço]||x||x||
+||Telefone||[wiki:ModeloDeDados/DemoGrafico/TeleFone Telefone]||x||x||
+||Site||URL||x||||
+||Comentários||||||x||
+[[BR]]
+¹ Especificar nome da escola, [wiki:ModeloDeDados/TerminoLogias/Municipio Município] e [wiki:ModeloDeDados/TerminoLogias/UF Unidade da Federação]. 
+
+[[BR]]
+
+''Curso Técnico/Profissionalizante''[[BR]] 
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Curso||texto||||x||
+||Período ou série||texto||x||x||
+||Ano de início||numérico||x||x||
+||Ano de conclusão||numérico||x||x||
+||Comentários||||||x||
+[[BR]]
+''Curso Superior''[[BR]] 
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Curso||[http://www.educacaosuperior.inep.gov.br/ INEP]||||x||
+||Semestre/Ano||texto||x||x||
+||Ano de início||numérico||x||x||
+||Ano de conclusão||numérico||x||x||
+||Comentários||||||x||
+[[BR]]
+
+''Pós-graduação''[[BR]] 
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Pós-graduação||[wiki:ModeloDeDados/TerminoLogias/PosGraduacao Pós-graduação]||||x||
+||Área||texto||||x||
+||Semestre/Ano||texto||x||x||
+||Ano de início||numérico||x||x||
+||Ano de conclusão||numérico||x||x||
+||Comentários||||||x||
+[[BR]]
+
+----
+'''Education Level'''
+
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||School Grade||[wiki:ModeloDeDados/TerminoLogias/GraudeInstrucao School Grade]||x||||
+||Comments||||||x||
+
+[[BR]] ''High School''
+
+||'''Educational Institution'''||
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Grade / Level||[wiki:ModeloDeDados/TerminoLogias/SerieEscolar Grade / Level]||x||||
+||Attending||checkbox||x||||
+||Educational Institution||[wiki:ModeloDeDados/TerminoLogias/TipodeInstituicaodeEnsino Type of Educational Institution]||x||||
+||Name ¹||text||x||||
+||Adress||[wiki:ModeloDeDados/DemoGrafico/EndeReco Adress]||x||x||
+||Phone||[wiki:ModeloDeDados/DemoGrafico/TeleFone Phone]||x||x||
+||Site||URL||x||||
+||Comments||||||x||
+[[BR]]
+¹ Especified school name, [wiki:ModeloDeDados/TerminoLogias/Municipio City] e [wiki:ModeloDeDados/TerminoLogias/UF State]. [[BR]] 
+
+[[BR]]
+
+''Associates Degree''
+
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Course||texto||x||||
+||Grade/Level||texto||x||||
+||Beginning of course||number||||||
+||End of course||number||||||
+||Comments||||||x||
+[[BR]]
+
+''College''[[BR]] 
+
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Course||[http://www.educacaosuperior.inep.gov.br/ INEP]||x||x||
+||Grade/Level||text||x||x||
+||Beginning of course||number||||x||
+||End of course||number||||x||
+||Comments||||||x||
+[[BR]]
+
+''Graduate school''[[BR]] 
+
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Graduate school||[wiki:ModeloDeDados/TerminoLogias/PosGraduacao Post-graduation]||x||x||
+||Sciences||text||x||x||
+||Period||text||x||x||
+||Beginning of course||numérico||||x||
+||End of course||numérico||||x||
+||Comments||||||x||
+
+----
+[[BR]] [[AddComment]]

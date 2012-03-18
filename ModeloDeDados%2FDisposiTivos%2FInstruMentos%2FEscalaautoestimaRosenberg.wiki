@@ -1,0 +1,25 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Escala de Auto-estima de Rosenberg'''[[BR]] 
+[[BR]]
+
+||'''Questão'''||'''Resposta'''||'''Pontos¹'''||
+||Como você avalia estas questões:||||
+||a) De uma forma geral (apesar de tudo), estou satisfeito(a) comigo mesmo(a).[[BR]]1- concordo plenamente[[BR]]2- concordo[[BR]]3- discordo[[BR]]4- discordo plenamente||||||
+||b) Às vezes, eu acho que eu não sirvo para nada (desqualificado(a) ou inferior em relação aos outros).[[BR]]1- concordo plenamente[[BR]]2- concordo[[BR]]3- discordo[[BR]]4- discordo plenamente||||||
+||c) Eu sinto que eu tenho um tanto (um número) de boas qualidades.[[BR]]1- concordo plenamente[[BR]]2- concordo[[BR]]3- discordo[[BR]]4- discordo plenamente||||||
+||d) Eu sou capaz de fazer coisas tão bem quanto a maioria das outras pessoas (desde que me ensinadas).[[BR]]1- concordo plenamente[[BR]]2- concordo[[BR]]3- discordo[[BR]]4- discordo plenamente||||||
+||e) Não sinto satisfação nas coisas que realizei. Eu sinto que não tenho muito do que me orgulhar.[[BR]]1- concordo plenamente[[BR]]2- concordo[[BR]]3- discordo[[BR]]4- discordo plenamente||||||
+||f) Às vezes, eu realmente me sinto inútil (incapaz de fazer as coisas).[[BR]]1- concordo plenamente[[BR]]2- concordo[[BR]]3- discordo[[BR]]4- discordo plenamente||||||
+||g) Eu sinto que sou uma pessoa de valor, pelo menos num plano igual (num mesmo nível) às outras pessoas.[[BR]]1- concordo plenamente[[BR]]2- concordo[[BR]]3- discordo[[BR]]4- discordo plenamente||||||
+||h) Não me dou o devido valor. Gostaria de ter mais respeito por mim mesmo(a).[[BR]]1- concordo plenamente[[BR]]2- concordo[[BR]]3- discordo[[BR]]4- discordo plenamente||||||
+||i) Quase sempre eu estou inclinado(a) a achar que sou um(a) fracassado(a).[[BR]]1- concordo plenamente[[BR]]2- concordo[[BR]]3- discordo[[BR]]4- discordo plenamente||||||
+||j)  Eu   tenho  uma   atitude  positiva (pensamentos, atos  e sentimentos positivos) em relação a mim mesmo(a).[[BR]]1- concordo plenamente[[BR]]2- concordo[[BR]]3- discordo[[BR]]4- discordo plenamente||||||
+||Comentários||||||
+
+[[BR]]
+¹ Trata-se de uma escala de 4 pontos do tipo Likert (1=concordo plenamente, 2=concordo, 3=discordo, 4=discordo plenamente), contendo 10 itens. Desse total de itens, 5 avaliam sentimentos positivos do indivíduo sobre si mesmo. Para a pontuação das respostas, os 5 itens que expressam sentimentos positivos têm valores invertidos e, então, soma-se esses valores aos dos outros 5 itens, totalizando um valor único para a escala, correspondente às respostas dos 10 itens. O intervalo possível dessa escala é de 10 (10 itens multiplicados por valor 1) a 40 (10 itens multiplicados por valor 4).

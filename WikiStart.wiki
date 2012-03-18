@@ -1,0 +1,72 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContentOver">
+<div id="pageContent">
+}}}
+= Bem Vindo ao GestorPsi =
+Este é o site técnico do GestorPsi, destinado a desenvolvedores de sistema ou usuários avançados. Se você é um profissional de psicologia ou gestor de estabelecimentos de psicologia ou saúde visite nosso [http://www.gestorpsi.com.br site para profissionais]
+{{{
+#!html
+
+<div style="background:url(http://www.gestorpsi.com.br/trac-htdocs/bg_div.gif) no-repeat;
+    width: 619px;
+    height: 135px;
+    padding: 10px 20px;
+    margin: 5px ;
+    float: left;"><a href="http://demo.gestorpsi.com.br" target="_blank"><img src="http://www.gestorpsi.com.br/trac-htdocs/th_demo.gif" style="margin-right: 10px;border: none; float: left;" /></a>
+    <h2>Versão de Demonstra&ccedil;&atilde;o</h2>
+
+    <p>Versão de demonstra&ccedil;&atilde;o do sistema em funcionamento. O acesso é feito através de um usuário "demo" que faz parte de um estabelecimento chamado "demo"
+. Essa versão é para explorar todo o sistema de forma lúdica sem inserir dados verdadeiros.</p>
+</div>
+<div style="background:url(http://www.gestorpsi.com.br/trac-htdocs/bg_div.gif) no-repeat;
+    width: 619px;
+    height: 135px;
+    padding: 10px 20px;
+    margin: 5px ;
+    float: left;">
+    <a href="http://www.gestorpsi.com.br/trac/wiki/GestorPsi/SuPorte/ConTato"><img src="http://www.gestorpsi.com.br/trac-htdocs/th_cont.gif" style="margin-right: 10px;border: none;float: left;" /></a><h2>Contato</h2>
+    <p>Entre em contato com a equipe de pesquisadores e desenvolvedores 
+        do GestorPsi, para maiores informa&ccedil;&otilde;es, ou para contribuir com 
+    o projeto.</p>
+</div>
+
+<div style="background:url(http://www.gestorpsi.com.br/trac-htdocs/bg_div.gif) no-repeat;
+    width: 619px;
+    height: 135px;
+    padding: 10px 20px;
+    margin: 5px ;
+    float: left"><a href="http://www.gestorpsi.com.br/trac/wiki/ScreenShots"><img src="http://www.gestorpsi.com.br/trac-htdocs/th_ss.gif" style="margin-right: 10px;border: none;float: left;" /></a>
+<h2>Screen Shots</h2>
+<p>Demonstrativo de algumas telas</p></div>
+<div style="background:url(http://www.gestorpsi.com.br/trac-htdocs/bg_div.gif) no-repeat;
+    width: 619px;
+    height: 135px;
+    padding: 10px 20px;
+    margin: 5px ;
+    float: left"><a href="https://beta.psico.net"><img src="http://www.gestorpsi.com.br/trac-htdocs/th_demo.gif" style="margin-right: 10px;border: none;float: left;" /></a>
+<h2>Versão de produção</h2>
+<p>Versão funcional para uso em ambientes produtivos.</p></div><div style="clear: left"></div>
+}}}
+O '''GestorPsi''' é um '''Sistema de Gestão de Serviços de Psicologia''' e está sendo desenvolvido pelo '''[http://ipc.psico.net/ Instituto de Psicologia Comportamental de São Carlos]''' com colaboração de diversas entidades públicas e privadas.
+
+O '''GestorPsi''' nasceu da demanda pela criação de um sistema informatizado que possa trazer a psicologia para a era digital possibilitando a criação de métodos padronizados para:
+
+ * O registro de informações clínicas;
+ * informações administrativas e financeiras;
+ * de serviços psicológicos e
+ * avaliação de resultados.
+
+Conheça mais sobre o '''GestorPsi''' navegando no menu principal, inscrevendo-se em nossas [wiki:GestorPsi/SuPorte/LisTas listas de email] e na [wiki:GestorPsi/SuPorte/InformaTivos lista informativa] para receber notícias sobre o andamento do nosso projeto. O '''GestorPsi''' tem apoio da [http://www.fapesp.br/ FAPESP] na linha de financiamento '''PIPE''' (Programa de Inovação tecnológica em Pequenas Empresas)
+
+{{{
+#!html
+<div class="pageContent">
+}}}
+{{{
+#!comment
+= Blog =
+[[BlogShow(blog,num_posts=3,hidecal=true)]]
+}}}

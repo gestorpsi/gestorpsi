@@ -1,0 +1,13 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Modalidade'''
+
+- Individual[[BR]]
+- Casal[[BR]]
+- Familiar[[BR]]
+- Grupo[[BR]]

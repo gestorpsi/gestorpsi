@@ -1,0 +1,20 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Condição Atual'''[[BR]]
+[[BR]]
+- Ativo[[BR]]
+- Perimenopausa (Climatério)[[BR]]
+- Menopausa[[BR]]
+- Pós-menopausa[[BR]]
+- outros[[BR]]
+[[BR]]
+
+----
+'''Referências:'''
+
+[wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas]

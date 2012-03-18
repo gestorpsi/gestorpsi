@@ -1,0 +1,40 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Grau de Parentesco'''
+
+1- Responsável legal[[BR]]
+2- Cônjuge/Companheiro(a)[[BR]]
+3- Filho(a)/Enteado(a)[[BR]]
+4- Pai/Mãe[[BR]]
+5- Avô/Avó[[BR]]
+6- Irmão/Irmã[[BR]]
+7- Cunhado(a)[[BR]]
+8- Genro/Nora[[BR]]
+9- Sobrinho(a)[[BR]]
+10- Primo(a)[[BR]]
+11- Sogro(a)[[BR]]
+12- Neto(a)[[BR]]
+13- Tio(a)[[BR]]
+14- Padrasto/Madrasta[[BR]]
+15- Bisneto(a)[[BR]]
+16- Sem parentesco[[BR]]
+17- Outro[[BR]]
+
+
+----
+
+'''Referências:'''
+[[BR]]
+
+Formulário para Cadastramento Único para Programas Sociais do Governo Federal.[[BR]]
+
+Disponível em:[[BR]]
+http://www1.caixa.gov.br/gov/gov_social/municipal/distribuicao_servicos_cidadao/cadastramento_unico/documentos_download.asp
+
+[http://www.ibge.gov.br/home/ IBGE] [[BR]]
+

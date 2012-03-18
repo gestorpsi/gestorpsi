@@ -1,0 +1,3 @@
+= Parceria com a BVS-PSI = 
+O GestorPsi e Biblioteca Virtual em Saúde - Psicologia firmaram uma parceria de divulgação e colaboração no sentido de unir esforços para a divulgação do conhecimento em psicologia.[[BR]]
+Futuramente quando o projeto estiver concluído e o sistema estiver em uso, serão disponibilizados dados estatísticos sobre serviços de psicologia e perfil da população atendida na biblioteca virtual, nos moldes do sistema do Datasus.

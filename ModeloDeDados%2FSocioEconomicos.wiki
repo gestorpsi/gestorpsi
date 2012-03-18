@@ -1,0 +1,36 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Modelo de Dados Sócioeconômicos'''
+
+Os modelos de dados aqui apresentados foram construídos à partir dos formulários utilizados pelas [wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas] na primeira e segunda fase do projeto.  Entretanto, poderão sofrer modificações.
+
+Consultar a partir dos temas. 
+
+
+----
+
+ * [wiki:ModeloDeDados/SocioEconomicos/CriteriodeClassificacaoEconomica Critério de Classificação Econômica Critério de Classificação Econômica Brasil][[BR]]
+ * [wiki:ModeloDeDados/SocioEconomicos/HabiTacao Habitação] - Dados a respeito das condições de habitação. [[BR]]
+ * [wiki:ModeloDeDados/SocioEconomicos/RenDa Renda] - Dados sobre a renda mensal.[[BR]]
+ * [wiki:ModeloDeDados/SocioEconomicos/TransPorte Transporte] - Dados referentes ao tipo  de transporte que o cliente utiliza para chegar à clínica.[[BR]]
+
+
+----
+'''Referências:'''
+[[BR]]
+
+[http://www.abep.org/codigosguias/Criterio_Brasil_2008.pdf Critério de Classificação Econômica Brasil - CCEB] [[BR]]
+
+[http://www.dieese.org.br/ DIEESE - Departamento Intersindical de Estatística e Estudos Socioeconômicos][[BR]]
+
+[http://www1.caixa.gov.br/gov/gov_social/municipal/distribuicao_servicos_cidadao/cadastramento_unico/documentos_download.asp Formulário para Cadastramento Único para Programas Sociais do Governo Federal]
+
+[http://www.ibge.gov.br/home/ IBGE] [[BR]]
+
+
+[wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas][[BR]]

@@ -1,0 +1,20 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Pais'''[[BR]]
+[[BR]]
+- Solteiros;[[BR]]
+- Casados;[[BR]]
+- Separados;[[BR]]
+- Mãe casou novamente;[[BR]]
+- Pai casou novamente;[[BR]]
+- Foi criado(a) por algum substituto do pai;[[BR]]
+- Foi criado(a) por alguma substituta da mãe;[[BR]]
+- Mãe é falecida;[[BR]]
+- Pai é falecido;[[BR]]
+- Mãe desconhecida;[[BR]]
+- Pai desconhecido.[[BR]]

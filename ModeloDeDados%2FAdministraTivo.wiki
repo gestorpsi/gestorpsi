@@ -1,0 +1,23 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Administrativos'''
+
+Dados das tarefas administrativas no sistema
+
+ * [wiki:ModeloDeDados/AdministraTivo/AdmiSsao Admissão] - Dados sobre a admissão de clientes em um estabelecimento de saúde
+ * [wiki:ModeloDeDados/AdministraTivo/AgendaMento Agendamento] - Dados sobre o agendamento entre clientes, profissionais e serviços em um estabelecimento de saúde
+ * [wiki:ModeloDeDados/AdministraTivo/EncamiNhamento Encaminhamento] - Dados sobre o encaminhamento interno e externo de clientes
+ * [wiki:ModeloDeDados/AdministraTivo/DesliGamento Desligamento] - Dados sobre o desligamento de clientes
+ * [wiki:ModeloDeDados/AdministraTivo/ServiCos Serviços] - Dados sobre o cadastro dos serviços prestados 
+ * [wiki:ModeloDeDados/AdministraTivo/ConfirmacaodeAtendimento Confirmação de Atendimento] - Dados sobre presenças, faltas e atrasos nos atendimentos
+ * [wiki:ModeloDeDados/AdministraTivo/ContatoTelefonico Contato Telefônico] - Registros de Contatos Telefônicos
+ * [wiki:ModeloDeDados/AdministraTivo/PagamEnto Pagamento] - Registros de Pagamento
+
+----
+'''Referências:'''
+
+[wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas][[BR]]  [http://www.openehr.org/home.html openEHR]

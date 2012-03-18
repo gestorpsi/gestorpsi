@@ -1,0 +1,12 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Sexo'''
+
+- Masculino[[BR]]
+- Feminino[[BR]]
+(de acordo com o IBGE)[[BR]]

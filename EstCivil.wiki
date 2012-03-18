@@ -1,0 +1,16 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Estado Civil'''
+
+- Solteiro[[BR]]
+- Casado[[BR]]
+- Separado judicialmente[[BR]]
+- Divorciado[[BR]]
+- Viúvo[[BR]]
+- União estável[[BR]]
+(previsto no Código Civil LEI Nº 10.406 - de 10 de Janeiro DE 2002 - DOU de 11/1/2002 -)[[BR]]

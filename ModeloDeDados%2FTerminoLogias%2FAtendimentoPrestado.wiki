@@ -1,0 +1,38 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Atendimento Prestado'''[[BR]]
+
+
+||'''Código'''||'''Descrição'''||                                                              
+||1||Internação||  
+||2||Ambulatorial||
+||3||SADT||
+||4||Urgência||                                                   
+||5||Outros||  
+||6||Vigilância em Saúde||                                                                     
+||7||Regulação||
+[[BR]]
+
+
+
+----
+
+'''Referências:'''
+
+
+Manual Técnico do Cadastro Nacional de Estabelecimentos de Saúde - Versão 2[[BR]]
+
+
+Disponível em: [http://cnes.datasus.gov.br/DownLoad/manual%20de%20preenchimento%20SCNES.zip]
+
+
+
+                                                                   
+                                                                         
+                                                                     
+                                                          

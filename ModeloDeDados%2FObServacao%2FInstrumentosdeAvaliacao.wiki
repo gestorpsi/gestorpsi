@@ -1,0 +1,27 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Resultados da Aplicação de Instrumentos de Avaliação'''
+
+||'''Nome do Campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Aplicado por||[wiki:ModeloDeDados/ProfissionalSaude Profissional de Saúde][[BR]][wiki:ModeloDeDados/DemoGrafico Contato]||||||
+||Versão||[wiki:ModeloDeDados/TerminoLogias/ApliCacao Aplicação]||||||
+||Data da Aplicação||data||||||
+||Resultado Geral||numérico||||||
+||Sub-escala||numérico||||x||
+||Upload de arquivos||imagem||x||x||
+||Comentários||||||x||
+
+----
+'''Evaluation Instruments'''
+
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Applied by||[wiki:ModeloDeDados/ProfissionalSaude Health Professional][[BR]][wiki:ModeloDeDados/DemoGrafico Contact]||||||
+||Version||[wiki:ModeloDeDados/TerminoLogias/ApliCacao Application]||||||
+||General Results||number||||||
+||Subscale||number||||x||
+||Upload of files||image||x||x||
+||Comments||||||x||

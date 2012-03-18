@@ -1,0 +1,42 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Métodos Contraceptivos'''[[BR]]
+[[BR]][[BR]]
+
+- Preservativo (camisinha masculina)[[BR]]
+- Pílula Anticoncepcional[[BR]]
+- Dispositivo Intra-uterino - DIU[[BR]]
+- Contracepcção hormonal (Implante, Anel Vaginal, Adesivo Contraceptivo Transdérmico, Injectável)[[BR]]
+- Diafragma[[BR]]
+- Espermicidas[[BR]]
+- Contracepção Cirúrgica - definitivos (Laqueação tubária bilateral, Vasectomia)[[BR]]
+- Métodos Naturais (Método do Muco ou Método de Billings, Método da Temperatura, Método Sinto-Térmico, Coito interrompido)[[BR]]
+- Abstinência sexual[[BR]]
+[[BR]]
+  
+
+----
+'''Contraceptive Methods'''[[BR]]
+[[BR]][[BR]]
+
+- Condoms-Male[[BR]]
+- Condoms-Female[[BR]]
+- Oral Contraceptive Pill[[BR]]
+- Intra-Uterine Device - IUD's[[BR]]
+- Hormonal Contraception (Implant, vaginal contraceptive ring, contraceptive patch, Injections)[[BR]]
+- Diaphragm[[BR]]
+- Spermicides[[BR]]
+- Surgical Contraception - definitive (Tubal Ligation, Vasectomy)[[BR]]
+- Natural Maethods (mucus or Billings method, temperature, Withdrawal)[[BR]]
+- Abstinence[[BR]]
+
+[[BR]]
+----
+'''Referências:'''
+
+[http://www.juventude.gov.pt/Portal/SaudeSexualidadeJuvenil/TemassSexualidade/SexualidadePrevencao/Os+outros+m%C3%A9todos+contraceptivos.htm Portal da Juventude][[BR]] 
+[http://www.sexualityandu.ca/adults/contraception-2.aspx Contraceptive Methods]

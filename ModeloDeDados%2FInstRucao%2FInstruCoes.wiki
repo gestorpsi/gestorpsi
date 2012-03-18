@@ -1,0 +1,27 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Instruções'''
+
+||'''Nome do Campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Instrução||texto||||||
+||Para||- Cliente / Paciente[[BR]]- Pais[[BR]]- Responsáveis[[BR]]- Irmã(o)[[BR]]- Escola[[BR]]- Amigo(a)[[BR]]- Funcionária da família[[BR]]- Outros||||x||
+||Problema Relacionado||[wiki:ModeloDeDados/ObServacao/ProBlema Problema][[BR]][wiki:ModeloDeDados/AvaliAcao/DiaGnostico Diagnóstico]||||x||
+||Resultados||texto||x||x||
+||Comentários||||||x||
+
+----
+'''Instructions'''
+
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Instruction||text||||x||
+||To||- Client / Patient[[BR]]- Parents[[BR]]- Responsible[[BR]]- Siblings[[BR]]- School[[BR]]- Friend[[BR]]- Family employee[[BR]]- Others||||x||
+||Related Problem||[wiki:ModeloDeDados/ObServacao/ProBlema Problem][[BR]][wiki:ModeloDeDados/AvaliAcao/DiaGnostico Diagnosis]||||x||
+||Results||text||x||x||
+||Comments||||||x||
+
+----
+'''Modelo de instruções'''[[BR]] [[BR]] [wiki:ModeloDeDados/InstRucao/TerapeutaPaciente Terapeuta para Cliente / Paciente][[BR]] [wiki:ModeloDeDados/InstRucao/AutoOrientacao Auto-Orientação (Cliente)][[BR]] [wiki:ModeloDeDados/InstRucao/TerapeutaPaisescolafamilia Terapeuta para Pais / Escola / Família]

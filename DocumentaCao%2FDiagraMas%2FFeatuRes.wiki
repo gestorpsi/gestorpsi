@@ -1,0 +1,25 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+Visão Geral
+
+[[BR]]Pela estrutura do sistema !GestorPsi, fazendo ele parte de um domínio específico (Gestão de Serviços de Psicologia) porém possuindo algumas variabilidades no tipo de ambiente instalado (Consultórios Comerciais, Clínicas Escola, Hospitais, etc.), fica claro que os diferentes sub-sistemas gerados fazem parte de uma mesma Linha de Produtos de Software - LPS. Por conta disso,o desenvolvimento está sendo planejado como uma LPS que gerará produtos diferentes inseridos num mesmo domínio.
+
+A LPS do !GestorPsi consistirá de um produto principal, e combinações de subprodutos, que foram baseados na análise dos principais perfis dos usuários e clientes do negócio.
+
+
+ * Estabelecimento de Saúde: 	o produto principal, contendo os cadastros de profissionais de 	saúde, funcionários, clientes, salas, equipamentos e 	serviços. Conterá também agenda, encaminhamentos, emissão de documentos, prontuário clínico e relatórios.
+
+
+ * Estágios: contemplando o cadastro de estagiários, grupos de estágio e supervisores. Esse produto é destinado à clínicas-escola e instituições que ministram 	formação e cursos de pós graduação.
+
+
+ * Aluguel de Salas e Financeiro: contemplando recursos para gestão de aluguel de salas e controle financeiro da clínica. Destinado aos 	estabelecimentos que alugam salas para profissionais.
+
+
+ * Prestação de Serviços via 	Internet: 	contemplando o oferecimento de serviços psicológicos 	via Internet através de mensagens via chat e fóruns.
+
+A figura mostra os ''features'' do sistema !GestorPsi e os módulos que compõe a LPS (Estágio'', Internet e ''Financeiro).

@@ -1,0 +1,19 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Hipótese Diagnóstica'''
+
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||Data do Diagnóstico||data||||||
+||Status||[wiki:ModeloDeDados/TerminoLogias/StatusdoDiagnostico Status do Diagnóstico]||||||
+||Hipótese Diagnóstica¹||[http://www.psi.bvs.br/cgi-bin/wxis.exe/iah/?IsisScript=iah/iah.xic&lang=P&base=TERMINOLOGIA BVS - Terminologia em Psicologia], [[BR]][http://decs.bvs.br/ DeCS - Descritores em Ciências da Saúde], [[BR]][http://www.datasus.gov.br/cid10/v2008/webhelp/cid10.htm CID-10 - Classificação Estatística Internacional de Doenças e Problemas Relacionados à Saúde]  [[BR]][wiki:ModeloDeDados/TerminoLogias/ListaGestorPsi - Lista GestorPsi][[BR]]- DSM IV||||||
+||Descrição Clínica||texto||||||
+||Severidade||[wiki:ModeloDeDados/TerminoLogias/SeVeridade Severidade]||||||
+||Comentários||texto||||||
+
+[[BR]]
+¹ Diagnóstico Atual.

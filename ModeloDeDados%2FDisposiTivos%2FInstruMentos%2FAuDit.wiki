@@ -1,0 +1,33 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Teste de Identificação de Distúrbio de Uso do Álcool - AUDIT'''[[BR]] 
+[[BR]]
+
+||'''Questão'''||'''Respostas'''||
+||Responda as questões:||||
+||1- Com qual freqüência você utiliza bebidas com álcool?[[BR]](0) nunca[[BR]](1) mensalmente ou menos[[BR]](2) 2-4 vezes ao mês[[BR]](3) 2-3 vezes por semana[[BR]](4) 4 ou mais vezes por semana||
+||2- Quantas bebidas alcoólicas você costuma tomar nesses dias?[[BR]](0) 1 ou 2[[BR]](1) 3 ou 4[[BR]](2) 5 ou 6[[BR]](3) 7 a 9[[BR]](4) 10 ou mais||||
+||3- Com que freqüência toma mais que 6 drinks em uma única ocasião?[[BR]](0) nunca[[BR]](1) menos que mensalmente[[BR]](2) mensalmente[[BR]](3) semanalmente[[BR]](4) quase diária||||
+||4- Com que freqüência no último ano você se sentiu incapaz de parar de beber depois que começou?[[BR]](0) nunca[[BR]](1) menos que mensalmente[[BR]](2) mensalmente[[BR]](3) semanalmente[[BR]](4) quase diária||||
+||5- Com que freqüência no último ano você não conseguiu fazer algo pela bebida?[[BR]](0) nunca[[BR]](1) menos que mensalmente[[BR]](2) mensalmente[[BR]](3) semanalmente[[BR]](4) quase diária||||
+||6- Com que freqüência no último ano você precisou beber de manhã para se recuperar de uma bebedeira?[[BR]](0) nunca[[BR]](1) menos que mensalmente[[BR]](2) mensalmente[[BR]](3) semanalmente[[BR]](4) quase diária||||
+||7- Com que freqüência no último ano você sentiu remorso após beber?[[BR]](0) nunca[[BR]](1) menos que mensalmente[[BR]](2) mensalmente[[BR]](3) semanalmente[[BR]](4) quase diária||||
+||8- Com que freqüência no último ano você não conseguiu se lembrar o que aconteceu na noite anterior pela bebida?[[BR]](0) nunca[[BR]](1) menos que mensalmente[[BR]](2) mensalmente[[BR]](3) semanalmente[[BR]](4) quase diária||||
+||9- Você já se machucou ou machucou alguém como resultado do seu uso de álcool?[[BR]](0) não[[BR]](1) sim, mas não no último ano[[BR]](2) sim, no último ano||||
+||10- Algum parente ou amigo ou médico ou outro profissional de saúde se preocupou com seu hábito ou sugeriu que parasse?[[BR]](0) não[[BR]](1) sim, mas não no último ano[[BR]](2) sim, no último ano||||
+||Total:¹||||
+
+	
+
+[[BR]]
+¹ Some os números em parênteses. Um valor maior que 8 indica problemas com bebida.[[BR]]
+
+
+----
+'''Referências:'''[[BR]]
+
+[http://www.hepcentro.com.br/alcoolismo.htm Hepcentro]

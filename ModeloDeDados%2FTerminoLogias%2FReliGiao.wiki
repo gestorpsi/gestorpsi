@@ -1,0 +1,71 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Religião'''
+
+Católica Apostólica Romana[[BR]]
+Católica Apostólica Brasileira[[BR]]
+Católica Ortodoxa[[BR]]
+Evangélicas[[BR]]
+Evangélicas de missão[[BR]]
+Evangélicas de missão - Igreja Evangélica Luterana[[BR]]
+Evangélicas de missão - Igreja Evangélica Presbiteriana[[BR]]
+Evangélicas de missão - Igreja Evangélica Metodista[[BR]]
+Evangélicas de missão - Igreja Evangélica Batista[[BR]]
+Evangélicas de missão - Igreja Evangélica Congregacional[[BR]]
+Evangélicas de missão - Igreja Evangélica Adventista[[BR]]
+Evangélicas de missão - outras Igrejas Evangélicas de Missão[[BR]]
+Evangélicas de origem pentecostal[[BR]]
+Evangélicas de origem pentecostal - Igreja Assembléia de Deus[[BR]]
+Evangélicas de origem pentecostal - Igreja Congregacional Cristã do Brasil[[BR]]
+Evangélicas de origem pentecostal - Igreja Brasil para Cristo[[BR]]
+Evangélicas de origem pentecostal - Igreja Evangelho Quadrangular[[BR]]
+Evangélicas de origem pentecostal - Igreja Universal do Reino de Deus[[BR]]
+Evangélicas de origem pentecostal - Igreja Casa da Benção[[BR]]
+Evangélicas de origem pentecostal - Igreja Deus é Amor[[BR]]
+Evangélicas de origem pentecostal - Igreja Maranata[[BR]]
+Evangélicas de origem pentecostal - Igreja Nova Vida[[BR]]
+Evangélicas de origem pentecostal - outras igrejas de origem pentecostal[[BR]]
+Evangélicas sem vínculo institucional[[BR]]
+Evangélicas sem vínculo institucional - Evangélicos[[BR]]
+Evangélicas sem vínculo institucional - Evangélicos de Origem Pentecostal[[BR]]
+Evangélicas - outras religiões Evangélicas[[BR]]
+Outras Cristãs[[BR]]
+Outras Cristãs - Cristãs[[BR]]
+Outras Cristãs - outras religiosidades Cristãs[[BR]]
+Igreja de Jesus Cristo dos Santos dos Últimos Dias[[BR]]
+Testemunhas de Jeová[[BR]]
+Espírita[[BR]]
+Espiritualista[[BR]]
+Umbanda[[BR]]
+Candomblé[[BR]]
+Judaísmo[[BR]]
+Hinduísmo[[BR]]
+Islamismo[[BR]]
+Budismo[[BR]]
+Outras religiões orientais[[BR]]
+Novas religiões orientais[[BR]]
+Novas religiões orientais - Igreja Messiânica Mundial[[BR]]
+Novas religiões orientais - Outras novas religiões orientais[[BR]]
+Tradições esotéricas[[BR]]
+Tradições indígenas[[BR]]
+Outras religiosidades[[BR]]
+Sem religião[[BR]]
+Não determinadas[[BR]]
+Sem declaração[[BR]]
+
+[[BR]]
+----
+
+
+
+'''Referências:'''
+
+
+
+Lista de Religiões de acordo com o Censo de 2000 do IBGE.[[BR]]
+Fonte: http://www.sidra.ibge.gov.br/bda/tabela/listabl.asp?c=2094&n=0&u=0&z=cd&o=7&i=P

@@ -1,0 +1,24 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Folha de Rosto'''[[BR]] 
+
+||'''Categoria'''||'''Código / Dados'''||
+||Instituição||numérico||
+||Estudo||numérico||
+||Clínico||numérico||
+||Data||data||
+||Paciente||texto||
+||Idade||numérico||
+||Sexo||texto||
+||Diagnóstico CID 10 (categoria F)[[BR]]- Principal:[[BR]]- Secundário:||texto||
+||Grau de confiança do diagnóstico¹||texto||
+||Anotações do Clínico||texto||
+[[BR]]
+[[BR]]
+
+¹ Alto / Moderado / Baixo[[BR]]
+

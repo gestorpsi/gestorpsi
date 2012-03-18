@@ -1,0 +1,31 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Tipo de Desligamento'''
+
+ * Abandono do serviço
+ * Desistência do serviço
+   * Procurou outro tipo de tratamento
+   * O desligamento foi comunicado pelo cliente ou por terceiros
+   * Incompatibilidade de horário
+ * Impossibilidade de contato com o cliente
+ * Abandono/desistência por parte do(a) profissional
+ * Alta (término do processo com consentimento profissional)
+ * Encaminhamento externo para continuidade do tratamento
+ * Falecimento do cliente
+ * Falecimento do profissional
+ * Inadimplência
+ * Mudança de cidade/endereço
+ * Não compareceu ao primeiro atendimento
+ * Não informado
+ * Outro
+ * Término do estágio - O processo foi encerrado
+ * Tratamento/Serviço encerrado por ordem judicial
+
+----
+'''Referências:'''
+
+[wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas]

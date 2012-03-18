@@ -1,0 +1,32 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Sinopse Clínica'''
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Identificação do Estabelecimento||texto||||||
+||Serviço||texto||||||
+||Profissional de Saúde||texto||||x||
+||Resumo||texto||||||
+||Avaliação / Conclusão||texto||||||
+||Data||texto||||||
+||Comentários||||||x||
+
+[[BR]] ¹ Resumo, avaliação ou conclusão sobre o quadro clínico.
+
+----
+'''Clinical Synopsis'''
+
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Identification of establishment||text||||||
+||Service||text||||||
+||Health Professional||text||||x||
+||Summary||text||||||
+||Evaluation / Conclusion||texto||||||
+||Date||date||||||
+||Comments||||||x||
+
+[[BR]] ¹ Summary, evaluation and conclusion on the clinical picture.

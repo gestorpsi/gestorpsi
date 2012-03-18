@@ -1,0 +1,27 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Perfil Profissional de Saúde'''[[BR]]
+[[BR]]
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Profissão||[wiki:ModeloDeDados/TerminoLogias/ProfissaoareaCuidados Profissão (Área de Cuidados)]||||x||
+||Serviços oferecidos||texto||||x||
+||Instituição de Ensino||texto||||||
+||Tipo de Instituição||[wiki:ModeloDeDados/TerminoLogias/InstiTuicao Instituição]||||||
+||Ano de início||numérico||||||
+||Ano de conclusão||numérico||||||
+||Pós-graduação||[wiki:ModeloDeDados/TerminoLogias/PosGraduacao Pós-graduação]||||x||
+||Área da Pós-graduação||texto||||||
+||Data de início||data||||||
+||Data término||data||||||
+||Ano de início da atividade profissional||numérico||||||
+||Horários disponíveis||texto||||||
+||Convênios||[wiki:ModeloDeDados/TerminoLogias/Convenios Convênios]||||||
+||Local de trabalho||texto||||x||
+||Comentários||||||x||
+[[BR]]

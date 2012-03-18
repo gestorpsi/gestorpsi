@@ -1,0 +1,25 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Correção do Teste'''[[BR]] 
+[[BR]]
+
+||'''Quadrante'''||'''Sim'''||'''Não'''||
+||Social||||||
+||Afetivo||||||
+||Profissional||||||
+||Saúde||||||
+[[BR]]
+[[BR]]
+- ''Quadrante Social'' – Some 3 pontos por respostas positivas aos itens 1,3,5,7 e 10. Subtraia 1 ponto por respostas positivas aos itens 2,4,6,8 e 9. Se o resultado for acima de 9 pontos, suas respostas indicam sucesso neste quadrante.
+
+- ''Quadrante Afetivo'' – Some 1 ponto por respostas positivas. Resultados acima de 8 indicam sucesso na área afetiva.
+
+- ''Quadrante Profissional'' – Some 1 ponto por respostas positivas aos itens 1,2,3,4,5, 7 e 9. Subtraia 1 ponto para respostas positivas aos itens 6.8.10. Resultados acima de 5 indicam sucesso profissional.
+
+- ''Quadrante Saúde'' -  Subtraia 1 ponto por respostas positivas dadas aos itens 11 e 13. Some 1 ponto para cada resposta positiva dada aos outros itens. Resultados acima de 11 indicam sucesso.
+
+Complete o quadro colocando um X nas colunas sim ou não para indicar se tem sucesso ou não nas áreas avaliadas e anote estes dados no formulário Resumo de auto-avaliação constante do capitulo 8.

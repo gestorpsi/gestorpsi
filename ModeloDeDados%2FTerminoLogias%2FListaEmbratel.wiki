@@ -1,0 +1,12 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Lista Embratel'''
+
+
+Neste documento em anexo contém os códigos de área para ligações internacionais.
+ 

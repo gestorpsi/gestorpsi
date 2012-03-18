@@ -1,0 +1,22 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Motivo da Exclusão'''[[BR]]
+[[BR]]
+
+
+- Ausência de evidência[[BR]]
+- Ausência de episódios[[BR]]
+- Doença não significativa[[BR]]
+- Histórico não significativo[[BR]]
+- Histórico familiar não significativo[[BR]]
+- Reações adversas desconhecidas[[BR]]
+- Alergias desconhecidas[[BR]]
+- Sem histórico de hospitalizações[[BR]]
+- Sem histórico de cirurgias[[BR]]
+- Sem histórico de sensibilidades[[BR]]
+- Sem histórico de intolerâncias[[BR]]

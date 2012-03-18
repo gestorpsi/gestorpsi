@@ -1,0 +1,26 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Gestão'''
+
+- Municipal[[BR]]
+- Estadual[[BR]]
+- Mista
+
+
+
+----
+
+
+'''Referências:'''
+
+
+
+Manual Técnico do Cadastro Nacional de Estabelecimentos de Saúde - Versão 2[[BR]]
+
+
+Disponível em: [http://cnes.datasus.gov.br/DownLoad/manual%20de%20preenchimento%20SCNES.zip ] 

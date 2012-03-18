@@ -1,0 +1,33 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Uso de Tabaco'''[[BR]] 
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Tipo||[wiki:ModeloDeDados/TerminoLogias/TipodeFumo Tipo de Fumo]||x||x||
+||Status||[wiki:ModeloDeDados/TerminoLogias/StatusdeUso Status de Uso]||x||||
+||Freqüência||[wiki:ModeloDeDados/TerminoLogias/FreqUencia Freqüência]||x||||
+||Classificação||- Leve[[BR]]- Moderada[[BR]]- Severa||x||||
+||Quantidade||[wiki:ModeloDeDados/TerminoLogias/MediadeCigarrosporDia Média de Cigarros por Dia]||x||||
+||Fuma há quanto tempo||[wiki:ModeloDeDados/TerminoLogias/TempoAproximado Tempo Aproximado]||x||||
+||Comentários||||||x||
+
+----
+'''Tobacco'''[[BR]] 
+
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Type||[wiki:ModeloDeDados/TerminoLogias/TipodeFumo Type of Tobacco]||||x||
+||Status||[wiki:ModeloDeDados/TerminoLogias/StatusdeUso Use Status]||||||
+||Frequency||[wiki:ModeloDeDados/TerminoLogias/FreqUencia Frequency]||||||
+||Classification||- Mild[[BR]]- Moderate[[BR]]- Severe||||||
+||Quantity||[wiki:ModeloDeDados/TerminoLogias/MediadeCigarrosporDia Daily Tobacco Consumption]||||||
+||How long||[wiki:ModeloDeDados/TerminoLogias/TempoAproximado Approximated Time]||||||
+||Comments||||||x||
+
+----
+'''Referências:'''[[BR]] 
+
+[wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas][[BR]]

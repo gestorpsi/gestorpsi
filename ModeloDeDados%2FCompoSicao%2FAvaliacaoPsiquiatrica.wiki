@@ -1,0 +1,33 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Avaliação Psiquiátrica'''[[BR]] 
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Psiquiatra responsável||[wiki:ModeloDeDados/TerminoLogias/ProFissionalDaSaude Profissional da Saúde]||||||
+||Tratamentos anteriores||[wiki:ModeloDeDados/ObServacao/Tratamentos Tratamentos Anteriores]||||x||
+||Exame físico||[wiki:ModeloDeDados/ObServacao/ExameFisico Exame Físico]||||||
+||Exame psíquico||[wiki:ModeloDeDados/ObServacao/ExamePsiquico Exame Psíquico]||||||
+||Exames complementares||[wiki:ModeloDeDados/ObServacao/DocumentosAnexados Documentos Anexados]||||x||
+||Diagnóstico psiquiátrico||[wiki:ModeloDeDados/AvaliAcao/DiaGnostico Diagnóstico]||||x||
+||Prescrição||[wiki:ModeloDeDados/InstRucao/PrescricaodeMedicamentos Prescrição de Medicamentos]||||x||
+||Comentários||||||x||
+
+----
+'''Psychiatric Evaluation'''[[BR]] 
+
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Responsible Psychiatrist||[wiki:ModeloDeDados/TerminoLogias/ProFissionalDaSaude Health Professional]||||||
+||Previous Treatments||[wiki:ModeloDeDados/ObServacao/Tratamentos Previous Treatments]||||x||
+||Physical Exammination||[wiki:ModeloDeDados/ObServacao/ExameFisico Physical Examination]||||||
+||Psychological Examination||[wiki:ModeloDeDados/ObServacao/ExamePsiquico Psychological Examination]||||||
+||Additional examinations||[wiki:ModeloDeDados/ObServacao/DocumentosAnexados Attached Documents]||||x||
+||Psychiatric Diagnosis||[wiki:ModeloDeDados/AvaliAcao/DiaGnostico Diagnosis]||||x||
+||Prescription||[wiki:ModeloDeDados/InstRucao/PrescricaodeMedicamentos Medical Prescription]||||x||
+||Comments||||||x||
+
+----
+'''Referências:'''[[BR]] [[BR]] [http://www.psiquiatriageral.com.br/ Psiquiatria Geral]

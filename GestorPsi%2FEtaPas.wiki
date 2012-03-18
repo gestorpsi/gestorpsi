@@ -1,0 +1,9 @@
+[[TracNav]]
+= Etapas =
+Estamos desenvolvendo este projeto em 3 Fases:
+
+ * '''[wiki:GestorPsi/EtaPas/FaSe1 Fase 1]''': inclui a coleta, revisão de dados e a especificação do sistema;
+ * '''[wiki:GestorPsi/EtaPas/FaSe2 Fase 2]''': o desenvolvimento e implementações piloto e
+ * '''[wiki:GestorPsi/EtaPas/FaSe3 Fase 3]:''': a produção e distribuição.
+
+Atualmente o projeto encontra-se na Fase 2 que teve início em Agosto de 2007.

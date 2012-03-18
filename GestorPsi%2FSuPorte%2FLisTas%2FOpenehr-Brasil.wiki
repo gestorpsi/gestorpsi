@@ -1,0 +1,14 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+= OpenEHR Brasil (openehr-brasil@gestorpsi.com.br) =
+'''Descrição'''[[BR]]Lista para assuntos relacionados ao [http://www.openehr.org/ OpenEHR]
+
+'''Inscrever-se nesta lista'''[[BR]]Para inscrever-se nesta lista, envie um email em branco (sem campo assunto e sem corpo na mensagem) para o endereço __openehr-brasil-subscribe@gestorpsi.com.br__ e em seguida uma mensagem de confirmação será enviada para sua caixa de mensagens, contendo as instruções para a conclusão da sua inscrição.
+
+'''Desinscrever-se nesta lista'''[[BR]]Para desinscrever-se desta lista, envie um email em branco (sem campo assunto e sem corpo na mensagem) para o endereço __openehr-brasil-unsubscribe@gestorpsi.com.br__ e em seguida uma mensagem de confirmação será enviada para sua caixa de mensagens, contendo as instruções para a remoção.
+
+'''Informações desta lista'''[[BR]]http://gestorpsi.com.br/mailman/listinfo/openehr-brasil_gestorpsi.com.br (Link externo)

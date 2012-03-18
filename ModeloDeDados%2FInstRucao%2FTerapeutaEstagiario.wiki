@@ -1,0 +1,33 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Supervisor para Terapeuta / Estagiário'''
+
+[[BR]]
+
+[wiki:ModeloDeDados/InstRucao/InstrucaodoSupervisorsobredesempenho Instrução do Supervisor Sobre o Desempenho do Terapeuta / Estagiário][[BR]]
+[wiki:ModeloDeDados/InstRucao/InstrucaodoSupervisorsobreestrategiasdeintervencao Instrução do Supervisor Sobre Estratégias de Intervenção do Terapeuta][[BR]]
+[wiki:ModeloDeDados/InstRucao/InstrucaodoSupervisorcomportamental Instrução do Supervisor Sobre Estratégias de Intervenção Comportamental]
+
+[[BR]]
+
+----
+
+'''Supervisor to Therapist / Trainee'''
+
+[[BR]]
+
+[wiki:ModeloDeDados/InstRucao/InstrucaodoSupervisorsobredesempenho Supervisor instruction about the therapist / trainee performance][[BR]]
+[wiki:ModeloDeDados/InstRucao/InstrucaodoSupervisorsobreestrategiasdeintervencao Supervisor evaluation about strategies for intervention of the therapist][[BR]]
+[wiki:ModeloDeDados/InstRucao/InstrucaodoSupervisorcomportamental Supervisor evaluation about strategies for intervention of the behavior therapist]
+
+[[BR]]
+
+----
+'''Referências:'''[[BR]]
+
+[http://www.teses.usp.br/teses/disponiveis/47/47133/tde-15012008-153251/ Ireno, Esther de Matos - Formação de terapeutas analítico-comportamentais: efeitos de um instrumento para avaliação de desempenho]

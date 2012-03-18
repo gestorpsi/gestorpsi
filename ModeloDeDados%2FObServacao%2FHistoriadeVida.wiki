@@ -1,0 +1,24 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Histórico de Vida'''[[BR]]
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Período da vida||- Intra-uterino[[BR]]- Neonato[[BR]]- Infância[[BR]]- Vida Escolar[[BR]]- Adolescência[[BR]]- Gravidez[[BR]]- Vida Adulta[[BR]]- Velhice||||||
+||Tema||[http://www.psi.bvs.br/cgi-bin/wxis.exe/iah/?IsisScript=iah/iah.xic&lang=P&base=TERMINOLOGIA BVS - Terminologia em Psicologia][[BR]][http://decs.bvs.br/ DeCS - Descritores em Ciências da Saúde][[BR]][http://www.datasus.gov.br/cid10/v2008/webhelp/cid10.htm CID-10 - Classificação Estatística Internacional de Doenças e Problemas Relacionados à Saúde][[BR]]- [wiki:ModeloDeDados/TerminoLogias/ListaGestorPsi Lista GestorPsi][[BR]]- DSM IV||x||x||
+||Dados relacionados ao problema||- [wiki:ModeloDeDados/ObServacao/ProBlema Problema][[BR]]- [wiki:ModeloDeDados/AvaliAcao/DiaGnostico Diagnóstico]||x||x||
+||Descrição||texto||||x||
+||Comentários||||||x||
+
+----
+'''Life History'''[[BR]]
+
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Period of life||- Intra-uterine[[BR]]- Newborn[[BR]]- Childhood[[BR]]- School Life[[BR]]- Adolescence[[BR]]- Pregnancy[[BR]]- Adult Life[[BR]]- Old age||||||
+||Theme||[http://www.psi.bvs.br/cgi-bin/wxis.exe/iah/?IsisScript=iah/iah.xic&lang=P&base=TERMINOLOGIA BVS - Terminology in Psichology][[BR]][http://decs.bvs.br/ DeCS - Health Sciences Descriptors][[BR]][http://www.datasus.gov.br/cid10/v2008/webhelp/cid10.htm ICD-10 - International Statistical Classification of Diseases and Related Health Problems][[BR]]- [wiki:ModeloDeDados/TerminoLogias/ListaGestorPsi GestorPsi List][[BR]]- DSM IV - Diagnostic and Statistical Manual of Mental Disorders||x||x||
+||Related issues||- [wiki:ModeloDeDados/ObServacao/ProBlema Problem][[BR]]- [wiki:ModeloDeDados/AvaliAcao/DiaGnostico Diagnosis]||x||||
+||Description||text||||x||
+||Comments||||||x||

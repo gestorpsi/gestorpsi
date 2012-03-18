@@ -1,0 +1,11 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Status do Diagnóstico'''
+
+- Fechado[[BR]]
+- Em aberto[[BR]]

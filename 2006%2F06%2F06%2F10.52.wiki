@@ -1,0 +1,2 @@
+= Colaboração da Clínica Aplicar - Ciência do Comportamento Aplicada e COPSI/UFSJ = 
+Dia 25 de maio foi feita uma reunião com o Professor  Roosevelt R. Starling da Clínica Aplicar e da COPSI/UFSJ. Nessa reunião foram discutidas colaborações para o envio de dados e informações sobre prática controlada em clínica e informações sobre registro e avaliação de supervisão clínica. Os dados fornecidos pelo professor serão incorporados ao GestorPsi.

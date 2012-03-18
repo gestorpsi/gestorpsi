@@ -1,0 +1,26 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Série escolar'''
+
+1- Maternal I[[BR]] 2- Maternal II[[BR]] 3- Maternal III[[BR]] 4- Jardim I[[BR]] 5- Jardim II[[BR]] 6- Jardim III[[BR]] 7- [[BR]] 8- 1ª série do ensino fundamental[[BR]] 9- 2ª série do ensino fundamental[[BR]] 10- 3ª série do ensino fundamental[[BR]] 11- 4ª série do ensino fundamental[[BR]] 12- 5ª série do ensino fundamental[[BR]] 13- 6ª série do ensino fundamental[[BR]] 14- 7ª série do ensino fundamental[[BR]] 15- 8ª série do ensino fundamental[[BR]] 16- 9ª série do ensino fundamental[[BR]] 17- 1ª série do ensino médio[[BR]] 18- 2ª série do ensino médio[[BR]] 19- 3ª série do ensino médio
+
+Maternal - Nursery
+
+Jardim - Kindergarten
+
+Serie - grade
+
+Ensino Fundamental - Primary School 
+
+Ensino Medio - High School
+
+----
+'''Referências:'''
+
+[wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas][[BR]] Formulário para Cadastramento Único para Programas Sociais do Governo Federal.
+
+Disponível em:[[BR]] http://www1.caixa.gov.br/gov/gov_social/municipal/distribuicao_servicos_cidadao/cadastramento_unico/documentos_download.asp

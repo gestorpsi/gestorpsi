@@ -1,0 +1,16 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Orientação Sexual'''
+
+- Assexual[[BR]]
+- Bissexual[[BR]]
+- Heterosexual[[BR]]
+- Homossexual[[BR]]
+- Pansexual[[BR]]
+- Transexual [[BR]]
+- Não informada[[BR]]

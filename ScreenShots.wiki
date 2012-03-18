@@ -1,0 +1,29 @@
+[[TracNav]]
+
+== Screenshots GestorPsi ==
+[[BR]]
+
+
+{{{
+#!html
+<div id="pageContent">
+<table><tr>
+<td valign="top" style="padding: 0 30px 30px 30px">
+<center><b>Agenda</b></center>
+<a href="http://www.gestorpsi.com.br/trac-htdocs/screenshots/agenda.png" target="_blank"><img style="border: 1px solid black" src="http://www.gestorpsi.com.br/trac-htdocs/screenshots/thumbs/agenda.png"></a>
+</td>
+<td valign="top" style="padding: 0 30px 30px 30px">
+<center><b>Cadastro de Estabelecimento</b></center>
+<a href="http://www.gestorpsi.com.br/trac-htdocs/screenshots/cadastro estabelecimento.png" target="_blank"><img style="border: 1px solid black" src="http://www.gestorpsi.com.br/trac-htdocs/screenshots/thumbs/cadastro estabelecimento.png"></a>
+</td>
+</tr>
+<td valign="top" style="padding: 0 30px 30px 30px">
+<center><b>Cadastro de Profissionais</b></center>
+<a href="http://www.gestorpsi.com.br/trac-htdocs/screenshots/cadastrar profissionais.png" target="_blank"><img style="border: 1px solid black" src="http://www.gestorpsi.com.br/trac-htdocs/screenshots/thumbs/cadastrar profissionais.png"></a>
+</td>
+<td valign="top" style="padding: 0 30px 30px 30px">
+<center><b>Cadastro de Clientes</b></center>
+<a href="http://www.gestorpsi.com.br/trac-htdocs/screenshots/cadastro cliente.png" target="_blank"><img style="border: 1px solid black" src="http://www.gestorpsi.com.br/trac-htdocs/screenshots/thumbs/cadastro cliente.png"></a>
+</td>
+</tr></table>
+}}}

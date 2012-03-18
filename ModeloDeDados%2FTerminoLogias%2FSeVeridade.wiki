@@ -1,0 +1,20 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+
+'''Severidade'''[[BR]]
+[[BR]]
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Severidade||- Leve[[BR]]- Moderada[[BR]]- Severa||||||
+||Comentários||||||x||
+[[BR]]
+
+
+----
+'''Referências:'''
+
+[http://www.openehr.org/home.html openEHR]

@@ -1,0 +1,9 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+
+}}}
+
+[[Include(http://www.gestorpsi.com.br/trac-htdocs/local/templates/mailing.html)]]

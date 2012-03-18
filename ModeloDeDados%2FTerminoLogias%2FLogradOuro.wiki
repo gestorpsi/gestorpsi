@@ -1,0 +1,150 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Logradouro'''
+
+Esta tabela contém o código, abreviatura e o tipo de logradouro.
+
+||'''Código'''||'''Abreviatura'''||'''Logradouro'''||
+||645||AL||Alameda||
+||001||AC||Acesso||
+||002||AD||Adro||
+||501||ERA||Aeroporto||
+||004||AL||Alameda||
+||005||AT||Alto||
+||472||A||Área||
+||654||AE||Área Especial||
+||465||ART||Artéria||
+||007||ATL||Atalho||
+||008||AV||Avenida||
+||651||AV-CONT||Avenida Contorno||
+||015||BX||Baixa||
+||470||BLO||Balão||
+||009||BAL||Balneário||
+||011||BC||Beco||
+||010||BELV||Belvedere||
+||012||BL||Bloco||
+||013||BSQ||Bosque||
+||014||BVD||Boulevard||
+||496||BCO||Buraco||
+||016||C||Cais||
+||571||CALC||Calçada||
+||017||CAM||Caminho||
+||023||CPO||Campo||
+||495||CAN||Canal||
+||481||CH||Chácara||
+||019||CHAP||Chapadão||
+||479||CIRC||Circular||
+||021||COL||Colônia||
+||503||CMP-VR||Complexo Viário||
+||485||COND||Condomínio||
+||020||CJ||Conjunto||
+||022||COR||Corredor||
+||024||CRG||Córrego||
+||478||DSC||Descida||
+||027||DSV||Desvio||
+||028||DT||Distrito||
+||468||EVD||Elevada||
+||573||ENT-PART||Entrada Particular||
+||652||EQ||Entre Quadra||
+||030||ESC||Escada||
+||474||ESP||Esplanada||
+||032||ETC||Estação||
+||564||ESTC||Estacionamento||
+||033||ETD||Estádio||
+||498||ETN||Estância||
+||031||EST||Estrada||
+||650||EST-MUN||Estrada Municipal||
+||036||FAV||Favela||
+||037||FAZ||Fazenda||
+||040||FRA||Feira||
+||038||FER||Ferrovia||
+||039||FNT||Fonte||
+||043||FTE||Forte||
+||045||GAL||Galeria||
+||046||GJA||Granja||
+||486||HAB||Habitacional||
+||050||IA||Ilha||
+||052||JD||Jardim||
+||473||JDE||Jardinete||
+||053||LD||Ladeira||
+||499||LG||Lago||
+||055||LGA||Lagoa||
+||054||LRG||Largo||
+||056||LOT||Loteamento||
+||477||MNA||Marina||
+||497||MOD||Módulo||
+||060||TEM||Monte||
+||059||MRO||Morro||
+||500||NUC||Núcleo||
+||067||PDA||Parada||
+||471||PDO||Paradouro||
+||062||PAR||Paralela||
+||072||PRQ||Parque||
+||074||PSG||Passagem||
+||502||PSC-SUB||Passagem Subterrânea||
+||073||PSA||Passarela||
+||063||PAS||Passeio||
+||064||PAT||Pátio||
+||483||PNT||Ponta||
+||076||PTE||Ponte||
+||469||PTO||Porto||
+||065||PC||Praça||
+||504||PC-ESP||Praça de Esportes||
+||070||PR||Praia||
+||071||PRL||Prolongamento||
+||077||Q||Quadra||
+||079||QTA||Quinta||
+||475||QTASRodo Ane||Quintas||
+||082||RAM||Ramal||
+||482||RMP||Rampa||
+||087||REC||Recanto||
+||487||RES||Residencial||
+||089||RET||Reta||
+||088||RER||Retiro||
+||091||RTN||Retorno||
+||569||ROD-AN||Rodo Anel||
+||090||ROD||Rodovia||
+||506||RTT||Rotatória||
+||476||ROT||Rótula||
+||081||R||Rua||
+||653||R-LIG||Rua de Ligação||
+||566||R-PED||Rua de Pedestre||
+||094||SRV||Servidão||
+||095||ST||Setor||
+||092||SIT||Sítio||
+||096||SUB||Subida||
+||098||TER||Terminal||
+||100||TV||Travessa||
+||570||TV-PART||Travessa Particular||
+||452||TRC||Trecho||
+||099||TRV||Trevo||
+||097||TCH||Trincheira||
+||567||TUN||Túnel||
+||480||UNID||Unidade||
+||565||VAL||Vala||
+||106||VLE||Vale||
+||568||VRTE||Variante||
+||453||VER||Vereda||
+||101||V||Via||
+||572||V-AC||AVia de Acesso||
+||484||V-PED||Via de Pedestre||
+||505||V-EVD||Via Elevado||
+||646||V-EXP||Via Expressa||
+||103||VD||Viaduto||
+||105||VLA||Viela||
+||104||VL||Vila||
+||108||ZIG-ZAG||Zigue-Zague||
+
+
+----
+
+'''Referências:'''
+
+
+Manual Técnico do Cadastro Nacional de Estabelecimentos de Saúde - Versão 2
+
+Disponível em: [http://cnes.datasus.gov.br/DownLoad/manual%20de%20preenchimento%20SCNES.zip ]

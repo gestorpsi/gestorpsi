@@ -1,0 +1,20 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Perfil Institucional'''[[BR]]
+[[BR]]
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Personalidade||[wiki:ModeloDeDados/TerminoLogias/Personalidade Personalidade]||x||||
+||Tipo                         unidade||[wiki:ModeloDeDados/TerminoLogias/TipoUnidade Tipo unidade]||x||||
+||Tipo de atendimento prestado||[wiki:ModeloDeDados/TerminoLogias/AtendimentoPrestado Atendimento Prestado]||x||||
+||Esfera administrativa||[wiki:ModeloDeDados/TerminoLogias/EsferaAdministrativa Esfera administrativa]||x||||
+||Gestão||[wiki:ModeloDeDados/TerminoLogias/Gestao Gestão]||x||||
+||Natureza                         da organização||[wiki:ModeloDeDados/TerminoLogias/NaturezadaOrganizacao Natureza da organização]||x||||
+||Dependência||[wiki:ModeloDeDados/TerminoLogias/DepenDencia Dependência]||x||||
+||Atividade de Ensino e Pesquisa||[wiki:ModeloDeDados/TerminoLogias/AtividadedeEnsinoePesquisa Atividade de Ensino e Pesquisa]||x||||
+||Comentários||||||x||
+[[BR]]

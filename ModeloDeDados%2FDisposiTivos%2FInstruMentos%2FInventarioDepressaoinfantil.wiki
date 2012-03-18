@@ -1,0 +1,50 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Inventário de Depressão Infantil - CDI'''[[BR]] 
+[[BR]]
+
+||'''nº'''||'''Questão¹'''||'''Resposta²'''||
+||1||(0) Eu fico triste de vez em quando[[BR]](1) Eu fico triste muitas vezes[[BR]](2) Eu fico triste o tempo todo||||
+||2||(2) Nada nunca vai dar certo para mim[[BR]](1) Não tenho certeza se as coisas vão dar certo para mim[[BR]]                                    (0) Vai dar tudo certo para mim||||
+||3||(0) Eu faço quase tudo certo[[BR]](1) Muitas coisas eu faço errado[[BR]](2) Eu faço tudo errado||||
+||4||(0) Eu me divirto com muitas coisas[[BR]](1) Eu me divirto com algumas coisas[[BR]](2) Não me divirto com nada||||
+||5||(2) Eu sou ruim o tempo todo[[BR]](1) Muitas vezes eu sou ruim[[BR]](0) Eu sou ruim uma vez ou outra||||
+||6||(0) Eu penso que coisas ruins possam acontecer comigo uma vez ou outra[[BR]](1) Eu fico preocupado que coisas ruins aconteçam comigo                                   [[BR]](2) Eu tenho certeza que coisas horríveis vão acontecer comigo||||
+||7||(2) Eu me detesto[[BR]](1) Eu não gosto de mim[[BR]](0) Eu gosto de mim||||
+||8||(2) Todas as coisas ruins acontecem por minha culpa[[BR]](1) Muitas coisas ruins acontecem por minha culpa[[BR]](0) As coisas ruins geralmente não acontecem por minha culpa||||
+||9||(0) Eu não penso em me matar[[BR]](1) Eu penso em me matar mas não faria isso[[BR]](2) Eu quero me matar||||
+||10||(2) Tenho vontade de chorar todos os dias[[BR]](1) Muitos dias eu tenho vontade de chorar[[BR]](0) Tenho vontade de chorar uma vez ou outra||||
+||11||(2) Tem sempre uma coisa me aborrecendo[[BR]](1) Muitas vezes tem uma coisa me aborrecendo[[BR]](0) Uma vez ou outra tem alguma coisa me aborrecendo||||
+||12||(0) Eu gosto de estar com outras pessoas[[BR]](1) Muitas vezes eu não gosto de estar[[BR]](2) Eu não tenho vontade de estar com ninguém||||
+||13||(2) Eu não consigo me decidir sobre nada[[BR]](1) É difícil tomar decisões[[BR]](0) Eu me decido sobre as coisas facilmente||||
+||14||(0) Minha aparência é legal[[BR]](1) Tem umas coisas que eu não gosto na minha aparência[[BR]](2) Eu sou feio(a)||||
+||15||(2) Eu tenho sempre que me forçar a fazer minhas tarefas escolares[[BR]](1) Muitas vezes eu tenho que me forçar a fazer minhas tarefas escolares[[BR]](0) Não tenho problemas para fazer as tarefas escolares||||
+||16||(2) Tenho problema para dormir todas as noites[[BR]](1) Muitas vezes tenho problema para dormir[[BR]](0) Eu durmo bem||||
+||17||(0) Eu fico cansado uma vez ou outra[[BR]](1) Muitos dias eu fico cansado[[BR]](2) Estou sempre cansado||||
+||18||(2) Na maioria dos dias eu não estou a fim de comer[[BR]](1) Muitos dias eu não estou a fim de comer[[BR]](0) Eu como bem||||
+||19||(0) Não me preocupo com dores[[BR]](1) Muitas vezes eu me preocupo com dores[[BR]](2) Eu sempre me preocupo com dores||||
+||20||(0) Eu não me sinto sozinho(1) Muitas vezes eu me sinto sozinho[[BR]](2) Eu sempre me sinto sozinho||||
+||21||(2) Nunca me divirto na escola[[BR]](1) Só me divirto na escola uma vez ou outra[[BR]](0) Muitas vezes me divirto na escola||||
+||22||(0) Eu tenho muitos amigos[[BR]](1) Eu tenho muitos amigos, mas queria ter mais[[BR]](2) Eu não tenho amigos||||
+||23||(0) Meu rendimento na escola está bom[[BR]](1) Meu rendimento na escola não está tão bom quanto antes[[BR]](2) Estou indo mal em matérias nas quais eu ia bem||||
+||24||(2) Nunca vou ser tão bom quanto os outros[[BR]](1) Se eu quiser posso ser tão bom quanto os outros[[BR]](0) Sou tão bom quanto os outros||||
+||25||(2) Ninguém me ama de verdade[[BR]](1) Não tenho certeza se alguém me ama[[BR]](0) Tenho certeza que alguém me ama||||
+||26||(0) Eu geralmente faço o que me mandam fazer[[BR]](1) Eu geralmente não faço o que me mandam fazer[[BR]](2) Eu nunca faço o que me mandam fazer||||
+||27||(0) Eu me dou bem com as pessoas[[BR]](1) Muitas vezes eu me meto em brigas[[BR]](2) Eu me meto em brigas o tempo todo||||
+||Total:||||||
+
+[[BR]]
+¹ Escolha as frases que descrevem seus sentimentos e seus pensamentos nas últimas duas semanas.
+[[BR]]
+² O escore é formado pela soma das respostas, sendo (0) “ausência de sintoma”, (1) “sintoma leve” e (2) “sintoma claro”. A nota de corte utilizada no Brasil é 17.
+
+----
+'''Referências:'''
+[[BR]]
+
+[http://www.pediatriasaopaulo.usp.br/upload/pdf/1143.pdf Fonseca, Maria Helena Gonçalves; Ferreira, Roberto Assis; Fonseca, Sarah Gonçalves. Departamento de Pediatria da Universidade Federal de Minas Gerais (UFMG) - Prevalência de sintomas depressivos em escolares]
+

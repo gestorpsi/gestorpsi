@@ -1,0 +1,55 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Escala de Humor de Brunel (BRUMS)'''[[BR]] 
+[[BR]]
+Data:[[BR]]Equipe:[[BR]]Nome:[[BR]]Data Nasc.:
+[[BR]]
+
+Abaixo está uma lista de palavras que descrevem sentimentos. Por favor, leia tudo
+atenciosamente. Em seguida assinale, em cada linha, o círculo que melhor descreve COMO
+VOCÊ SE SENTE AGORA¹. Tenha certeza de sua resposta para cada questão, antes de
+assinalar.
+[[BR]]
+[[BR]]
+
+||'''Questão²'''||'''0'''||'''1'''||'''2'''||'''3'''||'''4'''||
+||1. Apavorado||||||||||||
+||2. Animado||||||||||||
+||3. Confuso||||||||||||
+||4. Esgotado||||||||||||
+||5. Deprimido||||||||||||
+||6. Desanimado||||||||||||
+||7. Irritado||||||||||||
+||8. Exausto||||||||||||
+||9. Inseguro||||||||||||
+||10.Sonolento||||||||||||
+||11.Zangado||||||||||||
+||12.Triste||||||||||||
+||13.Ansioso||||||||||||
+||14.Preocupado||||||||||||
+||15.Com disposição||||||||||||
+||16.Infeliz||||||||||||
+||17.Desorientado||||||||||||
+||18.Tenso||||||||||||
+||19.Com raiva||||||||||||
+||20.Com energia||||||||||||
+||21.Cansado||||||||||||
+||22.Mal-humorado||||||||||||
+||23.Alerta||||||||||||
+||24.Indeciso||||||||||||
+
+
+¹ ''Escala:''[[BR]]0 = nada[[BR]]1 = um pouco[[BR]]2 = moderadamente[[BR]]3 = bastante[[BR]]4 = extremamente
+[[BR]]
+[[BR]]
+
+² ''Fatores:''[[BR]]Tensão - 01, 13, 14, 18[[BR]]Fadiga - 04, 08, 10, 21[[BR]]Depressão - 05, 06, 12, 16[[BR]]Vigor - 02, 15, 20, 23[[BR]]Confusão - 03, 09, 17, 24[[BR]]Raiva - 07, 11, 19, 22
+[[BR]]
+
+----
+''Referências:''[[BR]]
+[http://www.scielo.br/pdf/rbme/v14n3/a03v14n3.pdf A Escala de Humor de Brunel (Brums): Instrumento para Detecção Precoce da Síndrome do Excesso de Treinamento - Izabel Cristina Provenza de Miranda Rohlfs, Tatiana Marcela Rotta, Caroline Di Bernardi Luft, Alexandro Andrade, Ruy Jornada Krebs, Tales de Carvalho]

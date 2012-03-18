@@ -1,0 +1,22 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Sexo'''
+
+- Masculino[[BR]]
+- Feminino[[BR]]
+- Ignorado/Indiferenciado[[BR]]
+
+
+
+----
+
+'''Referências:'''
+[[BR]]
+
+[http://www.ibge.gov.br/home/ IBGE] [[BR]]
+[http://www.datasus.gov.br/dtd/#XML/ DTDs de Integração do Cartão Nacional de Saúde][[BR]]

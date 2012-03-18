@@ -1,0 +1,49 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Raça ou Cor'''
+
+De acordo com o IBGE.
+
+1- Branca[[BR]]
+2- Preta[[BR]]
+3- Amarela[[BR]]
+4- Indígena[[BR]]
+5- Parda[[BR]]
+
+
+----
+De acordo com o formulário para Cadastramento Único para Programas Sociais do Governo Federal.
+
+
+1- Branca[[BR]]
+2- Negra[[BR]]
+3- Parda[[BR]]
+4- Amarela[[BR]]
+5- Indígena[[BR]]
+
+
+
+
+Disponível em:
+http://www1.caixa.gov.br/gov/gov_social/municipal/distribuicao_servicos_cidadao/cadastramento_unico/documentos_download.asp
+
+
+
+----
+
+'''Race or Color'''[[BR]]
+[[BR]]
+1- White or caucasian[[BR]]
+2- Black or Negro[[BR]]
+3- Yellow or Mongolian[[BR]]
+4- Red or Indian[[BR]]
+5- Brown[[BR]]
+
+
+
+

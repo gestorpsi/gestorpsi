@@ -1,0 +1,22 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Avaliação'''[[BR]]
+[[BR]]
+
+
+[wiki:ModeloDeDados/AvaliAcao/SinopseClinica Sinopse Clínica][[BR]]
+[wiki:ModeloDeDados/AvaliAcao/ExclusaodeCondicaoespecifica Condição Excluída][[BR]]
+[wiki:ModeloDeDados/ObServacao/LeSao Lesão][[BR]]
+[wiki:ModeloDeDados/ObServacao/ProblemaGenetico Problema Genético][[BR]]
+
+
+
+----
+'''Referências:'''
+
+[http://www.openehr.org/home.html openEHR]

@@ -1,0 +1,22 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Perfil Institucional (Cliente)'''
+
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Personalidade||[wiki:ModeloDeDados/TerminoLogias/Personalidade Personalidade]||||||
+||Esfera                         administrativa||[wiki:ModeloDeDados/TerminoLogias/EsferaAdministrativa Esfera administrativa]||||||
+||Natureza                         da organização||[wiki:ModeloDeDados/TerminoLogias/NaturezadaOrganizacao Natureza da organização]||||||
+||Estrutura e funcionamento¹||texto||||||
+||Caracterização da clientela institucional²||texto||||||
+||Comentários||||||x||
+
+[[BR]]
+
+¹ Especificar dados sobre organograma, equipe, períodos e horário de funcionamento e histórico da instituição.[[BR]]
+² Especificar número de pessoas atendidas, idade, sexo, nível sócio-econômico, bem como as características das atividades desenvolvidas.[[BR]]

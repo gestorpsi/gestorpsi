@@ -1,0 +1,13 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Pagamento'''
+
+||'''Nome do Campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Valor Pago||texto||||||
+||Relativo a||texto||||||
+||Forma de Pagamento||[wiki:ModeloDeDados/TerminoLogias/FormadePagamento Forma de Pagamento]||||||
+||Comentários||||||x||

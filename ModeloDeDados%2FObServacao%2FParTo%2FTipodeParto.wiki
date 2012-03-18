@@ -1,0 +1,13 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Tipo de Parto'''[[BR]]
+[[BR]]
+- Normal[[BR]]
+- Normal com fórceps[[BR]]
+- Cesariana[[BR]]
+- Outro[[BR]]

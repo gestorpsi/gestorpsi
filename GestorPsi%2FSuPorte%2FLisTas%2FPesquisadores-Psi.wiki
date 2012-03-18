@@ -1,0 +1,14 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+= Pesquisadores-psi (pesquisadores-psi@gestorpsi.com.br) =
+'''Descrição'''[[BR]] Pesquisas na área de Psicologia
+
+'''Inscrever-se nesta lista'''[[BR]]Para inscrever-se nesta lista, envie um email em branco (sem campo assunto e sem corpo na mensagem) para o endereço __pesquisadores-psi-subscribe@gestorpsi.com.br__ e em seguida uma mensagem de confirmação será enviada para sua caixa de mensagens, contendo as instruções para a conclusão da sua inscrição.
+
+'''Desinscrever-se nesta lista'''[[BR]]Para desinscrever-se desta lista, envie um email em branco (sem campo assunto e sem corpo na mensagem) para o endereço __pesquisadores-psi-unsubscribe@gestorpsi.com.br__ e em seguida uma mensagem de confirmação será enviada para sua caixa de mensagens, contendo as instruções para a remoção.
+
+'''Informações desta lista'''[[BR]]http://gestorpsi.com.br/mailman/listinfo/pesquisadores-psi_gestorpsi.com.br (Link externo)

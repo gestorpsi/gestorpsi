@@ -1,0 +1,20 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Motivo do Aborto'''[[BR]]
+[[BR]]
+- Risco de vida da mulher[[BR]]
+- Prevenir grave lesão física ou mental do bebê[[BR]]
+- Risco de lesão à saúde física ou mental da mulher[[BR]]
+- Criança não desejada[[BR]]
+- Desconhecido[[BR]]
+- Outros[[BR]]
+
+----
+'''Referências:'''
+
+[http://www.datadictionaryadmin.scot.nhs.uk/isddd/CCC_FirstPage.jsp ISD Data Dictionary]

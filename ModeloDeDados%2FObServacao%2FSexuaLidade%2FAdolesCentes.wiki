@@ -1,0 +1,30 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Sexualidade na Adolescência'''[[BR]] 
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Idade de início da atividade sexual||[wiki:ModeloDeDados/TerminoLogias/IdadeiniciodaatividadeSexual Idade de Início da Atividade Sexual]||||||
+||Orientação Sexual||[wiki:ModeloDeDados/TerminoLogias/OrientacaoSexual Orientação Sexual]||x||||
+||Condutas de Risco||[http://www.datasus.gov.br/cid10/v2008/webhelp/cid10.htm CID-10 - Classificação Estatística Internacional de Doenças e Problemas Relacionados à Saúde][[BR]][[BR]]Z72.5 Comportamento sexual de alto risco||x||||
+||Pais têm conhecimento||[wiki:ModeloDeDados/TerminoLogias/ReacaodosPais Reação dos Pais]||x||||
+||Educação Sexual||[wiki:ModeloDeDados/TerminoLogias/EducacaoSexual Educação Sexual]||x||||
+||Contraceptivos||[wiki:ModeloDeDados/TerminoLogias/MetodosContraceptivos Métodos Contraceptivos]||x||x||
+||Sofreu abuso sexual||[http://www.datasus.gov.br/cid10/v2008/webhelp/cid10.htm CID-10 - Classificação Estatística Internacional de Doenças e Problemas Relacionados à Saúde][[BR]]T-74.2 Abuso sexual[[BR]][[BR]]Y05- Agressão sexual por meio de força física||||||
+||Comentários||||||x||
+[[BR]]
+----
+'''Adolescent Sexuality'''[[BR]] 
+
+||'''Field Name'''||'''Type'''||'''Editable'''||'''Multiple'''||
+||Age of beginning of sexual activities||[wiki:ModeloDeDados/TerminoLogias/IdadeiniciodaatividadeSexual Beginning of Sexual Activities]||||||
+||Sexual Orientation||[wiki:ModeloDeDados/TerminoLogias/OrientacaoSexual Sexual Orientation]||||||
+||Risky Behaviour||[http://www.datasus.gov.br/cid10/v2008/webhelp/cid10.htm ICD-10 - International Statistical Classification of Diseases and Related Health Problems][[BR]][[BR]]Z72.5 High-risk sexual behaviour||||||
+||Parents knowledge||[wiki:ModeloDeDados/TerminoLogias/ReacaodosPais Reaction of Parents]||||||
+||Sexual Education||[wiki:ModeloDeDados/TerminoLogias/EducacaoSexual Sexual Education]||||||
+||Contraceptive||[wiki:ModeloDeDados/TerminoLogias/MetodosContraceptivos Contraceptive Methods]||||x||
+||Sexual Abuse||[http://www.datasus.gov.br/cid10/v2008/webhelp/cid10.htm ICD-10 - International Statistical Classification of Diseases and Related Health Problems][[BR]]T-74.2 Sexual abuse [[BR]][[BR]]Y05- Sexual assault by bodily force||||||
+||Comments||||||x||

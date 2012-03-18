@@ -1,0 +1,46 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+
+'''Dados Comuns à Pessoas e Instituições'''
+
+[[BR]]
+
+||'''Endereço'''||||||||
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Descrição'''||
+||Tipo                         de endereço||uma ou mais entradas do tipo - [wiki:ModeloDeDados/TerminoLogias/TipoEndereco Tipo de endereço]||||||
+||Logradouro||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/LogradOuro Logradouro]||||||
+||nº||texto||||||
+||Complemento||texto||||||
+||Bairro||texto||||||
+||Município||texto - [wiki:ModeloDeDados/TerminoLogias/Municipio Município]||||||
+||UF||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/UF UF]||||||
+||CEP||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/CEP CEP]||||||
+||Comentários||||||||
+[[BR]]
+
+||'''Telefone'''||||||||
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||Tipo                         de telefone||uma ou mais entradas do tipo [wiki:ModeloDeDados/TerminoLogias/TipodeTelefone Tipo de Telefone]||||||
+||Código                         do país||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/ListaEmbratel Lista Embratel]||||||
+||Código                         de área||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/ListaAnatel Lista Anatel]||||||
+||Número||texto||||||
+||Ramal||texto||||||
+||Comentários||||||||
+[[BR]]
+
+||'''Internet'''||||||||
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||e-mail||uma ou mais entradas do tipo - [wiki:ModeloDeDados/TerminoLogias/email e-mail]||||||
+||Site||texto||||||
+||Comunicadores||uma ou mais entradas do tipo - [wiki:ModeloDeDados/TerminoLogias/Comunicadores Comunicadores]||||||
+||Comentários||||||||
+[[BR]]
+
+
+[[BR]]
+[[AddComment]]

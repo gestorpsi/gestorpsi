@@ -1,0 +1,47 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Órgão Emissor''' 
+
+10- SSP[[BR]]
+40- Organismos Militares[[BR]]
+41- Comando da Aeronáutica(Ex Ministério da Aeronáutica)[[BR]]
+42- Comando do Exército(Ex Ministério do Exército)[[BR]]
+43- Comando da Marinha(Ex Ministério da Marinha)[[BR]]
+44- Polícia Federal[[BR]]
+60- Carteira de Identidade Classista[[BR]]
+61- Conselho Regional de Administração[[BR]]
+62- Conselho Regional de Assist. Social[[BR]]
+63- Conselho Regional de Biblioteconomia[[BR]]
+64- Conselho Regional de Contabilidade[[BR]]
+65- Conselho Regional de Corretores Imóveis[[BR]]
+66- Conselho Regional de Enfermagem[[BR]]
+67- Conselho Regional de Engenharia, Arquitetura e Agronomia[[BR]]
+68- Conselho Regional de Estatística[[BR]]
+69- Conselho Regional de Farmácia[[BR]]
+70- Conselho Regional de Fisioterapia e Terapia Ocupacional[[BR]]
+71- Conselho Regional de Medicina[[BR]]
+72- Conselho Regional de Medicina Veterinária[[BR]]
+73- Ordem dos Músicos do Brasil[[BR]]
+74- Conselho Regional de Nutrição[[BR]]
+75- Conselho Regional de Odontologia[[BR]]
+76- Conselho Regional de Profissionais de Relações Públicas[[BR]]
+77- Conselho Regional de Psicologia[[BR]]
+78- Conselho Regional de Química[[BR]]
+79- Conselho Regional de Representantes Comerciais[[BR]]
+80- Ordem dos Advogados do Brasil[[BR]]
+81- Outros Emissores[[BR]]
+82- Documento Estrangeiro
+
+
+----
+
+'''Referências:'''
+
+Manual Técnico do Cadastro Nacional de Estabelecimentos de Saúde - Versão 2[[BR]]
+
+Disponível em: http://cnes.datasus.gov.br/DownLoad/manual%20de%20preenchimento%20SCNES.zip

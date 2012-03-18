@@ -1,0 +1,4 @@
+
+
+= Atualização na versão Beta =
+Foi atualizado o Beta do GestorPsi para a versão r1305, que reflete as mudanças aplicadas no Demo no dia 19/10/2009

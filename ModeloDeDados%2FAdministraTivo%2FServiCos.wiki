@@ -1,0 +1,27 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Serviços'''[[BR]]
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Múltiplo'''||
+||Área||[wiki:ModeloDeDados/AdministraTivo/ServicoseProcedimentos Serviços e Procedimentos]||||||
+||Nome do serviço||texto||||||
+||Descrição||texto||x||||
+||Tema||[http://www.psi.bvs.br/cgi-bin/wxis.exe/iah/?IsisScript=iah/iah.xic&lang=P&base=TERMINOLOGIA BVS - Terminologia em Psicologia][[BR]][http://decs.bvs.br/ DeCS - Descritores em Ciências da Saúde][[BR]]- [wiki:ModeloDeDados/TerminoLogias/ListaGestorPsi Lista GestorPsi]||x||x||
+||Responsáveis pelo serviço||||||||
+||Vínculos institucionais||[wiki:ModeloDeDados/AdministraTivo/VinculosInstitucionais Vínculos Institucionais]||x||x||
+||Projeto de Pesquisa Envolvido||[wiki:ModeloDeDados/AdministraTivo/ProjetodePesquisaEnvolvido Projeto de Pesquisa Envolvido]||x||||
+||Profissionais||selecionar de uma lista||||||
+||Profissão||[wiki:ModeloDeDados/TerminoLogias/ProfissaoareaCuidados Profissão (Área de Cuidados)]||x||||
+||Convênios||[wiki:ModeloDeDados/TerminoLogias/Convenios Convênios]||x||||
+||Comentários||texto||||x||
+
+----
+'''Referências:'''
+
+[wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas]
+
+[[AddComment]]

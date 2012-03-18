@@ -1,0 +1,30 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+= '''Caso de Uso: Visualização de salas''' =
+'''Ator'''
+
+  Secretária, ''Usuário (coordenador, supervisor, terapeuta, estagiário, co-terapeuta, observador)''
+
+'''Descrição resumida'''
+
+  O usuário deseja visualizar as informações de alguma sala.
+
+'''Pré-condição '''
+
+ 1. O usuário deve estar cadastrado e autenticado no sistema (UC – Cadastro)
+ 1. Devem haver salas cadastradas no sistema (UC – Gerenciamento de salas)
+
+'''Fluxo básico '''
+
+ 1. O usuário inicia a ação para visualizar uma sala.
+ 1. O sistema exibe as salas cadastradas no sistema.
+ 1. O usuário seleciona a sala desejada.
+ 1. O usuário visualiza todas as informações da sala (nome, dimensão física, móveis) e o seu tipo (atendimento, supervisão, brinquedoteca, coordenação, espera, estagiários ).
+
+'''Fluxos alternativos   '''[[BR]][[BR]]'''Pós-condições'''
+
+'''Informações Relevantes:'''

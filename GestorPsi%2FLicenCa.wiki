@@ -1,0 +1,62 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+== Licença de Uso ==
+{{{
+#!html
+<img src="/trac-htdocs/logos/gnu_large.png">
+}}}
+O GestorPsi está distribuído sob a [http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt GNU General Public License v2] da [http://www.fsf.org/ Free Software Foundation] (1991). Essa licença baseia-se em quatro liberdades:
+
+ * A liberdade de executar o programa, para qualquer propósito (liberdade nº 0);
+ * A liberdade de estudar como o programa funciona e adaptá-lo para as suas necessidades (liberdade nº 1). O acesso ao código-fonte é um pré-requisito para esta liberdade;
+ * A liberdade de redistribuir cópias de modo que você possa ajudar ao seu próximo (liberdade nº 2);
+ * A liberdade de aperfeiçoar o programa, e liberar os seus aperfeiçoamentos, de modo que toda a comunidade beneficie deles (liberdade nº 3). O acesso ao código-fonte é um pré-requisito para esta liberdade;
+
+A licença determina que essas modificações e distribuições mantenham os direitos dos autores e não permite que o código seja apoderado por outra pessoa ou que seja redistribuído com alguma restrição não contemplada na licença original.
+
+Assim, essa licença protege o produto por impedir que um terceiro modifique e restrinja a distribuição de sua modificação, como por exemplo adicionar uma modificação ao GestorPsi e distribuir o produto final como software proprietário e ao mesmo tempo abre a possibilidade de que outros desenvolvedores ou usuários colaborem no desenvolvimento do GestorPsi incluindo e modificando características.
+
+É importante observar que software livre não é necessariamente sinônimo de software grátis. Em inglês essa confusão é maior por conta da palavra "free" significar gratuidade e liberdade. Mesmo com a liberdade de utilizar e modificar o software, existem custos de tempo, mão de obra e manutenção envolvidos.
+
+Outro fator a se notar é que será pouco provável que os psicólogos (usuários) do sistema sejam os atores dessa distribuição, modificação ou aperfeiçoamento, dado que a tecnologia não é de domínio dessa categoria. Porém essa forma de licenciamento abre a possibilidade de que pesquisadores da área de computação, bem como instituições que dispõem de profissionais capacitados possam colaborar com o projeto.
+
+Isso se constitui em uma das inovações do projeto, pois abriu a possibilidade de participação e colaboração de diversos setores da sociedade que estariam fechados ao projeto caso se tratasse de software proprietário.
+
+Nota-se também que no Brasil o software livre esta em franco crescimento  sendo a opção de escolha em diversas instituições públicas e privadas, trazendo economia e aumentando o acesso a tecnologia. 
+
+A eventual disponibilização de instrumentos como testes psicológicos e outros instrumentos comerciais não poderá ser distribuída sob a licença GPL. Assim esses componentes, quando desenvolvidos, não farão parte do pacote disponível para download e distribuição.
+
+{{{
+#!html
+<img src="http://www.gestorpsi.com.br/trac-htdocs/logos/gnu.png">
+}}}
+Leia os [wiki:GestorPsi/GPL Termos da GNU GPLv2] em sua versão completa.
+
+== Documentação e Conteúdo ==
+{{{
+#!html
+<img src="/trac-htdocs/logos/fsf_large.png">
+}}}
+Todo o conteúdo desse site assim como a documentação do sistema possui licença [wiki:GestorPsi/FDL GNU FDL v1.2].[[BR]] Esta licença pode ser definida basicamente da seguinte forma:
+
+Permite que textos, apresentações e conteúdo de páginas na web sejam distribuídos e reaproveitados, mantendo, porém, alguns direitos autorais e sem permitir que essa informação seja usada de maneira indevida. A licença não permite, por exemplo, que o texto seja apoderado por outra pessoa, ou que sejam impostos sobre ele restrições que impeçam que ele seja distribuído da mesma maneira que foi adquirido.
+
+Uma das exigências da FDL é que o material publicado seja liberado também em um formato transparente para melhor se poder exercer os direitos que a licença garante.
+
+'''Permissões'''
+
+Desde que uma cópia de si mesma seja incluída, a GNU FDL permite explicitamente a qualquer usuário do item sob ela licenciado copiá-lo literalmente e distribuir essas cópias, inclusive recebendo compensação monetária por elas; permite ainda locá-las e exibi-las publicamente. Impõe, porém, uma série de exigências e obrigações, como a de disponibilizar uma cópia transparente do item, acima mencionada. Ela proíbe que se utilizem meios técnicos para impedir que pessoas que tenham acesso a qualquer cópia do item usufruam dos mesmos direitos que quaisquer outros.
+
+Versões modificadas do item também podem ser incluídas, desde que o autor da modificação concorde em também licenciar a versão modificada pela GNU FDL.
+
+{{{
+#!html
+<img src="http://upload.wikimedia.org/wikipedia/commons/1/11/Gnu-fdl.png">
+}}}
+Leia os termos completos da [wiki:GestorPsi/FDL GNU FDL v1.2]
+
+[[BR]] Comentário adicional:[[BR]] Em adição aos requisitos dessas licenças nenhum trabalho derivado nem do código e nem do conteúdo desse projeto poderá ser utilizado em sistemas ou publicações que não forem compatíveis com essas licenças de uso.

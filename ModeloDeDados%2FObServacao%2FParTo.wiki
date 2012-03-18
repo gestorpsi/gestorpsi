@@ -1,0 +1,37 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Parto'''[[BR]]
+[[BR]]
+
+||'''Nome do campo'''||'''Tipo'''||'''Editável'''||'''Multiplicidade'''||
+||Local||[wiki:ModeloDeDados/ObServacao/ParTo/LocaldoParto Local do Parto]||||||
+||Idade da mãe na época do parto||numérico||||||
+||Parto prematuro||checkbox||||||
+||Nasceu abaixo do peso||checkbox||||||
+||Tamanho ao nascer||numérico||||||
+||Tipo de parto||[wiki:ModeloDeDados/ObServacao/ParTo/TipodeParto Tipo de Parto]||||||
+||Complicações no parto||texto||||||
+||O pai estava presente||checkbox||||||
+||Mãe ficou na UTI||checkbox||||||
+||Criança ficou na UTI||checkbox||||||
+||Anomalias Congênitas e Características apresentadas pelo bebê||[http://www.datasus.gov.br/cid10/v2008/webhelp/cid10.htm CID-10 - Classificação Estatística Internacional de Doenças e Problemas Relacionados à Saúde]||||x||
+||Primeiras reações do bebê||[wiki:ModeloDeDados/ObServacao/ParTo/ReacoesdoBebe Primeiras Reações do Bebê]||||||
+||Criança foi rejeitada pela mãe||checkbox||||||
+||Criança foi rejeitada pelo pai||checkbox||||||
+||Depressão pós-parto||[wiki:ModeloDeDados/ObServacao/ParTo/DepressãoPosparto Depressão Pós-parto]||||||
+||Pais tiveram dificuldades nos primeiros cuidados com a criança||checkbox||||||
+||Foi auxiliada||checkbox||||||
+||Comentários||||||x||
+
+[[BR]]
+
+----
+'''Referências:'''
+
+[http://www.datasus.gov.br Datasus][[BR]]
+[wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas][[BR]] 

@@ -1,0 +1,17 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Perfil Estagiário'''
+
+
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||Curso||texto||||||
+||Período||texto||||||
+||Área                         de estágio||texto||||||
+||Período                         de vigência do estágio||texto||||||
+||Comentários||||||||
+[[BR]]

@@ -1,0 +1,34 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Sócio-Demográficos - Socio-Demographic'''[[BR]]
+[[BR]]
+Os modelos de dados aqui apresentados foram construídos a partir dos formulários utilizados pelas [wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas] na primeira e segunda fase do projeto.  Entretanto, poderão sofrer modificações.[[BR]]Consultar a partir dos temas. [[BR]]
+[[BR]]
+
+The data model presented here were constructed from the forms used by [wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Institutions Visited] on the first and second phase of the program. However, they may undergo changes.[[BR]]
+Read from the subjects.[[BR]]
+[[BR]]
+[[BR]]
+ * [wiki:ModeloDeDados/SocioDemografico/AtividadesSociais Atividades Sociais - Social Activities][[BR]]
+ * [wiki:ModeloDeDados/SocioDemografico/Escolaridade Escolaridade - Education Level][[BR]]
+ * [wiki:ModeloDeDados/SocioDemografico/Ocupacao/Profissao Ocupação/Profissão - Education Level][[BR]]
+ * [wiki:ModeloDeDados/SocioDemografico/RacaouCor Raça ou Cor - Race or Color][[BR]]
+ * [wiki:ModeloDeDados/SocioDemografico/Religiao Religião - Religion][[BR]]
+
+----
+'''Referências:'''
+[[BR]]
+
+Formulário para Cadastramento Único para Programas Sociais do Governo Federal.
+
+Disponível em:[[BR]]
+http://www1.caixa.gov.br/gov/gov_social/municipal/distribuicao_servicos_cidadao/cadastramento_unico/documentos_download.asp [[BR]]
+[[BR]]
+
+[http://www.ibge.gov.br/home/ IBGE] [[BR]]
+[wiki:ModeloDeDados/TerminoLogias/InstituicoesVisitadas Instituições Visitadas][[BR]]

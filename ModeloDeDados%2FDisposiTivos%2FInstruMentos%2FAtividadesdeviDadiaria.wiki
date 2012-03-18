@@ -1,0 +1,40 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+'''Avaliação das Atividades da Vida Diária - Índice de Katz'''[[BR]] 
+
+||'''Categoria''' / '''Questão'''||'''Resposta¹'''||'''Pontuação²'''||
+||A) Índice de atividades rotineiras do paciente[[BR]](Tentar obter essas informações com o paciente, caso seja possível. Quando o paciente não souber informar, favor anotar que a informação não foi dada por ele.)||||||
+||1. Tomar banho (esponja, chuveiro ou banheira):[[BR]](I) Não precisa de ajuda.[[BR]](A) Precisa de ajuda para lavar apenas uma parte do corpo (costas ou pernas)[[BR]](D) Precisa de ajuda para higiene completa (ou não toma banho)||||||
+||2. Vestir-se:[[BR]](I) Pega as roupas e veste-se sem nenhuma ajuda.[[BR]](A) Pega as roupas e veste-se sem ajuda, com exceção de amarrar os sapatos.[[BR]](D) Precisa de ajuda para pegar as roupas ou para se vestir, ou fica parcial ou completamente não vestido.||||||
+||3. Ir ao banheiro:[[BR]](I) Vai ao banheiro, faz a higiene, e se veste sem ajuda (mesmo usando um objeto para suporte como bengala, andador, cadeira de rodas, e pode usar urinol à noite, esvaziando este de manhã).[[BR]](A) Recebe ajuda para ir ao banheiro, ou para fazer a higiene, ou para se vestir depois de usar o banheiro, ou para uso do urinol a noite.[[BR]](D) Não vai ao banheiro para fazer suas necessidades. ||||||
+||4. Locomoção:[[BR]](I) Entra e sai da cama, assim como da cadeira, sem ajuda (pode estar usando objeto para suporte, como bengala ou andador).[[BR]](A) Entra e sai da cama ou da cadeira com ajuda.[[BR]](D) Não sai da cama.||||||
+||5. Continência:[[BR]](I) Controla a urina e movimentos do intestino completamente por si próprio.[[BR]](A) Tem acidentes ocasionais.[[BR]](D) Supervisão ajuda a manter controle de urina ou intestino, catéter é usado, ou é incontinente.||||||
+||6. Alimentação:[[BR]](I) Alimenta-se sem ajuda.[[BR]](A) Alimenta-se, com exceção no caso de cortar carne ou passar manteiga no pão.[[BR]](D) Recebe ajuda para se alimentar ou é alimentado parcial ou completamente por meio de tubos ou fluidos intravenosos.||||||
+||B) Sobre o paciente — Atividades instrumentais da vida diária[[BR]](As alternativas devem ser escolhidas em relação aos últimos 30 dias) ||||||
+||1. Telefone:[[BR]](I) capaz de olhar os números, discar, receber e fazer chamadas sem ajuda.[[BR]](A) É capaz de receber chamadas ou ligar para a telefonista em uma emergência, mas necessita de um telefone especial ou ajuda para pegar o número ou discar.[[BR]](D) É incapaz de usar o telefone (escreva "não se aplica" se o paciente nunca recebeu uma chamada ou usou o telefone).||||||
+||2. Locomoção fora de casa:[[BR]](I) É capaz de dirigir seu próprio carro ou andar em um ônibus ou de táxi sozinho.[[BR]](A) É capaz de se locomover fora de casa, mas não sozinho.[[BR]](D) É incapaz de se locomover fora de casa.||||||
+||3. Compras:[[BR]](I) É capaz de tomar conta de todas as compras, desde que o transporte seja providenciado.[[BR]](A) É capaz de fazer compras mas não sozinho.[[BR]](D) É incapaz de fazer compras.||||||
+||4. Preparar a comida:[[BR]](I) É capaz de planejar e preparar uma refeição completa.[[BR]](A) É capaz de preparar pratos simples, mas incapaz de cozinhar uma refeição completa sozinho.[[BR]](D) Incapaz de preparar qualquer comida. (Se o paciente nunca foi responsável por preparar uma refeição, pergunte algo como fazer sanduíche, pegar uma fruta para comer, etc. Verificar se essas atividades diminuíram e marcar da mesma forma.)||||||
+||5. Trabalho doméstico:[[BR]](I) é capaz de fazer o trabalho doméstico pesado (exemplo: limpar o chão).[[BR]](A) É capaz de fazer o trabalho doméstico leve, mas precisa de ajuda nas tarefas pesadas.[[BR]](D) É incapaz de fazer qualquer trabalho doméstico.||||||
+||6. Medicação:[[BR]](I) É capaz de tomar as medicações na dose e hora certa.[[BR]](A) É capaz de tomar as medicações, mas precisa ser lembrado ou alguém precisa preparar a medicação.[[BR]](D) É incapaz de tomar sozinho suas medicações.||||||
+||7. Dinheiro:[[BR]](I) É capaz de fazer as compras de coisas necessárias, preencher cheques e pagar contas.[[BR]](A) É capaz de fazer as compras de uso diário, mas necessita de ajuda com o talão de cheques e para pagar as contas.[[BR]](D) É incapaz de lidar com dinheiro.||||||
+||Comentários||||||
+
+[[BR]]
+¹ Legenda:[[BR]]
+I = independente[[BR]]A = assistência[[BR]]D = dependente.
+[[BR]]
+
+² [wiki:ModeloDeDados/DisposiTivos/InstruMentos/AtividadesdeviDadiaria/Classificacao Classificação][[BR]]
+[[BR]]
+
+----
+'''Referências:'''
+[[BR]]
+
+[http://www.hcnet.usp.br/ipq/revista/vol26/n2/anexo2(83).htm Instrumentos para avaliação de pacientes com demência - Almeida, Osvaldo P.]
+

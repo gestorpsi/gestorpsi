@@ -1,0 +1,33 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+= '''Caso de Uso: Gerenciar tipos de materiais''' =
+'''Ator'''
+
+  Secretária
+
+'''Descrição resumida'''
+
+  A Secretária necessitando de incluir, editar ou excluir tipos de materiais fará uma requisição ao administrador global do sistema e após aprovação deste, as modificações estarão disponíveis para todas as clínicas do sistema.
+
+'''Pré-condição'''
+
+ 1. A secretária já deve estar cadastrada e autenticada no sistema (UC - Cadastro)
+
+'''Fluxo básico'''
+
+ 1. A secretária seleciona a opção de enviar pedidos ao administrador global.
+ 1. A secretária escreve e envia o pedido.
+ 1. O administrador global aceita o pedido, envia uma mensagem a secretária informando a aceitação e altera o sistema.
+ 1. O administrador global envia uma notificação da modificação no sistema para todas as clínicas.
+
+'''Fluxos alternativos'''
+
+3a.  O administrador global rejeita o pedido e envia uma mensagem a secretária justificando a rejeição.
+
+'''Pós-condições'''
+
+'''Informações Relevantes:'''

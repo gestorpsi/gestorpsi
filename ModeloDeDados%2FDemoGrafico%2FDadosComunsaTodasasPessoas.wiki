@@ -1,0 +1,37 @@
+[[TracNav]]
+
+{{{
+#!html
+<div id="pageContent">
+}}}
+
+'''Dados Comuns à Todas as Pessoas'''
+
+[[BR]]
+
+||'''Identificação                         Pessoal'''||||||||
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||Foto||imagem||||||
+||Nome||texto||||||
+||RG||texto||||||
+||Órgão                         Emissor||Selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/OrgaoEmissor Órgão emissor]||||||
+||CPF||texto||||||
+||Comentários||||||||
+[[BR]]
+
+
+
+||'''Perfil Pessoal'''||||||||
+||'''Nome do campo'''||'''Tipo'''||'''Obrigatório'''||'''Validação'''||
+||Data                         de nascimento||data||||||
+||Idade||numérico||||||
+||Naturalidade||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/Municipio Município]||||||
+||UF||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/UF UF]||||||
+||Nacionalidade||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/Nacionalidade Nacionalidade]||||||
+||Sexo||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/Sexo Sexo]||||||
+||Estado                         Civil||selecionar de uma lista - [wiki:ModeloDeDados/TerminoLogias/EstadoCivil Estado civil]||||||
+||Comentários||||||||
+[[BR]]
+
+[[BR]]
+[[AddComment]]

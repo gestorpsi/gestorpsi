@@ -1,9 +1,0 @@
-[[TracNav]]
-
-{{{
-#!html
-<div id="pageContent">
-}}}
-'''Ocorrência'''
-
-- Atraso do cliente[[BR]]- Cliente desmarcou atendimento - Motivo[[BR]]- Terapeuta desmarcou atendimento[[BR]]- Atendimento Efetuado

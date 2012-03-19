@@ -1,2 +1,0 @@
-= Início oficial da Fase 1 = 
-No dia 01 de fevereiro iniciou-se oficialmente a Fase 1 do projeto após a aprovação junto a FAPESP. A Fase 1 vai durar até o final de julho onde iremos produzir a especificação técnica do sistema.

@@ -1,9 +1,0 @@
-[[TracNav]]
-
-{{{
-#!html
-<div id="pageContent">
-}}}
-De maneira geral, no processo de admissão e encaminhamento, um cliente é inscrito em um serviço e depois atribuído a um profissional, enquanto a atribuição ao profissional não é realizada ele permanece na “fila de espera”. Após o primeiro atendimento e início do tratamento o cliente fica com o ''status'' “ativo”. Se ele for encaminhado para outro serviço no mesmo estabelecimento, o fluxo é reiniciado. Caso o cliente interrompa o tratamento ele passa a ter ''status “''inativo” e se não retornar ao mesmo é desligado do serviço e do estabelecimento.
-
-Essa abordagem permite que se gerencie com maior precisão os casos onde o mesmo cliente é atendido em diferentes serviços em um mesmo estabelecimento, um caso comum principalmente em clínicas-escola de psicologia.

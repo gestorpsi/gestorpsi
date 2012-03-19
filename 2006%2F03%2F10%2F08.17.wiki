@@ -1,2 +1,0 @@
-= Coleta de dados na Unicenp Curitiba = 
-No dia 06 de março foi feita uma visita a clínica de psicologia da Unicenp que possui um sistema informatizado instalado. Foram coletados dados sobre o funcionamento da clínica e sobre o funcionamento do sistema.

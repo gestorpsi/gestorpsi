@@ -1,8 +1,0 @@
-[[TracNav]]
-
-{{{
-#!html
-<div id="pageContent">
-}}}
-= Listas de discussão GestorPsi =
-[wiki:GestorPsi/SuPorte/LisTas/Pesquisadores-Psi Pesquisadores] - Lista de discussão para pesquisadores e profissionais da área de psicologia e saúde. Para discutir uso, aplicações, idéias e assuntos relacionados a prática profissional e uso do !GestorPsi[[BR]] [wiki:GestorPsi/SuPorte/LisTas/DesenvolviMento Desenvolvimento] - Lista para desenvolvedores, para discutir aspectos técnicos e de desenvolvimento do sistema[[BR]] [wiki:GestorPsi/SuPorte/LisTas/Openehr-Brasil OpenEHR Brasil] - OpenEHR Brasil

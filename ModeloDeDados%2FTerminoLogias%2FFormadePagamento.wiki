@@ -1,9 +1,0 @@
-[[TracNav]]
-
-{{{
-#!html
-<div id="pageContent">
-}}}
-'''Forma de Pagamento'''
-
-- Cheque[[BR]]- Dinheiro[[BR]]- Outros (especificar)

@@ -1,3 +1,0 @@
-= Coleta de dados na UFSC = 
-Dia 26 de maio foi feita coleta de dados no Serviço de Atendimento Psicológico (SAPSI) que oferece atendimentos clínicos e serviços de orientação profissional. [[BR]]
-O SAPSI possui um sistema informatizado em desenvolvimento e foi firmada uma parceria no sentido de unir esforços entre o SAPSI e GestorPsi. Também nessa ocasião foi firmada uma parceria com o Prof Emilio Takase do Laboratório de Neurociência do Esporte e do Exercício LANESPE para inclusão de dados sobre psicologia do esporte e serviços a distância.

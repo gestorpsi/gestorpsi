@@ -1,5 +1,0 @@
-[[TracNav]]
-
-* [wiki:gestorpsi gestopsi][[BR]]
-* [wiki:gestorpsi gestopsi]
-* [wiki:GestorPsi/HistoRico Histórico]

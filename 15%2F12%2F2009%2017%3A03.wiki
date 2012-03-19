@@ -1,4 +1,0 @@
-= Atualização na versão Demo e Beta =
-Foi atualizado o Demo do [http://www.gestorpsi.com.br/wiki/GestorPsi GestorPsi] da versão r1459 para a versão r1467 em 15/12/2009.
-
-Foi atualizado o Beta do [http://www.gestorpsi.com.br/wiki/GestorPsi GestorPsi] da versão r1460 para a versão r1467 em 15/12/2009.

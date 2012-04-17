@@ -1,0 +1,24 @@
+{% extends "gcm/main.html" %}
+
+{% load i18n %}
+
+{% block section %}{% trans "Organizacoes" %}{% endblock %}
+{% block title %}{% trans "Organizacoes" %}{% endblock %}
+
+{% block core %}
+    <table>
+    <tr><th>{% trans "Organizacao" %}</th><th>{% trans "Numero de profissionais" %}</th><th>{% trans "Ativo" %}</th></tr>
+    {% for object in object_list %}
+    <tr class="{% cycle 'even' '' %}">
+        <td>
+            <a href="{% url org-update object.id %}" class="tag">
+            {{ object.name }}
+            </a>
+        </td>
+        <td>{{ object.care_professionals|length }}</td>
+        <td>{% if object.active %}{% trans "Sim" %}{% else %}{% trans "Não" %}{% endif %}</td>
+    </tr>
+
+    {% endfor %}
+    </table>
+{% endblock %}

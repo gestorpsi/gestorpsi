@@ -1,0 +1,11 @@
+{% extends "gcm/main.html" %}
+
+{% load i18n %}
+
+{% block core %}
+<p>
+{% trans "You've been logged out." %}
+<br />
+<a href="/gcm/login/">{% trans "log in again" %}</a>
+</p>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "gcm/main.html" %}
+
+{% load i18n %}
+
+{% block section %}{% trans "Organizacoes Pendentes" %}{% endblock %}
+{% block title %}{% trans "Organizacoes Pendentes" %}{% endblock %}
+
+{% block core %}
+{% if not object_list %}
+<p>{% trans "Não existe organizacao pendentes" %}</p>
+{% else %}
+    <table>
+    <tr><th>{% trans "Organizacao" %}</th><th>{% trans "Data de inscricao" %}</th><th>{% trans "Plano de acesso" %}</th></tr>
+    {% for object in object_list %}
+    <tr class="{% cycle 'even' '' %}">
+        <td>
+            <a href="{% url org-pen-detail object.id %}" class="tag">
+            {{ object.name }}
+            </a>
+        </td>
+        <td>{{ object.invoice_set.all.0.date|date:"d/m/Y" }}</td>
+        <td>{{ object.invoice_set.all.0.plan }}</td>
+    </tr>
+
+    {% endfor %}
+    </table>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "gcm/main.html" %}
+
+{% load i18n %}
+
+{% block section %}{% trans "Organizacoes" %}{% endblock %}
+{% block title %}{% trans "Organizacoes" %}{% endblock %}
+
+{% block core %}
+<h2>{{ object }}</h2>
+
+{% trans "Organizacão" %} <strong>{% if object.active %}{% trans "Ativa" %}{% else %}{% endif %}{% if not object.active %}{% trans "Desativada" %}{% else %}{% endif %}</strong> 
+<a href="#" onclick="$('div.form_active').show('slow');">{% if object.active %}{% trans "Desativar?" %}{% else %}{% endif %}{% if not object.active %}{% trans "Ativar?" %}{% else %}{% endif %}</a>
+
+<div class="form_active" style="display:none;"><br />
+<form action="{% url org-update object.id %}" method="post">
+    <fieldset>
+        <legend>{% trans "Ativar/Desativar Organizacao" %}</legend>
+        {{ form.errors }}
+        <p style="display:none;">
+        <label>{{ form.name.label }}</label><br>
+        {{ form.name }}
+        <label>{{ form.short_name.label }}</label><br>
+        {{ form.short_name }}
+        <label>{{ form.last_id_record.label }}</label><br>
+        {{ form.last_id_record }}
+        </p>
+        <p>
+        <label>{{ form.active.label }}</label><br>
+        {{ form.active }}
+        <small>{% trans "Desativando esta organizacao, ela ficará impossibitada de adicionar novo registros, ficará apenas disponíveis dados para leitura como listagens, consultas, relatórios etc" %}</small>
+        </p>
+    <p><br /><input type="submit" value="{% trans "Save" %}" class="submit"></p>
+    </fieldset>
+</form>
+</div>
+
+<br />
+<br />
+<table>
+<tr><th>{% trans "Data" %}</th><th>{% trans "Plano" %}</th><th>{% trans "Estado" %}</th><th>{% trans "Valor" %}</th><th>{% trans "Data de Vencimento" %}</th><th>{% trans "Data Pagamento" %}</th></tr>
+
+<strong>{% trans "Faturas desta organizacão" %}</strong>
+<hr>
+    {% for object in object.invoice_set.all %}
+    <tr class="{% cycle 'even' '' %}">
+        <td><a href="{% url invoice-update object.id %}">{{ object.date|date:"d/m/Y" }}</a></td>
+        <td>{{ object.plan }}</td>
+        <td>{{ object.get_status_display }}</td>
+        <td>{{ object.ammount }}</td>
+        <td>{% if not object.due_date %}-----{% else %}{{ object.due_date }}{% endif %}</td>
+        <td>{% if not object.date_payed %}-----{% else %}{{ object.date_payed }}{% endif %}</td>
+    </tr>
+{% endfor %}
+</table>
+
+<a href="{% url org-list %}">{% trans "Back" %}</a>
+{% endblock %}

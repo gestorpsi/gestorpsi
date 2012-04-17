@@ -1,0 +1,17 @@
+1) Adicionar no arquivo urls.py, antes de todas as regras a linha:
+
+url(r'^', include('gcm.urls')),
+
+
+2) Adicionar o seguinte template dir no arquivo settings.py:
+
+'gcm/templates'
+
+Ficando parecido com isso:
+
+TEMPLATE_DIRS = (
+    "templates",
+    "gcm/templates",
+)
+
+3) Alterar a variavel 'document_root' no arquivo gcm/urls.py apontando para o caminho absoluto

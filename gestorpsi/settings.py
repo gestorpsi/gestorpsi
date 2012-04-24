@@ -28,12 +28,17 @@ EMAIL_FROM = 'GestorPsi <webmaster@gestorpsi.com.br>'
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'postgresql_psycopg2'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'gestor'             # Or path to database file if using sqlite3.
-DATABASE_USER = 'gestor'             # Not used with sqlite3.
-DATABASE_PASSWORD = 'gestor'         # Not used with sqlite3.
-DATABASE_HOST = '127.0.0.1'             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'gestor',                      # Or path to database file if using sqlite3.
+        'USER': 'gestor',                      # Not used with sqlite3.
+        'PASSWORD': 'gestor',                  # Not used with sqlite3.
+        'HOST': '127.0.0.1',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    }
+}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -76,11 +81,14 @@ MEDIA_ROOT = 'media/'
 #MEDIA_URL = 'http://192.168.0.200:8000/media/' *************AQUI****************
 MEDIA_URL = 'http://127.0.0.1:8000/media/'
 
+ADMIN_URL = '/media/'
+
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 #ADMIN_MEDIA_PREFIX = '/media_admin/' *************AQUI****************
 ADMIN_MEDIA_PREFIX = '/media_admin/'
+
 
 # Make this unique, and don't share it with anybody.
 #SECRET_KEY = '3%$a^8zp51kg@=4dz_o@gwiuvt2062kt8cimpjzg)ri37-5cq*'

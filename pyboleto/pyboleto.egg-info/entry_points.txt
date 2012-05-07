@@ -1,0 +1,3 @@
+[console_scripts]
+print_boleto_data = pyboleto.scripts.print_sample_data:print_test
+

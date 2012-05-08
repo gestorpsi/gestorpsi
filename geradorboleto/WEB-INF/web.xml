@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.4" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	<display-name>Gerador de Boletos - www.boletobancario.com</display-name>
+	
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+    <description>
+	This is a simple web application with a source code organization
+	based on the recommendations of the Application Developer's Guide.
+    </description>
+
+    <servlet>
+        <servlet-name>hello</servlet-name>
+        <servlet-class>mypackage.Hello</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>hello</servlet-name>
+        <url-pattern>/hello</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>helloServlet</servlet-name>
+        <servlet-class>mypackage.HelloServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>helloServlet</servlet-name>
+        <url-pattern>/helloservlet</url-pattern>
+    </servlet-mapping>
+</web-app>

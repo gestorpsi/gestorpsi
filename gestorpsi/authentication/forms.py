@@ -18,8 +18,8 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import Group
-from gestorpsi.registration.forms import RegistrationForm
-from gestorpsi.registration.models import RegistrationProfile
+from registration.forms import RegistrationForm
+from registration.models import RegistrationProfile
 from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, PlaceType, Room, RoomType
 from gestorpsi.authentication.models import Profile, Role

@@ -164,7 +164,6 @@ INSTALLED_APPS = (
     #'gestorpsi.socioeconomic',  <--- TO BE IMPLEMENTED SOON
     'gestorpsi.ehr',
     'gestorpsi.report',
-    'pyboleto',
     
     'swingtime',
     'registration',

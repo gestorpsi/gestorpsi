@@ -18,7 +18,8 @@ def register(request, success_url=None,
              form_class=RegistrationForm,
              template_name='registration/registration_form.html',
              extra_context=None):
-    if request.method == 'POST':
+    
+    if request.method == 'POST': #the full process of registration is done here
         form = form_class(data=request.POST)
 
         if Organization.objects.filter(short_name__iexact = slugify(request.POST.get('shortname'))):
@@ -30,6 +31,8 @@ def register(request, success_url=None,
             form.errors["username"] = ErrorList([error_msg])
         else:
             if form.is_valid():
+                from gcm.boleto_functions import gera_boleto_bradesco_teste
+                url_boleto = gera_boleto_bradesco_teste()
                 new_user = form.save(request)
                 send_mail('Nova organizacao em gestorpsi.com.br', 'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar https://gestorpsi.psico.net/gcm/', 'webmaster@gestorpsi.com.br', ['webmaster@gestorpsi.com.br'], fail_silently=False)
                 return HttpResponseRedirect(success_url or reverse('gcm-registration-complete'))

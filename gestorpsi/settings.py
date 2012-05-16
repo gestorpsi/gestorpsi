@@ -129,6 +129,7 @@ TEMPLATE_DIRS = (
     #"/home/gestor/demo/gestorpsi/templates"
     #"/home/gestorpsi/Desenvolvimento/Django/gestorpsi/templates"
     os.path.join(PROJECT_ROOT_PATH, "templates"),
+    os.path.join(PROJECT_ROOT_PATH, "gcm/templates"),
     "util/templatetags",
 )
 

@@ -17,6 +17,10 @@ from gestorpsi.gcm.forms.invoice import InvoiceForm
 from gestorpsi.organization.models import Organization
 from django.contrib.auth import views as auth_views
 
+import os
+GCM_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
+
+
 plan_list = { 'queryset':Plan.objects.all(), }
 plan_update = { 'model':Plan, 'post_save_redirect': '/gcm/plan/',}
 plan_add = { 'model':Plan, 'post_save_redirect': '/gcm/plan/', }
@@ -53,5 +57,5 @@ urlpatterns = patterns('',
     url(r'gcm/invoice/(?P<object_id>\d+)/$', update_object, invoice_update, name='invoice-update'),
     url(r'gcm/invoice/add/$', create_object, invoice_add, name='invoice-add'),
     #url(r'gcm/$', 'gcm.views.admin.', {'form_class': RegistrationForm, 'template_name':'gcm/registration_form.html' }, name='registration_register'),
-    url(r'gcm_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/usr/home/beta/app/gestorpsi/gcm/media/', 'show_indexes': False}),
+    url(r'gcm_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': os.path.join(GCM_ROOT_PATH, 'media/'), 'show_indexes': False}),
 )

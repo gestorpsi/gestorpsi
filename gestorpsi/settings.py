@@ -174,6 +174,7 @@ INSTALLED_APPS = (
     'gestorpsi.schedule',
     'reversion',
     'gestorpsi.frontend', #load at last
+    'gestorpsi.gcm',
 )
 
 AUTHENTICATION_BACKENDS = (

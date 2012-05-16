@@ -90,10 +90,8 @@ def gera_boleto_bradesco_teste():
     the_page = response.read()
 
     if len(the_page) == 40:
-        print url+the_page
         return url+the_page
     else:
-        print the_page
         return False
     
     

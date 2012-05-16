@@ -24,7 +24,15 @@ ADMINS = (
      ('GestorPsi', 'webmaster@gestorpsi.com.br'),
 )
 
-EMAIL_FROM = 'GestorPsi <webmaster@gestorpsi.com.br>'
+#EMAIL_FROM = 'GestorPsi <webmaster@gestorpsi.com.br>'
+EMAIL_FROM = 'peixegama@gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'peixegama@gmail.com'
+EMAIL_HOST_PASSWORD = 'quackquack22'
+EMAIL_HOST_PORT = 465
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_FROM
+
 
 MANAGERS = ADMINS
 
@@ -81,7 +89,7 @@ MEDIA_ROOT = 'media/'
 #MEDIA_URL = 'http://192.168.0.200:8000/media/' *************AQUI****************
 MEDIA_URL = 'http://127.0.0.1:8000/media/'
 
-ADMIN_URL = '/media/'
+ADMIN_URL = '/admin/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -175,6 +183,7 @@ INSTALLED_APPS = (
     'reversion',
     'gestorpsi.frontend', #load at last
     'gestorpsi.gcm',
+    'notification',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -213,9 +222,4 @@ REFERRAL_DISCHARGE_REASON_CANCELED = 20
 
 # registration
 ACCOUNT_ACTIVATION_DAYS=7
-EMAIL_HOST=''
-EMAIL_PORT=25
-EMAIL_HOST_USER=''
-EMAIL_HOST_PASSWORD=''
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER    # used by django registration
 

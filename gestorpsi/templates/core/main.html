@@ -118,7 +118,7 @@ GNU General Public License for more details.
     </ul>
 {% endif %}
 </div>
-{% if user.is_authenticated %}
+{% if user.is_authenticated and user.is_active %}
 	<div id="menu_log">
 		<ul>
 

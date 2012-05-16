@@ -9,6 +9,7 @@ from gestorpsi.gcm.forms.auth import RegistrationForm
 from gestorpsi.organization.models import Organization
 from registration.models import RegistrationProfile
 from django.core.mail import send_mail
+from django.core.mail import EmailMessage, BadHeaderError
 
 '''
 from django-registration
@@ -31,10 +32,24 @@ def register(request, success_url=None,
             form.errors["username"] = ErrorList([error_msg])
         else:
             if form.is_valid():
+                new_user = form.save(request)
+    
                 from gcm.boleto_functions import gera_boleto_bradesco_teste
                 url_boleto = gera_boleto_bradesco_teste()
-                new_user = form.save(request)
-                send_mail('Nova organizacao em gestorpsi.com.br', 'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar https://gestorpsi.psico.net/gcm/', 'webmaster@gestorpsi.com.br', ['webmaster@gestorpsi.com.br'], fail_silently=False)
+                
+                if not url_boleto:
+                    url_boleto = ''
+                
+                bcc_list = ['jayme@doois.com.br', ]
+                msg = EmailMessage()
+                msg.subject = 'Nova organizacao em gestorpsi.com.br'
+                msg.body = 'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar https://gestorpsi.psico.net/gcm/'
+                msg.body += '\n Boleto exemplo: '+url_boleto
+                #msg.from = 'GestoPSI <webmaster@gestorpsi.com.br>'
+                msg.to = ['webmaster@gestorpsi.com.br', ]
+                msg.bcc =  bcc_list
+                #msg.content_subtype = "text"  # Main content is now text/html
+                msg.send()
                 return HttpResponseRedirect(success_url or reverse('gcm-registration-complete'))
     else:
         form = form_class()
@@ -47,6 +62,7 @@ def register(request, success_url=None,
     return render_to_response(template_name,
                               { 'form': form },
                               context_instance=context)
+
 
 def object_activate(request, *args, **kwargs):
     if not request.user.is_superuser:

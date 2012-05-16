@@ -41,6 +41,7 @@ class RegistrationForm(RegistrationForm):
         user = RegistrationProfile.objects.create_inactive_user(username=self.cleaned_data['username'],
                                                                     password=self.cleaned_data['password1'],
                                                                     email=self.cleaned_data['email'],
+                                                                    site=None,
                                                                     send_email=send_email
                                                                     )
         user.username = user.username.strip().lower()
@@ -70,14 +71,19 @@ class RegistrationForm(RegistrationForm):
         profile.temp = self.cleaned_data['password1']      # temporary field (LDAP)
         profile.person = person
         profile.save()
-                
-        admin_role = Group.objects.get(name='administrator')
-        Role.objects.create(profile=profile, organization=organization, group=admin_role)
-        profile.user.groups.add(admin_role)
-                
-        professional_role = Group.objects.get(name='professional')
-        Role.objects.create(profile=profile, organization=organization, group=professional_role)
-        profile.user.groups.add(professional_role)
+        
+        try:
+            admin_role = Group.objects.get(name='administrator')
+            Role.objects.create(profile=profile, organization=organization, group=admin_role)
+            profile.user.groups.add(admin_role)
+        except:
+            pass
+        try:
+            professional_role = Group.objects.get(name='professional')
+            Role.objects.create(profile=profile, organization=organization, group=professional_role)
+            profile.user.groups.add(professional_role)
+        except:
+            pass
 
         careprof = CareProfessional()
         careprof.person = person

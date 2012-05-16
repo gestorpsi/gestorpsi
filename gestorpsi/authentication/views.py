@@ -53,6 +53,7 @@ def user_authentication(request):
     form = AuthenticationForm(data=request.POST)
     username = request.POST.get('username').strip().lower()
     password = request.POST.get('password')
+    
     if (unblocked_user(username)):
         user = authenticate(username=username, password=password)
         
@@ -63,8 +64,9 @@ def user_authentication(request):
             return render_to_response('registration/login.html', {'form': form, 'form_messages': form_messages })
 
         if user.is_staff or user.is_superuser:
+            login(request, user)
             return HttpResponseRedirect(ADMIN_URL)
-        
+
         # user has not confirmed registration yet
         if user.registrationprofile_set.all()[0].activation_key != 'ALREADY_ACTIVATED':
             form_messages = _('Your account has not been confirmated yet. Please check your email and use your activation code to continue')

@@ -65,7 +65,7 @@ def register(request, success_url=None,
 
 
 
-def register(request, success_url=None,
+def complete(request, success_url=None,
              template_name='gcm/registration_complete.html',
              extra_context=None):
     from gestorpsi.gcm.boleto_functions import gera_boleto_bradesco_teste

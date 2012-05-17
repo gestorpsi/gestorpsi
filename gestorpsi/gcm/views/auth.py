@@ -64,6 +64,21 @@ def register(request, success_url=None,
                               context_instance=context)
 
 
+
+def register(request, success_url=None,
+             template_name='gcm/registration_complete.html',
+             extra_context=None):
+    from gestorpsi.gcm.boleto_functions import gera_boleto_bradesco_teste
+    url_boleto = gera_boleto_bradesco_teste()
+
+    if extra_context is None:
+        extra_context = {}
+    context = RequestContext(request)
+    for key, value in extra_context.items():
+        context[key] = callable(value) and value() or value
+    return render_to_response(template_name, locals(), context_instance=context)
+
+
 def object_activate(request, *args, **kwargs):
     if not request.user.is_superuser:
         return HttpResponseRedirect('/gcm/login/?next=%s' % request.path)

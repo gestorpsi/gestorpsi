@@ -62,7 +62,8 @@ def user_authentication(request):
             set_trylogin(username)
             form_messages = _('Invalid username or password')
             return render_to_response('registration/login.html', {'form': form, 'form_messages': form_messages })
-
+        else:
+            request.session['user_aux_id'] = user.id
         if user.is_staff or user.is_superuser:
             login(request, user)
             return HttpResponseRedirect(ADMIN_URL)

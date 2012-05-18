@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import datetime
 import httplib
 import urllib
@@ -7,7 +8,7 @@ import re
 
 
 URL_GERADOR_BOLETOS = 'http://dev.geradorboletos.doois.com.br/bradesco/'
-#URL_GERADOR_BOLETOS = 'http://localhost:8080/boleto/bradesco/'
+URL_GERADOR_BOLETOS = 'http://localhost:8080/boleto/bradesco/'
 CHAVE_UNICA = ''
 
 
@@ -20,7 +21,7 @@ def gera_boleto_bradesco_teste():
 
     dados_teste = {}
     #INFORMANDO DADOS SOBRE O CEDENTE.
-    dados_teste['cedente_nome'] = "PROJETO Gestor"
+    dados_teste['cedente_nome'] = "Gestorpsi"
     dados_teste['cedente_cnpj'] = "00.000.208/0001-00"
     
     #INFORMANDO DADOS SOBRE O SACADO.
@@ -39,7 +40,7 @@ def gera_boleto_bradesco_teste():
     dados_teste['sacadoravalista_nome'] = "JRimum Enterprise"
     dados_teste['sacadoravalista_cnpj'] = "00.000.000/0001-91"
     
-    #Informando o endereço do sacador avalista.
+    #Informando o endereco do sacador avalista.
     dados_teste['enderecosacaval_uf'] = "DF"
     dados_teste['enderecosacaval_localidade'] = "Brasília"
     dados_teste['enderecosacaval_cep'] = "59000-000"
@@ -51,9 +52,11 @@ def gera_boleto_bradesco_teste():
     
     #Informando dados sobre a conta bancaria do titulo.
     #dados_teste['contabancaria'] = "BRADESCO"
-    #dados_teste['contabancaria_numerodaconta'] = "123456-0"
-    #dados_teste['contabancaria_carteira'] = "30"
-    #dados_teste['contabancaria_agencia'] = "1234-1"
+    dados_teste['contabancaria_numerodaconta'] = "123456"
+    dados_teste['contabancaria_numerodaconta_digito'] = "0"
+    dados_teste['contabancaria_carteira'] = "30"
+    dados_teste['contabancaria_agencia'] = "1234"
+    dados_teste['contabancaria_agencia_digito'] = "1"
     
     dados_teste['titulo_numerododocumento'] = "123456"
     dados_teste['titulo_nossonumero'] = "99345678912"
@@ -80,6 +83,8 @@ def gera_boleto_bradesco_teste():
     dados_teste['boleto_instrucao7'] = "PARA PAGAMENTO 7 até xx/xx/xxxx COBRAR O VALOR QUE VOCÊ QUISER!"
     dados_teste['boleto_instrucao8'] = "APÓS o Vencimento, Pagável Somente na Rede X."    
     
+    for p in dados_teste:
+        p = p.encode()
     
     url = URL_GERADOR_BOLETOS
     data = urllib.urlencode(dados_teste)
@@ -92,11 +97,32 @@ def gera_boleto_bradesco_teste():
     if len(the_page) == 40:
         return url+the_page
     else:
+        return the_page
+
+
+
+def gera_boleto_bradesco(dados):
+    '''
+    Receives a dict filled with the data that will be sent to the billet generator
+    and returns a permalink to the billet generated.
+    '''
+  
+    url = URL_GERADOR_BOLETOS
+    data = urllib.urlencode(dados)
+    #print datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S") 
+    #raise Exception(url)
+    req = urllib2.Request(url, data) #if the data parameter is here, it's a POST request
+    response = urllib2.urlopen(req)
+    the_page = response.read()
+
+    if len(the_page) == 40:
+        return url+the_page
+    else:
         return False
-    
+
     
 def main(argv=None):
-    gera_boleto_bradesco_teste()
+    print gera_boleto_bradesco_teste()
 
 
 if __name__ == "__main__":

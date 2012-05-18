@@ -1,5 +1,6 @@
-#Thu May 17 09:06:23 BRT 2012
+#Fri May 18 15:19:42 BRT 2012
 eclipse.preferences.version=1
+encoding//gestorpsi/admission/models.py=utf-8
 encoding//gestorpsi/authentication/forms.py=utf-8
 encoding//gestorpsi/authentication/models.py=utf-8
 encoding//gestorpsi/authentication/urls.py=utf-8
@@ -10,6 +11,10 @@ encoding//gestorpsi/frontend/views.py=utf-8
 encoding//gestorpsi/gcm/boleto_functions.py=utf-8
 encoding//gestorpsi/gcm/forms/auth.py=utf-8
 encoding//gestorpsi/gcm/urls.py=utf-8
+encoding//gestorpsi/gcm/views/auth.py=utf-8
+encoding//gestorpsi/organization/models.py=utf-8
+encoding//gestorpsi/organization/urls.py=utf-8
+encoding//gestorpsi/organization/views.py=utf-8
 encoding//gestorpsi/person/models.py=utf-8
 encoding//gestorpsi/service/models.py=utf-8
 encoding//gestorpsi/support/views.py=utf-8

@@ -41,6 +41,7 @@ urlpatterns = patterns('',
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'media/', 'show_indexes': False}),
     (r'^profile/', include('gestorpsi.profile.urls')),
     (r'^util/', include('gestorpsi.util.urls')),
+    (r'^chaining/', include('smart_selects.urls')),
 )
 
 if 'rosetta' in settings.INSTALLED_APPS:

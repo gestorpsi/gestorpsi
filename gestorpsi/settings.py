@@ -173,6 +173,7 @@ INSTALLED_APPS = (
     #'gestorpsi.socioeconomic',  <--- TO BE IMPLEMENTED SOON
     'gestorpsi.ehr',
     'gestorpsi.report',
+    'gestorpsi.boleto',
     
     'swingtime',
     'registration',
@@ -184,6 +185,7 @@ INSTALLED_APPS = (
     'gestorpsi.frontend', #load at last
     'gestorpsi.gcm',
     'notification',
+    'smart_selects',
 )
 
 AUTHENTICATION_BACKENDS = (

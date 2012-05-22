@@ -1,14 +1,23 @@
-#Fri May 18 15:19:42 BRT 2012
+#Mon May 21 15:15:18 BRT 2012
 eclipse.preferences.version=1
+encoding//gestorpsi/address/models.py=utf-8
 encoding//gestorpsi/admission/models.py=utf-8
+encoding//gestorpsi/admission/views.py=utf-8
 encoding//gestorpsi/authentication/forms.py=utf-8
 encoding//gestorpsi/authentication/models.py=utf-8
 encoding//gestorpsi/authentication/urls.py=utf-8
 encoding//gestorpsi/authentication/views.py=utf-8
+encoding//gestorpsi/boleto/admin.py=utf-8
+encoding//gestorpsi/boleto/functions.py=utf-8
+encoding//gestorpsi/boleto/models.py=utf-8
+encoding//gestorpsi/careprofessional/admin.py=utf-8
 encoding//gestorpsi/client/models.py=utf-8
+encoding//gestorpsi/document/admin.py=utf-8
+encoding//gestorpsi/ehr/forms.py=utf-8
+encoding//gestorpsi/ehr/models.py=utf-8
+encoding//gestorpsi/frontend/models.py=utf-8
 encoding//gestorpsi/frontend/urls.py=utf-8
 encoding//gestorpsi/frontend/views.py=utf-8
-encoding//gestorpsi/gcm/boleto_functions.py=utf-8
 encoding//gestorpsi/gcm/forms/auth.py=utf-8
 encoding//gestorpsi/gcm/urls.py=utf-8
 encoding//gestorpsi/gcm/views/auth.py=utf-8

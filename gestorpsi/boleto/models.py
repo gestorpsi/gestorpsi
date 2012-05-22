@@ -19,6 +19,7 @@ from django.db import models
 from django.utils.translation import ugettext as _
 from gestorpsi.address.models import State, City
 from smart_selects.db_fields import ChainedForeignKey
+from django.core.validators import MaxValueValidator, MinLengthValidator
 
 
 class BradescoBilletData(models.Model):
@@ -66,8 +67,7 @@ class BradescoBilletData(models.Model):
     contabancaria_numerodaconta_digito.widget = forms.TextInput(attrs={"mask": "9",})
     contabancaria_numerodaconta_digito.verbose_name = _("Verifier digit")
     contabancaria_numerodaconta_digito.help_text = _("Verifier digit of the bank account of the seller.")
-    contabancaria_carteira = models.IntegerField(null=False, blank=False)
-    contabancaria_carteira.widget = forms.TextInput(attrs={"mask": "99",})
+    contabancaria_carteira = models.PositiveIntegerField(null=False, blank=False, validators=[MaxValueValidator(99)])
     contabancaria_carteira.verbose_name = _("Seller's wallet")
     contabancaria_carteira.help_text = _("Seller's bank wallet number")
     contabancaria_agencia = models.CharField(max_length=255, null=False, blank=False)
@@ -80,8 +80,7 @@ class BradescoBilletData(models.Model):
     contabancaria_agencia_digito.help_text = _("Seller's account agency verifier digit")
 
 
-    titulo_nossonumero = models.CharField(max_length=20, null=False, blank=False)
-    titulo_nossonumero.widget = forms.TextInput(attrs={"mask": "/[0-9]{11,20}/",})
+    titulo_nossonumero = models.CharField(max_length=20, null=False, blank=False, validators=[MinLengthValidator(11)])
     titulo_nossonumero.verbose_name = _("\"Our number\"")
     titulo_nossonumero.help_text = _("Number registered in Bradesco to register the receiving of billets.")
     

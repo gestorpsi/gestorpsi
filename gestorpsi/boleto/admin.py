@@ -29,6 +29,7 @@ from django.db import models
 from gestorpsi.address.models import State, City
 from django.utils.translation import ugettext as _
 from smart_selects.db_fields import ChainedForeignKey
+from django.core.validators import MinLengthValidator, MaxValueValidator
 
 class BradescoBilletDataAdminForm(forms.ModelForm):
     
@@ -38,13 +39,12 @@ class BradescoBilletDataAdminForm(forms.ModelForm):
     enderecosacaval_cep = forms.CharField(widget = forms.TextInput(attrs={"mask": "99999-999",}) )
     contabancaria_numerodaconta = forms.CharField(widget = forms.TextInput(attrs={"mask": "999999",}) )
     contabancaria_numerodaconta_digito = forms.CharField(widget = forms.TextInput(attrs={"mask": "9",}) )
-    contabancaria_carteira = forms.CharField(widget = forms.TextInput(attrs={"mask": "99",}) )
     contabancaria_agencia = forms.CharField(widget = forms.TextInput(attrs={"mask": "9999",}) )
     contabancaria_agencia_digito = forms.CharField(widget = forms.TextInput(attrs={"mask": "9",}) )
-    titulo_nossonumero = forms.CharField(widget = forms.TextInput(attrs={"mask": "/[0-9]{11,20}/",}) )
     titulo_digitodonossonumero = forms.CharField(widget = forms.TextInput(attrs={"mask": "9",}) )
     
     
+    titulo_nossonumero = models.CharField(max_length=20, null=False, blank=False, validators=[MinLengthValidator(11)])
     cedente_nome = models.CharField(max_length=255, null=False, blank=False)
     sacadoravalista_nome = models.CharField(max_length=255, null=False, blank=False)
     enderecosacaval_bairro = models.CharField(max_length=255, null=False, blank=False)
@@ -52,6 +52,7 @@ class BradescoBilletDataAdminForm(forms.ModelForm):
     enderecosacaval_numero = models.CharField(max_length=20, null=False, blank=False)
     enderecosacaval_uf = models.ForeignKey(State, null=False, blank=False)
     enderecosacaval_localidade = ChainedForeignKey(City, chained_field='enderecosacaval_uf', chained_model_field='state', null=False, blank=False)
+    contabancaria_carteira = models.PositiveIntegerField(null=False, blank=False, validators=[MaxValueValidator(99)])
     cedente_nome.label = _("Seller's name")
     cedente_nome.help_text = _("Seller (company that will receive the money).")
     cedente_cnpj.label = _("Seller's CNPJ")

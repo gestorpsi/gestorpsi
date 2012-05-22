@@ -113,7 +113,7 @@ def gera_boleto_bradesco(resp_usuario_id):
     from gestorpsi.document.models import Document, TypeDocument
     from gestorpsi.address.models import City, Address, Country
 
-    user = User.objects.get( pk=int(request.session['user_aux_id']) )
+    user = User.objects.get( pk=int(resp_usuario_id) )
     profile = user.get_profile()
     person = profile.person
 

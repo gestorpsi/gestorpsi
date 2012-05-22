@@ -8,7 +8,7 @@ import re
 
 
 URL_GERADOR_BOLETOS = 'http://dev.geradorboletos.doois.com.br/bradesco/'
-URL_GERADOR_BOLETOS = 'http://localhost:8080/boleto/bradesco/'
+#URL_GERADOR_BOLETOS = 'http://localhost:8080/boleto/bradesco/'
 CHAVE_UNICA = ''
 
 

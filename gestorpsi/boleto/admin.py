@@ -30,6 +30,7 @@ from gestorpsi.address.models import State, City
 from django.utils.translation import ugettext as _
 from smart_selects.db_fields import ChainedForeignKey
 from django.core.validators import MinLengthValidator, MaxValueValidator
+from django.utils.encoding import smart_str
 
 class BradescoBilletDataAdminForm(forms.ModelForm):
     

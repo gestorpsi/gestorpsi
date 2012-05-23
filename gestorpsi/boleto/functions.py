@@ -114,7 +114,11 @@ def gera_boleto_bradesco(resp_usuario_id):
     from django.contrib.auth.models import User
     from gestorpsi.document.models import Document, TypeDocument
     from gestorpsi.address.models import City, Address, Country
-
+    
+    from gestorpsi.gcm.models import Plan, Invoice
+    from gestorpsi.organization.models import Organization
+    
+    
     user = User.objects.get( pk=int(resp_usuario_id) )
     profile = user.get_profile()
     person = profile.person
@@ -126,6 +130,9 @@ def gera_boleto_bradesco(resp_usuario_id):
     addr = endereco = person.address.all()[0]
     
     data = BradescoBilletData.objects.all()[0]
+    
+    org = Organization.objects.filter(organization__isnull=True).filter(person__profile__user=user)[0]
+    inv = Invoice.objects.get(organization=org)
     
     dados = {}
     #INFORMANDO DADOS SOBRE O CEDENTE (quem vai receber).
@@ -172,19 +179,19 @@ def gera_boleto_bradesco(resp_usuario_id):
     
     
 
-    dados['titulo_deducao'] = "0"
-    dados['titulo_mora'] = "0"
+    dados['titulo_deducao'] = "0.00"
+    dados['titulo_mora'] = "0.00"
     dados['titulo_acrecimo'] = "0.00"
-    dados['titulo_valorcobrado'] = "0"
-    dados['titulo_desconto'] = "0.05"
-    dados['titulo_valor'] = "1.23"
+    dados['titulo_valorcobrado'] = "0.00"
+    dados['titulo_desconto'] = "0.00"
+    dados['titulo_valor'] = str(inv.plan.value)
     dados['titulo_datadodocumento'] = datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S") 
     dados['titulo_datadovencimento'] = (datetime.datetime.now() + datetime.timedelta(days=10)).strftime("%y-%m-%d %H:%M:%S") 
     
     #INFORMANDO OS DADOS SOBRE O BOLETO.
     dados['boleto_localpagamento'] = "Pagável preferencialmente no Bradesco."
     dados['boleto_instrucaoaosacado'] = "Pode ser pago em quaisquer agências."
-    dados['boleto_instrucao1'] = "Após vencimento cobrar multa de 50% e mora de 100% ao dia."
+    dados['boleto_instrucao1'] = "Após vencimento cobrar 50% de multa e 100% de juros ao dia."
     #dados['boleto_instrucao2'] = "PARA PAGAMENTO 2 até Amanhã Não cobre!"
     #dados['boleto_instrucao3'] = "PARA PAGAMENTO 3 até Depois de amanhã, OK, não cobre."
     #dados['boleto_instrucao4'] = "PARA PAGAMENTO 4 até 04/xx/xxxx de 4 dias atrás COBRAR O VALOR DE: R$ 01,00"

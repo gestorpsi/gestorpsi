@@ -201,7 +201,7 @@ def register(request, success_url=None,
         else:
             if form.is_valid():
                 new_user = form.save()
-                return HttpResponseRedirect(success_url or reverse('registration_complete'))
+                return HttpResponseRedirect(success_url or reverse('gcm-registration-complete'))
     else:
         form = form_class()
     

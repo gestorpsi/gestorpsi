@@ -69,8 +69,8 @@ def register(request, success_url=None,
 
 
 def complete(request, success_url=None,
-             template_name='gcm/registration_complete.html',
              extra_context=None):
+    template_name='gcm/registration_complete.html'
     from gestorpsi.boleto.functions import *
     from django.contrib.auth.models import User
     from gestorpsi.document.models import Document, TypeDocument

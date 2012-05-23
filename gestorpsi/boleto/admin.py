@@ -35,8 +35,8 @@ from django.utils.encoding import smart_str
 class BradescoBilletDataAdminForm(forms.ModelForm):
     
 
-    cedente_cnpj = forms.CharField(widget = forms.TextInput(attrs={"mask": "99.999.999/9999-99",}) )
-    sacadoravalista_cnpj = forms.CharField(widget = forms.TextInput(attrs={"mask": "99.999.999/9999-99",}) )
+    cedente_cnpj = forms.CharField(widget = forms.TextInput(attrs={"mask": "99.999.999/9999",}) )
+    sacadoravalista_cnpj = forms.CharField(widget = forms.TextInput(attrs={"mask": "99.999.999/9999",}) )
     enderecosacaval_cep = forms.CharField(widget = forms.TextInput(attrs={"mask": "99999-999",}) )
     contabancaria_numerodaconta = forms.CharField(widget = forms.TextInput(attrs={"mask": "999999",}) )
     contabancaria_numerodaconta_digito = forms.CharField(widget = forms.TextInput(attrs={"mask": "9",}) )
@@ -101,6 +101,8 @@ class BradescoBilletDataAdminForm(forms.ModelForm):
         css = {
               "all": (settings.MEDIA_URL+"css/boleto.admin.css", )
         }
+
+
 
 
 class BradescoBilletDataAdmin(admin.ModelAdmin):

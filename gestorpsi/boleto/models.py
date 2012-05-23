@@ -28,7 +28,7 @@ class BradescoBilletData(models.Model):
     cedente_nome.verbose_name = _("Seller's name")
     cedente_nome.help_text = _("Seller (company that will receive the money).")
     cedente_cnpj = models.CharField(max_length=20, null=False, blank=False)
-    cedente_cnpj.widget = forms.TextInput(attrs={"mask": "99.999.999/9999-99",})
+    cedente_cnpj.widget = forms.TextInput(attrs={"mask": "99.999.999/9999",})
     cedente_cnpj.verbose_name = _("Seller's CNPJ")
     cedente_cnpj.help_text = ""
     
@@ -36,7 +36,7 @@ class BradescoBilletData(models.Model):
     sacadoravalista_nome.verbose_name = _("Guarantor's name")
     sacadoravalista_nome.help_text = _("Guarantor (the person that takes responsibility over the transaction).")
     sacadoravalista_cnpj = models.CharField(max_length=20, null=False, blank=False)
-    sacadoravalista_cnpj.widget = forms.TextInput(attrs={"mask": "99.999.999/9999-99",})
+    sacadoravalista_cnpj.widget = forms.TextInput(attrs={"mask": "99.999.999/9999",})
     sacadoravalista_cnpj.verbose_name = _("Guarantor's CNPJ")
     sacadoravalista_cnpj.help_text = ""
 

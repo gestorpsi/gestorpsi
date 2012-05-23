@@ -6,6 +6,8 @@ import urllib
 import urllib2
 import re
 
+from django.utils.encoding import smart_str, force_unicode
+
 
 URL_GERADOR_BOLETOS = 'http://dev.geradorboletos.doois.com.br/bradesco/'
 #URL_GERADOR_BOLETOS = 'http://localhost:8080/boleto/bradesco/'
@@ -84,7 +86,7 @@ def gera_boleto_bradesco_teste():
     dados_teste['boleto_instrucao8'] = "APÓS o Vencimento, Pagável Somente na Rede X."    
     
     for p in dados_teste:
-        p = p.encode()
+        p = smart_str(p).decode('utf-8')
     
     url = URL_GERADOR_BOLETOS
     data = urllib.urlencode(dados_teste)
@@ -158,7 +160,7 @@ def gera_boleto_bradesco(resp_usuario_id):
     dados['sacadoravalista_cnpj'] = data.sacadoravalista_cnpj
     
     #Informando o endereço do sacador avalista.
-    dados['enderecosacaval_uf'] = data.enderecosacaval_uf
+    dados['enderecosacaval_uf'] = data.enderecosacaval_uf.shortName
     dados['enderecosacaval_localidade'] = data.enderecosacaval_localidade 
     dados['enderecosacaval_cep'] = data.enderecosacaval_cep
     dados['enderecosacaval_bairro'] = data.enderecosacaval_bairro
@@ -200,7 +202,10 @@ def gera_boleto_bradesco(resp_usuario_id):
     #dados['boleto_instrucao5'] = "PARA PAGAMENTO 5 até 05/xx/xxxx COBRAR O VALOR DE: R$ 02,00"
     #dados['boleto_instrucao6'] = "PARA PAGAMENTO 6 até 06/xx/xxxx COBRAR O VALOR DE: R$ 03,00"
     #dados['boleto_instrucao7'] = "PARA PAGAMENTO 7 até xx/xx/xxxx COBRAR O VALOR QUE VOCÊ QUISER!"
-    #dados['boleto_instrucao8'] = "APÓS o Vencimento, Pagável Somente na Rede X."  
+    #dados['boleto_instrucao8'] = "APÓS o Vencimento, Pagável Somente na Rede X."   
+    
+    for p in dados.keys():
+        dados[p] = smart_str(dados[p])
   
   
     url = URL_GERADOR_BOLETOS

@@ -152,7 +152,7 @@ class BradescoBilletDataAdminForm(forms.ModelForm):
 
     class Media:
         js = (
-              settings.MEDIA_URL+"js/jquery.maskedinput-1.1.3.pack.js",
+              settings.MEDIA_URL+"js/jquery.maskedinput-1.1.3.admin.js",
               settings.MEDIA_URL+"js/boleto.admin.js",
         )
         css = {

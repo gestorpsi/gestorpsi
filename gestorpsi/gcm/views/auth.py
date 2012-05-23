@@ -35,9 +35,10 @@ def register(request, success_url=None,
         else:
             if form.is_valid():
                 new_user = form.save(request)
-    
-                from gestorpsi.boleto.functions import gera_boleto_bradesco_teste
-                url_boleto = gera_boleto_bradesco_teste()
+                
+                from django.contrib.auth.models import User
+                from gestorpsi.boleto.functions import *
+                url_boleto = gera_boleto_bradesco( User.objects.get(username__iexact=form.cleaned_data['username']).id )
                 
                 if not url_boleto:
                     url_boleto = ''

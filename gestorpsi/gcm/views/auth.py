@@ -75,7 +75,7 @@ def complete(request, success_url=None,
     from django.contrib.auth.models import User
     from gestorpsi.document.models import Document, TypeDocument
     from gestorpsi.address.models import City, Address, Country
-    request.session['user_aux_id'] = 12
+
     if 'user_aux_id' in request.session:
         url_boleto = gera_boleto_bradesco(request.session['user_aux_id'])
 

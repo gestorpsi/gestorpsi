@@ -32,6 +32,9 @@ from smart_selects.db_fields import ChainedForeignKey
 from django.core.validators import BaseValidator, MinLengthValidator, MaxValueValidator
 from django.core import exceptions
 from django.utils.encoding import smart_str
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
+
 
 def CNPJValidator(value):
     def generate_digits(value):
@@ -111,7 +114,7 @@ class BradescoBilletDataAdminForm(forms.ModelForm):
     enderecosacaval_uf = models.ForeignKey(State, null=False, blank=False)
     enderecosacaval_localidade = ChainedForeignKey(City, chained_field='enderecosacaval_uf', chained_model_field='state', null=False, blank=False)
     contabancaria_carteira = models.PositiveIntegerField(null=False, blank=False, validators=[MaxValueValidator(99)])
-    cedente_nome.label = _("Seller's name")
+    cedente_nome.verbose_name = _("Seller's name")
     cedente_nome.help_text = _("Seller (company that will receive the money).")
     cedente_cnpj.label = _("Seller's CNPJ")
     cedente_cnpj.help_text = ""
@@ -167,6 +170,36 @@ class BradescoBilletDataAdmin(admin.ModelAdmin):
 
         
     form = BradescoBilletDataAdminForm
+    actions = None
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    #view para listagem de objetos deste tipo
+    def changelist_view(self, request, extra_context=None, **kwargs):
+        c = BradescoBilletData.objects.all()[0]
+        return HttpResponseRedirect( reverse('admin:boleto_bradescobilletdata_change', args=(c.id,)) )
+
+    fieldsets = (
+        ( _('Seller'), {
+            'fields': ('cedente_nome', 'cedente_cnpj')
+        }),
+        ( _('Guarantor'), {
+            'fields': ('sacadoravalista_nome', 'sacadoravalista_cnpj', 'enderecosacaval_uf',
+                       'enderecosacaval_localidade', 'enderecosacaval_cep', 'enderecosacaval_bairro', 
+                       'enderecosacaval_logradouro', 'enderecosacaval_numero')
+        }),
+        ( _('Bank account'), {
+            'fields': ('contabancaria_numerodaconta', 'contabancaria_numerodaconta_digito', 
+                       'contabancaria_carteira', 'contabancaria_agencia', 'contabancaria_agencia_digito')
+        }),
+        ( _('Title'), {
+            'fields': ('titulo_nossonumero', 'titulo_digitodonossonumero')
+        }),
+    )
 
     #formfield_overrides = {
     #    models.TextField: {'widget': RichTextEditorWidget},

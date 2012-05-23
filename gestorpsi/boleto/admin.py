@@ -29,14 +29,71 @@ from django.db import models
 from gestorpsi.address.models import State, City
 from django.utils.translation import ugettext as _
 from smart_selects.db_fields import ChainedForeignKey
-from django.core.validators import MinLengthValidator, MaxValueValidator
+from django.core.validators import BaseValidator, MinLengthValidator, MaxValueValidator
+from django.core import exceptions
 from django.utils.encoding import smart_str
 
-class BradescoBilletDataAdminForm(forms.ModelForm):
+def CNPJValidator(value):
+    def generate_digits(value):
+        cnpj = value
+        if len( cnpj ) != 18:
+            return False;
+        else:
+            soma = 0
+            soma += int(cnpj[0])*5
+            soma += int(cnpj[1])*4
+            soma += int(cnpj[3])*3
+            soma += int(cnpj[4])*2
+            soma += int(cnpj[5])*9
+            soma += int(cnpj[7])*8
+            soma += int(cnpj[8])*7
+            soma += int(cnpj[9])*6
+            soma += int(cnpj[11])*5
+            soma += int(cnpj[12])*4
+            soma += int(cnpj[13])*3
+            soma += int(cnpj[14])*2
+            
+            resto = soma % 11
+            if resto < 2:
+                digito1 = 0
+            else:
+                digito1 = 11 - resto
+            
+            soma = 0
+            soma += int(cnpj[0])*6
+            soma += int(cnpj[1])*5
+            soma += int(cnpj[3])*4
+            soma += int(cnpj[4])*3
+            soma += int(cnpj[5])*2
+            soma += int(cnpj[7])*9
+            soma += int(cnpj[8])*8
+            soma += int(cnpj[9])*7
+            soma += int(cnpj[11])*6
+            soma += int(cnpj[12])*5
+            soma += int(cnpj[13])*4
+            soma += int(cnpj[14])*3
+            soma += int(cnpj[16])*2 
+            
+            resto = soma % 11
+            if resto < 2:
+                digito2 = 0
+            else:
+                digito2 = 11 - resto
+            return str(digito1) + str(digito2)
+
+    def validate(digits, value):
+        return digits == ( value[16] + value[17] ) 
+
+    digits = generate_digits(value)
+    if not validate(digits, value):
+        raise exceptions.ValidationError( _(u'The CNPJ %s is not valid (right digits for testing purpose: %s).' % (value, digits)) )  
     
 
-    cedente_cnpj = forms.CharField(widget = forms.TextInput(attrs={"mask": "99.999.999/9999-99",}) )
-    sacadoravalista_cnpj = forms.CharField(widget = forms.TextInput(attrs={"mask": "99.999.999/9999",}) )
+
+class BradescoBilletDataAdminForm(forms.ModelForm):
+
+    cedente_cnpj = forms.CharField(widget = forms.TextInput(attrs={"mask": "99.999.999/9999-99",}), validators=[CNPJValidator]  )
+    sacadoravalista_cnpj = forms.CharField(widget = forms.TextInput(attrs={"mask": "99.999.999/9999-99",}), validators=[CNPJValidator] )
     enderecosacaval_cep = forms.CharField(widget = forms.TextInput(attrs={"mask": "99999-999",}) )
     contabancaria_numerodaconta = forms.CharField(widget = forms.TextInput(attrs={"mask": "999999",}) )
     contabancaria_numerodaconta_digito = forms.CharField(widget = forms.TextInput(attrs={"mask": "9",}) )

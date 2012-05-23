@@ -36,7 +36,7 @@ class BradescoBilletData(models.Model):
     sacadoravalista_nome.verbose_name = _("Guarantor's name")
     sacadoravalista_nome.help_text = _("Guarantor (the person that takes responsibility over the transaction).")
     sacadoravalista_cnpj = models.CharField(max_length=20, null=False, blank=False)
-    sacadoravalista_cnpj.widget = forms.TextInput(attrs={"mask": "99.999.999/9999",})
+    sacadoravalista_cnpj.widget = forms.TextInput(attrs={"mask": "99.999.999/9999-99",})
     sacadoravalista_cnpj.verbose_name = _("Guarantor's CNPJ")
     sacadoravalista_cnpj.help_text = ""
 
@@ -81,7 +81,7 @@ class BradescoBilletData(models.Model):
     contabancaria_agencia_digito.help_text = _("Seller's account agency verifier digit")
 
 
-    titulo_nossonumero = models.CharField(max_length=20, null=False, blank=False, validators=[MinLengthValidator(11)])
+    titulo_nossonumero = models.CharField(max_length=11, null=False, blank=False, validators=[MinLengthValidator(11)])
     titulo_nossonumero.verbose_name = _("\"Our number\"")
     titulo_nossonumero.help_text = _("Number registered in Bradesco to register the receiving of billets.")
     

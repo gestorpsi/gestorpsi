@@ -8,7 +8,7 @@
 	{% trans "Please wait until one of our operators to contact you for payment, and soon your account is enable for use." %}
 	{% if url_boleto %}
 	<br/><br/>
-	<a href="{{url_boleto}}">{% trans "Click here to get the billet to test the system payment." %}</a>
+	<a href="{{url_boleto}}">{% trans "Click here to get the billet to test the system payment." %}<br/>{{url_boleto}}</a>
 	{% endif %}
 </p>
 {% endblock %}

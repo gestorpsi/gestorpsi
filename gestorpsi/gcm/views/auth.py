@@ -38,8 +38,8 @@ def register(request, success_url=None,
                 
                 from django.contrib.auth.models import User
                 from gestorpsi.boleto.functions import *
-                url_boleto = gera_boleto_bradesco( User.objects.get(username__iexact=form.cleaned_data['username']).id )
-                
+                user_id = User.objects.get(username__iexact=form.cleaned_data['username']).id
+                url_boleto = gera_boleto_bradesco( user_id )
                 if not url_boleto:
                     url_boleto = ''
                 
@@ -53,6 +53,9 @@ def register(request, success_url=None,
                 msg.bcc =  bcc_list
                 #msg.content_subtype = "text"  # Main content is now text/html
                 msg.send()
+                
+                request.session['user_aux_id'] = user_id
+                
                 return HttpResponseRedirect(success_url or reverse('gcm-registration-complete'))
     else:
         form = form_class()

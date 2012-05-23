@@ -126,17 +126,6 @@ def gera_boleto_bradesco(resp_usuario_id):
     addr = endereco = person.address.all()[0]
     
     data = BradescoBilletData.objects.all()[0]
-
-    #if len(addr.addressLine2): text += " - %s" % addr.addressLine2
-    #if len(addr.neighborhood): text += " - %s" % addr.neighborhood
-    #if len(addr.zipCode): text += " - CEP: %s" % addr.zipCode
-    #raise Exception( endereco.city.name )
-    
-    #person.organization.add(organization)
-    #profile.org_active = organization                  #set org as active
-    #profile.temp = self.cleaned_data['password1']      # temporary field (LDAP)
-    #profile.person = person
-    #profile.save()
     
     dados = {}
     #INFORMANDO DADOS SOBRE O CEDENTE (quem vai receber).

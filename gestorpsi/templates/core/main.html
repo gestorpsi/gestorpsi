@@ -146,9 +146,7 @@ GNU General Public License for more details.
 	<div id="menus">
         <div id="main_menu">
         	<div style="height: 50px; widht: 100%; background-color: black; color: white;">
-        		{% for p in perms %}
-        		{{p}}<br/>
-        		{% endfor %}
+        		{{perms}}<br/>
         	</div>
             <ul>
                 {% if user.get_profile.person.is_client %}

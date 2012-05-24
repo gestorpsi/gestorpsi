@@ -186,7 +186,7 @@ def gera_boleto_bradesco(resp_usuario_id):
     dados['titulo_desconto'] = "0.00"
     dados['titulo_valor'] = str(inv.plan.value)
     dados['titulo_datadodocumento'] = datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S") 
-    dados['titulo_datadovencimento'] = (datetime.datetime.now() + datetime.timedelta(days=10)).strftime("%y-%m-%d %H:%M:%S") 
+    dados['titulo_datadovencimento'] = (datetime.datetime.now() + datetime.timedelta(days=7)).strftime("%y-%m-%d %H:%M:%S") 
     
     #INFORMANDO OS DADOS SOBRE O BOLETO.
     dados['boleto_localpagamento'] = "Pagável preferencialmente no Bradesco."

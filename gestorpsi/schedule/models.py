@@ -108,6 +108,10 @@ class ScheduleOccurrence(Occurrence):
 
     class Meta:
         ordering = ('start_time',)
+        permissions = (
+            ("schedule_list", "Can list occurrence confirmation"),
+        )
+
     
     def employees_active(self):
         return self.occurrenceemployees.client.filter(active=True)

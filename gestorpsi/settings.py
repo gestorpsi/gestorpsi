@@ -138,7 +138,7 @@ TEMPLATE_DIRS = (
     #"/home/gestorpsi/Desenvolvimento/Django/gestorpsi/templates"
     os.path.join(PROJECT_ROOT_PATH, "templates"),
     os.path.join(PROJECT_ROOT_PATH, "gcm/templates"),
-    "util/templatetags",
+    os.path.join(PROJECT_ROOT_PATH, "util/templatetags"),
 )
 
 INSTALLED_APPS = (

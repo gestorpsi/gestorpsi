@@ -118,7 +118,7 @@ GNU General Public License for more details.
     </ul>
 {% endif %}
 </div>
-{% if user.is_authenticated and user.is_active %}
+{% if user.is_authenticated %}
 	<div id="menu_log">
 		<ul>
 
@@ -145,6 +145,11 @@ GNU General Public License for more details.
     </div>
 	<div id="menus">
         <div id="main_menu">
+        	<div style="height: 50px; widht: 100%; background-color: black; color: white;">
+        		{% for p in perms %}
+        		{{p}}<br/>
+        		{% endfor %}
+        	</div>
             <ul>
                 {% if user.get_profile.person.is_client %}
                     <li><a id="start" class="main_menu {% block menu_client_start %}{% endblock %}" href="/frontend/">{% trans "start" %}</a></li>

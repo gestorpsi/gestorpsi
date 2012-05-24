@@ -145,9 +145,6 @@ GNU General Public License for more details.
     </div>
 	<div id="menus">
         <div id="main_menu">
-        	<div style="height: 50px; widht: 100%; background-color: black; color: white;">
-        		{{perms}}<br/>
-        	</div>
             <ul>
                 {% if user.get_profile.person.is_client %}
                     <li><a id="start" class="main_menu {% block menu_client_start %}{% endblock %}" href="/frontend/">{% trans "start" %}</a></li>

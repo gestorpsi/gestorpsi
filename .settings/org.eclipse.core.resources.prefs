@@ -1,4 +1,4 @@
-#Thu May 24 11:53:26 BRT 2012
+#Thu May 24 13:41:35 BRT 2012
 eclipse.preferences.version=1
 encoding//gestorpsi/address/models.py=utf-8
 encoding//gestorpsi/admission/models.py=utf-8
@@ -11,11 +11,15 @@ encoding//gestorpsi/boleto/admin.py=utf-8
 encoding//gestorpsi/boleto/functions.py=utf-8
 encoding//gestorpsi/boleto/models.py=utf-8
 encoding//gestorpsi/careprofessional/admin.py=utf-8
+encoding//gestorpsi/careprofessional/models.py=utf-8
 encoding//gestorpsi/client/models.py=utf-8
 encoding//gestorpsi/client/views.py=utf-8
+encoding//gestorpsi/contact/models.py=utf-8
+encoding//gestorpsi/device/models.py=utf-8
 encoding//gestorpsi/document/admin.py=utf-8
 encoding//gestorpsi/ehr/forms.py=utf-8
 encoding//gestorpsi/ehr/models.py=utf-8
+encoding//gestorpsi/employee/models.py=utf-8
 encoding//gestorpsi/frontend/models.py=utf-8
 encoding//gestorpsi/frontend/urls.py=utf-8
 encoding//gestorpsi/frontend/views.py=utf-8
@@ -30,6 +34,8 @@ encoding//gestorpsi/organization/models.py=utf-8
 encoding//gestorpsi/organization/urls.py=utf-8
 encoding//gestorpsi/organization/views.py=utf-8
 encoding//gestorpsi/person/models.py=utf-8
+encoding//gestorpsi/place/models.py=utf-8
+encoding//gestorpsi/report/models.py=utf-8
 encoding//gestorpsi/schedule/models.py=utf-8
 encoding//gestorpsi/service/models.py=utf-8
 encoding//gestorpsi/support/views.py=utf-8

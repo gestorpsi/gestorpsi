@@ -74,6 +74,9 @@ class Place( models.Model ):
 
     class Meta:
         ordering = ['label']
+        permissions = (
+            ("place_list", "Can list place"),
+        )
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

@@ -37,7 +37,10 @@ class Employee(models.Model):
         return u"%s" % self.person.name
 
     class Meta:
-        ordering = ['person']    
+        ordering = ['person']
+        permissions = (
+            ("employee_list", "Can list employee"),
+        )
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

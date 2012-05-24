@@ -50,6 +50,11 @@ PIE_CHART_WIDTH = 620
 PIE_CHART_HEIGHT = 180
 
 class Report(models.Model):
+    class Meta:
+        permissions = (
+            ("report_list", "Can list report"),
+        )
+
     def set_date(self, organization, date_start=None, date_end=None):
         if not date_start or not date_end:
             date_start = datetime.now()-relativedelta(months=1)

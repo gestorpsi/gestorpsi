@@ -69,6 +69,9 @@ class Device(models.Model):
    
     class Meta:
         ordering = ['description']
+        permissions = (
+            ("device_list", "Can list device"),
+        )
 
 
 

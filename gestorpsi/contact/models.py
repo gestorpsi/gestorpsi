@@ -171,6 +171,11 @@ class ContactManager(object):
 class Contact(object):
     objects = ContactManager()
     
+    class Meta:
+        permissions = (
+            ("contact_list", "Can list contact"),
+        )
+    
     def __unicode__(self):
         return u'%s' % self.name
 

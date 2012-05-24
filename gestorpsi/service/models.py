@@ -119,6 +119,9 @@ class Service(models.Model):
     class Meta:
         ordering = ['name']
         get_latest_by = ['date']
+        permissions = (
+            ("service_list", "Can list service"),
+        )
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

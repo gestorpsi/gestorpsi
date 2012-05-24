@@ -231,6 +231,9 @@ class CareProfessional(models.Model):
 
     class Meta:
         ordering = ['person']
+        permissions = (
+            ("careprofessional_list", "Can list careprofessional"),
+        )
 
     def _is_student(self):
         return False if not hasattr(self, 'studentprofile') else True

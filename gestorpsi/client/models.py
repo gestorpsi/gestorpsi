@@ -205,6 +205,9 @@ class Client(models.Model):
     
     class Meta:
         ordering = ['person']
+        permissions = (
+            ("client_list", "Can list client"),
+        )
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

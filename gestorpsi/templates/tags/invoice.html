@@ -1,0 +1,78 @@
+{% comment %}
+
+Copyright (C) 2012 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<div>
+	<fieldset class="signature organization" style="display: block;">
+		<legend>{% trans "Invoice" %}</legend>
+		<input type="hidden" name="invoice_id" value="{{ invoice.id }}" />
+	
+		<label>{% trans "Date" %}<br />
+			<input type="text" maxlength="20" class="medium" name="invoice_date" value="{{ invoice.date|date:'d/m/y' }}" />
+		</label>
+		<label>{% trans "Payed Date" %}<br />
+			<input type="text" maxlength="20" class="medium" name="invoice_date_payed" value="{{ invoice.date_payed|date:'d/m/y' }}" />
+		</label>
+		<label>{% trans "Due Date" %}<br />
+			<input type="text" maxlength="20" class="medium" name="invoice_due_date" value="{{ invoice.due_date|date:'d/m/y' }}" />
+		</label>
+		<label>{% trans "Expiry Date" %}<br />
+			<input type="text" maxlength="20" class="medium" name="invoice_expiry_date" value="{{ invoice.expiry_date|date:'d/m/y' }}" />
+		</label>
+
+		<br/><br/><br/>
+		<br/><br/><br/>
+		<br/><br/><br/>
+	
+		<label>{% trans "Value" %}<br />
+			<input type="text" maxlength="20" class="medium" name="invoice_ammount" value="{{ invoice.ammount|default:'' }}" />
+		</label>
+		<label>{% trans "Discount" %}<br />
+			<input type="text" maxlength="20" class="medium" name="invoice_discount" value="{{ invoice.discount|default:'' }}" />
+		</label>
+		<label>{% trans "Status" %}<br />
+			<select class="medium" name="invoice_status" >
+				{% for i, p in INVOICE_STATUS_CHOICES %}
+				<option value="{{i}}"{% if i == invoice.status %} selected="selected"{%endif%}>{{p}}</option>
+				{% endfor %}
+			</select>
+		</label>
+	</fieldset>
+	
+	<fieldset class="signature organization" style="display: block;">
+		<legend>{% trans "Plan" %}</legend>
+		<label>{% trans "Name" %}<br />
+		<input type="text" maxlength="50" class="big" name="plan_name" value="{{ invoice.plan.name }}" />
+		</label>
+		
+		<br/><br/><br/>
+		<br/><br/>
+		
+		<label>{% trans "Value" %}<br />
+		<input type="text" maxlength="20" class="small" name="plan_value" value="{{ invoice.plan.value }}" />
+		</label>
+		<label>{% trans "Duration" %}<br />
+		<input type="text" maxlength="20" class="small" name="plan_duration" value="{{ invoice.plan.duration }}" />
+		</label>
+		<label>{% trans "Active" %}<br />
+		<input type="text" maxlength="20" class="small" name="plan_active" value="{{ invoice.plan.active }}" />
+		</label>
+	</fieldset>
+
+</div>
+
+

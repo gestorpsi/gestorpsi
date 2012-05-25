@@ -29,6 +29,7 @@ from gestorpsi.internet.views import email_save, site_save, im_save
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.careprofessional.models import Profession, CareProfessional
 from gestorpsi.util.views import get_object_or_None
+from gestorpsi.gcm.models import Plan, Invoice, INVOICE_STATUS_CHOICES
 
 @permission_required_with_403('organization.organization_write')
 def professional_responsible_save(request, object, ids, names, subscriptions, organization_subscriptions, professions):
@@ -74,6 +75,8 @@ def form(request):
         'Activitie': Activitie.objects.all(),
         'professional_responsible': ProfessionalResponsible.objects.filter(organization = user.get_profile().org_active),
         'Professions': Profession.objects.all(),
+        'invoices': Invoice.objects.filter(organization=object),
+        'INVOICE_STATUS_CHOICES': INVOICE_STATUS_CHOICES
         },
         context_instance=RequestContext(request))
 

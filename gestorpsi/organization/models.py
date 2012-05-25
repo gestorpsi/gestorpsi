@@ -280,6 +280,7 @@ class Organization(models.Model):
         ordering = ['name']
         permissions = (
             ("organization_read", "Can read organization"),
+            ("organization_write", "Can write organization"),
         )
 
 reversion.register(Organization, follow=['provided_type', 'phones', 'address', 'emails', 'sites', 'instantMessengers'])

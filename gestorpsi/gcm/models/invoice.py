@@ -25,6 +25,9 @@ class Invoice(models.Model):
     discount = models.DecimalField(_('Desconto'), help_text=_('Valor para desconto. Utilizar apenas valor decimais aqui, NAO porcentagem. Ex.: 5.90'), decimal_places=2, max_digits=8, null=True, blank=True)
     status = models.IntegerField(_('Estado'), choices=INVOICE_STATUS_CHOICES, default=1)
     plan = models.ForeignKey(Plan, verbose_name=_('Plan'), null=True, blank=True)
+    billet_url = models.CharField(max_length=255, null=True, blank=True)
+    billet_url.verbose_name = _("Billet URL")
+    billet_url.help_text = _("URL of the billet to pay this invoice")
     
     class Meta:
         app_label = 'gcm'

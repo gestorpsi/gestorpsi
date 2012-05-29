@@ -186,6 +186,8 @@ INSTALLED_APPS = (
     'gestorpsi.gcm',
     'notification',
     'smart_selects',
+    'djcelery',
+    'kombu.transport.django',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -224,4 +226,24 @@ REFERRAL_DISCHARGE_REASON_CANCELED = 20
 
 # registration
 ACCOUNT_ACTIVATION_DAYS=7
+
+
+
+
+#django celery: task scheduling package
+BROKER_HOST = "localhost"
+BROKER_PORT = 5672
+BROKER_VHOST = "gestorpsi"
+BROKER_USER = "danielcj"
+BROKER_PASSWORD = "jcleinad"
+BROKER_BACKEND = "djkombu.transport.DatabaseTransport"
+
+CELERY_RESULT_BACKEND = "amqp"
+CELERY_IMPORTS = ("gestorpsi.async_tasks.tasks", )
+
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+import djcelery
+djcelery.setup_loader()
+#django celery: task scheduling package
 

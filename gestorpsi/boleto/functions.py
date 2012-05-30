@@ -133,6 +133,7 @@ def gera_boleto_bradesco(resp_usuario_id, days=7):
     if inv.billet_url is not None and len(inv.billet_url) > 5:
         return inv.billet_url
     else:
+        temp = (datetime.datetime.now() + datetime.timedelta(days=days)).strftime("%y-%m-%d %H:%M:%S")
         inv.due_date = (datetime.datetime.now() + datetime.timedelta(days=days)).strftime("%y-%m-%d %H:%M:%S")
         inv.save()
         

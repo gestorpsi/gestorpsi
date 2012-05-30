@@ -134,7 +134,7 @@ def gera_boleto_bradesco(resp_usuario_id, days=7):
         return inv.billet_url
     else:
         temp = (datetime.datetime.now() + datetime.timedelta(days=days)).strftime("%Y-%m-%d %H:%M:%S")
-        inv.due_date = temp#(datetime.datetime.now() + datetime.timedelta(days=days)).strftime("%y-%m-%d %H:%M:%S")
+        inv.due_date = temp
         inv.save()
         
         dados = {}

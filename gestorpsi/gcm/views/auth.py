@@ -7,11 +7,13 @@ from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.forms.util import ErrorList
-from gestorpsi.gcm.forms.auth import RegistrationForm
-from gestorpsi.organization.models import Organization
-from registration.models import RegistrationProfile
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage, BadHeaderError
+
+from gestorpsi.gcm.forms.auth import RegistrationForm
+from gestorpsi.organization.models import Organization, ProfessionalResponsible                
+from registration.models import RegistrationProfile
 
 '''
 from django-registration
@@ -34,16 +36,24 @@ def register(request, success_url=None,
             form.errors["username"] = ErrorList([error_msg])
         else:
             if form.is_valid():
-                new_user = form.save(request)
-                
-                from django.contrib.auth.models import User
+                form.save(request)
+
                 from gestorpsi.boleto.functions import *
-                user_id = User.objects.get(username__iexact=form.cleaned_data['username']).id
-                url_boleto = gera_boleto_bradesco( user_id )
+                user = User.objects.get(username__iexact=form.cleaned_data['username'])
+                profile = user.get_profile()
+                person = profile.person
+                org = Organization.objects.filter(organization__isnull=True).filter(person=person)[0]
+                prof = ProfessionalResponsible()
+                prof.organization = org
+                prof.person = person
+                prof.name = person.name
+                prof.save()
+                
+                url_boleto = gera_boleto_bradesco( user.id )
                 if not url_boleto:
                     url_boleto = ''
                 
-                bcc_list = ['jayme@doois.com.br', 'david@doois.com.br']
+                bcc_list = ['jayme@doois.com.br']#, 'david@doois.com.br']
                 msg = EmailMessage()
                 msg.subject = 'Teste: Nova organizacao em gestorpsi.com.br'
                 msg.body = 'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar https://gestorpsi.psico.net/gcm/'
@@ -54,7 +64,7 @@ def register(request, success_url=None,
                 #msg.content_subtype = "text"  # Main content is now text/html
                 msg.send()
                 
-                request.session['user_aux_id'] = user_id
+                request.session['user_aux_id'] = user.id
                 
                 return HttpResponseRedirect(success_url or reverse('gcm-registration-complete'))
     else:

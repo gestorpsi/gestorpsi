@@ -1,0 +1,321 @@
+[2012-05-29 09:26:47,685: WARNING/MainProcess] -------------- celery@platypus v2.5.3
+---- **** -----
+--- * ***  * -- [Configuration]
+-- * - **** ---   . broker:      amqp://danielcj@localhost:5672//
+- ** ----------   . loader:      djcelery.loaders.DjangoLoader
+- ** ----------   . logfile:     ./log.log@DEBUG
+- ** ----------   . concurrency: 2
+- ** ----------   . events:      OFF
+- *** --- * ---   . beat:        OFF
+-- ******* ----
+--- ***** ----- [Queues]
+ --------------   . celery:      exchange:celery (direct) binding:celery
+                  
+
+[Tasks]
+  . celery.backend_cleanup
+  . celery.chord
+  . celery.chord_unlock
+[2012-05-29 09:26:47,686: DEBUG/MainProcess] [Worker] Loading modules.
+[2012-05-29 09:26:47,690: DEBUG/MainProcess] [Worker] Claiming components.
+[2012-05-29 09:26:47,690: DEBUG/MainProcess] [Worker] Building boot step graph.
+[2012-05-29 09:26:47,691: DEBUG/MainProcess] [Worker] New boot order: ['queues', 'pool', 'mediator', 'beat', 'autoreloader', 'timers', 'state-db', 'autoscaler', 'consumer']
+[2012-05-29 09:26:47,695: DEBUG/MainProcess] Starting celery.concurrency.processes.TaskPool...
+[2012-05-29 09:26:47,697: DEBUG/MainProcess] created semlock with handle 3078504448
+[2012-05-29 09:26:47,697: DEBUG/MainProcess] created semlock with handle 3078500352
+[2012-05-29 09:26:47,697: DEBUG/MainProcess] created semlock with handle 3078496256
+[2012-05-29 09:26:47,698: DEBUG/MainProcess] created semlock with handle 3078492160
+[2012-05-29 09:26:47,698: DEBUG/MainProcess] created semlock with handle 3078488064
+[2012-05-29 09:26:47,698: DEBUG/MainProcess] created semlock with handle 3078483968
+[2012-05-29 09:26:47,698: DEBUG/MainProcess] created semlock with handle 3078479872
+[2012-05-29 09:26:47,698: DEBUG/MainProcess] created semlock with handle 3078475776
+[2012-05-29 09:26:47,699: DEBUG/MainProcess] created semlock with handle 3078471680
+[2012-05-29 09:26:47,701: DEBUG/MainProcess] created semlock with handle 3078467584
+[2012-05-29 09:26:47,702: DEBUG/MainProcess] created semlock with handle 3078463488
+[2012-05-29 09:26:47,702: DEBUG/MainProcess] created semlock with handle 3078459392
+[2012-05-29 09:26:47,703: DEBUG/MainProcess] created semlock with handle 3078455296
+[2012-05-29 09:26:47,703: DEBUG/MainProcess] created semlock with handle 3078451200
+[2012-05-29 09:26:47,707: INFO/PoolWorker-1] child process calling self.run()
+[2012-05-29 09:26:47,707: INFO/PoolWorker-2] child process calling self.run()
+[2012-05-29 09:26:47,710: DEBUG/MainProcess] worker handler starting
+[2012-05-29 09:26:47,711: DEBUG/MainProcess] result handler starting
+[2012-05-29 09:26:47,711: DEBUG/MainProcess] celery.concurrency.processes.TaskPool OK!
+[2012-05-29 09:26:47,711: DEBUG/MainProcess] Starting celery.worker.mediator.Mediator...
+[2012-05-29 09:26:47,712: DEBUG/MainProcess] celery.worker.mediator.Mediator OK!
+[2012-05-29 09:26:47,712: DEBUG/MainProcess] Starting celery.worker.consumer.Consumer...
+[2012-05-29 09:26:47,712: WARNING/MainProcess] celery@platypus has started.
+[2012-05-29 09:26:47,712: DEBUG/MainProcess] Consumer: Re-establishing connection to the broker...
+[2012-05-29 09:26:47,715: DEBUG/MainProcess] Start from server, version: 8.0, properties: {u'platform': u'Erlang/OTP', u'product': u'RabbitMQ', u'version': u'1.7.2', u'copyright': u'Copyright (C) 2007-2010 LShift Ltd., Cohesive Financial Technologies LLC., and Rabbit Technologies Ltd.', u'information': u'Licensed under the MPL.  See http://www.rabbitmq.com/'}, mechanisms: [u'PLAIN', u'AMQPLAIN'], locales: [u'en_US']
+[2012-05-29 09:26:47,717: DEBUG/MainProcess] Open OK! known_hosts [platypus:5672]
+[2012-05-29 09:26:47,717: DEBUG/MainProcess] Consumer: Connection established.
+[2012-05-29 09:26:47,717: DEBUG/MainProcess] using channel_id: 1
+[2012-05-29 09:26:47,718: DEBUG/MainProcess] Channel open
+[2012-05-29 09:26:47,720: DEBUG/MainProcess] basic.qos: prefetch_count->8
+[2012-05-29 09:26:47,720: DEBUG/MainProcess] using channel_id: 2
+[2012-05-29 09:26:47,721: DEBUG/MainProcess] Channel open
+[2012-05-29 09:26:47,726: DEBUG/MainProcess] Consumer: Starting message consumer...
+[2012-05-29 09:26:47,727: DEBUG/MainProcess] Consumer: Ready to accept tasks!
+[2012-05-29 09:26:55,799: WARNING/MainProcess] celeryd: Hitting Ctrl+C again will terminate all running tasks!
+[2012-05-29 09:26:55,799: WARNING/MainProcess] celeryd: Warm shutdown (MainProcess)
+[2012-05-29 09:26:55,800: DEBUG/MainProcess] Stopping celery.worker.consumer.Consumer...
+[2012-05-29 09:26:55,800: DEBUG/MainProcess] Consumer: Stopping consumers...
+[2012-05-29 09:26:55,800: DEBUG/MainProcess] Stopping celery.worker.mediator.Mediator...
+[2012-05-29 09:26:56,718: DEBUG/MainProcess] Stopping celery.concurrency.processes.TaskPool...
+[2012-05-29 09:26:56,719: DEBUG/MainProcess] closing pool
+[2012-05-29 09:26:57,320: DEBUG/MainProcess] worker handler exiting
+[2012-05-29 09:26:57,321: DEBUG/MainProcess] joining worker handler
+[2012-05-29 09:26:57,321: DEBUG/MainProcess] joining task handler
+[2012-05-29 09:26:57,321: DEBUG/MainProcess] task handler got sentinel
+[2012-05-29 09:26:57,322: DEBUG/MainProcess] task handler sending sentinel to result handler
+[2012-05-29 09:26:57,322: DEBUG/MainProcess] task handler sending sentinel to workers
+[2012-05-29 09:26:57,322: DEBUG/MainProcess] result handler got sentinel
+[2012-05-29 09:26:57,323: DEBUG/PoolWorker-2] worker got sentinel -- exiting
+[2012-05-29 09:26:57,323: DEBUG/MainProcess] ensuring that outqueue is not full
+[2012-05-29 09:26:57,323: DEBUG/PoolWorker-2] worker exiting after 0 tasks
+[2012-05-29 09:26:57,323: DEBUG/MainProcess] result handler exiting: len(cache)=0, thread._state=0
+[2012-05-29 09:26:57,323: INFO/PoolWorker-2] process shutting down
+[2012-05-29 09:26:57,323: DEBUG/PoolWorker-2] running all "atexit" finalizers with priority >= 0
+[2012-05-29 09:26:57,324: DEBUG/PoolWorker-2] running the remaining "atexit" finalizers
+[2012-05-29 09:26:57,324: INFO/PoolWorker-2] process exiting with exitcode 0
+[2012-05-29 09:26:57,326: DEBUG/MainProcess] task handler exiting
+[2012-05-29 09:26:57,326: DEBUG/PoolWorker-1] worker got sentinel -- exiting
+[2012-05-29 09:26:57,327: DEBUG/PoolWorker-1] worker exiting after 0 tasks
+[2012-05-29 09:26:57,327: DEBUG/MainProcess] joining result handler
+[2012-05-29 09:26:57,327: INFO/PoolWorker-1] process shutting down
+[2012-05-29 09:26:57,327: DEBUG/MainProcess] result handler joined
+[2012-05-29 09:26:57,327: DEBUG/PoolWorker-1] running all "atexit" finalizers with priority >= 0
+[2012-05-29 09:26:57,327: DEBUG/MainProcess] joining worker 0/2 (<Process(PoolWorker-1, started daemon)>)
+[2012-05-29 09:26:57,327: DEBUG/PoolWorker-1] running the remaining "atexit" finalizers
+[2012-05-29 09:26:57,328: INFO/PoolWorker-1] process exiting with exitcode 0
+[2012-05-29 09:26:57,330: DEBUG/MainProcess] joining worker 1/2 (<Process(PoolWorker-2, stopped daemon)>)
+[2012-05-29 09:26:57,331: DEBUG/MainProcess] Consumer: Closing consumer channel...
+[2012-05-29 09:26:57,332: DEBUG/MainProcess] Closed channel #1
+[2012-05-29 09:26:57,332: DEBUG/MainProcess] Consumer: Closing broadcast channel...
+[2012-05-29 09:26:57,335: DEBUG/MainProcess] Closed channel #2
+[2012-05-29 09:26:57,335: DEBUG/MainProcess] Consumer: Closing broker connection...
+[2012-05-29 09:26:57,337: DEBUG/MainProcess] celery.worker.consumer.Consumer OK!
+[2012-05-29 09:26:57,337: INFO/MainProcess] process shutting down
+[2012-05-29 09:26:57,338: DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
+[2012-05-29 09:26:57,338: DEBUG/MainProcess] finalizing pool
+[2012-05-29 09:26:57,338: DEBUG/MainProcess] helping task handler/workers to finish
+[2012-05-29 09:26:57,338: DEBUG/MainProcess] removing tasks from inqueue until task handler finished
+[2012-05-29 09:26:57,339: DEBUG/MainProcess] terminating workers
+[2012-05-29 09:26:57,339: DEBUG/MainProcess] joining task handler
+[2012-05-29 09:26:57,339: DEBUG/MainProcess] joining result handler
+[2012-05-29 09:26:57,339: DEBUG/MainProcess] joining pool workers
+[2012-05-29 09:26:57,340: DEBUG/MainProcess] pool workers joined
+[2012-05-29 09:26:57,340: DEBUG/MainProcess] running the remaining "atexit" finalizers
+[2012-05-29 09:27:00,585: WARNING/MainProcess] -------------- celery@platypus v2.5.3
+---- **** -----
+--- * ***  * -- [Configuration]
+-- * - **** ---   . broker:      amqp://danielcj@localhost:5672//
+- ** ----------   . loader:      djcelery.loaders.DjangoLoader
+- ** ----------   . logfile:     ./log.log@DEBUG
+- ** ----------   . concurrency: 2
+- ** ----------   . events:      OFF
+- *** --- * ---   . beat:        OFF
+-- ******* ----
+--- ***** ----- [Queues]
+ --------------   . celery:      exchange:celery (direct) binding:celery
+                  
+
+[Tasks]
+  . celery.backend_cleanup
+  . celery.chord
+  . celery.chord_unlock
+[2012-05-29 09:27:00,586: DEBUG/MainProcess] [Worker] Loading modules.
+[2012-05-29 09:27:00,590: DEBUG/MainProcess] [Worker] Claiming components.
+[2012-05-29 09:27:00,590: DEBUG/MainProcess] [Worker] Building boot step graph.
+[2012-05-29 09:27:00,591: DEBUG/MainProcess] [Worker] New boot order: ['queues', 'pool', 'mediator', 'beat', 'autoreloader', 'timers', 'state-db', 'autoscaler', 'consumer']
+[2012-05-29 09:27:00,595: DEBUG/MainProcess] Starting celery.concurrency.processes.TaskPool...
+[2012-05-29 09:27:00,596: DEBUG/MainProcess] created semlock with handle 3078029312
+[2012-05-29 09:27:00,597: DEBUG/MainProcess] created semlock with handle 3078025216
+[2012-05-29 09:27:00,597: DEBUG/MainProcess] created semlock with handle 3078021120
+[2012-05-29 09:27:00,597: DEBUG/MainProcess] created semlock with handle 3078017024
+[2012-05-29 09:27:00,597: DEBUG/MainProcess] created semlock with handle 3078012928
+[2012-05-29 09:27:00,598: DEBUG/MainProcess] created semlock with handle 3078008832
+[2012-05-29 09:27:00,598: DEBUG/MainProcess] created semlock with handle 3078004736
+[2012-05-29 09:27:00,598: DEBUG/MainProcess] created semlock with handle 3078000640
+[2012-05-29 09:27:00,598: DEBUG/MainProcess] created semlock with handle 3077996544
+[2012-05-29 09:27:00,601: DEBUG/MainProcess] created semlock with handle 3077992448
+[2012-05-29 09:27:00,602: DEBUG/MainProcess] created semlock with handle 3077988352
+[2012-05-29 09:27:00,602: DEBUG/MainProcess] created semlock with handle 3077984256
+[2012-05-29 09:27:00,603: DEBUG/MainProcess] created semlock with handle 3077980160
+[2012-05-29 09:27:00,603: DEBUG/MainProcess] created semlock with handle 3077976064
+[2012-05-29 09:27:00,603: INFO/PoolWorker-1] child process calling self.run()
+[2012-05-29 09:27:00,607: INFO/PoolWorker-2] child process calling self.run()
+[2012-05-29 09:27:00,607: DEBUG/MainProcess] worker handler starting
+[2012-05-29 09:27:00,608: DEBUG/MainProcess] celery.concurrency.processes.TaskPool OK!
+[2012-05-29 09:27:00,609: DEBUG/MainProcess] Starting celery.worker.mediator.Mediator...
+[2012-05-29 09:27:00,608: DEBUG/MainProcess] result handler starting
+[2012-05-29 09:27:00,609: DEBUG/MainProcess] celery.worker.mediator.Mediator OK!
+[2012-05-29 09:27:00,609: DEBUG/MainProcess] Starting celery.worker.consumer.Consumer...
+[2012-05-29 09:27:00,610: WARNING/MainProcess] celery@platypus has started.
+[2012-05-29 09:27:00,610: DEBUG/MainProcess] Consumer: Re-establishing connection to the broker...
+[2012-05-29 09:27:00,612: DEBUG/MainProcess] Start from server, version: 8.0, properties: {u'platform': u'Erlang/OTP', u'product': u'RabbitMQ', u'version': u'1.7.2', u'copyright': u'Copyright (C) 2007-2010 LShift Ltd., Cohesive Financial Technologies LLC., and Rabbit Technologies Ltd.', u'information': u'Licensed under the MPL.  See http://www.rabbitmq.com/'}, mechanisms: [u'PLAIN', u'AMQPLAIN'], locales: [u'en_US']
+[2012-05-29 09:27:00,613: DEBUG/MainProcess] Open OK! known_hosts [platypus:5672]
+[2012-05-29 09:27:00,614: DEBUG/MainProcess] Consumer: Connection established.
+[2012-05-29 09:27:00,614: DEBUG/MainProcess] using channel_id: 1
+[2012-05-29 09:27:00,615: DEBUG/MainProcess] Channel open
+[2012-05-29 09:27:00,616: DEBUG/MainProcess] basic.qos: prefetch_count->8
+[2012-05-29 09:27:00,617: DEBUG/MainProcess] using channel_id: 2
+[2012-05-29 09:27:00,617: DEBUG/MainProcess] Channel open
+[2012-05-29 09:27:00,624: DEBUG/MainProcess] Consumer: Starting message consumer...
+[2012-05-29 09:27:00,625: DEBUG/MainProcess] Consumer: Ready to accept tasks!
+[2012-05-29 09:27:02,063: WARNING/MainProcess] celeryd: Hitting Ctrl+C again will terminate all running tasks!
+[2012-05-29 09:27:02,064: WARNING/MainProcess] celeryd: Warm shutdown (MainProcess)
+[2012-05-29 09:27:02,064: DEBUG/MainProcess] Stopping celery.worker.consumer.Consumer...
+[2012-05-29 09:27:02,065: DEBUG/MainProcess] Consumer: Stopping consumers...
+[2012-05-29 09:27:02,065: DEBUG/MainProcess] Stopping celery.worker.mediator.Mediator...
+[2012-05-29 09:27:02,612: DEBUG/MainProcess] Stopping celery.concurrency.processes.TaskPool...
+[2012-05-29 09:27:02,612: DEBUG/MainProcess] closing pool
+[2012-05-29 09:27:03,011: DEBUG/MainProcess] worker handler exiting
+[2012-05-29 09:27:03,011: DEBUG/MainProcess] joining worker handler
+[2012-05-29 09:27:03,011: DEBUG/MainProcess] task handler got sentinel
+[2012-05-29 09:27:03,012: DEBUG/MainProcess] joining task handler
+[2012-05-29 09:27:03,012: DEBUG/MainProcess] task handler sending sentinel to result handler
+[2012-05-29 09:27:03,012: DEBUG/MainProcess] task handler sending sentinel to workers
+[2012-05-29 09:27:03,013: DEBUG/MainProcess] result handler got sentinel
+[2012-05-29 09:27:03,013: DEBUG/PoolWorker-2] worker got sentinel -- exiting
+[2012-05-29 09:27:03,013: DEBUG/MainProcess] ensuring that outqueue is not full
+[2012-05-29 09:27:03,013: DEBUG/PoolWorker-2] worker exiting after 0 tasks
+[2012-05-29 09:27:03,013: DEBUG/MainProcess] result handler exiting: len(cache)=0, thread._state=0
+[2012-05-29 09:27:03,014: INFO/PoolWorker-2] process shutting down
+[2012-05-29 09:27:03,014: DEBUG/PoolWorker-2] running all "atexit" finalizers with priority >= 0
+[2012-05-29 09:27:03,014: DEBUG/PoolWorker-2] running the remaining "atexit" finalizers
+[2012-05-29 09:27:03,014: INFO/PoolWorker-2] process exiting with exitcode 0
+[2012-05-29 09:27:03,016: DEBUG/MainProcess] task handler exiting
+[2012-05-29 09:27:03,016: DEBUG/PoolWorker-1] worker got sentinel -- exiting
+[2012-05-29 09:27:03,017: DEBUG/PoolWorker-1] worker exiting after 0 tasks
+[2012-05-29 09:27:03,017: INFO/PoolWorker-1] process shutting down
+[2012-05-29 09:27:03,017: DEBUG/PoolWorker-1] running all "atexit" finalizers with priority >= 0
+[2012-05-29 09:27:03,017: DEBUG/PoolWorker-1] running the remaining "atexit" finalizers
+[2012-05-29 09:27:03,018: DEBUG/MainProcess] joining result handler
+[2012-05-29 09:27:03,018: INFO/PoolWorker-1] process exiting with exitcode 0
+[2012-05-29 09:27:03,018: DEBUG/MainProcess] result handler joined
+[2012-05-29 09:27:03,018: DEBUG/MainProcess] joining worker 0/2 (<Process(PoolWorker-1, started daemon)>)
+[2012-05-29 09:27:03,020: DEBUG/MainProcess] joining worker 1/2 (<Process(PoolWorker-2, stopped daemon)>)
+[2012-05-29 09:27:03,020: DEBUG/MainProcess] Consumer: Closing consumer channel...
+[2012-05-29 09:27:03,022: DEBUG/MainProcess] Closed channel #1
+[2012-05-29 09:27:03,022: DEBUG/MainProcess] Consumer: Closing broadcast channel...
+[2012-05-29 09:27:03,025: DEBUG/MainProcess] Closed channel #2
+[2012-05-29 09:27:03,025: DEBUG/MainProcess] Consumer: Closing broker connection...
+[2012-05-29 09:27:03,026: DEBUG/MainProcess] celery.worker.consumer.Consumer OK!
+[2012-05-29 09:27:03,026: INFO/MainProcess] process shutting down
+[2012-05-29 09:27:03,027: DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
+[2012-05-29 09:27:03,027: DEBUG/MainProcess] finalizing pool
+[2012-05-29 09:27:03,027: DEBUG/MainProcess] helping task handler/workers to finish
+[2012-05-29 09:27:03,028: DEBUG/MainProcess] removing tasks from inqueue until task handler finished
+[2012-05-29 09:27:03,028: DEBUG/MainProcess] terminating workers
+[2012-05-29 09:27:03,028: DEBUG/MainProcess] joining task handler
+[2012-05-29 09:27:03,028: DEBUG/MainProcess] joining result handler
+[2012-05-29 09:27:03,029: DEBUG/MainProcess] joining pool workers
+[2012-05-29 09:27:03,029: DEBUG/MainProcess] pool workers joined
+[2012-05-29 09:27:03,029: DEBUG/MainProcess] running the remaining "atexit" finalizers
+[2012-05-29 09:27:07,645: WARNING/MainProcess] -------------- celery@platypus v2.5.3
+---- **** -----
+--- * ***  * -- [Configuration]
+-- * - **** ---   . broker:      amqp://danielcj@localhost:5672//
+- ** ----------   . loader:      djcelery.loaders.DjangoLoader
+- ** ----------   . logfile:     log.log@DEBUG
+- ** ----------   . concurrency: 2
+- ** ----------   . events:      OFF
+- *** --- * ---   . beat:        OFF
+-- ******* ----
+--- ***** ----- [Queues]
+ --------------   . celery:      exchange:celery (direct) binding:celery
+                  
+
+[Tasks]
+  . celery.backend_cleanup
+  . celery.chord
+  . celery.chord_unlock
+[2012-05-29 09:27:07,646: DEBUG/MainProcess] [Worker] Loading modules.
+[2012-05-29 09:27:07,650: DEBUG/MainProcess] [Worker] Claiming components.
+[2012-05-29 09:27:07,650: DEBUG/MainProcess] [Worker] Building boot step graph.
+[2012-05-29 09:27:07,650: DEBUG/MainProcess] [Worker] New boot order: ['queues', 'pool', 'mediator', 'beat', 'autoreloader', 'timers', 'state-db', 'autoscaler', 'consumer']
+[2012-05-29 09:27:07,655: DEBUG/MainProcess] Starting celery.concurrency.processes.TaskPool...
+[2012-05-29 09:27:07,656: DEBUG/MainProcess] created semlock with handle 3077910528
+[2012-05-29 09:27:07,656: DEBUG/MainProcess] created semlock with handle 3077906432
+[2012-05-29 09:27:07,657: DEBUG/MainProcess] created semlock with handle 3077902336
+[2012-05-29 09:27:07,657: DEBUG/MainProcess] created semlock with handle 3077898240
+[2012-05-29 09:27:07,657: DEBUG/MainProcess] created semlock with handle 3077894144
+[2012-05-29 09:27:07,657: DEBUG/MainProcess] created semlock with handle 3077890048
+[2012-05-29 09:27:07,658: DEBUG/MainProcess] created semlock with handle 3077885952
+[2012-05-29 09:27:07,658: DEBUG/MainProcess] created semlock with handle 3077881856
+[2012-05-29 09:27:07,658: DEBUG/MainProcess] created semlock with handle 3077877760
+[2012-05-29 09:27:07,660: DEBUG/MainProcess] created semlock with handle 3077873664
+[2012-05-29 09:27:07,661: DEBUG/MainProcess] created semlock with handle 3077869568
+[2012-05-29 09:27:07,662: DEBUG/MainProcess] created semlock with handle 3077865472
+[2012-05-29 09:27:07,662: DEBUG/MainProcess] created semlock with handle 3077861376
+[2012-05-29 09:27:07,663: DEBUG/MainProcess] created semlock with handle 3077857280
+[2012-05-29 09:27:07,666: INFO/PoolWorker-1] child process calling self.run()
+[2012-05-29 09:27:07,670: DEBUG/MainProcess] worker handler starting
+[2012-05-29 09:27:07,670: INFO/PoolWorker-2] child process calling self.run()
+[2012-05-29 09:27:07,673: DEBUG/MainProcess] result handler starting
+[2012-05-29 09:27:07,673: DEBUG/MainProcess] celery.concurrency.processes.TaskPool OK!
+[2012-05-29 09:27:07,673: DEBUG/MainProcess] Starting celery.worker.mediator.Mediator...
+[2012-05-29 09:27:07,674: DEBUG/MainProcess] celery.worker.mediator.Mediator OK!
+[2012-05-29 09:27:07,674: DEBUG/MainProcess] Starting celery.worker.consumer.Consumer...
+[2012-05-29 09:27:07,674: WARNING/MainProcess] celery@platypus has started.
+[2012-05-29 09:27:07,674: DEBUG/MainProcess] Consumer: Re-establishing connection to the broker...
+[2012-05-29 09:27:07,677: DEBUG/MainProcess] Start from server, version: 8.0, properties: {u'platform': u'Erlang/OTP', u'product': u'RabbitMQ', u'version': u'1.7.2', u'copyright': u'Copyright (C) 2007-2010 LShift Ltd., Cohesive Financial Technologies LLC., and Rabbit Technologies Ltd.', u'information': u'Licensed under the MPL.  See http://www.rabbitmq.com/'}, mechanisms: [u'PLAIN', u'AMQPLAIN'], locales: [u'en_US']
+[2012-05-29 09:27:07,678: DEBUG/MainProcess] Open OK! known_hosts [platypus:5672]
+[2012-05-29 09:27:07,678: DEBUG/MainProcess] Consumer: Connection established.
+[2012-05-29 09:27:07,679: DEBUG/MainProcess] using channel_id: 1
+[2012-05-29 09:27:07,679: DEBUG/MainProcess] Channel open
+[2012-05-29 09:27:07,681: DEBUG/MainProcess] basic.qos: prefetch_count->8
+[2012-05-29 09:27:07,682: DEBUG/MainProcess] using channel_id: 2
+[2012-05-29 09:27:07,682: DEBUG/MainProcess] Channel open
+[2012-05-29 09:27:07,689: DEBUG/MainProcess] Consumer: Starting message consumer...
+[2012-05-29 09:27:07,689: DEBUG/MainProcess] Consumer: Ready to accept tasks!
+[2012-05-29 09:27:13,462: WARNING/MainProcess] celeryd: Hitting Ctrl+C again will terminate all running tasks!
+[2012-05-29 09:27:13,463: WARNING/MainProcess] celeryd: Warm shutdown (MainProcess)
+[2012-05-29 09:27:13,463: DEBUG/MainProcess] Stopping celery.worker.consumer.Consumer...
+[2012-05-29 09:27:13,463: DEBUG/MainProcess] Consumer: Stopping consumers...
+[2012-05-29 09:27:13,464: DEBUG/MainProcess] Stopping celery.worker.mediator.Mediator...
+[2012-05-29 09:27:13,676: DEBUG/MainProcess] Stopping celery.concurrency.processes.TaskPool...
+[2012-05-29 09:27:13,677: DEBUG/MainProcess] closing pool
+[2012-05-29 09:27:14,079: DEBUG/MainProcess] worker handler exiting
+[2012-05-29 09:27:14,080: DEBUG/MainProcess] joining worker handler
+[2012-05-29 09:27:14,080: DEBUG/MainProcess] task handler got sentinel
+[2012-05-29 09:27:14,080: DEBUG/MainProcess] joining task handler
+[2012-05-29 09:27:14,081: DEBUG/MainProcess] task handler sending sentinel to result handler
+[2012-05-29 09:27:14,081: DEBUG/MainProcess] task handler sending sentinel to workers
+[2012-05-29 09:27:14,082: DEBUG/MainProcess] result handler got sentinel
+[2012-05-29 09:27:14,082: DEBUG/PoolWorker-2] worker got sentinel -- exiting
+[2012-05-29 09:27:14,082: DEBUG/MainProcess] ensuring that outqueue is not full
+[2012-05-29 09:27:14,082: DEBUG/PoolWorker-2] worker exiting after 0 tasks
+[2012-05-29 09:27:14,082: DEBUG/MainProcess] result handler exiting: len(cache)=0, thread._state=0
+[2012-05-29 09:27:14,082: INFO/PoolWorker-2] process shutting down
+[2012-05-29 09:27:14,083: DEBUG/MainProcess] task handler exiting
+[2012-05-29 09:27:14,083: DEBUG/PoolWorker-2] running all "atexit" finalizers with priority >= 0
+[2012-05-29 09:27:14,083: DEBUG/MainProcess] joining result handler
+[2012-05-29 09:27:14,083: DEBUG/PoolWorker-2] running the remaining "atexit" finalizers
+[2012-05-29 09:27:14,083: DEBUG/MainProcess] result handler joined
+[2012-05-29 09:27:14,083: INFO/PoolWorker-2] process exiting with exitcode 0
+[2012-05-29 09:27:14,083: DEBUG/MainProcess] joining worker 0/2 (<Process(PoolWorker-1, started daemon)>)
+[2012-05-29 09:27:14,085: DEBUG/PoolWorker-1] worker got sentinel -- exiting
+[2012-05-29 09:27:14,086: DEBUG/PoolWorker-1] worker exiting after 0 tasks
+[2012-05-29 09:27:14,086: INFO/PoolWorker-1] process shutting down
+[2012-05-29 09:27:14,086: DEBUG/PoolWorker-1] running all "atexit" finalizers with priority >= 0
+[2012-05-29 09:27:14,086: DEBUG/PoolWorker-1] running the remaining "atexit" finalizers
+[2012-05-29 09:27:14,087: INFO/PoolWorker-1] process exiting with exitcode 0
+[2012-05-29 09:27:14,089: DEBUG/MainProcess] joining worker 1/2 (<Process(PoolWorker-2, stopped daemon)>)
+[2012-05-29 09:27:14,089: DEBUG/MainProcess] Consumer: Closing consumer channel...
+[2012-05-29 09:27:14,091: DEBUG/MainProcess] Closed channel #1
+[2012-05-29 09:27:14,091: DEBUG/MainProcess] Consumer: Closing broadcast channel...
+[2012-05-29 09:27:14,094: DEBUG/MainProcess] Closed channel #2
+[2012-05-29 09:27:14,094: DEBUG/MainProcess] Consumer: Closing broker connection...
+[2012-05-29 09:27:14,095: DEBUG/MainProcess] celery.worker.consumer.Consumer OK!
+[2012-05-29 09:27:14,096: INFO/MainProcess] process shutting down
+[2012-05-29 09:27:14,096: DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
+[2012-05-29 09:27:14,096: DEBUG/MainProcess] finalizing pool
+[2012-05-29 09:27:14,096: DEBUG/MainProcess] helping task handler/workers to finish
+[2012-05-29 09:27:14,096: DEBUG/MainProcess] removing tasks from inqueue until task handler finished
+[2012-05-29 09:27:14,097: DEBUG/MainProcess] terminating workers
+[2012-05-29 09:27:14,097: DEBUG/MainProcess] joining task handler
+[2012-05-29 09:27:14,097: DEBUG/MainProcess] joining result handler
+[2012-05-29 09:27:14,097: DEBUG/MainProcess] joining pool workers
+[2012-05-29 09:27:14,097: DEBUG/MainProcess] pool workers joined
+[2012-05-29 09:27:14,097: DEBUG/MainProcess] running the remaining "atexit" finalizers

@@ -24,6 +24,7 @@ from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Address
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util.first_capitalized import first_capitalized
+#from gestorpsi.person.models import Person
 
 class ProfessionalResponsible(models.Model):
     """    
@@ -37,6 +38,7 @@ class ProfessionalResponsible(models.Model):
     organization_subscription = models.CharField(max_length=50)
     organization = models.ForeignKey('Organization', null=True, blank=True)
     profession = models.ForeignKey('careprofessional.Profession', null=True, blank=False)
+    person = models.ForeignKey('person.Person', null=False, blank=False, unique=True)
 
     class Meta:
         ordering = ['name']
@@ -191,7 +193,7 @@ class Organization(models.Model):
     sites = generic.GenericRelation(Site, null=True)
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True) 
     organization = models.ForeignKey('self', related_name="%(class)s_related", null=True, blank=True)
-    contact_owner = models.ForeignKey('person.Person', related_name="contact_owner", null=True, blank=True)
+    contact_owner = models.ForeignKey('person.Person', related_name="contact_owner", null=False, blank=False)
     
     objects = OrganizationManager()
 

@@ -9,8 +9,6 @@ MANAGE = os.path.join(AUX, 'manage.py')
 #varre os processos em busca de alguma instancia do django-celery sendo executado pelo meu projeto
 saida = os.popen("ps -ef | grep -i 'gestorpsi/manage.py celeryd' | grep -v grep | awk '{print $2}'").read()
 
-print "|"+saida+"|"
-
 #se a saida for vazia, executa o comando para iniciar o django-celery
 if len( str(saida) ) == 0:
     #time.sleep(5)

@@ -188,6 +188,7 @@ INSTALLED_APPS = (
     'smart_selects',
     'djcelery',
     'kombu.transport.django',
+    'django_extensions'
 )
 
 AUTHENTICATION_BACKENDS = (

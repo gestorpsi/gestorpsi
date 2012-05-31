@@ -8,7 +8,7 @@ from celery.registry import tasks
 
 
 # this will run everyday at 3:00 am, see http://celeryproject.org/docs/reference/celery.task.schedules.html#celery.task.schedules.crontab
-@periodic_task(run_every=crontab(hour="1", minute="0", day_of_week="*"))
+@periodic_task(run_every=crontab(hour="3", minute="0", day_of_week="*"))
 #@periodic_task(run_every=crontab(hour="*", minute="*", second=5, day_of_week="*"))
 #@periodic_task(run_every=timedelta(minutes=0, seconds=10))
 def check_and_charge():

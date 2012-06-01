@@ -21,6 +21,122 @@ URL_GERADOR_BOLETOS = 'http://dev.geradorboletos.doois.com.br/bradesco/'
 CHAVE_UNICA = ''
 
 
+def gera_boleto_bradesco(resp_usuario_id, invoice=None, days=7):
+    '''
+    Receives a dict filled with the data that will be sent to the billet generator
+    and returns a permalink to the billet generated.
+    '''
+    
+    user = User.objects.get( pk=int(resp_usuario_id) )
+    profile = user.get_profile()
+    person = profile.person
+
+    d = Document()
+    t = TypeDocument.objects.get(description='CPF')
+    cpf = person.document.get(typeDocument__id=t.id).document
+    addr = endereco = person.address.all()[0]
+    data = BradescoBilletData.objects.all()[0]
+    
+    org = Organization.objects.filter(organization__isnull=True).filter(person__profile__user=user)[0]
+    if invoice is None:
+        inv = Invoice.objects.filter(organization=org, status=1).order_by('-expiry_date')[0]
+        temp = (datetime.datetime.now() + datetime.timedelta(days=days)).strftime("%Y-%m-%d %H:%M:%S")
+        inv.due_date = temp
+        inv.save()
+    else:
+        inv = invoice
+
+
+    if inv.billet_url is not None and len(inv.billet_url) > 5:
+        return inv.billet_url
+    else:
+        dados = {}
+        #INFORMANDO DADOS SOBRE O CEDENTE (quem vai receber).
+        dados['cedente_nome'] = data.cedente_nome
+        dados['cedente_cnpj'] = data.cedente_cnpj
+        
+        #INFORMANDO DADOS SOBRE O SACADO (quem vai pagar).
+        dados['sacado_nome'] = person.name
+        dados['sacado_cpf'] = cpf
+        
+        #Informando o endereço do sacado.
+        dados['enderecosac_uf'] = str(endereco.city.state.shortName)
+        dados['enderecosac_localidade'] = endereco.city.name
+        dados['enderecosac_cep'] = endereco.zipCode
+        dados['enderecosac_bairro'] = str(endereco.neighborhood)
+        dados['enderecosac_logradouro'] = endereco.addressLine1
+        dados['enderecosac_numero'] = endereco.addressNumber
+        
+        #INFORMANDO DADOS SOBRE O SACADOR AVALISTA (aquele que é contactado em caso de problemas).
+        dados['sacadoravalista_nome'] = data.sacadoravalista_nome
+        dados['sacadoravalista_cnpj'] = data.sacadoravalista_cnpj
+        
+        #Informando o endereço do sacador avalista.
+        dados['enderecosacaval_uf'] = data.enderecosacaval_uf.shortName
+        dados['enderecosacaval_localidade'] = data.enderecosacaval_localidade 
+        dados['enderecosacaval_cep'] = data.enderecosacaval_cep
+        dados['enderecosacaval_bairro'] = data.enderecosacaval_bairro
+        dados['enderecosacaval_logradouro'] = data.enderecosacaval_logradouro
+        dados['enderecosacaval_numero'] = data.enderecosacaval_numero
+        
+        #INFORMANDO OS DADOS SOBRE O TÍTULO.
+        
+        #Informando dados sobre a conta bancaria do titulo.
+        dados['contabancaria_numerodaconta'] = data.contabancaria_numerodaconta
+        dados['contabancaria_numerodaconta_digito'] = data.contabancaria_numerodaconta_digito
+        dados['contabancaria_carteira'] = data.contabancaria_carteira
+        dados['contabancaria_agencia'] = data.contabancaria_agencia
+        dados['contabancaria_agencia_digito'] = data.contabancaria_agencia_digito
+        
+        #Código fornecido pelo Banco para identificação do título ou identificação 
+        #do título atribuído pelo emissor do título de cobrança. 
+        dados['titulo_nossonumero'] = data.titulo_nossonumero
+        dados['titulo_digitodonossonumero'] = data.titulo_digitodonossonumero
+        
+        
+    
+        dados['titulo_deducao'] = "0.00"
+        dados['titulo_mora'] = "0.00"
+        dados['titulo_acrecimo'] = "0.00"
+        dados['titulo_valorcobrado'] = "0.00"
+        dados['titulo_desconto'] = "0.00"
+        dados['titulo_valor'] = str(inv.ammount)
+        dados['titulo_datadodocumento'] = str(inv.date)
+        dados['titulo_datadovencimento'] = str(inv.due_date)
+        
+        #INFORMANDO OS DADOS SOBRE O BOLETO.
+        dados['boleto_localpagamento'] = "Pagável preferencialmente no Bradesco."
+        dados['boleto_instrucaoaosacado'] = "Pode ser pago em quaisquer agências."
+        dados['boleto_instrucao1'] = "Após vencimento cobrar 50% de multa e 100% de juros ao dia."
+        #dados['boleto_instrucao2'] = "PARA PAGAMENTO 2 até Amanhã Não cobre!"
+        #dados['boleto_instrucao3'] = "PARA PAGAMENTO 3 até Depois de amanhã, OK, não cobre."
+        #dados['boleto_instrucao4'] = "PARA PAGAMENTO 4 até 04/xx/xxxx de 4 dias atrás COBRAR O VALOR DE: R$ 01,00"
+        #dados['boleto_instrucao5'] = "PARA PAGAMENTO 5 até 05/xx/xxxx COBRAR O VALOR DE: R$ 02,00"
+        #dados['boleto_instrucao6'] = "PARA PAGAMENTO 6 até 06/xx/xxxx COBRAR O VALOR DE: R$ 03,00"
+        #dados['boleto_instrucao7'] = "PARA PAGAMENTO 7 até xx/xx/xxxx COBRAR O VALOR QUE VOCÊ QUISER!"
+        #dados['boleto_instrucao8'] = "APÓS o Vencimento, Pagável Somente na Rede X."   
+        
+        for p in dados.keys():
+            dados[p] = smart_str(dados[p])
+      
+      
+        url = URL_GERADOR_BOLETOS
+        data = urllib.urlencode(dados)
+        #print datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S") 
+        #raise Exception(url)
+        req = urllib2.Request(url, data) #if the data parameter is here, it's a POST request
+        response = urllib2.urlopen(req)
+        the_page = response.read()
+    
+        if len(the_page) == 40:
+            inv.billet_url = url+the_page
+            inv.save()
+            return url+the_page
+        else:
+            return False
+
+
+
 
 def gera_boleto_bradesco_teste():
     '''
@@ -109,120 +225,6 @@ def gera_boleto_bradesco_teste():
         return the_page
 
 
-
-def gera_boleto_bradesco(resp_usuario_id, days=7):
-    '''
-    Receives a dict filled with the data that will be sent to the billet generator
-    and returns a permalink to the billet generated.
-    '''
-    
-    user = User.objects.get( pk=int(resp_usuario_id) )
-    profile = user.get_profile()
-    person = profile.person
-
-    d = Document()
-    t = TypeDocument.objects.get(description='CPF')
-    cpf = person.document.get(typeDocument__id=t.id).document
-    
-    addr = endereco = person.address.all()[0]
-    
-    data = BradescoBilletData.objects.all()[0]
-    
-    org = Organization.objects.filter(organization__isnull=True).filter(person__profile__user=user)[0]
-    inv = Invoice.objects.get(organization=org)
-    if inv.billet_url is not None and len(inv.billet_url) > 5:
-        return inv.billet_url
-    else:
-        temp = (datetime.datetime.now() + datetime.timedelta(days=days)).strftime("%Y-%m-%d %H:%M:%S")
-        inv.due_date = temp
-        inv.save()
-        
-        dados = {}
-        #INFORMANDO DADOS SOBRE O CEDENTE (quem vai receber).
-        dados['cedente_nome'] = data.cedente_nome
-        dados['cedente_cnpj'] = data.cedente_cnpj
-        
-        #INFORMANDO DADOS SOBRE O SACADO (quem vai pagar).
-        dados['sacado_nome'] = person.name
-        dados['sacado_cpf'] = cpf
-        
-        #Informando o endereço do sacado.
-        dados['enderecosac_uf'] = str(endereco.city.state.shortName)
-        dados['enderecosac_localidade'] = endereco.city.name
-        dados['enderecosac_cep'] = endereco.zipCode
-        dados['enderecosac_bairro'] = str(endereco.neighborhood)
-        dados['enderecosac_logradouro'] = endereco.addressLine1
-        dados['enderecosac_numero'] = endereco.addressNumber
-        
-        #INFORMANDO DADOS SOBRE O SACADOR AVALISTA (aquele que é contactado em caso de problemas).
-        dados['sacadoravalista_nome'] = data.sacadoravalista_nome
-        dados['sacadoravalista_cnpj'] = data.sacadoravalista_cnpj
-        
-        #Informando o endereço do sacador avalista.
-        dados['enderecosacaval_uf'] = data.enderecosacaval_uf.shortName
-        dados['enderecosacaval_localidade'] = data.enderecosacaval_localidade 
-        dados['enderecosacaval_cep'] = data.enderecosacaval_cep
-        dados['enderecosacaval_bairro'] = data.enderecosacaval_bairro
-        dados['enderecosacaval_logradouro'] = data.enderecosacaval_logradouro
-        dados['enderecosacaval_numero'] = data.enderecosacaval_numero
-        
-        #INFORMANDO OS DADOS SOBRE O TÍTULO.
-        
-        #Informando dados sobre a conta bancaria do titulo.
-        dados['contabancaria_numerodaconta'] = data.contabancaria_numerodaconta
-        dados['contabancaria_numerodaconta_digito'] = data.contabancaria_numerodaconta_digito
-        dados['contabancaria_carteira'] = data.contabancaria_carteira
-        dados['contabancaria_agencia'] = data.contabancaria_agencia
-        dados['contabancaria_agencia_digito'] = data.contabancaria_agencia_digito
-        
-        #Código fornecido pelo Banco para identificação do título ou identificação 
-        #do título atribuído pelo emissor do título de cobrança. 
-        dados['titulo_nossonumero'] = data.titulo_nossonumero
-        dados['titulo_digitodonossonumero'] = data.titulo_digitodonossonumero
-        
-        
-    
-        dados['titulo_deducao'] = "0.00"
-        dados['titulo_mora'] = "0.00"
-        dados['titulo_acrecimo'] = "0.00"
-        dados['titulo_valorcobrado'] = "0.00"
-        dados['titulo_desconto'] = "0.00"
-        dados['titulo_valor'] = str(inv.plan.value)
-        dados['titulo_datadodocumento'] = str(inv.date)
-        dados['titulo_datadovencimento'] = str(inv.due_date)
-        
-        #INFORMANDO OS DADOS SOBRE O BOLETO.
-        dados['boleto_localpagamento'] = "Pagável preferencialmente no Bradesco."
-        dados['boleto_instrucaoaosacado'] = "Pode ser pago em quaisquer agências."
-        dados['boleto_instrucao1'] = "Após vencimento cobrar 50% de multa e 100% de juros ao dia."
-        #dados['boleto_instrucao2'] = "PARA PAGAMENTO 2 até Amanhã Não cobre!"
-        #dados['boleto_instrucao3'] = "PARA PAGAMENTO 3 até Depois de amanhã, OK, não cobre."
-        #dados['boleto_instrucao4'] = "PARA PAGAMENTO 4 até 04/xx/xxxx de 4 dias atrás COBRAR O VALOR DE: R$ 01,00"
-        #dados['boleto_instrucao5'] = "PARA PAGAMENTO 5 até 05/xx/xxxx COBRAR O VALOR DE: R$ 02,00"
-        #dados['boleto_instrucao6'] = "PARA PAGAMENTO 6 até 06/xx/xxxx COBRAR O VALOR DE: R$ 03,00"
-        #dados['boleto_instrucao7'] = "PARA PAGAMENTO 7 até xx/xx/xxxx COBRAR O VALOR QUE VOCÊ QUISER!"
-        #dados['boleto_instrucao8'] = "APÓS o Vencimento, Pagável Somente na Rede X."   
-        
-        for p in dados.keys():
-            dados[p] = smart_str(dados[p])
-      
-      
-        url = URL_GERADOR_BOLETOS
-        data = urllib.urlencode(dados)
-        #print datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S") 
-        #raise Exception(url)
-        req = urllib2.Request(url, data) #if the data parameter is here, it's a POST request
-        response = urllib2.urlopen(req)
-        the_page = response.read()
-    
-        if len(the_page) == 40:
-            inv.billet_url = url+the_page
-            inv.save()
-            return url+the_page
-        else:
-            return False
-
-    
 def main(argv=None):
     print gera_boleto_bradesco_teste()
 

@@ -24,6 +24,8 @@ ADMINS = (
      ('GestorPsi', 'webmaster@gestorpsi.com.br'),
 )
 
+GESTORPSI_DEFAULT_INSCRIPTION_TAX = '50.00'
+
 #EMAIL_FROM = 'GestorPsi <webmaster@gestorpsi.com.br>'
 EMAIL_FROM = 'peixegama@gmail.com'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -137,6 +139,7 @@ TEMPLATE_DIRS = (
     #"/home/gestor/demo/gestorpsi/templates"
     #"/home/gestorpsi/Desenvolvimento/Django/gestorpsi/templates"
     os.path.join(PROJECT_ROOT_PATH, "templates"),
+    os.path.join(PROJECT_ROOT_PATH, "async_tasks/templates"),
     os.path.join(PROJECT_ROOT_PATH, "gcm/templates"),
     os.path.join(PROJECT_ROOT_PATH, "util/templatetags"),
 )

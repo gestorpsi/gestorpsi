@@ -105,6 +105,8 @@ def object_activate(request, *args, **kwargs):
         return HttpResponseRedirect('/gcm/login/?next=%s' % request.path)
 
     o = Organization.objects.get(pk=kwargs['object_id'])
+    o.active = True
+    o.save()
     for p in o.person_set.all():
         for rp in p.profile.user.registrationprofile_set.all():
             activation_key = rp.activation_key.lower() # Normalize before trying anything with it.

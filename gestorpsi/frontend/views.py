@@ -26,7 +26,11 @@ from gestorpsi.referral.models import Queue
 def start(request):
     profile = request.user.get_profile()
     date = datetime.now()
-    
+
+    #code for testing the charging system
+    #from gestorpsi.async_tasks.tasks import check_and_charge
+    #return check_and_charge(request)
+
     """ user's client home page """
     if request.user.get_profile().person.is_client():
         object = Client.objects.get(pk=request.user.get_profile().person.client.id)

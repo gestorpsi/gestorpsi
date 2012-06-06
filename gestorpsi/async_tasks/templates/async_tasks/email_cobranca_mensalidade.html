@@ -8,10 +8,13 @@
 			<br/><br/>
 			
 			{% if last_invoice %}
-			é muito bom tê-lo conosco. Porém, o período de validade de sua assinatura está chegando ao fim ({{last_invoice.expiry_date}}).<br/> 
-			Para continuar usufruindo de nosso sistema será preciso pagar a mensalidade em até 10 dias corridos (até {{inv.due_date|date:"d \d\e M \d\e Y"}}).
+			é muito bom tê-lo conosco. Porém, o período de validade de sua assinatura está chegando 
+			ao fim ({{last_invoice.expiry_date|date:"d \d\e M \d\e Y"}}).<br/> 
+			Para continuar usufruindo de nosso sistema será preciso pagar a mensalidade em até 10 dias 
+			corridos (até {{inv.due_date|date:"d \d\e M \d\e Y"}}).
 			{% else %}
-			seja bem vindo. Para que a sua assinatura passe a ter validade será preciso pagar a mensalidade em até 10 dias corridos (até {{inv.due_date}}).
+			seja bem vindo. Para que a sua assinatura passe a ter validade será preciso pagar a mensalidade 
+			em até 10 dias corridos (até {{inv.due_date|date:"d \d\e M \d\e Y"}}).
 			{% endif %}
 			
 			<br/><br/>

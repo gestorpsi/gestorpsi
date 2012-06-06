@@ -9,13 +9,13 @@
 			
 			{% if last_invoice %}
 			é muito bom tê-lo conosco. Porém, o período de validade de sua assinatura está chegando ao fim ({{last_invoice.expiry_date}}).<br/> 
-			Para continuar usufruindo de nosso sistema será preciso pagar a mensalidade em até 10 dias corridos (até {{inv.due_date}}).
+			Para continuar usufruindo de nosso sistema será preciso pagar a mensalidade em até 10 dias corridos (até {{inv.due_date|date:"d \d\e M \d\e Y"}}).
 			{% else %}
 			seja bem vindo. Para que a sua assinatura passe a ter validade será preciso pagar a mensalidade em até 10 dias corridos (até {{inv.due_date}}).
 			{% endif %}
 			
 			<br/><br/>
-			Sua empresa {{org.name}} possui, no momento, {{org.person_set.all.count}} funcionários registrados.<br/>
+			Sua empresa {{org.name}} possui, no momento, {{org.person_set.all.count}} funcionário{{org.person_set.all.count|pluralize}} registrado{{org.person_set.all.count|pluralize}}.<br/>
 			O que implica numa mensalidade de R$ {{inv.ammount}}.
 			
 			

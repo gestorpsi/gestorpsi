@@ -37,7 +37,10 @@ def gera_boleto_bradesco(resp_usuario_id, invoice=None, days=7):
         cpf = person.document.get(typeDocument__id=t.id).document
     except:
         cpf = ''
-    addr = endereco = person.address.all()[0]
+    try:
+        addr = endereco = person.address.all()[0]
+    except:
+        addr = endereco = None
     data = BradescoBilletData.objects.all()[0]
     
     org = Organization.objects.filter(organization__isnull=True).filter(person__profile__user=user)[0]

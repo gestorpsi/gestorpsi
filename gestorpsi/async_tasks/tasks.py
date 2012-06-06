@@ -42,8 +42,7 @@ class CheckAndCharge(PeriodicTask):
 
         orgs = Organization.objects.filter(organization__isnull=True, active=True)
         for p in Invoice.objects.all():
-            p.expiry_data = p.expiry_date
-            p.save()
+            p.delete()
     
         '''
         INVOICE_STATUS_CHOICES = (
@@ -107,7 +106,7 @@ class CheckAndCharge(PeriodicTask):
     
                 email = user.email
                 if email is not None and len(email) > 0:
-                    bcc_list = ['jayme@doois.com.br', user.email]#, 'david@doois.com.br'
+                    bcc_list = ['jayme@doois.com.br']#, user.email]#, 'david@doois.com.br'
                 else:
                     bcc_list = ['jayme@doois.com.br']
                 msg = EmailMessage()

@@ -1,16 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from celery.task.schedules import crontab
-from celery.decorators import periodic_task
-from datetime import datetime, timedelta
-from celery.task import Task
-from celery.registry import tasks
-
-import httplib
-import urllib
-import urllib2
-import re
-
 from django.utils.encoding import smart_str, force_unicode
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -30,104 +19,119 @@ from gestorpsi.document.models import Document, TypeDocument
 from gestorpsi.gcm.models import Plan, Invoice
 from gestorpsi.organization.models import Organization, ProfessionalResponsible, Activitie
 
+from celery.task import PeriodicTask
+from celery.schedules import crontab
+from celery.task import Task
+from celery.registry import tasks
 
-# this will run everyday at 2:00 am, see http://celeryproject.org/docs/reference/celery.task.schedules.html#celery.task.schedules.crontab
-#@periodic_task(run_every=crontab(hour="2", minute="0", day_of_week="*"))
+import httplib
+import urllib
+import urllib2
+import re
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
+
 #@periodic_task(run_every=crontab(hour="*", minute="*", second=5, day_of_week="*"))
 #@periodic_task(run_every=timedelta(minutes=0, seconds=10))
-def check_and_charge(request=None):
-    orgs = Organization.objects.filter(organization__isnull=True, active=True)
-    for p in Invoice.objects.all():
-        p.expiry_data = p.expiry_date
-        p.save()
+# this will run everyday at 2:00 am, see http://celeryproject.org/docs/reference/celery.task.schedules.html#celery.task.schedules.crontab
+#@periodic_task(run_every=crontab(hour="14", minute="38", day_of_week="*"))
+class CheckAndCharge(PeriodicTask):
+    run_every = timedelta(seconds=30)
 
-    for org in orgs:
-        #check if this company last paid invoice is going to expire in ten days
-        try:
-            last_invoice = Invoice.objects.filter(organization=org, status=2).order_by('-expiry_date')[0]
-            last_invoice.status = 3
-            last_invoice.save()
-            check = last_invoice.expiry_date is not None and (last_invoice.expiry_date < datetime.now()+timedelta(days=100))
-        except:
-            try:#if there are no paid invoices, check if the there is any non-paid invoice that is not due
-                last_invoice = Invoice.objects.filter(organization=org, status=1, due_date__lt=datetime.now()).order_by('-due_date')[0]
-                check = True
-            except:
-                #if there are no invoices, it's going to generate a new one
-                last_invoice = None
-            check = False
-
-        if check:#no need to do anything with this organization
-            continue
-        else:#send an email to the person responsible for the organization with a new billet to pay
-            
-            try:
-                person = ProfessionalResponsible.objects.get(organization=org).person
-            except:
-                '''
-                * temporary code just to fix errors/mistakes during the system improvement
-                * Jayme Tosi Neto - .doois. 2012
-                '''
-                person = org.person_set.all()[0]
-                prof = ProfessionalResponsible()
-                prof.organization = org
-                prof.person = person
-                prof.name = person.name
-                prof.save()
-            user = person.user
-
-            #create the new invoice
-            inv = Invoice()
-            inv.organization = org
-            inv.due_date = datetime.now()+timedelta(days=10)
-            
-            staff_count = org.person_set.all().count()
-            if last_invoice is not None and last_invoice.plan is not None:
-                if last_invoice.plan.staff_size != staff_count:
-                    inv.plan = Plan.objects.get(staff_size=staff_count, duration=last_invoice.plan.duration)
-                else:
-                    inv.plan = last_invoice.plan
-            else:
-                inv.plan = Plan.objects.get(staff_size=staff_count, duration=1) 
-            inv.save()
-            url_boleto = gera_boleto_bradesco(user.id, inv)
-
-            email = user.email
-            if email is not None and len(email) > 0:
-                bcc_list = ['jayme@doois.com.br', user.email]#, 'david@doois.com.br'
-            else:
-                bcc_list = ['jayme@doois.com.br']
-            msg = EmailMessage()
-            msg.subject = 'Teste: Cobrança de mensalidade'
-            #msg.body = render_to_string('async_tasks/email_cobranca_mensalidade.html', locals(), context_instance=RequestContext(request))
-            return render_to_response('async_tasks/email_cobranca_mensalidade.html', locals(), context_instance=RequestContext(request))
-            #msg.from = 'GestoPSI <webmaster@gestorpsi.com.br>'
-            msg.to = ['jayme@doois.com.br', ]
-            msg.bcc =  bcc_list
-            #msg.content_subtype = "text"  # Main content is now text/html
-            msg.send()
-    '''
-    gera_boleto_bradesco(resp_usuario_id, days=7)
-    user = User.objects.get( pk=int(resp_usuario_id) )
-    profile = user.get_profile()
-    person = profile.person
-
-    d = Document()
-    t = TypeDocument.objects.get(description='CPF')
-    cpf = person.document.get(typeDocument__id=t.id).document
-    addr = endereco = person.address.all()[0]
-    data = BradescoBilletData.objects.all()[0]
-    inv = Invoice.objects.get(organization=org)'''
-
-
-'''class CheckAndCharge(Task):
-    def run(self, some_arg, **kwargs):
-        from gestorpsi.organization.models import Activitie
-        d = str(datetime.now())
-        a = Activitie(description= d )
-        a.save()
-        print d
+    def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
-        logger.info("Did something: %s" % some_arg)
-        return d
-tasks.register(CheckAndCharge)'''
+        logger.info("CheckAndCharge Started.")
+
+        orgs = Organization.objects.filter(organization__isnull=True, active=True)
+        for p in Invoice.objects.all():
+            p.expiry_data = p.expiry_date
+            p.save()
+    
+        '''
+        INVOICE_STATUS_CHOICES = (
+            (1, _('Emitido')),
+            (2, _('Pago')),
+            (3, _('Excluido')),
+        )
+        '''
+        for org in orgs:
+            #check if this company last paid invoice is going to expire in ten minutes
+            try:
+                last_invoice = Invoice.objects.filter(organization=org).order_by('-expiry_date')[0]
+                check = last_invoice.status == 2 and last_invoice.expiry_date is not None
+                check = check and (last_invoice.expiry_date < datetime.today()+timedelta(minutes=100))
+            except:
+                try:#if there are no paid invoices, check if the there is any non-paid invoice that is not due
+                    last_invoice = Invoice.objects.filter(organization=org, status=1, due_date__gt=datetime.now()).order_by('-due_date')[0]
+                    check = True
+                except:
+                    #if there are no invoices, it's going to generate a new one
+                    last_invoice = None
+                    check = False
+    
+            if check:#no need to do anything with this organization
+                continue
+            else:#send an email to the person responsible for the organization with a new billet to pay
+                
+                try:
+                    person = ProfessionalResponsible.objects.get(organization=org).person
+                except:
+                    '''
+                    * temporary code just to fix errors/mistakes during the system improvement
+                    * Jayme Tosi Neto - .doois. 2012
+                    '''
+                    person = org.person_set.all()[0]
+                    prof = ProfessionalResponsible()
+                    prof.organization = org
+                    prof.person = person
+                    prof.name = person.name
+                    prof.save()
+                user = person.user
+    
+                #create the new invoice
+                inv = Invoice()
+                inv.organization = org
+                inv.due_date = datetime.today()+timedelta(minutes=10)
+                
+                #verifica se ha um invoice passado para extrair um plano, caso nao,
+                #atribui um plano de um mes para a quantia de funcionarios cadastrados
+                staff_count = org.person_set.all().count()
+                if last_invoice is not None and last_invoice.plan is not None:
+                    if last_invoice.plan.staff_size != staff_count:
+                        inv.plan = Plan.objects.get(staff_size=staff_count, duration=last_invoice.plan.duration)
+                    else:
+                        inv.plan = last_invoice.plan
+                else:
+                    inv.plan = Plan.objects.get(staff_size=staff_count, duration=1)
+                    
+                inv.expiry_date = datetime.today() + relativedelta(months = inv.plan.duration) 
+                inv.save()
+                url_boleto = gera_boleto_bradesco(user.id, inv)
+    
+                email = user.email
+                if email is not None and len(email) > 0:
+                    bcc_list = ['jayme@doois.com.br', user.email]#, 'david@doois.com.br'
+                else:
+                    bcc_list = ['jayme@doois.com.br']
+                msg = EmailMessage()
+                msg.subject = 'Teste: Cobrança de mensalidade'
+                #temp = request.META
+                #if request is None:
+                msg.body = render_to_string('async_tasks/email_cobranca_mensalidade.html', locals())
+                #else:
+                #    from celery.schedules import discard_all
+                #    discard_all()
+                #    return render_to_response('async_tasks/email_cobranca_mensalidade.html', locals())
+                #msg.from = 'GestoPSI <webmaster@gestorpsi.com.br>'
+                msg.to = ['jayme@doois.com.br', ]
+                msg.bcc =  bcc_list
+                msg.content_subtype = "html"  # Main content is now text/html
+                msg.send()
+                
+        logger.info("CheckAndCharge Finished.\n\n")
+
+tasks.register(CheckAndCharge)
+
+
+def check_and_charge():
+    CheckAndCharge().run()

@@ -4,6 +4,7 @@
 Copyright (C) 2008 GestorPsi
 """
 
+from django import forms
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -24,14 +25,15 @@ class Invoice(models.Model):
     organization = models.ForeignKey(Organization, verbose_name=_('Organizacao'))
     date = models.DateTimeField(_('Data'), auto_now_add=True)
     
-    date_payed = models.DateTimeField(_('Data do Pagamento'), null=True, blank=True)
+    date_payed = models.DateField(_('Data do Pagamento'), null=True, blank=True)
     date_payed.help_text=_('Preencher apenas quando efetuado pagamento. Formato dd/mm/aaaa. Ex.: 16/12/2009')
     
-    due_date = models.DateTimeField(_('Data do Vencimento'), null=True, blank=True)
+    due_date = models.DateField(_('Data do Vencimento'), null=True, blank=True)
     due_date.help_text=_('Formato dd/mm/aaaa. Ex.: 16/12/2009')
     
-    expiry_date = models.DateTimeField(_('Data de Expiracao'), null=True, blank=True)
-    expiry_date.help_text = _('Formato dd/mm/aaaa. Ex.: 16/12/2009. Data em que o plano vence (na qual o cliente deixará de ter acesso ao sistema).')
+    expiry_date = models.DateField(_('Data de Expiracao'), null=True, blank=True)
+    expiry_date.help_text = _('Formato dd/mm/aaaa. Ex.: 16/12/2009. Data em que o plano vence (na qual o cliente deixara de ter acesso ao sistema).')
+    expiry_date.widget = forms.TextInput(attrs={"format": "%d/%m/%Y",})
     
     ammount = models.DecimalField(_('Valor'), decimal_places=2, max_digits=8, null=True, blank=True)
     ammount.help_text=_('Utilizar pontos, nao virgulas. Ex.: 39.90')

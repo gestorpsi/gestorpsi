@@ -41,8 +41,9 @@ class CheckAndCharge(PeriodicTask):
         logger.info("CheckAndCharge Started.")
 
         orgs = Organization.objects.filter(organization__isnull=True, active=True)
-        for p in Invoice.objects.all():
-            p.delete()
+        #for p in Invoice.objects.all():
+        #    p.expiry_date = p.expiry_date
+        #    p.save()
     
         '''
         INVOICE_STATUS_CHOICES = (

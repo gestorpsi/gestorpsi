@@ -55,17 +55,16 @@ class CheckAndCharge(PeriodicTask):
         )
         '''
         for org in orgs:
-            #check if this company last paid invoice is going to expire in ten minutes
-            try:
-                last_invoice = Invoice.objects.filter(organization=org).order_by('-expiry_date')[0]
-                check = last_invoice.status == 2 and last_invoice.expiry_date is not None
-                check = check and (last_invoice.expiry_date < datetime.today()+timedelta(minutes=100))
+            try:#check if the there is any non-paid invoice that is not due
+                last_invoice = Invoice.objects.filter(organization=org, status=1, due_date__gt=datetime.now()).order_by('-due_date')[0]
+                check = True
             except:
-                try:#if there are no paid invoices, check if the there is any non-paid invoice that is not due
-                    last_invoice = Invoice.objects.filter(organization=org, status=1, due_date__gt=datetime.now()).order_by('-due_date')[0]
-                    check = True
+                #check if this company last paid invoice is going to expire in ten minutes
+                try:
+                    last_invoice = Invoice.objects.filter(organization=org, status=2).order_by('-expiry_date')[0]
+                    check = last_invoice.expiry_date is not None and (last_invoice.expiry_date < datetime.today()+timedelta(minutes=100))
                 except:
-                    #if there are no invoices, it's going to generate a new one
+                    #if there are no invoices matching the criterias, it's going to generate a new one
                     last_invoice = None
                     check = False
     

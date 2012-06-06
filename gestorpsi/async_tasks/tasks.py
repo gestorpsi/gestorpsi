@@ -31,12 +31,10 @@ import re
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-#@periodic_task(run_every=crontab(hour="*", minute="*", second=5, day_of_week="*"))
-#@periodic_task(run_every=timedelta(minutes=0, seconds=10))
-# this will run everyday at 2:00 am, see http://celeryproject.org/docs/reference/celery.task.schedules.html#celery.task.schedules.crontab
-#@periodic_task(run_every=crontab(hour="14", minute="38", day_of_week="*"))
+
 class CheckAndCharge(PeriodicTask):
-    run_every = timedelta(seconds=30)
+    #run_every = timedelta(seconds=30)
+    run_every = crontab(hour=2, minute=0, day_of_week="*")
 
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
@@ -55,16 +53,16 @@ class CheckAndCharge(PeriodicTask):
         )
         '''
         for org in orgs:
-            try:#check if the there is any non-paid invoice that is not due
+            try:#check if there is any non-paid invoice that is not due
                 last_invoice = Invoice.objects.filter(organization=org, status=1, due_date__gt=datetime.now()).order_by('-due_date')[0]
                 check = True
             except:
-                #check if this company last paid invoice is going to expire in ten minutes
+                #check if this company last paid invoice is going to expire in ten days
                 try:
                     last_invoice = Invoice.objects.filter(organization=org, status=2).order_by('-expiry_date')[0]
-                    check = last_invoice.expiry_date is not None and (last_invoice.expiry_date < datetime.today()+timedelta(minutes=100))
+                    check = last_invoice.expiry_date is not None and (last_invoice.expiry_date < datetime.today()+timedelta(days=100))
                 except:
-                    #if there are no invoices matching the criterias, it's going to generate a new one
+                    #if there are no invoices matching the given criterias, it's going to generate a new one
                     last_invoice = None
                     check = False
     
@@ -90,7 +88,7 @@ class CheckAndCharge(PeriodicTask):
                 #create the new invoice
                 inv = Invoice()
                 inv.organization = org
-                inv.due_date = datetime.today()+timedelta(minutes=10)
+                inv.due_date = datetime.today()+timedelta(days=10)
                 
                 #verifica se ha um invoice passado para extrair um plano, caso nao,
                 #atribui um plano de um mes para a quantia de funcionarios cadastrados

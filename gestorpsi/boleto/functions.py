@@ -60,12 +60,30 @@ def gera_boleto_bradesco(resp_usuario_id, invoice=None, days=7):
         dados['sacado_cpf'] = cpf
         
         #Informando o endereço do sacado.
-        dados['enderecosac_uf'] = str(endereco.city.state.shortName)
-        dados['enderecosac_localidade'] = endereco.city.name
-        dados['enderecosac_cep'] = endereco.zipCode
-        dados['enderecosac_bairro'] = str(endereco.neighborhood)
-        dados['enderecosac_logradouro'] = endereco.addressLine1
-        dados['enderecosac_numero'] = endereco.addressNumber
+        try:
+            dados['enderecosac_uf'] = str(endereco.city.state.shortName)
+        except:
+            dados['enderecosac_uf'] = ''
+        try:
+            dados['enderecosac_localidade'] = endereco.city.name
+        except:
+            dados['enderecosac_localidade'] = ''
+        try:
+            dados['enderecosac_cep'] = endereco.zipCode
+        except:
+            dados['enderecosac_cep'] = ''
+        try:
+            dados['enderecosac_bairro'] = str(endereco.neighborhood)
+        except:
+            dados['enderecosac_bairro'] = ''
+        try:
+            dados['enderecosac_logradouro'] = endereco.addressLine1
+        except:
+            dados['enderecosac_logradouro'] = ''
+        try:
+            dados['enderecosac_numero'] = endereco.addressNumber
+        except:
+            dados['enderecosac_numero'] = ''
         
         #INFORMANDO DADOS SOBRE O SACADOR AVALISTA (aquele que é contactado em caso de problemas).
         dados['sacadoravalista_nome'] = data.sacadoravalista_nome

@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<title>GestorPsi - Cobrança</title>
+	</head>
+	<body>
+		<p>
+			Olá senhor(a) {{person.name}},
+			<br/><br/>
+			é muito bom tê-lo conosco. Porém, o período de validade de sua assinatura está chegando ao fim ({{last_invoice.expiry_date}}).<br/> 
+			Para continuar usufruindo de nosso sistema será preciso pagar a mensalidade em até 10 dias corridos (até {{inv.expiry_date}}).
+			<br/><br/>
+			Sua empresa {{org.name}} possui, no momento, {{org.person_set.all.count}} funcionários registrados.<br/>
+			
+			
+			
+			<br/><br/>
+			Clique <a href="{{url_boleto}}">aqui</a> para fazer download do boleto.
+			
+			<br/><br/><br/>
+			
+			Caso o link não funcione, copie e cole este endereço no seu navegador: {{url_boleto}}
+		</p>
+	</body>
+</html>

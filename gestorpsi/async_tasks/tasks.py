@@ -74,7 +74,7 @@ class CheckAndCharge(PeriodicTask):
                     person = ProfessionalResponsible.objects.get(organization=org).person
                 except:
                     '''
-                    * temporary code just to fix errors/mistakes during the system improvement
+                    * temporary code just to fix errors/mistakes due to the system improvement
                     * Jayme Tosi Neto - .doois. 2012
                     '''
                     person = org.person_set.all()[0]

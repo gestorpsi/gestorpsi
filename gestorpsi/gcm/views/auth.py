@@ -49,7 +49,7 @@ def register(request, success_url=None,
                 prof.name = person.name
                 prof.save()
                 
-                url_boleto = gera_boleto_bradesco( user.id )
+                url_boleto = gera_boleto_bradesco_inscricao( user.id )
                 if not url_boleto:
                     url_boleto = ''
                 
@@ -90,7 +90,7 @@ def complete(request, success_url=None,
     from gestorpsi.address.models import City, Address, Country
 
     if 'user_aux_id' in request.session:
-        url_boleto = gera_boleto_bradesco(request.session['user_aux_id'])
+        url_boleto = gera_boleto_bradesco_inscricao(request.session['user_aux_id'])
 
     if extra_context is None:
         extra_context = {}

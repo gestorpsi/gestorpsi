@@ -24,7 +24,8 @@ ADMINS = (
      ('GestorPsi', 'webmaster@gestorpsi.com.br'),
 )
 
-GESTORPSI_DEFAULT_INSCRIPTION_TAX = '50.00'
+GESTORPSI_DEFAULT_INSCRIPTION_TAX = '500.00'
+
 
 #EMAIL_FROM = 'GestorPsi <webmaster@gestorpsi.com.br>'
 EMAIL_FROM = 'peixegama@gmail.com'

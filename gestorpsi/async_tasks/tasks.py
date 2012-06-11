@@ -107,7 +107,7 @@ class CheckAndCharge(PeriodicTask):
     
                 email = user.email
                 if email is not None and len(email) > 0:
-                    bcc_list = ['jayme@doois.com.br']#, user.email]#, 'david@doois.com.br'
+                    bcc_list = ['jayme@doois.com.br', user.email]#, 'david@doois.com.br'
                 else:
                     bcc_list = ['jayme@doois.com.br']
                 msg = EmailMessage()

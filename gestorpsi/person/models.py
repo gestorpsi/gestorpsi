@@ -76,6 +76,20 @@ class Person(models.Model):
     def __unicode__(self):
         return (u"%s (%s)" % (self.name.title(), _('Company'))) if self.is_company() else (u"%s" % (self.name.title()))
 
+    def save(self, *args, **kwargs):
+        super(Person, self).save(*args, **kwargs)
+        if not self.id:
+            for p in self.organization_set.all():
+                p.employee_number = p.care_professionals()
+                p.save()
+    
+    def delete(self, *args, **kwargs):
+        super(Person, self).delete(*args, **kwargs)
+        for p in self.organization_set.all():
+            p.employee_number = p.care_professionals()
+            p.save()
+
+
     """ function used only in reports.py waiting a fix in Geraldo SubReport"""
     def get_documents(self):
         if self.document.all().count() > 1:

@@ -16,9 +16,11 @@ GNU General Public License for more details.
 
 import re
 import reversion
+from datetime import datetime
 from django.db import models
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import Group
+
 from gestorpsi.phone.models import Phone
 from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Address
@@ -33,10 +35,10 @@ class ProfessionalResponsible(models.Model):
     @version: 1.0 
     """
     id = UuidField(primary_key=True)
-    name = models.CharField(max_length=50)
-    subscription = models.CharField(max_length=50)
-    organization_subscription = models.CharField(max_length=50)
-    organization = models.ForeignKey('Organization', null=True, blank=True)
+    name = models.CharField(max_length=50, default="", null=True, blank=True, editable=False)
+    subscription = models.CharField(max_length=50, null=True, blank=True, default="")
+    organization_subscription = models.CharField(max_length=50, null=True, blank=True, default="")
+    organization = models.ForeignKey('Organization', null=False, blank=False)
     profession = models.ForeignKey('careprofessional.Profession', null=True, blank=False)
     person = models.ForeignKey('person.Person', null=False, blank=False, unique=True)
 
@@ -48,7 +50,11 @@ class ProfessionalResponsible(models.Model):
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
-
+    
+    def save(self, *args, **kwargs):
+        self.name = self.person.name
+        super(ProfessionalResponsible, self).save(*args, **kwargs)
+    
 reversion.register(ProfessionalResponsible)
 
 class PersonType(models.Model):
@@ -160,6 +166,7 @@ class Organization(models.Model):
     @version: 1.0 
     """
     id= UuidField(primary_key=True)
+    date_created = models.DateTimeField(auto_now_add=True)
 
     # identity
     name = models.CharField(max_length=100)
@@ -195,6 +202,10 @@ class Organization(models.Model):
     organization = models.ForeignKey('self', related_name="%(class)s_related", null=True, blank=True)
     contact_owner = models.ForeignKey('person.Person', related_name="contact_owner", null=False, blank=False)
     
+    employee_number = models.IntegerField(default=1, null=True, blank=True)
+    employee_number.help_text = "Number of employees (field used by the system DON'T change it)." 
+    employee_number.verbose_name = "Number of employees"
+        
     objects = OrganizationManager()
 
     def __unicode__(self):
@@ -203,8 +214,16 @@ class Organization(models.Model):
     def save(self, *args, **kwargs):
         if self.id: # save original state from register to verify if it has been changed from latest save
             original_state = Organization.objects.get(pk=self.id)
+            if self.date_created is None or not self.date_created:
+                try:
+                    temp = reversion.models.Version.objects.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
+                    temp = temp.date_created
+                except:
+                    temp = datetime.now()
+                self.date_created = temp
         else:
             original_state = None
+            self.date_created = datetime.now()
 
         super(Organization, self).save(*args, **kwargs)
         
@@ -225,6 +244,13 @@ class Organization(models.Model):
                                 person.profile.user.groups.add(new_group) # add user to new group (a readonly group)
                                 person.profile.user.groups.remove(Group.objects.get(name=group.name)) # remove user from past group 
 
+    def __professionalresponsible__(self):
+        try:
+            return ProfessionalResponsible.objects.filter(organization=self)[0]
+        except:
+            return None
+    professionalresponsible = property(__professionalresponsible__)
+
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
@@ -232,7 +258,7 @@ class Organization(models.Model):
         return reversion.models.Version.objects.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
 
     def created(self):
-        return self.revision_created().date_created
+        return self.date_created
 
     def get_first_phone(self):
         if ( len( self.phones.all() ) != 0 ):

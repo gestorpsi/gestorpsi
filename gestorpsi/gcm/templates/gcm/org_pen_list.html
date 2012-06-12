@@ -1,5 +1,6 @@
 {% extends "gcm/main.html" %}
 
+{% load url from future %}
 {% load i18n %}
 
 {% block section %}{% trans "Organizacoes Pendentes" %}{% endblock %}
@@ -10,16 +11,44 @@
 <p>{% trans "Não existe organizacao pendentes" %}</p>
 {% else %}
     <table>
-    <tr><th>{% trans "Organizacao" %}</th><th>{% trans "Data de inscricao" %}</th><th>{% trans "Plano de acesso" %}</th></tr>
+    <tr>
+    	<th>
+    		<a href="{% url 'org-list' 'name' %}">
+    			{% trans "Organizacao" %}
+    		</a>
+    	</th>
+    	<th>
+    		<a href="{% url 'org-list' 'employee_number' %}">
+    			{% trans "Numero de profissionais" %}
+   			</a>
+    	</th>
+    	<th>
+    		<a href="{% url 'org-list' 'professionalresponsible__name' %}">
+    			{% trans "Profissional responsavel" %}
+   			</a>
+    	</th>
+    	<th>
+    		<a href="{% url 'org-list' 'date_created' %}">
+    			{% trans "Data de inscricao" %}
+   			</a>
+    	</th>
+    	<th>
+    		<a href="{% url 'org-list' 'active' %}">
+    			{% trans "Ativo" %}
+   			</a>
+    	</th>
+    </tr>
     {% for object in object_list %}
     <tr class="{% cycle 'even' '' %}">
         <td>
-            <a href="{% url org-pen-detail object.id %}" class="tag">
-            {{ object.name }}
+            <a href="{% url 'org-update' object.id %}" class="tag">
+            	{{ object.name }}
             </a>
         </td>
-        <td>{{ object.invoice_set.all.0.date|date:"d/m/Y" }}</td>
-        <td>{{ object.invoice_set.all.0.plan }}</td>
+        <td>{{ object.employee_number }}</td>
+        <td>{{ object.professionalresponsible.name }}</td>
+        <td>{{ object.date_created|date:"d/m/y - h:i" }}</td>
+        <td>{% if object.active %}{% trans "Sim" %}{% else %}{% trans "Não" %}{% endif %}</td>
     </tr>
 
     {% endfor %}

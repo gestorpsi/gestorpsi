@@ -48,14 +48,15 @@ class ProfessionalResponsibleForm(forms.ModelForm):
 
 
 class ProfessionalResponsibleInline(admin.StackedInline):
+    form = ProfessionalResponsibleForm
     model = ProfessionalResponsible
     extra = 1
-    form = ProfessionalResponsibleForm
 
 
 class OrganizationAdmin(admin.ModelAdmin):
     inlines = [ProfessionalResponsibleInline, ]
-    
+
+
 class ProfessionalResponsibleAdmin(admin.ModelAdmin):
     form = ProfessionalResponsibleForm
 
@@ -71,8 +72,10 @@ admin.site.register(Management)
 admin.site.register(Dependence)
 admin.site.register(Activitie)
 admin.site.register(UnitType)
-admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(AgeGroup)
 admin.site.register(EducationLevel)
 admin.site.register(HierarchicalLevel)
 admin.site.register(ProfessionalResponsible, ProfessionalResponsibleAdmin)
+admin.site.register(Organization, OrganizationAdmin)
+
+

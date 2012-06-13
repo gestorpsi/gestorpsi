@@ -8,7 +8,7 @@ from django import forms
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from datetime import datetime, timedelta
+from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 
 from gestorpsi.organization.models import Organization
@@ -62,4 +62,13 @@ class Invoice(models.Model):
             if self.date is None:
                 self.date = datetime.now()
             self.expire_date = (self.date + relativedelta(months = int(self.plan.duration)))
+    
+        if self.date_payed is not None:
+            self.status = 2
+        else:
+            self.status = 1
+            
         super(Invoice, self).save()
+            
+
+

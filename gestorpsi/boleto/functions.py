@@ -266,6 +266,7 @@ def gera_boleto_bradesco_inscricao(resp_usuario_id, days=7):
         dados['titulo_valor'] = settings.GESTORPSI_DEFAULT_INSCRIPTION_TAX
         dados['titulo_datadodocumento'] = str(inv.date)
         dados['titulo_datadovencimento'] = str(inv.due_date)
+        dados['titulo_numerododocumento'] = str(inv.id)
         
         #INFORMANDO OS DADOS SOBRE O BOLETO.
         dados['boleto_localpagamento'] = "Pagável preferencialmente no Bradesco."

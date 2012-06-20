@@ -119,10 +119,12 @@ class ReturnFile(models.Model):
     header_nome_cliente = models.CharField(max_length=30, null=True, blank=True)   #razao social
     header_num_banco = models.IntegerField(null=True, blank=True)  #237 (Código do bradesco)
     header_nome_empresa = models.CharField(max_length=15, null=True, blank=True)   #Nome do banco (BRADESCO)
-    header_data_gravacao = models.DateTimeField(null=True, blank=True, unique=True)   #9 Data da Gravação: Informe no formato “DDMMAA”
+    header_data_gravacao = models.DateField(null=True, blank=True, unique=True)   #9 Data da Gravação: Informe no formato “DDMMAA”
     header_densidade_gravacao = models.IntegerField(null=True, blank=True)   #01600000
     header_num_aviso_bancario = models.IntegerField(null=True, blank=True, unique=True)
-    header_data_credito = models.DateTimeField(null=True, blank=True)   # “DDMMAA”
+    #header_num_aviso_bancario.verbose_name = ""
+    #header_num_aviso_bancario.help_text = ""
+    header_data_credito = models.DateField(null=True, blank=True)   # “DDMMAA”
     header_sequencial_reg = models.IntegerField(null=True, blank=True)   #9 Seqüencial do Registro: ”000001”
     ############   end: header of the return file   ############
     
@@ -155,11 +157,13 @@ class ReturnFile(models.Model):
     ############   end: trailer of the return file   ############
 
     def __unicode__(self):
-        return smart_str(self.header_id_tipo_operacao)
+        return smart_str(self.header_data_gravacao.strftime("%d/%m/%Y"))
+
+    def __str__(self):
+        return smart_str(self.header_data_gravacao.strftime("%d/%m/%Y"))
 
     def save(self):
         super(ReturnFile, self).save()
-
 
 reversion.register(ReturnFile)
 
@@ -177,10 +181,10 @@ class DetailLine(models.Model):
     detail_id_rateio_credito = models.IntegerField(null=True, blank=True)    #Indicador de Rateio Crédito “R”
     detail_carteira = models.IntegerField(null=True, blank=True)    #Carteira
     detail_id_ocorrencia = models.IntegerField(null=True, blank=True)    #Identificação de Ocorrência (vide pg 47)
-    detail_data_ocorrencia = models.DateTimeField(null=True, blank=True, unique=True)    #X  Data da Entrada/Liquidação (DDMMAA)
+    detail_data_ocorrencia = models.DateField(null=True, blank=True, unique=True)    #X  Data da Entrada/Liquidação (DDMMAA)
     detail_num_documento = models.IntegerField(null=True, blank=True)    #A  Número título dado pelo cedente
     detail_id_titulo_banco = models.IntegerField(null=True, blank=True)    #mesmo valor que o campo nosso_numero (indicado anteriormente)
-    detail_data_vencimento = models.DateTimeField(null=True, blank=True)    #9  Data de vencimento (DDMMAA)
+    detail_data_vencimento = models.DateField(null=True, blank=True)    #9  Data de vencimento (DDMMAA)
     detail_valor = models.IntegerField(null=True, blank=True)    #9  v99 Valor do título
     detail_cod_banco = models.IntegerField(null=True, blank=True)    #9  Código do banco recebedor
     detail_agencia = models.IntegerField(null=True, blank=True)    #9  Código da agência recebedora

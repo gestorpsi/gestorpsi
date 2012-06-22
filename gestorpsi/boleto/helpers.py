@@ -32,11 +32,8 @@ class RetornoBradescoProcessor:
                 invoice = Invoice.objects.get(pk=invoice_id)
                 #invoice.status = 'pago_boleto'
                 #invoice.bank_payed = 'bradesco'
-                if valor/100 < float(invoice.ammount):
-                    invoice.discount = str(valor/100 - float(invoice.ammount))
-                else:
-                    invoice.date_payed = data_pagamento  
-                invoice.ammount = valor/100 # valor vem em centavos
+                invoice.date_payed = data_pagamento  
+                #invoice.ammount = valor/100 # valor vem em centavos
                 invoice.save()
             except Invoice.DoesNotExist:
                 pass

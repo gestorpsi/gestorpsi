@@ -5,6 +5,14 @@
 {% block section %}{% trans "Planos" %}{% endblock %}
 {% block title %}{% trans "Planos" %}{% endblock %}
 
+
+{% block submenu %}
+<ul>
+    <li><a href="{% url retfile-list %}">{% trans "Arquivos de retorno" %}</a></li>
+</ul>
+<br/><br/>
+{% endblock %}
+
 {% block core %}
 {% if not object_list %}
 <p>

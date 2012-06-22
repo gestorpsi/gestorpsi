@@ -18,13 +18,13 @@
         {% if user.is_superuser %}
         <h1>{% trans "GestorPSI" %} - {% block section %}{% trans "Controle de clientes" %}{% endblock %}</h1>
         <div class="menu">
-        <ul>
-            <li><a href="{% url org-pen-list %}">{% trans "Organizacoes Pendentes" %}</a></li>
-            <li><a href="{% url org-list %}">{% trans "Organizacoes" %}</a></li>
-            <li><a href="{% url invoice-list %}">{% trans "Faturas" %}</a></li>
-            <li><a href="{% url plan-list %}">{% trans "Planos" %}</a></li>
-            <li><a href="{% url gcm-logout %}">{% trans "Sair" %}</a></li>
-        </ul>
+	        <ul>
+	            <li><a href="{% url org-pen-list %}">{% trans "Organizacoes Pendentes" %}</a></li>
+	            <li><a href="{% url org-list %}">{% trans "Organizacoes" %}</a></li>
+	            <li><a href="{% url invoice-list %}">{% trans "Faturas" %}</a></li>
+	            <li><a href="{% url plan-list %}">{% trans "Planos" %}</a></li>
+	            <li><a href="{% url gcm-logout %}">{% trans "Sair" %}</a></li>
+	        </ul>
         </div>
         <hr />
         <div class="submenu">

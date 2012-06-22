@@ -18,6 +18,7 @@ from gestorpsi.gcm.models import Invoice
 #from gestorpsi.gcm.forms.plan import PlanForm
 from gestorpsi.gcm.forms.invoice import InvoiceForm
 from gestorpsi.organization.models import Organization
+from gestorpsi.boleto.models import ReturnFile
 from django.contrib.auth import views as auth_views
 
 import os
@@ -27,6 +28,10 @@ GCM_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 plan_list = { 'queryset':Plan.objects.all(), }
 plan_update = { 'model':Plan, 'post_save_redirect': '/gcm/plan/',}
 plan_add = { 'model':Plan, 'post_save_redirect': '/gcm/plan/', }
+
+retfile_list = { 'queryset':ReturnFile.objects.all(), 'template_name': 'gcm/returnfile_list.html'}
+retfile_update = { 'model':ReturnFile, 'post_save_redirect': '/gcm/retfile/', 'template_name': 'gcm/returnfile_form.html'}
+retfile_add = { 'model':ReturnFile, 'post_save_redirect': '/gcm/retfile/', 'template_name': 'gcm/returnfile_form.html' }
 
 invoice_list = { 'queryset':Invoice.objects.all(), }
 invoice_update = { 'form_class':InvoiceForm, 'post_save_redirect': '/gcm/invoice/',}
@@ -53,6 +58,11 @@ urlpatterns = patterns('',
     url(r'gcm/plan/$', object_list, plan_list, name='plan-list'),
     url(r'gcm/plan/(?P<object_id>\d+)/$', update_object, plan_update, name='plan-update'),
     url(r'gcm/plan/add/$', create_object, plan_add, name='plan-add'),
+    
+    url(r'gcm/retfile/$', object_list, retfile_list, name='retfile-list'),
+    url(r'gcm/retfile/(?P<object_id>\d+)/$', update_object, retfile_update, name='retfile-update'),
+    url(r'gcm/retfile/add/$', create_object, retfile_add, name='retfile-add'),
+    
     
     url(r'gcm/org/(?P<order_by>\w+)/$', org_object_list, org_list, name='org-list'),
     url(r'gcm/org/$', org_object_list, org_list, name='org-list'),

@@ -110,13 +110,15 @@ reversion.register(BradescoBilletData)
 
 
 class ReturnFile(models.Model):
-    date_import = models.DateTimeField(default=datetime.today, verbose_name=_("Data arquivo"))
+    date_import = models.DateTimeField(default=datetime.today, verbose_name=_("Data arquivo"), blank=True, null=True)
     arquivo_retorno = models.FileField(upload_to='arquivos_retorno', verbose_name=_("Arquivo"))
     banco = models.CharField(_('Banco'), max_length=20, null=True, blank=True,choices=BANK_CHOICES, default='bradesco')
     #numero registros
     #numero linhas
     
     def save(self, force_insert=False, force_update=False):
+        super(ReturnFile, self).save()
+
         if self.banco == 'bradesco':
             bradesco_processor = RetornoBradescoProcessor()
             bradesco_processor.process_file(arquivo_retorno=self.arquivo_retorno.file)
@@ -124,7 +126,6 @@ class ReturnFile(models.Model):
         #    itau_processor = RetornoItauProcessor()
         #    itau_processor.process_file(arquivo_retorno=self.arquivo_retorno.file)
 
-        super(ReturnFile, self).save()
     
     def __unicode__(self):
         return '%s importado %s' % (self.arquivo_retorno.name, self.date_import) 

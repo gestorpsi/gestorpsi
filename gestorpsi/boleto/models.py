@@ -25,7 +25,7 @@ from datetime import datetime
 
 from gestorpsi.boleto.helpers import RetornoBradescoProcessor
 
-from settings import PROJECT_ROOT_PATH
+from gestorpsi.settings import PROJECT_ROOT_PATH
 import os
 
 BANK_CHOICES = (

@@ -20,26 +20,26 @@ class RetornoBradescoProcessor:
             data_pagamento = datetime.datetime.strptime(linha[110:116], "%d%m%y")
             data_credito = linha[295:301]
 
-	    if documento > 100000000:
-		      invoice_id = documento - 400000000
-	    else:
-		      invoice_id = documento
-
-
+            if documento > 100000000:
+                invoice_id = documento - 400000000
+            else:
+                invoice_id = documento
+    
+    
 #            invoice_id = documento - 400000000
 #            invoice_id = documento - 20000000
-        try:
-            invoice = Invoice.objects.get(pk=invoice_id)
-            #invoice.status = 'pago_boleto'
-            #invoice.bank_payed = 'bradesco'
-            if valor/100 < float(invoice.ammount):
-                invoice.discount = str(valor/100 - float(invoice.ammount))
-            else:
-                invoice.date_payed = data_pagamento  
-            invoice.ammount = valor/100 # valor vem em centavos
-            invoice.save()
-        except Invoice.DoesNotExist:
-            pass
+            try:
+                invoice = Invoice.objects.get(pk=invoice_id)
+                #invoice.status = 'pago_boleto'
+                #invoice.bank_payed = 'bradesco'
+                if valor/100 < float(invoice.ammount):
+                    invoice.discount = str(valor/100 - float(invoice.ammount))
+                else:
+                    invoice.date_payed = data_pagamento  
+                invoice.ammount = valor/100 # valor vem em centavos
+                invoice.save()
+            except Invoice.DoesNotExist:
+                pass
 
 #            logging.debug(int(linha[126:146]))
 #            logging.debug(linha[152:165])

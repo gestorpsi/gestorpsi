@@ -29,7 +29,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django import forms
 from django.forms.models import *
-from django.forms import *
+#from django.forms import *
 
 from django.db import models
 from django.utils.translation import ugettext as _
@@ -38,7 +38,7 @@ from smart_selects.db_fields import ChainedForeignKey
 
 from gestorpsi import settings
 from gestorpsi.address.models import State, City
-from gestorpsi.boleto.models import BradescoBilletData
+from gestorpsi.boleto.models import *
 #from gestorpsi.boleto.return_file import *
 
 
@@ -290,7 +290,7 @@ class ReturnFileAdminForm(forms.ModelForm):
 class ReturnFileAdmin(admin.ModelAdmin):
     #inlines = [DetailLineInline, ]
     #form = ReturnFileAdminForm
-    pass
+    model = ReturnFile
     #def save_model(self, request, obj, form, change):
     #    #raise Exception(obj)
     #    obj.save()

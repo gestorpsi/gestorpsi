@@ -39,7 +39,7 @@ from smart_selects.db_fields import ChainedForeignKey
 from gestorpsi import settings
 from gestorpsi.address.models import State, City
 from gestorpsi.boleto.models import BradescoBilletData
-from gestorpsi.boleto.return_file import *
+#from gestorpsi.boleto.return_file import *
 
 
 def CNPJValidator(value):

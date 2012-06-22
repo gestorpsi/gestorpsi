@@ -25,6 +25,8 @@ from datetime import datetime
 
 from gestorpsi.boleto.helpers import RetornoBradescoProcessor
 
+from settings import PROJECT_ROOT_PATH
+import os
 
 BANK_CHOICES = (
     ('bradesco', 'Bradesco'),
@@ -109,7 +111,7 @@ reversion.register(BradescoBilletData)
 
 class ReturnFile(models.Model):
     date_import = models.DateTimeField(default=datetime.today, verbose_name=_("Data arquivo"))
-    arquivo_retorno = models.FileField(upload_to='arquivos_retorno', verbose_name=_("Arquivo"))
+    arquivo_retorno = models.FileField(upload_to=os.path.join(PROJECT_ROOT_PATH, 'arquivos_retorno'), verbose_name=_("Arquivo"))
     banco = models.CharField(_('Banco'), max_length=20, null=True, blank=True,choices=BANK_CHOICES, default='bradesco')
     #numero registros
     #numero linhas

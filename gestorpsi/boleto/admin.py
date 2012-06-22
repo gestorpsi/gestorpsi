@@ -211,18 +211,18 @@ class BradescoBilletDataAdmin(admin.ModelAdmin):
     #    models.TextField: {'widget': RichTextEditorWidget},
     #}
 
-
+'''
 class DetailLineInlineForm(forms.ModelForm):
    
     class Meta:
         model = DetailLine
         #fields = ()
-    '''def to_python(self):
-        pass
-    def validate(self):
-        pass
-    def save(self, request, *args, **kwargs):
-        pass'''
+    #def to_python(self):
+    #    pass
+    #def validate(self):
+    #    pass
+    #def save(self, request, *args, **kwargs):
+    #    pass
 
 class DetailLineInline(admin.StackedInline):
     model = DetailLine
@@ -237,15 +237,15 @@ class ReturnFileAdminForm(forms.ModelForm):
     
     class Meta:
         model = ReturnFile
-        '''exclude = ('header_registro', 'header_tipo_operacao', 'header_id_tipo_operacao', 'header_id_tipo_servico', 
-                   'header_tipo_servico', 'header_cod_cliente', 'header_nome_cliente', 'header_num_banco', 'header_nome_empresa', 
-                   'header_data_gravacao', 'header_densidade_gravacao', 'header_num_aviso_bancario', 'header_data_credito', 
-                   'header_sequencial_reg', 'trailer_registro', 'trailer_retorno', 'trailer_tipo_registro', 'trailer_cod_banco', 
-                   'trailer_cob_simples_qtd_titulos', 'trailer_cob_simples_vlr_total', 'trailer_cob_simples_num_aviso', 'trailer_qtd_regs02', 
-                   'trailer_valor_regs02', 'trailer_valor_regs06liq', 'trailer_qtd_regs06', 'trailer_valor_regs06', 'trailer_qtd_regs09', 
-                   'trailer_valor_regs02', 'trailer_qtd_regs13', 'trailer_valor_regs13', 'trailer_qtd_regs14', 'trailer_valor_regs14', 
-                   'trailer_qtd_regs12', 'trailer_valor_regs12', 'trailer_qtd_regs19', 'trailer_valor_regs19', 'trailer_valor_total_rateios', 
-                   'trailer_qtd_rateios', 'trailer_sequencial')'''
+        #exclude = ('header_registro', 'header_tipo_operacao', 'header_id_tipo_operacao', 'header_id_tipo_servico', 
+        #           'header_tipo_servico', 'header_cod_cliente', 'header_nome_cliente', 'header_num_banco', 'header_nome_empresa', 
+        #           'header_data_gravacao', 'header_densidade_gravacao', 'header_num_aviso_bancario', 'header_data_credito', 
+        #           'header_sequencial_reg', 'trailer_registro', 'trailer_retorno', 'trailer_tipo_registro', 'trailer_cod_banco', 
+        #           'trailer_cob_simples_qtd_titulos', 'trailer_cob_simples_vlr_total', 'trailer_cob_simples_num_aviso', 'trailer_qtd_regs02', 
+        #           'trailer_valor_regs02', 'trailer_valor_regs06liq', 'trailer_qtd_regs06', 'trailer_valor_regs06', 'trailer_qtd_regs09', 
+        #           'trailer_valor_regs02', 'trailer_qtd_regs13', 'trailer_valor_regs13', 'trailer_qtd_regs14', 'trailer_valor_regs14', 
+        #           'trailer_qtd_regs12', 'trailer_valor_regs12', 'trailer_qtd_regs19', 'trailer_valor_regs19', 'trailer_valor_total_rateios', 
+        #           'trailer_qtd_rateios', 'trailer_sequencial')
     def save(self, commit=True):  
         if self.instance.pk is None:
             fail_message = 'created'
@@ -270,30 +270,30 @@ class ReturnFileAdminForm(forms.ModelForm):
         else:
             fail_message = 'changed'
             return save_instance(self, self.instance, self._meta.fields, fail_message, commit, construct=False)
-    '''def save(self, commit=False):
-        from gestorpsi.boleto.djcnab400_bradesco import cnab400
-        import StringIO
-        temp = StringIO.StringIO(self.cleaned_data['arquivo_retorno'].read())
-        #cnab400(temp)
-        #raise Exception( temp.readline()[108:112] )
-        ret = cnab400(temp)
-        if ret is None:
-            for p in ReturnFile.objects.all():
-                for k in DetailLine.objects.all():
-                    k.delete()
-                p.delete()
-        #else:
-        #    raise Exception(ret.header_data_credito)
-        super(ReturnFileAdminForm, self).save(commit)'''
+    #def save(self, commit=False):
+    #    from gestorpsi.boleto.djcnab400_bradesco import cnab400
+    #    import StringIO
+    #    temp = StringIO.StringIO(self.cleaned_data['arquivo_retorno'].read())
+    #    #cnab400(temp)
+    #    #raise Exception( temp.readline()[108:112] )
+    #    ret = cnab400(temp)
+    #    if ret is None:
+    #        for p in ReturnFile.objects.all():
+    #            for k in DetailLine.objects.all():
+    #                k.delete()
+    #            p.delete()
+    #    #else:
+    #    #    raise Exception(ret.header_data_credito)
+    #    super(ReturnFileAdminForm, self).save(commit)'''
 
-                
+      
 class ReturnFileAdmin(admin.ModelAdmin):
-    inlines = [DetailLineInline, ]
-    form = ReturnFileAdminForm
-    
-    def save_model(self, request, obj, form, change):
-        #raise Exception(obj)
-        obj.save()
+    #inlines = [DetailLineInline, ]
+    #form = ReturnFileAdminForm
+    pass
+    #def save_model(self, request, obj, form, change):
+    #    #raise Exception(obj)
+    #    obj.save()
 
 
 admin.site.register(BradescoBilletData, BradescoBilletDataAdmin)

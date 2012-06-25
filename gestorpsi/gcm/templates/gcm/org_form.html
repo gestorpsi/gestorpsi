@@ -1,5 +1,6 @@
 {% extends "gcm/main.html" %}
 
+{% load url from future %}
 {% load i18n %}
 
 {% block section %}{% trans "Organizacoes" %}{% endblock %}
@@ -8,11 +9,25 @@
 {% block core %}
 <h2>{{ object }}</h2>
 
-{% trans "Organizacão" %} <strong>{% if object.active %}{% trans "Ativa" %}{% else %}{% endif %}{% if not object.active %}{% trans "Desativada" %}{% else %}{% endif %}</strong> 
-<a href="#" onclick="$('div.form_active').show('slow');">{% if object.active %}{% trans "Desativar?" %}{% else %}{% endif %}{% if not object.active %}{% trans "Ativar?" %}{% else %}{% endif %}</a>
+{% trans "Organizacão" %} <strong>
+	{% if object.active %}
+		{% trans "Ativa" %}
+	{% else %}{% endif %}
+	{% if not object.active %}
+		{% trans "Desativada" %}
+	{% else %}{% endif %}
+</strong> 
+<a href="#" onclick="$('div.form_active').show('slow');">
+	{% if object.active %}
+		{% trans "Desativar?" %}
+	{% else %}{% endif %}
+	{% if not object.active %}
+		{% trans "Ativar?" %}
+	{% else %}{% endif %}
+</a>
 
 <div class="form_active" style="display:none;"><br />
-<form action="{% url org-update object.id %}" method="post">
+<form action="{% url 'org-update' object.id %}" method="post">
     <fieldset>
         <legend>{% trans "Ativar/Desativar Organizacao" %}</legend>
         {{ form.errors }}
@@ -27,31 +42,92 @@
         <p>
         <label>{{ form.active.label }}</label><br>
         {{ form.active }}
-        <small>{% trans "Desativando esta organizacao, ela ficará impossibitada de adicionar novo registros, ficará apenas disponíveis dados para leitura como listagens, consultas, relatórios etc" %}</small>
+        <small>{% trans "Desativando esta organizacao, ela ficará impossibitada de adicionar novo registros, 
+        ficarão apenas disponíveis dados para leitura como listagens, consultas, relatórios etc" %}</small>
         </p>
     <p><br /><input type="submit" value="{% trans "Save" %}" class="submit"></p>
     </fieldset>
 </form>
 </div>
 
+
+{% if object.phones_set.all %}
 <br />
 <br />
 <table>
-<tr><th>{% trans "Data" %}</th><th>{% trans "Plano" %}</th><th>{% trans "Estado" %}</th><th>{% trans "Valor" %}</th><th>{% trans "Data de Vencimento" %}</th><th>{% trans "Data Pagamento" %}</th></tr>
+	<tr>
+		<th>{% trans "Área" %}</th>
+		<th>{% trans "Número" %}</th>
+		<th>{% trans "Tipo" %}</th>
+	</tr>
+	<strong>{% trans "Telefones desta organizacão" %}</strong>
+	<hr>
+	    {% for phone in object.phones_set.all %}
+	    <tr class="{% cycle 'even' '' %}">
+	        <td><a href="{% url 'invoice-update' object.id %}">{{ object.date|date:"d/m/Y" }}</a></td>
+	        <td>{{ phone.area }}</td>
+	        <td>{{ phone.phoneNumber }}</td>
+	        <td>{{ phone.phoneType }}</td>
+	        <td>{% if not object.due_date %}-----{% else %}{{ object.due_date }}{% endif %}</td>
+	        <td>{% if not object.date_payed %}-----{% else %}{{ object.date_payed }}{% endif %}</td>
+	    </tr>
+	{% endfor %}
+</table>
+{% endif %}
 
-<strong>{% trans "Faturas desta organizacão" %}</strong>
-<hr>
-    {% for object in object.invoice_set.all %}
-    <tr class="{% cycle 'even' '' %}">
-        <td><a href="{% url invoice-update object.id %}">{{ object.date|date:"d/m/Y" }}</a></td>
-        <td>{{ object.plan }}</td>
-        <td>{{ object.get_status_display }}</td>
-        <td>{{ object.ammount }}</td>
-        <td>{% if not object.due_date %}-----{% else %}{{ object.due_date }}{% endif %}</td>
-        <td>{% if not object.date_payed %}-----{% else %}{{ object.date_payed }}{% endif %}</td>
-    </tr>
-{% endfor %}
+
+{% if object.professionalresponsible %}
+<br />
+<br />
+<table>
+	<tr>
+		<th>{% trans "Nome" %}</th>
+		<th>{% trans "Profissão" %}</th>
+		<th>{% trans "Fones" %}</th>
+	</tr>
+	<strong>{% trans "Profissional responsável" %}</strong>
+	<hr>
+	    <tr class="{% cycle 'even' '' %}">
+	        <td>{{ object.professionalresponsible.name }}</td>
+	        <td>{{ object.professionalresponsible.profession }}</td>
+	        <td>
+	        	{% for phone in object.professionalresponsible.person.phones_set.all %}
+	        	{%if phone.area%}{{phone.area}} - {%endif%}
+	        	{%if phone.phoneNumber%}{{phone.phoneNumber}} - {%endif%}
+	        	{%if phone.phoneType%}{{phone.phoneType}}{%endif%}<br/>
+	        	{% empty %}
+	        	-----------
+	        	{% endfor %}
+	        </td>
+	    </tr>
+</table>
+{% endif %}
+
+
+<br />
+<br />
+<table>
+	<tr>
+		<th>{% trans "Data" %}</th>
+		<th>{% trans "Plano" %}</th>
+		<th>{% trans "Estado" %}</th>
+		<th>{% trans "Valor" %}</th>
+		<th>{% trans "Data de Vencimento" %}</th>
+		<th>{% trans "Data Pagamento" %}</th>
+	</tr>
+	<strong>{% trans "Faturas desta organizacão" %}</strong>
+	<hr>
+	    {% for object in object.invoice_set.all %}
+	    <tr class="{% cycle 'even' '' %}">
+	        <td><a href="{% url 'invoice-update' object.id %}">{{ object.date|date:"d/m/Y" }}</a></td>
+	        <td>{{ object.plan }}</td>
+	        <td>{{ object.get_status_display }}</td>
+	        <td>{{ object.ammount }}</td>
+	        <td>{% if not object.due_date %}-----{% else %}{{ object.due_date }}{% endif %}</td>
+	        <td>{% if not object.date_payed %}-----{% else %}{{ object.date_payed }}{% endif %}</td>
+	    </tr>
+	{% endfor %}
 </table>
 
-<a href="{% url org-list %}">{% trans "Back" %}</a>
+<a href="{% url 'org-list' %}">{% trans "Back" %}</a>
 {% endblock %}

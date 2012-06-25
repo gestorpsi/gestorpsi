@@ -42,7 +42,7 @@ class Phone(models.Model):
     @version: 1.0
     @see: PhoneType
     """
-    id= UuidField(primary_key=True)
+    id = UuidField(primary_key=True)
     area = models.CharField(max_length=2)
     phoneNumber = models.CharField(max_length=9)
     ext = models.CharField(max_length=4, blank=True)

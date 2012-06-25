@@ -22,9 +22,14 @@ GNU General Public License for more details.
 """
 
 from django.contrib import admin
-from gestorpsi.phone.models import PhoneType
+from gestorpsi.phone.models import PhoneType, Phone
 
 class PhoneTypeAdmin(admin.ModelAdmin):
     pass
 
+class PhoneAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(PhoneType, PhoneTypeAdmin)
+admin.site.register(Phone, PhoneAdmin)

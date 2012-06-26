@@ -167,7 +167,7 @@ $(document).ready(function()
     </tr>
 	<tr id="form_invoice_{{invoice.id}}" class="{% cycle 'even' '' %}" style="display: none;">
 		<td colspan="6">
-			<form class="form_invoice" action="{% url 'org-bill-update' invoice.pk %}" method="post">
+			<form class="form_invoice" action="{% url 'org-bill-update' invoice.id %}" method="post">
 			    <fieldset>
 			        <input type="hidden" name="organization" value="{{object.id}}" />
 			        <input type="hidden" name="plan" value="{{invoice.plan.id}}" />

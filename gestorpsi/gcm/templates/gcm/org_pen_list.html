@@ -6,9 +6,10 @@
 {% block section %}{% trans "Organizacoes Pendentes" %}{% endblock %}
 {% block title %}{% trans "Organizacoes Pendentes" %}{% endblock %}
 
+
 {% block core %}
 {% if not object_list %}
-<p>{% trans "Não existe organizacao pendentes" %}</p>
+<p>{% trans "Não existem organizacoes pendentes" %}</p>
 {% else %}
     <table>
     <tr>
@@ -33,6 +34,9 @@
    			</a>
     	</th>
     	<th>
+   			{% trans "Fones" %}
+    	</th>
+    	<th>
     		<a href="{% url 'org-list' 'active' %}">
     			{% trans "Ativo" %}
    			</a>
@@ -46,8 +50,22 @@
             </a>
         </td>
         <td>{{ object.employee_number }}</td>
-        <td>{{ object.professionalresponsible.name }}</td>
+        <td>{{ object.professionalresponsible.name }} - {{ object.professionalresponsible.person.phones.all.0 }}</td>
         <td>{{ object.date_created|date:"d/m/y - h:i" }}</td>
+        <td>
+			{% if object.phones.all %}
+			<table>
+			    {% for phone in object.phones.all %}
+			    <tr class="{% cycle 'even' '' %}">
+			        <td>{{ phone.area }} - {{ phone.phoneNumber }}</td>
+			        <td>{{ phone.phoneType }}</td>
+			    </tr>
+				{% endfor %}
+			</table>
+			{% else %}
+			-----------
+			{% endif %}
+        </td>
         <td>{% if object.active %}{% trans "Sim" %}{% else %}{% trans "Não" %}{% endif %}</td>
     </tr>
 

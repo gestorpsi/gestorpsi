@@ -14,6 +14,8 @@ from dateutil.relativedelta import relativedelta
 from gestorpsi.organization.models import Organization
 from gestorpsi.gcm.models.plan import Plan
 
+from datetime import datetime
+
 
 INVOICE_STATUS_CHOICES = (
     (1, _('Emitido')),
@@ -56,19 +58,20 @@ class Invoice(models.Model):
         return u'%s - %s %s' % (self.organization, self.date.strftime('%d/%m/%Y'), self.plan)
     
     def save(self):
-        #self.ammount = '0.00' if not self.plan else self.plan.value
         if self.plan is not None and self.plan != '':
             self.ammount = self.plan.value
             if self.date is None:
                 self.date = datetime.now()
             self.expire_date = (self.date + relativedelta(months = int(self.plan.duration)))
-    
-        if self.date_payed is not None:
-            self.status = 2
-        else:
-            self.status = 1
+
+        if self.status < 3:
+            if self.date_payed is None:
+                self.status = 1 #emitido
+            else:
+                self.status = 2 #pago
             
         super(Invoice, self).save()
+        #raise Exception(self.status)
             
 
 

@@ -27,9 +27,34 @@ def create_object(request, *args, **kwargs):
         return HttpResponseRedirect('/gcm/login/?next=%s' % request.path)
     return generic_create_object(request, *args, **kwargs)
 
+def update_invoice_wrapper(request, object_id, *args, **kwargs):
+    data = request.POST
+    org_id = data.get('organization')
+
+    from django.core.urlresolvers import reverse
+    from datetime import datetime
+    redirect_to = reverse('org-update', args={org_id:''})    
+    kwargs['object_id'] = object_id
+    kwargs['post_save_redirect'] = redirect_to
+
+    return  update_object(request, *args, **kwargs)
+
+
 def update_object(request, *args, **kwargs):
     if not request.user.is_superuser:
         return HttpResponseRedirect('/gcm/login/?next=%s' % request.path)
+
+    #from gestorpsi.organization.models import Organization
+    #from gestorpsi.phone.models import Phone
+    #p = Phone()
+    #p.area = '99'
+    #p.phoneNumber = '87654321'
+    #p.phoneType_id = 2
+    #org = Organization.objects.get(pk=kwargs['object_id'])
+    #org.phones.add(p)
+    #org.save()
+    #raise Exception(kwargs['object_id'])
+    
     return generic_update_object(request, *args, **kwargs)
 
 def delete_object(request, *args, **kwargs):

@@ -243,7 +243,7 @@ class Report(models.Model):
         # X axis labels
         chart.set_axis_labels(Axis.BOTTOM, \
             self.get_chart_x_axis_label(date_start, date_end))
-        
+
         return chart.get_url()
 
 
@@ -836,9 +836,12 @@ class ReportReferralManager(models.Manager):
         query_discharged = Referral.objects.filter(service__organization=organization, referraldischarge__date__gte=date_start, referraldischarge__date__lt=date_end)
         query_full = query
         service_pks = [s.pk for s in organization.service_set.all()]
+        
         professional_pks = [p.pk for p in CareProfessional.objects.from_organization(organization)]
+        
         if service:
             query = query.filter(service__pk=service)
+            query_discharged = query_discharged.filter(service__pk=service)
 
         if view == 'overview':
 
@@ -858,7 +861,7 @@ class ReportReferralManager(models.Manager):
                 verbose_name = _('Referral Discharged Discussed')
 
             if filter == 'discharged_not_discussed':
-                query = query.query_discharged(referraldischarge__was_discussed_with_client=False)
+                query = query_discharged.filter(referraldischarge__was_discussed_with_client=False)
                 verbose_name = _('Referral Discharged Not Discussed')
 
             if filter == 'internal':
@@ -883,7 +886,7 @@ class ReportReferralManager(models.Manager):
             if not service:
                 query = query.filter(service=filter, referral__isnull=False, service__pk__in=service_pks)
             else:
-                query = query_full.filter(service=filter, referral__isnull=False, service__pk__in=service_pks)
+                query = query_full.filter(service=filter, referral__isnull=False, referral__service__pk__in=[service])
             obj = get_object_or_None(Service, pk=filter, pk__in=service_pks )
             verbose_name = _(u'Referral Internal to Service %s' % (obj))
             

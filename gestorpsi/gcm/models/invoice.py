@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 
-from gestorpsi.organization.models import Organization
+#from gestorpsi.organization.models import Organization
 from gestorpsi.gcm.models.plan import Plan
 
 from datetime import datetime
@@ -24,7 +24,7 @@ INVOICE_STATUS_CHOICES = (
 )
 
 class Invoice(models.Model):
-    organization = models.ForeignKey(Organization, verbose_name=_('Organizacao'))
+    organization = models.ForeignKey('organization.Organization', verbose_name=_('Organizacao'))
     date = models.DateTimeField(_('Data'), auto_now_add=True)
     
     date_payed = models.DateField(_('Data do Pagamento'), null=True, blank=True)

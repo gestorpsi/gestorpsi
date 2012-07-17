@@ -211,7 +211,7 @@ class Organization(models.Model):
     employee_number.verbose_name = "Number of employees"
     
     prefered_plan = models.ForeignKey(Plan, null=False, blank=False, choices=PLANS)
-    current_invoice = models.ForeignKey(Invoice, null=True, blank=True)
+    current_invoice = models.ForeignKey(Invoice, null=True, blank=True, related_name='current_invoice')
         
     objects = OrganizationManager()
 

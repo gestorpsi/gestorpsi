@@ -53,23 +53,22 @@ class CheckAndCharge(PeriodicTask):
         )
         '''
         for org in orgs:
-            try:#check if there is any non-paid invoice that is not due
-                last_invoice = Invoice.objects.filter(organization=org, status=1, due_date__gt=datetime.now()).order_by('-due_date')[0]
-                check = True
-            except:
-                #check if this company last paid invoice is going to expire in ten days
-                try:
-                    last_invoice = Invoice.objects.filter(organization=org, status=2).order_by('-expiry_date')[0]
-                    check = last_invoice.expiry_date is not None and (last_invoice.expiry_date < datetime.today()+timedelta(days=100))
-                except:
-                    #if there are no invoices matching the given criterias, it's going to generate a new one
-                    last_invoice = None
-                    check = False
+            last_invoice = org.current_invoice
+            if last_invoice is None:
+                #if there are no invoices, it's going to generate a new one
+                check = False
+            else:
+                if last_invoice.status == 1: #check if the last invoice isn't paid
+                    check = last_invoice.due_date > datetime.now() #check if the invoice is not due
+                elif last_invoice.status == 2:
+                    #check if this company last paid invoice is going to expire in ten days
+                    check = last_invoice.expiry_date is not None and (last_invoice.expiry_date < datetime.today()+timedelta(days=10))
+                else:
+                    check = True
     
             if check:#no need to do anything with this organization
                 continue
             else:#send an email to the person responsible for the organization with a new billet to pay
-                
                 try:
                     person = ProfessionalResponsible.objects.get(organization=org).person
                 except:
@@ -90,19 +89,38 @@ class CheckAndCharge(PeriodicTask):
                 inv.organization = org
                 inv.due_date = datetime.today()+timedelta(days=10)
                 
+                #prefered plan
+                pplan = org.prefered_plan
+                
                 #verifica se ha um invoice passado para extrair um plano, caso nao,
                 #atribui um plano de um mes para a quantia de funcionarios cadastrados
                 staff_count = org.person_set.all().count()
-                if last_invoice is not None and last_invoice.plan is not None:
-                    if last_invoice.plan.staff_size != staff_count:
-                        inv.plan = Plan.objects.get(staff_size=staff_count, duration=last_invoice.plan.duration)
+                if pplan is not None:
+                    inv.plan = pplan
+                elif last_invoice is not None and last_invoice.plan is not None:
+                    if last_invoice.plan.staff_size < staff_count:
+                        try:
+                            inv.plan = Plan.objects.get(staff_size=staff_count, duration=last_invoice.plan.duration)
+                        except:
+                            try:
+                                inv.plan = Plan.objects.filter(staff_size__gte=staff_count).order_by('duration')[0]
+                            except:
+                                inv.plan = Plan.objects.all().order_by('-staff_size', 'duration')[0]
                     else:
                         inv.plan = last_invoice.plan
                 else:
-                    inv.plan = Plan.objects.get(staff_size=staff_count, duration=1)
+                    try:
+                        inv.plan = Plan.objects.get(staff_size=staff_count, duration=1)
+                    except:
+                        try:
+                            inv.plan = Plan.objects.filter(staff_size__gte=staff_count).order_by('duration')[0]
+                        except:
+                            inv.plan = Plan.objects.all().order_by('staff_size', 'duration')[0]
                     
                 inv.expiry_date = datetime.today() + relativedelta(months = inv.plan.duration) 
                 inv.save()
+                org.current_invoice = inv
+                org.save()
                 url_boleto = gera_boleto_bradesco(user.id, inv)
     
                 email = user.email

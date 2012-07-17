@@ -249,10 +249,26 @@ GNU General Public License for more details.
 
 
 <fieldset class="signature organization hidden">
-	<legend>{% trans "Signatures - Under development" %}</legend>
-    {% for invoice in invoices %}
-	{% include "tags/invoice.html" %}
-    {% endfor %}
+	<legend>{% trans "Signature" %}</legend>
+	
+	<div>
+		<label>{% trans "Plan" %}<br />
+		<select name="prefered_plan" class="extrabig">
+		{% for p in plans %}
+		<option value="{{p.id}}" {% ifequal object.prefered_plan.id p.id %}selected="selected"{% endifequal %}>
+			{{p.name}} - {{p.duration}} mes{{p.duration|pluralize:"es"}}
+		</option>
+		{% endfor %}
+		</select>
+		</label>
+		
+		<br/><br/><br/>
+		<br/><br/>
+		<div>
+			{% trans "The new plan will be effectively applied only when the current signature is over." %}
+		</div>
+		<br/>
+	</div>
 </fieldset>
 
 <fieldset id="fieldset_place_status" class="identity organization">

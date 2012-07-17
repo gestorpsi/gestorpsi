@@ -26,7 +26,8 @@ from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Address
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util.first_capitalized import first_capitalized
-#from gestorpsi.person.models import Person
+from gestorpsi.gcm.models.plan import Plan
+from gestorpsi.gcm.models.invoice import Invoice
 
 class ProfessionalResponsible(models.Model):
     """    
@@ -159,6 +160,9 @@ class OrganizationManager(models.Manager):
     def real(self):
         return super(OrganizationManager, self).get_query_set().filter(active=True, organization__isnull=True)
 
+
+PLANS = ( (x.id, x.name) for x in Plan.objects.all() )
+
 class Organization(models.Model):
     """    
     This class represents the organization model.   
@@ -205,6 +209,9 @@ class Organization(models.Model):
     employee_number = models.IntegerField(default=1, null=True, blank=True)
     employee_number.help_text = "Number of employees (field used by the system DON'T change it)." 
     employee_number.verbose_name = "Number of employees"
+    
+    prefered_plan = models.ForeignKey(Plan, null=False, blank=False, choices=PLANS)
+    current_invoice = models.ForeignKey(Invoice, null=True, blank=True)
         
     objects = OrganizationManager()
 

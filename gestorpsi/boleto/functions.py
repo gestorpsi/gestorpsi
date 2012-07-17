@@ -21,7 +21,7 @@ URL_GERADOR_BOLETOS = 'http://dev.geradorboletos.doois.com.br/bradesco/'
 CHAVE_UNICA = ''
 
 
-def gera_boleto_bradesco(resp_usuario_id, invoice=None, days=7):
+def gera_boleto_bradesco(resp_usuario_id, invoice, days=7):
     '''
     Receives a dict filled with the data that will be sent to the billet generator
     and returns a permalink to the billet generated.
@@ -44,15 +44,11 @@ def gera_boleto_bradesco(resp_usuario_id, invoice=None, days=7):
     data = BradescoBilletData.objects.all()[0]
     
     org = Organization.objects.filter(organization__isnull=True).filter(person__profile__user=user)[0]
-    if invoice is None:
-        inv = Invoice.objects.filter(organization=org, status=1).order_by('-expiry_date')[0]
-        temp = (datetime.datetime.now() + datetime.timedelta(days=days)).strftime("%Y-%m-%d %H:%M:%S")
-        inv.due_date = temp
-        inv.save()
-    else:
-        inv = invoice
+    inv = invoice
 
-
+                
+    org.current_invoice = inv
+    org.save()
     if inv.billet_url is not None and len(inv.billet_url) > 5:
         return inv.billet_url
     else:
@@ -189,6 +185,9 @@ def gera_boleto_bradesco_inscricao(resp_usuario_id, days=7):
     inv.due_date = temp
     inv.expiry_date = temp
     inv.save()
+                
+    org.current_invoice = inv
+    org.save()
 
 
 

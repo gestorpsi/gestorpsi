@@ -32,6 +32,9 @@ from gestorpsi.util.views import get_object_or_None
 from gestorpsi.gcm.models import Invoice, INVOICE_STATUS_CHOICES
 from gestorpsi.gcm.models.plan import Plan
 
+from datetime import datetime, timedelta
+from gestorpsi.boleto.functions import gera_boleto_bradesco
+
 @permission_required_with_403('organization.organization_write')
 def professional_responsible_save(request, object, ids, names, subscriptions, organization_subscriptions, professions):
     ProfessionalResponsible.objects.all().delete()
@@ -78,8 +81,44 @@ def form(request):
         'professional_responsible': ProfessionalResponsible.objects.filter(organization = user.get_profile().org_active),
         'Professions': Profession.objects.all(),
         'plans': plans,
+        'invoices': Invoice.objects.filter(organization=object, status=1).order_by('date'), #billets not paid and not excluded
+        'inscription': Invoice.objects.filter(organization=object, status=1, plan=None).order_by('date')[0:1],
+        'today': datetime.today(),
         },
         context_instance=RequestContext(request))
+
+
+@permission_required_with_403('organization.organization_write')
+def make_second_copy(request, invoice):
+    user = request.user
+
+    invoice = Invoice.objects.get(pk=invoice)
+    aux = Invoice.objects.filter(status=1, organization=invoice.organization, due_date__gt=datetime.now()).count()
+    if aux <= 0:
+        inv = Invoice()
+        inv.organization = invoice.organization
+        inv.due_date = datetime.now() + timedelta(days=7)
+        inv.expiry_date = invoice.expiry_date
+        inv.ammount = invoice.ammount
+        inv.discount = invoice.discount
+        inv.status = 1
+        inv.plan = invoice.plan
+        inv.save()
+        
+        invoice.status = 3
+        invoice.save()
+        
+        billet_url = gera_boleto_bradesco(request.user.id, inv, days=7, second_copy=True)
+        inv.billet_url = billet_url
+        inv.save()
+        aux = True
+        message = 'Second copy details saved successfully'
+    else:
+        message = 'Second copy not generated: there are billets requiring payment.'
+        aux = False 
+        
+    return render_to_response('organization/second_copy.html', locals(), context_instance=RequestContext(request))
+
 
 @permission_required_with_403('organization.organization_write')
 def save(request):

@@ -50,12 +50,18 @@ class Invoice(models.Model):
     billet_url.verbose_name = _("Billet URL")
     billet_url.help_text = _("URL of the billet to pay this invoice")
     
+    
+    
     class Meta:
         app_label = 'gcm'
         ordering = ['organization', '-date', ]
     
     def __unicode__(self):
         return u'%s - %s %s' % (self.organization, self.date.strftime('%d/%m/%Y'), self.plan)
+    
+    def dued(self):
+        return self.due_date < datetime.today()
+            
     
     def save(self):
         if self.plan is not None and self.plan != '':

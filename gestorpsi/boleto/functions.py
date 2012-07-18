@@ -21,7 +21,7 @@ URL_GERADOR_BOLETOS = 'http://dev.geradorboletos.doois.com.br/bradesco/'
 CHAVE_UNICA = ''
 
 
-def gera_boleto_bradesco(resp_usuario_id, invoice, days=7):
+def gera_boleto_bradesco(resp_usuario_id, invoice, days=7, second_copy=False):
     '''
     Receives a dict filled with the data that will be sent to the billet generator
     and returns a permalink to the billet generated.
@@ -49,7 +49,7 @@ def gera_boleto_bradesco(resp_usuario_id, invoice, days=7):
                 
     org.current_invoice = inv
     org.save()
-    if inv.billet_url is not None and len(inv.billet_url) > 5:
+    if inv.billet_url is not None and len(inv.billet_url) > 5 and not second_copy:
         return inv.billet_url
     else:
         dados = {}

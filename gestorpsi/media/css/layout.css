@@ -1797,3 +1797,38 @@ div.multiselectable input { margin-bottom: 10px; }
 div.multiselectable select#m-selectable { clear: both;}
 div.multiselectable div.m-selectable-from label { clear: both; }
 div.multiselectable div.m-selectable-to label  { margin-top: -20px; }
+
+
+table.sign_history {
+	border: 3px solid #CCCCCC;
+	text-align: center;
+	border-collapse: collapse;
+}
+
+table.sign_history thead td {
+	border: 1px solid #CCCCCC;
+	background-color: #FCFCFC;
+	height: 26px;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+table.sign_history tbody td {
+	border: 1px solid #CCCCCC;
+}
+table.sign_history tbody tr.even {
+	background-color: #f2f2f2;
+}
+#content h2.sign_title
+{
+    float: none;
+    height: 26px;
+    line-height: 26px;
+    
+    color: #916F6F;
+    font-size: 22px;
+    margin: 0;
+    
+    font-weight: normal;
+    padding: 0;
+}

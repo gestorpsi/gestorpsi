@@ -34,6 +34,22 @@ GNU General Public License for more details.
 {% endblock %}
 
 
+{% block extrahead %}
+<script language="JavaScript" type="text/javascript">
+$(document).ready(function()
+{
+	$('.second_copy').click(function(event)
+	{
+		var sef = $(event.target);
+		window.open('/organization/second_copy/'+sef.attr('aux')+'/', 'ndvia', 'width=400, height=100, toolbar=0, titlebar=0');
+
+		event.preventDefault();
+	});
+});
+</script>
+
+{% endblock extrahead %}
+
 {% block core %}
 <h2 id="title_addressbook" style="display:none"></h2>
 
@@ -269,7 +285,126 @@ GNU General Public License for more details.
 		</div>
 		<br/>
 	</div>
+
 </fieldset>
+<fieldset class="signature organization">
+	<legend>{% trans "Use History - Under development" %}</legend>
+	
+	<div>
+		<label>{% trans "Inscription Date" %}<br />
+		<input type="text" value="{{object.date_created}}" readonly  />
+		<br/>
+		{% if inscription.0 %}
+		{% if inscription.0.date_payed %}
+		{% trans "Payed " %}{{inscription.0.ammount}}
+		{% else %}
+		{% trans "Not payed yet " %}{{inscription.0.ammount}}
+		{% endif %}
+		{% else %}{% trans "Inscription not done" %}{% endif %}
+		</label>
+		
+		<br/><br/><br/>
+		<br/><br/><br/>
+		<br/>
+	</div>
+		
+	<div>
+		<h2 class="sign_title">{% trans "Use History" %}</h2>
+		<table class="sign_history">
+			<thead>
+				<tr>
+					<td style="width: 80px;">{% trans "From" %}</td>
+					<td style="width: 80px;">{% trans "To" %}</td>
+					<td style="width: 120px;">{% trans "Plan" %}</td>
+					<td style="width: 100px;">{% trans "Value" %}</td>
+					<td style="width: 60px;">{% trans "Status" %}</td>
+					<td style="width: 100px;">{% trans "Second copy" %}</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for inv in invoices %}
+				<tr class="{% cycle '' 'even' %}">
+					<td>{{inv.date|date:"d/m/Y"}}</td>
+					<td>{{inv.expiry_date|date:"d/m/Y"}}</td>
+					<td>{{inv.plan.staff_size}} funcionarios</td>
+					<td>R$ {{inv.ammount}}</td>
+					<td>
+						{% if inv.status != 2 %}
+							{% if not inv.dued %}
+							<a href="{{inv.billet_url}}">{{inv.get_status_display}}</a>
+							{% else %}
+							Vencido
+							{% endif %}
+						{% else %}
+							<a href="{{inv.billet_url}}">{{inv.get_status_display}}</a>
+						{% endif %}
+					</td>
+					<td>
+						{% if inv.status != 2 %}
+							{% if inv.dued %}
+							<a class="second_copy" aux="{{inv.id}}" href="javascript:void(0);">
+								Second copy
+							</a>
+							{% endif %}
+						{% endif %}
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<br />
+		
+		{% if object.current_invoice %}
+		<h2 class="sign_title" style="font-size: 14px; height: 14px; line-height: 14px;">{% trans "Last Invoice" %}</h2>
+		<table class="sign_history">
+			<thead>
+				<tr>
+					<td style="width: 80px;">{% trans "From" %}</td>
+					<td style="width: 80px;">{% trans "To" %}</td>
+					<td style="width: 120px;">{% trans "Plan" %}</td>
+					<td style="width: 100px;">{% trans "Value" %}</td>
+					<td style="width: 60px;">{% trans "Status" %}</td>
+					<td style="width: 100px;">{% trans "Second copy" %}</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="">
+					<td>{{object.current_invoice.date|date:"d/m/Y"}}</td>
+					<td>{{object.current_invoice.expiry_date|date:"d/m/Y"}}</td>
+					<td>{{object.current_invoice.plan.staff_size}} funcionarios</td>
+					<td>R$ {{object.current_invoice.ammount}}</td>
+					<td>
+						{% if object.current_invoice.status != 2 %}
+							{% if not object.current_invoice.dued %}
+							<a href="{{object.current_invoice.billet_url}}">{{object.current_invoice.get_status_display}}</a>
+							{% else %}
+							Vencido
+							{% endif %}
+						{% else %}
+							<a href="{{object.current_invoice.billet_url}}">{{object.current_invoice.get_status_display}}</a>
+						{% endif %}
+					</td>
+					<td>
+						{% if object.current_invoice.status != 2 %}
+							{% if object.current_invoice.dued %}
+							<a class="second_copy" aux="{{object.current_invoice.id}}" href="javascript:void(0);">
+								Second copy
+							</a>
+							{% endif %}
+						{% endif %}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		{% endif %}
+		
+		<br/><br/><br/>
+		<br/><br/>
+		<br/>
+	</div>
+</fieldset>
+
+
 
 <fieldset id="fieldset_place_status" class="identity organization">
    <legend>{% trans "Visible for others" %}</legend>

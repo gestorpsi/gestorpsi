@@ -35,6 +35,10 @@ BANK_CHOICES = (
 
 
 class BradescoBilletData(models.Model):
+    inscription_default_value = models.DecimalField(max_digits=19, decimal_places=10)
+    inscription_default_value.verbose_name = _("Default inscription tax")
+    inscription_default_value.help_text = _("Value charged on the user to make their inscription on the system.")
+    
     cedente_nome = models.CharField(max_length=255, null=True, blank=True)
     cedente_nome.verbose_name = _("Seller's name")
     cedente_nome.help_text = _("Seller (company that will receive the money).")

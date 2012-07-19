@@ -14,22 +14,22 @@
     <table>
     <tr>
     	<th>
-    		<a href="{% url 'org-list' 'name' %}">
+    		<a href="{% url 'org-pen-list' 'name' %}">
     			{% trans "Organizacao" %}
     		</a>
     	</th>
     	<th>
-    		<a href="{% url 'org-list' 'employee_number' %}">
+    		<a href="{% url 'org-pen-list' 'employee_number' %}">
     			{% trans "Numero de profissionais" %}
    			</a>
     	</th>
     	<th>
-    		<a href="{% url 'org-list' 'professionalresponsible__name' %}">
+    		<a href="{% url 'org-pen-list' 'professionalresponsible__name' %}">
     			{% trans "Profissional responsavel" %}
    			</a>
     	</th>
     	<th>
-    		<a href="{% url 'org-list' 'date_created' %}">
+    		<a href="{% url 'org-pen-list' 'date_created' %}">
     			{% trans "Data de inscricao" %}
    			</a>
     	</th>
@@ -37,7 +37,7 @@
    			{% trans "Fones" %}
     	</th>
     	<th>
-    		<a href="{% url 'org-list' 'active' %}">
+    		<a href="{% url 'org-pen-list' 'active' %}">
     			{% trans "Ativo" %}
    			</a>
     	</th>
@@ -45,7 +45,7 @@
     {% for object in object_list %}
     <tr class="{% cycle 'even' '' %}">
         <td>
-            <a href="{% url 'org-update' object.id %}" class="tag">
+            <a href="{% url 'org-pen-detail' object.id %}" class="tag">
             	{{ object.name }}
             </a>
         </td>

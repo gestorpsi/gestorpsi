@@ -78,6 +78,7 @@ urlpatterns = patterns('',
     
     url(r'gcm/bill/(?P<object_id>\w+)/$', update_invoice_wrapper, org_bill_update, name='org-bill-update'),
     
+    url(r'gcm/org/(?P<order_by>\w+)/$', org_object_list, org_list, name='org-pen-list'),
     url(r'gcm/orgpen/$', org_object_list, org_pen_list, name='org-pen-list'),
     url(r'gcm/orgpen/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', object_detail, org_pen_detail, name='org-pen-detail'),
     url(r'gcm/orgpen/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/del/$', delete_object, org_pen_del, name='org-pen-del'),

@@ -8,10 +8,10 @@ from django.conf.urls.defaults import *
 from django.contrib.auth.views import *
 from gestorpsi.gcm.forms.auth import RegistrationForm
 from django.views.generic.simple import direct_to_template as django_direct_to_template
-from gestorpsi.gcm.views.generic import create_object, object_detail, update_object, update_invoice_wrapper, object_list, delete_object, direct_to_template
+from gestorpsi.gcm.views.generic import create_object, object_detail, update_object, update_invoice_wrapper, update_organization_wrapper, object_list, delete_object, direct_to_template
 from gestorpsi.gcm.views.auth import object_activate
 
-from gestorpsi.gcm.views.views import org_object_list, billet_config, update_organization
+from gestorpsi.gcm.views.views import org_object_list, billet_config
 
 from gestorpsi.gcm.models import Plan
 from gestorpsi.gcm.models import Invoice
@@ -41,7 +41,8 @@ invoice_add = { 'form_class':InvoiceForm, 'post_save_redirect': '/gcm/invoice/',
 org_list = {'queryset': Organization.objects.filter(organization__isnull=True, person__profile__user__registrationprofile__activation_key='ALREADY_ACTIVATED').distinct(), 'template_name':'gcm/org_list.html'}
 org_update = { 'model':Organization, 'post_save_redirect': '/gcm/org/', 'template_name': 'gcm/org_form.html'}
 
-org_bill_update = { 'model':Invoice}
+org_bill_update = { 'model':Invoice }
+org_org_update = { 'model':Organization }
 
 
 org_pen_list = { 'queryset':Organization.objects.filter(organization__isnull=True).exclude(person__profile__user__registrationprofile__activation_key='ALREADY_ACTIVATED').distinct(), 'template_name': 'gcm/org_pen_list.html'}
@@ -71,11 +72,12 @@ urlpatterns = patterns('',
     
     url(r'gcm/org/(?P<order_by>\w+)/$', org_object_list, org_list, name='org-list'),
     url(r'gcm/org/$', org_object_list, org_list, name='org-list'),
-    url(r'gcm/org/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', update_organization, name='org-update'),
+    url(r'gcm/org/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', update_object, org_update, name='org-update'),
+    
+    url(r'gcm/org/up/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', update_organization_wrapper, org_org_update, name='org-org-update'),
     
     url(r'gcm/bill/(?P<object_id>\w+)/$', update_invoice_wrapper, org_bill_update, name='org-bill-update'),
     
-
     url(r'gcm/orgpen/$', org_object_list, org_pen_list, name='org-pen-list'),
     url(r'gcm/orgpen/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', object_detail, org_pen_detail, name='org-pen-detail'),
     url(r'gcm/orgpen/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/del/$', delete_object, org_pen_del, name='org-pen-del'),

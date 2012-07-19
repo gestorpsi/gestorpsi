@@ -179,7 +179,8 @@ INSTALLED_APPS = (
     'gestorpsi.ehr',
     'gestorpsi.report',
     'gestorpsi.boleto',
-    
+   
+    'django_extensions', 
     'swingtime',
     'registration',
     'south',

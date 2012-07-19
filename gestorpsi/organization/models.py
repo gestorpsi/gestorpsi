@@ -165,7 +165,6 @@ class OrganizationManager(models.Manager):
         return super(OrganizationManager, self).get_query_set().filter(active=True, organization__isnull=True)
 
 
-PLANS = ( (x.id, x.name) for x in Plan.objects.all() )
 DEFAULT_PAYMENT_DAY = BradescoBilletData.objects.all()[0].default_payment_day
 
 class Organization(models.Model):
@@ -216,7 +215,7 @@ class Organization(models.Model):
     employee_number.verbose_name = "Number of employees"
     #employee_number.editable = False
     
-    prefered_plan = models.ForeignKey(Plan, null=False, blank=False, choices=PLANS)
+    prefered_plan = models.ForeignKey(Plan, null=False, blank=False)
     prefered_plan.verbose_name = _("Preferred plan")
     prefered_plan.help_text= _("The plan the organization will use next time the system gives a billet.")
     

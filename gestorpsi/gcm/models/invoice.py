@@ -24,8 +24,8 @@ INVOICE_STATUS_CHOICES = (
 )
 
 INVOICE_TYPES = (
-    (1, _('Inscription')),
-    (2, _('Monthly fee')),
+    ('1', _('Inscription')),
+    ('2', _('Monthly fee')),
 )
 
 

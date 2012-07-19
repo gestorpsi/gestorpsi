@@ -169,6 +169,7 @@ $(document).ready(function()
 		<td colspan="6">
 			<form class="form_invoice" action="{% url 'org-bill-update' invoice.id %}" method="post">
 			    <fieldset>
+			    	<input type="hidden" name="type" value="{{invoice.type}}" />
 			        <input type="hidden" name="organization" value="{{object.id}}" />
 			        <input type="hidden" name="plan" value="{{invoice.plan.id}}" />
 			        <input type="hidden" name="ammount" value="{{invoice.ammount|default:'0'}}" />
@@ -197,21 +198,25 @@ $(document).ready(function()
 	</tr>
 	{% endfor %}
 </table>
-<br/>
-<form action="{% url 'org-update' object.id %}" method="post">
+<br/><br/>
+
+<form action="{% url 'org-org-update' form.instance.id %}" method="post">
     <fieldset>
         <legend>{% trans "Organization data" %}</legend>
         {% for field in form %}
-        {% if not field.editable %}
         <p>
 	        {{ field.errors }}
 	        <label>{{ field.label }}</label><br>
 	        {{ field }}
 	        <small>{{ field.help_text }}</small>
         </p>
-        {% endif %}
         {% endfor %}
-    <p><br /><input type="submit" value="{% trans "Save" %}" class="submit"></p>
+        {% csrf_token %}
+        <input type="hidden" name="organization" value="{{form.instance.id}}" />
+	    <p>
+	    	<br />
+	    	<input type="submit" value="{% trans "Save" %}" class="submit">
+	    </p>
     </fieldset>
 </form>
 {% else %}

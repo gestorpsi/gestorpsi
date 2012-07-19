@@ -61,7 +61,10 @@ def billet_config(request):
     return render_to_response('gcm/billet_config.html', locals(), context_instance=RequestContext(request))
 
 
-def update_organization(request, object_id):
+
+
+def update_org_object(request, *args, **kwargs):
+    object_id = kwargs['object_id']
     dados = Organization.objects.get(pk=object_id)  
     if request.method == 'POST':
         form = OrganizationForm(request.POST, instance=dados)
@@ -73,10 +76,9 @@ def update_organization(request, object_id):
     else:
         form = OrganizationForm(instance=dados)
     
-    #plan = request.POST.get('prefered_plan')
-    #request.POST['prefered_plan'] = Plan.objects.get(pk=plan)
-    
-    return HttpResponseRedirect('/gcm/org/%s/' % dados.id)
+    if not request.user.is_superuser:
+        return HttpResponseRedirect('/gcm/login/?next=%s' % request.path)
+    return generic_object_detail(request, *args, **kwargs)
 
 
 

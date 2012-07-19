@@ -11,7 +11,7 @@ from django.views.generic.simple import direct_to_template as django_direct_to_t
 from gestorpsi.gcm.views.generic import create_object, object_detail, update_object, update_invoice_wrapper, object_list, delete_object, direct_to_template
 from gestorpsi.gcm.views.auth import object_activate
 
-from gestorpsi.gcm.views.views import org_object_list, billet_config
+from gestorpsi.gcm.views.views import org_object_list, billet_config, update_organization
 
 from gestorpsi.gcm.models import Plan
 from gestorpsi.gcm.models import Invoice

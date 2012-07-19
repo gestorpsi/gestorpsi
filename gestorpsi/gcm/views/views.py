@@ -58,3 +58,25 @@ def billet_config(request):
         
     return render_to_response('gcm/billet_config.html', locals(), context_instance=RequestContext(request))
 
+
+def update_organization(request, *args, **kwargs):
+    if not request.user.is_superuser:
+        return HttpResponseRedirect('/gcm/login/?next=%s' % request.path)
+
+    #from gestorpsi.organization.models import Organization
+    #from gestorpsi.phone.models import Phone
+    #p = Phone()
+    #p.area = '99'
+    #p.phoneNumber = '87654321'
+    #p.phoneType_id = 2
+    #org = Organization.objects.get(pk=kwargs['object_id'])
+    #org.phones.add(p)
+    #org.save()
+    #raise Exception(kwargs['object_id'])
+    plan = request.POST.get('prefered_plan')
+    request.POST['prefered_plan'] = Plan.objects.get(pk=plan)
+    
+    return generic_update_object(request, *args, **kwargs)
+
+
+

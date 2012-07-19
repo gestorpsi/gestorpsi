@@ -71,7 +71,7 @@ urlpatterns = patterns('',
     
     url(r'gcm/org/(?P<order_by>\w+)/$', org_object_list, org_list, name='org-list'),
     url(r'gcm/org/$', org_object_list, org_list, name='org-list'),
-    url(r'gcm/org/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', update_object, org_update, name='org-update'),
+    url(r'gcm/org/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', update_organization, org_update, name='org-update'),
     
     url(r'gcm/bill/(?P<object_id>\w+)/$', update_invoice_wrapper, org_bill_update, name='org-bill-update'),
     

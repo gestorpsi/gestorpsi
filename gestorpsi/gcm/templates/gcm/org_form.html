@@ -198,6 +198,7 @@ $(document).ready(function()
 	{% endfor %}
 </table>
 <br/>
+<form action="{% url 'org-update' object.id %}" method="post">
     <fieldset>
         <legend>{% trans "Organization data" %}</legend>
         {% for field in form %}
@@ -212,7 +213,7 @@ $(document).ready(function()
         {% endfor %}
     <p><br /><input type="submit" value="{% trans "Save" %}" class="submit"></p>
     </fieldset>
-
+</form>
 {% else %}
 <strong>{% trans "Esta organização não possui nenhuma fatura ainda." %}</strong>
 

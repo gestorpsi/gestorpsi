@@ -28,8 +28,8 @@ def start(request):
     date = datetime.now()
 
     #code for testing the charging system
-    from gestorpsi.async_tasks.tasks import check_and_charge
-    check_and_charge()
+    #from gestorpsi.async_tasks.tasks import check_and_charge
+    #check_and_charge()
 
     """ user's client home page """
     if request.user.get_profile().person.is_client():

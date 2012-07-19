@@ -76,7 +76,7 @@ def update_organization(request, object_id):
     #plan = request.POST.get('prefered_plan')
     #request.POST['prefered_plan'] = Plan.objects.get(pk=plan)
     
-    return generic_object_list(request, *args, **kwargs)
+    return HttpResponseRedirect('/gcm/org/%s/' % dados.id)
 
 
 

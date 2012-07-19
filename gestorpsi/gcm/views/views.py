@@ -61,7 +61,8 @@ def billet_config(request):
     return render_to_response('gcm/billet_config.html', locals(), context_instance=RequestContext(request))
 
 
-def update_organization(request):  
+def update_organization(request, object_id):
+    dados = Organization.objects.get(pk=object_id)  
     if request.method == 'POST':
         form = OrganizationForm(request.POST, instance=dados)
         if form.is_valid():

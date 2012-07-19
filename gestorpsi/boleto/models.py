@@ -19,7 +19,7 @@ from django.db import models
 from django.utils.translation import ugettext as _
 from gestorpsi.address.models import State, City
 from smart_selects.db_fields import ChainedForeignKey
-from django.core.validators import MaxValueValidator, MinLengthValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
 from django.utils.encoding import smart_str
 from datetime import datetime
 
@@ -38,6 +38,14 @@ class BradescoBilletData(models.Model):
     inscription_default_value = models.DecimalField(max_digits=19, decimal_places=10)
     inscription_default_value.verbose_name = _("Default inscription tax")
     inscription_default_value.help_text = _("Value charged on the user to make their inscription on the system.")
+    
+    default_payment_day = models.PositiveIntegerField(validators=[MaxValueValidator(28), MinValueValidator(1)], default=10)
+    default_payment_day.verbose_name = _("Default payment day")
+    default_payment_day.help_text= _("The default day in which the billets have to be paid by all the organizations (if they define another one that one will be preferred).")
+    
+    default_second_copy_days = models.PositiveIntegerField(validators=[MaxValueValidator(28), MinValueValidator(1)], default=7)
+    default_second_copy_days.verbose_name = _("Second copy tolerance time")
+    default_second_copy_days.help_text= _("The default amount of days that will be added to a second copy of a billet.")
     
     cedente_nome = models.CharField(max_length=255, null=True, blank=True)
     cedente_nome.verbose_name = _("Seller's name")
@@ -75,32 +83,32 @@ class BradescoBilletData(models.Model):
     enderecosacaval_numero.verbose_name = _("Number")
     enderecosacaval_numero.help_text = _("Number of the house where the guarantor lives.")
 
-    contabancaria_numerodaconta = models.CharField(max_length=7, null=True, blank=True)
+    contabancaria_numerodaconta = models.CharField(max_length=7, null=False, blank=False)
     contabancaria_numerodaconta.widget = forms.TextInput(attrs={"mask": "999999",})
     contabancaria_numerodaconta.verbose_name = _("Account")
     contabancaria_numerodaconta.help_text = _("Number of the bank account of the seller.")
-    contabancaria_numerodaconta_digito = models.CharField(max_length=1, null=True, blank=True)
+    contabancaria_numerodaconta_digito = models.CharField(max_length=1, null=False, blank=False)
     contabancaria_numerodaconta_digito.widget = forms.TextInput(attrs={"mask": "9",})
     contabancaria_numerodaconta_digito.verbose_name = _("Verifier digit")
     contabancaria_numerodaconta_digito.help_text = _("Verifier digit of the bank account of the seller.")
-    contabancaria_carteira = models.PositiveIntegerField(null=True, blank=True, validators=[MaxValueValidator(99)])
+    contabancaria_carteira = models.PositiveIntegerField(null=False, blank=False, validators=[MaxValueValidator(99)])
     contabancaria_carteira.verbose_name = _("Seller's wallet")
     contabancaria_carteira.help_text = _("Seller's bank wallet number")
-    contabancaria_agencia = models.CharField(max_length=255, null=True, blank=True)
+    contabancaria_agencia = models.CharField(max_length=255, null=False, blank=False)
     contabancaria_agencia.widget = forms.TextInput(attrs={"mask": "9999",})
     contabancaria_agencia.verbose_name = _("Agency")
     contabancaria_agencia.help_text = _("Seller's account agency")
-    contabancaria_agencia_digito = models.CharField(max_length=1, null=True, blank=True)
+    contabancaria_agencia_digito = models.CharField(max_length=1, null=False, blank=False)
     contabancaria_agencia_digito.widget = forms.TextInput(attrs={"mask": "9",})
     contabancaria_agencia_digito.verbose_name = _("Agency digit")
     contabancaria_agencia_digito.help_text = _("Seller's account agency verifier digit")
 
 
-    titulo_nossonumero = models.CharField(max_length=11, null=True, blank=True, validators=[MinLengthValidator(11)])
+    titulo_nossonumero = models.CharField(max_length=11, null=False, blank=False, validators=[MinLengthValidator(11)])
     titulo_nossonumero.verbose_name = _("\"Our number\"")
     titulo_nossonumero.help_text = _("Number registered in Bradesco to register the receiving of billets.")
     
-    titulo_digitodonossonumero = models.CharField(max_length=1, null=True, blank=True)
+    titulo_digitodonossonumero = models.CharField(max_length=1, null=False, blank=False)
     titulo_digitodonossonumero.widget = forms.TextInput(attrs={"mask": "9",})
     titulo_digitodonossonumero.verbose_name = _("\"Our number\" digit")
     titulo_digitodonossonumero.help_text = _("\"Our number\" digit")

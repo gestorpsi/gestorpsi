@@ -13,10 +13,6 @@
     <li><a href="{% url billet-config %}">{% trans "Configurations" %}</a></li>
 </ul>
 <br/><br/>
- - a field to define the standard day to the billets expiry (this one makes no sense. 
- We need to check with the client. Billets expiry based on their plans right now).<br/>
- - a field to define the inscription value.<br/>
- - the form from the admin with the company data to generate the billets (I bet Oliver doesn't want to use django admin).<br/>
 <br/><br/>
 {% endblock %}
 
@@ -29,7 +25,7 @@ $(function() {
 <h2>{{ object }}</h2>
 <form action="{% url billet-config %}" method="post">
     <fieldset>
-        <legend>{% trans "Plan Details" %}</legend>
+        <legend>{% trans "Invoice data" %}</legend>
         {% for field in form %}
         <p>
         {{ field.errors }}

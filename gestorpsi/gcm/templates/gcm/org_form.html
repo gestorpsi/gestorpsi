@@ -197,6 +197,22 @@ $(document).ready(function()
 	</tr>
 	{% endfor %}
 </table>
+<br/>
+    <fieldset>
+        <legend>{% trans "Organization data" %}</legend>
+        {% for field in form %}
+        {% if not field.editable %}
+        <p>
+	        {{ field.errors }}
+	        <label>{{ field.label }}</label><br>
+	        {{ field }}
+	        <small>{{ field.help_text }}</small>
+        </p>
+        {% endif %}
+        {% endfor %}
+    <p><br /><input type="submit" value="{% trans "Save" %}" class="submit"></p>
+    </fieldset>
+
 {% else %}
 <strong>{% trans "Esta organização não possui nenhuma fatura ainda." %}</strong>
 

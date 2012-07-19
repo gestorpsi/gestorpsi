@@ -30,6 +30,7 @@ import urllib2
 import re
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+from calendar import monthrange
 
 
 class CheckAndCharge(PeriodicTask):
@@ -51,43 +52,31 @@ class CheckAndCharge(PeriodicTask):
             (2, _('Pago')),
             (3, _('Excluido')),
         )
+        INVOICE_TYPES = (
+            (1, _('Inscription')),
+            (2, _('Monthly fee')),
+        )
         '''
         for org in orgs:
             last_invoice = org.current_invoice
-            if last_invoice is None:
-                #if there are no invoices, it's going to generate a new one
-                check = False
+
+            if last_invoice.status == 1: #check if the last invoice isn't paid
+                check = last_invoice.due_date > datetime.now() #check if the invoice is not due
+            elif last_invoice.status == 2:
+                #check if this company last paid invoice is going to expire in ten days
+                check = last_invoice.expiry_date < datetime.today()+timedelta(days=10)
             else:
-                if last_invoice.status == 1: #check if the last invoice isn't paid
-                    check = last_invoice.due_date > datetime.now() #check if the invoice is not due
-                elif last_invoice.status == 2:
-                    #check if this company last paid invoice is going to expire in ten days
-                    check = last_invoice.expiry_date is not None and (last_invoice.expiry_date < datetime.today()+timedelta(days=10))
-                else:
-                    check = True
+                check = True
     
-            if check:#no need to do anything with this organization
+            if check: #no need to do anything with this organization
                 continue
             else:#send an email to the person responsible for the organization with a new billet to pay
-                try:
-                    person = ProfessionalResponsible.objects.get(organization=org).person
-                except:
-                    '''
-                    * temporary code just to fix errors/mistakes due to the system improvement
-                    * Jayme Tosi Neto - .doois. 2012
-                    '''
-                    person = org.person_set.all()[0]
-                    prof = ProfessionalResponsible()
-                    prof.organization = org
-                    prof.person = person
-                    prof.name = person.name
-                    prof.save()
+                person = ProfessionalResponsible.objects.get(organization=org).person
                 user = person.user
     
                 #create the new invoice
                 inv = Invoice()
                 inv.organization = org
-                inv.due_date = datetime.today()+timedelta(days=10)
                 
                 #prefered plan
                 pplan = org.prefered_plan
@@ -97,31 +86,24 @@ class CheckAndCharge(PeriodicTask):
                 staff_count = org.person_set.all().count()
                 if pplan is not None:
                     inv.plan = pplan
-                elif last_invoice is not None and last_invoice.plan is not None:
-                    if last_invoice.plan.staff_size < staff_count:
-                        try:
-                            inv.plan = Plan.objects.get(staff_size=staff_count, duration=last_invoice.plan.duration)
-                        except:
-                            try:
-                                inv.plan = Plan.objects.filter(staff_size__gte=staff_count).order_by('duration')[0]
-                            except:
-                                inv.plan = Plan.objects.all().order_by('-staff_size', 'duration')[0]
-                    else:
-                        inv.plan = last_invoice.plan
+                elif last_invoice.plan is not None:
+                    inv.plan = last_invoice.plan
                 else:
-                    try:
-                        inv.plan = Plan.objects.get(staff_size=staff_count, duration=1)
-                    except:
-                        try:
-                            inv.plan = Plan.objects.filter(staff_size__gte=staff_count).order_by('duration')[0]
-                        except:
-                            inv.plan = Plan.objects.all().order_by('staff_size', 'duration')[0]
-                    
-                inv.expiry_date = datetime.today() + relativedelta(months = inv.plan.duration) 
+                    inv.plan = None
+                
+                #define a data de vencimento(pagamento) do boleto
+                dday = org.default_payment_day
+                inv.due_date = last_invoice.expiry_date.replace(day=dday)
+                
+                #define a data de vencimento(acesso ao sistema) do boleto
+                pplan = org.prefered_plan
+                inv.expiry_date = inv.due_date + relativedelta(months=pplan.duration)
                 inv.save()
+                
                 org.current_invoice = inv
                 org.save()
                 url_boleto = gera_boleto_bradesco(user.id, inv)
+    
     
                 email = user.email
                 if email is not None and len(email) > 0:

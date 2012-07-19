@@ -34,6 +34,7 @@ from gestorpsi.gcm.models.plan import Plan
 
 from datetime import datetime, timedelta
 from gestorpsi.boleto.functions import gera_boleto_bradesco
+from gestorpsi.boleto.models import BradescoBilletData
 
 @permission_required_with_403('organization.organization_write')
 def professional_responsible_save(request, object, ids, names, subscriptions, organization_subscriptions, professions):
@@ -108,13 +109,14 @@ def make_second_copy(request, invoice):
         invoice.status = 3
         invoice.save()
         
-        billet_url = gera_boleto_bradesco(request.user.id, inv, days=7, second_copy=True)
+        data = BradescoBilletData.objects.all()[0]
+        billet_url = gera_boleto_bradesco(request.user.id, inv, days=data.default_second_copy_days, second_copy=True)
         inv.billet_url = billet_url
         inv.save()
         aux = True
         message = 'Second copy details saved successfully'
     else:
-        message = 'Second copy not generated: there are billets requiring payment.'
+        message = 'Second copy not generated: there are billets that still requiring payment.'
         aux = False 
         
     return render_to_response('organization/second_copy.html', locals(), context_instance=RequestContext(request))

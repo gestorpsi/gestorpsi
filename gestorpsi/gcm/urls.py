@@ -11,7 +11,7 @@ from django.views.generic.simple import direct_to_template as django_direct_to_t
 from gestorpsi.gcm.views.generic import create_object, object_detail, update_object, update_invoice_wrapper, object_list, delete_object, direct_to_template
 from gestorpsi.gcm.views.auth import object_activate
 
-from gestorpsi.gcm.views.views import org_object_list
+from gestorpsi.gcm.views.views import org_object_list, billet_config
 
 from gestorpsi.gcm.models import Plan
 from gestorpsi.gcm.models import Invoice
@@ -65,6 +65,8 @@ urlpatterns = patterns('',
     url(r'gcm/retfile/$', object_list, retfile_list, name='retfile-list'),
     url(r'gcm/retfile/(?P<object_id>\d+)/$', update_object, retfile_update, name='retfile-update'),
     url(r'gcm/retfile/add/$', create_object, retfile_add, name='retfile-add'),
+    
+    url(r'gcm/billet_config/$', billet_config, name='billet-config'),
     
     
     url(r'gcm/org/(?P<order_by>\w+)/$', org_object_list, org_list, name='org-list'),

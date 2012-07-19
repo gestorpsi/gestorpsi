@@ -2,13 +2,15 @@
 
 {% load i18n %}
 
-{% block section %}{% trans "Planos" %}{% endblock %}
-{% block title %}{% trans "Planos" %}{% endblock %}
+{% block section %}{% trans "Plans" %}{% endblock %}
+{% block title %}{% trans "Plans" %}{% endblock %}
 
 
 {% block submenu %}
 <ul>
-    <li><a href="{% url retfile-list %}">{% trans "Arquivos de retorno" %}</a></li>
+    <li><a href="{% url retfile-list %}">{% trans "Return Files" %}</a></li>
+    <li>&nbsp;&nbsp;</li>
+    <li><a href="{% url billet-config %}">{% trans "Configurations" %}</a></li>
 </ul>
 <br/><br/>
 {% endblock %}

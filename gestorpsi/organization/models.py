@@ -20,6 +20,8 @@ from datetime import datetime
 from django.db import models
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import Group
+from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
+from django.utils.translation import ugettext as _
 
 from gestorpsi.phone.models import Phone
 from gestorpsi.internet.models import Email, Site, InstantMessenger
@@ -28,6 +30,8 @@ from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util.first_capitalized import first_capitalized
 from gestorpsi.gcm.models.plan import Plan
 from gestorpsi.gcm.models.invoice import Invoice
+from gestorpsi.boleto.models import BradescoBilletData
+
 
 class ProfessionalResponsible(models.Model):
     """    
@@ -162,6 +166,7 @@ class OrganizationManager(models.Manager):
 
 
 PLANS = ( (x.id, x.name) for x in Plan.objects.all() )
+DEFAULT_PAYMENT_DAY = BradescoBilletData.objects.all()[0].default_payment_day
 
 class Organization(models.Model):
     """    
@@ -209,10 +214,22 @@ class Organization(models.Model):
     employee_number = models.IntegerField(default=1, null=True, blank=True)
     employee_number.help_text = "Number of employees (field used by the system DON'T change it)." 
     employee_number.verbose_name = "Number of employees"
+    #employee_number.editable = False
     
     prefered_plan = models.ForeignKey(Plan, null=False, blank=False, choices=PLANS)
+    prefered_plan.verbose_name = _("Preferred plan")
+    prefered_plan.help_text= _("The plan the organization will use next time the system gives a billet.")
+    
     current_invoice = models.ForeignKey(Invoice, null=True, blank=True, related_name='current_invoice')
-        
+    current_invoice.verbose_name = _("Current invoice")
+    current_invoice.help_text= _("Field used by the system DON'T change it.")
+    #current_invoice.editable = False
+    
+    default_payment_day = models.PositiveIntegerField(validators=[MaxValueValidator(28), MinValueValidator(1)], default=DEFAULT_PAYMENT_DAY)
+    default_payment_day.verbose_name = _("Default payment day")
+    default_payment_day.help_text= _("The default day in which the billets have to be paid at the most by this organization.")
+    
+    
     objects = OrganizationManager()
 
     def __unicode__(self):

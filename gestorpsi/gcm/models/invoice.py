@@ -23,7 +23,15 @@ INVOICE_STATUS_CHOICES = (
     (3, _('Excluido')),
 )
 
+INVOICE_TYPES = (
+    (1, _('Inscription')),
+    (2, _('Monthly fee')),
+)
+
+
 class Invoice(models.Model):
+    type = models.CharField(max_length=2, null=False, blank=False, choices=INVOICE_TYPES, default='2')
+    
     organization = models.ForeignKey('organization.Organization', verbose_name=_('Organizacao'))
     date = models.DateTimeField(_('Data'), auto_now_add=True)
     
@@ -34,7 +42,7 @@ class Invoice(models.Model):
     due_date.help_text=_('Formato dd/mm/aaaa. Ex.: 16/12/2009')
     
     expiry_date = models.DateField(_('Data de Expiracao'), null=True, blank=True)
-    expiry_date.help_text = _('Formato dd/mm/aaaa. Ex.: 16/12/2009. Data em que o plano vence (na qual o cliente deixara de ter acesso ao sistema).')
+    expiry_date.help_text = _('Formato dd/mm/aaaa. Ex.: 10/12/2009. Data em que o plano vence (na qual o cliente deixara de ter acesso ao sistema).')
     expiry_date.widget = forms.TextInput(attrs={"format": "%d/%m/%Y",})
     
     ammount = models.DecimalField(_('Valor'), decimal_places=2, max_digits=8, null=True, blank=True)

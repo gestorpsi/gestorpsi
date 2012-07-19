@@ -16,6 +16,7 @@ from django.views.generic.create_update import delete_object as generic_delete_o
 from django.views.generic.simple import direct_to_template as generic_direct_to_template
 
 from gestorpsi.organization.models import Organization
+from gestorpsi.organization.forms import OrganizationForm
 from gestorpsi.boleto.models import *
 from gestorpsi.boleto.admin import *
 from django.utils.translation import ugettext as _
@@ -60,24 +61,21 @@ def billet_config(request):
     return render_to_response('gcm/billet_config.html', locals(), context_instance=RequestContext(request))
 
 
-def update_organization(request, *args, **kwargs):
-    if not request.user.is_superuser:
-        return HttpResponseRedirect('/gcm/login/?next=%s' % request.path)
-
-    #from gestorpsi.organization.models import Organization
-    #from gestorpsi.phone.models import Phone
-    #p = Phone()
-    #p.area = '99'
-    #p.phoneNumber = '87654321'
-    #p.phoneType_id = 2
-    #org = Organization.objects.get(pk=kwargs['object_id'])
-    #org.phones.add(p)
-    #org.save()
-    #raise Exception(kwargs['object_id'])
-    plan = request.POST.get('prefered_plan')
-    request.POST['prefered_plan'] = Plan.objects.get(pk=plan)
+def update_organization(request):  
+    if request.method == 'POST':
+        form = OrganizationForm(request.POST, instance=dados)
+        if form.is_valid():
+            form.save()
+            request.user.message_set.create(message= _('Successfully updated.'))
+        else:
+            request.user.message_set.create(message= _('Correct the errors bellow.'))
+    else:
+        form = OrganizationForm(instance=dados)
     
-    return generic_update_object(request, *args, **kwargs)
+    #plan = request.POST.get('prefered_plan')
+    #request.POST['prefered_plan'] = Plan.objects.get(pk=plan)
+    
+    return generic_object_list(request, *args, **kwargs)
 
 
 

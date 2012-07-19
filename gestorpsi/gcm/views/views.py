@@ -20,6 +20,7 @@ from gestorpsi.boleto.models import *
 from gestorpsi.boleto.admin import *
 from django.utils.translation import ugettext as _
 
+from gestorpsi.gcm.models import Plan
 
 def org_object_list(request, order_by=False, *args, **kwargs):
 

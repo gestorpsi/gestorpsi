@@ -7,13 +7,6 @@
 
 
 {% block submenu %}
-<ul>
-    <li><a href="{% url retfile-list %}">{% trans "Return Files" %}</a></li>
-    <li>&nbsp;&nbsp;</li>
-    <li><a href="{% url billet-config %}">{% trans "Configurations" %}</a></li>
-</ul>
-<br/><br/>
-<br/><br/>
 {% endblock %}
 
 {% block core %}
@@ -25,7 +18,7 @@ $(function() {
 <h2>{{ object }}</h2>
 <form action="{% url billet-config %}" method="post">
     <fieldset>
-        <legend>{% trans "Invoice data" %}</legend>
+        <legend>{% trans "Billets main data" %}</legend>
         {% for field in form %}
         <p>
         {{ field.errors }}

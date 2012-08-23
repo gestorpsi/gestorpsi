@@ -59,6 +59,13 @@ class CheckAndCharge(PeriodicTask):
         '''
         for org in orgs:
             last_invoice = org.current_invoice
+            
+            #correcao temporaria para evitar problemas no desenvolvimento
+            try:
+                len(last_invoice.status)
+            except:
+                last_invoice = Invoice.objects.filter(organization=org).order_by('-date')[0]
+            
             if last_invoice.status == 1: #check if the last invoice isn't paid
                 check = last_invoice.due_date > datetime.now() #check if the invoice is not due
             elif last_invoice.status == 2:

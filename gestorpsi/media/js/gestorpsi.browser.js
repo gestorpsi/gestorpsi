@@ -20,12 +20,14 @@ GNU General Public License for more details.
 
 $(document).ready(function(){
   /**
-   * not mozilla
+   * not chrome
    */
-
-  if($.browser.mozilla) {
-      $('div.login .ff_not_ok').hide();
-  }
+	var userAgent = navigator.userAgent.toLowerCase(); 
+	$.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
+	if($.browser.chrome)
+	{
+		$('div.login .ff_not_ok').hide();
+	}
 });
 
 

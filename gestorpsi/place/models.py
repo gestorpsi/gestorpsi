@@ -133,6 +133,14 @@ class Room( models.Model ):
 
     def __str__(self):
         return "%s" % self.description
+    
+    def __area__(self):
+        return ''
+    area = property(__area__)
+    
+    def __addressPrefix__(self):
+        return ''
+    addressPrefix = property(__addressPrefix__)
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

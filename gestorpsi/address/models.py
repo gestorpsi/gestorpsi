@@ -97,6 +97,19 @@ class Address(models.Model):
             self.addressPrefix, self.addressLine1, self.addressNumber, self.addressLine2, \
             self.zipCode, self.neighborhood, self.city, '' if not hasattr(self.city, 'state') else self.city.state.shortName, '' if not hasattr(self.city, 'state') else self.city.state.country, self.addressType\
         )
+    
+    def __empty__(self):
+        return ''
+    area = property(__empty__)
+    addressPrefix = property(__empty__)
+    addressLine1 = property(__empty__)
+    addressPrefix = property(__empty__)
+    addressLine1 = property(__empty__)
+    addressLine2 = property(__empty__)
+    addressNumber = property(__empty__)
+    neighborhood = property(__empty__)
+    zipCode = property(__empty__)
+    addressType = property(__empty__)
 
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

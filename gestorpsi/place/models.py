@@ -61,6 +61,19 @@ class Place( models.Model ):
     
     def __str__(self):
        return "%s" % self.label
+    
+    def __empty__(self):
+        return ''
+    area = property(__empty__)
+    addressPrefix = property(__empty__)
+    addressLine1 = property(__empty__)
+    addressPrefix = property(__empty__)
+    addressLine1 = property(__empty__)
+    addressLine2 = property(__empty__)
+    addressNumber = property(__empty__)
+    neighborhood = property(__empty__)
+    zipCode = property(__empty__)
+    addressType = property(__empty__)
    
     def get_first_phone(self):
        if ( len( self.phones.all() ) != 0 ):

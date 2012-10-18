@@ -46,7 +46,11 @@ class ProfessionalResponsible(models.Model):
     organization = models.ForeignKey('Organization', null=False, blank=False)
     profession = models.ForeignKey('careprofessional.Profession', null=True, blank=False)
     person = models.ForeignKey('person.Person', null=False, blank=False, unique=True)
-
+    
+    def __area__(self):
+        return ''
+    area = property(__area__)
+    
     class Meta:
         ordering = ['name']
 

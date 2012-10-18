@@ -47,13 +47,18 @@ class ProfessionalResponsible(models.Model):
     profession = models.ForeignKey('careprofessional.Profession', null=True, blank=False)
     person = models.ForeignKey('person.Person', null=False, blank=False, unique=True)
     
-    def __area__(self):
+    def __empty__(self):
         return ''
-    area = property(__area__)
-    
-    def __addressPrefix__(self):
-        return ''
-    addressPrefix = property(__addressPrefix__)
+    area = property(__empty__)
+    addressPrefix = property(__empty__)
+    addressLine1 = property(__empty__)
+    addressPrefix = property(__empty__)
+    addressLine1 = property(__empty__)
+    addressLine2 = property(__empty__)
+    addressNumber = property(__empty__)
+    neighborhood = property(__empty__)
+    zipCode = property(__empty__)
+    addressType = property(__empty__)
     
     class Meta:
         ordering = ['name']

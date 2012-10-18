@@ -185,7 +185,8 @@ def gera_boleto_bradesco_inscricao(resp_usuario_id, days=7):
     inv = Invoice(organization=org, status=1)
     due_date = (datetime.now() + timedelta(days=days))
     inv.due_date = (due_date).strftime("%Y-%m-%d %H:%M:%S")
-    inv.expiry_date = (due_date + relativedelta(months=1)).replace(day=org.default_payment_day)
+    expiry_date = (due_date + relativedelta(months=1))
+    inv.expiry_date = expiry_date.replace(day=org.default_payment_day)
     inv.ammount = data.inscription_default_value
     inv.save()
     

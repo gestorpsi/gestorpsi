@@ -150,7 +150,7 @@ class ProfessionalIdentification(models.Model):
     """
     id= UuidField( primary_key= True )
     profession = models.ForeignKey(Profession, null=True)
-    registerNumber = models.CharField(max_length=50, null=True)    
+    registerNumber = models.CharField(max_length=50, null=True)
     
     def __unicode__(self):
         try:
@@ -158,6 +158,14 @@ class ProfessionalIdentification(models.Model):
         except:
             p = _('[no professional related]')
         return u'%s' % p
+    
+    def __str__(self):
+        try:
+            p  = CareProfessional.objects.get(professionalIdentification=self).person.name
+        except:
+            p = _('[no professional related]')
+        return '%s' % p
+    
 
 reversion.register(ProfessionalIdentification)
 

@@ -53,6 +53,9 @@ class ProfessionalResponsible(models.Model):
     def __unicode__(self):
         return u"%s" % self.name
 
+    def __str__(self):
+        return u"%s" % self.name
+
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
     

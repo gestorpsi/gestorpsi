@@ -58,6 +58,9 @@ class Place( models.Model ):
     
     def __unicode__(self):
        return "%s" % self.label
+    
+    def __str__(self):
+       return "%s" % self.label
    
     def get_first_phone(self):
        if ( len( self.phones.all() ) != 0 ):
@@ -93,6 +96,9 @@ class RoomType( models.Model ):
 
     def __unicode__(self):
         return "%s" % self.description
+    def __str__(self):
+        return "%s" % self.description
+
     class Meta:
         ordering = ['description']
 
@@ -123,6 +129,9 @@ class Room( models.Model ):
         ordering = ['description']
 
     def __unicode__(self):
+        return "%s" % self.description
+
+    def __str__(self):
         return "%s" % self.description
 
     def revision(self):

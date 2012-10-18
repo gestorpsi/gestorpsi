@@ -22,7 +22,7 @@ GNU General Public License for more details.
     Date:               2008-07-29
 """
 import uuid
-import ctypes
+
 from django.db.models.fields import CharField
 
 class UuidField(CharField):

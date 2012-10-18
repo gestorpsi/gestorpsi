@@ -52,8 +52,6 @@ class ProfessionalResponsible(models.Model):
     area = property(__empty__)
     addressPrefix = property(__empty__)
     addressLine1 = property(__empty__)
-    addressPrefix = property(__empty__)
-    addressLine1 = property(__empty__)
     addressLine2 = property(__empty__)
     addressNumber = property(__empty__)
     neighborhood = property(__empty__)

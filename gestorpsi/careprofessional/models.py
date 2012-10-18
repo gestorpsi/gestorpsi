@@ -180,10 +180,17 @@ class ProfessionalIdentification(models.Model):
         except:
             p = _('[no professional related]')
         return '%s' % p
-    
-    def __area__(self):
+
+    def __empty__(self):
         return ''
-    area = property(__area__)
+    area = property(__empty__)
+    addressPrefix = property(__empty__)
+    addressLine1 = property(__empty__)
+    addressLine2 = property(__empty__)
+    addressNumber = property(__empty__)
+    neighborhood = property(__empty__)
+    zipCode = property(__empty__)
+    addressType = property(__empty__)
     
     def __addressPrefix__(self):
         return ''

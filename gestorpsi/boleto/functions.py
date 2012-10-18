@@ -183,8 +183,9 @@ def gera_boleto_bradesco_inscricao(resp_usuario_id, days=7):
     
     org = Organization.objects.filter(organization__isnull=True).filter(person__profile__user=user)[0]
     inv = Invoice(organization=org, status=1)
-    inv.due_date = (datetime.now() + timedelta(days=days)).strftime("%Y-%m-%d %H:%M:%S")
-    inv.expiry_date = (inv.due_date + relativedelta(months=1)).replace(day=org.default_payment_day)
+    due_date = (datetime.now() + timedelta(days=days))
+    inv.due_date = (due_date).strftime("%Y-%m-%d %H:%M:%S")
+    inv.expiry_date = (due_date + relativedelta(months=1)).replace(day=org.default_payment_day)
     inv.ammount = data.inscription_default_value
     inv.save()
     

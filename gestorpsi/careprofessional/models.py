@@ -191,10 +191,6 @@ class ProfessionalIdentification(models.Model):
     neighborhood = property(__empty__)
     zipCode = property(__empty__)
     addressType = property(__empty__)
-    
-    def __addressPrefix__(self):
-        return ''
-    addressPrefix = property(__addressPrefix__)
 
 reversion.register(ProfessionalIdentification)
 

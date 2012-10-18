@@ -222,7 +222,7 @@ class Organization(models.Model):
     sites = generic.GenericRelation(Site, null=True)
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True) 
     organization = models.ForeignKey('self', related_name="%(class)s_related", null=True, blank=True)
-    contact_owner = models.ForeignKey('person.Person', related_name="contact_owner", null=False, blank=False)
+    contact_owner = models.ForeignKey('person.Person', related_name="contact_owner", null=True, blank=True, default=None)
     
     employee_number = models.IntegerField(default=1, null=True, blank=True)
     employee_number.help_text = "Number of employees (field used by the system DON'T change it)." 

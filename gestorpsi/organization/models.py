@@ -51,6 +51,10 @@ class ProfessionalResponsible(models.Model):
         return ''
     area = property(__area__)
     
+    def __addressPrefix__(self):
+        return ''
+    addressPrefix = property(__addressPrefix__)
+    
     class Meta:
         ordering = ['name']
 

@@ -166,6 +166,13 @@ class ProfessionalIdentification(models.Model):
             p = _('[no professional related]')
         return '%s' % p
     
+    def __area__(self):
+        return ''
+    area = property(__area__)
+    
+    def __addressPrefix__(self):
+        return ''
+    addressPrefix = property(__addressPrefix__)
 
 reversion.register(ProfessionalIdentification)
 

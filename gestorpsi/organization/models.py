@@ -247,7 +247,7 @@ class Organization(models.Model):
         else:
             original_state = None
             self.date_created = datetime.now()
-            self.prefered_plan = Plan.objects.filter(staff_size__gte=employee_number, duration=1).order_by('staff_size')[0]
+            self.prefered_plan = Plan.objects.filter(staff_size__gte=self.employee_number, duration=1).order_by('staff_size')[0]
 
         super(Organization, self).save(*args, **kwargs)
         

@@ -12,6 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+
 import os
 PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 

@@ -16,7 +16,7 @@ from gestorpsi.address.models import City, Address, Country
 from gestorpsi.gcm.models import Plan, Invoice
 from gestorpsi.organization.models import Organization
 
-
+INSCRIPTION_DEFAULT_VALUE = 35.00
 URL_GERADOR_BOLETOS = 'http://dev.geradorboletos.doois.com.br/bradesco/'
 #URL_GERADOR_BOLETOS = 'http://localhost:8080/boleto/bradesco/'
 CHAVE_UNICA = ''
@@ -187,7 +187,14 @@ def gera_boleto_bradesco_inscricao(resp_usuario_id, days=7):
     inv.due_date = due_date.strftime("%Y-%m-%d")
     expiry_date = (due_date + relativedelta(months=1)).replace(day=org.default_payment_day)
     inv.expiry_date = expiry_date.strftime("%Y-%m-%d")
-    inv.ammount = data.inscription_default_value
+    try:
+        if float(data.inscription_default_value) > 0:
+            inv.ammount = data.inscription_default_value
+        else:
+            inv.ammount = INSCRIPTION_DEFAULT_VALUE
+    except:
+        inv.ammount = INSCRIPTION_DEFAULT_VALUE
+    
     inv.save()
     
     org.current_invoice = inv

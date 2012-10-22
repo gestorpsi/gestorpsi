@@ -29,7 +29,7 @@ from gestorpsi.settings import PROJECT_ROOT_PATH
 import os
 
 
-INSCRIPTION_DEFAULT_VALUE = 35.00
+INSCRIPTION_DEFAULT_VALUE = 50.00
 BANK_CHOICES = (
     ('bradesco', 'Bradesco'),
     #('bb', 'Banco do Brasil'),

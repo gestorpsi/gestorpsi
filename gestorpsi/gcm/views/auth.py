@@ -38,7 +38,7 @@ def register(request, success_url=None,
             if form.is_valid():
                 form.save(request)
 
-                from gestorpsi.boleto.functions import *
+                #from gestorpsi.boleto.functions import *
                 user = User.objects.get(username__iexact=form.cleaned_data['username'])
                 profile = user.get_profile()
                 person = profile.person
@@ -49,15 +49,15 @@ def register(request, success_url=None,
                 prof.name = person.name
                 prof.save()
                 
-                url_boleto = gera_boleto_bradesco_inscricao( user.id )
-                if not url_boleto:
-                    url_boleto = ''
+                #url_boleto = gera_boleto_bradesco_inscricao( user.id )
+                #if not url_boleto:
+                #    url_boleto = ''
                 
                 bcc_list = ['jayme@doois.com.br']#, 'david@doois.com.br']
                 msg = EmailMessage()
                 msg.subject = 'Teste: Nova organizacao em gestorpsi.com.br'
                 msg.body = 'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar https://gestorpsi.psico.net/gcm/'
-                msg.body += '\n Boleto exemplo: '+url_boleto
+                #msg.body += '\n Boleto exemplo: '+url_boleto
                 #msg.from = 'GestoPSI <webmaster@gestorpsi.com.br>'
                 msg.to = ['webmaster@gestorpsi.com.br', ]
                 msg.bcc =  bcc_list

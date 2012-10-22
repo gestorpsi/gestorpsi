@@ -16,7 +16,7 @@ from gestorpsi.address.models import City, Address, Country
 from gestorpsi.gcm.models import Plan, Invoice
 from gestorpsi.organization.models import Organization
 
-INSCRIPTION_DEFAULT_VALUE = 35.00
+from gestorpsi.boleto.models import INSCRIPTION_DEFAULT_VALUE
 URL_GERADOR_BOLETOS = 'http://dev.geradorboletos.doois.com.br/bradesco/'
 #URL_GERADOR_BOLETOS = 'http://localhost:8080/boleto/bradesco/'
 CHAVE_UNICA = ''

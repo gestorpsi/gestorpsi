@@ -26,9 +26,10 @@ from datetime import datetime
 from gestorpsi.boleto.helpers import RetornoBradescoProcessor
 
 from gestorpsi.settings import PROJECT_ROOT_PATH
-from gestorpsi.boleto.functions import INSCRIPTION_DEFAULT_VALUE
 import os
 
+
+INSCRIPTION_DEFAULT_VALUE = 35.00
 BANK_CHOICES = (
     ('bradesco', 'Bradesco'),
     #('bb', 'Banco do Brasil'),
@@ -36,7 +37,7 @@ BANK_CHOICES = (
 
 
 class BradescoBilletData(models.Model):
-    inscription_default_value = models.DecimalField(max_digits=19, decimal_places=10, DEFAULT=INSCRIPTION_DEFAULT_VALUE)
+    inscription_default_value = models.DecimalField(max_digits=19, decimal_places=10, default=INSCRIPTION_DEFAULT_VALUE)
     inscription_default_value.verbose_name = _("Default inscription tax")
     inscription_default_value.help_text = _("Value charged on the user to make their inscription on the system.")
     

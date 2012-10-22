@@ -300,5 +300,6 @@ def gera_boleto_bradesco_inscricao(resp_usuario_id, days=7):
             inv.save()
             return url+the_page
         else:
+            raise Exception(the_page)
             return False
 

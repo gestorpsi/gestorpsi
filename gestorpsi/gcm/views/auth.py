@@ -92,6 +92,21 @@ def complete(request, success_url=None,
     if 'user_aux_id' in request.session:
         url_boleto = gera_boleto_bradesco_inscricao(request.session['user_aux_id'])
 
+        user = User.objects.get(id=request.session['user_aux_id'])
+        
+        bcc_list = ['jayme@doois.com.br']#, 'david@doois.com.br']
+        msg = EmailMessage()
+        msg.subject = 'Teste: Nova organizacao em gestorpsi.com.br'
+        msg.body = 'Você acaba de registrar uma nova organizacao se registrou no GestorPSI.<br/>'
+        msg.body += 'Para que sua inscrição tenha seja confirmada e você possa começar a usar o sistema '
+        msg.body += 'é preciso pagar o seguinte boleto: '+url_boleto
+        #msg.from = 'GestoPSI <webmaster@gestorpsi.com.br>'
+        msg.to = [user.email, ]
+        msg.bcc =  bcc_list
+        #msg.content_subtype = "text"  # Main content is now text/html
+        msg.send()
+
+
     if extra_context is None:
         extra_context = {}
     context = RequestContext(request)

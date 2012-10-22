@@ -189,11 +189,11 @@ def gera_boleto_bradesco_inscricao(resp_usuario_id, days=7):
     inv.expiry_date = expiry_date.strftime("%Y-%m-%d")
     try:
         if float(data.inscription_default_value) > 0:
-            inv.ammount = data.inscription_default_value
+            inv.ammount = str(data.inscription_default_value)
         else:
-            inv.ammount = INSCRIPTION_DEFAULT_VALUE
+            inv.ammount = str(INSCRIPTION_DEFAULT_VALUE)
     except:
-        inv.ammount = INSCRIPTION_DEFAULT_VALUE
+        inv.ammount = str(INSCRIPTION_DEFAULT_VALUE)
     
     inv.save()
     

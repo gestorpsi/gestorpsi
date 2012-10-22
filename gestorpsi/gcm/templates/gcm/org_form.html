@@ -67,7 +67,7 @@ $(document).ready(function()
 <form action="{% url 'org-update' object.id %}" method="post">
 	<div style="display: none;">
 		<input type="hidden" name="default_payment_day" value="{{object.default_payment_day}}"/>
-		<input type="hidden" name="prefered_plan" value="{{object.prefered_plan}}"/>
+		<input type="hidden" name="prefered_plan" value="{{object.prefered_plan.id}}"/>
 	</div>
     <fieldset>
         <legend>{% trans "Ativar/Desativar Organizacao" %}</legend>

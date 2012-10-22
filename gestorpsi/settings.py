@@ -15,6 +15,7 @@ GNU General Public License for more details.
 import os
 PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 
+DEBUG = False
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -191,7 +192,12 @@ INSTALLED_APPS = (
     'smart_selects',
     'djcelery',
     'kombu.transport.django',
-    'django_extensions'
+    'django_extensions',
+
+    'smart_selects',
+    'paging',
+    'indexer',
+    'sentry',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -251,3 +257,13 @@ import djcelery
 djcelery.setup_loader()
 #django celery: task scheduling package
 
+
+if not DEBUG:
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+    
+    from sentry.client.handlers import SentryHandler
+    
+    logging.getLogger().addHandler(SentryHandler())
+    
+    SENTRY_TESTING = True

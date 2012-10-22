@@ -42,6 +42,8 @@ urlpatterns = patterns('',
     (r'^profile/', include('gestorpsi.profile.urls')),
     (r'^util/', include('gestorpsi.util.urls')),
     (r'^chaining/', include('smart_selects.urls')),
+    
+    (r'^sentry/', include('sentry.web.urls')),
 )
 
 if 'rosetta' in settings.INSTALLED_APPS:

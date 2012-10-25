@@ -106,12 +106,14 @@ class BradescoBilletData(models.Model):
     contabancaria_agencia_digito.help_text = _("Seller's account agency verifier digit")
 
 
-    titulo_nossonumero = models.CharField(max_length=11, null=False, blank=False, validators=[MinLengthValidator(11)])
+    titulo_nossonumero = models.CharField(max_length=11, null=True, blank=True, default=1, editable=False)
+    #titulo_nossonumero = models.CharField(max_length=11, null=False, blank=False, validators=[MinLengthValidator(11)])
     titulo_nossonumero.verbose_name = _("\"Our number\"")
     titulo_nossonumero.help_text = _("Number registered in Bradesco to register the receiving of billets.")
     
-    titulo_digitodonossonumero = models.CharField(max_length=1, null=False, blank=False)
-    titulo_digitodonossonumero.widget = forms.TextInput(attrs={"mask": "9",})
+    titulo_digitodonossonumero = models.CharField(max_length=1, null=True, blank=True, default=1, editable=False)
+    #titulo_digitodonossonumero = models.CharField(max_length=1, null=False, blank=False)
+    #titulo_digitodonossonumero.widget = forms.TextInput(attrs={"mask": "9",})
     titulo_digitodonossonumero.verbose_name = _("\"Our number\" digit")
     titulo_digitodonossonumero.help_text = _("\"Our number\" digit")
 
@@ -119,9 +121,9 @@ class BradescoBilletData(models.Model):
     def __unicode__(self):
         return smart_str(self.cedente_nome)
     def save(self, *args, **kwargs):
-        if self.inscription_default_value is None or len(self.inscription_default_value) == 0:
+        if self.inscription_default_value is None or len( str(self.inscription_default_value) ) == 0:
             self.inscription_default_value = str(INSCRIPTION_DEFAULT_VALUE)
-        super(Organization, self).save(*args, **kwargs)
+        super(BradescoBilletData, self).save(*args, **kwargs)
 
 reversion.register(BradescoBilletData)
 

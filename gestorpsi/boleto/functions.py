@@ -111,8 +111,12 @@ def gera_boleto_bradesco(resp_usuario_id, invoice, days=7, second_copy=False):
         
         #Código fornecido pelo Banco para identificação do título ou identificação 
         #do título atribuído pelo emissor do título de cobrança. 
-        dados['titulo_nossonumero'] = data.titulo_nossonumero
-        dados['titulo_digitodonossonumero'] = data.titulo_digitodonossonumero
+        dados['titulo_nossonumero'] = ("%0.20d") % inv.id
+        digito = 0
+        for p in str(inv.id):
+            digito += int(p)
+        digito = digito % 10
+        dados['titulo_digitodonossonumero'] = str(digito)
         
         
     
@@ -262,9 +266,13 @@ def gera_boleto_bradesco_inscricao(resp_usuario_id, days=7):
         dados['contabancaria_agencia_digito'] = data.contabancaria_agencia_digito
         
         #Código fornecido pelo Banco para identificação do título ou identificação 
-        #do título atribuído pelo emissor do título de cobrança. 
-        dados['titulo_nossonumero'] = data.titulo_nossonumero
-        dados['titulo_digitodonossonumero'] = data.titulo_digitodonossonumero
+        #do título atribuído pelo emissor do título de cobrança.
+        dados['titulo_nossonumero'] = ("%0.20d") % inv.id
+        digito = 0
+        for p in str(inv.id):
+            digito += int(p)
+        digito = digito % 10
+        dados['titulo_digitodonossonumero'] = str(digito)
         
         
     

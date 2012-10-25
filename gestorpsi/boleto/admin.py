@@ -108,10 +108,10 @@ class BradescoBilletDataAdminForm(forms.ModelForm):
     contabancaria_numerodaconta_digito = forms.CharField(widget = forms.TextInput(attrs={"mask": "9",}) )
     contabancaria_agencia = forms.CharField(widget = forms.TextInput(attrs={"mask": "9999",}) )
     contabancaria_agencia_digito = forms.CharField(widget = forms.TextInput(attrs={"mask": "9",}) )
-    titulo_digitodonossonumero = forms.CharField(widget = forms.TextInput(attrs={"mask": "9",}) )
+    #titulo_digitodonossonumero = forms.CharField(widget = forms.TextInput(attrs={"mask": "9",}) )
     
     
-    titulo_nossonumero = models.CharField(max_length=20, null=False, blank=False, validators=[MinLengthValidator(11)])
+    #titulo_nossonumero = models.CharField(max_length=20, null=False, blank=False, validators=[MinLengthValidator(11)])
     cedente_nome = models.CharField(max_length=255, null=False, blank=False)
     sacadoravalista_nome = models.CharField(max_length=255, null=False, blank=False)
     enderecosacaval_bairro = models.CharField(max_length=255, null=False, blank=False)
@@ -150,10 +150,10 @@ class BradescoBilletDataAdminForm(forms.ModelForm):
     contabancaria_agencia.help_text = _("Seller's account agency")
     contabancaria_agencia_digito.label = _("Agency digit")
     contabancaria_agencia_digito.help_text = _("Seller's account agency verifier digit")
-    titulo_nossonumero.label = _("\"Our number\"")
-    titulo_nossonumero.help_text = _("Number registered in Bradesco to register the receiving of billets.")
-    titulo_digitodonossonumero.label = _("\"Our number\" digit")
-    titulo_digitodonossonumero.help_text = _("\"Our number\" digit")
+    #titulo_nossonumero.label = _("\"Our number\"")
+    #titulo_nossonumero.help_text = _("Number registered in Bradesco to register the receiving of billets.")
+    #titulo_digitodonossonumero.label = _("\"Our number\" digit")
+    #titulo_digitodonossonumero.help_text = _("\"Our number\" digit")
 
 
     class Meta:
@@ -202,9 +202,9 @@ class BradescoBilletDataAdmin(admin.ModelAdmin):
             'fields': ('contabancaria_numerodaconta', 'contabancaria_numerodaconta_digito', 
                        'contabancaria_carteira', 'contabancaria_agencia', 'contabancaria_agencia_digito')
         }),
-        ( _('Title'), {
-            'fields': ('titulo_nossonumero', 'titulo_digitodonossonumero')
-        }),
+        #( _('Title'), {
+        #    'fields': ('titulo_nossonumero', 'titulo_digitodonossonumero')
+        #}),
     )
 
     #formfield_overrides = {

@@ -291,14 +291,14 @@ $(document).ready(function()
 	<legend>{% trans "Use History - Under development" %}</legend>
 	
 	<div>
-		<label>{% trans "Inscription Date" %}<br />
+		<label>{% trans "Inscription date" %}<br />
 		<input type="text" value="{{object.date_created}}" readonly  />
 		<br/>
 		{% if inscription.0 %}
 		{% if inscription.0.date_payed %}
 		{% trans "Payed " %}{{inscription.0.ammount}}
 		{% else %}
-		{% trans "Not payed yet " %}{{inscription.0.ammount}}
+		{% trans "Not payed " %}{{inscription.0.ammount}}
 		{% endif %}
 		{% else %}{% trans "Inscription not done" %}{% endif %}
 		</label>

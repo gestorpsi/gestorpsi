@@ -95,7 +95,7 @@ def CNPJValidator(value):
 
     digits = generate_digits(value)
     if not validate(digits, value):
-        raise exceptions.ValidationError( _(u'The CNPJ %s is not valid (right digits for testing purpose: %s).' % (value, digits)) )  
+        raise exceptions.ValidationError( _(u'The CNPJ '+value+' is not valid (right digits for testing purpose: '+digits+').') )  
     
 
 

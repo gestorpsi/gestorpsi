@@ -55,17 +55,17 @@ form .aligned p, form .aligned ul {padding-left: 133px;}
 
 {% if adminform and add %}
 <fieldset class="module aligned {{ fieldset.classes }}">
-    <h2>Arquivo de retorno do bradesco</h2>
+    <h2>{% trans 'Bradesco return file' %}</h2>
     
     <div class="description">
-    	Envie o arquivo de retorno do banco aqui para efetivar os pagamentos no sistema
+    	{% trans 'Upload the return file here to insert the payments in the system' %}
     </div>
 
 	<div class="form-row arquivo_retorno">
 		<div>
 			<label class="required" for="id_arquivo_retorno">Arquivo:</label>
 			<input type="file" id="id_arquivo_retorno" name="arquivo_retorno">
-			<p class="help">Envie aqui o arquivo de retorno obtido junto ao banco</p>
+			<p class="help">{% trans 'Upload the return file the bank gave you here' %}</p>
 		</div>
 	</div>
 </fieldset>

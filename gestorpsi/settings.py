@@ -17,7 +17,7 @@ import os
 PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = False
-DEBUG = True
+#DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 SITE_DISABLED = False # display "system is currently under maintenance" message instead login if True

@@ -21,11 +21,12 @@ from gestorpsi.gcm.models import Plan, Invoice
 from gestorpsi.phone.models import Phone
 from gestorpsi.address.models import State, City, Address, AddressType
 from gestorpsi.document.models import *
+from gestorpsi.gcm.forms import fields
 
 class RegistrationForm(RegistrationForm):
     plan = forms.ModelChoiceField(label=_('Access Plan'), help_text=_('Choice one access plan'), queryset=Plan.objects.filter(active=True))
     phone = forms.CharField(max_length=14, label=_('Phone Number'), help_text=_('Enter your phone number with area code here'), widget=forms.TextInput(attrs={'mask':'(99) 9999-9999?9',}))
-    cpf = forms.CharField(max_length=14, label=_('CPF Number'), help_text=_('Enter your CPF number here'), widget=forms.TextInput(attrs={'mask':'999.999.999-99',}))
+    cpf = fields.CPFField(label=_('CPF Number'), help_text=_('Enter your CPF number here'), widget=forms.TextInput(attrs={'mask':'999.999.999-99',}))
     address = forms.CharField(max_length=255, label=_('Address Street'), help_text=_('Enter your address here'))
     address_number = forms.CharField(max_length=30, label=_('Address Number'), help_text=_('Enter your address number here'))
     zipcode = forms.CharField(max_length=30, label=_('ZIP Code'), help_text=_('Enter your ZIP Code here'))

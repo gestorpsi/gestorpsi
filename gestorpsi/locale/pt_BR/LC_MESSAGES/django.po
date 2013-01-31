@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-28 12:13-0200\n"
-"PO-Revision-Date: 2013-01-28 12:15\n"
+"POT-Creation-Date: 2013-01-31 16:52-0200\n"
+"PO-Revision-Date: 2013-01-31 17:29\n"
 "Last-Translator:   <danielcj@doois.com.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -31,9 +31,8 @@ msgstr "Termo de Consentimento Livre e Esclarecido (TCLE)"
 
 #: admission/models.py:39 referral/models.py:377 referral/models.py:389
 #: service/models.py:95
-#, fuzzy
 msgid "Color"
-msgstr "Valor"
+msgstr "Cor"
 
 #: admission/models.py:39 referral/models.py:377 referral/models.py:389
 #: service/models.py:95
@@ -96,6 +95,7 @@ msgid "Email"
 msgstr "E-mail"
 
 #: authentication/forms.py:33 gcm/templates/gcm/registration_form.html:54
+#: templates/registration/gcm-registration_form.html:54
 #: templates/registration/registration_form.html:37
 msgid "Your email address"
 msgstr "Endereço de e-mail"
@@ -220,8 +220,9 @@ msgstr "Estado onde o fiador mora."
 #: boleto/admin.py:133 boleto/models.py:72
 #: gcm/templates/gcm/registration_form.html:62
 #: templates/meta/people_profile.html:92
-#: templates/meta/people_profile.html:101 templates/tags/address.html:69
-#: templates/tags/address.html.py:80
+#: templates/meta/people_profile.html:101
+#: templates/registration/gcm-registration_form.html:62
+#: templates/tags/address.html:69 templates/tags/address.html.py:80
 msgid "City"
 msgstr "Cidade"
 
@@ -238,9 +239,8 @@ msgid "CEP - Postal code"
 msgstr "CEP - Código postal"
 
 #: boleto/admin.py:137 boleto/models.py:79
-#, fuzzy
 msgid "District"
-msgstr "Restrito"
+msgstr "Distrito"
 
 #: boleto/admin.py:138 boleto/models.py:80
 msgid "District where the guarantor lives"
@@ -264,9 +264,8 @@ msgid "Number of the house where the guarantor lives."
 msgstr "Número da casa onde o fiador mora."
 
 #: boleto/admin.py:143 boleto/models.py:90
-#, fuzzy
 msgid "Account"
-msgstr "Novo registro"
+msgstr "Conta"
 
 #: boleto/admin.py:144 boleto/models.py:91
 msgid "Number of the bank account of the seller."
@@ -281,18 +280,16 @@ msgid "Verifier digit of the bank account of the seller."
 msgstr "Dígito verificador da conta bancária do vendedor."
 
 #: boleto/admin.py:147 boleto/models.py:97
-#, fuzzy
 msgid "Seller's wallet"
-msgstr "Ver todos"
+msgstr "Carteira do vendedor"
 
 #: boleto/admin.py:148 boleto/models.py:98
 msgid "Seller's bank wallet number"
 msgstr "Número da carteira bancária do vendedor"
 
 #: boleto/admin.py:149 boleto/models.py:101
-#, fuzzy
 msgid "Agency"
-msgstr "Idade"
+msgstr "Agência"
 
 #: boleto/admin.py:150 boleto/models.py:102
 msgid "Seller's account agency"
@@ -307,23 +304,20 @@ msgid "Seller's account agency verifier digit"
 msgstr "Dígito verificador da agência do vendedor"
 
 #: boleto/admin.py:193
-#, fuzzy
 msgid "Seller"
-msgstr "Severo"
+msgstr "Vendedor"
 
 #: boleto/admin.py:196
 msgid "Guarantor"
 msgstr "Fiador"
 
 #: boleto/admin.py:201
-#, fuzzy
 msgid "Bank account"
-msgstr "Novo registro"
+msgstr "Conta bancária"
 
 #: boleto/models.py:41
-#, fuzzy
 msgid "Default inscription tax"
-msgstr "Inscrição Estadual"
+msgstr "Taxa de inscrição padrão"
 
 #: boleto/models.py:42
 msgid "Value charged on the user to make their inscription on the system."
@@ -353,9 +347,8 @@ msgstr ""
 "O número de dias padrão de prazo para pagar uma segunda cópia de um boleto."
 
 #: boleto/models.py:111
-#, fuzzy
 msgid "\"Our number\""
-msgstr "Número de série"
+msgstr "\"Nosso número\""
 
 #: boleto/models.py:112
 msgid "Number registered in Bradesco to register the receiving of billets."
@@ -366,24 +359,20 @@ msgid "\"Our number\" digit"
 msgstr "Dígito do \"Nosso número\""
 
 #: boleto/models.py:132
-#, fuzzy
 msgid "Date of this file"
-msgstr "Falecimento do cliente "
+msgstr "Data deste arquivo"
 
 #: boleto/models.py:133
-#, fuzzy
 msgid "Return file"
-msgstr "Filtros de relatório"
+msgstr "Arquivo de retorno"
 
 #: boleto/models.py:134
-#, fuzzy
 msgid "Bank"
-msgstr "Voltar"
+msgstr "Banco"
 
 #: boleto/models.py:150
-#, fuzzy
 msgid "imported"
-msgstr "Início"
+msgstr "importado"
 
 #: boleto/models.py:153 boleto/models_lec.py:170
 msgid "returnFile"
@@ -406,25 +395,22 @@ msgid "SalesPerson:User"
 msgstr "SalesPerson:User"
 
 #: boleto/models_lec.py:16
-#, fuzzy
 msgid "SalesPeron:Comission"
-msgstr "Permissões"
+msgstr "Comissão"
 
 #: boleto/models_lec.py:22
 msgid "SalesPerson:SalesPerson"
 msgstr "SalesPerson:SalesPerson"
 
 #: boleto/models_lec.py:23
-#, fuzzy
 msgid "SalesPerson:SalesPeople"
-msgstr "Perfil Pessoal"
+msgstr "Vendedores"
 
 #: boleto/models_lec.py:27
 msgid "type:Normal"
 msgstr "type:Normal"
 
 #: boleto/models_lec.py:28
-#, fuzzy
 msgid "type:Free"
 msgstr "Livre"
 
@@ -433,9 +419,8 @@ msgid "type:Reciprocal"
 msgstr "type:Reciprocal"
 
 #: boleto/models_lec.py:42
-#, fuzzy
 msgid "Pendente"
-msgstr "Presente"
+msgstr "Pendente"
 
 #: boleto/models_lec.py:43
 msgid "Pagoboleto"
@@ -446,19 +431,16 @@ msgid "Pagocobranca"
 msgstr "Pagocobranca"
 
 #: boleto/models_lec.py:45
-#, fuzzy
 msgid "Pagoescritorio"
-msgstr "Descrição"
+msgstr "Escritório pago"
 
 #: boleto/models_lec.py:46
-#, fuzzy
 msgid "Cancelado"
-msgstr "Cancelar"
+msgstr "Cancelado"
 
 #: boleto/models_lec.py:47
-#, fuzzy
 msgid "Inadimplente"
-msgstr "Recuperar"
+msgstr "Inadimplente"
 
 #: boleto/models_lec.py:57
 msgid "subscription:InstallmentDate"
@@ -469,56 +451,48 @@ msgid "subscription:InstallmentDateHelpText"
 msgstr "subscription:InstallmentDateHelpText"
 
 #: boleto/models_lec.py:58
-#, fuzzy
 msgid "subscription:InstallmentPeriod"
-msgstr "Indicação da inscrição"
+msgstr "Período de instalação"
 
 #: boleto/models_lec.py:58
 msgid "subscription:InstallmentPeriodHelpText"
 msgstr "subscription:InstallmentPeriodHelpText"
 
 #: boleto/models_lec.py:59
-#, fuzzy
 msgid "subscription:InstallmentValue"
-msgstr "Detalhes da Inscrição"
+msgstr "Valor da instalação"
 
 #: boleto/models_lec.py:59
 msgid "subscription:InstallmentValueHelpText"
 msgstr "subscription:InstallmentValueHelpText"
 
 #: boleto/models_lec.py:60
-#, fuzzy
 msgid "subscription:DueDate"
-msgstr "Detalhes da Inscrição"
+msgstr "Data de vencimento"
 
 #: boleto/models_lec.py:60
-#, fuzzy
 msgid "subscription:DueDateHelpText"
-msgstr "Detalhes da Inscrição"
+msgstr "Texto de ajuda da data de vencimento"
 
 #: boleto/models_lec.py:61
-#, fuzzy
 msgid "subscription:SalesPerson"
-msgstr "Detalhes da Inscrição"
+msgstr "Vendedor"
 
 #: boleto/models_lec.py:62
-#, fuzzy
 msgid "subscription:Type"
-msgstr "Nova Inscrição"
+msgstr "Tipo"
 
 #: boleto/models_lec.py:62
 msgid "subscription:TypeHelpText"
 msgstr "subscription:TypeHelpText"
 
 #: boleto/models_lec.py:63
-#, fuzzy
 msgid "subscription:Indicator"
-msgstr "Indicação da inscrição"
+msgstr "Indicador"
 
 #: boleto/models_lec.py:63
-#, fuzzy
 msgid "subscription:IndicatorHelpText"
-msgstr "Indicação da inscrição"
+msgstr "Testo de ajuda da indicação"
 
 #: boleto/models_lec.py:64
 msgid "subscription:NeedsPaymentDocument"
@@ -530,29 +504,24 @@ msgstr "subscription:needsPaymentDocumentHelpText"
 
 #: boleto/models_lec.py:65 boleto/models_lec.py:152
 #: gcm/templates/gcm/returnfile_list.html:19
-#, fuzzy
 msgid "Banco"
-msgstr "Voltar"
+msgstr "Banco"
 
 #: boleto/models_lec.py:66
-#, fuzzy
 msgid "subscription:Phonebook"
-msgstr "Inscrições Ativas"
+msgstr "Agenda de telefones"
 
 #: boleto/models_lec.py:109
-#, fuzzy
 msgid "subscription:Subscription"
-msgstr "Indicação da inscrição"
+msgstr "Inscrição"
 
 #: boleto/models_lec.py:110
-#, fuzzy
 msgid "subscription:Subscriptions"
-msgstr "Indicação da inscrição"
+msgstr "Inscrições"
 
 #: boleto/models_lec.py:114
-#, fuzzy
 msgid "invoice:SubscriptionHelpText"
-msgstr "Inscrições no serviço"
+msgstr "Texto de ajuda da inscrição"
 
 #: boleto/models_lec.py:115
 msgid "invoice:DueDate"
@@ -575,7 +544,6 @@ msgid "Valor esperado"
 msgstr "Valor esperado"
 
 #: boleto/models_lec.py:118
-#, fuzzy
 msgid "invoice:Status"
 msgstr "Status do Diagnóstico"
 
@@ -608,14 +576,12 @@ msgid "invoice:Invoices"
 msgstr "invoice:Invoices"
 
 #: boleto/models_lec.py:150
-#, fuzzy
 msgid "Data arquivo"
-msgstr "Data da requisição"
+msgstr "Data da arquivo"
 
 #: boleto/models_lec.py:151
-#, fuzzy
 msgid "Arquivo"
-msgstr "Ativo"
+msgstr "Arquivo"
 
 #: boleto/templates/admin/boleto/returnfile/change_form_.html:26
 #: templates/registration/password_reset_complete.html:5
@@ -648,14 +614,12 @@ msgid "View on site"
 msgstr "Ver no site"
 
 #: boleto/templates/admin/boleto/returnfile/change_form_.html:50
-#, fuzzy
 msgid "Please correct the error below."
 msgid_plural "Please correct the errors below."
 msgstr[0] "Por favor, corrija os erros abaixo e tente novamente."
 msgstr[1] "Por favor, corrija os erros abaixo e tente novamente."
 
 #: boleto/templates/admin/boleto/returnfile/change_form_.html:58
-#, fuzzy
 msgid "Bradesco return file"
 msgstr "Arquivo de retorno"
 
@@ -1337,62 +1301,82 @@ msgstr "Funcionário ativado com sucesso."
 msgid "Employee deactivated successfully"
 msgstr "Funcionário desativado com sucesso."
 
-#: gcm/forms/auth.py:26
+#: gcm/forms/auth.py:27
 msgid "Access Plan"
 msgstr "Plano de Acesso"
 
-#: gcm/forms/auth.py:26
+#: gcm/forms/auth.py:27
 msgid "Choice one access plan"
 msgstr "Escolha um plano de acesso"
 
-#: gcm/forms/auth.py:27
+#: gcm/forms/auth.py:28
 msgid "Phone Number"
 msgstr "Telefone"
 
-#: gcm/forms/auth.py:27
+#: gcm/forms/auth.py:28
 msgid "Enter your phone number with area code here"
 msgstr "Informe seu número de telefone com o código de área"
 
-#: gcm/forms/auth.py:28
+#: gcm/forms/auth.py:29
 msgid "CPF Number"
 msgstr "CPF"
 
-#: gcm/forms/auth.py:28
+#: gcm/forms/auth.py:29
 msgid "Enter your CPF number here"
 msgstr "Informe aqui o número de seu CPF"
 
-#: gcm/forms/auth.py:29
+#: gcm/forms/auth.py:30
 msgid "Address Street"
 msgstr "Logradouro"
 
-#: gcm/forms/auth.py:29
+#: gcm/forms/auth.py:30
 msgid "Enter your address here"
 msgstr "Informe aqui seu endereço"
 
-#: gcm/forms/auth.py:30
+#: gcm/forms/auth.py:31
 msgid "Address Number"
 msgstr "Número"
 
-#: gcm/forms/auth.py:30
+#: gcm/forms/auth.py:31
 msgid "Enter your address number here"
 msgstr "Número do endereço com complementos"
 
-#: gcm/forms/auth.py:31 templates/tags/address.html:41
+#: gcm/forms/auth.py:32 templates/tags/address.html:41
 msgid "ZIP Code"
 msgstr "CEP"
 
-#: gcm/forms/auth.py:31
+#: gcm/forms/auth.py:32
 msgid "Enter your ZIP Code here"
 msgstr "Informe o CEP do endereço"
 
-#: gcm/forms/auth.py:32 templates/meta/people_profile.html:82
+#: gcm/forms/auth.py:33 templates/meta/people_profile.html:82
 #: templates/tags/address.html:55
 msgid "State/Region"
 msgstr "Estado"
 
-#: gcm/forms/auth.py:32
+#: gcm/forms/auth.py:33
 msgid "Enter your state/region here"
 msgstr "Estado/Região"
+
+#: gcm/forms/fields.py:23
+msgid "Invalid CPF number."
+msgstr "CPF inválido."
+
+#: gcm/forms/fields.py:24 gcm/forms/fields.py:73
+msgid "This field requires only numbers."
+msgstr "Este campo aceita somente números."
+
+#: gcm/forms/fields.py:25
+msgid "This field requires at most 11 digits."
+msgstr "Este campo requer 11 dígitos."
+
+#: gcm/forms/fields.py:72
+msgid "Invalid CNPJ number."
+msgstr "CNPJ inválido."
+
+#: gcm/forms/fields.py:74
+msgid "This field requires at most 14 digits."
+msgstr "Este campo requer 14 dígitos."
 
 #: gcm/forms/invoice.py:23
 msgid "Choice one organization"
@@ -1411,14 +1395,12 @@ msgid "Excluido"
 msgstr "Excluído"
 
 #: gcm/models/invoice.py:27
-#, fuzzy
 msgid "Inscription"
-msgstr "Descrição"
+msgstr "Inscrição"
 
 #: gcm/models/invoice.py:28
-#, fuzzy
 msgid "Monthly fee"
-msgstr "Mensalistas"
+msgstr "Mensalidade"
 
 #: gcm/models/invoice.py:35 gcm/templates/gcm/invoice_list.html:24
 #: gcm/templates/gcm/org_list.html:17 gcm/templates/gcm/org_pen_list.html:18
@@ -1478,7 +1460,6 @@ msgid "Desconto"
 msgstr "Desconto"
 
 #: gcm/models/invoice.py:52
-#, fuzzy
 msgid ""
 "Valor para desconto. Utilizar apenas valores decimais aqui, NAO porcentagem."
 " Ex.: 5.90"
@@ -1520,9 +1501,8 @@ msgstr "Tamanho da equipe"
 
 #: gcm/models/plan.py:12 gcm/templates/gcm/org_list.html:22
 #: gcm/templates/gcm/org_pen_list.html:23
-#, fuzzy
 msgid "Numero de profissionais"
-msgstr "Ex: de 1 a 9 profissionais"
+msgstr "Número de profissionais."
 
 #: gcm/models/plan.py:13
 msgid "Valor em R$"
@@ -1578,14 +1558,12 @@ msgstr "Bianual"
 
 #: gcm/templates/gcm/billet_config.html:5
 #: gcm/templates/gcm/billet_config.html:6
-#, fuzzy
 msgid "Invoice Configurations"
-msgstr "Confirmação de presença"
+msgstr "Configurações de fatura"
 
 #: gcm/templates/gcm/billet_config.html:21
-#, fuzzy
 msgid "Billets main data"
-msgstr "Coleta de dados"
+msgstr "Dados principais dos boletos"
 
 #: gcm/templates/gcm/billet_config.html:30
 #: gcm/templates/gcm/invoice_form.html:26 gcm/templates/gcm/org_form.html:90
@@ -1647,14 +1625,12 @@ msgid "Plan Details"
 msgstr "Detalhes do Plano"
 
 #: gcm/templates/gcm/invoice_list.html:5 gcm/templates/gcm/invoice_list.html:6
-#, fuzzy
 msgid "Plans"
 msgstr "Planos"
 
 #: gcm/templates/gcm/invoice_list.html:11
-#, fuzzy
 msgid "Return Files"
-msgstr "Filtros de relatório"
+msgstr "Arquivos de retorno"
 
 #: gcm/templates/gcm/invoice_list.html:19
 msgid "Nenhuma fatura registrada até o momento!"
@@ -1703,18 +1679,16 @@ msgstr "Controle de clientes"
 #: gcm/templates/gcm/main.html:24 gcm/templates/gcm/org_form.html:6
 #: gcm/templates/gcm/org_form.html.py:7 gcm/templates/gcm/org_list.html:6
 #: gcm/templates/gcm/org_list.html.py:7
-#, fuzzy
 msgid "Organizacoes"
-msgstr "Organização"
+msgstr "Organizações"
 
 #: gcm/templates/gcm/main.html:25
 msgid "Faturas"
 msgstr "Faturas"
 
 #: gcm/templates/gcm/main.html:27
-#, fuzzy
 msgid "Configurations"
-msgstr "Confirmação de evento"
+msgstr "Configurações"
 
 #: gcm/templates/gcm/main.html:28
 msgid "Sair"
@@ -1745,7 +1719,6 @@ msgid "Ativar/Desativar Organizacao"
 msgstr "Ativar/Desativar Organização"
 
 #: gcm/templates/gcm/org_form.html:86
-#, fuzzy
 msgid ""
 "Desativando esta organizacao, ela ficará impossibitada de adicionar novo "
 "registros, ficarão apenas disponíveis dados para leitura como listagens, "
@@ -1756,24 +1729,20 @@ msgstr ""
 "consultas, relatórios, etc."
 
 #: gcm/templates/gcm/org_form.html:102
-#, fuzzy
 msgid "Área"
 msgstr "Área"
 
 #: gcm/templates/gcm/org_form.html:103
-#, fuzzy
 msgid "Número"
 msgstr "Número"
 
 #: gcm/templates/gcm/org_form.html:104
-#, fuzzy
 msgid "Tipo"
-msgstr "Para"
+msgstr "Tipo"
 
 #: gcm/templates/gcm/org_form.html:106
-#, fuzzy
 msgid "Telefones desta organizacão"
-msgstr "Faturas desta organização"
+msgstr "Telefones desta organização"
 
 #: gcm/templates/gcm/org_form.html:126
 #: gcm/templates/gcm/org_pen_detail.html:15
@@ -1782,18 +1751,15 @@ msgid "Nome"
 msgstr "Nome"
 
 #: gcm/templates/gcm/org_form.html:127
-#, fuzzy
 msgid "Profissão"
 msgstr "Profissão"
 
 #: gcm/templates/gcm/org_form.html:128 gcm/templates/gcm/org_list.html:36
 #: gcm/templates/gcm/org_pen_list.html:37
-#, fuzzy
 msgid "Fones"
-msgstr "Telefone"
+msgstr "Telefones"
 
 #: gcm/templates/gcm/org_form.html:130
-#, fuzzy
 msgid "Profissional responsável"
 msgstr "Profissional Responsável"
 
@@ -1814,26 +1780,22 @@ msgid "Altere o estado de pagamento desta fatura."
 msgstr "Altere o estado de pagamento desta fatura."
 
 #: gcm/templates/gcm/org_form.html:209
-#, fuzzy
 msgid "Organization data"
-msgstr "Estabelecimento"
+msgstr "Informações da organização"
 
 #: gcm/templates/gcm/org_form.html:227
 msgid "Esta organização não possui nenhuma fatura ainda."
 msgstr "Esta organização não possui nenhuma fatura ainda."
 
 #: gcm/templates/gcm/org_list.html:11
-#, fuzzy
 msgid "Não existem organizacoes cadastradas"
-msgstr "Não existem organizações pendentes"
+msgstr "Não existem organizações cadastradas"
 
 #: gcm/templates/gcm/org_list.html:27 gcm/templates/gcm/org_pen_list.html:28
-#, fuzzy
 msgid "Profissional responsavel"
 msgstr "Profissional Responsável"
 
 #: gcm/templates/gcm/org_list.html:32 gcm/templates/gcm/org_pen_list.html:33
-#, fuzzy
 msgid "Data de inscricao"
 msgstr "Data da inscrição"
 
@@ -1848,23 +1810,20 @@ msgid "Não"
 msgstr "Não"
 
 #: gcm/templates/gcm/org_pen_detail.html:10
-#, fuzzy
 msgid "Dados pendente a aprovacao"
 msgstr "Dados sujeitos à aprovação"
 
 #: gcm/templates/gcm/org_pen_detail.html:12
-#, fuzzy
 msgid "Dados da Organizacão"
-msgstr "Dados da Organização"
+msgstr "Dados da organização"
 
 #: gcm/templates/gcm/org_pen_detail.html:17
 msgid "Sigla"
 msgstr "Sigla"
 
 #: gcm/templates/gcm/org_pen_detail.html:21
-#, fuzzy
 msgid "Dados do Profissional"
-msgstr "Adicionar Profissional"
+msgstr "Dados do profissional"
 
 #: gcm/templates/gcm/org_pen_detail.html:26
 msgid "CPF"
@@ -1875,23 +1834,20 @@ msgid "Fone"
 msgstr "Telefone"
 
 #: gcm/templates/gcm/org_pen_detail.html:30
-#, fuzzy
 msgid "Endereco"
 msgstr "Endereço"
 
 #: gcm/templates/gcm/org_pen_detail.html:37
-#, fuzzy
 msgid "Dados do Usuário"
-msgstr "Usuário"
+msgstr "Dados do usuário"
 
 #: gcm/templates/gcm/org_pen_detail.html:40
 msgid "Usuário"
 msgstr "Usuário"
 
 #: gcm/templates/gcm/org_pen_detail.html:44
-#, fuzzy
 msgid "Senha"
-msgstr "Enviar"
+msgstr "Senha"
 
 #: gcm/templates/gcm/org_pen_detail.html:49
 msgid "Dados do Plano de acesso"
@@ -1902,16 +1858,14 @@ msgid "Data da requisicão"
 msgstr "Data da requisição"
 
 #: gcm/templates/gcm/org_pen_detail.html:61
-#, fuzzy
 msgid "Excluir"
-msgstr "Excluído"
+msgstr "Excluir"
 
 #: gcm/templates/gcm/org_pen_detail.html:62
 msgid "Aprovar"
 msgstr "Aprovar"
 
 #: gcm/templates/gcm/org_pen_list.html:12
-#, fuzzy
 msgid "Não existem organizacoes pendentes"
 msgstr "Não existem organizações pendentes"
 
@@ -1924,16 +1878,19 @@ msgid "Validade (meses)"
 msgstr "Validade (meses)"
 
 #: gcm/templates/gcm/registration_complete.html:3
+#: templates/registration/gcm-registration_complete.html:3
 #: templates/registration/registration_complete.html:3
 msgid "Registration complete"
 msgstr "Cadastro completo"
 
 #: gcm/templates/gcm/registration_complete.html:6
+#: templates/registration/gcm-registration_complete.html:6
 #: templates/registration/registration_complete.html:6
 msgid "Your account has been registered successfully."
 msgstr "Sua conta foi registrada com sucesso!"
 
 #: gcm/templates/gcm/registration_complete.html:8
+#: templates/registration/gcm-registration_complete.html:8
 #: templates/registration/registration_complete.html:8
 msgid ""
 "Please wait until one of our operators to contact you for payment, and soon "
@@ -1944,16 +1901,19 @@ msgstr ""
 " uso."
 
 #: gcm/templates/gcm/registration_complete.html:13
+#: templates/registration/gcm-registration_complete.html:13
 #: templates/registration/registration_complete.html:13
 msgid "Click here to get the billet to test the system payment."
 msgstr "Clique aqui para gerar um boleto para testar o sistema de pagamento."
 
 #: gcm/templates/gcm/registration_form.html:40
+#: templates/registration/gcm-registration_form.html:40
 #: templates/registration/registration_form.html:22
 msgid "New account"
 msgstr "Novo registro"
 
 #: gcm/templates/gcm/registration_form.html:41
+#: templates/registration/gcm-registration_form.html:41
 #: templates/registration/registration_form.html:23
 msgid ""
 "Fill out the form to the left (all fields are required), and your account "
@@ -1965,18 +1925,22 @@ msgstr ""
 "será enviado com as instruções sobre como concluir o cadastro."
 
 #: gcm/templates/gcm/registration_form.html:43
+#: templates/registration/gcm-registration_form.html:43
 #: templates/registration/registration_form.html:25
 msgid "Form errors! Please correct errors below and try again"
 msgstr "Por favor, corrija os erros abaixo e tente novamente."
 
 #: gcm/templates/gcm/registration_form.html:72
 #: gcm/templates/gcm/registration_form.html:227
+#: templates/registration/gcm-registration_form.html:72
+#: templates/registration/gcm-registration_form.html:227
 #: templates/registration/registration_form.html:40
 #: templates/registration/registration_form.html:57
 msgid "terms of service"
 msgstr "Termos de Serviço"
 
 #: gcm/templates/gcm/registration_form.html:227
+#: templates/registration/gcm-registration_form.html:227
 #: templates/registration/registration_form.html:57
 msgid ""
 "By clicking the Signup button below, you agree that you have read and agree "
@@ -1984,16 +1948,19 @@ msgid ""
 msgstr "Clicando no botão abaixo, você concordará que leu e aceitou os"
 
 #: gcm/templates/gcm/registration_form.html:229
+#: templates/registration/gcm-registration_form.html:229
 #: templates/registration/registration_form.html:59
 msgid "Accept terms and register"
 msgstr "Aceitar os termos e continuar"
 
 #: gcm/templates/gcm/registration_form.html:232
+#: templates/registration/gcm-registration_form.html:232
 #: templates/registration/registration_form.html:62
 msgid "Already have an account?"
 msgstr "Já possui uma conta?"
 
 #: gcm/templates/gcm/registration_form.html:233
+#: templates/registration/gcm-registration_form.html:233
 #: templates/registration/login.html:58
 #: templates/registration/registration_form.html:63
 msgid "Forgot Password?"
@@ -2007,22 +1974,18 @@ msgid "Arquivos de retorno"
 msgstr "Arquivos de retorno"
 
 #: gcm/templates/gcm/returnfile_form.html:19
-#, fuzzy
 msgid "retfile Details"
-msgstr "Detalhes do Serviço"
+msgstr "Detalhes do arquivo de retorno"
 
 #: gcm/templates/gcm/returnfile_list.html:11
-#, fuzzy
 msgid "You dont have any return file sent yet!"
-msgstr "Nenhum plano cadastrado"
+msgstr "Nenhum arquivo de retorno enviado ainda."
 
 #: gcm/templates/gcm/returnfile_list.html:18
-#, fuzzy
 msgid "Nome do arquivo"
-msgstr "Nome do Plano"
+msgstr "Nome do arquivo"
 
 #: gcm/views/auth.py:32
-#, fuzzy
 msgid ""
 "Informed organization is already registered. Please choose another name here"
 " or login with an existing account"
@@ -2036,9 +1999,8 @@ msgid "Organizacao %s ativada com sucesso"
 msgstr "Organização %s ativada com sucesso"
 
 #: gcm/views/views.py:55 gcm/views/views.py:73
-#, fuzzy
 msgid "Successfully updated."
-msgstr "sucesso"
+msgstr "Atualizado com sucesso."
 
 #: gcm/views/views.py:57 gcm/views/views.py:75
 msgid "Correct the errors bellow."
@@ -2552,7 +2514,6 @@ msgid "Signed"
 msgstr "Assinado"
 
 #: report/models.py:316
-#, fuzzy
 msgid "Not"
 msgstr "Não"
 
@@ -2598,9 +2559,8 @@ msgid "Admission report - Knowledge - %s"
 msgstr "Indicação"
 
 #: report/models.py:462
-#, fuzzy
 msgid "Subscriptions"
-msgstr "Nova Inscrição"
+msgstr "Inscrições"
 
 #: report/models.py:463
 msgid "Subscriptions Discharged"
@@ -2615,14 +2575,12 @@ msgid "External Referrals"
 msgstr "Encaminhamento externo"
 
 #: report/models.py:490 report/models.py:494
-#, fuzzy
 msgid "Discussed with client"
-msgstr "Encerramento do serviço foi discutido junto ao cliente"
+msgstr "Discutido junto ao cliente"
 
 #: report/models.py:490 report/models.py:495
-#, fuzzy
 msgid "Not discussed with client"
-msgstr "Encerramento do serviço foi discutido junto ao cliente"
+msgstr "Não discutido com cliente"
 
 #: report/models.py:804
 msgid "Subscriptions Overview"
@@ -2637,7 +2595,6 @@ msgid "Discharges from Services"
 msgstr "Inscrições desligadas"
 
 #: report/models.py:810
-#, fuzzy
 msgid "Subscriptions Discharged Discussed"
 msgstr "Desligamento discutido com o cliente"
 
@@ -2646,9 +2603,8 @@ msgid "Subscriptions Indications"
 msgstr "Indicação da inscrição"
 
 #: report/models.py:811
-#, fuzzy
 msgid "Excluding internal referrals"
-msgstr "Encaminhamento externo"
+msgstr "Removendo referências internas"
 
 #: report/models.py:813
 msgid "Internal Referrals to Services"
@@ -2691,9 +2647,8 @@ msgid "Referral Discharged Discussed"
 msgstr "Desligamento discutido com o cliente"
 
 #: report/models.py:865
-#, fuzzy
 msgid "Referral Discharged Not Discussed"
-msgstr "Desligamento discutido com o cliente"
+msgstr "Desligamento não discutido"
 
 #: report/models.py:869
 msgid "Referral Internals"
@@ -4339,7 +4294,6 @@ msgid "Members Family"
 msgstr "Familiares"
 
 #: templates/client/client_print.html:186
-#, fuzzy
 msgid "Family Relation"
 msgstr "Grau de Parentesco"
 
@@ -5797,9 +5751,8 @@ msgstr "Internet"
 
 #: templates/organization/organization_form.html:32
 #: templates/organization/organization_form.html:268
-#, fuzzy
 msgid "Signature"
-msgstr "Assinado"
+msgstr "Assinatura"
 
 #: templates/organization/organization_form.html:58
 msgid "Organization Configuration"
@@ -5895,24 +5848,20 @@ msgid "Use History - Under development"
 msgstr "Histórico de uso - Em desenvolvimento"
 
 #: templates/organization/organization_form.html:294
-#, fuzzy
 msgid "Inscription date"
-msgstr "Inscrição Municipal"
+msgstr "Data de inscrição"
 
 #: templates/organization/organization_form.html:299
-#, fuzzy
 msgid "Payed "
-msgstr "Página"
+msgstr "Pago"
 
 #: templates/organization/organization_form.html:301
-#, fuzzy
 msgid "Not payed "
 msgstr "Não pago ainda"
 
 #: templates/organization/organization_form.html:303
-#, fuzzy
 msgid "Inscription not done"
-msgstr "Ocupação não encontrada"
+msgstr "Inscrição não realizada"
 
 #: templates/organization/organization_form.html:312
 msgid "Use History"
@@ -5934,20 +5883,17 @@ msgstr "Para"
 #: templates/organization/organization_form.html:319
 #: templates/organization/organization_form.html:365
 #: templates/tags/invoice.html:41 templates/tags/invoice.html.py:65
-#, fuzzy
 msgid "Value"
-msgstr "Masculino"
+msgstr "Valor"
 
 #: templates/organization/organization_form.html:321
 #: templates/organization/organization_form.html:367
-#, fuzzy
 msgid "Second copy"
-msgstr "Segundo(s)"
+msgstr "Segunda via"
 
 #: templates/organization/organization_form.html:358
-#, fuzzy
 msgid "Last Invoice"
-msgstr "Último acesso"
+msgstr "Última fatura"
 
 #: templates/organization/organization_form.html:410
 msgid "Visible for others"
@@ -5961,16 +5907,14 @@ msgstr ""
 " do GestorPsi."
 
 #: templates/organization/second_copy.html:6
-#, fuzzy
 msgid "Second copy of billet"
-msgstr "Enviar arquivo"
+msgstr "Segunda via do boleto"
 
 #: templates/organization/second_copy.html:10
 msgid "Second copy of billet generated."
 msgstr "Segunda via do boleto gerada."
 
 #: templates/organization/second_copy.html:11
-#, fuzzy
 msgid "Click "
 msgstr "Clique"
 
@@ -7119,27 +7063,22 @@ msgid "IM Type"
 msgstr "Tipo de Mensagens Instantâneas"
 
 #: templates/tags/invoice.html:21
-#, fuzzy
 msgid "Invoice"
-msgstr "Início"
+msgstr "Fatura"
 
 #: templates/tags/invoice.html:27
-#, fuzzy
 msgid "Payed Date"
-msgstr "Salvar como"
+msgstr "Data de pagamento"
 
 #: templates/tags/invoice.html:30
-#, fuzzy
 msgid "Due Date"
-msgstr "Data"
+msgstr "Data de vencimento"
 
 #: templates/tags/invoice.html:33
-#, fuzzy
 msgid "Expiry Date"
-msgstr "Data de Expiração"
+msgstr "Data de vencimento"
 
 #: templates/tags/invoice.html:44
-#, fuzzy
 msgid "Discount"
 msgstr "Desconto"
 

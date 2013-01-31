@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-28 12:13-0200\n"
+"POT-Creation-Date: 2013-01-31 16:52-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -95,6 +95,7 @@ msgid "Email"
 msgstr ""
 
 #: authentication/forms.py:33 gcm/templates/gcm/registration_form.html:54
+#: templates/registration/gcm-registration_form.html:54
 #: templates/registration/registration_form.html:37
 msgid "Your email address"
 msgstr ""
@@ -210,8 +211,9 @@ msgstr ""
 #: boleto/admin.py:133 boleto/models.py:72
 #: gcm/templates/gcm/registration_form.html:62
 #: templates/meta/people_profile.html:92
-#: templates/meta/people_profile.html:101 templates/tags/address.html:69
-#: templates/tags/address.html.py:80
+#: templates/meta/people_profile.html:101
+#: templates/registration/gcm-registration_form.html:62
+#: templates/tags/address.html:69 templates/tags/address.html.py:80
 msgid "City"
 msgstr ""
 
@@ -1269,61 +1271,81 @@ msgstr ""
 msgid "Employee deactivated successfully"
 msgstr ""
 
-#: gcm/forms/auth.py:26
+#: gcm/forms/auth.py:27
 msgid "Access Plan"
 msgstr ""
 
-#: gcm/forms/auth.py:26
+#: gcm/forms/auth.py:27
 msgid "Choice one access plan"
 msgstr ""
 
-#: gcm/forms/auth.py:27
+#: gcm/forms/auth.py:28
 msgid "Phone Number"
 msgstr ""
 
-#: gcm/forms/auth.py:27
+#: gcm/forms/auth.py:28
 msgid "Enter your phone number with area code here"
 msgstr ""
 
-#: gcm/forms/auth.py:28
+#: gcm/forms/auth.py:29
 msgid "CPF Number"
 msgstr ""
 
-#: gcm/forms/auth.py:28
+#: gcm/forms/auth.py:29
 msgid "Enter your CPF number here"
 msgstr ""
 
-#: gcm/forms/auth.py:29
+#: gcm/forms/auth.py:30
 msgid "Address Street"
 msgstr ""
 
-#: gcm/forms/auth.py:29
+#: gcm/forms/auth.py:30
 msgid "Enter your address here"
 msgstr ""
 
-#: gcm/forms/auth.py:30
+#: gcm/forms/auth.py:31
 msgid "Address Number"
 msgstr ""
 
-#: gcm/forms/auth.py:30
+#: gcm/forms/auth.py:31
 msgid "Enter your address number here"
 msgstr ""
 
-#: gcm/forms/auth.py:31 templates/tags/address.html:41
+#: gcm/forms/auth.py:32 templates/tags/address.html:41
 msgid "ZIP Code"
 msgstr ""
 
-#: gcm/forms/auth.py:31
+#: gcm/forms/auth.py:32
 msgid "Enter your ZIP Code here"
 msgstr ""
 
-#: gcm/forms/auth.py:32 templates/meta/people_profile.html:82
+#: gcm/forms/auth.py:33 templates/meta/people_profile.html:82
 #: templates/tags/address.html:55
 msgid "State/Region"
 msgstr ""
 
-#: gcm/forms/auth.py:32
+#: gcm/forms/auth.py:33
 msgid "Enter your state/region here"
+msgstr ""
+
+#: gcm/forms/fields.py:23
+msgid "Invalid CPF number."
+msgstr ""
+
+#: gcm/forms/fields.py:24 gcm/forms/fields.py:73
+msgid "This field requires only numbers."
+msgstr ""
+
+#: gcm/forms/fields.py:25
+msgid "This field requires at most 11 digits."
+msgstr ""
+
+#: gcm/forms/fields.py:72
+msgid "Invalid CNPJ number."
+msgstr ""
+
+#: gcm/forms/fields.py:74
+msgid "This field requires at most 14 digits."
 msgstr ""
 
 #: gcm/forms/invoice.py:23
@@ -1813,16 +1835,19 @@ msgid "Validade (meses)"
 msgstr ""
 
 #: gcm/templates/gcm/registration_complete.html:3
+#: templates/registration/gcm-registration_complete.html:3
 #: templates/registration/registration_complete.html:3
 msgid "Registration complete"
 msgstr ""
 
 #: gcm/templates/gcm/registration_complete.html:6
+#: templates/registration/gcm-registration_complete.html:6
 #: templates/registration/registration_complete.html:6
 msgid "Your account has been registered successfully."
 msgstr ""
 
 #: gcm/templates/gcm/registration_complete.html:8
+#: templates/registration/gcm-registration_complete.html:8
 #: templates/registration/registration_complete.html:8
 msgid ""
 "Please wait until one of our operators to contact you for payment, and soon "
@@ -1830,16 +1855,19 @@ msgid ""
 msgstr ""
 
 #: gcm/templates/gcm/registration_complete.html:13
+#: templates/registration/gcm-registration_complete.html:13
 #: templates/registration/registration_complete.html:13
 msgid "Click here to get the billet to test the system payment."
 msgstr ""
 
 #: gcm/templates/gcm/registration_form.html:40
+#: templates/registration/gcm-registration_form.html:40
 #: templates/registration/registration_form.html:22
 msgid "New account"
 msgstr ""
 
 #: gcm/templates/gcm/registration_form.html:41
+#: templates/registration/gcm-registration_form.html:41
 #: templates/registration/registration_form.html:23
 msgid ""
 "Fill out the form to the left (all fields are required), and your account "
@@ -1848,18 +1876,22 @@ msgid ""
 msgstr ""
 
 #: gcm/templates/gcm/registration_form.html:43
+#: templates/registration/gcm-registration_form.html:43
 #: templates/registration/registration_form.html:25
 msgid "Form errors! Please correct errors below and try again"
 msgstr ""
 
 #: gcm/templates/gcm/registration_form.html:72
 #: gcm/templates/gcm/registration_form.html:227
+#: templates/registration/gcm-registration_form.html:72
+#: templates/registration/gcm-registration_form.html:227
 #: templates/registration/registration_form.html:40
 #: templates/registration/registration_form.html:57
 msgid "terms of service"
 msgstr ""
 
 #: gcm/templates/gcm/registration_form.html:227
+#: templates/registration/gcm-registration_form.html:227
 #: templates/registration/registration_form.html:57
 msgid ""
 "By clicking the Signup button below, you agree that you have read and agree "
@@ -1867,16 +1899,19 @@ msgid ""
 msgstr ""
 
 #: gcm/templates/gcm/registration_form.html:229
+#: templates/registration/gcm-registration_form.html:229
 #: templates/registration/registration_form.html:59
 msgid "Accept terms and register"
 msgstr ""
 
 #: gcm/templates/gcm/registration_form.html:232
+#: templates/registration/gcm-registration_form.html:232
 #: templates/registration/registration_form.html:62
 msgid "Already have an account?"
 msgstr ""
 
 #: gcm/templates/gcm/registration_form.html:233
+#: templates/registration/gcm-registration_form.html:233
 #: templates/registration/login.html:58
 #: templates/registration/registration_form.html:63
 msgid "Forgot Password?"

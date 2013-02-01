@@ -40,7 +40,7 @@ from gestorpsi import settings
 from gestorpsi.address.models import State, City
 from gestorpsi.boleto.models import *
 #from gestorpsi.boleto.return_file import *
-
+from gestorpsi.gcm.forms import fields
 
 def CNPJValidator(value):
     def generate_digits(value):
@@ -101,8 +101,8 @@ def CNPJValidator(value):
 
 class BradescoBilletDataAdminForm(forms.ModelForm):
 
-    cedente_cnpj = forms.CharField(widget = forms.TextInput(attrs={"mask": "99.999.999/9999-99",}), validators=[CNPJValidator]  )
-    sacadoravalista_cnpj = forms.CharField(widget = forms.TextInput(attrs={"mask": "99.999.999/9999-99",}), validators=[CNPJValidator] )
+    cedente_cnpj = fields.CNPJField(widget = forms.TextInput(attrs={"mask": "99.999.999/9999-99",}))#, validators=[CNPJValidator]  )
+    sacadoravalista_cnpj = fields.CNPJField(widget = forms.TextInput(attrs={"mask": "99.999.999/9999-99",}))#, validators=[CNPJValidator] )
     enderecosacaval_cep = forms.CharField(widget = forms.TextInput(attrs={"mask": "99999-999",}) )
     contabancaria_numerodaconta = forms.CharField(widget = forms.TextInput(attrs={"mask": "999999",}) )
     contabancaria_numerodaconta_digito = forms.CharField(widget = forms.TextInput(attrs={"mask": "9",}) )

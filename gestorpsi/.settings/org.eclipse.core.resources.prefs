@@ -1,4 +1,4 @@
-#Sun Nov 04 16:23:29 BRST 2012
+#Mon Feb 04 09:07:33 BRST 2013
 eclipse.preferences.version=1
 encoding//address/models.py=utf-8
 encoding//address/views.py=utf-8
@@ -12,6 +12,7 @@ encoding//careprofessional/models.py=utf-8
 encoding//client/models.py=utf-8
 encoding//client/views.py=utf-8
 encoding//document/views.py=utf-8
+encoding//frontend/urls.py=utf-8
 encoding//frontend/views.py=utf-8
 encoding//gcm/forms/auth.py=utf-8
 encoding//gcm/forms/invoice.py=utf-8

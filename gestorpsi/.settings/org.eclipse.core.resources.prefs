@@ -1,4 +1,4 @@
-#Mon Feb 04 09:07:33 BRST 2013
+#Mon Feb 04 11:17:01 BRST 2013
 eclipse.preferences.version=1
 encoding//address/models.py=utf-8
 encoding//address/views.py=utf-8
@@ -28,5 +28,9 @@ encoding//organization/urls.py=utf-8
 encoding//organization/views.py=utf-8
 encoding//person/models.py=utf-8
 encoding//place/models.py=utf-8
+encoding//report/models.py=utf-8
+encoding//report/urls.py=utf-8
+encoding//report/views.py=utf-8
+encoding//reports/header.py=utf-8
 encoding//sponsor/admin.py=utf-8
 encoding//util/uuid_field.py=utf-8

@@ -53,6 +53,7 @@ class Report(models.Model):
     class Meta:
         permissions = (
             ("report_list", "Can list report"),
+            ("report_write", "Can write report"),
         )
 
     def set_date(self, organization, date_start=None, date_end=None):

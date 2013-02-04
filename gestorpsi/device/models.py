@@ -71,6 +71,7 @@ class Device(models.Model):
         ordering = ['description']
         permissions = (
             ("device_list", "Can list device"),
+            ("device_write", "Can write device"),
         )
 
 
@@ -99,6 +100,9 @@ class DeviceDetails(models.Model):
 
     class Meta:
         ordering = ['brand']
+        permissions = (
+            ("devicedetails_write", "Can write device details"),
+        )
 
     def __unicode__(self):
 #      return u"%s - %s - %s" % (self.device.description, self.brand, self.model,)

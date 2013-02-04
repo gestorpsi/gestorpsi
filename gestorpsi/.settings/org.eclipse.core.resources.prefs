@@ -1,4 +1,4 @@
-#Mon Feb 04 11:17:01 BRST 2013
+#Mon Feb 04 11:46:53 BRST 2013
 eclipse.preferences.version=1
 encoding//address/models.py=utf-8
 encoding//address/views.py=utf-8
@@ -11,6 +11,9 @@ encoding//boleto/models.py=utf-8
 encoding//careprofessional/models.py=utf-8
 encoding//client/models.py=utf-8
 encoding//client/views.py=utf-8
+encoding//device/models.py=utf-8
+encoding//device/urls.py=utf-8
+encoding//device/views.py=utf-8
 encoding//document/views.py=utf-8
 encoding//frontend/urls.py=utf-8
 encoding//frontend/views.py=utf-8

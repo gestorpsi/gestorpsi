@@ -345,8 +345,10 @@ class Organization(models.Model):
     class Meta:
         ordering = ['name']
         permissions = (
-            ("organization_read", "Can read organization"),
-            ("organization_write", "Can write organization"),
+            ("organization_add", "Can add organizations"),
+            ("organization_change", "Can change organizations"),
+            ("organization_list", "Can list organizations"),
+            ("organization_write", "Can write organizations"),
         )
 
 reversion.register(Organization, follow=['provided_type', 'phones', 'address', 'emails', 'sites', 'instantMessengers'])

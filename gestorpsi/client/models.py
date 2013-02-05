@@ -206,7 +206,10 @@ class Client(models.Model):
     class Meta:
         ordering = ['person']
         permissions = (
-            ("client_list", "Can list client"),
+            ("client_add", "Can add clients"),
+            ("client_change", "Can change clients"),
+            ("client_list", "Can list clients"),
+            ("client_write", "Can write clients"),
         )
 
     def revision(self):

@@ -89,7 +89,10 @@ class Place( models.Model ):
     class Meta:
         ordering = ['label']
         permissions = (
-            ("place_list", "Can list place"),
+            ("place_add", "Can add places"),
+            ("place_change", "Can change places"),
+            ("place_list", "Can list places"),
+            ("place_write", "Can write places"),
         )
 
     def revision(self):

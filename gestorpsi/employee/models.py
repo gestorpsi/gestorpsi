@@ -39,7 +39,10 @@ class Employee(models.Model):
     class Meta:
         ordering = ['person']
         permissions = (
-            ("employee_list", "Can list employee"),
+            ("employee_add", "Can add employees"),
+            ("employee_change", "Can change employees"),
+            ("employee_list", "Can list employees"),
+            ("employee_write", "Can write employees"),
         )
 
     def revision(self):

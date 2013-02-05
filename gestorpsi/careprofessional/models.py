@@ -265,7 +265,10 @@ class CareProfessional(models.Model):
     class Meta:
         ordering = ['person']
         permissions = (
-            ("careprofessional_list", "Can list careprofessional"),
+            ("careprofessional_add", "Can add careprofessionals"),
+            ("careprofessional_change", "Can change careprofessionals"),
+            ("careprofessional_list", "Can list careprofessionals"),
+            ("careprofessional_write", "Can write careprofessionals"),
         )
 
     def _is_student(self):

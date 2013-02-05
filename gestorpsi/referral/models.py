@@ -244,6 +244,12 @@ class Referral(Event):
 
     class Meta:
         ordering = ('title', )
+        permissions = (
+            ("referral_add", "Can add referrals"),
+            ("referral_change", "Can change referrals"),
+            ("referral_list", "Can list referrals"),
+            ("referral_write", "Can write referrals"),
+        )
 
     def __unicode__(self):
         return u"%s #%s" % (self.service, self.seq)

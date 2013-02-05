@@ -120,7 +120,10 @@ class Service(models.Model):
         ordering = ['name']
         get_latest_by = ['date']
         permissions = (
-            ("service_list", "Can list service"),
+            ("service_add", "Can add services"),
+            ("service_change", "Can change services"),
+            ("service_list", "Can list services"),
+            ("service_write", "Can write services"),
         )
 
     def revision(self):

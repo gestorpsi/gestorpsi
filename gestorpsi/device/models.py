@@ -70,8 +70,10 @@ class Device(models.Model):
     class Meta:
         ordering = ['description']
         permissions = (
-            ("device_list", "Can list device"),
-            ("device_write", "Can write device"),
+            ("device_add", "Can add devices"),
+            ("device_change", "Can change devices"),
+            ("device_list", "Can list devices"),
+            ("device_write", "Can write devices"),
         )
 
 

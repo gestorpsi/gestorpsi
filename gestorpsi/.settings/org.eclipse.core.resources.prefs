@@ -1,4 +1,4 @@
-#Mon Feb 04 11:46:53 BRST 2013
+#Tue Feb 05 14:46:03 BRST 2013
 eclipse.preferences.version=1
 encoding//address/models.py=utf-8
 encoding//address/views.py=utf-8
@@ -11,10 +11,13 @@ encoding//boleto/models.py=utf-8
 encoding//careprofessional/models.py=utf-8
 encoding//client/models.py=utf-8
 encoding//client/views.py=utf-8
+encoding//contact/models.py=utf-8
 encoding//device/models.py=utf-8
 encoding//device/urls.py=utf-8
 encoding//device/views.py=utf-8
 encoding//document/views.py=utf-8
+encoding//ehr/models.py=utf-8
+encoding//employee/models.py=utf-8
 encoding//frontend/urls.py=utf-8
 encoding//frontend/views.py=utf-8
 encoding//gcm/forms/auth.py=utf-8
@@ -31,9 +34,11 @@ encoding//organization/urls.py=utf-8
 encoding//organization/views.py=utf-8
 encoding//person/models.py=utf-8
 encoding//place/models.py=utf-8
+encoding//referral/models.py=utf-8
 encoding//report/models.py=utf-8
 encoding//report/urls.py=utf-8
 encoding//report/views.py=utf-8
 encoding//reports/header.py=utf-8
+encoding//service/models.py=utf-8
 encoding//sponsor/admin.py=utf-8
 encoding//util/uuid_field.py=utf-8

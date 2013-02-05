@@ -174,6 +174,7 @@ class Contact(object):
     class Meta:
         permissions = (
             ("contact_list", "Can list contact"),
+            ("contact_write", "Can write contact"),
         )
     
     def __unicode__(self):

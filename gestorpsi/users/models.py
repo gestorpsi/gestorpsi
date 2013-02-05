@@ -3,7 +3,10 @@ class Users(User):
     
     class Meta:
         permissions = (
-            ("user_list", "Can list user"),
+            ("user_add", "Can add users"),
+            ("user_change", "Can change users"),
+            ("user_list", "Can list users"),
+            ("user_write", "Can write users"),
         )
         
 

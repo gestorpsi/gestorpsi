@@ -1,8 +1,9 @@
-#Tue Feb 05 14:46:03 BRST 2013
+#Wed Feb 06 14:54:08 BRST 2013
 eclipse.preferences.version=1
 encoding//address/models.py=utf-8
 encoding//address/views.py=utf-8
 encoding//admission/models.py=utf-8
+encoding//admission/views.py=utf-8
 encoding//async_tasks/tasks.py=utf-8
 encoding//boleto/admin.py=utf-8
 encoding//boleto/cnab400_bradesco.py=utf-8
@@ -40,5 +41,6 @@ encoding//report/urls.py=utf-8
 encoding//report/views.py=utf-8
 encoding//reports/header.py=utf-8
 encoding//service/models.py=utf-8
+encoding//service/views.py=utf-8
 encoding//sponsor/admin.py=utf-8
 encoding//util/uuid_field.py=utf-8

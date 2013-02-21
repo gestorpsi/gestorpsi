@@ -48,20 +48,28 @@ appnames.append('users')
 for g in Group.objects.all():
     g.permissions.all().delete()
 
+appnames = sorted(appnames)
+
+
 print "Installing system groups..."
 
 for appname in appnames:
-    print "%s_list" % appname
-    print "%s_read" % appname
-    print "%s_write" % appname
-    
     ct, created = ContentType.objects.get_or_create(model='', app_label=appname, defaults={'name': appname})
-    Permission.objects.get_or_create(codename='%s_list' % appname, name='%s List' % appname.capitalize(), content_type=ct)
-    Permission.objects.get_or_create(codename='%s_read' % appname, name='%s Read' % appname.capitalize(), content_type=ct)
-    Permission.objects.get_or_create(codename='%s_write' % appname, name='%s Write' % appname.capitalize(), content_type=ct)
-
+    
+    perm_type = ["list", "read", "write"]
+    
+    for type in perm_type:
+        print "Creating permission: %s_%s" % (appname, type)
+        # flush existing permission to avoid duplicated register
+        Permission.objects.filter(codename='%s_%s' % (appname, type), content_type=ct).delete()
+        
+        # create permission again
+        permission, created = Permission.objects.get_or_create(codename='%s_%s' % (appname, type), content_type=ct)
+        permission.name = '%s %s' % (appname.capitalize(), type.capitalize())
+        permission.save()
+    
 # Administrator
-print "assigning permissions for group administrator"
+print "Assigning permissions for group administrator"
 grp_administrator,created = Group.objects.get_or_create(name='administrator')
 for p in Permission.objects.filter(codename__endswith='_read'):
     grp_administrator.permissions.add(p)
@@ -71,7 +79,7 @@ for p in Permission.objects.filter(codename__endswith='_list'):
     grp_administrator.permissions.add(p)
 
 # Professional
-print "assigning permissions for group careprofessional"
+print "Assigning permissions for group careprofessional"
 grp_professional, created = Group.objects.get_or_create(name='professional')
 grp_professional.permissions.add(Permission.objects.get(codename='client_read'))
 grp_professional.permissions.add(Permission.objects.get(codename='client_list'))
@@ -121,7 +129,7 @@ grp_professional.permissions.add(Permission.objects.get(codename='report_read'))
 grp_professional.permissions.add(Permission.objects.get(codename='report_write'))
 
 # Student
-print "assigning permissions for group student"
+print "Assigning permissions for group student"
 grp_student, created = Group.objects.get_or_create(name='student')
 grp_student.permissions.add(Permission.objects.get(codename='client_read'))
 grp_student.permissions.add(Permission.objects.get(codename='client_list'))
@@ -167,7 +175,7 @@ grp_student.permissions.add(Permission.objects.get(codename='report_read'))
 grp_student.permissions.add(Permission.objects.get(codename='report_write'))
 
 # Secretary
-print "assigning permissions for group secretary"
+print "Assigning permissions for group secretary"
 grp_secretary, created = Group.objects.get_or_create(name='secretary')
 grp_secretary.permissions.add(Permission.objects.get(codename='organization_write'))
 grp_secretary.permissions.add(Permission.objects.get(codename='organization_read'))
@@ -217,7 +225,7 @@ grp_secretary.permissions.add(Permission.objects.get(codename='report_write'))
 
 
 # Client
-print "assigning permissions for group client"
+print "Assigning permissions for group client"
 grp_client, created = Group.objects.get_or_create(name='client')
 grp_client.permissions.add(Permission.objects.get(codename='upload_write'))
 grp_client.permissions.add(Permission.objects.get(codename='upload_read'))
@@ -229,7 +237,7 @@ grp_client.permissions.add(Permission.objects.get(codename='upload_list'))
 
 # Administrator in Read Only Mode
 # just read grp_administrator permission excluding '_write' codename match
-print "assigning permissions for group administrator read-only (administrator_ro)"
+print "Assigning permissions for group administrator read-only (administrator_ro)"
 grp_administrator_ro,created = Group.objects.get_or_create(name='administrator_ro')
 for i in grp_administrator.permissions.all():
     if not re.search('_write' , i.codename):
@@ -237,7 +245,7 @@ for i in grp_administrator.permissions.all():
 
 # Professional Read Only
 # just read grp_professional permission excluding '_write' codename match
-print "assigning permissions for group careprofessional read-only (professional_ro)"
+print "Assigning permissions for group careprofessional read-only (professional_ro)"
 grp_professional_ro, created = Group.objects.get_or_create(name='professional_ro')
 for i in grp_professional.permissions.all():
     if not re.search('_write' , i.codename):
@@ -245,7 +253,7 @@ for i in grp_professional.permissions.all():
 
 # Secretary Read Only
 # just read grp_secretary permission excluding '_write' codename match
-print "assigning permissions for group secretary read-only (secretary_ro)"
+print "Assigning permissions for group secretary read-only (secretary_ro)"
 grp_secretary_ro, created = Group.objects.get_or_create(name='secretary_ro')
 for i in grp_secretary.permissions.all():
     if not re.search('_write' , i.codename):
@@ -253,7 +261,7 @@ for i in grp_secretary.permissions.all():
 
 # Client Read Only
 # just read grp_client permission excluding '_write' codename match
-print "assigning permissions for group client read-only (client_ro)"
+print "Assigning permissions for group client read-only (client_ro)"
 grp_client_ro, created = Group.objects.get_or_create(name='client_ro')
 for i in grp_client.permissions.all():
     if not re.search('_write' , i.codename):
@@ -261,7 +269,7 @@ for i in grp_client.permissions.all():
 
 # Student Read Only
 # just read grp_student permission excluding '_write' codename match
-print "assigning permissions for group student read-only (student_ro)"
+print "Assigning permissions for group student read-only (student_ro)"
 grp_student_ro, created = Group.objects.get_or_create(name='student_ro')
 for i in grp_student.permissions.all():
     if not re.search('_write' , i.codename):

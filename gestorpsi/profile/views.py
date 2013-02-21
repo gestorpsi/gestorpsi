@@ -18,6 +18,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import gettext as _
+from django.contrib import messages
 from gestorpsi.address.models import Country, State, AddressType
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.internet.models import EmailType, IMNetwork
@@ -81,13 +82,13 @@ def save(request):
     except:
         raise Http404
 
-    request.user.message_set.create(message=_('Profile updated successfully'))
+    messages.success(request, _('Profile updated successfully'))
     return HttpResponseRedirect('/profile/')
     
 def save_careprofessional(request):
     object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
     object = save_careprof(request, object.id, False)
-    request.user.message_set.create(message=_('Professional profile saved successfully'))
+    messages.success(request, _('Professional profile saved successfully'))
     return HttpResponseRedirect('/profile/careprofessional/')
 
 def change_pass(request):
@@ -100,18 +101,18 @@ def change_pass(request):
 
     if request.POST.get('c_pass'):
         if not request.user.check_password(request.POST.get("c_pass")):
-            request.user.message_set.create(message=_('The current password is wrong'))
+            messages.success(request, _('The current password is wrong'))
             return HttpResponseRedirect('/profile/chpass/?clss=error')
         else:
             if request.POST.get("n_pass") != request.POST.get("n_pass0"):
-                request.user.message_set.create(message=_('The confirmation of the new password is wrong'))
+                messages.success(request, _('The confirmation of the new password is wrong'))
                 return HttpResponseRedirect('/profile/chpass/?clss=error')
             else:
                 request.user.set_password(request.POST.get('n_pass'))
                 request.user.get_profile().temp = request.POST.get('n_pass')    # temporary field (LDAP)
                 request.user.get_profile().save(force_update=True)
                 request.user.save(force_update=True)
-                request.user.message_set.create(message=_('Password updated successfully'))
+                messages.success(request, _('Password updated successfully'))
                 return HttpResponseRedirect('/profile/chpass')
     else:
         return render_to_response('profile/profile_change_pass.html', locals(), context_instance=RequestContext(request))

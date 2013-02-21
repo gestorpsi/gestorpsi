@@ -160,7 +160,7 @@ GNU General Public License for more details.
                     {% if perms.client.client_list %}<li><a id="customers" class="main_menu {% block menu_client %}{% endblock %}" href="/client/">{% trans "clients" %}</a></li>{% endif %}
                     {% if perms.contact.contact_list %}<li><a id="contacts" class="main_menu {% block menu_contact %}{% endblock %}"  href="/contact/">{% trans "contacts" %}</a></li>{% endif %}
                     {% if perms.report.report_list %}<li><a id="report" class="main_menu {% block menu_report %}{% endblock %}"  href="/report/">{% trans "Reports" %}</a></li>{% endif %}
-                    <li><a id="myoffice" class="main_menu notajax vertical {% block menu_myoffice %}{% endblock %}">{{ user.profile.org_active.short_name }}{% block vertical_menu %}{% endblock %}</a>
+                    <li><a id="myoffice" class="main_menu notajax vertical {% block menu_myoffice %}{% endblock %}">{% if not user.profile.org_active.short_name %}{% trans "Configurations" %}{% else %}{{ user.profile.org_active.short_name }}{% endif %}{% block vertical_menu %}{% endblock %}</a>
                         <ul style="display:none" class="myoffice">
                             {% if perms.organization.organization_read %}<li><a id="organization" href="/organization/">{% trans "My Organization" %}</a></li>{% endif %}
                             {% if perms.place.place_list %}<li><a id="places" href="/place/" display="list">{% trans "Places" %}</a></li>{% endif %}

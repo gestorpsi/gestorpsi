@@ -23,6 +23,7 @@ from django.core.paginator import Paginator
 from django.utils import simplejson
 from django.db.models import Q
 from django.utils.translation import ugettext as _
+from django.contrib import messages
 from gestorpsi.device.models import DeviceDetails, Device
 from gestorpsi.careprofessional.views import Profession
 from gestorpsi.place.models import Place, Room
@@ -202,7 +203,7 @@ def save(request, object_id=None ):
             device_details.room = None
     device_details.save()
 
-    request.user.message_set.create(message=_('Device saved successfully'))
+    messages.success(request, _('Device saved successfully'))
 
     return HttpResponseRedirect('/device/%s/' % device_details.id)
 
@@ -219,7 +220,7 @@ def order(request, object_id=None):
     if object.active == True:
         upcoming_occurrences = object.scheduleoccurrence_set.filter(end_time__gt=datetime.now()).exclude(occurrenceconfirmation__presence=4).exclude(occurrenceconfirmation__presence=3)
         if len(upcoming_occurrences):
-            request.user.message_set.create(message=_('Sorry, you can not disable a device with upcoming occurrence(s). Total upcoming occurrences %s' % len(upcoming_occurrences)))
+            messages.success(request, _('Sorry, you can not disable a device with upcoming occurrence(s). Total upcoming occurrences %s' % len(upcoming_occurrences)))
             return HttpResponseRedirect('/device/%s/?clss=error' % (object.id))
         else:
             object.active = False
@@ -227,5 +228,5 @@ def order(request, object_id=None):
         object.active = True
 
     object.save(force_update = True)
-    request.user.message_set.create(message=('%s' % (_('Device activated successfully') if object.active else _('Device deactivated successfully'))))
+    messages.success(request, ('%s' % (_('Device activated successfully') if object.active else _('Device deactivated successfully'))))
     return HttpResponseRedirect('/device/%s/' % object.id)

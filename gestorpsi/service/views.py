@@ -24,6 +24,7 @@ from django.core.paginator import Paginator
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.db.models import Q
+from django.contrib import messages
 from gestorpsi.service.models import Service, Area, ServiceType, Modality
 from gestorpsi.person.views import person_json_list
 from gestorpsi.careprofessional.models import CareProfessional, Profession
@@ -262,7 +263,7 @@ def save(request, object_id=''):
     for p in request.POST.getlist('service_professionals'):
         object.professionals.add(CareProfessional.objects.get(pk=p))
 
-    request.user.message_set.create(message=_('Service saved successfully'))
+    messages.success(request, _('Service saved successfully'))
 
     return HttpResponseRedirect('/service/form/%s/' % object.id)
 
@@ -292,18 +293,18 @@ def order(request, object_id=None):
     if ( Referral.objects.charged().filter(service = object).count()) == 0:
         if (Queue.objects.filter(referral__service = object_id, date_out = None).order_by('date_in').order_by('priority').count()) == 0:
             if object.active == True:
-                request.user.message_set.create(message=_('Service deactive successfully'))
+                messages.success(request, _('Service deactive successfully'))
                 object.active = False
             else:
-                request.user.message_set.create(message=_('Service active successfully'))
+                messages.success(request, _('Service active successfully'))
                 object.active = True
 
             object.save(force_update = True)
         else:
-            request.user.message_set.create(message=_('You can not disable a service with clients in the queue'))
+            messages.success(request, _('You can not disable a service with clients in the queue'))
             url += '?clss=error'
     else:
-            request.user.message_set.create(message=_('You can not disable a service with clients registered in the referral'))
+            messages.success(request, _('You can not disable a service with clients registered in the referral'))
             url += '?clss=error'
     return HttpResponseRedirect(url % object.id)
 
@@ -421,7 +422,7 @@ def group_form(request, object_id=None, group_id=None):
             group = form.save(commit=False)
             group.service = object 
             group.save()
-            request.user.message_set.create(message=_('Group saved successfully'))
+            messages.success(request, _('Group saved successfully'))
             return HttpResponseRedirect('/service/%s/group/%s/form/' % (object.id, group.id))
 
     else:

@@ -19,6 +19,7 @@ from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson
 from django.utils.translation import ugettext as _
+from django.contrib import messages
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.person.views import person_json_list, person_save
 from gestorpsi.careprofessional.models import ProfessionalProfile, ProfessionalIdentification, CareProfessional, Profession
@@ -85,7 +86,7 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
         ServiceTypes = Service.objects.filter( active=True, organization=request.user.get_profile().org_active)
 
     if not object.active:
-        request.user.message_set.create(message= _('This professional is not enabled.'))
+        messages.success(request,  _('This professional is not enabled.'))
 
     return render_to_response(template_name, {
                                     'clss':request.GET.get('clss'),
@@ -220,12 +221,12 @@ def save(request, object_id=None, save_person=True, is_student=False):
             data.save()
 
     #if exist_referral == "False":
-        #request.user.message_set.create(message=_('Professional saved successfully') if not is_student else _('Student saved successfully'))
+        #messages.success(request, _('Professional saved successfully') if not is_student else _('Student saved successfully'))
         #return HttpResponseRedirect(('/careprofessional/%s/' % object.id) if not is_student else ('/careprofessional/student/%s/' % object.id))
-    request.user.message_set.create(message=_('Professional saved successfully') if not is_student else _('Student saved successfully'))
+    messages.success(request, _('Professional saved successfully') if not is_student else _('Student saved successfully'))
     return HttpResponseRedirect(('/careprofessional/%s/' % object.id) if not is_student else ('/careprofessional/student/%s/' % object.id))
     #else:
-        #request.user.message_set.create(message=_('Impossible discharged of the service. Exist referral to this professional.'))
+        #messages.success(request, _('Impossible discharged of the service. Exist referral to this professional.'))
         #return HttpResponseRedirect(('/careprofessional/%s/?clss=error' % object.id))
 
 @permission_required_with_403('careprofessional.careprofessional_write')
@@ -271,7 +272,7 @@ def order(request, object_id=None, is_student=False):
 
     object.save(force_update=True)
     
-    request.user.message_set.create(message=('%s %s %s' % ( \
+    messages.success(request, ('%s %s %s' % ( \
         (_('Student') if is_student else _('Professional')), \
         (_('activated') if object.active else _('deactivated')), \
         _('successfully'))))

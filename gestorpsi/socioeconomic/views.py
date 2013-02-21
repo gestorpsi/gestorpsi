@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from django.contrib import messages
 from gestorpsi.socioeconomic.forms import TransportationForm, IncomeForm, IncomeSourceForm, PossessionForm, EletricityForm
 from gestorpsi.socioeconomic.forms import SanitationForm, PavingForm, DwellingFeaturesForm, PeopleHouseholdForm
 from gestorpsi.socioeconomic.models import Transportation
@@ -87,7 +88,7 @@ def socioeconomic_transportation_save(request, object_id, transportation_id=0):
     transp.client = object
     transp.save()
     transportations = [t for t in object.transportation_set.all()]
-    request.user.message_set.create(message=_('Transportation saved successfully'))
+    messages.success(request, _('Transportation saved successfully'))
     return render_to_response('client/client_socio_transportation.html', {
                                         'object': object,
                                         'socioeconomic_menu': True,

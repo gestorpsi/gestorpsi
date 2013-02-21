@@ -21,6 +21,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template import RequestContext
 from django.utils import simplejson
+from django.contrib import messages
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.ehr.forms import DemandForm, DiagnosisForm, TimeUnitForm, SessionForm
@@ -207,7 +208,7 @@ def demand_form(request, client_id, referral_id, demand_id=0):
             if request.POST.get('howlong-unit'):
                 howlong_form = TimeUnitForm(request.POST, instance=demand.how_long_it_happens if demand.how_long_it_happens else TimeUnit(), prefix="howlong")
                 if not howlong_form.is_valid():
-                    request.user.message_set.create(message=_("There's an error in 'How long it happens' field."))
+                    messages.success(request, _("There's an error in 'How long it happens' field."))
                     return HttpResponseRedirect('/client/%s/%s/demand/%s/?clss=error' % (client_id, referral_id, demand.id)) if demand.id else HttpResponseRedirect('/client/%s/%s/demand/add/?clss=error' % (client_id, referral_id))
                 demand.how_long_it_happens = howlong_form.save()
             else:
@@ -216,7 +217,7 @@ def demand_form(request, client_id, referral_id, demand_id=0):
             if request.POST.get('frequency-unit'):
                 frequency_form = TimeUnitForm(request.POST, instance=demand.frequency if demand.frequency else TimeUnit(), prefix="frequency")
                 if not frequency_form.is_valid():
-                    request.user.message_set.create(message=_("There's an error in 'Frequency' field."))
+                    messages.success(request, _("There's an error in 'Frequency' field."))
                     return HttpResponseRedirect('/client/%s/%s/demand/%s/?clss=error' % (client_id, referral_id, demand.id)) if demand.id else HttpResponseRedirect('/client/%s/%s/demand/add/?clss=error' % (client_id, referral_id))
                 demand.frequency = frequency_form.save()
             else:
@@ -225,7 +226,7 @@ def demand_form(request, client_id, referral_id, demand_id=0):
             if request.POST.get('duration-unit'):
                 duration_form = TimeUnitForm(request.POST, instance=demand.duration if demand.duration else TimeUnit(), prefix="duration")
                 if not duration_form.is_valid():
-                    request.user.message_set.create(message=_("There's an error in 'Duration' field."))
+                    messages.success(request, _("There's an error in 'Duration' field."))
                     return HttpResponseRedirect('/client/%s/%s/demand/%s/?clss=error' % (client_id, referral_id, demand.id)) if demand.id else HttpResponseRedirect('/client/%s/%s/demand/add/?clss=error' % (client_id, referral_id))
                 demand.duration = duration_form.save()
             else:

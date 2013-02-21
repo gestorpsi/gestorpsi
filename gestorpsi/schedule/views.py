@@ -24,6 +24,7 @@ from django.shortcuts import get_object_or_404, render_to_response, HttpResponse
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.db.models import Q
+from django.contrib import messages
 from swingtime.utils import create_timeslot_table
 from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation, OccurrenceFamily, OccurrenceEmployees
 from gestorpsi.referral.models import Referral
@@ -106,7 +107,7 @@ def add_event(
                                 event = recurrence_form.save(group_member.referral, True) # ignore busy check
     
             if not event.errors:
-                request.user.message_set.create(message=_('Schedule saved successfully'))
+                messages.success(request, _('Schedule saved successfully'))
                 return http.HttpResponseRedirect(redirect_to or '/schedule/')
             else:
                 return render_to_response(
@@ -206,7 +207,7 @@ def occurrence_view(
         form = form_class(request.POST, instance=occurrence)
         if form.is_valid():
             form.save()
-            request.user.message_set.create(message=_('Occurrence updated successfully'))
+            messages.success(request, _('Occurrence updated successfully'))
             return http.HttpResponseRedirect(request.path)
         else:
             print form.errors
@@ -270,7 +271,7 @@ def occurrence_confirmation_form(
             # save occurrence comment
             occurrence.annotation = request.POST['occurrence_annotation']
             occurrence.save()
-            request.user.message_set.create(message=_('Occurrence confirmation updated successfully'))
+            messages.success(request, _('Occurrence confirmation updated successfully'))
             return http.HttpResponseRedirect(redirect_to or request.path)
         else:
             form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility=2, lendable=True) | Q(place =  occurrence.room.place, mobility=2, lendable=False))]
@@ -560,7 +561,7 @@ def occurrence_family_form(request, occurence_id = None, template=None):
 
     if request.POST:
         if not request.POST.getlist('family_members'):
-            request.user.message_set.create(message=_('No member family selected'))
+            messages.success(request, _('No member family selected'))
             return render_to_response(template, locals(), context_instance=RequestContext(request))
         
         if not hasattr(occurrence, 'occurrencefamily'):
@@ -575,7 +576,7 @@ def occurrence_family_form(request, occurence_id = None, template=None):
             if c not in [x.id for x in f.client.all()]:
                 f.client.add(c)
         
-        request.user.message_set.create(message=_('Family members added successfully'))
+        messages.success(request, _('Family members added successfully'))
         return http.HttpResponseRedirect('/schedule/events/%s/family/form/' % occurrence.id)
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))
@@ -590,7 +591,7 @@ def occurrence_employee_form(request, occurence_id = None, template=None):
 
     if request.POST:
         if not request.POST.getlist('company_employees'):
-            request.user.message_set.create(message=_('No company employees selected'))
+            messages.success(request, _('No company employees selected'))
             return render_to_response(template, locals(), context_instance=RequestContext(request))
         
         if not hasattr(occurrence, 'occurrenceemployees'):
@@ -605,7 +606,7 @@ def occurrence_employee_form(request, occurence_id = None, template=None):
             if c not in [x.id for x in f.client.all()]:
                 f.client.add(c)
         
-        request.user.message_set.create(message=_('Company employee(s) added successfully'))
+        messages.success(request, _('Company employee(s) added successfully'))
         return http.HttpResponseRedirect('/schedule/events/%s/employee/form/' % occurrence.id)
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))

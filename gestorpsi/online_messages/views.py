@@ -8,7 +8,7 @@ from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_noop
 from django.core.urlresolvers import reverse
 from django.conf import settings
-
+from django.contrib import messages
 from gestorpsi.online_messages.models import Message, MessageTopic
 from gestorpsi.online_messages.forms import ComposeForm
 from gestorpsi.online_messages.utils import format_quote
@@ -180,7 +180,7 @@ def new_message_topic(request, referral_id, object_id, template_name="messages/m
         messagetopic.subject = request.POST['topic']
         if request.POST.get('topic'):
             messagetopic.save()
-            request.user.message_set.create(message=_('Message topic created successfully'))
+            messages.success(request, _('Message topic created successfully'))
             return HttpResponseRedirect('/client/%s/referral/%s/messages/topic/%s' % (client_id, referral.id, messagetopic.id))
         else:
             return HttpResponseRedirect('/client/%s/referral/%s/messages/' % (object.id, referral.id))

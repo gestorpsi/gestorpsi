@@ -19,6 +19,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
+from django.contrib import messages
 from gestorpsi.employee.models import Employee
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.phone.models import PhoneType
@@ -133,7 +134,7 @@ def save(request, object_id=None):
 
     object.save()
 
-    request.user.message_set.create(message=_('Employee saved successfully'))
+    messages.success(request, _('Employee saved successfully'))
 
     return HttpResponseRedirect('/employee/%s/' % object.id)
 
@@ -155,5 +156,5 @@ def order(request, object_id=None):
         object.active = True
 
     object.save(force_update=True)
-    request.user.message_set.create(message=('%s' % (_('Employee activated successfully') if object.active else _('Employee deactivated successfully'))))
+    messages.success(request, ('%s' % (_('Employee activated successfully') if object.active else _('Employee deactivated successfully'))))
     return HttpResponseRedirect('/employee/%s/' % object.id)

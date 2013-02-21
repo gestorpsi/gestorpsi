@@ -22,6 +22,7 @@ from django.core.paginator import Paginator
 from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext as _
+from django.contrib import messages
 from gestorpsi.organization.models import Organization
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType, City
@@ -257,12 +258,12 @@ def contact_organization_save(request, object_id = None):
     except IntegrityError:
         from django.db import connection
         connection.close()
-        request.user.message_set.create(message=_('This organization has already been registered'))
+        messages.success(request, _('This organization has already been registered'))
         return HttpResponseRedirect('/contact/form/organization/?clss=error')
 
     object = extra_data_save(request, object)
     
-    request.user.message_set.create(message=_('Organization contact saved successfully'))
+    messages.success(request, _('Organization contact saved successfully'))
     return HttpResponseRedirect('/contact/form/organization/%s/' % (object.id))
 
 @permission_required_with_403('contact.contact_write')
@@ -304,7 +305,7 @@ def contact_professional_save(request, object_id = None):
     object.person = person
     object.save()
     
-    request.user.message_set.create(message=_('Professional contact saved successfully'))
+    messages.success(request, _('Professional contact saved successfully'))
     return HttpResponseRedirect('/contact/form/professional/%s/' % (object.id))
 
 @permission_required_with_403('contact.contact_write')
@@ -351,7 +352,7 @@ def contact_organization_order(request, object_id = None):
 
     object.save(force_update=True)
 
-    request.user.message_set.create(message=('%s' % (_('Contact activated successfully') if object.active else _('Contact deactivated successfully'))))
+    messages.success(request, ('%s' % (_('Contact activated successfully') if object.active else _('Contact deactivated successfully'))))
     return HttpResponseRedirect('/contact/form/organization/%s/' % (object.id))
 
 @permission_required_with_403('contact.contact_write')
@@ -373,5 +374,5 @@ def contact_professional_order(request, object_id = None):
 
     object.save(force_update=True)
 
-    request.user.message_set.create(message=('%s' % (_('Contact activated successfully') if object.active else _('Contact deactivated successfully'))))
+    messages.success(request, ('%s' % (_('Contact activated successfully') if object.active else _('Contact deactivated successfully'))))
     return HttpResponseRedirect('/contact/form/professional/%s/' % (object.id))

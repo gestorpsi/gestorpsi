@@ -19,6 +19,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
+from django.contrib import messages
 from gestorpsi.person.models import Person
 from gestorpsi.client.models import Client
 from gestorpsi.organization.models import Organization
@@ -106,7 +107,7 @@ def save(request, object_id=''):
 
     object.save()
 
-    request.user.message_set.create(message=_('Admission saved successfully'))
+    messages.success(request, _('Admission saved successfully'))
 
     return HttpResponseRedirect('/client/%s/home' % object.id)
 

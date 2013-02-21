@@ -20,13 +20,13 @@ from django.template import RequestContext
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User, Group
 from django.utils.translation import ugettext as _
+from django.contrib import messages
 from registration.models import RegistrationProfile
 from gestorpsi.authentication.models import Profile, Role
 from gestorpsi.person.models import Person
 from django.utils import simplejson
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.person.views import person_json_list
-from django.contrib import messages
 
 @permission_required_with_403('users.users_list')
 def index(request, deactive = False):
@@ -96,7 +96,7 @@ def create_user(request):
         raise Http404
 
     if User.objects.filter(username=request.POST.get('username').strip().lower()):
-        request.user.message_set.create(message=_('Error adding user <b>%s</b>: Username already exists.') % request.POST.get('username').strip().lower())
+        messages.success(request, _('Error adding user <b>%s</b>: Username already exists.') % request.POST.get('username').strip().lower())
         return HttpResponseRedirect('/user/add/?clss=error')
         
     person = get_object_or_404(Person, pk=request.POST.get('id_person'), organization=request.user.get_profile().org_active)
@@ -108,7 +108,7 @@ def create_user(request):
     permissions = request.POST.getlist('perms')
 
     if not password == pwd_conf:
-        request.user.message_set.create(message=_('Error: Supplied passwords are differents.'))
+        messages.success(request, _('Error: Supplied passwords are differents.'))
         return HttpResponseRedirect('/user/add/?clss=error')
 
     user = RegistrationProfile.objects.create_inactive_user(username, password, email)
@@ -139,7 +139,7 @@ def create_user(request):
         Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='student'))
         profile.user.groups.add(Group.objects.get(name='student'))
      
-    request.user.message_set.create(message=_('User created successfully. An email will be sent to the user with instructions on how to finish the registration process.'))
+    messages.success(request, _('User created successfully. An email will be sent to the user with instructions on how to finish the registration process.'))
 
     return HttpResponseRedirect('/user/%s/' % profile.person.id)
 
@@ -175,7 +175,7 @@ def update_user(request, object_id):
 
     profile.user.save(force_update = True)
 
-    request.user.message_set.create(message=_('User updated successfully'))
+    messages.success(request, _('User updated successfully'))
 
     return HttpResponseRedirect('/user/%s/' % profile.person.id)
 
@@ -212,7 +212,7 @@ def set_form_user(request, object_id=0):
 def order(request, profile_id = None):
     object = Profile.objects.get(pk = profile_id, person__organization=request.user.get_profile().org_active)
     if request.user.get_profile() == object:
-        request.user.message_set.create(message=('Sorry, you can not disable yourself!'))
+        messages.success(request, ('Sorry, you can not disable yourself!'))
     else:
         if object.user.is_active:
             object.user.is_active = False
@@ -223,7 +223,7 @@ def order(request, profile_id = None):
                 i.save()
 
         object.user.save(force_update=True)
-        request.user.message_set.create(message=('%s' % (_('User activated successfully') if object.user.is_active else _('User deactivated successfully'))))
+        messages.success(request, ('%s' % (_('User activated successfully') if object.user.is_active else _('User deactivated successfully'))))
     
     return HttpResponseRedirect('/user/%s/' % object.person.id)
 
@@ -231,10 +231,10 @@ def order(request, profile_id = None):
 def delete(request, profile_id = None):
     object = Profile.objects.get(pk = profile_id, person__organization=request.user.get_profile().org_active)
     if request.user.get_profile() == object:
-        request.user.message_set.create(message=('Sorry, you can not delete yourself!'))
+        messages.success(request, ('Sorry, you can not delete yourself!'))
     else:
         object.user.delete()
-        request.user.message_set.create(message=('%s' % (_('User removed successfully'))))
+        messages.success(request, ('%s' % (_('User removed successfully'))))
     
     return HttpResponseRedirect('/user/')
 

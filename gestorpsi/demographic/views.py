@@ -17,7 +17,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template import RequestContext
-
+from django.contrib import messages
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.client.models import Client
@@ -72,7 +72,7 @@ def education_save(request, object_id):
     education = education_form.save(commit=False)
     education.client = object
     education.save()
-    request.user.message_set.create(message=_('Education saved successfully'))
+    messages.success(request, _('Education saved successfully'))
     return render_to_response('demographic/demographic_education.html', {
                                         'object': object,
                                         'demographic_menu': True,
@@ -118,7 +118,7 @@ def occupation_save(request, object_id, occupation_id=0):
         profession.profession = Occupation.objects.get(cbo_code=ocup)
         profession.client = object
         profession.save()
-        request.user.message_set.create(message=_('Occupation saved successfully'))
+        messages.success(request, _('Occupation saved successfully'))
         professions = [p for p in object.profession_set.all()]
         return render_to_response('demographic/demographic_occupation.html', {
                                         'object': object,
@@ -128,7 +128,7 @@ def occupation_save(request, object_id, occupation_id=0):
                                         }, context_instance=RequestContext(request))
     # occupation not found
     except:
-        request.user.message_set.create(message=_('Occupation not found'))
+        messages.success(request, _('Occupation not found'))
         professions = [p for p in object.profession_set.all()]
         return render_to_response('demographic/demographic_occupation.html', {
                                         'object': object,

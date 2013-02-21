@@ -33,7 +33,7 @@ GNU General Public License for more details.
     #object = care_professional_fill(request, object)
     #object.save()
 
-    #request.user.message_set.create(message=_('Professional saved successfully'))
+    #messages.success(request, _('Professional saved successfully'))
 
     #return HttpResponseRedirect('/careprofessional/%s/' % object.id)
 

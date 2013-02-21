@@ -148,7 +148,7 @@ def home(request, object_id=None):
         c += x.past_occurrences().count()
 
     if not object.is_active():
-        request.user.message_set.create(message= _('This client is not enabled.'))
+        messages.success(request,  _('This client is not enabled.'))
     return render_to_response('client/client_home.html',
                                         {
                                         'object': object,
@@ -380,7 +380,7 @@ def referral_form(request, object_id = None, referral_id = None):
                 
                 url = '/client/%s/referral/%s/'
                 msg = _('Referral saved successfully')
-                request.user.message_set.create(message=_(msg))
+                messages.success(request, _(msg))
                 return HttpResponseRedirect(url % (object_id, data.id))
         else:
             return render_to_response('client/client_referral_form.html',
@@ -501,7 +501,7 @@ def referral_plus_save(request, object_id=None):
                     gm.save()
         #else:
             #print form.errors
-    request.user.message_set.create(message=_('Referral saved successfully'))
+    messages.success(request, _('Referral saved successfully'))
 
     return HttpResponseRedirect('/client/%s/referral/' % (request.POST.get('client_id')))
 
@@ -550,7 +550,7 @@ def referral_save(request, object_id = None, referral_id = None):
         else:
             return render_to_response('client/client_referral_form.html', locals(), context_instance=RequestContext(request))
 
-    request.user.message_set.create(message=_(msg))
+    messages.success(request, _(msg))
     return HttpResponseRedirect(url % (object_id, object.id))
 
 @permission_required_with_403('referral.referral_read')
@@ -563,7 +563,7 @@ def referral_discharge_form(request, object_id = None, referral_id = None, disch
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     if referral.on_queue():
-        request.user.message_set.create(message=_('Sorry, you can not discharge a queued referral. Remove it from queue first before to continue'))
+        messages.success(request, _('Sorry, you can not discharge a queued referral. Remove it from queue first before to continue'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
 
     instance = None
@@ -587,12 +587,12 @@ def referral_discharge_form(request, object_id = None, referral_id = None, disch
                 data.referral = referral
                 data.save()
                 if not instance:
-                    request.user.message_set.create(message=_('Client discharged successfully'))
+                    messages.success(request, _('Client discharged successfully'))
                 else:
-                    request.user.message_set.create(message=_('Referral discharge updated successfully'))
+                    messages.success(request, _('Referral discharge updated successfully'))
                 return HttpResponseRedirect('/client/%s/home/' % (object.id))
             else:
-                request.user.message_set.create(message=_('Form Error'))
+                messages.success(request, _('Form Error'))
                 return render_to_response('client/client_referral_discharge_form.html', locals(), context_instance=RequestContext(request))
         else:
             if not instance:
@@ -603,7 +603,7 @@ def referral_discharge_form(request, object_id = None, referral_id = None, disch
         return render_to_response('client/client_referral_discharge_form.html', locals(), context_instance=RequestContext(request))
 
     else:
-        request.user.message_set.create(message=_('Registered have hour in the schedule'))
+        messages.success(request, _('Registered have hour in the schedule'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
 
 @permission_required_with_403('referral.referral_list')
@@ -693,7 +693,7 @@ def save(request, object_id=None, is_company = False):
     a.referral_choice_id = AdmissionChoice.objects.all().order_by('weight')[0].id
     object.admissionreferral_set.add(a)
     
-    request.user.message_set.create(message=_('Client saved successfully'))
+    messages.success(request, _('Client saved successfully'))
 
     return HttpResponseRedirect('/client/%s/home' % object.id)
 
@@ -787,14 +787,14 @@ def order(request, object_id = ''):
     url = '/client/%s/home/'
 
     if not object.is_active():
-        request.user.message_set.create(message=_('User activated successfully'))
+        messages.success(request, _('User activated successfully'))
         object.set_active()
     else:
         if Referral.objects.charged().filter(client = object).count() == 0:
             object.set_deactive()
-            request.user.message_set.create(message=_('User deactivated successfully'))
+            messages.success(request, _('User deactivated successfully'))
         else:
-            request.user.message_set.create(message=_('Sorry, you can not deactivate a client with registered referral'))
+            messages.success(request, _('Sorry, you can not deactivate a client with registered referral'))
             url += '?clss=error'
         
     return HttpResponseRedirect(url % object.id)
@@ -814,7 +814,7 @@ def schedule_daily(request,
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     if referral.on_queue():
-        request.user.message_set.create(message=_('Sorry, you can not book a queued client. Remove it first from queue before continue'))
+        messages.success(request, _('Sorry, you can not book a queued client. Remove it first from queue before continue'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (request.GET.get('client'), referral.id))
     
     return _datetime_view(request, template, datetime(int(year), int(month), int(day)), referral = request.GET['referral'], client = request.GET['client'], **params)
@@ -867,11 +867,11 @@ def referral_queue(request, object_id = '',  referral_id = ''):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     if referral.on_queue():
-        request.user.message_set.create(message=_('Error adding to queue! Referral is already queued'))
+        messages.success(request, _('Error adding to queue! Referral is already queued'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
 
     if referral.upcoming_occurrences():
-        request.user.message_set.create(message=_('Error adding to queue! Referral have upcoming occurrences'))
+        messages.success(request, _('Error adding to queue! Referral have upcoming occurrences'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
 
     form=QueueForm()
@@ -888,11 +888,11 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
 
     if referral.on_queue():
-        request.user.message_set.create(message=_('Error adding to queue! Referral is already queued'))
+        messages.success(request, _('Error adding to queue! Referral is already queued'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
 
     if referral.upcoming_occurrences():
-        request.user.message_set.create(message=_('Subscript in the queue not is possible. Referral have upcoming occurrences'))
+        messages.success(request, _('Subscript in the queue not is possible. Referral have upcoming occurrences'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
 
     form = QueueForm(request.POST)
@@ -915,7 +915,7 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
 
     queues = Queue.objects.filter(referral=referral_id)
 
-    request.user.message_set.create(message=_('Referral added to queue successfully'))
+    messages.success(request, _('Referral added to queue successfully'))
     return HttpResponseRedirect('/client/%s/referral/%s/' % (object.id, referral.id))
 
 @permission_required_with_403('referral.referral_write')
@@ -936,7 +936,7 @@ def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id =
 
     queues = Queue.objects.filter(referral=referral_id)
 
-    request.user.message_set.create(message=_('Client removed from queue successfully'))
+    messages.success(request, _('Client removed from queue successfully'))
     return HttpResponseRedirect('/client/%s/referral/%s/' % (object.id, referral.id))
 
 @permission_required_with_403('referral.referral_read')
@@ -980,7 +980,7 @@ def referral_ext_save(request, object_id = '', referral_id=''):
     else:
         print form.errors
 
-    request.user.message_set.create(message=_('External Referral saved successfully'))
+    messages.success(request, _('External Referral saved successfully'))
     return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('client.client_read')
@@ -1020,7 +1020,7 @@ def family_form(request, object_id = None, relation_id=None):
                 relation.active = True if request.POST.get('active') else False
                 relation.comment = request.POST.get('comment') or ''
                 relation.save()
-            request.user.message_set.create(message=_('Family member added successfully'))
+            messages.success(request, _('Family member added successfully'))
             return HttpResponseRedirect('/client/%s/family/' % object.id)
         else:
             return render_to_response('client/client_family_form.html', locals(), context_instance=RequestContext(request))
@@ -1080,7 +1080,7 @@ def company_related_form(request, object_id = None, company_client_id=None):
 
     if request.method == 'POST':
         if request.POST.get('client_id') in [i.client.pk for i in object.employees()]:
-            request.user.message_set.create(message=_('Employee already registered on this company'))
+            messages.success(request, _('Employee already registered on this company'))
             return HttpResponseRedirect('/client/%s/company_clients/' % object.id)
 
         if company_client_id:
@@ -1090,7 +1090,7 @@ def company_related_form(request, object_id = None, company_client_id=None):
             
         if form.is_valid():
             form.save(request, object)
-            request.user.message_set.create(message=_('Related client added successfully to this company'))
+            messages.success(request, _('Related client added successfully to this company'))
             return HttpResponseRedirect('/client/%s/company_clients/' % object.id)
         else:
             return render_to_response('client/client_company_related_form.html', locals(), context_instance=RequestContext(request))

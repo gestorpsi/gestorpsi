@@ -19,6 +19,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext as _
+from django.contrib import messages
 from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization, ProfessionalResponsible
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
@@ -177,7 +178,7 @@ def save(request):
     request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
     request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))
 
-    request.user.message_set.create(message=_('Organization details saved successfully'))
+    messages.success(request, _('Organization details saved successfully'))
     return HttpResponseRedirect('/organization/')
     
 # The question is, is available the short name?

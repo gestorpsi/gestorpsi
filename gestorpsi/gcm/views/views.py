@@ -7,7 +7,7 @@ Copyright (C) 2008 GestorPsi
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-
+from django.contrib import messages
 from django.views.generic.list_detail import object_list as generic_object_list
 from django.views.generic.list_detail import object_detail as generic_object_detail
 from django.views.generic.create_update import create_object as generic_create_object
@@ -52,9 +52,9 @@ def billet_config(request):
         form = BradescoBilletDataAdminForm(request.POST, instance=dados)
         if form.is_valid():
             form.save()
-            request.user.message_set.create(message= _('Successfully updated.'))
+            messages.success(request,  _('Successfully updated.'))
         else:
-            request.user.message_set.create(message= _('Correct the errors bellow.'))
+            messages.success(request,  _('Correct the errors bellow.'))
     else:
         form = BradescoBilletDataAdminForm(instance=dados)
         
@@ -70,9 +70,9 @@ def update_org_object(request, *args, **kwargs):
         form = OrganizationForm(request.POST, instance=dados)
         if form.is_valid():
             form.save()
-            request.user.message_set.create(message= _('Successfully updated.'))
+            messages.success(request,  _('Successfully updated.'))
         else:
-            request.user.message_set.create(message= _('Correct the errors bellow.'))
+            messages.success(request,  _('Correct the errors bellow.'))
     else:
         form = OrganizationForm(instance=dados)
     

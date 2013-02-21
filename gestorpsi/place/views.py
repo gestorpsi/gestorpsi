@@ -21,6 +21,7 @@ from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.utils import simplejson
 from django.utils.translation import ugettext as _
+from django.contrib import messages
 from gestorpsi.place.models import Place, Room, RoomType, PlaceType
 from gestorpsi.address.models import Country, AddressType, State, City
 from gestorpsi.address.views import address_save
@@ -141,7 +142,7 @@ def save(request, object_id=None):
                  request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
                  request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))
 
-    request.user.message_set.create(message=_('Place saved successfully'))
+    messages.success(request, _('Place saved successfully'))
 
     return HttpResponseRedirect('/place/%s/' % object.id)
 
@@ -164,7 +165,7 @@ def room_save(request, object_id=None):
     else:
         object.save()
     
-    request.user.message_set.create(message=_('Room saved successfully'))
+    messages.success(request, _('Room saved successfully'))
 
     return HttpResponseRedirect('/place/room/%s/' % object.id)
 
@@ -247,7 +248,7 @@ def place_order(request, object_id = None):
             occurence_list_html = ''
             for i in object.occurrences():
                 occurence_list_html += u'<li><a href="/schedule/events/%s/confirmation/">%s - %s</a></li>' % (i.pk, i, i.event.referral)
-                request.user.message_set.create(message=(_('You can not disable a place with upcomming occurrences <ul>%s</ul>') % occurence_list_html))
+                messages.success(request, (_('You can not disable a place with upcomming occurrences <ul>%s</ul>') % occurence_list_html))
                 return HttpResponseRedirect('/place/%s/' % object.id)
         else:
             object.active = False
@@ -255,7 +256,7 @@ def place_order(request, object_id = None):
         object.active = True
 
     object.save(force_update=True)
-    request.user.message_set.create(message=('%s' % (_('Place activated successfully') if object.active else _('Place deactivated successfully'))))
+    messages.success(request, ('%s' % (_('Place activated successfully') if object.active else _('Place deactivated successfully'))))
     return HttpResponseRedirect('/place/%s/' % object.id)
 
 @permission_required_with_403('place.place_write')
@@ -267,7 +268,7 @@ def room_order(request, object_id = None):
             occurence_list_html = ''
             for i in object.occurrences():
                 occurence_list_html += u'<li><a href="/schedule/events/%s/confirmation/">%s - %s</a></li>' % (i.pk, i, i.event.referral)
-            request.user.message_set.create(message=(_('You can not disable a room with upcomming occurrences <ul>%s</ul>') % occurence_list_html))
+            messages.success(request, (_('You can not disable a room with upcomming occurrences <ul>%s</ul>') % occurence_list_html))
             return HttpResponseRedirect('/place/room/%s/' % object.id)
         else:
             object.active = False
@@ -275,5 +276,5 @@ def room_order(request, object_id = None):
         object.active = True
 
     object.save(force_update=True)
-    request.user.message_set.create(message=('%s' % (_('Room activated successfully') if object.active else _('Room deactivated successfully'))))
+    messages.success(request, ('%s' % (_('Room activated successfully') if object.active else _('Room deactivated successfully'))))
     return HttpResponseRedirect('/place/room/%s/' % object.id)

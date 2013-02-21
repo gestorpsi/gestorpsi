@@ -2556,7 +2556,7 @@ msgstr "Não assinado pelo cliente "
 #: report/models.py:407
 #, python-format
 msgid "Admission report - Knowledge - %s"
-msgstr "Indicação"
+msgstr "Indicação %s"
 
 #: report/models.py:462
 msgid "Subscriptions"

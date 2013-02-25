@@ -10,7 +10,7 @@ from django.forms.util import ErrorList
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage, BadHeaderError
-
+from django.contrib import messages
 from gestorpsi.gcm.forms.auth import RegistrationForm
 from gestorpsi.organization.models import Organization, ProfessionalResponsible                
 from registration.models import RegistrationProfile
@@ -126,5 +126,6 @@ def object_activate(request, *args, **kwargs):
         for rp in p.profile.user.registrationprofile_set.all():
             activation_key = rp.activation_key.lower() # Normalize before trying anything with it.
             RegistrationProfile.objects.activate_user(activation_key)
-    request.user.message_set.create(message=_('Organizacao %s ativada com sucesso') % o.name)
+    
+    messages.success(request, _('Organizacao %s ativada com sucesso') % o.name)
     return HttpResponseRedirect('/gcm/orgpen/')

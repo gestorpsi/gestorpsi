@@ -310,8 +310,7 @@ def compose(request, recipient=None, form_class=ComposeForm,
         form = form_class(request.POST, recipient_filter=recipient_filter)
         if form.is_valid():
             form.save(sender=request.user)
-            request.user.message_set.create(
-                message=_(u"Message successfully sent."))
+            messages.success(request, _(u"Message successfully sent."))
             if success_url is None:
                 success_url = reverse('messages_inbox')
             if request.GET.has_key('next'):
@@ -346,8 +345,7 @@ def reply(request, message_id, form_class=ComposeForm,
         form = form_class(request.POST, recipient_filter=recipient_filter)
         if form.is_valid():
             form.save(sender=request.user, parent_msg=parent)
-            request.user.message_set.create(
-                message=_(u"Message successfully sent."))
+            messages.success(request, _(u"Message successfully sent."))
             if success_url is None:
                 success_url = reverse('messages_inbox')
             return HttpResponseRedirect(success_url)
@@ -394,7 +392,7 @@ reply = login_required(reply)
 #        deleted = True
 #    if deleted:
 #        message.save()
-#        user.message_set.create(message=_(u"Message successfully deleted."))
+#        messages.success(request, _(u"Message successfully deleted."))
 #        if notification:
 #            notification.send([user], "messages_deleted", {'message': message,})
 #        return HttpResponseRedirect(success_url)
@@ -422,7 +420,7 @@ def undelete(request, message_id, success_url=None):
         undeleted = True
     if undeleted:
         message.save()
-        user.message_set.create(message=_(u"Message successfully recovered."))
+        messages.success(request, _(u"Message successfully recovered."))
         if notification:
             notification.send([user], "messages_recovered", {'message': message,})
         return HttpResponseRedirect(success_url)

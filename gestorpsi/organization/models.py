@@ -213,7 +213,7 @@ class Organization(models.Model):
     activity = models.ForeignKey(Activitie, null=True, blank=True)
     public = models.BooleanField(default=True)
     comment = models.CharField(max_length=765, blank=True)
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
     visible = models.BooleanField(default=True)
     photo = models.CharField(max_length=200, blank=True)          
     phones = generic.GenericRelation(Phone, null=True)

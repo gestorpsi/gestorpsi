@@ -49,7 +49,7 @@ class MaritalStatus(models.Model):
 
 class Person(models.Model):
     id = UuidField(primary_key=True)
-    user = models.OneToOneField(User, editable=False, default=threadlocals.get_current_user)
+    user = models.ForeignKey(User, editable=False, default=threadlocals.get_current_user) # the register owner
     name = models.CharField(max_length=50)
     nickname = models.CharField(max_length=50, null=True, blank=True)
     photo = models.CharField(max_length=100)

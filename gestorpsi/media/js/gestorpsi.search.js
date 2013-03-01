@@ -30,7 +30,7 @@ $(function() {
      * contact quick filter deactive
      */
 
-    $('div#search_header.contact_search.deactive table#letter_menu tr td a, div#search_header.contact_search a#letter_back, div#search_header.contact_search a#letter_fwd').click(function() {
+    $('div#search_header.contact_search.deactive table#letter_menu tr td a, div#search_header.contact_search.deactive a#letter_back, div#search_header.contact_search.deactive a#letter_fwd').click(function() {
         updateContact('/contact/initial/' + $(this).attr('initial') + '/page1/deactive/', true, 'contact/initial/'+$(this).attr('initial'));
     });
 

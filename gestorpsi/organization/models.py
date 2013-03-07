@@ -314,9 +314,14 @@ class Organization(models.Model):
         if self.address.all().count():
             addr = self.address.all()[0]
             text = "%s %s, %s" % (addr.addressPrefix, addr.addressLine1, addr.addressNumber)
+            
+            city = first_capitalized(addr.city.name) if hasattr(addr, "city") and addr.city else ""
+            state = addr.city.state.shortName if hasattr(addr, "city") and hasattr(addr.city, "state") and addr.city.state else ""
+            country = addr.city.state.country.name if hasattr(addr, "city") and hasattr(addr.city, "state") and hasattr(addr.city.state, "country") and addr.city.state.country  else ""
+            
             if len(addr.addressLine2): text += " - %s" % addr.addressLine2
             if len(addr.neighborhood): text += " - %s" % addr.neighborhood
-            text += "<br />%s - %s - %s" % (first_capitalized(addr.city.name), addr.city.state.shortName, addr.city.state.country.name)
+            text += "<br />%s - %s - %s" % (city, state, country)
             if len(addr.zipCode): text += " - CEP: %s" % addr.zipCode
         return text
 

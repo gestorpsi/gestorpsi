@@ -96,10 +96,10 @@ def complete(request, success_url=None,
         
         bcc_list = ['jayme@doois.com.br']#, 'david@doois.com.br']
         msg = EmailMessage()
-        msg.subject = 'Teste: Nova organizacao em gestorpsi.com.br'
-        msg.body = 'Você acaba de registrar uma nova organizacao se registrou no GestorPSI.<br/>'
-        msg.body += 'Para que sua inscrição tenha seja confirmada e você possa começar a usar o sistema '
-        msg.body += 'é preciso pagar o seguinte boleto: ' + url_boleto
+        msg.subject = u"Teste: Nova organizacao em gestorpsi.com.br"
+        msg.body = u"Você acaba de registrar uma nova organizacao se registrou no GestorPSI.<br/>"
+        msg.body += u"Para que sua inscrição tenha seja confirmada e você possa começar a usar o sistema "
+        msg.body += u"é preciso pagar o seguinte boleto: %s" % url_boleto
         #msg.from = 'GestoPSI <webmaster@gestorpsi.com.br>'
         msg.to = [user.email, ]
         msg.bcc =  bcc_list

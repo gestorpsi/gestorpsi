@@ -21,6 +21,8 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User, Group
 from django.utils.translation import ugettext as _
 from django.contrib import messages
+from django.contrib.sites.models import get_current_site
+import registration
 from registration.models import RegistrationProfile
 from gestorpsi.authentication.models import Profile, Role
 from gestorpsi.person.models import Person
@@ -110,8 +112,13 @@ def create_user(request):
     if not password == pwd_conf:
         messages.success(request, _('Error: Supplied passwords are differents.'))
         return HttpResponseRedirect('/user/add/?clss=error')
+    
+    site_url = "http://%s" % get_current_site(request).domain if not request.is_secure else "http://%s" % get_current_site(request).domain
+    user = RegistrationProfile.objects.create_inactive_user(username, password, email, site_url)
 
-    user = RegistrationProfile.objects.create_inactive_user(username, password, email)
+    user.set_password(password) # this is required! without it, password will not set ok
+    user.save(force_update=True)
+
     profile = Profile(user=user)
     profile.org_active = organization
     profile.temp = password    # temporary field (LDAP)

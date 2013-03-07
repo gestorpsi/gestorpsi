@@ -38,10 +38,11 @@ class RegistrationForm(RegistrationForm):
     shortname = forms.CharField(label=_('Short Name'), help_text=_('Shortname of your organization'))
 
     def save(self, send_email=True):
+        site_url = "http://%s" % get_current_site(request).domain if not request.is_secure else "http://%s" % get_current_site(request).domain
         user = RegistrationProfile.objects.create_inactive_user(username=self.cleaned_data['username'],
                                                                     password=self.cleaned_data['password1'],
                                                                     email=self.cleaned_data['email'],
-                                                                    site=None,
+                                                                    site=site_url,
                                                                     send_email=send_email
                                                                     )
         user.username = user.username.strip().lower()

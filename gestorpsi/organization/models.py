@@ -45,7 +45,6 @@ class ProfessionalResponsible(models.Model):
     organization_subscription = models.CharField(max_length=50, null=True, blank=True, default="")
     organization = models.ForeignKey('Organization', null=False, blank=False)
     profession = models.ForeignKey('careprofessional.Profession', null=True, blank=False)
-    person = models.ForeignKey('person.Person', null=False, blank=False, unique=True)
     
     def __empty__(self):
         return ''
@@ -71,7 +70,7 @@ class ProfessionalResponsible(models.Model):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
     
     def save(self, *args, **kwargs):
-        self.name = self.person.name
+        #self.name = self.person.name
         super(ProfessionalResponsible, self).save(*args, **kwargs)
     
 reversion.register(ProfessionalResponsible)

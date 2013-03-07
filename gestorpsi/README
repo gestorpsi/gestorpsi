@@ -70,7 +70,7 @@ Python packages:
 - Gettext (>= 0.17-2)
   debian/ubuntu: sudo apt-get install gettext
 
-- Django Registration (>= r220)
+- Django Registration (>= 0.8)
   maintainer: http://bitbucket.org/ubernostrum/django-registration/wiki/Home
 
 - Django Reversion (>= r197)

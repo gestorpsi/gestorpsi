@@ -262,4 +262,4 @@ class Company(models.Model):
 
 reversion.register(Company)
 reversion.register(CompanyClient)
-#reversion.register(Person)
+reversion.register(Person)

@@ -386,7 +386,7 @@ def referral_form(request, object_id = None, referral_id = None):
             return render_to_response('client/client_referral_form.html',
                           { 'object': object, 
                             'referral': referral,
-                            'referral_form': referral_form,
+                            'referral_form': form,
                             'referral_list': referral_list,
                             'services': Service.objects.filter(active=True, organization=request.user.get_profile().org_active),
                             'referrals': Referral.objects.filter(client = object),
@@ -421,33 +421,33 @@ def referral_form(request, object_id = None, referral_id = None):
                           context_instance=RequestContext(request)
                           )
     else:
-        referral_form = ReferralForm(instance = referral)
+        form = ReferralForm(instance = referral)
 
 
-    referral_form = ReferralForm(instance = referral)
+    form = ReferralForm(instance = referral)
 
-    referral_form.fields['referral'].queryset = Referral.objects.filter(client=object)
-    referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
-    referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, active = True)
+    form.fields['referral'].queryset = Referral.objects.filter(client=object)
+    form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
+    form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, active = True)
     if hasattr(referral.service, 'professionals'):
-        referral_form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('(Student)'))) for p in referral.service.professionals.all()]
+        form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('(Student)'))) for p in referral.service.professionals.all()]
     else:
-        referral_form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('(Student)'))) for p in CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)]
+        form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('(Student)'))) for p in CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)]
 
     total_service = Referral.objects.filter(client=object).count()
     referral_list = Referral.objects.filter(client=object, status='01')
 
     if referral.group:
-        referral_form.fields['group'].initial = referral.group.id
-        referral_form.fields['group'].queryset = ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active).filter(service=referral.service)
+        form.fields['group'].initial = referral.group.id
+        form.fields['group'].queryset = ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active).filter(service=referral.service)
     else:
-        referral_form.fields['group'].queryset = ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active)
+        form.fields['group'].queryset = ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active)
         
     
     return render_to_response('client/client_referral_form.html',
                               { 'object': object, 
                                 'referral': referral,
-                                'referral_form': referral_form,
+                                'referral_form': form,
                                 'referral_list': referral_list,
                                 'services': Service.objects.filter(active=True, organization=request.user.get_profile().org_active),
                                 'referrals': Referral.objects.filter(client = object),

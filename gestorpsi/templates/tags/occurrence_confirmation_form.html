@@ -48,11 +48,12 @@ $(function() {
         <div style="clear:both"></div>
         <div class="date_fields{% if hide_date_field %} hidden{% endif %}">
             <label>{{ form.date_started.label }}<br />
-            <div>
+            <div class="nomargin">
             {{ form.date_started }}
             </div>
+            </label>
             <label>{{ form.date_finished.label }}<br />
-            <div>
+            <div class="nomargin">
             {{ form.date_finished }}
             </div>
             </label>

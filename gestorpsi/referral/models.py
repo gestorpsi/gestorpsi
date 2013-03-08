@@ -416,7 +416,7 @@ class Indication(models.Model):
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
-reversion.register(Indication, follow=['client'])
+reversion.register(Indication)
 
 class ReferralChoice(models.Model):
     description = models.CharField(max_length=250)
@@ -437,7 +437,7 @@ class ReferralReferral(models.Model):
     def revision(self):
         return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
-reversion.register(ReferralReferral, follow=['client'])
+reversion.register(ReferralReferral)
 
 class ReferralExternal(models.Model):
     comments = models.TextField(_('comments'), blank=True)

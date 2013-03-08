@@ -249,7 +249,7 @@ def gera_boleto_bradesco_inscricao(resp_usuario_id, days=7):
         dados['sacadoravalista_cnpj'] = data.sacadoravalista_cnpj
         
         #Informando o endereço do sacador avalista.
-        dados['enderecosacaval_uf'] = data.enderecosacaval_uf.shortName
+        dados['enderecosacaval_uf'] = None if not hasattr(data.enderecosacaval_uf, "shortName") else data.enderecosacaval_uf.shortName
         dados['enderecosacaval_localidade'] = data.enderecosacaval_localidade 
         dados['enderecosacaval_cep'] = data.enderecosacaval_cep
         dados['enderecosacaval_bairro'] = data.enderecosacaval_bairro

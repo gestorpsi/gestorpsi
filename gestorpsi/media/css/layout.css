@@ -1717,7 +1717,7 @@ a.pointer {
     float:right;
 }
 
-
+.nomargin { margin: 0px;}
 
 .clear_both { clear:both; }
 
@@ -1832,3 +1832,5 @@ table.sign_history tbody tr.even {
     font-weight: normal;
     padding: 0;
 }
+
+form.schedule_occurrence li { float:none !important;}

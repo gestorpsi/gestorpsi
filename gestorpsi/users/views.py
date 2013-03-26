@@ -114,7 +114,7 @@ def create_user(request):
         return HttpResponseRedirect('/user/add/?clss=error')
     
     site_url = "http://%s" % get_current_site(request).domain if not request.is_secure else "http://%s" % get_current_site(request).domain
-    user = RegistrationProfile.objects.create_inactive_user(username, password, email, site_url)
+    user = RegistrationProfile.objects.create_inactive_user(username, email, password, site_url)
 
     user.set_password(password) # this is required! without it, password will not set ok
     user.save(force_update=True)

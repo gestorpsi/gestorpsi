@@ -178,7 +178,10 @@ class OrganizationManager(models.Manager):
         return super(OrganizationManager, self).get_query_set().filter(active=True, organization__isnull=True)
 
 
-DEFAULT_PAYMENT_DAY = BradescoBilletData.objects.all()[0].default_payment_day
+try:
+    DEFAULT_PAYMENT_DAY = BradescoBilletData.objects.all()[0].default_payment_day
+except:
+    DEFAULT_PAYMENT_DAY = 10
 
 class Organization(models.Model):
     """    

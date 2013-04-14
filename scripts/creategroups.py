@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
 
 """
 Copyright (C) 2008 GestorPsi
@@ -15,14 +15,9 @@ GNU General Public License for more details.
 """
 
 """
+Description:
 
-INSTALL:
-
-1) ./manage.py syncdb
-
-2) python install2.py
-
-3) Sign up a new user in login page
+Create gestorpsi groups. To use after "syncdb"
 
 """
 
@@ -34,7 +29,7 @@ import re
 environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Group, Permission, User
-from settings import INSTALLED_APPS
+from gestorpsi.settings import INSTALLED_APPS
 
 appnames = []
 for i in INSTALLED_APPS:
@@ -58,14 +53,14 @@ for appname in appnames:
     
     perm_type = ["list", "read", "write"]
     
-    for type in perm_type:
-        print "Creating permission: %s_%s" % (appname, type)
+    for t in perm_type:
+        print "Creating permission: %s_%s" % (appname, t)
         # flush existing permission to avoid duplicated register
-        Permission.objects.filter(codename='%s_%s' % (appname, type), content_type=ct).delete()
+        Permission.objects.filter(codename='%s_%s' % (appname, t), content_type=ct).delete()
         
         # create permission again
-        permission, created = Permission.objects.get_or_create(codename='%s_%s' % (appname, type), content_type=ct)
-        permission.name = '%s %s' % (appname.capitalize(), type.capitalize())
+        permission, created = Permission.objects.get_or_create(codename='%s_%s' % (appname, t), content_type=ct)
+        permission.name = '%s %s' % (appname.capitalize(), t.capitalize())
         permission.save()
     
 # Administrator

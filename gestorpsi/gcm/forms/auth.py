@@ -25,7 +25,7 @@ from gestorpsi.gcm.forms import fields
 
 class RegistrationForm(RegistrationForm):
     plan = forms.ModelChoiceField(label=_('Access Plan'), help_text=_('Choice one access plan'), queryset=Plan.objects.filter(active=True))
-    phone = forms.CharField(max_length=14, label=_('Phone Number'), help_text=_('Enter your phone number with area code here'), widget=forms.TextInput(attrs={'mask':'(99) 9999-9999?9',}))
+    phone = forms.CharField(max_length=15, label=_('Phone Number'), help_text=_('Enter your phone number with area code here'), widget=forms.TextInput(attrs={'mask':'(99) 9999-9999?9',}))
     cpf = fields.CPFField(label=_('CPF Number'), help_text=_('Enter your CPF number here'), widget=forms.TextInput(attrs={'mask':'999.999.999-99',}))
     address = forms.CharField(max_length=255, label=_('Address Street'), help_text=_('Enter your address here'))
     address_number = forms.CharField(max_length=30, label=_('Address Number'), help_text=_('Enter your address number here'))
@@ -43,7 +43,7 @@ class RegistrationForm(RegistrationForm):
         if self.cleaned_data['phone']:
             p = Phone()
             p.area = self.cleaned_data['phone'][1:3]
-            p.phoneNumber = self.cleaned_data['phone'][5:14]
+            p.phoneNumber = self.cleaned_data['phone'][5:15]
             p.phoneType_id = 2
             person = organization.care_professionals()[0]
             person.phones.add(p)

@@ -231,7 +231,7 @@ class Organization(models.Model):
     employee_number.verbose_name = "Number of employees"
     #employee_number.editable = False
     
-    prefered_plan = models.ForeignKey(Plan, null=False, blank=False)
+    prefered_plan = models.ForeignKey(Plan, null=True, blank=True)
     prefered_plan.verbose_name = _("Preferred plan")
     prefered_plan.help_text= _("The plan the organization will use next time the system gives a billet.")
     
@@ -263,7 +263,8 @@ class Organization(models.Model):
         else:
             original_state = None
             self.date_created = datetime.now()
-            self.prefered_plan = Plan.objects.filter(staff_size__gte=self.employee_number, duration=1).order_by('staff_size')[0]
+            if Plan.objects.filter(staff_size__gte=self.employee_number, duration=1):
+                self.prefered_plan = Plan.objects.filter(staff_size__gte=self.employee_number, duration=1).order_by('staff_size')[0]
 
         super(Organization, self).save(*args, **kwargs)
         

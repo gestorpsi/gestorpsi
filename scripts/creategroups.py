@@ -56,12 +56,11 @@ for appname in appnames:
     for t in perm_type:
         print "Creating permission: %s_%s" % (appname, t)
         # flush existing permission to avoid duplicated register
-        Permission.objects.filter(codename='%s_%s' % (appname, t), content_type=ct).delete()
-        
-        # create permission again
-        permission, created = Permission.objects.get_or_create(codename='%s_%s' % (appname, t), content_type=ct)
-        permission.name = '%s %s' % (appname.capitalize(), t.capitalize())
-        permission.save()
+        if not Permission.objects.filter(codename='%s_%s' % (appname, t)):
+            # create permission again
+            permission = Permission.objects.create(codename='%s_%s' % (appname, t), content_type=ct)
+            permission.name = '%s %s' % (appname.capitalize(), t.capitalize())
+            permission.save()
     
 # Administrator
 print "Assigning permissions for group administrator"

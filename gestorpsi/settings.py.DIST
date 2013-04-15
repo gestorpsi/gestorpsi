@@ -135,6 +135,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.transaction.TransactionMiddleware',
     'reversion.middleware.RevisionMiddleware',
     'gestorpsi.middleware.threadlocals.ThreadLocals',
+    'django.contrib.messages.middleware.MessageMiddleware',
     #'gestorpsi.util.usertimeout.UserTimeout',
     #'gestorpsi.util.showqueries.ShowQueries',
 )

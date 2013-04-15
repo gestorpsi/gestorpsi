@@ -31,20 +31,22 @@ from gestorpsi.person.models import Person
 
 
 class ProfessionalResponsibleForm(forms.ModelForm):
-    model = ProfessionalResponsible
+    pass
+    #model = ProfessionalResponsible
 
-    def __init__(self, *args, **kwargs):
-        super(ProfessionalResponsibleForm, self).__init__(*args, **kwargs)
+    #def __init__(self, *args, **kwargs):
+        #super(ProfessionalResponsibleForm, self).__init__(*args, **kwargs)
         
-        query = Q(professionalresponsible=None) & Q(professionalresponsible__organization=None)
-        try:
-            temp = self.instance.person.pk
-            query |= Q(pk__exact = temp)
-        except:
-            pass
-        query = Person.objects.filter(query)
+        ##query = Q(professionalresponsible=None) & Q(professionalresponsible__organization=None)
+        #query = Q(professionalresponsible__organization=None)
+        #try:
+            #temp = self.instance.person.pk
+            #query |= Q(pk__exact = temp)
+        #except:
+            #pass
+        #query = Person.objects.filter(query)
         
-        self.fields['person'].queryset = query
+        #self.fields['person'].queryset = query
 
 
 class ProfessionalResponsibleInline(admin.StackedInline):

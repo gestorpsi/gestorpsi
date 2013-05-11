@@ -60,7 +60,7 @@ def professional_responsible_save(request, object, ids, names, subscriptions, or
 def form(request):
     user = request.user
     object = get_object_or_404( Organization, pk=user.get_profile().org_active.id )
-    plans = Plan.objects.filter( staff_size__gte=object.person_set.all().count() )
+    plans = Plan.objects.filter( staff_size__gte=object.care_professionals().count() )
     return render_to_response('organization/organization_form.html', {
         'object': object, #Organization.objects.get(pk= user.get_profile().org_active.id),
         'PhoneTypes': PhoneType.objects.all(), 

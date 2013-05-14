@@ -71,7 +71,7 @@ class AcademicResume(models.Model):
     area = models.CharField(max_length=100, null=True)    
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(AcademicResume)
 
@@ -141,7 +141,7 @@ class ProfessionalProfile(models.Model):
     addressPrefix = property(__addressPrefix__)
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(ProfessionalProfile)
 
@@ -208,7 +208,7 @@ class StudentProfile(models.Model):
         return u'%s' % ( self.professional )
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(StudentProfile)
 
@@ -275,10 +275,10 @@ class CareProfessional(models.Model):
         return False if not hasattr(self, 'studentprofile') else True
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
     def revision_created(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
     
     def is_busy(self, start_time, end_time):
         ''' 

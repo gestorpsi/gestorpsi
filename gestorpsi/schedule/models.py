@@ -94,7 +94,7 @@ class ScheduleOccurrence(Occurrence):
         return messagetopic.online_users.count()
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
     def __unicode__(self):
         return u"%s" % (datetime.strftime(self.start_time, '%d/%m/%Y %H:%M'))

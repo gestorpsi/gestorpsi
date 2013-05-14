@@ -103,6 +103,6 @@ class Address(models.Model):
     area = property(__empty__)
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(Address)

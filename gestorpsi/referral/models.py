@@ -263,10 +263,10 @@ class Referral(Event):
     service_name_html_inline = property(_service_name_html_inline)
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
     def revision_created(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
 
     def past_occurrences(self):
         '''
@@ -414,7 +414,7 @@ class Indication(models.Model):
             return ''
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(Indication)
 
@@ -435,7 +435,7 @@ class ReferralReferral(models.Model):
         return u"%s" % self.referral_choice
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(ReferralReferral)
 

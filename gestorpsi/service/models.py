@@ -127,7 +127,7 @@ class Service(models.Model):
         )
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 class ServiceGroup(models.Model):
     id = UuidField(primary_key=True)
@@ -152,7 +152,7 @@ class ServiceGroup(models.Model):
         return members
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 class GroupMembers(models.Model):
     group = models.ForeignKey(ServiceGroup)

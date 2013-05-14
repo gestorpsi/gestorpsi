@@ -46,7 +46,7 @@ class Ticket(models.Model):
         return "%s %s" % (self.ticket_id, self.question)
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
     def save(self, force_insert=False, force_update=False):
         self.ticket_id = len(Ticket.objects.all()) + 1
@@ -70,7 +70,7 @@ class TicketIteration(models.Model):
         return "%s %s" % (self.operator, self.answer)
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(TicketIteration)
 

@@ -65,7 +65,7 @@ class Device(models.Model):
        return u"%s" % ( self.description )
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
    
     class Meta:
         ordering = ['description']
@@ -111,7 +111,7 @@ class DeviceDetails(models.Model):
       return u"%s - %s - %s" % (self.model, self.brand, self.device.description,)
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(DeviceDetails, follow=['device'])
 reversion.register(Device)

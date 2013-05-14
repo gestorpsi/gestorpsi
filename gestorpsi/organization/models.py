@@ -67,7 +67,7 @@ class ProfessionalResponsible(models.Model):
         return u"%s" % self.name
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
     
     def save(self, *args, **kwargs):
         #self.name = self.person.name
@@ -293,10 +293,10 @@ class Organization(models.Model):
     professionalresponsible = property(__professionalresponsible__)
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
     def revision_created(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision
 
     def created(self):
         return self.date_created

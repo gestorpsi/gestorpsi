@@ -65,6 +65,6 @@ class Phone(models.Model):
         return "(%s) %s %s" % (self.area, self.phoneNumber, self.phoneType)
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(Phone)

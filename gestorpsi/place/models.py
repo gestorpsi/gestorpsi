@@ -96,7 +96,7 @@ class Place( models.Model ):
         )
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
 reversion.register(Place, follow=['address', 'phones'])
 
@@ -162,7 +162,7 @@ class Room( models.Model ):
     addressType = property(__empty__)
 
     def revision(self):
-        return reversion.models.Version.objects.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
     def is_busy(self, start_time, end_time):
         ''' check if room is busy in schedule for selected range ''' 

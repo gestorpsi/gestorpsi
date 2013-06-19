@@ -318,7 +318,7 @@ class Referral(Event):
     def professional_list(self):
         a = []
         for p in self.professional.all():
-            if(p.professionalIdentification.profession):
+            if(hasattr(p.professionalIdentification, "profession") and p.professionalIdentification.profession):
                 a.append(u'%s (%s)' % (p, p.professionalIdentification.profession))
             else:
                 a.append(u'%s' % (p))

@@ -97,11 +97,17 @@ def index(request, deactive = False):
     return render_to_response( "service/service_list.html", locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('service.service_list')
-def list(request, page = 1, deactive = False):
+def list(request, page = 1, initial = None, filter = None, no_paging = False, deactive = False):
     if deactive:
         object = Service.objects.filter( active=False, organization=request.user.get_profile().org_active )
     else:
         object = Service.objects.filter( active=True, organization=request.user.get_profile().org_active )
+        
+    if initial:
+        object = object.filter(name__istartswith = initial)
+        
+    if filter:
+        object = object.filter(Q(name__icontains = filter) | Q(referral__client__person__name__icontains=filter)).distinct()
 
     object_length = len(object)
     paginator = Paginator(object, settings.PAGE_RESULTS)

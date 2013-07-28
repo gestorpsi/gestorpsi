@@ -314,7 +314,7 @@ class ReportAdmissionManager(models.Manager):
         
         chart = PieChart3D(PIE_CHART_WIDTH, PIE_CHART_HEIGHT)
         chart.add_data([Decimal(percentage(signed, total)), Decimal(percentage(not_signed, total))])
-        chart.set_pie_labels([_(u"Admission Signed"), _(u"Admission Not Signed")])
+        chart.set_pie_labels([_(u"Admission Signed").encode('utf8'), _(u"Admission Not Signed").encode('utf8')])
         chart.set_colours(['00ff00','ff0000']) # red, green
         
         data.append({'name': _('Signed'), 'total': signed, 'percentage': percentage(signed, total), 'url':reverse('admission_client_signed_signed'), 'color':'00ff00' })
@@ -488,7 +488,7 @@ class ReportReferralManager(models.Manager):
         if return_chart_url and range:
             chart = PieChart3D(PIE_CHART_WIDTH, PIE_CHART_HEIGHT)
             chart.add_data([Decimal(percentage(discharged_discussed_with_client, total)), Decimal(percentage(discharged_not_discussed_with_client, total))])
-            chart.set_pie_labels([_(u"Referral Discharge Discussed with client"), _(u"Referral Discharge Not discussed with client")])
+            chart.set_pie_labels([_(u"Referral Discharge Discussed with client").encode('utf8'), _(u"Referral Discharge Not discussed with client").encode('utf8')])
             chart.set_colours(['00ff00','ff0000']) # red, green
             return chart.get_url()
 

@@ -17,20 +17,14 @@ GNU General Public License for more details.
 $(function(){
 	
 	/** global ajax events */
-	
-        $.ajaxSetup({
-			timeout: 10000,
-			async:false
-		});
         	
-         $("#loading").bind("ajaxSend", function(){
+         $("#loading").bind("ajaxStart", function(){
            $(this).show();
            $('#over').show();
-         }).bind("ajaxComplete", function(){
+         }).bind("ajaxStop", function(){
            $(this).hide();
            $('#over').hide();
          });
-
 
 		/**
          * msg_area get global events

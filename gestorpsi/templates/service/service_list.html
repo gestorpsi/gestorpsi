@@ -39,7 +39,9 @@ GNU General Public License for more details.
         <p class="description">{% trans "Displaying" %} <a href="/service"><span id="object_length"></span> {% trans "service(s)" %}</a>. {% trans "Page" %} <b></b> {% trans "of" %} <b></b></p>
         
         <div class="main_area contact">
-            
+            <div id="search_header" class="service_search {% if deactive %} deactive {% else %} active {% endif %}">
+                {% include "tags/search_header.html" %}
+            </div>
             <div id="msg_area" class="alert no_registers_available hidden">
                 {% trans "There is no registers available." %}<br />
                 {% if perms.service.service_write %}

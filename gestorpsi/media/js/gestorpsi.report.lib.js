@@ -181,9 +181,8 @@ function updateReferral(data) {
     /**
      * update admission data
      */
-
+    
     $('div#report_table').load('/report/referral/?'+data);
-
     /**
      * update demographic data
      */

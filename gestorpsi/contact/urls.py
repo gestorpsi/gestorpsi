@@ -26,20 +26,20 @@ urlpatterns = patterns('',
     (r'^$', login_check(index)),
     url(r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
     url(r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
-    url(r'^filter/(?P<filter>[a-zA-Z ]+)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
+    url(r'^filter/(?P<filter>\w+)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
     
     # external contacts
     url(r'^external/$', login_check(index), {'template':'contact/contact_list_external.html'}),
     url(r'^external/page(?P<page>(\d)+)$', login_check(list), {'filter_type':'external'}), #list objects
     url(r'^external/initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list), {'filter_type':'external'}), # quick filter
-    url(r'^external/filter/(?P<filter>[a-zA-Z ]+)/page(?P<page>(\d)+)/$', login_check(list), {'filter_type':'external'}), # quick search
+    url(r'^external/filter/(?P<filter>\w+)/page(?P<page>(\d)+)/$', login_check(list), {'filter_type':'external'}), # quick search
     
     # deactivated contacts
     (r'^deactive/$', login_check(index), {'deactive':True}), # list objects deactive
     (r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick filter
     (r'^initial/(?P<initial>[a-zA-Z])/deactive/$', login_check(list), {'deactive':True} ), # quick filter
-    (r'^filter/(?P<filter>[a-zA-Z0-9 ]+)/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick search
-    (r'^filter/(?P<filter>[a-zA-Z0-9 ]+)/deactive/$', login_check(list), {'no_paging': True, 'deactive':True } ), # quick search
+    (r'^filter/(?P<filter>\w+)/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick search
+    (r'^filter/(?P<filter>\w+)/deactive/$', login_check(list), {'no_paging': True, 'deactive':True } ), # quick search
     (r'^page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True}), #list objects
     
     (r'^form/organization/$', login_check(contact_organization_form)), # add form

@@ -506,6 +506,55 @@ $(function() {
     });
 
     /**
+     * service quick filter deactive
+     */
+
+    $('div#search_header.service_search.deactive table#letter_menu tr td a, div#search_header.service_search.deactive a#letter_back, div#search_header.service_search.deactive a#letter_fwd').click(function() {
+        updateService('/service/initial/' + $(this).attr('initial') + '/page1/deactive/', true, 'service/initial/'+$(this).attr('initial'));
+    });
+
+    /**
+    * service quick search deactive
+    */
+
+    $('div#search_header.service_search.deactive a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateService('/service/filter/' + $(this).prev().val() + '/page1/deactive/', true, 'service/filter/'+$(this).prev().val()) : updateService('/service/page1/deactive/', true);
+    });
+
+    /**
+     * service clean up deactive
+     */
+
+    $('div#search_header.service_search.deactive a#cleanup').click(function() {
+        updateService('/service/page1/deactive/', true);
+    });
+
+    /**
+     * service quick filter active
+     */
+
+    $('div#search_header.service_search.active table#letter_menu tr td a, div#search_header.service_search.active a#letter_back, div#search_header.service_search.active a#letter_fwd').click(function() {
+        updateService('/service/initial/' + $(this).attr('initial') + '/page1/', false, 'service/initial/'+$(this).attr('initial'));
+    });
+
+
+    /**
+    * service quick search active
+    */
+
+    $('div#search_header.service_search.active a.quick_search').click(function() {
+        ($(this).prev().val().length >= 1) ? updateService('/service/filter/' + $(this).prev().val() + '/page1/', false, 'service/filter/'+$(this).prev().val()) : updateService('/service/page1');
+    });
+
+    /**
+     * service clean up active
+     */
+
+    $('div#search_header.service_search.active a#cleanup').click(function() {
+        updateService('/service/page1');
+    });
+
+    /**
      * commom quick filter events
      */
 

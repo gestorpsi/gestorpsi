@@ -19,7 +19,7 @@ $(function() {
     /**
      * load first data
      */
-    
+
     updateAdmission('accumulated=True');
 
     /**

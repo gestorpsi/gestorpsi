@@ -421,7 +421,6 @@ def referral_form(request, object_id = None, referral_id = None):
                           { 'object': object, 
                             'referral': referral,
                             'referral_form': form,
-                            'referral_list': referral_list,
                             'services': Service.objects.filter(active=True, organization=request.user.get_profile().org_active),
                             'referrals': Referral.objects.filter(client = object),
                             'groups': ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active, active=True),

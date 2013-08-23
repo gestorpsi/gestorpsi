@@ -223,7 +223,7 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
     
     if request.GET.get('service'):
         service = request.GET.get('service')
-        object_list = object_list.filter(referral__service=service, referral__referraldischarge__isnull=True)
+        object_list = object_list.filter(referral__service=service, referral__referraldischarge__isnull=True).distinct()
         url_extra += '&service=%s' % service
 
     p = Paginator(object_list, PAGE_RESULTS)

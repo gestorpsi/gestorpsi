@@ -175,11 +175,6 @@ def person_json_list(request, object, perm, page, no_paging = False, with_client
         except:
             username = ''
         
-        age = ''
-        if c.person.birthDate:
-            today = datetime.today()
-            age = (today.year - c.person.birthDate.year) - int((today.month, today.day) < (c.person.birthDate.month, c.person.birthDate.day))
-            
         array[i] = {
             'id': c.id,
             'person_id': c.person.id,
@@ -187,7 +182,7 @@ def person_json_list(request, object, perm, page, no_paging = False, with_client
             'phone': u'%s' % c.person.get_first_phone(),
             'email': u'%s' % c.person.get_first_email(),
             'username': username,
-            'age': age,
+            'age': c.person.age,
         }
         
         if with_client_services:

@@ -19,10 +19,20 @@ GNU General Public License for more details.
  * build paginator from JSON data
  */
 
-function buildPaginator(app, json_paginator, json_util, selector, deactive) { 
-    
+function buildPaginator(app, json_paginator, json_util, selector, deactive, extra_context) { 
         if(!selector) selector = 'div#list';
         url_extra = (deactive)?'/deactive/':'';
+
+        if(extra_context) {
+            var element_count = 0;
+            url_extra += "?";
+            for(var i in extra_context) {
+                if(element_count > 0) { url_extra += "&"; }
+                url_extra += i + "=" + extra_context[i];
+                element_count++;
+            }
+        }
+
         var page_range = '';
 
         jQuery.each(json_paginator,  function(){

@@ -288,6 +288,30 @@ class Client(models.Model):
     def set_deactive(self):
         self.active = False
         self.save()
+    
+    def list_item_title(self):
+        return u"%s" % (self.person.name)
+    
+    def list_item_url(self):
+        return "/client/%s/home/" % (self.pk)
+    
+    def list_item_title_aditional(self):
+        if not self.person.age:
+            return ""
+        return u"%s %s" % (self.person.age, _(u"years"))
+    
+    def list_item_description(self):
+        return u"%s" % (self.person.get_first_phone())
+    
+    def list_item_extra_links(self):
+        html = ''
+        for r in self.referrals_charged():
+            html += u"<a title='%s' href='/client/%s/referral/%s/' style='color:#%s;'><div class='service_name_html' style='background-color:#%s;'>&nbsp;</div></a>" % (r, self.pk, r.pk, r.service.font_color, r.service.color)
+        
+        html += '<a class="admit" href="/admission/%s/" title="%s"><img src="/media/img/22/ico_reg.png"></a>' % (self.pk, _('Admission Details'))
+
+        return u"%s" % (html)
+    list_item_extra_links.allow_tags = True
 
 
 reversion.register(Client)

@@ -1060,7 +1060,8 @@ hr {
         width: 715px;
         position:relative;
 }
-
+.search_header_aditional { padding-left:0px; margin-bottom:25px; margin-top:10px }
+.search_header_aditional select { background-color:#fff; border: 2px solid #ccc; padding:6px; color:#444; width:100%}
 div.schedule #search_header {
         padding-left: 90px;
 }
@@ -1088,7 +1089,7 @@ div.schedule #search_header {
 }
 .contact #search_header input, div.multiselectable input.multiselectable_filter, input.ffb-input {
         float: left;
-        width: 120px;
+        width: 200px;
         margin-top: 7px;
         background-color: #FFF;
         border: 2px solid #CCCCCC;
@@ -1115,7 +1116,7 @@ div.schedule #search_header {
         background: url(/media/img/22/cleanup.png) 5px 12px no-repeat;
 }
 #letter_menu {
-        margin-top: 15px;
+        padding-top: 15px;
         margin-left: 15px;
         font-size: 12px;
 }
@@ -1200,7 +1201,7 @@ div.schedule #search_header {
 #search_results tr.person.gestorpsi,  #search_results tr.person.gestorpsi:hover { background-image: url(/media/img/16/proffessional_gestor.png); background-repeat: no-repeat; background-position: 98% 10px; }
 #search_results tr.clinic.gestorpsi,  #search_results tr.clinic.gestorpsi:hover {background-image: url(/media/img/16/go-home_gestor.png); background-repeat: no-repeat; background-position: 98% 10px;}
 
-#search_results .service_name_html { padding: 0 10px 0 0;}
+#search_results .service_name_html { padding: 10px 20px 0px 0; margin-bottom:10px !important; }
 
 #legend div {
 	float: left;
@@ -1593,11 +1594,11 @@ textarea.terms_of_service {
 
 /* list paginator */
 
-ul.paginator {
+ul.paginator, .pagination{
         text-align: center;
         margin-top: 20px;
 }
-
+.pagination span { padding:10px;}
 ul.paginator li {
         list-style: none;
         display: inline;

@@ -78,7 +78,7 @@ SITE_ID = 1
 USE_I18N = True
 
 # cookies
-LOCALE_PATHS = ()
+LOCALE_PATHS = (PROJECT_ROOT_PATH + "/locale", PROJECT_ROOT_PATH + "/locale")
 LANGUAGE_COOKIE_NAME = 'gestor_language'
 
 # Absolute path to the directory that holds media.

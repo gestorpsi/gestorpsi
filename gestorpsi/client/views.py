@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import string
 from datetime import datetime
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
@@ -25,7 +26,8 @@ from django.utils import simplejson
 from django.template.defaultfilters import slugify
 from django.db.models import Q
 from django.contrib import messages
-from gestorpsi.settings import DEBUG, MEDIA_URL, MEDIA_ROOT
+from django.core.paginator import Paginator
+from gestorpsi.settings import DEBUG, MEDIA_URL, MEDIA_ROOT, PAGE_RESULTS
 from gestorpsi.address.models import Country, State, AddressType, City
 from gestorpsi.authentication.models import Profile
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
@@ -33,7 +35,6 @@ from gestorpsi.service.models import Service, ServiceGroup, GroupMembers
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.careprofessional.views import Profession
 from gestorpsi.client.models import Client, Relation
-#from gestorpsi.client.reports import ClientRecord, ClientList
 from gestorpsi.client.forms import FamilyForm
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.internet.models import EmailType, IMNetwork
@@ -127,6 +128,8 @@ def _access_check_referral_write(request, referral=None):
 @permission_required_with_403('client.client_list')
 def index(request, deactive = False):
     # Test if clinic administrator has registered services before access client page.
+    list_url_base = '/client/list/' if not deactive else '/client/list/deactive/'
+
     if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
         return render_to_response('client/client_service_alert.html', context_instance=RequestContext(request))
     return render_to_response('client/client_list.html', locals(), context_instance=RequestContext(request))
@@ -196,15 +199,46 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
     user = request.user
     
     object_list = Client.objects.from_user(user, 'deactive' if deactive else 'active')
+    
+    list_url_base = '/client/list/' if not deactive else '/client/list/deactive/'
+    
+    url_extra = ''
+    initial = ''
+    if request.GET.get('initial'):
+        initial = request.GET.get('initial')
+        
+        if ord(initial) < 90:
+            initial_next = chr(ord(initial) + 1)
 
-    if initial:
+        if ord(initial) > 65:
+            initial_prev = chr(ord(initial) - 1)
+
         object_list = object_list.filter(person__name__istartswith = initial)
+        url_extra += '&initial=%s' % initial
 
-    if filter:
-        object_list = object_list.filter(person__name__icontains = filter)
+    if request.GET.get('search'):
+        search = request.GET.get('search')
+        object_list = object_list.filter(person__name__icontains = search)
+        url_extra += '&search=%s' % search
+    
+    if request.GET.get('service'):
+        service = request.GET.get('service')
+        object_list = object_list.filter(referral__service=service, referral__referraldischarge__isnull=True)
+        url_extra += '&service=%s' % service
 
-    return HttpResponse(simplejson.dumps(person_json_list(request, object_list, 'client.client_read', page, no_paging, True), sort_keys=True),
-                            mimetype='application/json')
+    p = Paginator(object_list, PAGE_RESULTS)
+    
+    page_number = 1 if not request.GET.get('page') else request.GET.get('page')
+
+    page = p.page(page_number)
+    object_list = page.object_list
+    
+    service_list = Service.objects.filter( active=True, organization=request.user.get_profile().org_active )
+    initials = string.uppercase
+
+    return render_to_response('tags/list_item.html', locals(), context_instance=RequestContext(request))
+    #return HttpResponse(simplejson.dumps(person_json_list(request, object_list, 'client.client_read', page, no_paging, True), sort_keys=True),
+                            #mimetype='application/json')
 
 # edit form
 @permission_required_with_403('client.client_read')

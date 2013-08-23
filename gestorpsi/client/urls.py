@@ -28,10 +28,11 @@ from gestorpsi.organization.views import list_prof_org
 
 urlpatterns = patterns('',
     (r'^$', login_check(index)), #list objects
-    (r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
-    (r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
-    (r'^filter/(?P<filter>\w+)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
-    (r'^filter/(?P<filter>\w+)/$', login_check(list), {'no_paging': True}), # quick search
+    (r'^list/$', login_check(list)), #list objects
+    #(r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
+    #(r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
+    #(r'^filter/(?P<filter>\w+)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
+    #(r'^filter/(?P<filter>\w+)/$', login_check(list), {'no_paging': True}), # quick search
     (r'^add/$', login_check(add)), #new object form
     (r'^add/company/$', login_check(add_company)), #new object form
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/home/$', login_check(home)),
@@ -91,9 +92,11 @@ urlpatterns = patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/family/(?P<relation_id>\d+)/form/$', login_check(family_form)), # client family
 
     # DEACTIVES
-    (r'^deactive/$', login_check(index), {'deactive': True} ), #list objects
-    (r'^page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), #list objects
-    (r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive': True}), # quick filter
-    (r'^filter/(?P<filter>\w+)/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive': True}), # quick search
-    (r'^filter/(?P<filter>\w+)/deactive/$', login_check(list), {'no_paging': True, 'deactive': True}), # quick search
+    #(r'^deactive/$', login_check(index), {'deactive': True} ), #list objects
+    #(r'^page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), #list objects
+    #(r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive': True}), # quick filter
+    #(r'^filter/(?P<filter>\w+)/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive': True}), # quick search
+    #(r'^filter/(?P<filter>\w+)/deactive/$', login_check(list), {'no_paging': True, 'deactive': True}), # quick search
+    url(r'^deactive/$', login_check(index), {'deactive': True} ), #list objects
+    url(r'^list/deactive/$', login_check(list), {'deactive': True}), #list objects
 )

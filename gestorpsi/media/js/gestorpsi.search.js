@@ -91,54 +91,6 @@ $(function() {
     });
 
     /**
-     * client quick filter active
-     */
-
-    $('div#search_header.client_search.active table#letter_menu tr td a, div#search_header.client_search.active a#letter_back, div#search_header.client_search.active a#letter_fwd').click(function() {
-        updateClient('/client/initial/' + $(this).attr('initial') + '/page1/', false, 'client/initial/'+$(this).attr('initial'));
-    });
-
-    /**
-     * client quick filter deactive
-     */
-
-    $('div#search_header.client_search.deactive table#letter_menu tr td a, div#search_header.client_search.deactive a#letter_back, div#search_header.client_search.deactive a#letter_fwd').click(function() {
-        updateClient('/client/initial/' + $(this).attr('initial') + '/page1/deactive/', true, 'client/initial/'+$(this).attr('initial'));
-    });
-
-    /**
-    * client quick search active
-    */
-
-    $('div#search_header.client_search.active a.quick_search').click(function() {
-        ($(this).prev().val().length >= 1) ? updateClient('/client/filter/' + $(this).prev().val() + '/page1/', false, 'client/filter/'+$(this).prev().val()) : updateClient('/client/page1');
-    });
-
-    /**
-    * client quick search deactive
-    */
-
-    $('div#search_header.client_search.deactive a.quick_search').click(function() {
-        ($(this).prev().val().length >= 1) ? updateClient('/client/filter/' + $(this).prev().val() + '/page1/deactive/', true, 'client/filter/'+$(this).prev().val()) : updateClient('/client/page1/deactive/', true);
-    });
-
-    /**
-     * client clean up active
-     */
-
-    $('div#search_header.client_search.active a#cleanup').click(function() {
-        updateClient('/client/page1');
-    });
-
-    /**
-     * client clean up deactive
-     */
-
-    $('div#search_header.client_search.deactive a#cleanup').click(function() {
-        updateClient('/client/page1/deactive/', true);
-    });
-
-    /**
      * employee quick filter active
      */
 

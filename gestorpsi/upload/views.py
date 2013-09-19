@@ -121,12 +121,12 @@ def attach_save(request, object_id = None, client_id = None):
         filename = ''
 
         if 'file' in request.FILES:
-            path = '%simg/organization/%s' % (MEDIA_ROOT, user.get_profile().org_active.id)
+            path = '%s/img/organization/%s' % (MEDIA_ROOT, user.get_profile().org_active.id)
             if not os.path.exists(path):
                 os.mkdir(path)
                 os.chmod(path, 0777)
 
-            path = '%simg/organization/%s/attach' % (MEDIA_ROOT, user.get_profile().org_active.id)
+            path = '%s/img/organization/%s/attach' % (MEDIA_ROOT, user.get_profile().org_active.id)
             if not os.path.exists(path):
                 os.mkdir(path)
                 os.chmod(path, 0777)

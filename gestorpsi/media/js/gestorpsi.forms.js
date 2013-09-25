@@ -65,14 +65,10 @@ function bindDelete() {
 }
 
 function reloadCities(el) {
-    var line = '<option value=""></option>';
-    $.getJSON('/address/search/cities/state/' + el.val() + '/', function(json) {
-            jQuery.each(json,  function(){
-                line = line + '<option value="' + this.id + '">' + this.name + '</option>';
-            }); 
+        $.get('/address/search/cities/state/' + el.val() + '/', function( data ) {
+          el.parent('label').parent('div').children('label.city').children('select').html(data); // rebuild city combo
+          el.parent('label').parent('div').children('label.city').children('select').children('option[value=' + el.attr('city') + ']').attr('selected', 'selected'); // select city
         });
-        el.parent('label').parent('div').children('label.city').children('select').html(line); // rebuild city combo 
-        el.parent('label').parent('div').children('label.city').children('select').children('option[value=' + el.attr('city') + ']').attr('selected', 'selected'); // select city
 }
 
     /**

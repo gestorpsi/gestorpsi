@@ -1634,7 +1634,6 @@ div.login ul.errorlist li {
 
 form li label {
     clear: both;
-    display:block !important;
     margin-top: 5px !important;
     padding: 0px;
    

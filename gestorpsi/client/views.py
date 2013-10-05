@@ -462,10 +462,7 @@ def referral_form(request, object_id = None, referral_id = None):
     form.fields['referral'].queryset = Referral.objects.filter(client=object)
     form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
     form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, active = True)
-    if hasattr(referral.service, 'professionals'):
-        form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('(Student)'))) for p in referral.service.professionals.all()]
-    else:
-        form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('(Student)'))) for p in CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)]
+    form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('(Student)'))) for p in CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)]
 
     total_service = Referral.objects.filter(client=object).count()
     referral_list = Referral.objects.filter(client=object, status='01')

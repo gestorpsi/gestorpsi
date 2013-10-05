@@ -134,9 +134,9 @@ function referral_edit(select_field) {
     if (select_field.val() != ''){
         $.getJSON("/service/" + select_field.val() + "/listprofessional/", function(json) {
             jQuery.each(json,  function(){
-                $('div.referral_form_professional ul input[value='+this.id+']').parents('li:first').show();
-                $('div.referral_form_professional ul input[value='+this.id+']').attr('checked','');
+                $('input[name=professional][value='+this.id+']').parents('label li').show();
             });
+            $('input[name=professional]').attr('checked','');
         });
         
         // is group

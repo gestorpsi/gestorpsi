@@ -133,6 +133,18 @@ GNU General Public License for more details.
                 <div class="overflow referral_form_professional{% if referral.id %} check_change{% endif %}{% if not referral.id %} hide_on_first{% endif %}">
                     {{ referral_form.professional }}
                 </div> 
+            {% if referral_form.instance %}
+            <script>
+            $('.referral_form_professional li').hide();
+            $(function () {
+                $.getJSON("/service/{{referral_form.instance.service.id }}/listprofessional/", function(json) {
+                    jQuery.each(json,  function(){
+                        $('input[name=professional][value='+this.id+']').parents('label li').show();
+                    });
+                });
+            });
+            </script>
+            {% endif %}
             </label>
 
         <label style="display:none">{% trans "Clients" %}<br />

@@ -11,8 +11,11 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage, BadHeaderError
 from django.contrib import messages
+
 from gestorpsi.gcm.forms.auth import RegistrationForm
 from gestorpsi.organization.models import Organization, ProfessionalResponsible                
+
+from gestorpsi.authentication.models import Profile
 from registration.models import RegistrationProfile
 
 '''

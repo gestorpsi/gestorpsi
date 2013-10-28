@@ -64,7 +64,7 @@ class Address(models.Model):
     addressLine2 = models.CharField(max_length=50, blank=True)
     addressNumber = models.CharField(max_length=10, blank=True)
     neighborhood = models.CharField(max_length=30, blank=True)
-    zipCode = models.CharField(max_length=10, blank=True)
+    zipCode = models.CharField(max_length=14, blank=True)
     addressType = models.ForeignKey(AddressType)
     city = models.ForeignKey(City, null=True)
     # Foreign Address

@@ -112,7 +112,15 @@ class AdmissionReferral(models.Model):
         return self.date
     created = property(_created)
 
+    class Meta:
+        permissions = (
+                           ("admission_write", "Can view Admissions"),
+                           ("admission_view", "Can view Admissions"),
+                       )
+
 reversion.register(AdmissionReferral, follow=['client'])
+
+
 
 class Attach(models.Model):
     filename = models.CharField(null=True, max_length=255)

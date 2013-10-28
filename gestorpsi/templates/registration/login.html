@@ -46,14 +46,12 @@ GNU General Public License for more details.
     </li></ul>
 {% endif %}
 
-<label>{% trans "Username" %}<br />{{ form.username }}</label>
-<label>{% trans "Password" %}<br />{{ form.password }}</label>
+<label>{% trans "Username" %}<br /><input id="id_username" type="text" name="username" maxlength="30" value="demo"></label>
+<label>{% trans "Password" %}<br /><input type="password" name="password" id="id_password" value="demo"></label>
 <input type="hidden" name="next" value="{{ next}}" />
 <input type="submit" value="{% trans "Log in" %}" class="btn"/>
 </div>
 </fieldset>
 </form>
 
-<p class="ff_ok">{% trans "If you don't have an account, you can" %} <a href="/accounts/register/">{% trans "sign up" %}</a> {% trans "for one" %}.</p>
-<p class="ff_ok"><a href="/accounts/password/reset/">{% trans "Forgot Password?" %}</a></p>
 {% endblock %}

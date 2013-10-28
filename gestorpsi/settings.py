@@ -1,4 +1,3 @@
-#-*- coding: utf-8 -*-
 """
 Copyright (C) 2008 GestorPsi
 
@@ -13,31 +12,29 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+
 import os
 PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static')
 
-PAYPAL_RECEIVER_EMAIL = "kalkehcoisa-facilitator@gmail.com"
-
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
 
 SITE_DISABLED = False # display "system is currently under maintenance" message instead login if True
 
 ADMINS = (
-     #('GestorPsi', 'noreply@domain.com'),
-     ('Jayme', 'kalkehcoisa@gmail.com'),
+     ('GestorPsi', 'cuzido@gmail.com'),
 )
 
 
 #EMAIL_FROM = 'GestorPsi <webmaster@gestorpsi.com.br>'
-EMAIL_FROM = '' # eg: noreply@domain.com
-EMAIL_HOST = '' # eg.: smtp.gmail.com
-EMAIL_HOST_USER = '' # eg: noreply@domain.com
-EMAIL_HOST_PASSWORD = '' # eg.: password123
-EMAIL_HOST_PORT = 465 # eg.: 465
-EMAIL_USE_TLS = True
+EMAIL_FROM = 'GestorPsi <noreply@gestorpsi.com.br>' # eg: noreply@domain.com
+EMAIL_HOST = 'smtp.webfaction.com' # eg.: smtp.gmail.com
+EMAIL_HOST_USER = 'gestorpsi_noreply' # eg: noreply@domain.com
+EMAIL_HOST_PASSWORD = 'bf2efa11' # eg.: password123
+EMAIL_HOST_PORT = 25 # eg.: 465
+#EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_FROM
 
 
@@ -46,14 +43,26 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'gestorpsi',                      # Or path to database file if using sqlite3.
-        'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'gestorpsi_demo',
+        'USER': 'gestorpsi_demo',
+        'PASSWORD': 'bup@Ud*v',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
+
+
+#DATABASES = {
+    #'default': {
+        #'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        #'NAME': 'gestorpsi',                      # Or path to database file if using sqlite3.
+        #'USER': 'root',                      # Not used with sqlite3.
+        #'PASSWORD': '',                  # Not used with sqlite3.
+        #'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        #'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    #}
+#}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -82,13 +91,13 @@ SITE_ID = 1
 USE_I18N = True
 
 # cookies
-LOCALE_PATHS = (PROJECT_ROOT_PATH + "/locale", PROJECT_ROOT_PATH + "/locale")
+LOCALE_PATHS = (PROJECT_ROOT_PATH + "/locale", PROJECT_ROOT_PATH + "/gestorpsi/locale")
 LANGUAGE_COOKIE_NAME = 'gestor_language'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 #MEDIA_ROOT = '/home/gestor/demo/gestorpsi/media/' *************AQUI****************
-MEDIA_ROOT = os.path.join(PROJECT_ROOT_PATH, 'media')
+MEDIA_ROOT = os.path.join(PROJECT_ROOT_PATH, 'media/')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -102,14 +111,10 @@ ADMIN_URL = '/admin/'
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT_PATH, "media"),
-)
-
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/admin_media/'
+#ADMIN_MEDIA_PREFIX = '/admin_media/'
 
 
 # Make this unique, and don't share it with anybody.
@@ -128,6 +133,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.static',
     'django.core.context_processors.media',
+    'django.contrib.messages.context_processors.messages',
     'swingtime.context_processors.current_datetime',
 )
 
@@ -155,13 +161,13 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT_PATH, "boleto/templates"),
     os.path.join(PROJECT_ROOT_PATH, "gcm/templates"),
     os.path.join(PROJECT_ROOT_PATH, "util/templatetags"),
-    os.path.join(PROJECT_ROOT_PATH, "payments/paypal/templates"),
 )
 
 INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.contenttypes',
     'django.contrib.sites',
+    'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.staticfiles',
@@ -210,8 +216,10 @@ INSTALLED_APPS = (
     'paging',
     'indexer',
     'sentry',
-    
-    'packages.paypal.standard.ipn'
+)
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT_PATH, "media"),
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -221,7 +229,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 #CUSTOM_USER_MODEL = 'authentication.CustomUser'
-AUTH_PROFILE_MODULE = 'authentication.Profile'
+AUTH_PROFILE_MODULE = 'authentication.profile'
 
 #login
 LOGIN_REDIRECT_URL = '/'
@@ -260,39 +268,6 @@ CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 import djcelery
 djcelery.setup_loader()
 #django celery: task scheduling package
-
-
-
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        },
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    }
-}
-
-
 
 
 if not DEBUG:

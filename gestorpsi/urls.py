@@ -38,28 +38,15 @@ urlpatterns = patterns('',
     (r'^report/', include('gestorpsi.report.urls')),
     (r'^support/', include('gestorpsi.support.urls')),
     (r'^frontend/', include('gestorpsi.frontend.urls')),
+    #(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'media/', 'show_indexes': False}),
     (r'^profile/', include('gestorpsi.profile.urls')),
     (r'^util/', include('gestorpsi.util.urls')),
     (r'^chaining/', include('smart_selects.urls')),
     
     (r'^sentry/', include('sentry.web.urls')),
-
-    (r'^payments/', include('gestorpsi.payments.urls')),
-    
 )
-
-
 
 if 'rosetta' in settings.INSTALLED_APPS:
     urlpatterns += patterns('',
         url(r'^rosetta/', include('rosetta.urls')),
     )
-
-try:
-    from gestorpsi.urls_local import *
-except:
-    pass
-
-
-
-

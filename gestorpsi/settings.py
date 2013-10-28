@@ -28,6 +28,8 @@ ADMINS = (
      ('Jayme', 'kalkehcoisa@gmail.com'),
 )
 
+PAYPAL_RECEIVER_EMAIL = 'kalkehcoisa-facilitator@gmail.com'
+
 
 #EMAIL_FROM = 'GestorPsi <webmaster@gestorpsi.com.br>'
 EMAIL_FROM = 'GestorPsi <noreply@gestorpsi.com.br>' # eg: noreply@domain.com

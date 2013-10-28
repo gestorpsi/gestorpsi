@@ -1,0 +1,12 @@
+#formats
+*.pyc
+
+
+#root folders
+/py
+/psi/
+/static/
+/gestorpsi/urls_local.py
+/gestorpsi/settings_local.py
+/.pydevproject
+/.settings/

@@ -1,10 +1,10 @@
-#Wed Feb 06 14:54:08 BRST 2013
 eclipse.preferences.version=1
 encoding//address/models.py=utf-8
 encoding//address/views.py=utf-8
 encoding//admission/models.py=utf-8
 encoding//admission/views.py=utf-8
 encoding//async_tasks/tasks.py=utf-8
+encoding//authentication/forms.py=utf-8
 encoding//boleto/admin.py=utf-8
 encoding//boleto/cnab400_bradesco.py=utf-8
 encoding//boleto/functions.py=utf-8
@@ -17,11 +17,13 @@ encoding//device/models.py=utf-8
 encoding//device/urls.py=utf-8
 encoding//device/views.py=utf-8
 encoding//document/views.py=utf-8
+encoding//ehr/forms.py=utf-8
 encoding//ehr/models.py=utf-8
 encoding//employee/models.py=utf-8
 encoding//frontend/urls.py=utf-8
 encoding//frontend/views.py=utf-8
 encoding//gcm/forms/auth.py=utf-8
+encoding//gcm/forms/fields.py=utf-8
 encoding//gcm/forms/invoice.py=utf-8
 encoding//gcm/models/invoice.py=utf-8
 encoding//gcm/models/plan.py=utf-8

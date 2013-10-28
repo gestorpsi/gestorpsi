@@ -37,6 +37,10 @@ def index(request, deactive = False):
 @permission_required_with_403('users.users_list')
 def list(request, page = 1, initial = None, filter = None, deactive = False):
     user = request.user
+    try:
+        request.user.get_profile()
+    except:
+        UserProfile(user=user).save()
 
     if deactive:
         object = Profile.objects.filter(org_active = user.get_profile().org_active, user__is_active = False).order_by('user__username')

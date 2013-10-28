@@ -56,7 +56,7 @@ def register(request, success_url=None,
                 #if not url_boleto:
                 #    url_boleto = ''
                 
-                bcc_list = ['jayme@doois.com.br']#, 'david@doois.com.br']
+                bcc_list = ['kalkehcoisa@gmail.com']
                 msg = EmailMessage()
                 msg.subject = 'Teste: Nova organizacao em gestorpsi.com.br'
                 msg.body = 'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar https://gestorpsi.psico.net/gcm/'
@@ -97,7 +97,7 @@ def complete(request, success_url=None,
 
         user = User.objects.get(id=request.session['user_aux_id'])
         
-        bcc_list = ['jayme@doois.com.br']#, 'david@doois.com.br']
+        bcc_list = ['kalkehcoisa@gmail.com']
         msg = EmailMessage()
         msg.subject = u"Teste: Nova organizacao em gestorpsi.com.br"
         msg.body = u"Você acaba de registrar uma nova organizacao se registrou no GestorPSI.<br/>"

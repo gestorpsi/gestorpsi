@@ -164,6 +164,7 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT_PATH, "boleto/templates"),
     os.path.join(PROJECT_ROOT_PATH, "gcm/templates"),
     os.path.join(PROJECT_ROOT_PATH, "util/templatetags"),
+    os.path.join(PROJECT_ROOT_PATH, "payments/templates"),
 )
 
 INSTALLED_APPS = (

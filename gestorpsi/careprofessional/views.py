@@ -167,7 +167,15 @@ def save_careprof(request, object_id, save_person, is_student=False):
                 #object.prof_services.remove(o)
 
     profile = get_object_or_None(ProfessionalProfile, pk=object.professionalProfile_id) or ProfessionalProfile()
-    profile.initialProfessionalActivities = request.POST.get('professional_initialActivitiesDate')
+    initialDateError = True
+    initialDate = request.POST.get('professional_initialActivitiesDate', False)
+    try:
+        initialDate = datetime.strptime(dateBirth, '%d/%m/%Y')
+        profile.initialProfessionalActivities = initialDate
+        initialDateError = False
+    except:
+        initialDateError = True
+    
     profile.save()
     object.professionalProfile = profile
 

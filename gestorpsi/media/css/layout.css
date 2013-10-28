@@ -1837,3 +1837,8 @@ table.sign_history tbody tr.even {
 }
 
 form.schedule_occurrence li { float:none !important;}
+
+input.dateError, input.dateError:focus
+{
+	box-shadow: 0 0 5px red !important;
+}

@@ -18,6 +18,57 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
+{% block extrajs %}
+<script type="text/javascript">
+$(document).ready(function()
+{
+	var checkDate = function(field)
+	{
+		var validformat=/^\d{2}\/\d{2}\/\d{4}$/
+		var returnval = false;
+		var date_str = field.val();
+		
+		if (!validformat.test(date_str))
+			alert("Formato de data incorreto. Deve ser escrita no formato dd/mm/aaaa.")
+		else
+		{ //Detailed check for valid date ranges
+			var dayfield = date_str.split("/")[0];
+			var monthfield = date_str.split("/")[1];
+			var yearfield = date_str.split("/")[2];
+			var dayobj = new Date(yearfield, monthfield-1, dayfield);
+			
+			if (dayobj.getDate() != dayfield)
+				alert( 'Dia inválido!' );
+			else
+				if( dayobj.getMonth()+1 != monthfield )
+					alert( 'Mês inválido!' );
+				else
+					if (dayobj.getFullYear()!=yearfield)
+						alert("Ano inválido!")
+					else
+						returnval = true;
+		}
+		if ( !returnval )
+		{
+			field.focus().addClass('dateError');
+			$('body').scrollTo(field);
+		}
+		return returnval
+	}
+
+	$('form').submit(function()
+	{
+		var teste = true;
+		teste = teste && checkDate( $('[name="professional_initialActivitiesDate"]') );
+		if( !$('[name="aprox"]').is(':checked') )
+			teste = teste && checkDate( $('[name="dateBirth"]') );
+			
+		return teste;
+	});
+});
+</script>
+{% endblock extrajs %}
+
 {% block menu_myoffice %}active{% endblock %}
 
 {% block vertical_menu %} - {% trans "Professionals" %}{% endblock %}
@@ -91,7 +142,7 @@ GNU General Public License for more details.
 	<fieldset id="fieldset_professional_profile">
 		<legend>{% trans "Professional Profile" %}</legend>
 			<label>{% trans "Inital Activities Date" %}<br />
-				<input type="text" maxlength="10" name="professional_initialActivitiesDate" value="{% ifnotequal object.professionalProfile.initialProfessionalActivities 'None' %}{{ object.professionalProfile.initialProfessionalActivities }}{% endifnotequal %}" class="initialActivities calendar" />
+				<input type="text" maxlength="10" name="professional_initialActivitiesDate" value="{{ object.professionalProfile.initialProfessionalActivities|default:'' }}" class="initialActivities calendar" />
 			</label>
             {% comment %}
 			<label>{% trans "Available Time" %}<br />

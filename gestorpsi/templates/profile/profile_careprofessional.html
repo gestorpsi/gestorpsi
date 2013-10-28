@@ -49,7 +49,7 @@ GNU General Public License for more details.
 	<input type="hidden" name="nickname" value="{{ object.person.nickname }}" />
 	<input type="hidden" name="photo" value="{{ object.person.photo }}" />
 	<input type="hidden" name="birthDate" value="{{ object.person.birthDate }}" />
-	<!--
+	<!-- 
 	Professional infos
 	-->
 	
@@ -74,7 +74,7 @@ GNU General Public License for more details.
 	<fieldset id="fieldset_professional_profile">
 		<legend>{% trans "Professional Profile" %}</legend>
 			<label>{% trans "Inital Activities Date" %}<br />
-				<input type="text" maxlength="10" name="professional_initialActivitiesDate" value="{{ object.professionalProfile.initialProfessionalActivities }}" class="initialActivities" />
+				<input mask="99/99/9999" type="text" maxlength="10" name="professional_initialActivitiesDate" value="{{ object.professionalProfile.initialProfessionalActivities|default:'' }}" class="initialActivities {% if initialDateError %}dateError{% endif %}" />
 			</label>
             {% comment %}
 			<label>{% trans "Available Time" %}<br />

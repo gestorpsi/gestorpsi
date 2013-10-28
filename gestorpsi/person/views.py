@@ -35,16 +35,22 @@ def person_save(request, person):
         person.photo = ''
 
     """ AGE """
-    if(request.POST.get('dateBirth')):
-        person.birthDate = datetime.strptime(request.POST.get('dateBirth'),'%d/%m/%Y')
-    else:
-        if request.POST.get('Years'):
+    dateBirthError = True
+    dateBirth = request.POST.get('dateBirth', False)
+    if request.POST.get('aprox', False) and request.POST.get('Years', False) and not dateBirth:
             birthYear = (( int(datetime.now().strftime("%Y")) ) - ( int(request.POST.get('Years')) ) ) 
             today = (datetime.now().strftime("%d/%m/"))
             dt = "%s%s" % (today, birthYear)
             person.birthDate = datetime.strptime(dt ,'%d/%m/%Y')
+            dateBirthError = False
+    elif dateBirth:
+        try:
+            person.birthDate = datetime.strptime(dateBirth, '%d/%m/%Y')
+            dateBirthError = False
+        except:
+            pass
 
-    if(request.POST.get('aprox')):
+    if request.POST.get('aprox', False):
         person.birthDateSupposed = True
     else:
         person.birthDateSupposed = False

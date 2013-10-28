@@ -44,7 +44,7 @@ class Phone(models.Model):
     """
     id = UuidField(primary_key=True)
     area = models.CharField(max_length=2)
-    phoneNumber = models.CharField(max_length=10)
+    phoneNumber = models.CharField(max_length=15)
     ext = models.CharField(max_length=4, blank=True)
     phoneType = models.ForeignKey(PhoneType)
     # Generic Relationship

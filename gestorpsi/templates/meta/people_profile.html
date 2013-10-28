@@ -11,7 +11,7 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
+ 
 {% endcomment %}
 
 {% load i18n %}
@@ -27,7 +27,7 @@ People Personal Profile Form
         <legend>{% trans "Personal Profile" %}</legend>
 
             <label>{% trans "Birthdate" %} ( dd/mm/yyyy )<br />
-                <input mask="99/99/9999" class="medium" type="text" name="dateBirth" id="dateBirth" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate|date:"d/m/Y" }}{% endifnotequal %}" />
+                <input mask="99/99/9999" class="medium {% if dateBirthError %}dateError{% endif %}" type="text" name="dateBirth" id="dateBirth" value="{{ object.person.birthDate|date:"d/m/Y" }}" />
             </label>
 
 
@@ -40,7 +40,7 @@ People Personal Profile Form
 
         <label>
             <input name="aprox" type="checkbox" id="aprox" {% if object.person.birthDateSupposed  %} checked="checked" {% endif %}  onclick="dateOrAge();" />
-            {% trans "Birthdate supposedly from the age" %} 
+            {% trans "Birthdate supposedly from the age" %}  
         </label>
         
          <br />

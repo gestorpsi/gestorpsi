@@ -25,7 +25,7 @@ This tag is used in client (home) view for administrator AND CLIENT users.
 <!-- DataTypes form menu -->
 <h3><span>{% trans "registration information" %}</span></h3>
 <div class="photo">
-    <img class="img_people" src="{% if object.person.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
+    <img class="img_people" src="{% if object.person.photo %}{{MEDIA_URL}}img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}{{MEDIA_URL}}img/generic_photo.gif{% endif %}" />
     {% ifequal object.person.gender '2'%}
         <a class="male notajax gender active" value="2"><span>{% trans "Male" %}</span></a>
     {% endifequal %}

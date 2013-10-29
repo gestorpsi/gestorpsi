@@ -20,21 +20,21 @@ GNU General Public License for more details.
 {% load i18n %}
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
 <title>GestorPsi - {% trans "Sistema de Gestão de Serviços em Psicologia" %}{% block title %}{% endblock %}</title>
-<script type="text/javascript" src="/media/js/jquery-latest.pack.js"></script> <!-- JQuery Core Library -->
-<script type="text/javascript" src="/media/js/jquery.form.js"></script> <!-- jQuery Form Plugin -->
-<script type="text/javascript" src="/media/js/jquery.validate.pack.js"></script> <!-- jQuery validation plug-in -->
-<script type="text/javascript" src="/media/js/autocomplete/jquery.autocomplete.js"></script>
-<script type="text/javascript" src="/media/js/jquery-ui-personalized-1.5.2.min.js"></script> <!-- JQuery UI with Draggable -->
-<script type="text/javascript" src="/media/js/jquery.dimensions.js"></script> <!-- Fixed Save Menu (sidebar right) -->
-<script type="text/javascript" src="/media/js/jquery.maskedinput.1.3.1.pack.js"></script> <!-- JQuery Masked Input Plugin -->
-<script type="text/javascript" src="/media/js/jquery.scrollTo-min.js"></script> <!-- JQuery Scroll on Page Plugin -->
+<script type="text/javascript" src="{{MEDIA_URL}}js/jquery-latest.pack.js"></script> <!-- JQuery Core Library -->
+<script type="text/javascript" src="{{MEDIA_URL}}js/jquery.form.js"></script> <!-- jQuery Form Plugin -->
+<script type="text/javascript" src="{{MEDIA_URL}}js/jquery.validate.pack.js"></script> <!-- jQuery validation plug-in -->
+<script type="text/javascript" src="{{MEDIA_URL}}js/autocomplete/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}js/jquery-ui-personalized-1.5.2.min.js"></script> <!-- JQuery UI with Draggable -->
+<script type="text/javascript" src="{{MEDIA_URL}}js/jquery.dimensions.js"></script> <!-- Fixed Save Menu (sidebar right) -->
+<script type="text/javascript" src="{{MEDIA_URL}}js/jquery.maskedinput.1.3.1.pack.js"></script> <!-- JQuery Masked Input Plugin -->
+<script type="text/javascript" src="{{MEDIA_URL}}js/jquery.scrollTo-min.js"></script> <!-- JQuery Scroll on Page Plugin -->
 
-<script type="text/javascript" src="/media/js/gestorpsi.frontend.js"></script> <!-- gestorpsi interface (ajax links and other stuffs) -->
+<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.frontend.js"></script> <!-- gestorpsi interface (ajax links and other stuffs) -->
 
 <style type="text/css" media="all">
-@import "/media/css/layout.css";
-@import "/media/css/jquery.autocomplete.css";
-@import "/media/css/datePicker.css";
+@import "{{MEDIA_URL}}css/layout.css";
+@import "{{MEDIA_URL}}css/jquery.autocomplete.css";
+@import "{{MEDIA_URL}}css/datePicker.css";
 </style>
 
 

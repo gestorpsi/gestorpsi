@@ -27,21 +27,21 @@ class PhoneForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(PhoneForm, self).__init__(*args, **kwargs)
+
+
+class PhonesForm(forms.Form):
     
-    #phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
+    def __init__(self, *args, **kwargs):
+        super(PhonesForm, self).__init__(*args, **kwargs)
     
-    def save_list(self, *args, **kwargs):
-        raise Exception( self )
-        def phone_list(ids, areas, numbers, exts, types): 
-            objs = []
-            for i in range(0, len(numbers)):
-                if (len(numbers[i])):
-                    objs.append(Phone(id=ids[i], area=areas[i], phoneNumber=numbers[i], ext=exts[i], phoneType=PhoneType.objects.get(pk=types[i])))
-            return objs
-        
-        def phone_save(object, ids, areas, numbers, exts, types):
-            object.phones.all().delete()
-            for phone in phone_list(ids, areas, numbers, exts, types):
-                phone.content_object = object
-                phone.save()
+    
+
+
+
+
+
+
+
+
+
 

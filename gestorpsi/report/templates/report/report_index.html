@@ -27,9 +27,9 @@ GNU General Public License for more details.
 
 {% block core %}
 
-<script type="text/javascript" src="/media/js/gestorpsi.report.lib.js"></script>
-<script type="text/javascript" src="/media/js/gestorpsi.report.js"></script>
-<script type="text/javascript" src="/media/js/gestorpsi.report.forms.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.report.lib.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.report.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.report.forms.js"></script>
 
 <h2 class="title_report title">{% trans "Report for" %} {{ user.get_profile.org_active }}</h2>
 

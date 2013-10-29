@@ -1,5 +1,6 @@
-{% comment %}
+{% load i18n %}
 
+{% comment %}
 Copyright (C) 2008 GestorPsi
 
 This program is free software; you can redistribute it and/or
@@ -11,78 +12,94 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
 {% endcomment %}
 
 <!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
-	{% load i18n %}
-	
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>GestorPsi - {% trans "Sistema de Gestão de Serviços em Psicologia" %} {% block title %}{% endblock %}</title>
 	
-	<script type="text/javascript" src="/media/js/jquery-1.4.2.min.js"></script> <!-- JQuery Core Library -->
-	<script type="text/javascript" src="/media/js/jquery.maskedinput.1.3.1.pack.js"></script> <!-- JQuery Masked Input Plugin -->
-	{% if user.is_authenticated %}
-	<script type="text/javascript" src="/media/js/jquery.form.js"></script> <!-- jQuery Form Plugin -->
-	<script type="text/javascript" src="/media/js/jquery.validate.min.js"></script> <!-- jQuery validation plug-in -->
-	<!--<script type="text/javascript" src="/media/js/jquery-ui-1.5.3.custom.min.js"></script>--> <!-- JQuery UI with Draggable -->
-	<script type="text/javascript" src="/media/js/jquery-ui-1.8.2.custom.min.js"></script> <!-- JQuery UI with Draggable -->
-    <script type="text/javascript" src="/media/js/jquery.flexbox.js"></script>
-    <script type="text/javascript" src="/media/js/jquery.flot.min.js"></script>
-    <script type="text/javascript" src="/media/js/jquery.autocomplete.min.js"></script>
-    <script type="text/javascript" src="/media/js/jquery.scrollTo-min.js"></script>
-    <script type="text/javascript" src="/media/js/jquery.colorpicker.js"></script>
-    <script type="text/javascript" src="/media/js/jquery.eye.js"></script>
-    <script type="text/javascript" src="/media/js/jquery.eye.utils.js"></script>
-    <script type="text/javascript" src="/media/js/multiselectable.js"></script>
-	<script type="text/javascript" src="/media/js/gestorpsi.util.js"></script>
-	<script type="text/javascript" src="/media/js/gestorpsi.frontend.js"></script> <!-- gestorpsi interface (ajax links and other stuffs) -->
-	<script type="text/javascript" src="/media/js/gestorpsi.lists.js"></script>
-	<script type="text/javascript" src="/media/js/gestorpsi.forms.options.js"></script>
-	<script type="text/javascript" src="/media/js/gestorpsi.forms.submit.js"></script>
-	<script type="text/javascript" src="/media/js/gestorpsi.forms.js"></script>
-	<script type="text/javascript" src="/media/js/gestorpsi.dates.js"></script>
-	<script type="text/javascript" src="/media/js/gestorpsi.json.js"></script>
-	<script type="text/javascript" src="/media/js/gestorpsi.search.js"></script>
-	{% else %}
-	<script type="text/javascript" src="/media/js/gestorpsi.browser.js"></script>
-	{% endif %}
-	
-	{% block extrahead %}
-	{% endblock extrahead %}
-	
 	<style type="text/css" media="all">
-	@import "/media/css/layout.css";
+	@import "{{MEDIA_URL}}css/layout.css";
 	{% if user.is_authenticated %}
-		@import "/media/css/schedule.css";
-		@import "/media/css/report.css";
-		@import "/media/css/jquery-ui/smoothness/jquery-ui-1.8.1.custom.css";
-	    @import "/media/css/jquery.flexbox.css";
-	    @import "/media/css/jquery.autocomplete.css";
-	    @import "/media/css/jquery.colorpicker.css";
+		@import "{{MEDIA_URL}}css/schedule.css";
+		@import "{{MEDIA_URL}}css/report.css";
+		@import "{{MEDIA_URL}}css/jquery-ui/smoothness/jquery-ui-1.8.1.custom.css";
+	    @import "{{MEDIA_URL}}css/jquery.flexbox.css";
+	    @import "{{MEDIA_URL}}css/jquery.autocomplete.css";
+	    @import "{{MEDIA_URL}}css/jquery.colorpicker.css";
 	{% endif %}
 	</style>
-	<link href="/media/css/print.css" rel="stylesheet" type="text/css" media="print" />
-	<link href="/media/img/gestorpsi.ico" rel="SHORTCUT ICON" />
+	<link href="{{MEDIA_URL}}css/print.css" rel="stylesheet" type="text/css" media="print" />
+	<link href="{{MEDIA_URL}}img/gestorpsi.ico" rel="SHORTCUT ICON" />
 	
 	<!--[if gte IE 5]>
-	<link href="/media/css/main_ie5.css" rel="stylesheet" type="text/css" />
+	<link href="{{MEDIA_URL}}css/main_ie5.css" rel="stylesheet" type="text/css" />
 	<![endif]-->
 	
 	<!--[if IE 6]>
-	<link href="/media/css/main_ie6.css" rel="stylesheet" type="text/css" />
+	<link href="{{MEDIA_URL}}css/main_ie6.css" rel="stylesheet" type="text/css" />
 	<![endif]-->
-	
 	
 	<!--[if IE 7]>
-	<link href="/media/css/main_ie7.css" rel="stylesheet" type="text/css" />
+	<link href="{{MEDIA_URL}}css/main_ie7.css" rel="stylesheet" type="text/css" />
 	<![endif]-->
+
+	{% block extracss %}{% endblock extracss %}
+	
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> <!-- JQuery Core Library -->
+	<!-- <script type="text/javascript" src="{{MEDIA_URL}}js/jquery.maskedinput.1.3.1.pack.js"></script> JQuery Masked Input Plugin -->
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.mask.min.js"></script>
+	{% if user.is_authenticated %}
+	<script type="text/javascript" src="{{MEDIA_URL}}js/jquery.form.js"></script> <!-- jQuery Form Plugin -->
+	<script type="text/javascript" src="{{MEDIA_URL}}js/jquery.validate.min.js"></script> <!-- jQuery validation plug-in -->
+	<!--<script type="text/javascript" src="{{MEDIA_URL}}js/jquery-ui-1.5.3.custom.min.js"></script>--> <!-- JQuery UI with Draggable -->
+	<script type="text/javascript" src="{{MEDIA_URL}}js/jquery-ui-1.8.2.custom.min.js"></script> <!-- JQuery UI with Draggable -->
+    <script type="text/javascript" src="{{MEDIA_URL}}js/jquery.flexbox.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/jquery.flot.min.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/jquery.autocomplete.min.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/jquery.scrollTo-min.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/jquery.colorpicker.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/jquery.eye.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/jquery.eye.utils.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/multiselectable.js"></script>
+	<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.util.js"></script>
+	<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.frontend.js"></script> <!-- gestorpsi interface (ajax links and other stuffs) -->
+	<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.lists.js"></script>
+	<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.forms.options.js"></script>
+	<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.forms.submit.js"></script>
+	<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.forms.js"></script>
+	<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.dates.js"></script>
+	<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.json.js"></script>
+	<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.search.js"></script>
+	{% else %}
+	<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.browser.js"></script>
+	{% endif %}
+	<script type="text/javascript">
+    $(document).ready(function()
+	{
+		var phone_masks = ['0000-00009', '0-0000-0000'];
+		var fields = $("[name='phoneNumber']");
+		fields.mask(phone_masks[0]);//.bind("propertychange keyup input paste", function(){ alert('aa'); });
+		function fixMask()
+		{
+			fields.each(function()
+			{
+				var newMask = ($(this).val().length < 10) ? phone_masks[0] : phone_masks[1];
+				$(this).unmask();
+				$(this).mask(newMask);
+			});
+		}
+		if( fields.length > 0 )
+			setInterval(function() { fixMask(); }, 500);
+	});
+	</script>
+	
+	{% block extrahead %}{% endblock extrahead %}
 	
 	{% block extrajs %}{% endblock extrajs %}
-	
 </head>
 
 <body>
@@ -95,7 +112,7 @@ GNU General Public License for more details.
         {% for message in messages %}
             {{ message|safe }}
         {% endfor %}
-        <a class="close_link"><img src="/media/img/close.gif" /></a>
+        <a class="close_link"><img src="{{MEDIA_URL}}img/close.gif" /></a>
     </div>
 {% endif %}
 
@@ -111,7 +128,7 @@ GNU General Public License for more details.
         <li>
             <a href="/profile/" id="profile" class="main_menu" display="form" title="{{ profile.person.name }}">{% trans "My record" %}</a>
         </li>|<li>
-            <a href="/media/manual.pdf" class="main_menu">{% trans "Help" %}</a>
+            <a href="{{MEDIA_URL}}manual.pdf" class="main_menu">{% trans "Help" %}</a>
         </li>|<li>
             <a href="/support/ticket/form/" class="support ajaxable">{% trans "Support" %}</a>
         </li>|<li>
@@ -132,11 +149,11 @@ GNU General Public License for more details.
 	</div>
     <div id="logotype">
     <!-- {{ MEDIA_URL }}img/organization/{{ profile.org_active.id }}/.thumb/{{ profile.org_active.photo }} -->
-    <!-- <img src="/media/img/generic_photo.gif" width="71" height="83" /> -->
+    <!-- <img src="{{MEDIA_URL}}img/generic_photo.gif" width="71" height="83" /> -->
     {% if user.profile.org_active.photo %}
         <img src="{{ MEDIA_URL }}img/organization/{{ user.profile.org_active.id }}/.thumb/{{ user.profile.org_active.photo }}" width="71" height="83" />
     {% else %}
-        <img src="/media/img/generic_photo.gif" width="71" height="83" />
+        <img src="{{MEDIA_URL}}img/generic_photo.gif" width="71" height="83" />
     {% endif %}
     <span>
         <b>{{ user.profile.org_active.trade_name }}</b><br />

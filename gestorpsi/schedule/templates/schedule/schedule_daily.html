@@ -29,8 +29,8 @@ GNU General Public License for more details.
 {% endblock %}
 
 {% block core %}
-<script type="text/javascript" src="/media/js/gestorpsi.schedule.js"></script>
-<script type="text/javascript" src="/media/js/gestorpsi.schedule.filter.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.schedule.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}js/gestorpsi.schedule.filter.js"></script>
 <div class="schedule">
     {% include "tags/schedule_daily.html" %}
 </div>

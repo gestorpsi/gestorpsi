@@ -22,13 +22,14 @@ people phone numbers
 -->
         
 <fieldset>
-        <legend>{% trans "Phones" %}</legend>
-                {% if not phones %}
-                        {% include "tags/phone.html" %}
-                {% else %}
-                        {% for phone in phones %}
-                                {% include "tags/phone.html" %}
-                        {% endfor %}
-                {% endif %}
-        <a class="add_to_form"><span>{% trans "Add Phone" %}</span></a>
+	<legend>{% trans "Phones" %}</legend>
+		{% if not phones %}
+			{% include "contact/phone_tag.html" %}
+		{% else %}
+			{% for phone in phones %}
+				{% include "contact/phone_tag.html" %}
+			{% endfor %}
+		{% endif %}
+	<a class="add_to_form"><span>{% trans "Add Phone" %}</span></a>
 </fieldset>
+

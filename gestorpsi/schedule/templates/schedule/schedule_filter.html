@@ -21,7 +21,7 @@ GNU General Public License for more details.
         <table>
             {% for o in places %}
             <tr>
-                <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
+                <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="{{MEDIA_URL}}img/chk.png" />{{ o }}</a></td>
                 <td><span style="background-color:#{{ o.color }};">&nbsp;&nbsp;</span></td>
             </tr>
             {% endfor %}
@@ -29,7 +29,7 @@ GNU General Public License for more details.
                 <td colspan="2"><hr /></td>
             </tr>
             <tr>
-                <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all" type="place"><img src="/media/img/chk.png" />{% trans "All Places" %}</a></td>
+                <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all" type="place"><img src="{{MEDIA_URL}}img/chk.png" />{% trans "All Places" %}</a></td>
             </tr>
         </table>
     </div>
@@ -42,7 +42,7 @@ GNU General Public License for more details.
             {% for place in places %}{% for o in place.room_set.all %}
             {% if o.active %}
             <tr place="{{ place.id }}" class="room_itens">
-                <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="room" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
+                <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="room" uuid="{{ o.id }}"><img src="{{MEDIA_URL}}img/chk.png" />{{ o }}</a></td>
                 <td><span style="background-color: #{{ o.color }};">&nbsp;&nbsp;</span></td>
             </tr>
             {% endif %}
@@ -51,7 +51,7 @@ GNU General Public License for more details.
                 <td colspan="2"><hr /></td>
             </tr>
             <tr>
-                <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all"><img src="/media/img/chk.png" />{% trans "All Rooms" %}</a></td>
+                <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all"><img src="{{MEDIA_URL}}img/chk.png" />{% trans "All Rooms" %}</a></td>
             </tr>
         </table>
     </div>
@@ -64,7 +64,7 @@ GNU General Public License for more details.
         <table>
             {% for o in services %}
             <tr>
-                <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="service" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
+                <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="service" uuid="{{ o.id }}"><img src="{{MEDIA_URL}}img/chk.png" />{{ o }}</a></td>
                 <td><span style="background-color: #{{ o.color }};">&nbsp;&nbsp;</span></td>
             </tr>
             {% endfor %}
@@ -72,7 +72,7 @@ GNU General Public License for more details.
                 <td colspan="2"><hr /></td>
             </tr>
             <tr>
-                <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all"><img src="/media/img/chk.png" />{% trans "All Services" %}</a></td>
+                <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all"><img src="{{MEDIA_URL}}img/chk.png" />{% trans "All Services" %}</a></td>
             </tr>
         </table>
     </div>
@@ -85,14 +85,14 @@ GNU General Public License for more details.
             <table>
                 {% for o in professionals %}
                 <tr>
-                    <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="professional" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
+                    <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="professional" uuid="{{ o.id }}"><img src="{{MEDIA_URL}}img/chk.png" />{{ o }}</a></td>
                 </tr>
                 {% endfor %}
                  <tr>
                     <td><hr /></td>
                 </tr>
                  <tr>
-                     <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all"><img src="/media/img/chk.png" />{% trans "All Professionals" %}</a></td>
+                     <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all"><img src="{{MEDIA_URL}}img/chk.png" />{% trans "All Professionals" %}</a></td>
                  </tr> 
             </table> 
        </div>

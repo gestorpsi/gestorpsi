@@ -19,7 +19,7 @@ from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from gestorpsi.middleware import threadlocals
-from gestorpsi.phone.models import Phone
+#from gestorpsi.contact.models import Phone
 from gestorpsi.address.models import City, Address, Country
 from gestorpsi.document.models import Document
 from gestorpsi.internet.models import Email, Site, InstantMessenger
@@ -59,7 +59,7 @@ class Person(models.Model):
     birthDateSupposed = models.BooleanField(default=False)
     gender = models.CharField(max_length=1, choices=Gender) 
     maritalStatus = models.ForeignKey(MaritalStatus, null=True)
-    phones = generic.GenericRelation(Phone, null=True)
+    phones = generic.GenericRelation('contact.Phone', null=True)
     address = generic.GenericRelation(Address, null=True)
     document = generic.GenericRelation(Document, null=True)
     emails  = generic.GenericRelation(Email, null=True)

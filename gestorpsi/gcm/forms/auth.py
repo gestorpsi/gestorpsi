@@ -18,7 +18,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from gestorpsi.authentication.forms import RegistrationForm
 from gestorpsi.gcm.models import Plan, Invoice
-from gestorpsi.phone.models import Phone
+from gestorpsi.contact.models import Phone
 from gestorpsi.address.models import State, City, Address, AddressType
 from gestorpsi.document.models import *
 from gestorpsi.gcm.forms import fields

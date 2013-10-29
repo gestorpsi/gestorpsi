@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from gestorpsi.address.models import Address
-from gestorpsi.phone.models import Phone, PhoneType
+from gestorpsi.contact.models import Phone, PhoneType
 from gestorpsi.place.models import PlaceType, Place
 from gestorpsi.address.models import City, State, Country, AddressType
 import unittest

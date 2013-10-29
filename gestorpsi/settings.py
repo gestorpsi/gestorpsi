@@ -188,7 +188,6 @@ INSTALLED_APPS = (
     'gestorpsi.client',
     'gestorpsi.admission',
     'gestorpsi.referral',
-    'gestorpsi.phone',
     'gestorpsi.address',
     'gestorpsi.person',
     'gestorpsi.employee',

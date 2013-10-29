@@ -22,7 +22,7 @@ GNU General Public License for more details.
 """
 
 from django.contrib import admin
-from gestorpsi.phone.models import PhoneType, Phone
+from gestorpsi.contact.models import PhoneType, Phone
 
 class PhoneTypeAdmin(admin.ModelAdmin):
     pass

@@ -20,7 +20,7 @@ from gestorpsi.address.models import City
 from gestorpsi.address.views import address_save
 from gestorpsi.document.views import document_save
 from gestorpsi.person.models import MaritalStatus
-from gestorpsi.phone.views import phone_save
+from gestorpsi.contact.helpers import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
 from datetime import datetime
 

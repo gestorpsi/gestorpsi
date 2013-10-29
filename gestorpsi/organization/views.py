@@ -21,11 +21,11 @@ from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext as _
 from django.contrib import messages
 from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization, ProfessionalResponsible
-from gestorpsi.phone.models import PhoneType
+from gestorpsi.contact.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.address.views import address_save
-from gestorpsi.phone.views import phone_save
+from gestorpsi.contact.helpers import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.careprofessional.models import Profession, CareProfessional

@@ -25,8 +25,8 @@ from django.contrib import messages
 from gestorpsi.place.models import Place, Room, RoomType, PlaceType
 from gestorpsi.address.models import Country, AddressType, State, City
 from gestorpsi.address.views import address_save
-from gestorpsi.phone.models import PhoneType
-from gestorpsi.phone.views import phone_save
+from gestorpsi.contact.models import PhoneType
+from gestorpsi.contact.helpers import phone_save
 from gestorpsi.util.decorators import permission_required_with_403
 
 @permission_required_with_403('place.place_list')

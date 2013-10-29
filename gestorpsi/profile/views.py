@@ -20,7 +20,7 @@ from django.template.context import RequestContext
 from django.utils.translation import gettext as _
 from django.contrib import messages
 from gestorpsi.address.models import Country, State, AddressType
-from gestorpsi.phone.models import PhoneType
+from gestorpsi.contact.models import PhoneType
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.person.models import MaritalStatus

@@ -42,7 +42,7 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.person.models import Person, MaritalStatus, CompanyClient
 from gestorpsi.person.forms import CompanyForm, CompanyClientForm
 from gestorpsi.person.views import person_save
-from gestorpsi.phone.models import PhoneType
+from gestorpsi.contact.models import PhoneType
 from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, ReferralAttach, REFERRAL_ATTACH_TYPE, Queue, ReferralExternal, ReferralDischarge
 from gestorpsi.admission.models import ReferralChoice as AdmissionChoice, AdmissionReferral
 from gestorpsi.referral.forms import ReferralForm, ReferralDischargeForm, QueueForm, ReferralExtForm

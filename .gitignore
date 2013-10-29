@@ -1,5 +1,8 @@
 #formats
 *.pyc
+*.zip
+*.tar
+*.sql
 
 
 #root folders

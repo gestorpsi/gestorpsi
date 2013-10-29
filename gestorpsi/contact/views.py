@@ -24,49 +24,18 @@ from django.template.defaultfilters import slugify
 from django.utils.translation import gettext as _
 from django.contrib import messages
 from gestorpsi.organization.models import Organization
-from gestorpsi.phone.models import PhoneType
+from gestorpsi.contact.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType, City
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.person.models import Person
 from gestorpsi.careprofessional.models import CareProfessional, Profession, ProfessionalIdentification
 from gestorpsi.address.views import address_save
-from gestorpsi.phone.views import phone_save
+from gestorpsi.contact.helpers import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.contact.models import Contact
-
-def have_organization_perms_save(request, object):
-    if  object.organization != request.user.get_profile().org_active \
-        or ( not object.revision_created().user == request.user \
-        and 'administrator' not in [ g.name for g in request.user.groups.all()] \
-        and 'secretary' not in [ g.name for g in request.user.groups.all()]):
-        return False
-    else:
-        return True
-
-def have_careprofessional_perms_save(request, object):
-    if  request.user.get_profile().org_active not in [ i.organization for i in object.person.organization.all()] \
-        or ( not object.revision_created().user == request.user \
-        and 'administrator' not in [ g.name for g in request.user.groups.all()] \
-        and 'secretary' not in [ g.name for g in request.user.groups.all()]):
-        return False
-    else:
-        return True
-
-@permission_required_with_403('contact.contact_write')
-def extra_data_save(request, object = None):
-    phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
-    email_save(object, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
-    site_save(object, request.POST.getlist('site_id'), request.POST.getlist('site_description'), request.POST.getlist('site_site'))
-    im_save(object, request.POST.getlist('im_id'), request.POST.getlist('im_identity'), request.POST.getlist('im_network'))
-    address_save(object, request.POST.getlist('addressId'), request.POST.getlist('addressPrefix'),
-        request.POST.getlist('addressLine1'), request.POST.getlist('addressLine2'),
-        request.POST.getlist('addressNumber'), request.POST.getlist('neighborhood'),
-        request.POST.getlist('zipCode'), request.POST.getlist('addressType'),
-        request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
-        request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))
-    return object
+from gestorpsi.contact.helpers import *
 
 @permission_required_with_403('contact.contact_list')
 def index(request, deactive = False, template='contact/contact_list.html'):

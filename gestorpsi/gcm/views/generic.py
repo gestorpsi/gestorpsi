@@ -69,7 +69,7 @@ def update_object(request, *args, **kwargs):
         return HttpResponseRedirect('/gcm/login/?next=%s' % request.path)
 
     #from gestorpsi.organization.models import Organization
-    #from gestorpsi.phone.models import Phone
+    #from gestorpsi.contact.models import Phone
     #p = Phone()
     #p.area = '99'
     #p.phoneNumber = '87654321'

@@ -18,7 +18,7 @@ import reversion
 from datetime import datetime
 from django.db import models
 from gestorpsi.address.models import Address
-from gestorpsi.phone.models import Phone
+#from gestorpsi.contact.models import Phone
 from django.contrib.contenttypes import generic
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
@@ -49,7 +49,7 @@ class Place( models.Model ):
     label = models.CharField(max_length=80)
     active = models.BooleanField(default=True)
     address = generic.GenericRelation(Address)
-    phones = generic.GenericRelation(Phone)
+    phones = generic.GenericRelation('contact.Phone')
     place_type = models.ForeignKey(PlaceType)
     organization = models.ForeignKey(Organization, null= True, blank= True)
     comments = models.TextField(blank=True, null=True)

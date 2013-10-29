@@ -80,20 +80,30 @@ GNU General Public License for more details.
 	<script type="text/javascript">
     $(document).ready(function()
 	{
-		var phone_masks = ['0000-00009', '0-0000-0000'];
-		var fields = $("[name='phoneNumber']");
-		fields.mask(phone_masks[0]);//.bind("propertychange keyup input paste", function(){ alert('aa'); });
-		function fixMask()
-		{
-			fields.each(function()
+    	var timer = null;
+    	var maskPhones = function()
+    	{
+			var phone_masks = ['0000-00009', '0-0000-0000'];
+			var fields = $("[name='phoneNumber']");
+			fields.mask(phone_masks[0]);//.bind("propertychange keyup input paste", function(){ alert('aa'); });
+			function fixMask()
 			{
-				var newMask = ($(this).val().length < 10) ? phone_masks[0] : phone_masks[1];
-				$(this).unmask();
-				$(this).mask(newMask);
-			});
-		}
-		if( fields.length > 0 )
-			setInterval(function() { fixMask(); }, 500);
+				fields.each(function()
+				{
+					var newMask = ($(this).val().length < 10) ? phone_masks[0] : phone_masks[1];
+					$(this).unmask();
+					$(this).mask(newMask);
+				});
+			}
+			
+			if( timer == null )
+				window.clearInterval( timer );
+			if( fields.length > 0 )
+				timer = setInterval(function() { fixMask(); }, 500);
+    	}
+    	
+    	maskPhones();
+		$('fieldset a.add_to_form').click(function(){ maskPhones(); });
 	});
 	</script>
 	

@@ -44,7 +44,7 @@ GNU General Public License for more details.
              <h2 class="red">
             {{ occurrence.start_time|date:"l," }} {{ occurrence.start_time|date:"d" }} {% trans "of" %} {{ occurrence.start_time|date:"F" }} {% trans "of" %} {{ occurrence.start_time|date:"Y" }}</a>
             </h2>
-            <p>{{ occurrence.room }} <b>{{ occurrence.start_time|date:"H:i" }} - {{ occurrence.end_time|date:"H:i" }} hs</b></p>
+            <p>{{ occurrence.room }} <b>{{ occurrence.start_time|date:"H:i" }} - {{ occurrence.end_time|date:"H:i" }} h</b></p>
             <label style="display:none">{% trans "Start Time" %}<br />
             {{ form.start_time }}</label>
             <label style="display:none">{% trans "End Time" %}<br />

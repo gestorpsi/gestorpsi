@@ -21,78 +21,18 @@ from gestorpsi.address.views import address_save
 from gestorpsi.document.views import document_save
 from gestorpsi.person.models import MaritalStatus
 from gestorpsi.contact.helpers import phone_save
-from gestorpsi.internet.views import email_save, site_save, im_save
+from gestorpsi.contact.helpers import email_save, site_save, im_save
 from datetime import datetime
 
 def person_save(request, person):
-    person.name= request.POST['name']
-    person.nickname = request.POST['nickname']
-    person.comments = request.POST.get('comments')
-
-    if(request.POST['photo']):
-        person.photo = request.POST['photo']
+    from gestorpsi.client.forms import PersonForm
+    personform = PersonForm( request.POST, instance=person )
+    if personform.is_valid():
+        person = personform.save()
     else:
-        person.photo = ''
-
-    """ AGE """
-    dateBirthError = True
-    dateBirth = request.POST.get('dateBirth', False)
-    if request.POST.get('aprox', False) and request.POST.get('Years', False) and not dateBirth:
-            birthYear = (( int(datetime.now().strftime("%Y")) ) - ( int(request.POST.get('Years')) ) ) 
-            today = (datetime.now().strftime("%d/%m/"))
-            dt = "%s%s" % (today, birthYear)
-            person.birthDate = datetime.strptime(dt ,'%d/%m/%Y')
-            dateBirthError = False
-    elif dateBirth:
-        try:
-            person.birthDate = datetime.strptime(dateBirth, '%d/%m/%Y')
-            dateBirthError = False
-        except:
-            pass
-
-    if request.POST.get('aprox', False):
-        person.birthDateSupposed = True
-    else:
-        person.birthDateSupposed = False
-    """ AGE """
-
-    person.gender = request.POST['gender']
-    
-    # maritalStatus
-    try:
-        if not (request.POST['maritalStatus']):
-            person.maritalStatus = None
-        else:
-            person.maritalStatus = MaritalStatus.objects.get(pk = request.POST['maritalStatus'])
-    except:
-        person.maritalStatus = None
-
-    # birthPlace (Naturality)
-    person.birthForeignCity= ''
-    person.birthForeignState= ''
-    person.birthForeignCountry= None
-    
-    try:
-        person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
-    except:
-        person.birthPlace = None
-        try:
-            person.birthForeignCity= request.POST['birthForeignCity']
-        except:
-            person.birthForeignCity = None
-        try:
-            person.birthForeignState= request.POST['birthForeignState']
-        except:
-            person.birthForeignState = None
-        try:
-            person.birthForeignCountry= request.POST['birthForeignCountry']
-        except:
-            person.birthForeignCountry= None
-
-
-    person.save()    
-    user = request.user
-    person.organization.add(user.get_profile().org_active)
+        return person
+        raise Exception( personform.errors )
+    person = personform.save()
 
     # save phone numbers (using Phone APP)
     phone_save(person, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))

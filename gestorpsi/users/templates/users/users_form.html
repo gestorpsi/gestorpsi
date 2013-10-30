@@ -200,7 +200,7 @@ GNU General Public License for more details.
                 {% trans "This register are not saved yet. Click Save to register it." %}
             {% else %}
             {% trans 'User created at' %} 
-            {{ profile.user.date_joined|date:"r"|slice:":-9"}}&nbsp;hs
+            {{ profile.user.date_joined|date:"r"|slice:":-9"}}&nbsp;h
             {% endif %}
             </span>
         </p>

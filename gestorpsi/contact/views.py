@@ -26,12 +26,12 @@ from django.contrib import messages
 from gestorpsi.organization.models import Organization
 from gestorpsi.contact.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType, City
-from gestorpsi.internet.models import EmailType, IMNetwork
+from gestorpsi.contact.models import EmailType, IMNetwork
 from gestorpsi.person.models import Person
 from gestorpsi.careprofessional.models import CareProfessional, Profession, ProfessionalIdentification
 from gestorpsi.address.views import address_save
 from gestorpsi.contact.helpers import phone_save
-from gestorpsi.internet.views import email_save, site_save, im_save
+from gestorpsi.contact.helpers import email_save, site_save, im_save
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.contact.models import Contact

@@ -44,7 +44,7 @@ GNU General Public License for more details.
                      <a href="/client/{{e.id }}/home/">{{ e }}</a>{% if not forloop.last %}, {% endif%}
                  {% endfor %}
                 {% endif %}</td>
-                <td>{{ o.start_time|date:"H:i" }} - {{ o.end_time|date:"H:i" }} hs<br />{{ o.scheduleoccurrence.room }}</td>
+                <td>{{ o.start_time|date:"H:i" }} - {{ o.end_time|date:"H:i" }} h<br />{{ o.scheduleoccurrence.room }}</td>
                 <td></td>
                 </tr>
             {% endfor %}

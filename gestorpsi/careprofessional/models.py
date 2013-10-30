@@ -19,7 +19,6 @@ from django.db import models
 from django.db.models import Q 
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
-from gestorpsi.person.models import Person
 from gestorpsi.place.models import Place
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.organization.models import Agreement
@@ -254,7 +253,7 @@ class CareProfessional(models.Model):
     id= UuidField( primary_key= True )
     professionalIdentification = models.OneToOneField(ProfessionalIdentification, null=True)
     professionalProfile = models.OneToOneField(ProfessionalProfile, null = True)
-    person = models.OneToOneField(Person)
+    person = models.OneToOneField('person.Person')
     comments = models.CharField(max_length=200, null=True)
     active = models.BooleanField(default=True)
     objects = CareProfessionalManager()

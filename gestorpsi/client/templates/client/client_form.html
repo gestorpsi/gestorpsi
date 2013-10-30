@@ -17,8 +17,35 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
+{% load calculate_age %}
 
 {% block menu_client %}active{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+$(document).ready(function()
+{
+	var isValidDate = function (value)
+	{
+	    var match = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(value),
+	    isDate = function (d, m, y)
+	    {
+	        return m > 0 && m < 13 && y > 0 && y < 32768 && d > 0 && d <= (new Date(y, m, 0)).getDate();
+	    };
+	    return match && isDate(match[1], match[2], match[3]);
+	}
+	
+	/*$('form').submit(function()
+	{
+		alert( isValidDate(  $('#dateBirth').val()  ) );
+		return false;
+	});*/
+});
+</script>
+{% for form in forms %}
+{{ form.media }}
+{% endfor %}
+{% endblock extrajs %}
 
 {% block submenu %}
 <ul id="sub_customers">
@@ -48,7 +75,9 @@ GNU General Public License for more details.
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
 
-<form action="/client/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_client" class="form_people collapsable form_client{% if not object.id %} autocomplete{% endif %}">	
+{% if perms.client.client_write %}
+<form action="/client/{% if object.id %}{{ object.id }}/{% endif %}" method="post" id="form_client" class="form_people collapsable form_client{% if not object.id %} autocomplete{% endif %}">
+{% endif %}	
 <div class="main_area">
 
 	<!-- <a href="" id="help">&nbsp;</a> -->
@@ -60,7 +89,291 @@ GNU General Public License for more details.
 		<li><label><input name="this" type="radio" value="" />{% trans "Socio-Economic" %}</label></li>
 	</ul>
 
-    {% include "meta/people.html" %}
+	<div class="photo">
+		<img class="img_people" organization="{{ user.get_profile.org_active.id }}" src="{% if object.person.photo %}{{MEDIA_URL}}img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}{{MEDIA_URL}}img/generic_photo.gif{% endif %}" />
+		<a class="male notajax gender{% ifequal object.person.gender '2' %} active{% endifequal %}" value="2"><span>{% trans "Male" %}</span></a>
+		<a class="female notajax gender{% ifequal object.person.gender '1' %} active{% endifequal %}" value="1"><span>{% trans "Female" %}</span></a>
+		
+		<a class="clips notajax">{% trans "Photo" %}</a>
+		<input type="hidden" name="photo" value="{{ object.person.photo }}" class="photo" />
+		<a class="notajax delete" title="delete" onclick="$(this).siblings('input.photo').val(''); $(this).siblings('img.img_people').attr('src', '{{MEDIA_URL}}img/generic_photo.gif');"><span>{% trans "Delete" %}</span></a>
+		<input type="hidden" name="gender" value="{{ object.person.gender }}" class="gender" />
+	</div> 
+	
+	<fieldset class="fieldset_personal_identification">
+	{% for form in forms %}
+	{% for error in form.errors %}
+	<p>{{error}}</p>
+	{% endfor %}
+	{% endfor %}
+	</fieldset>
+	
+	<!--
+	People Personal Identification Form	
+	-->
+	<fieldset class="fieldset_personal_identification">
+		<legend>{% trans "Personal Identification" %}</legend>
+		<label>
+			{{forms.personform.name.label}}
+			<br />
+			{{ forms.personform.name }}
+            <span class="error_message">{{ forms.personform.name.errors|striptags }}</span>
+		</label>
+		<label>
+			{{forms.personform.nickname.label}}
+			<br />
+			{{ forms.personform.nickname }}
+            <span class="erforms.personforms.personform.essage">{{ forms.personform.nickname.errors|striptags }}</span>
+		</label>
+	</fieldset>
+
+	<!--
+	People Personal Profile Form	
+	-->
+	<fieldset>
+        <legend>{% trans "Personal Profile" %}</legend>
+
+            <label>
+            	{{forms.personform.birthDate.label}}<br />
+                {{forms.personform.birthDate}}
+            	<span class="error_message">{{ forms.personform.birthDate.errors|striptags }}</span>
+            </label>
+
+
+        <label>
+        	{% trans "Age" %} <br />
+            <input class="small" type="text" name="Years" id="Years" onchange="displayAge();" value="{% if object.person.birthDate %}{{ object.person.birthDate|age }}{% endif %}"/>
+        </label>
+        
+         <br />
+         <br />
+
+        <label>
+            <input name="aprox" type="checkbox" id="aprox" {% if object.person.birthDateSupposed  %} checked="checked" {% endif %}  onclick="dateOrAge();" />
+            {% trans "Birthdate supposedly from the age" %}  
+        </label>
+        
+         <br />
+         <br />
+
+        {% comment %}
+        <label>{% trans "Age" %}<br />
+                <input type="text" name="age" class="extrasmall" value="{{ object.age }}" id="id_age" />
+        </label>
+
+        {% endcomment %}
+        <label>{% trans "Marital Status" %}<br />
+                <select name="maritalStatus" class="select extramedium">
+                        <option></option>
+                        {% for m in MaritalStatusTypes %}
+                                <option value="{{ m.id }}"{% ifequal m.id object.person.maritalStatus_id %} selected{% endifequal %}>{{ m }}</option>
+                        {% endfor %}
+                </select>
+        </label>
+	</fieldset>
+
+
+		<fieldset>
+	        <legend>{% trans "Naturality" %}</legend>
+	        <div>
+                <label>{% trans "Country" %}<br />
+                <select name="birthForeignCountry" class="select country">
+                {% for country in countries %}
+                        <option value="{{ country.id }}" {% if object.person.birthForeignCountry %}{% ifequal object.person.birthForeignCountry country.id %}selected{% endifequal %}{% else %}{% ifequal country.id 33 %}selected{% endifequal %}{% endif %}>{{ country.name }}</option>
+                {% endfor %}
+                </select>
+                </label>
+                
+                <!--auto complete city-->
+                <label class="autocomplete state"{% if object.person.birthForeignCity %} style="display:none"{% endif %}>
+                {% trans "State/Region" %}<br />
+                <select class="city_search extrasmall" city="{{ object.person.birthPlace.id }}">
+                    <option></option>
+                    {% for s in States %}
+                    <option value="{{ s.id }}"{% ifequal object.person.birthPlace.state.id s.id %} selected{% endifequal %}>{{ s.shortName }}</option>
+                    {% endfor %}
+                </select>
+                </label>
+
+                <label class="autocomplete city"{% if object.person.birthForeignCity %} style="display:none"{% endif %}>
+                {% trans "City" %}<br />
+                <select name="birthPlace" class="extramedium">
+                    {% if not object.person.birthPlace %}
+                        <option disabled>{% trans "Select state first" %}</option>
+                    {% endif %}
+                </select>
+                </label>
+
+                <!--not autocomplete-->
+                <label class="noautocomplete"{% if not object.person.birthForeignCity %} style="display:none"{% endif %}>{% trans "City" %}<br />
+                        <input type="text" maxlength="100" name="birthForeignCity" class="extramedium" value="{{ object.person.birthForeignCity }}"  />
+                </label>
+                
+                <label class="noautocomplete"{% if not object.person.birthForeignState %} style="display:none"{% endif %}>{% trans "State" %}<br />
+                        <input type="text" maxlength="100" name="birthForeignState" class="extrasmall" value="{{ object.person.birthForeignState }}" />
+                </label>
+	        </div>
+		</fieldset>
+
+
+	<!--
+	people phone numbers
+	-->
+	<fieldset>
+		<legend>{% trans "Phones" %}</legend>
+		{% for phone in object.person.phones.all %}
+		<div>
+			<input type="hidden" name="phoneId" value="{{ phone.id }}" />
+			
+			<label>{% trans "Area" %}<br />
+			<input type="text" maxlength="2" class="extrasmall" name="area" value="{{ phone.area }}" mask="99" />
+			</label>
+		
+			<label>{% trans "Number" %}<br />
+			<input type="text" maxlength="12"  class="medium" name="phoneNumber" value="{{ phone.phoneNumber }}" />
+			</label>
+			
+			<label>{% trans "Extension" %}<br />
+			<input type="text" class="small" name="ext" value="{{ phone.ext }}" maxlength="4" />
+			</label>
+					
+			<label>{% trans "Type" %}<br />
+			{% if not PhoneTypes %}
+				{% trans "There is no types available to choice" %}
+			{% else %}
+			<select name="phoneType" class="medium">
+			{% for phoneType in PhoneTypes %}
+				<option value="{{ phoneType.id }}"{% ifequal phone.phoneType.id phoneType.id %} selected{% endifequal %}>{{ phoneType }}</option>
+			{% endfor %}
+			</select>
+			{% endif %}
+			</label>
+			<label>
+			<br /><a class="notajax remove_from_form" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a>
+			</label>
+		</div>
+		{% empty %}
+		<div>
+			<input type="hidden" name="phoneId" value="{{ phone.id }}" />
+			
+			<label>{% trans "Area" %}<br />
+			<input type="text" maxlength="2" class="extrasmall" name="area" value="{{ phone.area }}" mask="99" />
+			</label>
+		
+			<label>{% trans "Number" %}<br />
+			<input type="text" maxlength="12"  class="medium" name="phoneNumber" value="{{ phone.phoneNumber }}" />
+			</label>
+			
+			<label>{% trans "Extension" %}<br />
+			<input type="text" class="small" name="ext" value="{{ phone.ext }}" maxlength="4" />
+			</label>
+					
+			<label>{% trans "Type" %}<br />
+			{% if not PhoneTypes %}
+				{% trans "There is no types available to choice" %}
+			{% else %}
+			<select name="phoneType" class="medium">
+			{% for phoneType in PhoneTypes %}
+				<option value="{{ phoneType.id }}"{% ifequal phone.phoneType.id phoneType.id %} selected{% endifequal %}>{{ phoneType }}</option>
+			{% endfor %}
+			</select>
+			{% endif %}
+			</label>
+			<label>
+			<br /><a class="notajax remove_from_form" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a>
+			</label>
+		</div>
+		{% endfor %}
+		<a class="add_to_form"><span>{% trans "Add Phone" %}</span></a>
+	</fieldset>
+
+	<!--
+	people addresses  
+	-->
+	<fieldset class="set_multirow">
+        <legend>{% trans "Addresses" %}</legend>
+                {% if not addresses %}
+                        {% include "tags/address.html" %}
+                {% else %}
+                        {% for address in addresses %}
+                                {% include "tags/address.html" %}
+                        {% endfor %}
+                {% endif %}
+        <a class="add_to_form"><span>{% trans "Add Address" %}</span></a>
+	</fieldset>
+
+
+	<!--
+	WebSites
+	-->
+	<fieldset>
+        <legend>{% trans "Websites" %}</legend>
+                {% if not websites %}
+                        {% include "tags/website.html" %}
+                {% else %}
+                        {% for website in websites %}
+                                {% include "tags/website.html" %}
+                        {% endfor %}
+                {% endif %}
+        <a class="add_to_form"><span>{% trans "Add Website" %}</span></a>
+	</fieldset>
+	
+	
+	<!--
+	emails addresses
+	-->
+	<fieldset>
+        <legend>{% trans "Emails" %}</legend>
+                {% if not emails %}
+                        {% include "tags/email.html" %}
+                {% else %}
+                        {% for email in emails %}
+                                {% include "tags/email.html" %}
+                        {% endfor %}
+                {% endif %}
+        <a class="add_to_form"><span>{% trans "Add Email" %}</span></a>
+	</fieldset>
+
+
+
+
+	<!--
+	Instant Messengers
+	-->
+	<fieldset>
+        <legend>{% trans "Instant Messengers" %}</legend>
+                {% if not ims %}
+                        {% include "tags/im.html" %}
+                {% else %}
+                        {% for im in ims %}
+                                {% include "tags/im.html" %}
+                        {% endfor %}
+                {% endif %}
+        <a class="add_to_form"><span>{% trans "Add IM" %}</span></a>
+	</fieldset>
+	
+	<!--
+	people documents  
+	-->
+	<fieldset>
+        <legend>{% trans "Documents" %}</legend>
+                {% if not documents %}
+                        {% include "tags/document.html" %}
+                {% else %}
+                        {% for document in documents %}
+                                {% include "tags/document.html" %}
+                        {% endfor %}
+                {% endif %}
+        <a class="add_to_form"><span>{% trans "Add Document" %}</span></a>
+	</fieldset>
+	
+	<fieldset class="comment_form">
+	        <legend>{% trans "Comments" %}</legend>
+	        <label>{% trans "Comments" %}<br />
+	                <textarea name="comments" class="extrabig">{{ object.person.comments }}</textarea>
+	        </label>
+	
+	</fieldset>
 
 <br />	
 </div>
@@ -69,7 +382,21 @@ GNU General Public License for more details.
 <div id="sidebar" class="sidebar">
     {% if perms.client.client_write %}
         <div class="bg_blue">
-            {% include "tags/save.html" %}
+			<input class="save_button" name="save" type="submit" value="{% trans 'Save' %}" />
+			<input class="save_button" name="cancel" id="cancel_button" type="button" value="{% trans 'Back' %}" onclick="javascript:history.go(-1)" />
+			
+			<div id="msg_info">
+				<p>
+			        <span>
+				{% if not object.revision %}
+			            {% trans "This register are not saved yet. Click Save to register it." %}
+			        {% else %}
+			        {% trans 'Last revision' %} 
+					{{ object.revision.date_created|date:"r"|slice:":-9"}}&nbsp;h
+			        {% endif %}
+					</span>
+				</p>
+			</div>
         </div>
     {% endif %}
     {% if object.id %}
@@ -79,7 +406,8 @@ GNU General Public License for more details.
 
 
 
-</form>
+{% if perms.client.client_write %}</form>
 {% include "tags/upload.html" %}
+{% endif %}
 
 {% endblock %}

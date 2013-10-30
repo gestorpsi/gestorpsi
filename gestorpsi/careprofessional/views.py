@@ -21,12 +21,12 @@ from django.utils import simplejson
 from django.utils.translation import ugettext as _
 from django.contrib import messages
 from gestorpsi.person.models import Person, MaritalStatus
-from gestorpsi.person.views import person_json_list, person_save
+from gestorpsi.person.helpers import person_json_list, person_save
 from gestorpsi.careprofessional.models import ProfessionalProfile, ProfessionalIdentification, CareProfessional, Profession
 from gestorpsi.organization.models import Agreement
 from gestorpsi.contact.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType, City
-from gestorpsi.internet.models import EmailType, IMNetwork
+from gestorpsi.contact.models import EmailType, IMNetwork
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.place.models import Place, PlaceType
 from gestorpsi.service.models import Service

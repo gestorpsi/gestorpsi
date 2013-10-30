@@ -53,7 +53,7 @@
     <br />
     <strong>{% trans "Valor" %}</strong>: {{ i.ammount }}
     <br />
-    <strong>{% trans "Data da requisicão" %}</strong>: <a href="{% url invoice-update i.id %}">{{ i.date|date:"d/m/Y H:i:s" }}hs</a>
+    <strong>{% trans "Data da requisicão" %}</strong>: <a href="{% url invoice-update i.id %}">{{ i.date|date:"d/m/Y H:i:s" }}h</a>
     <br />
 </p>
 {% endfor %}

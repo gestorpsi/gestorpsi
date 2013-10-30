@@ -28,7 +28,7 @@ from gestorpsi.authentication.models import Profile, Role
 from gestorpsi.person.models import Person
 from django.utils import simplejson
 from gestorpsi.util.decorators import permission_required_with_403
-from gestorpsi.person.views import person_json_list
+from gestorpsi.person.helpers import person_json_list
 
 @permission_required_with_403('users.users_list')
 def index(request, deactive = False):

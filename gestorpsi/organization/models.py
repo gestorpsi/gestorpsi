@@ -24,8 +24,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator, MinLeng
 from django.utils.translation import ugettext as _
 
 #from gestorpsi.contact.models import Phone
-from gestorpsi.internet.models import Email, Site, InstantMessenger
-from gestorpsi.address.models import Address
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util.first_capitalized import first_capitalized
 from gestorpsi.gcm.models.plan import Plan
@@ -219,10 +217,10 @@ class Organization(models.Model):
     visible = models.BooleanField(default=True)
     photo = models.CharField(max_length=200, blank=True)          
     phones = generic.GenericRelation('contact.Phone', null=True)
-    address = generic.GenericRelation(Address, null=True)
-    emails  = generic.GenericRelation(Email, null=True)
-    sites = generic.GenericRelation(Site, null=True)
-    instantMessengers =generic.GenericRelation(InstantMessenger, null=True) 
+    address = generic.GenericRelation('address.Address', null=True)
+    emails  = generic.GenericRelation('contact.Email', null=True)
+    sites = generic.GenericRelation('contact.Site', null=True)
+    instantMessengers =generic.GenericRelation('contact.InstantMessenger', null=True) 
     organization = models.ForeignKey('self', related_name="%(class)s_related", null=True, blank=True)
     contact_owner = models.ForeignKey('person.Person', related_name="contact_owner", null=True, blank=True, default=None)
     

@@ -192,7 +192,7 @@ INSTALLED_APPS = (
     'gestorpsi.person',
     'gestorpsi.employee',
     'gestorpsi.document',
-    'gestorpsi.internet',
+    'gestorpsi.contact',
     'gestorpsi.upload',
     'gestorpsi.support',
     'gestorpsi.cbo',

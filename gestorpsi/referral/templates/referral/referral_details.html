@@ -232,7 +232,7 @@ GNU General Public License for more details.
     {% else %}
         {% for i in referral.online_and_active_occurrences|slice:":5" %}
                 <p>
-             {{ i.start_time|date:"r"|slice:"-9" }} hs - {{ i.scheduleoccurrence.room }}
+             {{ i.start_time|date:"r"|slice:"-9" }} h - {{ i.scheduleoccurrence.room }}
              {% if i.scheduleoccurrence.employees_active %}<br />
                  {% trans "Employees:" %}
                  {% for e in i.scheduleoccurrence.employees_active %}
@@ -249,7 +249,7 @@ GNU General Public License for more details.
 
         {% for i in referral.upcoming_occurrences|slice:":5" %}
                 <p>
-             <a href="/schedule/events/{{i.pk}}/confirmation/">{{ i.start_time|date:"r"|slice:"-9" }} hs </a> 
+             <a href="/schedule/events/{{i.pk}}/confirmation/">{{ i.start_time|date:"r"|slice:"-9" }} h </a> 
             <br /><small><b>{{ i.scheduleoccurrence.room }}</b>
             {% if i.scheduleoccurrence.occurrencefamily.client.all %}
                     <br />
@@ -288,7 +288,7 @@ GNU General Public License for more details.
     {% else %}
         {% for i in referral.past_occurrences_all|slice:":5" %}
             <p>
-            <a href="/schedule/events/{{i.pk}}/confirmation/">{{ i.start_time|date:"r"|slice:"-9" }} hs</a>
+            <a href="/schedule/events/{{i.pk}}/confirmation/">{{ i.start_time|date:"r"|slice:"-9" }} h</a>
             <br />
             <small>
             {% if i.scheduleoccurrence.is_online %}

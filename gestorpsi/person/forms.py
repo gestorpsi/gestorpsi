@@ -53,3 +53,91 @@ class CompanyClientForm(forms.ModelForm):
         company_client.save()
 
         return company_client
+
+
+class PersonForm(forms.ModelForm):
+    class Meta:
+        model = Person
+        #fields = ('name', 'relation_level', 'responsible', 'active', 'comment')
+    
+    name = forms.CharField(label=_("Name"), 
+                           required = True, 
+                           widget=forms.TextInput(attrs={'class':'big tabtitle', 'maxlength': '50'}))
+    nickname = forms.CharField(label=_("Nickname"), 
+                               required = False, 
+                               widget=forms.TextInput(attrs={'class':'big tabtitle', 'maxlength': '50'}))
+    birthDate = forms.DateField(label=_("Birthday")+' ( dd/mm/yyyy )', 
+                                required = False, 
+                                widget=forms.DateInput(format =('%d/%m/%Y'), 
+                                                       attrs={'class':'medium', 'maxlength': '10', 'mask': '99/99/9999'}),
+                                )
+    
+    def clean_birthDate(self):
+        try:
+            return datetime.strptime(self.cleaned_data.get('birthDate'),'%d/%m/%Y')
+        except:
+            raise forms.ValidationError( _('Birthdate')+' inválida.' )
+    
+    def save(self, request, *args, **kwargs):
+        if self.instance.pk is None:
+            person = super(PersonForm, self).save(*args, **kwargs)
+            return person
+        else:
+            """ AGE """
+            dateBirthError = True
+            dateBirth = request.POST.get('dateBirth', False)
+            if request.POST.get('aprox', False) and request.POST.get('Years', False) and not dateBirth:
+                    birthYear = (( int(datetime.now().strftime("%Y")) ) - ( int(request.POST.get('Years')) ) )
+                    today = (datetime.now().strftime("%d/%m/"))
+                    dt = "%s%s" % (today, birthYear)
+                    person.birthDate = datetime.strptime(dt ,'%d/%m/%Y')
+                    dateBirthError = False
+            elif dateBirth:
+                try:
+                    person.birthDate = datetime.strptime(dateBirth, '%d/%m/%Y')
+                    dateBirthError = False
+                except:
+                    pass
+        
+            if request.POST.get('aprox', False):
+                person.birthDateSupposed = True
+            else:
+                person.birthDateSupposed = False
+            """ AGE """
+        
+            person.gender = request.POST['gender']
+            
+            # maritalStatus
+            try:
+                if not (request.POST['maritalStatus']):
+                    person.maritalStatus = None
+                else:
+                    person.maritalStatus = MaritalStatus.objects.get(pk = request.POST['maritalStatus'])
+            except:
+                person.maritalStatus = None
+            
+            try:
+                person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
+            except:
+                person.birthPlace = None
+                try:
+                    person.birthForeignCity= request.POST['birthForeignCity']
+                except:
+                    person.birthForeignCity = None
+                try:
+                    person.birthForeignState= request.POST['birthForeignState']
+                except:
+                    person.birthForeignState = None
+                try:
+                    person.birthForeignCountry= request.POST['birthForeignCountry']
+                except:
+                    person.birthForeignCountry= None
+        
+            person.save()    
+            user = request.user
+            person.organization.add(user.get_profile().org_active)
+
+
+
+
+

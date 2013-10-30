@@ -19,7 +19,8 @@ from django.utils.translation import ugettext_lazy as _
 from gestorpsi.client.models import Family, FAMILY_RELATION
 from gestorpsi.person.models import Person
 from gestorpsi.client.models import Client
-            
+
+
 class FamilyForm(forms.ModelForm):
     name = forms.CharField(required = True, widget=forms.TextInput(attrs={'class':'big'}))
 
@@ -42,4 +43,8 @@ class FamilyForm(forms.ModelForm):
         family.client_related = client_related
         family.save()
         return family
+
+
+
+
 

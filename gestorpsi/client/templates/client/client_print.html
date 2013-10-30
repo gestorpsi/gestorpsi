@@ -92,7 +92,7 @@ table {
         </td>
         <td style="text-align:right;font-size: 12px;">
                 <b>{% trans "Client Report" %}</b><br>
-        {% trans "generated at" %} {% now "d/m/Y H:i" %} hs<br>
+        {% trans "generated at" %} {% now "d/m/Y H:i" %} h<br>
         {% trans "by " %} {{ user.get_profile.person.name }}<br>
         </td>
     </tr>
@@ -311,7 +311,7 @@ table {
                 {% for o in i.demand_set.reverse %}
                     <p>
                     <strong>{% trans "Demand" %} #{{ forloop.counter }}</strong> <br />
-                    {% if o.occurrence.start_time %}<strong>{% trans "Date" %}: </strong>{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "hs" %}<br />{% endif %}
+                    {% if o.occurrence.start_time %}<strong>{% trans "Date" %}: </strong>{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "h" %}<br />{% endif %}
                     <strong>{% trans "Status" %}: </strong>{{ o.get_demand_status_display }}<br />
                     <strong>{% trans "Demand" %}: </strong>{{ o.demand }}<br />
                     <strong>{% trans "Initial complaint" %}: </strong>{% if not o.initial_complaint %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}<br />
@@ -339,7 +339,7 @@ table {
                 {% for o in i.diagnosis_set.reverse %}
                     <p>
                     <strong>{% trans "Diagnosis" %} #{{ forloop.counter }}</strong> <br />
-                    {% if o.occurrence.start_time %}<strong>{% trans "Session Date" %}: </strong>{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "hs" %}<br />{% endif %}
+                    {% if o.occurrence.start_time %}<strong>{% trans "Session Date" %}: </strong>{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "h" %}<br />{% endif %}
                     <strong>{% trans "Diagnosis Date" %}: </strong>{{ o.diagnosis_date|date:"d/m/Y" }}<br />
                     {% if o.diagnosis_status %}<strong>{% trans "Status" %}: </strong>{{ o.get_diagnosis_status_display }} {{ o.get_diagnosis_status2_display }}<br />{% endif %}
                     {% if o.diagnosis_resolution %}<strong>{% trans "Resolution" %}: </strong>{{ o.diagnosis_resolution|date:"d/m/Y" }}<br />{% endif %}
@@ -375,11 +375,11 @@ table {
                 {% for o in i.occurrence_set.all %}
                     <p>
                     <strong>{% trans "Occurrence" %} #{{ forloop.counter }}</strong><br />
-                    <strong>{% trans "Date" %}:</strong> {{ o.start_time|date:"d/m/Y H:i" }} {{ o.end_time|date:"H:i" }}{% trans "hs" %}<br />
+                    <strong>{% trans "Date" %}:</strong> {{ o.start_time|date:"d/m/Y H:i" }} {{ o.end_time|date:"H:i" }}{% trans "h" %}<br />
                     <strong>{% trans "Room" %}:</strong> {{ o.scheduleoccurrence.room }} ({{ o.scheduleoccurrence.room.place }})<br />
                     <strong>{% trans "Occurrence Confirmation" %}:</strong> {% if not o.scheduleoccurrence.was_confirmed %}{% trans "Not confirmed" %}{% else %}{{ o.scheduleoccurrence.occurrenceconfirmation.get_presence_display }}{% endif %}<br />
                     {% if o.scheduleoccurrence.occurrenceconfirmation.date_started %}
-                    <strong>{% trans "Time started/finished" %}:</strong> {{ o.scheduleoccurrence.occurrenceconfirmation.date_started|date:"H:i"}} {{ o.scheduleoccurrence.occurrenceconfirmation.date_finished|date:"H:i"}}{% trans "hs" %}<br />
+                    <strong>{% trans "Time started/finished" %}:</strong> {{ o.scheduleoccurrence.occurrenceconfirmation.date_started|date:"H:i"}} {{ o.scheduleoccurrence.occurrenceconfirmation.date_finished|date:"H:i"}}{% trans "h" %}<br />
                     {% endif %}
                     {% if o.scheduleoccurrence.occurrenceconfirmation.reason %}
                         <strong>{% trans "Confirmation Reason" %}:</strong> {{ o.scheduleoccurrence.occurrenceconfirmation.reason }}<br />
@@ -414,7 +414,7 @@ table {
                 {% for o in i.session_set.reverse %}
                     <p>
                     <strong>{% trans "Session" %} #{{ forloop.counter }}</strong> <br />
-                    <strong>{% trans "Date" %}: </strong>{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "hs" %}<br />
+                    <strong>{% trans "Date" %}: </strong>{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "h" %}<br />
                     <strong>{% trans "Goals" %}: </strong>{{ o.get_session_goals_display }}<br />
                     <strong>{% trans "Descriptive" %}: </strong>{{ o.descriptive }}<br />
                     {% if o.comments %}
@@ -424,7 +424,7 @@ table {
                 {% endfor %}
             {% endif %}
         {% endif %}
-<br />
+		<br />
         {% if i.service.responsibles.all and signed_professional_responsible %}
         <br /><br />
         <table class="signature">

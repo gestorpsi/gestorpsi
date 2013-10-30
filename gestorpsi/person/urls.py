@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('gestorpsi.person.views',
+urlpatterns = patterns('gestorpsi.person.helpers',
 #    (r'^$', 'index'),
 #    (r'^add$', 'form'),
 #    (r'^(?P<object_id>\d+)/$', 'form'),

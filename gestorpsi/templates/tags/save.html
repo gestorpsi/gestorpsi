@@ -25,7 +25,7 @@ GNU General Public License for more details.
             {% trans "This register are not saved yet. Click Save to register it." %}
         {% else %}
         {% trans 'Last revision' %} 
-		{{ object.revision.date_created|date:"r"|slice:":-9"}}&nbsp;hs
+		{{ object.revision.date_created|date:"r"|slice:":-9"}}&nbsp;h
         {% endif %}
 		</span>
 	</p>

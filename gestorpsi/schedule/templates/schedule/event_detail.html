@@ -42,7 +42,7 @@ GNU General Public License for more details.
         {% trans "Follow below a list with these conflits and their reasons:" %}
         <ul>
             {% for i in event.errors %}
-            <li>{{ i.start_time|date:"r"|slice:":-9" }} - {{ i.end_time|date:"H:i" }}hs<br /><small> {{ i.error_message|join:". " }}</small></li>
+            <li>{{ i.start_time|date:"r"|slice:":-9" }} - {{ i.end_time|date:"H:i" }}h<br /><small> {{ i.error_message|join:". " }}</small></li>
             {% endfor %}
         </ul>
         <br />
@@ -65,7 +65,7 @@ GNU General Public License for more details.
             {% for o in event.upcoming_occurrences %}
                 <tr class="zebra_{% cycle 0 1 %}">
                 <td><a href="{% url swingtime-occurrence-confirmation o.id %}">{{ o.start_time|date:"l, d" }} {% trans "of" %} {{ o.start_time|date:"F" }} {% trans "of" %} {{ o.start_time|date:"Y" }}</a></td>
-                <td>{{ o.start_time|date:"H:i" }} - {{ o.end_time|date:"H:i" }} hs<br />{{ o.scheduleoccurrence.room }}</td>
+                <td>{{ o.start_time|date:"H:i" }} - {{ o.end_time|date:"H:i" }} h<br />{{ o.scheduleoccurrence.room }}</td>
                 <td></td>
                 </tr>
             {% endfor %}

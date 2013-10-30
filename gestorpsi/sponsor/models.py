@@ -17,7 +17,7 @@ GNU General Public License for more details.
 from django.db import models
 from django.contrib.contenttypes import generic
 from gestorpsi.contact.models import Phone
-from gestorpsi.internet.models import Email, Site, InstantMessenger
+from gestorpsi.contact.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Address
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField

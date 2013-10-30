@@ -22,7 +22,7 @@ from gestorpsi.middleware import threadlocals
 #from gestorpsi.contact.models import Phone
 from gestorpsi.address.models import City, Address, Country
 from gestorpsi.document.models import Document
-from gestorpsi.internet.models import Email, Site, InstantMessenger
+from gestorpsi.contact.models import Email, Site, InstantMessenger
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util.first_capitalized import first_capitalized
@@ -51,28 +51,65 @@ class MaritalStatus(models.Model):
 class Person(models.Model):
     id = UuidField(primary_key=True)
     user = models.ForeignKey(User, editable=False, default=threadlocals.get_current_user) # the register owner
+    user.verbose_name = _('User')
+    
     name = models.CharField(max_length=50)
+    name.verbose_name = _('Name')
+    
     nickname = models.CharField(max_length=50, null=True, blank=True)
-    photo = models.CharField(max_length=100)
-    birthDate = models.DateField(null=True)
+    nickname.verbose_name = _('Nickname')
+    
+    photo = models.CharField(max_length=100, null=True, blank=True, default='')
+    photo.verbose_name = _('Photo')
+    
+    birthDate = models.DateField(null=True, blank=True)
+    birthDate.verbose_name = _("Birthdate")+' ( dd/mm/yyyy )'
+    
     birthPlace = models.ForeignKey(City, null=True)
+    birthPlace.verbose_name = _('Birth place')
+    
     birthDateSupposed = models.BooleanField(default=False)
-    gender = models.CharField(max_length=1, choices=Gender) 
+    birthDateSupposed.verbose_name = _('Birthdate supposed')
+    
+    gender = models.CharField(max_length=1, choices=Gender)
+    gender.verbose_name = _('Gender')
+    
     maritalStatus = models.ForeignKey(MaritalStatus, null=True)
+    maritalStatus.verbose_name = _('Marital Status')
+    
     phones = generic.GenericRelation('contact.Phone', null=True)
+    phones.verbose_name = _('Phones')
+    
     address = generic.GenericRelation(Address, null=True)
+    address.verbose_name = _('Address')
+    
     document = generic.GenericRelation(Document, null=True)
+    document.verbose_name = _('Document')
+    
     emails  = generic.GenericRelation(Email, null=True)
+    emails.verbose_name = _('Emails')
+    
     sites = generic.GenericRelation(Site, null=True)
-    instantMessengers =generic.GenericRelation(InstantMessenger, null=True)
+    instantMessengers = generic.GenericRelation(InstantMessenger, null=True)
+    
     comments = models.TextField(blank=True)
+    comments.verbose_name = _('Comments')
+    
     active = models.BooleanField(default=True)
-    organization = models.ManyToManyField(Organization)
+    active.verbose_name = _('Active')
+    
+    organization = models.ManyToManyField(Organization, null=True, blank=True)
 
     # the fields below were added in order to deal with foreign ones
-    birthForeignCity = models.CharField(max_length=100, null=True)
-    birthForeignState = models.CharField(max_length=100, null=True)
-    birthForeignCountry = models.IntegerField(max_length=4, null=True)
+    birthForeignCity = models.CharField(max_length=100, null=True, blank=True, default='')
+    birthForeignCity.verbose_name = _('Birth Foreign City')
+    
+    birthForeignState = models.CharField(max_length=100, null=True, blank=True, default='')
+    birthForeignState.verbose_name = _('Birth Foreign State')
+    
+    birthForeignCountry = models.IntegerField(max_length=4, null=True, blank=True, default=None)
+    birthForeignCountry.verbose_name = _('Birth Foreign Country')
+    
         
     def __unicode__(self):
         return (u"%s (%s)" % (self.name.title(), _('Company'))) if self.is_company() else (u"%s" % (self.name.title()))

@@ -21,10 +21,10 @@ from django.utils.translation import gettext as _
 from django.contrib import messages
 from gestorpsi.address.models import Country, State, AddressType
 from gestorpsi.contact.models import PhoneType
-from gestorpsi.internet.models import EmailType, IMNetwork
+from gestorpsi.contact.models import EmailType, IMNetwork
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.person.models import MaritalStatus
-from gestorpsi.person.views import person_save
+from gestorpsi.person.helpers import person_save
 from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.organization.models import Agreement
 from gestorpsi.place.models import Place, PlaceType

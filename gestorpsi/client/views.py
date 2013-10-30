@@ -37,11 +37,11 @@ from gestorpsi.careprofessional.views import Profession
 from gestorpsi.client.models import Client, Relation
 from gestorpsi.client.forms import FamilyForm
 from gestorpsi.document.models import TypeDocument, Issuer
-from gestorpsi.internet.models import EmailType, IMNetwork
+from gestorpsi.contact.models import EmailType, IMNetwork
 from gestorpsi.organization.models import Organization
 from gestorpsi.person.models import Person, MaritalStatus, CompanyClient
-from gestorpsi.person.forms import CompanyForm, CompanyClientForm
-from gestorpsi.person.views import person_save
+from gestorpsi.person.forms import CompanyForm, CompanyClientForm, PersonForm
+from gestorpsi.person.helpers import person_save
 from gestorpsi.contact.models import PhoneType
 from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, ReferralAttach, REFERRAL_ATTACH_TYPE, Queue, ReferralExternal, ReferralDischarge
 from gestorpsi.admission.models import ReferralChoice as AdmissionChoice, AdmissionReferral
@@ -52,7 +52,7 @@ from gestorpsi.referral.views import _referral_occurrences
 #from gestorpsi.reports.footer import footer_gen
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
-from gestorpsi.person.views import person_json_list
+from gestorpsi.person.helpers import person_json_list
 from gestorpsi.schedule.views import _datetime_view
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm
 from gestorpsi.schedule.views import add_event
@@ -63,6 +63,10 @@ from gestorpsi.contact.models import Contact
 from gestorpsi.util.views import get_object_or_None, write_pdf
 from gestorpsi.util.models import Cnae
 from gestorpsi.ehr.views import _access_ehr_check_read
+from gestorpsi.address.views import address_save
+from gestorpsi.document.views import document_save
+from gestorpsi.person.models import MaritalStatus
+from gestorpsi.contact.helpers import phone_save, email_save, site_save, im_save
 
 def _access_check(request, object=None):
     """
@@ -242,66 +246,200 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
 
 # edit form
 @permission_required_with_403('client.client_read')
-def form(request, object_id=''):
+def form(request, object_id = None, is_company = False):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
 
     # check access by requested user
     if not _access_check(request, object):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
-    cnae = None
-    # User Registration Code
-    groups = [False, False, False, False]
-    try:
-        profile = get_object_or_404(Profile, person=object.person.id)
-        for g in profile.user.groups.all():
-            if g.name == "administrator": groups[0] = True
-            if g.name == "psychologist":  groups[1] = True
-            if g.name == "secretary":     groups[2] = True
-            if g.name == "client":        groups[3] = True
-    except:
-        profile = Profile()
-        profile.person = get_object_or_404(Person, pk=object.person.id)
-        profile.user = User(username=slugify(profile.person.name))
+    user = request.user
+    forms = {}
+    if request.method == 'POST':
+        if object_id:
+            object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+            person = object.person
+        else:
+            object = Client()
+            person = Person()
+            
+            # Id Record
+            org = get_object_or_404(Organization, pk=user.get_profile().org_active.id )
+            object.idRecord = org.last_id_record + 1
+            org.last_id_record = org.last_id_record + 1
+            org.save()
     
-    if object.person.is_company():
-        template_name = 'client/client_form_company.html'
-        company_form = CompanyForm(instance=object.person.company)
-        cnae = get_object_or_None(Cnae, pk=object.person.company.cnae_class)
+            # Admission date
+            object.admission_date = datetime.now()
+        
+        person = object.person
+        personform = PersonForm( request.POST, instance=person )
+        if personform.is_valid():
+            person = personform.save()
+        else:
+            forms['personform'] = personform
+            messages.error(request, _('Errors while trying to save the client'))
+            return HttpResponseRedirect('/client/%s/' % object.id)
+    
+        # save phone numbers (using Phone APP)
+        phone_save(person, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
+    
+        # save addresses (using Address APP)
+        address_save(person, request.POST.getlist('addressId'), request.POST.getlist('addressPrefix'),
+                     request.POST.getlist('addressLine1'), request.POST.getlist('addressLine2'),
+                     request.POST.getlist('addressNumber'), request.POST.getlist('neighborhood'),
+                     request.POST.getlist('zipCode'), request.POST.getlist('addressType'),
+                     request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
+                     request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))
+        
+        # save documents (using Document APP) 
+        document_save(person, request.POST.getlist('documentId'), request.POST.getlist('document_typeDocument'), request.POST.getlist('document_document'), request.POST.getlist('document_issuer'), request.POST.getlist('document_state'))
+        
+        # save internet data
+        email_save(person, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
+        site_save(person, request.POST.getlist('site_id'), request.POST.getlist('site_description'), request.POST.getlist('site_site'))
+        im_save(person, request.POST.getlist('im_id'), request.POST.getlist('im_identity'), request.POST.getlist('im_network'))
+    
+        object.person = person
+        object.save()
+        
+        if is_company:
+            company_form = CompanyForm(request.POST) if not object_id else CompanyForm(request.POST, instance=object.person.company)
+            if not company_form.is_valid():
+                print company_form.errors
+            else:
+                company = company_form.save(commit=False)
+                print object.person
+                company.person = object.person
+                company.save()
+    
+        '''
+        automatic admit client
+        '''
+        
+        if not object.admissionreferral_set.all():
+            a = AdmissionReferral()
+        else:
+            a = object.admissionreferral_set.all()[0]
+    
+        a.referral_choice_id = AdmissionChoice.objects.all().order_by('weight')[0].id
+        object.admissionreferral_set.add(a)
+        
+        messages.success(request, _('Client saved successfully'))
+    
+        return HttpResponseRedirect('/client/%s/home' % object.id)
     else:
-        template_name = 'client/client_form.html'
-        company_form = None
+        cnae = None
+        # User Registration Code
+        groups = [False, False, False, False]
+        try:
+            profile = get_object_or_404(Profile, person=object.person.id)
+            for g in profile.user.groups.all():
+                if g.name == "administrator": groups[0] = True
+                if g.name == "psychologist":  groups[1] = True
+                if g.name == "secretary":     groups[2] = True
+                if g.name == "client":        groups[3] = True
+        except:
+            profile = Profile()
+            profile.person = get_object_or_404(Person, pk=object.person.id)
+            profile.user = User(username=slugify(profile.person.name))
+        
+        if object.person.is_company():
+            template_name = 'client/client_form_company.html'
+            forms = {'companyform': CompanyForm(instance=object.person.company)}
+            company_form = CompanyForm(instance=object.person.company)
+            cnae = get_object_or_None(Cnae, pk=object.person.company.cnae_class)
+        else:
+            template_name = 'client/client_form.html'
+            if request.method == 'POST':
+                temp = PersonForm( request.POST )
+                temp.is_valid()
+                forms['personform'] = temp
+            else:
+                forms['personform'] = PersonForm(instance=object.person)
+            company_form = None
 
-    return render_to_response(template_name,
-                              {'object': object,
-                                'phones' : object.person.phones.all(),
-                                'addresses' : object.person.address.all(),
-                                'documents' : object.person.document.all(),
-                                'emails' : object.person.emails.all(),
-                                'websites' : object.person.sites.all(),
-                                'ims' : object.person.instantMessengers.all(),
-                                'countries': Country.objects.all(),
-                                'PhoneTypes': PhoneType.objects.all(), 
-                                'AddressTypes': AddressType.objects.all(), 
-                                'EmailTypes': EmailType.objects.all(), 
-                                'IMNetworks': IMNetwork.objects.all(), 
-                                'TypeDocuments': TypeDocument.objects.filter(source=1), 
-                                'Issuers': Issuer.objects.all(), 
-                                'States': State.objects.all(), 
-                                'MaritalStatusTypes': MaritalStatus.objects.all(), 
-                                'PROFESSIONAL_AREAS': Profession.objects.all(),
-                                'licenceBoardTypes': LicenceBoard.objects.all(),
-                                'ReferralChoices': ReferralChoice.objects.all(),
-                                'IndicationsChoices': IndicationChoice.objects.all(),
-                                'Relations': Relation.objects.all(),
-                                'profile': profile,
-                                'groups': groups,
-                                'clss': request.GET.get('clss'),
-                                'company_form': company_form,
-                                'cnae': cnae,
-                               },
-                              context_instance=RequestContext(request)
-                              )
+        phones = object.person.phones.all()
+        addresses = object.person.address.all()
+        documents = object.person.document.all()
+        emails = object.person.emails.all()
+        websites = object.person.sites.all()
+        ims = object.person.instantMessengers.all()
+        countries = Country.objects.all()
+        PhoneTypes = PhoneType.objects.all()
+        AddressTypes = AddressType.objects.all()
+        EmailTypes = EmailType.objects.all()
+        IMNetworks = IMNetwork.objects.all()
+        TypeDocuments = TypeDocument.objects.filter(source=1)
+        Issuers = Issuer.objects.all()
+        States = State.objects.all()
+        MaritalStatusTypes = MaritalStatus.objects.all()
+        PROFESSIONAL_AREAS = Profession.objects.all()
+        licenceBoardTypes = LicenceBoard.objects.all()
+        ReferralChoices = ReferralChoice.objects.all()
+        IndicationsChoices = IndicationChoice.objects.all()
+        Relations = Relation.objects.all()
+        clss = request.GET.get('clss')
+    return render_to_response(template_name, locals(), context_instance=RequestContext(request) )
+
+
+@permission_required_with_403('client.client_write')
+def save(request, object_id=None, is_company = False):
+    """
+       Save or Update a client record
+    """
+    user = request.user
+
+    if object_id:
+        object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+        person = object.person
+
+        # check access by requested user
+        if not _access_check(request, object):
+            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    else:
+        object = Client()
+        person = Person()
+        
+        # Id Record
+        org = get_object_or_404(Organization, pk=user.get_profile().org_active.id )
+        object.idRecord = org.last_id_record + 1
+        org.last_id_record = org.last_id_record + 1
+        org.save()
+
+        # Admission date
+        object.admission_date = datetime.now()
+
+    object.person = person_save(request, person)
+    object.save()
+    
+    if is_company:
+        company_form = CompanyForm(request.POST) if not object_id else CompanyForm(request.POST, instance=object.person.company)
+        if not company_form.is_valid():
+            print company_form.errors
+        else:
+            company = company_form.save(commit=False)
+            print object.person
+            company.person = object.person
+            company.save()
+
+    '''
+    automatic admit client
+    '''
+    
+    if not object.admissionreferral_set.all():
+        a = AdmissionReferral()
+    else:
+        a = object.admissionreferral_set.all()[0]
+
+    a.referral_choice_id = AdmissionChoice.objects.all().order_by('weight')[0].id
+    object.admissionreferral_set.add(a)
+    
+    messages.success(request, _('Client saved successfully'))
+
+    return HttpResponseRedirect('/client/%s/home' % object.id)
+
 
 @permission_required_with_403('client.client_read')
 def add_company(request, object_id=''):
@@ -669,63 +807,6 @@ def referral_home(request, object_id = None, referral_id = None):
         access_check_referral_write = True
 
     return _referral_view(request, object_id, referral_id, 'client/client_referral_home.html', access_check_referral_write)
-
-@permission_required_with_403('client.client_write')
-def save(request, object_id=None, is_company = False):
-    """
-       Save or Update a client record
-    """
-    user = request.user
-
-    if object_id:
-        object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
-        person = object.person
-
-        # check access by requested user
-        if not _access_check(request, object):
-            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
-
-    else:
-        object = Client()
-        person = Person()
-        
-        # Id Record
-        org = get_object_or_404(Organization, pk=user.get_profile().org_active.id )
-        object.idRecord = org.last_id_record + 1
-        org.last_id_record = org.last_id_record + 1
-        org.save()
-
-        # Admission date
-        object.admission_date = datetime.now()
-
-    object.person = person_save(request, person)
-    object.save()
-    
-    if is_company:
-        company_form = CompanyForm(request.POST) if not object_id else CompanyForm(request.POST, instance=object.person.company)
-        if not company_form.is_valid():
-            print company_form.errors
-        else:
-            company = company_form.save(commit=False)
-            print object.person
-            company.person = object.person
-            company.save()
-
-    '''
-    automatic admit client
-    '''
-    
-    if not object.admissionreferral_set.all():
-        a = AdmissionReferral()
-    else:
-        a = object.admissionreferral_set.all()[0]
-
-    a.referral_choice_id = AdmissionChoice.objects.all().order_by('weight')[0].id
-    object.admissionreferral_set.add(a)
-    
-    messages.success(request, _('Client saved successfully'))
-
-    return HttpResponseRedirect('/client/%s/home' % object.id)
 
 @permission_required_with_403('client.client_read')
 def client_print(request, object_id = None):

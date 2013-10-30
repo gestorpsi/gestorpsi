@@ -60,9 +60,8 @@ $(document).ready(function()
 	{
 		var teste = true;
 		teste = teste && checkDate( $('[name="professional_initialActivitiesDate"]') );
-		if( !$('[name="aprox"]').is(':checked') )
+		if( !$('#aprox').is(':checked') )
 			teste = teste && checkDate( $('[name="dateBirth"]') );
-			
 		return teste;
 	});
 });

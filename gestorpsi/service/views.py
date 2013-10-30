@@ -26,7 +26,7 @@ from django.utils.translation import ugettext as _
 from django.db.models import Q
 from django.contrib import messages
 from gestorpsi.service.models import Service, Area, ServiceType, Modality
-from gestorpsi.person.views import person_json_list
+from gestorpsi.person.helpers import person_json_list
 from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.referral.models import Queue, Referral
 from django.utils import simplejson

@@ -49,9 +49,9 @@ GNU General Public License for more details.
 	{% block extracss %}{% endblock extracss %}
 	
 	
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> <!-- JQuery Core Library -->
-	<!-- <script type="text/javascript" src="{{MEDIA_URL}}js/jquery.maskedinput.1.3.1.pack.js"></script> JQuery Masked Input Plugin -->
-	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.mask.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script> <!-- JQuery Core Library -->
+	<script type="text/javascript" src="{{MEDIA_URL}}js/jquery.maskedinput.1.3.1.pack.js"></script> <!-- JQuery Masked Input Plugin -->
+	{#<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.mask.min.js"></script>#}
 	{% if user.is_authenticated %}
 	<script type="text/javascript" src="{{MEDIA_URL}}js/jquery.form.js"></script> <!-- jQuery Form Plugin -->
 	<script type="text/javascript" src="{{MEDIA_URL}}js/jquery.validate.min.js"></script> <!-- jQuery validation plug-in -->

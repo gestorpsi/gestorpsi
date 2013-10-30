@@ -22,7 +22,7 @@ GNU General Public License for more details.
 """
 
 from django.contrib import admin
-from gestorpsi.contact.models import PhoneType, Phone
+from gestorpsi.contact.models import PhoneType, Phone, EmailType, IMNetwork
 
 class PhoneTypeAdmin(admin.ModelAdmin):
     pass
@@ -31,5 +31,13 @@ class PhoneAdmin(admin.ModelAdmin):
     pass
 
 
+class EmailTypeAdmin(admin.ModelAdmin):
+    pass
+
+class IMNetworkAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(EmailType, EmailTypeAdmin)
+admin.site.register(IMNetwork, IMNetworkAdmin)
 admin.site.register(PhoneType, PhoneTypeAdmin)
 admin.site.register(Phone, PhoneAdmin)

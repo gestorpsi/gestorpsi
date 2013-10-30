@@ -49,7 +49,7 @@ GNU General Public License for more details.
                         {% if not topic.messages.latest.sent_at %}
                             {% trans "This topic have no messages yet" %}
                         {% else %}
-                        {% trans "Last message at" %} <b>{{topic.messages.latest.sent_at|date:"d/m/Y"}} {{topic.messages.latest.sent_at|date:"H:i"}}{% trans "hs" %}</b>  {% trans "by" %} <b>{{ topic.messages.latest.sender.get_profile.person }} ({{ topic.messages.latest.sender}})</b>
+                        {% trans "Last message at" %} <b>{{topic.messages.latest.sent_at|date:"d/m/Y"}} {{topic.messages.latest.sent_at|date:"H:i"}}{% trans "h" %}</b>  {% trans "by" %} <b>{{ topic.messages.latest.sender.get_profile.person }} ({{ topic.messages.latest.sender}})</b>
                         {% endif %}
                         </td>
                         

@@ -24,12 +24,12 @@ from gestorpsi.employee.models import Employee
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.contact.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType, City
-from gestorpsi.internet.models import EmailType, IMNetwork
+from gestorpsi.contact.models import EmailType, IMNetwork
 from gestorpsi.document.models import TypeDocument, Issuer
-from gestorpsi.person.views import person_save
+from gestorpsi.person.helpers import person_save
 from django.utils import simplejson
 from gestorpsi.util.decorators import permission_required_with_403
-from gestorpsi.person.views import person_json_list
+from gestorpsi.person.helpers import person_json_list
 
 @permission_required_with_403('employee.employee_list')
 def index(request, deactive = False ):

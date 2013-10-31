@@ -186,7 +186,8 @@ $(function() {
       * if another country is selected, change form fields ..
       */
      
-     $('form select.country').unbind().change(function() {
+     $('form select.country').unbind().change(function()
+     {
            if($(this).val() == 33) { // Brazil
                // reset oldvalues
                $(this).parents('div').children('label.noautocomplete').children('input').val('');
@@ -198,7 +199,7 @@ $(function() {
                $(this).parents('div').children('label.autocomplete').hide();
                $(this).parents('div').children('label.noautocomplete').show();
            }
-     });
+     }).trigger('change');
 
      /**
       * VALID IF EXIST A SHORT NAME IN FORM ORGANIZATION

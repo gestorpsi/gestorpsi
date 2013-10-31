@@ -65,6 +65,8 @@ class Person(models.Model):
     birthDate = models.DateField(null=True, blank=True)
     birthDate.verbose_name = _("Birthdate")+' ( dd/mm/yyyy )'
     
+    years = models.IntegerField(null=True, blank=True)
+    
     birthPlace = models.ForeignKey(City, null=True)
     birthPlace.verbose_name = _('Birth place')
     

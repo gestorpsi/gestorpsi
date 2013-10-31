@@ -18,23 +18,41 @@ GNU General Public License for more details.
  * array to string util function
  */
 
-function personInLine(list) {
-    
-    var str = ''
-    
-    //append person list
-    if(list) {
-    jQuery.each(list,  function(){
-        str = str + this.name + ", " ;
-    });
-    str = str.substr(0, (str.length-2))
+$(document).ready(function()
+{
+	
+	var personInLine = function(list)
+	{
+	    var str = ''
+	    
+	    //append person list
+	    if(list) {
+	    jQuery.each(list,  function(){
+	        str = str + this.name + ", " ;
+	    });
+	    str = str.substr(0, (str.length-2))
+	    }
+	    return str
+	}
+
+	var isValidDate = function (value)
+	{
+	    var match = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(value),
+	    isDate = function (d, m, y)
+	    {
+	        return m > 0 && m < 13 && y > 0 && y < 32768 && d > 0 && d <= (new Date(y, m, 0)).getDate();
+	    };
+	    return match && isDate(match[1], match[2], match[3]);
+	}
+	
+    var verificaNumero = function(e)
+    {
+        if (e.which != 8 && e.which != 0 && e.which != 44 && e.which != 46 && (e.which < 48 || e.which > 57)) {
+            return false;
+        }
     }
-    return str
-    
-}
+	
 
-
-$(document).ready(function() {
     $('a.load_html').live('click', function() {
         var element = $(this).attr('element');
         $(element).load($(this).attr('href'));
@@ -67,89 +85,138 @@ $(document).ready(function() {
      */
      
      //$('#colorpickerHolder').ColorPicker({flat: true});
-
-$('.colorpicker_open').ColorPicker({
-	onSubmit: function(hsb, hex, rgb, el) {
-		$(el).val(hex);
-		$(el).ColorPickerHide();
-        $('div.colorpicker_preview').css('background-color','#'+hex);
-	},
-	onBeforeShow: function () {
+	
+	$('.colorpicker_open').ColorPicker({
+		onSubmit: function(hsb, hex, rgb, el) {
+			$(el).val(hex);
+			$(el).ColorPickerHide();
+	        $('div.colorpicker_preview').css('background-color','#'+hex);
+		},
+		onBeforeShow: function () {
+			$(this).ColorPickerSetColor(this.value);
+		}
+	})
+	.bind('keyup', function(){
 		$(this).ColorPickerSetColor(this.value);
+	    
+	});
+	
+	
+	var CalcAge = function()
+	{
+	    dBirth = document.getElementById('id_birthDate').value;
+	    x = dBirth.split("/");
+	    var mm = x[1];
+	    var dd = x[0];
+	    var yy = x[2];
+	    
+	    var thedate = new Date()
+	    var mm2 = thedate.getMonth() + 1;
+	    var dd2 = thedate.getDate();
+	    var yy2 = thedate.getFullYear();
+	    
+	    var yourage = yy2 - yy
+	        if (mm2 < mm) {
+	        yourage = yourage - 1;
+	        }
+	        if (mm2 == mm) {
+	            if (dd2 < dd) {
+	            yourage = yourage - 1;
+	            }
+	        }
+	    if(yourage > 0)
+	        return yourage;
+	    else
+	        return ""
 	}
-})
-.bind('keyup', function(){
-	$(this).ColorPickerSetColor(this.value);
+	var calcDate = function() {
+	    age = document.getElementById('id_years').value;
+	    
+	    var thedate = new Date()
+	    var mm2 = thedate.getMonth() + 1;
+	    var dd2 = thedate.getDate();
+	    var yy2 = thedate.getFullYear();
+	    
+	    var yearBirth = yy2 - age;
+	    
+	    var dtBirth = dd2 + "/" + mm2 + "/" + yearBirth
+	    return dtBirth;
+	
+	}
+	
+	var displayAge = function() {
+	    if (document.getElementById('id_birthDate').value == "") {
+	        document.getElementById('id_birthDate').value = calcDate();
+	    }else{
+	        document.getElementById('id_years').value = CalcAge();
+	    }
+	}
+
+
+	
+    $('#id_years').keypress( verificaNumero );
     
+	$('#id_birthDateSupposed').change(function()
+	{
+	    if( !$('#id_birthDateSupposed').is(':checked') )
+	    {	
+	        $('#id_years').attr('disabled', true);
+	        $('#id_years').val('');
+	        $('#id_birthDate').attr('disabled', false);
+	    }
+	    else
+	    {
+	    	alert('bbb');
+	        $('#id_birthDate').attr('disabled', true);
+	        $('#id_birthDate').val('');
+	        $('#id_years').attr('disabled', false);
+	    }
+	}).trigger('change');
+    
+    
+	$('form#form_client').submit(function(e)
+	{
+		if( !isValidDate($('#id_birthDate').val()) )
+		{
+			alert('Data inválida!');
+			$('body').scrollTo( $('#id_birthDate').closest('fieldset') );
+			
+			e.preventDefault();
+			return false;
+		}
+		else
+			return true;
+	});
+	
+	
+
+	var maskPhones = function()
+	{
+		$("[name='phoneNumber']").unbind('focusout');
+		$("[name='phoneNumber']").focusout(function()
+		{
+		    var phone, element;
+		    element = $(this);
+		    element.unmask();
+		    phone = element.val().replace(/\D/g, '');
+		    if(phone.length > 8) {
+		        element.mask("9-9999-999?9");
+		    } else {
+		        element.mask("9999-9999?9");
+		    }
+		}).trigger('focusout');
+	}
+	maskPhones();
+	$('fieldset a.add_to_form').click(function(){ maskPhones(); });
+	
+	/*$(window).load(function()
+	{
+		$('#id_birthCountry').trigger('change');
+		$('#id_birthPlaceState').trigger('change');
+	});*/
+
 });
 
 
 
-});
-
-
-/**
- * calcula idade
- */
-
-function dateOrAge() {
-    if (document.getElementById('id_birthDateSupposed').checked==false) {
-        document.getElementById('id_years').disabled=true;
-        document.getElementById('id_years').value="";
-        document.getElementById('id_birthDate').disabled=false;
-    }else{
-        document.getElementById('id_birthDate').disabled=true;
-        document.getElementById('id_birthDate').value="";
-        document.getElementById('id_years').disabled=false;
-    }
-}
-function CalcAge() {
-
-    dBirth = document.getElementById('id_birthDate').value;
-    x = dBirth.split("/");
-    var mm = x[1];
-    var dd = x[0];
-    var yy = x[2];
-    
-    var thedate = new Date()
-    var mm2 = thedate.getMonth() + 1;
-    var dd2 = thedate.getDate();
-    var yy2 = thedate.getFullYear();
-    
-    var yourage = yy2 - yy
-        if (mm2 < mm) {
-        yourage = yourage - 1;
-        }
-        if (mm2 == mm) {
-            if (dd2 < dd) {
-            yourage = yourage - 1;
-            }
-        }
-    if(yourage > 0)
-        return yourage;
-    else
-        return ""
-}
-function calcDate() {
-    age = document.getElementById('id_years').value;
-    
-    var thedate = new Date()
-    var mm2 = thedate.getMonth() + 1;
-    var dd2 = thedate.getDate();
-    var yy2 = thedate.getFullYear();
-    
-    var yearBirth = yy2 - age;
-    
-    var dtBirth = dd2 + "/" + mm2 + "/" + yearBirth
-    return dtBirth;
-
-}
-
-function displayAge() {
-    if (document.getElementById('id_birthDate').value == "") {
-        document.getElementById('id_birthDate').value = calcDate();
-    }else{
-        document.getElementById('id_years').value = CalcAge();
-    }
-}
 

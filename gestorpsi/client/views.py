@@ -265,11 +265,11 @@ def form_client(request, object_id = None):
             person = personform.save(request)
         else:
             errors = True
-            forms['personform'] = personform
             #raise Exception( dir(personform) )
             messages.error(request, _('Errors while trying to save the client'))
             for key, value in personform.errors.items():
                 messages.error(request, _( ('<br/>'+str(key)+' : '+str(value)).decode('utf-8') ))
+        forms['personform'] = personform
     
         # save phone numbers (using Phone APP)
         phone_save(person, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))

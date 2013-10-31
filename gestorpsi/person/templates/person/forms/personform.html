@@ -1,6 +1,14 @@
 {% load i18n %}
 {% load calculate_age %}
 
+<script type="text/javascript">
+$(document).ready(function()
+{
+
+});
+</script>
+
+
 <!--
 People Personal Identification Form	
 -->
@@ -53,4 +61,36 @@ People Personal Profile Form
 			{{ form.maritalStatus }}
            	{#<span class="error_message">{{ form.maritalStatus.errors|striptags }}</span>#}
        	</label>
+</fieldset>
+
+<fieldset>
+	<legend>{% trans "Naturality" %}</legend>
+	<div>
+		<label>
+			{{form.birthForeignCountry.label}} - {{form.instance.birthPlace.state.country}}<br />
+			{{form.birthForeignCountry}}
+		</label>
+		
+		<!--auto complete city-->
+		<label class="autocomplete state"{% if not form.instance.birthState %} style="display:none"{% endif %}>
+			{{form.birthPlaceState.label}}<br />
+			{{form.birthPlaceState}}
+		</label>
+		
+		<label class="autocomplete city"{% if form.instance.birthForeignCity %} style="display:none"{% endif %}>
+			{{form.birthPlace.label}}<br />
+			{{form.birthPlace}}
+		</label>
+		
+		<!--no autocomplete-->
+		<label class="noautocomplete"{% if not form.instance.birthForeignState %} style="display:none"{% endif %}>
+			{{form.birthForeignState.label}}<br />
+			{{form.birthForeignState}}
+		</label>
+		
+		<label class="noautocomplete"{% if not form.instance.birthForeignCity %} style="display:none"{% endif %}>
+			{{form.birthForeignCity.label}}<br />
+			{{form.birthForeignCity}}
+		</label>
+	</div>
 </fieldset>

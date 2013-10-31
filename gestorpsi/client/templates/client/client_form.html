@@ -20,43 +20,11 @@ GNU General Public License for more details.
 
 {% block menu_client %}active{% endblock %}
 
-{% block extrajs %}
-<script type="text/javascript">
-$(document).ready(function()
-{
-	var isValidDate = function (value)
-	{
-	    var match = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(value),
-	    isDate = function (d, m, y)
-	    {
-	        return m > 0 && m < 13 && y > 0 && y < 32768 && d > 0 && d <= (new Date(y, m, 0)).getDate();
-	    };
-	    return match && isDate(match[1], match[2], match[3]);
-	}
-	
-    function verificaNumero(e)
-    {
-        if (e.which != 8 && e.which != 0 && e.which != 44 && e.which != 46 && (e.which < 48 || e.which > 57)) {
-            return false;
-        }
-    }
-    $('#id_years').keypress( verificaNumero );
-    
-	/*$('form').submit(function()
-	{
-		if( !isValidDate(  $('#id_birthDate').val()  ) )
-		{
-			alert();
-		}
-		alert( isValidDate(  $('#id_birthDate').val()  ) );
-		return false;
-	});*/
-});
-</script>
+{% block extrahead %}
 {% for form in forms %}
-{{ form.media }}
+{% for js in form.js %}<script type="text/javascript" src="{{js}}"></script>{%endfor%}
 {% endfor %}
-{% endblock extrajs %}
+{% endblock extrahead %}
 
 {% block submenu %}
 <ul id="sub_customers">
@@ -112,50 +80,7 @@ $(document).ready(function()
 	</div>
 	
 	{{forms.personform}}
-
-		<fieldset>
-	        <legend>{% trans "Naturality" %}</legend>
-	        <div>
-                <label>{% trans "Country" %}<br />
-                <select name="birthForeignCountry" class="select country">
-                {% for country in countries %}
-                        <option value="{{ country.id }}" {% if object.person.birthForeignCountry %}{% ifequal object.person.birthForeignCountry country.id %}selected{% endifequal %}{% else %}{% ifequal country.id 33 %}selected{% endifequal %}{% endif %}>{{ country.name }}</option>
-                {% endfor %}
-                </select>
-                </label>
-                
-                <!--auto complete city-->
-                <label class="autocomplete state"{% if object.person.birthForeignCity %} style="display:none"{% endif %}>
-                {% trans "State/Region" %}<br />
-                <select class="city_search extrasmall" city="{{ object.person.birthPlace.id }}">
-                    <option></option>
-                    {% for s in States %}
-                    <option value="{{ s.id }}"{% ifequal object.person.birthPlace.state.id s.id %} selected{% endifequal %}>{{ s.shortName }}</option>
-                    {% endfor %}
-                </select>
-                </label>
-
-                <label class="autocomplete city"{% if object.person.birthForeignCity %} style="display:none"{% endif %}>
-                {% trans "City" %}<br />
-                <select name="birthPlace" class="extramedium">
-                    {% if not object.person.birthPlace %}
-                        <option disabled>{% trans "Select state first" %}</option>
-                    {% endif %}
-                </select>
-                </label>
-
-                <!--not autocomplete-->
-                <label class="noautocomplete"{% if not object.person.birthForeignCity %} style="display:none"{% endif %}>{% trans "City" %}<br />
-                        <input type="text" maxlength="100" name="birthForeignCity" class="extramedium" value="{{ object.person.birthForeignCity }}"  />
-                </label>
-                
-                <label class="noautocomplete"{% if not object.person.birthForeignState %} style="display:none"{% endif %}>{% trans "State" %}<br />
-                        <input type="text" maxlength="100" name="birthForeignState" class="extrasmall" value="{{ object.person.birthForeignState }}" />
-                </label>
-	        </div>
-		</fieldset>
-
-
+	
 	<!--
 	people phone numbers
 	-->

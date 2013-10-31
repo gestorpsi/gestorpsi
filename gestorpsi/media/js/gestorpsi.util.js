@@ -89,23 +89,23 @@ $('.colorpicker_open').ColorPicker({
 
 
 /**
- * calula idade
+ * calcula idade
  */
 
 function dateOrAge() {
-    if (document.getElementById('aprox').checked==false) {
-        document.getElementById('Years').disabled=true;
-        document.getElementById('Years').value="";
-        document.getElementById('dateBirth').disabled=false;
+    if (document.getElementById('id_birthDateSupposed').checked==false) {
+        document.getElementById('id_years').disabled=true;
+        document.getElementById('id_years').value="";
+        document.getElementById('id_birthDate').disabled=false;
     }else{
-        document.getElementById('dateBirth').disabled=true;
-        document.getElementById('dateBirth').value="";
-        document.getElementById('Years').disabled=false;
+        document.getElementById('id_birthDate').disabled=true;
+        document.getElementById('id_birthDate').value="";
+        document.getElementById('id_years').disabled=false;
     }
 }
 function CalcAge() {
 
-    dBirth = document.getElementById('dateBirth').value;
+    dBirth = document.getElementById('id_birthDate').value;
     x = dBirth.split("/");
     var mm = x[1];
     var dd = x[0];
@@ -131,7 +131,7 @@ function CalcAge() {
         return ""
 }
 function calcDate() {
-    age = document.getElementById('Years').value;
+    age = document.getElementById('id_years').value;
     
     var thedate = new Date()
     var mm2 = thedate.getMonth() + 1;
@@ -146,10 +146,10 @@ function calcDate() {
 }
 
 function displayAge() {
-    if (document.getElementById('dateBirth').value == "") {
-        document.getElementById('dateBirth').value = calcDate();
+    if (document.getElementById('id_birthDate').value == "") {
+        document.getElementById('id_birthDate').value = calcDate();
     }else{
-        document.getElementById('Years').value = CalcAge();
+        document.getElementById('id_years').value = CalcAge();
     }
 }
 

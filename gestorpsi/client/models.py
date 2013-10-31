@@ -195,7 +195,7 @@ class Client(models.Model):
     person = models.OneToOneField(Person)
     idRecord = models.PositiveIntegerField()
     legacyRecord = models.CharField(max_length=15)
-    admission_date = models.DateField(null=True)
+    admission_date = models.DateField(null=True, blank=True, auto_now_add=True)
     active = models.BooleanField(default=True)
     comments = models.TextField(blank=True)
     objects = ClientManager()

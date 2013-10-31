@@ -1842,3 +1842,10 @@ input.dateError, input.dateError:focus
 {
 	box-shadow: 0 0 5px red !important;
 }
+
+.formError
+{
+	box-shadow: 0 0 5px red !important;
+}
+
+

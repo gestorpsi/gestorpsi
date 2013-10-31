@@ -17,7 +17,6 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
-{% load calculate_age %}
 
 {% block menu_client %}active{% endblock %}
 
@@ -35,9 +34,21 @@ $(document).ready(function()
 	    return match && isDate(match[1], match[2], match[3]);
 	}
 	
+    function verificaNumero(e)
+    {
+        if (e.which != 8 && e.which != 0 && e.which != 44 && e.which != 46 && (e.which < 48 || e.which > 57)) {
+            return false;
+        }
+    }
+    $('#id_years').keypress( verificaNumero );
+    
 	/*$('form').submit(function()
 	{
-		alert( isValidDate(  $('#dateBirth').val()  ) );
+		if( !isValidDate(  $('#id_birthDate').val()  ) )
+		{
+			alert();
+		}
+		alert( isValidDate(  $('#id_birthDate').val()  ) );
 		return false;
 	});*/
 });
@@ -98,80 +109,9 @@ $(document).ready(function()
 		<input type="hidden" name="photo" value="{{ object.person.photo }}" class="photo" />
 		<a class="notajax delete" title="delete" onclick="$(this).siblings('input.photo').val(''); $(this).siblings('img.img_people').attr('src', '{{MEDIA_URL}}img/generic_photo.gif');"><span>{% trans "Delete" %}</span></a>
 		<input type="hidden" name="gender" value="{{ object.person.gender }}" class="gender" />
-	</div> 
+	</div>
 	
-	<fieldset class="fieldset_personal_identification">
-	{% for form in forms %}
-	{% for error in form.errors %}
-	<p>{{error}}</p>
-	{% endfor %}
-	{% endfor %}
-	</fieldset>
-	
-	<!--
-	People Personal Identification Form	
-	-->
-	<fieldset class="fieldset_personal_identification">
-		<legend>{% trans "Personal Identification" %}</legend>
-		<label>
-			{{forms.personform.name.label}}
-			<br />
-			{{ forms.personform.name }}
-            <span class="error_message">{{ forms.personform.name.errors|striptags }}</span>
-		</label>
-		<label>
-			{{forms.personform.nickname.label}}
-			<br />
-			{{ forms.personform.nickname }}
-            <span class="erforms.personforms.personform.essage">{{ forms.personform.nickname.errors|striptags }}</span>
-		</label>
-	</fieldset>
-
-	<!--
-	People Personal Profile Form	
-	-->
-	<fieldset>
-        <legend>{% trans "Personal Profile" %}</legend>
-
-            <label>
-            	{{forms.personform.birthDate.label}}<br />
-                {{forms.personform.birthDate}}
-            	<span class="error_message">{{ forms.personform.birthDate.errors|striptags }}</span>
-            </label>
-
-
-        <label>
-        	{% trans "Age" %} <br />
-            <input class="small" type="text" name="Years" id="Years" onchange="displayAge();" value="{% if object.person.birthDate %}{{ object.person.birthDate|age }}{% endif %}"/>
-        </label>
-        
-         <br />
-         <br />
-
-        <label>
-            <input name="aprox" type="checkbox" id="aprox" {% if object.person.birthDateSupposed  %} checked="checked" {% endif %}  onclick="dateOrAge();" />
-            {% trans "Birthdate supposedly from the age" %}  
-        </label>
-        
-         <br />
-         <br />
-
-        {% comment %}
-        <label>{% trans "Age" %}<br />
-                <input type="text" name="age" class="extrasmall" value="{{ object.age }}" id="id_age" />
-        </label>
-
-        {% endcomment %}
-        <label>{% trans "Marital Status" %}<br />
-                <select name="maritalStatus" class="select extramedium">
-                        <option></option>
-                        {% for m in MaritalStatusTypes %}
-                                <option value="{{ m.id }}"{% ifequal m.id object.person.maritalStatus_id %} selected{% endifequal %}>{{ m }}</option>
-                        {% endfor %}
-                </select>
-        </label>
-	</fieldset>
-
+	{{forms.personform}}
 
 		<fieldset>
 	        <legend>{% trans "Naturality" %}</legend>

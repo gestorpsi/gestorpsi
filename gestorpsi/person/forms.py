@@ -15,9 +15,15 @@ GNU General Public License for more details.
 """
 
 from django import forms
+from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
+
+from datetime import datetime, timedelta
+
 from gestorpsi.client.models import Client
-from gestorpsi.person.models import Person, Company, CompanyClient
+from gestorpsi.person.models import Person, Company, CompanyClient, MaritalStatus
+
+MARITAL_STATUS_CHOICES = ( (p.id, p.description) for p in MaritalStatus.objects.all() )
 
 class CompanyForm(forms.ModelForm):
     cnae_class = forms.CharField(label=_('CNAE Class Code'), required=False, widget=forms.TextInput(attrs={'mask':'9999-9/99'}))
@@ -58,84 +64,106 @@ class CompanyClientForm(forms.ModelForm):
 class PersonForm(forms.ModelForm):
     class Meta:
         model = Person
-        #fields = ('name', 'relation_level', 'responsible', 'active', 'comment')
+        fields = ('birthDateSupposed', 'name', 'nickname', 'photo', 'birthDate', 'birthPlace', 
+                  'gender', 'maritalStatus',  'comments', 'active', 'organization', 'birthForeignCity', 
+                  'birthForeignState', 'birthForeignCountry')
+        
+    def __init__(self, *args, **kwargs):
+        if 'initial' not in kwargs:
+            kwargs['initial'] = {}
+        if 'instance' in kwargs:
+            instance = kwargs['instance']
+            if instance.birthDateSupposed and instance.birthDate:
+                d = datetime.today()
+                kwargs['initial']['years'] = (d.year - instance.birthDate.year) - int((d.month, d.day) < (instance.birthDate.month, instance.birthDate.day))
+        super(PersonForm, self).__init__(*args, **kwargs)
+        
+        if self.errors:
+            for f_name in self.fields:
+                if f_name in self.errors:
+                    classes = self.fields[f_name].widget.attrs.get('class', '')
+                    classes += ' formError'
+                    self.fields[f_name].widget.attrs['class'] = classes
     
     name = forms.CharField(label=_("Name"), 
                            required = True, 
                            widget=forms.TextInput(attrs={'class':'big tabtitle', 'maxlength': '50'}))
+    
     nickname = forms.CharField(label=_("Nickname"), 
                                required = False, 
                                widget=forms.TextInput(attrs={'class':'big tabtitle', 'maxlength': '50'}))
+    
     birthDate = forms.DateField(label=_("Birthday")+' ( dd/mm/yyyy )', 
                                 required = False, 
                                 widget=forms.DateInput(format =('%d/%m/%Y'), 
                                                        attrs={'class':'medium', 'maxlength': '10', 'mask': '99/99/9999'}),
                                 )
     
-    def clean_birthDate(self):
+    maritalStatus = forms.IntegerField(label=_('Marital Status'),
+                                       required=False,
+                                       widget=forms.Select(choices=MARITAL_STATUS_CHOICES,
+                                                           attrs={'class':'select extramedium',}))
+    
+    years = forms.IntegerField(label=_('Age'),
+                               required=False,
+                               widget=forms.TextInput(attrs={'class':'small',}))
+    
+    birthDateSupposed = forms.BooleanField(label=_('Birthdate supposed'),
+                                           required=False,
+                                           widget=forms.CheckboxInput(attrs={'onclick':"dateOrAge();",}))
+    
+    def clean_years(self):
         try:
-            return datetime.strptime(self.cleaned_data.get('birthDate'),'%d/%m/%Y')
+            dt = datetime.now() - timedelta( weeks=int(self.cleaned_data.get('years')) )
+            return dt
         except:
-            raise forms.ValidationError( _('Birthdate')+' inválida.' )
+            raise forms.ValidationError( _('Invalid age provided') )
+    
+    def clean_birthDate(self):
+        if self.cleaned_data.get('birthDateSupposed', False):
+            return self.cleaned_data.get('years')
+        else:
+            try:
+                return datetime.strptime(self.cleaned_data.get('birthDate'),'%d/%m/%Y')
+            except:
+                raise forms.ValidationError( _('Invalid Birthdate') )
+    
+    def clean_maritalStatus(self):
+        try:
+            return MaritalStatus.objects.get(pk=self.cleaned_data.get('maritalStatus'))
+        except:
+            return None
+        
+    
+    def render(self):
+        form = self
+        return render_to_string('person/forms/personform.html', locals())
+    def __str__(self):
+        return self.render()
+    def __unicode__(self):
+        return self.render()
     
     def save(self, request, *args, **kwargs):
         if self.instance.pk is None:
             person = super(PersonForm, self).save(*args, **kwargs)
-            return person
+            # Id Record
+            org = get_object_or_404('organization.Organization', pk=request.user.get_profile().org_active.id )
+            object.idRecord = org.last_id_record + 1
+            org.last_id_record = org.last_id_record + 1
+            org.save()
         else:
-            """ AGE """
-            dateBirthError = True
-            dateBirth = request.POST.get('dateBirth', False)
-            if request.POST.get('aprox', False) and request.POST.get('Years', False) and not dateBirth:
-                    birthYear = (( int(datetime.now().strftime("%Y")) ) - ( int(request.POST.get('Years')) ) )
-                    today = (datetime.now().strftime("%d/%m/"))
-                    dt = "%s%s" % (today, birthYear)
-                    person.birthDate = datetime.strptime(dt ,'%d/%m/%Y')
-                    dateBirthError = False
-            elif dateBirth:
-                try:
-                    person.birthDate = datetime.strptime(dateBirth, '%d/%m/%Y')
-                    dateBirthError = False
-                except:
-                    pass
-        
-            if request.POST.get('aprox', False):
-                person.birthDateSupposed = True
-            else:
-                person.birthDateSupposed = False
-            """ AGE """
-        
-            person.gender = request.POST['gender']
-            
-            # maritalStatus
-            try:
-                if not (request.POST['maritalStatus']):
-                    person.maritalStatus = None
-                else:
-                    person.maritalStatus = MaritalStatus.objects.get(pk = request.POST['maritalStatus'])
-            except:
-                person.maritalStatus = None
-            
+            person = self.instance
             try:
                 person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
             except:
                 person.birthPlace = None
-                try:
-                    person.birthForeignCity= request.POST['birthForeignCity']
-                except:
-                    person.birthForeignCity = None
-                try:
-                    person.birthForeignState= request.POST['birthForeignState']
-                except:
-                    person.birthForeignState = None
-                try:
-                    person.birthForeignCountry= request.POST['birthForeignCountry']
-                except:
-                    person.birthForeignCountry= None
+                person.birthForeignCity = request.POST.get('birthForeignCity', None)
+                person.birthForeignState = request.POST.get('birthForeignState', None)
+                person.birthForeignCountry = request.POST.get('birthForeignCountry', None)
         
-            person.save()    
-            user = request.user
-            person.organization.add(user.get_profile().org_active)
+            super(PersonForm, self).save(*args, **kwargs)
+            person.organization.add(request.user.get_profile().org_active)
+        return person
 
 
 

@@ -1,0 +1,56 @@
+{% load i18n %}
+{% load calculate_age %}
+
+<!--
+People Personal Identification Form	
+-->
+<fieldset class="fieldset_personal_identification">
+	<legend>{% trans "Personal Identification" %}</legend>
+	<label>
+		{{form.name.label}}
+		<br />
+		{{ form.name }}
+        {#<span class="error_message">{{ form.name.errors|striptags }}</span>#}
+	</label>
+	<label>
+		{{form.nickname.label}}
+		<br />
+		{{ form.nickname }}
+        {#<span class="error_message">{{ form.nickname.errors|striptags }}</span>#}
+	</label>
+</fieldset>
+
+<!--
+People Personal Profile Form	
+-->
+<fieldset>
+       <legend>{% trans "Personal Profile" %}</legend>
+
+           <label>
+           	{{form.birthDate.label}}<br />
+               {{form.birthDate}}
+           	{#<span class="error_message">{{ form.birthDate.errors|striptags }}</span>#}
+           </label>
+
+       	<label>
+			{{form.years.label}}<br />
+            {{form.years}}
+       	</label>
+       
+        <br />
+        <br />
+
+       	<label>
+           {{form.birthDateSupposed}}
+           {{form.birthDateSupposed.label}}
+       	</label>
+       
+        <br />
+        <br />
+
+       	<label>
+       		{{form.maritalStatus.label}}<br />
+			{{ form.maritalStatus }}
+           	{#<span class="error_message">{{ form.maritalStatus.errors|striptags }}</span>#}
+       	</label>
+</fieldset>

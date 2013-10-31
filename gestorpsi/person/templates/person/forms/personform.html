@@ -67,17 +67,17 @@ People Personal Profile Form
 	<legend>{% trans "Naturality" %}</legend>
 	<div>
 		<label>
-			{{form.birthForeignCountry.label}} - {{form.instance.birthPlace.state.country}}<br />
-			{{form.birthForeignCountry}}
+			{{form.birthCountry.label}}<br />
+			{{form.birthCountry}}
 		</label>
 		
 		<!--auto complete city-->
 		<label class="autocomplete state"{% if not form.instance.birthState %} style="display:none"{% endif %}>
-			{{form.birthPlaceState.label}}<br />
-			{{form.birthPlaceState}}
+			{{form.birthState.label}}<br />
+			{{form.birthState}}
 		</label>
 		
-		<label class="autocomplete city"{% if form.instance.birthForeignCity %} style="display:none"{% endif %}>
+		<label class="autocomplete city"{% if not form.instance.birthPlace %} style="display:none"{% endif %}>
 			{{form.birthPlace.label}}<br />
 			{{form.birthPlace}}
 		</label>

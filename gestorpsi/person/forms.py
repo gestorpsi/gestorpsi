@@ -71,7 +71,7 @@ class PersonForm(forms.ModelForm):
         model = Person
         fields = ('birthDateSupposed', 'years', 'name', 'nickname', 'photo', 'birthDate', 'birthPlace', 
                   'gender', 'maritalStatus',  'comments', 'active', 'organization', 'birthForeignCity', 
-                  'birthForeignState', 'birthForeignCountry')
+                  'birthForeignState', 'birthCountry', 'birthState')
     
     def __init__(self, *args, **kwargs):
             if 'initial' not in kwargs:
@@ -84,7 +84,6 @@ class PersonForm(forms.ModelForm):
                         kwargs['initial']['years'] = (d.year - instance.birthDate.year) - int((d.month, d.day) < (instance.birthDate.month, instance.birthDate.day))
                 if instance.birthPlace:
                     kwargs['initial']['birthPlaceState'] = instance.birthPlace.state
-                    kwargs['initial']['birthForeignCountry'] = instance.birthPlace.state.country
             super(PersonForm, self).__init__(*args, **kwargs)
             
             if not 'instance' in kwargs:
@@ -137,21 +136,32 @@ class PersonForm(forms.ModelForm):
                                       required=False,
                                       widget=forms.Select(choices=COUNTRY_CHOICES,
                                                    attrs={'class':'select country',}))
-    birthPlaceState = forms.IntegerField(label=_('State'),
-                                             required=False,
-                                             widget=forms.Select(choices=STATE_SHORT_CHOICES,
-                                                           attrs={'class':'city_search extrasmall',}))
-    birthForeignCity = forms.IntegerField(label=_('City'),
+    birthState = forms.IntegerField(label=_('State'),
+                                     required=False,
+                                     widget=forms.Select(choices=STATE_SHORT_CHOICES,
+                                                   attrs={'class':'city_search extrasmall',}))
+    birthForeignCity = forms.CharField(label=_('City'),
                                              required=False,
                                              widget=forms.TextInput(attrs={'class':'extramedium', 'maxlength': '100'}))
-    birthForeignState = forms.IntegerField(label=_('State'),
+    birthForeignState = forms.CharField(label=_('State'),
                                              required=False,
                                              widget=forms.TextInput(attrs={'class':'extrasmall', 'maxlength': '100'}))
     birthForeignCountry = forms.CharField(max_length=100,
                                           label=_('Country'),
                                           required=False,
-                                          widget=forms.Select(choices=COUNTRY_CHOICES,
-                                                              attrs={'class':'select country',}))
+                                          widget=forms.TextInput(attrs={'class':'select country',}))
+    
+    def clean_birthState(self):
+        try:
+            return State.objects.get( id=self.cleaned_data.get('birthState') )
+        except:
+            raise forms.ValidationError( _('Invalid state provided') )
+    
+    def clean_birthCountry(self):
+        try:
+            return Country.objects.get( id=self.cleaned_data.get('birthCountry') )
+        except:
+            raise forms.ValidationError( _('Invalid country provided') )
     
     def clean_years(self):
         if self.cleaned_data.get('birthDateSupposed', False):

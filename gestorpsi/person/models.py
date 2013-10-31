@@ -20,7 +20,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from gestorpsi.middleware import threadlocals
 #from gestorpsi.contact.models import Phone
-from gestorpsi.address.models import City, Address, Country
+from gestorpsi.address.models import City, Address, Country, State
 from gestorpsi.document.models import Document
 from gestorpsi.contact.models import Email, Site, InstantMessenger
 from gestorpsi.organization.models import Organization
@@ -70,6 +70,12 @@ class Person(models.Model):
     birthPlace = models.ForeignKey(City, null=True)
     birthPlace.verbose_name = _('Birth place')
     
+    birthState = models.ForeignKey(State, null=True, blank=True, related_name='birthState')
+    birthState.verbose_name = _('State of birth place')
+    
+    birthCountry = models.ForeignKey(Country, null=True, blank=True, default=33, related_name='birthCountry')
+    birthCountry.verbose_name = _('Country of birth place')
+    
     birthDateSupposed = models.BooleanField(default=False)
     birthDateSupposed.verbose_name = _('Birthdate supposed')
     
@@ -109,6 +115,7 @@ class Person(models.Model):
     birthForeignState = models.CharField(max_length=100, null=True, blank=True, default='')
     birthForeignState.verbose_name = _('Birth Foreign State')
     
+    #deprecated
     birthForeignCountry = models.IntegerField(max_length=4, null=True, blank=True, default=None)
     birthForeignCountry.verbose_name = _('Birth Foreign Country')
     
@@ -117,6 +124,9 @@ class Person(models.Model):
         return (u"%s (%s)" % (self.name.title(), _('Company'))) if self.is_company() else (u"%s" % (self.name.title()))
 
     def save(self, *args, **kwargs):
+        if self.birthPlace is not None:
+            self.birthCountry = self.birthPlace.state.country
+            self.birthState = self.birthPlace.state
         super(Person, self).save(*args, **kwargs)
         if not self.id:
             for p in self.organization_set.all():

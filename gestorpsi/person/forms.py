@@ -74,24 +74,24 @@ class PersonForm(forms.ModelForm):
                   'birthForeignState', 'birthCountry', 'birthState')
     
     def __init__(self, *args, **kwargs):
-            if 'initial' not in kwargs:
-                kwargs['initial'] = {}
-            if 'instance' in kwargs:
-                instance = kwargs['instance']
-                if instance.birthDateSupposed:
-                    if instance.birthDate:
-                        d = datetime.today()
-                        kwargs['initial']['years'] = (d.year - instance.birthDate.year) - int((d.month, d.day) < (instance.birthDate.month, instance.birthDate.day))
-                if instance.birthPlace:
-                    kwargs['initial']['birthPlaceState'] = instance.birthPlace.state
-            super(PersonForm, self).__init__(*args, **kwargs)
-            
-            if self.errors:
-                for f_name in self.fields:
-                    if f_name in self.errors:
-                        classes = self.fields[f_name].widget.attrs.get('class', '')
-                        classes += ' formError'
-                        self.fields[f_name].widget.attrs['class'] = classes
+        if 'initial' not in kwargs:
+            kwargs['initial'] = {}
+        if 'instance' in kwargs:
+            instance = kwargs['instance']
+            if instance.birthDateSupposed:
+                if instance.birthDate:
+                    d = datetime.today()
+                    kwargs['initial']['years'] = (d.year - instance.birthDate.year) - int((d.month, d.day) < (instance.birthDate.month, instance.birthDate.day))
+            if instance.birthPlace:
+                kwargs['initial']['birthPlaceState'] = instance.birthPlace.state
+        super(PersonForm, self).__init__(*args, **kwargs)
+        
+        if self.errors:
+            for f_name in self.fields:
+                if f_name in self.errors:
+                    classes = self.fields[f_name].widget.attrs.get('class', '')
+                    classes += ' formError'
+                    self.fields[f_name].widget.attrs['class'] = classes
     
     
     
@@ -103,9 +103,9 @@ class PersonForm(forms.ModelForm):
                                required = False, 
                                widget=forms.TextInput(attrs={'class':'big tabtitle', 'maxlength': '50'}))
     
-    birthDate = forms.DateField(label=_("Birthday")+' ( dd/mm/yyyy )', 
+    birthDate = forms.CharField(label=_("Birthday")+' ( dd/mm/yyyy )', 
                                 required = False, 
-                                widget=forms.DateInput(#format =('%d/%m/%Y'), 
+                                widget=forms.DateInput(format =('%d/%m/%Y'), 
                                                        attrs={'class':'medium', 'maxlength': '10', 'mask': '99/99/9999'}),
                                 )
     
@@ -168,8 +168,9 @@ class PersonForm(forms.ModelForm):
             except:
                 raise forms.ValidationError( _('Invalid age provided') )
         else:
-            bday = datetime.strptime( str(self.cleaned_data.get('birthDate')), '%Y-%d-%m')
-            bday = '-'.join([str(bday.year), str(bday.month), str(bday.day)])
+            #'%Y-%d-%m'
+            bday = datetime.strptime( str(self.cleaned_data.get('birthDate')), '%d/%m/%Y')
+            bday = '-'.join(['%04d'%bday.year, '%02d'%bday.month, '%02d'%bday.day])
             return bday
     
     def clean_birthState(self):

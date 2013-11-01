@@ -78,10 +78,14 @@ class PersonForm(forms.ModelForm):
             kwargs['initial'] = {}
         if 'instance' in kwargs:
             instance = kwargs['instance']
-            if instance.birthDateSupposed:
-                if instance.birthDate:
+            if not instance.birthDateSupposed:
+                if instance.birthDate is not None:
                     d = datetime.today()
                     kwargs['initial']['years'] = (d.year - instance.birthDate.year) - int((d.month, d.day) < (instance.birthDate.month, instance.birthDate.day))
+            else:
+                if instance.years is not None:
+                    kwargs['initial']['birthDate'] = datetime.today() - relativedelta(instance.years)
+                    #raise Exception( kwargs['initial']['birthDate'] )
             if instance.birthPlace:
                 kwargs['initial']['birthPlaceState'] = instance.birthPlace.state
         super(PersonForm, self).__init__(*args, **kwargs)
@@ -241,20 +245,21 @@ class PersonForm(forms.ModelForm):
         return self.render()
     
     def save(self, request, *args, **kwargs):
-        person = super(PersonForm, self).save(*args, **kwargs)
         if self.instance.pk is None:
+            person = super(PersonForm, self).save(*args, **kwargs)
             # Id Record
             org = get_object_or_404('organization.Organization', pk=request.user.get_profile().org_active.id )
             object.idRecord = org.last_id_record + 1
             org.last_id_record = org.last_id_record + 1
             org.save()
         else:
+            person = super(PersonForm, self).save(*args, **kwargs)
             person.organization.add(request.user.get_profile().org_active)
         
         if person.birthDateSupposed == True:
             dt = datetime.now() - relativedelta(years=person.years) 
             person.birthDate = dt
-            self.instance.birthDate = temp
+            self.instance.birthDate = dt
         else:
             d = datetime.now()
             temp = person.birthDate

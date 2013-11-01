@@ -101,50 +101,81 @@ $(document).ready(function()
 	    
 	});
 	
+	function zeroFill( number, width )
+	{
+	  width -= number.toString().length;
+	  if ( width > 0 )
+	  {
+	    return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+	  }
+	  return number + ""; // always return a string
+	}
+	
+	var calcTheAge = function(dBirth)
+	{	
+		try
+		{
+		    x = dBirth.split("/");
+		    var mm = x[1];
+		    var dd = x[0];
+		    var yy = x[2];
+		    
+		    var thedate = new Date()
+		    var mm2 = thedate.getMonth() + 1;
+		    var dd2 = thedate.getDate();
+		    var yy2 = thedate.getFullYear();
+		    
+		    var yourage = yy2 - yy
+		        if (mm2 < mm) {
+		        yourage = yourage - 1;
+		        }
+		        if (mm2 == mm) {
+		            if (dd2 < dd) {
+		            yourage = yourage - 1;
+		            }
+		        }
+		    if(yourage > 0)
+		        return yourage;
+		    else
+		        return ""
+		}
+		catch(err){;}
+		return ""
+	}
+	
 	
 	var CalcAge = function()
 	{
 	    dBirth = document.getElementById('id_birthDate').value;
-	    x = dBirth.split("/");
-	    var mm = x[1];
-	    var dd = x[0];
-	    var yy = x[2];
-	    
-	    var thedate = new Date()
-	    var mm2 = thedate.getMonth() + 1;
-	    var dd2 = thedate.getDate();
-	    var yy2 = thedate.getFullYear();
-	    
-	    var yourage = yy2 - yy
-	        if (mm2 < mm) {
-	        yourage = yourage - 1;
-	        }
-	        if (mm2 == mm) {
-	            if (dd2 < dd) {
-	            yourage = yourage - 1;
-	            }
-	        }
-	    if(yourage > 0)
-	        return yourage;
-	    else
-	        return ""
+	    calcTheAge( dBirth );
 	}
-	var calcDate = function() {
+	
+	var calcBDay = function(age)
+	{
+		try
+		{
+		    var thedate = new Date()
+		    var mm2 = thedate.getMonth() + 1;
+		    var dd2 = thedate.getDate();
+		    var yy2 = thedate.getFullYear();
+		    
+		    var yearBirth = yy2 - age;
+		    
+		    var dtBirth = zeroFill(dd2, 2) + "/" + zeroFill(mm2, 2) + "/" + zeroFill(yearBirth, 4);
+		    return dtBirth;
+		}
+		catch(err){;}
+	    return ''
+	}
+	
+	var calcDate = function()
+	{
 	    age = document.getElementById('id_years').value;
-	    
-	    var thedate = new Date()
-	    var mm2 = thedate.getMonth() + 1;
-	    var dd2 = thedate.getDate();
-	    var yy2 = thedate.getFullYear();
-	    
-	    var yearBirth = yy2 - age;
-	    
-	    var dtBirth = dd2 + "/" + mm2 + "/" + yearBirth
-	    return dtBirth;
-	
+	    return calcBDay(age);
 	}
 	
-	var displayAge = function() {
+	var displayAge = function()
+	{
 	    if (document.getElementById('id_birthDate').value == "") {
 	        document.getElementById('id_birthDate').value = calcDate();
 	    }else{
@@ -161,13 +192,13 @@ $(document).ready(function()
 	    if( !$('#id_birthDateSupposed').is(':checked') )
 	    {	
 	        $('#id_years').attr('disabled', true);
-	        $('#id_years').val('');
+	        $('#id_years').val( calcTheAge( $('#id_birthDate').val() ) );
 	        $('#id_birthDate').attr('disabled', false);
 	    }
 	    else
 	    {
 	        $('#id_birthDate').removeClass('formError').attr('disabled', true);
-	        $('#id_birthDate').val('');
+	        $('#id_birthDate').val( calcBDay( $('#id_years').val() ) );
 	        $('#id_years').attr('disabled', false);
 	    }
 	}).trigger('change');
@@ -175,17 +206,20 @@ $(document).ready(function()
     
 	$('form#form_client').submit(function(e)
 	{
-		if( !isValidDate($('#id_birthDate').val()) )
-		{
-			alert('Data inválida!');
-			$('body').scrollTo( $('#id_birthDate').closest('fieldset') );
-			$('#id_birthDate').addClass('formError');
-			
-			e.preventDefault();
-			return false;
-		}
+		if( $('#id_birthDate').attr('disabled')+'' == 'undefined' || $('#id_birthDate').attr('disabled') == true )
+			return true
 		else
-			return true;
+			if( !isValidDate($('#id_birthDate').val()) )
+			{
+				alert('Data inválida!');
+				$('body').scrollTo( $('#id_birthDate').closest('fieldset') );
+				$('#id_birthDate').addClass('formError');
+				
+				e.preventDefault();
+				return false;
+			}
+			else
+				return true;
 	});
 	
 	

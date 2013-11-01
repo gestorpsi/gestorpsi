@@ -202,7 +202,6 @@ INSTALLED_APPS = (
     'gestorpsi.report',
     'gestorpsi.boleto',
     'swingtime',
-    'registration',
     'south',
     'gestorpsi.online_messages',
     'rosetta',
@@ -220,6 +219,7 @@ INSTALLED_APPS = (
     'indexer',
     'sentry',
     
+    'packages.registration',
     'packages.paypal.standard.ipn',
 )
 

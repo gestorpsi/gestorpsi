@@ -26,7 +26,7 @@ from gestorpsi.demographic.models import EducationalLevel, Profession
 
 from gestorpsi.cbo.models import Occupation
 
-from gestorpsi.client.views import _access_check
+from gestorpsi.client.helpers import _access_check
 
 @permission_required_with_403('demographic.demographic_read')
 def home(request, object_id):

@@ -31,7 +31,7 @@ from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.settings import MEDIA_ROOT
 import os
 import uuid
-from gestorpsi.client.views import _access_check
+from gestorpsi.client.helpers import _access_check
 
 @permission_required_with_403('admission.admission_read')
 def form(request, object_id=''):

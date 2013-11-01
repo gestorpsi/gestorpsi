@@ -69,65 +69,7 @@ from gestorpsi.document.views import document_save
 from gestorpsi.person.models import MaritalStatus
 from gestorpsi.contact.helpers import phone_save, email_save, site_save, im_save
 from gestorpsi import settings 
-
-def _access_check(request, object=None):
-    """
-    client read rights
-    this method checks if logged professional have rights to read client data
-    @object: client
-    """
-        
-    # check if user is professional and not admin or secretary. 
-    if request.user.groups.filter(name='administrator') or request.user.groups.filter(name='secretary'):
-        return True
-
-    # check if professional
-    if request.user.groups.filter(name='professional') or request.user.groups.filter(name='student'):
-        professional_have_referral_with_client = False
-        professional_is_responsible_for_service = False
-        # professional. lets check if request.user (professional) have referral with this client
-        for r in object.referral_set.all():
-            if request.user.profile.person.careprofessional in [p for p in r.professional.all()]:
-                professional_have_referral_with_client = True
-
-        # professional. lets check if request.user (professional) is responsible for referral service
-        for r in object.referral_set.all():
-            if request.user.profile.person.careprofessional in [p for p in r.service.responsibles.all()]:
-                professional_is_responsible_for_service = True
-
-        # check if client is referred by professional or if professional is owner of this record
-        if professional_have_referral_with_client or professional_is_responsible_for_service or object.revision().user == request.user:
-            return True
-
-    return False
-
-def _access_check_referral_write(request, referral=None):
-    """
-    this method checks professional as users when accessing clients
-    @referral: referral object
-    """
-
-    # check if user is professional and not admin or secretary. if it's true, check if professional has referral with this customer
-    if request.user.groups.filter(name='administrator') or request.user.groups.filter(name='secretary'):
-        return True
-
-    # check if professional
-    if request.user.groups.filter(name='professional') or request.user.groups.filter(name='student'):
-        professional_have_referral_with_client = False
-        professional_is_responsible_for_service = False
-
-        # lets check if request.user (professional) have referral with this client
-        if request.user.profile.person.careprofessional in [p for p in referral.professional.all()]:
-            professional_have_referral_with_client = True
-        
-        # lets check if request.user (professional) is responsible for this referral service
-        if request.user.profile.person.careprofessional in [p for p in referral.service.responsibles.all()]:
-            professional_is_responsible_for_service = True
-
-        if professional_have_referral_with_client or professional_is_responsible_for_service:
-            return True
-
-    return False
+from gestorpsi.client.helpers import _access_check, _access_check_referral_write
 
 
 # list all active clients
@@ -171,6 +113,7 @@ def home(request, object_id=None):
 
 @permission_required_with_403('client.client_read')
 def add(request):
+    forms = {}
     if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
         return render_to_response('client/client_service_alert.html', {'object': _("There's no Service created yet. Please, create one before access Client."), }, context_instance=RequestContext(request))
     else:
@@ -178,26 +121,24 @@ def add(request):
             cities = City.objects.filter(state=request.user.get_profile().org_active.address.all()[0].city.state)
         except:
             cities = {}
-        return render_to_response('client/client_form.html',
-                                        {
-                                        'countries': Country.objects.all(),
-                                        'PhoneTypes': PhoneType.objects.all(), 
-                                        'AddressTypes': AddressType.objects.all(), 
-                                        'EmailTypes': EmailType.objects.all(), 
-                                        'IMNetworks': IMNetwork.objects.all() , 
-                                        'TypeDocuments': TypeDocument.objects.filter(source=1), 
-                                        'Issuers': Issuer.objects.all(), 
-                                        'Cities': cities,
-                                        'States': State.objects.all(), 
-                                        'MaritalStatusTypes': MaritalStatus.objects.all(),
-                                        'PROFESSIONAL_AREAS': Profession.objects.all(),
-                                        'licenceBoardTypes': LicenceBoard.objects.all(),
-                                        'ReferralChoices': ReferralChoice.objects.all(),
-                                        'IndicationsChoices': IndicationChoice.objects.all(),
-                                        'Relations': Relation.objects.all(),
-                                        'cnae': Cnae.objects.all(),
-                                         },
-                                        context_instance=RequestContext(request))
+        forms['personform'] = PersonForm()
+        countries = Country.objects.all()
+        PhoneTypes = PhoneType.objects.all()
+        AddressTypes = AddressType.objects.all()
+        EmailTypes = EmailType.objects.all()
+        IMNetworks = IMNetwork.objects.all()
+        TypeDocuments = TypeDocument.objects.filter(source=1)
+        Issuers = Issuer.objects.all()
+        Cities = cities
+        States = State.objects.all()
+        MaritalStatusTypes = MaritalStatus.objects.all()
+        PROFESSIONAL_AREAS = Profession.objects.all()
+        licenceBoardTypes = LicenceBoard.objects.all()
+        ReferralChoices = ReferralChoice.objects.all()
+        IndicationsChoices = IndicationChoice.objects.all()
+        Relations = Relation.objects.all()
+        cnae = Cnae.objects.all()
+        return render_to_response('client/client_form.html', locals(), context_instance=RequestContext(request))
 
 
 @permission_required_with_403('client.client_list')

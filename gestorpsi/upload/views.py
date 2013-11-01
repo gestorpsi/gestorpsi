@@ -26,7 +26,7 @@ from gestorpsi.client.models import Client
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from gestorpsi.client.views import  _access_check_referral_write
+from gestorpsi.client.helpers import  _access_check_referral_write
 
 @permission_required_with_403('upload.upload_write')
 def send(request):

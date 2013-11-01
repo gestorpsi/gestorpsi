@@ -41,7 +41,7 @@ from gestorpsi.device.models import DeviceDetails
 
 
 def _access_check_by_occurrence(request, occurrence):
-    from gestorpsi.client.views import _access_check_referral_write, _access_check
+    from gestorpsi.client.helpers import _access_check_referral_write, _access_check
     denied_to_read = None
     for c in occurrence.event.referral.client.all():
         if not _access_check(request, c):
@@ -249,7 +249,7 @@ def occurrence_confirmation_form(
     
     object = get_object_or_None(Client, pk = client_id, person__organization=request.user.get_profile().org_active)
 
-    from gestorpsi.client.views import  _access_check_referral_write
+    from gestorpsi.client.helpers import  _access_check_referral_write
     denied_to_write = None
 
     if not _access_check_referral_write(request, occurrence.event.referral):

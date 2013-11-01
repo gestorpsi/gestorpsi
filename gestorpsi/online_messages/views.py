@@ -16,7 +16,7 @@ from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.referral.models import Referral
 from gestorpsi.client.models import Client
 from gestorpsi.util.decorators import permission_required_with_403
-from gestorpsi.client.views import  _access_check_referral_write, _access_check
+from gestorpsi.client.helpers import  _access_check_referral_write, _access_check
 
 if "notification" in settings.INSTALLED_APPS:
     from notification import models as notification

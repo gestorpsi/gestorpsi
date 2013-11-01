@@ -257,6 +257,9 @@ class PersonForm(forms.ModelForm):
             person.organization.add(request.user.get_profile().org_active)
         
         if person.birthDateSupposed == True:
+            person.birthDateSupposed = False
+            self.instance.birthDateSupposed = False
+            
             dt = datetime.now() - relativedelta(years=person.years) 
             person.birthDate = dt
             self.instance.birthDate = dt

@@ -18,7 +18,7 @@ from django import forms
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
 from gestorpsi.client.models import Client
@@ -86,12 +86,6 @@ class PersonForm(forms.ModelForm):
                     kwargs['initial']['birthPlaceState'] = instance.birthPlace.state
             super(PersonForm, self).__init__(*args, **kwargs)
             
-            if not 'instance' in kwargs:
-                if kwargs['instance'].birthDateSupposed:
-                    self.fields['birthDate'].widget.attrs['disabled'] = 'disabled'
-                else:
-                    self.fields['years'].widget.attrs['disabled'] = 'disabled'
-            
             if self.errors:
                 for f_name in self.fields:
                     if f_name in self.errors:
@@ -111,7 +105,7 @@ class PersonForm(forms.ModelForm):
     
     birthDate = forms.DateField(label=_("Birthday")+' ( dd/mm/yyyy )', 
                                 required = False, 
-                                widget=forms.DateInput(format =('%d/%m/%Y'), 
+                                widget=forms.DateInput(#format =('%d/%m/%Y'), 
                                                        attrs={'class':'medium', 'maxlength': '10', 'mask': '99/99/9999'}),
                                 )
     
@@ -150,6 +144,33 @@ class PersonForm(forms.ModelForm):
                                           label=_('Country'),
                                           required=False,
                                           widget=forms.TextInput(attrs={'class':'select country',}))
+        
+    
+    def clean(self):
+        self.cleaned_data = super(PersonForm, self).clean()
+        #raise Exception( self.cleaned_data )
+        #if self.cleaned_data.get('birthDate'):# and 'birthDate' in self._errors:
+        #    del self._errors['director']
+        #    raise Exception( self.cleaned_data.get('birthDate') )
+        return self.cleaned_data 
+    
+        if not 'instance' in kwargs:
+            if kwargs['instance'].birthDateSupposed:
+                self.fields['birthDate'].widget.attrs['disabled'] = 'disabled'
+            else:
+                self.fields['years'].widget.attrs['disabled'] = 'disabled'
+    
+    def clean_birthDate(self):
+        if self.cleaned_data.get('birthDateSupposed', False):
+            try:
+                dt = date.today() - relativedelta( years=int(self.cleaned_data.get('years')) )
+                return str(dt)
+            except:
+                raise forms.ValidationError( _('Invalid age provided') )
+        else:
+            bday = datetime.strptime( str(self.cleaned_data.get('birthDate')), '%Y-%d-%m')
+            bday = '-'.join([str(bday.year), str(bday.month), str(bday.day)])
+            return bday
     
     def clean_birthState(self):
         try:
@@ -184,16 +205,7 @@ class PersonForm(forms.ModelForm):
                     return None
             except:
                 raise forms.ValidationError( _('Invalid Birthdate') )
-    
-    def clean_birthDate(self):
-        if self.cleaned_data.get('birthDateSupposed', False):
-            try:
-                dt = datetime.now() - relativedelta( years=int(self.cleaned_data.get('years')) )
-                return dt
-            except:
-                raise forms.ValidationError( _('Invalid age provided') )
-        else:
-            return str( self.cleaned_data.get('birthDate') )
+
     
     def clean_maritalStatus(self):
         try:

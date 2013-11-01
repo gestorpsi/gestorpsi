@@ -166,8 +166,7 @@ $(document).ready(function()
 	    }
 	    else
 	    {
-	    	alert('bbb');
-	        $('#id_birthDate').attr('disabled', true);
+	        $('#id_birthDate').removeClass('formError').attr('disabled', true);
 	        $('#id_birthDate').val('');
 	        $('#id_years').attr('disabled', false);
 	    }
@@ -180,6 +179,7 @@ $(document).ready(function()
 		{
 			alert('Data inválida!');
 			$('body').scrollTo( $('#id_birthDate').closest('fieldset') );
+			$('#id_birthDate').addClass('formError');
 			
 			e.preventDefault();
 			return false;

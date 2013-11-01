@@ -23,6 +23,7 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
+from django.utils.html import strip_tags
 from django.template.defaultfilters import slugify
 from django.db.models import Q
 from django.contrib import messages
@@ -268,7 +269,8 @@ def form_client(request, object_id = None):
             #raise Exception( dir(personform) )
             messages.error(request, _('Errors while trying to save the client'))
             for key, value in personform.errors.items():
-                messages.error(request, _( ('<br/>'+str(key)+' : '+str(value)).decode('utf-8') ))
+                temp = _( str(key) ).encode('utf-8')
+                messages.error(request, _( ('<br/>'+temp+' : '+strip_tags(str(value)).encode('utf-8')).decode('utf-8') ))
         forms['personform'] = personform
     
         # save phone numbers (using Phone APP)

@@ -43,7 +43,7 @@ def send(request):
                 os.chmod('%s/.thumb' % pathdir, 0777)
                 os.chmod('%s/.thumb-whitebg' % pathdir, 0777)
             file = request.FILES['file']
-
+            
             try:
                 if file.content_type in ['image/jpeg', 'image/png', 'image/gif']:
                     filename = str(uuid.uuid4()) + '.png'

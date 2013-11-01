@@ -55,7 +55,7 @@ GNU General Public License for more details.
 <h2 id="title_myoffice" style="display:none"></h2>
 
 {% if perms.client.client_write %}
-<form action="/client/{% if object.id %}{{ object.id }}/{% endif %}" method="post" id="form_client" class="form_people collapsable form_client{% if not object.id %} autocomplete{% endif %}">
+<form action="/client/{% if object.id %}{{ object.id }}/{% endif %}" method="post" id="form_client" enctype='multipart/form-data' class="form_people collapsable form_client{% if not object.id %} autocomplete{% endif %}">
 {% endif %}	
 <div class="main_area">
 

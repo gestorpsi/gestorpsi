@@ -69,7 +69,7 @@ class CompanyClientForm(forms.ModelForm):
 class PersonForm(forms.ModelForm):
     class Meta:
         model = Person
-        fields = ('birthDateSupposed', 'years', 'name', 'nickname', 'photo', 'birthDate', 'birthPlace', 
+        fields = ('birthDateSupposed', 'years', 'name', 'nickname', 'birthDate', 'birthPlace', 
                   'gender', 'maritalStatus',  'comments', 'active', 'organization', 'birthForeignCity', 
                   'birthForeignState', 'birthCountry', 'birthState')
     

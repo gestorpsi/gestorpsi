@@ -69,7 +69,7 @@ class CompanyClientForm(forms.ModelForm):
 class PersonForm(forms.ModelForm):
     class Meta:
         model = Person
-        fields = ('birthDateSupposed', 'years', 'name', 'nickname', 'birthDate', 'birthPlace', 
+        fields = ('birthDateSupposed', 'years', 'name', 'nickname', 'photo', 'birthDate', 'birthPlace', 
                   'gender', 'maritalStatus',  'comments', 'active', 'organization', 'birthForeignCity', 
                   'birthForeignState', 'birthCountry', 'birthState')
     
@@ -159,6 +159,12 @@ class PersonForm(forms.ModelForm):
                 self.fields['birthDate'].widget.attrs['disabled'] = 'disabled'
             else:
                 self.fields['years'].widget.attrs['disabled'] = 'disabled'
+    
+    def clean_photo(self):
+        if len( self.cleaned_data.get('photo') ) < 100:
+            return self.cleaned_data.get('photo')
+        else:
+            return None
     
     def clean_birthDate(self):
         if self.cleaned_data.get('birthDateSupposed', False):

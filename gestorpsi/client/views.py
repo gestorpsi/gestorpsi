@@ -260,7 +260,10 @@ def form_client(request, object_id = None):
     forms = {}
     if request.method == 'POST':
         person = object.person
-        personform = PersonForm( request.POST, instance=person )
+        POST = request.POST.copy()
+        if 'photo' in POST and len(POST['photo']) > 100: 
+            del POST['photo']
+        personform = PersonForm( POST, instance=person )
         errors = False
         if personform.is_valid():
             person = personform.save(request)

@@ -79,7 +79,7 @@ class Person(models.Model):
     birthDateSupposed = models.BooleanField(default=False)
     birthDateSupposed.verbose_name = _('Birthdate supposed')
     
-    gender = models.CharField(max_length=1, choices=Gender)
+    gender = models.CharField(max_length=1, choices=Gender, null=True, blank=True)
     gender.verbose_name = _('Gender')
     
     maritalStatus = models.ForeignKey(MaritalStatus, null=True)

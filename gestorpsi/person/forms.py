@@ -85,9 +85,11 @@ class PersonForm(forms.ModelForm):
             else:
                 if instance.years is not None:
                     kwargs['initial']['birthDate'] = datetime.today() - relativedelta(instance.years)
+                    
                     #raise Exception( kwargs['initial']['birthDate'] )
             if instance.birthPlace:
                 kwargs['initial']['birthPlaceState'] = instance.birthPlace.state
+        kwargs['initial']['birthDateSupposed'] = False
         super(PersonForm, self).__init__(*args, **kwargs)
         
         if self.errors:

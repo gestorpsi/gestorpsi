@@ -108,13 +108,14 @@ table {
       <strong>{% trans "Subscribed since" %}:</strong> {{ object.admission_date|date:"d/m/Y" }}<br />
       {% if object.legacyRecord %}<strong>{% trans "Legacy record" %}: </strong>{{ object.legacyRecord }}<br />{% endif %}
       
-      <strong>{% trans "Admission Knowledge" %}: </strong>{% for i in object.admissionreferral_set.all %}
-                {{ i.referral_choice }} 
-                {% if i.referral_organization or i.referral_professional %} 
-                    ({% if i.referral_organization.name %}{{ i.referral_organization.name }}{% endif %}{% if i.referral_professional %}{{ i.referral_professional }}{% endif %})
-                {% endif %}
-                {% if not forloop.last %},{% endif %}
-            {% endfor %}
+      <strong>{% trans "Admission Knowledge" %}: </strong>
+      	{% for i in object.admissionreferral_set.all %}
+	        {{ i.referral_choice }} 
+	        {% if i.referral_organization or i.referral_professional %} 
+	            ({% if i.referral_organization.name %}{{ i.referral_organization.name }}{% endif %}{% if i.referral_professional %}{{ i.referral_professional }}{% endif %})
+	        {% endif %}
+	        {% if not forloop.last %},{% endif %}
+        {% endfor %}
             <br />
         {% for a in object.admissionreferral_set.all %}
             <strong>{% trans "Signed by the client" %}:</strong> {% if not a.signed_bythe_client %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}<br />
@@ -231,7 +232,7 @@ table {
 {% endif %}
 
 
-    {% for i in referral %}
+    {% for i, supervisors in package %}
         <h1>{{ i }}</h1>
 
         <strong>{% trans "Status" %}: </strong>
@@ -426,6 +427,7 @@ table {
         {% endif %}
 		<br />
         {% if i.service.responsibles.all and signed_professional_responsible %}
+        <h2>{% trans "Professionals/Trainees" %}</h2>
         <br /><br />
         <table class="signature">
             <tr>
@@ -443,15 +445,16 @@ table {
 <br />
 
         {% if i.professional.all and signed_professionals %}
+        <h2>{% trans "Supervisors" %}</h2>
         <br /><br />
         <table class="signature">
             <tr>
-                {% for p in i.professional.all %}
+                {% for p in supervisors %}
                 <td>____________________________</td>
                 {% endfor %}
             </tr>
             <tr>
-                {% for p in i.professional.all %}
+                {% for p in supervisors %}
                 <td>{{ p.person.name }} {% if p.professionalIdentification.registerNumber %}{{ p.professionalIdentification.profession.symbol }} {{ p.professionalIdentification.registerNumber }}{% endif %}</td>
                 {% endfor %}
             </tr>
@@ -459,6 +462,7 @@ table {
         {% endif %}
 
         {% if user.profile.org_active.professionalresponsible_set.all and signed_organization_reponsibles %}
+        <h2>{% trans "Technical Responsibles" %}</h2>
         <br /><br />
         <table class="signature">
             <tr>

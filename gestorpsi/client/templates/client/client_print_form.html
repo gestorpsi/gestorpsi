@@ -18,6 +18,29 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
+{% block extrajs %}
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$('[name="referral"]').change(function()
+	{
+		var id = $(this).val();
+		if( $(this).is(':checked') )
+			$('.signed_professionals_responsible_'+id).show();
+		else
+			$('.signed_professionals_responsible_'+id).hide();
+	}).trigger('change');
+	
+	$('[name^="referral_"]').change(function()
+	{
+		var id = $(this).attr('name').split('_')[1];
+		if( $('[name="referral_'+id+'"]:checked').length == 0)
+			$(this).attr('checked', 'checked');
+	});
+});
+</script>
+{% endblock extrajs %}
+
 {% block menu_client %}active{% endblock %}
 
 {% block submenu %}
@@ -63,6 +86,18 @@ GNU General Public License for more details.
         <div class="label">
         {% for i in object.referral_set.all %}
             <input type="checkbox" name="referral" value="{{ i.id }}" checked />&nbsp;{{ i }}{% if i.professional.all %} - {{ i.professional.all|join:", " }}{% endif %} {% if i.referraldischarge_set.all %}<b>({% trans "Referral is discharged" %})</b>{% endif %}<br />
+            <div style="padding-left: 10px; display: none;" class="signed_professionals_responsible_{{i.id}}">
+            	<div style="display: inline-block; width: 100px; height: 100%; min-height: 25px; margin-top: 5px; vertical-align: top;">Supervisores</div>
+            	<div style="display: inline-block; width: 300px; height: 100%; min-height: 25px; margin-top: 5px;">
+		            {% for p in i.service.responsibles.all %}
+			            <input type="checkbox" name="referral_{{i.id}}" value="{{p.pk}}" checked="checked" />
+			            {{ p.person.name }} {{p.professionalIdentification.registerNumber|default:''}} {{p.professionalIdentification.profession.symbol|default:''}}
+		            	<br/>
+		            {% empty %}
+		            	{% trans 'No supervisor' %}
+		            {% endfor %}
+	            </div>
+	        </div>
         {% endfor %}
         </div>
         <div style="clear:both;"></div>
@@ -80,15 +115,24 @@ GNU General Public License for more details.
         <div style="clear:both"></div>
         <label><b>{% trans "Signed by" %}</b><br /></label>
         <div style="clear:both"></div>
-        <label><input type="checkbox" name="signed_professionals" value="True" checked />&nbsp; <b>
-        {% trans "Professionals from referral" %}</b>
-        </label>
-        <label><input type="checkbox" name="signed_professional_responsible" value="True" checked />&nbsp; <b>
-        {% trans "Responsible Professionals from Service" %}</b>
-        </label>
-        <label><input type="checkbox" name="signed_organization_reponsibles" value="True" checked />&nbsp; <b>
-        {% trans "Organization Responsibles" %}</b>
-        </label>
+        <div>
+	        <label>
+		        <input type="checkbox" name="signed_professionals" value="True" checked />&nbsp; <b>
+		        {% trans "Professionals from referral" %}</b>
+	        </label>
+        </div>
+        <div>
+	        <label>
+		        <input type="checkbox" name="signed_professional_responsible" value="True" checked />&nbsp; <b>
+		        {% trans "Responsible Professionals from Service" %}</b>
+	        </label>
+        </div>
+        <div>
+	        <label>
+		        <input type="checkbox" name="signed_organization_reponsibles" value="True" checked="checked" />&nbsp; <b>
+		        {% trans "Organization Responsibles" %}</b>
+	        </label>
+        </div>
 
         <div style="clear:both"></div><br />
         <label><b>{% trans "Print output format" %}</b><br /></label>

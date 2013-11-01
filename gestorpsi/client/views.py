@@ -68,6 +68,7 @@ from gestorpsi.address.views import address_save
 from gestorpsi.document.views import document_save
 from gestorpsi.person.models import MaritalStatus
 from gestorpsi.contact.helpers import phone_save, email_save, site_save, im_save
+from gestorpsi import settings 
 
 def _access_check(request, object=None):
     """
@@ -269,7 +270,6 @@ def form_client(request, object_id = None):
             person = personform.save(request)
         else:
             errors = True
-            #raise Exception( dir(personform) )
             messages.error(request, _('Errors while trying to save the client'))
             for key, value in personform.errors.items():
                 temp = _( str(key) ).encode('utf-8')
@@ -850,11 +850,18 @@ def client_print(request, object_id = None):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     have_ehr_read_perms = False if not _access_ehr_check_read(request, object) else True
+    user = request.user
     
+    #raise Exception( object.referral_set.all()[0].service.responsibles.all() )
     if not request.POST:
+        #signed_prof_resp_list = user.profile.org_active.professionalresponsible_set.all()
         return render_to_response('client/client_print_form.html', locals(), context_instance=RequestContext(request))
     else:
         referral = object.referral_set.filter(pk__in=request.POST.getlist('referral'))
+        package = []
+        for p in object.referral_set.filter(pk__in=request.POST.getlist('referral')):
+            aux = ( p, p.professional.filter(id__in=request.POST.getlist('referral_'+str(p.id))) )
+            package.append( aux )
         print_schedule = None if not request.POST.get('schedule') else True
         print_demographic = None if not request.POST.get('demographic') else True
         print_ehr = None if not request.POST.get('ehr') else True
@@ -862,32 +869,20 @@ def client_print(request, object_id = None):
         signed_professionals = None if not request.POST.get('signed_professionals') else True
         signed_organization_reponsibles = None if not request.POST.get('signed_organization_reponsibles') else True
         #company_related_clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active) if object.is_company else None
+        signed_org_resp_list = user.profile.org_active.professionalresponsible_set.filter(pk__in=request.POST.getlist('signed_org_resp_list'))
+        
         company_related_clients = []
         if object.is_company():
             company_related_clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active)
     
-        dict = {
-            'referral': referral,
-            'print_schedule': print_schedule,
-            'print_demographic': print_demographic,
-            'signed_professional_responsible': signed_professional_responsible,
-            'signed_professionals': signed_professionals,
-            'signed_organization_reponsibles': signed_organization_reponsibles,
-            'print_ehr': print_ehr,
-            'pagesize' : 'A4',
-            'object': object, 
-            'org_active': request.user.get_profile().org_active, 
-            'user': request.user, 
-            'DEBUG': DEBUG, 
-            'MEDIA_URL': MEDIA_URL if request.POST.get('output') == 'html' else MEDIA_ROOT.replace('\\','/') + '/', 
-            'company_related_clients': company_related_clients,
-            'have_ehr_read_perms': have_ehr_read_perms,
-            }
-
-        if request.POST.get('output') == 'html':
-            return render_to_response('client/client_print.html', dict, context_instance=RequestContext(request))
+        pagesize = 'A4'
+        org_active = user.get_profile().org_active
+        MEDIA_URL = settings.MEDIA_URL if request.POST.get('output') == 'html' else settings.MEDIA_ROOT.replace('\\','/') + '/' 
         
-        return write_pdf('client/client_print.html', dict, '%s.pdf' % slugify(object.person.name))
+        if request.POST.get('output') == 'html':
+            return render_to_response('client/client_print.html', locals(), context_instance=RequestContext(request))
+        
+        return write_pdf('client/client_print.html', locals(), '%s.pdf' % slugify(object.person.name))
 
 @permission_required_with_403('client.client_read')
 def organization_clients(request):

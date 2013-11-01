@@ -305,6 +305,8 @@ LOGGING = {
     }
 }
 
+ROSETTA_WSGI_AUTO_RELOAD = True
+
 
 if not DEBUG:
     import logging

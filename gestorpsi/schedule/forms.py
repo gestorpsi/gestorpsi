@@ -17,7 +17,7 @@ GNU General Public License for more details.
 from datetime import datetime, date, time, timedelta
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from swingtime.forms import MultipleOccurrenceForm, SingleOccurrenceForm
 from swingtime import utils
 from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation

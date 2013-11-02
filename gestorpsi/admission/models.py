@@ -20,7 +20,7 @@ GNU General Public License for more details.
 import reversion
 from datetime import datetime
 from django.db import models
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client

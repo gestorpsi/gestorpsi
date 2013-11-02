@@ -11,7 +11,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.defaultfilters import slugify
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 from gestorpsi.address.models import City, Address, Country
 from gestorpsi.boleto.functions import gera_boleto_bradesco

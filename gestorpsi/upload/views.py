@@ -19,7 +19,7 @@ from django.http import HttpResponse
 from gestorpsi.settings import MEDIA_ROOT
 import uuid
 from PIL import Image
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.referral.models import ReferralAttach, Referral, REFERRAL_ATTACH_TYPE
 from gestorpsi.client.models import Client

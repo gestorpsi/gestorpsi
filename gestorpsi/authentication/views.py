@@ -25,7 +25,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from django.forms.util import ErrorList
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.views import login as django_login
 from gestorpsi.settings import SITE_DISABLED
 from gestorpsi.organization.models import Organization

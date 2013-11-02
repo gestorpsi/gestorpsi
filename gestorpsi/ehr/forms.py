@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django import forms
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from gestorpsi.ehr.models import TimeUnit, Diagnosis, Demand, Session, SESSION_GOALS, DEMAND_STATUS, DIAGNOSIS_STATUS, DIAGNOSIS_STATUS2, SEVERITY, UNITS
 from gestorpsi.schedule.models import ScheduleOccurrence
 

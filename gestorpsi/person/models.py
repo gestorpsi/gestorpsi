@@ -42,7 +42,7 @@ COMPANY_SIZE = (
 )
 
 class MaritalStatus(models.Model):
-    description = models.CharField(max_length=20)
+    description = models.CharField(max_length=20, null=False, blank=False)
     def __unicode__(self):
         return u"%s" % self.description
     class Meta:
@@ -53,7 +53,7 @@ class Person(models.Model):
     user = models.ForeignKey(User, editable=False, default=threadlocals.get_current_user) # the register owner
     user.verbose_name = _('User')
     
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, blank=False, null=False)
     name.verbose_name = _('Name')
     
     nickname = models.CharField(max_length=50, null=True, blank=True)
@@ -67,7 +67,7 @@ class Person(models.Model):
     
     years = models.IntegerField(null=True, blank=True)
     
-    birthPlace = models.ForeignKey(City, null=True)
+    birthPlace = models.ForeignKey(City, null=True, blank=True)
     birthPlace.verbose_name = _('Birth place')
     
     birthState = models.ForeignKey(State, null=True, blank=True, related_name='birthState')
@@ -82,25 +82,25 @@ class Person(models.Model):
     gender = models.CharField(max_length=1, choices=Gender, null=True, blank=True)
     gender.verbose_name = _('Gender')
     
-    maritalStatus = models.ForeignKey(MaritalStatus, null=True)
+    maritalStatus = models.ForeignKey(MaritalStatus, null=True, blank=True)
     maritalStatus.verbose_name = _('Marital Status')
     
-    phones = generic.GenericRelation('contact.Phone', null=True)
+    phones = generic.GenericRelation('contact.Phone', null=True, blank=True)
     phones.verbose_name = _('Phones')
     
-    address = generic.GenericRelation(Address, null=True)
+    address = generic.GenericRelation(Address, null=True, blank=True)
     address.verbose_name = _('Address')
     
-    document = generic.GenericRelation(Document, null=True)
+    document = generic.GenericRelation(Document, null=True, blank=True)
     document.verbose_name = _('Document')
     
-    emails  = generic.GenericRelation(Email, null=True)
+    emails  = generic.GenericRelation(Email, null=True, blank=True)
     emails.verbose_name = _('Emails')
     
-    sites = generic.GenericRelation(Site, null=True)
-    instantMessengers = generic.GenericRelation(InstantMessenger, null=True)
+    sites = generic.GenericRelation(Site, null=True, blank=True)
+    instantMessengers = generic.GenericRelation(InstantMessenger, null=True, blank=True)
     
-    comments = models.TextField(blank=True)
+    comments = models.TextField(blank=True, null=True)
     comments.verbose_name = _('Comments')
     
     active = models.BooleanField(default=True)

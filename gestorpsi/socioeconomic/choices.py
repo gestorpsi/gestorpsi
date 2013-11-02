@@ -27,7 +27,7 @@ SOMETHING_TYPE = (
 )
 """
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 EDUCATION_LEVEL = (
     ('01', (u'Analfabeto')),

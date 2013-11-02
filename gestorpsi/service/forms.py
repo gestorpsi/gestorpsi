@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django import forms
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from gestorpsi.service.models import ServiceGroup, Area, ServiceType, Modality
 from gestorpsi.client.models import Client
 from gestorpsi.organization.models import AgeGroup, EducationLevel, HierarchicalLevel

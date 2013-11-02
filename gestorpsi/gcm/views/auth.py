@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.forms.util import ErrorList
 from django.contrib.auth.models import User
 from django.core.mail import send_mail

@@ -19,7 +19,7 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.organization.forms import OrganizationForm
 from gestorpsi.boleto.models import *
 from gestorpsi.boleto.admin import *
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 from gestorpsi.gcm.models import Plan
 

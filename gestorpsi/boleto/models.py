@@ -16,7 +16,7 @@ GNU General Public License for more details.
 from django import forms
 import reversion
 from django.db import models
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from gestorpsi.address.models import State, City
 from smart_selects.db_fields import ChainedForeignKey
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator

@@ -18,7 +18,7 @@ from datetime import datetime
 from django import forms
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, get_object_or_404
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.template import RequestContext
 from django.utils import simplejson
 from django.contrib import messages

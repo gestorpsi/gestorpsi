@@ -25,10 +25,10 @@ from gestorpsi.client.models import Client
 from gestorpsi.person.models import Person, Company, CompanyClient, MaritalStatus
 from gestorpsi.address.models import Country, State, AddressType, City
 
-MARITAL_STATUS_CHOICES = ( (p.id, p.description) for p in MaritalStatus.objects.all() )
-COUNTRY_CHOICES = ( ((p.id, p.name) for p in Country.objects.all()) )
-STATE_SHORT_CHOICES = ( (p.id, p.shortName) for p in State.objects.all() )
-CITY_CHOICES = ( (p.id, p.name) for p in City.objects.all() )
+MARITAL_STATUS_CHOICES = ( (p.id, _(p.description) ) for p in MaritalStatus.objects.all() )
+COUNTRY_CHOICES = ( ((p.id, _(p.name) ) for p in Country.objects.all()) )
+STATE_SHORT_CHOICES = ( (p.id, _(p.shortName) ) for p in State.objects.all() )
+CITY_CHOICES = ( (p.id, _(p.name) ) for p in City.objects.all() )
 
 class CompanyForm(forms.ModelForm):
     cnae_class = forms.CharField(label=_('CNAE Class Code'), required=False, widget=forms.TextInput(attrs={'mask':'9999-9/99'}))
@@ -134,6 +134,7 @@ class PersonForm(forms.ModelForm):
                                                    attrs={'class':'extramedium',}))
     birthCountry = forms.IntegerField(label=_('Country'),
                                       required=False,
+                                      initial=33,
                                       widget=forms.Select(choices=COUNTRY_CHOICES,
                                                    attrs={'class':'select country',}))
     birthState = forms.IntegerField(label=_('State'),

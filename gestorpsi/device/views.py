@@ -22,7 +22,7 @@ from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.utils import simplejson
 from django.db.models import Q
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from gestorpsi.device.models import DeviceDetails, Device
 from gestorpsi.careprofessional.views import Profession

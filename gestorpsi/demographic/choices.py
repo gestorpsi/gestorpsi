@@ -27,7 +27,7 @@ SOMETHING_TYPE = (
 )
 """
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from gestorpsi.socioeconomic.choices import EDUCATION_LEVEL
 
 LABOR_MARKET_STATUS = (

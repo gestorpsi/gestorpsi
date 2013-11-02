@@ -15,14 +15,14 @@ GNU General Public License for more details.
 """
 
 from django.utils import simplejson
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.template import RequestContext
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
 from django.contrib import messages
 from gestorpsi.service.models import Service, Area, ServiceType, Modality

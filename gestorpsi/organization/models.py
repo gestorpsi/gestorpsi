@@ -21,7 +21,7 @@ from django.db import models
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import Group
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 #from gestorpsi.contact.models import Phone
 from gestorpsi.util.uuid_field import UuidField

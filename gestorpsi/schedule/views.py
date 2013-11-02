@@ -21,7 +21,7 @@ from datetime import datetime, timedelta
 from django import http
 from django.template.context import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response, HttpResponse
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.utils import simplejson
 from django.db.models import Q
 from django.contrib import messages

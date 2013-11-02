@@ -25,7 +25,7 @@ from django.forms.models import *
 #from django.forms import *
 
 from django.db import models
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 from smart_selects.db_fields import ChainedForeignKey
 

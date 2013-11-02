@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django import forms
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from gestorpsi.demographic.models import Profession, EducationalLevel
 from gestorpsi.demographic.choices import *
 from gestorpsi.cbo.models import Occupation

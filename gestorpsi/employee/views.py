@@ -18,7 +18,7 @@ from datetime import datetime
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from gestorpsi.employee.models import Employee
 from gestorpsi.person.models import Person, MaritalStatus

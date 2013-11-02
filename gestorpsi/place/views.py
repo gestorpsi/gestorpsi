@@ -20,7 +20,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.utils import simplejson
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from gestorpsi.place.models import Place, Room, RoomType, PlaceType
 from gestorpsi.address.models import Country, AddressType, State, City

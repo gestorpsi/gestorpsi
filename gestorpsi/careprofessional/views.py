@@ -18,7 +18,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.person.helpers import person_json_list, person_save

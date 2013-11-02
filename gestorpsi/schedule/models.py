@@ -18,7 +18,7 @@ from datetime import datetime
 import reversion
 from django.db import models
 from django.db.models import Q
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from swingtime.models import Occurrence
 from gestorpsi.place.models import Room
 from gestorpsi.client.models import Client

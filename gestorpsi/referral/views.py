@@ -18,7 +18,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils import simplejson
 from django.template import RequestContext
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, Queue, ReferralExternal, ReferralAttach

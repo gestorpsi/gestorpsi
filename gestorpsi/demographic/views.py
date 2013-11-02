@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.template import RequestContext
 from django.contrib import messages
 from gestorpsi.util.views import get_object_or_None

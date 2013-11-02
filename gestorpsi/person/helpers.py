@@ -15,7 +15,7 @@ GNU General Public License for more details.
 
 from django.core.paginator import Paginator
 from django.conf import settings
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from gestorpsi.address.models import City
 from gestorpsi.address.views import address_save
 from gestorpsi.document.views import document_save

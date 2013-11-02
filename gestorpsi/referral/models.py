@@ -20,7 +20,7 @@ from datetime import datetime
 from django.core.files import File
 from django.db import models
 from django.db.models import Q
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.core.files.storage import FileSystemStorage
 from swingtime.models import Event, EventType
 from gestorpsi.client.models import Client

@@ -13,4 +13,6 @@
 /gestorpsi/settings_local.py
 /.pydevproject
 /.settings/
+/settings.py
+/urls.py
 /gpconnect.sh

@@ -49,8 +49,29 @@
             	{{ object.name }}
             </a>
         </td>
-        <td>{{ object.employee_number }}</td>
-        <td>{{ object.professionalresponsible.name }} - {{ object.professionalresponsible.person.phones.all.0 }}</td>
+        <td>{{ object.care_professionals|length }}</td>
+        <td>
+	    {% for i in object.adminstrators %}
+		<strong>{{ i }}</strong>
+		<br />
+		{% if i.emails.all %}
+		    <small>
+		    {% for e in i.emails.all %}
+			{{ e }} {% if not forloop.last %}| {% endif %}
+		    {% endfor %}
+		    </small>
+		    <br />
+		{% endif %}
+		{% if i.phones.all %}
+		    <small>
+		    {% for p in i.phones.all %}
+			{{ p.area }} {{ p.phoneNumber }} {% if not forloop.last %}| {% endif %}
+		    {% endfor %}
+		    </small>
+		    <br />
+		{% endif %}
+	    {% endfor %}
+	</td>
         <td>{{ object.date_created|date:"d/m/y - h:i" }}</td>
         <td>
 			{% if object.phones.all %}

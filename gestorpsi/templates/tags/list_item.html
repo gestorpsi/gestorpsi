@@ -55,10 +55,10 @@ GNU General Public License for more details.
         {% endfor %}
     </select>
     <label>
-        <input type="checkbox" name="subscribed"{% if subscribed == "true" %} checked{% endif %} />&nbsp;{% trans "Com Encaminhamentos Ativos" %}
+        <input type="checkbox" name="subscribed"{% if subscribed == "true" %} checked{% endif %} />&nbsp;{% trans "Com inscrição ativa" %}
     </label>
     <label>
-        <input type="checkbox" name="discharged"{% if discharged == "true" %} checked{% endif %} />&nbsp;{% trans "Com Serviços Desligados" %}
+        <input type="checkbox" name="discharged"{% if discharged == "true" %} checked{% endif %} />&nbsp;{% trans "Com inscrição desligada" %}
     </label>
     <label>
         <input type="checkbox" name="queued"{% if queued == "true" %} checked{% endif %} />&nbsp;{% trans "Na Fila de Espera" %}

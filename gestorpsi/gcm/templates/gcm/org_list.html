@@ -62,7 +62,12 @@
 		    <br />
 		{% endif %}
 		{% if i.phones.all %}
-		    <small>{{ i.phones.all.0.area }} {{ i.phones.all.0.phoneNumber }}</small><br />
+		    <small>
+		    {% for p in i.phones.all %}
+			{{ p.area }} {{ p.phoneNumber }} {% if not forloop.last %}| {% endif %}
+		    {% endfor %}
+		    </small>
+		    <br />
 		{% endif %}
 	    {% endfor %}
 	</td>

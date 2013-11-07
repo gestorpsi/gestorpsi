@@ -54,6 +54,17 @@ GNU General Public License for more details.
             <option value="{{ s.pk }}"{% if s.pk == service %} selected{% endif %}>{{ s }}</option>
         {% endfor %}
     </select>
+    <label>
+        <input type="checkbox" name="subscribed"{% if subscribed == "true" %} checked{% endif %} />&nbsp;{% trans "Com Encaminhamentos Ativos" %}
+    </label>
+    <label>
+        <input type="checkbox" name="discharged"{% if discharged == "true" %} checked{% endif %} />&nbsp;{% trans "Com Serviços Desligados" %}
+    </label>
+    <label>
+        <input type="checkbox" name="queued"{% if queued == "true" %} checked{% endif %} />&nbsp;{% trans "Na Fila de Espera" %}
+    </label>
+    <label>
+        <input type="checkbox" name="nooccurrences"{% if nooccurrences == "true" %} checked{% endif %} />&nbsp;{% trans "Sem agendamentos" %}
     </label>
 </div>
 
@@ -103,7 +114,13 @@ GNU General Public License for more details.
 </div>
 
 <script>
-function updateResults(url) {
+function updateResults(url, initial) {
+    if(!url) {
+        if(!initial) {
+            initial = ''
+        }
+        var url = '{{ list_url_base }}?search=' + encodeURIComponent($("#quick_search").val()) + "&initial=" + initial + '&service=' + $('select[name=service]').val() + '&subscribed=' + $('input[name=subscribed]').attr("checked") + '&discharged=' + $('input[name=discharged]').attr("checked") + '&queued=' + $('input[name=queued]').attr('checked') + '&nooccurrences=' + $('input[name=nooccurrences]').attr('checked');
+    }
     $('#page_results').load(url,function(responseTxt,statusTxt,xhr){
             if(statusTxt=="success") {
                 $('#pageof').text($('.pagination span.current').text());
@@ -120,20 +137,36 @@ $(function() {
             return false;
         });
         $('a.quick_search').click(function() {
-            updateResults("{{ list_url_base }}?search=" + encodeURIComponent($("#quick_search").val()) + "&initial=" + $("input[name=initial]").val() + "&service=" + $("select[name=service]").val());
+            updateResults();
             return false;
         });
         $('a.initial').click(function() {
-            updateResults("{{ list_url_base }}?search=" + encodeURIComponent($("#quick_search").val()) + "&initial=" + $(this).attr("initial") + "&service=" + $("select[name=service]").val());
+            updateResults(null, $(this).attr("initial"));
             return false;
         });
         $('select[name=service]').change(function() {
-            updateResults('{{ list_url_base }}?search=' + encodeURIComponent($("#quick_search").val()) + "&initial=" + $("input[name=initial]").val() + '&service=' + $(this).val());
+            updateResults();
+            return false;
+        });
+        $('input[name=subscribed]').change(function() {
+            updateResults();
+            return false;
+        });
+        $('input[name=discharged]').change(function() {
+            updateResults();
+            return false;
+        });
+        $('input[name=queued]').change(function() {
+            updateResults();
+            return false;
+        });
+        $('input[name=nooccurrences]').change(function() {
+            updateResults();
             return false;
         });
 
         $('a#cleanup').click(function() {
-            updateResults('{{ list_url_base }}');
+            updateResults();
             return false;
         });
 

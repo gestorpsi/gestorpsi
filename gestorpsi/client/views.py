@@ -167,11 +167,38 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
         search = request.GET.get('search')
         object_list = object_list.filter(person__name__icontains = search)
         url_extra += '&search=%s' % search
+
+    #
+    # filters
+    #
     
     if request.GET.get('service'):
         service = request.GET.get('service')
-        object_list = object_list.filter(referral__service=service, referral__referraldischarge__isnull=True).distinct()
+        object_list = object_list.filter(referral__service=service).distinct()
         url_extra += '&service=%s' % service
+    
+    if request.GET.get('subscribed') and request.GET.get('subscribed') == "true":
+        subscribed = request.GET.get('subscribed')
+        if request.GET.get('discharged') != "true": # if discharged not selected, 
+            object_list = object_list.filter(referral__service__isnull=False, referral__referraldischarge__isnull=True).distinct()
+        else:
+            object_list = object_list.filter(referral__service__isnull=False).distinct()
+        url_extra += '&subscribed=%s' % subscribed
+    
+    if request.GET.get('discharged') and request.GET.get('discharged') == "true":
+        discharged = request.GET.get('discharged')
+        object_list = object_list.filter(referral__referraldischarge__isnull=False).distinct()
+        url_extra += '&discharged=%s' % discharged
+    
+    if request.GET.get('queued') and request.GET.get('queued') == "true":
+        queued = request.GET.get('queued')
+        object_list = object_list.filter(referral__queue__isnull=False).distinct()
+        url_extra += '&queued=%s' % queued
+
+    if request.GET.get('nooccurrences') and request.GET.get('nooccurrences') == "true":
+        nooccurrences = request.GET.get('nooccurrences')
+        object_list = object_list.filter(referral__occurrence__isnull=True).distinct()
+        url_extra += '&nooccurrences=%s' % nooccurrences
 
     p = Paginator(object_list, PAGE_RESULTS)
     
@@ -184,8 +211,6 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
     initials = string.uppercase
 
     return render_to_response('tags/list_item.html', locals(), context_instance=RequestContext(request))
-    #return HttpResponse(simplejson.dumps(person_json_list(request, object_list, 'client.client_read', page, no_paging, True), sort_keys=True),
-                            #mimetype='application/json')
 
 # edit form
 @permission_required_with_403('client.client_read')

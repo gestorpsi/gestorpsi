@@ -31,6 +31,7 @@ class EmailType(models.Model):
         return self.description
     class Meta:
         ordering = ['description']
+        db_table = 'internet_emailtype'
 
 class Email(models.Model):
     id = UuidField(primary_key= True)
@@ -38,9 +39,12 @@ class Email(models.Model):
     email_type = models.ForeignKey(EmailType)
     
     # Generic Relation
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(ContentType, related_name='contact_email')
     object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
+
+    class Meta:
+        db_table = 'internet_email'
 
     def __cmp__(self, other):
         if (self.email == other.email) and \
@@ -63,9 +67,12 @@ class Site(models.Model):
     site = models.CharField(max_length=100, blank=True)
 
     # Generic Relation
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(ContentType, related_name='contact_site')
     object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
+
+    class Meta:
+        db_table = 'internet_site'
 
     def __cmp__(self, other):
         if (self.description == other.description) and \
@@ -86,8 +93,10 @@ class IMNetwork(models.Model):
     description = models.CharField(max_length=30)
     def __unicode__(self):
         return self.description
+    
     class Meta:
         ordering = ['description']
+        db_table = 'internet_imnetwork'
 
 class InstantMessenger(models.Model):
     id = UuidField(primary_key=True)
@@ -95,9 +104,12 @@ class InstantMessenger(models.Model):
     network = models.ForeignKey(IMNetwork, blank=True)
 
     # Generic Relation
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(ContentType, related_name='contact_instantmessenger')
     object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
+
+    class Meta:
+        db_table = 'internet_instantmessenger'
 
     def __cmp__(self, other):
         if (self.identity == other.identity) and \
@@ -130,6 +142,7 @@ class PhoneType(models.Model):
         return self.description
     class Meta:
         ordering = ['description']
+        db_table = 'phone_phonetype'
 
 class Phone(models.Model):
     """
@@ -144,9 +157,12 @@ class Phone(models.Model):
     ext = models.CharField(max_length=4, blank=True)
     phoneType = models.ForeignKey(PhoneType)
     # Generic Relationship
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(ContentType, related_name='contact_phone')
     object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
+
+    class Meta:
+        db_table = 'phone_phone'
 
     def __cmp__(self, other):
         if (self.area == other.area) and \

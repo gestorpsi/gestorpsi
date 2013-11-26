@@ -230,22 +230,38 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
         object_list = object_list.filter(referral__service=service).distinct()
         url_extra += '&service=%s' % service
     
+    client_service_pk_list = []
+
     if request.GET.get('subscribed') and request.GET.get('subscribed') == "true":
         subscribed = request.GET.get('subscribed')
-        if request.GET.get('discharged') != "true": # if discharged not selected, 
-            object_list = object_list.filter(referral__service__isnull=False, referral__referraldischarge__isnull=True).distinct()
-        else:
+        if not request.GET.get('service'):
             object_list = object_list.filter(referral__service__isnull=False).distinct()
+        else:
+            for c in object_list:
+                for r in c.referrals_charged():
+                    if r.service.pk == request.GET.get('service') and c.pk not in client_service_pk_list:
+                        client_service_pk_list.append(c.pk)
+                        break
+        
         url_extra += '&subscribed=%s' % subscribed
     
     if request.GET.get('discharged') and request.GET.get('discharged') == "true":
         discharged = request.GET.get('discharged')
-        object_list = object_list.filter(referral__referraldischarge__isnull=False).distinct()
+        if not request.GET.get('service'):
+            object_list = object_list.filter(referral__referraldischarge__isnull=False).distinct()
+        else:
+            for c in object_list:
+                for r in c.referrals_discharged():
+                    if r.service.pk == request.GET.get('service') and c.pk not in client_service_pk_list:
+                        client_service_pk_list.append(c.pk)
+                        break
+
         url_extra += '&discharged=%s' % discharged
-    
+
     if request.GET.get('queued') and request.GET.get('queued') == "true":
         queued = request.GET.get('queued')
         object_list = object_list.filter(referral__queue__isnull=False).distinct()
+            
         url_extra += '&queued=%s' % queued
 
     if request.GET.get('nooccurrences') and request.GET.get('nooccurrences') == "true":
@@ -253,6 +269,9 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
         object_list = object_list.filter(referral__occurrence__isnull=True).distinct()
         url_extra += '&nooccurrences=%s' % nooccurrences
 
+    if client_service_pk_list: # exclude filtered for charged and discharged results
+        object_list = object_list.filter(pk__in=client_service_pk_list)
+    
     p = Paginator(object_list, PAGE_RESULTS)
     
     page_number = 1 if not request.GET.get('page') else request.GET.get('page')

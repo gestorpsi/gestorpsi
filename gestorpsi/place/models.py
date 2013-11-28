@@ -40,6 +40,58 @@ class PlaceManager(models.Manager):
     def deactive(self):
         return super(PlaceManager, self).get_query_set().filter(active=False)
 
+HOURS = ( 
+        ('00:00', '00,00'),
+        ('00:30', '00,30'),
+        ('01:00', '01,00'),
+        ('01:30', '01,30'),
+        ('02:00', '02,00'),
+        ('02:30', '02,30'),
+        ('03:00', '03,00'),
+        ('03:30', '03,30'),
+        ('04:00', '04,00'),
+        ('04:30', '04,30'),
+        ('05:00', '05,00'),
+        ('05:30', '05,30'),
+        ('06:00', '06,00'),
+        ('06:30', '06,30'),
+        ('07:00', '07,00'),
+        ('07:30', '07,30'),
+        ('08:00', '08,00'),
+        ('08:30', '08,30'),
+        ('09:00', '09,00'),
+        ('09:30', '09,30'),
+        ('10:00', '10,00'),
+        ('10:30', '10,30'),
+        ('11:00', '11,00'),
+        ('11:30', '11,30'),
+        ('12:00', '12,00'),
+        ('12:30', '12,30'),
+        ('13:00', '13,00'),
+        ('13:30', '13,30'),
+        ('14:00', '14,00'),
+        ('14:30', '14,30'),
+        ('15:00', '15,00'),
+        ('15:30', '15,30'),
+        ('16:00', '16,00'),
+        ('16:30', '16,30'),
+        ('17:00', '17,00'),
+        ('17:30', '17,30'),
+        ('18:00', '18,00'),
+        ('18:30', '18,30'),
+        ('19:00', '19,00'),
+        ('19:30', '19,30'),
+        ('20:00', '20,00'),
+        ('20:30', '20,30'),
+        ('21:00', '21,00'),
+        ('21:30', '21,30'),
+        ('22:00', '22,00'),
+        ('22:30', '22,30'),
+        ('23:00', '23,00'),
+        ('23:30', '23,30'),
+        ('24:00', '24,00'),
+)
+
 class Place( models.Model ):
     """
     This class represents a place.
@@ -53,6 +105,9 @@ class Place( models.Model ):
     place_type = models.ForeignKey(PlaceType)
     organization = models.ForeignKey(Organization, null= True, blank= True)
     comments = models.TextField(blank=True, null=True)
+
+    hour_start = models.CharField(u'Primeiro horário', max_length=10, default='00', choices=HOURS)
+    hour_end = models.CharField(u'Último horário', max_length=10, default='23,30', choices=HOURS)
     
     objects = PlaceManager()
     
@@ -98,6 +153,31 @@ class Place( models.Model ):
     def revision(self):
         return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
+    # Tiago de Souza Moraes, 26/11/2013
+    # retorna a quantidade de horas que a sala estará aberta para atendimento
+    # return array = [hour_start], [min_start], [hours_works]
+    def hours_work(self):
+        r = [None]*3
+
+        # hour
+        r[0] = ( int(self.hour_start.split(',')[0]) )
+        # min
+        r[1] = ( int(self.hour_start.split(',')[1]) )
+
+        # quantas horarios disponivel na agenda
+        m = 0
+        # meia hora existe? 
+        if int(self.hour_start.split(',')[1]) >  int(self.hour_end.split(',')[1]) :
+            m = float(-.5)
+
+        if int(self.hour_start.split(',')[1]) <  int(self.hour_end.split(',')[1]) :
+            m = float(.5)
+
+        x = ( float(self.hour_end.split(',')[0]) - float(self.hour_start.split(',')[0]) ) + m
+
+        r[2] = x
+        return r 
+        
 reversion.register(Place, follow=['address', 'phones'])
 
 class RoomType( models.Model ):

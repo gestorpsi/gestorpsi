@@ -610,7 +610,7 @@ a.prase_edit {
         float: left;
         margin: 2px;
         color: #916F6F;
-        font-size: 13px;
+        font-size: 11px;
         margin: 10px 0 0 12px;
         line-height: 20px;
 }
@@ -1057,10 +1057,10 @@ hr {
 
 #search_header {
         height: 50px;
-        width: 715px;
+        width: 100%;
         position:relative;
 }
-.search_header_aditional { padding-left:0px; margin-bottom:45px; margin-top:10px }
+.search_header_aditional { padding-left:0px; margin-bottom:25px; margin-top:10px }
 .search_header_aditional select { background-color:#fff; border: 2px solid #ccc; padding:6px; color:#444; width:100%}
 div.schedule #search_header {
         padding-left: 90px;

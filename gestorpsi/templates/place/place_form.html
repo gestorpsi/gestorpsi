@@ -73,6 +73,27 @@ GNU General Public License for more details.
 			</label>
 	</fieldset>
 
+    <!-- horario atendimento -->
+    <fieldset>
+		<legend>{% trans "Hor&aacute;rio atendimento" %}</legend>
+
+			<label>{% trans "First hour" %}
+                <select name="hour_start" class="normal">
+                    {% for h in Hours %}
+                        <option value="{{ h.1 }}"{% ifequal object.hour_start h.1 %} selected{% endifequal %}>{{ h.0 }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+
+			<label>{% trans "End last hour" %}
+                <select name="hour_end" class="normal">
+                    {% for h in Hours %}
+                        <option value="{{ h.1 }}"{% ifequal object.hour_end h.1 %} selected{% endifequal %}>{{ h.0 }}</option>
+                    {% endfor %}
+                </select>
+			</label>
+	</fieldset>
+
 
 	<!--
 	phones

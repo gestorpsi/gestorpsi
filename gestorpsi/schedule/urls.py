@@ -37,8 +37,17 @@ urlpatterns = patterns('',
         login_check(schedule_index), 
         name='schedule-index'
     ),
+
+    # index, not default place
+     url(
+        r'^place/(?P<place>([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}))/$', 
+        login_check(schedule_index), 
+        name='schedule-index'
+    ),
+    
+    # return JSON
     url(
-        r'^occurrences/(\d{4})/(0?[1-9]|1[012])/([0-3]?\d)/$', 
+        r'^occurrences/(?P<year>(\d)+)/(?P<month>(\d)+)/(?P<day>(\d)+)/place/(?P<place>([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}))/$', 
         login_check(daily_occurrences),
         name='schedule-daily-occurrences'
     ),

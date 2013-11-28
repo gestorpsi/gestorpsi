@@ -22,7 +22,7 @@ from django.core.paginator import Paginator
 from django.utils import simplejson
 from django.utils.translation import ugettext as _
 from django.contrib import messages
-from gestorpsi.place.models import Place, Room, RoomType, PlaceType
+from gestorpsi.place.models import Place, Room, RoomType, PlaceType, HOURS
 from gestorpsi.address.models import Country, AddressType, State, City
 from gestorpsi.address.views import address_save
 from gestorpsi.phone.models import PhoneType
@@ -87,6 +87,7 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
 
 @permission_required_with_403('place.place_read')
 def form(request, object_id=None):
+
     if object_id:
         object = get_object_or_404(Place, pk=object_id, organization=request.user.get_profile().org_active)
         addresses= object.address.all()
@@ -113,11 +114,13 @@ def form(request, object_id=None):
                                                         'RoomTypes': RoomType.objects.all(),
                                                         'States': State.objects.all(),
                                                         'Cities': cities,
+                                                        'Hours': HOURS,
                                                         },
                                                         context_instance=RequestContext(request))
 
 @permission_required_with_403('place.place_write')
 def save(request, object_id=None):
+
     if object_id:
         object = get_object_or_404(Place, pk=object_id, organization=request.user.get_profile().org_active)
     else:
@@ -132,6 +135,8 @@ def save(request, object_id=None):
     object.comments = request.POST.get('comments')
     object.place_type= PlaceType.objects.get( pk= request.POST[ 'place_type' ] )
     object.organization = request.user.get_profile().org_active
+    object.hour_start = request.POST['hour_start']
+    object.hour_end = request.POST['hour_end']
     object.save() 
 
     phone_save(object, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))

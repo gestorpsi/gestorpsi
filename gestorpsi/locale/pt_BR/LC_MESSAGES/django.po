@@ -7562,6 +7562,13 @@ msgstr "Senha atualizada com sucesso."
 msgid "User removed successfully"
 msgstr "Usuário removido com sucesso."
 
+#: place_form.html horario:80
+msgid "First hour"
+msgstr "Primeiro horário"
+
+msgid "End last hour"
+msgstr "Fim do último horário"
+
 #~ msgid "Detalhes da Fatura"
 #~ msgstr "Detalhes da Fatura"
 

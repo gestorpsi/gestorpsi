@@ -16,88 +16,98 @@ GNU General Public License for more details.
 {% load i18n %}
 
 <span style="position: relative">
-<a href="#" class="option toggle" display="div.filter.place">{% trans "Places" %}</a>
+<a href="#" class="option toggle" display="div.filter.place" id="schedule_filter_place">{% trans "Places" %}</a>
     <div class="filter incols place" style="display:none">
         <table>
-            {% for o in places %}
-            <tr>
-                <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
-                <td><span style="background-color:#{{ o.color }};">&nbsp;&nbsp;</span></td>
-            </tr>
-            {% endfor %}
-            <tr>
-                <td colspan="2"><hr /></td>
-            </tr>
+
+            {% comment %}
+            show just one place at filter
             <tr>
                 <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all" type="place"><img src="/media/img/chk.png" />{% trans "All Places" %}</a></td>
             </tr>
+            <tr>
+                <td colspan="2"><hr /></td>
+            </tr>
+            {% endcomment %}
+
+            {% for o in places_list %}
+                <tr>
+                    <td nowrap="nowrap">
+                        {% if o == place %}
+                            <a href="#" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a>
+                        {% else %}
+                            {% comment %}
+                            <a href="/schedule/occurrences/{{ day.year }}/{{ day.month }}/{{ day.day }}/place/{{ o.id }}/" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="/media/img/chk_off.png" />{{ o }}</a>
+                            {% endcomment %}
+                            <a href="/schedule/place/{{ o.id }}/" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="/media/img/chk_off.png" />{{ o }}</a>
+                        {% endif %}
+                    </td>
+                    <td><span style="background-color:#{{ o.color }};">&nbsp;&nbsp;</span></td>
+                </tr>
+            {% endfor %}
         </table>
     </div>
 </span>
 
 <span style="position: relative">
-<a href="#" class="option toggle" display="div.filter.room">{% trans "Rooms" %}</a>
+<a href="#" class="option toggle" display="div.filter.room" id="schedule_filter_room">{% trans "Rooms" %}</a>
     <div class="filter incols room" style="display:none">
         <table>
-            {% for place in places %}{% for o in place.room_set.all %}
-            {% if o.active %}
-            <tr place="{{ place.id }}" class="room_itens">
-                <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="room" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
-                <td><span style="background-color: #{{ o.color }};">&nbsp;&nbsp;</span></td>
-            </tr>
-            {% endif %}
-            {% endfor %}{% endfor %}
-            <tr>
-                <td colspan="2"><hr /></td>
-            </tr>
             <tr>
                 <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all"><img src="/media/img/chk.png" />{% trans "All Rooms" %}</a></td>
             </tr>
-        </table>
-    </div>
-</span>
-
-
-<span style="position: relative">
-<a href="#" class="option toggle" display="div.filter.service">{% trans "Services" %}</a>
-    <div class="filter service" style="display:none">
-        <table>
-            {% for o in services %}
-            <tr>
-                <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="service" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
-                <td><span style="background-color: #{{ o.color }};">&nbsp;&nbsp;</span></td>
-            </tr>
-            {% endfor %}
             <tr>
                 <td colspan="2"><hr /></td>
             </tr>
-            <tr>
-                <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all"><img src="/media/img/chk.png" />{% trans "All Services" %}</a></td>
-            </tr>
+            {% for o in place.room_set.all %}
+                {% if o.active %}
+                    <tr place="{{ place.id }}" class="room_itens">
+                        <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="room" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
+                        <td><span style="background-color: #{{ o.color }};">&nbsp;&nbsp;</span></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
         </table>
     </div>
 </span>
 
 
 <span style="position: relative">
-<a href="#" class="option toggle" display="div.filter.professional">{% trans "Professionals" %}</a>
+<a href="#" class="option toggle" display="div.filter.service" id="schedule_filter_service">{% trans "Services" %}</a>
+    <div class="filter service" style="display:none">
+        <table>
+            <tr>
+                <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all"><img src="/media/img/chk.png" />{% trans "All Services" %}</a></td>
+            </tr>
+            <tr>
+                <td colspan="2"><hr /></td>
+            </tr>
+            {% for o in services %}
+                <tr>
+                    <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="service" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
+                    <td><span style="background-color: #{{ o.color }};">&nbsp;&nbsp;</span></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</span>
+
+
+<span style="position: relative">
+<a href="#" class="option toggle" display="div.filter.professional" id="schedule_filter_professional">{% trans "Professionals" %}</a>
     <div class="filter professional" style="display:none">
             <table>
-                {% for o in professionals %}
-                <tr>
-                    <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="professional" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
-                </tr>
-                {% endfor %}
-                 <tr>
-                    <td><hr /></td>
-                </tr>
                  <tr>
                      <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all"><img src="/media/img/chk.png" />{% trans "All Professionals" %}</a></td>
                  </tr> 
+                 <tr>
+                    <td><hr /></td>
+                </tr>
+                {% for o in professionals %}
+                    <tr>
+                        <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="professional" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
+                    </tr>
+                {% endfor %}
             </table> 
        </div>
 </span>
-
-    
-    
-

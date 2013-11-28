@@ -24,6 +24,13 @@ $(document).ready(function() {
         $('div.schedule div.filter').not(filter).hide();
         $(filter).toggle();
     });
+
+    // close all window filter when click out
+    $(document).click(function(e) { 
+        if ( e.target.id != 'schedule_filter_room' && e.target.id != 'schedule_filter_place' && e.target.id != 'schedule_filter_service' && e.target.id != 'schedule_filter_professional' ){ 
+            $('div.schedule div.filter').hide();
+        }
+    });
     
 
     /**

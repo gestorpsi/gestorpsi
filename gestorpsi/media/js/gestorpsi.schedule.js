@@ -76,8 +76,10 @@ function updateGrid(url) {
             }
             $(this).attr('href',  href);
         });
-        $('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/');
-        $('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/');
+        /*$('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/');*/
+        /*$('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/');*/
+        $('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/place/'+json['util']['place']+'/');
+        $('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/place/'+json['util']['place']+'/');
         jQuery.each(json,  function(){
             if(this.start_time) {
 

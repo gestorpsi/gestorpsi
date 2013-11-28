@@ -18,6 +18,7 @@ import calendar
 import locale
 from dateutil import parser
 from datetime import datetime, timedelta
+import datetime as datetime_
 from django import http
 from django.template.context import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response, HttpResponse
@@ -75,6 +76,7 @@ def schedule_occurrence_listing(request, year = 1, month = 1, day = None,
 @permission_required_with_403('schedule.schedule_list')
 def schedule_occurrence_listing_today(request, template='schedule/schedule_events.html'):
     return schedule_occurrence_listing(request, datetime.now().strftime('%Y'), datetime.now().strftime('%m'), datetime.now().strftime('%d'))
+
 
 @permission_required_with_403('schedule.schedule_write')
 def add_event(
@@ -329,6 +331,7 @@ def _datetime_view(
     request, 
     template, 
     dt, 
+    place,
     referral = None,
     client = None,
     timeslot_factory=None, 
@@ -346,15 +349,28 @@ def _datetime_view(
     except:
         object = ''
 
+    try:
+        place = Place.objects.get(pk=place, organization=request.user.get_profile().org_active)
+    except:
+        # Possible to exist more than one place as matriz, filter and get first element
+        place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0]
+
     user = request.user
     timeslot_factory = timeslot_factory or create_timeslot_table
+
     params = params or {}
     data = dict(
         day=dt, 
         next_day=dt + timedelta(days=+1),
         prev_day=dt + timedelta(days=-1),
-        timeslots=timeslot_factory(dt, items, **params),
-        places = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
+
+        # get start_time and end_time_delta from place
+        timeslots=timeslot_factory(dt, items, start_time = datetime_.time( place.hours_work()[0], place.hours_work()[1]), end_time_delta = timedelta(hours=place.hours_work()[2] ),  **params),
+
+        places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
+        place = place,
+        place_id = place.id,
+
         services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
         professionals = CareProfessional.objects.active_all(request.user.get_profile().org_active.id),
         referral = referral,
@@ -367,19 +383,28 @@ def _datetime_view(
         context_instance=RequestContext(request)
     )
 
+
+
 @permission_required_with_403('schedule.schedule_list')
 def schedule_index(request, 
     year = datetime.now().strftime("%Y"), 
     month = datetime.now().strftime("%m"), 
     day = datetime.now().strftime("%d"), 
     template='schedule/schedule_daily.html',
+    place = None,
      **params):
+
+    if place == None:
+        # Possible to exist more than one place as matriz, filter and get first element
+        place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0].id
     
     # Test if clinic administrator has registered referrals before access schedule page.
     if not Referral.objects.filter(status='01', organization=request.user.get_profile().org_active).count():
         return render_to_response('schedule/schedule_referral_alert.html', context_instance=RequestContext(request))    
 
-    return _datetime_view(request, template, datetime(int(year), int(month), int(day)), **params)
+    return _datetime_view(request, template, datetime(int(year), int(month), int(day)), place, **params)
+
+
 
 def week_view(request,
     year = datetime.now().strftime("%Y"), 
@@ -441,9 +466,13 @@ def week_view_table(request,
     
     return render_to_response('schedule/schedule_week_table.html', locals(), context_instance=RequestContext(request))
 
+
+
 @permission_required_with_403('schedule.schedule_list')
 def today_occurrences(request):
     return daily_occurrences(request, datetime.now().strftime("%Y"), datetime.now().strftime("%m"), datetime.now().strftime("%d"))
+
+
 
 def schedule_occurrences(request, year = 1, month = 1, day = None):
     if day:
@@ -465,7 +494,8 @@ def schedule_occurrences(request, year = 1, month = 1, day = None):
     return objs
     
 @permission_required_with_403('schedule.schedule_list')
-def daily_occurrences(request, year = 1, month = 1, day = None):
+def daily_occurrences(request, year = 1, month = 1, day = None, place = None):
+
     #locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
     #locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
     #locale.setlocale(locale.LC_ALL,'pt_BR.ISO8859-1')
@@ -477,6 +507,10 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
 
     date = datetime.strptime(('%s/%s/%s' % (year, month, day)), "%Y/%m/%d")
 
+    if place == None:
+        # Possible to exist more than one place as matriz, filter and get first element
+        place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0].id
+
     array['util'] = {
         'date': ('%s-%s-%s' % (year, month, day)),
         'date_field': ('%s/%s/%s' % (year, month, day)),
@@ -484,6 +518,7 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
         'next_day': (date + timedelta(days=+1)).strftime("%Y/%m/%d"),
         'prev_day': (date + timedelta(days=-1)).strftime("%Y/%m/%d"),
         'weekday': date.weekday(),
+        'place': place,
     }
     
     for o in occurrences:
@@ -549,6 +584,7 @@ def daily_occurrences(request, year = 1, month = 1, day = None):
     array = simplejson.dumps(array)
     
     return HttpResponse(array, mimetype='application/json')
+
 
 
 @permission_required_with_403('schedule.schedule_write')

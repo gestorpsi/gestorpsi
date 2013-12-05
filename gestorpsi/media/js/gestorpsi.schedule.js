@@ -18,7 +18,7 @@ var schedule_options = {
     dateFormat: 'yymmdd',
     'onSelect': function(date) {
         $("div#mini_calendar").hide();
-        return updateGrid('/schedule/occurrences/' + date.substr(0,4) + '/' + date.substr(4,2) + '/' + date.substr(6,2) + '/');
+        return updateGrid('/schedule/occurrences/' + date.substr(0,4) + '/' + date.substr(4,2) + '/' + date.substr(6,2) + '/place/' + $('input[name="current_place_id"]').val() );
     }
 }
 
@@ -300,7 +300,7 @@ $(function() {
     });
 
         /**
-         *  SHOW DEVICES OF THE ROOM WHEN SELECTED OR CHANGE THE SELECT ROOM
+         *  show devices of the room when select or change to other room
          */
 
         $("form.schedule div.main_area select#id_room").change(function(){ 

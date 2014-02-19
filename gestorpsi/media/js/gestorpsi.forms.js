@@ -65,6 +65,7 @@ function bindDelete() {
 }
 
 function reloadCities(el) {
+
         $.get('/address/search/cities/state/' + el.val() + '/', function( data ) {
           el.parent('label').parent('div').children('label.city').children('select').html(data); // rebuild city combo
           el.parent('label').parent('div').children('label.city').children('select').children('option[value=' + el.attr('city') + ']').attr('selected', 'selected'); // select city

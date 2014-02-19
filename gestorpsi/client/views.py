@@ -63,6 +63,7 @@ from gestorpsi.contact.models import Contact
 from gestorpsi.util.views import get_object_or_None, write_pdf
 from gestorpsi.util.models import Cnae
 from gestorpsi.ehr.views import _access_ehr_check_read
+from gestorpsi.place.models import Place
 
 def _access_check(request, object=None):
     """
@@ -891,7 +892,9 @@ def schedule_daily(request,
         messages.success(request, _('Sorry, you can not book a queued client. Remove it first from queue before continue'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (request.GET.get('client'), referral.id))
     
-    return _datetime_view(request, template, datetime(int(year), int(month), int(day)), referral = request.GET['referral'], client = request.GET['client'], **params)
+    place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0].id
+
+    return _datetime_view(request, template, datetime(int(year), int(month), int(day)), Place, referral = request.GET['referral'], client = request.GET['client'], **params)
 
 @permission_required_with_403('schedule.schedule_write')
 def schedule_add(request):

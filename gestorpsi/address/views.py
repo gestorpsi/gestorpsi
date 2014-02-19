@@ -73,23 +73,11 @@ def address_save(object, ids, addressPrefixs, addressLines1, addressLines2, addr
 
 # return JSON with cities from selected state
 def get_cities(request, state_id):
-    #locale.setlocale(locale.LC_ALL,'pt_BR.ISO-8859-1')
-    #locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
-
-    #array = {} #json
 
     i = 0
     html = ''
 
     for c in City.objects.filter(state = state_id):
         html += u'<option value="%s">%s</option>' % (c.id, c.name)
-        #array[i] = {
-            #'id': c.id,
-            #'name': c.name,
-        #}
-        #i = i + 1
 
-    #array = simplejson.dumps(array, encoding = 'iso8859-1')
-    
-    #return HttpResponse(array, mimetype='application/json')
     return HttpResponse(html)

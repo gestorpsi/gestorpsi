@@ -136,7 +136,7 @@ class Referral(Event):
     #id = UuidField(primary_key=True)
     seq = models.IntegerField(null=True, blank=True, max_length=5, default=0)
     client = models.ManyToManyField(Client, null=True, blank=True)
-    professional = models.ManyToManyField(CareProfessional, null=True)
+    professional = models.ManyToManyField(CareProfessional, null=True, blank=True)
     service = models.ForeignKey(Service, null=True)
     referral = models.ForeignKey('Referral', null=True, blank=True, related_name='referral_children')
     date = models.DateTimeField(auto_now_add=True)

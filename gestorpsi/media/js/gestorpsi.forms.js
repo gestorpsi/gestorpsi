@@ -127,34 +127,46 @@ function bindMask() {
 
     /**
      * referral new. Show professional subscription when change service.
+     * upate Tiago de Souza Moraes / 19 02 2014
      **/
 
 function referral_edit(select_field) {
-    // REMOVE ALL PROFESSIONAL FROM SELECT
-    $('div.referral_form_professional li').hide();
-    if (select_field.val() != ''){
-        $.getJSON("/service/" + select_field.val() + "/listprofessional/", function(json) {
-            jQuery.each(json,  function(){
-                $('input[name=professional][value='+this.id+']').parents('label li').show();
-            });
-            $('input[name=professional]').attr('checked','');
-        });
-        
-        // is group
-        $('select[name=group] option').remove();
-        if(select_field.children(':selected').attr('is_group')=='True') {
-            $.getJSON("/service/" + select_field.val() + "/group/json/", function(json) {
-                jQuery.each(json,  function(){
-                    $('select[name=group]').append(new Option(this.name, this.id));
-                });
-            });
-            $('label.referral_group').effect('blind', {'mode':'show'});
-        } else {
-            $('label.referral_group').hide();
-        }
-    }
 
+        // remove all professional from select
+        $('select#id_professional').html('');
+        // delete combobox 
+        $('div#ms-id_professional').remove();
+
+        if ( select_field.val() != '' ){ 
+
+            var HTML='';
+
+            $.getJSON("/service/" + select_field.val() + "/listprofessional/", function(json) {
+                jQuery.each(json,  function(){
+                    HTML += '<option value="' + this.id + '">' + this.name + '</option>';
+                });
+                // add new elements in select
+                $('select#id_professional').html(HTML);
+                // reload combobox
+                $('select#id_professional').multiSelect();
+            });
+            
+            // is group
+            $('select[name=group] option').remove();
+            if(select_field.children(':selected').attr('is_group')=='True') {
+                $.getJSON("/service/" + select_field.val() + "/group/json/", function(json) {
+                    jQuery.each(json,  function(){
+                        $('select[name=group]').append(new Option(this.name, this.id));
+                    });
+                });
+                $('label.referral_group').effect('blind', {'mode':'show'});
+            } else {
+                $('label.referral_group').hide();
+            }
+        }
 }
+
+
 
 $(function() {
     

@@ -20,13 +20,22 @@ from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client 
 from gestorpsi.service.models import Service, ServiceGroup
 
+
+
+'''
+    Tiago de Souza Moraes / tiago@futuria.com.br
+    update 20 02 2014
+'''
 class ReferralForm(forms.ModelForm):
+
     referral = forms.ModelChoiceField(queryset=Referral.objects.all(), required = False, widget=forms.Select(attrs={'class':'extrabig asm', }))
     service = forms.ModelChoiceField(queryset=Service.objects.all(), widget=forms.Select(attrs={'class':'extrabig asm', }))
     group = forms.ModelChoiceField(queryset=ServiceGroup.objects.all(), required=False, widget=forms.Select(attrs={'class':'extrabig asm', }))
-    professional = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, choices = (
-        [(i.id, i) for i in CareProfessional.objects.all()]
-    ))    
+
+    #professional = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, choices = (
+        #[(i.id, i) for i in CareProfessional.objects.all()]
+    #))    
+
     client = forms.ModelMultipleChoiceField(queryset=Client.objects.all(), required=False,  widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
     annotation = forms.CharField(widget=forms.Textarea(), required = False)
     referral_reason = forms.CharField(widget=forms.Textarea(), required = False)
@@ -43,6 +52,8 @@ class ReferralForm(forms.ModelForm):
         if hasattr(self,'instance') and self.instance.id:
             if self.instance.service.is_group:
                 self.fields['group'].widget.attrs = {'class':'extrabig asm', 'original_state':self.instance.group.id}
+                
+
         
 class ReferralDischargeForm(forms.ModelForm):
     details = forms.CharField(widget = forms.Textarea(attrs={'class':'giant'}), required = False)

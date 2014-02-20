@@ -127,30 +127,45 @@ GNU General Public License for more details.
             <label class="referral_group{% if referral.id %} check_change{% endif %}"{% if not referral.service.is_group %} style="display:none;"{% endif %}>{% trans "Subscribe this customer in a group" %}<br />
                 {{ referral_form.group }}
             </label>
+    </fieldset>
             
-            <div style="clear:both;"></div>
-            <label>{% trans "Professionals" %}<br />
-                <div class="overflow referral_form_professional{% if referral.id %} check_change{% endif %}{% if not referral.id %} hide_on_first{% endif %}">
-                    {{ referral_form.professional }}
-                </div> 
-            {% if referral_form.instance %}
-            <script>
-            $('.referral_form_professional li').hide();
+    <!-- profissional combobox -->
+    <label style="height: auto;">{% trans "Professionals" %}</label>
+    <div style="clear:both; margin-left:10px;" class="referral_form_professional{% if referral.id %} check_change{% endif %}{% if not referral.id %} hide_on_first{% endif %}">
+        {{ referral_form.professional }}
+    </div> 
+
+    {% if referral_form.instance %}
+        <script>
+            $('select#id_professional').multiSelect();
+        </script>
+    {% endif %}
+
+    {% comment %}
+    {% if referral_form.instance %}
+        <script>
+
+            //$('.referral_form_professional li').hide();
+            $('select#id_professional').val('');
+
             $(function () {
-                $.getJSON("/service/{{referral_form.instance.service.id }}/listprofessional/", function(json) {
-                    jQuery.each(json,  function(){
-                        $('input[name=professional][value='+this.id+']').parents('label li').show();
+                var HTML='';
+                $.getJSON("/service/{{ referral_form.instance.service.id }}/listprofessional/" , function(json) {
+                    jQuery.each(json, function() {
+                        //$('input[name=professional][value=' + this.id + ']').parents('label li').show();
+                        HTML += '<option value="' + this.id + '">' + this.name + '</option>';
                     });
                 });
             });
-            </script>
-            {% endif %}
-            </label>
+            alert(HTML);
+            $('select#id_professional').val(HTML);
+            $('select#id_professional').multiSelect();
+        </script>
+    {% endif %}
+    {% endcomment %}
+    <!-- profissional combobox -->
 
-        <label style="display:none">{% trans "Clients" %}<br />
-        {{ referral_form.client }}
-        </label>
-    </fieldset>
+    <label style="display:none">{% trans "Clients" %}<br /> {{ referral_form.client }} </label>
 
     <fieldset>
     <legend>{% trans "Referral Additional Infos" %}</legend>

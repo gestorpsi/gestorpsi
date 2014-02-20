@@ -407,10 +407,18 @@ def referral_plus_form(request, object_id=None, referral_id=None):
                                }, context_instance=RequestContext(request))
 
 
+'''
+    referral form for client
+    Tiago de Souza Moraes / tiago@futuria.com.br
+    update 20 02 2014
+'''
 # add or edit form
 @permission_required_with_403('referral.referral_read')
 def referral_form(request, object_id = None, referral_id = None):
+
+    # client
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+
     # check access by requested user
     if not _access_check(request, object):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
@@ -429,16 +437,18 @@ def referral_form(request, object_id = None, referral_id = None):
         form = ReferralForm(request.POST, instance = referral)
 
         if form.is_valid():
+
             data = form.save(commit=False)
-            
             data.organization = request.user.get_profile().org_active
             data.status = '01'
+
             if data.service.active:
                 data.save()
                 #save professionals
                 form.save_m2m()
                 # add client(s)
                 data.client.add(object)
+
                 ''' Indication  Section '''
                 if request.POST.get('indication'):
                     referral.indication_set.all().delete()
@@ -449,8 +459,8 @@ def referral_form(request, object_id = None, referral_id = None):
                     # indication.client = Client.objects.get(pk = object_id)
                     indication.referral = Referral.objects.get(pk = data)
                     indication.save()
+
                 ''' if asked, add referral and client to some existing group ''' 
-                
                 GroupMembers.objects.filter(client=Client.objects.get(pk = object_id, person__organization=request.user.get_profile().org_active), referral=data).delete()
                 if data.service.is_group:
                     group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active)
@@ -461,11 +471,13 @@ def referral_form(request, object_id = None, referral_id = None):
                 msg = _('Referral saved successfully')
                 messages.success(request, _(msg))
                 return HttpResponseRedirect(url % (object_id, data.id))
-        else:
+
+    '''
             return render_to_response('client/client_referral_form.html',
                           { 'object': object, 
                             'referral': referral,
                             'referral_form': form,
+                            'referral_list': referral_list,
                             'services': Service.objects.filter(active=True, organization=request.user.get_profile().org_active),
                             'referrals': Referral.objects.filter(client = object),
                             'groups': ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active, active=True),
@@ -498,26 +510,36 @@ def referral_form(request, object_id = None, referral_id = None):
                            },
                           context_instance=RequestContext(request)
                           )
-    else:
+    '''
+
+    # show just professional that are have subscription in a selected service
+    # update 
+    if referral_id:
+
         form = ReferralForm(instance = referral)
+        form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('(Student)'))) for p in CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active, prof_services=referral.service)]
+        referral_list = Referral.objects.filter(client=object, status='01')
 
+    # new
+    else:
 
-    form = ReferralForm(instance = referral)
+        form = ReferralForm()
+        # need choose a service to show professional list
+        form.fields['professional'].choices = ()
+        referral_list = None
 
+    # of client
     form.fields['referral'].queryset = Referral.objects.filter(client=object)
     form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
     form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, active = True)
-    form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('(Student)'))) for p in CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)]
 
     total_service = Referral.objects.filter(client=object).count()
-    referral_list = Referral.objects.filter(client=object, status='01')
 
     if referral.group:
         form.fields['group'].initial = referral.group.id
         form.fields['group'].queryset = ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active).filter(service=referral.service)
     else:
         form.fields['group'].queryset = ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active)
-        
     
     return render_to_response('client/client_referral_form.html',
                               { 'object': object, 
@@ -556,6 +578,8 @@ def referral_form(request, object_id = None, referral_id = None):
                                },
                               context_instance=RequestContext(request)
                               )
+
+
 
 @permission_required_with_403('referral.referral_write')
 def referral_plus_save(request, object_id=None):
@@ -752,7 +776,7 @@ def save(request, object_id=None, is_company = False):
             print company_form.errors
         else:
             company = company_form.save(commit=False)
-            print object.person
+            #print object.person
             company.person = object.person
             company.save()
 
@@ -987,8 +1011,8 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
         except:
             object_q.priority = '03'
         object_q.save()
-    else:
-        print form.errors
+    #else:
+        #print form.errors
 
     queues = Queue.objects.filter(referral=referral_id)
 
@@ -1054,8 +1078,8 @@ def referral_ext_save(request, object_id = '', referral_id=''):
         referral_ext.professional = get_object_or_None(CareProfessional, pk = request.POST.get('professional') )
         referral_ext.organization = get_object_or_None(Organization, pk = request.POST.get('organization') )
         referral_ext.save()
-    else:
-        print form.errors
+    #else:
+        #print form.errors
 
     messages.success(request, _('External Referral saved successfully'))
     return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))

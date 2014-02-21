@@ -3500,6 +3500,14 @@ msgstr "Enviar arquivo"
 msgid "Professionals"
 msgstr "Profissionais"
 
+#: templates/client/client_referral_form.html
+msgid "Professionals available"
+msgstr "Profissionais disponíveis"
+
+#: templates/client/client_referral_form.html
+msgid "Professionals selected"
+msgstr "Profissionais selecionados"
+
 #: templates/careprofessional/careprofessional_form.html:27
 #: templates/careprofessional/careprofessional_list.html:27
 #: templates/careprofessional/student_form.html:27

@@ -160,6 +160,11 @@ $(document).ready(function()
             <td>
                 {{ x.profile.person.careprofessional.professionalIdentification.profession }}
             </td>
+            <td>
+                {% for f in x.profile.person.emails.all %}
+                    {{ f }}<br />
+                {% endfor %}
+            </td>
         </tr>
     {% endfor %}
 </table>

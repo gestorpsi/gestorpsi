@@ -122,7 +122,7 @@ $(document).ready(function()
 <br />
 <br />
 <table>
-	<strong>{% trans "Profissional responsável" %}</strong>
+	<strong>{% trans "Profissional responsável" %} </strong>
 	<hr>
 	    <tr class="{% cycle 'even' '' %}">
 	        <td>{{ object.professionalresponsible.name }}</td>
@@ -136,9 +136,34 @@ $(document).ready(function()
 	        	-----------
 	        	{% endfor %}
 	        </td>
+
 	    </tr>
 </table>
 {% endif %}
+<br />
+<br />
+
+<table>
+	<strong>Administradores </strong>
+    <hr>
+
+    {% for x in object.adminstrators %}
+	    <tr class="{% cycle 'even' '' %}">
+            <td>
+                {{ x }}
+            </td>
+            <td>
+                {% for f in x.profile.person.phones.all %}
+                   {{ f }}
+                {% endfor %}
+            </td>
+            <td>
+                {{ x.profile.person.careprofessional.professionalIdentification.profession }}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
 <br />
 <br />
 

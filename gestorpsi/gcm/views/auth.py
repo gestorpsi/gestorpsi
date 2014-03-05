@@ -57,14 +57,42 @@ def register(request, success_url=None,
                 msg = EmailMessage()
                 msg.subject = 'Teste: Nova organizacao em gestorpsi.com.br'
                 msg.body = 'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar https://gestorpsi.psico.net/gcm/'
-                #msg.body += '\n Boleto exemplo: '+url_boleto
-                #msg.from = 'GestoPSI <webmaster@gestorpsi.com.br>'
                 msg.to = ['webmaster@gestorpsi.com.br', ]
                 msg.bcc =  bcc_list
-                #msg.content_subtype = "text"  # Main content is now text/html
                 msg.send()
                 
                 request.session['user_aux_id'] = user.id
+
+                # message for client
+                user = User.objects.get(id=request.session['user_aux_id'])
+                msg = EmailMessage()
+                msg.subject = u"Assinatura GestorPSI.com.br"
+
+                msg.body = u"Olá, bom dia!\n\n.Primeiramente agradecemos a inscrição no sistema GestorPSI.com.br\n\n"
+                msg.body += u"Em instantes você ira receber um boleto referênte ao plano que você escolheu.\n"
+                msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco pelo link.\n"
+                msg.body += u"link funcionalidades:   http://portal.gestorpsi.com.br/funcionalidades/\nlink como usar:  http://portal.gestorpsi.com.br/como-usar/\nlink manual:     http://demo.gestorpsi.com.br/media/manual.pdf\nlink contato:    http://portal.gestorpsi.com.br/contato/\n\n"
+                msg.body += u"GestorPSI.com.br - Prontuários Eletrônicos e Gestão de Serviços em Psicologia"
+
+                msg.body = u"Olá, bom dia!\n\n"
+                msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe e em breve você receberá outro email após a ativação da sua conta."
+                msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
+
+                msg.body += u"Endereço direto ao sistema: http://app.gestorpsi.com.br\n"
+                msg.body += u"Usuário / Login:%s\n" % request.POST.get('username')
+                msg.body += u"Senha:%s\n\n" % request.POST.get('password1')
+
+                msg.body += u"link funcionalidades: http://portal.gestorpsi.com.br/funcionalidades/\n"
+                msg.body += u"link como usar: http://portal.gestorpsi.com.br/como-usar/\n"
+                msg.body += u"link manual: http://demo.gestorpsi.com.br/media/manual.pdf\n"
+                msg.body += u"link contato: http://portal.gestorpsi.com.br/contato/\n\n"
+
+                msg.body += u"GestorPsi - Prontuários Eletrônicos e Gestão de Serviços em Psicologia.\n"
+                msg.body += u"www.gestorpsi.com.br"
+
+                msg.to = [ user.email, ]
+                msg.bcc =  bcc_list
+                msg.send()
                 
                 return HttpResponseRedirect(success_url or reverse('gcm-registration-complete'))
     else:
@@ -81,31 +109,47 @@ def register(request, success_url=None,
 
 
 
-def complete(request, success_url=None,
-             extra_context=None):
+def complete(request, success_url=None, extra_context=None):
+
     template_name='gcm/registration_complete.html'
-    from gestorpsi.boleto.functions import *
+    from gestorpsi.boleto.functions import gera_boleto_bradesco_inscricao
     from django.contrib.auth.models import User
     from gestorpsi.document.models import Document, TypeDocument
     from gestorpsi.address.models import City, Address, Country
 
+    '''
     if 'user_aux_id' in request.session:
-        url_boleto = gera_boleto_bradesco_inscricao(request.session['user_aux_id'])
+
+        #url_boleto = gera_boleto_bradesco_inscricao(request.session['user_aux_id'])
 
         user = User.objects.get(id=request.session['user_aux_id'])
         
         bcc_list = ['teagom@gmail.com']
         msg = EmailMessage()
-        msg.subject = u"Teste: Nova organizacao em gestorpsi.com.br"
-        msg.body = u"Você acaba de registrar uma nova organizacao se registrou no GestorPSI.<br/>"
-        msg.body += u"Para que sua inscrição tenha seja confirmada e você possa começar a usar o sistema "
-        msg.body += u"é preciso pagar o seguinte boleto: %s" % url_boleto
-        #msg.from = 'GestoPSI <webmaster@gestorpsi.com.br>'
-        msg.to = [user.email, ]
-        msg.bcc =  bcc_list
-        #msg.content_subtype = "text"  # Main content is now text/html
-        msg.send()
+        msg.subject = u"Assinatura GestorPSI.com.br"
 
+        msg.body = u"Olá, bom dia!\n\n.Primeiramente agradecemos a inscrição no sistema GestorPSI.com.br\n\n"
+        msg.body += u"Em instantes você ira receber um boleto referênte ao plano que você escolheu.\n"
+        msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco pelo link.\n"
+        msg.body += u"link funcionalidades:   http://portal.gestorpsi.com.br/funcionalidades/\nlink como usar:  http://portal.gestorpsi.com.br/como-usar/\nlink manual:     http://demo.gestorpsi.com.br/media/manual.pdf\nlink contato:    http://portal.gestorpsi.com.br/contato/\n\n"
+        msg.body += u"GestorPSI.com.br - Prontuários Eletrônicos e Gestão de Serviços em Psicologia"
+
+        msg.body = u"Olá, bom dia!\n\n"
+        msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe e em breve você receberá outro email após a ativação da sua conta."
+        msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
+
+        msg.body += u"link funcionalidades: http://portal.gestorpsi.com.br/funcionalidades/\n"
+        msg.body += u"link como usar: http://portal.gestorpsi.com.br/como-usar/\n"
+        msg.body += u"link manual: http://demo.gestorpsi.com.br/media/manual.pdf\n"
+        msg.body += u"link contato: http://portal.gestorpsi.com.br/contato/\n\n"
+
+        msg.body += u"GestorPsi - Prontuários Eletrônicos e Gestão de Serviços em Psicologia.\n"
+        msg.body += u"www.gestorpsi.com.br"
+
+        msg.to = [ user.email, ]
+        msg.bcc =  bcc_list
+        msg.send()
+    '''
 
     if extra_context is None:
         extra_context = {}

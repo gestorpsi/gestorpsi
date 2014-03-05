@@ -29,7 +29,7 @@ class RegistrationForm(RegistrationForm):
     cpf = fields.CPFField(label=_('CPF Number'), help_text=_('Enter your CPF number here'), widget=forms.TextInput(attrs={'mask':'999.999.999-99',}))
     address = forms.CharField(max_length=255, label=_('Address Street'), help_text=_('Enter your address here'))
     address_number = forms.CharField(max_length=30, label=_('Address Number'), help_text=_('Enter your address number here'))
-    zipcode = forms.CharField(max_length=30, label=_('ZIP Code'), help_text=_('Enter your ZIP Code here'))
+    zipcode = forms.CharField(max_length=30, label=_('ZIP Code'), help_text=_('Enter your ZIP Code here'), widget=forms.TextInput( attrs={'mask':'99999-999'} ) )
     state = forms.ModelChoiceField(label=_('State/Region'), help_text=_('Enter your state/region here'), queryset=State.objects.all(), widget=forms.Select(attrs={'style':'width:265px;', 'class':'city_search'}))
 
     def save(self, request, *args, **kwargs):

@@ -313,22 +313,23 @@ $(document).ready(function()
 		<table class="sign_history">
 			<thead>
 				<tr>
-					<td style="width: 80px;">{% trans "From" %}</td>
-					<td style="width: 80px;">{% trans "To" %}</td>
+					<td style="width: 80px;">Emiss&atilde;o</td>
+					<td style="width: 80px;">Vencimento</td>
 					<td style="width: 120px;">{% trans "Plan" %}</td>
 					<td style="width: 100px;">{% trans "Value" %}</td>
 					<td style="width: 60px;">{% trans "Status" %}</td>
-					<td style="width: 100px;">{% trans "Second copy" %}</td>
+                    <!-- <td style="width: 100px;">{% trans "Second copy" %}</td> -->
 				</tr>
 			</thead>
 			<tbody>
-				{% for inv in invoices %}
+				{% for inv in object.invoice_set.all %}
 				<tr class="{% cycle '' 'even' %}">
 					<td>{{inv.date|date:"d/m/Y"}}</td>
 					<td>{{inv.expiry_date|date:"d/m/Y"}}</td>
 					<td>{{inv.plan.staff_size}} funcionarios</td>
 					<td>R$ {{inv.ammount}}</td>
 					<td>
+                        {% comment %}
 						{% if inv.status != 2 %}
 							{% if not inv.dued %}
 							<a href="{{inv.billet_url}}">{{inv.get_status_display}}</a>
@@ -338,7 +339,10 @@ $(document).ready(function()
 						{% else %}
 							<a href="{{inv.billet_url}}">{{inv.get_status_display}}</a>
 						{% endif %}
+                        {% endcomment %}
+					    {{inv.get_status_display}}
 					</td>
+                    {% comment %}
 					<td>
 						{% if inv.status != 2 %}
 							{% if inv.dued %}
@@ -348,6 +352,7 @@ $(document).ready(function()
 							{% endif %}
 						{% endif %}
 					</td>
+                    {% endcomment %}
 				</tr>
 				{% endfor %}
 			</tbody>

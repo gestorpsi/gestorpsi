@@ -79,6 +79,3 @@ def update_org_object(request, *args, **kwargs):
     if not request.user.is_superuser:
         return HttpResponseRedirect('/gcm/login/?next=%s' % request.path)
     return generic_object_detail(request, *args, **kwargs)
-
-
-

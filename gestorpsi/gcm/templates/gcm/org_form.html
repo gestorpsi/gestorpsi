@@ -160,46 +160,49 @@ $(document).ready(function()
 	</tr>
 	<strong>{% trans "Faturas desta organizacão" %}</strong>
 	<hr>
-    {% for invoice in object.invoice_set.all %}
-    <tr class="invoice {% cycle 'even' '' %}" style="cursor: pointer;" id="{{invoice.id}}">
-        <td><a href="{% url 'invoice-update' invoice.id %}">{{ object.date|date:"d/m/Y" }}</a></td>
-        <td>{{ invoice.plan }}</td>
-        <td>{{ invoice.get_status_display }}</td>
-        <td>{{ invoice.ammount }}</td>
-        <td>{% if not invoice.due_date %}-----{% else %}{{ invoice.due_date }}{% endif %}</td>
-        <td>{% if not invoice.date_payed %}-----{% else %}{{ invoice.date_payed }}{% endif %}</td>
-    </tr>
-	<tr id="form_invoice_{{invoice.id}}" class="{% cycle 'even' '' %}" style="display: none;">
-		<td colspan="6">
-			<form class="form_invoice" action="{% url 'org-bill-update' invoice.id %}" method="post">
-			    <fieldset>
-			    	<input type="hidden" name="type" value="{{invoice.type}}" />
-			        <input type="hidden" name="organization" value="{{object.id}}" />
-			        <input type="hidden" name="plan" value="{{invoice.plan.id}}" />
-			        <input type="hidden" name="ammount" value="{{invoice.ammount|default:'0'}}" />
-			        <input type="hidden" name="discount" value="{{invoice.discount|default:'0'}}" />
-			        <input type="hidden" name="due_date" value="{{invoice.due_date|date:'Y-m-d'}}" />
-			        <input type="hidden" name="date_payed" value="{{invoice.date_payed|date:'Y-m-d'}}" />
-			        <input type="hidden" name="expiry_date" value="{{invoice.expiry_date|date:'Y-m-d'}}" />
 
-			        <legend>{% trans "Altere o estado de pagamento desta fatura." %}</legend>
-			        <label>Estado de pagamento: </label>
-			    	<select name="status">
-				    	<option value="1"{%ifequal invoice.status 1%} selected="selected"{%endifequal%}>
-				    		Emitido
-				    	</option>
-				    	<option value="2"{%ifequal invoice.status 2%} selected="selected"{%endifequal%}>
-				    		Pago
-				    	</option>
-				    	<option value="3"{%ifequal invoice.status 3%} selected="selected"{%endifequal%}>
-				    		Excluido
-				    	</option>
-			    	</select>
-		    		<input type="submit" value="{% trans "Save" %}" class="submit">
-			    </fieldset>
-			</form>
-		</td>
-	</tr>
+    {% for invoice in object.invoice_set.all %}
+
+        <tr class="invoice {% cycle 'even' '' %}" style="cursor: pointer;" id="{{invoice.id}}">
+            <td><a href="{% url 'invoice-update' invoice.id %}">{{ invoice.date|date:"d/m/Y" }}</a></td>
+            <td>{{ invoice.plan }}</td>
+            <td>{{ invoice.get_status_display }}</td>
+            <td>{{ invoice.ammount }}</td>
+            <td>{% if not invoice.due_date %}-----{% else %}{{ invoice.due_date }}{% endif %}</td>
+            <td>{% if not invoice.date_payed %}-----{% else %}{{ invoice.date_payed }}{% endif %}</td>
+        </tr>
+
+        <tr id="form_invoice_{{invoice.id}}" class="{% cycle 'even' '' %}" style="display: none;">
+            <td colspan="6">
+                <form class="form_invoice" action="{% url 'org-bill-update' invoice.id %}" method="post">
+                    <fieldset>
+                        <input type="hidden" name="type" value="{{invoice.type}}" />
+                        <input type="hidden" name="organization" value="{{object.id}}" />
+                        <input type="hidden" name="plan" value="{{invoice.plan.id}}" />
+                        <input type="hidden" name="ammount" value="{{invoice.ammount|default:'0'}}" />
+                        <input type="hidden" name="discount" value="{{invoice.discount|default:'0'}}" />
+                        <input type="hidden" name="due_date" value="{{invoice.due_date|date:'Y-m-d'}}" />
+                        <input type="hidden" name="date_payed" value="{{invoice.date_payed|date:'Y-m-d'}}" />
+                        <input type="hidden" name="expiry_date" value="{{invoice.expiry_date|date:'Y-m-d'}}" />
+
+                        <legend>{% trans "Altere o estado de pagamento desta fatura." %}</legend>
+                        <label>Estado de pagamento: </label>
+                        <select name="status">
+                            <option value="1"{%ifequal invoice.status 1%} selected="selected"{%endifequal%}>
+                                Emitido
+                            </option>
+                            <option value="2"{%ifequal invoice.status 2%} selected="selected"{%endifequal%}>
+                                Pago
+                            </option>
+                            <option value="3"{%ifequal invoice.status 3%} selected="selected"{%endifequal%}>
+                                Excluido
+                            </option>
+                        </select>
+                        <input type="submit" value="{% trans "Save" %}" class="submit">
+                    </fieldset>
+                </form>
+            </td>
+        </tr>
 	{% endfor %}
 </table>
 <br/><br/>

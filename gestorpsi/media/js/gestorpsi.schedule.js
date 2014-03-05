@@ -76,6 +76,9 @@ function updateGrid(url) {
             }
             $(this).attr('href',  href);
         });
+
+        // - - CHECKED 
+        
         /*$('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/');*/
         /*$('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/');*/
         $('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/place/'+json['util']['place']+'/');
@@ -98,7 +101,7 @@ function updateGrid(url) {
                  * start daily occurrence
                  */
                 
-                var col = $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+']');
+                var col = $('table.schedule_results.daily tr[hour="' + this.start_time + '"] td[room="' + this.room + '"]');
                 
                 /** 
                  * start occurrence event
@@ -175,21 +178,21 @@ function updateGrid(url) {
                 // for occurrences greater than half-hour, change table rowspan
                 if (this.rowspan > 1) {
                     // we need to remove next TD's if last rowspan is greater than 1
-                    next_tds = $('table.schedule_results.daily tr[hour=' + this.start_time +']').nextAll().find('td[room='+this.room+']').slice(0, (parseInt(this.rowspan)-1));
+                    next_tds = $('table.schedule_results.daily tr[hour="' + this.start_time + '"]').nextAll().find('td[room="' + this.room + '"]').slice(0, (parseInt(this.rowspan)-1));
                     next_tds.hide();
                     next_tds.addClass('already_hided');
                     // increase rowspan size 
-                    $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+']').attr('rowspan', this.rowspan);
+                    $('table.schedule_results.daily tr[hour="' + this.start_time +'"] td[room="' + this.room + '"]').attr('rowspan', this.rowspan);
                 }
 
-                $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').hide(); // hide free slot 
+                $('table.schedule_results.daily tr[hour="' + this.start_time +'"] td[room="' + this.room + '"] a.book').hide(); // hide free slot 
                 
                 url = (this.group != '')?'/schedule/events/group/' +  this.group_id + '/occurrence/' + this.id + '/':'/schedule/events/' + this.id + '/confirmation/';
                 
                 if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {
-                    $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a title="'+json['util']['str_date']+'" href="' + url + '" class="booked" style="color:#'+this.font_color+'">' + label + '</a>'); // show booked event
+                    $('table.schedule_results.daily tr[hour="' + this.start_time + '"] td[room="' + this.room + '"] a.book').after('<a title="'+json['util']['str_date']+'" href="' + url + '" class="booked" style="color:#'+this.font_color+'">' + label + '</a>'); // show booked event
                 } else {
-                    $('table.schedule_results.daily tr[hour=' + this.start_time +'] td[room='+this.room+'] a.book').after('<a class="booked" style="color:#'+this.font_color+'">' + label + '</a>'); // show booked event in Client View
+                    $('table.schedule_results.daily tr[hour="' + this.start_time +'"] td[room="' + this.room + '"] a.book').after('<a class="booked" style="color:#'+this.font_color+'">' + label + '</a>'); // show booked event in Client View
                 }
                 
 
@@ -219,7 +222,7 @@ function updateGrid(url) {
             // hide elements if some filter is activated AFTER data loaded
             var count = 0;
             var class_name = '';
-            
+
             // service and professional
             $('div.filter:not(.incols) a.filter_by').each(function() {
                 var el = $(this);

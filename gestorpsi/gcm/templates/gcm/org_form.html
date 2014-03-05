@@ -161,6 +161,7 @@ $(document).ready(function()
                 {{ x.profile.person.careprofessional.professionalIdentification.profession }}
             </td>
             <td>
+                {{ x.user.email }} <br />
                 {% for f in x.profile.person.emails.all %}
                     {{ f }}<br />
                 {% endfor %}

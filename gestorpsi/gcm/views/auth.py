@@ -53,12 +53,13 @@ def register(request, success_url=None,
                 #if not url_boleto:
                 #    url_boleto = ''
                 
-                bcc_list = ['teagom@gmail.com']
+                bcc_list = ['webmaster@gestorpsi.com.br','tsm@gestorpsi.com.br','ozp@gestorpsi.com.br',]
+
                 msg = EmailMessage()
-                msg.subject = 'Teste: Nova organizacao em gestorpsi.com.br'
-                msg.body = 'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar https://gestorpsi.psico.net/gcm/'
-                msg.to = ['webmaster@gestorpsi.com.br', ]
-                msg.bcc =  bcc_list
+                msg.subject = u'Nova inscrição em gestorpsi.com.br'
+                msg.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar https://gestorpsi.psico.net/gcm/\n\n'
+                msg.body += u'Organização %s' % org
+                msg.to = bcc_list
                 msg.send()
                 
                 request.session['user_aux_id'] = user.id
@@ -78,14 +79,14 @@ def register(request, success_url=None,
                 msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe e em breve você receberá outro email após a ativação da sua conta."
                 msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
 
-                msg.body += u"Endereço direto ao sistema: http://app.gestorpsi.com.br\n"
-                msg.body += u"Usuário / Login:%s\n" % request.POST.get('username')
-                msg.body += u"Senha:%s\n\n" % request.POST.get('password1')
-
                 msg.body += u"link funcionalidades: http://portal.gestorpsi.com.br/funcionalidades/\n"
                 msg.body += u"link como usar: http://portal.gestorpsi.com.br/como-usar/\n"
                 msg.body += u"link manual: http://demo.gestorpsi.com.br/media/manual.pdf\n"
                 msg.body += u"link contato: http://portal.gestorpsi.com.br/contato/\n\n"
+
+                msg.body += u"Endereço do sistema: http://app.gestorpsi.com.br\n"
+                msg.body += u"Usuário/Login  %s\n" % request.POST.get('username')
+                msg.body += u"Senha  %s\n\n" % request.POST.get('password1')
 
                 msg.body += u"GestorPsi - Prontuários Eletrônicos e Gestão de Serviços em Psicologia.\n"
                 msg.body += u"www.gestorpsi.com.br"

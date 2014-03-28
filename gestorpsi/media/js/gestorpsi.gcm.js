@@ -29,6 +29,7 @@ $(document).ready(function() {
             plan = $('select[name="prefered_plan"]').val(); // get selected plan id
             $('div[id="pagseguro_form' + plan + '"]').show(); // show selected form
         }
+
     });
 
     // plan, hide or show pagseguro form

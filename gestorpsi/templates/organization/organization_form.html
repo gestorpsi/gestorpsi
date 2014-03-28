@@ -36,13 +36,10 @@ GNU General Public License for more details.
 
 {% block extrahead %}
     <script language="JavaScript" type="text/javascript">
-        $(document).ready(function()
-        {
-            $('.second_copy').click(function(event)
-            {
+        $(document).ready(function(){
+            $('.second_copy').click(function(event){
                 var sef = $(event.target);
                 window.open('/organization/second_copy/'+sef.attr('aux')+'/', 'ndvia', 'width=400, height=100, toolbar=0, titlebar=0');
-
                 event.preventDefault();
             });
         });
@@ -50,13 +47,14 @@ GNU General Public License for more details.
 {% endblock extrahead %}
 
 {% block core %}
-    <h2 id="title_addressbook" style="display:none"></h2>
 
+    <h2 id="title_addressbook" style="display:none"></h2>
     <h2 class="title_organization title">{{ object }}</h2>
     <p class="description"> {% trans "Organization Configuration" %}<br /></p>
 
     <form action="/organization/save/" method="post" class="form_people">	
         <div class="main_area">
+
             <div class="photo">
                     <img class="img_people" organization="{{ user.get_profile.org_active.id }}" src="{% if object.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
                     {% if perms.organization.organization_write %}
@@ -67,405 +65,398 @@ GNU General Public License for more details.
             </div> 
 
 
-<fieldset class="identity organization first comment fieldset_personal_identification">
-        <legend>{% trans "Corporate Identity" %}</legend>
+            <fieldset class="identity organization first comment fieldset_personal_identification">
+                    <legend>{% trans "Corporate Identity" %}</legend>
 
-        <label>{% trans "Trade Name" %}<br />
-                <input type="text" maxlength="100" value="{{ object.trade_name }}" name="trade_name" class="extrabig" />
-        </label>
+                    <label>{% trans "Trade Name" %}<br />
+                            <input type="text" maxlength="100" value="{{ object.trade_name }}" name="trade_name" class="extrabig" />
+                    </label>
 
-        <label>{% trans "Company" %}<br />
-                <input type="text" maxlength="100"  value="{{ object.name }}" name="name" class="extrabig tabtitle" />
-        </label>
+                    <label>{% trans "Company" %}<br />
+                            <input type="text" maxlength="100"  value="{{ object.name }}" name="name" class="extrabig tabtitle" />
+                    </label>
 
-	
-	<label>{% trans "Short Name" %}<br />
-         	   <input class="short_search medium tabtitle" maxlength="100" type="text" value="{{ object.short_name }}" name="short_name" />
-        </label>
-	
+                    <label>{% trans "Short Name" %}<br /><input class="short_search medium tabtitle" maxlength="100" type="text" value="{{ object.short_name }}" name="short_name" /></label>
 
-	<label>
-		 <div name="msg_error" class="error check_available organization" style="display: none;">
-		   &nbsp; &nbsp; {% trans "Not available" %}
-		 </div>
-	</label>
-	
-         <label> {{ html }}</label>
-</fieldset>
+                    <label><div name="msg_error" class="error check_available organization" style="display: none;">&nbsp; &nbsp; {% trans "Not available" %}</div></label>
+                
+                    <label> {{ html }}</label>
+            </fieldset>
     
 
 
-<fieldset class="identity organization first comment">
-	<legend>{% trans "Additional Identities" %}</legend>
-	<label>{% trans "Register Number" %}<br />
-                <input type="text" maxlength="100" value="{{ object.register_number }}" name="register_number" class="medium" />
-        </label>
-	<label>{% trans "CNES Code" %}<br />
-                <input type="text" maxlength="100" value="{{ object.cnes }}" name="cnes" class="medium" />
-        </label>
-	<label>{% trans "State Inscription" %}<br />
-                <input type="text" maxlength="30" value="{{ object.state_inscription }}" name="state_inscription" class="medium" />
-        </label>
-	<label>{% trans "City Inscription" %}<br />
-                <input type="text" maxlength="30" value="{{ object.city_inscription }}" name="city_inscription" class="medium" />
-        </label>
-</fieldset>
+            <fieldset class="identity organization first comment">
+                <legend>{% trans "Additional Identities" %}</legend>
+                <label>{% trans "Register Number" %}<br />
+                            <input type="text" maxlength="100" value="{{ object.register_number }}" name="register_number" class="medium" />
+                    </label>
+                <label>{% trans "CNES Code" %}<br />
+                            <input type="text" maxlength="100" value="{{ object.cnes }}" name="cnes" class="medium" />
+                    </label>
+                <label>{% trans "State Inscription" %}<br />
+                            <input type="text" maxlength="30" value="{{ object.state_inscription }}" name="state_inscription" class="medium" />
+                    </label>
+                <label>{% trans "City Inscription" %}<br />
+                            <input type="text" maxlength="30" value="{{ object.city_inscription }}" name="city_inscription" class="medium" />
+                    </label>
+            </fieldset>
 
-<fieldset class="identity professional organization first">
-	<legend>{% trans "Professional Responsible" %}</legend>
-	{% if not professional_responsible %}
-        {% include "tags/professional.html" %}
-	{% else %}
-        {% for professional in professional_responsible %}
-	        {% include "tags/professional.html" %}
-        {% endfor %}
-	{% endif %}
-	<a class="add_to_form"><span>{% trans "Add Professional" %}</span></a>
-</fieldset>
 
-<fieldset class="profile organization comment hidden">
-        <legend>{% trans "Corporate Profile" %}</legend>
 
-        <label>{% trans "Person Type" %}<br />
-                <select name="person_type" class="medium">
-                    <option value="0"></option>   
-                        {% for o in PersonType %}
-			                <option value="{{ o.id }}"{% ifequal object.person_type_id o.id %} selected{% endifequal %}>{{ o }}</option>
-			            {% endfor %}
-		        </select>
-        </label>
-	
-        <label>{% trans "Unit Type" %}<br />
-                <select name="unit_type" class="extrabig">
-                    <option value="0"></option>   
-                        {% for o in UnitType %}
-			        <option value="{{ o.id }}"{% ifequal object.unit_type_id o.id %} selected{% endifequal %}>{{ o }}</option>
-                        {% endfor %}
-		        </select>
-        </label>		
-
-	<label>{% trans "Administrative Environment" %}<br />
-                <select name="environment" class="medium">
-                    <option value="0"></option>   
-			        {% for o in AdministrationEnvironment %}
-			            <option value="{{ o.id }}"{% ifequal object.environment_id o.id %} selected{% endifequal %}>{{ o }}</option>
+            <fieldset class="identity professional organization first">
+                <legend>{% trans "Professional Responsible" %}</legend>
+                {% if not professional_responsible %}
+                    {% include "tags/professional.html" %}
+                {% else %}
+                    {% for professional in professional_responsible %}
+                        {% include "tags/professional.html" %}
                     {% endfor %}
-		        </select>
-        </label>
-	
-	<label>{% trans "Management Type" %}<br />
-                <select name="management" class="medium">
-                    <option value="0"></option>   
-			        {% for o in Management %}
-			            <option value="{{ o.id }}"{% ifequal object.management_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                {% endif %}
+                <a class="add_to_form"><span>{% trans "Add Professional" %}</span></a>
+            </fieldset>
+
+
+
+            <fieldset class="profile organization comment hidden">
+                    <legend>{% trans "Corporate Profile" %}</legend>
+
+                    <label>{% trans "Person Type" %}<br />
+                            <select name="person_type" class="medium">
+                                <option value="0"></option>   
+                                    {% for o in PersonType %}
+                                        <option value="{{ o.id }}"{% ifequal object.person_type_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                                    {% endfor %}
+                            </select>
+                    </label>
+                
+                    <label>{% trans "Unit Type" %}<br />
+                            <select name="unit_type" class="extrabig">
+                                <option value="0"></option>   
+                                    {% for o in UnitType %}
+                                <option value="{{ o.id }}"{% ifequal object.unit_type_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                                    {% endfor %}
+                            </select>
+                    </label>		
+
+                    <label>{% trans "Administrative Environment" %}<br />
+                            <select name="environment" class="medium">
+                                <option value="0"></option>   
+                                {% for o in AdministrationEnvironment %}
+                                    <option value="{{ o.id }}"{% ifequal object.environment_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                                {% endfor %}
+                            </select>
+                    </label>
+                
+                    <label>{% trans "Management Type" %}<br />
+                            <select name="management" class="medium">
+                                <option value="0"></option>   
+                                {% for o in Management %}
+                                    <option value="{{ o.id }}"{% ifequal object.management_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                                {% endfor %}
+                            </select>
+                    </label>
+
+                    <label>{% trans "Organization Source" %}<br />
+                            <select name="source" class="extrabig">
+                                <option value="0"></option>   
+                            {% for o in Source %}
+                                <option value="{{ o.id }}"{% ifequal object.source_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                            {% endfor %}
+                            </select>
+                    </label>	
+        
+                    <label>{% trans "Dependence" %}<br />
+                        <select name="dependence" class="medium">
+                                <option value="0"></option>   
+                            {% for o in Dependence %}
+                                <option value="{{ o.id }}"{% ifequal object.dependence_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                    
+                    <label>{% trans "Care Provided Type" %}<br />
+                        <select name="provided_type" multiple="multiple" class="medium multiple small_fonts">
+                            {% for o in ProvidedType %}
+                                <option value="{{ o.id }}"{% for pc in object.provided_type.values_list %}{% ifequal pc.0 o.id %} selected="selected"{% endifequal %}{% endfor %}>{{ o }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                        
+                    <label>{% trans "Education and Research Activity" %}<br />
+                        <select name="activity" class="big">
+                            <option value="0"></option>   
+                            {% for o in Activitie %}
+                                <option value="{{ o.id }}"{% ifequal object.activity_id o.id %} selected{% endifequal %}>{{ o }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>	
+            </fieldset>
+
+            <fieldset class="address organization set_multirow hidden">
+                <legend>{% trans "Addresses" %}</legend>
+                {% if not addresses %}
+                    {% include "tags/address.html" %}
+                {% else %}
+                    {% for address in addresses %}
+                        {% include "tags/address.html" %}
                     {% endfor %}
-		        </select>
-        </label>
+                {% endif %}	
+                <a class="add_to_form"><span>{% trans "Add Address" %}</span></a>
+            </fieldset>
 
-	<label>{% trans "Organization Source" %}<br />
-                <select name="source" class="extrabig">
-                    <option value="0"></option>   
-			    {% for o in Source %}
-			        <option value="{{ o.id }}"{% ifequal object.source_id o.id %} selected{% endifequal %}>{{ o }}</option>
-                {% endfor %}
-		        </select>
-        </label>	
-	
-	<label>{% trans "Dependence" %}<br />
-                <select name="dependence" class="medium">
-                    <option value="0"></option>   
-			    {% for o in Dependence %}
-			        <option value="{{ o.id }}"{% ifequal object.dependence_id o.id %} selected{% endifequal %}>{{ o }}</option>
-                {% endfor %}
-		        </select>
-        </label>
-	
-        <label>{% trans "Care Provided Type" %}<br />
-	        <select name="provided_type" multiple="multiple" class="medium multiple small_fonts">
-			        {% for o in ProvidedType %}
-			        <option value="{{ o.id }}"{% for pc in object.provided_type.values_list %}{% ifequal pc.0 o.id %} selected="selected"{% endifequal %}{% endfor %}>{{ o }}</option>
-                        {% endfor %}
-		    </select>
-        </label>
-		
-	<label>{% trans "Education and Research Activity" %}<br />
-        <select name="activity" class="big">
-            <option value="0"></option>   
-			{% for o in Activitie %}
-			    <option value="{{ o.id }}"{% ifequal object.activity_id o.id %} selected{% endifequal %}>{{ o }}</option>
-            {% endfor %}
-		</select>
-        </label>	
-</fieldset>
+            <fieldset class="phone organization hidden">
+                <legend>{% trans "Phones" %}</legend>
+                {% if not phones %}
+                    {% include "tags/phone.html" %}
+                {% else %}
+                    {% for phone in phones %}
+                        {% include "tags/phone.html" %}
+                    {% endfor %}
+                {% endif %}
+                <a class="add_to_form"><span>{% trans "Add Phone" %}</span></a>
+            </fieldset>
 
-<fieldset class="address organization set_multirow hidden">
-	<legend>{% trans "Addresses" %}</legend>
-	{% if not addresses %}
-	    {% include "tags/address.html" %}
-	{% else %}
-        {% for address in addresses %}
-            {% include "tags/address.html" %}
-        {% endfor %}
-	{% endif %}	
-	<a class="add_to_form"><span>{% trans "Add Address" %}</span></a>
-</fieldset>
+            <fieldset class="internet organization hidden">
+                <legend>{% trans "Emails" %}</legend>
+                {% if not emails %}
+                    {% include "tags/email.html" %}
+                {% else %}
+                    {% for email in emails %}
+                        {% include "tags/email.html" %}
+                    {% endfor %}
+                {% endif %}
+                <a class="add_to_form"><span>{% trans "Add Email" %}</span></a>
+            </fieldset>
 
-<fieldset class="phone organization hidden">
-	<legend>{% trans "Phones" %}</legend>
-	{% if not phones %}
-        {% include "tags/phone.html" %}
-	{% else %}
-        {% for phone in phones %}
-	        {% include "tags/phone.html" %}
-        {% endfor %}
-	{% endif %}
-	<a class="add_to_form"><span>{% trans "Add Phone" %}</span></a>
-</fieldset>
+            <fieldset class="internet organization hidden">
+                <legend>{% trans "Websites" %}</legend>
+                {% if not websites %}
+                    {% include "tags/website.html" %}
+                {% else %}
+                    {% for website in websites %}
+                    {% include "tags/website.html" %}
+                    {% endfor %}
+                {% endif %}	
+                <a class="add_to_form"><span>{% trans "Add Website" %}</span></a>
+            </fieldset>
 
-<fieldset class="internet organization hidden">
-	<legend>{% trans "Emails" %}</legend>
-	{% if not emails %}
-	    {% include "tags/email.html" %}
-	{% else %}
-        {% for email in emails %}
-            {% include "tags/email.html" %}
-        {% endfor %}
-	{% endif %}
-	<a class="add_to_form"><span>{% trans "Add Email" %}</span></a>
-</fieldset>
-
-<fieldset class="internet organization hidden">
-	<legend>{% trans "Websites" %}</legend>
-	{% if not websites %}
-	    {% include "tags/website.html" %}
-	{% else %}
-	    {% for website in websites %}
-		{% include "tags/website.html" %}
-	    {% endfor %}
-	{% endif %}	
-	<a class="add_to_form"><span>{% trans "Add Website" %}</span></a>
-</fieldset>
-
-<fieldset class="internet organization hidden">
-	<legend>{% trans "Instant Messengers" %}</legend>
-	{% if not ims %}
-	    {% include "tags/im.html" %}
-	{% else %}
-	    {% for im in ims %}
-		{% include "tags/im.html" %}
-	    {% endfor %}
-	{% endif %}
-	<a class="add_to_form"><span>{% trans "Add IM" %}</span></a>
-</fieldset>
+            <fieldset class="internet organization hidden">
+                <legend>{% trans "Instant Messengers" %}</legend>
+                {% if not ims %}
+                    {% include "tags/im.html" %}
+                {% else %}
+                    {% for im in ims %}
+                    {% include "tags/im.html" %}
+                    {% endfor %}
+                {% endif %}
+                <a class="add_to_form"><span>{% trans "Add IM" %}</span></a>
+            </fieldset>
 
 
-<fieldset id="fieldset_place_status" class="identity organization">
-   <legend>{% trans "Visible for others" %}</legend>
-	<label>
-            <input type="checkbox" name="visible" {% if object.visible %} checked {% endif %} /> {% trans "Visible?" %}
-        </label>
-</fieldset>
-
-<fieldset id="fieldset_place_status" class="identity organization">
-	<legend>{% trans "Comments" %}</legend>
-	<label>
-        <textarea name="comment" class="extrabig">{{ object.comment }}</textarea>
-    </label>
-</fieldset>
-
-<br />	
-</div>
-
-{% if perms.organization.organization_write %}
-<div id="sidebar" class="sidebar">
-	<div class="bg_blue">
-		{% include "tags/save.html" %}
-	</div>
-</div>
-{% endif %}
-
-</form>
-
-{% include "tags/upload.html" %}
+            <fieldset id="fieldset_place_status" class="identity organization">
+               <legend>{% trans "Visible for others" %}</legend>
+                <label>
+                        <input type="checkbox" name="visible" {% if object.visible %} checked {% endif %} /> {% trans "Visible?" %}
+                    </label>
+            </fieldset>
 
 
+            <fieldset id="fieldset_place_status" class="identity organization">
+                <legend>{% trans "Comments" %}</legend>
+                <label>
+                    <textarea name="comment" class="extrabig">{{ object.comment }}</textarea>
+                </label>
+            </fieldset>
 
-<!-- payment -->
 
-<fieldset class="signature organization hidden">
-	<legend>{% trans "Signature" %}</legend>
-	
-	<div>
-		<label>{% trans "Plan" %}<br />
-            <select name="prefered_plan" class="extrabig prefered_plan">
-            {% for p in plans %}
-                <option value="{{p.id}}" {% ifequal object.prefered_plan.id p.id %}selected="selected"{% endifequal %}>
-                    {{p.name}} - {{p.duration}} mes{{p.duration|pluralize:"es"}}
-                </option>
-            {% endfor %}
-            </select>
-		</label>
-		
-        <br />
+            <!-- plan and payment area -->
+            <fieldset class="signature organization hidden">
+                <legend>{% trans "Signature" %}</legend>
 
-        <div>
-            <h3>{% trans "The new plan will be effectively applied only when the current signature is over." %}</h3>
-        </div>
-
-        <!-- meios de pagamento -->
-		<label>{% trans "Forma de pagamento" %}<br />
-            <select name="payment_type" class="extrabig payment_type">
-            {% for p in payment_type %}
-                <option value="{{ p.id }}" {% ifequal object.payment_type p %}selected="selected"{% endifequal %} {% ifequal object.payment_type.id 1 %}disabled{% endifequal %}>{{ p.get_name_display }}</option>
-            {% endfor %}
-            </select>
-		</label>
-
-        <br />
-        {% for p in payment_type %}
-            <!-- text -->
-            <div id='payment_type{{ p.id }}' {% ifnotequal object.payment_type p %}style='display: none;'{% endifnotequal %}>
-                <h3>{{ p.detail }}</h3>
-            </div>
-        {% endfor %}
-
-        <!-- pagseguro form -->
-        {% for p in plans %}
-            {% if p.pagseguro_code %}
-            <div id='pagseguro_form{{ p.id }}' style="text-align:center; {% ifnotequal object.prefered_plan p %} display: none; {% else %} {% ifnotequal object.payment_type.name '1' %} display: none; {% endifnotequal %} {% endifnotequal %} " />
-                <p>{{ p.pagseguro_code|safe }} - - - {{ p.id }}<p/>
+                <div>
+                    <label>{% trans "Inscription date" %}<br />
+                    <input type="text" value="{{object.date_created}}" readonly  />
+                    <br/>
+                    {% if inscription.0 %}
+                        {% if inscription.0.date_payed %}
+                            {% trans "Payed " %}{{inscription.0.ammount}}
+                        {% else %}
+                            {% trans "Not payed " %}{{inscription.0.ammount}}
+                        {% endif %}
+                    {% else %}
+                        {% trans "Inscription not done" %}
+                    {% endif %}
+                    </label>
                 </div>
-            {% endif %}
-        {% endfor %}
+                
+                <div>
+                    <label>{% trans "Plan" %}<br />
+                        <select name="prefered_plan" class="extrabig prefered_plan">
+                        {% for p in plans %}
+                            <option value="{{p.id}}" {% ifequal object.prefered_plan.id p.id %}selected="selected"{% endifequal %}>
+                                {{p.name}} - {{p.duration}} mes{{p.duration|pluralize:"es"}}
+                            </option>
+                        {% endfor %}
+                        </select>
+                    </label>
+                    
+                    <br />
 
-        <div>
-            <h3>Para alterar a forma de pagamento, <a href='/support/ticket/form/'>entre em contato.</a></h3>
+                    <div><h3>{% trans "The new plan will be effectively applied only when the current signature is over." %}</h3></div>
+
+                    <!-- meios de pagamento -->
+                    <label>{% trans "Forma de pagamento" %}<br />
+                        <select name="payment_type" class="extrabig payment_type">
+                        {% for p in payment_type %}
+                            <option value="{{ p.id }}" {% ifequal object.payment_type p %}selected="selected"{% endifequal %} {% ifequal object.payment_type.id 1 %}disabled{% endifequal %}>{{ p.get_name_display }}</option>
+                        {% endfor %}
+                        </select>
+                    </label>
+
+                    <br />
+                    {% for p in payment_type %}
+                        <!-- text about -->
+                        <div id='payment_type{{ p.id }}' {% ifnotequal object.payment_type p %}style='display: none;'{% endifnotequal %}>
+                            <h3>{{ p.detail }}</h3>
+                        </div>
+                    {% endfor %}
+                    <div><h3>Para alterar a forma de pagamento, <a href='/support/ticket/form/'>entre em contato.</a></h3></div>
+            </fieldset>
+
+            <br />
+
+        </div> <!-- main area -->
+
+        {% if perms.organization.organization_write %}
+            <div id="sidebar" class="sidebar">
+                <div class="bg_blue">
+                    {% include "tags/save.html" %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% include "tags/upload.html" %}
+
+    </form> <!-- form org save -->
+
+
+
+
+    <!-- pagseguro form -->
+    <div class="main_area">
+
+        <h3>Fazer pagamento</h3>
+
+        <div class='contact'>
+            <!-- pagseguro form -->
+            {% for p in plans %}
+                {% if p.pagseguro_code %}
+                    <div id='pagseguro_form{{ p.id }}' style="text-align:center; {% ifnotequal object.prefered_plan p %} display: none; {% else %} {% ifnotequal object.payment_type.name '1' %} display: none; {% endifnotequal %} {% endifnotequal %} " />
+                        <p>{{ p.pagseguro_code|safe }}<p/>
+                     </div>
+                {% endif %}
+            {% endfor %}
+
         </div>
-        <!-- meios de pagamento -->
-	</div>
 
-</fieldset>
-
-<fieldset class="signature organization hidden">
-	<legend>{% trans "Use History - Under development" %}</legend>
-	
-	<div>
-		<label>{% trans "Inscription date" %}<br />
-		<input type="text" value="{{object.date_created}}" readonly  />
-		<br/>
-		{% if inscription.0 %}
-		{% if inscription.0.date_payed %}
-		{% trans "Payed " %}{{inscription.0.ammount}}
-		{% else %}
-		{% trans "Not payed " %}{{inscription.0.ammount}}
-		{% endif %}
-		{% else %}{% trans "Inscription not done" %}{% endif %}
-		</label>
-		
-		<br/><br/><br/>
-		<br/><br/><br/>
-		<br/>
-	</div>
-		
-	<div>
-		<h2 class="sign_title">{% trans "Use History" %}</h2>
-		<table class="sign_history">
-			<thead>
-				<tr>
-					<td style="width: 80px;">Emiss&atilde;o</td>
-					<td style="width: 80px;">Vencimento</td>
-					<td style="width: 120px;">{% trans "Plan" %}</td>
-					<td style="width: 100px;">{% trans "Value" %}</td>
-					<td style="width: 60px;">{% trans "Status" %}</td>
-                    <!-- <td style="width: 100px;">{% trans "Second copy" %}</td> -->
-				</tr>
-			</thead>
-			<tbody>
-				{% for inv in object.invoice_set.all %}
-				<tr class="{% cycle '' 'even' %}">
-					<td>{{inv.date|date:"d/m/Y"}}</td>
-					<td>{{inv.expiry_date|date:"d/m/Y"}}</td>
-					<td>{{inv.plan.staff_size}} funcionarios</td>
-					<td>R$ {{inv.ammount}}</td>
-					<td>
-                        {% comment %}
-						{% if inv.status != 2 %}
-							{% if not inv.dued %}
-							<a href="{{inv.billet_url}}">{{inv.get_status_display}}</a>
-							{% else %}
-							Vencido
-							{% endif %}
-						{% else %}
-							<a href="{{inv.billet_url}}">{{inv.get_status_display}}</a>
-						{% endif %}
-                        {% endcomment %}
-					    {{inv.get_status_display}}
-					</td>
-                    {% comment %}
-					<td>
-						{% if inv.status != 2 %}
-							{% if inv.dued %}
-							<a class="second_copy" aux="{{inv.id}}" href="javascript:void(0);">
-								Second copy
-							</a>
-							{% endif %}
-						{% endif %}
-					</td>
-                    {% endcomment %}
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-		<br />
-		
-		{% if object.current_invoice %}
-		<h2 class="sign_title" style="font-size: 14px; height: 14px; line-height: 14px;">{% trans "Last Invoice" %}</h2>
-		<table class="sign_history">
-			<thead>
-				<tr>
-					<td style="width: 80px;">{% trans "From" %}</td>
-					<td style="width: 80px;">{% trans "To" %}</td>
-					<td style="width: 120px;">{% trans "Plan" %}</td>
-					<td style="width: 100px;">{% trans "Value" %}</td>
-					<td style="width: 60px;">{% trans "Status" %}</td>
-					<td style="width: 100px;">{% trans "Second copy" %}</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr class="">
-					<td>{{object.current_invoice.date|date:"d/m/Y"}}</td>
-					<td>{{object.current_invoice.expiry_date|date:"d/m/Y"}}</td>
-					<td>{{object.current_invoice.plan.staff_size}} funcionarios</td>
-					<td>R$ {{object.current_invoice.ammount}}</td>
-					<td>
-						{% if object.current_invoice.status != 2 %}
-							{% if not object.current_invoice.dued %}
-							<a href="{{object.current_invoice.billet_url}}">{{object.current_invoice.get_status_display}}</a>
-							{% else %}
-							Vencido
-							{% endif %}
-						{% else %}
-							<a href="{{object.current_invoice.billet_url}}">{{object.current_invoice.get_status_display}}</a>
-						{% endif %}
-					</td>
-					<td>
-						{% if object.current_invoice.status != 2 %}
-							{% if object.current_invoice.dued %}
-							<a class="second_copy" aux="{{object.current_invoice.id}}" href="javascript:void(0);">
-								Second copy
-							</a>
-							{% endif %}
-						{% endif %}
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		{% endif %}
-		
-		<br/><br/><br/>
-		<br/><br/>
-		<br/>
-	</div>
-</fieldset>
+    </div><!-- main area -->
 
 {% endblock %}
+
+    {% comment %}
+    <div class="main_area">
+        <h3>{% trans "Use History - Under development" %}</h3>
+                
+            <fieldset class="signature organization">
+            <div>
+                <table class="sign_history">
+                    <thead>
+                        <tr>
+                            <td style="width: 80px;">Emiss&atilde;o</td>
+                            <td style="width: 80px;">Vencimento</td>
+                            <td style="width: 120px;">{% trans "Plan" %}</td>
+                            <td style="width: 100px;">{% trans "Value" %}</td>
+                            <td style="width: 60px;">{% trans "Status" %}</td>
+                            <!-- <td style="width: 100px;">{% trans "Second copy" %}</td> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for inv in object.invoice_set.all %}
+                        <tr class="{% cycle '' 'even' %}">
+                            <td>{{inv.date|date:"d/m/Y"}}</td>
+                            <td>{{inv.expiry_date|date:"d/m/Y"}}</td>
+                            <td>{{inv.plan.staff_size}} funcionarios</td>
+                            <td>R$ {{inv.ammount}}</td>
+                            <td>
+                                {% if inv.status != 2 %}
+                                    {% if not inv.dued %}
+                                    <a href="{{inv.billet_url}}">{{inv.get_status_display}}</a>
+                                    {% else %}
+                                    Vencido
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{{inv.billet_url}}">{{inv.get_status_display}}</a>
+                                {% endif %}
+                                {{inv.get_status_display}}
+                            </td>
+                            <td>
+                                {% if inv.status != 2 %}
+                                    {% if inv.dued %}
+                                    <a class="second_copy" aux="{{inv.id}}" href="javascript:void(0);">
+                                        Second copy
+                                    </a>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <br />
+                
+                {% if object.current_invoice %}
+                <h2 class="sign_title" style="font-size: 14px; height: 14px; line-height: 14px;">{% trans "Last Invoice" %}</h2>
+                <table class="sign_history">
+                    <thead>
+                        <tr>
+                            <td style="width: 80px;">{% trans "From" %}</td>
+                            <td style="width: 80px;">{% trans "To" %}</td>
+                            <td style="width: 120px;">{% trans "Plan" %}</td>
+                            <td style="width: 100px;">{% trans "Value" %}</td>
+                            <td style="width: 60px;">{% trans "Status" %}</td>
+                            <td style="width: 100px;">{% trans "Second copy" %}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="">
+                            <td>{{object.current_invoice.date|date:"d/m/Y"}}</td>
+                            <td>{{object.current_invoice.expiry_date|date:"d/m/Y"}}</td>
+                            <td>{{object.current_invoice.plan.staff_size}} funcionarios</td>
+                            <td>R$ {{object.current_invoice.ammount}}</td>
+                            <td>
+                                {% if object.current_invoice.status != 2 %}
+                                    {% if not object.current_invoice.dued %}
+                                    <a href="{{object.current_invoice.billet_url}}">{{object.current_invoice.get_status_display}}</a>
+                                    {% else %}
+                                    Vencido
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{{object.current_invoice.billet_url}}">{{object.current_invoice.get_status_display}}</a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if object.current_invoice.status != 2 %}
+                                    {% if object.current_invoice.dued %}
+                                    <a class="second_copy" aux="{{object.current_invoice.id}}" href="javascript:void(0);">
+                                        Second copy
+                                    </a>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+        </fieldset>
+    {% endcomment %}

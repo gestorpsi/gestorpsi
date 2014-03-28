@@ -90,7 +90,7 @@ def form(request):
         'invoices': Invoice.objects.filter(organization=object, status=1).order_by('date'), #billets not paid and not excluded
         'inscription': Invoice.objects.filter(organization=object, status=1, plan=None).order_by('date')[0:1],
         'today': datetime.today(),
-        'payment_type': PaymentType.objects.filter(active=True, show_to_client=True).order_by('name'),
+        'payment_type': PaymentType.objects.filter(active=True, show_to_client=True).order_by('-name'),
         },
         context_instance=RequestContext(request))
 

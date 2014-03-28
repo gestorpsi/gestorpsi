@@ -28,10 +28,11 @@ from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Address
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util.first_capitalized import first_capitalized
-from gestorpsi.gcm.models.plan import Plan
-from gestorpsi.gcm.models.invoice import Invoice
 from gestorpsi.boleto.models import BradescoBilletData
 
+from gestorpsi.gcm.models.plan import Plan
+from gestorpsi.gcm.models.invoice import Invoice
+from gestorpsi.gcm.models.payment import PaymentType
 
 class ProfessionalResponsible(models.Model):
     """    
@@ -239,6 +240,10 @@ class Organization(models.Model):
     current_invoice.verbose_name = _("Current invoice")
     current_invoice.help_text= _("Field used by the system DON'T change it.")
     #current_invoice.editable = False
+
+    payment_type = models.ForeignKey(PaymentType, null=True, blank=True, related_name='payment_type')
+    payment_type.verbose_name = _("Tipo de pagamento")
+    payment_detail = models.TextField(u'Detalhes do pagamento. Usado pelo ADM gestorPSI.', null=True, blank=True)
     
     default_payment_day = models.PositiveIntegerField(validators=[MaxValueValidator(28), MinValueValidator(1)], default=DEFAULT_PAYMENT_DAY)
     default_payment_day.verbose_name = _("Default payment day")

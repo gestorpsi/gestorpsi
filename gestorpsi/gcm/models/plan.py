@@ -15,6 +15,8 @@ class Plan(models.Model):
     weight = models.IntegerField(_('Peso'), max_length=4, null=True, blank=True)
     weight.help_text = _('Peso para ordenacao visual no formulario de cadastro. Utilizar valores inteiros aqui')
     active = models.BooleanField(default=True)
+
+    pagseguro_code = models.TextField(u'Código botão PagSeguro', null=True, blank=True) # cobrança recorrente, código botao PagSeguro
     
     class Meta:
         app_label = 'gcm'

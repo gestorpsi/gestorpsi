@@ -269,21 +269,30 @@ $(document).ready(function()
 	
 	<div>
 		<label>{% trans "Plan" %}<br />
-		<select name="prefered_plan" class="extrabig">
-		{% for p in plans %}
-		<option value="{{p.id}}" {% ifequal object.prefered_plan.id p.id %}selected="selected"{% endifequal %}>
-			{{p.name}} - {{p.duration}} mes{{p.duration|pluralize:"es"}}
-		</option>
-		{% endfor %}
-		</select>
+            <select name="prefered_plan" class="extrabig">
+            {% for p in plans %}
+                <option value="{{p.id}}" {% ifequal object.prefered_plan.id p.id %}selected="selected"{% endifequal %}>
+                    {{p.name}} - {{p.duration}} mes{{p.duration|pluralize:"es"}}
+                </option>
+            {% endfor %}
+            </select>
 		</label>
 		
-		<br/><br/><br/>
-		<br/><br/>
-		<div>
-			{% trans "The new plan will be effectively applied only when the current signature is over." %}
-		</div>
-		<br/>
+        <br />
+
+        <div>
+            <h3>{% trans "The new plan will be effectively applied only when the current signature is over." %}</h3>
+        </div>
+
+		<label>{% trans "Meio de pagamento" %}<br />
+            <select name="payment_type" class="extrabig">
+            {% for p in payment_type %}
+                <option value="{{ p.id }}" {% ifequal object.payment_type.id p.id %}selected="selected"{% endifequal %}>
+                    {{ p.get_name_display }}
+                </option>
+            {% endfor %}
+            </select>
+		</label>
 	</div>
 
 </fieldset>

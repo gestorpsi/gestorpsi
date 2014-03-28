@@ -30,8 +30,10 @@ from gestorpsi.internet.views import email_save, site_save, im_save
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.careprofessional.models import Profession, CareProfessional
 from gestorpsi.util.views import get_object_or_None
+
 from gestorpsi.gcm.models import Invoice, INVOICE_STATUS_CHOICES
 from gestorpsi.gcm.models.plan import Plan
+from gestorpsi.gcm.models.payment import PaymentType
 
 from datetime import datetime, timedelta
 from gestorpsi.boleto.functions import gera_boleto_bradesco
@@ -88,6 +90,7 @@ def form(request):
         'invoices': Invoice.objects.filter(organization=object, status=1).order_by('date'), #billets not paid and not excluded
         'inscription': Invoice.objects.filter(organization=object, status=1, plan=None).order_by('date')[0:1],
         'today': datetime.today(),
+        'payment_type': PaymentType.objects.filter(active=True, show_to_client=True).order_by('name'),
         },
         context_instance=RequestContext(request))
 

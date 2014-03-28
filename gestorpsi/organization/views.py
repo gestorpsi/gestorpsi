@@ -168,6 +168,7 @@ def save(request):
     # comment
     object.comment = request.POST['comment']
     object.prefered_plan = get_object_or_None(Plan, pk=request.POST.get('prefered_plan'))
+    object.payment_type = PaymentType.objects.get( pk=request.POST.get('payment_type') )
     object.save()
    
     professional_responsible_save(request, object, request.POST.getlist('professionalId'), request.POST.getlist('professional_name'), request.POST.getlist('professional_subscription'), request.POST.getlist('professional_organization_subscription'), request.POST.getlist('service_profession'))

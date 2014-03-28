@@ -35,41 +35,36 @@ GNU General Public License for more details.
 
 
 {% block extrahead %}
-<script language="JavaScript" type="text/javascript">
-$(document).ready(function()
-{
-	$('.second_copy').click(function(event)
-	{
-		var sef = $(event.target);
-		window.open('/organization/second_copy/'+sef.attr('aux')+'/', 'ndvia', 'width=400, height=100, toolbar=0, titlebar=0');
+    <script language="JavaScript" type="text/javascript">
+        $(document).ready(function()
+        {
+            $('.second_copy').click(function(event)
+            {
+                var sef = $(event.target);
+                window.open('/organization/second_copy/'+sef.attr('aux')+'/', 'ndvia', 'width=400, height=100, toolbar=0, titlebar=0');
 
-		event.preventDefault();
-	});
-});
-</script>
-
+                event.preventDefault();
+            });
+        });
+    </script>
 {% endblock extrahead %}
 
 {% block core %}
-<h2 id="title_addressbook" style="display:none"></h2>
+    <h2 id="title_addressbook" style="display:none"></h2>
 
+    <h2 class="title_organization title">{{ object }}</h2>
+    <p class="description"> {% trans "Organization Configuration" %}<br /></p>
 
-<h2 class="title_organization title">{{ object }}</h2>
-<p class="description"> {% trans "Organization Configuration" %}<br />	
-</p>
-
-
-<form action="/organization/save/" method="post" class="form_people">	
-<div class="main_area">
-
-<div class="photo">
-        <img class="img_people" organization="{{ user.get_profile.org_active.id }}" src="{% if object.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
-        {% if perms.organization.organization_write %}
-            <a class="clips notajax">{% trans "Logo" %}</a>
-            <input type="hidden" name="photo" value="{{ object.photo }}" class="photo" />
-            <a class="notajax delete" title="delete" onclick="$(this).siblings('input.photo').val(''); $(this).siblings('img.img_people').attr('src', '/media/img/generic_photo.gif');"><span>{% trans "Delete" %}</span></a>
-        {% endif %}
-</div> 
+    <form action="/organization/save/" method="post" class="form_people">	
+        <div class="main_area">
+            <div class="photo">
+                    <img class="img_people" organization="{{ user.get_profile.org_active.id }}" src="{% if object.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
+                    {% if perms.organization.organization_write %}
+                        <a class="clips notajax">{% trans "Logo" %}</a>
+                        <input type="hidden" name="photo" value="{{ object.photo }}" class="photo" />
+                        <a class="notajax delete" title="delete" onclick="$(this).siblings('input.photo').val(''); $(this).siblings('img.img_people').attr('src', '/media/img/generic_photo.gif');"><span>{% trans "Delete" %}</span></a>
+                    {% endif %}
+            </div> 
 
 
 <fieldset class="identity organization first comment fieldset_personal_identification">
@@ -264,12 +259,45 @@ $(document).ready(function()
 </fieldset>
 
 
+<fieldset id="fieldset_place_status" class="identity organization">
+   <legend>{% trans "Visible for others" %}</legend>
+	<label>
+            <input type="checkbox" name="visible" {% if object.visible %} checked {% endif %} /> {% trans "Visible?" %}
+        </label>
+</fieldset>
+
+<fieldset id="fieldset_place_status" class="identity organization">
+	<legend>{% trans "Comments" %}</legend>
+	<label>
+        <textarea name="comment" class="extrabig">{{ object.comment }}</textarea>
+    </label>
+</fieldset>
+
+<br />	
+</div>
+
+{% if perms.organization.organization_write %}
+<div id="sidebar" class="sidebar">
+	<div class="bg_blue">
+		{% include "tags/save.html" %}
+	</div>
+</div>
+{% endif %}
+
+</form>
+
+{% include "tags/upload.html" %}
+
+
+
+<!-- payment -->
+
 <fieldset class="signature organization hidden">
 	<legend>{% trans "Signature" %}</legend>
 	
 	<div>
 		<label>{% trans "Plan" %}<br />
-            <select name="prefered_plan" class="extrabig">
+            <select name="prefered_plan" class="extrabig prefered_plan">
             {% for p in plans %}
                 <option value="{{p.id}}" {% ifequal object.prefered_plan.id p.id %}selected="selected"{% endifequal %}>
                     {{p.name}} - {{p.duration}} mes{{p.duration|pluralize:"es"}}
@@ -284,18 +312,40 @@ $(document).ready(function()
             <h3>{% trans "The new plan will be effectively applied only when the current signature is over." %}</h3>
         </div>
 
-		<label>{% trans "Meio de pagamento" %}<br />
-            <select name="payment_type" class="extrabig">
+        <!-- meios de pagamento -->
+		<label>{% trans "Forma de pagamento" %}<br />
+            <select name="payment_type" class="extrabig payment_type">
             {% for p in payment_type %}
-                <option value="{{ p.id }}" {% ifequal object.payment_type.id p.id %}selected="selected"{% endifequal %}>
-                    {{ p.get_name_display }}
-                </option>
+                <option value="{{ p.id }}" {% ifequal object.payment_type p %}selected="selected"{% endifequal %} {% ifequal object.payment_type.id 1 %}disabled{% endifequal %}>{{ p.get_name_display }}</option>
             {% endfor %}
             </select>
 		</label>
+
+        <br />
+        {% for p in payment_type %}
+            <!-- text -->
+            <div id='payment_type{{ p.id }}' {% ifnotequal object.payment_type p %}style='display: none;'{% endifnotequal %}>
+                <h3>{{ p.detail }}</h3>
+            </div>
+        {% endfor %}
+
+        <!-- pagseguro form -->
+        {% for p in plans %}
+            {% if p.pagseguro_code %}
+            <div id='pagseguro_form{{ p.id }}' style="text-align:center; {% ifnotequal object.prefered_plan p %} display: none; {% else %} {% ifnotequal object.payment_type.name '1' %} display: none; {% endifnotequal %} {% endifnotequal %} " />
+                <p>{{ p.pagseguro_code|safe }} - - - {{ p.id }}<p/>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <div>
+            <h3>Para alterar a forma de pagamento, <a href='/support/ticket/form/'>entre em contato.</a></h3>
+        </div>
+        <!-- meios de pagamento -->
 	</div>
 
 </fieldset>
+
 <fieldset class="signature organization hidden">
 	<legend>{% trans "Use History - Under development" %}</legend>
 	
@@ -417,37 +467,5 @@ $(document).ready(function()
 		<br/>
 	</div>
 </fieldset>
-
-
-
-<fieldset id="fieldset_place_status" class="identity organization">
-   <legend>{% trans "Visible for others" %}</legend>
-	<label>
-            <input type="checkbox" name="visible" {% if object.visible %} checked {% endif %} /> {% trans "Visible?" %}
-        </label>
-</fieldset>
-
-<fieldset id="fieldset_place_status" class="identity organization">
-	<legend>{% trans "Comments" %}</legend>
-	<label>
-        <textarea name="comment" class="extrabig">{{ object.comment }}</textarea>
-    </label>
-</fieldset>
-
-<br />	
-</div>
-
-{% if perms.organization.organization_write %}
-<div id="sidebar" class="sidebar">
-	<div class="bg_blue">
-		{% include "tags/save.html" %}
-	</div>
-</div>
-{% endif %}
-
-</form>
-
-{% include "tags/upload.html" %}
-
 
 {% endblock %}

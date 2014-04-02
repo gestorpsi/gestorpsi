@@ -60,9 +60,10 @@ def professional_responsible_save(request, object, ids, names, subscriptions, or
 
 @permission_required_with_403('organization.organization_read')
 def form(request):
+
     user = request.user
     object = get_object_or_404( Organization, pk=user.get_profile().org_active.id )
-    plans = Plan.objects.filter( staff_size__gte=object.care_professionals().count() )
+
     return render_to_response('organization/organization_form.html', {
         'object': object, #Organization.objects.get(pk= user.get_profile().org_active.id),
         'PhoneTypes': PhoneType.objects.all(), 
@@ -86,10 +87,10 @@ def form(request):
         'Activitie': Activitie.objects.all(),
         'professional_responsible': ProfessionalResponsible.objects.filter(organization = user.get_profile().org_active),
         'Professions': Profession.objects.all(),
-        'plans': plans,
-        'invoices': Invoice.objects.filter(organization=object, status=1).order_by('date'), #billets not paid and not excluded
         'inscription': Invoice.objects.filter(organization=object, status=1, plan=None).order_by('date')[0:1],
         'today': datetime.today(),
+        'plans': Plan.objects.filter( staff_size__gte=object.care_professionals().count() ),
+        'invoices': Invoice.objects.filter(organization=object, status=1).order_by('date'), #billets not paid and not excluded
         'payment_type': PaymentType.objects.filter(active=True, show_to_client=True).order_by('-name'),
         },
         context_instance=RequestContext(request))

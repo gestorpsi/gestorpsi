@@ -271,11 +271,12 @@ GNU General Public License for more details.
 
             <!-- plan and payment area -->
             <fieldset class="signature organization hidden">
+
                 <legend>{% trans "Signature" %}</legend>
 
                 <div>
                     <label>{% trans "Inscription date" %}<br />
-                    <input type="text" value="{{object.date_created}}" readonly  />
+                    <input type="text" value="{{ object.date_created }}" readonly  />
                     <br/>
                     {% if inscription.0 %}
                         {% if inscription.0.date_payed %}
@@ -294,7 +295,8 @@ GNU General Public License for more details.
                         <select name="prefered_plan" class="extrabig prefered_plan">
                         {% for p in plans %}
                             <option value="{{p.id}}" {% ifequal object.prefered_plan.id p.id %}selected="selected"{% endifequal %}>
-                                {{p.name}} - {{p.duration}} mes{{p.duration|pluralize:"es"}}
+                                <!-- {{p.name}} - {{p.duration}} mes{{p.duration|pluralize:"es"}} -->
+                                {{ p.name }}
                             </option>
                         {% endfor %}
                         </select>
@@ -311,6 +313,11 @@ GNU General Public License for more details.
                             <option value="{{ p.id }}" {% ifequal object.payment_type p %}selected="selected"{% endifequal %} {% ifequal object.payment_type.id 1 %}disabled{% endifequal %}>{{ p.get_name_display }}</option>
                         {% endfor %}
                         </select>
+
+                        {% for p in payment_type %}
+                            <input type='hidden' value="{{ p.time }}" name="payment_id{{ p.id }}_time" />
+                        {% endfor %}
+
                     </label>
 
                     <br />
@@ -320,7 +327,17 @@ GNU General Public License for more details.
                             <h3>{{ p.detail }}</h3>
                         </div>
                     {% endfor %}
+
+                    <label>{% trans "Valor" %}<br />
+                        <input type="text" name="valor_plano" readonly='1'>
+                    </label>
+
+                    <label>{% trans "Tempo / Dura&ccedil;&atilde;o" %}<br />
+                        <input type="text" name="tempo_plano" readonly='1'>
+                    </label>
+
                     <div><h3>Para alterar a forma de pagamento, <a href='/support/ticket/form/'>entre em contato.</a></h3></div>
+
             </fieldset>
 
             <br />
@@ -343,21 +360,22 @@ GNU General Public License for more details.
 
 
     <!-- pagseguro form -->
-    <div class="main_area">
+    <div class="main_area" style="padding-bottom: 20px !important;" />
 
         <h3>Fazer pagamento</h3>
 
         <div class='contact'>
+
             <!-- pagseguro form -->
             {% for p in plans %}
                 {% if p.pagseguro_code %}
-                    <div id='pagseguro_form{{ p.id }}' style="text-align:center; {% ifnotequal object.prefered_plan p %} display: none; {% else %} {% ifnotequal object.payment_type.name '1' %} display: none; {% endifnotequal %} {% endifnotequal %} " />
-                        <p>{{ p.pagseguro_code|safe }}<p/>
-                     </div>
+                    <div id='pagseguro_form{{ p.id }}' style="text-align:center; {% ifnotequal object.prefered_plan p %} display: none; {% else %} {% ifnotequal object.payment_type.name '1' %} display: none; {% endifnotequal %} {% endifnotequal %} " />{{ p.pagseguro_code|safe }}</div>
                 {% endif %}
             {% endfor %}
 
         </div>
+
+        <div style='height: 10px;'></div>
 
     </div><!-- main area -->
 

@@ -20,9 +20,15 @@ $(document).ready(function() {
      * show and hide information about payment type
      */
     $('select.payment_type').change( function() { 
+
         $('div[id*="pagseguro_form"]').hide(); // hide all pagseguro forms
         $('div[id*="payment_type"]').hide(); // hide all div contains payment type
         $('div[id="payment_type' + this.value + '"]').show(); // show selected payment type
+
+        // periodo depende da forma de pagamento
+        tempo = $('input[name="payment_id' + this.value + '_time"]').val();
+
+        alert( $('select.payment_type').val() );
 
         // if cartao, show pagseguro forms
         if ( $('select.payment_type').val() == '1' ) { 

@@ -354,6 +354,18 @@ class Organization(models.Model):
 
     def services(self):
         return self.service_set.filter(active=True)
+
+    '''
+        return value of plan and plan time/duration
+        array[0] = value total ( plan * time )
+        array[1] = time / duration / month
+    '''
+    def payment_(self):
+        r = [False]*2
+        r[0] = ('R$ %s' % float(self.prefered_plan.value * int(self.payment_type.time) ))
+        r[1] = (u'%s mes(es)' % self.payment_type.time )
+
+        return r
     
     class Meta:
         ordering = ['name']

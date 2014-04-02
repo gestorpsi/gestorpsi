@@ -301,6 +301,11 @@ GNU General Public License for more details.
                         {% endfor %}
                         </select>
                     </label>
+
+                    <!-- plan id and value -->
+                    {% for p in plans %}
+                        <input type='hidden' value="{{ p.value }}" name="plan_id{{ p.id }}" />
+                    {% endfor %}
                     
                     <br />
 
@@ -321,19 +326,19 @@ GNU General Public License for more details.
                     </label>
 
                     <br />
+                    <!-- text about -->
                     {% for p in payment_type %}
-                        <!-- text about -->
                         <div id='payment_type{{ p.id }}' {% ifnotequal object.payment_type p %}style='display: none;'{% endifnotequal %}>
                             <h3>{{ p.detail }}</h3>
                         </div>
                     {% endfor %}
 
                     <label>{% trans "Valor" %}<br />
-                        <input type="text" name="valor_plano" readonly='1'>
+                        <input type="text" name="valor_plano" readonly='1' value='{{ object.payment_.0 }}'>
                     </label>
 
                     <label>{% trans "Tempo / Dura&ccedil;&atilde;o" %}<br />
-                        <input type="text" name="tempo_plano" readonly='1'>
+                        <input type="text" name="tempo_plano" readonly='1' value='{{ object.payment_.1 }}'>
                     </label>
 
                     <div><h3>Para alterar a forma de pagamento, <a href='/support/ticket/form/'>entre em contato.</a></h3></div>
@@ -360,18 +365,60 @@ GNU General Public License for more details.
 
 
     <!-- pagseguro form -->
-    <div class="main_area" style="padding-bottom: 20px !important;" />
+    <div class="main_area" />
 
         <h3>Fazer pagamento</h3>
 
         <div class='contact'>
 
-            <!-- pagseguro form -->
+            <!-- pagseguro cartao botao -->
             {% for p in plans %}
                 {% if p.pagseguro_code %}
-                    <div id='pagseguro_form{{ p.id }}' style="text-align:center; {% ifnotequal object.prefered_plan p %} display: none; {% else %} {% ifnotequal object.payment_type.name '1' %} display: none; {% endifnotequal %} {% endifnotequal %} " />{{ p.pagseguro_code|safe }}</div>
+                    <div id='pagseguro_cartao{{ p.id }}' style="text-align:center; margin-top:10px; {% ifnotequal object.prefered_plan p %} display: none; {% else %} {% ifnotequal object.payment_type.name '1' %} display: none; {% endifnotequal %} {% endifnotequal %} " />{{ p.pagseguro_code|safe }}</div>
                 {% endif %}
             {% endfor %}
+
+            <!-- boleto -->
+            <div id='pagseguro_boleto' style='text-align: center; {% ifnotequal object.payment_type.name '2' %} display: none; {% endifnotequal %} margin-top:10px;'>
+                <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html">  
+                        <!-- Campos obrigat&oacute;rios -->  
+                        <input name="receiverEmail" type="hidden" value="ozp@psico.net">  
+                        <input name="currency" type="hidden" value="BRL">  
+
+                        <!-- Itens do pagamento -->
+                        <input name="itemId1" type="hidden" value="0001">  
+                        <input name="itemDescription1" type="hidden" value="Assinatura GestorPSI por 3 meses ">  
+                        <input name="itemAmount1" type="hidden" value="90.00">  
+                        <input name="itemQuantity1" type="hidden" value="1">  
+                        <input name="itemWeight1" type="hidden" value="1000">  
+
+                        <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->  
+                        <!-- organization.id -->
+                        <input name="reference" type="hidden" value="REF1234">  
+
+                        <!-- Informa&ccedil;&otilde;es de frete (opcionais)
+                        <input name="shippingType" type="hidden" value="1">  
+                        <input name="shippingAddressPostalCode" type="hidden" value="01452002">  
+                        <input name="shippingAddressStreet" type="hidden" value="Av. Brig. Faria Lima">  
+                        <input name="shippingAddressNumber" type="hidden" value="1384">  
+                        <input name="shippingAddressComplement" type="hidden" value="5o andar">  
+                        <input name="shippingAddressDistrict" type="hidden" value="Jardim Paulistano">  
+                        <input name="shippingAddressCity" type="hidden" value="Sao Paulo">  
+                        <input name="shippingAddressState" type="hidden" value="SP">  
+                        <input name="shippingAddressCountry" type="hidden" value="BRA">  
+                        -->
+
+                        <!-- Dados do comprador (opcionais) -->  
+                        <input name="senderName" type="hidden" value="Jos&eacute; Comprador">  
+                        <input name="senderAreaCode" type="hidden" value="11">  
+                        <input name="senderPhone" type="hidden" value="56273440">  
+                        <input name="senderEmail" type="hidden" value="comprador@uol.com.br">  
+
+                        <!-- submit do form (obrigat&oacute;rio) -->  
+                        <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/assinaturas/209x48-assinar-assina.gif"/>  
+                        <img src='http://www.boletofast.com.br/boleto.png' alt='boleto' />
+                </form>  
+            </div>
 
         </div>
 

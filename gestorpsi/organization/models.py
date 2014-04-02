@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 import re
 import reversion
-from datetime import datetime
+from datetime import datetime, date
 from django.db import models
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import Group
@@ -249,7 +249,6 @@ class Organization(models.Model):
     default_payment_day.verbose_name = _("Default payment day")
     default_payment_day.help_text= _("The default day in which the billets have to be paid at the most by this organization.")
     
-    
     objects = OrganizationManager()
 
     def __unicode__(self):
@@ -361,9 +360,31 @@ class Organization(models.Model):
         array[1] = time / duration / month
     '''
     def payment_(self):
+
+        r = ['Nenhum']*2
+
+        try:
+            r[0] = ('R$ %s' % float(self.prefered_plan.value * int(self.payment_type.time) ))
+            r[1] = (u'%s mes(es)' % self.payment_type.time )
+        except:
+            pass
+
+        return r
+
+    '''
+        retorna todas as faturas
+        array
+            0 = assinatura corrente
+            1 = assinaturas pagas
+    '''
+    def invoice_(self):
         r = [False]*2
-        r[0] = ('R$ %s' % float(self.prefered_plan.value * int(self.payment_type.time) ))
-        r[1] = (u'%s mes(es)' % self.payment_type.time )
+        # current 
+        if self.invoice_set.filter( due_date__gte=date.today() ).count() > 0 :
+            r[0] = self.invoice_set.filter( due_date__gte=date.today() )
+        # old
+        if self.invoice_set.filter( due_date__lt=date.today() ).count() > 0 :
+            r[1] = self.invoice_set.filter( due_date__lt=date.today() )[:6]
 
         return r
     

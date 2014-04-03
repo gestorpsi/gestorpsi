@@ -380,11 +380,11 @@ class Organization(models.Model):
     def invoice_(self):
         r = [False]*2
         # current 
-        if self.invoice_set.filter( due_date__gte=date.today() ).count() > 0 :
-            r[0] = self.invoice_set.filter( due_date__gte=date.today() )
+        if self.invoice_set.filter( expiry_date__gte=date.today(), status=2 ).count() > 0 :
+            r[0] = self.invoice_set.filter( expiry_date__gte=date.today(), status=2 )[0]
         # old
-        if self.invoice_set.filter( due_date__lt=date.today() ).count() > 0 :
-            r[1] = self.invoice_set.filter( due_date__lt=date.today() )[:6]
+        if self.invoice_set.filter( expiry_date__lt=date.today() ).count() > 0 :
+            r[1] = self.invoice_set.filter( expiry_date__lt=date.today() )[:6]
 
         return r
     

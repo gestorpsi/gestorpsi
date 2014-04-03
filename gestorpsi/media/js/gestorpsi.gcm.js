@@ -19,7 +19,9 @@ $(document).ready(function() {
     // plan, hide or show pagseguro form
     $('select.prefered_plan').change( function() { 
 
-        $('div[id*="pagseguro_cartao"]').hide(); // hide all payments forms
+        // hide all
+        $('div[id*="pagseguro_cartao"]').hide(); 
+        $('div#show_values').hide();
 
         // plan 
         planid = $('select[name="prefered_plan"]').val(); // get selected plan id
@@ -29,13 +31,23 @@ $(document).ready(function() {
         payment_id = $('select.payment_type').val(); // get payment form
         tempo = $('input[name="payment_id' + payment_id + '_time"]').val();
 
+        // update boleto data
+        label = $('input[name="plan_label' + planid + '"]' ).val(); // get price of plan
+        $('input[name="itemDescription1"]').val(label);
+        $('input[name="itemAmount1"]').val( parseFloat(tempo*value).toFixed(2) );
+
         // mostrar ao cliente valor total e tempo do plano
         // clean
         $('input[name="valor_plano"]').val('');
         $('input[name="tempo_plano"]').val('');
         // new value
-        $('input[name="valor_plano"]').val('R$ ' + tempo*value);
+        $('input[name="valor_plano"]').val('R$ ' +  parseFloat(tempo*value).toFixed(2) );
         $('input[name="tempo_plano"]').val(tempo + ' mes(es)');
+
+        // show values calculation
+        if ( this.value != '0' &&  payment_id != '0'){ 
+            $('div#show_values').show();
+        }
 
         // cartao
         if ( $('select.payment_type').val() == '1' ) { 
@@ -58,6 +70,7 @@ $(document).ready(function() {
         $('div[id*="pagseguro_cartao"]').hide(); // hide all pagseguro cartao
         $('div[id="pagseguro_boleto"]').hide(); // hide all pagseguro boleto
         $('div[id*="payment_type"]').hide(); // hide all div contains payment type / text about 
+        $('div#show_values').hide();
         
         // plan 
         planid = $('select[name="prefered_plan"]').val(); // get selected plan id
@@ -76,6 +89,11 @@ $(document).ready(function() {
         $('input[name="tempo_plano"]').val(tempo + ' mes(es)');
 
         $('div[id="payment_type' + this.value + '"]').show(); // show selected payment type
+        
+        // show values calculation
+        if ( planid != '0' &&  payment_id != '0'){ 
+            $('div#show_values').show();
+        }
 
         // cartao
         if ( $('select.payment_type').val() == '1' ) { 

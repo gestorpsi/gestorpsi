@@ -14,15 +14,68 @@ GNU General Public License for more details.
 
 */
 
+// hide all these fields or divs
+function hideAll(){ 
+    $('div[id*="pagseguro_cartao"]').hide(); // hide all pagseguro cartao
+    $('div[id="pagseguro_boleto"]').hide(); // hide all pagseguro boleto
+}
+
+// mostrar ao cliente valor total e tempo do plano
+function updateValue(tempo, value){ 
+    // clean
+    $('input[name="valor_plano"]').val('');
+    $('input[name="tempo_plano"]').val('');
+    // new value
+    $('input[name="valor_plano"]').val('R$ ' +  parseFloat(tempo*value).toFixed(2) );
+    $('input[name="tempo_plano"]').val(tempo + ' mes(es)');
+}
+
+
+// show cartao or boleto
+function showCartaoOrBoleto(){ 
+    // cartao
+    if ( $('select.payment_type').val() == '1' ) { 
+        plan = $('select[name="prefered_plan"]').val(); // get selected plan id
+        $('div[id="pagseguro_cartao' + plan + '"]').show(); // show selected form
+    }
+    // boleto
+    if ( $('select.payment_type').val() == '2' ) { 
+        $('div[id="pagseguro_boleto"]').show(); // show selected form
+    }
+}
+
+
 $(document).ready(function() {
 
-    // plan, hide or show pagseguro form
+    /*
+     * update fields when mount html
+     */
+    payment_id = $('select.payment_type').val(); // get payment form
+    plan_id = $('select[name="prefered_plan"]').val(); // get selected plan id
+    tempo = $('input[name="payment_id' + payment_id + '_time"]').val();
+    value = $('input[name="plan_id' + plan_id + '"]' ).val(); // get price of plan
+
+    // cartao
+    if ( payment_id == '1' ) { 
+        $('div[id="pagseguro_cartao' + plan_id + '"]').show(); // show selected form
+    }
+    // boleto
+    if ( payment_id == '2' ) { 
+        $('div[id="pagseguro_boleto"]').show(); // show selected form
+        // update boleto data
+        label = $('input[name="plan_label' + plan_id + '"]' ).val(); // get price of plan
+        $('input[name="itemDescription1"]').val(label);
+        $('input[name="itemAmount1"]').val( parseFloat(tempo*value).toFixed(2) );
+    }
+
+    
+    /*
+     * plan, hide or show pagseguro form
+     */
     $('select.prefered_plan').change( function() { 
 
         // hide all
-        $('div[id*="pagseguro_boleto"]').hide(); 
-        $('div[id*="pagseguro_cartao"]').hide(); 
-        $('div#show_values').hide();
+        hideAll();
 
         // plan 
         planid = $('select[name="prefered_plan"]').val(); // get selected plan id
@@ -33,46 +86,27 @@ $(document).ready(function() {
         tempo = $('input[name="payment_id' + payment_id + '_time"]').val();
 
         // update boleto data
-        label = $('input[name="plan_label' + planid + '"]' ).val(); // get price of plan
-        $('input[name="itemDescription1"]').val(label);
-        $('input[name="itemAmount1"]').val( parseFloat(tempo*value).toFixed(2) );
+        if ( $('select.payment_type').val() == '2' ) { 
+            label = $('input[name="plan_label' + planid + '"]' ).val(); // get price of plan
+            $('input[name="itemDescription1"]').val(label);
+            $('input[name="itemAmount1"]').val( parseFloat(tempo*value).toFixed(2) );
+        }
 
         // mostrar ao cliente valor total e tempo do plano
-        // clean
-        $('input[name="valor_plano"]').val('');
-        $('input[name="tempo_plano"]').val('');
-        // new value
-        $('input[name="valor_plano"]').val('R$ ' +  parseFloat(tempo*value).toFixed(2) );
-        $('input[name="tempo_plano"]').val(tempo + ' mes(es)');
+        updateValue(tempo, value);
 
-        // show values calculation
-        if ( this.value != '0' &&  payment_id != '0'){ 
-            $('div#show_values').show();
-        }
-
-        if ( this.value != '0' ){ 
-            // cartao
-            if ( $('select.payment_type').val() == '1' ) { 
-                plan = $('select[name="prefered_plan"]').val(); // get selected plan id
-                $('div[id="pagseguro_cartao' + plan + '"]').show(); // show selected form
-            }
-            // boleto
-            if ( $('select.payment_type').val() == '2' ) { 
-                $('div[id="pagseguro_boleto"]').show(); // show selected form
-            }
-        }
-
+        showCartaoOrBoleto();
     });
+
+
 
     /*
      * show and hide information about payment type
      */
     $('select.payment_type').change( function() { 
 
-        $('div[id*="pagseguro_cartao"]').hide(); // hide all pagseguro cartao
-        $('div[id="pagseguro_boleto"]').hide(); // hide all pagseguro boleto
+        hideAll();
         $('div[id*="payment_type"]').hide(); // hide all div contains payment type / text about 
-        $('div#show_values').hide();
         
         // plan 
         planid = $('select[name="prefered_plan"]').val(); // get selected plan id
@@ -83,31 +117,18 @@ $(document).ready(function() {
         tempo = $('input[name="payment_id' + payment_id + '_time"]').val();
 
         // mostrar ao cliente valor total e tempo do plano
-        // clean
-        $('input[name="valor_plano"]').val('');
-        $('input[name="tempo_plano"]').val('');
-        // new value
-        $('input[name="valor_plano"]').val('R$ ' + tempo*value);
-        $('input[name="tempo_plano"]').val(tempo + ' mes(es)');
+        updateValue(tempo, value);
 
         $('div[id="payment_type' + this.value + '"]').show(); // show selected payment type
         
-        // show values calculation
-        if ( planid != '0' &&  payment_id != '0'){ 
-            $('div#show_values').show();
-        }
-
-        // cartao
-        if ( $('select.payment_type').val() == '1' ) { 
-            plan = $('select[name="prefered_plan"]').val(); // get selected plan id
-            $('div[id="pagseguro_cartao' + plan + '"]').show(); // show selected form
-        }
+        showCartaoOrBoleto();
         
-        // boleto
+        // update boleto data
         if ( $('select.payment_type').val() == '2' ) { 
-            $('div[id="pagseguro_boleto"]').show(); // show selected form
+            label = $('input[name="plan_label' + planid + '"]' ).val(); // get price of plan
+            $('input[name="itemDescription1"]').val(label);
+            $('input[name="itemAmount1"]').val( parseFloat(tempo*value).toFixed(2) );
         }
-
     });
 
 }); // ready

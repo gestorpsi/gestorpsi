@@ -360,9 +360,7 @@ class Organization(models.Model):
         array[1] = time / duration / month
     '''
     def payment_(self):
-
         r = ['Nenhum']*2
-
         try:
             r[0] = ('R$ %s' % float(self.prefered_plan.value * int(self.payment_type.time) ))
             r[1] = (u'%s mes(es)' % self.payment_type.time )
@@ -374,8 +372,8 @@ class Organization(models.Model):
     '''
         retorna todas as faturas
         array
-            0 = assinatura corrente
-            1 = assinaturas pagas
+            0 = assinatura corrente, status=2, nao venceu
+            1 = assinaturas pagas e vencidas
     '''
     def invoice_(self):
         r = [False]*2

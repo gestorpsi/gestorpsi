@@ -386,22 +386,22 @@ GNU General Public License for more details.
             <div style='height: 10px;'></div>
 
         </div><!-- main area -->
+
+        <!-- save buttom -->
+        {% if perms.organization.organization_write %}
+            <div id="sidebar" class="sidebar">
+                <div class="bg_blue">
+                    {% include "tags/save.html" %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% include "tags/upload.html" %}
+
     </form> <!-- form org save -->
 
 
-    <!-- save buttom -->
-    {% if perms.organization.organization_write %}
-        <div id="sidebar" class="sidebar">
-            <div class="bg_blue">
-                {% include "tags/save.html" %}
-            </div>
-        </div>
-    {% endif %}
-
-    {% include "tags/upload.html" %}
-
     <!-- pagseguro form -->
-
     <!-- boleto -->
     {% if not object.invoice_.0 %}
         <div id='pagseguro_boleto' style='text-align: center; display: none; margin-top:10px;'>

@@ -20,6 +20,7 @@ $(document).ready(function() {
     $('select.prefered_plan').change( function() { 
 
         // hide all
+        $('div[id*="pagseguro_boleto"]').hide(); 
         $('div[id*="pagseguro_cartao"]').hide(); 
         $('div#show_values').hide();
 
@@ -49,15 +50,16 @@ $(document).ready(function() {
             $('div#show_values').show();
         }
 
-        // cartao
-        if ( $('select.payment_type').val() == '1' ) { 
-            plan = $('select[name="prefered_plan"]').val(); // get selected plan id
-            $('div[id="pagseguro_cartao' + plan + '"]').show(); // show selected form
-        }
-        
-        // boleto
-        if ( $('select.payment_type').val() == '2' ) { 
-            $('div[id="pagseguro_boleto"]').show(); // show selected form
+        if ( this.value != '0' ){ 
+            // cartao
+            if ( $('select.payment_type').val() == '1' ) { 
+                plan = $('select[name="prefered_plan"]').val(); // get selected plan id
+                $('div[id="pagseguro_cartao' + plan + '"]').show(); // show selected form
+            }
+            // boleto
+            if ( $('select.payment_type').val() == '2' ) { 
+                $('div[id="pagseguro_boleto"]').show(); // show selected form
+            }
         }
 
     });

@@ -7,6 +7,8 @@ from gestorpsi.frontend.views import start as frontend_start
 from django.contrib.auth.decorators import login_required
 from gestorpsi.authentication.views import gestorpsi_login
 
+from gestorpsi.settings import MEDIA_ROOT
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -38,7 +40,8 @@ urlpatterns = patterns('',
     (r'^report/', include('gestorpsi.report.urls')),
     (r'^support/', include('gestorpsi.support.urls')),
     (r'^frontend/', include('gestorpsi.frontend.urls')),
-    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/home/tiago/Desktop/dev/gestorpsi/gestorpsi/media/', 'show_indexes': False}),
+    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT, 'show_indexes': False}),
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT, 'show_indexes': False}),
     (r'^profile/', include('gestorpsi.profile.urls')),
     (r'^util/', include('gestorpsi.util.urls')),
     (r'^chaining/', include('smart_selects.urls')),

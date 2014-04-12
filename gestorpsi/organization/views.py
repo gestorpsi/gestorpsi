@@ -89,7 +89,7 @@ def form(request):
         'Professions': Profession.objects.all(),
         'inscription': Invoice.objects.filter(organization=object, status=1, plan=None).order_by('date')[0:1],
         'today': datetime.today(),
-        'plans': Plan.objects.filter( staff_size__gte=object.care_professionals().count() ),
+        'plans': Plan.objects.filter( staff_size__gte=object.care_professionals().count(), active=True ).order_by('weight'),
         'invoices': Invoice.objects.filter(organization=object, status=1).order_by('date'), #billets not paid and not excluded
         'payment_type': PaymentType.objects.filter(active=True, show_to_client=True).order_by('-name'),
         },

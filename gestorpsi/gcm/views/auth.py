@@ -57,7 +57,7 @@ def register(request, success_url=None,
 
                 msg = EmailMessage()
                 msg.subject = u'Nova inscrição em gestorpsi.com.br'
-                msg.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar https://gestorpsi.psico.net/gcm/\n\n'
+                msg.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar https://app.gestorpsi.com.br/gcm/\n\n'
                 msg.body += u'Organização %s' % org
                 msg.to = bcc_list
                 msg.send()

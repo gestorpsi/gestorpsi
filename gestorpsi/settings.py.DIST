@@ -124,6 +124,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.static',
     'django.core.context_processors.media',
+    'django.contrib.messages.context_processors.messages',
     'swingtime.context_processors.current_datetime',
 )
 

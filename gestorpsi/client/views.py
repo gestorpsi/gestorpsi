@@ -148,11 +148,12 @@ def home(request, object_id=None):
     referrals_discharged = ReferralDischarge.objects.filter(client=object)
 
     c=0
-    for x in (Referral.objects.filter(client=object)):
+    for x in Referral.objects.filter(client=object):
         c += x.past_occurrences().count()
 
     if not object.is_active():
         messages.success(request,  _('This client is not enabled.'))
+
     return render_to_response('client/client_home.html',
                                         {
                                         'object': object,
@@ -162,7 +163,8 @@ def home(request, object_id=None):
                                         'care_delivered': c,
                     					'clss':request.GET.get('clss'),
                                         },
-                                        context_instance=RequestContext(request))
+                                        context_instance=RequestContext(request)
+                            )
 
 @permission_required_with_403('client.client_read')
 def add(request):
@@ -772,6 +774,14 @@ def save(request, object_id=None, is_company = False):
     
     if is_company:
         company_form = CompanyForm(request.POST) if not object_id else CompanyForm(request.POST, instance=object.person.company)
+
+        if company_form.is_valid():
+            company = company_form.save(commit=False)
+            company.person = object.person
+            company.save()
+
+        '''
+        WHY?
         if not company_form.is_valid():
             print company_form.errors
         else:
@@ -779,6 +789,7 @@ def save(request, object_id=None, is_company = False):
             #print object.person
             company.person = object.person
             company.save()
+        '''
 
     '''
     automatic admit client

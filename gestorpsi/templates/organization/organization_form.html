@@ -437,10 +437,10 @@ GNU General Public License for more details.
                         <h3>Assinatura paga / vencida (&uacute;ltimas 6)</h3>
                         {% for x in object.invoice_.1 %}
                             <label>{% trans "Plan" %}<br />
-                                <input type="text" readonly='1' value='{{ x.plan }}'>
+                                <input type="text" readonly='1' value='{{ x.plan }}' class=''>
                             </label>
                             <label>{% trans "Data do pagamento" %}<br />
-                                <input type="text" readonly='1' value='{{ x.date_payed }}' class='normal'>
+                                <input type="text" readonly='1' value='{{ x.date_payed }}' class='medium'>
                             </label>
                             <label>{% trans "Venceu" %}<br />
                                 <input type="text" readonly='1' value='{{ x.expiry_date }}' class='medium'>

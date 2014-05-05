@@ -351,9 +351,8 @@ GNU General Public License for more details.
 
     </form> <!-- form org save -->
 
-
     <!-- form pagamento -->
-    <form>	
+    <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
         <div class="main_area">
             <fieldset class="signature organization hidden">
 
@@ -363,31 +362,31 @@ GNU General Public License for more details.
                         <h3>Fazer pagamento</h3>
                         <div style='height: 10px;'></div>
                         <div class='contact'>
-                            <!-- Campos obrigat&oacute;rios -->  
-                            <input name="receiverEmail" type="hidden" value="ozp@psico.net">  
-                            <input name="currency" type="hidden" value="BRL">  
+                                <!-- Campos obrigat&oacute;rios -->  
+                                <input name="receiverEmail" type="hidden" value="ozp@psico.net">  
+                                <input name="currency" type="hidden" value="BRL">  
 
-                            <!-- Itens do pagamento (ao menos um item &eacute; obrigat&oacute;rio) -->  
-                            <input name="itemId1" type="hidden" value="0001">  
-                            <input name="itemDescription1" type="hidden" value="Assinatura GestorPSI por 3 meses ">  
-                            <input name="itemAmount1" type="hidden" value="90.00">  
-                            <input name="itemQuantity1" type="hidden" value="1">  
-                            <input name="itemWeight1" type="hidden" value="1000">  
+                                <!-- Itens do pagamento (ao menos um item &eacute; obrigat&oacute;rio) -->  
+                                <input name="itemId1" type="hidden" value="0001">  
+                                <input name="itemDescription1" type="hidden" value="Assinatura GestorPSI por 3 meses ">  
+                                <input name="itemAmount1" type="hidden" value="90.00">  
+                                <input name="itemQuantity1" type="hidden" value="1">  
+                                <input name="itemWeight1" type="hidden" value="1000">  
 
-                            <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->  
-                            <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}">  
+                                <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->  
+                                <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}">  
 
-                            <!-- Dados do comprador (opcionais) -->  
-                            <input name="senderName" type="hidden" value="{{ object.administrator.0.name }}">  
-                            <input name="senderPhone" type="hidden" value="{{ object.administrator.0.get_firtst_phone }}">  
-                            <input name="senderEmail" type="hidden" value="{{ object.administrator.0.get_first_email }}">  
+                                <!-- Dados do comprador (opcionais) -->  
+                                <input name="senderName" type="hidden" value="{{ object.administrator.0.name }}">  
+                                <input name="senderPhone" type="hidden" value="{{ object.administrator.0.get_firtst_phone }}">  
+                                <input name="senderEmail" type="hidden" value="{{ object.administrator.0.get_first_email }}">  
 
-                            <!-- submit do form (obrigat&oacute;rio) -->  
-                            <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/120x53-pagar.gif"/>  
+                                <!-- submit do form (obrigat&oacute;rio) -->  
+                                <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/120x53-pagar.gif"/>  
                         </div>
                     </div>
                 {% endif %}
-
+    </form>
 
                 <!-- pagseguro cartao botao -->
                 {% for p in plans %}
@@ -418,7 +417,7 @@ GNU General Public License for more details.
 
                 <!-- invoices -->
                 {% if object.invoice_.0 %}
-                    <div class='main_area' style="padding-bottom: 15px;">
+                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
                         <h3>Assinatura atual / corrente</h3>
                         <label>{% trans "Plan" %}<br />
                             <input type="text" readonly='1' value='{{ object.invoice_.0.plan }}'>
@@ -427,7 +426,7 @@ GNU General Public License for more details.
                             <input type="text" readonly='1' value='{{ object.invoice_.0.date_payed }}' class='normal'>
                         </label>
                         <label>{% trans "Vai vencer" %}<br />
-                            <input type="text" readonly='1' value='{{ object.invoice_.0.expiry_date }}' class='normal'>
+                            <input type="text" readonly='1' value='{{ object.invoice_.0.expiry_date }}' class='medium'>
                         </label>
                     </div>
                 {% endif %}
@@ -444,7 +443,7 @@ GNU General Public License for more details.
                                 <input type="text" readonly='1' value='{{ x.date_payed }}' class='normal'>
                             </label>
                             <label>{% trans "Venceu" %}<br />
-                                <input type="text" readonly='1' value='{{ x.expiry_date }}' class='normal'>
+                                <input type="text" readonly='1' value='{{ x.expiry_date }}' class='medium'>
                             </label>
                         {% endfor %}
                     </div>

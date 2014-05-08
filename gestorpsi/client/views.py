@@ -190,19 +190,47 @@ def add(request):
                                         'PROFESSIONAL_AREAS': Profession.objects.all(),
                                         'licenceBoardTypes': LicenceBoard.objects.all(),
                                         'ReferralChoices': ReferralChoice.objects.all(),
-                                        'IndicationsChoices': IndicationChoice.objects.all(),
                                         'Relations': Relation.objects.all(),
                                         'cnae': Cnae.objects.all(),
                                          },
                                         context_instance=RequestContext(request))
 
 
+"""
+    Tiago de Souza Moraes - 06/05/2014
+    retrn: JSON or HTML
+    search person family return JSON
+    search client/initial letter return HTML
+"""
 @permission_required_with_403('client.client_list')
-def list(request, page = 1, initial = None, filter = None, no_paging = False, deactive = False):
+def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=False, retrn=False):
+
     user = request.user
-    
     object_list = Client.objects.from_user(user, 'deactive' if deactive else 'active')
+
+    """
+        return json
+    """
+    if retrn == 'json':
+
+        person = {}
+        i = 0
+
+        for c in object_list.filter(person__name__icontains=filter):
+            person[i] = {
+                'id': c.id, # client id
+                'name': c.person.name,
+            }
+            i = i + 1
+
+        return HttpResponse(simplejson.dumps(person, encoding = 'iso8859-1'), mimetype='application/json')
+                                    
     
+
+    """
+        return default
+        client index / paginator
+    """
     list_url_base = '/client/list/' if not deactive else '/client/list/deactive/'
     
     url_extra = ''
@@ -224,10 +252,7 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
         object_list = object_list.filter(person__name__icontains = search)
         url_extra += '&search=%s' % search
 
-    #
     # filters
-    #
-    
     if request.GET.get('service'):
         service = request.GET.get('service')
         object_list = object_list.filter(referral__service=service).distinct()
@@ -286,6 +311,8 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
     initials = string.uppercase
 
     return render_to_response('tags/list_item.html', locals(), context_instance=RequestContext(request))
+
+
 
 # edit form
 @permission_required_with_403('client.client_read')

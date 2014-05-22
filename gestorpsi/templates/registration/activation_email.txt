@@ -2,7 +2,7 @@ Ola,
 
 Segue abaixo o endereço para a confirmação de seu cadastro:
 
-{{site}}/accounts/activate/{{ activation_key }}/
+https://app.gestorpsi.com.br/accounts/activate/{{ activation_key }}/
 
 Apenas clique, ou copie e cole na barra de endereços do seu navegador de internet.
 

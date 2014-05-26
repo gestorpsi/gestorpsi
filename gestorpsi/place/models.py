@@ -106,8 +106,8 @@ class Place( models.Model ):
     organization = models.ForeignKey(Organization, null= True, blank= True)
     comments = models.TextField(blank=True, null=True)
 
-    hour_start = models.CharField(u'Primeiro horário', max_length=10, default='00', choices=HOURS)
-    hour_end = models.CharField(u'Último horário', max_length=10, default='23,30', choices=HOURS)
+    hour_start = models.CharField(u'Primeiro horário', max_length=10, default='07,00', choices=HOURS)
+    hour_end = models.CharField(u'Último horário', max_length=10, default='19,00', choices=HOURS)
     
     objects = PlaceManager()
     

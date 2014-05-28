@@ -28,7 +28,7 @@ GNU General Public License for more details.
 function processJson(data) {
     $('li#occurrence_'+data.occurrence_pk).load(data.url);
     $('div#dialog').hide();
-    $.scrollTo($('li#occurrence_'+data.occurrence_pk),100);
+    //$.scrollTo($('li#occurrence_'+data.occurrence_pk),100);
     $('li#occurrence_'+data.occurrence_pk).hide();
     $('li#occurrence_'+data.occurrence_pk).fadeIn(1000);
 }

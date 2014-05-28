@@ -34,7 +34,7 @@ urlpatterns = patterns('',
     (r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
     #(r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
     url(r'^deactive/$', login_check(index), {'deactive': True} ), #list objects
-    #url(r'^list/deactive/$', login_check(list), {'deactive': True}), #list objects
+    url(r'^list/deactive/$', login_check(list), {'deactive': True}), #list objects
 
     # client search person family, return JSON
     #(r'^filter/(?P<filter>\w+)/page(?P<page>(\d)+)/$', login_check(list), {'no_paging': True, 'retrn':'json'}), # quick search

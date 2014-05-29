@@ -45,11 +45,10 @@ $(document).ready(function() {
     /**
      * generic metho to load href into DOM element
      */
-    
     $('a.load').live('click', function() {
         $($(this).attr('element')).load($(this).attr('href'));
         $($(this).attr('element')).show();
-        $.scrollTo(0,0, {duration:300});
+        //$.scrollTo(0,0, {duration:300});
         return false;
     });
     
@@ -58,7 +57,7 @@ $(document).ready(function() {
      */
     
     $('#dialog #cancel_button').live('click', function() {
-        $.scrollTo(0,0, {duration:300});
+        //$.scrollTo(0,0, {duration:300});
         return false;
     });
     

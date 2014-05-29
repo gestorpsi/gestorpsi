@@ -61,26 +61,31 @@ GNU General Public License for more details.
     {% with form.demand_resolution as field %}
         {% include "tags/dialog_form.html" %}
     {% endwith %}
+
     {% with form.comments as field %}
         {% include "tags/dialog_form.html" %}
     {% endwith %}
+
     {% with form.bibliography as field %}
         {% include "tags/dialog_form.html" %}
     {% endwith %}
+
     {% with form.related_sites as field %}
         {% include "tags/dialog_form.html" %}
     {% endwith %}
+
     {% include "ehr/ehr_save_button.html" %}
 </form>
 
 <script>
+    /*
     function processForm() {
-        $.scrollTo(0,0, {duration:300});
-    }
+        //$.scrollTo(0,0, {duration:300});
+    }*/
     $(function() {
         $('form.form_ajax').ajaxForm({ 
             target: 'div#dialog',
-            success:   processForm
+            //success:   processForm
         });
         
         $('input[name=demand_resolution]').datepicker({ dateFormat: 'dd/mm/yy' });

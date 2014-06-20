@@ -219,3 +219,34 @@ def list_prof_org(request, org_id = None):
         i = i + 1
 
     return HttpResponse(simplejson.dumps(array), mimetype='application/json')
+
+
+
+'''
+    organization signature save
+    Tiago de Souza Moraes 20/06/2014
+'''
+@permission_required_with_403('organization.organization_write')
+def signature_save(request):
+
+    user = request.user
+    obj = Organization.objects.get(pk= user.get_profile().org_active.id) # get org from logged user
+
+    if request.POST:
+
+        obj.prefered_plan = get_object_or_None(Plan, pk=request.POST.get('prefered_plan'))
+        obj.payment_type = PaymentType.objects.get( pk=request.POST.get('payment_type') )
+        obj.save()
+
+        messages.success(request, _('Organization details saved successfully'))
+        return HttpResponseRedirect('/organization/signature/')
+
+    else:
+
+        return render_to_response('organization/organization_signature.html', {
+            'obj': obj,
+            'plans': Plan.objects.filter( active=True ).order_by('weight'),
+            'invoices': Invoice.objects.filter(organization=object, status=1).order_by('date'), 
+            'payment_type': PaymentType.objects.filter(active=True, show_to_client=True).order_by('-name'),
+            },
+            context_instance=RequestContext(request))

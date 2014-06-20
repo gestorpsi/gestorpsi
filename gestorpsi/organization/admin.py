@@ -55,13 +55,40 @@ class ProfessionalResponsibleInline(admin.StackedInline):
     extra = 1
 
 
-class OrganizationAdmin(admin.ModelAdmin):
-    inlines = [ProfessionalResponsibleInline, ]
+'''
+    organization filter and action
+'''
+def turnoff(modeladmin, request, queryset):
+        for obj in queryset:
+            obj.active = False
+            obj.save()
+turnoff.short_description = "Desligar organização"
 
+def turnon(modeladmin, request, queryset):
+        for obj in queryset:
+            obj.active = True
+            obj.save()
+turnon.short_description = "Ligar organização"
+
+class OrganizationAdmin(admin.ModelAdmin):
+    list_display = ('name','id','active','trade_name','short_name', 'care_professional' )
+    list_filter = ['active']
+    search_fields = ['name','trade_name','short_name','id']
+    actions = [turnoff, turnon]
+
+
+    def care_professional(self, obj):
+        from django.contrib.auth.models import User
+        s = ''
+        for x in User.objects.filter( profile__organization__id=obj.id ).distinct():
+            s += u'%s ' % ( x.profile.person.name )
+            for e in x.profile.person.emails.all():
+                s += u'<%s> , ' % e
+        return s
+        
 
 class ProfessionalResponsibleAdmin(admin.ModelAdmin):
     form = ProfessionalResponsibleForm
-
 
 
 admin.site.register(Agreement)
@@ -79,5 +106,3 @@ admin.site.register(EducationLevel)
 admin.site.register(HierarchicalLevel)
 admin.site.register(ProfessionalResponsible, ProfessionalResponsibleAdmin)
 admin.site.register(Organization, OrganizationAdmin)
-
-

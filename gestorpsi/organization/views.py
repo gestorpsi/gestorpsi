@@ -39,6 +39,7 @@ from datetime import datetime, timedelta
 from gestorpsi.boleto.functions import gera_boleto_bradesco
 from gestorpsi.boleto.models import BradescoBilletData
 
+
 @permission_required_with_403('organization.organization_write')
 def professional_responsible_save(request, object, ids, names, subscriptions, organization_subscriptions, professions):
     ProfessionalResponsible.objects.all().delete()
@@ -56,7 +57,8 @@ def professional_responsible_save(request, object, ids, names, subscriptions, or
                 obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x], profession=get_object_or_None(Profession, pk=professions[x])))
 
         if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):
-            obj.save()
+            object.save()
+
 
 @permission_required_with_403('organization.organization_read')
 def form(request):
@@ -87,12 +89,6 @@ def form(request):
         'Activitie': Activitie.objects.all(),
         'professional_responsible': ProfessionalResponsible.objects.filter(organization = user.get_profile().org_active),
         'Professions': Profession.objects.all(),
-        'inscription': Invoice.objects.filter(organization=object, status=1, plan=None).order_by('date')[0:1],
-        'today': datetime.today(),
-        #'plans': Plan.objects.filter( staff_size__gte=object.care_professionals().count(), active=True ).order_by('weight'),
-        'plans': Plan.objects.filter( active=True ).order_by('weight'),
-        'invoices': Invoice.objects.filter(organization=object, status=1).order_by('date'), #billets not paid and not excluded
-        'payment_type': PaymentType.objects.filter(active=True, show_to_client=True).order_by('-name'),
         },
         context_instance=RequestContext(request))
 
@@ -132,9 +128,11 @@ def make_second_copy(request, invoice):
 
 @permission_required_with_403('organization.organization_write')
 def save(request):
+
     user = request.user
+
     try:
-	object = Organization.objects.get(pk= user.get_profile().org_active.id)
+	    object = Organization.objects.get(pk= user.get_profile().org_active.id)
     except:
         object = Organization()
         object.short_name = slugify(request.POST['name'])
@@ -155,7 +153,6 @@ def save(request):
     object.photo = request.POST['photo']
     object.visible = get_visible( request, request.POST.get('visible') )
     #profile
-    #object.person_type = PersonType.objects.get(pk=request.POST.get('person_type'))
     object.person_type = get_object_or_None(PersonType, pk=request.POST.get('person_type'))
     object.unit_type = get_object_or_None(UnitType, pk=request.POST.get('unit_type'))
     object.environment = get_object_or_None(AdministrationEnvironment, pk=request.POST.get('environment'))
@@ -165,12 +162,11 @@ def save(request):
     object.activity = get_object_or_None(Activitie, pk=request.POST.get('activity'))
     """ provided types """
     object.provided_type.clear()
+
     for p in request.POST.getlist('provided_type'):
         object.provided_type.add(ProvidedType.objects.get(pk=p))
-    # comment
+
     object.comment = request.POST['comment']
-    object.prefered_plan = get_object_or_None(Plan, pk=request.POST.get('prefered_plan'))
-    object.payment_type = PaymentType.objects.get( pk=request.POST.get('payment_type') )
     object.save()
    
     professional_responsible_save(request, object, request.POST.getlist('professionalId'), request.POST.getlist('professional_name'), request.POST.getlist('professional_subscription'), request.POST.getlist('professional_organization_subscription'), request.POST.getlist('service_profession'))
@@ -189,9 +185,12 @@ def save(request):
     messages.success(request, _('Organization details saved successfully'))
     return HttpResponseRedirect('/organization/')
     
-# The question is, is available the short name?
-# 0 = NO
-# 1 = YES
+
+'''
+    Tiago de Souza Moraes 20/06/2014
+    Organization short name is available?
+    return 0=No / 1=Yes
+'''
 @permission_required_with_403('organization.organization_read')
 def shortname_is_available(request, short):
     if Organization.objects.filter(short_name__iexact = short).count():
@@ -199,11 +198,15 @@ def shortname_is_available(request, short):
     else:
 	    return HttpResponse("1")
 
+
+
 def get_visible( request, value ):
     if ( value == 'on' ):
         return True
     else:
         return False 
+
+
 
 def list_prof_org(request, org_id = None):
     org = Organization.objects.get(pk = org_id)

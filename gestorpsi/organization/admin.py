@@ -62,18 +62,18 @@ def turnoff(modeladmin, request, queryset):
         for obj in queryset:
             obj.active = False
             obj.save()
-turnoff.short_description = "Desligar organização"
+turnoff.short_description = "Desativar organização"
 
 def turnon(modeladmin, request, queryset):
         for obj in queryset:
             obj.active = True
             obj.save()
-turnon.short_description = "Ligar organização"
+turnon.short_description = "Ativar organização"
 
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ('name','id','active','trade_name','short_name', 'care_professional' )
+    list_display = ('name','id','active','trade_name','short_name','care_professional')
     list_filter = ['active']
-    search_fields = ['name','trade_name','short_name','id']
+    search_fields = ['name','trade_name','short_name','id','profile_set__person__emails']
     actions = [turnoff, turnon]
 
 

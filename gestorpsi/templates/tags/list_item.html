@@ -49,22 +49,22 @@ GNU General Public License for more details.
 
 <div class="search_header_aditional">
     <select name="service">
-        <option value="">Todos os serviços ...</option>
+        <option value="">Todos os serviços</option>
         {% for s in service_list %}
             <option value="{{ s.pk }}"{% if s.pk == service %} selected{% endif %}>{{ s }}</option>
         {% endfor %}
     </select>
     <label>
-        <input type="checkbox" name="subscribed"{% if subscribed == "true" %} checked{% endif %} />&nbsp;{% trans "Com inscrição ativa" %}
+        <input type="checkbox" name="subscribed"{% if subscribed %} checked{% endif %} />&nbsp;{% trans "Com inscrição ativa" %}
     </label>
     <label>
-        <input type="checkbox" name="discharged"{% if discharged == "true" %} checked{% endif %} />&nbsp;{% trans "Com inscrição desligada" %}
+        <input type="checkbox" name="discharged"{% if discharged %} checked{% endif %} />&nbsp;{% trans "Com inscrição desligada" %}
     </label>
     <label>
-        <input type="checkbox" name="queued"{% if queued == "true" %} checked{% endif %} />&nbsp;{% trans "Na Fila de Espera" %}
+        <input type="checkbox" name="queued"{% if queued %} checked{% endif %} />&nbsp;{% trans "Na Fila de Espera" %}
     </label>
     <label>
-        <input type="checkbox" name="nooccurrences"{% if nooccurrences == "true" %} checked{% endif %} />&nbsp;{% trans "Sem agendamentos" %}
+        <input type="checkbox" name="nooccurrences"{% if nooccurrences %} checked{% endif %} />&nbsp;{% trans "Sem agendamentos" %}
     </label>
 </div>
 
@@ -119,7 +119,7 @@ function updateResults(url, initial) {
         if(!initial) {
             initial = ''
         }
-        var url = '{{ list_url_base }}?search=' + encodeURIComponent($("#quick_search").val()) + "&initial=" + initial + '&service=' + $('select[name=service]').val() + '&subscribed=' + $('input[name=subscribed]').attr("checked") + '&discharged=' + $('input[name=discharged]').attr("checked") + '&queued=' + $('input[name=queued]').attr('checked') + '&nooccurrences=' + $('input[name=nooccurrences]').attr('checked');
+        var url = '{{ list_url_base }}?search=' + encodeURIComponent($("#quick_search").val()) + "&initial=" + initial + '&service=' + $('select[name=service]').val() + '&subscribed=' + $('input[name=subscribed]').is(":checked") + '&discharged=' + $('input[name=discharged]').is(":checked") + '&queued=' + $('input[name=queued]').is(':checked') + '&nooccurrences=' + $('input[name=nooccurrences]').is(':checked');
     }
     $('#page_results').load(url,function(responseTxt,statusTxt,xhr){
             if(statusTxt=="success") {

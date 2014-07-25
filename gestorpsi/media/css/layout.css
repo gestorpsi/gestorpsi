@@ -245,6 +245,7 @@ ul.myoffice li a:hover { -moz-border-radius: 0px !important; background-color:#F
 #main_menu a#careprofessional {background: url(/media/img/16/people-professional.png) no-repeat 25px 4px;}
 #main_menu a#student {background: url(/media/img/16/people-student.png) no-repeat 25px 4px;}
 #main_menu a#users {background: url(/media/img/16/system-users.png) no-repeat 25px 4px;}
+#main_menu a#payment {background: url(/media/img/16/shopping_cart_green.png) no-repeat 25px 4px;}
 
 #main_menu ul li {
         position: relative;
@@ -384,6 +385,7 @@ div.main_area h1 {
 #content h2.title_organization {background: url(/media/img/42/go-home.png) no-repeat 20px 15px;}
 #content h2.title_fronted {background: url(/media/img/42/user-desktop.png) no-repeat 20px 15px;}
 #content h2.title_report {background: url(/media/img/42/report.png) no-repeat 20px 15px;}
+#content h2.title_signature {background: url(/media/img/42/shopping_cart_green.png) no-repeat 20px 15px;}
 
 #content p.description {
         font-size: 9px;

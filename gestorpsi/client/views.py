@@ -232,9 +232,10 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         client index / paginator
     """
     list_url_base = '/client/list/' if not deactive else '/client/list/deactive/'
-    
+
     url_extra = ''
     initial = ''
+
     if request.GET.get('initial'):
         initial = request.GET.get('initial')
         
@@ -260,8 +261,9 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     
     client_service_pk_list = []
 
-    if request.GET.get('subscribed') and request.GET.get('subscribed') == "true":
-        subscribed = request.GET.get('subscribed')
+    # subscribed
+    subscribed = True if request.GET.get('subscribed') == 'true' else False
+    if subscribed:
         if not request.GET.get('service'):
             object_list = object_list.filter(referral__service__isnull=False).distinct()
         else:
@@ -273,8 +275,10 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         
         url_extra += '&subscribed=%s' % subscribed
     
-    if request.GET.get('discharged') and request.GET.get('discharged') == "true":
-        discharged = request.GET.get('discharged')
+
+    # discharged
+    discharged = True if request.GET.get('discharged') == "true" else False
+    if discharged:
         if not request.GET.get('service'):
             object_list = object_list.filter(referral__referraldischarge__isnull=False).distinct()
         else:
@@ -286,27 +290,37 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
 
         url_extra += '&discharged=%s' % discharged
 
-    if request.GET.get('queued') and request.GET.get('queued') == "true":
+
+    # queued
+    queued = True if request.GET.get('queued') == "true" else False
+    if queued:
         queued = request.GET.get('queued')
         object_list = object_list.filter(referral__queue__isnull=False).distinct()
             
         url_extra += '&queued=%s' % queued
 
-    if request.GET.get('nooccurrences') and request.GET.get('nooccurrences') == "true":
+
+    # nooccurrences
+    nooccurrences = True if request.GET.get('nooccurrences') == "true" else False
+    if nooccurrences:
         nooccurrences = request.GET.get('nooccurrences')
         object_list = object_list.filter(referral__occurrence__isnull=True).distinct()
         url_extra += '&nooccurrences=%s' % nooccurrences
 
+
+    # service filter
     if client_service_pk_list: # exclude filtered for charged and discharged results
         object_list = object_list.filter(pk__in=client_service_pk_list)
     
-    p = Paginator(object_list, PAGE_RESULTS)
-    
-    page_number = 1 if not request.GET.get('page') else request.GET.get('page')
 
+    # paginator result
+    p = Paginator(object_list, PAGE_RESULTS)
+    page_number = 1 if not request.GET.get('page') else request.GET.get('page')
     page = p.page(page_number)
     object_list = page.object_list
     
+
+    # mount page
     service_list = Service.objects.filter( active=True, organization=request.user.get_profile().org_active )
     initials = string.uppercase
 

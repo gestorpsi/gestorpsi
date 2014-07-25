@@ -27,5 +27,4 @@ urlpatterns = patterns('gestorpsi.authentication.views',
     url(r'^password/reset/done/$', password_reset_done, {'template_name': 'registration/password_reset_done.html'}),
     url(r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', password_reset_confirm, {'template_name': 'registration/password_reset_confirm.html'}, name='auth_password_reset_confim'),
     url(r'^password/reset/complete/$', password_reset_complete, {'template_name': 'registration/password_reset_complete.html'}, name='auth_password_reset_complete'),
-
 )

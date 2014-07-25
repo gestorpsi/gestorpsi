@@ -1,22 +1,115 @@
+{% if user.is_superuser %}
 <!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
 
-{% load i18n %}
+    <head>
+        {% load i18n %}
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>GestorPsi {% trans "GCM" %} - {% block title %}{% trans "Inicio" %}{% endblock %}</title>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<title>GestorPsi {% trans "CM" %} - {% block title %}{% trans "Inicio" %}{% endblock %}</title>
-<script type="text/javascript" src="/media/js/jquery-1.2.6.min.js"></script> <!-- JQuery Core Library -->
-<script type="text/javascript" src="/media/js/jquery-ui-1.5.3.custom.min.js"></script> <!-- JQuery Core Library -->
-<link href="/gcm_media/screen.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="/media/css/datePicker.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="/media/img/gestorpsi.ico" rel="SHORTCUT ICON" />
-{% block extrahead %}{% endblock extrahead %}
-</head>
+        <link href="/media/img/gestorpsi.ico" rel="SHORTCUT ICON" />
+        <link rel="stylesheet" href="/media/uikit/css/uikit.min.css" />
+        <script src="/media/uikit/js/jquery.js"></script>
+        <script src="/media/uilit/js/uikit.min.js"></script>
+        <script type="text/javascript" src="/media/js/jquery-1.2.6.min.js"></script>
 
-<body>
-<div class="container">
-        {% if user.is_superuser %}
+        {% block extrahead %}{% endblock extrahead %}
+    </head>
+
+    <body>
+        <div class="uk-container uk-container-center uk-margin-top uk-margin-large-bottom">
+            <nav class="uk-navbar uk-margin-large-bottom">
+                <ul class="uk-navbar-nav uk-hidden-small">
+	                <li><a href="{% url org-pen-list %}" class="uk-button-primary">{% trans "Organizacoes Pendentes" %}</a></li>
+                    <li>
+                        <a href="layouts_portfolio.html">Portfolio</a>
+                    </li>
+                    <li>
+                        <a href="layouts_blog.html">Blog</a>
+                    </li>
+                    <li>
+                        <a href="layouts_documentation.html">Documentation</a>
+                    </li>
+                    <li>
+                        <a href="layouts_contact.html">Contact</a>
+                    </li>
+                    <li>
+                        <a href="layouts_login.html">Login</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- messages -->
+        {% if messages %}
+                {% for message in messages %}
+                    {{ message|safe }}
+                {% endfor %}
+        {% endif %}
+        
+        <!-- core code -->
+        <div class="uk-width-medium-1-1 uk-container uk-container-center">
+        {% block core %}{% endblock %}
+        </div>
+        
+        <div class="uk-container uk-container-center uk-width-medium-1-1">
+            <div class="uk-text-large">GestorPsi © - PRONTU&Aacute;RIOS ELETR&Ocirc;NICOS E GEST&Atilde;O DE SERVI&Ccedil;OS EM PSICOLOGIA</div>
+        </div>
+    </body>
+</html>
+{% endif %}
+
+
+    {% comment %}
+            <div class="uk-grid" data-uk-grid-margin>
+
+                <div class="uk-width-medium-1-1">
+                    <table class="uk-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>N&ordm; profissionais</th>
+                                <th>Prof. respons&aacute;vel</th>
+                                <th>Inscri&ccedil;&atilde;o</th>
+                                <th>Ativo?</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td>Org</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="uk-width-medium-1-1">
+                    <h2 id="getstarted">Get Started</h2>
+                    <p>Lorem ipsum dolor sit amet, <code>consectetuer adipiscing</code> elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
+                </div>
+
+                <!--
+                <div class="uk-width-medium-1-4">
+                    <div class="uk-panel uk-panel-box" data-uk-sticky="{top:35}">
+                        <ul class="uk-nav uk-nav-side" data-uk-scrollspy-nav="{closest:'li', smoothscroll:true}">
+                            <li class="uk-nav-header">For Beginners</li>
+                            <li class="uk-active"><a href="#getstarted">Get Started</a></li>
+                            <li class=""><a href="#templatesettings">Template Settings</a></li>
+                            <li class=""><a href="#customizer">Customizer</a></li>
+                            <li class="uk-nav-header">For Developers</li>
+                            <li class=""><a href="#customization">Customizaton</a></li>
+                            <li class=""><a href="#troubleshooting">Troubleshooting</a></li>
+                            <li class="uk-nav-divider"></li>
+                            <li class=""><a href="#faq"><i class="uk-icon-info-circle uk-margin-small-right"></i>FAQ</a></li>
+                        </ul>
+                    </div>
+                </div>
+                -->
+
+            </div>
+        </div>
+
+    <div class="uk-width-1-1">
+
         <h1>{% trans "GestorPSI" %} - {% block section %}{% trans "Controle de clientes" %}{% endblock %}</h1>
         <div class="menu">
 	        <ul>
@@ -32,22 +125,7 @@
         <div class="submenu">
         {% block submenu %}{% endblock %}
         </div>
-    {% endif %}
-    {% if messages %}
-        <div class="notice">
-            {% for message in messages %}
-                {{ message|safe }}
-            {% endfor %}
-        </div>
-    {% endif %}
-    <div id="core">
-    {% block core %}{% endblock %}
-    </div>
 </div>
 
-<div id="footer">
-	2009 GestorPsi©
-</div>
+    {% endcomment %}
 
-</body>
-</html>

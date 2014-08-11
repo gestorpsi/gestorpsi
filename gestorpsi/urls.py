@@ -12,7 +12,7 @@ from gestorpsi.settings import MEDIA_ROOT
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^', include('gestorpsi.gcm.urls')),
+    #url(r'^', include('gestorpsi.gcm.urls')),
     url(r'^accounts/register/$', 'gestorpsi.authentication.views.register', {'form_class': RegistrationForm }, name='registration_register'),
     url(r'^accounts/login/$', 'gestorpsi.authentication.views.gestorpsi_login', {'template_name': 'registration/login.html'}, name='auth_login'),
     (r'^accounts/', include('gestorpsi.authentication.urls')),

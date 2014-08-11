@@ -28,13 +28,52 @@ from gestorpsi.gcm.models.invoice import Invoice
 from gestorpsi.gcm.models.plan import Plan
 from gestorpsi.gcm.models.payment import PaymentType
 
+from datetime import datetime
+
 class PlanAdmin(admin.ModelAdmin):
+    list_display = ('name', 'value','duration','staff_size','active')
+    list_filter = ('active',)
     pass
 admin.site.register(Plan, PlanAdmin)
 
+
+
+'''
+    filter and action invoice
+'''
+# pendente
+def pendente(modeladmin, request, queryset):
+    for obj in queryset:
+        obj.date_payed = None
+        obj.status = 0
+        obj.save()
+pendente.short_description = u"Pendente"
+
+# pago pelo cliente - boleto ou cartao
+def pagoCliente(modeladmin, request, queryset):
+    for obj in queryset:
+        obj.date_payed = datetime.today()
+        obj.status = 1
+        obj.save()
+pagoCliente.short_description = u"Pago pelo cliente"
+
+# pago pelo GestorPSI - gratis/teste/cortesia
+def pagoGratis(modeladmin, request, queryset):
+    for obj in queryset:
+        obj.date_payed = datetime.today()
+        obj.status = 2
+        obj.save()
+pagoGratis.short_description = u"Pago / Grátis"
+
 class InvoiceAdmin(admin.ModelAdmin):
+    list_display = ('organization','status','date_payed','plan','ammount')
+    list_filter = ('status',)
+    #readonly_fields = ('organization','plan',)
+    actions = [pendente, pagoCliente, pagoGratis]
     pass
 admin.site.register(Invoice, InvoiceAdmin)
+
+
 
 class PaymentTypeAdmin(admin.ModelAdmin):
     pass

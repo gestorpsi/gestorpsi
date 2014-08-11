@@ -14,8 +14,8 @@ class Plan(models.Model):
     duration = models.IntegerField(_('Duracao'), help_text=_('Duracao em MESES do plano. Preencher 1 para plano mensal, 3 para trimestral etc'))
     weight = models.IntegerField(_('Peso'), max_length=4, null=True, blank=True)
     weight.help_text = _('Peso para ordenacao visual no formulario de cadastro. Utilizar valores inteiros aqui')
-    active = models.BooleanField(default=True)
-
+    active = models.BooleanField(u'Funcionando?', default=True)
+    visible_client = models.BooleanField(u'Visível para cliente? (cliente pode escolher)', default=True)
     pagseguro_code = models.TextField(u'Código botão PagSeguro', null=True, blank=True) # cobrança recorrente, código botao PagSeguro
     
     class Meta:

@@ -61,7 +61,7 @@ GNU General Public License for more details.
                     <label>{% trans "Plan" %}<br />
                         <select name="prefered_plan" class="extrabig prefered_plan">
                         {% for p in plans %}
-                            <option value="{{ p.id }}" {% ifequal obj.prefered_plan_id p.id %}selected{% endifequal %} >{{ p.name }} / R$ {{ p.value }} / {{ p.duration }} mes{{ p.duration|pluralize:"es" }}</option>
+                            <option value="{{ p.id }}" {% ifequal obj.prefered_plan_id p.id %}selected{% endifequal %} >{{ p.name }} / R$ {{ p.value }} por {{ p.duration }} m&ecirc;s{{ p.duration|pluralize:"es" }}</option>
                         {% endfor %}
                         </select>
                     </label>

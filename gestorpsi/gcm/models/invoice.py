@@ -18,9 +18,9 @@ from datetime import datetime
 
 
 INVOICE_STATUS_CHOICES = (
-    (1, _('Emitido')),
-    (2, _('Pago')),
-    (3, _('Excluido')),
+    (0, _(u'Pendente')),
+    (1, _(u'Pago pelo Cliente')),
+    (2, _(u'Pago / 28 dias grátis')),
 )
 
 INVOICE_TYPES = (
@@ -33,17 +33,17 @@ class Invoice(models.Model):
     type = models.CharField(max_length=2, null=False, blank=False, choices=INVOICE_TYPES, default='2')
     
     organization = models.ForeignKey('organization.Organization', verbose_name=_('Organizacao'))
-    date = models.DateTimeField(_('Data'), auto_now_add=True)
+    date = models.DateTimeField(_('Data'), auto_now_add=True) # data que foi gerado
     
     date_payed = models.DateField(_('Data do Pagamento'), null=True, blank=True)
-    date_payed.help_text=_('Preencher apenas quando efetuado pagamento. Formato dd/mm/aaaa. Ex.: 16/12/2009')
+    date_payed.help_text=_('Preencher apenas quando efetuado pagamento. Formato aaaa/mm/dd Ex: 2014-12-31')
     
-    due_date = models.DateField(_('Data do Vencimento'), null=True, blank=True)
-    due_date.help_text=_('Formato dd/mm/aaaa. Ex.: 16/12/2009')
+    due_date = models.DateField(_('Data do Vencimento'), null=False, blank=False)
+    due_date.help_text=_('Formato aaaa/mm/dd Ex: 2014-12-31')
     
     expiry_date = models.DateField(_('Data de Expiracao'), null=True, blank=True)
-    expiry_date.help_text = _('Formato dd/mm/aaaa. Ex.: 10/12/2009. Data em que o plano vence (na qual o cliente deixara de ter acesso ao sistema).')
-    expiry_date.widget = forms.TextInput(attrs={"format": "%d/%m/%Y",})
+    expiry_date.help_text = _('Formato aaaa/mm/dd  Ex: 2014-12-31 Data em que o plano vence. Conta do cliente modo apenas leitura.')
+    #expiry_date.widget = forms.TextInput(attrs={"format": "%d/%m/%Y",})
     
     ammount = models.DecimalField(_('Valor'), decimal_places=2, max_digits=8, null=True, blank=True)
     ammount.help_text=_('Utilizar pontos, nao virgulas. Ex.: 39.90')
@@ -57,6 +57,8 @@ class Invoice(models.Model):
     
     billet_url.verbose_name = _("Billet URL")
     billet_url.help_text = _("URL of the billet to pay this invoice")
+
+    observation = models.TextField(_(u'Observação'), null=True, blank=True)
     
     
     
@@ -72,10 +74,16 @@ class Invoice(models.Model):
             
     
     def save(self):
-        if self.plan is not None and self.plan != '':
-            self.ammount = self.plan.value
+
+        # new
+        if not self.id:
+            self.date = datetime.now()
+
+        self.ammount = self.plan.value
+        super(Invoice, self).save()
+
+    """
             if self.date is None:
-                self.date = datetime.now()
             self.expire_date = (self.date + relativedelta(months = int(self.plan.duration)))
 
         if self.status < 3:
@@ -84,8 +92,5 @@ class Invoice(models.Model):
             else:
                 self.status = 2 #pago
             
-        super(Invoice, self).save()
         #raise Exception(self.status)
-            
-
-
+    """

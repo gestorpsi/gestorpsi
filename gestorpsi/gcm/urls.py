@@ -51,17 +51,17 @@ org_pen_del = { 'model':Organization, 'post_delete_redirect': '/gcm/orgpen/', 't
 #org_pen_update = { 'model':Organization, 'post_save_redirect': '/gcm/org/', 'template_name': 'gcm/org_form.html'}
 
 urlpatterns = patterns('',
+    url(r'gcm/$', direct_to_template, {'template':'gcm/index.html'}, name='gcm-index'),
     url(r'^gcm/login/$', auth_views.login, {'template_name': 'gcm/login.html', }, name='gcm-login'),
     url(r'^gcm/logout/$', auth_views.logout, {'template_name': 'gcm/logout.html'}, name='gcm-logout'),
     url(r'^register/complete/$', 'gestorpsi.gcm.views.auth.complete', name='gcm-registration-complete'),
     #url(r'^register/complete/$', django_direct_to_template, {'template': 'gcm/registration_complete.html'}, name='gcm-registration-complete'),
     url(r'accounts/register/$', 'gestorpsi.gcm.views.auth.register', {'form_class': RegistrationForm, 'template_name':'gcm/registration_form.html' }, name='registration_register'),
     
-    url(r'gcm/$', direct_to_template, {'template':'gcm/index.html'}, name='gcm-index'),
-    
-    url(r'gcm/plan/$', object_list, plan_list, name='plan-list'),
-    url(r'gcm/plan/(?P<object_id>\d+)/$', update_object, plan_update, name='plan-update'),
-    url(r'gcm/plan/add/$', create_object, plan_add, name='plan-add'),
+    # use default admin
+    #url(r'gcm/plan/$', object_list, plan_list, name='plan-list'),
+    #url(r'gcm/plan/(?P<object_id>\d+)/$', update_object, plan_update, name='plan-update'),
+    #url(r'gcm/plan/add/$', create_object, plan_add, name='plan-add'),
     
     url(r'gcm/retfile/$', object_list, retfile_list, name='retfile-list'),
     url(r'gcm/retfile/(?P<object_id>\d+)/$', update_object, retfile_update, name='retfile-update'),
@@ -78,6 +78,7 @@ urlpatterns = patterns('',
     
     url(r'gcm/bill/(?P<object_id>\w+)/$', update_invoice_wrapper, org_bill_update, name='org-bill-update'),
     
+    # off - automatic ative
     url(r'gcm/org/(?P<order_by>\w+)/$', org_object_list, org_list, name='org-pen-list'),
     url(r'gcm/orgpen/$', org_object_list, org_pen_list, name='org-pen-list'),
     url(r'gcm/orgpen/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', object_detail, org_pen_detail, name='org-pen-detail'),
@@ -85,9 +86,11 @@ urlpatterns = patterns('',
     url(r'gcm/orgpen/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/activate/$', object_activate, name='org-pen-activate'),
     #url(r'gcm/orgpen/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', update_object, org_update, name='org-update'),
     
-    url(r'gcm/invoice/$', object_list, invoice_list, name='invoice-list'),
-    url(r'gcm/invoice/(?P<object_id>\d+)/$', update_object, invoice_update, name='invoice-update'),
-    url(r'gcm/invoice/add/$', create_object, invoice_add, name='invoice-add'),
+    # use default admin
+    #url(r'gcm/invoice/$', object_list, invoice_list, name='invoice-list'),
+    #url(r'gcm/invoice/(?P<object_id>\d+)/$', update_object, invoice_update, name='invoice-update'),
+    #url(r'gcm/invoice/add/$', create_object, invoice_add, name='invoice-add'),
+
     #url(r'gcm/$', 'gcm.views.admin.', {'form_class': RegistrationForm, 'template_name':'gcm/registration_form.html' }, name='registration_register'),
     url(r'gcm_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': os.path.join(GCM_ROOT_PATH, 'media/'), 'show_indexes': False}),
 )

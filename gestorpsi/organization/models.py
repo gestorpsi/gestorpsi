@@ -20,7 +20,7 @@ from datetime import datetime, date
 from django.db import models
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import Group
-from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import ugettext as _
 
 from gestorpsi.phone.models import Phone
@@ -71,7 +71,6 @@ class ProfessionalResponsible(models.Model):
         return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
     
     def save(self, *args, **kwargs):
-        #self.name = self.person.name
         super(ProfessionalResponsible, self).save(*args, **kwargs)
     
 reversion.register(ProfessionalResponsible)
@@ -241,7 +240,7 @@ class Organization(models.Model):
     current_invoice.help_text= _("Field used by the system DON'T change it.")
     #current_invoice.editable = False
 
-    payment_type = models.ForeignKey(PaymentType, null=True, blank=True, related_name='payment_type')
+    payment_type = models.ForeignKey(PaymentType, null=True, blank=True, related_name='payment_type', default=PaymentType.objects.get(pk=1) )
     payment_type.verbose_name = _("Tipo de pagamento")
     payment_detail = models.TextField(u'Detalhes do pagamento. Usado pelo ADM gestorPSI.', null=True, blank=True)
     
@@ -255,6 +254,7 @@ class Organization(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
+
         if self.id: # save original state from register to verify if it has been changed from latest save
             original_state = Organization.objects.get(pk=self.id)
             if self.date_created is None or not self.date_created:
@@ -269,6 +269,7 @@ class Organization(models.Model):
             self.date_created = datetime.now()
             if Plan.objects.filter(staff_size__gte=self.employee_number, duration=1):
                 self.prefered_plan = Plan.objects.filter(staff_size__gte=self.employee_number, duration=1).order_by('staff_size')[0]
+                self.payment_type = PaymentType.objects.get(pk=1) # cartao
 
         super(Organization, self).save(*args, **kwargs)
         
@@ -372,17 +373,31 @@ class Organization(models.Model):
     '''
         retorna todas as faturas
         array
-            0 = assinatura corrente, status=2, nao venceu
-            1 = assinaturas pagas e vencidas
+            0 = proxima
+            1 = corrente
+            2 = vencida
+
+        filter pago ou não no html
     '''
     def invoice_(self):
-        r = [False]*2
+
+        r = [False]*3
+
+        # future
+        r[0] = self.invoice_set.filter( start_date__gt=date.today() )
+
         # current 
-        if self.invoice_set.filter( expiry_date__gte=date.today(), status=2 ).count() > 0 :
-            r[0] = self.invoice_set.filter( expiry_date__gte=date.today(), status=2 )[0]
-        # old
-        if self.invoice_set.filter( expiry_date__lt=date.today() ).count() > 0 :
-            r[1] = self.invoice_set.filter( expiry_date__lt=date.today() )[:6]
+        r[1] = self.invoice_set.filter( start_date__lte=date.today(), end_date__gte=date.today() )
+
+        # past
+        # 1t invoices are not payed
+        r[2] = []
+        for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today(), status=0 ).order_by('-date'):
+            r[2].append(x)
+
+        # all rest diferent of status=0
+        for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today() ).order_by('-date').exclude(status=0):
+            r[2].append(x)
 
         return r
     

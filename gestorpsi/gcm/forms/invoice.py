@@ -24,4 +24,4 @@ class InvoiceForm(forms.ModelForm):
 
     class Meta:
         model = Invoice
-        fields = ['organization', 'plan', 'status', 'discount', 'due_date', 'date_payed', 'expiry_date', ]
+        fields = ['organization', 'plan', 'status', 'discount', 'start_date','end_date','date_payed', 'expiry_date', ]

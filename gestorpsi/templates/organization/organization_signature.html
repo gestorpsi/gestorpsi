@@ -121,10 +121,24 @@ GNU General Public License for more details.
     <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
         <div class="main_area">
             <fieldset class="signature organization">
+                
+                    <legend>{% trans "Valor e plano para pr&oacute;xima fatura" %}</legend>
+
+                    <!-- show values combination between plan and payment type -->
+                    <div class='main_area' id='show_values' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
+                        <label>{% trans "Valor" %}<br />
+                            <input type="text" name="valor_plano" readonly='1' value='{{ obj.payment_.0 }}' style='text-align: center;' />
+                        </label>
+
+                        <label>{% trans "Tempo / Dura&ccedil;&atilde;o" %}<br />
+                            <input type="text" name="tempo_plano" readonly='1' value='{{ obj.payment_.1 }}' style='text-align: center;' class='big'>
+                        </label>
+                    </div>
+
 
                 <!-- pagseguro boleto -->
-                {% if not obj.invoice_.0 %}
-                    <div id='pagseguro_boleto' style='text-align: center; display: none; margin-top:10px;'>
+                {% if obj.invoice_.0 or obj.invoice_.1 %}
+                    <div id='pagseguro_boleto' style='text-align: center; display: block; margin-top:10px;'>
                         <h3>Fazer pagamento</h3>
                         <div style='height: 10px;'></div>
                         <div class='contact'>
@@ -152,13 +166,13 @@ GNU General Public License for more details.
                         </div>
                     </div>
                 {% endif %}
-    </form><!-- end form pagamento -->
+
 
                 <!-- pagseguro cartao botao -->
                 {% for p in plans %}
                     {% if p.pagseguro_code %}
                         <div id='pagseguro_cartao{{ p.id }}' style="text-align:center; margin-top:10px; display: none;" />
-                            {% if not obj.invoice_.0 %}
+                            {% if obj.invoice_.0 or obj.invoice_.1 or obj.invoice_.2 %}
                                     <h3>Fazer pagamento</h3>
                                     <div style='height: 10px;'></div>
                                     <div class='contact'>{{ p.pagseguro_code|safe }}</div>
@@ -168,55 +182,124 @@ GNU General Public License for more details.
                     {% endif %}
                 {% endfor %}
 
+            </fieldset>
+            <br />
+        </div>
+    </form><!-- end form pagamento -->
 
-                <!-- show values combination between plan and payment type -->
-                <div class='main_area' id='show_values' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
-                    <label>{% trans "Valor" %}<br />
-                        <input type="text" name="valor_plano" readonly='1' value='{{ obj.payment_.0 }}' style='text-align: center;' />
-                    </label>
 
-                    <label>{% trans "Tempo / Dura&ccedil;&atilde;o" %}<br />
-                        <input type="text" name="tempo_plano" readonly='1' value='{{ obj.payment_.1 }}' style='text-align: center;' class='big'>
-                    </label>
-                </div>
+
+    <form>
+        <div class="main_area">
+
+            <!-- plan and payment area -->
+            <fieldset class="signature organization">
 
 
                 <!-- invoices -->
                 {% if obj.invoice_.0 %}
                     <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
-                        <h3>Assinatura atual / corrente</h3>
-                        <label>{% trans "Plan" %}<br />
-                            <input type="text" readonly='1' value='{{ obj.invoice_.0.plan }}'>
-                        </label>
-                        <label>{% trans "Data do pagamento" %}<br />
-                            <input type="text" readonly='1' value='{{ obj.invoice_.0.date_payed }}' class='normal'>
-                        </label>
-                        <label>{% trans "Vai vencer" %}<br />
-                            <input type="text" readonly='1' value='{{ obj.invoice_.0.expiry_date }}' class='medium'>
-                        </label>
+                        <h3>Pr&oacute;xima futura</h3>
+                            <table style='margin-left:10px; width:100%;'>
+                                <tr style='width:100%;'>
+                                    <th style='width:25%;'>Plano</th>
+                                    <th style='width:25%'>In&iacute;cio</th>
+                                    <th style='width:25%'>Fim</th>
+                                    <th style='width:25%'>A&ccedil;&atilde;o</th>
+                                </tr>
+                            </table>
+
+                            <table style='margin-left:10px; width:100%;'>
+                                <tr>
+                                    {% for x in obj.invoice_.0 %}
+                                        <th style='width:25%; font-weight: normal;'>{{ x.plan }}</th>
+                                        <th style='width:25%; font-weight: normal; background-color: yellow;'>{{ x.start_date }}</th>
+                                        <th style='width:25%; font-weight: normal;'>{{ x.end_date }}</th>
+                                        <th style='width:25%; font-weight: normal;'>
+                                            {% ifequal x.status 0 %}
+                                                <a href='pagseguro'>Pagar agora</a>
+                                            {% else %}
+                                                {{ x.get_bank_display }}</th>
+                                            {% endifequal %}
+                                        </th>
+                                    {% endfor %}
+                                </tr>
+                            </table>
                     </div>
                 {% endif %}
 
 
                 {% if obj.invoice_.1 %}
                     <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
-                        <h3>Assinatura paga / vencida (&uacute;ltimas 6)</h3>
-                        {% for x in obj.invoice_.1 %}
-                            <label>{% trans "Plan" %}<br />
-                                <input type="text" readonly='1' value='{{ x.plan }}' class=''>
-                            </label>
-                            <label>{% trans "Data do pagamento" %}<br />
-                                <input type="text" readonly='1' value='{{ x.date_payed }}' class='medium'>
-                            </label>
-                            <label>{% trans "Venceu" %}<br />
-                                <input type="text" readonly='1' value='{{ x.expiry_date }}' class='medium'>
-                            </label>
-                        {% endfor %}
+                        <h3>Fatura corrente</h3>
+                            <table style='margin-left:10px; width:100%;'>
+                                <tr style='width:100%;'>
+                                    <th style='width:25%;'>Plano</th>
+                                    <th style='width:25%'>Pagamento</th>
+                                    <th style='width:25%'>Vence</th>
+                                    <th style='width:25%'>A&ccedil;&atilde;o</th>
+                                </tr>
+                            </table>
+
+                            <table style='margin-left:10px; width:100%;'>
+                                <tr>
+                                    {% for x in obj.invoice_.1 %}
+                                        <th style='width:25%; font-weight: normal;'>{{ x.plan }}</th>
+                                        <th style='width:25%; font-weight: normal;'>{{ x.date_payed }}</th>
+                                        <th style='width:25%; font-weight: normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.expiry_date }}</th>
+                                        <th style='width:25%; font-weight: normal;'>
+                                            {% ifequal x.status 0 %}
+                                                <a href='pagseguro'>Pagar agora</a>
+                                            {% else %}
+                                                {{ x.get_bank_display }}</th>
+                                            {% endifequal %}
+                                            
+                                    {% endfor %}
+                                </tr>
+                            </table>
                     </div>
                 {% endif %}
 
 
+                {% if obj.invoice_.2 %}
+                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
+                        <h3>Fatura vencida</h3>
+                            <table style='margin-left:10px; width:100%;'>
+                                <tr style='width:100%;'>
+                                    <th style='width:25%;'>Plano</th>
+                                    <th style='width:25%'>Pagamento</th>
+                                    <th style='width:25%'>Venceu</th>
+                                    <th style='width:25%'>A&ccedil;&atilde;o</th>
+                                </tr>
+                            </table>
+
+                            <table style='margin-left:0px; width:100%;'>
+                                {% for x in obj.invoice_.2 %}
+                                    <tr>
+                                        <th style='width:25%; font-weight:normal;'>{{ x.plan }}</th>
+                                        <th style='width:25%; font-weight:normal;'>{{ x.date_payed }}</th>
+                                        <th style='width:25%; font-weight:normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.expiry_date }}</th>
+                                        <th style='width:25%; font-weight:normal;{% ifnotequal x.status 0 %} background-color:green;{% endifnotequal %}'>
+                                            {% ifequal x.status 0 %}
+                                                <a href='pagseguro'>Pagar agora</a>
+                                            {% else %}
+                                                Pago
+                                            {% endifequal %}
+                                    </tr>
+                                    <tr>
+                                        <th>.</th>
+                                        <th>.</th>
+                                        <th>.</th>
+                                        <th>.</th>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                    </div>
+                {% endif %}
+
             </fieldset>
+            <br />
         </div><!-- main area -->
+    </form>
 
 {% endblock %}

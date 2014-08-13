@@ -1,6 +1,14 @@
--- plan
+--- settings
+ADMINS_REGISTRATION = ['webmaster@gestorpsi.com.br','tsm@gestorpsi.com.br','ozp@gestorpsi.com.br',]
+
+--- plan
 alter table gcm_plan add column visible_client boolean NULL default "1";
 
--- invoice
+--- invoice
+Alter table gcm_invoice add payment_detail text NULL;
+Alter table gcm_invoice add bank varchar(3) NULL;
+Alter table gcm_invoice add start_date date NOT NULL;
+Alter table gcm_invoice add end_date date NOT NULL;
 
-Alter table gcm_invoice add observation text NULL;
+Alter table gcm_invoice drop billet_url;
+Alter table gcm_invoice drop due_date;

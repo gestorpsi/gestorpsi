@@ -23,7 +23,12 @@ from gestorpsi.address.models import State, City, Address, AddressType
 from gestorpsi.document.models import *
 from gestorpsi.gcm.forms import fields
 
+"""
+    Tiago de Souza Moraes
+    Change 11 08 2014
+"""
 class RegistrationForm(RegistrationForm):
+
     plan = forms.ModelChoiceField(label=_('Access Plan'), help_text=_('Choice one access plan'), queryset=Plan.objects.filter(active=True))
     phone = forms.CharField(max_length=15, label=_('Phone Number'), help_text=_('Enter your phone number with area code here'), widget=forms.TextInput(attrs={'mask':'(99) 9999-9999?9',}))
     cpf = fields.CPFField(label=_('CPF Number'), help_text=_('Enter your CPF number here'), widget=forms.TextInput(attrs={'mask':'999.999.999-99',}))
@@ -31,13 +36,10 @@ class RegistrationForm(RegistrationForm):
     address_number = forms.CharField(max_length=30, label=_('Address Number'), help_text=_('Enter your address number here'))
     zipcode = forms.CharField(max_length=30, label=_('ZIP Code'), help_text=_('Enter your ZIP Code here'), widget=forms.TextInput( attrs={'mask':'99999-999'} ) )
     state = forms.ModelChoiceField(label=_('State/Region'), help_text=_('Enter your state/region here'), queryset=State.objects.all(), widget=forms.Select(attrs={'style':'width:265px;', 'class':'city_search'}))
+    city = forms.ModelChoiceField( label=_('City'), help_text=_('Enter your state/region here'), queryset=City.objects.all(), widget=forms.Select(attrs={'style':'width:265px;'}) )
 
     def save(self, request, *args, **kwargs):
         organization = super(RegistrationForm, self).save(False, *args, **kwargs) # send_email = False 
-        i = Invoice()
-        i.organization = organization
-        i.plan = self.cleaned_data['plan']
-        i.save()
 
         # add phone number to 'first' professional registered
         if self.cleaned_data['phone']:
@@ -66,5 +68,3 @@ class RegistrationForm(RegistrationForm):
             a.zipCode = self.cleaned_data['zipcode']
             a.city_id = request.POST.get('city')
             person.address.add(a)
-        
-        

@@ -42,22 +42,24 @@ from gestorpsi.boleto.models import BradescoBilletData
 
 @permission_required_with_403('organization.organization_write')
 def professional_responsible_save(request, object, ids, names, subscriptions, organization_subscriptions, professions):
-    ProfessionalResponsible.objects.all().delete()
 
-    for x in range(len(names)):
-        obj = []
+    ProfessionalResponsible.objects.filter(organization=object).delete()
 
-        # Whitout Profession of the Professional
-        if not professions[x]:
-            if names[x]:
-                obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x] ))
-        else:
-            # Whit Profession of the Professional
-            if names[x]:
-                obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x], profession=get_object_or_None(Profession, pk=professions[x])))
+    if len(names) > 0 :
+        for x in range(len(names)):
+            obj = []
 
-        if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):
-            object.save()
+            # Whitout Profession of the Professional
+            if not professions[x]:
+                if names[x]:
+                    obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x] ))
+            else:
+                # Whit Profession of the Professional
+                if names[x]:
+                    obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x], profession=get_object_or_None(Profession, pk=professions[x])))
+
+            if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):
+                obj.save()
 
 
 @permission_required_with_403('organization.organization_read')

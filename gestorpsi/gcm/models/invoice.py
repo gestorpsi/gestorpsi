@@ -10,8 +10,8 @@ from django.utils.translation import ugettext_lazy as _
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+from gestorpsi.gcm.models.payment import PaymentType
 from gestorpsi.gcm.models.plan import Plan
-
 
 
 INVOICE_STATUS_CHOICES = (
@@ -23,6 +23,11 @@ INVOICE_STATUS_CHOICES = (
 INVOICE_TYPES = (
     ('1', _('Inscription')),
     ('2', _('Monthly fee')),
+)
+
+PAYMENT_WAY = (
+    ('1', _(u'Boleto')),
+    ('2', _(u'Cartão crédito')),
 )
 
 BANK = (
@@ -56,6 +61,9 @@ class Invoice(models.Model):
     discount = models.DecimalField(_('Desconto'), decimal_places=2, max_digits=8, null=True, blank=True)
     discount.help_text=_('Valor para desconto. Utilizar apenas valores decimais aqui, NAO porcentagem. Ex.: 5.90')
     
+    payment_way = models.CharField(_('Forma pgto'), choices=PAYMENT_WAY, max_length=3, null=False, blank=False, default='1')
+    payment_type = models.ForeignKey(PaymentType, null=True, blank=True, related_name='payment_type') # from org choosen
+
     status = models.IntegerField(_('Estado'), choices=INVOICE_STATUS_CHOICES, default=1)
     plan = models.ForeignKey(Plan, verbose_name=_('Plan'), null=True, blank=True)
 

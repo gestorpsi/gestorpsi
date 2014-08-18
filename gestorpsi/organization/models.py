@@ -215,7 +215,8 @@ class Organization(models.Model):
     activity = models.ForeignKey(Activitie, null=True, blank=True)
     public = models.BooleanField(default=True)
     comment = models.CharField(max_length=765, blank=True)
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(u'Ativo. Todas as faturas pagas?', default=True)
+    suspension = models.BooleanField(u'Cliente suspendeu serviço. Não gera nova fatura ou notificação.', default=False)
     visible = models.BooleanField(default=True)
     photo = models.CharField(max_length=200, blank=True)          
     phones = generic.GenericRelation(Phone, null=True)
@@ -390,13 +391,13 @@ class Organization(models.Model):
         r[1] = self.invoice_set.filter( start_date__lte=date.today(), end_date__gte=date.today() )
 
         # past
-        # 1t invoices are not payed
+        # 1t all overdue invoices
         r[2] = []
         for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today(), status=0 ).order_by('-date'):
             r[2].append(x)
 
-        # all rest diferent of status=0
-        for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today() ).order_by('-date').exclude(status=0):
+        # last 6 invoices where status diferent 0
+        for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today() ).order_by('-date').exclude(status=0)[:6]:
             r[2].append(x)
 
         return r

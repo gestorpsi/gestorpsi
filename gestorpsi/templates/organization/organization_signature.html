@@ -44,6 +44,7 @@ GNU General Public License for more details.
                 <div>
                     <label>{% trans "Inscription date" %}<br />
                     <input type="text" value="{{ obj.date_created }}" readonly  />
+                    {% comment %}
                     <br/>
                     {% if inscription.0 %}
                         {% if inscription.0.date_payed %}
@@ -54,6 +55,7 @@ GNU General Public License for more details.
                     {% else %}
                         {% trans "Inscription not done" %}
                     {% endif %}
+                    {% endcomment %}
                     </label>
                 </div>
                 
@@ -97,7 +99,7 @@ GNU General Public License for more details.
                         </div>
                     {% endfor %}
 
-                    <div><h3>Para alterar a forma de pagamento, <a href='/support/ticket/form/'>entre em contato.</a></h3></div>
+                    <div><h3>Para alterar a forma de pagamento ou d&uacute;vida, <a href='/support/ticket/form/'>entre em contato.</a></h3></div>
 
             </fieldset>
 
@@ -116,7 +118,7 @@ GNU General Public License for more details.
 
     </form><!-- form org save -->
 
-
+    {% comment %}
     <!-- form pagamento -->
     <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
         <div class="main_area">
@@ -148,7 +150,7 @@ GNU General Public License for more details.
 
                                 <!-- Itens do pagamento (ao menos um item &eacute; obrigat&oacute;rio) -->  
                                 <input name="itemId1" type="hidden" value="0001">  
-                                <input name="itemDescription1" type="hidden" value="Assinatura GestorPSI por 3 meses ">  
+                                <input name="itemDescription1" type="hidden" value="ura GestorPSI por 3 meses ">  
                                 <input name="itemAmount1" type="hidden" value="90.00">  
                                 <input name="itemQuantity1" type="hidden" value="1">  
                                 <input name="itemWeight1" type="hidden" value="1000">  
@@ -183,18 +185,24 @@ GNU General Public License for more details.
                 {% endfor %}
 
             </fieldset>
+
+            {% endcomment %}
+
             <br />
         </div>
     </form><!-- end form pagamento -->
 
 
 
+    <!-- faturas historico -->
     <form>
         <div class="main_area">
+    </form>
 
-            <!-- plan and payment area -->
-            <fieldset class="signature organization">
+        <!-- plan and payment area -->
+        <fieldset class="signature organization">
 
+                <legend>{% trans "Hist&oacute;rico das faturas e pagamentos" %}</legend>
 
                 <!-- invoices -->
                 {% if obj.invoice_.0 %}
@@ -202,24 +210,54 @@ GNU General Public License for more details.
                         <h3>Pr&oacute;xima futura</h3>
                             <table style='margin-left:10px; width:100%;'>
                                 <tr style='width:100%;'>
-                                    <th style='width:25%;'>Plano</th>
-                                    <th style='width:25%'>In&iacute;cio</th>
-                                    <th style='width:25%'>Fim</th>
-                                    <th style='width:25%'>A&ccedil;&atilde;o</th>
+                                    <th style='width:30%;'>Plano</th>
+                                    <th style='width:15%'>In&iacute;cio</th>
+                                    <th style='width:15%'>Fim</th>
+                                    <th style='width:40%'>A&ccedil;&atilde;o</th>
                                 </tr>
                             </table>
 
                             <table style='margin-left:10px; width:100%;'>
                                 <tr>
                                     {% for x in obj.invoice_.0 %}
-                                        <th style='width:25%; font-weight: normal;'>{{ x.plan }}</th>
-                                        <th style='width:25%; font-weight: normal; background-color: yellow;'>{{ x.start_date }}</th>
-                                        <th style='width:25%; font-weight: normal;'>{{ x.end_date }}</th>
-                                        <th style='width:25%; font-weight: normal;'>
+                                        <th style='width:30%; font-weight: normal;'>{{ x.plan }}</th>
+                                        <th style='width:15%; font-weight: normal; background-color: yellow;'>{{ x.start_date }}</th>
+                                        <th style='width:15%; font-weight: normal;'>{{ x.end_date }}</th>
+                                        <th style='width:40%; font-weight: normal;'>
                                             {% ifequal x.status 0 %}
-                                                <a href='pagseguro'>Pagar agora</a>
+
+                                                <!-- boleto -->
+                                                {% ifequal x.payment_way '1' %}
+                                                    <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
+                                                        <!-- Campos obrigat&oacute;rios -->  
+                                                        <input name="receiverEmail" type="hidden" value="ozp@psico.net">  
+                                                        <input name="currency" type="hidden" value="BRL">  
+
+                                                        <!-- Itens do pagamento (ao menos um item &eacute; obrigat&oacute;rio) -->  
+                                                        <input name="itemId1" type="hidden" value="0001">  
+                                                        <input name="itemDescription1" type="hidden" value="{{ x.plan }}">  
+                                                        <input name="itemAmount1" type="hidden" value="{{ x.ammount }}">  
+                                                        <input name="itemQuantity1" type="hidden" value="1">  
+                                                        <input name="itemWeight1" type="hidden" value="1000">  
+
+                                                        <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->  
+                                                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date }}-fim-{{ x.end_date }}">  
+
+                                                        <!-- Dados do comprador (opcionais) -->  
+                                                        <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">  
+                                                        <input name="senderPhone" type="hidden" value="{{ obj.administrator.0.get_firtst_phone }}">  
+                                                        <input name="senderEmail" type="hidden" value="{{ obj.administrator.0.get_first_email }}">  
+
+                                                        <!-- submit do form (obrigat&oacute;rio) -->  
+                                                        <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/184x42-pagar-cinza-assina.gif"/>  
+                                                    </form>
+                                                {% endifequal %}
+
+                                                <!-- cartao -->
+                                                {% ifequal x.payment_way '2' %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
+
                                             {% else %}
-                                                {{ x.get_bank_display }}</th>
+                                                Pago em {{ x.date_payed|date:"d M Y" }} / {{ x.get_payment_way_display }}
                                             {% endifequal %}
                                         </th>
                                     {% endfor %}
@@ -234,24 +272,54 @@ GNU General Public License for more details.
                         <h3>Fatura corrente</h3>
                             <table style='margin-left:10px; width:100%;'>
                                 <tr style='width:100%;'>
-                                    <th style='width:25%;'>Plano</th>
-                                    <th style='width:25%'>Pagamento</th>
-                                    <th style='width:25%'>Vence</th>
-                                    <th style='width:25%'>A&ccedil;&atilde;o</th>
+                                    <th style='width:30%;'>Plano</th>
+                                    <th style='width:15%'>In&iacute;cio</th>
+                                    <th style='width:15%'>Fim</th>
+                                    <th style='width:40%'>A&ccedil;&atilde;o</th>
                                 </tr>
                             </table>
 
                             <table style='margin-left:10px; width:100%;'>
                                 <tr>
                                     {% for x in obj.invoice_.1 %}
-                                        <th style='width:25%; font-weight: normal;'>{{ x.plan }}</th>
-                                        <th style='width:25%; font-weight: normal;'>{{ x.date_payed }}</th>
-                                        <th style='width:25%; font-weight: normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.expiry_date }}</th>
-                                        <th style='width:25%; font-weight: normal;'>
+                                        <th style='width:30%; font-weight: normal;'>{{ x.plan }}</th>
+                                        <th style='width:15%; font-weight: normal;'>{{ x.date_payed }}</th>
+                                        <th style='width:15%; font-weight: normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.expiry_date }}</th>
+                                        <th style='width:40%; font-weight: normal;'>
+
                                             {% ifequal x.status 0 %}
-                                                <a href='pagseguro'>Pagar agora</a>
+                                                <!-- boleto -->
+                                                {% ifequal x.payment_way '1' %}
+                                                    <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
+                                                        <!-- Campos obrigat&oacute;rios -->  
+                                                        <input name="receiverEmail" type="hidden" value="ozp@psico.net">  
+                                                        <input name="currency" type="hidden" value="BRL">  
+
+                                                        <!-- Itens do pagamento (ao menos um item &eacute; obrigat&oacute;rio) -->  
+                                                        <input name="itemId1" type="hidden" value="0001">  
+                                                        <input name="itemDescription1" type="hidden" value="{{ x.plan }}">  
+                                                        <input name="itemAmount1" type="hidden" value="{{ x.ammount }}">  
+                                                        <input name="itemQuantity1" type="hidden" value="1">  
+                                                        <input name="itemWeight1" type="hidden" value="1000">  
+
+                                                        <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->  
+                                                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date }}-fim-{{ x.end_date }}">  
+
+                                                        <!-- Dados do comprador (opcionais) -->  
+                                                        <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">  
+                                                        <input name="senderPhone" type="hidden" value="{{ obj.administrator.0.get_firtst_phone }}">  
+                                                        <input name="senderEmail" type="hidden" value="{{ obj.administrator.0.get_first_email }}">  
+
+                                                        <!-- submit do form (obrigat&oacute;rio) -->  
+                                                        <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/184x42-pagar-cinza-assina.gif"/>  
+                                                    </form>
+                                                {% endifequal %}
+
+                                                <!-- cartao -->
+                                                {% ifequal x.payment_way '2' %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
+
                                             {% else %}
-                                                {{ x.get_bank_display }}</th>
+                                                Pago em {{ x.date_payed|date:"d M Y" }} / {{ x.get_payment_way_display }}
                                             {% endifequal %}
                                             
                                     {% endfor %}
@@ -266,32 +334,52 @@ GNU General Public License for more details.
                         <h3>Fatura vencida</h3>
                             <table style='margin-left:10px; width:100%;'>
                                 <tr style='width:100%;'>
-                                    <th style='width:25%;'>Plano</th>
-                                    <th style='width:25%'>Pagamento</th>
-                                    <th style='width:25%'>Venceu</th>
-                                    <th style='width:25%'>A&ccedil;&atilde;o</th>
+                                    <th style='width:30%;'>Plano</th>
+                                    <th style='width:15%'>In&iacute;cio</th>
+                                    <th style='width:15%'>Fim</th>
+                                    <th style='width:40%'>A&ccedil;&atilde;o</th>
                                 </tr>
                             </table>
 
                             <table style='margin-left:0px; width:100%;'>
                                 {% for x in obj.invoice_.2 %}
                                     <tr>
-                                        <th style='width:25%; font-weight:normal;'>{{ x.plan }}</th>
-                                        <th style='width:25%; font-weight:normal;'>{{ x.date_payed }}</th>
-                                        <th style='width:25%; font-weight:normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.expiry_date }}</th>
-                                        <th style='width:25%; font-weight:normal;{% ifnotequal x.status 0 %} background-color:green;{% endifnotequal %}'>
+                                        <th style='width:30%; font-weight:normal;'>{{ x.plan }}</th>
+                                        <th style='width:15%; font-weight:normal;'>{{ x.date_payed }}</th>
+                                        <th style='width:15%; font-weight:normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.expiry_date }}</th>
+                                        <th style='width:40%; font-weight:normal;'>
                                             {% ifequal x.status 0 %}
-                                                <a href='pagseguro'>Pagar agora</a>
+                                                <!-- boleto -->
+                                                {% ifequal x.payment_way '1' %}
+                                                    <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
+                                                        <!-- Campos obrigat&oacute;rios -->  
+                                                        <input name="receiverEmail" type="hidden" value="ozp@psico.net">  
+                                                        <input name="currency" type="hidden" value="BRL">  
+
+                                                        <!-- Itens do pagamento (ao menos um item &eacute; obrigat&oacute;rio) -->  
+                                                        <input name="itemId1" type="hidden" value="0001">  
+                                                        <input name="itemDescription1" type="hidden" value="{{ x.plan }}">  
+                                                        <input name="itemAmount1" type="hidden" value="{{ x.ammount }}">  
+                                                        <input name="itemQuantity1" type="hidden" value="1">  
+                                                        <input name="itemWeight1" type="hidden" value="1000">  
+
+                                                        <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->  
+                                                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date }}-fim-{{ x.end_date }}">  
+
+                                                        <!-- Dados do comprador (opcionais) -->  
+                                                        <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">  
+                                                        <input name="senderPhone" type="hidden" value="{{ obj.administrator.0.get_firtst_phone }}">  
+                                                        <input name="senderEmail" type="hidden" value="{{ obj.administrator.0.get_first_email }}">  
+
+                                                        <!-- submit do form (obrigat&oacute;rio) -->  
+                                                        <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/184x42-pagar-cinza-assina.gif"/>  
+                                                    </form>
+                                                {% endifequal %}
                                             {% else %}
-                                                Pago
+                                                Pago em {{ x.date_payed|date:"d F Y" }} / {{ x.get_payment_way_display }}
                                             {% endifequal %}
                                     </tr>
-                                    <tr>
-                                        <th>.</th>
-                                        <th>.</th>
-                                        <th>.</th>
-                                        <th>.</th>
-                                    </tr>
+                                    <tr><th>.</th></tr>
                                 {% endfor %}
                             </table>
                     </div>
@@ -300,6 +388,5 @@ GNU General Public License for more details.
             </fieldset>
             <br />
         </div><!-- main area -->
-    </form>
 
 {% endblock %}

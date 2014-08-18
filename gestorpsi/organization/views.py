@@ -233,7 +233,7 @@ def list_prof_org(request, org_id = None):
     organization signature save
     Tiago de Souza Moraes 20/06/2014
 '''
-@permission_required_with_403('organization.organization_write')
+#@permission_required_with_403('organization.organization_write')
 def signature_save(request):
 
     user = request.user

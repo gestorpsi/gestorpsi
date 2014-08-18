@@ -1,4 +1,4 @@
-/**
+/*
 
 Copyright (C) 2008 GestorPsi
 
@@ -13,6 +13,9 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+
+
+/*
 
 // hide all these fields or divs
 function hideAll(){ 
@@ -43,13 +46,19 @@ function showCartaoOrBoleto(){
         $('div[id="pagseguro_boleto"]').show(); // show selected form
     }
 }
+*/
 
 
 $(document).ready(function() {
 
+    $('select.payment_type').change( function() { 
+        $('div[id*="payment_type"]').hide(); // hide all div contains payment type / text about 
+        $('div[id="payment_type' + this.value + '"]').show(); // show selected payment type
+    });
+    
     /*
      * update fields when mount html
-     */
+    
     payment_id = $('select.payment_type').val(); // get payment form
     plan_id = $('select[name="prefered_plan"]').val(); // get selected plan id
     tempo = $('input[name="payment_id' + payment_id + '_time"]').val();
@@ -69,9 +78,7 @@ $(document).ready(function() {
     }
 
     
-    /*
-     * plan, hide or show pagseguro form
-     */
+    // plan, hide or show pagseguro form
     $('select.prefered_plan').change( function() { 
 
         // hide all
@@ -100,9 +107,7 @@ $(document).ready(function() {
 
 
 
-    /*
-     * show and hide information about payment type
-     */
+    // show and hide information about payment type
     $('select.payment_type').change( function() { 
 
         hideAll();
@@ -130,5 +135,6 @@ $(document).ready(function() {
             $('input[name="itemAmount1"]').val( parseFloat(tempo*value).toFixed(2) );
         }
     });
+    */
 
 }); // ready

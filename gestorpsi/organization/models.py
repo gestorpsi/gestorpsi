@@ -241,7 +241,7 @@ class Organization(models.Model):
     current_invoice.help_text= _("Field used by the system DON'T change it.")
     #current_invoice.editable = False
 
-    payment_type = models.ForeignKey(PaymentType, null=True, blank=True, related_name='payment_type', default=PaymentType.objects.get(pk=1) )
+    payment_type = models.ForeignKey(PaymentType, null=True, blank=True)
     payment_type.verbose_name = _("Tipo de pagamento")
     payment_detail = models.TextField(u'Detalhes do pagamento. Usado pelo ADM gestorPSI.', null=True, blank=True)
     
@@ -255,6 +255,9 @@ class Organization(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
+
+        if not self.id:
+            self.payment_type = default=PaymentType.objects.get(pk=1) 
 
         if self.id: # save original state from register to verify if it has been changed from latest save
             original_state = Organization.objects.get(pk=self.id)

@@ -63,7 +63,7 @@ class Invoice(models.Model):
     
     payment_type = models.ForeignKey(PaymentType, null=False, blank=False, related_name='payment_type', verbose_name='Forma de pagamento') # from org choosen
 
-    status = models.IntegerField(_('Estado'), choices=INVOICE_STATUS_CHOICES, default=1)
+    status = models.IntegerField(_(u'Situação'), choices=INVOICE_STATUS_CHOICES, default=0)
     plan = models.ForeignKey(Plan, verbose_name=_('Plan'), null=True, blank=True)
 
     bank = models.CharField(_('Banco'), choices=BANK, max_length=3, null=True, blank=True)

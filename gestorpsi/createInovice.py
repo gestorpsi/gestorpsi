@@ -5,7 +5,7 @@ import sys
 from os import environ
 
 from dateutil.relativedelta import relativedelta
-from datetime import date, timedelta
+from datetime import date
 
 environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
 sys.path.append('..')
@@ -20,7 +20,12 @@ for o in Organization.objects.filter(suspension=False, organization=None):
 
     # when client do register a automatic invoice will create.
     # Org had no less than one invoice by paterns
-    last = Invoice.objects.filter(organization=o).latest('end_date')
+    try:
+        last = Invoice.objects.filter(organization=o).latest('end_date')
+    except:
+        last = Invoice()
+        last.start_date = date.today() - relativedelta(months=1)
+        last.end_date = date.today()
 
     # can not be None
     if o.payment_type == None:

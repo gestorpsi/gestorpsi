@@ -21,14 +21,15 @@ GNU General Public License for more details.
    @version: 1.0
 """
 
-from django import forms
 from django.contrib import admin
+
+from datetime import datetime
 
 from gestorpsi.gcm.models.invoice import Invoice
 from gestorpsi.gcm.models.plan import Plan
 from gestorpsi.gcm.models.payment import PaymentType
+from gestorpsi.gcm.forms.invoice import InvoiceForm
 
-from datetime import datetime
 
 class PlanAdmin(admin.ModelAdmin):
     list_display = ('name', 'value','duration','staff_size','active')
@@ -65,14 +66,14 @@ def pagoGratis(modeladmin, request, queryset):
         obj.save()
 pagoGratis.short_description = u"Pago / Grátis"
 
-
 class InvoiceAdmin(admin.ModelAdmin):
-    list_display = ('organization','start_date','end_date','status','date_payed','plan','ammount')
+    list_display = ('organization','plan','start_date','end_date','status','date_payed','bank')
     list_filter = ('status',)
     actions = [pendente, pagoCliente, pagoGratis]
     search_fields = ['organization__name']
-admin.site.register(Invoice, InvoiceAdmin)
+    form = InvoiceForm
 
+admin.site.register(Invoice, InvoiceAdmin)
 
 class PaymentTypeAdmin(admin.ModelAdmin):
     pass

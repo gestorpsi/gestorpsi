@@ -207,12 +207,12 @@ GNU General Public License for more details.
                 <!-- invoices -->
                 {% if obj.invoice_.0 %}
                     <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
-                        <h3>Pr&oacute;xima futura</h3>
+                        <h3>Pr&oacute;xima assinatura</h3>
                             <table style='margin-left:10px; width:100%;'>
                                 <tr style='width:100%;'>
                                     <th style='width:30%;'>Plano</th>
                                     <th style='width:15%'>In&iacute;cio</th>
-                                    <th style='width:15%'>Fim</th>
+                                    <th style='width:15%'>Fim/Vencimento</th>
                                     <th style='width:40%'>A&ccedil;&atilde;o</th>
                                 </tr>
                             </table>
@@ -227,7 +227,7 @@ GNU General Public License for more details.
                                             {% ifequal x.status 0 %}
 
                                                 <!-- boleto -->
-                                                {% ifequal x.payment_way '1' %}
+                                                {% ifequal x.payment_type.id 2 %}
                                                     <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
                                                         <!-- Campos obrigat&oacute;rios -->  
                                                         <input name="receiverEmail" type="hidden" value="ozp@psico.net">  
@@ -254,10 +254,10 @@ GNU General Public License for more details.
                                                 {% endifequal %}
 
                                                 <!-- cartao -->
-                                                {% ifequal x.payment_way '2' %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
+                                                {% ifequal x.payment_type.id 1 %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
 
                                             {% else %}
-                                                Pago em {{ x.date_payed|date:"d M Y" }} / {{ x.get_payment_way_display }}
+                                                Pago em {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
                                             {% endifequal %}
                                         </th>
                                     {% endfor %}
@@ -269,12 +269,12 @@ GNU General Public License for more details.
 
                 {% if obj.invoice_.1 %}
                     <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
-                        <h3>Fatura corrente</h3>
+                        <h3>Assinatura corrente</h3>
                             <table style='margin-left:10px; width:100%;'>
                                 <tr style='width:100%;'>
                                     <th style='width:30%;'>Plano</th>
                                     <th style='width:15%'>In&iacute;cio</th>
-                                    <th style='width:15%'>Fim</th>
+                                    <th style='width:15%'>Fim/Vencimento</th>
                                     <th style='width:40%'>A&ccedil;&atilde;o</th>
                                 </tr>
                             </table>
@@ -283,13 +283,13 @@ GNU General Public License for more details.
                                 <tr>
                                     {% for x in obj.invoice_.1 %}
                                         <th style='width:30%; font-weight: normal;'>{{ x.plan }}</th>
-                                        <th style='width:15%; font-weight: normal;'>{{ x.date_payed }}</th>
-                                        <th style='width:15%; font-weight: normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.expiry_date }}</th>
+                                        <th style='width:15%; font-weight: normal;'>{{ x.start_date }}</th>
+                                        <th style='width:15%; font-weight: normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.end_date }}</th>
                                         <th style='width:40%; font-weight: normal;'>
 
                                             {% ifequal x.status 0 %}
                                                 <!-- boleto -->
-                                                {% ifequal x.payment_way '1' %}
+                                                {% ifequal x.payment_type.id 2 %}
                                                     <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
                                                         <!-- Campos obrigat&oacute;rios -->  
                                                         <input name="receiverEmail" type="hidden" value="ozp@psico.net">  
@@ -316,10 +316,10 @@ GNU General Public License for more details.
                                                 {% endifequal %}
 
                                                 <!-- cartao -->
-                                                {% ifequal x.payment_way '2' %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
+                                                {% ifequal x.payment_type.id 1 %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
 
                                             {% else %}
-                                                Pago em {{ x.date_payed|date:"d M Y" }} / {{ x.get_payment_way_display }}
+                                                Pago em {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
                                             {% endifequal %}
                                             
                                     {% endfor %}
@@ -331,12 +331,12 @@ GNU General Public License for more details.
 
                 {% if obj.invoice_.2 %}
                     <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
-                        <h3>Fatura vencida</h3>
+                        <h3>Assinatura vencida</h3>
                             <table style='margin-left:10px; width:100%;'>
                                 <tr style='width:100%;'>
                                     <th style='width:30%;'>Plano</th>
                                     <th style='width:15%'>In&iacute;cio</th>
-                                    <th style='width:15%'>Fim</th>
+                                    <th style='width:15%'>Fim/Vencimento</th>
                                     <th style='width:40%'>A&ccedil;&atilde;o</th>
                                 </tr>
                             </table>
@@ -350,7 +350,7 @@ GNU General Public License for more details.
                                         <th style='width:40%; font-weight:normal;'>
                                             {% ifequal x.status 0 %}
                                                 <!-- boleto -->
-                                                {% ifequal x.payment_way '1' %}
+                                                {% ifequal x.payment_type.id 2 %}
                                                     <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
                                                         <!-- Campos obrigat&oacute;rios -->  
                                                         <input name="receiverEmail" type="hidden" value="ozp@psico.net">  
@@ -375,8 +375,12 @@ GNU General Public License for more details.
                                                         <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/184x42-pagar-cinza-assina.gif"/>  
                                                     </form>
                                                 {% endifequal %}
+
+                                                <!-- cartao -->
+                                                {% ifequal x.payment_type.id 1 %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
+
                                             {% else %}
-                                                Pago em {{ x.date_payed|date:"d F Y" }} / {{ x.get_payment_way_display }}
+                                                Pago em {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
                                             {% endifequal %}
                                     </tr>
                                     <tr><th>.</th></tr>

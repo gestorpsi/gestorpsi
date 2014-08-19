@@ -9,7 +9,7 @@ Alter table gcm_invoice add payment_detail text NULL;
 Alter table gcm_invoice add bank varchar(3) NULL;
 
 Alter table gcm_invoice add payment_type_id integer NOT NULL;
-ALTER TABLE `gcm_invoice` ADD CONSTRAINT `payment_type_id_refs_id_7e5b53be` FOREIGN KEY (`payment_type_id`) REFERENCES `gcm_paymenttype` (`id`);
+-- ALTER TABLE `gcm_invoice` ADD CONSTRAINT `payment_type_id_refs_id_7e5b53be` FOREIGN KEY (`payment_type_id`) REFERENCES `gcm_paymenttype` (`id`);
 CREATE INDEX `gcm_invoice_19543b21` ON `gcm_invoice` (`payment_type_id`);
 
 Alter table gcm_invoice add start_date date NOT NULL;

@@ -67,7 +67,7 @@ def pagoGratis(modeladmin, request, queryset):
 pagoGratis.short_description = u"Pago / Grátis"
 
 class InvoiceAdmin(admin.ModelAdmin):
-    list_display = ('organization','plan','start_date','end_date','status','date_payed','bank')
+    list_display = ('organization','plan','start_date','end_date','status','date_payed','bank','situation_')
     list_filter = ('status',)
     actions = [pendente, pagoCliente, pagoGratis]
     search_fields = ['organization__name']

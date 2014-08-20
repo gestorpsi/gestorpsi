@@ -7,7 +7,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from datetime import datetime
+from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 
 from gestorpsi.gcm.models.payment import PaymentType
@@ -78,7 +78,6 @@ class Invoice(models.Model):
     
     #def dued(self):
         #return self.due_date < datetime.today()
-            
     
     def save(self, *args, **kargs):
 
@@ -90,9 +89,33 @@ class Invoice(models.Model):
 
         # gratis / register
         if self.status == 2:
-            self.date_payed = datetime.today()
+            self.date_payed = date.today()
             self.start_date = self.date_payed
             self.end_date = self.start_date + relativedelta(months=1)
             self.expiry_date = self.end_date
 
+        # status pendente, reset fields
+        if self.status == 0 :
+            self.bank = None
+            self.date_payed = None
+
         super(Invoice, self).save()
+
+        # call method to update org
+        self.organization.automatic_on_()
+
+
+    '''
+        Is future, current or pass invoice?
+        Most easy to find a invoice when manager invoices from org in admin page
+    '''
+    def situation_(self, *args, **kargs):
+
+        if self.start_date > date.today():
+            return u'Future'
+
+        if self.start_date < date.today() and self.end_date < date.today():
+            return u'Pass'
+
+        if self.start_date < date.today() and self.end_date > date.today():
+            return u'Current'

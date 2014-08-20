@@ -345,8 +345,8 @@ GNU General Public License for more details.
                                 {% for x in obj.invoice_.2 %}
                                     <tr>
                                         <th style='width:30%; font-weight:normal;'>{{ x.plan }}</th>
-                                        <th style='width:15%; font-weight:normal;'>{{ x.date_payed }}</th>
-                                        <th style='width:15%; font-weight:normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.expiry_date }}</th>
+                                        <th style='width:15%; font-weight:normal;'>{{ x.start_date }}</th>
+                                        <th style='width:15%; font-weight:normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.end_date }}</th>
                                         <th style='width:40%; font-weight:normal;'>
                                             {% ifequal x.status 0 %}
                                                 <!-- boleto -->

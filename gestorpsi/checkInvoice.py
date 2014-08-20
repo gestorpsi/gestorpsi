@@ -11,10 +11,5 @@ from gestorpsi.organization.models import Organization
 
 # main code
 for o in Organization.objects.filter(suspension=False, organization=None):
-
-    # all overdue invoice
-    for x in o.invoice_()[2]:
-        if x.status == 0 : # not payed
-            o.active = False
-            o.save()
-            break # one invoice is enough to turn off the org
+    # call method
+    o.automatic_on_()

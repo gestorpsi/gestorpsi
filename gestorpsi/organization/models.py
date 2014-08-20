@@ -236,6 +236,7 @@ class Organization(models.Model):
     prefered_plan.verbose_name = _("Preferred plan")
     prefered_plan.help_text= _("The plan the organization will use next time the system gives a billet.")
     
+    # is old, remove next alteration. Can be used org.invoice_() method to check
     current_invoice = models.ForeignKey(Invoice, null=True, blank=True, related_name='current_invoice')
     current_invoice.verbose_name = _("Current invoice")
     current_invoice.help_text= _("Field used by the system DON'T change it.")
@@ -404,6 +405,27 @@ class Organization(models.Model):
             r[2].append(x)
 
         return r
+
+
+
+    '''
+        automatic on
+        call method when save a invoice
+        if all overdue invoice is payed, org work without restriction.
+    '''
+    def automatic_on_(self, *args, **kwargs):
+
+        turn_on = True # default
+
+        for x in self.invoice_()[2]:
+            if x.status == 0 :
+                turn_on = False
+                # one not payed invoice is enough to turn off, stop immediately.
+                break
+
+        self.active = turn_on
+        super(Organization, self).save(*args, **kwargs)
+
     
     class Meta:
         ordering = ['name']

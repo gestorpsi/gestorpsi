@@ -22,9 +22,9 @@ from gestorpsi.gcm.models import Invoice
 from gestorpsi.gcm.models.plan import Plan
 
 class InvoiceForm(forms.ModelForm):
+
     organization = forms.ModelChoiceField(label=(u'Organização'), queryset=Organization.objects.filter(organization=None).order_by('name'))
     plan = forms.ModelChoiceField(label=_('Plano'), queryset=Plan.objects.filter(active=True))
 
     class Meta:
         model = Invoice
-        fields = ['organization', 'plan', 'status', 'discount', 'start_date','end_date','date_payed', 'expiry_date', ]

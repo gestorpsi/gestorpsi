@@ -49,7 +49,7 @@ class Invoice(models.Model):
     start_date = models.DateField(_(u'Data início periodo'), null=False, blank=False)
     start_date.help_text=_('Formato aaaa/mm/dd Ex: 2014-12-31')
 
-    end_date = models.DateField(_(u'Data do fim Periodo'), null=False, blank=False)
+    end_date = models.DateField(_(u'Data do fim Periodo'), null=False, blank=False) # vencimento e sem acesso ao sistema
     end_date.help_text=_('Formato aaaa/mm/dd Ex: 2014-12-31')
     
     expiry_date = models.DateField(_('Data de Expiracao'), null=True, blank=True)

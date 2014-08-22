@@ -1,114 +1,81 @@
 {% if user.is_superuser %}
-<!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+    <!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
 
-    <head>
-        {% load i18n %}
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title>GestorPsi {% trans "GCM" %} - {% block title %}{% trans "Inicio" %}{% endblock %}</title>
+        <head>
+            {% load i18n %}
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+            <title>GestorPsi {% trans "GCM" %} - {% block title %}{% trans "Inicio" %}{% endblock %}</title>
 
-        <link href="/media/img/gestorpsi.ico" rel="SHORTCUT ICON" />
-        <link rel="stylesheet" href="/media/uikit/css/uikit.min.css" />
+            <link href="/media/img/gestorpsi.ico" rel="SHORTCUT ICON" />
+            <link rel="stylesheet" href="/media/uikit/css/uikit.min.css" />
 
-        <script src="/media/js/jquery-1.11.1.js"></script>
-        <script src="/media/uikit/js/uikit.min.js"></script>
+            <script src="/media/uikit/js/jquery-1.11.1.js"></script>
+            <script src="/media/uikit/js/uikit.js"></script>
 
-        <script>
-            $( document ).ready(function() {
-                $('input#option_subscription').click( function(){ 
-                        $('div#modal-option-subscription').show();
+            <script>
+                $( document ).ready(function() {
+                    $('input#option_subscription').click( function(){ 
+                            $('div#modal-option-subscription').show();
+                    });
                 });
-            });
-        </script>
-        {% block extrahead %}{% endblock extrahead %}
-    </head>
+            </script>
 
-    <body>
-        <div class="uk-container uk-container-center">
-            <nav class="uk-navbar">
+            {% block extrahead %}{% endblock extrahead %}
 
-                <div class="uk-navbar-content">GestorPSI GCM</div>
+        </head>
 
-                {% comment %}
-                <ul class="uk-navbar-nav">
-                    <li data-uk-dropdown="" class="uk-parent uk-active">
-                        <a href="/admin/gcm/invoice/" target='_blank'><i class="uk-icon-dollar"></i> fatura </a>
-                    </li>
-                </ul>
-                {% endcomment %}
 
-                <form class="uk-form" action="{% url org-list %}" method="post">
-                    <div class="uk-navbar-content uk-hidden-small">
-                            <input type="text" placeholder="nome org" name="search_org_name" value="{{ search_org_name }}">
-                            Data inscri&ccedil;&atilde;o inicio <input class='uk-form-width-small' type="text" name="option_subscription" placeholder="31/12/2000" />
-                            fim <input class='uk-form-width-small' type="text" name="option_subscription" placeholder="31/12/2000" />
+        <body>
+            <form class="uk-form" action="{% url org-list %}" method="post">
+                <div class='uk-content uk-width-1-1 uk-container uk-container-center uk-grid-width-*'>
 
-                            <div data-uk-dropdown="{delay: 1000}" class="uk-button-dropdown">
-                                <button class="uk-button">Filtros <i class="uk-icon-caret-down"></i></button>
-                                <div class="uk-dropdown" style="">
-                                    <ul class="uk-nav uk-nav-dropdown">
-                                        <li><a href="#">Item</a></li>
-                                        <li><a href="#">Another item</a></li>
-                                        <li class="uk-nav-header">Header</li>
-                                        <li><a href="#">Item</a></li>
-                                        <li><a href="#">Another item</a></li>
-                                        <li class="uk-nav-divider"></li>
-                                        <li><a href="#">Separated item</a></li>
-                                        <li>&nbsp;&nbsp;Ativo&nbsp;<input type="checkbox"></a></li>
-                                    </ul>
-                                </div>
+                    <fieldset data-uk-margin>
+                        <legend>GestorPSI GCM</legend>
+                        <input type="text" placeholder="nome org" name="search_org_name">
+                        <input type="text" placeholder="inscri&ccedil;&atilde;o inicio 31/12/2000" name='subscription_start'>
+                        <input type="text" placeholder="inscri&ccedil;&atilde;o fim 31/12/2001" name='subscription_end'>
+
+                        <div data-uk-dropdown class="uk-button-dropdown">
+                            <button class="uk-button">Filtros <i class="uk-icon-caret-down"></i></button>
+                            <div class="uk-dropdown uk-dropdown-small">
+                                <ul class="uk-nav uk-nav-dropdown">
+                                    <li>&nbsp;&nbsp;&nbsp;Ativo <input type="checkbox" name="option_active"></li>
+                                    <li>&nbsp;&nbsp;&nbsp;N&atilde;o ativo <input type="checkbox" name="option_inactive"></li>
+                                    <li>&nbsp;&nbsp;&nbsp;Suspenso <input type="checkbox" name="option_suspension"></li>
+                                    <li>&nbsp;&nbsp;&nbsp;N&atilde;o suspenso <input type="checkbox" name="option_notsuspension"></li>
+                                    <li>&nbsp;&nbsp;&nbsp;Zero cliente <input type="checkbox" name="option_zero_client"></li>
+                                </ul>
                             </div>
+                        </div>
 
-                            <button class="uk-button uk-button-primary">Ok</button>
+                        <button class="uk-button uk-button-primary">Ok</button>
 
-                    </div>
-                    <div class="uk-navbar-content uk-hidden-small">
-                            <label>Ativa</label> <input type="checkbox" name="option_active">&nbsp;&nbsp;
-
-                            Inativo<input type="checkbox" name="option_inactive">&nbsp;&nbsp;
-
-                            Suspenso <input type="checkbox" name="option_suspension">&nbsp;&nbsp;
-                            N&atilde;o Suspenso <input type="checkbox" name="option_notsuspension">&nbsp;&nbsp;
-
-
-                            Zero cliente <input type="checkbox" name="option_zero_client">&nbsp;&nbsp;
-                    </div>
-
-
-                    <div class="uk-navbar-content uk-hidden-small">
-                    </div>
-                </form>
-
-                {% comment %}
-                <div class="uk-navbar-content uk-navbar-flip  uk-hidden-small">
-                    <div class="uk-button-group">
-                        <a href="#" class="uk-button uk-button-danger">Link</a>
-                        <button class="uk-button uk-button-danger">Button</button>
-                    </div>
+                        {% if object_list %}<label class='uk-text-bold'>Resgistros{{ object_list.count }}</label>{% endif %}
+                    </fieldset>
                 </div>
-                {% endcomment %}
+            </form>
 
-            </nav>
-        </div>
 
-        <!-- messages -->
-        {% if messages %}
-                {% for message in messages %}
-                    {{ message|safe }}
-                {% endfor %}
-        {% endif %}
-        
-        <!-- core code -->
-        <div class="uk-width-medium-1-1 uk-container uk-container-center">
-        {% block core %}{% endblock %}
-        </div>
-        
-        <div class="uk-container uk-container-center uk-width-medium-1-1 uk-text-center">
-            <div class="uk-text-muted">GestorPsi © - PRONTU&Aacute;RIOS ELETR&Ocirc;NICOS E GEST&Atilde;O DE SERVI&Ccedil;OS EM PSICOLOGIA</div>
-            <br />
-            <br />
-            <br />
-        </div>
-    </body>
-</html>
+            <!-- messages -->
+            {% if messages %}
+                    {% for message in messages %}
+                        {{ message|safe }}
+                    {% endfor %}
+            {% endif %}
+            
+            <!-- core code -->
+            <div class="uk-width-medium-1-1 uk-container uk-container-center">
+            {% block core %}{% endblock %}
+            </div>
+            
+            <div class="uk-container uk-container-center uk-width-medium-1-1 uk-text-center">
+                <div class="uk-text-muted">GestorPsi © - PRONTU&Aacute;RIOS ELETR&Ocirc;NICOS E GEST&Atilde;O DE SERVI&Ccedil;OS EM PSICOLOGIA</div>
+                <br />
+                <br />
+                <br />
+            </div>
+
+        </body>
+    </html>
 {% endif %}

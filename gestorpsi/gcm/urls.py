@@ -38,7 +38,8 @@ invoice_list = { 'queryset':Invoice.objects.all(), }
 invoice_update = { 'form_class':InvoiceForm, 'post_save_redirect': '/gcm/invoice/',}
 invoice_add = { 'form_class':InvoiceForm, 'post_save_redirect': '/gcm/invoice/', }
 
-org_list = {'queryset': Organization.objects.filter(organization__isnull=True, person__profile__user__registrationprofile__activation_key='ALREADY_ACTIVATED').distinct(), 'template_name':'gcm/org_list.html'}
+#org_list = {'queryset': Organization.objects.filter(organization__isnull=True, person__profile__user__registrationprofile__activation_key='ALREADY_ACTIVATED').distinct(), 'template_name':'gcm/org_list.html'}
+org_list = {'queryset': Organization.objects.filter(organization__isnull=True), 'template_name':'gcm/org_list.html'}
 org_update = { 'model':Organization, 'post_save_redirect': '/gcm/org/', 'template_name': 'gcm/org_form.html'}
 
 org_bill_update = { 'model':Invoice }

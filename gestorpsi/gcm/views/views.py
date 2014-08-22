@@ -25,9 +25,12 @@ from gestorpsi.gcm.models import Plan
 
 def org_object_list(request, order_by=False, *args, **kwargs):
 
+    if not request.user.is_superuser:
+        return HttpResponseRedirect('/gcm/login/?next=%s' % request.path)
+
     # filter from navbar
     search_org_name = request.POST.get('search_org_name')
-    if not search_org_name == None :
+    if search_org_name:
         kwargs['queryset'] = kwargs['queryset'].filter(name__icontains=search_org_name)
 
     if request.POST.get('option_active'):
@@ -43,14 +46,18 @@ def org_object_list(request, order_by=False, *args, **kwargs):
         kwargs['queryset'] = kwargs['queryset'].filter(suspension=False)
 
     if request.POST.get('option_zero_client'):
-
         exclude = []
-
         for x in kwargs['queryset']:
             if x.clients().count() == 0 :
                 exclude.append(x)
-
         kwargs['queryset'] = kwargs['queryset'].exclude(id__in=exclude)
+
+    if request.POST.get('subscription_start') and request.POST.get('subscription_end'):
+        d,m,a = request.POST.get('subscription_start').split('/')
+        s = "%s-%s-%s" % (a,m,d)
+        dd,mm,aa = request.POST.get('subscription_end').split('/')
+        e = "%s-%s-%s" % (aa,mm,dd)
+        kwargs['queryset'] = kwargs['queryset'].filter(date_created__gt=s, date_created__lt=e)
 
 
     # filter sort
@@ -69,8 +76,7 @@ def org_object_list(request, order_by=False, *args, **kwargs):
     if "order_by" in request.session:
         kwargs['queryset'] = kwargs['queryset'].order_by(request.session['order_by'])
 
-    if not request.user.is_superuser:
-        return HttpResponseRedirect('/gcm/login/?next=%s' % request.path)
+
     return generic_object_list(request, *args, **kwargs)
 
 

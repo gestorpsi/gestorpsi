@@ -295,12 +295,12 @@ class Organization(models.Model):
                                 person.profile.user.groups.add(new_group) # add user to new group (a readonly group)
                                 person.profile.user.groups.remove(Group.objects.get(name=group.name)) # remove user from past group 
 
-    def __professionalresponsible__(self):
+    def professionalresponsible_(self):
         try:
             return ProfessionalResponsible.objects.filter(organization=self)[0]
         except:
             return None
-    professionalresponsible = property(__professionalresponsible__)
+    professionalresponsible = property(professionalresponsible_)
 
     def revision(self):
         return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
@@ -360,6 +360,18 @@ class Organization(models.Model):
     def services(self):
         return self.service_set.filter(active=True)
 
+
+
+    '''
+        return number of rooms from org
+    '''
+    def room_count_(self):
+        c = 0 
+        for x in self.place_set.all():
+            c += x.room_set.all().count()
+        return c
+    
+
     '''
         return value of plan and plan time/duration
         array[0] = value total ( plan * time )
@@ -374,6 +386,7 @@ class Organization(models.Model):
             pass
 
         return r
+
 
     '''
         retorna todas as faturas

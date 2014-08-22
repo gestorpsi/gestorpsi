@@ -25,6 +25,35 @@ from gestorpsi.gcm.models import Plan
 
 def org_object_list(request, order_by=False, *args, **kwargs):
 
+    # filter from navbar
+    search_org_name = request.POST.get('search_org_name')
+    if not search_org_name == None :
+        kwargs['queryset'] = kwargs['queryset'].filter(name__icontains=search_org_name)
+
+    if request.POST.get('option_active'):
+        kwargs['queryset'] = kwargs['queryset'].filter(active=True)
+
+    if request.POST.get('option_inactive'):
+        kwargs['queryset'] = kwargs['queryset'].filter(active=False)
+
+    if request.POST.get('option_suspension'):
+        kwargs['queryset'] = kwargs['queryset'].filter(suspension=True)
+
+    if request.POST.get('option_notsuspension'):
+        kwargs['queryset'] = kwargs['queryset'].filter(suspension=False)
+
+    if request.POST.get('option_zero_client'):
+
+        exclude = []
+
+        for x in kwargs['queryset']:
+            if x.clients().count() == 0 :
+                exclude.append(x)
+
+        kwargs['queryset'] = kwargs['queryset'].exclude(id__in=exclude)
+
+
+    # filter sort
     if order_by:
         if "order_by" in request.session:
             if request.session['order_by'].replace("-", "") == order_by:

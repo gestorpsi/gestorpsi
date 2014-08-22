@@ -9,34 +9,85 @@
 
         <link href="/media/img/gestorpsi.ico" rel="SHORTCUT ICON" />
         <link rel="stylesheet" href="/media/uikit/css/uikit.min.css" />
-        <script src="/media/uikit/js/jquery.js"></script>
-        <script src="/media/uilit/js/uikit.min.js"></script>
-        <script type="text/javascript" src="/media/js/jquery-1.2.6.min.js"></script>
 
+        <script src="/media/js/jquery-1.11.1.js"></script>
+        <script src="/media/uikit/js/uikit.min.js"></script>
+
+        <script>
+            $( document ).ready(function() {
+                $('input#option_subscription').click( function(){ 
+                        $('div#modal-option-subscription').show();
+                });
+            });
+        </script>
         {% block extrahead %}{% endblock extrahead %}
     </head>
 
     <body>
-        <div class="uk-container uk-container-center uk-margin-top uk-margin-large-bottom">
-            <nav class="uk-navbar uk-margin-large-bottom">
-                <ul class="uk-navbar-nav uk-hidden-small">
-	                <li><a href="{% url org-pen-list %}" class="uk-button-primary">{% trans "Organizacoes Pendentes" %}</a></li>
-                    <li>
-                        <a href="layouts_portfolio.html">Portfolio</a>
-                    </li>
-                    <li>
-                        <a href="layouts_blog.html">Blog</a>
-                    </li>
-                    <li>
-                        <a href="layouts_documentation.html">Documentation</a>
-                    </li>
-                    <li>
-                        <a href="layouts_contact.html">Contact</a>
-                    </li>
-                    <li>
-                        <a href="layouts_login.html">Login</a>
+        <div class="uk-container uk-container-center">
+            <nav class="uk-navbar">
+
+                <div class="uk-navbar-content">GestorPSI GCM</div>
+
+                {% comment %}
+                <ul class="uk-navbar-nav">
+                    <li data-uk-dropdown="" class="uk-parent uk-active">
+                        <a href="/admin/gcm/invoice/" target='_blank'><i class="uk-icon-dollar"></i> fatura </a>
                     </li>
                 </ul>
+                {% endcomment %}
+
+                <form class="uk-form" action="{% url org-list %}" method="post">
+                    <div class="uk-navbar-content uk-hidden-small">
+                            <input type="text" placeholder="nome org" name="search_org_name" value="{{ search_org_name }}">
+                            Data inscri&ccedil;&atilde;o inicio <input class='uk-form-width-small' type="text" name="option_subscription" placeholder="31/12/2000" />
+                            fim <input class='uk-form-width-small' type="text" name="option_subscription" placeholder="31/12/2000" />
+
+                            <div data-uk-dropdown="{delay: 1000}" class="uk-button-dropdown">
+                                <button class="uk-button">Filtros <i class="uk-icon-caret-down"></i></button>
+                                <div class="uk-dropdown" style="">
+                                    <ul class="uk-nav uk-nav-dropdown">
+                                        <li><a href="#">Item</a></li>
+                                        <li><a href="#">Another item</a></li>
+                                        <li class="uk-nav-header">Header</li>
+                                        <li><a href="#">Item</a></li>
+                                        <li><a href="#">Another item</a></li>
+                                        <li class="uk-nav-divider"></li>
+                                        <li><a href="#">Separated item</a></li>
+                                        <li>&nbsp;&nbsp;Ativo&nbsp;<input type="checkbox"></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <button class="uk-button uk-button-primary">Ok</button>
+
+                    </div>
+                    <div class="uk-navbar-content uk-hidden-small">
+                            <label>Ativa</label> <input type="checkbox" name="option_active">&nbsp;&nbsp;
+
+                            Inativo<input type="checkbox" name="option_inactive">&nbsp;&nbsp;
+
+                            Suspenso <input type="checkbox" name="option_suspension">&nbsp;&nbsp;
+                            N&atilde;o Suspenso <input type="checkbox" name="option_notsuspension">&nbsp;&nbsp;
+
+
+                            Zero cliente <input type="checkbox" name="option_zero_client">&nbsp;&nbsp;
+                    </div>
+
+
+                    <div class="uk-navbar-content uk-hidden-small">
+                    </div>
+                </form>
+
+                {% comment %}
+                <div class="uk-navbar-content uk-navbar-flip  uk-hidden-small">
+                    <div class="uk-button-group">
+                        <a href="#" class="uk-button uk-button-danger">Link</a>
+                        <button class="uk-button uk-button-danger">Button</button>
+                    </div>
+                </div>
+                {% endcomment %}
+
             </nav>
         </div>
 
@@ -52,80 +103,12 @@
         {% block core %}{% endblock %}
         </div>
         
-        <div class="uk-container uk-container-center uk-width-medium-1-1">
-            <div class="uk-text-large">GestorPsi © - PRONTU&Aacute;RIOS ELETR&Ocirc;NICOS E GEST&Atilde;O DE SERVI&Ccedil;OS EM PSICOLOGIA</div>
+        <div class="uk-container uk-container-center uk-width-medium-1-1 uk-text-center">
+            <div class="uk-text-muted">GestorPsi © - PRONTU&Aacute;RIOS ELETR&Ocirc;NICOS E GEST&Atilde;O DE SERVI&Ccedil;OS EM PSICOLOGIA</div>
+            <br />
+            <br />
+            <br />
         </div>
     </body>
 </html>
 {% endif %}
-
-
-    {% comment %}
-            <div class="uk-grid" data-uk-grid-margin>
-
-                <div class="uk-width-medium-1-1">
-                    <table class="uk-table">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>N&ordm; profissionais</th>
-                                <th>Prof. respons&aacute;vel</th>
-                                <th>Inscri&ccedil;&atilde;o</th>
-                                <th>Ativo?</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <td>Org</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-
-                <div class="uk-width-medium-1-1">
-                    <h2 id="getstarted">Get Started</h2>
-                    <p>Lorem ipsum dolor sit amet, <code>consectetuer adipiscing</code> elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                </div>
-
-                <!--
-                <div class="uk-width-medium-1-4">
-                    <div class="uk-panel uk-panel-box" data-uk-sticky="{top:35}">
-                        <ul class="uk-nav uk-nav-side" data-uk-scrollspy-nav="{closest:'li', smoothscroll:true}">
-                            <li class="uk-nav-header">For Beginners</li>
-                            <li class="uk-active"><a href="#getstarted">Get Started</a></li>
-                            <li class=""><a href="#templatesettings">Template Settings</a></li>
-                            <li class=""><a href="#customizer">Customizer</a></li>
-                            <li class="uk-nav-header">For Developers</li>
-                            <li class=""><a href="#customization">Customizaton</a></li>
-                            <li class=""><a href="#troubleshooting">Troubleshooting</a></li>
-                            <li class="uk-nav-divider"></li>
-                            <li class=""><a href="#faq"><i class="uk-icon-info-circle uk-margin-small-right"></i>FAQ</a></li>
-                        </ul>
-                    </div>
-                </div>
-                -->
-
-            </div>
-        </div>
-
-    <div class="uk-width-1-1">
-
-        <h1>{% trans "GestorPSI" %} - {% block section %}{% trans "Controle de clientes" %}{% endblock %}</h1>
-        <div class="menu">
-	        <ul>
-	            <li><a href="{% url org-pen-list %}">{% trans "Organizacoes Pendentes" %}</a></li>
-	            <li><a href="{% url org-list %}">{% trans "Organizacoes" %}</a></li>
-	            <li><a href="{% url invoice-list %}">{% trans "Faturas" %}</a></li>
-	            <li><a href="{% url plan-list %}">{% trans "Planos" %}</a></li>
-    			<li><a href="{% url billet-config %}">{% trans "Configurations" %}</a></li>
-	            <li><a href="{% url gcm-logout %}">{% trans "Sair" %}</a></li>
-	        </ul>
-        </div>
-        <hr />
-        <div class="submenu">
-        {% block submenu %}{% endblock %}
-        </div>
-</div>
-
-    {% endcomment %}
-

@@ -17,7 +17,7 @@ org_list = {'queryset': Organization.objects.filter(organization__isnull=True, p
 
 urlpatterns = patterns('',
     # org
-    url(r'^admin/organization/organization/$', 'gestorpsi.gcm.views.views.org_object_list', org_list, name='test' ),
+    #url(r'^admin/organization/organization/$', 'gestorpsi.gcm.views.views.org_object_list', org_list, name='test' ),
 
     url(r'^', include('gestorpsi.gcm.urls')),
     url(r'^accounts/register/$', 'gestorpsi.authentication.views.register', {'form_class': RegistrationForm }, name='registration_register'),

@@ -39,7 +39,7 @@ invoice_update = { 'form_class':InvoiceForm, 'post_save_redirect': '/gcm/invoice
 invoice_add = { 'form_class':InvoiceForm, 'post_save_redirect': '/gcm/invoice/', }
 
 #org_list = {'queryset': Organization.objects.filter(organization__isnull=True, person__profile__user__registrationprofile__activation_key='ALREADY_ACTIVATED').distinct(), 'template_name':'gcm/org_list.html'}
-org_list = {'queryset': Organization.objects.filter(organization__isnull=True), 'template_name':'gcm/org_list.html'}
+#org_list = {'queryset': Organization.objects.filter(organization__isnull=True), 'template_name':'gcm/org_list.html'}
 org_update = { 'model':Organization, 'post_save_redirect': '/gcm/org/', 'template_name': 'gcm/org_form.html'}
 
 org_bill_update = { 'model':Invoice }
@@ -71,17 +71,17 @@ urlpatterns = patterns('',
     url(r'gcm/billet_config/$', billet_config, name='billet-config'),
     
     
-    url(r'gcm/org/(?P<order_by>\w+)/$', org_object_list, org_list, name='org-list'),
-    url(r'gcm/org/$', org_object_list, org_list, name='org-list'),
-    url(r'gcm/org/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', update_object, org_update, name='org-update'),
+    #url(r'gcm/org/(?P<order_by>\w+)/$', org_object_list, org_list, name='org-list'),
+    url(r'gcm/org/$', org_object_list, name='org-list'),
+    #url(r'gcm/org/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', update_object, org_update, name='org-update'),
     
-    url(r'gcm/org/up/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', update_organization_wrapper, org_org_update, name='org-org-update'),
+    #url(r'gcm/org/up/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', update_organization_wrapper, org_org_update, name='org-org-update'),
     
-    url(r'gcm/bill/(?P<object_id>\w+)/$', update_invoice_wrapper, org_bill_update, name='org-bill-update'),
+    #url(r'gcm/bill/(?P<object_id>\w+)/$', update_invoice_wrapper, org_bill_update, name='org-bill-update'),
     
     # off - automatic ative
-    url(r'gcm/org/(?P<order_by>\w+)/$', org_object_list, org_list, name='org-pen-list'),
-    url(r'gcm/orgpen/$', org_object_list, org_pen_list, name='org-pen-list'),
+    #url(r'gcm/org/(?P<order_by>\w+)/$', org_object_list, org_list, name='org-pen-list'),
+    #url(r'gcm/orgpen/$', org_object_list, org_pen_list, name='org-pen-list'),
     url(r'gcm/orgpen/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', object_detail, org_pen_detail, name='org-pen-detail'),
     url(r'gcm/orgpen/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/del/$', delete_object, org_pen_del, name='org-pen-del'),
     url(r'gcm/orgpen/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/activate/$', object_activate, name='org-pen-activate'),

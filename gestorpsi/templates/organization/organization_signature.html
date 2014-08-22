@@ -174,7 +174,7 @@ GNU General Public License for more details.
                 {% for p in plans %}
                     {% if p.pagseguro_code %}
                         <div id='pagseguro_cartao{{ p.id }}' style="text-align:center; margin-top:10px; display: none;" />
-                            {% if obj.invoice_.0 or obj.invoice_.1 or obj.invoice_.2 %}
+                            {% if obj.invoice_.0 or obj.invoice_.1 or obj.invoice_.3 %}
                                     <h3>Fazer pagamento</h3>
                                     <div style='height: 10px;'></div>
                                     <div class='contact'>{{ p.pagseguro_code|safe }}</div>
@@ -329,7 +329,7 @@ GNU General Public License for more details.
                 {% endif %}
 
 
-                {% if obj.invoice_.2 %}
+                {% if obj.invoice_.3 %}
                     <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
                         <h3>Assinatura vencida</h3>
                             <table style='margin-left:10px; width:100%;'>
@@ -342,7 +342,7 @@ GNU General Public License for more details.
                             </table>
 
                             <table style='margin-left:0px; width:100%;'>
-                                {% for x in obj.invoice_.2 %}
+                                {% for x in obj.invoice_.3 %}
                                     <tr>
                                         <th style='width:30%; font-weight:normal;'>{{ x.plan }}</th>
                                         <th style='width:15%; font-weight:normal;'>{{ x.start_date }}</th>

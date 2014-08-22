@@ -258,7 +258,7 @@ class Organization(models.Model):
     def save(self, *args, **kwargs):
 
         if not self.id:
-            self.payment_type = default=PaymentType.objects.get(pk=1) 
+            self.payment_type = PaymentType.objects.get(pk=1) 
 
         if self.id: # save original state from register to verify if it has been changed from latest save
             original_state = Organization.objects.get(pk=self.id)
@@ -275,6 +275,12 @@ class Organization(models.Model):
             if Plan.objects.filter(staff_size__gte=self.employee_number, duration=1):
                 self.prefered_plan = Plan.objects.filter(staff_size__gte=self.employee_number, duration=1).order_by('staff_size')[0]
                 self.payment_type = PaymentType.objects.get(pk=1) # cartao
+
+        # read only?
+        if self.invoice_()[2]: # one not payed overdue invoice
+            self.active = False
+        else:
+            self.active = True
 
         super(Organization, self).save(*args, **kwargs)
         
@@ -399,7 +405,7 @@ class Organization(models.Model):
     '''
     def invoice_(self):
 
-        r = [False]*3
+        r = [False]*4
 
         # future
         r[0] = self.invoice_set.filter( start_date__gt=date.today() )
@@ -413,33 +419,15 @@ class Organization(models.Model):
         for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today(), status=0 ).order_by('-date'):
             r[2].append(x)
 
-        # last 6 invoices where status diferent 0
-        for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today() ).order_by('-date').exclude(status=0)[:6]:
-            r[2].append(x)
+        # copy r2
+        import copy
+        r[3] = copy.deepcopy(r[2])
+        for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today, status__gt=0).order_by('-date'):
+            r[3].append(x)
 
         return r
 
 
-
-    '''
-        automatic on
-        call method when save a invoice
-        if all overdue invoice is payed, org work without restriction.
-    '''
-    def automatic_on_(self, *args, **kwargs):
-
-        turn_on = True # default
-
-        for x in self.invoice_()[2]:
-            if x.status == 0 :
-                turn_on = False
-                # one not payed invoice is enough to turn off, stop immediately.
-                break
-
-        self.active = turn_on
-        super(Organization, self).save(*args, **kwargs)
-
-    
     class Meta:
         ordering = ['name']
         permissions = (

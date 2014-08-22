@@ -102,7 +102,7 @@ class Invoice(models.Model):
         super(Invoice, self).save()
 
         # call method to update org
-        self.organization.automatic_on_()
+        self.organization.save()
 
 
     '''
@@ -117,5 +117,5 @@ class Invoice(models.Model):
         if self.start_date < date.today() and self.end_date < date.today():
             return u'Pass'
 
-        if self.start_date < date.today() and self.end_date > date.today():
+        if self.start_date <= date.today() and self.end_date >= date.today():
             return u'Current'

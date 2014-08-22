@@ -1,5 +1,5 @@
 -- settings
-ADMINS_REGISTRATION = ['webmaster@gestorpsi.com.br','tsm@gestorpsi.com.br','ozp@gestorpsi.com.br',]
+-- ADMINS_REGISTRATION = ['webmaster@gestorpsi.com.br','tsm@gestorpsi.com.br','ozp@gestorpsi.com.br',]
 
 -- plan
 alter table gcm_plan add column visible_client boolean NULL default "1";

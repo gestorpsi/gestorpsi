@@ -26,9 +26,20 @@
 
 
         <body>
+
+            <!-- export e-mails -->
+            <div id="my-id" class="uk-modal">
+                <div class="uk-modal-dialog uk-modal-dialog-large">
+                    <button class="uk-modal-close uk-close" type="button"></button>
+                    <h2>E-mail do administrador e secretaria das organiza&ccedil;&otilde;es selecionadas</h2>
+                    <p>{{ export_email }}</p>
+                </div>
+            </div>
+
+            <!-- menu filter -->
             <form class="uk-form" action="{% url org-list %}" method="post">
                 <div class='uk-content uk-width-1-1 uk-container uk-container-center uk-grid-width-*'>
-                    <fieldset data-uk-margin>
+                    <fieldset>
                         <legend><a href='/gcm/org/'>GestorPSI GCM</a></legend>
                         <input type="text" placeholder="nome organiza&ccedil;&atilde;o" name="search_org_name" value="{% if request.session.filter.0 %}{{ request.session.filter.0 }}{% endif %}">
                         <input type="text" placeholder="inscri&ccedil;&atilde;o inicio 31/12/2000" name='subscription_start' value="{% if request.session.filter.1 %}{{ request.session.filter.1 }}{% endif %}">
@@ -60,8 +71,15 @@
 
                         <button class="uk-button uk-button-primary">Ok</button>
 
-                        {% if object_list %}<button class="uk-button" type="button">Resgistros encontrados {{ object_list.count }}</button>{% endif %}
+                    </fieldset>
+                </div>
 
+                <div class='uk-content uk-width-1-1 uk-container uk-container-center uk-grid-width-*'>
+                    <fieldset>
+                        {% if object_list %}
+                            <button class="uk-button" type="button">Resgistros encontrados {{ object_list.count }}</button>
+                            <a href="#my-id" data-uk-modal>e-mail usu&aacute;rio</a>
+                        {% endif %}
                     </fieldset>
                 </div>
             </form>

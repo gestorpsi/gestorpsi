@@ -16,9 +16,6 @@ from gestorpsi.organization.models import Organization
 org_list = {'queryset': Organization.objects.filter(organization__isnull=True, person__profile__user__registrationprofile__activation_key='ALREADY_ACTIVATED').distinct(), 'template_name':'gcm/org_list.html'}
 
 urlpatterns = patterns('',
-    # org
-    #url(r'^admin/organization/organization/$', 'gestorpsi.gcm.views.views.org_object_list', org_list, name='test' ),
-
     url(r'^', include('gestorpsi.gcm.urls')),
     url(r'^accounts/register/$', 'gestorpsi.authentication.views.register', {'form_class': RegistrationForm }, name='registration_register'),
     url(r'^accounts/login/$', 'gestorpsi.authentication.views.gestorpsi_login', {'template_name': 'registration/login.html'}, name='auth_login'),

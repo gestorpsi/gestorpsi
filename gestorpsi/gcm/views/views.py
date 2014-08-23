@@ -8,6 +8,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib import messages
+from django.db.models import Q
 
 from django.views.generic.list_detail import object_list as generic_object_list
 from django.views.generic.list_detail import object_detail as generic_object_detail
@@ -117,6 +118,12 @@ def org_object_list(request):
         if "order_by" in request.session:
             object_list = object_list.order_by(request.session['order_by'])
         '''
+
+        # create email list of result, all organization
+        export_email = ''
+        for o in object_list:
+            for p in o.profile_set.all().filter( Q(user__groups__name__icontains='administrator') | Q(user__groups__name__icontains='secretary') ):
+                export_email += u"%s, " % p.user.email
 
     return render_to_response('gcm/org_list.html', locals(), context_instance=RequestContext(request) )
 

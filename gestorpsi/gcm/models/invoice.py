@@ -87,17 +87,24 @@ class Invoice(models.Model):
             self.ammount = self.organization.prefered_plan.value
             self.plan = self.organization.prefered_plan
 
+        # payed by client
+        if self.status == 1 :
+            if not self.date_payed:
+                self.date_payed = date.today()
+            if not self.bank :
+                self.bank = 2
+
+        # status pendente, reset fields
+        if self.status == 0 :
+            self.bank = None
+            self.date_payed = None
+
         # gratis / register
         if self.status == 2:
             self.date_payed = date.today()
             self.start_date = self.date_payed
             self.end_date = self.start_date + relativedelta(months=1)
             self.expiry_date = self.end_date
-
-        # status pendente, reset fields
-        if self.status == 0 :
-            self.bank = None
-            self.date_payed = None
 
         super(Invoice, self).save()
 

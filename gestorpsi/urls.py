@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
+
 from django.conf.urls.defaults import *
 from django.conf import settings
 from django.contrib import admin
-from gestorpsi.authentication.forms import RegistrationForm
+#from gestorpsi.authentication.forms import RegistrationForm
 from gestorpsi.authentication.models import Profile
 from gestorpsi.frontend.views import start as frontend_start
 from django.contrib.auth.decorators import login_required
@@ -12,15 +14,20 @@ from gestorpsi.settings import MEDIA_ROOT
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    # url
+    (r'^$', login_required(frontend_start)),
+    url(r'^accounts/login/$', 'gestorpsi.authentication.views.gestorpsi_login', {'template_name': 'registration/login.html'}, name='auth_login'),
 
-    url(r'^gcm/', include('gestorpsi.gcm.urls')),
+    # registration org form
+    url(r'^accounts/register/$', 'gestorpsi.authentication.views.register', name='registration-register'),
+    url(r'^accounts/complete/$', 'gestorpsi.authentication.views.complete', name='registration-complete'),
+
+    # user custom admin for GCM
     url(r'^admin/gcm/$', 'gestorpsi.gcm.views.views.org_object_list', name='gcm-index'),
 
-    url(r'^accounts/register/$', 'gestorpsi.authentication.views.register', {'form_class': RegistrationForm }, name='registration_register'),
-    url(r'^accounts/login/$', 'gestorpsi.authentication.views.gestorpsi_login', {'template_name': 'registration/login.html'}, name='auth_login'),
+    # include
     (r'^accounts/', include('gestorpsi.authentication.urls')),
-    (r'^accounts/', include('registration.urls')),
-    (r'^$', login_required(frontend_start)),
+    (r'^accounts/', include('registration.urls')), # logout
     (r'^admin/', include(admin.site.urls)),
     (r'^contact/', include('gestorpsi.contact.urls')),
     (r'^place/', include('gestorpsi.place.urls')),
@@ -48,9 +55,8 @@ urlpatterns = patterns('',
     (r'^profile/', include('gestorpsi.profile.urls')),
     (r'^util/', include('gestorpsi.util.urls')),
     (r'^chaining/', include('smart_selects.urls')),
-    
     (r'^sentry/', include('sentry.web.urls')),
-
+    (r'^gcm/', include('gestorpsi.gcm.urls')),
 )
 
 if 'rosetta' in settings.INSTALLED_APPS:

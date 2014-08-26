@@ -18,17 +18,27 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import Group
-from registration.forms import RegistrationForm
+
+from registration.forms import RegistrationForm as RegistrationRegistrationForm
 from registration.models import RegistrationProfile
+
 from gestorpsi.organization.models import Organization
 from gestorpsi.place.models import Place, PlaceType, Room, RoomType
 from gestorpsi.authentication.models import Profile, Role
 from gestorpsi.person.models import Person
 from gestorpsi.careprofessional.models import CareProfessional, ProfessionalProfile, ProfessionalIdentification
 
+from gestorpsi.gcm.models import Plan
+from gestorpsi.gcm.forms import fields
+
+from gestorpsi.phone.models import Phone
+from gestorpsi.address.models import State, City, Address, AddressType
+
+from gestorpsi.document.models import TypeDocument, Document
+
 attrs_dict = { 'class': 'required' }
 
-class RegistrationForm(RegistrationForm):
+class AuthenticationRegistrationForm(RegistrationRegistrationForm):
     name = forms.CharField(label=_('Name'), help_text=_('Responsible professional name'))
     email = forms.EmailField(label=_('Email'), help_text=_('Your email address'))
     password1 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=_('Password'), help_text=_('Choice one password'))
@@ -96,3 +106,50 @@ class RegistrationForm(RegistrationForm):
         careprof.save()
 
         return organization
+
+
+"""
+    Tiago de Souza Moraes
+    Change 11 08 2014
+"""
+class RegistrationForm(AuthenticationRegistrationForm):
+
+    plan = forms.ModelChoiceField(label=_('Access Plan'), help_text=_('Choice one access plan'), queryset=Plan.objects.filter(active=True))
+    phone = forms.CharField(max_length=15, label=_('Phone Number'), help_text=_('Enter your phone number with area code here'), widget=forms.TextInput(attrs={'mask':'(99) 9999-9999?9',}))
+    cpf = fields.CPFField(label=_('CPF Number'), help_text=_('Enter your CPF number here'), widget=forms.TextInput(attrs={'mask':'999.999.999-99',}))
+    address = forms.CharField(max_length=255, label=_('Address Street'), help_text=_('Enter your address here'))
+    address_number = forms.CharField(max_length=30, label=_('Address Number'), help_text=_('Enter your address number here'))
+    zipcode = forms.CharField(max_length=30, label=_('ZIP Code'), help_text=_('Enter your ZIP Code here'), widget=forms.TextInput( attrs={'mask':'99999-999'} ) )
+    state = forms.ModelChoiceField(label=_('State/Region'), help_text=_('Enter your state/region here'), queryset=State.objects.all(), widget=forms.Select(attrs={'style':'width:265px;', 'class':'city_search'}))
+    city = forms.ModelChoiceField( label=_('City'), help_text=_('Enter your state/region here'), queryset=City.objects.all(), widget=forms.Select(attrs={'style':'width:265px;'}) )
+
+    def save(self, request, *args, **kwargs):
+        organization = super(RegistrationForm, self).save(False, *args, **kwargs) # send_email = False 
+
+        # add phone number to 'first' professional registered
+        if self.cleaned_data['phone']:
+            p = Phone()
+            p.area = self.cleaned_data['phone'][1:3]
+            p.phoneNumber = self.cleaned_data['phone'][5:15]
+            p.phoneType_id = 2
+            person = organization.care_professionals()[0]
+            person.phones.add(p)
+            
+        # add cpf number to 'first' professional registered
+        if self.cleaned_data['cpf']:
+            d = Document()
+            t = TypeDocument.objects.get(description='CPF')
+            d.typeDocument_id = t.id
+            d.document = self.cleaned_data['cpf']
+            person.document.add(d)
+
+        # add address to 'first' professional registered
+        if self.cleaned_data['address']:
+            a = Address()
+            at = AddressType.objects.get(description='Comercial')
+            a.addressType_id = at.id
+            a.addressLine1 = self.cleaned_data['address']
+            a.addressNumber = self.cleaned_data['address_number']
+            a.zipCode = self.cleaned_data['zipcode']
+            a.city_id = request.POST.get('city')
+            person.address.add(a)

@@ -105,6 +105,7 @@ class Invoice(models.Model):
             self.start_date = self.date_payed
             self.end_date = self.start_date + relativedelta(months=1)
             self.expiry_date = self.end_date
+            self.payment_type = PaymentType.objects.get(pk=4)
 
         super(Invoice, self).save()
 

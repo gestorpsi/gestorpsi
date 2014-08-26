@@ -132,7 +132,8 @@ def index(request, deactive = False):
     list_url_base = '/client/list/' if not deactive else '/client/list/deactive/'
 
     if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
-        return render_to_response('client/client_service_alert.html', context_instance=RequestContext(request))
+        msg = _("There's no Service created yet. Please, create one before access Client, ") + " <a href='/service/add'> clique aqui.</a>"
+        return render_to_response('client/client_service_alert.html', {'object': msg }, context_instance=RequestContext(request))
     return render_to_response('client/client_list.html', locals(), context_instance=RequestContext(request))
 
 # client home
@@ -161,7 +162,7 @@ def home(request, object_id=None):
                                         'referrals_discharged': referrals_discharged,
                                         'service_subscribers': Service.objects.filter(referral__client = object).distinct().count(),
                                         'care_delivered': c,
-                    					'clss':request.GET.get('clss'),
+                    			'clss':request.GET.get('clss'),
                                         },
                                         context_instance=RequestContext(request)
                             )
@@ -169,7 +170,8 @@ def home(request, object_id=None):
 @permission_required_with_403('client.client_read')
 def add(request):
     if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
-        return render_to_response('client/client_service_alert.html', {'object': _("There's no Service created yet. Please, create one before access Client."), }, context_instance=RequestContext(request))
+        msg = _("There's no Service created yet. Please, create one before access Client, ") + " <a href='/service/add'> clique aqui.</a>"
+        return render_to_response('client/client_service_alert.html', {'object': msg }, context_instance=RequestContext(request))
     else:
         try:
             cities = City.objects.filter(state=request.user.get_profile().org_active.address.all()[0].city.state)

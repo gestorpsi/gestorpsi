@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.contrib import messages
 
-from gestorpsi.settings import ADMINS_REGISTRATION
+from gestorpsi.settings import ADMINS
 from gestorpsi.gcm.forms.auth import RegistrationForm
 from gestorpsi.gcm.models.invoice import Invoice
 from gestorpsi.organization.models import Organization, ProfessionalResponsible                
@@ -71,7 +71,7 @@ def register(request, success_url=None,
                 i.status = 2
                 i.save()
                 
-                bcc_list = ADMINS_REGISTRATION
+                bcc_list = ADMINS
 
                 msg = EmailMessage()
                 msg.subject = u'Nova assinatura em gestorpsi.com.br'

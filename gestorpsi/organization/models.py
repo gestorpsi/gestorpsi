@@ -18,6 +18,7 @@ import re
 import reversion
 from datetime import datetime, date
 from django.db import models
+from django.db.models import Q
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import Group
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -276,11 +277,15 @@ class Organization(models.Model):
                 self.prefered_plan = Plan.objects.filter(staff_size__gte=self.employee_number, duration=1).order_by('staff_size')[0]
                 self.payment_type = PaymentType.objects.get(pk=1) # cartao
 
-        # read only?
-        if self.invoice_()[2]: # one not payed overdue invoice
+        # suspension
+        if self.suspension == True:
             self.active = False
         else:
-            self.active = True
+            # read only?
+            if self.invoice_()[2]: # one not payed overdue invoice
+                self.active = False
+            else:
+                self.active = True
 
         super(Organization, self).save(*args, **kwargs)
         
@@ -360,8 +365,11 @@ class Organization(models.Model):
     def is_local(self):
         return True if self.organization else False
 
-    def adminstrators(self):
-        return self.person_set.filter(profile__user__groups__name='administrator').order_by('profile__user__date_joined')
+    def administrators_(self):
+        return self.person_set.filter(Q(profile__user__groups__name='administrator') | Q(profile__user__groups__name='administrator_ro')).order_by('profile__user__date_joined').distinct()
+
+    def secretary_(self):
+        return self.person_set.filter(profile__user__groups__name='secretary').order_by('profile__user__date_joined')
 
     def services(self):
         return self.service_set.filter(active=True)
@@ -379,26 +387,10 @@ class Organization(models.Model):
     
 
     '''
-        return value of plan and plan time/duration
-        array[0] = value total ( plan * time )
-        array[1] = time / duration / month
-    '''
-    def payment_(self):
-        r = ['Nenhum']*2
-        try:
-            r[0] = ('R$ %s' % float(self.prefered_plan.value * int(self.payment_type.time) ))
-            r[1] = (u'%s mes(es)' % self.payment_type.time )
-        except:
-            pass
-
-        return r
-
-
-    '''
         retorna todas as faturas
         array
             0 = proxima
-            1 = corrente
+            1 = corrente/atual
             2 = vencida
 
         filter pago ou não no html

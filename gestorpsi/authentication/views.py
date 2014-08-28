@@ -30,7 +30,7 @@ from django.contrib.auth.views import login as django_login
 from django.core.mail import EmailMessage
 from django.contrib import messages
 
-from gestorpsi.settings import SITE_DISABLED, ADMIN_URL, ADMINS_REGISTRATION
+from gestorpsi.settings import SITE_DISABLED, ADMIN_URL, ADMINS_REGISTRATION, URL_APP, URL_HOME, SIGNATURE, URL_DEMO
 
 from gestorpsi.organization.models import Organization, ProfessionalResponsible
 from gestorpsi.gcm.models.invoice import Invoice
@@ -270,8 +270,8 @@ def register(request, success_url=None,
                 bcc_list = ADMINS_REGISTRATION
 
                 msg = EmailMessage()
-                msg.subject = u'Nova assinatura em gestorpsi.com.br'
-                msg.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar https://app.gestorpsi.com.br/gcm/\n\n'
+                msg.subject = u'Nova assinatura em %s' % URL_HOME
+                msg.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar %s/gcm/\n\n' % URL_APP
                 msg.body += u'Organização %s' % org
                 msg.to = bcc_list
                 msg.send()
@@ -287,20 +287,19 @@ def register(request, success_url=None,
                 msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe e em breve você receberá outro email após a ativação da sua conta."
                 msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
 
-                msg.body += u"link funcionalidades: http://portal.gestorpsi.com.br/funcionalidades/\n"
-                msg.body += u"link como usar: http://portal.gestorpsi.com.br/como-usar/\n"
-                msg.body += u"link manual: http://demo.gestorpsi.com.br/media/manual.pdf\n"
-                msg.body += u"link contato: http://portal.gestorpsi.com.br/contato/\n\n"
+                msg.body += u"link funcionalidades: %s/funcionalidades/\n" % URL_HOME
+                msg.body += u"link como usar: %s/como-usar/\n" % URL_HOME
+                msg.body += u"link manual: %s/media/manual.pdf\n" % URL_DEMO
+                msg.body += u"link contato: %s/contato/\n\n" % URL_HOME
 
                 msg.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( i.start_date.strftime("%d/%m/%Y"), i.end_date.strftime("%d/%m/%Y") )
-                msg.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: https://app.gestorpsi.com.br/organization/signature/\n\n"
+                msg.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % URL_APP
 
-                msg.body += u"Endereço do sistema: http://app.gestorpsi.com.br\n"
+                msg.body += u"Endereço do sistema: %s\n" % URL_APP
                 msg.body += u"Usuário/Login  %s\n" % request.POST.get('username')
                 msg.body += u"Senha  %s\n\n" % request.POST.get('password1')
 
-                msg.body += u"GestorPsi - Prontuários Eletrônicos e Gestão de Serviços em Psicologia.\n"
-                msg.body += u"www.gestorpsi.com.br"
+                msg.body += u"%s" % SIGNATURE
 
                 msg.to = [ user.email, ]
                 msg.bcc =  bcc_list
@@ -322,9 +321,17 @@ def register(request, success_url=None,
 
 
 
+'''
+    registration complete. New org
+'''
 def complete(request, success_url=None, extra_context=None):
 
-    template_name='registration/registration_complete.html'
+    from gestorpsi.settings import URL_APP, URL_HOME
+
+    return render_to_response('registration/registration_complete.html',
+                locals(),
+                context_instance=context
+            )
 
     '''
     from gestorpsi.boleto.functions import gera_boleto_bradesco_inscricao
@@ -363,19 +370,17 @@ def complete(request, success_url=None, extra_context=None):
         msg.to = [ user.email, ]
         msg.bcc =  bcc_list
         msg.send()
-    '''
 
     if extra_context is None:
         extra_context = {}
     context = RequestContext(request)
     for key, value in extra_context.items():
         context[key] = callable(value) and value() or value
-    return render_to_response(template_name, locals(), context_instance=context)
+    '''
 
 
 """
     confirm register after fill form, receive e-mail.
-"""
 def object_activate(request, *args, **kwargs):
 
     if not request.user.is_superuser:
@@ -391,3 +396,4 @@ def object_activate(request, *args, **kwargs):
     
     messages.success(request, _('Organizacao %s ativada com sucesso') % o.name)
     return HttpResponseRedirect('/gcm/orgpen/')
+"""

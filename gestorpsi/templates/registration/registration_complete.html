@@ -4,7 +4,7 @@
 {% block title %}{% trans "Registration complete" %}{% endblock %}
 
 {% block content %}
-    <img src="http://portal.gestorpsi.com.br/wp-content/uploads/2012/01/logo1.png" style='margin-bottom:15px; margin-left:17px;'>
+    <img src="{{ URL_HOME }}/wp-content/uploads/2012/01/logo1.png" style='margin-bottom:15px; margin-left:17px;'>
     <h2>{% trans "Your account has been registered successfully." %}</h2>
-    <h2>{% trans "<a href='https://app.gestorpsi.com.br/'>Clique aqui para comer&ccedil;ar a usar.</a>" %}</h2>
+    <h2><a href='{{ URL_APP }}'>Clique aqui para comer&ccedil;ar a usar.</a></h2>
 {% endblock %}

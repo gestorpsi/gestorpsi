@@ -1,5 +1,6 @@
 -- settings
 -- ADMINS_REGISTRATION = ['webmaster@gestorpsi.com.br','tsm@gestorpsi.com.br','ozp@gestorpsi.com.br',]
+-- URL_HOME, URL_APP, SIGNATURE, URL_DEMO
 
 -- plan
 alter table gcm_plan add column visible_client boolean NULL default "1";

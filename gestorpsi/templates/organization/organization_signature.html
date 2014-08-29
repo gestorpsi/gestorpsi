@@ -18,14 +18,13 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-{% block menu_myoffice %}active{% endblock %}
-
 {% block vertical_menu %} - {% trans "My Organization" %}{% endblock %}
 
 {% block submenu %}
-		<ul id="sub_organization">
-			<li><a display="signature" class="first active organization" href="#">{% trans "Signature" %}</a></li>
-		</ul>
+    <ul id="sub_organization">
+        <li><a class="first active" href="{% url organization-signature %}">{% trans "Signature" %}</a></li>
+        <li><a href="{% url organization-suspension %}">{% trans "Suspender" %}</a></li>
+    </ul>
 {% endblock %}
 
 {% block core %}
@@ -307,6 +306,7 @@ GNU General Public License for more details.
 
             </fieldset>
             <br />
+
         </div><!-- main area -->
 
 {% endblock %}

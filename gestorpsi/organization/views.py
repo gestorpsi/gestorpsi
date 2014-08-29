@@ -257,3 +257,25 @@ def signature_save(request):
             'payment_type': PaymentType.objects.filter(active=True, show_to_client=True).order_by('-name'),
             },
             context_instance=RequestContext(request))
+
+
+"""
+    suspension signature of organization
+"""
+def suspension(request):
+
+    obj = Organization.objects.get(pk=request.user.get_profile().org_active.id) # get org from logged user
+
+    if request.POST:
+
+        obj.save()
+
+        messages.success(request, _('Organization details saved successfully') )
+        return HttpResponseRedirect('/organization/suspension/')
+
+    else:
+
+        return render_to_response('organization/organization_signature_suspension.html', {
+            'obj': obj,
+            },
+            context_instance=RequestContext(request))

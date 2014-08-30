@@ -261,20 +261,29 @@ def signature_save(request):
 
 """
     suspension signature of organization
+    register reason to suspension organization
 """
 def suspension(request):
 
     obj = Organization.objects.get(pk=request.user.get_profile().org_active.id) # get org from logged user
 
-    if request.POST:
+    if request.POST and request.POST.get('suspension_confirm'):
 
+        r = u"Conta suspensa dia %s\n\n" %  datetime.today()
+        for x in request.POST.getlist('suspension_reason'):
+            r += u"%s\n\n" % x
+
+        if request.POST.get('other_reason'):
+            r += request.POST.get('other_reason')
+
+        obj.suspension = True
+        obj.suspension_reason = r
         obj.save()
 
         messages.success(request, _('Organization details saved successfully') )
         return HttpResponseRedirect('/organization/suspension/')
 
     else:
-
         return render_to_response('organization/organization_signature_suspension.html', {
             'obj': obj,
             },

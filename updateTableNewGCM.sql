@@ -21,5 +21,6 @@ Alter table gcm_invoice drop due_date;
 
 -- organization
 Alter table organization_organization add suspension boolean NULL default False;
+Alter table organization_organization add suspension_reason text NULL;
 
 COMMIT;

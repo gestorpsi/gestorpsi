@@ -32,7 +32,7 @@ GNU General Public License for more details.
     <h2 class="title_signature title">{{ obj }}</h2>
     <p class="description"> {% trans "Assinatura da organiza&ccedil;&atilde;o" %}<br /></p>
 
-    <form action="/organization/signature/" method="post" class="form_people">	
+    <form action="{% url organization-signature %}" method="post" class="form_people">	
         <div class="main_area">
 
             <!-- plan and payment area -->

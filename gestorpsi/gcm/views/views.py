@@ -106,9 +106,12 @@ def org_object_list(request):
         '''
 
         # create email list of result, all organization
+        export_email_count = 0
         export_email = ''
         for o in object_list:
             for p in o.profile_set.all().filter( Q(user__groups__name__icontains='administrator') | Q(user__groups__name__icontains='secretary') ):
-                export_email += u"%s, " % p.user.email
+                if not p.user.email in export_email:
+                    export_email += u"%s, " % p.user.email
+                    export_email_count += 1
 
     return render_to_response('gcm/org_list.html', locals(), context_instance=RequestContext(request) )

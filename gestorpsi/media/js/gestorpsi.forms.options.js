@@ -21,24 +21,31 @@ GNU General Public License for more details.
 var form_mini_options = {
      success: function(response, message, form) {
 
-                if (response == 'IntegrityError') {
-                    alert('Esta organização já está registrada.');
+                var sts = response.split("|")[0]
+                //alert(sts);
+
+                if (sts == 'True') {
+                    alert('Já existe umaorganização com esse nome, tente outro por favor.');
                 } else {
+
+                    var name = response.split("|")[1]
+                    var id = response.split("|")[2]
+
                     // get option label
                     var text = $(form).children('fieldset').children('label').children('input:text').val();
 
-                    //// add <option> to asm select - referral form new 
+                    // add <option> to asm select - referral form new 
 
-                    //// add <option> to asmselect select box
+                    // add <option> to asmselect select box
                     $.form_mini_link.parents('fieldset').children('label').children('select.asmSelect:first').append('<option value='+response+' disabled="disabled">'+text+'</option>');
 
-                    //// add <option> to asm select box
+                    // add <option> to asm select box
                     $.form_mini_link.parents('label').children('select.asm:first').append('<option value='+response+' selected="selected">'+text+'</option>');
 
-                    //// add <option> to real multiselect
+                    // add <option> to real multiselect
                     $.form_mini_link.parents('fieldset').children('label').children('select.multiple').append('<option value='+response+' selected="selected">'+text+'</option>');
 
-                    //// append it to list
+                    // append it to list
                     $.form_mini_link.parents('fieldset').children('label').children('ol').append('<li style="display: list-item;" class="asmListItem"><span class="asmListItemLabel">'+text+'</span><a class="asmListItemRemove dyn_added">remove</a></li>');
 
                     // clean form and hide it

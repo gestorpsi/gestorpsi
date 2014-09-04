@@ -459,7 +459,7 @@ def referral_plus_form(request, object_id=None, referral_id=None):
 '''
 # add or edit form
 @permission_required_with_403('referral.referral_read')
-def referral_form(request, object_id = None, referral_id = None):
+def referral_form(request, object_id=None, referral_id=None):
 
     # client
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
@@ -517,54 +517,15 @@ def referral_form(request, object_id = None, referral_id = None):
                 messages.success(request, _(msg))
                 return HttpResponseRedirect(url % (object_id, data.id))
 
-    '''
-            return render_to_response('client/client_referral_form.html',
-                          { 'object': object, 
-                            'referral': referral,
-                            'referral_form': form,
-                            'referral_list': referral_list,
-                            'services': Service.objects.filter(active=True, organization=request.user.get_profile().org_active),
-                            'referrals': Referral.objects.filter(client = object),
-                            'groups': ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active, active=True),
-                            'IndicationsChoices': IndicationChoice.objects.all(),
-                            'contact_organizations': Contact.objects.filter_internal(
-                                            org_id = request.user.get_profile().org_active.id, 
-                                            person_id = request.user.get_profile().person.id, 
-                                            filter_name = None,
-                                            filter_type = 1
-                                        ),
-                            'contact_professionals': Contact.objects.filter_internal(
-                                            org_id = request.user.get_profile().org_active.id, 
-                                            person_id = request.user.get_profile().person.id, 
-                                            filter_name = None,
-                                            filter_type = 2
-                                        ),
-                            'contact_organizations_external': Contact.objects.filter_external(
-                                            org_id = request.user.get_profile().org_active.id, 
-                                            person_id = request.user.get_profile().person.id, 
-                                            filter_name = None,
-                                            filter_type = 1
-                                        ),
-                            'contact_professionals_external': Contact.objects.filter_external(
-                                            org_id = request.user.get_profile().org_active.id, 
-                                            person_id = request.user.get_profile().person.id, 
-                                            filter_name = None,
-                                            filter_type = 2
-                                        ),
-                            'AttachTypes': REFERRAL_ATTACH_TYPE,
-                           },
-                          context_instance=RequestContext(request)
-                          )
-    '''
 
     # show just professional that are have subscription in a selected service
     # update 
-    if referral_id:
+    if referral.id:
 
-        form = ReferralForm(instance = referral)
+        form = ReferralForm(instance=referral)
         form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('(Student)'))) for p in CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active, prof_services=referral.service)]
         referral_list = Referral.objects.filter(client=object, status='01')
-
+    
     # new
     else:
 
@@ -573,6 +534,13 @@ def referral_form(request, object_id = None, referral_id = None):
         form.fields['professional'].choices = ()
         referral_list = None
 
+    # group
+    if referral.group:
+        form.fields['group'].initial = referral.group.id
+        form.fields['group'].queryset = ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active).filter(service=referral.service)
+    else:
+        form.fields['group'].queryset = ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active)
+
     # of client
     form.fields['referral'].queryset = Referral.objects.filter(client=object)
     form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
@@ -580,12 +548,6 @@ def referral_form(request, object_id = None, referral_id = None):
 
     total_service = Referral.objects.filter(client=object).count()
 
-    if referral.group:
-        form.fields['group'].initial = referral.group.id
-        form.fields['group'].queryset = ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active).filter(service=referral.service)
-    else:
-        form.fields['group'].queryset = ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active)
-    
     return render_to_response('client/client_referral_form.html',
                               { 'object': object, 
                                 'referral': referral,
@@ -970,7 +932,7 @@ def schedule_daily(request,
         messages.success(request, _('Sorry, you can not book a queued client. Remove it first from queue before continue'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (request.GET.get('client'), referral.id))
     
-    place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0].id
+    place = Place.objects.filter(organization=request.user.get_profile().org_active)[0].id
 
     return _datetime_view(request, template, datetime(int(year), int(month), int(day)), Place, referral = request.GET['referral'], client = request.GET['client'], **params)
 

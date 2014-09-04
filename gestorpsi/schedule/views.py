@@ -353,7 +353,7 @@ def _datetime_view(
         place = Place.objects.get(pk=place, organization=request.user.get_profile().org_active)
     except:
         # Possible to exist more than one place as matriz, filter and get first element
-        place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0]
+        place = Place.objects.filter(organization=request.user.get_profile().org_active)[0]
 
     user = request.user
     timeslot_factory = timeslot_factory or create_timeslot_table

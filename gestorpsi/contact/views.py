@@ -323,10 +323,8 @@ def save_mini(request):
 
     user = request.user
     obj = Organization()
-    array = {} # json
 
     if request.POST.get('label'):
-
         if Organization.objects.filter(short_name=slugify(request.POST.get('label')) ):
             r = True
         else:

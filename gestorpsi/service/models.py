@@ -92,7 +92,7 @@ class Service(models.Model):
     comments = models.TextField(blank=True)
     academic_related = models.BooleanField(_('Academic (supervised) related service'), default=False)
     is_online = models.BooleanField(default=False)
-    color = models.CharField(_('Color'), max_length=6, null=True, help_text=_('Color in HEX Format. Ex: 662393'))
+    color = models.CharField(_('Color'), max_length=6, null=True, help_text=_('Color in HEX Format. Ex: 662393'), default=0)
     
     objects = ServiceManager()
 

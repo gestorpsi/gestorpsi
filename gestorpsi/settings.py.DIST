@@ -26,6 +26,14 @@ ADMINS = (
      ('GestorPsi', 'noreply@domain.com'),
 )
 
+# notification people when new organization subscription
+ADMINS_REGISTRATION = ['seu-email@server.com']
+
+# URL
+URL_HOME = "http://127.0.0.1:8000"
+URL_APP = "http://127.0.0.1:8000"
+URL_DEMO = "http://127.0.0.1:8000"
+SIGNATURE = "GestorPSI Developer"
 
 #EMAIL_FROM = 'GestorPsi <webmaster@gestorpsi.com.br>'
 EMAIL_FROM = '' # eg: noreply@domain.com

@@ -8,86 +8,91 @@
 
 {% block core %}
 
-        {% if not object_list %}
-            <p>{% trans "Não existem organizacoes cadastradas" %}</p>
-        {% else %}
-            <table>
-                <tr>
-                    <th>
-                        <a href="{% url 'org-list' 'name' %}">
-                            {% trans "Organizacao" %}
-                        </a>
-                    </th>
-                    <th>
-                        <a href="{% url 'org-list' 'employee_number' %}">
-                            {% trans "Numero de profissionais" %}
-                        </a>
-                    </th>
-                    <th>
-                        <a href="{% url 'org-list' 'professionalresponsible__name' %}">
-                            {% trans "Profissional responsavel" %}
-                        </a>
-                    </th>
+        <!-- This is the number of professional modal -->
+        {% for o in object_list %}
+            {% if o.care_professionals.count > 5  %}
+                <div id="modal-professional-{{ o.id }}" class="uk-modal">
+                    <div class="uk-modal-dialog">
+                        <a class="uk-modal-close uk-close"></a>
+                        <h2>{{ o.name }}</h2>
+                        {% for c in o.care_professionals.all %}
+                            <b>{{ c }}</b><br />
+                            {% for f in c.phones.all %}{{ f }}<br />{% endfor %}
+                            <br />
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
 
-                    <th>
-                        {% trans "Profissional" %}
-                    </th>
 
-                    <th>
-                        <a href="{% url 'org-list' 'date_created' %}">
-                            {% trans "Data de inscricao" %}
-                        </a>
-                    </th>
-                    <th>
-                        Fone organiza&ccedil;&atilde;o
-                    </th>
-                    <th>
-                        <a href="{% url 'org-list' 'active' %}">
-                            {% trans "Ativo" %}
-                        </a>
-                    </th>
-                </tr>
-
-                {% for object in object_list %}
-                    <tr class="{% cycle 'even' '' %}">
-                        <td>
-                            <a href="{% url 'org-update' object.id %}" class="tag">
-                                {{ object.name }}
-                            </a>
-                        </td>
-                        <td>
-                            {{ object.care_professionals.count }}
-                        </td>
-
-                        <td>
-                            {{ object.professionalresponsible.name }} <br />
-                            {{ object.professionalresponsible.person.phones.all.0.area }} - 
-                            {{ object.professionalresponsible.person.phones.all.0.phoneNumber }}<br /><br />
-                        </td>
-
-                        <td>
-                            {% for c in object.care_professionals.all %}
-                                {{ c }}<br />
-                                {% for f in c.phones.all %}
-                                    {{ f }}<br />
-                                {% endfor %}
-                                <br />
-                            {% endfor %}
-                        </td>
-
-                        <td>{{ object.date_created|date:"d/m/y - h:i" }}</td>
-
-                        <td>
-                            {% if object.phones.all %}
-                                    {% for phone in object.phones.all %}
-                                        {{ phone.area }} - {{ phone.phoneNumber }}<br />
-                                    {% endfor %}
-                            {% endif %}
-                        </td>
-                        <td>{% if object.active %}{% trans "Sim" %}{% else %}{% trans "Não" %}{% endif %}</td>
+        {% if object_list %}
+            {% if object_list.0 %}
+                <table class="uk-table uk-table-hover uk-table-striped uk-table-condensed">
+                  <thead>
+                    <tr>
+                        <th>{% trans "Organizacao" %}</th>
+                        <th>{% trans "Data de inscricao" %}</th>
+                        <th>N&deg; de profissional</th>
+                        <th>{% trans "Profissional responsavel" %}</th>
+                        <th>N&deg; de sala</th>
+                        <th>{% trans "Profissional" %}</th>
+                        <th>Telefone</th>
+                        <th>Ativo</th>
+                        <th>Suspenso</th>
+                        <th>A&ccedil;&atilde;o</th>
                     </tr>
+                  </thead>
 
-                {% endfor %}
-            </table>
+                    {% for object in object_list %}
+                        <tr class="{% cycle 'even' '' %}">
+                            <td><a href="/admin/organization/organization/{{ object.id }}/" class="tag" target='_blank'>{{ object.name }}</a></td>
+
+                            <td>{{ object.date_created|date:"d/m/y" }}</td>
+
+                            <td>
+                                {{ object.care_professionals.count }}
+                            </td>
+
+                            <td>{% if object.professionalresponsible_ %}{{ object.professionalresponsible_ }}{% endif %}</td>
+
+                            <td>{{ object.room_count_ }}</td>
+
+                            <td>
+                                {% if object.care_professionals.count > 5  %}
+                                    <a href="#modal-professional-{{ object.id }}" data-uk-modal>Lista</a>
+                                {% else %}
+                                    {% for c in object.care_professionals.all %}
+                                        <b>{{ c }}</b><br />
+                                        {% for f in c.phones.all %}
+                                            {{ f }}<br />
+                                        {% endfor %}
+                                        <br />
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if object.phones.all %}
+                                    {% for phone in object.phones.all %}
+                                        {{ phone.area }}-{{ phone.phoneNumber }}<br />
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+                            <td>{% if object.active %}{% trans "Sim" %}{% else %}{% trans "Não" %}{% endif %}</td>
+
+                            <td>{% if object.suspension %}{% trans "Sim" %}{% else %}{% trans "Não" %}{% endif %}</td>
+
+                            <td><a href="/admin/gcm/invoice/?q={{ object.name }}" target='_blank'>Fatura</a>
+
+                        </tr>
+
+                    {% endfor %}
+                </table>
+            {% endif %}
+        {% else %}
+            <div class="uk-container uk-container-center uk-width-medium-1-1 uk-text-center">
+                <div class="uk-text-large">Nenhum registro encontrado</div>
+            </div>
         {% endif %}
 {% endblock %}

@@ -87,22 +87,30 @@ class Invoice(models.Model):
             self.ammount = self.organization.prefered_plan.value
             self.plan = self.organization.prefered_plan
 
-        # gratis / register
-        if self.status == 2:
-            self.date_payed = date.today()
-            self.start_date = self.date_payed
-            self.end_date = self.start_date + relativedelta(months=1)
-            self.expiry_date = self.end_date
+        # payed by client
+        if self.status == 1 :
+            if not self.date_payed:
+                self.date_payed = date.today()
+            if not self.bank :
+                self.bank = 2
 
         # status pendente, reset fields
         if self.status == 0 :
             self.bank = None
             self.date_payed = None
 
+        # gratis / register
+        if self.status == 2:
+            self.date_payed = date.today()
+            self.start_date = self.date_payed
+            self.end_date = self.start_date + relativedelta(months=1)
+            self.expiry_date = self.end_date
+            self.payment_type = PaymentType.objects.get(pk=4)
+
         super(Invoice, self).save()
 
         # call method to update org
-        self.organization.automatic_on_()
+        self.organization.save()
 
 
     '''
@@ -117,5 +125,5 @@ class Invoice(models.Model):
         if self.start_date < date.today() and self.end_date < date.today():
             return u'Pass'
 
-        if self.start_date < date.today() and self.end_date > date.today():
+        if self.start_date <= date.today() and self.end_date >= date.today():
             return u'Current'

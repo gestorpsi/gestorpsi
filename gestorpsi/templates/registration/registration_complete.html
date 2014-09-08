@@ -1,17 +1,10 @@
 {% extends "registration/base.html" %}
+
 {% load i18n %}
 {% block title %}{% trans "Registration complete" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Your account has been registered successfully." %}</h1>
-<p>
-	{% trans "Please wait until one of our operators to contact you for payment, and soon your account is enable for use." %}
-	{% if url_boleto %}
-	<br/><br/>
-	<a href="{{url_boleto}}">
-		<img src="{{MEDIA_URL}}img/icone_pdf.gif" style="text-align: center; width: 36px; height: 34px; padding-top: 2px;" />
-		<span style="float: left;">{% trans "Click here to get the billet to test the system payment." %}</span>
-	</a>
-	{% endif %}
-</p>
+    <img src="{{ URL_HOME }}/wp-content/uploads/2012/01/logo1.png" style='margin-bottom:15px; margin-left:17px;'>
+    <h2>{% trans "Your account has been registered successfully." %}</h2>
+    <h2><a href='{{ URL_APP }}'>Clique aqui para comer&ccedil;ar a usar.</a></h2>
 {% endblock %}

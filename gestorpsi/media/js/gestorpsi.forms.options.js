@@ -21,29 +21,30 @@ GNU General Public License for more details.
 var form_mini_options = {
      success: function(response, message, form) {
 
-                if (response == 'IntegrityError') {
-                    alert('Esta organização já está registrada.');
+                if (response == 'True') {
+                    alert('Já existe uma organização com esse nome, tente outro por favor.');
+
                 } else {
-                    // get option label
-                    var text = $(form).children('fieldset').children('label').children('input:text').val();
+                    var id = response.split("|")[1]
+                    var name = response.split("|")[2]
 
-                    //// add <option> to asm select - referral form new 
+                    // add <option> to asm select - referral form new 
 
-                    //// add <option> to asmselect select box
-                    $.form_mini_link.parents('fieldset').children('label').children('select.asmSelect:first').append('<option value='+response+' disabled="disabled">'+text+'</option>');
+                    // add <option> to asmselect select box
+                    $.form_mini_link.parents('fieldset').children('label').children('select.asmSelect:first').append('<option value=' + id + ' disabled="disabled">' + name + '</option>');
 
-                    //// add <option> to asm select box
-                    $.form_mini_link.parents('label').children('select.asm:first').append('<option value='+response+' selected="selected">'+text+'</option>');
+                    // add <option> to asm select box
+                    $.form_mini_link.parents('label').children('select.asm:first').append('<option value=' + id + ' selected="selected">' + name + '</option>');
 
-                    //// add <option> to real multiselect
-                    $.form_mini_link.parents('fieldset').children('label').children('select.multiple').append('<option value='+response+' selected="selected">'+text+'</option>');
+                    // add <option> to real multiselect
+                    $.form_mini_link.parents('fieldset').children('label').children('select.multiple').append('<option value=' + id + ' selected="selected">' + name + '</option>');
 
-                    //// append it to list
-                    $.form_mini_link.parents('fieldset').children('label').children('ol').append('<li style="display: list-item;" class="asmListItem"><span class="asmListItemLabel">'+text+'</span><a class="asmListItemRemove dyn_added">remove</a></li>');
+                    // append it to list
+                    $.form_mini_link.parents('fieldset').children('label').children('ol').append('<li style="display: list-item;" class="asmListItem"><span class="asmListItemLabel">' + name +'</span><a class="asmListItemRemove dyn_added">remove</a></li>');
 
                     // clean form and hide it
-                    $(form).children('fieldset').children('label').children('input:text').val('');
-                    $(form).parents('div.form_mini').hide();
+                    $('form fieldset label input[name="label"]').val('');
+                    $('div.form_mini').hide();
                 }
           },
      error: function() {

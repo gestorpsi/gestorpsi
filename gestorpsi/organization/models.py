@@ -18,6 +18,7 @@ import re
 import reversion
 from datetime import datetime, date
 from django.db import models
+from django.db.models import Q
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import Group
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -217,6 +218,7 @@ class Organization(models.Model):
     comment = models.CharField(max_length=765, blank=True)
     active = models.BooleanField(u'Ativo. Todas as faturas pagas?', default=True)
     suspension = models.BooleanField(u'Cliente suspendeu serviço. Não gera nova fatura ou notificação.', default=False)
+    suspension_reason = models.TextField(u'Motivos da suspensão', blank=True, null=True)
     visible = models.BooleanField(default=True)
     photo = models.CharField(max_length=200, blank=True)          
     phones = generic.GenericRelation(Phone, null=True)
@@ -258,7 +260,7 @@ class Organization(models.Model):
     def save(self, *args, **kwargs):
 
         if not self.id:
-            self.payment_type = default=PaymentType.objects.get(pk=1) 
+            self.payment_type = PaymentType.objects.get(pk=1) 
 
         if self.id: # save original state from register to verify if it has been changed from latest save
             original_state = Organization.objects.get(pk=self.id)
@@ -275,6 +277,17 @@ class Organization(models.Model):
             if Plan.objects.filter(staff_size__gte=self.employee_number, duration=1):
                 self.prefered_plan = Plan.objects.filter(staff_size__gte=self.employee_number, duration=1).order_by('staff_size')[0]
                 self.payment_type = PaymentType.objects.get(pk=1) # cartao
+
+        # suspension
+        if self.suspension == True:
+            self.active = False
+        else:
+            # read only?
+            if self.invoice_()[2]: # one not payed overdue invoice
+                self.active = False
+            else:
+                self.active = True
+                self.suspension_reason = None # clean old data
 
         super(Organization, self).save(*args, **kwargs)
         
@@ -295,12 +308,12 @@ class Organization(models.Model):
                                 person.profile.user.groups.add(new_group) # add user to new group (a readonly group)
                                 person.profile.user.groups.remove(Group.objects.get(name=group.name)) # remove user from past group 
 
-    def __professionalresponsible__(self):
+    def professionalresponsible_(self):
         try:
             return ProfessionalResponsible.objects.filter(organization=self)[0]
         except:
             return None
-    professionalresponsible = property(__professionalresponsible__)
+    professionalresponsible = property(professionalresponsible_)
 
     def revision(self):
         return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
@@ -354,39 +367,39 @@ class Organization(models.Model):
     def is_local(self):
         return True if self.organization else False
 
-    def adminstrators(self):
-        return self.person_set.filter(profile__user__groups__name='administrator').order_by('profile__user__date_joined')
+    def administrators_(self):
+        return self.person_set.filter(Q(profile__user__groups__name='administrator') | Q(profile__user__groups__name='administrator_ro')).order_by('profile__user__date_joined').distinct()
+
+    def secretary_(self):
+        return self.person_set.filter(profile__user__groups__name='secretary').order_by('profile__user__date_joined')
 
     def services(self):
         return self.service_set.filter(active=True)
 
-    '''
-        return value of plan and plan time/duration
-        array[0] = value total ( plan * time )
-        array[1] = time / duration / month
-    '''
-    def payment_(self):
-        r = ['Nenhum']*2
-        try:
-            r[0] = ('R$ %s' % float(self.prefered_plan.value * int(self.payment_type.time) ))
-            r[1] = (u'%s mes(es)' % self.payment_type.time )
-        except:
-            pass
 
-        return r
+
+    '''
+        return number of rooms from org
+    '''
+    def room_count_(self):
+        c = 0 
+        for x in self.place_set.all():
+            c += x.room_set.all().count()
+        return c
+    
 
     '''
         retorna todas as faturas
         array
             0 = proxima
-            1 = corrente
+            1 = corrente/atual
             2 = vencida
 
         filter pago ou não no html
     '''
     def invoice_(self):
 
-        r = [False]*3
+        r = [False]*4
 
         # future
         r[0] = self.invoice_set.filter( start_date__gt=date.today() )
@@ -400,33 +413,15 @@ class Organization(models.Model):
         for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today(), status=0 ).order_by('-date'):
             r[2].append(x)
 
-        # last 6 invoices where status diferent 0
-        for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today() ).order_by('-date').exclude(status=0)[:6]:
-            r[2].append(x)
+        # copy r2
+        import copy
+        r[3] = copy.deepcopy(r[2])
+        for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today, status__gt=0).order_by('-date'):
+            r[3].append(x)
 
         return r
 
 
-
-    '''
-        automatic on
-        call method when save a invoice
-        if all overdue invoice is payed, org work without restriction.
-    '''
-    def automatic_on_(self, *args, **kwargs):
-
-        turn_on = True # default
-
-        for x in self.invoice_()[2]:
-            if x.status == 0 :
-                turn_on = False
-                # one not payed invoice is enough to turn off, stop immediately.
-                break
-
-        self.active = turn_on
-        super(Organization, self).save(*args, **kwargs)
-
-    
     class Meta:
         ordering = ['name']
         permissions = (

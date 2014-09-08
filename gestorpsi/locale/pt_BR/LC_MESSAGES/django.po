@@ -780,11 +780,8 @@ msgid "This client is not enabled."
 msgstr "Nenhum familiar vinculado"
 
 #: client/views.py:166
-msgid ""
-"There's no Service created yet. Please, create one before access Client."
-msgstr ""
-"Nenhum \"Serviço\" foi criado até o momento. Por favor, crie um antes de "
-"acessar \"Clientes\"."
+msgid "There's no Service created yet. Please, create one before access Client, "
+msgstr "Nenhum \"Serviço\" foi criado até o momento. Por favor, crie um antes de acessar \"Clientes\", "
 
 #: client/views.py:340
 msgid "Sorry! You can not save referral for disabled clients!"
@@ -4842,12 +4839,8 @@ msgid "Next"
 msgstr "Próximo"
 
 #: templates/client/client_service_alert.html:26
-msgid ""
-"There's no Service created yet. Please, <a href='/service/add/'>create "
-"one</a> before access Client."
-msgstr ""
-"Nenhum \"Serviço\" foi criado até o momento. Por favor, cadastre um serviço "
-"antes de acessar \"Clientes\"."
+msgid "There's no Service created yet. Please, create one before access Client."
+msgstr "Nenhum \"Serviço\" foi criado até o momento. Por favor, cadastre um serviço antes de acessar \"Clientes\"."
 
 #: templates/contact/contact_list.html:27
 #: templates/contact/contact_list_external.html:27
@@ -6639,11 +6632,9 @@ msgstr "Evento confirmado"
 
 #: templates/schedule/schedule_referral_alert.html:26
 msgid ""
-"There is no client referral created yet. Please <a "
-"href='/client/'>create</a> at least one before start Schedule."
+"There is no client referral created yet. Please create one before start Schedule"
 msgstr ""
-"Nenhuma inscrição foi realizada até o momento. Por favor, inscreva um "
-"cliente antes de acessar a Agenda."
+"Nenhuma inscrição foi realizada até o momento. Por favor, inscreva um cliente antes de acessar a Agenda"
 
 #: templates/schedule/schedule_week.html:40
 msgid "Weekly view"

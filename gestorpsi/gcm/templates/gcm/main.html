@@ -1,131 +1,102 @@
 {% if user.is_superuser %}
-<!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+    <!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
 
-    <head>
-        {% load i18n %}
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title>GestorPsi {% trans "GCM" %} - {% block title %}{% trans "Inicio" %}{% endblock %}</title>
+        <head>
+            {% load i18n %}
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+            <title>GestorPsi {% trans "GCM" %} - {% block title %}{% trans "Inicio" %}{% endblock %}</title>
 
-        <link href="/media/img/gestorpsi.ico" rel="SHORTCUT ICON" />
-        <link rel="stylesheet" href="/media/uikit/css/uikit.min.css" />
-        <script src="/media/uikit/js/jquery.js"></script>
-        <script src="/media/uilit/js/uikit.min.js"></script>
-        <script type="text/javascript" src="/media/js/jquery-1.2.6.min.js"></script>
+            <link href="/media/img/gestorpsi.ico" rel="SHORTCUT ICON" />
+            <link rel="stylesheet" href="/media/uikit/css/uikit.min.css" />
 
-        {% block extrahead %}{% endblock extrahead %}
-    </head>
+            <script src="/media/uikit/js/jquery-1.11.1.js"></script>
+            <script src="/media/uikit/js/uikit.js"></script>
 
-    <body>
-        <div class="uk-container uk-container-center uk-margin-top uk-margin-large-bottom">
-            <nav class="uk-navbar uk-margin-large-bottom">
-                <ul class="uk-navbar-nav uk-hidden-small">
-	                <li><a href="{% url org-pen-list %}" class="uk-button-primary">{% trans "Organizacoes Pendentes" %}</a></li>
-                    <li>
-                        <a href="layouts_portfolio.html">Portfolio</a>
-                    </li>
-                    <li>
-                        <a href="layouts_blog.html">Blog</a>
-                    </li>
-                    <li>
-                        <a href="layouts_documentation.html">Documentation</a>
-                    </li>
-                    <li>
-                        <a href="layouts_contact.html">Contact</a>
-                    </li>
-                    <li>
-                        <a href="layouts_login.html">Login</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
-        <!-- messages -->
-        {% if messages %}
-                {% for message in messages %}
-                    {{ message|safe }}
-                {% endfor %}
-        {% endif %}
-        
-        <!-- core code -->
-        <div class="uk-width-medium-1-1 uk-container uk-container-center">
-        {% block core %}{% endblock %}
-        </div>
-        
-        <div class="uk-container uk-container-center uk-width-medium-1-1">
-            <div class="uk-text-large">GestorPsi © - PRONTU&Aacute;RIOS ELETR&Ocirc;NICOS E GEST&Atilde;O DE SERVI&Ccedil;OS EM PSICOLOGIA</div>
-        </div>
-    </body>
-</html>
-{% endif %}
+            {% block extrahead %}{% endblock extrahead %}
+        </head>
 
 
-    {% comment %}
-            <div class="uk-grid" data-uk-grid-margin>
+        <body>
 
-                <div class="uk-width-medium-1-1">
-                    <table class="uk-table">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>N&ordm; profissionais</th>
-                                <th>Prof. respons&aacute;vel</th>
-                                <th>Inscri&ccedil;&atilde;o</th>
-                                <th>Ativo?</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <td>Org</td>
-                            </tr>
-                        </tfoot>
-                    </table>
+            <!-- export e-mails -->
+            <div id="my-id" class="uk-modal">
+                <div class="uk-modal-dialog uk-modal-dialog-large">
+                    <button class="uk-modal-close uk-close" type="button"></button>
+                    <h2>E-mail do administrador e secretaria das organiza&ccedil;&otilde;es selecionadas ({{ export_email_count }})</h2>
+                    <p>{{ export_email }}</p>
                 </div>
-
-                <div class="uk-width-medium-1-1">
-                    <h2 id="getstarted">Get Started</h2>
-                    <p>Lorem ipsum dolor sit amet, <code>consectetuer adipiscing</code> elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                </div>
-
-                <!--
-                <div class="uk-width-medium-1-4">
-                    <div class="uk-panel uk-panel-box" data-uk-sticky="{top:35}">
-                        <ul class="uk-nav uk-nav-side" data-uk-scrollspy-nav="{closest:'li', smoothscroll:true}">
-                            <li class="uk-nav-header">For Beginners</li>
-                            <li class="uk-active"><a href="#getstarted">Get Started</a></li>
-                            <li class=""><a href="#templatesettings">Template Settings</a></li>
-                            <li class=""><a href="#customizer">Customizer</a></li>
-                            <li class="uk-nav-header">For Developers</li>
-                            <li class=""><a href="#customization">Customizaton</a></li>
-                            <li class=""><a href="#troubleshooting">Troubleshooting</a></li>
-                            <li class="uk-nav-divider"></li>
-                            <li class=""><a href="#faq"><i class="uk-icon-info-circle uk-margin-small-right"></i>FAQ</a></li>
-                        </ul>
-                    </div>
-                </div>
-                -->
-
             </div>
-        </div>
 
-    <div class="uk-width-1-1">
+            <!-- menu filter -->
+            <form class="uk-form" action="{% url org-list %}" method="post">
+                <div class='uk-content uk-width-1-1 uk-container uk-container-center uk-grid-width-*'>
+                    <fieldset>
+                        <legend><a href='{% url gcm-index %}'>GestorPSI GCM</a></legend>
+                        <input type="text" placeholder="nome organiza&ccedil;&atilde;o" name="search_org_name" value="{% if request.session.filter.0 %}{{ request.session.filter.0 }}{% endif %}">
+                        <input type="text" placeholder="inscri&ccedil;&atilde;o inicio 31/12/2000" name='subscription_start' value="{% if request.session.filter.1 %}{{ request.session.filter.1 }}{% endif %}">
+                        <input type="text" placeholder="inscri&ccedil;&atilde;o fim 31/12/2000" name='subscription_end' value="{% if request.session.filter.2 %}{{ request.session.filter.2 }}{% endif %}">
 
-        <h1>{% trans "GestorPSI" %} - {% block section %}{% trans "Controle de clientes" %}{% endblock %}</h1>
-        <div class="menu">
-	        <ul>
-	            <li><a href="{% url org-pen-list %}">{% trans "Organizacoes Pendentes" %}</a></li>
-	            <li><a href="{% url org-list %}">{% trans "Organizacoes" %}</a></li>
-	            <li><a href="{% url invoice-list %}">{% trans "Faturas" %}</a></li>
-	            <li><a href="{% url plan-list %}">{% trans "Planos" %}</a></li>
-    			<li><a href="{% url billet-config %}">{% trans "Configurations" %}</a></li>
-	            <li><a href="{% url gcm-logout %}">{% trans "Sair" %}</a></li>
-	        </ul>
-        </div>
-        <hr />
-        <div class="submenu">
-        {% block submenu %}{% endblock %}
-        </div>
-</div>
+                        <select name="order_by">
+                            <option value="c" {% ifequal request.session.filter.3 'c' %} selected {% endifequal %}>Crescente</option>
+                            <option value="d" {% ifequal request.session.filter.3 'd' %} selected {% endifequal %}>Decrescente</option>
+                        </select>
 
-    {% endcomment %}
+                        <div data-uk-dropdown class="uk-button-dropdown">
+                            <button class="uk-button">Filtros <i class="uk-icon-caret-down"></i></button>
+                            <div class="uk-dropdown uk-dropdown-small">
+                                <ul class="uk-nav uk-nav-dropdown">
+                                    <li>&nbsp;&nbsp;&nbsp;Ativo <input type="checkbox" name="option_active" {% if request.session.filter.4 %} checked {% endif %}></li>
+                                    <li class="uk-nav-divider"></li>
+                                    <li>&nbsp;&nbsp;&nbsp;N&atilde;o ativo <input type="checkbox" name="option_inactive" {% if request.session.filter.5 %} checked {% endif %}></li>
+                                    <li class="uk-nav-divider"></li>
+                                    <li>&nbsp;&nbsp;&nbsp;Suspenso <input type="checkbox" name="option_suspension" {% if request.session.filter.6 %} checked {% endif %}></li>
+                                    <li class="uk-nav-divider"></li>
+                                    <li>&nbsp;&nbsp;&nbsp;N&atilde;o suspenso <input type="checkbox" name="option_notsuspension" {% if request.session.filter.7 %} checked {% endif %}></li>
+                                    <li class="uk-nav-divider"></li>
+                                    <li>&nbsp;&nbsp;&nbsp;Zero cliente <input type="checkbox" name="option_zero_client" {% if request.session.filter.8 %} checked {% endif %}></li>
+                                    <li class="uk-nav-divider"></li>
+                                    <li>&nbsp;&nbsp;&nbsp;Fatura n&atilde;o paga <input type="checkbox" name="option_notpayed_invoice" {% if request.session.filter.9 %} checked {% endif %}></li>
+                                </ul>
+                            </div>
+                        </div>
 
+                        <button class="uk-button uk-button-primary">Ok</button>
+
+                        <a href="/admin/logout/">Sair</a>
+
+                    </fieldset>
+                </div>
+
+                <div class='uk-content uk-width-1-1 uk-container uk-container-center uk-grid-width-*'>
+                    <fieldset>
+                        {% if object_list %}
+                            <button class="uk-button" type="button">Resgistros encontrados {{ object_list.count }}</button>
+                            <a href="#my-id" data-uk-modal>e-mail usu&aacute;rio</a>
+                        {% endif %}
+                    </fieldset>
+                </div>
+            </form>
+
+            <!-- messages -->
+            {% if messages %}
+                    {% for message in messages %}
+                        {{ message|safe }}
+                    {% endfor %}
+            {% endif %}
+            
+            <!-- core code -->
+            <div class="uk-width-medium-1-1 uk-container uk-container-center">
+            {% block core %}{% endblock %}
+            </div>
+            
+            <div class="uk-container uk-container-center uk-width-medium-1-1 uk-text-center">
+                <div class="uk-text-muted">GestorPsi © - PRONTU&Aacute;RIOS ELETR&Ocirc;NICOS E GEST&Atilde;O DE SERVI&Ccedil;OS EM PSICOLOGIA</div>
+                <br />
+                <br />
+                <br />
+            </div>
+
+        </body>
+    </html>
+{% endif %}

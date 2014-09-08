@@ -22,9 +22,7 @@ GNU General Public License for more details.
 
 {% block core %}
 
-<div class="msg_area">
-{% trans "There's no Service created yet. Please, <a href='/service/add/'>create one</a> before access Client." %}
-</div>
+<div class="msg_area">{{ object|safe }}</div>
 
 {% endblock %}
 

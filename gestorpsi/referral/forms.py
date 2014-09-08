@@ -30,7 +30,7 @@ class ReferralForm(forms.ModelForm):
 
     referral = forms.ModelChoiceField(queryset=Referral.objects.all(), required = False, widget=forms.Select(attrs={'class':'extrabig asm', }))
     service = forms.ModelChoiceField(queryset=Service.objects.all(), widget=forms.Select(attrs={'class':'extrabig asm', }))
-    group = forms.ModelChoiceField(queryset=ServiceGroup.objects.all(), required=False, widget=forms.Select(attrs={'class':'extrabig asm', }))
+    group = forms.ModelChoiceField(queryset=ServiceGroup.objects.all(), required=True, widget=forms.Select(attrs={'class':'extrabig asm', }))
 
     #professional = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, choices = (
         #[(i.id, i) for i in CareProfessional.objects.all()]
@@ -50,8 +50,10 @@ class ReferralForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ReferralForm, self).__init__(*args, **kwargs)
         if hasattr(self,'instance') and self.instance.id:
-            if self.instance.service.is_group:
+            #if self.instance.service.is_group:
+            if self.instance.service.is_group and self.instance.group:
                 self.fields['group'].widget.attrs = {'class':'extrabig asm', 'original_state':self.instance.group.id}
+                self.fields['group'].required = True
                 
 
         

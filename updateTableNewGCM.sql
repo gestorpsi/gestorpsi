@@ -1,5 +1,6 @@
 -- settings
-ADMINS_REGISTRATION = ['webmaster@gestorpsi.com.br','tsm@gestorpsi.com.br','ozp@gestorpsi.com.br',]
+-- ADMINS_REGISTRATION = ['webmaster@gestorpsi.com.br','tsm@gestorpsi.com.br','ozp@gestorpsi.com.br',]
+-- URL_HOME, URL_APP, SIGNATURE, URL_DEMO
 
 -- plan
 alter table gcm_plan add column visible_client boolean NULL default "1";
@@ -20,5 +21,6 @@ Alter table gcm_invoice drop due_date;
 
 -- organization
 Alter table organization_organization add suspension boolean NULL default False;
+Alter table organization_organization add suspension_reason text NULL;
 
 COMMIT;

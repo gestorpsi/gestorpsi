@@ -18,8 +18,8 @@ from gestorpsi.gcm.models.plan import Plan
 # main code
 for o in Organization.objects.filter(suspension=False, organization=None):
 
-    # when client do register a automatic invoice will create.
-    # Org had no less than one invoice by paterns
+    # when client do register a automatic invoice will be created.
+    # Org have no less than one invoice by default roles system invoice.
     try:
         last = Invoice.objects.filter(organization=o).latest('end_date')
     except:
@@ -52,5 +52,6 @@ for o in Organization.objects.filter(suspension=False, organization=None):
         i.end_date = i.start_date + relativedelta(months=1)
         i.payment_type = o.payment_type
         i.ammount = o.prefered_plan.value
+        i.plan = o.prefered_plan
         i.status = 0 # pendente
         i.save()

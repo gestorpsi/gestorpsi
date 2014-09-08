@@ -1,0 +1,102 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block vertical_menu %} - {% trans "My Organization" %}{% endblock %}
+
+{% block submenu %}
+    <ul id="sub_organization">
+        <li><a href="{% url organization-signature %}">{% trans "Signature" %}</a></li>
+        <li><a class='first active'href="{% url organization-suspension %}">{% trans "Suspender" %}</a></li>
+    </ul>
+{% endblock %}
+
+{% block core %}
+
+    <h2 class="title_signature title">{{ obj }}</h2>
+    <p class="description"> {% trans "Assinatura da organiza&ccedil;&atilde;o" %}<br /></p>
+
+    <form action="{% url organization-suspension %}" method="post" class="form_people">	
+        <div class="main_area">
+
+            <!-- plan and payment area -->
+            <fieldset class="signature organization">
+
+                <legend>{% trans "Suspender assinatura" %}</legend>
+
+                    <div>
+                        <h3>Suspendendo a assinatura voc&ecirc; vai poder apenas consultar os dados no sistema, n&atilde;o poder&aacute; inserir novas informa&ccedil;&otilde;es. Voc&ecirc; pode voltar a usar o GestorPSI a qualquer momento, basta <a href='/support/ticket/form/'>entrar em contato.</a></h3>
+
+                        <label>{% trans "Deseja suspender a assinatura?" %}<br />
+                            <input type='checkbox' name='suspension_confirm' {% if obj.suspension %} checked disabled {% endif %}> Sim
+                        </label>
+                    </div>
+
+                    {% if not obj.suspension %}
+                        <div>
+                            <label>Motivo
+                                <br />
+
+                                <input name='suspension_reason' type='checkbox' value="N&atilde;o tive tempo de testar o sistema durante o per&iacute;odo de experimenta&ccedil;&atilde;o"> N&atilde;o tive tempo de testar o sistema durante o per&iacute;odo de experimenta&ccedil;&atilde;o.<br />
+                                <input name='suspension_reason' type='checkbox' value="O sistema n&atilde;o possui funcionalidades que atendam as minhas necessidades"> O sistema n&atilde;o possui funcionalidades que atendam as minhas necessidades.<br />
+                                <input name='suspension_reason' type='checkbox' value="Houve resist&ecirc;ncia ao uso do sistema no meu estabelecimento"> Houve resist&ecirc;ncia ao uso do sistema no meu estabelecimento.<br />
+                                <input name='suspension_reason' type='checkbox' value="Os valores cobrados est&atilde;o al&eacute;m das minhas possibilidades"> Os valores cobrados est&atilde;o al&eacute;m das minhas possibilidades.<br />
+                                <input name='suspension_reason' type='checkbox' value="Tive dificuldades para entender o funcionamento do sistema"> Tive dificuldades para entender o funcionamento do sistema.<br />
+                                <input name='suspension_reason' type='checkbox' value="Outros motivos"> Outros motivos.
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>Outro motivo
+                                <br />
+                                <textarea name='other_reason' class='extrabig'></textarea>
+                            </label>
+                        </div>
+                    {% endif %}
+
+
+                    {% if obj.suspension %}
+                        <div>
+                            <label>Motivo
+                                <br />
+                                <textarea class='extrabig' readonly>{{ obj.suspension_reason }}</textarea>
+                            </label>
+                        </div>
+                    {% endif %}
+
+            </fieldset>
+
+            <div style='height: 10px;'></div>
+
+        </div><!-- main area -->
+
+        <!-- save buttom -->
+        {% if perms.organization.organization_write %}
+            <div id="sidebar" class="sidebar">
+                <div class="bg_blue">
+                    {% include "tags/save.html" %}
+                </div>
+            </div>
+        {% endif %}
+
+        <br />
+
+    </form><!-- end form pagamento -->
+
+{% endblock %}

@@ -18,14 +18,13 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-{% block menu_myoffice %}active{% endblock %}
-
 {% block vertical_menu %} - {% trans "My Organization" %}{% endblock %}
 
 {% block submenu %}
-		<ul id="sub_organization">
-			<li><a display="signature" class="first active organization" href="#">{% trans "Signature" %}</a></li>
-		</ul>
+    <ul id="sub_organization">
+        <li><a class="first active" href="{% url organization-signature %}">{% trans "Signature" %}</a></li>
+        <li><a href="{% url organization-suspension %}">{% trans "Suspender" %}</a></li>
+    </ul>
 {% endblock %}
 
 {% block core %}
@@ -33,7 +32,7 @@ GNU General Public License for more details.
     <h2 class="title_signature title">{{ obj }}</h2>
     <p class="description"> {% trans "Assinatura da organiza&ccedil;&atilde;o" %}<br /></p>
 
-    <form action="/organization/signature/" method="post" class="form_people">	
+    <form action="{% url organization-signature %}" method="post" class="form_people">	
         <div class="main_area">
 
             <!-- plan and payment area -->
@@ -43,19 +42,7 @@ GNU General Public License for more details.
 
                 <div>
                     <label>{% trans "Inscription date" %}<br />
-                    <input type="text" value="{{ obj.date_created }}" readonly  />
-                    {% comment %}
-                    <br/>
-                    {% if inscription.0 %}
-                        {% if inscription.0.date_payed %}
-                            {% trans "Payed " %}{{inscription.0.ammount}}
-                        {% else %}
-                            {% trans "Not payed " %}{{inscription.0.ammount}}
-                        {% endif %}
-                    {% else %}
-                        {% trans "Inscription not done" %}
-                    {% endif %}
-                    {% endcomment %}
+                        <input type="text" value="{{ obj.date_created }}" readonly  />
                     </label>
                 </div>
                 
@@ -115,78 +102,6 @@ GNU General Public License for more details.
                 </div>
             </div>
         {% endif %}
-
-    </form><!-- form org save -->
-
-    {% comment %}
-    <!-- form pagamento -->
-    <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
-        <div class="main_area">
-            <fieldset class="signature organization">
-                
-                    <legend>{% trans "Valor e plano para pr&oacute;xima fatura" %}</legend>
-
-                    <!-- show values combination between plan and payment type -->
-                    <div class='main_area' id='show_values' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
-                        <label>{% trans "Valor" %}<br />
-                            <input type="text" name="valor_plano" readonly='1' value='{{ obj.payment_.0 }}' style='text-align: center;' />
-                        </label>
-
-                        <label>{% trans "Tempo / Dura&ccedil;&atilde;o" %}<br />
-                            <input type="text" name="tempo_plano" readonly='1' value='{{ obj.payment_.1 }}' style='text-align: center;' class='big'>
-                        </label>
-                    </div>
-
-
-                <!-- pagseguro boleto -->
-                {% if obj.invoice_.0 or obj.invoice_.1 %}
-                    <div id='pagseguro_boleto' style='text-align: center; display: block; margin-top:10px;'>
-                        <h3>Fazer pagamento</h3>
-                        <div style='height: 10px;'></div>
-                        <div class='contact'>
-                                <!-- Campos obrigat&oacute;rios -->  
-                                <input name="receiverEmail" type="hidden" value="ozp@psico.net">  
-                                <input name="currency" type="hidden" value="BRL">  
-
-                                <!-- Itens do pagamento (ao menos um item &eacute; obrigat&oacute;rio) -->  
-                                <input name="itemId1" type="hidden" value="0001">  
-                                <input name="itemDescription1" type="hidden" value="ura GestorPSI por 3 meses ">  
-                                <input name="itemAmount1" type="hidden" value="90.00">  
-                                <input name="itemQuantity1" type="hidden" value="1">  
-                                <input name="itemWeight1" type="hidden" value="1000">  
-
-                                <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->  
-                                <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}">  
-
-                                <!-- Dados do comprador (opcionais) -->  
-                                <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">  
-                                <input name="senderPhone" type="hidden" value="{{ obj.administrator.0.get_firtst_phone }}">  
-                                <input name="senderEmail" type="hidden" value="{{ obj.administrator.0.get_first_email }}">  
-
-                                <!-- submit do form (obrigat&oacute;rio) -->  
-                                <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/120x53-pagar.gif"/>  
-                        </div>
-                    </div>
-                {% endif %}
-
-
-                <!-- pagseguro cartao botao -->
-                {% for p in plans %}
-                    {% if p.pagseguro_code %}
-                        <div id='pagseguro_cartao{{ p.id }}' style="text-align:center; margin-top:10px; display: none;" />
-                            {% if obj.invoice_.0 or obj.invoice_.1 or obj.invoice_.2 %}
-                                    <h3>Fazer pagamento</h3>
-                                    <div style='height: 10px;'></div>
-                                    <div class='contact'>{{ p.pagseguro_code|safe }}</div>
-                                    <div style='height: 10px;'></div>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-
-            </fieldset>
-
-            {% endcomment %}
 
             <br />
         </div>
@@ -269,7 +184,7 @@ GNU General Public License for more details.
 
                 {% if obj.invoice_.1 %}
                     <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
-                        <h3>Assinatura corrente</h3>
+                        <h3>Assinatura atual</h3>
                             <table style='margin-left:10px; width:100%;'>
                                 <tr style='width:100%;'>
                                     <th style='width:30%;'>Plano</th>
@@ -329,7 +244,7 @@ GNU General Public License for more details.
                 {% endif %}
 
 
-                {% if obj.invoice_.2 %}
+                {% if obj.invoice_.3 %}
                     <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
                         <h3>Assinatura vencida</h3>
                             <table style='margin-left:10px; width:100%;'>
@@ -342,7 +257,7 @@ GNU General Public License for more details.
                             </table>
 
                             <table style='margin-left:0px; width:100%;'>
-                                {% for x in obj.invoice_.2 %}
+                                {% for x in obj.invoice_.3 %}
                                     <tr>
                                         <th style='width:30%; font-weight:normal;'>{{ x.plan }}</th>
                                         <th style='width:15%; font-weight:normal;'>{{ x.start_date }}</th>
@@ -391,6 +306,7 @@ GNU General Public License for more details.
 
             </fieldset>
             <br />
+
         </div><!-- main area -->
 
 {% endblock %}

@@ -516,7 +516,9 @@ def referral_form(request, object_id=None, referral_id=None):
                 msg = _('Referral saved successfully')
                 messages.success(request, _(msg))
                 return HttpResponseRedirect(url % (object_id, data.id))
-
+        #else:
+            #print '---------- ERRO '
+            #print form.errors
 
     # show just professional that are have subscription in a selected service
     # update 

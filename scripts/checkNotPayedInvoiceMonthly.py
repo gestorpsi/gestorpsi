@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+    Check all org. If org have one or more not payed invoice
+    call object.save() to check. Method save check not payed invoices.
+'''
+
 import sys
 from os import environ
 
@@ -11,5 +16,4 @@ from gestorpsi.organization.models import Organization
 
 # main code
 for o in Organization.objects.filter(suspension=False, organization=None):
-    # call method
-    o.automatic_on_()
+    o.save()

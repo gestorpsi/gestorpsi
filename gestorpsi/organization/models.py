@@ -238,10 +238,10 @@ class Organization(models.Model):
     prefered_plan.verbose_name = _("Preferred plan")
     prefered_plan.help_text= _("The plan the organization will use next time the system gives a billet.")
     
-    # is old, remove next alteration. Can be used org.invoice_() method to check
-    current_invoice = models.ForeignKey(Invoice, null=True, blank=True, related_name='current_invoice')
-    current_invoice.verbose_name = _("Current invoice")
-    current_invoice.help_text= _("Field used by the system DON'T change it.")
+    # is old, to remove next alteration. Can be used org.invoice_() method to check
+    #current_invoice = models.ForeignKey(Invoice, null=True, blank=True, related_name='current_invoice')
+    #current_invoice.verbose_name = _("Current invoice")
+    #current_invoice.help_text= _("Field used by the system DON'T change it.")
     #current_invoice.editable = False
 
     payment_type = models.ForeignKey(PaymentType, null=True, blank=True)

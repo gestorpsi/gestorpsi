@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+    script used to migrantion for new GCM
+    all invoices was deleted
+    create a new invoice for each organization
+'''
+
 import sys
 from os import environ
 
@@ -32,7 +38,7 @@ for o in Organization.objects.filter(suspension=False, organization=None):
         o.payment_type = PaymentType.objects.get(pk=1) # credit card
         o.save()
 
-    # can not be None
+    # can not be None / Check how many professional are subscribed.
     if o.prefered_plan == None:
         o.prefered_plan = Plan.objects.get(pk=2) # 1 professional
         o.save()

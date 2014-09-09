@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+    script used to create next invoice
+    create a new invoice for each organization
+'''
+
 import sys
 from os import environ
 
@@ -19,12 +24,11 @@ from gestorpsi.gcm.models.invoice import Invoice
 
 # check all invoices that will be expire 10 days from today.
 end = date.today() +timedelta(10) # corret
-end = date.today() -timedelta(4)  # teste
+#end = date.today() -timedelta(4)  # teste
 
 
 # main code
 for x in Invoice.objects.filter(end_date=end):
-    print x
 
     """
         contratos
@@ -42,7 +46,7 @@ for x in Invoice.objects.filter(end_date=end):
     i.ammount = x.organization.prefered_plan.value
     i.plan = x.organization.prefered_plan
     i.status = 0 # pendente
-    #i.save()
+    i.save()
 
     to = [] # send mail to
     # administratror
@@ -67,7 +71,7 @@ for x in Invoice.objects.filter(end_date=end):
     text += u"Quer suspender sua assinatura? Clique aqui %s/organization/suspension/\n\n%s" % ( URL_APP, SIGNATURE )
 
     msg = EmailMessage()
-    msg.subject = u'Nova assinatura está disponível para pagamento - gestorpsi.com.br'
+    msg.subject = u'Assinatura disponível para pagamento - gestorpsi.com.br'
     msg.body = text
     msg.to = to
     msg.send()

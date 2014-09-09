@@ -314,9 +314,11 @@ def register(request, success_url=None,
     context = RequestContext(request)
     for key, value in extra_context.items():
         context[key] = callable(value) and value() or value
-    return render_to_response(template_name,
-                              { 'form': form },
-                              context_instance=context)
+    return render_to_response(
+                template_name,
+                { 'form': form },
+                context_instance=RequestContext(request)
+            )
 
 
 
@@ -330,7 +332,7 @@ def complete(request, success_url=None, extra_context=None):
 
     return render_to_response('registration/registration_complete.html',
                 locals(),
-                context_instance=context
+                context_instance=RequestContext(request)
             )
 
     '''

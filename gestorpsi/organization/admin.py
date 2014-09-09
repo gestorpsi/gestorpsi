@@ -71,21 +71,11 @@ def turnon(modeladmin, request, queryset):
 turnon.short_description = "Ativar organização"
 
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ('name','id','active','trade_name','short_name','care_professional')
-    list_filter = ['active']
-    search_fields = ['name','trade_name','short_name','id','profile_set__person__emails']
+    list_display = ('name','id','active','suspension','trade_name','short_name')
+    list_filter = ['active',]
+    search_fields = ['name','trade_name','short_name','id']
     actions = [turnoff, turnon]
 
-
-    def care_professional(self, obj):
-        from django.contrib.auth.models import User
-        s = ''
-        for x in User.objects.filter( profile__organization__id=obj.id ).distinct():
-            s += u'%s ' % ( x.profile.person.name )
-            for e in x.profile.person.emails.all():
-                s += u'<%s> , ' % e
-        return s
-        
 
 class ProfessionalResponsibleAdmin(admin.ModelAdmin):
     form = ProfessionalResponsibleForm

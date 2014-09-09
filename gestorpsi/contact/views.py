@@ -308,19 +308,36 @@ def contact_professional_save(request, object_id = None):
     messages.success(request, _('Professional contact saved successfully'))
     return HttpResponseRedirect('/contact/form/professional/%s/' % (object.id))
 
+
+
+'''
+    save organization as contact
+    short_name field is unique, return 0, don't save
+    return array: [0] = True or False / exsit or not
+                  [1] = id
+                  [2] = name
+                  to append in select.
+'''
 @permission_required_with_403('contact.contact_write')
 def save_mini(request):
-    user = request.user
-    object = Organization()
-    if request.POST.get('label'):
-        object.name = request.POST.get('label') # adding by mini form
-        object.short_name = slugify(request.POST.get('label'))
-        object.organization = user.get_profile().org_active
-        object.contact_owner = user.get_profile().person
-        object.save()
-        return HttpResponse("%s" % (object.id))
 
-    return HttpResponse("IntegrityError")
+    user = request.user
+    obj = Organization()
+
+    if request.POST.get('label'):
+        if Organization.objects.filter(short_name=slugify(request.POST.get('label')) ):
+            r = True
+        else:
+            obj.name = request.POST.get('label') # adding by mini form
+            obj.short_name = slugify(request.POST.get('label'))
+            obj.organization = user.get_profile().org_active
+            obj.contact_owner = user.get_profile().person
+            obj.save()
+            r = u"%s|%s|%s" % (False, obj.id, obj.name)
+
+    return HttpResponse(r)
+
+
 
 @permission_required_with_403('contact.contact_write')
 def save_mini_professional(request):

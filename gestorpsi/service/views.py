@@ -246,7 +246,6 @@ def save(request, object_id=''):
     """ Modalities """
     object.modalities.clear()
     for m in request.POST.getlist('modalities'):
-        print m
         object.modalities.add(Modality.objects.get(pk=m))
 
     """ Age Group """

@@ -45,7 +45,12 @@ def professional_responsible_save(request, object, ids, names, subscriptions, or
 
     ProfessionalResponsible.objects.filter(organization=object).delete()
 
+<<<<<<< HEAD
     if len(names) > 0 :
+=======
+    # required
+    if range(len(names)) > 0 :
+>>>>>>> 1ec05bceedc707385bf4e286441a68324682e667
         for x in range(len(names)):
             obj = []
 
@@ -57,9 +62,16 @@ def professional_responsible_save(request, object, ids, names, subscriptions, or
                 # Whit Profession of the Professional
                 if names[x]:
                     obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x], profession=get_object_or_None(Profession, pk=professions[x])))
+<<<<<<< HEAD
 
             if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):
                 obj.save()
+=======
+
+            if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):
+                obj.save()
+
+>>>>>>> 1ec05bceedc707385bf4e286441a68324682e667
 
 
 @permission_required_with_403('organization.organization_read')
@@ -134,14 +146,14 @@ def save(request):
     user = request.user
 
     try:
-	    object = Organization.objects.get(pk= user.get_profile().org_active.id)
+        object = Organization.objects.get(pk= user.get_profile().org_active.id)
     except:
         object = Organization()
         object.short_name = slugify(request.POST['name'])
     
     if (object.short_name != request.POST['short_name']):
         if (Organization.objects.filter(short_name__iexact = request.POST['short_name']).count()):
-	        return HttpResponse("false")
+            return HttpResponse("false")
         else:
             object.short_name = request.POST['short_name']
     
@@ -231,7 +243,7 @@ def list_prof_org(request, org_id = None):
     organization signature save
     Tiago de Souza Moraes 20/06/2014
 '''
-@permission_required_with_403('organization.organization_write')
+#@permission_required_with_403('organization.organization_write')
 def signature_save(request):
 
     user = request.user
@@ -253,5 +265,36 @@ def signature_save(request):
             'plans': Plan.objects.filter( active=True ).order_by('weight'),
             'invoices': Invoice.objects.filter(organization=object, status=1).order_by('date'), 
             'payment_type': PaymentType.objects.filter(active=True, show_to_client=True).order_by('-name'),
+            },
+            context_instance=RequestContext(request))
+
+
+"""
+    suspension signature of organization
+    register reason to suspension organization
+"""
+def suspension(request):
+
+    obj = Organization.objects.get(pk=request.user.get_profile().org_active.id) # get org from logged user
+
+    if request.POST and request.POST.get('suspension_confirm'):
+
+        r = u"Conta suspensa dia %s\n\n" %  datetime.today().strftime("%d %B %Y, %H:%m")
+        for x in request.POST.getlist('suspension_reason'):
+            r += u"%s\n\n" % x
+
+        if request.POST.get('other_reason'):
+            r += request.POST.get('other_reason')
+
+        obj.suspension = True
+        obj.suspension_reason = r
+        obj.save()
+
+        messages.success(request, _('Organization details saved successfully') )
+        return HttpResponseRedirect('/organization/suspension/')
+
+    else:
+        return render_to_response('organization/organization_signature_suspension.html', {
+            'obj': obj,
             },
             context_instance=RequestContext(request))

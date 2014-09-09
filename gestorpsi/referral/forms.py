@@ -51,7 +51,9 @@ class ReferralForm(forms.ModelForm):
         super(ReferralForm, self).__init__(*args, **kwargs)
         if hasattr(self,'instance') and self.instance.id:
             if self.instance.service.is_group:
+            #if self.instance.service.is_group and self.instance.group:
                 self.fields['group'].widget.attrs = {'class':'extrabig asm', 'original_state':self.instance.group.id}
+                self.fields['group'].required = True
                 
 
         

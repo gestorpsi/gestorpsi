@@ -14,8 +14,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.conf.urls.defaults import *
-from gestorpsi.organization.views import form, save, shortname_is_available, make_second_copy, signature_save
+from django.conf.urls.defaults import patterns, url
+from gestorpsi.organization.views import form, save, shortname_is_available, make_second_copy, signature_save, suspension
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
@@ -25,4 +25,5 @@ urlpatterns = patterns('',
     (r'^second_copy/(?P<invoice>.*)/$', (make_second_copy)),
 
     url(r'^signature/$', login_check(signature_save), name='organization-signature'),
+    url(r'^suspension/$', login_check(suspension), name='organization-suspension'),
 )

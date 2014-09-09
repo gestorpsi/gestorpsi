@@ -118,13 +118,12 @@ GNU General Public License for more details.
                 <select id="id_service" class="extrabig asm{% if referral.id %} check_change{% endif %}" name="service" original_state="{{ referral.service.id }}">
                     <option value="">---------</option>
                     {% for s in services %}
-                    <option{% if referral %}{% ifequal referral.service s %} selected {% endifequal %}{% endif %} value="{{ s.id }}" is_group="{% if s.is_group %}True{% else %}False{% endif %}"{% if s.is_group and not s.servicegroup_set.all %} disabled{% endif %}>{{ s }}{% if s.is_group and not s.servicegroup_set.all %} ({% trans "Empty" %}){% endif %}</option>
+                        <option{% if referral %}{% ifequal referral.service s %} selected {% endifequal %}{% endif %} value="{{ s.id }}" is_group="{% if s.is_group %}True{% else %}False{% endif %}"{% if s.is_group and not s.servicegroup_set.all %} disabled{% endif %}>{{ s }}{% if s.is_group and not s.servicegroup_set.all %} ({% trans "Empty" %}){% endif %}</option>
                     {% endfor %}
                 </select>
             </label>
             
-            <label class="referral_group{% if referral.id %} check_change{% endif %}"{% if not referral.service.is_group %} style="display:none;"{% endif %}>{% trans "Subscribe this customer in a group" %}<br />
-                {{ referral_form.group }}
+            <label class="referral_group {% if referral.id %} check_change {% endif %} " {% if not referral.service.is_group %} style="display:none;" {% endif %}>{% trans "Subscribe this customer in a group" %} <br /> {{ referral_form.group }}
             </label>
     </fieldset>
             

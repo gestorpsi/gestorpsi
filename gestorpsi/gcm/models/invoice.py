@@ -1,26 +1,23 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 """
 
-from django import forms
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from datetime import datetime, date, timedelta
+from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 
-#from gestorpsi.organization.models import Organization
+from gestorpsi.gcm.models.payment import PaymentType
 from gestorpsi.gcm.models.plan import Plan
-
-from datetime import datetime
 
 
 INVOICE_STATUS_CHOICES = (
-    (1, _('Emitido')),
-    (2, _('Pago')),
-    (3, _('Excluido')),
+    (0, _(u'Pendente')),
+    (1, _(u'Pago pelo Cliente')),
+    (2, _(u'Pago / 1 mês grátis')),
 )
 
 INVOICE_TYPES = (
@@ -28,22 +25,35 @@ INVOICE_TYPES = (
     ('2', _('Monthly fee')),
 )
 
+PAYMENT_WAY = (
+    ('1', _(u'Boleto')),
+    ('2', _(u'Cartão crédito')),
+)
+
+BANK = (
+    ('1', _(u'PagSeguro cartão crédito')),
+    ('2', _(u'PagSeguro boleto')),
+    ('99', _(u'Depósito em conta')),
+)
+
 
 class Invoice(models.Model):
     type = models.CharField(max_length=2, null=False, blank=False, choices=INVOICE_TYPES, default='2')
     
     organization = models.ForeignKey('organization.Organization', verbose_name=_('Organizacao'))
-    date = models.DateTimeField(_('Data'), auto_now_add=True)
+    date = models.DateTimeField(_('Data'), auto_now_add=True) # data que foi gerado
     
-    date_payed = models.DateField(_('Data do Pagamento'), null=True, blank=True)
-    date_payed.help_text=_('Preencher apenas quando efetuado pagamento. Formato dd/mm/aaaa. Ex.: 16/12/2009')
+    date_payed = models.DateField(_(u'Data do Pagamento'), null=True, blank=True)
+    date_payed.help_text=_('Preencher apenas quando efetuado pagamento. Formato aaaa/mm/dd Ex: 2014-12-31')
     
-    due_date = models.DateField(_('Data do Vencimento'), null=True, blank=True)
-    due_date.help_text=_('Formato dd/mm/aaaa. Ex.: 16/12/2009')
+    start_date = models.DateField(_(u'Data início periodo'), null=False, blank=False)
+    start_date.help_text=_('Formato aaaa/mm/dd Ex: 2014-12-31')
+
+    end_date = models.DateField(_(u'Data do fim Periodo'), null=False, blank=False) # vencimento e sem acesso ao sistema
+    end_date.help_text=_('Formato aaaa/mm/dd Ex: 2014-12-31')
     
     expiry_date = models.DateField(_('Data de Expiracao'), null=True, blank=True)
-    expiry_date.help_text = _('Formato dd/mm/aaaa. Ex.: 10/12/2009. Data em que o plano vence (na qual o cliente deixara de ter acesso ao sistema).')
-    expiry_date.widget = forms.TextInput(attrs={"format": "%d/%m/%Y",})
+    expiry_date.help_text = _('Formato aaaa/mm/dd  Ex: 2014-12-31 Data em que o plano vence. Conta do cliente modo apenas leitura.')
     
     ammount = models.DecimalField(_('Valor'), decimal_places=2, max_digits=8, null=True, blank=True)
     ammount.help_text=_('Utilizar pontos, nao virgulas. Ex.: 39.90')
@@ -51,14 +61,13 @@ class Invoice(models.Model):
     discount = models.DecimalField(_('Desconto'), decimal_places=2, max_digits=8, null=True, blank=True)
     discount.help_text=_('Valor para desconto. Utilizar apenas valores decimais aqui, NAO porcentagem. Ex.: 5.90')
     
-    status = models.IntegerField(_('Estado'), choices=INVOICE_STATUS_CHOICES, default=1)
+    payment_type = models.ForeignKey(PaymentType, null=False, blank=False, related_name='payment_type', verbose_name='Forma de pagamento') # from org choosen
+
+    status = models.IntegerField(_(u'Situação'), choices=INVOICE_STATUS_CHOICES, default=0)
     plan = models.ForeignKey(Plan, verbose_name=_('Plan'), null=True, blank=True)
-    billet_url = models.CharField(max_length=255, null=True, blank=True)
-    
-    billet_url.verbose_name = _("Billet URL")
-    billet_url.help_text = _("URL of the billet to pay this invoice")
-    
-    
+
+    bank = models.CharField(_('Banco'), choices=BANK, max_length=3, null=True, blank=True)
+    payment_detail = models.TextField(_(u'Detalhes do pagamento'), null=True, blank=True)
     
     class Meta:
         app_label = 'gcm'
@@ -67,25 +76,54 @@ class Invoice(models.Model):
     def __unicode__(self):
         return u'%s - %s %s' % (self.organization, self.date.strftime('%d/%m/%Y'), self.plan)
     
-    def dued(self):
-        return self.due_date < datetime.today()
-            
+    #def dued(self):
+        #return self.due_date < datetime.today()
     
-    def save(self):
-        if self.plan is not None and self.plan != '':
-            self.ammount = self.plan.value
-            if self.date is None:
-                self.date = datetime.now()
-            self.expire_date = (self.date + relativedelta(months = int(self.plan.duration)))
+    def save(self, *args, **kargs):
 
-        if self.status < 3:
-            if self.date_payed is None:
-                self.status = 1 #emitido
-            else:
-                self.status = 2 #pago
-            
+        # new
+        if not self.id:
+            self.date = datetime.now()
+            self.ammount = self.organization.prefered_plan.value
+            self.plan = self.organization.prefered_plan
+
+        # payed by client
+        if self.status == 1 :
+            if not self.date_payed:
+                self.date_payed = date.today()
+            if not self.bank :
+                self.bank = 2
+
+        # status pendente, reset fields
+        if self.status == 0 :
+            self.bank = None
+            self.date_payed = None
+
+        # gratis / register
+        if self.status == 2:
+            self.date_payed = date.today()
+            self.start_date = self.date_payed
+            self.end_date = self.start_date + relativedelta(months=1)
+            self.expiry_date = self.end_date
+            self.payment_type = PaymentType.objects.get(pk=4)
+
         super(Invoice, self).save()
-        #raise Exception(self.status)
-            
+
+        # call method to update org
+        self.organization.save()
 
 
+    '''
+        Is future, current or pass invoice?
+        Most easy to find a invoice when manager invoices from org in admin page
+    '''
+    def situation_(self, *args, **kargs):
+
+        if self.start_date > date.today():
+            return u'Future'
+
+        if self.start_date < date.today() and self.end_date < date.today():
+            return u'Pass'
+
+        if self.start_date <= date.today() and self.end_date >= date.today():
+            return u'Current'

@@ -107,37 +107,41 @@ GNU General Public License for more details.
 
 </ul>
 
-{% if referral %}
+{% if referral.id %}
     <h3>{% trans 'Referral Details' %}</h3>
     <ul>
         <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/" class="client_services" title="{{ object.person.name }}">{% trans "Referral Home" %}</a></li>
-    {% if not referral_discharged and access_check_referral_write %}
-        <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/form/" class="referral_edit" title="{{ object.person.name }}">{% trans "Change Referral" %}</a></li>
-    {% endif %}
+        {% if not referral_discharged and access_check_referral_write %}
+            <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/form/" class="referral_edit" title="{{ object.person.name }}">{% trans "Change Referral" %}</a></li>
+        {% endif %}
         {# <li><a href="/client/{{ object.id }}/home/" class="client_home" title="{{ object.person.name }}">{% trans "Schedule" %}</a></li> #}
         {# <li><a href="/client/{{ object.id }}/" class="client_form" title="{{ object.person.name }}">{% trans "Treatment Registers" %}</a></li> #}
         <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/upcoming/" class="client_calendar" title="{{ object.person.name }}">{% trans "Upcoming Occurrences" %}</a></li>
         <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/past/" class="client_calendar" title="{{ object.person.name }}">{% trans "Past Occurrences" %}</a></li>
     </ul>
-    {% if not referral_discharged %}
-    <h3>{% trans 'Referral Actions' %}</h3>
-    <ul>
-        <li><a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}" class="client_calendar" title="{{ object.person.name }}">{% trans "Schedule Client" %}</a></li>
-        {% if referral.id %}
-            <li><a href="/client/{{ object.id }}/referral/plus/{{ referral.id }}/form/" class="client_referral_form" title="{{ object.person.name }}">{% trans "Internal Referral" %}</a></li>
-            <li><a href="/client/{{ object.id }}/referral/ext/{{ referral.id }}/form/" class="client_referral_ext_form" title="{{ object.person.name }}">{% trans "External Referral" %}</a></li>
-        {% endif %}
-        {% if not referral.referraldischarge_set.all %}
-        <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/discharge/" class="client_referral_discharge" title="{{ object.person.name }}">{% trans "Service Discharge" %}</a></li>
-        {% endif %}
-        <li><a class="client_messages" href="/client/{{ object.id }}/referral/{{ referral.id }}/messages/" title="{{ object.person.name }}">{% trans "Messages" %}</a></li>
-        <li><a href="/upload/client/{{ object.id }}/attach/{{ referral.id }}" title="{{ object.person.name }}">{% trans "Attach Document" %}</a></li>
-        {% if not user.profile.person.careprofessional.studentprofile  and access_check_referral_write %}
-            <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/" title="{{ object.person.name }}">{% trans "Queue (add/remove)" %}</a></li>
-        {% endif %}
 
+    {% if not referral_discharged %}
+        <h3>{% trans 'Referral Actions' %}</h3>
+        <ul>
+            <li><a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}" class="client_calendar" title="{{ object.person.name }}">{% trans "Schedule Client" %}</a></li>
+
+            {% if referral.id %}
+                <li><a href="/client/{{ object.id }}/referral/plus/{{ referral.id }}/form/" class="client_referral_form" title="{{ object.person.name }}">{% trans "Internal Referral" %}</a></li>
+                <li><a href="/client/{{ object.id }}/referral/ext/{{ referral.id }}/form/" class="client_referral_ext_form" title="{{ object.person.name }}">{% trans "External Referral" %}</a></li>
+            {% endif %}
+
+            {% if not referral.referraldischarge_set.all %}
+                <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/discharge/" class="client_referral_discharge" title="{{ object.person.name }}">{% trans "Service Discharge" %}</a></li>
+            {% endif %}
+
+            <li><a class="client_messages" href="/client/{{ object.id }}/referral/{{ referral.id }}/messages/" title="{{ object.person.name }}">{% trans "Messages" %}</a></li>
+            <li><a href="/upload/client/{{ object.id }}/attach/{{ referral.id }}" title="{{ object.person.name }}">{% trans "Attach Document" %}</a></li>
+
+            {% if not user.profile.person.careprofessional.studentprofile  and access_check_referral_write %}
+                <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/" title="{{ object.person.name }}">{% trans "Queue (add/remove)" %}</a></li>
+            {% endif %}
+        </ul>
     {% endif %}
-    </ul>
 {% endif %}
 
 </div>

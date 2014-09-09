@@ -45,12 +45,8 @@ def professional_responsible_save(request, object, ids, names, subscriptions, or
 
     ProfessionalResponsible.objects.filter(organization=object).delete()
 
-<<<<<<< HEAD
-    if len(names) > 0 :
-=======
     # required
     if range(len(names)) > 0 :
->>>>>>> 1ec05bceedc707385bf4e286441a68324682e667
         for x in range(len(names)):
             obj = []
 
@@ -62,16 +58,10 @@ def professional_responsible_save(request, object, ids, names, subscriptions, or
                 # Whit Profession of the Professional
                 if names[x]:
                     obj = (ProfessionalResponsible(name=names[x], subscription=subscriptions[x], organization=object, organization_subscription=organization_subscriptions[x], profession=get_object_or_None(Profession, pk=professions[x])))
-<<<<<<< HEAD
-
-            if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):
-                obj.save()
-=======
 
             if ( len(names[x]) != 0 or len(subscriptions[x]) !=0 ):
                 obj.save()
 
->>>>>>> 1ec05bceedc707385bf4e286441a68324682e667
 
 
 @permission_required_with_403('organization.organization_read')

@@ -284,7 +284,7 @@ def register(request, success_url=None,
                 msg.subject = u"Assinatura GestorPSI.com.br"
 
                 msg.body = u"Olá, bom dia!\n\n"
-                msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe e em breve você receberá outro email após a ativação da sua conta."
+                msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe. Sua conta está pronta para usar!"
                 msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
 
                 msg.body += u"link funcionalidades: %s/funcionalidades/\n" % URL_HOME
@@ -295,7 +295,7 @@ def register(request, success_url=None,
                 msg.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( i.start_date.strftime("%d/%m/%Y"), i.end_date.strftime("%d/%m/%Y") )
                 msg.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % URL_APP
 
-                msg.body += u"Endereço do sistema: %s\n" % URL_APP
+                msg.body += u"Endereço do GestorPSI: %s\n" % URL_APP
                 msg.body += u"Usuário/Login  %s\n" % request.POST.get('username')
                 msg.body += u"Senha  %s\n\n" % request.POST.get('password1')
 

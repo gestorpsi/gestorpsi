@@ -218,7 +218,7 @@ class Organization(models.Model):
     comment = models.CharField(max_length=765, blank=True)
     active = models.BooleanField(u'Ativo. Todas as faturas pagas?', default=True)
     suspension = models.BooleanField(u'Cliente suspendeu serviço. Não gera nova fatura ou notificação.', default=False)
-    suspension_reason = models.TextField(u'Motivos da suspensão', blank=True)
+    suspension_reason = models.TextField(u'Motivos da suspensão', blank=True, null=True)
     visible = models.BooleanField(default=True)
     photo = models.CharField(max_length=200, blank=True)          
     phones = generic.GenericRelation(Phone, null=True)

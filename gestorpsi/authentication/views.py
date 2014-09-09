@@ -28,7 +28,7 @@ from django.forms.util import ErrorList
 from django.utils.translation import ugettext as _
 from django.contrib.auth.views import login as django_login
 from django.core.mail import EmailMessage
-from django.contrib import messages
+
 
 from gestorpsi.settings import SITE_DISABLED, ADMIN_URL, ADMINS_REGISTRATION, URL_APP, URL_HOME, SIGNATURE, URL_DEMO
 

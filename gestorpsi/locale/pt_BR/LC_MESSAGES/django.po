@@ -7046,8 +7046,8 @@ msgid "Queue (add/remove)"
 msgstr "Fila de Espera (adicionar / remover)"
 
 #: templates/tags/device_mini.html:22
-msgid "Adding new Device"
-msgstr "Adicionar novo equipamento"
+msgid "Adding new Device Type"
+msgstr "Adicionar novo tipo de equipamento"
 
 #: templates/tags/device_mini.html:23
 msgid "Device"

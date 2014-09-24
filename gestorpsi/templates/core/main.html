@@ -119,6 +119,8 @@ GNU General Public License for more details.
 <div id="disable_menu" style="display:none">
 </div>
 <div id="loading" style="display:none">&nbsp;</div>
+
+<div style="position:fixed; width:100%; background-color:#FFFFFF;z-index:+1; top:0;" >
 <div id="bar"><h1>[GestorPsi]</h1>
 {% if user.is_authenticated %}
     <ul>
@@ -194,10 +196,11 @@ GNU General Public License for more details.
             {% block submenu %}{% endblock %}
         </div>
 	</div>
+    </div>
 {% endif %}
-
+<div style="position:relative; top: 110px;">
 	{% block registration %}{% endblock %}
-	<div id="content">
+	<div id="content" >
 		<div id="core">
             {% block core %}{% endblock %}
 		</div>
@@ -205,5 +208,6 @@ GNU General Public License for more details.
 	<div id="footer">
 		2009 GestorPsi©
 	</div>
+</div>    
 </body>
 </html>

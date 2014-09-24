@@ -80,6 +80,11 @@ def schedule_occurrence_listing(request, year = 1, month = 1, day = None,
 def schedule_occurrence_listing_today(request, template='schedule/schedule_events.html'):
     return schedule_occurrence_listing(request, datetime.now().strftime('%Y'), datetime.now().strftime('%m'), datetime.now().strftime('%d'))
 
+def times_are_invalid(start_time, end_time):
+    if start_time >= end_time:
+        return True
+
+    return False
 
 @permission_required_with_403('schedule.schedule_write')
 def add_event(
@@ -100,6 +105,10 @@ def add_event(
         recurrence_form = recurrence_form_class(request.POST)
 
         if recurrence_form.is_valid():
+            if times_are_invalid(request.POST.get('start_time_delta'), request.POST.get('end_time_delta')):
+                messages.error(request, _('The start time should be less than the end time'))
+                return http.HttpResponseRedirect(request.META.get('HTTP_REFERER') or '/schedule/')
+
             if not request.POST.get('group'): # booking single client
                 referral = get_object_or_404(Referral, pk=request.POST.get('referral'), service__organization=request.user.get_profile().org_active)
                 event = recurrence_form.save(referral)

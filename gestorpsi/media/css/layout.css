@@ -755,6 +755,7 @@ select.high {
 .sidebar {
         margin-left:750px;
         width: 240px;
+        position: fixed;
 }
 
 

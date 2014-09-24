@@ -2808,6 +2808,10 @@ msgstr "Confirmação de presença"
 msgid "Sorry. You can not book more than 40 occurrence at the same time"
 msgstr "Desculpe. Impossível agendar mais de 40 eventos de uma vez."
 
+#: schedule/views.py:102
+msgid "The start time should be less than the end time"
+msgstr "A hora de início deve ser menor que a hora de término"
+
 #: schedule/views.py:109
 msgid "Schedule saved successfully"
 msgstr "Agendamento salvo com sucesso."

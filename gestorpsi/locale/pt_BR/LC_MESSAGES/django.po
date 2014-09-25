@@ -2812,6 +2812,10 @@ msgstr "Desculpe. Impossível agendar mais de 40 eventos de uma vez."
 msgid "The start time should be less than the end time"
 msgstr "A hora de início deve ser menor que a hora de término"
 
+#: schedule/views.py:103
+msgid "Check the mandatory fields"
+msgstr "Verifique os campos obrigatórios"
+
 #: schedule/views.py:109
 msgid "Schedule saved successfully"
 msgstr "Agendamento salvo com sucesso."

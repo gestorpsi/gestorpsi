@@ -210,6 +210,7 @@ def form(request, object_id=None):
 
 @permission_required_with_403('service.service_write')
 def save(request, object_id=''):
+
     object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active) if object_id else Service()
     object.organization = request.user.get_profile().org_active
     object.name = request.POST.get('service_name')
@@ -230,13 +231,10 @@ def save(request, object_id=''):
     
     object.color = request.POST.get('service_color')
 
-    object.save()
-
-    if not object_id: # service reponsible professionals not editable
-        """ Responsibles list """
-        object.responsibles.clear()
-        for p in request.POST.getlist('service_responsibles'):
-            object.responsibles.add(CareProfessional.objects.get(pk=p))
+    """ Responsibles list """
+    object.responsibles.clear()
+    for p in request.POST.getlist('service_responsibles'):
+        object.responsibles.add(CareProfessional.objects.get(pk=p))
 
     """ Professions """
     object.professions.clear()
@@ -268,6 +266,7 @@ def save(request, object_id=''):
     for p in request.POST.getlist('service_professionals'):
         object.professionals.add(CareProfessional.objects.get(pk=p))
 
+    object.save()
     messages.success(request, _('Service saved successfully'))
 
     return HttpResponseRedirect('/service/form/%s/' % object.id)

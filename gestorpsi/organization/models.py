@@ -259,6 +259,7 @@ class Organization(models.Model):
 
     def save(self, *args, **kwargs):
 
+        # payment type default, credit card, id=1.
         if not self.id:
             self.payment_type = PaymentType.objects.get(pk=1) 
 

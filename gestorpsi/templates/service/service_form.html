@@ -156,7 +156,7 @@ GNU General Public License for more details.
 		<div class="overflow">
 		<ul>
 		{% for l in CareProfessionals %}
-		    <li><label><input{% if object.id %} disabled{% endif %}{% for or in object.responsibles.values_list %}{% ifequal or.0 l.id %} checked{% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_responsibles" />{{ l }}{% if l.professionalIdentification.profession %} ({{ l.professionalIdentification.profession }}){% endif %}</label></li>
+		    <li><label><input {% for r in object.responsibles.all %}{% ifequal r.id l.id %} checked {% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_responsibles" />{{ l }}{% if l.professionalIdentification.profession %} ({{ l.professionalIdentification.profession }}) {% endif %}</label></li>
 		{% endfor %}
 		</ul>
 		</div>

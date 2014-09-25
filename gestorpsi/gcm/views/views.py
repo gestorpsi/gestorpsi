@@ -4,7 +4,6 @@
     Copyright (C) 2008 GestorPsi
 """
 
-from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.db.models import Q
@@ -12,9 +11,6 @@ from django.db.models import Q
 from gestorpsi.organization.models import Organization
 
 def org_object_list(request):
-
-    if not request.user.is_superuser:
-        return HttpResponseRedirect('/gcm/login/?next=%s' % request.path)
 
     # store filter data
     # arry order follow order code
@@ -33,11 +29,12 @@ def org_object_list(request):
 
 
         # filter from navbar
-        search_org_name = request.POST.get('search_org_name')
-        if search_org_name:
-            object_list = object_list.filter(name__icontains=search_org_name)
-            request.session['filter'][0] = request.POST.get('search_org_name')
+        search_word = request.POST.get('search_word')
+        if search_word:
 
+            # org name, user email or user first name
+            object_list = object_list.filter( Q(name__icontains=search_word) | Q( person__profile__user__email__icontains=search_word ) | Q( person__name__icontains=search_word ) ).distinct()
+            request.session['filter'][0] = request.POST.get('search_word')
 
         if request.POST.get('subscription_start') and request.POST.get('subscription_end'):
             d,m,a = request.POST.get('subscription_start').split('/')

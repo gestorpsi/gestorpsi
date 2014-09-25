@@ -1,0 +1,23 @@
+from django.test import TestCase
+from datetime import timedelta
+from gestorpsi.schedule.views import *
+
+class ScheduleTest(TestCase):
+
+	def test_start_time_less_than_end_time(self):
+		start_time = timedelta(hours=8, minutes=30, seconds=0)
+		end_time = timedelta(hours=9, minutes=30, seconds=0)
+
+		self.assertEquals(times_are_invalid(start_time, end_time), False)
+
+	def test_start_time_equal_to_end_time(self):
+		start_time = timedelta(hours=8, minutes=30, seconds=0)
+		end_time = timedelta(hours=8, minutes=30, seconds=0)
+
+		self.assertEquals(times_are_invalid(start_time, end_time), True)
+
+	def test_start_time_greater_than_end_time(self):
+		start_time = timedelta(hours=9, minutes=30, seconds=0)
+		end_time = timedelta(hours=8, minutes=30, seconds=0)
+
+		self.assertEquals(times_are_invalid(start_time, end_time), True)

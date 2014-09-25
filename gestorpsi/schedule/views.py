@@ -85,6 +85,12 @@ def times_are_invalid(start_time, end_time):
 
     return False
 
+def verify_client(referral):
+        if referral == None:
+            return False
+        else:
+            return True
+
 @permission_required_with_403('schedule.schedule_write')
 def add_event(
     request,
@@ -137,6 +143,9 @@ def add_event(
        
 
             if not request.POST.get('group'): # booking single client
+                if verify_client(request.POST.get('referral')) == False:
+                    messages.error(request, _('Check the mandatory fields'))
+                    return http.HttpResponseRedirect(request.META.get('HTTP_REFERER') or '/schedule/')
                 referral = get_object_or_404(Referral, pk=request.POST.get('referral'), service__organization=request.user.get_profile().org_active)
                 event = recurrence_form.save(referral)
             else: # booking a group

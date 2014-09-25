@@ -89,7 +89,7 @@ class InvoiceAdmin(admin.ModelAdmin):
     list_display = ('organization','plan','start_date','end_date','status','date_payed','bank','situation_')
     list_filter = ('status',)
     actions = [pendente, pagoClienteCartao, pagoClienteBoleto, pagoClienteDeposito, pagoGratis]
-    search_fields = ['organization__name']
+    search_fields = ['organization__name','organization__id']
     form = InvoiceForm
 
 admin.site.register(Invoice, InvoiceAdmin)

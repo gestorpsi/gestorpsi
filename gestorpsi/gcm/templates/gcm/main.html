@@ -1,4 +1,3 @@
-{% if user.is_superuser %}
     <!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -33,7 +32,7 @@
                 <div class='uk-content uk-width-1-1 uk-container uk-container-center uk-grid-width-*'>
                     <fieldset>
                         <legend><a href='{% url gcm-index %}'>GestorPSI GCM</a></legend>
-                        <input type="text" placeholder="nome organiza&ccedil;&atilde;o" name="search_org_name" value="{% if request.session.filter.0 %}{{ request.session.filter.0 }}{% endif %}">
+                        <input type="text" placeholder="organiza&ccedil;&atilde;o e-mail assinante" name="search_word" value="{% if request.session.filter.0 %}{{ request.session.filter.0 }}{% endif %}">
                         <input type="text" placeholder="inscri&ccedil;&atilde;o inicio 31/12/2000" name='subscription_start' value="{% if request.session.filter.1 %}{{ request.session.filter.1 }}{% endif %}">
                         <input type="text" placeholder="inscri&ccedil;&atilde;o fim 31/12/2000" name='subscription_end' value="{% if request.session.filter.2 %}{{ request.session.filter.2 }}{% endif %}">
 
@@ -99,4 +98,3 @@
 
         </body>
     </html>
-{% endif %}

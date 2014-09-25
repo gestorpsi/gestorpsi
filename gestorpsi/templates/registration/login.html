@@ -1,19 +1,17 @@
 {% extends "registration/base.html" %}
 
 {% comment %}
+    Copyright (C) 2008 GestorPsi
 
-Copyright (C) 2008 GestorPsi
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
@@ -21,39 +19,38 @@ GNU General Public License for more details.
 {% block title %}{% trans "Log in" %}{% endblock %}
 
 {% block content %}
+
 <h1>{% trans "Welcome to GestorPsi" %}</h1>
 
-<div class="ff_not_ok" style="text-align: left;">
-<img src="/media/img/logos/chrome-icon.png" style="width: 128px; height: 128px; margin-top: 15px; margin-right: 10px;">
-<br>
-{% trans "Your browser is not compatible with and some functions can not work well" %}.
-<br>
-{% trans "Please, get the latest version of" %} <a target="_blank" href="https://www.google.com/chrome">{% trans "Google Chrome" %}</a> {% trans "to get all features running" %}
-{% trans "or" %} {% trans "continue with restricted features" %}.<br /><span class="read_more"><a href="http://www.gestorpsi.com.br/trac/wiki/Chrome" target="_blank">{% trans "Read more" %}</a>
-</div>
+    <div class="ff_not_ok" style="text-align: left;">
+        <img src="/media/img/logos/chrome-icon.png" style="width: 128px; height: 128px; margin-top: 15px; margin-right: 10px;">
+        <br>
+        {% trans "Your browser is not compatible with and some functions can not work well" %}.
+        <br>
+        {% trans "Please, get the latest version of" %} <a target="_blank" href="https://www.google.com/chrome">{% trans "Google Chrome" %}</a> {% trans "to get all features running" %}
+        {% trans "or" %} {% trans "continue with restricted features" %}.<br /><span class="read_more"><a href="http://www.gestorpsi.com.br/trac/wiki/Chrome" target="_blank">{% trans "Read more" %}</a>
+    </div>
 
-<form method="post" action="/accounts/authentication/" id="form_login" class="ff_ok">
+    <form method="post" action="/accounts/authentication/" id="form_login" class="ff_ok">
+        <fieldset class="orgField"><label>{% trans "Short Name" %}<br /><input type="text" name="shortname" /></label></fieldset>
 
-<fieldset class="orgField">
-<label>{% trans "Short Name" %}<br /><input type="text" name="shortname" /></label>
-</fieldset>
+        <fieldset class="userField">
+            <div class="ie_block">
+                {% if form_messages %}
+                    <ul class="errorlist"><li>
+                    {{ form_messages }}
+                    </li></ul>
+                {% endif %}
 
-<fieldset class="userField">
-<div class="ie_block">
-{% if form_messages %}
-    <ul class="errorlist"><li>
-    {{ form_messages }}
-    </li></ul>
-{% endif %}
+                <label>{% trans "Username" %}<br />{{ form.username }}</label>
+                <label>{% trans "Password" %}<br />{{ form.password }}</label>
+                <input type="hidden" name="next" value="{{ next}}" />
+                <input type="submit" value="{% trans "Log in" %}" class="btn"/>
+            </div>
+        </fieldset>
+    </form>
 
-<label>{% trans "Username" %}<br />{{ form.username }}</label>
-<label>{% trans "Password" %}<br />{{ form.password }}</label>
-<input type="hidden" name="next" value="{{ next}}" />
-<input type="submit" value="{% trans "Log in" %}" class="btn"/>
-</div>
-</fieldset>
-</form>
+    <p class="ff_ok">{% trans "If you don't have an account, you can" %} <a href="/accounts/register/">{% trans "sign up" %}</a> {% trans "for one" %}.</p>
+    <p class="ff_ok"><a href="/accounts/password/reset/">{% trans "Forgot Password?" %}</a></p>
 
-<p class="ff_ok">{% trans "If you don't have an account, you can" %} <a href="/accounts/register/">{% trans "sign up" %}</a> {% trans "for one" %}.</p>
-<p class="ff_ok"><a href="/accounts/password/reset/">{% trans "Forgot Password?" %}</a></p>
 {% endblock %}

@@ -16,11 +16,12 @@ GNU General Public License for more details.
 
 from django.conf.urls.defaults import url, patterns
 from django.views.generic.simple import direct_to_template
+from django.contrib.auth.decorators import login_required
 
 from gestorpsi.gcm.views.views import org_object_list
 
 urlpatterns = patterns('',
     # use by admin section
-    url(r'^$', direct_to_template, {'template':'gcm/index.html'}, name='gcm-index'),
-    url(r'gcm/org/$', org_object_list, name='org-list'),
+    url(r'^$', login_required( direct_to_template ), {'template':'gcm/index.html'}, name='gcm-index'),
+    url(r'gcm/org/$', login_required( org_object_list ), name='org-list'),
 )

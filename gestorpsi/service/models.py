@@ -126,8 +126,22 @@ class Service(models.Model):
             ("service_write", "Can write services"),
         )
 
+
+
     def revision(self):
         return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+
+
+
+    def save(self, *args, **kwargs):
+
+        # color can not be None or empty
+        if not self.color:
+            self.color = "000000"
+
+        super(Service, self).save(*args, **kwargs)
+
+
 
 class ServiceGroup(models.Model):
     id = UuidField(primary_key=True)

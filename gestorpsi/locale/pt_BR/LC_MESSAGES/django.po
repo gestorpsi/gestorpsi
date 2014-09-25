@@ -2816,6 +2816,10 @@ msgstr "A hora de início deve ser menor que a hora de término"
 msgid "Schedule saved successfully"
 msgstr "Agendamento salvo com sucesso."
 
+#: schedule/views.py:123
+msgid "Selected device is busy"
+msgstr "Equipamento já está reservado"
+
 #: schedule/views.py:209
 msgid "Occurrence updated successfully"
 msgstr "Atualização salva com sucesso."
@@ -7919,3 +7923,4 @@ msgstr "Fim do último horário"
 
 #~ msgid "Admissions reports saved"
 #~ msgstr "Relatório de admissão gravado"
+

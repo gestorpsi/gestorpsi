@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 import calendar
-import locale
+#import locale
 from dateutil import parser
 from datetime import datetime, timedelta
 import datetime as datetime_
@@ -42,7 +42,8 @@ from gestorpsi.device.models import DeviceDetails
 
 
 def _access_check_by_occurrence(request, occurrence):
-    from gestorpsi.client.views import _access_check_referral_write, _access_check
+    #from gestorpsi.client.views import _access_check_referral_write, _access_check
+    from gestorpsi.client.views import _access_check
     denied_to_read = None
     for c in occurrence.event.referral.client.all():
         if not _access_check(request, c):
@@ -326,18 +327,23 @@ def occurrence_group(
         context_instance=RequestContext(request)
     )
 
+'''
+    Tiago de Souza Moraes / 26 09 2014
+    place: Place.id
+'''
 @permission_required_with_403('schedule.schedule_list')
 def _datetime_view(
-    request, 
-    template, 
-    dt, 
-    place,
-    referral = None,
-    client = None,
-    timeslot_factory=None, 
-    items=None,
-    params=None
-):
+        request, 
+        template, 
+        dt, 
+        place,
+        referral=None,
+        client=None,
+        timeslot_factory=None, 
+        items=None,
+        params=None
+    ):
+
 
     try:
         referral = Referral.objects.get(pk=referral, service__organization=request.user.get_profile().org_active)
@@ -349,11 +355,7 @@ def _datetime_view(
     except:
         object = ''
 
-    try:
-        place = Place.objects.get(pk=place, organization=request.user.get_profile().org_active)
-    except:
-        # Possible to exist more than one place as matriz, filter and get first element
-        place = Place.objects.filter(organization=request.user.get_profile().org_active)[0]
+    place = Place.objects.get( pk=place )
 
     user = request.user
     timeslot_factory = timeslot_factory or create_timeslot_table

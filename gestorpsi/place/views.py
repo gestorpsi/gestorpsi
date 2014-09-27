@@ -131,9 +131,15 @@ def save(request, object_id=None):
     except:
         object.visible = False
 
+    # all others place will be filial if place_type of object is Matriz
+    if request.POST.get('place_type') == '1': # hardcode
+        for x in Place.objects.filter( organization=request.user.get_profile().org_active, place_type__id=1 ): # todos que são matriz
+            x.place_type = PlaceType.objects.get( pk=4 ) # hardcode
+            x.save()
+
     object.label = request.POST['label']
     object.comments = request.POST.get('comments')
-    object.place_type= PlaceType.objects.get( pk= request.POST[ 'place_type' ] )
+    object.place_type = PlaceType.objects.get( pk=request.POST[ 'place_type' ] )
     object.organization = request.user.get_profile().org_active
     object.hour_start = request.POST['hour_start']
     object.hour_end = request.POST['hour_end']

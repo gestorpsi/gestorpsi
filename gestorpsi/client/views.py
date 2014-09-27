@@ -917,12 +917,14 @@ def order(request, object_id = ''):
     return HttpResponseRedirect(url % object.id)
 
 @permission_required_with_403('schedule.schedule_read')
-def schedule_daily(request,
-    year = datetime.now().strftime("%Y"), 
-    month = datetime.now().strftime("%m"), 
-    day = datetime.now().strftime("%d"), 
-    template='client/client_schedule_daily.html',
-     **params):
+def schedule_daily(
+            request,  
+            year = datetime.now().strftime("%Y"),
+            month = datetime.now().strftime("%m"), 
+            day = datetime.now().strftime("%d"), 
+            template='client/client_schedule_daily.html',
+            **params
+        ):
 
     # verify if user has perm
     referral = get_object_or_404(Referral, pk=request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
@@ -934,9 +936,9 @@ def schedule_daily(request,
         messages.success(request, _('Sorry, you can not book a queued client. Remove it first from queue before continue'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (request.GET.get('client'), referral.id))
     
-    place = Place.objects.filter(organization=request.user.get_profile().org_active)[0].id
+    place = Place.objects.filter( organization=request.user.get_profile().org_active, place_type__id=1 )[0] # hard code
 
-    return _datetime_view(request, template, datetime(int(year), int(month), int(day)), Place, referral = request.GET['referral'], client = request.GET['client'], **params)
+    return _datetime_view(request, template, datetime(int(year), int(month), int(day)), place.id, referral = request.GET['referral'], client = request.GET['client'], **params)
 
 @permission_required_with_403('schedule.schedule_write')
 def schedule_add(request):

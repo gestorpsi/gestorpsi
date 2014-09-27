@@ -20,7 +20,7 @@ from django.core.mail import EmailMessage, BadHeaderError
 from django.utils.translation import gettext as _
 from django.template.context import RequestContext
 from gestorpsi.support.forms import TicketForm
-from gestorpsi.settings import EMAIL_FROM, ADMINS
+from gestorpsi.settings import EMAIL_FROM, ADMINS_REGISTRATION
 
 def ticket_form(request):
     if request.method == 'POST':
@@ -29,9 +29,8 @@ def ticket_form(request):
             new = form.save(commit=False)
             new.user = request.user.profile.person
             new.save()
-            body = ('%s\n\n%s\n%s\n%s') % (request.POST['question'], request.POST['contact_name'], request.POST['contact_phone'], request.POST['contact_email'])
-            email = EmailMessage(_('[GestorPsi] Support Request'), body, EMAIL_FROM , [ i[1] for i in ADMINS ],
-            headers = {'Reply-To': request.POST['contact_email']})
+            body = ('%s\n\n%s\n%s\n%s') % (request.POST['question'], request.POST['contact_name'], request.POST['contact_phone'], request.POST['contact_email'] )
+            email = EmailMessage(_('[GestorPsi] Support Request'), body, EMAIL_FROM , ADMINS_REGISTRATION, headers = {'Reply-To': request.POST['contact_email']} )
 
             try:
                 email.send()

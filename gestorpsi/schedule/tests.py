@@ -21,3 +21,11 @@ class ScheduleTest(TestCase):
 		end_time = timedelta(hours=8, minutes=30, seconds=0)
 
 		self.assertEquals(times_are_invalid(start_time, end_time), True)
+
+	def test_verify_client(self):
+
+		self.assertEquals(verify_client(1), True)
+
+		self.assertEquals(verify_client(23), True)
+
+		self.assertEquals(verify_client(None), False)

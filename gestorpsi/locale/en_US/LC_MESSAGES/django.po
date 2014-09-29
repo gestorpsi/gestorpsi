@@ -7421,5 +7421,5 @@ msgstr ""
 msgid "User removed successfully"
 msgstr ""
 
-mggid "Selected device is busy"
+msgid "Selected device is busy"
 msgstr ""

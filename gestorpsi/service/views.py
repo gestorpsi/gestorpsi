@@ -230,6 +230,7 @@ def save(request, object_id=''):
         object.css_color_class = request.POST.get('service_css_color_class')
     
     object.color = request.POST.get('service_color')
+    object.save() # save object
 
     """ Responsibles list """
     object.responsibles.clear()

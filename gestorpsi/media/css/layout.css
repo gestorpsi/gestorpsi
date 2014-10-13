@@ -754,8 +754,7 @@ select.high {
 
 .sidebar {
         margin-left:750px;
-        width: 240px;
-        position: fixed;
+        width: 240px;        
 }
 
 
@@ -1072,8 +1071,8 @@ div.schedule #search_header {
 #nav_back, #nav_fwd {
         position: absolute;
         left: 10px;
-        top: 170px;
-        z-index: 3;
+        top: 10px;
+        
 }
 #nav_fwd {
         left: 60px;

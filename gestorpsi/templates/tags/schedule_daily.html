@@ -20,7 +20,7 @@ GNU General Public License for more details.
 <a id="calendar_link" href="#"></a>
 <div id="mini_calendar" style="display:none;"></div>
 
-<div id="schedule_header">
+<div id="schedule_header" style="position:fixed; background-color:white; z-index:0   ">
     {% include "schedule/schedule_header.html" %}
 </div>
 
@@ -29,7 +29,7 @@ GNU General Public License for more details.
     <input type="hidden" name="client" value="{{ object.id }}" />
     <table class="schedule_results daily zebra" border="0" cellspacing="0" cellpadding="0">
         <tr>
-            <th class="schedule"></th>
+            <th class="schedule" ></th>
             {% for room in place.room_set.all %}
                 {% if room.active %}
                     <th room="{{ room.id }}" place="{{ place.id }}">{{ room }}</th>

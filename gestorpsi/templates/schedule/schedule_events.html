@@ -35,7 +35,7 @@ GNU General Public License for more details.
     <a id="calendar_link" href="#"></a>
     <div id="mini_calendar" style="display:none;"></div>
 
-    <div id="schedule_header">
+    <div id="schedule_header" style="position:fixed;">
         {% include "schedule/schedule_header.html" %}
     </div>
 
@@ -43,7 +43,7 @@ GNU General Public License for more details.
     
         <div class="schedule_events">
             <table class="zebra schedule_results events" >
-            <div class="msg_area alert" style="display:none">{% trans "There is no events for this day." %}</div>
+            <div class="msg_area alert" style="display:none;">{% trans "There is no events for this day." %}</div>
             <tr>
                 <th class="tiny">{% trans "Room" %}</th>
                 <th class="small">{% trans "Hour" %}</th>

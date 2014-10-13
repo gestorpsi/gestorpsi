@@ -198,16 +198,20 @@ GNU General Public License for more details.
 	</div>
     </div>
 {% endif %}
-<div style="position:relative; top: 110px;">
-	{% block registration %}{% endblock %}
-	<div id="content" >
+{% block registration %}{% endblock %}
+
+<div style="position:relative;top: 110px;">
+	
+	<div id="content"  >
 		<div id="core">
             {% block core %}{% endblock %}
-		</div>
-	</div>
+        </div>
+    </div>
+    {% block footer %}
 	<div id="footer">
 		2009 GestorPsi©
 	</div>
-</div>    
+    {% endblock %}
+</div>   
 </body>
 </html>

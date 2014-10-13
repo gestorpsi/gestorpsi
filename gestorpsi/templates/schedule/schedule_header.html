@@ -25,8 +25,8 @@ GNU General Public License for more details.
 <input type='hidden' value="{{ place.id }}" name="current_place_id">
 
 <p class="description">{% trans "O dia de hoje possui" %} <span id="occurrences_total"></span> {% trans "consulta(s)." %}</p>
-<a class="json_ocorrences prev_day{% if messages%} margin_top_fix{% endif %}" id="nav_back"></a>
-<a class="json_ocorrences next_day{% if messages%} margin_top_fix{% endif %}" id="nav_fwd"></a>
 <div id="search_header">
+	<a class="json_ocorrences prev_day{% if messages%} margin_top_fix{% endif %}" id="nav_back"></a>
+	<a class="json_ocorrences next_day{% if messages%} margin_top_fix{% endif %}" id="nav_fwd"></a>
     <h2><span class="date_selected"></span>.&nbsp;&nbsp;Sala(s) do local <font style='background-color:gray; color:white;'>&nbsp;{{ place.label }}&nbsp;</font></h2>
 </div>

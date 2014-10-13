@@ -2808,9 +2808,21 @@ msgstr "Confirmação de presença"
 msgid "Sorry. You can not book more than 40 occurrence at the same time"
 msgstr "Desculpe. Impossível agendar mais de 40 eventos de uma vez."
 
+#: schedule/views.py:102
+msgid "The start time should be less than the end time"
+msgstr "A hora de início deve ser menor que a hora de término"
+
+#: schedule/views.py:103
+msgid "Check the mandatory fields"
+msgstr "Verifique os campos obrigatórios"
+
 #: schedule/views.py:109
 msgid "Schedule saved successfully"
 msgstr "Agendamento salvo com sucesso."
+
+#: schedule/views.py:123
+msgid "Selected device is busy"
+msgstr "Equipamento já está reservado"
 
 #: schedule/views.py:209
 msgid "Occurrence updated successfully"
@@ -7046,8 +7058,8 @@ msgid "Queue (add/remove)"
 msgstr "Fila de Espera (adicionar / remover)"
 
 #: templates/tags/device_mini.html:22
-msgid "Adding new Device"
-msgstr "Adicionar novo equipamento"
+msgid "Adding new Device Type"
+msgstr "Adicionar novo tipo de equipamento"
 
 #: templates/tags/device_mini.html:23
 msgid "Device"
@@ -7915,3 +7927,4 @@ msgstr "Fim do último horário"
 
 #~ msgid "Admissions reports saved"
 #~ msgstr "Relatório de admissão gravado"
+

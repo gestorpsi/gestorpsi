@@ -37,7 +37,7 @@ GNU General Public License for more details.
             <fieldset>
             <legend>{% trans "Schedule Due" %}</legend>
             <h2 class="red">
-            {{ dtstart|date:"l," }} {{ dtstart|date:"d" }} {% trans "of" %} {{ dtstart|date:"F" }} {% trans "of" %} {{ dtstart|date:"Y" }} - {{ room }} <a href="javascript:history.back();"><small>[{% trans "change" %}]</small></a>
+            {{ dtstart|date:"l," }} {{ dtstart|date:"d" }} {% trans "of" %} {{ dtstart|date:"F" }} {% trans "of" %} {{ dtstart|date:"Y" }} - {{ room }} <a href="/schedule/"><small>[{% trans "change" %}]</small></a>
             </h2>
                 <label>{% trans "Start Time" %}<br />
                 {{ recurrence_form.start_time_delta }}
@@ -58,12 +58,12 @@ GNU General Public License for more details.
             <legend>{% trans "Existing Referral" %}</legend>
                 
                     <div>
-                    <label style="margin-left: 0px !important;">{% trans "Client" %}<br />
+                    <label style="margin-left: 0px !important;">{% trans "Client" %}*<br />
                     <div id="fb_client"></div> <!-- clients from organization -->
                     </label>
                     </div>
                     <div class="hidden client_referrals" style="margin-left: 0px !important;">
-                    <label>{% trans "Service" %}<br />
+                    <label>{% trans "Service" %}*<br />
                     <select name="referral" class="big">
                     </select>
                     </label>
@@ -77,7 +77,7 @@ GNU General Public License for more details.
             {% endif %}
 
             <fieldset class="referral_group hidden">
-            <legend>{% trans "Group" %}</legend>
+            <legend>{% trans "Group" %}*</legend>
                 <label>{% trans "Choice one group or" %} <a href="/service/">{% trans "add a new one" %}</a> {% trans "from selected service" %}<br />
                     <select name="group" class="giant">
                     <option value="">--------</option>

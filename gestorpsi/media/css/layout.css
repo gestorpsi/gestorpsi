@@ -754,7 +754,7 @@ select.high {
 
 .sidebar {
         margin-left:750px;
-        width: 240px;
+        width: 240px;        
 }
 
 
@@ -1071,8 +1071,8 @@ div.schedule #search_header {
 #nav_back, #nav_fwd {
         position: absolute;
         left: 10px;
-        top: 170px;
-        z-index: 3;
+        top: 10px;
+        
 }
 #nav_fwd {
         left: 60px;
@@ -1585,7 +1585,7 @@ fieldset div {
         display: block;
 }
 
-div.login div.ff_not_ok img {
+div.login img {
     float: left;
 }
 

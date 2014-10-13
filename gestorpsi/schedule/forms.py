@@ -119,17 +119,30 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
 
         import logging
         logging.debug("is online: " + str(self.cleaned_data['is_online']))
-
-        event.errors = event.add_occurrences(
-            self.cleaned_data['start_time'], 
-            self.cleaned_data['end_time'],
-            self.cleaned_data['room'].id,
-            self.cleaned_data['device'],
-            self.cleaned_data['annotation'],
-            self.cleaned_data['is_online'],
-            disable_check_busy,
-            **params
-        )
+        if len(self.errors) is 0:  # check for custom errors if there's any
+            event.errors = event.add_occurrences(
+                self.cleaned_data['start_time'], 
+                self.cleaned_data['end_time'],
+                self.cleaned_data['room'].id,
+                self.cleaned_data['device'],
+                self.cleaned_data['annotation'],
+                self.cleaned_data['is_online'],
+                disable_check_busy,
+                **params
+                )
+        else:
+            print type(self.errors)
+            error_message = []
+            for values in  self.errors.values(): # obtaining custom list of error messages
+                for message in values:
+                    error_message.append(_(message))
+            event.errors = [{
+                'start_time': self.cleaned_data['start_time'],
+                'end_time': self.cleaned_data['end_time'],
+                'room': self.cleaned_data['room'],
+                'group': event.group,
+                'error_message': error_message,
+                }]
 
         return event
 

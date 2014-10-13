@@ -20,6 +20,7 @@ from dateutil import parser
 from datetime import datetime, timedelta
 import datetime as datetime_
 from django import http
+from django.forms.util import ErrorList
 from django.template.context import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response, HttpResponse
 from django.utils.translation import ugettext as _
@@ -112,12 +113,28 @@ def add_event(
                 day=int(request.POST.get('until_day'))
                 )
             start_delta = timedelta(seconds=int(request.POST.get('start_time_delta'))) # create a start delta time
-            end_delta = timedelta(seconds=int(request.POST.get('end_time_delta')))
+            end_delta = timedelta(seconds=(int(request.POST.get('end_time_delta')) - 1)) # checking till one minute before next session
             start_device_schedule = (start_occurrence_date + start_delta) # get correct start time of device schedule
 
-            for device in devices:  # iterate throughout devices selected to check whether or not they are scheduled in selected time
-                occurence = get_object_or_None(Occurrence, start_time=start_device_schedule) # try to check if there's any occurrence with the device in specified time
-
+            end_device_schedule = (end_occurrence_date + end_delta)
+            occurrence_start = Occurrence.objects.filter(
+                start_time__range=(
+                    start_device_schedule,
+                    end_device_schedule),
+                scheduleoccurrence__device__in=devices,
+                ) # try to check if there's any occurrence with the device in specified time
+            end_delta= timedelta(seconds=int(request.POST.get('end_time_delta'))) # check exact end time
+            end_device_schedule = (end_occurrence_date + end_delta)
+            occurrence_end = Occurrence.objects.filter(
+                end_time__range=(
+                    start_device_schedule,
+                    end_device_schedule),
+                scheduleoccurrence__device__in=devices,
+                )
+            if len(occurrence_start) is not 0 or len(occurrence_end) is not 0:
+                error = recurrence_form._errors.setdefault('device', ErrorList())
+                error.append('Selected device is busy')
+       
 
             if not request.POST.get('group'): # booking single client
                 referral = get_object_or_404(Referral, pk=request.POST.get('referral'), service__organization=request.user.get_profile().org_active)
@@ -133,7 +150,7 @@ def add_event(
                         else:
                             if not event.errors:
                                 event = recurrence_form.save(group_member.referral, True) # ignore busy check
-
+                    
 
             if not event.errors:
                 messages.success(request, _('Schedule saved successfully'))

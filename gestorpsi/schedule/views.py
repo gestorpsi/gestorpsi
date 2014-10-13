@@ -170,8 +170,7 @@ def add_event(
                         else:
                             if not event.errors:
                                 event = recurrence_form.save(group_member.referral, True) # ignore busy check
-                    
-
+            # TODO validate exclusive device booking
             if not event.errors:
                 messages.success(request, _('Schedule saved successfully'))
                 return http.HttpResponseRedirect(redirect_to or '/schedule/')
@@ -478,7 +477,7 @@ def week_view(request, place=None,
     year = datetime.now().strftime("%Y"),
     month = datetime.now().strftime("%m"),
     day = datetime.now().strftime("%d")
-    ):
+):
 
     place_id = place
 
@@ -509,8 +508,8 @@ def week_view_table(request,
     place_id,
     year = datetime.now().strftime("%Y"),
     month = datetime.now().strftime("%m"),
-    day = datetime.now().strftime("%d"),
-    ):
+    day = datetime.now().strftime("%d")
+):
 
     if not year or not month or not day:
         today = datetime.now()

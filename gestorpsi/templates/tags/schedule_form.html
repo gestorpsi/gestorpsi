@@ -37,7 +37,7 @@ GNU General Public License for more details.
             <fieldset>
             <legend>{% trans "Schedule Due" %}</legend>
             <h2 class="red">
-            {{ dtstart|date:"l," }} {{ dtstart|date:"d" }} {% trans "of" %} {{ dtstart|date:"F" }} {% trans "of" %} {{ dtstart|date:"Y" }} - {{ room }} <a href="javascript:history.back();"><small>[{% trans "change" %}]</small></a>
+            {{ dtstart|date:"l," }} {{ dtstart|date:"d" }} {% trans "of" %} {{ dtstart|date:"F" }} {% trans "of" %} {{ dtstart|date:"Y" }} - {{ room }} <a href="/schedule/"><small>[{% trans "change" %}]</small></a>
             </h2>
                 <label>{% trans "Start Time" %}<br />
                 {{ recurrence_form.start_time_delta }}

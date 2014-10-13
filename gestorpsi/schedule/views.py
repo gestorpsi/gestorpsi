@@ -99,9 +99,19 @@ def add_event(
         recurrence_form = recurrence_form_class(request.POST)
 
         if recurrence_form.is_valid():
+
             if times_are_invalid(request.POST.get('start_time_delta'), request.POST.get('end_time_delta')):
                 messages.error(request, _('The start time should be less than the end time'))
                 return http.HttpResponseRedirect(request.META.get('HTTP_REFERER') or '/schedule/')
+
+
+            devices = DeviceDetails.objects.filter(id__in=request.POST.getlist('device')) # filter devices based on selection
+            start_occurrence_date = datetime(year=request.POST.get('until_year'), month=request.POST.get('until_month'), day=request.POST.get('until_day')) # create start date based on schedule, with hours, minutes and seconds equals 0
+            start_delta = timedelta(seconds=request.POST.get('start_time_delta')) # create a start delta time
+            start_device_schedule = (start_occurrence_date + start_delta) # get correct start time of device schedule
+            for device in devices:  # iterate throughout devices selected to check whether or not they are scheduled in selected time
+                occurence = get_object_or_None(Occurrence, start_time=start_device_schedule) # try to check if there's any occurrence with the device in specified time
+
 
             if not request.POST.get('group'): # booking single client
                 referral = get_object_or_404(Referral, pk=request.POST.get('referral'), service__organization=request.user.get_profile().org_active)
@@ -117,8 +127,6 @@ def add_event(
                         else:
                             if not event.errors:
                                 event = recurrence_form.save(group_member.referral, True) # ignore busy check
-
-            # TODO validate exclusive device booking
 
             if not event.errors:
                 messages.success(request, _('Schedule saved successfully'))

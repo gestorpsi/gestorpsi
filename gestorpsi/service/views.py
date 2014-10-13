@@ -223,9 +223,9 @@ def save(request, object_id=''):
     object.service_type = ServiceType.objects.get(pk=request.POST.get('service_type'))
 
     if not object_id:
-      object.research_project = request.POST.get('research_project') or False
-      object.research_project_name = request.POST.get('research_project_name')
-      object.area = Area.objects.get(pk=request.POST.get('service_area'))
+        object.research_project = request.POST.get('research_project') or False
+        object.research_project_name = request.POST.get('research_project_name')
+        object.area = Area.objects.get(pk=request.POST.get('service_area'))
     else:
         object.css_color_class = request.POST.get('service_css_color_class')
     

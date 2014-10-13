@@ -25,6 +25,7 @@ from gestorpsi.internet.views import email_save, site_save, im_save
 from datetime import datetime
 
 def person_save(request, person):
+
     person.name= request.POST['name']
     person.nickname = request.POST['nickname']
     person.comments = request.POST.get('comments')

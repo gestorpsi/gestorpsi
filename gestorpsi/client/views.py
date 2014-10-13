@@ -776,8 +776,9 @@ def save(request, object_id=None, is_company = False):
         # Admission date
         object.admission_date = datetime.now()
 
-    object.person = person_save(request, person)
-    object.save()
+    if request.POST:
+        object.person = person_save(request, person)
+        object.save()
     
     if is_company:
         company_form = CompanyForm(request.POST) if not object_id else CompanyForm(request.POST, instance=object.person.company)

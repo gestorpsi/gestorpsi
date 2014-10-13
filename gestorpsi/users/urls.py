@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.users.views import index, list, form, create_user, update_user, update_pwd, set_form_user, add, order, username_is_available, delete #, form_new_user (WILL BE DELETED)
+from gestorpsi.users.views import index, list, form, create_user, update_user, update_pwd, set_form_user, add, order, username_is_available 
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
@@ -32,7 +32,7 @@ urlpatterns = patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/savepwd/$', login_check(update_pwd)),
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/setformuser/$', login_check(set_form_user)),
     (r'^(?P<profile_id>(\d)+)/order/$', login_check(order)),
-    url(r'^(?P<profile_id>(\d)+)/delete/$', login_check(delete), name='user_delete'),
+    #url(r'^(?P<profile_id>(\d)+)/delete/$', login_check(delete), name='user_delete'),
     (r'^check/(?P<user>.*)/$', login_check(username_is_available)),  #check username
     # DEACTIVE
     (r'^deactive/$', login_check(index), { 'deactive':True }),

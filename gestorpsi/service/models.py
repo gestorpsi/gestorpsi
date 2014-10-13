@@ -135,10 +135,16 @@ class Service(models.Model):
 
     def save(self, *args, **kwargs):
 
-        # color can not be None or empty
-        if not self.color:
-            self.color = "000000"
-
+        # check html color is valid
+        '''
+            int(string) == erro, using try and except
+        '''
+        try:
+            if not int(self.color,16) < 16777216 :
+                self.color = 'ffffff' # white
+        except:
+            self.color = 'ffffff' # white
+            
         super(Service, self).save(*args, **kwargs)
 
 

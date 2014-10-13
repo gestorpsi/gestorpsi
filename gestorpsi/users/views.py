@@ -57,7 +57,7 @@ def form(request, object_id=None):
     user = request.user
     try:
         profile = Profile.objects.get(person=object_id, person__organization=request.user.get_profile().org_active)
-        # HAVE JUST ONE ADMINISTRATOR?
+        # have just one administrator?
         show = "False"
         
         if ( (Group.objects.get(name='administrator').user_set.all().filter(profile__organization=user.get_profile().org_active).count()) == 1 ):
@@ -156,7 +156,7 @@ def update_user(request, object_id):
     profile = Profile.objects.get(person = object_id, person__organization=request.user.get_profile().org_active)
     permissions = request.POST.getlist('perms')
 
-    # GROUPS - clear all permissions and re-create them
+    # groups - clear all permissions and re-create them
     profile.user.groups.clear()
     Role.objects.filter(organization=organization, profile=profile).delete()
 
@@ -234,6 +234,7 @@ def order(request, profile_id = None):
     
     return HttpResponseRedirect('/user/%s/' % object.person.id)
 
+'''
 @permission_required_with_403('users.users_write')
 def delete(request, profile_id = None):
     object = Profile.objects.get(pk = profile_id, person__organization=request.user.get_profile().org_active)
@@ -244,6 +245,7 @@ def delete(request, profile_id = None):
         messages.success(request, ('%s' % (_('User removed successfully'))))
     
     return HttpResponseRedirect('/user/')
+'''
 
 @permission_required_with_403('organization.organization_read')
 def username_is_available(request, user):

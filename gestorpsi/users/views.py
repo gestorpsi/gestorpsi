@@ -309,7 +309,6 @@ def order(request, profile_id = None):
 
     return HttpResponseRedirect('/user/%s/' % object.person.id)
 
-
 @permission_required_with_403('organization.organization_read')
 def username_is_available(request, user):
     """

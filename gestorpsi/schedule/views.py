@@ -130,8 +130,11 @@ def add_event(
                 day=int(request.POST.get('until_day'))
                 )
             start_delta = timedelta(seconds=int(request.POST.get('start_time_delta'))) # create a start delta time
-            end_delta = timedelta(seconds=(int(request.POST.get('end_time_delta')) - 1)) # checking till one minute before next session
+            end_delta = timedelta(seconds=int(request.POST.get('end_time_delta')))
             start_device_schedule = (start_occurrence_date + start_delta) # get correct start time of device schedule
+
+            for device in devices:  # iterate throughout devices selected to check whether or not they are scheduled in selected time
+                occurence = get_object_or_None(Occurrence, start_time=start_device_schedule) # try to check if there's any occurrence with the device in specified time
 
             end_device_schedule = (end_occurrence_date + end_delta)
             occurrence_start = Occurrence.objects.filter(
@@ -170,7 +173,12 @@ def add_event(
                         else:
                             if not event.errors:
                                 event = recurrence_form.save(group_member.referral, True) # ignore busy check
+<<<<<<< HEAD
             # TODO validate exclusive device booking
+=======
+
+
+>>>>>>> Validating occurrences on schedule
             if not event.errors:
                 messages.success(request, _('Schedule saved successfully'))
                 return http.HttpResponseRedirect(redirect_to or '/schedule/')

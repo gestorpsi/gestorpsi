@@ -91,7 +91,10 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
 
     attachs = ReferralAttach.objects.filter(referral = referral_id)
 
-    is_secretary = False
+    # Fiding if the user is a secretary.
+    is_secretary = False 
+    for a in attachs:
+        print a.is_locked
 
     for group in user.groups.all():
             if group.name == "secretary":     is_secretary = True

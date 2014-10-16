@@ -47,6 +47,8 @@ GNU General Public License for more details.
 
                 <input type="file" class="file" name="file" />
 
+
+
                 </label>
                 <label>Tipo de documento<br />
                 <select name="doc_type" class="big">
@@ -55,6 +57,9 @@ GNU General Public License for more details.
                         {% endfor %}
                 </select></label>
 
+                <label><br />
+                <INPUT TYPE="checkbox" NAME="permission" VALUE="False"> Todos podem acessar</label>
+               
                 <label>Assunto do documento<br />
                 <input name="description" type="text" class="big" /></label>
                 <label><input name="" type="submit" class="btn" value="Enviar Arquivo" /></label>

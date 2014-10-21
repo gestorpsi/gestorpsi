@@ -6030,6 +6030,9 @@ msgstr "Órgão Emissor"
 msgid "Change password"
 msgstr "Alterar Senha"
 
+msgid "Change e-mail"
+msgstr "Alterar E-mail"
+
 #: templates/profile/profile_change_pass.html:42
 msgid "Current password"
 msgstr "Senha atual"
@@ -7565,9 +7568,15 @@ msgstr "Usuário atualizado com sucesso."
 msgid "Password confirmation does not match. Please try again"
 msgstr "Senha não confere. Tente novamente."
 
+msgid "email confirmation does not match. Please try again"
+msgstr "E-mail não confere. Tente novamente."
+
 #: users/views.py:198
 msgid "Password updated successfully!"
-msgstr "Senha atualizada com sucesso."
+msgstr "Senha atualizada com sucesso!"
+
+msgid "email updated successfully!"
+msgstr "E-mail alterado com sucesso!"
 
 #: users/views.py:237
 msgid "User removed successfully"

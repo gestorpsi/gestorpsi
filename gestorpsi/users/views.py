@@ -206,6 +206,25 @@ def update_pwd(request, object_id=0):
     return HttpResponseRedirect('/user/%s/' % object_id)
 
 @permission_required_with_403('users.users_write')
+def update_email(request, object_id=0):
+    if not request.POST.get('email_mini') or not request.POST.get('email_mini_conf'):
+        messages.error(request, _('All fields are required'))
+        return HttpResponseRedirect('/user/%s/' % object_id)
+        
+    if request.POST.get('email_mini') != request.POST.get('email_mini_conf'):
+        messages.error(request, _('email confirmation does not match. Please try again'))
+        return HttpResponseRedirect('/user/%s/' % object_id)
+
+    user = Profile.objects.get(person = object_id, person__organization=request.user.get_profile().org_active).user
+    user.email = request.POST.get('email_mini')
+    user.profile.temp = request.POST.get('email_mini')    # temporary field (LDAP)
+    user.profile.save()
+    user.save(force_update=True)
+
+    messages.success(request, _('email updated successfully!'))
+    return HttpResponseRedirect('/user/%s/' % object_id)
+
+@permission_required_with_403('users.users_write')
 def set_form_user(request, object_id=0):
     array = {} #json
     

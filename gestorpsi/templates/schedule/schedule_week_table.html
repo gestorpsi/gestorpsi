@@ -17,8 +17,10 @@ GNU General Public License for more details.
 {% load i18n %}
 
 <p class="description">{% trans "This week have" %} <span id="occurrences_total">{{ occurrences_length }}</span> {% trans "occurrences(s)." %}</p>
-<a id="nav_back" class="load_html" element="#schedule_week" href="/schedule/week/{{ previous_week|date:"Y" }}/{{ previous_week|date:"m" }}/{{ previous_week|date:"d" }}/"></a>
-<a id="nav_fwd" class="load_html" element="#schedule_week" href="/schedule/week/{{ next_week|date:"Y" }}/{{ next_week|date:"m" }}/{{ next_week|date:"d" }}/"></a>
+
+<a id="nav_back" style="margin:0 0 0 95px; " class="load_html" element="#schedule_week" href="/schedule/week/{{ previous_week|date:"Y" }}/{{ previous_week|date:"m" }}/{{ previous_week|date:"d" }}/"></a>
+<a id="nav_fwd" style="margin:0 0 0 95px;" class="load_html" element="#schedule_week" href="/schedule/week/{{ next_week|date:"Y" }}/{{ next_week|date:"m" }}/{{ next_week|date:"d" }}/"></a>
+
 <div id="search_header">
     <h2><span class="date_selected">{% trans "From" %} {{ first_week_day|date:"d" }} {% trans "to" %} {{ last_week_day|date:"d" }} {{ last_week_day|date:"F" }} {% trans "of" %} {{ last_week_day|date:"Y" }} </span></h2>	
 </div>

@@ -23,6 +23,8 @@ body {
         font-family: Verdana, Arial, Helvetica, sans-serif;
         font-size: 12px;
         min-width: 1000px;
+        overflow-y:hidden;
+        height: 100%;
 }
 img { border:0px;}
 a, a:visited {
@@ -229,6 +231,7 @@ ul.myoffice li a:hover { -moz-border-radius: 0px !important; background-color:#F
 
 #menus .main_menu_listing_big.main_menu_listing {
         width: 177px
+        position:fixed;
 }
 
 #myoffice span {
@@ -338,7 +341,10 @@ ul.myoffice li a:hover { -moz-border-radius: 0px !important; background-color:#F
 
 #content {
         width: 990px;
+        height: 85vh;
         margin-bottom: 10px;
+        overflow-y:auto;
+        overflow-x: hidden;
 }
 
 div.main_area h1, #content h2 {

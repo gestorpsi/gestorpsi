@@ -27,7 +27,7 @@ GNU General Public License for more details.
 <div id="daily" class="schedule">
     <input type="hidden" name="referral" value="{{ referral.id }}" />
     <input type="hidden" name="client" value="{{ object.id }}" />
-    <table class="schedule_results daily zebra" border="0" cellspacing="0" cellpadding="0">
+    <table class="schedule_results daily zebra" border="0" cellspacing="0" cellpadding="0" style="margin-top:120px;">
         <tr>
             <th class="schedule"></th>
             {% for room in place.room_set.all %}

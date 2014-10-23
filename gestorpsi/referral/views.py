@@ -91,13 +91,19 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
 
     attachs = ReferralAttach.objects.filter(referral = referral_id)
 
-    # Fiding if the user is a secretary.
+    # Fiding if the user is a secretary or a psychologist.
     is_secretary = False 
-    for a in attachs:
-        print a.is_locked
+    is_professional = False 
 
     for group in user.groups.all():
             if group.name == "secretary":     is_secretary = True
+            if group.name == "professional":     is_professional = True
+
+    print "É professional? ", is_professional
+    print "É secretaria? ",   is_secretary
+
+    for a in attachs:
+        print a.only_professionals
             
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
     

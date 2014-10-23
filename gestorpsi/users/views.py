@@ -205,14 +205,20 @@ def update_pwd(request, object_id=0):
     messages.success(request, _('Password updated successfully!'))
     return HttpResponseRedirect('/user/%s/' % object_id)
 
+def verify_emails(email, email_confirmation):
+    if not email or not email_confirmation:
+        return "All fields are required"
+    if email != email_confirmation:
+        return "email confirmation does not match. Please try again"
+
+    return ""
+
 @permission_required_with_403('users.users_write')
 def update_email(request, object_id=0):
-    if not request.POST.get('email_mini') or not request.POST.get('email_mini_conf'):
-        messages.error(request, _('All fields are required'))
-        return HttpResponseRedirect('/user/%s/' % object_id)
-        
-    if request.POST.get('email_mini') != request.POST.get('email_mini_conf'):
-        messages.error(request, _('email confirmation does not match. Please try again'))
+    invalid_emails = verify_emails(request.POST.get('email_mini'), request.POST.get('email_mini_conf'))
+    
+    if invalid_emails != "":
+        messages.error(request, _(invalid_emails))
         return HttpResponseRedirect('/user/%s/' % object_id)
 
     user = Profile.objects.get(person = object_id, person__organization=request.user.get_profile().org_active).user

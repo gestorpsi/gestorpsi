@@ -173,12 +173,7 @@ def add_event(
                         else:
                             if not event.errors:
                                 event = recurrence_form.save(group_member.referral, True) # ignore busy check
-<<<<<<< HEAD
             # TODO validate exclusive device booking
-=======
-
-
->>>>>>> Validating occurrences on schedule
             if not event.errors:
                 messages.success(request, _('Schedule saved successfully'))
                 return http.HttpResponseRedirect(redirect_to or '/schedule/')

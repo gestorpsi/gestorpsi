@@ -190,10 +190,11 @@ GNU General Public License for more details.
                         <tr>
                                 <td nowrap="nowrap"><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
                                 
-                                {% if is_secretary and a.is_locked %}
-                                <td><span  class="pdf">{{ a.filename }}</span></td>
+                               
+                                {% if is_secretary and a.only_professionals %}
+                                <td><span class="pdf">{{ a.filename }}</span></td>
                                 {% else %}
-                                <td><span  class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
+                                <td><span class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
                                 {% endif %}
 
                                 <td><span>{% for t in types %}

@@ -56,18 +56,25 @@ def _access_check_by_occurrence(request, occurrence):
     return True
 
 @permission_required_with_403('schedule.schedule_list')
-def schedule_occurrence_listing(request, year = 1, month = 1, day = None,
+def schedule_occurrence_listing(request, place_id, year = 1, month = 1, day = None,
     template='schedule/schedule_events.html',
     **extra_context):
 
     occurrences = schedule_occurrences(request, year, month, day)
+
+    try:
+        place = Place.objects.get( pk=place_id )
+    except:
+        place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0]
 
     return render_to_response(
         template,
         dict(
             extra_context,
             occurrences=occurrences,
-            places = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
+            path = "events/",
+            places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
+            place = place,
             services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
             professionals = CareProfessional.objects.active(request.user.get_profile().org_active.id)
             ),
@@ -76,8 +83,8 @@ def schedule_occurrence_listing(request, year = 1, month = 1, day = None,
 
 
 @permission_required_with_403('schedule.schedule_list')
-def schedule_occurrence_listing_today(request, template='schedule/schedule_events.html'):
-    return schedule_occurrence_listing(request, datetime.now().strftime('%Y'), datetime.now().strftime('%m'), datetime.now().strftime('%d'))
+def schedule_occurrence_listing_today(request, place=None, template='schedule/schedule_events.html'):
+    return schedule_occurrence_listing(request, place, datetime.now().strftime('%Y'), datetime.now().strftime('%m'), datetime.now().strftime('%d'))
 
 def invalid_delta_time(start, end):
     if start >= end:

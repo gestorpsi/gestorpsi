@@ -44,6 +44,12 @@ urlpatterns = patterns('',
         login_check(schedule_index), 
         name='schedule-index'
     ),
+
+     url(
+        r'^events/place/(?P<place>([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}))/$', 
+        login_check(schedule_occurrence_listing_today),
+        name='schedule-index'
+    ),
     
     # return JSON
     url(

@@ -147,7 +147,7 @@ def attach_save(request, object_id = None, client_id = None):
                     attach.description = request.POST.get('description')
                     attach.type = request.POST.get('doc_type')
                     attach.is_locked = False if request.POST.get('permission') =='False' else True
-                    print attach.is_locked 
+                    
                     attach.referral = Referral.objects.get(pk = object_id, service__organization=request.user.get_profile().org_active)
                     attach.save()
     

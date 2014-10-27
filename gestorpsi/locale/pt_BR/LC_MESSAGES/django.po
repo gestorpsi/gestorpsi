@@ -5364,7 +5364,7 @@ msgstr "Atendimentos"
 
 #: templates/ehr/ehr_session_list.html:37
 msgid "This referral have no occurrences yet."
-msgstr "Este encaminhamento ainda não possue agendamento para registrar."
+msgstr "Este encaminhamento ainda não possui agendamento para registrar."
 
 #: templates/ehr/ehr_session_list.html:37
 msgid "Go back"
@@ -6594,7 +6594,7 @@ msgstr "O dia de hoje possui"
 
 #: templates/schedule/schedule_header.html:24
 msgid "consulta(s)."
-msgstr "consulta (s)."
+msgstr "consulta(s)."
 
 #: templates/schedule/schedule_occurrence_form.html:34
 msgid "Occurrences"
@@ -6669,11 +6669,11 @@ msgstr "Selecione uma sala antes de continuar"
 
 #: templates/schedule/schedule_week_table.html:19
 msgid "This week have"
-msgstr "Esta semana possue"
+msgstr "Esta semana possui"
 
 #: templates/schedule/schedule_week_table.html:19
 msgid "occurrences(s)."
-msgstr "agendamentos"
+msgstr "agendamento(s)"
 
 #: templates/schedule/schedule_week_table.html:23
 msgid "to"

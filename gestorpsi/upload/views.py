@@ -146,8 +146,10 @@ def attach_save(request, object_id = None, client_id = None):
                     attach.file = '%s' % file
                     attach.description = request.POST.get('description')
                     attach.type = request.POST.get('doc_type')
-                    attach.only_professionals = True if request.POST.get('only_professionals') =='True' else False
-                    attach.only_psychologists = True if request.POST.get('only_psychologists') =='True' else False
+                    attach.only_professionals = True if request.POST.get('onlyprofessionals') == 'True' else False
+                    attach.only_psychologists = True if request.POST.get('onlypsychologists') == 'True' else False
+
+                    
 
                     attach.referral = Referral.objects.get(pk = object_id, service__organization=request.user.get_profile().org_active)
                     attach.save()

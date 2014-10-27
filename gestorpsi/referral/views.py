@@ -92,17 +92,14 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     attachs = ReferralAttach.objects.filter(referral = referral_id)
 
     # Finding if the user is a secretary or a psychologist.
-    is_secretary = False 
-    is_professional = False 
+    is_secretary = user.get_profile().person.is_secretary()
+    is_professional = user.get_profile().person.is_careprofessional() 
+    is_psychologist = False
     
-
-    for group in user.groups.all():
-            if group.name == "secretary":     is_secretary = True
-            if group.name == "professional":     is_professional = True
-
-   
+    if is_professional:
+        if str(user.get_profile().person.careprofessional.professionalIdentification.profession) == "Psicólogo":
+            is_psychologist = True
   
-            
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
     
 def _referral_occurrences(request, object_id = None, referral_id = None, type = 'upcoming', template_name='client/client_referral_occurrences.html'):

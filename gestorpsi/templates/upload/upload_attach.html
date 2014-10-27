@@ -59,10 +59,11 @@ GNU General Public License for more details.
 
                 <label><br />
 
-                <INPUT TYPE="checkbox" NAME="onlyprofessionals" VALUE="True">Somente Profissionais</label>
+                <INPUT TYPE="checkbox" id="onlyprofessionals" NAME="onlyprofessionals" VALUE="True"  onclick="marcardesmarcar('onlyprofessionals','onlypsychologists')" >Somente Profissionais</label>
 
-                <label><br />
-                <INPUT TYPE="checkbox" NAME="onlypsychologists" VALUE="True">Somente Psicólogos</label>
+                 <label><br />
+                <INPUT TYPE="checkbox" id="onlypsychologists" NAME="onlypsychologists" VALUE="True" onclick="marcardesmarcar('onlypsychologists','onlyprofessionals')" >Somente Psicólogos</label>
+
                
                 <label>Assunto do documento<br />
                 <input name="description" type="text" class="big" /></label>
@@ -103,5 +104,16 @@ GNU General Public License for more details.
     {% endif %}
 </div>
 <input type="hidden" name="client_id" value="{{ object.id }}" />
+
+
+<script>
+function marcardesmarcar(check1, check2){
+    
+        if(document.getElementById(check1).checked==true){
+
+        document.getElementById(check2).checked=false;   
+        }
+}
+</script>
 
 {% endblock %}

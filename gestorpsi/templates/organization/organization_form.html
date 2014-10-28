@@ -257,7 +257,7 @@ GNU General Public License for more details.
                 <legend>{% trans "Schedule Details" %}</legend>
 
                 <label>
-                    Intervalo de tempo entre as consultas &nbsp;
+                    Tempo de cada consulta &nbsp;
                     <select name="time_slot_schedule" class='medium asm'>
                          {% for k,v in time_slot_schedule %}
                             <option {% ifequal object.time_slot_schedule k %} selected {% endifequal %} value="{{ k }}"/>{{ v }} minutos

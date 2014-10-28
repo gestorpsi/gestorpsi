@@ -23,4 +23,6 @@ Alter table gcm_invoice drop due_date;
 Alter table organization_organization add suspension boolean NULL default False;
 Alter table organization_organization add suspension_reason text NULL;
 
+Alter table organization_organization add time_slot_schedule varchar(2) NOT NULL;
+
 COMMIT;

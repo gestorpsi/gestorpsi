@@ -184,6 +184,14 @@ try:
 except:
     DEFAULT_PAYMENT_DAY = 10
 
+
+TIME_SLOT_SCHEDULE = ( 
+            ("30",'30'),
+            ("40",'40'),
+            ("45",'45'),
+            ("60",'60'),
+        )
+
 class Organization(models.Model):
     """    
     This class represents the organization model.   
@@ -251,6 +259,8 @@ class Organization(models.Model):
     default_payment_day = models.PositiveIntegerField(validators=[MaxValueValidator(28), MinValueValidator(1)], default=DEFAULT_PAYMENT_DAY)
     default_payment_day.verbose_name = _("Default payment day")
     default_payment_day.help_text= _("The default day in which the billets have to be paid at the most by this organization.")
+
+    time_slot_schedule = models.CharField(u"Tempo de cada consulta (minutos)", null=False, blank=False, choices=TIME_SLOT_SCHEDULE, max_length=2, default=30)
     
     objects = OrganizationManager()
 

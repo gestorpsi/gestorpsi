@@ -29,6 +29,7 @@ GNU General Public License for more details.
 			<li><a display="address" class="organization" href="#">{% trans "Address" %}</a></li>
 			<li><a display="phone" class="organization" href="#">{% trans "Phones" %}</a></li>
 			<li><a display="internet" class="organization" href="#">{% trans "Internet" %}</a></li>
+			<li><a display="schedule" class="organization" href="#">{% trans "calendar" %}</a></li>
 		</ul>
 {% endblock %}
 
@@ -252,6 +253,21 @@ GNU General Public License for more details.
             </fieldset>
 
 
+            <fieldset class="schedule organization hidden">
+                <legend>{% trans "Schedule Details" %}</legend>
+
+                <label>
+                    Intervalo de tempo entre as consultas &nbsp;
+                    <select name="time_slot_schedule" class='medium asm'>
+                         {% for k,v in time_slot_schedule %}
+                            <option {% ifequal object.time_slot_schedule k %} selected {% endifequal %} value="{{ k }}"/>{{ v }} minutos
+                         {% endfor %}
+                    </select>
+                </label>
+
+            </fieldset>
+
+
             <fieldset id="fieldset_place_status" class="identity organization">
                <legend>{% trans "Visible for others" %}</legend>
                 <label>
@@ -267,74 +283,6 @@ GNU General Public License for more details.
                 </label>
             </fieldset>
 
-
-            {% comment %}
-            <!-- plan and payment area -->
-            <fieldset class="signature organization hidden">
-
-                <legend>{% trans "Signature" %}</legend>
-
-                <div>
-                    <label>{% trans "Inscription date" %}<br />
-                    <input type="text" value="{{ object.date_created }}" readonly  />
-                    <br/>
-                    {% if inscription.0 %}
-                        {% if inscription.0.date_payed %}
-                            {% trans "Payed " %}{{inscription.0.ammount}}
-                        {% else %}
-                            {% trans "Not payed " %}{{inscription.0.ammount}}
-                        {% endif %}
-                    {% else %}
-                        {% trans "Inscription not done" %}
-                    {% endif %}
-                    </label>
-                </div>
-                
-                <div>
-                    <label>{% trans "Plan" %}<br />
-                        <select name="prefered_plan" class="extrabig prefered_plan">
-                        {% for p in plans %}
-                            <option value="{{ p.id }}" {% ifequal object.prefered_plan_id p.id %}selected{% endifequal %} >{{ p.name }} / R$ {{ p.value }} / {{ p.duration }} mes{{ p.duration|pluralize:"es" }}</option>
-                        {% endfor %}
-                        </select>
-                    </label>
-
-                    <!-- plan id and value -->
-                    {% for p in plans %}
-                        <input type='hidden' value="{{ p.value }}" name="plan_id{{ p.id }}" />
-                        <input type='hidden' value="{{ p.name }}" name="plan_label{{ p.id }}" />
-                    {% endfor %}
-                    
-                    <br />
-
-                    <div><h3>{% trans "The new plan will be effectively applied only when the current signature is over." %}</h3></div>
-
-                    <!-- meios de pagamento -->
-                    <label>{% trans "Forma de pagamento" %}<br />
-                        <select name="payment_type" class="extrabig payment_type">
-                            {% for p in payment_type %}
-                                <option value="{{ p.id }}" {% ifequal p object.payment_type %}selected="selected"{% endifequal %} >{{ p.get_name_display }}</option>
-                            {% endfor %}
-                        </select>
-
-                        {% for p in payment_type %}
-                            <input type='hidden' value="{{ p.time }}" name="payment_id{{ p.id }}_time" />
-                        {% endfor %}
-                    </label>
-
-                    <br />
-                    <!-- text about -->
-                    {% for p in payment_type %}
-                        <div id='payment_type{{ p.id }}' {% ifnotequal object.payment_type p %}style='display: none;'{% endifnotequal %}>
-                            <h3>{{ p.detail }}</h3>
-                        </div>
-                    {% endfor %}
-
-                    <div><h3>Para alterar a forma de pagamento, <a href='/support/ticket/form/'>entre em contato.</a></h3></div>
-
-            </fieldset>
-
-            {% endcomment %}
 
             <div style='height: 10px;'></div>
 
@@ -352,110 +300,5 @@ GNU General Public License for more details.
     </form> <!-- form org save -->
 
     {% include "tags/upload.html" %}
-
-    {% comment %}
-    <!-- form pagamento -->
-    <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
-        <div class="main_area">
-            <fieldset class="signature organization hidden">
-
-                <!-- pagseguro boleto -->
-                {% if not object.invoice_.0 %}
-                    <div id='pagseguro_boleto' style='text-align: center; display: none; margin-top:10px;'>
-                        <h3>Fazer pagamento</h3>
-                        <div style='height: 10px;'></div>
-                        <div class='contact'>
-                                <!-- Campos obrigat&oacute;rios -->  
-                                <input name="receiverEmail" type="hidden" value="ozp@psico.net">  
-                                <input name="currency" type="hidden" value="BRL">  
-
-                                <!-- Itens do pagamento (ao menos um item &eacute; obrigat&oacute;rio) -->  
-                                <input name="itemId1" type="hidden" value="0001">  
-                                <input name="itemDescription1" type="hidden" value="Assinatura GestorPSI por 3 meses ">  
-                                <input name="itemAmount1" type="hidden" value="90.00">  
-                                <input name="itemQuantity1" type="hidden" value="1">  
-                                <input name="itemWeight1" type="hidden" value="1000">  
-
-                                <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->  
-                                <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}">  
-
-                                <!-- Dados do comprador (opcionais) -->  
-                                <input name="senderName" type="hidden" value="{{ object.administrator.0.name }}">  
-                                <input name="senderPhone" type="hidden" value="{{ object.administrator.0.get_firtst_phone }}">  
-                                <input name="senderEmail" type="hidden" value="{{ object.administrator.0.get_first_email }}">  
-
-                                <!-- submit do form (obrigat&oacute;rio) -->  
-                                <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/120x53-pagar.gif"/>  
-                        </div>
-                    </div>
-                {% endif %}
-    </form>
-
-                <!-- pagseguro cartao botao -->
-                {% for p in plans %}
-                    {% if p.pagseguro_code %}
-                        <div id='pagseguro_cartao{{ p.id }}' style="text-align:center; margin-top:10px; display: none;" />
-                            {% if not object.invoice_.0 %}
-                                    <h3>Fazer pagamento</h3>
-                                    <div style='height: 10px;'></div>
-                                    <div class='contact'>{{ p.pagseguro_code|safe }}</div>
-                                    <div style='height: 10px;'></div>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-
-
-                <!-- show values combination between plan and payment type -->
-                <div class='main_area' id='show_values' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
-                    <label>{% trans "Valor" %}<br />
-                        <input type="text" name="valor_plano" readonly='1' value='{{ object.payment_.0 }}' style='text-align: center;' />
-                    </label>
-
-                    <label>{% trans "Tempo / Dura&ccedil;&atilde;o" %}<br />
-                        <input type="text" name="tempo_plano" readonly='1' value='{{ object.payment_.1 }}' style='text-align: center;' class='big'>
-                    </label>
-                </div>
-
-
-                <!-- invoices -->
-                {% if object.invoice_.0 %}
-                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
-                        <h3>Assinatura atual / corrente</h3>
-                        <label>{% trans "Plan" %}<br />
-                            <input type="text" readonly='1' value='{{ object.invoice_.0.plan }}'>
-                        </label>
-                        <label>{% trans "Data do pagamento" %}<br />
-                            <input type="text" readonly='1' value='{{ object.invoice_.0.date_payed }}' class='normal'>
-                        </label>
-                        <label>{% trans "Vai vencer" %}<br />
-                            <input type="text" readonly='1' value='{{ object.invoice_.0.expiry_date }}' class='medium'>
-                        </label>
-                    </div>
-                {% endif %}
-
-
-                {% if object.invoice_.1 %}
-                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
-                        <h3>Assinatura paga / vencida (&uacute;ltimas 6)</h3>
-                        {% for x in object.invoice_.1 %}
-                            <label>{% trans "Plan" %}<br />
-                                <input type="text" readonly='1' value='{{ x.plan }}' class=''>
-                            </label>
-                            <label>{% trans "Data do pagamento" %}<br />
-                                <input type="text" readonly='1' value='{{ x.date_payed }}' class='medium'>
-                            </label>
-                            <label>{% trans "Venceu" %}<br />
-                                <input type="text" readonly='1' value='{{ x.expiry_date }}' class='medium'>
-                            </label>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-
-
-            </fieldset>
-        </div><!-- main area -->
-    </form>
-    {% endcomment %}
 
 {% endblock %}

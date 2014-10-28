@@ -327,10 +327,6 @@ def occurrence_group(
         context_instance=RequestContext(request)
     )
 
-'''
-    Tiago de Souza Moraes / 26 09 2014
-    place: Place.id
-'''
 @permission_required_with_403('schedule.schedule_list')
 def _datetime_view(
         request, 
@@ -344,6 +340,10 @@ def _datetime_view(
         params=None
     ):
 
+    '''
+        Tiago de Souza Moraes
+        place: Place.id
+    '''
 
     try:
         referral = Referral.objects.get(pk=referral, service__organization=request.user.get_profile().org_active)
@@ -362,12 +362,17 @@ def _datetime_view(
 
     params = params or {}
     data = dict(
+
         day=dt, 
         next_day=dt + timedelta(days=+1),
         prev_day=dt + timedelta(days=-1),
 
         # get start_time and end_time_delta from place
-        timeslots=timeslot_factory(dt, items, start_time = datetime_.time( place.hours_work()[0], place.hours_work()[1]), end_time_delta = timedelta(hours=place.hours_work()[2] ),  **params),
+        # get schedule slot time from organization
+        timeslots=timeslot_factory(dt, items, start_time=datetime_.time( place.hours_work()[0], place.hours_work()[1]),\
+                    end_time_delta=timedelta(hours=place.hours_work()[2] ),\
+                    time_delta=timedelta( minutes=int(user.get_profile().org_active.time_slot_schedule) ),\
+                    **params),
 
         places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
         place = place,

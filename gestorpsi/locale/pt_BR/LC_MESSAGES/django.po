@@ -6664,7 +6664,7 @@ msgid "Please, choose one room to book"
 msgstr "Escolha um nome para o relatório."
 
 #: templates/schedule/schedule_week.html:67
-msgid "Selecione uma sala antes de continuar"
+msgid "Select one room before continuing"
 msgstr "Selecione uma sala antes de continuar"
 
 #: templates/schedule/schedule_week_table.html:19

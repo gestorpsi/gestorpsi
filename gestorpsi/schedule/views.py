@@ -15,7 +15,6 @@ GNU General Public License for more details.
 """
 
 import calendar
-#import locale
 from dateutil import parser
 from datetime import datetime, timedelta
 import datetime as datetime_
@@ -27,6 +26,7 @@ from django.utils import simplejson
 from django.db.models import Q
 from django.contrib import messages
 from swingtime.utils import create_timeslot_table
+
 from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation, OccurrenceFamily, OccurrenceEmployees
 from gestorpsi.referral.models import Referral
 from gestorpsi.referral.forms import ReferralForm
@@ -39,6 +39,7 @@ from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.schedule.forms import OccurrenceConfirmationForm
 from gestorpsi.device.models import DeviceDetails
+from gestorpsi.organization.models import TIME_SLOT_SCHEDULE
 
 
 def _access_check_by_occurrence(request, occurrence):
@@ -68,7 +69,8 @@ def schedule_occurrence_listing(request, year = 1, month = 1, day = None,
             occurrences=occurrences,
             places = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
             services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
-            professionals = CareProfessional.objects.active(request.user.get_profile().org_active.id)
+            professionals = CareProfessional.objects.active(request.user.get_profile().org_active.id),
+            tab_event_class = 'active',
             ),
         context_instance=RequestContext(request)
     )
@@ -382,12 +384,13 @@ def _datetime_view(
         professionals = CareProfessional.objects.active_all(request.user.get_profile().org_active.id),
         referral = referral,
         object = object,
+        tab_daily_class = "active", # class object, tab menu
     )
 
     return render_to_response(
         template,
         data,
-        context_instance=RequestContext(request)
+        context_instance=RequestContext(request),
     )
 
 
@@ -414,15 +417,17 @@ def schedule_index(request,
 
 
 def week_view(request,
-    year = datetime.now().strftime("%Y"), 
-    month = datetime.now().strftime("%m"), 
-    day = datetime.now().strftime("%d"), ):
+        year = datetime.now().strftime("%Y"), 
+        month = datetime.now().strftime("%m"), 
+        day = datetime.now().strftime("%d"),
+    ):
 
-    return render_to_response('schedule/schedule_week.html',         dict(
-            places = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
-            rooms = Room.objects.active().filter(place__organization=request.user.get_profile().org_active.id),
-            services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
-            professionals = CareProfessional.objects.active_all(request.user.get_profile().org_active.id)
+    return render_to_response('schedule/schedule_week.html', dict(
+                places = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
+                rooms = Room.objects.active().filter(place__organization=request.user.get_profile().org_active.id),
+                services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
+                professionals = CareProfessional.objects.active_all(request.user.get_profile().org_active.id),
+                tab_week_class = 'active',
             ), context_instance=RequestContext(request))
 
 def week_view_table(request,
@@ -653,3 +658,25 @@ def occurrence_employee_form(request, occurence_id = None, template=None):
         return http.HttpResponseRedirect('/schedule/events/%s/employee/form/' % occurrence.id)
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))
+
+
+
+@permission_required_with_403('schedule.schedule_write')
+def schedule_settings(request):
+    """
+        Tiago de Souza Moraes
+        Save schedule settings, slot time, format display.
+    """
+
+    object = request.user.get_profile().org_active
+
+    if request.POST:
+        messages.success(request, _(u'Configuração da salvo com sucesso'))
+        object.time_slot_schedule = request.POST.get('time_slot_schedule')
+        object.save()
+
+    return render_to_response('schedule/schedule_settings.html', dict(
+                object = object,
+                time_slot_schedule = TIME_SLOT_SCHEDULE,
+                tab_settings_class = 'active',
+            ), context_instance=RequestContext(request) )

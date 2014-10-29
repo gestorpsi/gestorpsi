@@ -36,7 +36,7 @@ GNU General Public License for more details.
 
     <div id="schedule_header" style="margin-top:-125px">
         <h2 class="title_schedule">{% trans "Weekly view" %} 
-            {% include "schedule/schedule_filter.html" %}
+            {% include "schedule/schedule_filter_week.html" %}
         </h2>
     </div>
 
@@ -44,7 +44,7 @@ GNU General Public License for more details.
 
     {# load template/schedule/schedule_week_table.html by jquery in media/jss/gestorpsi.schedule.js #}
     <script>
-        $('#schedule_week').load('/schedule/week/today/');
+        $('#schedule_week').load('/schedule/week/today/{{ place.pk }}/');
     </script>
     
     </div>

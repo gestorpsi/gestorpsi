@@ -507,9 +507,11 @@ def week_view(request, place=None,
 
 
 def week_view_table(request,
+    place_id,
     year = datetime.now().strftime("%Y"),
     month = datetime.now().strftime("%m"),
-    day = datetime.now().strftime("%d"), ):
+    day = datetime.now().strftime("%d"),
+    ):
 
     if not year or not month or not day:
         today = datetime.now()
@@ -521,13 +523,14 @@ def week_view_table(request,
     week = []
     occurrences = []
     occurrences_length = 0
+    place = place_id
 
     for i in range(7):
         occurrences_daily = []
         week_day = first_week_day+timedelta(i)
         week.append(week_day)
         groups = []
-        for s in schedule_occurrences(request, week_day.strftime('%Y'), week_day.strftime('%m'), week_day.strftime('%d')):
+        for s in schedule_occurrences(request, week_day.strftime('%Y'), week_day.strftime('%m'), week_day.strftime('%d'), place_id):
             if s.is_group():
                 if s.event.referral.group.pk not in groups:
                     occurrences_daily.append({
@@ -562,7 +565,7 @@ def today_occurrences(request):
 
 
 
-def schedule_occurrences(request, year = 1, month = 1, day = None):
+def schedule_occurrences(request, year = 1, month = 1, day = None, place_id = None):
     if day:
         date_start = datetime.strptime("%s%s%s" % (year, month, day),"%Y%m%d")
         date_end = date_start+timedelta(days=+1)
@@ -570,14 +573,26 @@ def schedule_occurrences(request, year = 1, month = 1, day = None):
         date_start = datetime.strptime("%s%s" % (year, month),"%Y%m")
         date_end = date_start+timedelta( days=calendar.monthrange(int(year), int(month))[1] + 0)
 
-    objs = ScheduleOccurrence.objects.filter(
-            start_time__gte=date_start,
-            start_time__lt=date_end,
-            event__referral__organization=request.user.get_profile().org_active.id
-            ).exclude(occurrenceconfirmation__presence = 4 # unmarked's
-            ).exclude(occurrenceconfirmation__presence = 5 # remarked
-            ).exclude(room__place__active = False # exclude not active places
-            ).exclude(room__active = False) # exclude not active rooms
+    if place_id == None:
+        objs = ScheduleOccurrence.objects.filter(
+                start_time__gte=date_start,
+                start_time__lt=date_end,
+                event__referral__organization=request.user.get_profile().org_active.id,
+                ).exclude(occurrenceconfirmation__presence = 4 # unmarked's
+                ).exclude(occurrenceconfirmation__presence = 5 # remarked
+                ).exclude(room__place__active = False # exclude not active places
+                ).exclude(room__active = False) # exclude not active rooms
+
+    else:
+        objs = ScheduleOccurrence.objects.filter(
+                start_time__gte=date_start,
+                start_time__lt=date_end,
+                event__referral__organization=request.user.get_profile().org_active.id,
+                room__place__id = place_id
+                ).exclude(occurrenceconfirmation__presence = 4 # unmarked's
+                ).exclude(occurrenceconfirmation__presence = 5 # remarked
+                ).exclude(room__place__active = False # exclude not active places
+                ).exclude(room__active = False) # exclude not active rooms
 
     return objs
 

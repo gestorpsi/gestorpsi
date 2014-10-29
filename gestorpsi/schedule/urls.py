@@ -105,12 +105,12 @@ urlpatterns = patterns('',
         name='schedule-index'
     ),
     url(
-        r'^week/(\d{4})/(0?[1-9]|1[012])/([0-3]?\d)/$', 
+        r'^week/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(\d{4})/(0?[1-9]|1[012])/([0-3]?\d)/$', 
         login_check(week_view_table),
         name='swingtime-week-table'
     ),
     url(
-        r'^week/today/$', 
+        r'^week/today/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', 
         login_check(week_view_table),
         name='swingtime-week-table'
     ),

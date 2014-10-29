@@ -29,7 +29,6 @@ GNU General Public License for more details.
 			<li><a display="address" class="organization" href="#">{% trans "Address" %}</a></li>
 			<li><a display="phone" class="organization" href="#">{% trans "Phones" %}</a></li>
 			<li><a display="internet" class="organization" href="#">{% trans "Internet" %}</a></li>
-			<li><a display="schedule" class="organization" href="#">{% trans "calendar" %}</a></li>
 		</ul>
 {% endblock %}
 
@@ -252,29 +251,12 @@ GNU General Public License for more details.
                 <a class="add_to_form"><span>{% trans "Add IM" %}</span></a>
             </fieldset>
 
-
-            <fieldset class="schedule organization hidden">
-                <legend>{% trans "Schedule Details" %}</legend>
-
-                <label>
-                    Tempo de cada consulta &nbsp;
-                    <select name="time_slot_schedule" class='medium asm'>
-                         {% for k,v in time_slot_schedule %}
-                            <option {% ifequal object.time_slot_schedule k %} selected {% endifequal %} value="{{ k }}"/>{{ v }} minutos
-                         {% endfor %}
-                    </select>
-                </label>
-
-            </fieldset>
-
-
             <fieldset id="fieldset_place_status" class="identity organization">
                <legend>{% trans "Visible for others" %}</legend>
                 <label>
                         <input type="checkbox" name="visible" {% if object.visible %} checked {% endif %} /> {% trans "Visible?" %}
                     </label>
             </fieldset>
-
 
             <fieldset id="fieldset_place_status" class="identity organization">
                 <legend>{% trans "Comments" %}</legend>

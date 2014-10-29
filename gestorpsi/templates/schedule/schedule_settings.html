@@ -1,0 +1,54 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_schedule %}active{% endblock %}
+
+{% block submenu %}
+    {% include "schedule/schedule_submenu.html" %}
+{% endblock %}
+
+{% block core %}
+    <div class="schedule">
+        <form action="{% url schedule-settings %}" method="post">
+            <fieldset class="schedule organization">
+                <legend>{% trans "Schedule Details" %}</legend>
+                <label>
+                    Tempo de cada consulta &nbsp;
+                    <select name="time_slot_schedule" class='medium asm'>
+                         {% for k,v in time_slot_schedule %}
+                            <option {% ifequal object.time_slot_schedule k %} selected {% endifequal %} value="{{ k }}"/>{{ v }} minutos
+                         {% endfor %}
+                    </select>
+                </label>
+            </fieldset>
+    </div>
+
+        <!-- save buttom -->
+        {% if perms.organization.organization_write %}
+            <div id="sidebar" class="sidebar">
+                <div class="bg_blue">
+                    {% include "tags/save.html" %}
+                </div>
+            </div>
+        {% endif %}
+
+    </form>
+
+{% endblock %}

@@ -20,7 +20,7 @@ from django.template import RequestContext
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext as _
 from django.contrib import messages
-from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization, ProfessionalResponsible, TIME_SLOT_SCHEDULE
+from gestorpsi.organization.models import PersonType, UnitType, AdministrationEnvironment, Source, ProvidedType, Management, Dependence, Activitie, Organization, ProfessionalResponsible
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType
 from gestorpsi.internet.models import EmailType, IMNetwork
@@ -93,7 +93,6 @@ def form(request):
         'Activitie': Activitie.objects.all(),
         'professional_responsible': ProfessionalResponsible.objects.filter(organization = user.get_profile().org_active),
         'Professions': Profession.objects.all(),
-        'time_slot_schedule': TIME_SLOT_SCHEDULE,
         },
         context_instance=RequestContext(request))
 
@@ -167,7 +166,6 @@ def save(request):
     object.activity = get_object_or_None(Activitie, pk=request.POST.get('activity'))
     """ provided types """
     object.provided_type.clear()
-    object.time_slot_schedule = request.POST.get('time_slot_schedule')
 
     for p in request.POST.getlist('provided_type'):
         object.provided_type.add(ProvidedType.objects.get(pk=p))

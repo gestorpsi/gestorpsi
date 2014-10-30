@@ -25,20 +25,28 @@ GNU General Public License for more details.
 {% endblock %}
 
 {% block core %}
-    <div class="schedule">
-        <form action="{% url schedule-settings %}" method="post">
-            <fieldset class="schedule organization">
+
+    <div id="schedule_header">
+        <h2 class="title_schedule">{% trans "Configura&ccedil;&atilde;o" %}</h2>
+    </div>
+
+    <form action="{% url schedule-settings %}" method="post" class="form_people">
+        <div class='main_area'>
+
+            <fieldset class="organization">
                 <legend>{% trans "Schedule Details" %}</legend>
                 <label>
-                    Tempo de cada consulta &nbsp;
+                    Intervalo padr&atilde;o para agendamento &nbsp;
                     <select name="time_slot_schedule" class='medium asm'>
                          {% for k,v in time_slot_schedule %}
                             <option {% ifequal object.time_slot_schedule k %} selected {% endifequal %} value="{{ k }}"/>{{ v }} minutos
                          {% endfor %}
                     </select>
                 </label>
+
             </fieldset>
-    </div>
+            <div style='height: 10px;'></div>
+        </div>
 
         <!-- save buttom -->
         {% if perms.organization.organization_write %}

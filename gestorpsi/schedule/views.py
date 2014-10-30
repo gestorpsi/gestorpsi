@@ -397,16 +397,21 @@ def _datetime_view(
 
 @permission_required_with_403('schedule.schedule_list')
 def schedule_index(request, 
-    year = datetime.now().strftime("%Y"), 
-    month = datetime.now().strftime("%m"), 
-    day = datetime.now().strftime("%d"), 
-    template='schedule/schedule_daily.html',
-    place = None,
-     **params):
+        year = datetime.now().strftime("%Y"), 
+        month = datetime.now().strftime("%m"), 
+        day = datetime.now().strftime("%d"), 
+        template='schedule/schedule_daily.html',
+        place = None,
+        **params
+    ):
 
     if place == None:
-        # Possible to exist more than one place as matriz, filter and get first element
-        place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0].id
+        # Possible to exist more than one place as matriz or none, filter and get first element
+        if Place.objects.filter( place_type=1, organization=request.user.get_profile().org_active):
+            place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0].id
+        # non exist a matriz place
+        else:
+            place = Place.objects.filter(organization=request.user.get_profile().org_active)[0].id
     
     # Test if clinic administrator has registered referrals before access schedule page.
     if not Referral.objects.filter(status='01', organization=request.user.get_profile().org_active).count():

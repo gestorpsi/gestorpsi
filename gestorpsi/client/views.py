@@ -937,7 +937,10 @@ def schedule_daily(
         messages.success(request, _('Sorry, you can not book a queued client. Remove it first from queue before continue'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (request.GET.get('client'), referral.id))
     
-    place = Place.objects.filter( organization=request.user.get_profile().org_active, place_type__id=1 )[0] # hard code
+    if Place.objects.filter( organization=request.user.get_profile().org_active, place_type__id=1 ):
+        place = Place.objects.filter( organization=request.user.get_profile().org_active, place_type__id=1 )[0] # place type = matriz
+    else:
+        place = Place.objects.filter( organization=request.user.get_profile().org_active, )[0] # first
 
     return _datetime_view(request, template, datetime(int(year), int(month), int(day)), place.id, referral = request.GET['referral'], client = request.GET['client'], **params)
 

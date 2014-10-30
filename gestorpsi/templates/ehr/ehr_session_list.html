@@ -32,35 +32,31 @@ GNU General Public License for more details.
 
 <div class="main_area contact">
     {% if not referral.occurrences %}
-
-    <div id="msg_area" class="alert no_registers_available">
-        {% trans "This referral have no occurrences yet." %} <a href="javascript:history.go(-1)">{% trans "Go back"%} </a>
-    </div>
-
+        <div id="msg_area" class="alert no_registers_available">{% trans "This referral have no occurrences yet." %} <a href="javascript:history.go(-1)">{% trans "Go back"%}</a></div>
     {% else %}
 
     {% if referral.occurrences %}
-    <div class="list_big">
-        <h1>{% trans "Session List" %}</h1>
-        <ul>
-        <li class="last"><a class="item_description_all pointer">{% trans "View All" %}</a></li>
-        <li class="last"></li>
-        {% for i in referral.occurrences %}
-            {% if not i.have_session %}
-                <li id="occurrence_{{ i.pk }}" {% if forloop.last %} class="last"{% endif %}>{{ i }} <small>{{ i.occurrenceconfirmation.get_presence_display }}</small><a class="load" element="#dialog" href="/client/{{ object.pk }}/{{ referral.pk }}/session/add/?o={{ i.pk }}">{% trans "Register Session" %}</a></li>
-            {% else %}
-                <li id="occurrence_{{ i.pk }}" {% if forloop.last %} class="last"{% endif %}>{{ i }}<small><b>{{ i.session.get_session_goals_display }}</b> - {{ i.session.get_edit_status_display }}</small><a class="item_description pointer">{% trans "View" %}</a>{% if i.session.edit_status != '4' %}<a class="load" element="#dialog" href="/client/{{ object.id }}/{{ referral.id }}/session/{{ i.session.id }}/">{% trans "Edit" %}</a>{% endif %}
-                    <div class="description hidden">
-                        <div class="quote">
-                            <p>{{ i.session.descriptive }}</p>
-                            <p class="comments">{{ i.session.comments }}</p>
-                        </div>
-                    </div>
-                </li>
-            {% endif %}
-        {% endfor %}
-        </ul>
-    </div>
+        <div class="list_big">
+            <h1>{% trans "Session List" %}</h1>
+            <ul>
+                <li class="last"><a class="item_description_all pointer">{% trans "View All" %}</a></li>
+                <li class="last"></li>
+                {% for i in referral.occurrences %}
+                    {% if not i.have_session %}
+                        <li id="occurrence_{{ i.pk }}" {% if forloop.last %} class="last"{% endif %}>{{ i }} <small>{{ i.occurrenceconfirmation.get_presence_display }}</small><a class="load" element="#dialog" href="/client/{{ object.pk }}/{{ referral.pk }}/session/add/?o={{ i.pk }}">{% trans "Register Session" %}</a></li>
+                    {% else %}
+                        <li id="occurrence_{{ i.pk }}" {% if forloop.last %} class="last"{% endif %}>{{ i }}<small><b>{{ i.session.get_session_goals_display }}</b> - {{ i.session.get_edit_status_display }}</small><a class="item_description pointer">{% trans "View" %}</a>{% if i.session.edit_status != '4' %}<a class="load" element="#dialog" href="/client/{{ object.id }}/{{ referral.id }}/session/{{ i.session.id }}/">{% trans "Edit" %}</a>{% endif %}
+                            <div class="description hidden">
+                                <div class="quote">
+                                    <p>{{ i.session.descriptive }}</p>
+                                    <p class="comments">{{ i.session.comments }}</p>
+                                </div>
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
     {% endif %}
 
 {% endif %}

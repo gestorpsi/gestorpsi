@@ -228,13 +228,13 @@ def occurrence_view(
 
 @permission_required_with_403('schedule.schedule_write')
 def occurrence_confirmation_form(
-    request, 
-    pk, 
-    template='schedule/schedule_occurrence_confirmation_form.html',
-    form_class=OccurrenceConfirmationForm,
-    client_id = None,
-    redirect_to = None,
-):
+        request, 
+        pk, 
+        template='schedule/schedule_occurrence_confirmation_form.html',
+        form_class=OccurrenceConfirmationForm,
+        client_id = None,
+        redirect_to = None,
+    ):
 
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
     

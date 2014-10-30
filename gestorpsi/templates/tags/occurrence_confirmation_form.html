@@ -24,51 +24,59 @@ hide Date fields and second field
 {% endcomment %}
 
 <script>
-$(function() {
-    $('select#id_date_started_0_month, select#id_date_started_0_day, select#id_date_started_0_year, select#id_date_started_1_second').hide();
-    $('select#id_date_finished_0_month, select#id_date_finished_0_day, select#id_date_finished_0_year, select#id_date_finished_1_second').hide();
-    $('form input[name=presence]').click(function(){
-        if($(this).val()>2) {
-            $('div.date_fields').hide();
-        } else {
-            $('div.date_fields').show();
-        }
+    $(function() {
+        $('select#id_date_started_0_month, select#id_date_started_0_day, select#id_date_started_0_year, select#id_date_started_1_second').hide();
+        $('select#id_date_finished_0_month, select#id_date_finished_0_day, select#id_date_finished_0_year, select#id_date_finished_1_second').hide();
+        $('form input[name=presence]').click(function(){
+            if($(this).val()>2) {
+                $('div.date_fields').hide();
+            } else {
+                $('div.date_fields').show();
+            }
+        });
     });
-});
 </script>
 
 <form method="post" action="" class="schedule_occurrence">
-<div class="main_area">
-    <fieldset>
-    <legend>{% trans "Occurrence Confirmation Details" %}</legend>
-        <label>{{ form.presence.label }}<br />
-        {{ form.presence }}
-        {{ form.presence.errors }}
-        </label>
-        <div style="clear:both"></div>
-        <div class="date_fields{% if hide_date_field %} hidden{% endif %}">
-            <label>{{ form.date_started.label }}<br />
-            <div class="nomargin">
-            {{ form.date_started }}
-            </div>
+    <div class="main_area">
+        <fieldset>
+
+            <legend>{% trans "Occurrence Confirmation Details" %}</legend>
+            <label>
+                {{ form.presence.label }}<br />
+                {{ form.presence }}
+                {{ form.presence.errors }}
             </label>
-            <label>{{ form.date_finished.label }}<br />
-            <div class="nomargin">
-            {{ form.date_finished }}
+
+            <div style="clear:both"></div>
+
+            <div class="date_fields{% if hide_date_field %} hidden{% endif %}">
+                <label>{{ form.date_started.label }}<br />
+                    <div class="nomargin">{{ form.date_started }}</div>
+                </label>
+                <label>{{ form.date_finished.label }}<br />
+                    <div class="nomargin">{{ form.date_finished }}</div>
+                </label>
             </div>
+
+            <div style="clear:both"></div>
+
+            <label>
+                {{ form.reason.label }}<br />
+                {{ form.reason }}
             </label>
-        </div>
-        <div style="clear:both"></div>
-        <label>{{ form.reason.label }}<br />
-        {{ form.reason }}
-        </label>
-        <label>{{ form.device.label }}<br /></label>
-        <div class="overflow">
-        {{ form.device }}
-        </div>        
-        <label>{% trans "Notes" %}<br />
-        <textarea rows="10" name="occurrence_annotation" class="giant">{% if occurrence.annotation %}{{ occurrence.annotation }}{% endif %}</textarea>
-        </label>            
-    </fieldset>
-  <br />
-</div>
+
+            <label>{{ form.device.label }}<br /></label>
+            <div class="overflow">
+                {{ form.device }}
+            </div>        
+
+            <label>
+                {% trans "Notes" %}<br />
+                <textarea rows="10" name="occurrence_annotation" class="giant">{% if occurrence.annotation %}{{ occurrence.annotation }}{% endif %}</textarea>
+            </label>            
+
+        </fieldset>
+      <br />
+    </div>
+</form>

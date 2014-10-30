@@ -26,6 +26,7 @@ GNU General Public License for more details.
 
 {% block core %}
 <input type="hidden" name="object_id" value="{{ object.id }}" />
+<script type="text/javascript" src="/media/js/gestorpsi.upload.checkbox.js"></script>
 
 <h2 id="title_addressbook" style="display:none"></h2>
 
@@ -59,10 +60,10 @@ GNU General Public License for more details.
 
                 <label><br />
 
-                <INPUT TYPE="checkbox" id="onlyprofessionals" NAME="onlyprofessionals" VALUE="True"  onclick="marcardesmarcar('onlyprofessionals','onlypsychologists')" >Somente Profissionais</label>
+                <INPUT TYPE="checkbox" id="onlyprofessionals" NAME="onlyprofessionals" VALUE="True"  onclick="checkbox_click_swapper('onlyprofessionals','onlypsychologists')" >Somente Profissionais</label>
 
                  <label><br />
-                <INPUT TYPE="checkbox" id="onlypsychologists" NAME="onlypsychologists" VALUE="True" onclick="marcardesmarcar('onlypsychologists','onlyprofessionals')" >Somente Psicólogos</label>
+                <INPUT TYPE="checkbox" id="onlypsychologists" NAME="onlypsychologists" VALUE="True" onclick="checkbox_click_swapper('onlypsychologists','onlyprofessionals')" >Somente Psicólogos</label>
 
                
                 <label>Assunto do documento<br />
@@ -127,15 +128,5 @@ GNU General Public License for more details.
 </div>
 <input type="hidden" name="client_id" value="{{ object.id }}" />
 
-
-<script>
-function marcardesmarcar(check1, check2){
-    
-        if(document.getElementById(check1).checked==true){
-
-        document.getElementById(check2).checked=false;   
-        }
-}
-</script>
 
 {% endblock %}

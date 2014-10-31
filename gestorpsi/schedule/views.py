@@ -83,13 +83,17 @@ def schedule_occurrence_listing_today(request, template='schedule/schedule_event
 
 @permission_required_with_403('schedule.schedule_write')
 def add_event(
-    request, 
-    template='schedule/schedule_form.html',
-    event_form_class=ReferralForm,
-    recurrence_form_class=ScheduleOccurrenceForm,
-    redirect_to = None
-):
-    dtstart = None
+        request, 
+        template='schedule/schedule_form.html',
+        event_form_class=ReferralForm,
+        recurrence_form_class=ScheduleOccurrenceForm,
+        redirect_to = None
+    ):
+
+    # have to contains dtstart variable in URL. URL from schedule have to contains date and time informations.
+    if not 'dtstart' in request.GET:
+        return http.HttpResponseRedirect('/schedule/')
+
     if request.method == 'POST':
         if int(request.POST.get('count')) > 40: # limit occurrence repeat
             return render_to_response('403.html', {'object':_('Sorry. You can not book more than 40 occurrence at the same time')})
@@ -121,24 +125,18 @@ def add_event(
                     context_instance=RequestContext(request)
                 )
     else:
-        if 'dtstart' in request.GET:
-            try:
-                dtstart = parser.parse(request.GET['dtstart'])
-            except:
-                # TODO A badly formatted date is passed to add_event
-                dtstart = datetime.now()
 
+        dtstart = parser.parse( request.GET['dtstart'] )
         room = get_object_or_None(Room, pk=request.GET.get('room'), place__organization=request.user.get_profile().org_active)
         client = get_object_or_None(Client, pk = request.GET.get('client'), person__organization=request.user.get_profile().org_active)
         referral = get_object_or_None(Referral, pk = request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
-        
         event_form = event_form_class()
 
         recurrence_form = recurrence_form_class(initial=dict(
-            dtstart=dtstart, 
-            day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"), 
-            until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
-            room=room.id,
+                dtstart=dtstart, 
+                day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"), 
+                until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
+                room=room.id,
             ))
 
         recurrence_form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=room) | Q(mobility="2", lendable=True) | Q(place=room.place, mobility="2", lendable=False))]
@@ -525,8 +523,12 @@ def daily_occurrences(request, year = 1, month = 1, day = None, place = None):
     date = datetime.strptime(('%s/%s/%s' % (year, month, day)), "%Y/%m/%d")
 
     if place == None:
-        # Possible to exist more than one place as matriz, filter and get first element
-        place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0].id
+        # Possible to exist more than one place as matriz or none, filter and get first element
+        if Place.objects.filter( place_type=1, organization=request.user.get_profile().org_active):
+            place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0].id
+        # non exist a matriz place
+        else:
+            place = Place.objects.filter(organization=request.user.get_profile().org_active)[0].id
 
     array['util'] = {
         'date': ('%s-%s-%s' % (year, month, day)),

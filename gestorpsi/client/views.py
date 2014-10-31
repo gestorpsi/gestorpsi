@@ -748,12 +748,18 @@ def referral_home(request, object_id = None, referral_id = None):
 
     return _referral_view(request, object_id, referral_id, 'client/client_referral_home.html', access_check_referral_write)
 
+
+
+
 @permission_required_with_403('client.client_write')
 def save(request, object_id=None, is_company = False):
     """
        Save or Update a client record
     """
     user = request.user
+
+    if not request.POST:
+        return HttpResponseRedirect('/client/add/')
 
     if object_id:
         object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
@@ -769,14 +775,12 @@ def save(request, object_id=None, is_company = False):
         
         # Id Record
         org = get_object_or_404(Organization, pk=user.get_profile().org_active.id )
-        object.idRecord = org.last_id_record + 1
         org.last_id_record = org.last_id_record + 1
         org.save()
 
         # Admission date
+        object.idRecord = org.last_id_record + 1
         object.admission_date = datetime.now()
-
-    if request.POST:
         object.person = person_save(request, person)
         object.save()
     
@@ -788,32 +792,19 @@ def save(request, object_id=None, is_company = False):
             company.person = object.person
             company.save()
 
-        '''
-        WHY?
-        if not company_form.is_valid():
-            print company_form.errors
-        else:
-            company = company_form.save(commit=False)
-            #print object.person
-            company.person = object.person
-            company.save()
-        '''
-
-    '''
-    automatic admit client
-    '''
-    
-    if not object.admissionreferral_set.all():
-        a = AdmissionReferral()
-    else:
+    # automatic admit client
+    a = AdmissionReferral()
+    if object.admissionreferral_set.all():
         a = object.admissionreferral_set.all()[0]
 
     a.referral_choice_id = AdmissionChoice.objects.all().order_by('weight')[0].id
     object.admissionreferral_set.add(a)
+    object.save()
     
     messages.success(request, _('Client saved successfully'))
 
     return HttpResponseRedirect('/client/%s/home' % object.id)
+
 
 @permission_required_with_403('client.client_read')
 def client_print(request, object_id = None):

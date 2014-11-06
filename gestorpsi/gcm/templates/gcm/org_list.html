@@ -83,7 +83,10 @@
 
                             <td>{% if object.suspension %}{% trans "Sim" %}{% else %}{% trans "Não" %}{% endif %}</td>
 
-                            <td><a href="/admin/gcm/invoice/?q={{ object.id }}" target='_blank'>Fatura</a>
+                            <td>
+                                <a href="/admin/gcm/invoice/?q={{ object.id }}" target='_blank'>Fatura</a><br />- - -
+                                </br><a href="/admin/gcm/invoice/add/?org={{ object.id }}" target='_blank'>Nova Fatura</a>
+                            </td>
 
                         </tr>
 

@@ -77,6 +77,7 @@ def pagoClienteDeposito(modeladmin, request, queryset):
         obj.save()
 pagoClienteDeposito.short_description = u"Pago pelo cliente / depósito"
 
+
 # pago pelo GestorPSI - gratis/teste/cortesia
 def pagoGratis(modeladmin, request, queryset):
     for obj in queryset:
@@ -85,12 +86,17 @@ def pagoGratis(modeladmin, request, queryset):
         obj.save()
 pagoGratis.short_description = u"Pago / Grátis"
 
+
 class InvoiceAdmin(admin.ModelAdmin):
     list_display = ('organization','plan','start_date','end_date','status','date_payed','bank','situation_')
     list_filter = ('status',)
     actions = [pendente, pagoClienteCartao, pagoClienteBoleto, pagoClienteDeposito, pagoGratis]
     search_fields = ['organization__name','organization__id']
     form = InvoiceForm
+
+    class Media:
+        js = ('/media/js/jquery-1.6.4.min.js','/media/js/invoiceAdd.js')
+
 
 admin.site.register(Invoice, InvoiceAdmin)
 

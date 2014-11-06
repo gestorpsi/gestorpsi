@@ -33,12 +33,11 @@ GNU General Public License for more details.
     {% include "tags/occurrence_confirmation_form.html" %}
     <div id="sidebar" class="sidebar">
         {% if not denied_to_write %}
-        <div class="bg_blue">
-            {% include "tags/save.html" %}
-        </div>
+            <div class="bg_blue">
+                {% include "tags/save.html" %}
+            </div>
         {% endif %}
         {% include "tags/schedule_sidebar.html"%}
-
     </div>
 </form>
 {% endblock %}

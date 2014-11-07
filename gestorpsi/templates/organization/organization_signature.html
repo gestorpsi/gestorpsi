@@ -195,8 +195,8 @@ GNU General Public License for more details.
                             </table>
 
                             <table style='margin-left:10px; width:100%;'>
-                                <tr>
                                     {% for x in obj.invoice_.1 %}
+                                    <tr>
                                         <th style='width:30%; font-weight: normal;'>{{ x.plan }}</th>
                                         <th style='width:15%; font-weight: normal;'>{{ x.start_date }}</th>
                                         <th style='width:15%; font-weight: normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.end_date }}</th>
@@ -236,9 +236,11 @@ GNU General Public License for more details.
                                             {% else %}
                                                 Pago em {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
                                             {% endifequal %}
-                                            
+
+                                    </tr>
+                                    <tr><th>.</th></tr>
                                     {% endfor %}
-                                </tr>
+                                            
                             </table>
                     </div>
                 {% endif %}

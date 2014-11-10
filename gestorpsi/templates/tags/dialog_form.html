@@ -17,13 +17,13 @@ GNU General Public License for more details.
 {% load i18n %}
 
 {% if not field.is_hidden %}
-{{ field.errors }}
-<label>
-{{ field.label }}
+    {{ field.errors }}
+    <label>
+    {{ field.label }}
 {% endif %}
+
 {{ field }}
 
 {% if not field.is_hidden %}
-</label>
+    </label>
 {% endif %}
-

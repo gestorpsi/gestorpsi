@@ -79,7 +79,7 @@ class TimeUnit(models.Model):
 class Demand(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
-    edit_status = models.CharField(max_length=1, choices=EDIT_STATUS)
+    edit_status = models.CharField(max_length=2, choices=EDIT_STATUS)
     initial_complaint = models.BooleanField()
     demand = models.TextField(blank=True)
     description = models.TextField(blank=True)
@@ -107,7 +107,7 @@ class Demand(models.Model):
 class Diagnosis(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
-    edit_status = models.CharField(max_length=1, choices=EDIT_STATUS)
+    edit_status = models.CharField(max_length=2, choices=EDIT_STATUS)
     diagnosis_date = models.DateTimeField(null=True)
     diagnosis_resolution = models.DateTimeField(null=True)
     diagnosis = models.TextField(blank=True)
@@ -136,7 +136,7 @@ class Diagnosis(models.Model):
 class Session(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
-    edit_status = models.CharField(max_length=1, choices=EDIT_STATUS)
+    edit_status = models.CharField(max_length=2, choices=EDIT_STATUS)
     session_goals = models.CharField(max_length=2, choices=SESSION_GOALS)
     descriptive = models.TextField(blank=True)
     client = models.ForeignKey(Client)

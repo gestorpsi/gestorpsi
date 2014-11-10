@@ -136,8 +136,8 @@ GNU General Public License for more details.
                                 <tr>
                                     {% for x in obj.invoice_.0 %}
                                         <th style='width:30%; font-weight: normal;'>{{ x.plan }}</th>
-                                        <th style='width:15%; font-weight: normal; background-color: yellow;'>{{ x.start_date }}</th>
-                                        <th style='width:15%; font-weight: normal;'>{{ x.end_date }}</th>
+                                        <th style='width:15%; font-weight: normal; background-color: yellow;'>{{ x.start_date|date:"d M Y" }}</th>
+                                        <th style='width:15%; font-weight: normal;'>{{ x.end_date|date:"d M Y" }}</th>
                                         <th style='width:40%; font-weight: normal;'>
                                             {% ifequal x.status 0 %}
 
@@ -156,7 +156,7 @@ GNU General Public License for more details.
                                                         <input name="itemWeight1" type="hidden" value="1000">  
 
                                                         <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->  
-                                                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date }}-fim-{{ x.end_date }}">  
+                                                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date|date:"d M Y" }}-fim-{{ x.end_date|date:"d M Y" }}">  
 
                                                         <!-- Dados do comprador (opcionais) -->  
                                                         <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">  
@@ -198,8 +198,8 @@ GNU General Public License for more details.
                                     {% for x in obj.invoice_.1 %}
                                     <tr>
                                         <th style='width:30%; font-weight: normal;'>{{ x.plan }}</th>
-                                        <th style='width:15%; font-weight: normal;'>{{ x.start_date }}</th>
-                                        <th style='width:15%; font-weight: normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.end_date }}</th>
+                                        <th style='width:15%; font-weight: normal;'>{{ x.start_date|date:"d M Y" }}</th>
+                                        <th style='width:15%; font-weight: normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.end_date|date:"d M Y" }}</th>
                                         <th style='width:40%; font-weight: normal;'>
 
                                             {% ifequal x.status 0 %}
@@ -218,7 +218,7 @@ GNU General Public License for more details.
                                                         <input name="itemWeight1" type="hidden" value="1000">  
 
                                                         <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->  
-                                                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date }}-fim-{{ x.end_date }}">  
+                                                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date|date:"d M Y" }}-fim-{{ x.end_date|date:"d M Y" }}">  
 
                                                         <!-- Dados do comprador (opcionais) -->  
                                                         <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">  
@@ -262,8 +262,8 @@ GNU General Public License for more details.
                                 {% for x in obj.invoice_.3 %}
                                     <tr>
                                         <th style='width:30%; font-weight:normal;'>{{ x.plan }}</th>
-                                        <th style='width:15%; font-weight:normal;'>{{ x.start_date }}</th>
-                                        <th style='width:15%; font-weight:normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.end_date }}</th>
+                                        <th style='width:15%; font-weight:normal;'>{{ x.start_date|date:"d M Y" }}</th>
+                                        <th style='width:15%; font-weight:normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.end_date|date:"d M Y" }}</th>
                                         <th style='width:40%; font-weight:normal;'>
                                             {% ifequal x.status 0 %}
                                                 <!-- boleto -->
@@ -281,7 +281,7 @@ GNU General Public License for more details.
                                                         <input name="itemWeight1" type="hidden" value="1000">  
 
                                                         <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->  
-                                                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date }}-fim-{{ x.end_date }}">  
+                                                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date|date:"d M Y" }}-fim-{{ x.end_date|date:"d M Y" }}">  
 
                                                         <!-- Dados do comprador (opcionais) -->  
                                                         <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">  

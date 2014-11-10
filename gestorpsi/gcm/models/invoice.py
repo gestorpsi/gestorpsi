@@ -50,7 +50,7 @@ class Invoice(models.Model):
     start_date.help_text=_('Formato aaaa/mm/dd Ex: 2014-12-31')
 
     end_date = models.DateField(_(u'Data do fim Periodo'), null=False, blank=False) # vencimento e sem acesso ao sistema
-    end_date.help_text=_('Formato aaaa/mm/dd Ex: 2014-12-31')
+    end_date.help_text=_(u'Formato aaaa/mm/dd Ex: 2014-12-31. Organização modo apenas leitura.')
     
     expiry_date = models.DateField(_('Data de Expiracao'), null=True, blank=True)
     expiry_date.help_text = _('Formato aaaa/mm/dd  Ex: 2014-12-31 Data em que o plano vence. Conta do cliente modo apenas leitura.')
@@ -66,7 +66,7 @@ class Invoice(models.Model):
     status = models.IntegerField(_(u'Situação'), choices=INVOICE_STATUS_CHOICES, default=0)
     plan = models.ForeignKey(Plan, verbose_name=_('Plan'), null=True, blank=True)
 
-    bank = models.CharField(_('Banco'), choices=BANK, max_length=3, null=True, blank=True)
+    bank = models.CharField(_('Que banco recebeu?'), choices=BANK, max_length=3, null=True, blank=True)
     payment_detail = models.TextField(_(u'Detalhes do pagamento'), null=True, blank=True)
     
     class Meta:

@@ -130,6 +130,7 @@ def _ehr_can_save(request, object):
     if 'professional' in [i.name for i in request.user.groups.all()]:
         if object.edit_status == '3' or object.edit_status == '2': # is professional and is draft
             return True
+
     if 'student' in [i.name for i in request.user.groups.all()]:
         if object.edit_status == '1': # is student and is draft
             return True
@@ -422,6 +423,7 @@ def session_item_html(request, client_id, referral_id, session_id):
 
 @permission_required_with_403('ehr.ehr_write')
 def session_form(request, client_id, referral_id, session_id=0):
+
     if not settings.DEBUG and not request.is_ajax(): raise Http404
 
     client = get_object_or_404(Client, pk=client_id, person__organization=request.user.get_profile().org_active)
@@ -474,6 +476,7 @@ def session_form(request, client_id, referral_id, session_id=0):
             return HttpResponse(simplejson.dumps({'occurrence_pk':request.POST.get('occurrence'), 'url':url}))
 
     else: # GET
+
         if request.GET.get('o') or session.pk:
             occurrence_pk = session.occurrence if session.pk else request.GET.get('o')
             form = SessionForm(instance=session, initial={'occurrence':occurrence_pk})

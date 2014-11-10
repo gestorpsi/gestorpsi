@@ -17,25 +17,21 @@ GNU General Public License for more details.
 {% load i18n %}
 
 {% if have_perms_to_write %}
+    <label><input type="radio" name="draft" value="true" checked="checked" />&nbsp;{% trans "Save as draft" %}</label>
+    <label><input type="radio" name="draft" value="false" />&nbsp;{% trans "Save and finish" %}</label>
+    <div style="clear:both"></div>
+    <div class="float_right"><input type="submit" name="submit" class="submit" value="{% trans "Save" %}" /></div>
 
-<label>
-<input type="radio" name="draft" value="true" checked="checked" />&nbsp;{% trans "Save as draft" %}
-</label>
-<label>
-<input type="radio" name="draft" value="false"  />&nbsp;{% trans "Save and finish" %}
-</label>
-
-<div style="clear:both"></div>
-<div class="float_right">
-
-<input type="submit" name="submit" class="submit" value="{% trans "Save" %}" />
-</div>
+    <div class="cancel_button">
+        <a class="pointer" onclick="$('div#dialog, #over').hide();return false;">{% trans "Cancel" %}</a>
+    </div>
 {% else %}
-<p>{{ form.instance.get_edit_status_display }}</p>
+    <label>Situa&ccedil;&atilde;o</label>
+    <textarea class="giant asm" cols="38" rows="2" readonly="yes">{{ form.instance.get_edit_status_display }}</textarea>  
+    <div style="clear:both"></div>
+    <div class="float_right"><input disabled type="submit" name="submit" class="submit" value="{% trans "Save" %}" /></div>
+    <div class="cancel_button">
+        <a class="pointer" onclick="$('div#dialog, #over').hide();return false;">{% trans "Cancel" %}</a>
+    </div>
 {% endif %}
 
-
-<div class="cancel_button">
-    <!-- <a class="pointer" onclick="$('div#dialog, #over').hide();$.scrollTo(0, 200);return false;">{% trans "Cancel" %}</a> -->
-    <a class="pointer" onclick="$('div#dialog, #over').hide();return false;">{% trans "Cancel" %}</a>
-</div>

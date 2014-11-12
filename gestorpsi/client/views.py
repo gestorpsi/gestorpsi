@@ -781,8 +781,9 @@ def save(request, object_id=None, is_company = False):
         # Admission date
         object.idRecord = org.last_id_record + 1
         object.admission_date = datetime.now()
-        object.person = person_save(request, person)
-        object.save()
+
+    # person
+    object.person = person_save(request, person)
     
     if is_company:
         company_form = CompanyForm(request.POST) if not object_id else CompanyForm(request.POST, instance=object.person.company)
@@ -799,10 +800,11 @@ def save(request, object_id=None, is_company = False):
 
     a.referral_choice_id = AdmissionChoice.objects.all().order_by('weight')[0].id
     object.admissionreferral_set.add(a)
+
+    # save all
     object.save()
     
     messages.success(request, _('Client saved successfully'))
-
     return HttpResponseRedirect('/client/%s/home' % object.id)
 
 

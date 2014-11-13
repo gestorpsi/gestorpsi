@@ -1,9 +1,138 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Conv&ecirc;nio" %}{% endblock %}
+
+{% block submenu %}
+    {% include "covenant/covenant_submenu.html" %}
+{% endblock %}
+
+{% block core %}
+
+{% if object.id %}
+	<h2 class="title_covenant title">{{ obj.name }}</h2>
+    <p class="description"><br /></p>
+{% else %}
+	<h2 class="title_covenant title">{% trans "Adicionar conv&ecirc;nio" %}</h2>
+	<p class="description">{% trans "Preencha as informa&ccedil;&otilde;es do conv&ecirc;nio e clique no bot&atilde;o Salvar" %}</p>
+{% endif %}
 
 {% if obj.id %}
-    <form method='post' action='{% url covenant-edit obj.id %}'>
+    <form action="{% url covenant-edit object.id %}" method="post" class="collapsable form_covenant">	
 {% else %}
-    <form method='post' action='/covenant/add/'>
+    <form action="{% url covenant-add %}" method="post" class="collapsable form_covenant">	
 {% endif %}
-        {{ form.as_p }}
-        <input type='submit' value='Save'>
-    </form>
+
+        <div class="main_area">
+            <div>
+
+    <fieldset>
+        <input type="text" maxlength="80" name="label" class="big" value="{{ object.label }}" required placeholder="nome" />
+	</fieldset>
+
+    <fieldset>
+        <input type="text" maxlength="80" name="price" class="big" value="{{ object.label }}" required placeholder="valor" />
+	</fieldset>
+
+    <!-- horario atendimento -->
+    <fieldset>
+		<legend>{% trans "Hor&aacute;rio atendimento" %}</legend>
+
+			<label>{% trans "First hour" %}
+                <select name="hour_start" class="normal">
+                    {% for h in Hours %}
+                        <option value="{{ h.1 }}"{% ifequal object.hour_start h.1 %} selected{% endifequal %}>{{ h.0 }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+
+			<label>{% trans "End last hour" %}
+                <select name="hour_end" class="normal">
+                    {% for h in Hours %}
+                        <option value="{{ h.1 }}"{% ifequal object.hour_end h.1 %} selected{% endifequal %}>{{ h.0 }}</option>
+                    {% endfor %}
+                </select>
+			</label>
+	</fieldset>
+
+
+	<!--
+	phones
+	-->
+
+    {% include "meta/phones.html" %}
+	
+	<!--
+	place have only one address
+	-->
+		
+	{% include "meta/addressbook.html" %}
+	
+	<!--
+	Places must to have a status
+	-->
+	
+</div>
+	
+	<fieldset id="fieldset_room_identification" style="display:none">
+	<legend>{% trans "Room Details" %}</legend>
+	
+		{% if not rooms %}
+			{% include "tags/room.html" %}
+		{% else %}
+		{% for room in rooms %}
+			{% include "tags/room.html" %}
+		{% endfor %}
+		{% endif %}
+
+		<div id="room_more"></div>
+
+	</fieldset>
+
+<fieldset class="comment_form">
+        <legend>{% trans "Comments" %}</legend>
+        <label>{% trans "Comments" %}<br />
+                <textarea name="comments" class="extrabig">{{ object.comments }}</textarea>
+        </label>
+</fieldset>
+
+<br />	
+</div>
+
+<div id="sidebar" class="sidebar">
+    {% if perms.place.place_write %}
+        <div class="bg_blue">
+            <input type="hidden" name="place" value="{{ object.id }}" />
+            {% include "tags/save.html" %}
+        </div>    
+
+        {% if object.id %}
+            {% include "tags/place_sidebar.html" %}
+        {% endif %}
+	{% endif %}
+</div>
+
+</form>
+
+{% endblock %}
+
+

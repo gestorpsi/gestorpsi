@@ -214,7 +214,7 @@ $(function() {
      });
 
      /**
-      * VALID IF EXIST A SHORT NAME IN FORM ORGANIZATION
+      * valid if exist a short name in form organization
       */
      $('input.short_search').unbind().keyup(function() {
          $.ajax({
@@ -231,7 +231,7 @@ $(function() {
      });
 
      /**
-      * VALID IF EXIST A USER NAME
+      * valid if exist a user name
       */
      $('input#id_username').unbind().keyup(function() {
          $.ajax({

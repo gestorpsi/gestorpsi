@@ -529,4 +529,11 @@ $(function() {
           });
      });
 
+
+
+     /*
+      * covenant valid form
+      */
+     $('form.form_covenant').validate();
+
 });

@@ -23,11 +23,7 @@ GNU General Public License for more details.
 {% block vertical_menu %} - {% trans "Conv&ecirc;nio" %}{% endblock %}
 
 {% block submenu %}
-    <ul>
-        <li><a class="first{% if not deactive %} active{% endif %}" href="/covenant/">{% trans "all" %}</a></li>
-        <li><a href="/covenant/add/">{% trans "add" %}</a></li>
-        <li><a class="{% if deactive %}active{% endif %}" href="/covenant/deactive/">{% trans "all Deactive" %}</a></li>
-    </ul>
+    {% include "covenant/covenant_submenu.html" %}
 {% endblock %}
 
 {% block core %}

@@ -22,6 +22,6 @@ from gestorpsi.covenant.views import index, form, list_json
 urlpatterns = patterns('',
     url(r'^$', login_check(index), name='covenant-index'), # index list
     url(r'^add/$', login_check(form), name='covenant-add'), # form
-    url(r'^(?P<obj>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/edit/$', login_check(form), name='covenant-edit'), # edit 
+    url(r'^(?P<obj>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form), name='covenant-edit'), # edit 
     url(r'^list/$', login_check(list_json), name='covenant-list-json'),
 )

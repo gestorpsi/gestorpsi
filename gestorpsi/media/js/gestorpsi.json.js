@@ -186,6 +186,42 @@ function updateRoom(url, deactive, app) {
 }
 
 /** 
+* covenant list
+*/
+
+function updateCovenant(url) {
+
+    $.getJSON(url, function(json) {
+        var tableTR = '';
+        
+        /**
+        * build html
+        */
+
+        jQuery.each(json,  function(){
+                tableTR += '<tr id="' + this.id + '"><td class="title">';
+                tableTR += '<a href="/covenant/' + this.id + '/edit/" title="' + this.name + '">' + this.name + '</a><br />' + this.price;
+                tableTR += '</td>';
+                tableTR += '<td><span class="phone">' + this.price + '</span><br />';
+                tableTR += '</td>';
+                tableTR += '</tr>';
+        });
+
+        buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
+        buildPaginator(app, json['paginator'], json['util'], 'div#list', deactive);
+
+        /*
+        $("ul.paginator a").unbind().click(function(){
+            updatePlace($(this).attr('href'), deactive, app);
+            return false;
+        });
+        */
+    });  
+
+    return false;
+}
+
+/** 
 * place list
 */
 

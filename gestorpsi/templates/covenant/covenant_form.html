@@ -1,0 +1,9 @@
+
+{% if obj.id %}
+    <form method='post' action='{% url covenant-edit obj.id %}'>
+{% else %}
+    <form method='post' action='/covenant/add/'>
+{% endif %}
+        {{ form.as_p }}
+        <input type='submit' value='Save'>
+    </form>

@@ -18,6 +18,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from gestorpsi.util.uuid_field import UuidField
+from gestorpsi.organization.models import Organization
 
 CATEGORY = ( 
     (1, _('Pagamento direto')),
@@ -66,6 +67,10 @@ class Covenant(models.Model):
     price = models.DecimalField(u'Valor', max_digits=10, decimal_places=2, null=True, blank=True)
     description = models.TextField(u'Descrição', null=True, blank=True)
     dead_line = models.IntegerField(u'Prazo', choices=DEADLINE, max_length=2, null=False, blank=False)
+    organization = models.ForeignKey(Organization, editable=False, null=False, blank=False)
 
     def __unicode__(self):
         return u"%s" % self.name
+
+    class Meta:
+        ordering = ['name']

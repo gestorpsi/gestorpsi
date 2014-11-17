@@ -13,6 +13,10 @@ from dateutil.relativedelta import relativedelta
 from datetime import date, timedelta
 
 environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
+sys.path.append("/home/redepsi/lib/python2.7")
+sys.path.append("/home/redepsi/webapps/gestorpsi_app/git.gestorpsi.com.br")
+sys.path.append("/home/redepsi/webapps/gestorpsi_app/git.gestorpsi.com.br/gestorpsi")
+sys.path.append("/home/redepsi/webapps/gestorpsi_app/git.gestorpsi.com.br/gestorpsi/gestorpsi")
 sys.path.append('..')
 
 from django.core.mail import EmailMessage
@@ -22,12 +26,16 @@ from gestorpsi.settings import URL_HOME, URL_APP, SIGNATURE
 from gestorpsi.organization.models import Organization 
 from gestorpsi.gcm.models.invoice import Invoice
 
+import locale
+locale.setlocale(locale.LC_ALL, 'pt_BR.utf8')
+
 # check all invoices that will be expire 10 days from today.
-end = date.today() +timedelta(10) # corret
+end = date.today() + timedelta(10) # corret
 #end = date.today() -timedelta(4)  # teste
 
-
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # main code
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 for x in Invoice.objects.filter(end_date=end):
 
     """
@@ -63,10 +71,13 @@ for x in Invoice.objects.filter(end_date=end):
         text/body
         1 = url pagamento
         2 = data vencimento assinatura atual
-        3 = URL contato
-        4 = assinatura gestorPSI
+        3 = dia da semana: Segunda-feira
+        4 = URL contato
+        5 = assinatura gestorPSI
     """
-    text = u"Bom dia.\n\nSua próxima assinatura já está disponível para pagamento em %s/organization/signature/ Sua assinatura atual vence dia %s, evite ter o seu plano suspenso, pague até esta data.\n\nQualquer dúvida entre em contato pelo link %s/contato/\n\n" % ( URL_APP , end.strftime("%d %B %Y, %A") , URL_HOME )
+    w = ['segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado','domingo']
+    
+    text = u"Bom dia.\n\nSua próxima assinatura já está disponível para pagamento em %s/organization/signature/ Sua assinatura atual vence dia %s, %s, evite ter o seu acesso limitado, pague até esta data.\n\nQualquer dúvida entre em contato pelo link %s/contato/\n" % ( URL_APP , end.strftime("%d %B %Y"), w[date.today().weekday()] , URL_HOME )
 
     text += u"Quer suspender sua assinatura? Clique aqui %s/organization/suspension/\n\n%s" % ( URL_APP, SIGNATURE )
 

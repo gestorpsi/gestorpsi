@@ -6,9 +6,14 @@ import sys
 from os import environ
 
 environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
-sys.path.append('..')
+sys.path.append("/home/redepsi/lib/python2.7")
+sys.path.append("/home/redepsi/webapps/gestorpsi_app/git.gestorpsi.com.br")
+sys.path.append("/home/redepsi/webapps/gestorpsi_app/git.gestorpsi.com.br/gestorpsi")
+sys.path.append("/home/redepsi/webapps/gestorpsi_app/git.gestorpsi.com.br/gestorpsi/gestorpsi")
 
 from gestorpsi.organization.models import Organization 
+from gestorpsi.gcm.models.invoice import Invoice, PaymentType
+from datetime import date, timedelta
 
 # main code
 '''

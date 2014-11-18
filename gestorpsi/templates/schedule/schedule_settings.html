@@ -27,7 +27,7 @@ GNU General Public License for more details.
 {% block core %}
 
     <div id="schedule_header">
-        <h2 class="title_schedule">{% trans "Configura&ccedil;&atilde;o" %}</h2>
+        <h2 class="title_schedule">{% trans "Settings" %}</h2>
     </div>
 
     <form action="{% url schedule-settings %}" method="post" class="form_people">
@@ -36,7 +36,7 @@ GNU General Public License for more details.
             <fieldset class="organization">
                 <legend>{% trans "Schedule Details" %}</legend>
                 <label>
-                    Intervalo padr&atilde;o para agendamento &nbsp;
+                    {% trans "Default interval for scheduling" %} &nbsp;
                     <select name="time_slot_schedule" class='medium asm'>
                          {% for k,v in time_slot_schedule %}
                             <option {% ifequal object.time_slot_schedule k %} selected {% endifequal %} value="{{ k }}"/>{{ v }} minutos

@@ -6099,10 +6099,23 @@ msgstr "Retirar da lista de espera"
 msgid "Attach"
 msgstr "Anexo"
 
-#: templates/referral/referral_details.html:209
+#: templates/referral/referral_details.html:224
 #: templates/tags/schedule_form.html:95
+#: templates/schedule/schedule_settings.html:37
 msgid "Schedule Details"
 msgstr "Detalhes da Agenda"
+
+#: templates/schedule/schedule_settings.html:39
+msgid "Default interval for scheduling"
+msgstr "Intervalo padrão para agendamento"
+
+#: templates/schedule/schedule_settings.html:30
+msgid "Settings"
+msgstr "Configurações"
+
+#: templates/schedule/schedule_settings.html:42
+msgid "minutes"
+msgstr "minutos"
 
 #: templates/referral/referral_details.html:212
 msgid "This referral has"

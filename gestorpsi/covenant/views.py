@@ -21,8 +21,10 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 
-from gestorpsi.covenant.models import Covenant
+from gestorpsi.covenant.models import Covenant, CATEGORY, CHARGE
 from gestorpsi.covenant.forms import CovenantForm
+
+from decimal import Decimal
 
 """
     Tiago de Souza Moraes
@@ -36,7 +38,8 @@ def index(request):
     """
     return render_to_response('covenant/covenant_index.html',
         {
-            'obj_list': Covenant.objects.filter( organization=request.user.get_profile().org_active )
+            'obj_list': Covenant.objects.filter( organization=request.user.get_profile().org_active ),
+            'all' : True,
         },
         context_instance=RequestContext(request)
     )
@@ -49,40 +52,54 @@ def form(request, obj=False):
         obj: Covenant.id
     """
 
-    if obj:
+    add = False
+
+    if obj: # update register
         obj = get_object_or_404(Covenant, pk=obj)
+    else:
+        add = True
 
     if request.POST:
 
-        # update
-        if obj:
-            form = CovenantForm(request.POST, instance=obj)
-            obj = form.save()
-            messages.success(request, _(u'Salvo com sucesso!'))
-            return HttpResponseRedirect('/covenant/%s/edit/' % obj.id )
-
         # new
-        else:
-            form = CovenantForm(request.POST)
+        if not obj:
+            obj = Covenant()
 
-            if form.is_valid():
-                obj = form.save(commit=False)
-                obj.organization = request.user.get_profile().org_active
-                obj.save()
-                messages.success(request, _(u'Salvo com sucesso!'))
-                return HttpResponseRedirect('/covenant/%s/edit/' % obj.id )
+        # update or new
+        obj.organization = request.user.get_profile().org_active
+        obj.name = request.POST.get('name')
+        obj.active = True if request.POST.get('active') else False
+
+        obj.category = int( request.POST.get('category') )
+
+        obj.deadline = int( request.POST.get('deadline') )
+
+        obj.charge = int( request.POST.get('charge') )
+        obj.payment_way = int( request.POST.get('payment_way') )
+
+        obj.event_time = request.POST.get('event_time')
+        obj.price = Decimal(request.POST.get('price'))
+        obj.description = request.POST.get('description')
+
+        obj.save()
+        messages.success(request, _(u'Salvo com sucesso!'))
+        return HttpResponseRedirect('/covenant/%s/' % obj.id )
 
     # mount form
     else:
         if obj:
-            form = CovenantForm(instance=obj)
+            form = CovenantForm( instance=obj )
         else:
             form = CovenantForm()
+            obj = Covenant()
 
     return render_to_response('covenant/covenant_form.html',
                                 {
                                     'form': form,
                                     'obj': obj,
+                                    'add': add,
+                                    'category': CATEGORY,
+                                    'charge': CHARGE
                                 },
                                 context_instance=RequestContext(request)
     )

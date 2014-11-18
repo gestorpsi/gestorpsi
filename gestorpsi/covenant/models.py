@@ -24,7 +24,7 @@ CATEGORY = (
     (1, _('Pagamento direto')),
     (2, _(u'Plano de saúde privado')),
     (3, _(u'Seguro de saúde privado')),
-    (3, _('SUS')),
+    (4, _('SUS')),
 )
 
 CHARGE = ( 
@@ -59,14 +59,17 @@ class Covenant(models.Model):
     id = UuidField(primary_key=True)
     date_join = models.DateField(auto_now_add=True, null=False, editable=False)
     name = models.CharField(_(u'Name'), max_length=250, null=False, blank=False)
+
+    category = models.IntegerField(u'Categoria', choices=CATEGORY, null=False, blank=False)
+    charge = models.IntegerField(u'Cobrança', choices=CHARGE, null=False, blank=False)
+    payment_way = models.IntegerField(u'Forma de pagamento', choices=PAYMENT_WAY, null=False, blank=False)
+    deadline = models.IntegerField(u'Prazo', choices=DEADLINE, null=False, blank=False)
+
     active = models.BooleanField(u'Disponível', default=True)
-    category = models.IntegerField(u'Categoria', choices=CATEGORY, max_length=2, null=False, blank=False)
-    charge = models.IntegerField(u'Cobrança', choices=CHARGE, max_length=2, null=False, blank=False)
     event_time = models.PositiveIntegerField(u'Número de eventos', null=True, blank=True) # if charge=2, show this field
-    payment_way = models.IntegerField(u'Forma de pagamento', choices=PAYMENT_WAY, max_length=2, null=False, blank=False)
     price = models.DecimalField(u'Valor', max_digits=10, decimal_places=2, null=True, blank=True)
     description = models.TextField(u'Descrição', null=True, blank=True)
-    dead_line = models.IntegerField(u'Prazo', choices=DEADLINE, max_length=2, null=False, blank=False)
+
     organization = models.ForeignKey(Organization, editable=False, null=False, blank=False)
 
     def __unicode__(self):

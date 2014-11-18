@@ -18,6 +18,10 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
+{% block extrahead %}
+    <script type="text/javascript" src="/media/js/gestorpsi.covenant.forms.js"></script>
+{% endblock extrahead %}
+
 {% block menu_myoffice %}active{% endblock %}
 
 {% block vertical_menu %} - {% trans "Conv&ecirc;nio" %}{% endblock %}
@@ -28,111 +32,77 @@ GNU General Public License for more details.
 
 {% block core %}
 
-{% if object.id %}
-	<h2 class="title_covenant title">{{ obj.name }}</h2>
-    <p class="description"><br /></p>
-{% else %}
-	<h2 class="title_covenant title">{% trans "Adicionar conv&ecirc;nio" %}</h2>
-	<p class="description">{% trans "Preencha as informa&ccedil;&otilde;es do conv&ecirc;nio e clique no bot&atilde;o Salvar" %}</p>
-{% endif %}
+    {% if obj.id %}
+        <h2 class="title_covenant title">{{ obj.name }}</h2>
+        <p class="description"><br /></p>
+    {% else %}
+        <h2 class="title_covenant title">{% trans "Adicionar conv&ecirc;nio" %}</h2>
+        <p class="description">{% trans "Preencha as informa&ccedil;&otilde;es do conv&ecirc;nio e clique no bot&atilde;o Salvar" %}</p>
+    {% endif %}
 
-{% if obj.id %}
-    <form action="{% url covenant-edit object.id %}" method="post" class="collapsable form_covenant">	
-{% else %}
-    <form action="{% url covenant-add %}" method="post" class="collapsable form_covenant">	
-{% endif %}
+    {% if obj.id %}
+        <form action="{% url covenant-edit obj.id %}" method="post" class="collapsable form_covenant">	
+    {% else %}
+        <form action="{% url covenant-add %}" method="post" class="collapsable form_covenant">	
+    {% endif %}
 
-        <div class="main_area">
-            <div>
+            <div class="main_area">
+                <fieldset>
+                    <legend>{% trans "Informa&ccedil;&otilde;es do conv&ecirc;nio" %}</legend>
 
-    <fieldset>
-        <input type="text" maxlength="80" name="label" class="big" value="{{ object.label }}" required placeholder="nome" />
-	</fieldset>
+                    <label>{% trans "Nome" %} <br />
+                        <input type="text" maxlength="80" name="name" class="extrabig" value="{{ obj.name }}" required placeholder="nome" />
+                    </label>
 
-    <fieldset>
-        <input type="text" maxlength="80" name="price" class="big" value="{{ object.label }}" required placeholder="valor" />
-	</fieldset>
+                    <label>{% trans "Categoria" %} <br />
+                        {{ form.category }}
+                    </label>
 
-    <!-- horario atendimento -->
-    <fieldset>
-		<legend>{% trans "Hor&aacute;rio atendimento" %}</legend>
+                    <label>{% trans "Prazo" %} <br />
+                        {{ form.deadline }}
+                    </label>
 
-			<label>{% trans "First hour" %}
-                <select name="hour_start" class="normal">
-                    {% for h in Hours %}
-                        <option value="{{ h.1 }}"{% ifequal object.hour_start h.1 %} selected{% endifequal %}>{{ h.0 }}</option>
-                    {% endfor %}
-                </select>
-            </label>
+                    <label>{% trans "Cobran&ccedil;a" %} <br />
+                        {{ form.charge }}
+                    </label>
 
-			<label>{% trans "End last hour" %}
-                <select name="hour_end" class="normal">
-                    {% for h in Hours %}
-                        <option value="{{ h.1 }}"{% ifequal object.hour_end h.1 %} selected{% endifequal %}>{{ h.0 }}</option>
-                    {% endfor %}
-                </select>
-			</label>
-	</fieldset>
+                    <!-- if charge equal 2, show this field else hide -->
+                    <label for='event_time' style='display:{% ifequal obj.charge 2 %}block{% else %}none{% endifequal %};'>{% trans "N&uacute;mero de eventos" %} <br />
+                        <input type="text" maxlength="2" name="event_time" class="small" value="{% if obj.event_time %}{{ obj.event_time }}{% endif %}" {% ifequal obj.charge 2 %} required="required" {% endifequal %} />
+                    </label>
 
+                    <label>{% trans "Forma de pagamento" %} <br />
+                        {{ form.payment_way }}
+                    </label>
 
-	<!--
-	phones
-	-->
+                    <label>{% trans "Valor" %} <br />
+                        <input type="text" maxlength="15" name="price" class="big" value="{% if obj.price %}{{ obj.price }}{% endif %}" required placeholder="valor" mask="99.99" />
+                    </label>
 
-    {% include "meta/phones.html" %}
+                    <label>{% trans "Ativo" %}
+                        <input type="checkbox" name="active" class="big" {% if obj.active %} checked {% endif %} />
+                    </label>
+
+                    <label>{% trans "Descri&ccedil;&atilde;o" %} <br />
+                        {{ form.description }}
+                    </label>
+
+                </fieldset>
+                <br />
+            </div>
 	
-	<!--
-	place have only one address
-	-->
-		
-	{% include "meta/addressbook.html" %}
-	
-	<!--
-	Places must to have a status
-	-->
-	
-</div>
-	
-	<fieldset id="fieldset_room_identification" style="display:none">
-	<legend>{% trans "Room Details" %}</legend>
-	
-		{% if not rooms %}
-			{% include "tags/room.html" %}
-		{% else %}
-		{% for room in rooms %}
-			{% include "tags/room.html" %}
-		{% endfor %}
-		{% endif %}
 
-		<div id="room_more"></div>
+            <!-- save buttom -->
+            <div id="sidebar" class="sidebar">
+                {% if perms.place.place_write %}
+                    <div class="bg_blue">
+                        <input type="hidden" name="place" value="{{ object.id }}" />
+                        {% include "tags/save.html" %}
+                    </div>    
+                {% endif %}
+            </div>
 
-	</fieldset>
 
-<fieldset class="comment_form">
-        <legend>{% trans "Comments" %}</legend>
-        <label>{% trans "Comments" %}<br />
-                <textarea name="comments" class="extrabig">{{ object.comments }}</textarea>
-        </label>
-</fieldset>
-
-<br />	
-</div>
-
-<div id="sidebar" class="sidebar">
-    {% if perms.place.place_write %}
-        <div class="bg_blue">
-            <input type="hidden" name="place" value="{{ object.id }}" />
-            {% include "tags/save.html" %}
-        </div>    
-
-        {% if object.id %}
-            {% include "tags/place_sidebar.html" %}
-        {% endif %}
-	{% endif %}
-</div>
-
-</form>
+        </form>
 
 {% endblock %}
-
-

@@ -16,11 +16,15 @@ GNU General Public License for more details.
 
 
 from django import forms
-from gestorpsi.covenant.models import Covenant
+from gestorpsi.covenant.models import Covenant, CATEGORY, CHARGE, DEADLINE, PAYMENT_WAY
 
 
 class CovenantForm(forms.ModelForm):
 
+    category = forms.MultipleChoiceField( required=True, widget=forms.Select, choices=CATEGORY)
+    charge = forms.MultipleChoiceField( required=True, widget=forms.Select, choices=CHARGE)
+    deadline = forms.MultipleChoiceField( required=True, widget=forms.Select, choices=DEADLINE)
+    payment_way = forms.MultipleChoiceField( required=True, widget=forms.Select, choices=PAYMENT_WAY)
+
     class Meta:
         model = Covenant
-        #fields = ('name', 'relation_level', 'responsible', 'active', 'comment')

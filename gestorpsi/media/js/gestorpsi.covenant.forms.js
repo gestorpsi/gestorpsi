@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
+/**
 
-"""
 Copyright (C) 2008 GestorPsi
 
 This program is free software; you can redistribute it and/or
@@ -12,18 +11,18 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-"""
 
-"""
-   This file contains all configurations for Admin Interface
-   I{These models were created only for testing purposes}
-   @author: Sergio Durand
-   @version: 1.0
-"""
+*/
 
-from django.contrib import admin
-from gestorpsi.covenant.models import Covenant
+$(document).ready(function() {
 
-class CovenantAdmin(admin.ModelAdmin):
-    pass
-admin.site.register(Covenant, CovenantAdmin)
+    $('select[name=charge]').change( function(){ 
+        if ( this.value == '2' ){ 
+            $('label[for=event_time]').show(); 
+            $('input[name=event_time]').attr("required","true");
+        } else { 
+            $('label[for=event_time]').hide(); 
+            $('input[name=event_time]').removeAttr('required'); 
+        }
+    });
+});

@@ -1,10 +1,8 @@
 {% load i18n %}
 
 <ul>
-    <li><a class="first" href="/covenant/">{% trans "all" %}</a></li>
-    {% if perms.place.place_write %}
-        <li><a class="{% if not object.id %}active{% endif %}" href="/covenant/add/">{% trans "add" %}</a></li>
-    {% endif %}
-    <li><a class="{% if deactive %}active{% endif %}" href="/covenant/deactive/">{% trans "all Deactive" %}</a></li>
+    <li><a class="first {% if all %} active {% endif %}" href="/covenant/">{% trans "all" %}</a></li>
+    <li><a class="{% if add %} active {% endif %}" href="/covenant/add/">{% trans "add" %}</a></li>
+    <li><a class="{% if deactive %} active {% endif %}" href="/covenant/deactive/">{% trans "all Deactive" %}</a></li>
     {% if obj.id %}<li><a class="active">{{ obj.name }}</a></li>{% endif %}
 </ul>

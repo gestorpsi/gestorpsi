@@ -261,6 +261,7 @@ class Organization(models.Model):
     default_payment_day.help_text= _("The default day in which the billets have to be paid at the most by this organization.")
 
     time_slot_schedule = models.CharField(u"Tempo de cada consulta (minutos)", null=False, blank=False, choices=TIME_SLOT_SCHEDULE, max_length=2, default=30)
+    restrict_schedule = models.NullBooleanField(null=True, default=False)
     
     objects = OrganizationManager()
 

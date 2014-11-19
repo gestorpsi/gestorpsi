@@ -6117,6 +6117,18 @@ msgstr "Configurações"
 msgid "minutes"
 msgstr "minutos"
 
+#: templates/schedule/schedule_settings.html:49
+msgid "Restrict viewing of events"
+msgstr "Restringir visualização dos eventos"
+
+#: templates/schedule/schedule_settings.html:49
+msgid "This option restricts the display of professionals and interns to the events of other professionals"
+msgstr "Essa opção restringe a visualização dos profissionais e estagiários aos eventos de outros profissionais"
+
+#: templates/schedule/schedule_settings.html:51
+msgid "Activate"
+msgstr "Ativar"
+
 #: templates/referral/referral_details.html:212
 msgid "This referral has"
 msgstr "Esta inscrição tem"

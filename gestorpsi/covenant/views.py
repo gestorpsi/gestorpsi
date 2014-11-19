@@ -69,11 +69,10 @@ def form(request, obj=False):
         obj.organization = request.user.get_profile().org_active
         obj.name = request.POST.get('name')
         obj.active = True if request.POST.get('active') else False
-
-        obj.category = request.POST.getlist('category')
+        obj.category = request.POST.get('category')
         obj.deadline = request.POST.get('deadline')
         obj.charge = request.POST.get('charge')
-        obj.payment_way = request.POST.get('payment_way')
+        obj.payment_way = request.POST.getlist('payment_way')
 
         if request.POST.get('event_time'):
             obj.event_time = request.POST.get('event_time')

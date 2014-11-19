@@ -24,8 +24,8 @@ class CovenantForm(forms.ModelForm):
     category = forms.MultipleChoiceField( required=True, widget=forms.Select( attrs={'class':'extrabig'} ), choices=CATEGORY)
     charge = forms.MultipleChoiceField( required=True, widget=forms.Select( attrs={'class':'extrabig'} ), choices=CHARGE)
     deadline = forms.MultipleChoiceField( required=True, widget=forms.Select( attrs={'class':'extrabig'} ), choices=DEADLINE)
-    payment_way = forms.MultipleChoiceField( required=True, widget=forms.Select( attrs={'class':'extrabig'} ), choices=PAYMENT_WAY)
     price = forms.CharField( required=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'123,45', 'id':"numbersOnly"} ))
+    payment_way = forms.MultipleChoiceField( required=True, widget=forms.CheckboxSelectMultiple(), choices=PAYMENT_WAY )
 
     class Meta:
         model = Covenant

@@ -23,7 +23,8 @@ GNU General Public License for more details.
 
 from django.contrib import admin
 from gestorpsi.covenant.models import Covenant
+from gestorpsi.covenant.forms import CovenantForm
 
 class CovenantAdmin(admin.ModelAdmin):
-    pass
+    form = CovenantForm
 admin.site.register(Covenant, CovenantAdmin)

@@ -21,10 +21,11 @@ from gestorpsi.covenant.models import Covenant, CATEGORY, CHARGE, DEADLINE, PAYM
 
 class CovenantForm(forms.ModelForm):
 
-    category = forms.MultipleChoiceField( required=True, widget=forms.Select, choices=CATEGORY)
-    charge = forms.MultipleChoiceField( required=True, widget=forms.Select, choices=CHARGE)
-    deadline = forms.MultipleChoiceField( required=True, widget=forms.Select, choices=DEADLINE)
-    payment_way = forms.MultipleChoiceField( required=True, widget=forms.Select, choices=PAYMENT_WAY)
+    category = forms.MultipleChoiceField( required=True, widget=forms.Select( attrs={'class':'extrabig'} ), choices=CATEGORY)
+    charge = forms.MultipleChoiceField( required=True, widget=forms.Select( attrs={'class':'extrabig'} ), choices=CHARGE)
+    deadline = forms.MultipleChoiceField( required=True, widget=forms.Select( attrs={'class':'extrabig'} ), choices=DEADLINE)
+    payment_way = forms.MultipleChoiceField( required=True, widget=forms.Select( attrs={'class':'extrabig'} ), choices=PAYMENT_WAY)
+    price = forms.CharField( required=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'123,45', 'id':"numbersOnly"} ))
 
     class Meta:
         model = Covenant

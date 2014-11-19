@@ -19,6 +19,7 @@ GNU General Public License for more details.
 {% load i18n %}
 
 {% block extrahead %}
+    <script type="text/javascript" src="/media/js/jquery.numeric.js"></script>
     <script type="text/javascript" src="/media/js/gestorpsi.covenant.forms.js"></script>
 {% endblock extrahead %}
 
@@ -75,17 +76,21 @@ GNU General Public License for more details.
                         {{ form.payment_way }}
                     </label>
 
-                    <label>{% trans "Valor" %} <br />
-                        <input type="text" maxlength="15" name="price" class="big" value="{% if obj.price %}{{ obj.price }}{% endif %}" required placeholder="valor" mask="99.99" />
+                    <label>{% trans "Valor" %} 
+                        R$&nbsp;&nbsp;{{ form.price }}
                     </label>
 
-                    <label>{% trans "Ativo" %}
-                        <input type="checkbox" name="active" class="big" {% if obj.active %} checked {% endif %} />
-                    </label>
+                    <div style='margin-left:0px;'>
+                        <label>{% trans "Ativo" %} 
+                            <input type="checkbox" name="active" {% if obj.active %} checked {% endif %} />
+                        </label>
+                    </div>
 
-                    <label>{% trans "Descri&ccedil;&atilde;o" %} <br />
-                        {{ form.description }}
-                    </label>
+                    <div style='margin-left:0px;'>
+                        <label>{% trans "Descri&ccedil;&atilde;o" %} <br />
+                            {{ form.description }}
+                        </label>
+                    </div>
 
                 </fieldset>
                 <br />

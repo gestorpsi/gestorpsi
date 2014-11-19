@@ -62,12 +62,12 @@ class Covenant(models.Model):
 
     category = models.IntegerField(u'Categoria', choices=CATEGORY, null=False, blank=False)
     charge = models.IntegerField(u'Cobrança', choices=CHARGE, null=False, blank=False)
-    payment_way = models.IntegerField(u'Forma de pagamento', choices=PAYMENT_WAY, null=False, blank=False)
+    payment_way = models.CharField(u'Forma de pagamento', max_length=255, null=False, blank=False)
     deadline = models.IntegerField(u'Prazo', choices=DEADLINE, null=False, blank=False)
 
     active = models.BooleanField(u'Disponível', default=True)
     event_time = models.PositiveIntegerField(u'Número de eventos', null=True, blank=True) # if charge=2, show this field
-    price = models.DecimalField(u'Valor', max_digits=10, decimal_places=2, null=True, blank=True)
+    price = models.CharField(u'Valor', max_length=10, null=False, blank=False)
     description = models.TextField(u'Descrição', null=True, blank=True)
 
     organization = models.ForeignKey(Organization, editable=False, null=False, blank=False)

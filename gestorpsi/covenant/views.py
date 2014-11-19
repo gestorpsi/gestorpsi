@@ -70,15 +70,15 @@ def form(request, obj=False):
         obj.name = request.POST.get('name')
         obj.active = True if request.POST.get('active') else False
 
-        obj.category = int( request.POST.get('category') )
+        obj.category = request.POST.getlist('category')
+        obj.deadline = request.POST.get('deadline')
+        obj.charge = request.POST.get('charge')
+        obj.payment_way = request.POST.get('payment_way')
 
-        obj.deadline = int( request.POST.get('deadline') )
-
-        obj.charge = int( request.POST.get('charge') )
-        obj.payment_way = int( request.POST.get('payment_way') )
-
-        obj.event_time = request.POST.get('event_time')
-        obj.price = Decimal(request.POST.get('price'))
+        if request.POST.get('event_time'):
+            obj.event_time = request.POST.get('event_time')
+        
+        obj.price = request.POST.get('price')
         obj.description = request.POST.get('description')
 
         obj.save()

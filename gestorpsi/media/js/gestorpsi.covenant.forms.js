@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 $(document).ready(function() {
 
+    // show and hide event numnber input
     $('select[name=charge]').change( function(){ 
         if ( this.value == '2' ){ 
             $('label[for=event_time]').show(); 
@@ -25,4 +26,9 @@ $(document).ready(function() {
             $('input[name=event_time]').removeAttr('required'); 
         }
     });
+
+    // 2 decimal places and positive 
+    // jquery.numeric
+    $("#numbersOnly").numeric({ decimal : "," , negative: false , decimalPlaces: 2 }); // use , as separator
+
 });

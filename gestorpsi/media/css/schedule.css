@@ -238,9 +238,9 @@ div.sidebar_client_schedule {
 
 .margin_top_fix { margin-top: 45px; }
 
-#schedule_header{
-    position:fixed;
-    margin-top:-120px;
+#schedule_header {
+    position: relative;
+    margin-top: 0px;
     width: 975px;
     height: 125px;
     background-color: white;

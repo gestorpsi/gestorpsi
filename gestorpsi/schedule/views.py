@@ -756,11 +756,11 @@ def occurrence_employee_form(request, occurence_id = None, template=None):
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 
 
-
 @permission_required_with_403('schedule.schedule_write')
 def schedule_settings(request):
     """
         Tiago de Souza Moraes
+        Rodrigo Santana Gonçalves
         Save schedule settings, slot time, format display.
     """
 
@@ -769,10 +769,12 @@ def schedule_settings(request):
     if request.POST:
         messages.success(request, _(u'Configuração da salvo com sucesso'))
         object.time_slot_schedule = request.POST.get('time_slot_schedule')
+        object.restrict_schedule = request.POST.get('restrict_schedule')
         object.save()
 
     return render_to_response('schedule/schedule_settings.html', dict(
-                object = object,
-                time_slot_schedule = TIME_SLOT_SCHEDULE,
-                tab_settings_class = 'active',
-            ), context_instance=RequestContext(request) )
+        object=object,
+        time_slot_schedule=TIME_SLOT_SCHEDULE,
+        tab_settings_class='active',
+        checked=True,
+    ), context_instance=RequestContext(request))

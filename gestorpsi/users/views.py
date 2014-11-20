@@ -30,9 +30,9 @@ from django.utils import simplejson
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.person.views import person_json_list
 
-@permission_required_with_403('users.users_list')
+permission_required_with_403('users.users_list')
 def index(request, deactive = False):
-    return render_to_response('users/users_list.html', locals(), context_instance=RequestContext(request))    
+    return render_to_response('users/users_list.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('users.users_list')
 def list(request, page = 1, initial = None, filter = None, deactive = False):
@@ -45,7 +45,7 @@ def list(request, page = 1, initial = None, filter = None, deactive = False):
 
     if initial:
         object = object.filter(person__name__istartswith = initial)
-        
+
     if filter:
         object = object.filter(person__name__icontains = filter)
 
@@ -59,7 +59,7 @@ def form(request, object_id=None):
         profile = Profile.objects.get(person=object_id, person__organization=request.user.get_profile().org_active)
         # have just one administrator?
         show = "False"
-        
+
         if ( (Group.objects.get(name='administrator').user_set.all().filter(profile__organization=user.get_profile().org_active).count()) == 1 ):
             if (profile.user.groups.filter(name='administrator').count() == 1 ):
                 show = "True"
@@ -100,7 +100,7 @@ def create_user(request):
     if User.objects.filter(username=request.POST.get('username').strip().lower()):
         messages.success(request, _('Error adding user <b>%s</b>: Username already exists.') % request.POST.get('username').strip().lower())
         return HttpResponseRedirect('/user/add/?clss=error')
-        
+
     person = get_object_or_404(Person, pk=request.POST.get('id_person'), organization=request.user.get_profile().org_active)
     organization = request.user.get_profile().org_active
     username = request.POST.get('username').strip().lower()
@@ -112,7 +112,7 @@ def create_user(request):
     if not password == pwd_conf:
         messages.success(request, _('Error: Supplied passwords are differents.'))
         return HttpResponseRedirect('/user/add/?clss=error')
-    
+
     site_url = "http://%s" % get_current_site(request).domain if not request.is_secure else "http://%s" % get_current_site(request).domain
     user = RegistrationProfile.objects.create_inactive_user(username, email, password, site_url)
 
@@ -129,15 +129,15 @@ def create_user(request):
     if permissions.count('administrator'):
         Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='administrator'))
         profile.user.groups.add(Group.objects.get(name='administrator'))
-        
+
     if permissions.count('professional'):
         Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='professional'))
         profile.user.groups.add(Group.objects.get(name='professional'))
-                    
+
     if permissions.count('secretary'):
         Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='secretary'))
         profile.user.groups.add(Group.objects.get(name='secretary'))
-                    
+
     if permissions.count('client'):
         Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='client'))
         profile.user.groups.add(Group.objects.get(name='client'))
@@ -145,7 +145,7 @@ def create_user(request):
     if permissions.count('student'):
         Role.objects.create(profile=profile, organization=organization, group=Group.objects.get(name='student'))
         profile.user.groups.add(Group.objects.get(name='student'))
-     
+
     messages.success(request, _('User created successfully. An email will be sent to the user with instructions on how to finish the registration process.'))
 
     return HttpResponseRedirect('/user/%s/' % profile.person.id)
@@ -186,17 +186,29 @@ def update_user(request, object_id):
 
     return HttpResponseRedirect('/user/%s/' % profile.person.id)
 
+def verify_requests(old_password, request, request_confirmation):
+    if not old_password:
+        return "Actual Password required."
+    if not request or not request_confirmation:
+        return "All fields are required"
+    if request != request_confirmation:
+        return "Confirmation does not match. Please try again"
+
+    return ""
+
 @permission_required_with_403('users.users_write')
 def update_pwd(request, object_id=0):
-    if not request.POST.get('password_mini') or not request.POST.get('password_mini_conf'):
-        messages.error(request, _('All fields are required'))
-        return HttpResponseRedirect('/user/%s/' % object_id)
-        
-    if request.POST.get('password_mini') != request.POST.get('password_mini_conf'):
-        messages.error(request, _('Password confirmation does not match. Please try again'))
+    invalid_passwords = verify_requests(request.POST.get('old_password_mini'), request.POST.get('password_mini'), request.POST.get('password_mini_conf'))
+
+    if invalid_passwords != "":
+        messages.error(request, _(invalid_passwords))
         return HttpResponseRedirect('/user/%s/' % object_id)
 
     user = Profile.objects.get(person = object_id, person__organization=request.user.get_profile().org_active).user
+    if not user.check_password(request.POST.get('old_password_mini')):
+        messages.error(request, _('Password Incorrect'))
+        return HttpResponseRedirect('/user/%s/' % object_id)
+
     user.set_password(request.POST.get('password_mini'))
     user.profile.temp = request.POST.get('password_mini')    # temporary field (LDAP)
     user.profile.save()
@@ -205,39 +217,38 @@ def update_pwd(request, object_id=0):
     messages.success(request, _('Password updated successfully!'))
     return HttpResponseRedirect('/user/%s/' % object_id)
 
-def verify_emails(email, email_confirmation):
-    if not email or not email_confirmation:
-        return "All fields are required"
-    if email != email_confirmation:
-        return "email confirmation does not match. Please try again"
-
-    return ""
-
 @permission_required_with_403('users.users_write')
 def update_email(request, object_id=0):
-    invalid_emails = verify_emails(request.POST.get('email_mini'), request.POST.get('email_mini_conf'))
-    
+    invalid_emails = verify_requests(request.POST.get('old_password_mini'), request.POST.get('email_mini'), request.POST.get('email_mini_conf'))
+
     if invalid_emails != "":
         messages.error(request, _(invalid_emails))
         return HttpResponseRedirect('/user/%s/' % object_id)
 
-    user = Profile.objects.get(person=object_id, person__organization=request.user.get_profile().org_active).user
+    user = Profile.objects.get(person = object_id, person__organization=request.user.get_profile().org_active).user
+
+    if not user.check_password(request.POST.get('old_password_mini')):
+        messages.error(request, _('Password Incorrect'))
+        return HttpResponseRedirect('/user/%s/' % object_id)
+
     user.email = request.POST.get('email_mini')
     user.profile.temp = request.POST.get('email_mini')    # temporary field (LDAP)
     user.profile.save()
     user.save(force_update=True)
 
     messages.success(request, _('email updated successfully!'))
+    # return render_to_response('/user/%s/' % object_id, {'profile': user.profile}, context_instance=RequestContext(request))
+    # update_user(request, objecti_id)
     return HttpResponseRedirect('/user/%s/' % object_id)
 
 @permission_required_with_403('users.users_write')
 def set_form_user(request, object_id=0):
     array = {} #json
-    
+
     person = get_object_or_404(Person, pk = object_id, organization=request.user.get_profile().org_active)
     array[0] = slugify(person.name)
     array[1] = u'%s' % person.get_first_email()
-    
+
     return HttpResponse(simplejson.dumps(array), mimetype='application/json')
 
 @permission_required_with_403('users.users_write')
@@ -256,21 +267,9 @@ def order(request, profile_id = None):
 
         object.user.save(force_update=True)
         messages.success(request, ('%s' % (_('User activated successfully') if object.user.is_active else _('User deactivated successfully'))))
-    
+
     return HttpResponseRedirect('/user/%s/' % object.person.id)
 
-'''
-@permission_required_with_403('users.users_write')
-def delete(request, profile_id = None):
-    object = Profile.objects.get(pk = profile_id, person__organization=request.user.get_profile().org_active)
-    if request.user.get_profile() == object:
-        messages.success(request, ('Sorry, you can not delete yourself!'))
-    else:
-        object.user.delete()
-        messages.success(request, ('%s' % (_('User removed successfully'))))
-    
-    return HttpResponseRedirect('/user/')
-'''
 
 @permission_required_with_403('organization.organization_read')
 def username_is_available(request, user):

@@ -27,8 +27,10 @@ $(document).ready(function() {
         }
     });
 
-    // 2 decimal places and positive 
     // jquery.numeric
-    $("#numbersOnly").numeric({ decimal : "," , negative: false , decimalPlaces: 2 }); // use , as separator
+    // 2 decimal places and positive 
+    $("#numbersOnly").numeric({ decimal : "," , negative: false , decimalPlaces: 2 });
+    // event number positive
+    $("#event_time").numeric({ negative: false });
 
 });

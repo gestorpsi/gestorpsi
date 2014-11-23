@@ -25,6 +25,10 @@ import uuid
 
 from django.db.models.fields import CharField
 
+# south rule for UuidField
+from south.modelsinspector import add_introspection_rules
+add_introspection_rules( [], ["^gestorpsi\.util\.uuid_field\.UuidField"] )
+
 class UuidField(CharField):
     """ A field which stores a UUID value, this may also have the Boolean
         attribute 'auto' which will set the value on initial save to a new

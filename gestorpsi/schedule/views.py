@@ -776,5 +776,4 @@ def schedule_settings(request):
         object=object,
         time_slot_schedule=TIME_SLOT_SCHEDULE,
         tab_settings_class='active',
-        checked=True,
     ), context_instance=RequestContext(request))

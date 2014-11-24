@@ -49,7 +49,7 @@ GNU General Public License for more details.
                 <legend>{% trans "Restrict viewing of events" %}</legend>
                 <label>
                     {% trans "Activate" %}
-                    <input type="checkbox" name="restrict_schedule" {% if checked %} checked {% endif %} />
+                    <input type="checkbox" name="restrict_schedule" {% if object.restrict_schedule %} checked {% endif %} />
                     <br>
                     Obs: {% trans "This option restricts the display of professionals and interns to the events of other professionals" %}
                 </label>

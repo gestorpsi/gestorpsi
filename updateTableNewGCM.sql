@@ -24,5 +24,6 @@ Alter table organization_organization add suspension boolean NULL default False;
 Alter table organization_organization add suspension_reason text NULL;
 
 Alter table organization_organization add time_slot_schedule varchar(2) NOT NULL;
+Alter table organization_organization add restrict_schedule boolean;
 
 COMMIT;

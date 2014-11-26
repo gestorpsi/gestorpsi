@@ -6030,6 +6030,12 @@ msgstr "Órgão Emissor"
 msgid "Change password"
 msgstr "Alterar Senha"
 
+msgid "Add Availability"
+msgstr "Adicionar Disponibilidade"
+
+msgid "Change e-mail"
+msgstr "Alterar E-mail"
+
 #: templates/profile/profile_change_pass.html:42
 msgid "Current password"
 msgstr "Senha atual"

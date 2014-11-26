@@ -22,7 +22,7 @@ from django.contrib.auth.models import User, Group
 from django.utils.translation import ugettext as _
 from django.contrib import messages
 from django.contrib.sites.models import get_current_site
-import registration
+# import registration
 from registration.models import RegistrationProfile
 from gestorpsi.authentication.models import Profile, Role
 from gestorpsi.person.models import Person
@@ -31,32 +31,53 @@ from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.person.views import person_json_list
 
 permission_required_with_403('users.users_list')
-def index(request, deactive = False):
-    return render_to_response('users/users_list.html', locals(), context_instance=RequestContext(request))
+
+
+def index(request, deactive=False):
+    return render_to_response(
+        'users/users_list.html',
+        locals(),
+        context_instance=RequestContext(request)
+        )
+
 
 @permission_required_with_403('users.users_list')
-def list(request, page = 1, initial = None, filter = None, deactive = False):
+def list(request, page=1, initial=None, filter=None, deactive=False):
     user = request.user
 
     if deactive:
-        object = Profile.objects.filter(org_active = user.get_profile().org_active, user__is_active = False).order_by('user__username')
+        object = Profile.objects.filter(
+            org_active=user.get_profile().org_active,
+            user__is_active=False).order_by('user__username')
     else:
-        object = Profile.objects.filter(org_active = user.get_profile().org_active, user__is_active = True).order_by('user__username')
+        object = Profile.objects.filter(
+            org_active=user.get_profile().org_active,
+            user__is_active=True).order_by('user__username')
 
     if initial:
-        object = object.filter(person__name__istartswith = initial)
+        object = object.filter(person__name__istartswith=initial)
 
     if filter:
-        object = object.filter(person__name__icontains = filter)
+        object = object.filter(person__name__icontains=filter)
 
-    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'users.users_read', page), sort_keys=True),
-                            mimetype='application/json')
+    return HttpResponse(
+        simplejson.dumps(
+            person_json_list(
+                request,
+                object,
+                'users.users_read',
+                page),
+            sort_keys=True),
+        mimetype='application/json')
+
 
 @permission_required_with_403('users.users_read')
 def form(request, object_id=None):
     user = request.user
     try:
-        profile = Profile.objects.get(person=object_id, person__organization=request.user.get_profile().org_active)
+        profile = Profile.objects.get(
+            person=object_id,
+            person__organization=request.user.get_profile().org_active)
         # have just one administrator?
         show = "False"
 
@@ -186,8 +207,9 @@ def update_user(request, object_id):
 
     return HttpResponseRedirect('/user/%s/' % profile.person.id)
 
-def verify_requests(old_password, request, request_confirmation):
-    if not old_password:
+
+def verify_requests(actual_password, request, request_confirmation):
+    if not actual_password:
         return "Actual Password required."
     if not request or not request_confirmation:
         return "All fields are required"
@@ -196,43 +218,60 @@ def verify_requests(old_password, request, request_confirmation):
 
     return ""
 
+
 @permission_required_with_403('users.users_write')
 def update_pwd(request, object_id=0):
-    invalid_passwords = verify_requests(request.POST.get('old_password_mini'), request.POST.get('password_mini'), request.POST.get('password_mini_conf'))
+    invalid_passwords = verify_requests(
+        request.POST.get('actual_password_mini'),
+        request.POST.get('password_mini'),
+        request.POST.get('password_mini_conf')
+        )
+
 
     if invalid_passwords != "":
         messages.error(request, _(invalid_passwords))
         return HttpResponseRedirect('/user/%s/' % object_id)
 
-    user = Profile.objects.get(person = object_id, person__organization=request.user.get_profile().org_active).user
-    if not user.check_password(request.POST.get('old_password_mini')):
+    user = Profile.objects.get(
+        person=object_id,
+        person__organization=request.user.get_profile().org_active).user
+    if not user.check_password(request.POST.get('actual_password_mini')):
         messages.error(request, _('Password Incorrect'))
         return HttpResponseRedirect('/user/%s/' % object_id)
 
     user.set_password(request.POST.get('password_mini'))
-    user.profile.temp = request.POST.get('password_mini')    # temporary field (LDAP)
+    # temporary field (LDAP)
+    user.profile.temp = request.POST.get('password_mini')
     user.profile.save()
     user.save(force_update=True)
 
     messages.success(request, _('Password updated successfully!'))
     return HttpResponseRedirect('/user/%s/' % object_id)
 
+
 @permission_required_with_403('users.users_write')
 def update_email(request, object_id=0):
-    invalid_emails = verify_requests(request.POST.get('old_password_mini'), request.POST.get('email_mini'), request.POST.get('email_mini_conf'))
+    invalid_emails = verify_requests(
+        request.POST.get('actual_password_mini'),
+        request.POST.get('email_mini'),
+        request.POST.get('email_mini_conf')
+        )
 
     if invalid_emails != "":
         messages.error(request, _(invalid_emails))
         return HttpResponseRedirect('/user/%s/' % object_id)
 
-    user = Profile.objects.get(person = object_id, person__organization=request.user.get_profile().org_active).user
+    user = Profile.objects.get(
+        person=object_id,
+        person__organization=request.user.get_profile().org_active
+        ).user
 
-    if not user.check_password(request.POST.get('old_password_mini')):
+    if not user.check_password(request.POST.get('actual_password_mini')):
         messages.error(request, _('Password Incorrect'))
         return HttpResponseRedirect('/user/%s/' % object_id)
 
     user.email = request.POST.get('email_mini')
-    user.profile.temp = request.POST.get('email_mini')    # temporary field (LDAP)
+    user.profile.temp = request.POST.get('email_mini')  # temporary field(LDAP)
     user.profile.save()
     user.save(force_update=True)
 

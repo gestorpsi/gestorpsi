@@ -30,167 +30,170 @@ GNU General Public License for more details.
         {% endif %}
         {% if object.id %}<li><a class="active">{{ object.name }}</a></li>{% endif %}
         <li><a class="{% if deactive %} active {% endif %}" href="/service/deactive/">{% trans "all Deactive" %}</a></li>
-        
     </ul>
 {% endblock %}
 
 
 {% block core %}
 
-{% if object.id %}
-	<h2 class="title_services title">{{ object.name_html_inline|safe }}</h2>
-	<p class="description">{{ object.description }}<br />	
-{% else %}
-	<h2 class="title_services title">{% trans "Adding New Service" %}</h2>
-	<p class="description">{% trans "Inform the service details then click on Save button" %}</p>
-{% endif %}
-</p>
-		
-<form action="/service/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_service" class="form_service">	
-<div class="main_area">
+    {% if object.id %}
+        <h2 class="title_services title">{{ object.name_html_inline|safe }}</h2>
+        <p class="description">{{ object.description }}<br /></p>
+    {% else %}
+        <h2 class="title_services title">{% trans "Adding New Service" %}</h2>
+        <p class="description">{% trans "Inform the service details then click on Save button" %}</p>
+    {% endif %}
+            
+    <form action="/service/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_service" class="form_service">	
+        <div class="main_area">
 
-	<!-- <a href="" id="help">&nbsp;</a> -->
+            <!-- Service Identification -->
+            <fieldset>
+                <legend>{% trans "Service Identification" %}</legend>
+                    <label>{% trans "Service Name" %}<br />
+                        <input type="text" maxlength="80"  name="service_name" class="giant tabtitle" value="{{ object.name }}" />
+                    </label>
+                    <label>{% trans "Service Description" %}<br />
+                        <textarea name="service_description" maxlength="999" class="giant object_description">{{ object.description }}</textarea>				
+                    </label>
+                    <label>{% trans "Keywords (separated by ;)" %}<br />
+                        <input type="text" maxlength="100" name="service_keywords" class="giant" value="{{ object.keywords }}" />
+                    </label>
+                    <label>{% trans "Service Color" %}<br />
+                        <div class="colorpicker_open colorpicker_preview" style="background-color:#{{ object.color }}; display:inline; padding:10px 20px 10px 10px; margin-right:6px;cursor:pointer;"></div>
+                    <input type="text" maxlength="6" name="service_color" class="colorpicker_open" value="{% if object.color %}{{ object.color }}{% endif %}" />
+                    </label>
+            </fieldset>
 
-	<!--
-	Service Identification 
-	-->
-	
-	<fieldset>
-		<legend>{% trans "Service Identification" %}</legend>
-			<label>{% trans "Service Name" %}<br />
-			<input type="text" maxlength="80"  name="service_name" class="giant tabtitle" value="{{ object.name }}" />
-			</label>
-			<label>{% trans "Service Description" %}<br />
-				<textarea name="service_description" maxlength="999" class="giant object_description">{{ object.description }}</textarea>				
-			</label>
-			<label>{% trans "Keywords (separated by ;)" %}<br />
-			<input type="text" maxlength="100" name="service_keywords" class="giant" value="{{ object.keywords }}" />
-			</label>
-			<label>{% trans "Service Color" %}<br />
-			<div class="colorpicker_open colorpicker_preview" style="background-color:#{{ object.color }}; display:inline; padding:10px 20px 10px 10px; margin-right:6px;cursor:pointer;"></div>
-			<input type="text" maxlength="6" name="service_color" class="colorpicker_open" value="{% if object.color %}{{ object.color }}{% endif %}" />
-			</label>
-    </fieldset>
-    <fieldset>
-		<legend>{% trans "Academic Related" %}</legend>
-            <label>
-                <input type="checkbox" name="academic_related" {% if object.academic_related %} checked{% endif %} />&nbsp;
-                {% trans "This service is academic (supervised) related." %} 
-            </label>
-	</fieldset>
-    <fieldset>
-		<legend>{% trans "Research Project" %}</legend>
-            <label>
-                <input class="research_project_name" type="checkbox" {% if object.id %}disabled="disabled"{% endif %} name="research_project"{% if object.research_project %} checked{% endif %} />&nbsp;
-                {% trans "This service is linked with a research project" %} 
-            </label>
+            <fieldset>
+                <legend>{% trans "Academic Related" %}</legend>
+                    <label>
+                        <input type="checkbox" name="academic_related" {% if object.academic_related %} checked{% endif %} />&nbsp;
+                        {% trans "This service is academic (supervised) related." %} 
+                    </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>{% trans "Research Project" %}</legend>
+                <label>
+                    <input class="research_project_name" type="checkbox" {% if object.id %}disabled="disabled"{% endif %} name="research_project"{% if object.research_project %} checked{% endif %} />&nbsp;
+                    {% trans "This service is linked with a research project" %} 
+                </label>
                 <div class="research_project_name" {% if object.research_project_name %} style="display:block;" {% else %} style="display:none;" {% endif %}>
                     <label> 
                         {% trans "Name" %}
-			            <input type="text" maxlength="100" name="research_project_name" {% if object.id %}disabled="disabled"{% endif %} class="giant" value="{% if object.research_project_name %}{{ object.research_project_name }}{% endif %}" />
+                        <input type="text" maxlength="100" name="research_project_name" {% if object.id %}disabled="disabled"{% endif %} class="giant" value="{% if object.research_project_name %}{{ object.research_project_name }}{% endif %}" />
                     </label>
                 </div>
-	</fieldset>
+            </fieldset>
 
-    <fieldset>
-		<legend>{% trans "Service Group Support" %}</legend>
-            <label>
-                <input type="checkbox" name="is_group" {% if object.is_group %} checked{% endif %} />&nbsp;
-                {% trans "If checked, this service will accept group members." %} 
-            </label>
-	</fieldset>
+            <fieldset>
+                <legend>{% trans "Service Group Support" %}</legend>
+                <label>
+                    <input type="checkbox" name="is_group" {% if object.is_group %} checked{% endif %} />&nbsp;
+                    {% trans "If checked, this service will accept group members." %} 
+                </label>
+            </fieldset>
 
-    <fieldset>
-		<legend>{% trans "On-line Service" %}</legend>
-            <label>
-                <input type="checkbox" name="is_online" {% if object.is_online %} checked{% endif %} />&nbsp;
-                {% trans "If checked, this service will accept on-line chat and messages." %} 
-            </label>
-	</fieldset>
+            <fieldset>
+                <legend>{% trans "On-line Service" %}</legend>
+                <label>
+                    <input type="checkbox" name="is_online" {% if object.is_online %} checked{% endif %} />&nbsp;
+                    {% trans "If checked, this service will accept on-line chat and messages." %} 
+                </label>
+            </fieldset>
 
-	<!--
-	Service Profile 
-	-->
-	
-	<fieldset>
-    <input type="hidden" name="service_area" value="{{ area.id }}" />
-    
-		<legend>{% trans "Service Profile" %}</legend>
-        <label>{{area.area_name}} {#[ <a href="/service/add/{% if object.id %}{{ object.id }}/{% endif %}">Change Area</a> ]#}</label><br />
 
-		{{ form_area.as_ul }}
+            <!-- Service Profile -->
+            <fieldset>
+                <input type="hidden" name="service_area" value="{{ area.id }}" />
+            
+                <legend>{% trans "Service Profile" %}</legend>
+                <label>{{area.area_name}} {#[ <a href="/service/add/{% if object.id %}{{ object.id }}/{% endif %}">Change Area</a> ]#}</label><br />
 
-		<div style="clear:both;"></div>	
-		<li><label>{% trans "Profession" %}</label></li><br />
-		<ul>
-		{% for p in Professions %}
-		    <li><label><input{% for op in object.professions.all %}{% ifequal op.id p.id %} checked{% endifequal %}{%endfor%} value="{{ p.pk }}" type="checkbox" name="service_profession" /> {{ p }}</label></li>
-		{% endfor %}
-		</ul>
-    </fieldset>
+                {{ form_area.as_ul }}
+
+                <div style="clear:both;"></div>	
+                <li><label>{% trans "Profession" %}</label></li><br />
+                <ul>
+                {% for p in Professions %}
+                    <li><label><input{% for op in object.professions.all %}{% ifequal op.id p.id %} checked{% endifequal %}{%endfor%} value="{{ p.pk }}" type="checkbox" name="service_profession" /> {{ p }}</label></li>
+                {% endfor %}
+                </ul>
+            </fieldset>
 
 	
-	<!--
-	Services Relations
-	-->
+            <!-- Services Relations -->
+            <fieldset>
+                <legend>{% trans "Professionals" %}</legend>
+
+                <div style="clear:both;"></div>	
+
+                <li><label>{% trans "Related Professionals" %}</label></li><br />
+                <div class="overflow">
+                    <ul>
+                    {% for l in CareProfessionals %}
+                        <li><label><input{% for or in object.professionals.values_list %}{% ifequal or.0 l.id %} checked{% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_professionals" />{{ l }}{% if l.professionalIdentification.profession %} ({{ l.professionalIdentification.profession }}){% endif %}</label></li>
+                    {% endfor %}
+                    {% for l in Students %}
+                        <li><label><input{% for or in object.professionals.values_list %}{% ifequal or.0 l.id %} checked{% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_professionals" />{{ l }}{% if l.studentprofile.lecture_class.academic_name %} ({{ l.studentprofile.lecture_class.academic_name }}) - {% trans "Student" %}{% endif %}</label></li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                
+                <div style="clear:both;"></div>	
+                <li><label>{% trans "Professionals Responsible" %}</label></li><br />
+
+                <div class="overflow">
+                    <ul>
+                        {% for l in CareProfessionals %}
+                            <li><label><input {% for r in object.responsibles.all %}{% ifequal r.id l.id %} checked {% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_responsibles" />{{ l }}{% if l.professionalIdentification.profession %} ({{ l.professionalIdentification.profession }}) {% endif %}</label></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </fieldset>	
+
+
+            <!-- covenant list -->
+            <fieldset>
+                <legend>{% trans "Conv&ecirc;nio" %}</legend>
+                <div style="clear:both;"></div>	
+                <li><label>{% trans "Este servi&ccedil;o aceita os pr&oacute;ximos conv&ecirc;nios" %}</label></li><br />
+
+                <div class="overflow">
+                    <ul>
+                        {% for l in covenant_list %}
+                            <li><label><input {% for r in object.covenant.all %}{% ifequal r.id l.id %} checked {% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_covenant" />{{ l.name }} </label></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </fieldset>	
 	
-	<fieldset>
-		<legend>{% trans "Professionals" %}</legend>
 
-		
-		<div style="clear:both;"></div>	
-		<li><label>{% trans "Related Professionals" %}</label></li><br />
-		<div class="overflow">
-		<ul>
-		{% for l in CareProfessionals %}
-		    <li><label><input{% for or in object.professionals.values_list %}{% ifequal or.0 l.id %} checked{% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_professionals" />{{ l }}{% if l.professionalIdentification.profession %} ({{ l.professionalIdentification.profession }}){% endif %}</label></li>
-		{% endfor %}
-		{% for l in Students %}
-		    <li><label><input{% for or in object.professionals.values_list %}{% ifequal or.0 l.id %} checked{% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_professionals" />{{ l }}{% if l.studentprofile.lecture_class.academic_name %} ({{ l.studentprofile.lecture_class.academic_name }}) - {% trans "Student" %}{% endif %}</label></li>
-		{% endfor %}
-		</ul>
-		</div>
-		
-		<div style="clear:both;"></div>	
-		<li><label>{% trans "Professionals Responsible" %}</label></li><br />
-		<div class="overflow">
-		<ul>
-		{% for l in CareProfessionals %}
-		    <li><label><input {% for r in object.responsibles.all %}{% ifequal r.id l.id %} checked {% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_responsibles" />{{ l }}{% if l.professionalIdentification.profession %} ({{ l.professionalIdentification.profession }}) {% endif %}</label></li>
-		{% endfor %}
-		</ul>
-		</div>
-	</fieldset>	
-	
-	<!--
-	Service must to have a status
-	-->
-	
-<fieldset class="comment_form">
-        <legend>{% trans "Comments" %}</legend>
-        <label>
-                <textarea name="comments" class="extrabig">{{ object.comments }}</textarea>
-        </label>
-</fieldset>
+            <!-- Service must to have a status -->
+            <fieldset class="comment_form">
+                <legend>{% trans "Comments" %}</legend>
+                <label>
+                    <textarea name="comments" class="extrabig">{{ object.comments }}</textarea>
+                </label>
+            </fieldset>
+
+            <br />	
+        </div><!-- main area -->
 
 
-<br />	
-</div>
-
-<div id="sidebar" class="sidebar">
-    {% if perms.service.service_write %}
-    	<div class="bg_blue">
-        	<input type="hidden" name="service" value="{{ object.id }}" />
-            {% include "tags/save.html" %}
+        <!-- sidebar save button -->
+        <div id="sidebar" class="sidebar">
+            {% if perms.service.service_write %}
+                <div class="bg_blue">
+                    <input type="hidden" name="service" value="{{ object.id }}" />
+                    {% include "tags/save.html" %}
+                </div>
+            {% endif %}
+            {% if object.id %}
+                {% include "tags/service_sidebar.html" %}
+            {% endif %}
         </div>
-    {% endif %}
-    {% if object.id %}
-        {% include "tags/service_sidebar.html" %}
-    {% endif %}
-</div>
 
-</form>
-
+    </form>
 {% endblock %}
-
-

@@ -37,6 +37,8 @@ from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.service.models import Service, Area, ServiceType, Modality, ServiceGroup
 from gestorpsi.service.forms import ServiceGroupForm, GenericAreaForm, SchoolAreaForm, OrganizationalAreaForm, GENERIC_AREA #, ClinicAreaForm
 from gestorpsi.client.forms import Client
+from gestorpsi.covenant.models import Covenant
+
 
 def _can_view_group(request, group=None, service=None):
     """
@@ -206,6 +208,7 @@ def form(request, object_id=None):
         'queue_list': _queue_list(request,object),
         'can_list_groups': False if not len(_group_list(request, object)) else True,
         'can_write_group': False if not _can_write_group(request, object) else True,
+        'covenant_list': Covenant.objects.filter( organization=request.user.get_profile().org_active ),
         }, context_instance=RequestContext(request) )
 
 @permission_required_with_403('service.service_write')
@@ -266,6 +269,11 @@ def save(request, object_id=''):
     object.professionals.clear()
     for p in request.POST.getlist('service_professionals'):
         object.professionals.add(CareProfessional.objects.get(pk=p))
+
+    """ Covenant list """
+    object.covenant.clear()
+    for p in request.POST.getlist('service_covenant'):
+        object.covenant.add( Covenant.objects.get(pk=p) )
 
     object.save()
     messages.success(request, _('Service saved successfully'))

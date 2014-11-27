@@ -23,5 +23,7 @@ urlpatterns = patterns('',
     url(r'^$', login_check(index), name='covenant-index'), # index list
     url(r'^add/$', login_check(form), name='covenant-add'), # form
     url(r'^(?P<obj>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form), name='covenant-edit'), # edit 
-    url(r'^list/$', login_check(list_json), name='covenant-list-json'),
+    # return json list
+    url(r'^list/$', login_check(list_json), name='covenant-list-json'), # return all covenant of organization
+    url(r'^list/service/(?P<service>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(list_json) ), # return all covenant of service
 )

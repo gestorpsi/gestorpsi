@@ -64,6 +64,7 @@ from gestorpsi.util.views import get_object_or_None, write_pdf
 from gestorpsi.util.models import Cnae
 from gestorpsi.ehr.views import _access_ehr_check_read
 from gestorpsi.place.models import Place
+from gestorpsi.covenant.models import Covenant
 
 def _access_check(request, object=None):
     """
@@ -95,6 +96,7 @@ def _access_check(request, object=None):
             return True
 
     return False
+
 
 def _access_check_referral_write(request, referral=None):
     """
@@ -136,6 +138,7 @@ def index(request, deactive = False):
         return render_to_response('client/client_service_alert.html', {'object': msg }, context_instance=RequestContext(request))
     return render_to_response('client/client_list.html', locals(), context_instance=RequestContext(request))
 
+
 # client home
 @permission_required_with_403('client.client_read')
 def home(request, object_id=None):
@@ -166,6 +169,7 @@ def home(request, object_id=None):
                                         },
                                         context_instance=RequestContext(request)
                             )
+
 
 @permission_required_with_403('client.client_read')
 def add(request):
@@ -226,8 +230,6 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
             i = i + 1
 
         return HttpResponse(simplejson.dumps(person, encoding = 'iso8859-1'), mimetype='application/json')
-                                    
-    
 
     """
         return default
@@ -393,6 +395,7 @@ def form(request, object_id=''):
                               context_instance=RequestContext(request)
                               )
 
+
 @permission_required_with_403('client.client_read')
 def add_company(request, object_id=''):
     object = Client() if not object_id else get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
@@ -421,6 +424,7 @@ def add_company(request, object_id=''):
                                },
                               context_instance=RequestContext(request)
                               )
+
 
 @permission_required_with_403('referral.referral_read')
 def referral_plus_form(request, object_id=None, referral_id=None):
@@ -478,8 +482,10 @@ def referral_form(request, object_id=None, referral_id=None):
     else:
         referral = Referral()
     
+
+    # save 
     if request.method == 'POST':
-        form = ReferralForm(request.POST, instance = referral)
+        form = ReferralForm( request.POST, instance=referral )
 
         if form.is_valid():
 
@@ -516,8 +522,9 @@ def referral_form(request, object_id=None, referral_id=None):
                 msg = _('Referral saved successfully')
                 messages.success(request, _(msg))
                 return HttpResponseRedirect(url % (object_id, data.id))
+
+        # for debug
         #else:
-            #print '---------- ERRO '
             #print form.errors
 
     # show just professional that are have subscription in a selected service
@@ -659,7 +666,8 @@ def referral_save(request, object_id = None, referral_id = None):
             return render_to_response('client/client_referral_form.html', locals(), context_instance=RequestContext(request))
 
     messages.success(request, _(msg))
-    return HttpResponseRedirect(url % (object_id, object.id))
+    return HttpResponseRedirect( url % (object_id, object.id) )
+
 
 @permission_required_with_403('referral.referral_read')
 def referral_discharge_form(request, object_id = None, referral_id = None, discharge_id = None):

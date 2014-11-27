@@ -106,15 +106,23 @@ def form(request, obj=False):
 
 
 
-def list_json(request, deactive=True):
+def list_json(request, deactive=True, service=False):
     """
         return object list in json format
+        service: Service.id
     """
 
-    if not deactive:
-        obj_list = Covenant.objects.filter(active=False)
+    # all covenant of service
+    # referral form, show all active covenant of service
+    if service:
+        obj_list = Covenant.objects.filter(active=True, service__id=service)
+
+    # all covenant
     else:
-        obj_list = Covenant.objects.filter(active=True)
+        if not deactive:
+            obj_list = Covenant.objects.filter(active=False)
+        else:
+            obj_list = Covenant.objects.filter(active=True)
 
     covenant = {} # json
     c = 0

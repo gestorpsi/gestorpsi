@@ -19,7 +19,7 @@ from gestorpsi.referral.models import Referral, ReferralPriority, ReferralImpact
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client 
 from gestorpsi.service.models import Service, ServiceGroup
-
+from gestorpsi.covenant.models import Covenant
 
 
 '''
@@ -44,7 +44,7 @@ class ReferralForm(forms.ModelForm):
     impact = forms.ModelChoiceField(queryset=ReferralImpact.objects.all(), required = False, widget=forms.Select(attrs={'class':'giant', }))
     
     class Meta:
-        fields = ('client', 'service', 'professional', 'annotation', 'referral', 'annotation', 'referral_reason', 'available_time', 'priority', 'impact')
+        fields = ('client', 'service', 'professional', 'annotation', 'referral', 'annotation', 'referral_reason', 'available_time', 'priority', 'impact', 'covenant')
         model = Referral
     
     def __init__(self, *args, **kwargs):

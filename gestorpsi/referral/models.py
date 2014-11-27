@@ -31,6 +31,7 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.place.models import Room
 from gestorpsi.settings import REFERRAL_DISCHARGE_REASON_CANCELED
+from gestorpsi.covenant.models import Covenant
 
 fs = FileSystemStorage(location='/tmp')
 
@@ -147,7 +148,7 @@ class Referral(Event):
     impact = models.ForeignKey(ReferralImpact, null=True)
     organization = models.ForeignKey(Organization, null= True, blank= True)
     status = models.CharField(max_length=2, blank=True, null=True, choices=REFERRAL_STATUS)
-
+    covenant = models.ManyToManyField(Covenant, null=True, blank=True) # selected covenant available for service
     objects = ReferralManager()
     objects_inrange = ReferralInRangeManager()
 

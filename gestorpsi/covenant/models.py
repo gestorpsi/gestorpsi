@@ -34,11 +34,11 @@ CHARGE = (
 
     (u'Por período', 
         (
-            (10,u'Semana'),
-            (11,u'Quinzena'),
-            (12,u'Mês'),
-            (13,u'Bimestre'),
-            (14,u'Semestre'), 
+            (10,u'Semanal'),
+            (11,u'Quinzenal'),
+            (12,u'Mensal'),
+            (13,u'Bimestral'),
+            (14,u'Semestral'), 
         )
     ),
 )
@@ -70,7 +70,11 @@ class Covenant(models.Model):
     organization = models.ForeignKey(Organization, editable=False, null=False, blank=False)
 
     def __unicode__(self):
-        return u"%s" % self.name
+        # return need show as this format, relation m2m.
+        if self.event_time:
+            return u"%s - %s (%s) - R$%s" % ( self.name, self.get_charge_display(), self.event_time, self.price )
+        else:
+            return u"%s - %s - R$%s" % ( self.name, self.get_charge_display(), self.price )
 
     class Meta:
         ordering = ['name']

@@ -130,8 +130,7 @@ def list_json(request, deactive=True, service=False):
     for o in obj_list:
         covenant[c] = {
             'id': o.id,
-            'name': u'%s' % o.name,
-            'price': u'%s' % o.price,
+            'name': u'%s' % o,
         }
         c += 1
 

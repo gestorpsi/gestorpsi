@@ -179,8 +179,8 @@ function referral_edit(select_field) {
             // covenant of service
             var TEMP='';
             $.getJSON("/covenant/list/service/" + select_field.val() + "/", function(json) {
-                jQuery.each(json,  function(){
-                    TEMP += '<option value="' + this.id + '">' + this.name + '</option>';
+                jQuery.each(json, function(){
+                            TEMP += '<option value="' + this.id + '">' + this.name + '</option>';
                 });
                 // add new elements in select
                 $('select#id_covenant').html(TEMP);

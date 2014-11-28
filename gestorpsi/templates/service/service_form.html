@@ -163,7 +163,7 @@ GNU General Public License for more details.
                 <div class="overflow">
                     <ul>
                         {% for l in covenant_list %}
-                            <li><label><input {% for r in object.covenant.all %}{% ifequal r.id l.id %} checked {% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_covenant" />{{ l.name }} </label></li>
+                        <li><label><input {% for r in object.covenant.all %}{% ifequal r.id l.id %} checked {% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_covenant" />{{ l.name }} - {{ l.get_charge_display }} {% if l.event_time %} ({{ l.event_time }}) {% endif %} - Valor R${{ l.price }} </label></li>
                         {% endfor %}
                     </ul>
                 </div>

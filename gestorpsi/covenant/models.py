@@ -72,9 +72,9 @@ class Covenant(models.Model):
     def __unicode__(self):
         # return need show as this format, relation m2m.
         if self.event_time:
-            return u"%s - %s (%s) - R$%s" % ( self.name, self.get_charge_display(), self.event_time, self.price )
+            return u"%s %s (%s) R$%s" % ( self.name, self.get_charge_display(), self.event_time, self.price )
         else:
-            return u"%s - %s - R$%s" % ( self.name, self.get_charge_display(), self.price )
+            return u"%s %s R$%s" % ( self.name, self.get_charge_display(), self.price )
 
     class Meta:
         ordering = ['name']

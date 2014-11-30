@@ -26,6 +26,7 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.db.models import Q
 from django.contrib import messages
+from django.contrib.auth.models import User
 from swingtime.utils import create_timeslot_table
 
 from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation, OccurrenceFamily, OccurrenceEmployees, Occurrence
@@ -441,6 +442,7 @@ def _datetime_view(
         referral = referral,
         object = object,
         tab_daily_class = "active", # class object, tab menu
+        restrict_schedule=request.user.get_profile().org_active.restrict_schedule,
     )
 
     return render_to_response(

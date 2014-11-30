@@ -194,6 +194,10 @@ function updateGrid(url) {
                 
                 url = (this.group != '')?'/schedule/events/group/' +  this.group_id + '/occurrence/' + this.id + '/':'/schedule/events/' + this.id + '/confirmation/';
                 
+                if ($('input[name=restrict_schedule]').val() != "None") {
+                    label = '';
+                }
+
                 if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {
                     $('table.schedule_results.daily tr[hour="' + this.start_time + '"] td[room="' + this.room + '"] a.book').after('<a title="'+json['util']['str_date']+'" href="' + url + '" class="booked" style="color:#'+this.font_color+'">' + label + '</a>'); // show booked event
                 } else {

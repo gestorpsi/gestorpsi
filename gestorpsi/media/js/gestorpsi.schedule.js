@@ -204,12 +204,17 @@ function updateGrid(url) {
                 $('table.schedule_results.daily tr[hour="' + this.start_time +'"] td[room="' + this.room + '"] a.book').hide(); // hide free slot 
                 
                 url = (this.group != '')?'/schedule/events/group/' +  this.group_id + '/occurrence/' + this.id + '/':'/schedule/events/' + this.id + '/confirmation/';
+                
+                if ($('input[name=restrict_schedule]').val() != "None") {
+                    label = '';
+                }
 
                 if($('input[name=occurrences]').val() && findReserve($('input[name=occurrences]').val(), this.start_time.slice(0, 5) + " True")){
                     url = '/schedule/events/add/?dtstart=' + json['util']['date'] + 'T' + this.start_time + '&room='+ this.room;
                     $('table.schedule_results.daily tr[hour="' + this.start_time + '"] td[room="' + this.room + '"] a.book').after('<a title="'+json['util']['str_date']+'" href="' + url + '" class="booked" style="color:#'+this.font_color+'">' + label + '</a>'); // show booked event
                 }
                 else if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {
+
                     $('table.schedule_results.daily tr[hour="' + this.start_time + '"] td[room="' + this.room + '"] a.book').after('<a title="'+json['util']['str_date']+'" href="' + url + '" class="booked" style="color:#'+this.font_color+'">' + label + '</a>'); // show booked event
                 } else {
                     $('table.schedule_results.daily tr[hour="' + this.start_time +'"] td[room="' + this.room + '"] a.book').after('<a class="booked" style="color:#'+this.font_color+'">' + label + '</a>'); // show booked event in Client View

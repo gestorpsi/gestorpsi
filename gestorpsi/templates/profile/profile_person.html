@@ -25,6 +25,7 @@ GNU General Public License for more details.
         <li><a class="first active" href="/profile/">{% trans "Personal Profile" %}</a></li>
         {% if object.person.is_careprofessional %}<li><a href="/profile/careprofessional/">{% trans "Professional Profile" %}</a></li>{% endif %}
         <li><a href="/profile/chpass/">{% trans "Change password" %}</a></li>
+        <li><a href="/profile/add_availability/" class="client_admit_form" title="{{ object.person.name }}">{% trans "Add Availability" %}</a></li>
     </ul>
 {% endblock %}
 

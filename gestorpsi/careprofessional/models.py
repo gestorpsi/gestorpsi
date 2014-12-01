@@ -260,7 +260,7 @@ class Availability(models.Model):
     hour = models.TimeField(null=False)
 
     def __unicode__(self):
-        return u"%s - %s" % self.day % self.hour
+        return u"%s - %s" % (self.day, self.hour)
 
 reversion.register(Availability)
 

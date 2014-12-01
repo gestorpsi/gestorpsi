@@ -64,6 +64,9 @@ msgstr "Cor em formato hexadecimal. Ex: 662393"
 msgid "Oops! You don't have access for this service!"
 msgstr "Oops! Você não tem acesso a este serviço!"
 
+msgid "Availability updated successfully!"
+msgstr "Disponibilidade atualizada com sucesso!"
+
 #: admission/views.py:109
 msgid "Admission saved successfully"
 msgstr "Admissão salva com sucesso"

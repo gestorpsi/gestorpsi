@@ -21,7 +21,6 @@ GNU General Public License for more details.
     <h3>{% trans 'Actions' %}</h3>
     <ul>
         <li><a href="/profile/chpass/" class="client_admit_form" title="{{ object.person.name }}">{% trans "Change password" %}</a></li>
-        <li><a href="/profile/#/" class="client_admit_form" title="{{ object.person.name }}">{% trans "Add Availability" %}</a></li>
         {% comment %}
             {% if object.person.is_client %}
                 <li><a class="print" href="/client/{{ object.person.client.id }}/print/" title="{{ object.person.name }}">{% trans "Print Record" %}</a></li>

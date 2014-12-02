@@ -91,16 +91,10 @@ def schedule_occurrence_listing_today(request, place=None, template='schedule/sc
     return schedule_occurrence_listing(request, place, datetime.now().strftime('%Y'), datetime.now().strftime('%m'), datetime.now().strftime('%d'))
 
 def invalid_delta_time(start, end):
-    if start >= end:
-        return True
-
-    return False
+    return start >= end
 
 def verify_client(referral):
-        if referral == None:
-            return False
-        else:
-            return True
+    return referral is not None
 
 @permission_required_with_403('schedule.schedule_write')
 def add_event(

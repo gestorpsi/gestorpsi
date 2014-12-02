@@ -573,6 +573,18 @@ def week_view_table(request,
     next_week = today+timedelta(weeks=1)
     last_week_day = first_week_day+timedelta(days=6)
 
+    profile = Profile.objects.get(person=request.user.get_profile().person_id, person__organization=request.user.get_profile().org_active)
+
+    # restrict information of schedules booked for professional and student profiles
+    restrict_schedule = request.user.get_profile().org_active.restrict_schedule
+    for g in profile.user.groups.all():
+        if g.name == "administrator" or not restrict_schedule:
+            restrict_schedule = False
+            break
+
+        if g.name == "professional" or g.name == "student":
+            restrict_schedule = True
+
     return render_to_response('schedule/schedule_week_table.html', locals(), context_instance=RequestContext(request))
 
 

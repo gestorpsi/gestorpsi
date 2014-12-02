@@ -40,25 +40,30 @@ GNU General Public License for more details.
                 {% for dict in day %}
                 {% with dict.data as o %}
                 <div class="tag clean place_{{o.room.place.pk}} room_{{o.room.pk}} {% for p in o.event.referral.professional.all %} professional_{{ p.pk }}{%endfor%} service_{{ o.event.referral.service.pk }}" style="background-color:#{{ o.event.referral.service.color }};" room="{{ o.room.pk }}" place="{{ o.room.place.pk }}">
-                    {% if dict.is_group %}
-                        <a style="color:#{{ o.event.referral.service.font_color }};" title="{{ o.start_time|date:"H:i" }}hs - {{o.room}} - {{ o.room.place }} - {{ o.event.referral.client.all|join:", "}} - {{ dict.group_name }}" href="/schedule/events/group/{{ dict.group_pk }}/occurrence/{{ o.pk }}/" class="booked">
+                    {% if restrict_schedule %}
+                        <b>{{ o.start_time|date:"H:i" }} - {{ o.room }}</b><br />
+                        {% trans "Booked" %}
                     {% else %}
-                        <a style="color:#{{ o.event.referral.service.font_color }};" title="{{ o.start_time|date:"H:i" }}hs - {{o.room}} - {{ o.room.place }} - {{ o.event.referral.client.all|join:", "}} - {{ o }}" href="/schedule/events/{{ o.pk }}/confirmation/" class="booked">
+                        {% if dict.is_group %}
+                            <a style="color:#{{ o.event.referral.service.font_color }};" title="{{ o.start_time|date:"H:i" }}hs - {{o.room}} - {{ o.room.place }} - {{ o.event.referral.client.all|join:", "}} - {{ dict.group_name }}" href="/schedule/events/group/{{ dict.group_pk }}/occurrence/{{ o.pk }}/" class="booked">
+                        {% else %}
+                            <a style="color:#{{ o.event.referral.service.font_color }};" title="{{ o.start_time|date:"H:i" }}hs - {{o.room}} - {{ o.room.place }} - {{ o.event.referral.client.all|join:", "}} - {{ o }}" href="/schedule/events/{{ o.pk }}/confirmation/" class="booked">
+                        {% endif %}
+                        <b>{{ o.start_time|date:"H:i" }} - {{ o.room }}</b><br />
+                        {% if dict.is_group %}
+                            {{ dict.group_name }}
+                        {% else %}
+                            {{ o.event.referral.client.all|join:", "}}<br>
+                        {% endif %}
+                        &gt;&gt;{{ o.event.referral }} <br>{{ o.event.referral.professional.all|join:", "}}<br></a>
                     {% endif %}
-                    <b>{{ o.start_time|date:"H:i" }} - {{ o.room }}</b><br />
-                    {% if dict.is_group %}
-                        {{ dict.group_name }}
-                    {% else %}
-                        {{ o.event.referral.client.all|join:", "}}<br>
-                    {% endif %}
-                    &gt;&gt;{{ o.event.referral }} <br>{{ o.event.referral.professional.all|join:", "}}<br></a>
                 </div>
                 {% endwith %}
                 {% endfor %}
             </td>
             {% endfor %}
         </tr>
-{% endif %}
+        {% endif %}
         <tr>
         {% for day in week %}
                 <td class="no_events">

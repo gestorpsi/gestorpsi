@@ -6705,6 +6705,10 @@ msgstr "até"
 msgid "There is no occurrence on this week"
 msgstr "Sem agendamentos para esta semana"
 
+#: templates/schedule/schedule_week_table.html:44
+msgid "Booked"
+msgstr "Reservado"
+
 #: templates/schedule/schedule_week_table.html:63
 msgid "Book on this day"
 msgstr "Agendar neste dia"

@@ -194,8 +194,8 @@ function updateGrid(url) {
                 
                 url = (this.group != '')?'/schedule/events/group/' +  this.group_id + '/occurrence/' + this.id + '/':'/schedule/events/' + this.id + '/confirmation/';
                 
-                if ($('input[name=restrict_schedule]').val() != "None") {
-                    label = '';
+                if ($('input[name=restrict_schedule]').val() == "True") {
+                    label = "Reservado";
                 }
 
                 if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {

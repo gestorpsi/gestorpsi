@@ -42,6 +42,8 @@ from gestorpsi.util.views import get_object_or_None
 from gestorpsi.schedule.forms import OccurrenceConfirmationForm
 from gestorpsi.device.models import DeviceDetails
 from gestorpsi.organization.models import TIME_SLOT_SCHEDULE
+from gestorpsi.authentication.models import Profile
+from gestorpsi.person.models import Person
 
 
 def _access_check_by_occurrence(request, occurrence):
@@ -421,6 +423,19 @@ def _datetime_view(
     timeslot_factory = timeslot_factory or create_timeslot_table
 
     params = params or {}
+
+    profile = Profile.objects.get(person=user.get_profile().person_id, person__organization=user.get_profile().org_active)
+
+    # restrict information of schedules booked for professional and student profiles
+    restrict_schedule = user.get_profile().org_active.restrict_schedule
+    for g in profile.user.groups.all():
+        if g.name == "administrator" or not restrict_schedule:
+            restrict_schedule = False
+            break
+
+        if g.name == "professional" or g.name == "student":
+            restrict_schedule = True
+
     data = dict(
         day=dt,
         next_day=dt + timedelta(days=+1),
@@ -442,7 +457,7 @@ def _datetime_view(
         referral = referral,
         object = object,
         tab_daily_class = "active", # class object, tab menu
-        restrict_schedule=request.user.get_profile().org_active.restrict_schedule,
+        restrict_schedule = restrict_schedule
     )
 
     return render_to_response(

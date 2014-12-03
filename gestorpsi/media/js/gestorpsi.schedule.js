@@ -207,6 +207,7 @@ function updateGrid(url) {
                 
                 if ($('input[name=restrict_schedule]').val() == "True") {
                     label = "Reservado";
+                    label_inline = "Reservado";
                 }
 
                 if($('input[name=occurrences]').val() && findReserve($('input[name=occurrences]').val(), this.start_time.slice(0, 5) + " True")){

@@ -192,7 +192,23 @@ GNU General Public License for more details.
                 <table class="nozebra">
                         <tr>
                                 <td nowrap="nowrap"><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
-                                <td><span  class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
+                                
+                                {% if is_psychologist %}
+                                <td><span class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
+
+                                {% elif is_secretary and a.only_psychologists%}
+                                <td><span class="pdf">{{ a.filename }} </span></td>
+
+                                {% elif is_secretary and a.only_professionals %}
+                                <td><span class="pdf">{{ a.filename }} </span></td>
+
+                                {% elif  is_professional and  a.only_psychologists %}
+                                <td><span class="pdf">{{ a.filename }} </span></td>                               
+
+                                {% else %}
+                                <td><span class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>                                                              
+                                {% endif %}
+
                                 <td><span>{% for t in types %}
                                             {% ifequal a.type t.0 %}</span>{{ t.1 }}:<br /> {{ a.description }} </td> {% endifequal %} {% endfor %}
                                 <td>{# <a href="" class="edit" title="editar"><span>Edit</span></a> #}</td>

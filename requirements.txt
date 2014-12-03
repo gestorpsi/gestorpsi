@@ -29,7 +29,7 @@ lockfile==0.9.1
 pisa==3.0.33
 pyasn1==0.1.6
 pycrypto==2.6
-pygooglechart==0.3.0
+http://slowchop.com/pygooglechart/download/pygooglechart-0.3.0.tar.gz
 python-daemon==1.6
 python-dateutil==1.5
 pytz==2013b

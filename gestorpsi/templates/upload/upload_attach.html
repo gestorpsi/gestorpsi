@@ -26,6 +26,7 @@ GNU General Public License for more details.
 
 {% block core %}
 <input type="hidden" name="object_id" value="{{ object.id }}" />
+<script type="text/javascript" src="/media/js/gestorpsi.upload.checkbox.js"></script>
 
 <h2 id="title_addressbook" style="display:none"></h2>
 
@@ -47,6 +48,8 @@ GNU General Public License for more details.
 
                 <input type="file" class="file" name="file" />
 
+
+
                 </label>
                 <label>Tipo de documento<br />
                 <select name="doc_type" class="big">
@@ -55,6 +58,14 @@ GNU General Public License for more details.
                         {% endfor %}
                 </select></label>
 
+                <label><br />
+
+                <INPUT TYPE="checkbox" id="onlyprofessionals" NAME="onlyprofessionals" VALUE="True"  onclick="checkbox_click_swapper('onlyprofessionals','onlypsychologists')" >Somente Profissionais</label>
+
+                 <label><br />
+                <INPUT TYPE="checkbox" id="onlypsychologists" NAME="onlypsychologists" VALUE="True" onclick="checkbox_click_swapper('onlypsychologists','onlyprofessionals')" >Somente Psicólogos</label>
+
+               
                 <label>Assunto do documento<br />
                 <input name="description" type="text" class="big" /></label>
                 <label><input name="" type="submit" class="btn" value="Enviar Arquivo" /></label>
@@ -66,11 +77,33 @@ GNU General Public License for more details.
     {% if attachs %}
         {% for a in attachs %}
                 <table class="nozebra">
-                        <tr>
+                        <tr>    
+
+
                                 <td nowrap="nowrap"><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
-                                <td><span  class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
+
+
+                                {% if is_psychologist %}
+                                <td><span class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
+
+                                {% elif is_secretary and a.only_psychologists%}
+                                <td><span class="pdf">{{ a.filename }} </span></td>
+
+                                {% elif is_secretary and a.only_professionals %}
+                                <td><span class="pdf">{{ a.filename }} </span></td>
+
+                                {% elif  is_professional and  a.only_psychologists %}
+                                <td><span class="pdf">{{ a.filename }} </span></td>                               
+
+                                {% else %}
+                                <td><span class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>                                                              
+                                {% endif %}
+
                                 <td><span>{% for t in types %}
                                             {% ifequal a.type t.0 %}</span>{{ t.1 }}:<br /> {{ a.description }} </td> {% endifequal %} {% endfor %}
+
+
+
                                 <td> {# <a href="" class="edit" title="editar"><span>Edit</span></a> #}</td>
                                 <td> {# <a href="" class="delete" title="delete" ><span>Delete</span></a> #}</td>
                         </tr>
@@ -94,5 +127,6 @@ GNU General Public License for more details.
     {% endif %}
 </div>
 <input type="hidden" name="client_id" value="{{ object.id }}" />
+
 
 {% endblock %}

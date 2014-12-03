@@ -37,7 +37,7 @@ the two kinds of mobility type that are used to classify them.
 class DeviceDetailsManager(models.Manager):
     def mobile(self):
         return super(DeviceDetailsManager, self).get_query_set().filter(mobility__exact='2')
-    
+
     def fix(self):
         return super(DeviceDetailsManager, self).get_query_set().filter(mobility__exact='1')
 
@@ -46,7 +46,7 @@ class DeviceDetailsManager(models.Manager):
 
     def deactive(self, organization):
         return super(DeviceDetailsManager, self).get_query_set().filter(active = False, device__organization = organization).order_by('model')
-        
+
 class Device(models.Model):
     """
     The class C{Device} is used to represent devices in the context of the GestorPsi project. Using this class,
@@ -66,7 +66,7 @@ class Device(models.Model):
 
     def revision(self):
         return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
-   
+
     class Meta:
         ordering = ['description']
         permissions = (
@@ -107,8 +107,11 @@ class DeviceDetails(models.Model):
         )
 
     def __unicode__(self):
-#      return u"%s - %s - %s" % (self.device.description, self.brand, self.model,)
-      return u"%s - %s - %s" % (self.model, self.brand, self.device.description,)
+        device_type = _("Type")
+        device_model = _("Model")
+        device_part_number = _("Part number")
+        return u"%s: %s - %s: %s - %s: %s" % \
+                 (device_type, self.device.description, device_model, self.model, device_part_number, self.part_number)
 
     def revision(self):
         return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision

@@ -111,6 +111,9 @@ class ReferralAttach(models.Model):
     file = models.CharField(max_length=200)
     type = models.CharField(max_length=2, blank=True, null=True, choices=REFERRAL_ATTACH_TYPE) 
     referral = models.ForeignKey('Referral')
+    only_professionals = models.BooleanField()
+    only_psychologists = models.BooleanField()
+
 
     def __unicode__(self):
         return u'%s' % (self.file)

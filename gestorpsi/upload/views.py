@@ -107,6 +107,15 @@ def attach_form(request, object_id = '', referral_id = ''):
     attachs = ReferralAttach.objects.filter(referral = referral_id, referral__service__organization=request.user.get_profile().org_active)
     object = Client.objects.get(pk = object_id, person__organization=request.user.get_profile().org_active)
 
+    # Finding if the user is a secretary or a psychologist.
+    is_secretary = user.get_profile().person.is_secretary()
+    is_professional = user.get_profile().person.is_careprofessional() 
+    is_psychologist = False
+    
+    if is_professional:
+        if str(user.get_profile().person.careprofessional.professionalIdentification.profession) == "Psicólogo":
+            is_psychologist = True
+
     return render_to_response('upload/upload_attach.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('upload.upload_write')
@@ -146,6 +155,11 @@ def attach_save(request, object_id = None, client_id = None):
                     attach.file = '%s' % file
                     attach.description = request.POST.get('description')
                     attach.type = request.POST.get('doc_type')
+                    attach.only_professionals = True if request.POST.get('onlyprofessionals') == 'True' else False
+                    attach.only_psychologists = True if request.POST.get('onlypsychologists') == 'True' else False
+
+                    
+
                     attach.referral = Referral.objects.get(pk = object_id, service__organization=request.user.get_profile().org_active)
                     attach.save()
     

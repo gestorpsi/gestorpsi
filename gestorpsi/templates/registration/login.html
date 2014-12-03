@@ -22,18 +22,9 @@
 
 <h1>{% trans "Welcome to GestorPsi" %}</h1>
 
-    <div class="ff_not_ok" style="text-align: left;">
-        <img src="/media/img/logos/chrome-icon.png" style="width: 128px; height: 128px; margin-top: 15px; margin-right: 10px;">
-        <br>
-        {% trans "Your browser is not compatible with and some functions can not work well" %}.
-        <br>
-        {% trans "Please, get the latest version of" %} <a target="_blank" href="https://www.google.com/chrome">{% trans "Google Chrome" %}</a> {% trans "to get all features running" %}
-        {% trans "or" %} {% trans "continue with restricted features" %}.<br /><span class="read_more"><a href="http://www.gestorpsi.com.br/trac/wiki/Chrome" target="_blank">{% trans "Read more" %}</a>
-    </div>
 
     <form method="post" action="/accounts/authentication/" id="form_login" class="ff_ok">
         <fieldset class="orgField"><label>{% trans "Short Name" %}<br /><input type="text" name="shortname" /></label></fieldset>
-
         <fieldset class="userField">
             <div class="ie_block">
                 {% if form_messages %}
@@ -53,4 +44,9 @@
     <p class="ff_ok">{% trans "If you don't have an account, you can" %} <a href="/accounts/register/">{% trans "sign up" %}</a> {% trans "for one" %}.</p>
     <p class="ff_ok"><a href="/accounts/password/reset/">{% trans "Forgot Password?" %}</a></p>
 
+{% endblock %}
+{% block footer %}
+ <div id="footer" style="position:relative;bottom:50px">
+2009 GestorPsi©
+</div>
 {% endblock %}

@@ -7420,3 +7420,6 @@ msgstr ""
 #: users/views.py:237
 msgid "User removed successfully"
 msgstr ""
+
+msgid "Selected device is busy"
+msgstr ""

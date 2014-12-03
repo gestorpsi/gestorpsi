@@ -2808,9 +2808,21 @@ msgstr "Confirmação de presença"
 msgid "Sorry. You can not book more than 40 occurrence at the same time"
 msgstr "Desculpe. Impossível agendar mais de 40 eventos de uma vez."
 
+#: schedule/views.py:102
+msgid "The start time should be less than the end time"
+msgstr "A hora de início deve ser menor que a hora de término"
+
+#: schedule/views.py:103
+msgid "Check the mandatory fields"
+msgstr "Verifique os campos obrigatórios"
+
 #: schedule/views.py:109
 msgid "Schedule saved successfully"
 msgstr "Agendamento salvo com sucesso."
+
+#: schedule/views.py:123
+msgid "Selected device is busy"
+msgstr "Equipamento já está reservado"
 
 #: schedule/views.py:209
 msgid "Occurrence updated successfully"
@@ -5352,7 +5364,7 @@ msgstr "Atendimentos"
 
 #: templates/ehr/ehr_session_list.html:37
 msgid "This referral have no occurrences yet."
-msgstr "Este encaminhamento ainda não possue agendamento para registrar."
+msgstr "Este encaminhamento ainda não possui agendamento para registrar."
 
 #: templates/ehr/ehr_session_list.html:37
 msgid "Go back"
@@ -6018,6 +6030,9 @@ msgstr "Órgão Emissor"
 msgid "Change password"
 msgstr "Alterar Senha"
 
+msgid "Change e-mail"
+msgstr "Alterar E-mail"
+
 #: templates/profile/profile_change_pass.html:42
 msgid "Current password"
 msgstr "Senha atual"
@@ -6087,10 +6102,35 @@ msgstr "Retirar da lista de espera"
 msgid "Attach"
 msgstr "Anexo"
 
-#: templates/referral/referral_details.html:209
+#: templates/referral/referral_details.html:224
 #: templates/tags/schedule_form.html:95
+#: templates/schedule/schedule_settings.html:37
 msgid "Schedule Details"
 msgstr "Detalhes da Agenda"
+
+#: templates/schedule/schedule_settings.html:39
+msgid "Default interval for scheduling"
+msgstr "Intervalo padrão para agendamento"
+
+#: templates/schedule/schedule_settings.html:30
+msgid "Settings"
+msgstr "Configurações"
+
+#: templates/schedule/schedule_settings.html:42
+msgid "minutes"
+msgstr "minutos"
+
+#: templates/schedule/schedule_settings.html:49
+msgid "Restrict viewing of events"
+msgstr "Restringir visualização dos eventos"
+
+#: templates/schedule/schedule_settings.html:49
+msgid "This option restricts the display of professionals and interns to the events of other professionals"
+msgstr "Essa opção restringe a visualização dos profissionais e estagiários aos eventos de outros profissionais"
+
+#: templates/schedule/schedule_settings.html:51
+msgid "Activate"
+msgstr "Ativar"
 
 #: templates/referral/referral_details.html:212
 msgid "This referral has"
@@ -6579,7 +6619,7 @@ msgstr "O dia de hoje possui"
 
 #: templates/schedule/schedule_header.html:24
 msgid "consulta(s)."
-msgstr "consulta (s)."
+msgstr "consulta(s)."
 
 #: templates/schedule/schedule_occurrence_form.html:34
 msgid "Occurrences"
@@ -6649,16 +6689,16 @@ msgid "Please, choose one room to book"
 msgstr "Escolha um nome para o relatório."
 
 #: templates/schedule/schedule_week.html:67
-msgid "Selecione uma sala antes de continuar"
+msgid "Select one room before continuing"
 msgstr "Selecione uma sala antes de continuar"
 
 #: templates/schedule/schedule_week_table.html:19
 msgid "This week have"
-msgstr "Esta semana possue"
+msgstr "Esta semana possui"
 
 #: templates/schedule/schedule_week_table.html:19
 msgid "occurrences(s)."
-msgstr "agendamentos"
+msgstr "agendamento(s)"
 
 #: templates/schedule/schedule_week_table.html:23
 msgid "to"
@@ -6667,6 +6707,10 @@ msgstr "até"
 #: templates/schedule/schedule_week_table.html:33
 msgid "There is no occurrence on this week"
 msgstr "Sem agendamentos para esta semana"
+
+#: templates/schedule/schedule_week_table.html:44
+msgid "Booked"
+msgstr "Reservado"
 
 #: templates/schedule/schedule_week_table.html:63
 msgid "Book on this day"
@@ -7046,8 +7090,8 @@ msgid "Queue (add/remove)"
 msgstr "Fila de Espera (adicionar / remover)"
 
 #: templates/tags/device_mini.html:22
-msgid "Adding new Device"
-msgstr "Adicionar novo equipamento"
+msgid "Adding new Device Type"
+msgstr "Adicionar novo tipo de equipamento"
 
 #: templates/tags/device_mini.html:23
 msgid "Device"
@@ -7553,9 +7597,15 @@ msgstr "Usuário atualizado com sucesso."
 msgid "Password confirmation does not match. Please try again"
 msgstr "Senha não confere. Tente novamente."
 
+msgid "email confirmation does not match. Please try again"
+msgstr "E-mail não confere. Tente novamente."
+
 #: users/views.py:198
 msgid "Password updated successfully!"
-msgstr "Senha atualizada com sucesso."
+msgstr "Senha atualizada com sucesso!"
+
+msgid "email updated successfully!"
+msgstr "E-mail alterado com sucesso!"
 
 #: users/views.py:237
 msgid "User removed successfully"
@@ -7915,3 +7965,4 @@ msgstr "Fim do último horário"
 
 #~ msgid "Admissions reports saved"
 #~ msgstr "Relatório de admissão gravado"
+

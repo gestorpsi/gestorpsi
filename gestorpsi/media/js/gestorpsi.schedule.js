@@ -47,6 +47,8 @@ function updateGrid(url) {
     $('table.schedule_results.daily tr td.clean').attr('class','clean'); // remove class from lastest event
     $('table.schedule_results.daily tr td.clean a.booked').remove(); // remove booked events
     $('table.schedule_results.daily tr td.clean').attr('rowspan', '1'); // reset rowspans
+    $('table.schedule_results.daily tr td.clean').attr('style', ''); // reset columns style 
+    
     
     // hide elements if some filter is activated BEFORE data loaded
     // places and rooms (cols)
@@ -84,6 +86,9 @@ function updateGrid(url) {
         $('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/place/'+json['util']['place']+'/');
         $('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/place/'+json['util']['place']+'/');
         jQuery.each(json,  function(){
+    
+            $('table.zebra tr:odd').addClass('zebra_0');
+            $('table.zebra tr:even').addClass('zebra_1');
             if(this.start_time) {
 
                 var str_client = '';
@@ -169,7 +174,7 @@ function updateGrid(url) {
                 /**
                  * populate daily view
                  */
-                
+
                 col.addClass('clean'); // required
                 col.addClass('tag'); // required
                 col.css('background-color', '#' + this.color); // service color
@@ -189,6 +194,11 @@ function updateGrid(url) {
                 
                 url = (this.group != '')?'/schedule/events/group/' +  this.group_id + '/occurrence/' + this.id + '/':'/schedule/events/' + this.id + '/confirmation/';
                 
+                if ($('input[name=restrict_schedule]').val() == "True") {
+                    label = "Reservado";
+                    label_inline = "Reservado";
+                }
+
                 if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {
                     $('table.schedule_results.daily tr[hour="' + this.start_time + '"] td[room="' + this.room + '"] a.book').after('<a title="'+json['util']['str_date']+'" href="' + url + '" class="booked" style="color:#'+this.font_color+'">' + label + '</a>'); // show booked event
                 } else {
@@ -206,8 +216,6 @@ function updateGrid(url) {
                 event.addClass('place_' + this.place); // service color
                 event.addClass('service_' + this.service_id); // service from cell
                 $(event).children('td').children('div').html('<a title="'+json['util']['str_date']+'" href="' + url + '" class="booked" style="color:#'+this.font_color+'">' + label_inline + '</a>');
-                $('table.zebra tr:odd').addClass('zebra_0');
-                $('table.zebra tr:even').addClass('zebra_1');
                 }
             });
             

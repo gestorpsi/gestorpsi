@@ -37,7 +37,7 @@ GNU General Public License for more details.
                             <a href="#" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a>
                         {% else %}
                             {% comment %}
-                            <a href="/schedule/occurrences/{{ day.year }}/{{ day.month }}/{{ day.day }}/place/{{ o.id }}/" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="/media/img/chk_off.png" />{{ o }}</a>
+                            <a href="/schedule/week/today/{{o.id }}" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="/media/img/chk_off.png" />{{ o }}</a>
                             {% endcomment %}
 
                             <a href="/schedule/{{ path }}place/{{ o.id }}/" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="/media/img/chk_off.png" />{{ o }}</a>

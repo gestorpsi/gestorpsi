@@ -89,6 +89,8 @@ GNU General Public License for more details.
         <label style="clear: both;">
             {% trans "Registered user e-mail" %}<br />
 			<input type="text" name="email" value="{{ profile.user.email }}" class="extramedium"  readonly>
+            <br />
+            <a class="form_mini" display="email_mini">{% trans "Change e-mail" %}</a>
 		</label>
 	{% else %}
     
@@ -233,5 +235,25 @@ GNU General Public License for more details.
     </form>
 </div>
 
+<div class="form_mini email_mini">
+    <form action="/user/{{ profile.person.id }}/saveemail/" method="post" class="email">
+        <fieldset>
+            <legend>{% trans "Change e-mail" %}</legend>
+
+            <div id="msg_area" class="error" style="opacity: 1; display: none;">{% trans "E-mail not match. Try again."%}</div>
+
+            <label>{% trans "E-mail" %}<br />
+                <input type="email" name="email_mini" class="big" value=""     />
+            </label>
+            <label>{% trans "E-mail" %} <small>({% trans "Again" %})</small><br />
+                <input type="email" name="email_mini_conf" class="big tabtitle" value=""    />
+            </label>
+            <label>
+                 <input type="submit" name="submit" value="{% trans "Change" %}" class="mini" />
+                 <input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />
+            </label>
+        </fieldset>
+    </form>
+</div>
 
 {% endblock %}

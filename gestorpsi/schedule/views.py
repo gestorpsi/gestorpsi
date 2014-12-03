@@ -59,6 +59,20 @@ def _access_check_by_occurrence(request, occurrence):
 
     return True
 
+# restrict information of schedules booked for professional and student profiles
+def hide_schedule_information(user):
+    profile = Profile.objects.get(person=user.get_profile().person_id, person__organization=user.get_profile().org_active)
+    restrict = user.get_profile().org_active.restrict_schedule
+
+    for g in profile.user.groups.all():
+        if g.name == "administrator" or not restrict:
+            restrict = False
+            break
+        if g.name == "professional" or g.name == "student":
+            restrict = True
+
+    return restrict
+
 @permission_required_with_403('schedule.schedule_list')
 def schedule_occurrence_listing(request, place_id, year = 1, month = 1, day = None,
     template='schedule/schedule_events.html',
@@ -412,23 +426,8 @@ def _datetime_view(
         object = ''
 
     place = Place.objects.get( pk=place )
-
-    user = request.user
     timeslot_factory = timeslot_factory or create_timeslot_table
-
     params = params or {}
-
-    profile = Profile.objects.get(person=user.get_profile().person_id, person__organization=user.get_profile().org_active)
-
-    # restrict information of schedules booked for professional and student profiles
-    restrict_schedule = user.get_profile().org_active.restrict_schedule
-    for g in profile.user.groups.all():
-        if g.name == "administrator" or not restrict_schedule:
-            restrict_schedule = False
-            break
-
-        if g.name == "professional" or g.name == "student":
-            restrict_schedule = True
 
     data = dict(
         day=dt,
@@ -439,7 +438,7 @@ def _datetime_view(
         # get schedule slot time from organization
         timeslots=timeslot_factory(dt, items, start_time=datetime_.time( place.hours_work()[0], place.hours_work()[1]),\
                     end_time_delta=timedelta(hours=place.hours_work()[2] ),\
-                    time_delta=timedelta( minutes=int(user.get_profile().org_active.time_slot_schedule) ),\
+                    time_delta=timedelta( minutes=int(request.user.get_profile().org_active.time_slot_schedule) ),\
                     **params),
 
         places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
@@ -451,7 +450,7 @@ def _datetime_view(
         referral = referral,
         object = object,
         tab_daily_class = "active", # class object, tab menu
-        restrict_schedule = restrict_schedule
+        restrict_schedule = hide_schedule_information(request.user)
     )
 
     return render_to_response(
@@ -567,17 +566,7 @@ def week_view_table(request,
     next_week = today+timedelta(weeks=1)
     last_week_day = first_week_day+timedelta(days=6)
 
-    profile = Profile.objects.get(person=request.user.get_profile().person_id, person__organization=request.user.get_profile().org_active)
-
-    # restrict information of schedules booked for professional and student profiles
-    restrict_schedule = request.user.get_profile().org_active.restrict_schedule
-    for g in profile.user.groups.all():
-        if g.name == "administrator" or not restrict_schedule:
-            restrict_schedule = False
-            break
-
-        if g.name == "professional" or g.name == "student":
-            restrict_schedule = True
+    restrict_schedule = hide_schedule_information(request.user)
 
     return render_to_response('schedule/schedule_week_table.html', locals(), context_instance=RequestContext(request))
 

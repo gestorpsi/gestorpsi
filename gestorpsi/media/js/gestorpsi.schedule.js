@@ -196,6 +196,7 @@ function updateGrid(url) {
                 
                 if ($('input[name=restrict_schedule]').val() == "True") {
                     label = "Reservado";
+                    label_inline = "Reservado";
                 }
 
                 if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {

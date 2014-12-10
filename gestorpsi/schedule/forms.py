@@ -87,9 +87,7 @@ class SplitDateTimeWidget(forms.MultiWidget):
 class ScheduleSingleOccurrenceForm(SingleOccurrenceForm):
     room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=forms.Select(attrs={'class':'extramedium asm', }))
     device = forms.ModelMultipleChoiceField(required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'multiselectable', }))
-    professionals = forms.MultipleChoiceField(required=False, widget=forms.CheckoutSelectMultiple, choices=(
-        [(i.id, i) for i in CareProfessional.objects.all()]
-    ))
+
     annotation = forms.CharField(required = False, widget=forms.Textarea(attrs={'class':'giant'}))
     
     class Meta:
@@ -100,7 +98,7 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
     device = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, choices = (
         [(i.id, i) for i in DeviceDetails.objects.all()]
         ))
-    professionals = forms.MultipleChoiceField(required=False, widget=forms.CheckoutSelectMultiple, choices=(
+    professionals = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, choices=(
         [(i.id, i) for i in CareProfessional.objects.all()]
     ))
     annotation = forms.CharField(required = False, widget=forms.Textarea())

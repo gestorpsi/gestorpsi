@@ -123,13 +123,31 @@ GNU General Public License for more details.
             </fieldset>
 			
 			<fieldset>
-				<legend>{% trans "Professional" %}</legend>
-				<label>{% trans "Select professional" %}</label>
-				<div class="overflow">
-					{{ recurrence_form.professional }}
-				</div>
+				<legend>{% trans "Select Professional" %}</legend>
+		            <div style="clear:both;"></div>
+		            <label>{% trans "Professionals" %}<br />
+		                <div class="overflow referral_form_professional{% if not referral.id %} hide_on_first{% endif %}">
+		                    {{ recurrence_form.professional }}
+		                </div> 
+		            </label>
+
+		        {% comment %}
+		            {% if not referral %}
+		                <label>{% trans "Professionals" %}<br />
+		                    <select name="professional" class="extrabig multiple asm" id="id_professional" multiple="multiple">
+		                    </select>
+		                </label>
+		            {% else %}
+		                <label>{% trans "Professionals" %}<br />
+		                    {{ recurrence_form.professional }}
+		                </label>            
+		            {% endif %}
+		        {% endcomment %}
+
+		        <label style="display:none">{% trans "Clients" %}<br />
+		        {{ referral_form.client }}
+		        </label>
 			</fieldset>
-			
 
             <fieldset>
             <legend>{% trans "Schedule Details" %}</legend>

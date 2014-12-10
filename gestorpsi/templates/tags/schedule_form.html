@@ -70,6 +70,11 @@ GNU General Public License for more details.
                     </div>
                     <div style="clear:both"><br />
                     <a style="cursor:pointer;" onclick="$('fieldset#existing_referral_true').hide();$('fieldset.referral_group').show('slow'); ">{% trans "Schedule a Group?" %}</a>
+
+                    <br>
+                    <br>
+                    <a style="cursor:pointer;" onclick="$('fieldset#existing_referral_true').hide();$('fieldset.referral_service').show('slow'); ">Reservar Sala</a>
+
                     </div>
             </fieldset>
             {% else %} {# client schedule view #}
@@ -88,6 +93,32 @@ GNU General Public License for more details.
                 </label>
                 <div style="clear:both"><br />
                     <a style="cursor:pointer;" onclick="$('fieldset.referral_group').hide();$('fieldset.existing_referral').show('slow');$('fieldset.referral_group select option:first').attr('selected', 'selected');">{% trans "Schedule a single client?" %}</a>
+
+                    <br>
+                    <br>
+                    <a style="cursor:pointer;" onclick="$('fieldset.referral_group').hide();$('fieldset#existing_referral_true').hide();$('fieldset.referral_service').show('slow'); ">Reservar Sala</a>
+
+                </div>
+            </fieldset>
+
+            <fieldset class="referral_service hidden">
+            <br>
+            <legend>{% trans "Service" %}</legend>
+                <div class="referral_services" style="margin-left: 0px !important;">
+                    <label>{% trans "Service" %}<br />
+                        <select name="select_referral" class="select asm" style="min-width:400px;">
+                            {% for l in referrals %}
+                                <option value="{{ l.id }}"{% ifequal object.referral.id l.id %} selected{% endifequal %}>{{ l.service.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                    <div style="clear:both"><br />
+                        <a style="cursor:pointer;" onclick="$('fieldset.referral_service').hide();$('fieldset.existing_referral').show('slow');">{% trans "Schedule a single client?" %}</a>
+
+                        <br>
+                        <br>
+                        <a style="cursor:pointer;" onclick="$('fieldset.referral_service').hide();$('fieldset.referral_group').show('slow'); ">{% trans "Schedule a Group?" %}</a>
+                    </div>
                 </div>
             </fieldset>
 

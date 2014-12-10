@@ -174,7 +174,7 @@ class Referral(Event):
         return self.date
     created = property(_created)
 
-    def add_occurrences(self, start_time, end_time, room, device, annotation, is_online, disable_check_busy = False, **rrule_params):
+    def add_occurrences(self, start_time, end_time, room, device, annotation, is_online, disable_check_busy = False, reserve = False, **rrule_params):
         rrule_params.setdefault('freq', rrule.DAILY)
         error_list = []
         group = None
@@ -193,6 +193,7 @@ class Referral(Event):
                 o = ScheduleOccurrence.objects.create(event=self, start_time=start_time, end_time=end_time, room_id=room, annotation=annotation)
                 o.device = device
                 o.is_online = is_online
+                o.reserve = reserve
                 o.save()
             else:
                 error_list.append(is_busy)
@@ -213,6 +214,7 @@ class Referral(Event):
                     o = ScheduleOccurrence.objects.create(event=self, start_time=ev, end_time=ev + delta, room_id=room, annotation=annotation)
                     o.device = device
                     o.is_online = is_online
+                    o.reserve = reserve
                     o.save()
                 else:
                     error_list.append(is_busy)

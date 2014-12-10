@@ -148,13 +148,13 @@ def add_event(
                 error.append('Selected device is busy')
        
 
-            if not request.POST.get('group'): # booking single client
+            if request.POST.get('tabtitle'): # booking single client
                 if verify_client(request.POST.get('referral')) == False:
                     messages.error(request, _('Check the mandatory fields'))
                     return http.HttpResponseRedirect(request.META.get('HTTP_REFERER') or '/schedule/')
                 referral = get_object_or_404(Referral, pk=request.POST.get('referral'), service__organization=request.user.get_profile().org_active)
                 event = recurrence_form.save(referral)
-            else: # booking a group
+            elif request.POST.get('group'): # booking a group
                 group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active, active=True)
                 if group.charged_members(): # this check is already done in template. just to prevent empty groups
                     first = True
@@ -165,6 +165,9 @@ def add_event(
                         else:
                             if not event.errors:
                                 event = recurrence_form.save(group_member.referral, True) # ignore busy check
+            else:
+                referral = get_object_or_404(Referral, pk=request.POST.get('select_referral'), service__organization=request.user.get_profile().org_active)
+                event = recurrence_form.save(referral, True, True)
                     
 
             if not event.errors:
@@ -209,6 +212,7 @@ def add_event(
             room = room,
             object = client,
             referral = referral,
+            referrals = Referral.objects.all(),
             room_id=room.id,
             ),
         context_instance=RequestContext(request)
@@ -415,6 +419,8 @@ def _datetime_view(
 
     place = Place.objects.get( pk=place )
 
+    occurrences =  ScheduleOccurrence.objects.filter(start_time__year = dt.year, start_time__month = dt.month, start_time__day = dt.day)
+
     user = request.user
     timeslot_factory = timeslot_factory or create_timeslot_table
 
@@ -430,6 +436,8 @@ def _datetime_view(
         places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
         place = place,
         place_id = place.id,
+
+        occurrences = occurrences,
 
         services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
         professionals = CareProfessional.objects.active_all(request.user.get_profile().org_active.id),

@@ -8,6 +8,8 @@ argparse==1.2.1
 billiard==2.7.3.26
 celery==3.0.17
 crypto==1.0.0
+paramiko==1.10.0
+Fabric==1.10.0
 distribute==0.6.24
 django-celery==3.0.17
 django-extensions==1.1.1

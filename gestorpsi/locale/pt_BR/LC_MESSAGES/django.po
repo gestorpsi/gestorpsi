@@ -64,6 +64,9 @@ msgstr "Cor em formato hexadecimal. Ex: 662393"
 msgid "Oops! You don't have access for this service!"
 msgstr "Oops! Você não tem acesso a este serviço!"
 
+msgid "Availability updated successfully!"
+msgstr "Disponibilidade atualizada com sucesso!"
+
 #: admission/views.py:109
 msgid "Admission saved successfully"
 msgstr "Admissão salva com sucesso"
@@ -6029,6 +6032,12 @@ msgstr "Órgão Emissor"
 #: templates/tags/profile_sidebar.html:23 templates/users/users_form.html:218
 msgid "Change password"
 msgstr "Alterar Senha"
+
+msgid "Add Availability"
+msgstr "Adicionar Disponibilidade"
+
+msgid "Change e-mail"
+msgstr "Alterar E-mail"
 
 #: templates/profile/profile_change_pass.html:42
 msgid "Current password"

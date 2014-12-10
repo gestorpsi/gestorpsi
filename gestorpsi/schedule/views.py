@@ -162,7 +162,7 @@ def add_event(
             if len(occurrence_start) is not 0 or len(occurrence_end) is not 0:
                 error = recurrence_form._errors.setdefault('device', ErrorList())
                 error.append('Selected device is busy')
-       
+
 
             if request.POST.get('tabtitle'): # booking single client
                 if verify_client(request.POST.get('referral')) == False:
@@ -185,7 +185,6 @@ def add_event(
                 referral = get_object_or_404(Referral, pk=request.POST.get('select_referral'), service__organization=request.user.get_profile().org_active)
                 event = recurrence_form.save(referral, True, True)
                     
-
             if not event.errors:
                 messages.success(request, _('Schedule saved successfully'))
                 return http.HttpResponseRedirect(redirect_to or '/schedule/')
@@ -401,13 +400,13 @@ def occurrence_group(
 
 @permission_required_with_403('schedule.schedule_list')
 def _datetime_view(
-        request, 
-        template, 
-        dt, 
+        request,
+        template,
+        dt,
         place,
         referral=None,
         client=None,
-        timeslot_factory=None, 
+        timeslot_factory=None,
         items=None,
         params=None
     ):

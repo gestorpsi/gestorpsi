@@ -1,2 +1,3 @@
 *.pyc
-*.po
+*.mo
+gestorpsi/settings.py

@@ -24,7 +24,7 @@ GNU General Public License for more details.
     <ul>
         <li><a class="first" href="/profile/">{% trans "Personal Profile" %}</a></li>
         {% if object.person.is_careprofessional %}<li><a href="/profile/careprofessional/">{% trans "Professional Profile" %}</a></li>{% endif %}
-        <li><a class="active" href="/profile/chpass/">{% trans "Change password" %}</a></li>
+        <li><a class="active" href="/profile/add_availability/">{% trans "Add Availability" %}</a></li>
     </ul>
 {% endblock %}
 
@@ -33,29 +33,27 @@ GNU General Public License for more details.
 <h2 id="title_addressbook" style="display:none"></h2>
 
 <h2 class="title_myoffice title">{{ user.get_profile.person.name }}</h2>
-<p class="description">{% trans "Change password" %}</p>
+<p class="description">{% trans "Add Availability" %}</p>
 
-<form action="/profile/chpass/" method="post" class="record_chpass">
+<form action="/profile/add_availability/" method="post" class="record_chpass">
     <div class="main_area">
-            <fieldset class="fieldset_personal_identification">
-                <legend>{% trans "Change password" %}</legend>
-                    <label>{% trans "Current password" %}<br/>
-                    <input type="password" class="big" id="c_pass" maxlength="20" name="c_pass"/>
-                    </label>
-                    <label>{% trans "New password" %}<br/>
-                    <input type="password" class="big" id="n_pass" maxlength="20" name="n_pass"/>
-                    </label>
-                    <label>{% trans "Confirm the new password" %}<br/>
-                    <input type="password" class="big" id="n_pass0" maxlength="20" name="n_pass0"/>
-                    </label>
+            <fieldset>
+                <legend>{% trans "Add Availability" %}</legend>
+                    {% for i in days_of_week %}
+                        <label>{% trans i %}<br/>
+                            {% for j in hours %}
+                                <input type="checkbox" name="{{i}}" value="{{j}}">{{j}}:00hs - {{j|add:1}}:00hs<br>
+                            {% endfor %}
+                        </label>
+                    {% endfor %}
             </fieldset>
         <br />
     </div>
 
     <div id="sidebar" class="sidebar">
-              <div class="bg_blue">
-                {% include "tags/save.html" %}
-              </div>
+      <div class="bg_blue">
+        {% include "tags/save.html" %}
+      </div>
     </div>
 </form>
 {% endblock %}

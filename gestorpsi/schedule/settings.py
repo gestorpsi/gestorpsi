@@ -6,7 +6,7 @@ TIMESLOT_TIME_FORMAT = '%I:%M %p'
 # Used for creating start and end time form selectors as well as time slot grids.
 # Value should be datetime.timedelta value representing the incremental 
 # differences between temporal options
-TIMESLOT_INTERVAL = datetime.timedelta(minutes=30)
+TIMESLOT_INTERVAL = datetime.timedelta(minutes=5)
 
 # A datetime.time value indicting the starting time for time slot grids and form
 # selectors

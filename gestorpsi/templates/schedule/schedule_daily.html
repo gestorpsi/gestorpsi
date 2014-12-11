@@ -21,11 +21,7 @@ GNU General Public License for more details.
 {% block menu_schedule %}active{% endblock %}
 
 {% block submenu %}
-     <ul id="sub_schedule">
-        <li><a class="first active" href="/schedule/">{% trans "daily" %}</a></li>
-        <li><a class="" href="/schedule/week/">{% trans "Weekly" %}</a></li>
-        <li><a href="/schedule/events/">{% trans "events" %}</a></li>
-    </ul>
+    {% include "schedule/schedule_submenu.html" %}
 {% endblock %}
 
 {% block core %}

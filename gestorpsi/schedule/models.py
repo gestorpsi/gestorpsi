@@ -72,6 +72,7 @@ class ScheduleOccurrence(Occurrence):
     """
     room = models.ForeignKey(Room, null=True, blank=True)
     device = models.ManyToManyField(DeviceDetails, null=True, blank=True)
+    reserve = models.BooleanField(default=False)
     annotation = models.CharField(max_length=765, null=True, blank=True)
     is_online = models.BooleanField(default=False)
 
@@ -97,7 +98,7 @@ class ScheduleOccurrence(Occurrence):
         return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
     def __unicode__(self):
-        return u"%s" % (datetime.strftime(self.start_time, '%d/%m/%Y %H:%M'))
+        return u"%s %s" % (datetime.strftime(self.start_time, '%d/%m/%Y %H:%M'), self.reserve)
 
     def have_company(self):
         have_company = False

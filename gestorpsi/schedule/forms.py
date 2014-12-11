@@ -20,6 +20,7 @@ from django.forms.extras.widgets import SelectDateWidget
 from django.utils.translation import ugettext as _
 from swingtime.forms import MultipleOccurrenceForm, SingleOccurrenceForm
 from swingtime import utils
+from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation
 from gestorpsi.place.models import Room
 from gestorpsi.device.models import DeviceDetails
@@ -86,6 +87,7 @@ class SplitDateTimeWidget(forms.MultiWidget):
 class ScheduleSingleOccurrenceForm(SingleOccurrenceForm):
     room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=forms.Select(attrs={'class':'extramedium asm', }))
     device = forms.ModelMultipleChoiceField(required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'multiselectable', }))
+
     annotation = forms.CharField(required = False, widget=forms.Textarea(attrs={'class':'giant'}))
     
     class Meta:
@@ -95,7 +97,10 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
     room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=forms.Select(attrs={'class':'extramedium asm', }))
     device = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, choices = (
         [(i.id, i) for i in DeviceDetails.objects.all()]
-        ))    
+        ))
+    professionals = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, choices=(
+        [(i.id, i) for i in CareProfessional.objects.all()]
+    ))
     annotation = forms.CharField(required = False, widget=forms.Textarea())
     is_online = forms.BooleanField(required = False)
     start_time_delta = forms.IntegerField(
@@ -111,7 +116,7 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
     class Meta:
         model = ScheduleOccurrence
 
-    def save(self, event, disable_check_busy = False):
+    def save(self, event, disable_check_busy = False, reserve = False):
         if self.cleaned_data['repeats'] == 'no':
             params = {}
         else:
@@ -128,6 +133,7 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
                 self.cleaned_data['annotation'],
                 self.cleaned_data['is_online'],
                 disable_check_busy,
+                reserve,
                 **params
                 )
         else:

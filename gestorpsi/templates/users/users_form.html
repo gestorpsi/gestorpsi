@@ -91,7 +91,7 @@ GNU General Public License for more details.
 			<input type="text" name="email" value="{{ profile.user.email }}" class="extramedium"  readonly>
 		</label>
 	{% else %}
-    
+
 	{% if emails %}
         <label>
             {% trans "Select one e-mail to procede with your registration" %}<br />
@@ -106,7 +106,7 @@ GNU General Public License for more details.
             {% trans "Type an e-mail to procede with your registration" %}<br />
             <input class="extramedium email_send_user" type="text" name="email_send_user" value="">
         </label>
-    {% endif %}		    
+    {% endif %}
     {% endif %}
 </fieldset>
 
@@ -146,7 +146,7 @@ GNU General Public License for more details.
                         <td>&nbsp;</td>
                     </tr>
                 {% endif %}
-                
+
                 {% if not person.is_client %}
                     <tr>
                         <td><input class="group" type="checkbox" id="3" name="perms" value="secretary" {% if groups.2 %}checked{% endif %}> {% trans "Secretary" %}<br />
@@ -154,7 +154,7 @@ GNU General Public License for more details.
                         <td>&nbsp;</td>
                     </tr>
                 {% endif %}
-                
+
                 {% if not person.is_client %}
                     <tr>
                         <td><input class="group" type="checkbox" id="2" name="perms" value="professional" {% if groups.1 %}checked{% endif %}> {% trans "Professional" %}<br />
@@ -162,7 +162,7 @@ GNU General Public License for more details.
                         <td>&nbsp;</td>
                     </tr>
                 {% endif %}
-                
+
                 {% if not person.is_client %}
                     <tr>
                         <td><input class="group" type="checkbox" id="4" name="perms" value="student" {% if groups.4 %}checked{% endif %}> {% trans "Student" %}<br />
@@ -170,7 +170,7 @@ GNU General Public License for more details.
                         <td>&nbsp;</td>
                     </tr>
                 {% endif %}
-                
+
                 </table>
 </div>
 
@@ -184,8 +184,8 @@ GNU General Public License for more details.
         {% endifequal %}
 <!-- </fieldset> -->
 
-	
-<br />	
+
+<br />
 </div>
 
 <div id="sidebar" class="sidebar">
@@ -199,13 +199,13 @@ GNU General Public License for more details.
         {% if not profile.user.date_joined %}
                 {% trans "This register are not saved yet. Click Save to register it." %}
             {% else %}
-            {% trans 'User created at' %} 
+            {% trans 'User created at' %}
             {{ profile.user.date_joined|date:"r"|slice:":-9"}}&nbsp;hs
             {% endif %}
             </span>
         </p>
-    </div>    
-    
+    </div>
+
     </div>{% endif %}
     {% include "tags/user_sidebar.html" %}
 </div>
@@ -219,11 +219,37 @@ GNU General Public License for more details.
 
             <div id="msg_area" class="error" style="opacity: 1; display: none;">{% trans "Password not match. Try again."%}</div>
 
+            <label>{% trans "Old Password" %}<br />
+                <input type="password" name="actual_password_mini" class="big" value=""     />
+            </label>
             <label>{% trans "Password" %}<br />
                 <input type="password" name="password_mini" class="big" value=""     />
             </label>
             <label>{% trans "Password" %} <small>({% trans "Again" %})</small><br />
                 <input type="password" name="password_mini_conf" class="big tabtitle" value=""    />
+            </label>
+            <label>
+                 <input type="submit" name="submit" value="{% trans "Change" %}" class="mini" />
+                 <input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />
+            </label>
+        </fieldset>
+    </form>
+</div>
+
+<div class="form_mini email_mini">
+    <form action="/user/{{ profile.person.id }}/saveemail/" method="post" class="email">
+        <fieldset>
+            <legend>{% trans "Change e-mail" %}</legend>
+
+            <div id="msg_area" class="error" style="opacity: 1; display: none;">{% trans "E-mail not match. Try again."%}</div>
+            <label>{% trans "Old Password" %}<br />
+                <input type="password" name="actual_password_mini" class="big" value=""     />
+            </label>
+            <label>{% trans "E-mail" %}<br />
+                <input type="email" name="email_mini" class="big" value=""     />
+            </label>
+            <label>{% trans "E-mail" %} <small>({% trans "Again" %})</small><br />
+                <input type="email" name="email_mini_conf" class="big tabtitle" value=""    />
             </label>
             <label>
                  <input type="submit" name="submit" value="{% trans "Change" %}" class="mini" />

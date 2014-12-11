@@ -1,5 +1,3 @@
-{% extends "core/main.html" %}
-
 {% comment %}
 
 Copyright (C) 2008 GestorPsi
@@ -18,12 +16,9 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-{% block menu_schedule %}active{% endblock %}
-
-{% block submenu %}
-    {% include "schedule/schedule_submenu.html" %}
-{% endblock %}
-
-{% block core %}
-    {% include "tags/schedule_form.html" %}
-{% endblock %}
+<ul id="sub_schedule">
+    <li><a class="first {{ tab_daily_class }}" href="/schedule/">{% trans "daily" %}</a></li>
+    <li><a class="{{ tab_week_class }}" href="/schedule/week/">{% trans "Weekly" %}</a></li>
+    <li><a class="{{ tab_event_class }}" href="/schedule/events/">{% trans "events" %}</a></li>
+    <li><a class="{{ tab_settings_class }}" href="{% url schedule-settings %}">{% trans "Configura&ccedil;&atilde;o" %}</a></li>
+</ul>

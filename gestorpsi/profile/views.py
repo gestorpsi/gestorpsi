@@ -25,23 +25,24 @@ from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.person.models import MaritalStatus
 from gestorpsi.person.views import person_save
-from gestorpsi.careprofessional.models import CareProfessional, Profession
+from gestorpsi.careprofessional.models import CareProfessional, Profession, Availability
 from gestorpsi.organization.models import Agreement
 from gestorpsi.place.models import Place, PlaceType
 from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.views import save_careprof
+from datetime import time
 
 def form(request):
     try:
         object = request.user.get_profile()
     except:
         raise Http404
-    
+
     countries = Country.objects.all()
     PhoneTypes = PhoneType.objects.all()
     AddressTypes = AddressType.objects.all()
     EmailTypes = EmailType.objects.all()
-    IMNetworks = IMNetwork.objects.all() 
+    IMNetworks = IMNetwork.objects.all()
     TypeDocuments = TypeDocument.objects.all()
     Issuers = Issuer.objects.all()
     States = State.objects.all()
@@ -49,7 +50,7 @@ def form(request):
 
     phones    = object.person.phones.all()
     addresses = object.person.address.all()
-    documents = object.person.document.all()                       
+    documents = object.person.document.all()
     emails    = object.person.emails.all()
     websites  = object.person.sites.all()
     ims       = object.person.instantMessengers.all()
@@ -75,7 +76,7 @@ def form_careprofessional(request):
 
 def save(request):
     if not request.method == 'POST':
-        raise Http404  
+        raise Http404
     try:
         person = request.user.get_profile().person
         person_save(request, person)
@@ -84,7 +85,7 @@ def save(request):
 
     messages.success(request, _('Profile updated successfully'))
     return HttpResponseRedirect('/profile/')
-    
+
 def save_careprofessional(request):
     object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
     object = save_careprof(request, object.id, False)
@@ -116,3 +117,33 @@ def change_pass(request):
                 return HttpResponseRedirect('/profile/chpass')
     else:
         return render_to_response('profile/profile_change_pass.html', locals(), context_instance=RequestContext(request))
+
+def add_availability(request):
+    days_of_week = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday')
+    hours = range(8,18)
+
+    object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
+
+    for day in days_of_week:
+        if request.POST.getlist(day):
+            times_of_day = request.POST.getlist(day)
+
+            for hour in times_of_day:
+                availability = Availability.objects.get(day=day, hour=time(int(hour)))
+
+                if not availability:
+                    availability = Availability(day=day, hour=time(int(hour)))
+                    availability.save()
+
+                object.availability.add(availability)
+                object = save_careprof(request, object.id, False)
+
+
+    if request.POST:
+        messages.success(request, _('Availability updated successfully!'))
+
+        return render_to_response('profile/profile_add_availability.html',
+            {'days_of_week': days_of_week, 'hours': hours}, context_instance=RequestContext(request))
+    else:
+        return render_to_response('profile/profile_add_availability.html',
+            {'days_of_week': days_of_week, 'hours': hours}, context_instance=RequestContext(request))

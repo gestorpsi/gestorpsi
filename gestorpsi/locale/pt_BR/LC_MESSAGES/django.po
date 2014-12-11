@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -63,6 +63,9 @@ msgstr "Cor em formato hexadecimal. Ex: 662393"
 #: util/decorators.py:43
 msgid "Oops! You don't have access for this service!"
 msgstr "Oops! Você não tem acesso a este serviço!"
+
+msgid "Availability updated successfully!"
+msgstr "Disponibilidade atualizada com sucesso!"
 
 #: admission/views.py:109
 msgid "Admission saved successfully"
@@ -6030,6 +6033,12 @@ msgstr "Órgão Emissor"
 msgid "Change password"
 msgstr "Alterar Senha"
 
+msgid "Add Availability"
+msgstr "Adicionar Disponibilidade"
+
+msgid "Change e-mail"
+msgstr "Alterar E-mail"
+
 #: templates/profile/profile_change_pass.html:42
 msgid "Current password"
 msgstr "Senha atual"
@@ -6099,10 +6108,35 @@ msgstr "Retirar da lista de espera"
 msgid "Attach"
 msgstr "Anexo"
 
-#: templates/referral/referral_details.html:209
+#: templates/referral/referral_details.html:224
 #: templates/tags/schedule_form.html:95
+#: templates/schedule/schedule_settings.html:37
 msgid "Schedule Details"
 msgstr "Detalhes da Agenda"
+
+#: templates/schedule/schedule_settings.html:39
+msgid "Default interval for scheduling"
+msgstr "Intervalo padrão para agendamento"
+
+#: templates/schedule/schedule_settings.html:30
+msgid "Settings"
+msgstr "Configurações"
+
+#: templates/schedule/schedule_settings.html:42
+msgid "minutes"
+msgstr "minutos"
+
+#: templates/schedule/schedule_settings.html:49
+msgid "Restrict viewing of events"
+msgstr "Restringir visualização dos eventos"
+
+#: templates/schedule/schedule_settings.html:49
+msgid "This option restricts the display of professionals and interns to the events of other professionals"
+msgstr "Essa opção restringe a visualização dos profissionais e estagiários aos eventos de outros profissionais"
+
+#: templates/schedule/schedule_settings.html:51
+msgid "Activate"
+msgstr "Ativar"
 
 #: templates/referral/referral_details.html:212
 msgid "This referral has"
@@ -6679,6 +6713,10 @@ msgstr "até"
 #: templates/schedule/schedule_week_table.html:33
 msgid "There is no occurrence on this week"
 msgstr "Sem agendamentos para esta semana"
+
+#: templates/schedule/schedule_week_table.html:44
+msgid "Booked"
+msgstr "Reservado"
 
 #: templates/schedule/schedule_week_table.html:63
 msgid "Book on this day"
@@ -7567,7 +7605,13 @@ msgstr "Senha não confere. Tente novamente."
 
 #: users/views.py:198
 msgid "Password updated successfully!"
-msgstr "Senha atualizada com sucesso."
+msgstr "Senha atualizada com sucesso!"
+
+msgid "Actual Password required."
+msgstr "Senha atual requisitada."
+
+msgid "email updated successfully!"
+msgstr "E-mail alterado com sucesso!"
 
 #: users/views.py:237
 msgid "User removed successfully"
@@ -7927,4 +7971,3 @@ msgstr "Fim do último horário"
 
 #~ msgid "Admissions reports saved"
 #~ msgstr "Relatório de admissão gravado"
-

@@ -214,7 +214,7 @@ div#sub_menu .active {
 }
 
 #myoffice.main_menu {
-        width: 170px;
+        width: auto;
 }
 
 ul.myoffice { -moz-border-radius: 0 0 8px 8px; -webkit-radius-border: 0 0 8px 8px;}

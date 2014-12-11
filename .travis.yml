@@ -1,0 +1,17 @@
+language: python
+python:
+  - "2.7"
+
+# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+install: pip install -r requirements.txt
+before_script: 
+  - mv gestorpsi/settings.py.TRAVIS gestorpsi/settings.py
+  - mysqladmin create gpsi -u travis
+  - python manage.py syncdb --noinput
+  - python manage.py migrate
+# command to run tests, e.g. python setup.py test
+script:
+  # - python manage.py test schedule
+  - python manage.py test users
+
+after_success: fab server staging

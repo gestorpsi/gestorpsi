@@ -20,10 +20,12 @@ from gestorpsi.authentication.views import login_check
 from gestorpsi.covenant.views import index, form, list_json
 
 urlpatterns = patterns('',
-    url(r'^$', login_check(index), name='covenant-index'), # index list
-    url(r'^add/$', login_check(form), name='covenant-add'), # form
+    url(r'^$', login_check(index), name='covenant-index'), # index, active list
+    url(r'^deactive/$', login_check(index), {'active':False}, name='covenant-list-deactive'), # deactive list
+    url(r'^add/$', login_check(form), name='covenant-add'), # add
     url(r'^(?P<obj>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form), name='covenant-edit'), # edit 
-    # return json list
-    url(r'^list/$', login_check(list_json), name='covenant-list-json'), # return all covenant of organization
-    url(r'^list/service/(?P<service>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(list_json) ), # return all covenant of service
+    # list
+    url(r'^list/active/$', login_check(list_json)), # return all ACTIVE covenant of organization
+    url(r'^list/deactive/$', login_check(list_json), {'active':False}), # return all DEACTIVE covenant of organization
+    #url(r'^list/service/(?P<service>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(list_json) ), # return all covenant of service
 )

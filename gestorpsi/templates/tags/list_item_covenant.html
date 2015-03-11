@@ -99,53 +99,45 @@ GNU General Public License for more details.
 </div>
 
 <script>
-function updateResults(url, initial) {
-    if(!url) {
-        if(!initial) {
-            initial = ''
+
+    function updateResults(url, initial) {
+
+        if(!url) {
+            if(!initial) {
+                initial = ''
+            }
+            var url = '{{ list_url_base }}?search=' + encodeURIComponent($("#quick_search").val()) + "&initial=" + initial + '&service=' + $('select[name=service]').val();
         }
-        var url = '{{ list_url_base }}?search=' + encodeURIComponent($("#quick_search").val()) + "&initial=" + initial + '&service=' + $('select[name=service]').val() + '&subscribed=' + $('input[name=subscribed]').is(":checked") + '&discharged=' + $('input[name=discharged]').is(":checked") + '&queued=' + $('input[name=queued]').is(':checked') + '&nooccurrences=' + $('input[name=nooccurrences]').is(':checked');
+        $('#page_results').load(url,function(responseTxt,statusTxt,xhr){
+                if(statusTxt=="success") {
+                    $('#pageof').text($('.pagination span.current').text());
+                    $('#object_length').text($('input[name=result_count]').val());
+                    }
+                if(statusTxt=="error")
+                    alert("Error: "+xhr.status+": "+xhr.statusText);
+        });
     }
-    $('#page_results').load(url,function(responseTxt,statusTxt,xhr){
-            if(statusTxt=="success") {
-                $('#pageof').text($('.pagination span.current').text());
-                $('#object_length').text($('input[name=result_count]').val());
-                }
-            if(statusTxt=="error")
-                alert("Error: "+xhr.status+": "+xhr.statusText);
-    });
-}
-$(function() {
+
+
+    $(function() {
         $('#quick_search').focus();
+
         $('#page_results .pagination a').click(function() {
             updateResults($(this).attr('href'));
             return false;
         });
+
         $('a.quick_search').click(function() {
             updateResults();
             return false;
         });
+
         $('a.initial').click(function() {
             updateResults(null, $(this).attr("initial"));
             return false;
         });
+
         $('select[name=service]').change(function() {
-            updateResults();
-            return false;
-        });
-        $('input[name=subscribed]').change(function() {
-            updateResults();
-            return false;
-        });
-        $('input[name=discharged]').change(function() {
-            updateResults();
-            return false;
-        });
-        $('input[name=queued]').change(function() {
-            updateResults();
-            return false;
-        });
-        $('input[name=nooccurrences]').change(function() {
             updateResults();
             return false;
         });
@@ -160,5 +152,5 @@ $(function() {
                 $('a.quick_search').click();
             }
         });
-});
+    });
 </script>

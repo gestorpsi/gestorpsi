@@ -27,5 +27,7 @@ urlpatterns = patterns('',
     # list
     url(r'^list/active/$', login_check(list_json)), # return all ACTIVE covenant of organization
     url(r'^list/deactive/$', login_check(list_json), {'active':False}), # return all DEACTIVE covenant of organization
-    #url(r'^list/service/(?P<service>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(list_json) ), # return all covenant of service
+    # quick search
+    url(r'^list/active/(?P<filter>\w+)/$', login_check(list_json)), # search method get
+    url(r'^list/deactive/(?P<filter>\w+)/$', login_check(list_json)), # search method get
 )

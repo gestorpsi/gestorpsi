@@ -114,30 +114,36 @@ def form(request, obj=False):
 
 
 
-def list_json(request, active=True, service=False):
+def list_json(request, active=True):
     """
         return object list in json format
         service: Service.id
     """
 
-    # all covenant of service
-    # referral form, show all active covenant of service
-    if service:
-        obj_list = Covenant.objects.filter(active=True, service__id=service)
+    list_url_base = '/covenant/list/deactive/' if not active else '/covenant/list/active/'
 
-    # all covenant
+    if active:
+        obj_list = Covenant.objects.filter(active=True, organization=request.user.get_profile().org_active)
     else:
-        if active:
-            obj_list = Covenant.objects.filter(active=True)
-        else:
-            obj_list = Covenant.objects.filter(active=False)
-
+        obj_list = Covenant.objects.filter(active=False, organization=request.user.get_profile().org_active)
 
     # filters
-    if request.GET.get('service'):
-        service = request.GET.get('service')
-        object_list = object_list.filter(referral__service=service).distinct()
+    url_extra = ''
+
+    initial = request.GET.get('initial')
+    if initial:
+        obj_list = obj_list.filter(name__startswith=initial).distinct()
+        url_extra += '&initial=%s' % initial
+
+    service = request.GET.get('service')
+    if service:
+        obj_list = obj_list.filter(service__id=service).distinct()
         url_extra += '&service=%s' % service
+
+    search = request.GET.get('search')
+    if search:
+        obj_list = obj_list.filter(name__icontains = search)
+        url_extra += '&search=%s' % search
 
     # paginator result
     p = Paginator(obj_list, PAGE_RESULTS)

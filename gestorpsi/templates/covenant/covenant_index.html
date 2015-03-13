@@ -41,8 +41,10 @@ GNU General Public License for more details.
                 </div>
             </div>
 
+            <!-- mount result of search -->
             <div class="main_area contact" id="page_results"></div>
 
+            <!-- call JS function -->
             <script>
                 $(function() {
                     $('#page_results').load('{{ list_url_base }}',function(responseTxt,statusTxt,xhr){

@@ -86,6 +86,7 @@ GNU General Public License for more details.
                         </label>
                     </div>
 
+	
                     <div style='margin-left:0px;'>
                         <label>{% trans "Descri&ccedil;&atilde;o" %} <br />
                             {{ form.description }}
@@ -93,9 +94,24 @@ GNU General Public License for more details.
                     </div>
 
                 </fieldset>
+
+                <!-- select services -->
+                <label style="margin-right:251px;" for="id_professional">{% trans "Services available" %}</label>
+                <label for="id_professional">{% trans "Services selected" %}</label>
+                <div style="clear:both; margin-left:10px;">
+                    <select multiple="multiple" id="id_service" name="services">
+                        {% for x in service_list.all %}
+                            <option value="{{ x.id }}" {% if x in obj.service_set.all %} selected {% endif %}>{{ x.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <script>
+                    $('select#id_service').multiSelect();
+                </script>
+
                 <br />
+
             </div>
-	
 
             <!-- save buttom -->
             <div id="sidebar" class="sidebar">
@@ -106,7 +122,6 @@ GNU General Public License for more details.
                     </div>    
                 {% endif %}
             </div>
-
 
         </form>
 

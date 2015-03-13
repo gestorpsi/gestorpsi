@@ -2410,6 +2410,11 @@ msgstr "Gráfico não acumulado"
 msgid "Service"
 msgstr "Serviço"
 
+#: template/covenant
+#: template/referral/referral details
+msgid "Covenant"
+msgstr "Convênio"
+
 #: report/forms.py:47
 msgid "Export format"
 msgstr "Formato de exportação de dados"
@@ -3504,6 +3509,13 @@ msgstr "Profissionais disponíveis"
 #: templates/client/client_referral_form.html
 msgid "Professionals selected"
 msgstr "Profissionais selecionados"
+
+#: templates/covenant/form
+msgid "Services available"
+msgstr "Serviços disponíveis"
+
+msgid "Services selected"
+msgstr "Serviços selecionados"
 
 #: templates/careprofessional/careprofessional_form.html:27
 #: templates/careprofessional/careprofessional_list.html:27

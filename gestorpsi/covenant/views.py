@@ -61,6 +61,7 @@ def form(request, obj=False):
         obj: Covenant.id
     """
     tab = 'form' # new register
+    service_list = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
 
     if obj: # update register
         obj = get_object_or_404(Covenant, pk=obj)
@@ -87,7 +88,15 @@ def form(request, obj=False):
         obj.price = request.POST.get('price')
         obj.description = request.POST.get('description')
 
-        obj.save()
+        obj.save() # save before add services
+
+        # add services
+        obj.service_set.clear() # remove all
+        for x in request.POST.getlist('services'): # add selected
+            obj.service_set.add( Service.objects.get(pk=x) )
+
+        obj.save() # update services
+
         messages.success(request, _(u'Salvo com sucesso!'))
         return HttpResponseRedirect('/covenant/%s/' % obj.id )
 
@@ -106,7 +115,8 @@ def form(request, obj=False):
                                     'obj': obj,
                                     'tab': tab,
                                     'category': CATEGORY,
-                                    'charge': CHARGE
+                                    'charge': CHARGE,
+                                    'service_list': service_list,
                                 },
                                 context_instance=RequestContext(request)
     )

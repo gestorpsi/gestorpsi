@@ -59,19 +59,14 @@ GNU General Public License for more details.
 </div>
 
 <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-    <thead> 
-        <tr class="zebra_1"> 
-            <th></th> 
-            <th></th>
-        </tr> 
-    </thead>
     <tbody>
         {% for i in object_list %}
             <tr class="zebra_{% cycle 0,1 %}">
-                <td class="title">
+                <td>
                     <a href="{% url covenant-edit i.id %}" title="{{ i.name }}">{{ i.name }}</a>
                     <span style="font-weight:normal;">{% for s in i.service_set.all %} <br />{{ s }}  {% endfor %}</span>
                 </td>
+                <td><span>{{ i.get_charge_display }} {% ifequal i.charge 2 %} - {{ i.event_time }}{% endifequal %}</span></td>
                 <td><span>R$ {{ i.price }}</span></td>
             </tr>
         {% endfor %}

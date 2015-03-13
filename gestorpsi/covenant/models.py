@@ -30,7 +30,6 @@ CATEGORY = (
 CHARGE = ( 
     (1, _(u'Por evento')),
     (2, _(u'Por pacote')),
-    (3, _(u'Seguro de saúde privado')),
 
     (u'Por período', 
         (

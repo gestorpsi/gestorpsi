@@ -69,7 +69,7 @@ GNU General Public License for more details.
 
             <br />
             <br />
-            <small><i><b>Conv&ecirc;nio:</b> {% for c in referral.service.covenant.all %}{{ c }}; {% endfor %}</i></small>
+            <small><i><b>{% trans "Covenant" %}:</b> {% for c in referral.service.covenant.all %} {{ c }} <br />  {% endfor %}</i></small>
             
             <br>
             {% for g in referral.service.servicegroup_set.all %}{% for cl in g.client.all %}{% ifequal cl object %} {% trans "Group" %}: <a href="/service/{{ referral.service.id}}/group/{{ g.id }}/form/">{{ g }}</a><br />{% endifequal %}{% endfor %}{% endfor %}

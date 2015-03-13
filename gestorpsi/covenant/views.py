@@ -123,8 +123,27 @@ def form(request, obj=False):
 
 
 
+def list_json(request, service=False):
+    '''
+        return json
+        return all covenant when choosen a service in referral client form, subscription a service.
+    '''
+    c = 0
+    covenant = {} # json
+    
+    for o in Covenant.objects.filter(active=True, organization=request.user.get_profile().org_active, service__id=service):
+        covenant[c] = {
+            'id': o.id,
+            'name': u'%s' % o.name,
+            'price': u'%s' % o.price,
+        }
+        c += 1
 
-def list_json(request, active=True):
+    return HttpResponse(simplejson.dumps(covenant, encoding = 'iso8859-1'), mimetype='application/json')
+
+
+
+def list_filter(request, active=True):
     """
         return object list in json format
         service: Service.id

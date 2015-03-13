@@ -758,6 +758,8 @@ select.high {
         margin-left:750px;
         width: 240px;
         position: fixed;
+        height: 535px;
+        overflow: scroll;
 }
 
 
@@ -1298,14 +1300,14 @@ select.country {
         text-align: center;
         padding: 8px;
         font-size: 9px;
-        margin-left: 20px;
-        margin-right: 20px;
+        /*margin-left: 20px;*/
+        /*margin-right: 20px;*/
         font-weight: bold;
         background: none repeat scroll 0 0 #ececec;
         color: #000000;
         border: 1px solid #999999;
-        letter-spacing: 1px;
-        margin-top: 635px;
+        letter-spacing: 2px;
+        /*margin-top: 635px;*/
 }
 #footer span {
         display: none;

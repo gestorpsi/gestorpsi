@@ -115,18 +115,19 @@ $(function() {
 <br />
 </div>
 
-<div id="sidebar" class="sidebar">
-    {% if perms.client.client_write %}
+{% if perms.client.client_write %}
+    <div id="sidebar" class="sidebar_save">
         <div class="bg_blue">
             {% include "tags/save.html" %}
         </div>
-    {% endif %}
-    {% if object.id %}
-        <br />
-        {% include "tags/client_sidebar.html" %}
-    {% endif %}
-</div>
+    </div>
+{% endif %}
 
+{% if object.id %}
+    <div id="sidebar" class="sidebar_client">
+        {% include "tags/client_sidebar.html" %}
+    </div>
+{% endif %}
 
 </form>
 {% include "tags/upload.html" %}

@@ -77,17 +77,19 @@ GNU General Public License for more details.
   <br />
 </div>
 
-<div id="sidebar" class="sidebar">
-    {% if perms.client.client_write %}
+{% if perms.client.client_write %}
+    <div id="sidebar" class="sidebar_save">
         <div class="bg_blue">
             {% include "tags/save.html" %}
         </div>
-    {% endif %}
-    {% if object.id %}
-        <br />
+    </div>
+{% endif %}
+
+{% if object.id %}
+    <div id="sidebar" class="sidebar_client">
         {% include "tags/client_sidebar.html" %}
-    {% endif %}
-</div>
+    </div>
+{% endif %}
 <input type="hidden" name="client_id" value="{{ object.id }}" />
 </form>
 

@@ -16,19 +16,22 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<div id="sidebar" class="sidebar">
+<div id="sidebar" class="sidebar_save">
     {% if perms.employee.employee_write %}
         <div class="bg_blue">
             {% include "tags/save.html" %}
         </div>
     {% endif %}
+</div>
 
+<div id="sidebar" class="sidebar_client">
     <ul>
     {% if object.id %}
         <li><a href="/employee/{{ object.id }}/order/" class="client_order" title="{{ object.person.name }}">{% if object.active %} {% trans "Disable" %} {% else %} {% trans "Enable" %} {% endif %} </a></li>
         {% if perms.users.users_read %}<li><a href="/user/{{ object.person.id }}/" class="client_form" title="{% trans "User" %}">{% trans "User" %}</a></li>{% endif %}
     {% endif %}
     </ul>
+</div>
 
 {% comment %}
 

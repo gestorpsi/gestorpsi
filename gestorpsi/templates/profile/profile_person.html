@@ -43,14 +43,15 @@ GNU General Public License for more details.
 <br />	
 </div>
 
-<div id="sidebar" class="sidebar">
-          <div class="bg_blue">
-            {% include "tags/save.html" %}
-          </div>
+<div id="sidebar" class="sidebar_save">
+    <div class="bg_blue">
+        {% include "tags/save.html" %}
+    </div>
+</div>
 
-          <div>
-                {% include "tags/profile_sidebar.html" %}
-          </div>
+<div id="sidebar" class="sidebar_client">
+    {% include "tags/profile_sidebar.html" %}
+    </div>
 </div>
 
 </form>
@@ -58,4 +59,3 @@ GNU General Public License for more details.
 {% include "tags/upload.html" %}
 
 {% endblock %}
-

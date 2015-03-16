@@ -31,13 +31,19 @@ GNU General Public License for more details.
 
 {% block core %}
     {% include "tags/occurrence_confirmation_form.html" %}
-    <div id="sidebar" class="sidebar">
-        {% if not denied_to_write %}
+
+    {% if not denied_to_write %}
+        <div id="sidebar" class="sidebar_save">
             <div class="bg_blue">
                 {% include "tags/save.html" %}
             </div>
-        {% endif %}
+        </div>
+    {% endif %}
+
+    <div id="sidebar" class="sidebar_client">
         {% include "tags/schedule_sidebar.html"%}
     </div>
+
 </form>
+
 {% endblock %}

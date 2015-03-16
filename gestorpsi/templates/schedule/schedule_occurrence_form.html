@@ -82,17 +82,20 @@ GNU General Public License for more details.
 <br />
 </div>
 
-<div id="sidebar" class="sidebar">
+<div id="sidebar" class="sidebar_save">
     <div class="bg_blue">
         {% include "tags/save.html" %}
     </div>
-    {% if occurrence.is_past %}
-    <h3>{% trans 'Occurrence Actions' %}</h3>
-    <ul>
-        <li><a href="/schedule/events/{{ occurrence.id }}/confirmation/" class="occurrence_confirmation" title="{{ object }}">{% trans "Occurrence Confirmation" %}</a></li>
-    </ul>
-    {% endif %}
 </div>
+
+{% if occurrence.is_past %}
+    <div id="sidebar" class="sidebar_client">
+        <h3>{% trans 'Occurrence Actions' %}</h3>
+        <ul>
+            <li><a href="/schedule/events/{{ occurrence.id }}/confirmation/" class="occurrence_confirmation" title="{{ object }}">{% trans "Occurrence Confirmation" %}</a></li>
+        </ul>
+    </div>
+{% endif %}
 
 </form>
 {% endblock %}

@@ -27,10 +27,9 @@ GNU General Public License for more details.
 {% block core %}
     {% include "tags/schedule_form.html" %}
 
-<br />
-<div id="sidebar" class="sidebar">
-    {% if object.id %}
-        {% include "tags/client_sidebar.html" %}
-    {% endif %}
-</div>
+    <div id="sidebar" class="sidebar_client">
+        {% if object.id %}
+            {% include "tags/client_sidebar.html" %}
+        {% endif %}
+    </div>
 {% endblock %}

@@ -754,16 +754,23 @@ select.high {
     height: 300px;
 }
 
-.sidebar {
+.sidebar_client {
         margin-left:750px;
+        margin-top :130px;
         width: 240px;
         position: fixed;
-        height: 535px;
+        max-height: 500px;
         overflow: scroll;
 }
 
+.sidebar_save {
+        margin-left:750px;
+        width: 240px;
+        position: fixed;
+}
 
-.sidebar .bg_blue {
+
+.sidebar_save .bg_blue {
         background: #005A7D;
         border: 1px solid black;
         color: #FFFFFF;
@@ -771,10 +778,10 @@ select.high {
 
 }
 
-.sidebar .bg_blue p, .sidebar .bg_blue p span {
+.sidebar_save .bg_blue p, .sidebar .bg_blue p span {
         color: #FFF;
 }
-.sidebar .bg_blue input {
+.sidebar_save .bg_blue input {
         background: #E6E6E6;
         border: 1px solid #FFFFFF;
         padding: 10px 15px;
@@ -792,18 +799,18 @@ select.high {
         font-weight: bold;
         cursor: pointer;
 }
-.sidebar .bg_blue input:hover {
+.sidebar_client .bg_blue input:hover {
         background: #45ACD4;
         color: #E6E6E6;
         cursor: pointer;
 }
 
-.sidebar p {
+.sidebar_client p {
         margin: 5px;
         font-size: 10px;
         padding: 0
 }
-.sidebar h3 {
+.sidebar_client h3 {
         border-bottom: 1px solid #000000;
         margin-top: 10px;
         font-family: Georgia, "Times New Roman", Times, serif;
@@ -812,14 +819,14 @@ select.high {
         padding-bottom: 2px;
         letter-spacing: 0.05em;
 }
-.sidebar ul {
+.sidebar_client ul {
         margin: 10px 0;
 }
-.sidebar li {
+.sidebar_client li {
         list-style: none;
         padding-left: 2px;
 }
-.sidebar li a {
+.sidebar_client li a {
         line-height: 20px;
         padding: 5px 0 5px 1px;
         color: #000000;
@@ -1300,14 +1307,12 @@ select.country {
         text-align: center;
         padding: 8px;
         font-size: 9px;
-        /*margin-left: 20px;*/
-        /*margin-right: 20px;*/
         font-weight: bold;
         background: none repeat scroll 0 0 #ececec;
         color: #000000;
         border: 1px solid #999999;
         letter-spacing: 2px;
-        /*margin-top: 635px;*/
+        margin-top: 580px;
 }
 #footer span {
         display: none;

@@ -71,13 +71,13 @@ GNU General Public License for more details.
             </div>
     </div>
 
-    <div id="sidebar" class="sidebar">
-        {% if service.id %}
-        {% with service as object %}
-            {% include "tags/service_sidebar.html" %}
-        {% endwith %}
-        {% endif %}
-    </div>
+    {% if service.id %}
+        <div id="sidebar" class="sidebar_client_top">
+            {% with service as object %}
+                {% include "tags/service_sidebar.html" %}
+            {% endwith %}
+        </div>
+    {% endif %}
 
     {% endif %}
 {% endif %}

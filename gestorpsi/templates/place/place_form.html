@@ -138,18 +138,22 @@ GNU General Public License for more details.
 <br />	
 </div>
 
-<div id="sidebar" class="sidebar">
-    {% if perms.place.place_write %}
+{% if perms.place.place_write %}
+    <div id="sidebar" class="sidebar_save">
         <div class="bg_blue">
             <input type="hidden" name="place" value="{{ object.id }}" />
             {% include "tags/save.html" %}
         </div>    
+    </div>
+{% endif %}
 
+{% if perms.place.place_write %}
+    <div id="sidebar" class="sidebar_client">
         {% if object.id %}
             {% include "tags/place_sidebar.html" %}
         {% endif %}
-	{% endif %}
-</div>
+    </div>
+{% endif %}
 
 </form>
 

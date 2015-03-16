@@ -40,8 +40,8 @@ GNU General Public License for more details.
 <h2 id="title_myoffice" style="display:none"></h2>
 
 <form action="/admission/{{ object.id }}/save/" method="post" id="client_admission_form" class="form_admission">
-<input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
-<div class="main_area">
+    <input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
+    <div class="main_area">
         <!-- <a href="" id=help>&nbsp;</a> -->
         <h3><span onClick="$('form_options').toggle();">{% trans "Admission Details" %}</span></h3>
         <ul id="form_options" class="float_menu" style="display:none;">
@@ -157,17 +157,18 @@ GNU General Public License for more details.
               {% trans "Termo de Consentimento Livre e Esclarecido (TCLE)" %}
             </label>
         </fieldset>
-
         <br />
+    </div>
 
-</div>
-
-    <div id="sidebar" class="sidebar">
+    <div id="sidebar" class="sidebar_save">
         {% if perms.admission.admission_write %}
             <div class="bg_blue">
                 {% include "tags/save.html" %}
             </div>
         {% endif %}
+    </div>
+
+    <div id="sidebar" class="sidebar_client">
         {% if object.id %}
             {% include "tags/client_sidebar.html" %}
         {% endif %}

@@ -175,18 +175,21 @@ GNU General Public License for more details.
 	</div>
 </div>
 
-<div id="sidebar" class="sidebar">
-    {% if perms.device.device_write %}
+{% if perms.device.device_write %}
+    <div id="sidebar" class="sidebar_save">
     	<div class="bg_blue">
         	<input type="hidden" name="place" value="{{ object.id }}" />
             {% include "tags/save.html" %}
         </div>
+    </div>
+{% endif %}
 
-        {% if object.id %}
-            {% include "tags/device_sidebar.html" %}
-        {% endif %}
+{% if object.id %}
+    <div id="sidebar" class="sidebar_client">
+        {% include "tags/device_sidebar.html" %}
+    </div>
+{% endif %}
 
-    {% endif %}
 </div>
 
 </form>

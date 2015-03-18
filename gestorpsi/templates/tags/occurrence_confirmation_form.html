@@ -39,8 +39,9 @@ hide Date fields and second field
 
 <form method="post" action="" class="schedule_occurrence">
     <div class="main_area">
-        <fieldset>
 
+        <!-- confirm occurrence -->
+        <fieldset>
             <legend>{% trans "Occurrence Confirmation Details" %}</legend>
             <label>
                 {{ form.presence.label }}<br />
@@ -77,6 +78,13 @@ hide Date fields and second field
             </label>            
 
         </fieldset>
+
+
+        <!-- payment event -->
+        <fieldset>
+            <legend>{% trans "Payment" %}</legend>
+        </fieldset>
+
       <br />
     </div>
 <!-- </form> will be close in another file -->

@@ -134,7 +134,7 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
         return event
 
 class OccurrenceConfirmationForm(forms.ModelForm):
-    presence = forms.CharField(label=_('Presence'), required=True, widget=forms.RadioSelect(choices=OCCURRENCE_CONFIRMATION_PRESENCE))
+    presence = forms.CharField(label=_('Presence'), required=True, widget=forms.RadioSelect(choices=OCCURRENCE_CONFIRMATION_PRESENCE, attrs={'required':'required'}) )
     date_started = forms.DateTimeField(label=_('Time Started'), required=False, widget=SplitSelectDateTimeWidget(minute_step=5))
     date_finished = forms.DateTimeField(label=_('Time Finished'), required=False, widget=SplitSelectDateTimeWidget(minute_step=5))
     device = forms.MultipleChoiceField(label=_('Devices utilized in this session'), required=False, widget=forms.CheckboxSelectMultiple, choices = (

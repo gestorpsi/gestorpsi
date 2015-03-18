@@ -71,8 +71,8 @@ def _access_check(request, object=None):
     this method checks if logged professional have rights to read client data
     @object: client
     """
-        
-    # check if user is professional and not admin or secretary. 
+
+    # check if user is professional and not admin or secretary.
     if request.user.groups.filter(name='administrator') or request.user.groups.filter(name='secretary'):
         return True
 
@@ -114,7 +114,7 @@ def _access_check_referral_write(request, referral=None):
         # lets check if request.user (professional) have referral with this client
         if request.user.profile.person.careprofessional in [p for p in referral.professional.all()]:
             professional_have_referral_with_client = True
-        
+
         # lets check if request.user (professional) is responsible for this referral service
         if request.user.profile.person.careprofessional in [p for p in referral.service.responsibles.all()]:
             professional_is_responsible_for_service = True
@@ -180,14 +180,14 @@ def add(request):
         return render_to_response('client/client_form.html',
                                         {
                                         'countries': Country.objects.all(),
-                                        'PhoneTypes': PhoneType.objects.all(), 
-                                        'AddressTypes': AddressType.objects.all(), 
-                                        'EmailTypes': EmailType.objects.all(), 
-                                        'IMNetworks': IMNetwork.objects.all() , 
-                                        'TypeDocuments': TypeDocument.objects.filter(source=1), 
-                                        'Issuers': Issuer.objects.all(), 
+                                        'PhoneTypes': PhoneType.objects.all(),
+                                        'AddressTypes': AddressType.objects.all(),
+                                        'EmailTypes': EmailType.objects.all(),
+                                        'IMNetworks': IMNetwork.objects.all() ,
+                                        'TypeDocuments': TypeDocument.objects.filter(source=1),
+                                        'Issuers': Issuer.objects.all(),
                                         'Cities': cities,
-                                        'States': State.objects.all(), 
+                                        'States': State.objects.all(),
                                         'MaritalStatusTypes': MaritalStatus.objects.all(),
                                         'PROFESSIONAL_AREAS': Profession.objects.all(),
                                         'licenceBoardTypes': LicenceBoard.objects.all(),
@@ -226,8 +226,8 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
             i = i + 1
 
         return HttpResponse(simplejson.dumps(person, encoding = 'iso8859-1'), mimetype='application/json')
-                                    
-    
+
+
 
     """
         return default
@@ -240,7 +240,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
 
     if request.GET.get('initial'):
         initial = request.GET.get('initial')
-        
+
         if ord(initial) < 90:
             initial_next = chr(ord(initial) + 1)
 
@@ -260,7 +260,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         service = request.GET.get('service')
         object_list = object_list.filter(referral__service=service).distinct()
         url_extra += '&service=%s' % service
-    
+
     client_service_pk_list = []
 
     # subscribed
@@ -274,9 +274,9 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
                     if r.service.pk == request.GET.get('service') and c.pk not in client_service_pk_list:
                         client_service_pk_list.append(c.pk)
                         break
-        
+
         url_extra += '&subscribed=%s' % subscribed
-    
+
 
     # discharged
     discharged = True if request.GET.get('discharged') == "true" else False
@@ -298,7 +298,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     if queued:
         queued = request.GET.get('queued')
         object_list = object_list.filter(referral__queue__isnull=False).distinct()
-            
+
         url_extra += '&queued=%s' % queued
 
 
@@ -313,14 +313,14 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     # service filter
     if client_service_pk_list: # exclude filtered for charged and discharged results
         object_list = object_list.filter(pk__in=client_service_pk_list)
-    
+
 
     # paginator result
     p = Paginator(object_list, PAGE_RESULTS)
     page_number = 1 if not request.GET.get('page') else request.GET.get('page')
     page = p.page(page_number)
     object_list = page.object_list
-    
+
 
     # mount page
     service_list = Service.objects.filter( active=True, organization=request.user.get_profile().org_active )
@@ -353,7 +353,7 @@ def form(request, object_id=''):
         profile = Profile()
         profile.person = get_object_or_404(Person, pk=object.person.id)
         profile.user = User(username=slugify(profile.person.name))
-    
+
     if object.person.is_company():
         template_name = 'client/client_form_company.html'
         company_form = CompanyForm(instance=object.person.company)
@@ -371,14 +371,14 @@ def form(request, object_id=''):
                                 'websites' : object.person.sites.all(),
                                 'ims' : object.person.instantMessengers.all(),
                                 'countries': Country.objects.all(),
-                                'PhoneTypes': PhoneType.objects.all(), 
-                                'AddressTypes': AddressType.objects.all(), 
-                                'EmailTypes': EmailType.objects.all(), 
-                                'IMNetworks': IMNetwork.objects.all(), 
-                                'TypeDocuments': TypeDocument.objects.filter(source=1), 
-                                'Issuers': Issuer.objects.all(), 
-                                'States': State.objects.all(), 
-                                'MaritalStatusTypes': MaritalStatus.objects.all(), 
+                                'PhoneTypes': PhoneType.objects.all(),
+                                'AddressTypes': AddressType.objects.all(),
+                                'EmailTypes': EmailType.objects.all(),
+                                'IMNetworks': IMNetwork.objects.all(),
+                                'TypeDocuments': TypeDocument.objects.filter(source=1),
+                                'Issuers': Issuer.objects.all(),
+                                'States': State.objects.all(),
+                                'MaritalStatusTypes': MaritalStatus.objects.all(),
                                 'PROFESSIONAL_AREAS': Profession.objects.all(),
                                 'licenceBoardTypes': LicenceBoard.objects.all(),
                                 'ReferralChoices': ReferralChoice.objects.all(),
@@ -408,13 +408,13 @@ def add_company(request, object_id=''):
                                 'websites' : None if not object_id else object.person.sites.all(),
                                 'ims' : None if not object_id else object.person.instantMessengers.all(),
                                 'countries': Country.objects.all(),
-                                'PhoneTypes': PhoneType.objects.all(), 
-                                'AddressTypes': AddressType.objects.all(), 
-                                'EmailTypes': EmailType.objects.all(), 
-                                'IMNetworks': IMNetwork.objects.all(), 
-                                'TypeDocuments': TypeDocument.objects.filter(source=2), 
-                                'Issuers': Issuer.objects.all(), 
-                                'States': State.objects.all(), 
+                                'PhoneTypes': PhoneType.objects.all(),
+                                'AddressTypes': AddressType.objects.all(),
+                                'EmailTypes': EmailType.objects.all(),
+                                'IMNetworks': IMNetwork.objects.all(),
+                                'TypeDocuments': TypeDocument.objects.filter(source=2),
+                                'Issuers': Issuer.objects.all(),
+                                'States': State.objects.all(),
                                 'Relations': Relation.objects.all(),
                                 'company_form': company_form,
                                 'cnae': Cnae.objects.all(),
@@ -442,7 +442,7 @@ def referral_plus_form(request, object_id=None, referral_id=None):
     total_service = Referral.objects.filter(client=object).count()
 
     return render_to_response('client/client_referral_plus_form.html',
-                              {'object': object, 
+                              {'object': object,
                                 'referral': referral,
                                 'referral_form': referral_form,
                                 'services': Service.objects.filter(active=True, organization=request.user.get_profile().org_active),
@@ -467,7 +467,7 @@ def referral_form(request, object_id=None, referral_id=None):
     # check access by requested user
     if not _access_check(request, object):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
-    
+
     if not object.active:
         return render_to_response('403.html', {'object': _("Sorry! You can not save referral for disabled clients!"), }, context_instance=RequestContext(request))
 
@@ -477,7 +477,7 @@ def referral_form(request, object_id=None, referral_id=None):
             return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
     else:
         referral = Referral()
-    
+
     if request.method == 'POST':
         form = ReferralForm(request.POST, instance = referral)
 
@@ -505,13 +505,13 @@ def referral_form(request, object_id=None, referral_id=None):
                     indication.referral = Referral.objects.get(pk = data)
                     indication.save()
 
-                ''' if asked, add referral and client to some existing group ''' 
+                ''' if asked, add referral and client to some existing group '''
                 GroupMembers.objects.filter(client=Client.objects.get(pk = object_id, person__organization=request.user.get_profile().org_active), referral=data).delete()
                 if data.service.is_group:
                     group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active)
                     gm = GroupMembers(group=group, client=object, referral=data)
                     gm.save()
-                
+
                 url = '/client/%s/referral/%s/'
                 msg = _('Referral saved successfully')
                 messages.success(request, _(msg))
@@ -521,13 +521,13 @@ def referral_form(request, object_id=None, referral_id=None):
             #print form.errors
 
     # show just professional that are have subscription in a selected service
-    # update 
+    # update
     if referral.id:
 
         form = ReferralForm(instance=referral)
         form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('(Student)'))) for p in CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active, prof_services=referral.service)]
         referral_list = Referral.objects.filter(client=object, status='01')
-    
+
     # new
     else:
 
@@ -551,7 +551,7 @@ def referral_form(request, object_id=None, referral_id=None):
     total_service = Referral.objects.filter(client=object).count()
 
     return render_to_response('client/client_referral_form.html',
-                              { 'object': object, 
+                              { 'object': object,
                                 'referral': referral,
                                 'referral_form': form,
                                 'referral_list': referral_list,
@@ -560,26 +560,26 @@ def referral_form(request, object_id=None, referral_id=None):
                                 'groups': ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active, active=True),
                                 'IndicationsChoices': IndicationChoice.objects.all(),
                                 'contact_organizations': Contact.objects.filter_internal(
-                                                org_id = request.user.get_profile().org_active.id, 
-                                                person_id = request.user.get_profile().person.id, 
+                                                org_id = request.user.get_profile().org_active.id,
+                                                person_id = request.user.get_profile().person.id,
                                                 filter_name = None,
                                                 filter_type = 1
                                             ),
                                 'contact_professionals': Contact.objects.filter_internal(
-                                                org_id = request.user.get_profile().org_active.id, 
-                                                person_id = request.user.get_profile().person.id, 
+                                                org_id = request.user.get_profile().org_active.id,
+                                                person_id = request.user.get_profile().person.id,
                                                 filter_name = None,
                                                 filter_type = 2
                                             ),
                                 'contact_organizations_external': Contact.objects.filter_external(
-                                                org_id = request.user.get_profile().org_active.id, 
-                                                person_id = request.user.get_profile().person.id, 
+                                                org_id = request.user.get_profile().org_active.id,
+                                                person_id = request.user.get_profile().person.id,
                                                 filter_name = None,
                                                 filter_type = 1
                                             ),
                                 'contact_professionals_external': Contact.objects.filter_external(
-                                                org_id = request.user.get_profile().org_active.id, 
-                                                person_id = request.user.get_profile().person.id, 
+                                                org_id = request.user.get_profile().org_active.id,
+                                                person_id = request.user.get_profile().person.id,
                                                 filter_name = None,
                                                 filter_type = 2
                                             ),
@@ -601,7 +601,7 @@ def referral_plus_save(request, object_id=None):
             object.status = '01'
             object.save()
             form.save_m2m()
-            ''' if asked, add referral and client to some existing group ''' 
+            ''' if asked, add referral and client to some existing group '''
             if request.POST.get('group'):
                 group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active)
                 for c in request.POST.getlist('client'):
@@ -643,13 +643,13 @@ def referral_save(request, object_id = None, referral_id = None):
                     # indication.client = Client.objects.get(pk = object_id)
                     indication.referral = Referral.objects.get(pk = object)
                     indication.save()
-                ''' if asked, add referral and client to some existing group ''' 
+                ''' if asked, add referral and client to some existing group '''
                 if object.service.is_group:
                     group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active)
                     for c in request.POST.getlist('client'):
                         gm = GroupMembers(group=group, client=Client.objects.get(pk = object_id, person__organization=request.user.get_profile().org_active), referral=object)
                         gm.save()
-                
+
                 url = '/client/%s/referral/%s/'
                 msg = _('Referral saved successfully')
             else:
@@ -727,11 +727,11 @@ def referral_list(request, object_id = None, discharged = None):
     else:
         referrals = object.referrals_charged()
         charged = True
-    
+
     # not in use anymore. if user have perm to see client, will display every referral
     #if request.user.groups.filter(name='professional').count() :
         #referrals = referrals.filter(professional = request.user.profile.person.careprofessional.id)
-    
+
     return render_to_response('client/client_referral_list.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('referral.referral_read')
@@ -772,7 +772,7 @@ def save(request, object_id=None, is_company = False):
     else:
         object = Client()
         person = Person()
-        
+
         # Id Record
         org = get_object_or_404(Organization, pk=user.get_profile().org_active.id )
         org.last_id_record = org.last_id_record + 1
@@ -781,10 +781,9 @@ def save(request, object_id=None, is_company = False):
         # Admission date
         object.idRecord = org.last_id_record + 1
         object.admission_date = datetime.now()
+        object.person = person_save(request, person)
+        object.save()
 
-    # person
-    object.person = person_save(request, person)
-    
     if is_company:
         company_form = CompanyForm(request.POST) if not object_id else CompanyForm(request.POST, instance=object.person.company)
 
@@ -800,13 +799,12 @@ def save(request, object_id=None, is_company = False):
 
     a.referral_choice_id = AdmissionChoice.objects.all().order_by('weight')[0].id
     object.admissionreferral_set.add(a)
-
-    # save all
     object.save()
-    
-    messages.success(request, _('Client saved successfully'))
-    return HttpResponseRedirect('/client/%s/home' % object.id)
 
+    messages.success(request, _('Client saved successfully'))
+
+    return HttpResponseRedirect('/client/%s/home' % object.id)
+    
 
 @permission_required_with_403('client.client_read')
 def client_print(request, object_id = None):
@@ -817,7 +815,7 @@ def client_print(request, object_id = None):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     have_ehr_read_perms = False if not _access_ehr_check_read(request, object) else True
-    
+
     if not request.POST:
         return render_to_response('client/client_print_form.html', locals(), context_instance=RequestContext(request))
     else:
@@ -832,7 +830,7 @@ def client_print(request, object_id = None):
         company_related_clients = []
         if object.is_company():
             company_related_clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active)
-    
+
         dict = {
             'referral': referral,
             'print_schedule': print_schedule,
@@ -842,18 +840,18 @@ def client_print(request, object_id = None):
             'signed_organization_reponsibles': signed_organization_reponsibles,
             'print_ehr': print_ehr,
             'pagesize' : 'A4',
-            'object': object, 
-            'org_active': request.user.get_profile().org_active, 
-            'user': request.user, 
-            'DEBUG': DEBUG, 
-            'MEDIA_URL': MEDIA_URL if request.POST.get('output') == 'html' else MEDIA_ROOT.replace('\\','/') + '/', 
+            'object': object,
+            'org_active': request.user.get_profile().org_active,
+            'user': request.user,
+            'DEBUG': DEBUG,
+            'MEDIA_URL': MEDIA_URL if request.POST.get('output') == 'html' else MEDIA_ROOT.replace('\\','/') + '/',
             'company_related_clients': company_related_clients,
             'have_ehr_read_perms': have_ehr_read_perms,
             }
 
         if request.POST.get('output') == 'html':
             return render_to_response('client/client_print.html', dict, context_instance=RequestContext(request))
-        
+
         return write_pdf('client/client_print.html', dict, '%s.pdf' % slugify(object.person.name))
 
 @permission_required_with_403('client.client_read')
@@ -866,10 +864,10 @@ def organization_clients(request):
         clients = Client.objects.from_user(request.user, 'active').order_by('person__name')
     else:
         clients = Client.objects.from_user(request.user).order_by('person__name')
-    
+
     if request.GET.get('q'):
         clients = clients.filter(person__name__istartswith=request.GET.get('q'))
-    
+
     dict = {}
     array = [] #json
     i = 0
@@ -907,15 +905,15 @@ def order(request, object_id = ''):
         else:
             messages.success(request, _('Sorry, you can not deactivate a client with registered referral'))
             url += '?clss=error'
-        
+
     return HttpResponseRedirect(url % object.id)
 
 @permission_required_with_403('schedule.schedule_read')
 def schedule_daily(
-            request,  
+            request,
             year = datetime.now().strftime("%Y"),
-            month = datetime.now().strftime("%m"), 
-            day = datetime.now().strftime("%d"), 
+            month = datetime.now().strftime("%m"),
+            day = datetime.now().strftime("%d"),
             template='client/client_schedule_daily.html',
             **params
         ):
@@ -929,7 +927,7 @@ def schedule_daily(
     if referral.on_queue():
         messages.success(request, _('Sorry, you can not book a queued client. Remove it first from queue before continue'))
         return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (request.GET.get('client'), referral.id))
-    
+
     if Place.objects.filter( organization=request.user.get_profile().org_active, place_type__id=1 ):
         place = Place.objects.filter( organization=request.user.get_profile().org_active, place_type__id=1 )[0] # place type = matriz
     else:
@@ -946,8 +944,8 @@ def schedule_add(request):
     if not _access_check_referral_write(request, referral):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
-    return add_event(request, 
-        'client/client_schedule_form.html', 
+    return add_event(request,
+        'client/client_schedule_form.html',
         event_form_class=ReferralForm,
         recurrence_form_class=ScheduleOccurrenceForm,
         redirect_to = '/client/%s/referral/%s/' % (request.GET['client'], request.GET['referral']))
@@ -958,7 +956,7 @@ def occurrence_view(request, object_id = None, occurrence_id = None):
 
     return occurrence_confirmation_form(request,
         occurrence_id,
-        template = 'client/client_occurrence_confirmation_form.html', 
+        template = 'client/client_occurrence_confirmation_form.html',
         form_class=OccurrenceConfirmationForm,
         client_id=object_id,
         redirect_to = '/client/%s/referral/%s/' % (object_id, occurrence.event.referral.id)
@@ -970,7 +968,7 @@ def referral_occurrences(request, object_id = None, referral_id = None, type = '
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     return _referral_occurrences(request, object_id, referral_id, type, 'client/client_referral_occurrences.html')
-    
+
 @permission_required_with_403('referral.referral_read')
 def referral_queue(request, object_id = '',  referral_id = ''):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
@@ -1048,7 +1046,7 @@ def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id =
 
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
     queue = get_object_or_None(Queue, pk = queue_id)
-    
+
     queue.date_out = datetime.now()
     queue.save()
 
@@ -1067,8 +1065,8 @@ def referral_ext_form(request, object_id ='', referral_id=''):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     contact_organizations = Contact.objects.filter(
-                                                org_id = request.user.get_profile().org_active.id, 
-                                                person_id = request.user.get_profile().person.id, 
+                                                org_id = request.user.get_profile().org_active.id,
+                                                person_id = request.user.get_profile().person.id,
                                                 filter_name = None,
                                                 filter_type = 1
                                                 )
@@ -1085,12 +1083,12 @@ def referral_ext_save(request, object_id = '', referral_id=''):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
-    form = ReferralExtForm(request.POST) 
+    form = ReferralExtForm(request.POST)
     queues = Queue.objects.filter(referral=referral_id)
     referrals = ReferralExternal.objects.filter(referral=referral_id)
 
     if form.is_valid():
-        referral_ext = ReferralExternal() 
+        referral_ext = ReferralExternal()
         referral_ext = form.save(commit=False)
         referral_ext.professional = get_object_or_None(CareProfessional, pk = request.POST.get('professional') )
         referral_ext.organization = get_object_or_None(Organization, pk = request.POST.get('organization') )
@@ -1191,7 +1189,7 @@ def company_related_form(request, object_id = None, company_client_id=None):
             client__person__organization=request.user.get_profile().org_active, \
             )
         form = CompanyClientForm(instance=company_client)
-        
+
         from django import forms
         form.fields['name'].widget = forms.TextInput(attrs={'readonly':'readonly', 'class':'extrabig'})
         form.fields['name'].initial = company_client.client
@@ -1205,7 +1203,7 @@ def company_related_form(request, object_id = None, company_client_id=None):
             form = CompanyClientForm(request.POST, instance=company_client)
         else:
             form = CompanyClientForm(request.POST)
-            
+
         if form.is_valid():
             form.save(request, object)
             messages.success(request, _('Related client added successfully to this company'))

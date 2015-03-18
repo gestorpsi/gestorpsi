@@ -437,7 +437,7 @@ def referral_plus_form(request, object_id=None, referral_id=None):
     if not _access_check(request, object) or not _access_check_referral_write(request, referral):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
-    referral_form = ReferralForm(data)
+    referral_form = ReferralForm(request, data)
     referral_form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('Student'))) for p in CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active)]
     referral_form.fields['referral'].queryset = Referral.objects.filter(client=object)
     referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
@@ -485,7 +485,7 @@ def referral_form(request, object_id=None, referral_id=None):
 
     # save 
     if request.method == 'POST':
-        form = ReferralForm( request.POST, instance=referral )
+        form = ReferralForm( request, request.POST, instance=referral )
 
         if form.is_valid():
 
@@ -531,14 +531,14 @@ def referral_form(request, object_id=None, referral_id=None):
     # update 
     if referral.id:
 
-        form = ReferralForm(instance=referral)
+        form = ReferralForm(request, instance=referral)
         form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('(Student)'))) for p in CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active, prof_services=referral.service)]
         referral_list = Referral.objects.filter(client=object, status='01')
     
     # new
     else:
 
-        form = ReferralForm()
+        form = ReferralForm(request)
         # need choose a service to show professional list
         form.fields['professional'].choices = ()
         referral_list = None
@@ -601,7 +601,7 @@ def referral_form(request, object_id=None, referral_id=None):
 def referral_plus_save(request, object_id=None):
     """ This function save an internal referral """
     if request.method == 'POST':
-        form = ReferralForm(request.POST)
+        form = ReferralForm(request, request.POST)
         if form.is_valid():
             object = form.save(commit=False)
             object.organization = request.user.get_profile().org_active
@@ -628,9 +628,9 @@ def referral_save(request, object_id = None, referral_id = None):
             referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active, referraldischarge__isnull=True)
             if not _access_check_referral_write(request, referral):
                 return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
-            form = ReferralForm(request.POST, instance = referral)
+            form = ReferralForm(request, request.POST, instance = referral)
         except:
-            form = ReferralForm(request.POST)
+            form = ReferralForm(request, request.POST)
         if form.is_valid():
             object = form.save(commit=False)
             object.organization = request.user.get_profile().org_active
@@ -956,7 +956,7 @@ def schedule_add(request):
 
     return add_event(request, 
         'client/client_schedule_form.html', 
-        event_form_class=ReferralForm,
+        event_form_class=ReferralForm(request),
         recurrence_form_class=ScheduleOccurrenceForm,
         redirect_to = '/client/%s/referral/%s/' % (request.GET['client'], request.GET['referral']))
 

@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from django import forms
 from gestorpsi.referral.models import Referral, ReferralPriority, ReferralImpact, ReferralDischarge, Queue, ReferralExternal
-from gestorpsi.careprofessional.models import CareProfessional
+#from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client 
 from gestorpsi.service.models import Service, ServiceGroup
 from gestorpsi.covenant.models import Covenant
@@ -47,8 +47,15 @@ class ReferralForm(forms.ModelForm):
         fields = ('client', 'service', 'professional', 'annotation', 'referral', 'annotation', 'referral_reason', 'available_time', 'priority', 'impact', 'covenant')
         model = Referral
     
-    def __init__(self, *args, **kwargs):
+    def __init__(self, request, *args, **kwargs):
         super(ReferralForm, self).__init__(*args, **kwargs)
+
+        # query covenant of org
+        self.fields['covenant'] = forms.ModelMultipleChoiceField(
+                                    queryset=Covenant.objects.filter( organization=request.user.get_profile().org_active, active=True),
+                                    required=False,
+                                )
+
         if hasattr(self,'instance') and self.instance.id:
             if self.instance.service.is_group:
             #if self.instance.service.is_group and self.instance.group:

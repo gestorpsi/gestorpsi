@@ -3,15 +3,20 @@ python:
   - "2.7"
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -r requirements.txt
-before_script: 
+install:
+    - pip install -r requirements.txt
+    - pip install flake8 coveralls
+before_script:
   - mv gestorpsi/settings.py.TRAVIS gestorpsi/settings.py
-  - mysqladmin create gpsi -u travis
   - python manage.py syncdb --noinput
   - python manage.py migrate
 # command to run tests, e.g. python setup.py test
 script:
   # - python manage.py test schedule
-  - python manage.py test users
+  - coverage run --source=gestorpsi manage.py test
+  - coverage report --show-missing
+  - flake8 gestorpsi
 
-after_success: fab server staging
+after_success:
+    - fab server staging
+    - coveralls

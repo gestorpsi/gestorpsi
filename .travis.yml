@@ -18,5 +18,4 @@ script:
   - flake8 gestorpsi
 
 after_success:
-    - fab server staging
     - coveralls

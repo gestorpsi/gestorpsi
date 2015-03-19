@@ -8,6 +8,7 @@ install:
     - pip install flake8 coveralls unittest2
 before_script:
   - mv gestorpsi/settings.py.TRAVIS gestorpsi/settings.py
+  - mysqladmin create gpsi -u travis
   - python manage.py syncdb --noinput
   - python manage.py migrate
 # command to run tests, e.g. python setup.py test

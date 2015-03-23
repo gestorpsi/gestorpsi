@@ -19,6 +19,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.organization.models import Organization
+from gestorpsi.financial.models import PaymentWay
 
 CATEGORY = ( 
     (1, _('Pagamento direto')),
@@ -42,13 +43,6 @@ CHARGE = (
     ),
 )
 
-PAYMENT_WAY = (
-    (1, _(u'Dinheiro')),
-    (2, _(u'Cartão')),
-    (3, _(u'Boleto')),
-    (4, _(u'Depósito bancário')),
-)
-
 DEADLINE = (
     (1, _(u'A vista')),
     (2, _(u'Faturado')),
@@ -61,7 +55,7 @@ class Covenant(models.Model):
     active = models.BooleanField(u'Disponível', default=True)
     category = models.IntegerField(u'Categoria', choices=CATEGORY, null=False, blank=False)
     charge = models.IntegerField(u'Cobrança', choices=CHARGE, null=False, blank=False)
-    payment_way = models.CharField(u'Forma de pagamento', max_length=255, null=False, blank=False, choices=PAYMENT_WAY)
+    payment_way = models.ManyToManyField(PaymentWay, null=False, blank=False )
     deadline = models.IntegerField(u'Prazo', choices=DEADLINE, null=False, blank=False)
     event_time = models.PositiveIntegerField(u'Número de eventos', null=True, blank=True) # if charge=2, show this field
     price = models.CharField(u'Valor', max_length=10, null=False, blank=False)

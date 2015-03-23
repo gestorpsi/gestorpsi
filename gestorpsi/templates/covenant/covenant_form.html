@@ -72,10 +72,6 @@ GNU General Public License for more details.
                         <input type="text" maxlength="2" id="event_time" name="event_time" class="small" value="{% if obj.event_time %}{{ obj.event_time }}{% endif %}" {% ifequal obj.charge 2 %} required="required" {% endifequal %} />
                     </label>
 
-                    <label>{% trans "Forma de pagamento" %} <br />
-                        {{ form.payment_way }}
-                    </label>
-
                     <label>{% trans "Valor" %} 
                         R$&nbsp;&nbsp;{{ form.price }}
                     </label>
@@ -95,6 +91,13 @@ GNU General Public License for more details.
 
                 </fieldset>
 
+                <!-- payment way -->
+                <label style="margin-right:200px;">{% trans "Forma de pagamento disponivel" %} </label>
+                <label>{% trans "Forma de pagamento selecionado" %}</label>
+                <div style="clear:both; margin-left:10px;">
+                    {{ form.payment_way }}
+                </div>
+
                 <!-- select services -->
                 <label style="margin-right:251px;" for="id_professional">{% trans "Services available" %}</label>
                 <label for="id_professional">{% trans "Services selected" %}</label>
@@ -105,8 +108,11 @@ GNU General Public License for more details.
                         {% endfor %}
                     </select>
                 </div>
+
+                <!-- mount combox -->
                 <script>
                     $('select#id_service').multiSelect();
+                    $('select#id_payment_way').multiSelect();
                 </script>
 
                 <br />

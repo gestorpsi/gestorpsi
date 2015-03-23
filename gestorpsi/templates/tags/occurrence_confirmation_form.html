@@ -80,11 +80,31 @@ hide Date fields and second field
         </fieldset>
 
 
-        <!-- payment event -->
-        <fieldset>
-            <legend>{% trans "Payment" %}</legend>
-            {{ referral.covenant.all }}
-        </fieldset>
+        <!-- to pay event -->
+        {% for c in referral.covenant.all %}
+            <input type="hidden" value="{{ c.id }}">
+            <fieldset>
+                <legend>{% trans "Selected covenant" %}</legend>
+                <div>
+                    <label>{% trans 'Name' %}<br /><input class="big" type='text' readonly value="{{ c.name }}" /></label>
+                    <label>Valor R$<br /><input class="big" type='text' name="value{{c.id}}" readonly value="{{ c.price }}" /></label>
+                    <label>Desconto R$<br /> <input class="big" type='text' name="off{{c.id}}" /></label>
+                    <label>Total R$<br /> <input class="big" type='text' name="total{{c.id}}" readonly /></label>
+
+                    <label>{% trans 'Situa&ccedil;&atilde;o' %}<br />
+                        {{ receive_form.status }}
+                    </label>
+
+                    <label>Forma de pagamento<br />
+                        <select class="medium" name="payment_way{{c.id}}">
+                            {% for pw in c.payment_way.all %}
+                                <option value="{{ pw.id }}"> {{ pw.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                </div>
+            </fieldset>
+        {% endfor %}
 
       <br />
     </div>

@@ -40,6 +40,7 @@ from gestorpsi.util.views import get_object_or_None
 from gestorpsi.schedule.forms import OccurrenceConfirmationForm
 from gestorpsi.device.models import DeviceDetails
 from gestorpsi.organization.models import TIME_SLOT_SCHEDULE
+from gestorpsi.financial.forms import ReceiveForm
 
 
 def _access_check_by_occurrence(request, occurrence):
@@ -130,7 +131,7 @@ def add_event(
         room = get_object_or_None(Room, pk=request.GET.get('room'), place__organization=request.user.get_profile().org_active)
         client = get_object_or_None(Client, pk = request.GET.get('client'), person__organization=request.user.get_profile().org_active)
         referral = get_object_or_None(Referral, pk = request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
-        event_form = event_form_class()
+        event_form = event_form_class
 
         recurrence_form = recurrence_form_class(initial=dict(
                 dtstart=dtstart, 
@@ -234,6 +235,8 @@ def occurrence_confirmation_form(
         redirect_to = None,
     ):
 
+    print '------------------------ SCHEDULE '
+
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
     
     if not occurrence.scheduleoccurrence.was_confirmed():
@@ -252,32 +255,45 @@ def occurrence_confirmation_form(
     
     object = get_object_or_None(Client, pk = client_id, person__organization=request.user.get_profile().org_active)
 
-    from gestorpsi.client.views import  _access_check_referral_write
+    from gestorpsi.client.views import _access_check_referral_write
     denied_to_write = None
 
     if not _access_check_referral_write(request, occurrence.event.referral):
         denied_to_write = True
 
     if request.method == 'POST':
+
+        print '------------------------------ POST '
+        print 1/0
+
         if denied_to_write:
             return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
         form = form_class(request.POST, instance = occurrence_confirmation, initial={ 'device':initial_device, })
+
         if form.is_valid():
+
             data = form.save(commit=False)
             data.occurrence = occurrence
+
             if int(data.presence) not in (1,2): # client not arrive, dont save datetime field
                 data.date_started = None
                 data.date_finished = None
+
             data.save()
             form.save_m2m()
 
             # save occurrence comment
             occurrence.annotation = request.POST['occurrence_annotation']
             occurrence.save()
+
             messages.success(request, _('Occurrence confirmation updated successfully'))
             return http.HttpResponseRedirect(redirect_to or request.path)
+
         else:
+
             form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility=2, lendable=True) | Q(place =  occurrence.room.place, mobility=2, lendable=False))]
+
             return render_to_response(
                 template,
                 dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral),
@@ -299,7 +315,7 @@ def occurrence_confirmation_form(
 
     return render_to_response(
         template,
-        dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral, occurrence_confirmation = occurrence_confirmation, hide_date_field = True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None, denied_to_write = denied_to_write ),
+        dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral, occurrence_confirmation = occurrence_confirmation, hide_date_field = True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None, denied_to_write = denied_to_write, receive_form = ReceiveForm(), ),
         context_instance=RequestContext(request)
     )
 

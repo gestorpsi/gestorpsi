@@ -27,6 +27,7 @@ from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.covenant.models import Covenant, CATEGORY, CHARGE
 from gestorpsi.covenant.forms import CovenantForm
 from gestorpsi.service.models import Service
+from gestorpsi.financial.models import PaymentWay
 
 from gestorpsi.settings import PAGE_RESULTS #DEBUG, MEDIA_URL, MEDIA_ROOT
 
@@ -80,7 +81,6 @@ def form(request, obj=False):
         obj.category = request.POST.get('category')
         obj.deadline = request.POST.get('deadline')
         obj.charge = request.POST.get('charge')
-        obj.payment_way = request.POST.getlist('payment_way')
 
         if request.POST.get('event_time'):
             obj.event_time = request.POST.get('event_time')
@@ -95,7 +95,12 @@ def form(request, obj=False):
         for x in request.POST.getlist('services'): # add selected
             obj.service_set.add( Service.objects.get(pk=x) )
 
-        obj.save() # update services
+        # payment way
+        obj.payment_way.clear() # remove all
+        for x in request.POST.getlist('payment_way'):
+            obj.payment_way.add( PaymentWay.objects.get(pk=x) )
+
+        obj.save() # update
 
         messages.success(request, _(u'Salvo com sucesso!'))
         return HttpResponseRedirect('/covenant/%s/' % obj.id )

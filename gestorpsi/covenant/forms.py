@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 
 from django import forms
-from gestorpsi.covenant.models import Covenant, CATEGORY, CHARGE, DEADLINE, PAYMENT_WAY
+from gestorpsi.covenant.models import Covenant, CATEGORY, CHARGE, DEADLINE
 
 
 class CovenantForm(forms.ModelForm):
@@ -25,7 +25,6 @@ class CovenantForm(forms.ModelForm):
     charge = forms.MultipleChoiceField( required=True, widget=forms.Select( attrs={'class':'extrabig'} ), choices=CHARGE)
     deadline = forms.MultipleChoiceField( required=True, widget=forms.Select( attrs={'class':'extrabig'} ), choices=DEADLINE)
     price = forms.CharField( required=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'123,45', 'id':"numbersOnly"} ))
-    payment_way = forms.MultipleChoiceField( required=True, widget=forms.CheckboxSelectMultiple(), choices=PAYMENT_WAY )
 
     class Meta:
         model = Covenant

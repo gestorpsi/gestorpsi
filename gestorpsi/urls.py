@@ -58,6 +58,7 @@ urlpatterns = patterns('',
     (r'^sentry/', include('sentry.web.urls')),
     (r'^gcm/', include('gestorpsi.gcm.urls')),
     (r'^covenant/', include('gestorpsi.covenant.urls')),
+    (r'^financial/', include('gestorpsi.financial.urls')),
 )
 
 if 'rosetta' in settings.INSTALLED_APPS:

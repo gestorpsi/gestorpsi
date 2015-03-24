@@ -317,3 +317,24 @@ class Client(models.Model):
 reversion.register(Client)
 reversion.register(Family)
 
+
+
+class Payment(models.Model):
+    '''
+        receive payment
+            referral covenant
+            to pay, phone, internet, monthly bullet
+        informations about payment, payment way, check, value, dead line and others
+    '''
+    status = models.CharField(_(u'Status'), max_length=2, choices=STATUS)
+    payment_way = models.ForeignKey('financial.PaymentWay', null=True, blank=True)
+    price = models.IntegerField(_(u'Valor'), null=True, blank=True) # from covenance
+    off = models.IntegerField(_(u'Desconto'), null=True, blank=True)
+    total = models.IntegerField(_(u'Total'), null=True, blank=True)
+    comment = models.TextField(_('Comments'), blank=True, null=True)
+
+    # from 
+    referral = models.ForeignKey('referral.Referral', null=True, blank=True)
+
+    def __unicode__(self):
+        return u"%s" % self.referral.name

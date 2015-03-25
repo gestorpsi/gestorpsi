@@ -319,6 +319,21 @@ reversion.register(Family)
 
 
 
+STATUS = ( 
+        (0,_(u'Aberto')),
+        (1,_(u'Pago')),
+        (2,_(u'Faturado')),
+        (3,_(u'Cancelado')),
+)
+
+PAYMENT_WAY = ( 
+        (1,u'Dinheiro'),
+        (2,u'Cheque'),
+        (3,u'Cartão'),
+        (4,u'Boleto'),
+        (5,u'Depósito'),
+)
+
 class Payment(models.Model):
     '''
         receive payment
@@ -327,14 +342,14 @@ class Payment(models.Model):
         informations about payment, payment way, check, value, dead line and others
     '''
     status = models.CharField(_(u'Status'), max_length=2, choices=STATUS)
-    payment_way = models.ForeignKey('financial.PaymentWay', null=True, blank=True)
+    payment_way = models.CharField(_(u'Forma de pagamento'), max_length=2, choices=PAYMENT_WAY)
     price = models.IntegerField(_(u'Valor'), null=True, blank=True) # from covenance
     off = models.IntegerField(_(u'Desconto'), null=True, blank=True)
     total = models.IntegerField(_(u'Total'), null=True, blank=True)
     comment = models.TextField(_('Comments'), blank=True, null=True)
 
     # from 
-    referral = models.ForeignKey('referral.Referral', null=True, blank=True)
+    #referral = models.ForeignKey('referral.Referral', null=True, blank=True)
 
     def __unicode__(self):
         return u"%s" % self.referral.name

@@ -40,7 +40,8 @@ from gestorpsi.util.views import get_object_or_None
 from gestorpsi.schedule.forms import OccurrenceConfirmationForm
 from gestorpsi.device.models import DeviceDetails
 from gestorpsi.organization.models import TIME_SLOT_SCHEDULE
-from gestorpsi.financial.forms import ReceiveForm
+from gestorpsi.financial.models import Payment
+from gestorpsi.financial.forms import PaymentForm
 
 
 def _access_check_by_occurrence(request, occurrence):
@@ -235,8 +236,6 @@ def occurrence_confirmation_form(
         redirect_to = None,
     ):
 
-    print '------------------------ SCHEDULE '
-
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
     
     if not occurrence.scheduleoccurrence.was_confirmed():
@@ -262,9 +261,6 @@ def occurrence_confirmation_form(
         denied_to_write = True
 
     if request.method == 'POST':
-
-        print '------------------------------ POST '
-        print 1/0
 
         if denied_to_write:
             return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
@@ -315,7 +311,18 @@ def occurrence_confirmation_form(
 
     return render_to_response(
         template,
-        dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral, occurrence_confirmation = occurrence_confirmation, hide_date_field = True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None, denied_to_write = denied_to_write, receive_form = ReceiveForm(), ),
+        dict(
+                occurrence=occurrence,
+                form=form,
+                object=object,
+                referral=occurrence.event.referral,
+                occurrence_confirmation=occurrence_confirmation,
+                hide_date_field=True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None,
+                denied_to_write = denied_to_write,
+                payment_form = PaymentForm(),
+                payment_list = Payment.objects.filter(status='0', referral__client=object)
+            
+            ),
         context_instance=RequestContext(request)
     )
 

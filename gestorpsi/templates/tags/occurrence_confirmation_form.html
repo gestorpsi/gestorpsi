@@ -14,6 +14,10 @@ GNU General Public License for more details.
 
 {% endcomment %}
 
+{% block extrahead %}
+     <script type="text/javascript" src="/media/js/gestorpsi.payment.forms.js"></script>
+{% endblock %}
+
 {% load i18n %}
 
 <h2 class="title_schedule title">{% if occurrence.event.referral.referralgroup_set.all %}<a href="/service/group/{{ occurrence.event.referral.referralgroup_set.all.0.id }}/form/">{{ occurrence.event.referral.group_name }}</a>{% else %}{{ occurrence.event.referral.client.all.0 }}{% endif %} - {{ occurrence.event.referral }}</h2>
@@ -22,20 +26,6 @@ GNU General Public License for more details.
 {% comment %}
 hide Date fields and second field
 {% endcomment %}
-
-<script>
-    $(function() {
-        $('select#id_date_started_0_month, select#id_date_started_0_day, select#id_date_started_0_year, select#id_date_started_1_second').hide();
-        $('select#id_date_finished_0_month, select#id_date_finished_0_day, select#id_date_finished_0_year, select#id_date_finished_1_second').hide();
-        $('form input[name=presence]').click(function(){
-            if($(this).val()>2) {
-                $('div.date_fields').hide();
-            } else {
-                $('div.date_fields').show();
-            }
-        });
-    });
-</script>
 
 <form method="post" action="" class="schedule_occurrence">
     <div class="main_area">
@@ -81,18 +71,72 @@ hide Date fields and second field
 
 
         <!-- payment event -->
-        {% for c in referral.covenant.all %}
             <input type="hidden" value="{{ c.id }}">
+
             <fieldset>
-                <legend>{% trans "Selected covenant" %}</legend>
+                <legend>{% trans "Payment" %}</legend>
                 <div>
+                    <label>{% trans 'Pagamento' %}
+                        <br />
+                        <select class='big' id='payment_select'>
+                            <option value='new' selected >Criar novo pagamento</option>
+                            {% for x in payment_list %}
+                                <option value='{{ x.id }}'>R$ {{ x.price }} - {{ x.created }} ({{x.get_status_display}})</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                </div>
+
+               <!-- show this select when create new payment -->
+                <div id='covenant'>
+                    <label>Conv&ecirc;nio
+                        <br />
+                        <select class='big' name='payment_selected'>
+                            <option value='None' selected >- - -</option>
+                            {% for x in referral.covenant.all %}
+                                <option value='{{ x.id }}'>{{ x.name }} R$ {{ x.price }} {% if x.event_time %}(Pacote {{ x.event_time }}) {% endif %}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                </div>
+
+
+                <!-- a form for each payment -->
+                {% for c in payment_list %}
+                    <div id="payment_form{{ c.id }}">
+                        <label>{% trans 'Name' %}<br /><input class="big" type='text' readonly value="{{ c.name }}" /></label>
+                        <label>Pacote<br /><input class="big" type='text' name='package' readonly value="{{ c.event_time }}" /></label>
+                        <label>Valor R$<br /><input class="big" type='text' name="value{{c.id}}" readonly value="{{ c.price }}" /></label>
+                        <label>Desconto R$<br /> <input class="big" type='text' name="off{{c.id}}" /></label>
+                        <label>Total R$<br /> <input class="big" type='text' name="total{{c.id}}" readonly /></label>
+
+                        <label>{% trans 'Situa&ccedil;&atilde;o' %}<br />
+                            {{ payment_form.status }}
+                        </label>
+
+                        <label>Forma de pagamento<br />
+                            <select class="medium" name="payment_way{{c.id}}">
+                                {% for pw in c.payment_way.all %}
+                                    <option value="{{ pw.id }}"> {{ pw.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    </div>
+                {% endfor %}
+            </fieldset>
+
+            <!-- form for new payment -->
+            <div id="payment_form_new">
+                <fieldset>
+                    <legend>{% trans "Novo pagamento" %}</legend>
                     <label>{% trans 'Name' %}<br /><input class="big" type='text' readonly value="{{ c.name }}" /></label>
+                    <label>Pacote<br /><input class="big" type='text' name='package' readonly value="{{ c.event_time }}" /></label>
                     <label>Valor R$<br /><input class="big" type='text' name="value{{c.id}}" readonly value="{{ c.price }}" /></label>
                     <label>Desconto R$<br /> <input class="big" type='text' name="off{{c.id}}" /></label>
                     <label>Total R$<br /> <input class="big" type='text' name="total{{c.id}}" readonly /></label>
 
                     <label>{% trans 'Situa&ccedil;&atilde;o' %}<br />
-                        {{ receive_form.status }}
+                        {{ payment_form.status }}
                     </label>
 
                     <label>Forma de pagamento<br />
@@ -102,9 +146,8 @@ hide Date fields and second field
                             {% endfor %}
                         </select>
                     </label>
-                </div>
-            </fieldset>
-        {% endfor %}
+                </fieldset>
+            </div>
 
       <br />
     </div>

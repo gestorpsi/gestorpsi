@@ -36,11 +36,44 @@ $(document).ready(function() {
      * show and hide covenat when change select to new payment
      */
     $('select#payment_select').change( function(){ 
-        if ( $('select#payment_select').val() == 'new' ){ 
-            $('div#covenant').show();
-        } else { 
-            $('div#covenant').hide();
+        var id = $('select#payment_select').val();
+
+        // hide all
+        $('div[id*="payment_form"]').hide(); // hide all
+        $('div#covenant').hide(); //select
+
+        if ( id == 'new' ){ 
+            $('div#covenant').show(); //select
+            /*$('div#payment_form_new').show();*/
         }
+        
+        if ( id !=0 ){ 
+            $('div#payment_form'+id).show();
+        }
+    });
+
+
+    /*
+     * show and hide covenant
+     */
+    $('select#covenant_select').change( function(){ 
+        var idc = $('select#covenant_select').val();
+        $('div[id*="payment_form_covenant"]').hide(); // hide all
+        $('div#payment_form_covenant'+idc).show(); // show
+    });
+
+    // cal off
+    $('input[name*="off"]').keyup( function(){ 
+        var idc = $('select#covenant_select').val();
+        var off = parseFloat( $('input[name=off'+idc+']').val() );
+        var price = parseFloat( $('input[name=price'+idc+']').val() );
+
+        if ( isNaN(off) == true ){ 
+            var total = +price;
+        } else { 
+            var total = +price-off;
+        }
+        $('input[name=total'+idc+']').val(total);
     });
 
 });

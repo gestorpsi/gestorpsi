@@ -309,6 +309,24 @@ def occurrence_confirmation_form(
 
         form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility="2", lendable=True) | Q(place=occurrence.room.place, mobility="2", lendable=False))]
 
+    '''
+        payment section
+    '''
+    print '------------------ PAYMENT'
+    print request.POST.get('payment_select')
+
+    id_payment = request.POST.get('payment_select')
+
+    # will be create a new payment by hand
+    if id_payment == 'new' or id_payment == '0':
+        if id_payment == 'new':
+            id_covenant = request.POST.get('covenant_select')
+
+            if not id_covenant == '0':
+                payment = Payment()
+    else:
+
+
     return render_to_response(
         template,
         dict(

@@ -89,7 +89,7 @@ hide Date fields and second field
                     <label>Conv&ecirc;nio
                         <br />
                         <select class='big' name='covenant_select' id='covenant_select'>
-                            <option value='None' selected >- - -</option>
+                            <option value='0' selected >- - -</option>
                             {% for x in referral.covenant.all %}
                                 <option value='{{ x.id }}'>{{ x.name }} R$ {{ x.price }} {% if x.event_time %}(Pacote {{ x.event_time }}) {% endif %}</option>
                             {% endfor %}
@@ -107,8 +107,8 @@ hide Date fields and second field
                         <label>{% trans 'Name' %}<br /><input class="big" type='text' readonly value="{{ c.name }}" /></label>
                         {% if c.event_time %}<label>Pacote<br /><input class="big" type='text' name='package' readonly value="{{ c.event_time }}" /></label>{% endif %}
                         <label>Valor R$<br /><input class="big" type='text' name="price{{c.id}}" readonly value="{{ c.price }}" /></label>
-                        <label>Desconto R$<br /> <input class="big" type='text' name="off{{c.id}}" /></label>
-                        <label>Total R$<br /> <input class="big" type='text' name="total{{c.id}}" readonly value="{{ c.price }}" /></label>
+                        <label>Desconto R$<br /><input class="big" type='text' name="off{{c.id}}" placeholder='123,45' id="numbersOnly" /></label>
+                        <label>Total R$<br /><input class="big" type='text' name="total{{c.id}}" readonly value="{{ c.price }}" /></label>
 
                         <label>{% trans 'Situa&ccedil;&atilde;o' %}<br />
                             {{ payment_form.status }}
@@ -131,7 +131,7 @@ hide Date fields and second field
                 <fieldset>
                     <legend>{% trans "Novo pagamento" %}</legend>
                     <label>{% trans 'Name' %}<br /><input class="big" type='text' readonly value="{{ c.name }}" /></label>
-                    <label>Pacote<br /><input class="big" type='text' name='package' readonly value="{{ c.event_time }}" /></label>
+                    {% if c.event_time %}<label>Pacote<br /><input class="big" type='text' name='package' readonly value="{{ c.event_time }}" /></label>{% endif %}
                     <label>Valor R$<br /><input class="big" type='text' name="value{{c.id}}" readonly value="{{ c.price }}" /></label>
                     <label>Desconto R$<br /> <input class="big" type='text' name="off{{c.id}}" /></label>
                     <label>Total R$<br /> <input class="big" type='text' name="total{{c.id}}" readonly /></label>
@@ -156,9 +156,9 @@ hide Date fields and second field
                     <fieldset>
                         <legend>Pagamento</legend>
                         <label>Data<br /><input class="big" type='text' readonly value="{{ c.created }}" /></label>
-                        <label>Pacote<br /><input class="big" type='text' name='package' readonly value="{{ c.event_time }}" /></label>
+                        {% if c.event_time %}<label>Pacote<br /><input class="big" type='text' name='package' readonly value="{{ c.event_time }}" /></label>{% endif %}
                         <label>Valor R$<br /><input class="big" type='text' name="price{{c.id}}" readonly value="{{ c.price }}" /></label>
-                        <label>Desconto R$<br /> <input class="big" type='text' name="off{{c.id}}" /></label>
+                        <label>Desconto R$<br /> <input class="big" type='text' name="off{{c.id}}" placeholder='123,45' id="numbersOnly"/></label>
                         <label>Total R$<br /> <input class="big" type='text' name="total{{c.id}}" readonly /></label>
 
                         <label>{% trans 'Situa&ccedil;&atilde;o' %}<br />

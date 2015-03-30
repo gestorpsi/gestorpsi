@@ -71,9 +71,10 @@ $(document).ready(function() {
         if ( isNaN(off) == true ){ 
             var total = +price;
         } else { 
-            var total = +price-off;
+            var total = -off+price;
         }
-        $('input[name=total'+idc+']').val(total);
+
+        $('input[name=total'+idc+']').val( total );
     });
 
 });

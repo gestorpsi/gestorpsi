@@ -21,7 +21,7 @@ from gestorpsi.client.models import Client
 
 
 class FamilyForm(forms.ModelForm):
-    name = forms.CharField(required=True, 
+    name = forms.CharField(required=True,
                            widget=forms.TextInput(attrs={'class': 'big'}))
 
     class Meta:
@@ -39,7 +39,9 @@ class FamilyForm(forms.ModelForm):
             person = Person(name=request.POST.get('name'))
             person.save()
             person.organization.add(request.user.get_profile().org_active.id)
-            client_related = Client(person=person,idRecord=request.user.get_profile().org_active.last_id_record + 1)
+            client_related = Client(person=person,
+                                    idRecord=request.user.get_profile().
+                                    org_active.last_id_record + 1)
             client_related.save()
 
         family.client_related = client_related

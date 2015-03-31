@@ -23,7 +23,7 @@ from django.db.models import Q
 from gestorpsi.person.models import Person
 from gestorpsi.util.uuid_field import UuidField
 
-FAMILY_RELATION = ( 
+FAMILY_RELATION = (
     (1, _('Parents')),
     (2, _('Children')),
     (3, _('Siblings')),
@@ -39,7 +39,7 @@ FAMILY_RELATION = (
     (13, _('Others')),
 )
 
-FAMILY_RELATION_REVERSE = ( 
+FAMILY_RELATION_REVERSE = (
     (1, _('Children')),
     (2, _('Parents')),
     (3, _('Siblings')),
@@ -64,9 +64,14 @@ class MaritalStatus(models.Model):
         ordering = ['description']
 
 class Family(models.Model):
-    client = models.ForeignKey('Client', related_name='family_client_selected', null=True, blank=True)
-    client_related = models.ForeignKey('Client', related_name='family_client_related', null=True, blank=True)
-    relation_level = models.IntegerField(choices = FAMILY_RELATION, max_length=2, null=True, blank=True)
+    client = models.ForeignKey('Client',
+                               related_name='family_client_selected',
+                               null=True, blank=True)
+    client_related = models.ForeignKey('Client',
+                                       related_name='family_client_related',
+                                       null=True, blank=True)
+    relation_level = models.IntegerField(choices=FAMILY_RELATION,
+                                         max_length=2, null=True, blank=True)
     responsible = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
     comment = models.TextField(_('Comments'), blank=True, null=True)
@@ -74,7 +79,8 @@ class Family(models.Model):
     def __unicode__(self):
         return u"%s" % self.get_relation_level_display()
 
-''' class not in use! moved to parents relations to class Family. removing soon  ''' 
+''' class not in use! moved to parents relations to class Family. 
+removing soon  ''' 
 class Relation(models.Model):
     description = models.CharField(max_length=30)
     def __unicode__(self):
@@ -226,27 +232,29 @@ class Client(models.Model):
     
     def employees(self):
         from gestorpsi.person.models import Person, CompanyClient
-        return CompanyClient.objects.filter(company__person__client = self).filter(client__active=True)
+        return CompanyClient.objects.filter(company__person__client=self).filter(client__active=True)
     
     def family_members(self):
         family_list = []
-        for i in Family.objects.filter(Q(client=self) | Q(client_related=self)).order_by('-active', '-responsible', 'relation_level','client__person__name', 'client_related__person__name'):
+        for i in Family.objects.filter(Q(client=self) | Q(client_related=self)).order_by('-active', '-responsible', 'relation_level', 'client__person__name', 'client_related__person__name'):
             responsable = False
             id = i.client.id if not i.client == self else i.client_related.id
             name = i.client if not i.client == self else i.client_related
             dict = {}
             if not i.client == self:
-                for x,y in FAMILY_RELATION_REVERSE:
+                for x, y in FAMILY_RELATION_REVERSE:
                     dict[x] = y.__unicode__()
                 relation_level = dict[i.relation_level]
             else:
                 if i.responsible: responsable = True
                 relation_level = i.get_relation_level_display()
 
-            family_list.append([id, name, relation_level, responsable, i.id, i.active, i.comment]) # id = client selected id, i.id = family relation id 
-        
+            family_list.append([id, name, relation_level, responsable,
+                               i.id, i.active, i.comment])
+#  id = client selected id, i.id = family relation id
+
         return family_list
-    
+
     def family_members_active(self):
         family_list = []
         for i in self.family_members():
@@ -273,12 +281,13 @@ class Client(models.Model):
 
         from gestorpsi.schedule.models import ScheduleOccurrence
         queryset = ScheduleOccurrence.objects.filter(event__referral__client=self) \
-            .exclude(occurrenceconfirmation__presence=4).exclude(occurrenceconfirmation__presence=5)
+            .exclude(occurrenceconfirmation__presence=4) \
+            .exclude(occurrenceconfirmation__presence=5)
 
         return True if \
-            queryset.filter(start_time__lte = start_time, end_time__gt = start_time) or \
-            queryset.filter(start_time__lt = end_time, end_time__gte = end_time) or \
-            queryset.filter(start_time__gte = start_time, end_time__lte = end_time) \
+            queryset.filter(start_time__lte=start_time, end_time__gt=start_time) or \
+            queryset.filter(start_time__lt=end_time, end_time__gte=end_time) or \
+            queryset.filter(start_time__gte=start_time, end_time__lte=end_time) \
             else False
 
     def set_active(self):
@@ -288,27 +297,32 @@ class Client(models.Model):
     def set_deactive(self):
         self.active = False
         self.save()
-    
+
     def list_item_title(self):
         return u"%s" % (self.person.name)
-    
+
     def list_item_url(self):
         return "/client/%s/home/" % (self.pk)
-    
+
     def list_item_title_aditional(self):
         if not self.person.age:
             return ""
         return u"%s %s" % (self.person.age, _(u"years"))
-    
+
     def list_item_description(self):
         return u"%s" % (self.person.get_first_phone())
-    
+
     def list_item_extra_links(self):
         html = ''
         for r in self.referrals_charged():
-            html += u"<a title='%s' href='/client/%s/referral/%s/' style='color:#%s;'><div class='service_name_html' style='background-color:#%s;'>&nbsp;</div></a>" % (r, self.pk, r.pk, r.service.font_color, r.service.color)
-        
-        html += '<a class="admit" href="/admission/%s/" title="%s"><img src="/media/img/22/ico_reg.png"></a>' % (self.pk, _('Admission Details'))
+            html += u"<a title='%s' href='/client/%s/referral/%s/' \
+                  style='color:#%s;'><div class='service_name_html' \
+                  style='background-color:#%s;'>&nbsp;</div></a>"\
+                  % (r, self.pk, r.pk, r.service.font_color, r.service.color)
+
+        html += '<a class="admit" href="/admission/%s/" \
+                title="%s"><img src="/media/img/22/ico_reg.png"></a>'\
+                % (self.pk, _('Admission Details'))
 
         return u"%s" % (html)
     list_item_extra_links.allow_tags = True
@@ -316,4 +330,3 @@ class Client(models.Model):
 
 reversion.register(Client)
 reversion.register(Family)
-

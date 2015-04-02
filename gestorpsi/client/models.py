@@ -112,24 +112,24 @@ class PersonLink(models.Model):
 class ClientManager(models.Manager):
     def active(self, organization):
         return super(Client, self).get_query_set().filter(
-        												  active=True,
-        person__organization=organization).order_by('person__name')
+        			active=True,
+        			person__organization=organization).order_by('person__name')
 
     def deactive(self, organization):
         return super(Client, self).get_query_set().filter(
         	active=False,
-        	person__organization=organization).order_by('person__name')
+        	person__organization = organization).order_by('person__name')
 
     def from_organization(self, organization, pk_in=None):
-        
+
         """
         return clients list from logged organization
         and/or with a pk range filter
         ...
         actually used in report app
         """
-        
-        query = super(ClientManager, self).get_query_set().filter(person__organization=organization)
+
+        query = super(ClientManager, self).get_query_set().filter(person__organization = organization)
 
         if pk_in:
             query = query.filter(pk__in=pk_in)
@@ -140,16 +140,16 @@ class ClientManager(models.Manager):
     def from_user(self, user, status=None, query_pk_in=None):
 
         object_list = Client.objects.from_organization(user.get_profile().org_active, query_pk_in)
-        
+
         if status:
-            object_list = object_list.filter(active=False if status == 'deactive' else True)
-        
+            object_list = object_list.filter(active = False if status == 'deactive' else True)
+
         if not user.groups.filter(name='administrator') and not user.groups.filter(name='secretary'):
-            object_list = object_list.filter(Q(referral__professional=user.profile.person.careprofessional.id) \
+            object_list = object_list.filter(Q(referral__professional = user.profile.person.careprofessional.id) \
                             | Q(person__user=user) \
                             | Q(referral__service__responsibles=user.profile.person.careprofessional) \
                             ).distinct().order_by('person__name')
-        
+
         return object_list
 
     def Individuals(self, organization, query_pk_in=None):
@@ -169,7 +169,7 @@ class ClientManager(models.Manager):
         if query_pk_in:
             q = q.filter(pk__in=query_pk_in)
         return q
-    
+
     def GenderFemale(self, organization, query_pk_in=None):
         q = super(ClientManager, self).get_query_set().filter(person__active=True, person__gender='2', person__organization=organization)
         if query_pk_in:
@@ -183,25 +183,25 @@ class ClientManager(models.Manager):
         return q
 
     def AgeChildren(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__gt=datetime.now()-relativedelta(years=13), person__organization=organization)
+        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__gt = datetime.now()-relativedelta(years=13), person__organization=organization)
         if query_pk_in:
             q = q.filter(pk__in=query_pk_in)
         return q
 
     def AgeTeen(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte=datetime.now()-relativedelta(years=13), person__birthDate__gt=datetime.now()-relativedelta(years=18), person__organization=organization)
+        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=13), person__birthDate__gt = datetime.now()-relativedelta(years=18), person__organization=organization)
         if query_pk_in:
             q = q.filter(pk__in=query_pk_in)
         return q
 
     def AgeAdult(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte=datetime.now()-relativedelta(years=18), person__birthDate__gt=datetime.now()-relativedelta(years=66), person__organization=organization)
+        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=18), person__birthDate__gt = datetime.now()-relativedelta(years=66), person__organization=organization)
         if query_pk_in:
             q = q.filter(pk__in=query_pk_in)
         return q
 
     def AgeElderly(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte=datetime.now()-relativedelta(years=66), person__organization=organization)
+        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=66), person__organization=organization)
         if query_pk_in:
             q = q.filter(pk__in=query_pk_in)
         return q
@@ -224,7 +224,7 @@ class Client(models.Model):
 
     def __unicode__(self):
         return (u"%s" % (self.person.name.title(), )) if self.person.is_company() else (u"%s" % (self.person.name.title()))
-    
+
     class Meta:
         ordering = ['person']
         permissions = (
@@ -245,11 +245,11 @@ class Client(models.Model):
 
     def referrals_discharged(self):
         return self.referral_set.discharged().filter(client=self)
-    
+
     def employees(self):
         from gestorpsi.person.models import Person, CompanyClient
         return CompanyClient.objects.filter(company__person__client=self).filter(client__active=True)
-    
+
     def family_members(self):
         family_list = []
         for i in Family.objects.filter(Q(client=self) | Q(client_related=self)).order_by('-active', '-responsible', 'relation_level', 'client__person__name', 'client_related__person__name'):

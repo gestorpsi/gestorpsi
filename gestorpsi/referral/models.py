@@ -81,7 +81,7 @@ REFERRAL_DISCHARGE_STATUS = (
     ('2', _('List of expected')),
     ('3', _('Scheduled')),
     ('4', _('In attendance (active)')),
-    ('5', _('Forwarded to external service and remains in attendance at the clinic (active)')),
+    ('5', _('Forwarded to external service and remains in attendance at the clinic (active)')),  # noqa
     ('6', _('Inactive')),
     ('7', _('Off')),
 )
@@ -174,8 +174,10 @@ class Referral(Event):
 
     def __init__(self, *args, **kwargs):
         super(Referral, self).__init__(*args, **kwargs)
-        try: self.event_type = EventType.objects.all()[0]
-        except: self.event_type = EventType.objects.create(abbr='')
+        try:
+            self.event_type = EventType.objects.all()[0]
+        except:
+            self.event_type = EventType.objects.create(abbr='')
 
     def save(self, *args, **kwargs):
         is_new = True if not self.id else False

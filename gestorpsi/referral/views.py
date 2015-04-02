@@ -30,8 +30,8 @@ from gestorpsi.authentication.models import Profile
 @permission_required_with_403('referral.referral_list')
 def referral_off(request, object_id=None):
     referral = get_object_or_404(Referral, pk=object_id,
-                               service__organization=request.user.
-                               get_profile().org_active)
+                                 service__organization=request.user.
+                                 get_profile().org_active)
     referral.status = '02'
     referral.save(force_update=True)
     return HttpResponse(referral.id)

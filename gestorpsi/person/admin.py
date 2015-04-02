@@ -24,8 +24,10 @@ GNU General Public License for more details.
 from django.contrib import admin
 from gestorpsi.person.models import MaritalStatus, Person
 
+
 class MaritalStatusAdmin(admin.ModelAdmin):
     pass
+
 
 class PersonAdmin(admin.ModelAdmin):
     pass

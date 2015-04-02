@@ -92,6 +92,8 @@ def add_event(
         redirect_to = None
     ):
 
+    print '-------------------- ADD SCHEDULE --- '
+
     # have to contains dtstart variable in URL. URL from schedule have to contains date and time informations.
     if not 'dtstart' in request.GET:
         return http.HttpResponseRedirect('/schedule/')
@@ -99,12 +101,15 @@ def add_event(
     if request.method == 'POST':
         if int(request.POST.get('count')) > 40: # limit occurrence repeat
             return render_to_response('403.html', {'object':_('Sorry. You can not book more than 40 occurrence at the same time')})
+
         recurrence_form = recurrence_form_class(request.POST)
 
         if recurrence_form.is_valid():
             if not request.POST.get('group'): # booking single client
+
                 referral = get_object_or_404(Referral, pk=request.POST.get('referral'), service__organization=request.user.get_profile().org_active)
                 event = recurrence_form.save(referral)
+
             else: # booking a group
                 group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active, active=True)
                 if group.charged_members(): # this check is already done in template. just to prevent empty groups
@@ -116,7 +121,38 @@ def add_event(
                         else:
                             if not event.errors:
                                 event = recurrence_form.save(group_member.referral, True) # ignore busy check
-    
+
+
+            '''
+                payment
+            '''
+            #for x in referral.service.covenant.filter(charge='1'):
+            for x in referral.service.covenant.all():
+
+                if x.charge == 2:
+                    payment.pack_size = x.event_time
+
+                    # check if exist a opened pack of same referral
+                    # Payment.objects.filter(schedule_occurrence=event)
+                    # if True. Payment.schedule_occurrence.add(event)
+                    # if True. Payment.occurrence.count() == pack_size :
+
+                payment = Payment()
+                payment.price = x.price
+                payment.off = 0
+                payment.total = x.price
+                payment.save()
+
+                for pw in x.payment_way.all():
+                    payment.payment_way.add(pw)
+
+                #from swingtime.models import Occurrence
+                payment.occurrence.add( event.occurrences().latest('id') )
+
+
+
+                payment.save() # update m2m
+
             if not event.errors:
                 messages.success(request, _('Schedule saved successfully'))
                 return http.HttpResponseRedirect(redirect_to or '/schedule/')
@@ -309,22 +345,9 @@ def occurrence_confirmation_form(
 
         form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility="2", lendable=True) | Q(place=occurrence.room.place, mobility="2", lendable=False))]
 
-    '''
-        payment section
-    '''
-    print '------------------ PAYMENT'
-    print request.POST.get('payment_select')
 
-    id_payment = request.POST.get('payment_select')
-
-    # will be create a new payment by hand
-    if id_payment == 'new' or id_payment == '0':
-        if id_payment == 'new':
-            id_covenant = request.POST.get('covenant_select')
-
-            if not id_covenant == '0':
-                payment = Payment()
-    else:
+        payment_list = []
+        print Payment.objects.filter(schedule_occurrence=occurrence)
 
 
     return render_to_response(
@@ -337,9 +360,6 @@ def occurrence_confirmation_form(
                 occurrence_confirmation=occurrence_confirmation,
                 hide_date_field=True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None,
                 denied_to_write = denied_to_write,
-                payment_form = PaymentForm(),
-                payment_list = Payment.objects.filter(status='0', referral__client=object)
-            
             ),
         context_instance=RequestContext(request)
     )

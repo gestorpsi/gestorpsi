@@ -18,6 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db import models
 
 from gestorpsi.client.models import Client
+from swingtime.models import Occurrence
 
 STATUS = ( 
         ('0',_(u'Aberto')),
@@ -45,16 +46,31 @@ class Payment(models.Model):
     '''
     created = models.DateTimeField(_('Criado'), auto_now_add=True, default='2000-12-31 00:00:00')
     status = models.CharField(_(u'Status'), max_length=2, choices=STATUS, default='0')
-    payment_way = models.ForeignKey(PaymentWay, null=False, blank=False)
-    price = models.DecimalField(_(u'Valor'), max_digits=6, decimal_places=2, null=False, blank=False) # from covenance
+    payment_way = models.ManyToManyField(PaymentWay, null=False, blank=False)
+    price = models.DecimalField(_(u'Valor'), max_digits=6, decimal_places=2, null=False, blank=False) # from covenant
     off = models.DecimalField(_(u'Desconto'), max_digits=6, decimal_places=2, null=False, blank=False)
     total = models.DecimalField(_(u'Total'), max_digits=6, decimal_places=2, null=False, blank=False)
     comment = models.TextField(_('Comments'), blank=True, null=True)
 
+    pack_size = models.PositiveIntegerField(blank=False, null=False, default=0) # por pacote
+    # if 0 = 1x1 ; if pack_size > 0 = pack occurrence
+    # easy to filter objects who is pack , who is not pack
+
+    #pack_counter = models.PositiveIntegerField(blank=False, null=False, default=0) # contador pacote
+
     # fk
-    referral = models.ForeignKey('referral.Referral', null=True, blank=True)
-    #client = models.ForeignKey(Client, null=True, blank=True)
-    #service = models.ForeignKey('service.Service', null=True, blank=True)
+    occurrence = models.ManyToManyField(Occurrence, null=True, blank=True) # contador pacote
+
 
     def __unicode__(self):
         return u"%s" % self.id
+
+
+    def _terminated_(self):
+        '''
+            if pack have event times like as covenant
+        '''
+        if self.pack_size == self.occurrence.count():
+            return True
+        else:
+            return False

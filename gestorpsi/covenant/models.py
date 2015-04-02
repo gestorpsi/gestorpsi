@@ -58,7 +58,7 @@ class Covenant(models.Model):
     payment_way = models.ManyToManyField(PaymentWay, null=False, blank=False )
     deadline = models.IntegerField(u'Prazo', choices=DEADLINE, null=False, blank=False)
     event_time = models.PositiveIntegerField(u'Número de eventos', null=True, blank=True) # if charge=2, show this field
-    price = models.CharField(u'Valor', max_length=10, null=False, blank=False)
+    price = models.DecimalField(u'Valor', max_digits=6, decimal_places=2, null=False, blank=False)
     description = models.TextField(u'Descrição', null=True, blank=True)
     organization = models.ForeignKey(Organization, editable=False, null=False, blank=False)
 

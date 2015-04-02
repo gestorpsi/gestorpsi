@@ -22,4 +22,4 @@ class PaymentForm(forms.ModelForm):
     pass
     class Meta:
         model = Payment
-        exclude = ['referral','client']
+        #exclude = ['referral','client']

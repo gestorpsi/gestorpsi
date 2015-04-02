@@ -29,7 +29,7 @@ $(document).ready(function() {
 
     // jquery.numeric
     // 2 decimal places and positive 
-    $("#numbersOnly").numeric({ decimal : "," , negative: false , decimalPlaces: 2 });
+    $("#numbersOnly").numeric({ decimal : "." , negative: false , decimalPlaces: 2 });
     // event number positive
     $("#event_time").numeric({ negative: false });
 

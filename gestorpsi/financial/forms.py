@@ -15,11 +15,23 @@ GNU General Public License for more details.
 """
 
 from django import forms
-from gestorpsi.financial.models import Payment
+from gestorpsi.financial.models import Payment, PaymentWay
 
 
 class PaymentForm(forms.ModelForm):
-    pass
+    price = forms.DecimalField(
+            label='Valor',
+            decimal_places=2,
+            required=True,
+            )
+
+    payment_way = forms.Select( 
+            #label='Forma de pagamento',
+            #required=True,
+            #widget=forms.Select(attrs={'class':'big'}),
+            #queryset=PaymentWay.objects.all() 
+            )
+
     class Meta:
         model = Payment
-        #exclude = ['referral','client']
+        exclude = ['occurrence','pack_size']

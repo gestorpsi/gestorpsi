@@ -105,6 +105,10 @@ GNU General Public License for more details.
     </div>
 {% endif %}
 
+
+{% include "tags/message.html" %}
+
+{% comment %}
 {% if messages %}
     <div id="msg_area" class="{% if clss %}{{ clss }}{% else %}alert{% endif%} msg_area_top">
         {% for message in messages %}
@@ -113,6 +117,7 @@ GNU General Public License for more details.
         <a class="close_link"><img src="/media/img/close.gif" /></a>
     </div>
 {% endif %}
+{% endcomment %}
 
 <a name="top"></a>
 <div id="over" style="display:none">

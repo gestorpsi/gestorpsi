@@ -137,17 +137,17 @@ def add_event(
                     # if True. Payment.schedule_occurrence.add(event)
                     # if True. Payment.occurrence.count() == pack_size :
 
-                payment = Payment()
-                payment.price = x.price
-                payment.off = 0
-                payment.total = x.price
-                payment.save()
+                    payment = Payment()
+                    payment.price = x.price
+                    payment.off = 0
+                    payment.total = x.price
+                    payment.save()
 
-                for pw in x.payment_way.all():
-                    payment.payment_way.add(pw)
+                    for pw in x.payment_way.all():
+                        payment.payment_way.add(pw)
 
-                #from swingtime.models import Occurrence
-                payment.occurrence.add( event.occurrences().latest('id') )
+                    #from swingtime.models import Occurrence
+                    payment.occurrence.add( event.occurrences().latest('id') )
 
 
 
@@ -273,6 +273,7 @@ def occurrence_confirmation_form(
     ):
 
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
+    payment_list = []
     
     if not occurrence.scheduleoccurrence.was_confirmed():
         initial_device = [device.pk for device in occurrence.device.all()]
@@ -303,7 +304,22 @@ def occurrence_confirmation_form(
 
         form = form_class(request.POST, instance = occurrence_confirmation, initial={ 'device':initial_device, })
 
-        if form.is_valid():
+        # payment
+        payment_valid = True
+
+        for x in Payment.objects.filter(occurrence=occurrence):
+
+            prefix = 'payment_form_%s' % x.id
+            form_payment = PaymentForm(request.POST, prefix=prefix, instance=x)
+
+            payment_list.append(form_payment)
+
+            if form_payment.is_valid():
+                fp = form_payment.save()
+            else:
+                payment_valid = False
+
+        if form.is_valid() and payment_valid :
 
             data = form.save(commit=False)
             data.occurrence = occurrence
@@ -326,9 +342,16 @@ def occurrence_confirmation_form(
 
             form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility=2, lendable=True) | Q(place =  occurrence.room.place, mobility=2, lendable=False))]
 
+            messages.error(request, _(u'Campo inválido ou obrigatório'))
+
             return render_to_response(
                 template,
-                dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral),
+                dict(occurrence=occurrence,
+                    form=form,
+                    object=object,
+                    referral=occurrence.event.referral,
+                    payment_list=payment_list,
+                    ),
                 context_instance=RequestContext(request)
             )
     else:
@@ -346,8 +369,10 @@ def occurrence_confirmation_form(
         form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility="2", lendable=True) | Q(place=occurrence.room.place, mobility="2", lendable=False))]
 
 
-        payment_list = []
-        print Payment.objects.filter(schedule_occurrence=occurrence)
+        # payment form
+        for x in Payment.objects.filter(occurrence=occurrence):
+            prefix = 'payment_form_%s' % x.id
+            payment_list.append( PaymentForm(instance=x, prefix=prefix) )
 
 
     return render_to_response(
@@ -360,6 +385,7 @@ def occurrence_confirmation_form(
                 occurrence_confirmation=occurrence_confirmation,
                 hide_date_field=True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None,
                 denied_to_write = denied_to_write,
+                payment_list = payment_list,
             ),
         context_instance=RequestContext(request)
     )

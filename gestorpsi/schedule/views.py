@@ -129,27 +129,28 @@ def add_event(
             #for x in referral.service.covenant.filter(charge='1'):
             for x in referral.service.covenant.all():
 
+                payment = Payment()
+
                 if x.charge == 2:
-                    payment.pack_size = x.event_time
 
                     # check if exist a opened pack of same referral
                     # Payment.objects.filter(schedule_occurrence=event)
                     # if True. Payment.schedule_occurrence.add(event)
                     # if True. Payment.occurrence.count() == pack_size :
 
-                    payment = Payment()
-                    payment.price = x.price
-                    payment.off = 0
-                    payment.total = x.price
-                    payment.save()
+                    # if new pack:
+                    payment.pack_size = x.event_time
 
-                    for pw in x.payment_way.all():
-                        payment.payment_way.add(pw)
+                payment.name = x.name
+                payment.price = x.price
+                payment.off = 0
+                payment.total = x.price
+                payment.save()
 
-                    #from swingtime.models import Occurrence
-                    payment.occurrence.add( event.occurrences().latest('id') )
+                for pw in x.payment_way.all():
+                    payment.payment_way.add(pw)
 
-
+                payment.occurrence.add( event.occurrences().latest('id') )
 
                 payment.save() # update m2m
 

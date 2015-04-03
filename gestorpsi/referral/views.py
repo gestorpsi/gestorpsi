@@ -19,6 +19,8 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.utils import simplejson
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
+from swingtime.models import Occurrence
+
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, Queue, ReferralExternal, ReferralAttach
@@ -78,8 +80,6 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     organization = user.get_profile().org_active.id
     queues = Queue.objects.filter(referral=referral_id, client=object)
     referrals = ReferralExternal.objects.filter(referral=referral_id)
-
-    from swingtime.models import Occurrence
     payments = Payment.objects.filter(occurrence__event__referral=referral)
 
     '''
@@ -90,7 +90,7 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
         array[1][N]= array of Payments
     '''
     payments = []
-    for o in Occurrence.objects.filter(event__referral=referral):
+    for o in Occurrence.objects.filter(event__referral=referral).order_by('-id'):
         tmp = []
         tmp.append(o)
 
@@ -102,8 +102,6 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
         payments.append(tmp)
         del(tmp)
         del(tmpp)
-
-    print payments
 
     try:
         discharged = ReferralDischarge.objects.get(referral=referral)

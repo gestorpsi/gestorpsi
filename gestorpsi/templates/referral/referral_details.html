@@ -339,8 +339,31 @@ GNU General Public License for more details.
         </p>
     {% endif %}
     </p>
-
-<br />	
 </div>
 
 
+<div class="main_area home">
+
+	<h3><span>{% trans "Pagamentos" %}</span></h3>
+    <h2 class="red">{% trans "Valores" %}</h2>
+
+    {% for pay in payments %}
+        <p>
+            <a href="/schedule/events/{{ pay.0.id }}/confirmation/">{{ pay.0.start_time|date:"r"|slice:"-9" }} hs</a>
+            <br />
+            <small>
+                {% for x in pay.1 %}
+                    {% ifequal x.status '1' %}
+                        <span style="background-color:green;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    {% else %}
+                        <span style="background-color:red;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    {% endifequal %}
+
+                    - <b><i>Total</i></b> {{ x.total }} <b><i>Situa&ccedil;&atilde;o</i></b> {{ x.get_status_display }} <b><i>Forma pagto</i></b> {% for x in x.payment_way.all %} {{ x }} | {% endfor %}
+                    <br />
+                {% endfor %}
+          </small>
+        </p>
+    {% endfor %}
+</div>
+<br />	

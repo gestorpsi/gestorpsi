@@ -23,6 +23,7 @@ from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, Queue, ReferralExternal, ReferralAttach
 from gestorpsi.util.decorators import permission_required_with_403
+from gestorpsi.financial.models import Payment
 
 @permission_required_with_403('referral.referral_list')
 def referral_off(request, object_id=None):
@@ -77,6 +78,32 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     organization = user.get_profile().org_active.id
     queues = Queue.objects.filter(referral=referral_id, client=object)
     referrals = ReferralExternal.objects.filter(referral=referral_id)
+
+    from swingtime.models import Occurrence
+    payments = Payment.objects.filter(occurrence__event__referral=referral)
+
+    '''
+        payment have 1 or N occurrences
+        array[0] = occurrence
+        array[1][0] = array of Payments
+        array[1][...] = array of Payments
+        array[1][N]= array of Payments
+    '''
+    payments = []
+    for o in Occurrence.objects.filter(event__referral=referral):
+        tmp = []
+        tmp.append(o)
+
+        tmpp = []
+        for p in Payment.objects.filter(occurrence=o):
+            tmpp.append(p)
+        
+        tmp.append( tmpp )
+        payments.append(tmp)
+        del(tmp)
+        del(tmpp)
+
+    print payments
 
     try:
         discharged = ReferralDischarge.objects.get(referral=referral)

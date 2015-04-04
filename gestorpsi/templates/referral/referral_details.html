@@ -69,7 +69,7 @@ GNU General Public License for more details.
 
             <br />
             <br />
-            <small><i><b>{% trans "Covenant" %}:</b> {% for c in referral.service.covenant.all %} {{ c }} <br />  {% endfor %}</i></small>
+            <small><i><b>{% trans "Covenant" %}:</b> {% for c in referral.covenant.all %} {{ c }} <br />  {% endfor %}</i></small>
             
             <br>
             {% for g in referral.service.servicegroup_set.all %}{% for cl in g.client.all %}{% ifequal cl object %} {% trans "Group" %}: <a href="/service/{{ referral.service.id}}/group/{{ g.id }}/form/">{{ g }}</a><br />{% endifequal %}{% endfor %}{% endfor %}
@@ -277,11 +277,12 @@ GNU General Public License for more details.
              </p>
         {% endfor %}
     <p>
-    <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}referral/{{ referral.id }}/upcoming/">{% trans "See all" %}</a>
-    {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
-        <a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}" title="{% trans "Book new" %}">{% trans "Book new" %}</a>
-    {% endif %}
-    {% endif %}
+        <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}referral/{{ referral.id }}/upcoming/">{% trans "See all" %}</a>
+        <br />
+        {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
+            <a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}" title="{% trans "Book new" %}">{% trans "Book new" %}</a>
+        {% endif %}
+        {% endif %}
     </p>
 
     <h2 class="red">{% trans "Past schedules for this service" %}</h2>
@@ -347,6 +348,14 @@ GNU General Public License for more details.
 
         <h3><span>{% trans "Pagamentos" %}</span></h3>
 
+        <p>
+            <b>Legenda</b><br />
+            <span style="background-color:red;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Aberto
+            <span style="background-color:green;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Pago
+            <span style="background-color:orange;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Faturado
+            <span style="background-color:yellow;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Cancelado
+        </p>
+
         {% for pay in payments %}
             <p>
                 <a href="/schedule/events/{{ pay.0.id }}/confirmation/">{{ pay.0.start_time|date:"r"|slice:"-9" }} hs</a>
@@ -370,8 +379,7 @@ GNU General Public License for more details.
                             <span style="background-color:yellow;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         {% endifequal %}
 
-                        &nbsp;&nbsp;{{ x.name }} <b><i>Total</i></b> {{ x.total }} <b><i>Situa&ccedil;&atilde;o</i></b> {{ x.get_status_display }} <b><i>Forma pagto</i></b> {% for x in x.payment_way.all %} {{ x }} | {% endfor %}
-
+                        &nbsp;&nbsp;{{ x.name }} | <b><i>Total</i></b> {{ x.total }} | <b><i>Situa&ccedil;&atilde;o</i></b> {{ x.get_status_display }} | <b><i>Forma pagto</i></b> {% for x in x.payment_way.all %} {{ x }} | {% endfor %} {% ifnotequal x.pack_size 0 %}<b><i>Pacote</i></b> {{ x.pack_size }} ({{ x.id }}) {{ x.terminated_|yesno:"Finalizado,Aberto" }} {% endifnotequal %}
                         <br />
                     {% endfor %}
               </small>

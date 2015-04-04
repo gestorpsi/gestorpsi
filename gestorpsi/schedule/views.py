@@ -92,8 +92,6 @@ def add_event(
         redirect_to = None
     ):
 
-    print '-------------------- ADD SCHEDULE --- '
-
     # have to contains dtstart variable in URL. URL from schedule have to contains date and time informations.
     if not 'dtstart' in request.GET:
         return http.HttpResponseRedirect('/schedule/')
@@ -124,35 +122,40 @@ def add_event(
 
 
             '''
-                payment
+                create a payment
             '''
-            #for x in referral.service.covenant.filter(charge='1'):
-            for x in referral.service.covenant.all():
+            # Filter payment by pack or occurrence
+            for x in referral.covenant.filter(Q(charge=1) | Q(charge=2) ):
 
-                payment = Payment()
+                payment = Payment() # new
 
+                # by pack
                 if x.charge == 2:
+                    # check not terminated pack of same referral
+                    for p in Payment.objects.filter(occurrence__event=event, pack_size__gt=0):
+                        if not p.terminated_():
+                            # not terminated pack
+                            payment = p
 
-                    # check if exist a opened pack of same referral
-                    # Payment.objects.filter(schedule_occurrence=event)
-                    # if True. Payment.schedule_occurrence.add(event)
-                    # if True. Payment.occurrence.count() == pack_size :
-
-                    # if new pack:
-                    payment.pack_size = x.event_time
-
-                payment.name = x.name
-                payment.price = x.price
-                payment.off = 0
-                payment.total = x.price
-                payment.save()
+                # by occurrence
+                # new
+                if not payment.id:
+                    payment.name = x.name
+                    payment.price = x.price
+                    payment.off = 0
+                    payment.total = x.price
+                    payment.save()
+                    # by pack
+                    payment.pack_size = x.event_time if x.event_time > 0 else 0
 
                 for pw in x.payment_way.all():
                     payment.payment_way.add(pw)
 
+                # add occurrence
                 payment.occurrence.add( event.occurrences().latest('id') )
+                # update m2m
+                payment.save()
 
-                payment.save() # update m2m
 
             if not event.errors:
                 messages.success(request, _('Schedule saved successfully'))

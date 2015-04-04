@@ -51,11 +51,9 @@ class Payment(models.Model):
     price = models.DecimalField(_(u'Valor'), max_digits=6, decimal_places=2, null=False, blank=False) # from covenant
     off = models.DecimalField(_(u'Desconto'), max_digits=6, decimal_places=2, null=False, blank=False)
     total = models.DecimalField(_(u'Total'), max_digits=6, decimal_places=2, null=False, blank=False)
-
-    #pack = models.BooleanField(_(u'Pacote?'), default=False) # pacote?
     pack_size = models.PositiveIntegerField(blank=False, null=False, default=0) # por pacote
-    # if 0 then 1x1 ; if pack_size > 0 = pack occurrence
-    # easy to filter if object is pack or not.
+    # if pack_size = 0 is a occurrence
+    # if pack_size > 0 is a pack
 
     # fk
     occurrence = models.ManyToManyField(Occurrence, null=True, blank=True) # contador pacote
@@ -65,7 +63,7 @@ class Payment(models.Model):
         return u"%s" % self.id
 
 
-    def _terminated_(self):
+    def terminated_(self):
         '''
             if pack have event times like as covenant
         '''

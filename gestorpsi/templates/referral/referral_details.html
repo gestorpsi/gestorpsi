@@ -379,7 +379,7 @@ GNU General Public License for more details.
                             <span style="background-color:yellow;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         {% endifequal %}
 
-                        &nbsp;&nbsp;{{ x.name }} | <b><i>Total</i></b> {{ x.total }} | <b><i>Situa&ccedil;&atilde;o</i></b> {{ x.get_status_display }} | <b><i>Forma pagto</i></b> {% for x in x.payment_way.all %} {{ x }} | {% endfor %} {% ifnotequal x.pack_size 0 %}<b><i>Pacote</i></b> {{ x.pack_size }} ({{ x.id }}) {{ x.terminated_|yesno:"Finalizado,Aberto" }} {% endifnotequal %}
+                        &nbsp;&nbsp;{{ x.name }} | <b><i>Total</i></b> {{ x.total }} | <b><i>Situa&ccedil;&atilde;o</i></b> {{ x.get_status_display }} | <b><i>Forma pagto</i></b> {% for x in x.payment_way.all %} {{ x }} | {% endfor %} {% ifnotequal x.pack_size 0 %}<b><i>Pacote</i></b> {{ x.pack_size }} Sess&otilde;es ({{ x.id }}) {{ x.terminated_|yesno:"Finalizado,Aberto" }} {% endifnotequal %}
                         <br />
                     {% endfor %}
               </small>

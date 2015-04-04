@@ -125,7 +125,7 @@ def add_event(
                 create a payment
             '''
             # Filter payment by pack or occurrence
-            for x in referral.covenant.filter(Q(charge=1) | Q(charge=2) ):
+            for x in referral.covenant.filter(Q(charge=1) | Q(charge=2) ).distinct():
 
                 payment = Payment() # new
 
@@ -148,8 +148,8 @@ def add_event(
                     # by pack
                     payment.pack_size = x.event_time if x.event_time > 0 else 0
 
-                for pw in x.payment_way.all():
-                    payment.payment_way.add(pw)
+                    for pw in x.payment_way.all():
+                        payment.payment_way.add(pw)
 
                 # add occurrence
                 payment.occurrence.add( event.occurrences().latest('id') )

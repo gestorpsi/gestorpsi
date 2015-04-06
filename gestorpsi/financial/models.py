@@ -44,16 +44,19 @@ class Payment(models.Model):
             to pay, phone, internet, monthly bullet
         informations about payment, payment way, check, value, dead line and others
     '''
-    name = models.CharField(_('Nome'), max_length=250, null=False, blank=False)
+    name = models.CharField(_('Nome'), max_length=250, null=False, blank=False) # covenant name or billet
     created = models.DateTimeField(_('Criado'), auto_now_add=True, default='2000-12-31 00:00:00')
     status = models.CharField(_(u'Situação'), max_length=2, choices=STATUS, default='0')
     payment_way = models.ManyToManyField(PaymentWay, null=False, blank=False, verbose_name='Forma de pagamento')
     price = models.DecimalField(_(u'Valor'), max_digits=6, decimal_places=2, null=False, blank=False) # from covenant
     off = models.DecimalField(_(u'Desconto'), max_digits=6, decimal_places=2, null=False, blank=False)
     total = models.DecimalField(_(u'Total'), max_digits=6, decimal_places=2, null=False, blank=False)
-    pack_size = models.PositiveIntegerField(blank=False, null=False, default=0) # por pacote
-    # if pack_size = 0 is a occurrence
-    # if pack_size > 0 is a pack
+
+    # from covenant
+    covenant_charge = models.PositiveIntegerField(blank=True, null=True)
+    covenant_pack_size = models.PositiveIntegerField(blank=True, null=True)
+    covenant_payment_way_options = models.TextField(blank=True, null=True,)# editabled=False)
+    covenant_payment_way_selected = models.TextField(blank=True, null=True,)# editabled=False)
 
     # fk
     occurrence = models.ManyToManyField(Occurrence, null=True, blank=True) # contador pacote
@@ -71,3 +74,17 @@ class Payment(models.Model):
             return True
         else:
             return False
+
+
+    def status_color_(self):
+        if self.status == '0':
+            return '<span style="background-color:red;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+        
+        if self.status == '1':
+            return '<span style="background-color:green;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+
+        if self.status == '2':
+            return '<span style="background-color:orange;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+
+        if self.status == '3':
+            return '<span style="background-color:yellow;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'

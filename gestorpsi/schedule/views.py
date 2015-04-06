@@ -132,7 +132,7 @@ def add_event(
                 # by pack
                 if x.charge == 2:
                     # check not terminated pack of same referral
-                    for p in Payment.objects.filter(occurrence__event=event, pack_size__gt=0):
+                    for p in Payment.objects.filter(occurrence__event=event, covenant_charge=2):
                         if not p.terminated_():
                             # not terminated pack
                             payment = p
@@ -144,12 +144,16 @@ def add_event(
                     payment.price = x.price
                     payment.off = 0
                     payment.total = x.price
+                    payment.covenant_charge = x.charge
                     payment.save()
-                    # by pack
-                    payment.pack_size = x.event_time if x.event_time > 0 else 0
 
+                    # by pack
+                    payment.covenant_pack_size = x.event_time if x.charge == 2 else 0
+
+                    payment.covenant_payment_way_options = []
                     for pw in x.payment_way.all():
-                        payment.payment_way.add(pw)
+                        x = '%s,%s' % (pw.name, pw.id)
+                        payment.covenant_payment_way_options.append(x)
 
                 # add occurrence
                 payment.occurrence.add( event.occurrences().latest('id') )

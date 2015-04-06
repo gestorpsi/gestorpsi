@@ -83,25 +83,32 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     payments = Payment.objects.filter(occurrence__event__referral=referral)
 
     '''
-        payment have 1 or N occurrences
+        payment have None, 1 or N occurrences
         array[0] = occurrence
-        array[1][0] = array of Payments
-        array[1][...] = array of Payments
-        array[1][N]= array of Payments
+        array[1] = array of Payments
+        array[1][0] = Payment
+        array[1][N] = Payment
     '''
-    payments = []
-    for o in Occurrence.objects.filter(event__referral=referral).order_by('-id'):
+    # event
+    payment_event = []
+    for o in Occurrence.objects.filter(payment__pack_size=0, event__referral=referral).order_by('-id'):
         tmp = []
         tmp.append(o)
 
         tmpp = []
-        for p in Payment.objects.filter(occurrence=o):
+        for p in Payment.objects.filter(occurrence=o, charge=1):
             tmpp.append(p)
         
         tmp.append( tmpp )
-        payments.append(tmp)
+        payment_event.append(tmp)
         del(tmp)
         del(tmpp)
+
+    # pack
+    payment_pack = Payment.objects.filter(charge=1, occurrence__event__referral=referral).distinct()
+
+    # period
+    payment_time = Payment.objects.filter(charge_gte=10, occurrence__event__referral=referral).distinct()
 
     try:
         discharged = ReferralDischarge.objects.get(referral=referral)

@@ -31,8 +31,6 @@ from gestorpsi.financial.models import PaymentWay
 
 from gestorpsi.settings import PAGE_RESULTS #DEBUG, MEDIA_URL, MEDIA_ROOT
 
-from decimal import Decimal
-
 """
     Tiago de Souza Moraes
     tiago @ futuria com br
@@ -70,41 +68,36 @@ def form(request, obj=False):
 
     if request.POST:
 
+
         # new
         if not obj:
-            obj = Covenant()
+            form = CovenantForm(request.POST)
+        else:
+            form = CovenantForm(request.POST, instance=obj)
 
-        # update or new
-        obj.organization = request.user.get_profile().org_active
-        obj.name = request.POST.get('name')
-        obj.active = True if request.POST.get('active') else False
-        obj.category = request.POST.get('category')
-        obj.deadline = request.POST.get('deadline')
-        obj.charge = request.POST.get('charge')
+        if form.is_valid():
+            # update or new
+            obj = form.save(commit=False) # A org is required
+            obj.organization = request.user.get_profile().org_active
+            obj.save() # save before add services
 
-        if request.POST.get('event_time'):
-            obj.event_time = request.POST.get('event_time')
-        
-        obj.price = request.POST.get('price')
-        obj.description = request.POST.get('description')
+            # add services
+            obj.service_set.clear() # remove all
+            for x in request.POST.getlist('services'): # add selected
+                obj.service_set.add( Service.objects.get(pk=x) )
 
-        obj.save() # save before add services
+            # payment way
+            obj.payment_way.clear() # remove all
+            for x in request.POST.getlist('payment_way'):
+                obj.payment_way.add( PaymentWay.objects.get(pk=x) )
 
-        # add services
-        obj.service_set.clear() # remove all
-        for x in request.POST.getlist('services'): # add selected
-            obj.service_set.add( Service.objects.get(pk=x) )
+            obj.save() # update
 
-        # payment way
-        obj.payment_way.clear() # remove all
-        for x in request.POST.getlist('payment_way'):
-            obj.payment_way.add( PaymentWay.objects.get(pk=x) )
+            messages.success(request, _(u'Salvo com sucesso!'))
+            return HttpResponseRedirect('/covenant/%s/' % obj.id )
 
-        obj.save() # update
-
-        messages.success(request, _(u'Salvo com sucesso!'))
-        return HttpResponseRedirect('/covenant/%s/' % obj.id )
-
+        else:
+            messages.error(request, _(u'Erro no preenchimento do campo'))
     # mount form
     else:
     

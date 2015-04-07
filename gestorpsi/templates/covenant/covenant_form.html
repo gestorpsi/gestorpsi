@@ -19,7 +19,7 @@ GNU General Public License for more details.
 {% load i18n %}
 
 {% block extrahead %}
-    <script type="text/javascript" src="/media/js/jquery.numeric.js"></script>
+    <script type="text/javascript" src="/media/js/jquery.maskMoney.min.js"></script>
     <script type="text/javascript" src="/media/js/gestorpsi.covenant.forms.js"></script>
 {% endblock extrahead %}
 
@@ -69,11 +69,12 @@ GNU General Public License for more details.
 
                     <!-- if charge equal 2, show this field else hide -->
                     <label for='event_time' style='display:{% ifequal obj.charge 2 %}block{% else %}none{% endifequal %};'>{% trans "N&uacute;mero de eventos" %} <br />
-                        <input type="text" maxlength="2" id="event_time" name="event_time" class="small" value="{% if obj.event_time %}{{ obj.event_time }}{% endif %}" {% ifequal obj.charge 2 %} required="required" {% endifequal %} />
+                        <input type="text" maxlength="3" id="event_time" name="event_time" class="small" value="{% if obj.event_time %}{{ obj.event_time }}{% endif %}" {% ifequal obj.charge 2 %} required="required" {% endifequal %} />
                     </label>
 
                     <label>{% trans "Valor" %} 
                         R$&nbsp;&nbsp;{{ form.price }}
+                        {{ form.price.errors }}
                     </label>
 
                     <div style='margin-left:0px;'>

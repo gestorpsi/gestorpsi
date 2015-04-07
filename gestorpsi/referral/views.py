@@ -91,12 +91,12 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     '''
     # event
     payment_event = []
-    for o in Occurrence.objects.filter(payment__pack_size=0, event__referral=referral).order_by('-id'):
+    for o in Occurrence.objects.filter(payment__covenant_charge=1, event__referral=referral).order_by('-id'):
         tmp = []
         tmp.append(o)
 
         tmpp = []
-        for p in Payment.objects.filter(occurrence=o, charge=1):
+        for p in Payment.objects.filter(occurrence=o, covenant_charge=1):
             tmpp.append(p)
         
         tmp.append( tmpp )
@@ -105,10 +105,10 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
         del(tmpp)
 
     # pack
-    payment_pack = Payment.objects.filter(charge=1, occurrence__event__referral=referral).distinct()
+    payment_pack = Payment.objects.filter(covenant_charge=2, occurrence__event__referral=referral).distinct()
 
     # period
-    payment_time = Payment.objects.filter(charge_gte=10, occurrence__event__referral=referral).distinct()
+    payment_time = Payment.objects.filter(covenant_charge__gte=10, occurrence__event__referral=referral).distinct()
 
     try:
         discharged = ReferralDischarge.objects.get(referral=referral)

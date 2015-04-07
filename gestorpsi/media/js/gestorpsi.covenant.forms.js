@@ -27,10 +27,10 @@ $(document).ready(function() {
         }
     });
 
-    // jquery.numeric
+    // jquery.maskMoney
     // 2 decimal places and positive 
-    $("#numbersOnly").numeric({ decimal : "." , negative: false , decimalPlaces: 2 });
+    $("#numbersOnly").maskMoney({ thousands:'.', decimal:',', allowZero:true });
     // event number positive
-    $("#event_time").numeric({ negative: false });
+    $("#event_time").maskMoney({ allowZero:false, thousands:'', decimal:'' });
 
 });

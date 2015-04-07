@@ -198,6 +198,7 @@ INSTALLED_APPS = (
     'gestorpsi.report',
     'gestorpsi.boleto',
     'gestorpsi.covenant',
+    'gestorpsi.financial',
     'swingtime',
     'registration',
     'south',
@@ -265,6 +266,11 @@ import djcelery
 djcelery.setup_loader()
 #django celery: task scheduling package
 
+# currency
+USE_L10N = True
+DECIMAL_SEPARATOR = ','
+THOUSAND_SEPARATOR = '.'
+USE_THOUSAND_SEPARATOR = True
 
 if not DEBUG:
     import logging

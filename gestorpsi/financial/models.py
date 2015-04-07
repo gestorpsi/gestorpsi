@@ -55,8 +55,8 @@ class Payment(models.Model):
     # from covenant
     covenant_charge = models.PositiveIntegerField(blank=True, null=True)
     covenant_pack_size = models.PositiveIntegerField(blank=True, null=True)
-    covenant_payment_way_options = models.TextField(blank=True, null=True,)# editabled=False)
-    covenant_payment_way_selected = models.TextField(blank=True, null=True,)# editabled=False)
+    covenant_payment_way_options = models.TextField(blank=True, null=True, editable=False)
+    covenant_payment_way_selected = models.TextField(blank=True, null=True, editable=False)
 
     # fk
     occurrence = models.ManyToManyField(Occurrence, null=True, blank=True) # contador pacote
@@ -70,7 +70,7 @@ class Payment(models.Model):
         '''
             if pack have event times like as covenant
         '''
-        if self.pack_size == self.occurrence.count():
+        if self.covenant_pack_size == self.occurrence.count():
             return True
         else:
             return False

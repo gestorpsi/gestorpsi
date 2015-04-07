@@ -351,28 +351,51 @@ def occurrence_confirmation_form(
             form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility=2, lendable=True) | Q(place =  occurrence.room.place, mobility=2, lendable=False))]
             return render_to_response(
                 template,
-                dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral),
+                dict(
+                    occurrence=occurrence,
+                    form=form,
+                    object=object,
+                    referral=occurrence.event.referral),
                 context_instance=RequestContext(request)
             )
     else:
-        if hasattr(occurrence_confirmation, 'presence') and int(occurrence_confirmation.presence) not in (1,2): # load initial data if client dont arrive
+        # load initial data if client dont arrive
+        if hasattr(occurrence_confirmation, 'presence') and int(
+                occurrence_confirmation.presence) not in (1, 2):
             occurrence_confirmation.date_started = occurrence.start_time
             occurrence_confirmation.date_finished = occurrence.end_time
 
         form = form_class(instance=occurrence_confirmation, initial={
-            'occurrence':occurrence,
-            'start_time':occurrence.start_time,
-            'end_time':occurrence.end_time,
+            'occurrence': occurrence,
+            'start_time': occurrence.start_time,
+            'end_time': occurrence.end_time,
             'device': initial_device,
             })
 
-        form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility="2", lendable=True) | Q(place=occurrence.room.place, mobility="2", lendable=False))]
+        form.fields['device'].widget.choices = [(
+            i.id, i) for i in DeviceDetails.objects.active(
+                request.user.get_profile().org_active).filter(
+                    Q(room=occurrence.room) |
+                    Q(mobility="2", lendable=True) |
+                    Q(
+                        place=occurrence.room.place,
+                        mobility="2",
+                        lendable=False))]
 
     return render_to_response(
         template,
-        dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral, occurrence_confirmation = occurrence_confirmation, hide_date_field = True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None, denied_to_write = denied_to_write ),
+        dict(
+            occurrence=occurrence,
+            form=form,
+            object=object,
+            referral=occurrence.event.referral,
+            occurrence_confirmation=occurrence_confirmation,
+            hide_date_field=True if occurrence_confirmation and int(
+                occurrence_confirmation.presence) > 2 else None,
+            denied_to_write=denied_to_write),
         context_instance=RequestContext(request)
     )
+
 
 @permission_required_with_403('schedule.schedule_read')
 def occurrence_group(
@@ -380,36 +403,56 @@ def occurrence_group(
     group_id,
     occurrence_id,
     template='schedule/schedule_occurrence_group.html',
-    #form_class=OccurrenceConfirmationForm,
+    # form_class=OccurrenceConfirmationForm,
 ):
 
-    group = get_object_or_404(ServiceGroup, pk=group_id, service__organization = request.user.get_profile().org_active, active=True)
-    occurrence = get_object_or_404(ScheduleOccurrence, pk=occurrence_id, event__referral__service__organization=request.user.get_profile().org_active)
-    group_occurrences = ScheduleOccurrence.objects.filter(start_time=occurrence.start_time, end_time=occurrence.end_time, room=occurrence.room
-            ).exclude(occurrenceconfirmation__presence = 4 # unmarked's
-            ).exclude(occurrenceconfirmation__presence = 5 # remarked
-            ).order_by('occurrenceconfirmation', 'event__referral__client')
+    group = get_object_or_404(
+        ServiceGroup,
+        pk=group_id,
+        service__organization=request.user.get_profile().org_active,
+        active=True)
+    occurrence = get_object_or_404(
+        ScheduleOccurrence,
+        pk=occurrence_id,
+        event__referral__service__organization=request.user.get_profile(
+            ).org_active)
+    group_occurrences = ScheduleOccurrence.objects.filter(
+        start_time=occurrence.start_time,
+        # unmarked's
+        # remarked
+        end_time=occurrence.end_time,
+        room=occurrence.room).exclude(
+            occurrenceconfirmation__presence=4).exclude(
+                occurrenceconfirmation__presence=5).order_by(
+                    'occurrenceconfirmation', 'event__referral__client')
     event = occurrence.event.referral
 
     return render_to_response(
         template,
         locals(),
-        #dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral, occurrence_confirmation = occurrence_confirmation, hide_date_field = True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None ),
+
+        # dict(
+        #    occurrence=occurrence,
+        #    form=form, object = object, referral = occurrence.event.referral,
+        #    occurrence_confirmation = occurrence_confirmation,
+        #    hide_date_field = True if occurrence_confirmation and int(
+        #        occurrence_confirmation.presence) > 2 else None ),
         context_instance=RequestContext(request)
     )
 
+
 @permission_required_with_403('schedule.schedule_list')
 def _datetime_view(
-        request,
-        template,
-        dt,
-        place,
-        referral=None,
-        client=None,
-        timeslot_factory=None,
-        items=None,
-        params=None
-    ):
+    request,
+    template,
+    dt,
+    place,
+    referral=None,
+    client=None,
+    timeslot_factory=None,
+    items=None,
+    params=None
+):
 
     '''
         Tiago de Souza Moraes
@@ -417,19 +460,26 @@ def _datetime_view(
     '''
 
     try:
-        referral = Referral.objects.get(pk=referral, service__organization=request.user.get_profile().org_active)
+        referral = Referral.objects.get(
+            pk=referral,
+            service__organization=request.user.get_profile().org_active)
     except:
         referral = None
 
     try:
-        object = Client.objects.get(pk=client, person__organization=request.user.get_profile().org_active)
+        object = Client.objects.get(
+            pk=client,
+            person__organization=request.user.get_profile().org_active)
     except:
         object = ''
 
-    place = Place.objects.get( pk=place )
-    occurrences =  ScheduleOccurrence.objects.filter(start_time__year = dt.year, start_time__month = dt.month, start_time__day = dt.day)
+    place = Place.objects.get(pk=place)
+    occurrences = ScheduleOccurrence.objects.filter(
+        start_time__year=dt.year,
+        start_time__month=dt.month,
+        start_time__day=dt.day)
 
-    user = request.user
+    # user = request.user
     timeslot_factory = timeslot_factory or create_timeslot_table
     params = params or {}
 
@@ -440,23 +490,31 @@ def _datetime_view(
 
         # get start_time and end_time_delta from place
         # get schedule slot time from organization
-        timeslots=timeslot_factory(dt, items, start_time=datetime_.time( place.hours_work()[0], place.hours_work()[1]),\
-                    end_time_delta=timedelta(hours=place.hours_work()[2] ),\
-                    time_delta=timedelta( minutes=int(request.user.get_profile().org_active.time_slot_schedule) ),\
-                    **params),
+        timeslots=timeslot_factory(
+            dt, items,
+            start_time=datetime_.time(
+                place.hours_work()[0], place.hours_work()[1]),
+            end_time_delta=timedelta(hours=place.hours_work()[2]),
+            time_delta=timedelta(
+                minutes=int(
+                    request.user.get_profile().org_active.time_slot_schedule)),
+            **params),
 
-        places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
-        place = place,
-        place_id = place.id,
+        places_list=Place.objects.active().filter(
+            organization=request.user.get_profile().org_active.id),
+        place=place,
+        place_id=place.id,
 
-        occurrences = occurrences,
+        occurrences=occurrences,
 
-        services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
-        professionals = CareProfessional.objects.active_all(request.user.get_profile().org_active.id),
-        referral = referral,
-        object = object,
-        tab_daily_class = "active", # class object, tab menu
-        restrict_schedule = hide_schedule_information(request.user)
+        services=Service.objects.active().filter(
+            organization=request.user.get_profile().org_active.id),
+        professionals=CareProfessional.objects.active_all(
+            request.user.get_profile().org_active.id),
+        referral=referral,
+        object=object,
+        tab_daily_class="active",  # class object, tab menu
+        restrict_schedule=hide_schedule_information(request.user)
     )
 
     return render_to_response(
@@ -466,55 +524,77 @@ def _datetime_view(
     )
 
 
-
 @permission_required_with_403('schedule.schedule_list')
-def schedule_index(request, 
-        year = datetime.now().strftime("%Y"), 
-        month = datetime.now().strftime("%m"), 
-        day = datetime.now().strftime("%d"), 
-        template='schedule/schedule_daily.html',
-        place = None,
-        **params
-    ):
+def schedule_index(
+    request,
+    year=datetime.now().strftime("%Y"),
+    month=datetime.now().strftime("%m"),
+    day=datetime.now().strftime("%d"),
+    template='schedule/schedule_daily.html',
+    place=None,
+    **params
+):
 
-    if place == None:
-        # Possible to exist more than one place as matriz or none, filter and get first element
-        if Place.objects.filter( place_type=1, organization=request.user.get_profile().org_active):
-            place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0].id
+    if place is None:
+        # Possible to exist more than one place as matriz or none, filter and
+        # get first element
+        if Place.objects.filter(
+                place_type=1,
+                organization=request.user.get_profile().org_active):
+            place = Place.objects.filter(
+                place_type=1,
+                organization=request.user.get_profile().org_active)[0].id
         # non exist a matriz place
         else:
-            place = Place.objects.filter(organization=request.user.get_profile().org_active)[0].id
-    # Test if clinic administrator has registered referrals before access schedule page.
-    if not Referral.objects.filter(status='01', organization=request.user.get_profile().org_active).count():
-        return render_to_response('schedule/schedule_referral_alert.html', context_instance=RequestContext(request))
+            place = Place.objects.filter(
+                organization=request.user.get_profile().org_active)[0].id
+    # Test if clinic administrator has registered referrals before access
+    # schedule page.
+    if not Referral.objects.filter(
+            status='01',
+            organization=request.user.get_profile().org_active).count():
+        return render_to_response(
+            'schedule/schedule_referral_alert.html',
+            context_instance=RequestContext(request))
 
-    return _datetime_view(request, template, datetime(int(year), int(month), int(day)), place, **params)
+    return _datetime_view(
+        request, template, datetime(int(year), int(month), int(day)),
+        place, **params)
 
 
+def week_view(
+    request,
+    year=datetime.now().strftime("%Y"),
+    month=datetime.now().strftime("%m"),
+    day=datetime.now().strftime("%d"),
+):
 
-def week_view(request,
-        year = datetime.now().strftime("%Y"), 
-        month = datetime.now().strftime("%m"), 
-        day = datetime.now().strftime("%d"),
-    ):
+    return render_to_response(
+        'schedule/schedule_week.html',
+        dict(
+            places=Place.objects.active().filter(
+                organization=request.user.get_profile().org_active.id),
+            rooms=Room.objects.active().filter(
+                place__organization=request.user.get_profile().org_active.id),
+            services=Service.objects.active().filter(
+                organization=request.user.get_profile().org_active.id),
+            professionals=CareProfessional.objects.active_all(
+                request.user.get_profile().org_active.id),
+            tab_week_class='active'),
+        context_instance=RequestContext(request))
 
-    return render_to_response('schedule/schedule_week.html', dict(
-                places = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
-                rooms = Room.objects.active().filter(place__organization=request.user.get_profile().org_active.id),
-                services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
-                professionals = CareProfessional.objects.active_all(request.user.get_profile().org_active.id),
-                tab_week_class = 'active',
-            ), context_instance=RequestContext(request))
 
-def week_view_table(request,
-    year = datetime.now().strftime("%Y"),
-    month = datetime.now().strftime("%m"),
-    day = datetime.now().strftime("%d"), ):
+def week_view_table(
+    request,
+    year=datetime.now().strftime("%Y"),
+    month=datetime.now().strftime("%m"),
+    day=datetime.now().strftime("%d")
+):
 
     if not year or not month or not day:
         today = datetime.now()
     else:
-        today = datetime(year=int(year),month=int(month),day=int(day))
+        today = datetime(year=int(year), month=int(month), day=int(day))
 
     first_week_day = today - timedelta(days=today.weekday())
 
@@ -527,7 +607,9 @@ def week_view_table(request,
         week_day = first_week_day+timedelta(i)
         week.append(week_day)
         groups = []
-        for s in schedule_occurrences(request, week_day.strftime('%Y'), week_day.strftime('%m'), week_day.strftime('%d')):
+        for s in schedule_occurrences(
+                request, week_day.strftime('%Y'), week_day.strftime('%m'),
+                week_day.strftime('%d')):
             if s.is_group():
                 if s.event.referral.group.pk not in groups:
                     occurrences_daily.append({
@@ -554,61 +636,79 @@ def week_view_table(request,
 
     restrict_schedule = hide_schedule_information(request.user)
 
-    return render_to_response('schedule/schedule_week_table.html', locals(), context_instance=RequestContext(request))
-
+    return render_to_response(
+        'schedule/schedule_week_table.html', locals(),
+        context_instance=RequestContext(request))
 
 
 @permission_required_with_403('schedule.schedule_list')
 def today_occurrences(request):
-    return daily_occurrences(request, datetime.now().strftime("%Y"), datetime.now().strftime("%m"), datetime.now().strftime("%d"))
+    return daily_occurrences(
+        request, datetime.now().strftime("%Y"), datetime.now().strftime("%m"),
+        datetime.now().strftime("%d"))
 
 
-
-def schedule_occurrences(request, year = 1, month = 1, day = None):
+def schedule_occurrences(request, year=1, month=1, day=None):
     if day:
-        date_start = datetime.strptime("%s%s%s" % (year, month, day),"%Y%m%d")
+        date_start = datetime.strptime("%s%s%s" % (year, month, day), "%Y%m%d")
         date_end = date_start+timedelta(days=+1)
     else:
-        date_start = datetime.strptime("%s%s" % (year, month),"%Y%m")
-        date_end = date_start+timedelta( days=calendar.monthrange(int(year), int(month))[1] + 0)
+        date_start = datetime.strptime("%s%s" % (year, month), "%Y%m")
+        date_end = date_start+timedelta(
+            days=calendar.monthrange(int(year), int(month))[1] + 0)
 
     objs = ScheduleOccurrence.objects.filter(
-            start_time__gte=date_start,
-            start_time__lt=date_end,
-            event__referral__organization=request.user.get_profile().org_active.id
-            ).exclude(occurrenceconfirmation__presence = 4 # unmarked's
-            ).exclude(occurrenceconfirmation__presence = 5 # remarked
-            ).exclude(room__place__active = False # exclude not active places
-            ).exclude(room__active = False) # exclude not active rooms
+        start_time__gte=date_start,
+        start_time__lt=date_end,
+        # unmarked's
+        # remarked
+        # exclude not active places
+        # exclude not active rooms
+        event__referral__organization=request.user.get_profile(
+            ).org_active.id).exclude(
+                occurrenceconfirmation__presence=4).exclude(
+                    occurrenceconfirmation__presence=5).exclude(
+                        room__place__active=False).exclude(room__active=False)
 
     return objs
 
-@permission_required_with_403('schedule.schedule_list')
-def daily_occurrences(request, year = 1, month = 1, day = None, place = None):
 
-    #locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
-    #locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
-    #locale.setlocale(locale.LC_ALL,'pt_BR.ISO8859-1')
+@permission_required_with_403('schedule.schedule_list')
+def daily_occurrences(request, year=1, month=1, day=None, place=None):
+
+    # locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+    # locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
+    # locale.setlocale(locale.LC_ALL,'pt_BR.ISO8859-1')
     occurrences = schedule_occurrences(request, year, month, day)
 
-    array = {} #json
+    array = {}  # json
     i = 0
     groups = []
 
     date = datetime.strptime(('%s/%s/%s' % (year, month, day)), "%Y/%m/%d")
 
-    if place == None:
-        # Possible to exist more than one place as matriz or none, filter and get first element
-        if Place.objects.filter( place_type=1, organization=request.user.get_profile().org_active):
-            place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0].id
+    if place is None:
+        """
+        Possible to exist more than one place as matriz or none, filter and get
+        first element
+        """
+        if Place.objects.filter(
+                place_type=1,
+                organization=request.user.get_profile().org_active):
+            place = Place.objects.filter(
+                place_type=1,
+                organization=request.user.get_profile().org_active)[0].id
         # non exist a matriz place
         else:
-            place = Place.objects.filter(organization=request.user.get_profile().org_active)[0].id
+            place = Place.objects.filter(
+                organization=request.user.get_profile().org_active)[0].id
 
     array['util'] = {
         'date': ('%s-%s-%s' % (year, month, day)),
         'date_field': ('%s/%s/%s' % (year, month, day)),
-        'str_date': u'%s, %s %s %s %s %s' % (date.strftime("%A").decode('utf-8'), date.strftime("%d"), _('of'), date.strftime("%B"), _('of'), date.strftime("%Y")),
+        'str_date': u'%s, %s %s %s %s %s' % (
+            date.strftime("%A").decode('utf-8'), date.strftime("%d"),
+            _('of'), date.strftime("%B"), _('of'), date.strftime("%Y")),
         'next_day': (date + timedelta(days=+1)).strftime("%Y/%m/%d"),
         'prev_day': (date + timedelta(days=-1)).strftime("%Y/%m/%d"),
         'weekday': date.weekday(),
@@ -618,12 +718,15 @@ def daily_occurrences(request, year = 1, month = 1, day = None, place = None):
     for o in occurrences:
         have_same_group = False
         if hasattr(o.event.referral.group, 'id'):
-            if '%s-%s-%s' % (o.event.referral.group.id, o.room_id, o.start_time.strftime('%H:%M:%S')) in groups:
+            if '%s-%s-%s' % (
+                    o.event.referral.group.id, o.room_id,
+                    o.start_time.strftime('%H:%M:%S')) in groups:
                 have_same_group = True
 
         if not have_same_group:
             range = o.end_time-o.start_time
-            rowspan = range.seconds/1800 # how many blocks of 30min the occurrence have
+            # how many blocks of 30min the occurrence have
+            rowspan = range.seconds/1800
 
             array[i] = {
                 'id': o.id,
@@ -631,12 +734,16 @@ def daily_occurrences(request, year = 1, month = 1, day = None, place = None):
                 'room': o.room_id,
                 'place': o.room.place_id,
                 'room_name': (u"%s" % o.room),
-                'service_id':o.event.referral.service.id,
-                'group': (u"%s" % '' if not hasattr(o.event.referral.group, 'id') else o.event.referral.group.description),
-                'group_id': '' if not hasattr(o.event.referral.group, 'id') else o.event.referral.group.id,
+                'service_id': o.event.referral.service.id,
+                'group': (u"%s" % '' if not hasattr(
+                    o.event.referral.group,
+                    'id') else o.event.referral.group.description),
+                'group_id': '' if not hasattr(
+                    o.event.referral.group,
+                    'id') else o.event.referral.group.id,
                 'service': u"%s" % o.event.referral,
-                'color':o.event.referral.service.color,
-                'font_color':o.event.referral.service.font_color,
+                'color': o.event.referral.service.color,
+                'font_color': o.event.referral.service.font_color,
                 'start_time': o.start_time.strftime('%H:%M:%S'),
                 'end_time': o.end_time.strftime('%H:%M:%S'),
                 'rowspan': rowspan,
@@ -646,13 +753,15 @@ def daily_occurrences(request, year = 1, month = 1, day = None, place = None):
             sub_count = 0
             array[i]['professional'] = {}
             for p in o.event.referral.professional.all():
-                array[i]['professional'][sub_count] = ({'id':p.id, 'name':p.person.name})
+                array[i]['professional'][sub_count] = (
+                    {'id': p.id, 'name': p.person.name})
                 sub_count = sub_count + 1
 
             sub_count = 0
             array[i]['client'] = {}
             for c in o.event.referral.client.all():
-                array[i]['client'][sub_count] = ({'id':c.id, 'name':c.person.name})
+                array[i]['client'][sub_count] = (
+                    {'id': c.id, 'name': c.person.name})
                 sub_count = sub_count + 1
 
             sub_count = 0
@@ -664,15 +773,23 @@ def daily_occurrences(request, year = 1, month = 1, day = None, place = None):
                 device_list = o.occurrenceconfirmation.device.all()
 
             for o in device_list:
-                array[i]['device'][sub_count] = ({'id':o.id, 'name': ("%s - %s - %s" % (o.device.description, o.model, o.part_number)) })
+                array[i]['device'][sub_count] = ({'id': o.id, 'name': (
+                    "%s - %s - %s" % (
+                        o.device.description, o.model, o.part_number))})
                 sub_count = sub_count + 1
 
             i = i + 1
 
-            # concat group id, room id and start time to register in a list and verify in the begin of the loop if the same
-            # occurrence already has been registered
+            """
+            concat group id, room id and start time to register in a list and
+            verify in the begin of the loop if the same occurrence already has
+            been registered
+            """
+
             if hasattr(o, 'event') and hasattr(o.event.referral.group, 'id'):
-                groups.append('%s-%s-%s' % (o.event.referral.group.id, o.room_id, o.start_time.strftime('%H:%M:%S')))
+                groups.append('%s-%s-%s' % (
+                    o.event.referral.group.id, o.room_id,
+                    o.start_time.strftime('%H:%M:%S')))
 
     array['util']['occurrences_total'] = i
     array = simplejson.dumps(array)
@@ -680,19 +797,25 @@ def daily_occurrences(request, year = 1, month = 1, day = None, place = None):
     return HttpResponse(array, mimetype='application/json')
 
 
-
 @permission_required_with_403('schedule.schedule_write')
-def occurrence_family_form(request, occurence_id = None, template=None):
-    occurrence = get_object_or_404(ScheduleOccurrence, pk=occurence_id, event__referral__service__organization=request.user.get_profile().org_active)
+def occurrence_family_form(request, occurence_id=None, template=None):
+    occurrence = get_object_or_404(
+        ScheduleOccurrence, pk=occurence_id,
+        event__referral__service__organization=request.user.get_profile(
+            ).org_active)
 
     # check if requested user have perms to read it
     if not _access_check_by_occurrence(request, occurrence):
-        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+        return render_to_response(
+            '403.html',
+            {'object': _("Oops! You don't have access for this service!"), },
+            context_instance=RequestContext(request))
 
     if request.POST:
         if not request.POST.getlist('family_members'):
             messages.success(request, _('No member family selected'))
-            return render_to_response(template, locals(), context_instance=RequestContext(request))
+            return render_to_response(
+                template, locals(), context_instance=RequestContext(request))
 
         if not hasattr(occurrence, 'occurrencefamily'):
             """ new register """
@@ -707,22 +830,32 @@ def occurrence_family_form(request, occurence_id = None, template=None):
                 f.client.add(c)
 
         messages.success(request, _('Family members added successfully'))
-        return http.HttpResponseRedirect('/schedule/events/%s/family/form/' % occurrence.id)
+        return http.HttpResponseRedirect(
+            '/schedule/events/%s/family/form/' % occurrence.id)
 
-    return render_to_response(template, locals(), context_instance=RequestContext(request))
+    return render_to_response(
+        template, locals(), context_instance=RequestContext(request))
+
 
 @permission_required_with_403('schedule.schedule_write')
-def occurrence_employee_form(request, occurence_id = None, template=None):
-    occurrence = get_object_or_404(ScheduleOccurrence, pk=occurence_id, event__referral__service__organization=request.user.get_profile().org_active)
+def occurrence_employee_form(request, occurence_id=None, template=None):
+    occurrence = get_object_or_404(
+        ScheduleOccurrence, pk=occurence_id,
+        event__referral__service__organization=request.user.get_profile(
+            ).org_active)
 
     # check if requested user have perms to read it
     if not _access_check_by_occurrence(request, occurrence):
-        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+        return render_to_response(
+            '403.html',
+            {'object': _("Oops! You don't have access for this service!"), },
+            context_instance=RequestContext(request))
 
     if request.POST:
         if not request.POST.getlist('company_employees'):
             messages.success(request, _('No company employees selected'))
-            return render_to_response(template, locals(), context_instance=RequestContext(request))
+            return render_to_response(
+                template, locals(), context_instance=RequestContext(request))
 
         if not hasattr(occurrence, 'occurrenceemployees'):
             """ new register """
@@ -737,9 +870,11 @@ def occurrence_employee_form(request, occurence_id = None, template=None):
                 f.client.add(c)
 
         messages.success(request, _('Company employee(s) added successfully'))
-        return http.HttpResponseRedirect('/schedule/events/%s/employee/form/' % occurrence.id)
+        return http.HttpResponseRedirect(
+            '/schedule/events/%s/employee/form/' % occurrence.id)
 
-    return render_to_response(template, locals(), context_instance=RequestContext(request))
+    return render_to_response(
+        template, locals(), context_instance=RequestContext(request))
 
 
 @permission_required_with_403('schedule.schedule_write')

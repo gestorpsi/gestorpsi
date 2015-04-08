@@ -253,7 +253,6 @@ def signature_save(request):
         return render_to_response('organization/organization_signature.html', {
             'obj': obj,
             'plans': Plan.objects.filter( active=True ).order_by('weight'),
-            'invoices': Invoice.objects.filter(organization=object, status=1).order_by('date'), 
             'payment_type': PaymentType.objects.filter(active=True, show_to_client=True).order_by('-name'),
             },
             context_instance=RequestContext(request))

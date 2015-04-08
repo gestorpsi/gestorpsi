@@ -28,8 +28,10 @@ $(document).ready(function() {
     });
 
     // jquery.maskMoney
+    // http://plentz.github.io/jquery-maskmoney/
+    
     // 2 decimal places and positive 
-    $("#numbersOnly").maskMoney({ thousands:'.', decimal:',', allowZero:true });
+    $("#numbersOnly").maskMoney({ thousands:'', decimal:',', allowZero:true });
     // event number positive
     $("#event_time").maskMoney({ allowZero:false, thousands:'', decimal:'' });
 

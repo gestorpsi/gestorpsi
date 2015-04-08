@@ -19,19 +19,28 @@ from gestorpsi.financial.models import Payment, PaymentWay
 
 
 class PaymentForm(forms.ModelForm):
-    price = forms.DecimalField(
-            label='Valor',
-            decimal_places=2,
-            required=True,
-            )
+    price = forms.DecimalField(max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'1.234,56', 'id':"price", 'data-symbol':"R$ ", 'data-thousands':".", 'data-decimal':"," } ))
 
-    payment_way = forms.Select( 
-            #label='Forma de pagamento',
+    off = forms.DecimalField(max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'1.234,56', 'id':"off"} ))
+
+    total = forms.DecimalField(max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'1.234,56', 'id':"total"} ))
+
+    #price = forms.DecimalField(
+            #label='Valor',
+            #decimal_places=2,
             #required=True,
-            #widget=forms.Select(attrs={'class':'big'}),
-            #queryset=PaymentWay.objects.all() 
-            )
+            #)
 
+    #payment_way = forms.Select( 
+            ##label='Forma de pagamento',
+            ##required=True,
+            ##widget=forms.Select(attrs={'class':'big'}),
+            ##queryset=PaymentWay.objects.all() 
+            #)
+    #covenant_payment_way_options = forms.ChoiceField( required=True, widget=forms.CheckboxInput( attrs={'class':'extrabig'} ))
+
+    pass
+        
     class Meta:
         model = Payment
-        exclude = ['occurrence','pack_size']
+        exclude = ['occurrence','covenant_pack_size','covenant_charge']

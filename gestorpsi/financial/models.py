@@ -47,7 +47,7 @@ class Payment(models.Model):
     name = models.CharField(_('Nome'), max_length=250, null=False, blank=False) # covenant name or billet
     created = models.DateTimeField(_('Criado'), auto_now_add=True, default='2000-12-31 00:00:00')
     status = models.CharField(_(u'Situação'), max_length=2, choices=STATUS, default='0')
-    payment_way = models.ManyToManyField(PaymentWay, null=False, blank=False, verbose_name='Forma de pagamento')
+    #payment_way = models.ManyToManyField(PaymentWay, null=False, blank=False, verbose_name='Forma de pagamento')
     price = models.DecimalField(_(u'Valor'), max_digits=6, decimal_places=2, null=False, blank=False) # from covenant
     off = models.DecimalField(_(u'Desconto'), max_digits=6, decimal_places=2, null=False, blank=False)
     total = models.DecimalField(_(u'Total'), max_digits=6, decimal_places=2, null=False, blank=False)
@@ -55,11 +55,11 @@ class Payment(models.Model):
     # from covenant
     covenant_charge = models.PositiveIntegerField(blank=True, null=True)
     covenant_pack_size = models.PositiveIntegerField(blank=True, null=True)
-    covenant_payment_way_options = models.TextField(blank=True, null=True, editable=False)
-    covenant_payment_way_selected = models.TextField(blank=True, null=True, editable=False)
+    covenant_payment_way_options = models.TextField(blank=True, null=True)#, editable=False)
+    covenant_payment_way_selected = models.TextField(blank=True, null=True)#, editable=False)
 
     # fk
-    occurrence = models.ManyToManyField(Occurrence, null=True, blank=True) # contador pacote
+    occurrence = models.ManyToManyField(Occurrence, null=True, blank=True, editable=False) # contador pacote
 
 
     def __unicode__(self):

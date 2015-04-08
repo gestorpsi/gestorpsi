@@ -16,6 +16,13 @@ GNU General Public License for more details.
 
 $(document).ready(function() {
 
+    // jquery.maskmoney
+    // http://plentz.github.io/jquery-maskmoney/
+    /*$("#price").maskMoney({ thousands:'', decimal:',', allowZero:true });*/
+    $("#price").maskMoney();
+    /*$("#off").maskMoney({ thousands:'', decimal:',', allowZero:true });*/
+    /*$("#total").maskMoney({ thousands:'', decimal:',', allowZero:true });*/
+
     /*
      * show and hide date 
      */

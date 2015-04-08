@@ -270,7 +270,7 @@ djcelery.setup_loader()
 USE_L10N = True
 DECIMAL_SEPARATOR = ','
 THOUSAND_SEPARATOR = '.'
-USE_THOUSAND_SEPARATOR = True
+USE_THOUSAND_SEPARATOR = False
 
 if not DEBUG:
     import logging

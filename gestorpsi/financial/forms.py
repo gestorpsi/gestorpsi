@@ -19,17 +19,10 @@ from gestorpsi.financial.models import Payment, PaymentWay
 
 
 class PaymentForm(forms.ModelForm):
-    price = forms.DecimalField(max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'1.234,56', 'id':"price", 'data-symbol':"R$ ", 'data-thousands':".", 'data-decimal':"," } ))
-
-    off = forms.DecimalField(max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'1.234,56', 'id':"off"} ))
-
-    total = forms.DecimalField(max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'1.234,56', 'id':"total"} ))
-
-    #price = forms.DecimalField(
-            #label='Valor',
-            #decimal_places=2,
-            #required=True,
-            #)
+    name = forms.CharField(label=u'Nome convênio', max_length=250, widget=forms.TextInput( attrs={ 'readonly':'true' , 'class':'big' }) );
+    price = forms.DecimalField(label=u"Valor", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','readonly':'true'} ) )
+    off = forms.DecimalField(label=u"Desconto", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'1.234,56'} ))
+    total = forms.DecimalField(label=u"Total", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','readonly':'true'} ) )
 
     #payment_way = forms.Select( 
             ##label='Forma de pagamento',
@@ -39,8 +32,6 @@ class PaymentForm(forms.ModelForm):
             #)
     #covenant_payment_way_options = forms.ChoiceField( required=True, widget=forms.CheckboxInput( attrs={'class':'extrabig'} ))
 
-    pass
-        
     class Meta:
         model = Payment
-        exclude = ['occurrence','covenant_pack_size','covenant_charge']
+        exclude = ['occurrence','covenant_pack_size','covenant_charge','covenant_payment_way_options','covenant_payment_way_selected']

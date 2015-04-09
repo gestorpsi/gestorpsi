@@ -18,10 +18,7 @@ $(document).ready(function() {
 
     // jquery.maskmoney
     // http://plentz.github.io/jquery-maskmoney/
-    /*$("#price").maskMoney({ thousands:'', decimal:',', allowZero:true });*/
-    $("#price").maskMoney();
-    /*$("#off").maskMoney({ thousands:'', decimal:',', allowZero:true });*/
-    /*$("#total").maskMoney({ thousands:'', decimal:',', allowZero:true });*/
+    $('input[id*="off"]').maskMoney({ thousands:'', decimal:',', allowZero:true });
 
     /*
      * show and hide date 
@@ -40,48 +37,32 @@ $(document).ready(function() {
 
 
     /*
-     * show and hide covenat when change select to new payment
+     * When change input OFF update total
+     * 
+     * <input name="payment_form-59-off" placeholder="1.234,56" required="required" type="text" class="big" value="20,50" id="id_payment_form-59-off" />
+     * Any input contains the word "off" in name. Pattern: *-ID-off; str.split('-')[1] = ID
+     *
      */
-    $('select#payment_select').change( function(){ 
-        var id = $('select#payment_select').val();
-
-        // hide all
-        $('div[id*="payment_form"]').hide(); // hide all
-        $('div#covenant').hide(); //select
-
-        if ( id == 'new' ){ 
-            $('div#covenant').show(); //select
-            /*$('div#payment_form_new').show();*/
-        }
-        
-        if ( id !=0 ){ 
-            $('div#payment_form'+id).show();
-        }
-    });
-
-
-    /*
-     * show and hide covenant
-     */
-    $('select#covenant_select').change( function(){ 
-        var idc = $('select#covenant_select').val();
-        $('div[id*="payment_form_covenant"]').hide(); // hide all
-        $('div#payment_form_covenant'+idc).show(); // show
-    });
-
-    // cal off
     $('input[name*="off"]').keyup( function(){ 
-        var idc = $('select#covenant_select').val();
-        var off = parseFloat( $('input[name=off'+idc+']').val() );
-        var price = parseFloat( $('input[name=price'+idc+']').val() );
 
+        // get id
+        idc = this.name.split("-")[1];
+
+        // get values
+        var off = parseFloat( $('input[name=payment_form-'+idc+'-off]').val().replace(",", ".") );
+        var price = parseFloat( $('input[name=payment_form-'+idc+'-price]').val().replace(",",".") );
+
+        // sum values
         if ( isNaN(off) == true ){ 
-            var total = +price;
+            var total = parseFloat(+price);
         } else { 
-            var total = -off+price;
+            var total = parseFloat(-off+price);
         }
 
-        $('input[name=total'+idc+']').val( total );
+        // convert to currency
+        tt = total.toFixed(2).replace(".",",");
+
+        $('input[name=payment_form-'+idc+'-total]').val(tt);
     });
 
 });

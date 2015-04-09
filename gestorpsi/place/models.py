@@ -23,24 +23,29 @@ from django.contrib.contenttypes import generic
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 
-class PlaceType( models.Model ):
+
+class PlaceType(models.Model):
     """
     This class represents place types.
     @version: 1.0
     """
-    description= models.CharField( max_length= 100 )
+    description = models.CharField(max_length=100)
+
     def __unicode__(self):
         return "%s" % self.description
+
     class Meta:
         ordering = ['description']
+
 
 class PlaceManager(models.Manager):
     def active(self):
         return super(PlaceManager, self).get_query_set().filter(active=True)
+
     def deactive(self):
         return super(PlaceManager, self).get_query_set().filter(active=False)
 
-HOURS = ( 
+HOURS = (
         ('00:00', '00,00'),
         ('00:30', '00,30'),
         ('01:00', '01,00'),
@@ -92,7 +97,8 @@ HOURS = (
         ('24:00', '24,00'),
 )
 
-class Place( models.Model ):
+
+class Place(models.Model):
     """
     This class represents a place.
     @version: 1.0
@@ -103,20 +109,22 @@ class Place( models.Model ):
     address = generic.GenericRelation(Address)
     phones = generic.GenericRelation(Phone)
     place_type = models.ForeignKey(PlaceType)
-    organization = models.ForeignKey(Organization, null= True, blank= True)
+    organization = models.ForeignKey(Organization, null=True, blank=True)
     comments = models.TextField(blank=True, null=True)
 
-    hour_start = models.CharField(u'Primeiro horário', max_length=10, default='07,00', choices=HOURS)
-    hour_end = models.CharField(u'Último horário', max_length=10, default='19,00', choices=HOURS)
-    
+    hour_start = models.CharField(u'Primeiro horário', max_length=10,
+                                  default='07,00', choices=HOURS)
+    hour_end = models.CharField(u'Último horário', max_length=10,
+                                default='19,00', choices=HOURS)
+
     objects = PlaceManager()
-    
+
     def __unicode__(self):
-       return "%s" % self.label
-    
+        return "%s" % self.label
+
     def __str__(self):
-       return "%s" % self.label
-    
+        return "%s" % self.label
+
     def __empty__(self):
         return ''
     area = property(__empty__)
@@ -127,17 +135,20 @@ class Place( models.Model ):
     neighborhood = property(__empty__)
     zipCode = property(__empty__)
     addressType = property(__empty__)
-   
+
     def get_first_phone(self):
-       if ( len( self.phones.all() ) != 0 ):
-         return self.phones.all()[0]
-       else:
-         return ''
+        if (len(self.phones.all()) != 0):
+            return self.phones.all()[0]
+        else:
+            return ''
 
     def occurrences(self):
         o = []
         for room in self.room_set.filter(active=True):
-            for i in room.scheduleoccurrence_set.filter(start_time__gte = datetime.now()).exclude(occurrenceconfirmation__presence=4).exclude(occurrenceconfirmation__presence=5):
+            for i in room.scheduleoccurrence_set.filter(
+                start_time__gte=datetime.now()).exclude(
+                    occurrenceconfirmation__presence=4).exclude(
+                    occurrenceconfirmation__presence=5):
                 o.append(i)
         return o
 
@@ -151,7 +162,9 @@ class Place( models.Model ):
         )
 
     def revision(self):
-        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by(
+            '-revision__date_created').latest(
+            'revision__date_created').revision
 
     # Tiago de Souza Moraes, 26/11/2013
     # retorna a quantidade de horas que a sala estará aberta para atendimento
@@ -160,63 +173,71 @@ class Place( models.Model ):
         r = [None]*3
 
         # hour
-        r[0] = ( int(self.hour_start.split(',')[0]) )
+        r[0] = (int(self.hour_start.split(',')[0]))
         # min
-        r[1] = ( int(self.hour_start.split(',')[1]) )
+        r[1] = (int(self.hour_start.split(',')[1]))
 
         # quantas horarios disponivel na agenda
         m = 0
-        # meia hora existe? 
-        if int(self.hour_start.split(',')[1]) >  int(self.hour_end.split(',')[1]) :
+        # meia hora existe?
+        if int(self.hour_start.split(',')[1]) > int(self.hour_end.split(
+                                                    ',')[1]):
             m = float(-.5)
 
-        if int(self.hour_start.split(',')[1]) <  int(self.hour_end.split(',')[1]) :
+        if int(self.hour_start.split(',')[1]) < int(self.hour_end.split(
+                                                    ',')[1]):
             m = float(.5)
 
-        x = ( float(self.hour_end.split(',')[0]) - float(self.hour_start.split(',')[0]) ) + m
+        x = (float(self.hour_end.split(',')[0]) - float(self.hour_start.split(
+                                                        ',')[0])) + m
 
         r[2] = x
-        return r 
-        
+        return r
+
 reversion.register(Place, follow=['address', 'phones'])
 
-class RoomType( models.Model ):
+
+class RoomType(models.Model):
     """
-    This class contains information on room types, thus instances of this class can be used to
-    handle information related to room types.
+    This class contains information on room types, thus instances of this class
+    can be used to handle information related to room types.
     @version: 1.0
     """
-    description= models.CharField( max_length= 45, unique= True )
+    description = models.CharField(max_length=45, unique=True)
 
     def __unicode__(self):
         return "%s" % self.description
+
     def __str__(self):
         return "%s" % self.description
 
     class Meta:
         ordering = ['description']
 
+
 class RoomManager(models.Manager):
     def active(self):
         return super(RoomManager, self).get_query_set().filter(active=True)
+
     def deactive(self):
         return super(RoomManager, self).get_query_set().filter(active=False)
 
-class Room( models.Model ):
+
+class Room(models.Model):
     """
-    This class represents a room, it also holds information on the furniture that belongs to
-    the underlying room and its dimension.
+    This class represents a room, it also holds information on the furniture
+    that belongs to the underlying room and its dimension.
     @version: 1.0
     """
     id = UuidField(primary_key=True)
-    description= models.CharField( max_length= 80, blank=True )
+    description = models.CharField(max_length=80, blank=True)
     dimension = models.CharField(max_length=10, blank=True)
-    place= models.ForeignKey( Place )
-    room_type= models.ForeignKey( RoomType, related_name= 'room_type' )
-    furniture= models.TextField()
+    place = models.ForeignKey(Place)
+    room_type = models.ForeignKey(RoomType, related_name='room_type')
+    furniture = models.TextField()
     active = models.BooleanField(default=True)
     comments = models.TextField(blank=True)
-    
+
     objects = RoomManager()
 
     class Meta:
@@ -227,7 +248,7 @@ class Room( models.Model ):
 
     def __str__(self):
         return "%s" % self.description
-    
+
     def __empty__(self):
         return ''
     area = property(__empty__)
@@ -242,29 +263,38 @@ class Room( models.Model ):
     addressType = property(__empty__)
 
     def revision(self):
-        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by(
+            '-revision__date_created').latest(
+            'revision__date_created').revision
 
     def is_busy(self, start_time, end_time):
-        ''' check if room is busy in schedule for selected range ''' 
-        ''' filter 1: start time not in occurrence range ''' 
+        ''' check if room is busy in schedule for selected range '''
+        ''' filter 1: start time not in occurrence range '''
         ''' filter 2: end time not in occurrence range '''
         ''' filter 2: end time not in occurrence range '''
         ''' filter 3: occurrence range are not between asked values '''
-        
+
         from gestorpsi.schedule.models import ScheduleOccurrence
-        queryset = ScheduleOccurrence.objects.filter(room=self) \
-            .exclude(occurrenceconfirmation__presence=4).exclude(occurrenceconfirmation__presence=5)
+        queryset = ScheduleOccurrence.objects.filter(
+            room=self).exclude(occurrenceconfirmation__presence=4).exclude(
+            occurrenceconfirmation__presence=5)
 
         return True if \
-            queryset.filter(start_time__lte = start_time, end_time__gt = start_time) or \
-            queryset.filter(start_time__lt = end_time, end_time__gte = end_time) or \
-            queryset.filter(start_time__gte = start_time, end_time__lte = end_time) \
+            queryset.filter(start_time__lte=start_time,
+                            end_time__gt=start_time) or \
+            queryset.filter(start_time__lt=end_time,
+                            end_time__gte=end_time) or \
+            queryset.filter(start_time__gte=start_time,
+                            end_time__lte=end_time) \
             else False
-    
+
     def occurrences(self):
         o = []
-        for i in self.scheduleoccurrence_set.filter(start_time__gte = datetime.now()).exclude(occurrenceconfirmation__presence=4).exclude(occurrenceconfirmation__presence=5):
-            o.append(i)
+        for i in self.scheduleoccurrence_set.filter(
+            start_time__gte=datetime.now()).exclude(
+            occurrenceconfirmation__presence=4).exclude(
+                occurrenceconfirmation__presence=5):
+                o.append(i)
         return o
 
 reversion.register(Room)

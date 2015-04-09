@@ -20,17 +20,19 @@ from gestorpsi.place.models import PlaceType, Place
 from gestorpsi.address.models import City, State, Country, AddressType
 import unittest
 
+
 class PlaceTest(unittest.TestCase):
     def setUp(self):
-        self.place= Place(label='testing place', visible= True )
-        place_type= PlaceType(description= 'a place type')
+        self.place = Place(label='testing place', visible=True)
+        place_type = PlaceType(description='a place type')
         place_type.save()
-        self.place.place_type= place_type
-        phone_type= PhoneType(description= 'phone type test')
-        phone= Phone(area= '23', phoneNumber= '45679078', ext= '4444', phoneType= phone_type)
+        self.place.place_type = place_type
+        phone_type = PhoneType(description='phone type test')
+        phone = Phone(area='23', phoneNumber='45679078', ext='4444',
+                      phoneType=phone_type)
         phone.content_object = self.place
 
-        addressType=AddressType(description='Home')
+        addressType = AddressType(description='Home')
         addressType.save()
         address = Address()
         address.addressPrefix = 'Rua'
@@ -40,11 +42,11 @@ class PlaceTest(unittest.TestCase):
         address.zipCode = '12345-123'
         address.addressType = AddressType.objects.get(pk=1)
 
-        country= Country( name= 'test', nationality= 'testing' )
+        country = Country(name='test', nationality='testing')
         country.save()
-        state= State(name= 'test', shortName= 't', country= country )
+        state = State(name='test', shortName='t', country=country)
         state.save()
-        city= City(name= 'test', state= state)
+        city = City(name='test', state=state)
         city.save()
 
         address.city = city
@@ -54,15 +56,18 @@ class PlaceTest(unittest.TestCase):
 
     def testDefaultPlace(self):
         #get all places stored in the database and put them in a list
-        #then compare the first (and probably only) stored-place with self.place 
-        self.assertEquals(  Place.objects.all()[0], self.place, 'place has not been appropriately saved' )
+        #then compare the first (and probably only) stored-place
+        #with self.place
+        self.assertEquals(Place.objects.all()[0], self.place,
+                          'place has not been appropriately saved')
 
-class ViewPlaceTest( unittest.TestCase ):
+
+class ViewPlaceTest(unittest.TestCase):
     urls = 'gestorpsi.place.urls'
-    
+
     def setUp(self):
         print 'setup'
-        
+
     def testIndex(self):
         #c= Client()
         #print "%s" % c.post( '/index/', { 'joaoajoa': 2 } )
@@ -71,8 +76,9 @@ class ViewPlaceTest( unittest.TestCase ):
 
     def tearDown(self):
         print 'teardown'
-       
+
+
 def suite():
-    suite = unittest.TestLoader().loadTestsFromTestCase( PlaceTest )
-    suite.addTest( ViewPlaceTest('testIndex'))
+    suite = unittest.TestLoader().loadTestsFromTestCase(PlaceTest)
+    suite.addTest(ViewPlaceTest('testIndex'))
     return suite

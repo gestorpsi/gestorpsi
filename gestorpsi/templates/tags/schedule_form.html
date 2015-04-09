@@ -29,7 +29,7 @@ GNU General Public License for more details.
     <input type="hidden" name="day_day" id="id_day_day" value="{{ dtstart|date:"j" }}" />
     <input type="hidden" name="day_year" id="id_day_year" value="{{ dtstart|date:"Y" }}" />
     <input type="hidden" name="room" id="id_room" value="{{ room_id }}" />
-    
+
     <div class="main_area">
     {{ event_form.errors }}
     {{ recurrence_form.errors }}
@@ -56,7 +56,7 @@ GNU General Public License for more details.
             {% if not referral %} {# schedule view #}
             <fieldset class="existing_referral" id="existing_referral_true">
             <legend>{% trans "Existing Referral" %}</legend>
-                
+
                     <div>
                     <label style="margin-left: 0px !important;">{% trans "Client" %}*<br />
                     <div id="fb_client"></div> <!-- clients from organization -->
@@ -121,28 +121,15 @@ GNU General Public License for more details.
                     </div>
                 </div>
             </fieldset>
-			
+
 			<fieldset>
-				<legend>{% trans "Select Professional" %}</legend>
+				<legend>{% trans "Professional Details" %}</legend>
 		            <div style="clear:both;"></div>
 		            <label>{% trans "Professionals" %}<br />
-		                <div class="overflow referral_form_professional{% if not referral.id %} hide_on_first{% endif %}">
-		                    {{ recurrence_form.professional }}
-		                </div> 
+		                <div class="overflow referral_form_professional {% if not referral.id %} hide_on_first{% endif %}">
+                            {{recurrence_form.professionals}}
+		                </div>
 		            </label>
-
-		        {% comment %}
-		            {% if not referral %}
-		                <label>{% trans "Professionals" %}<br />
-		                    <select name="professional" class="extrabig multiple asm" id="id_professional" multiple="multiple">
-		                    </select>
-		                </label>
-		            {% else %}
-		                <label>{% trans "Professionals" %}<br />
-		                    {{ recurrence_form.professional }}
-		                </label>            
-		            {% endif %}
-		        {% endcomment %}
 
 		        <label style="display:none">{% trans "Clients" %}<br />
 		        {{ referral_form.client }}
@@ -157,9 +144,9 @@ GNU General Public License for more details.
                 <label>{% trans "Devices" %}<br /></label>
                 <div class="overflow">
                     {{ recurrence_form.device }}
-                </div>            
+                </div>
             </fieldset>
-            
+
             <fieldset>
             <legend>{% trans "Occurrence Details" %}</legend>
                 <label>{% trans "Occurrence Format" %}</label>
@@ -168,14 +155,14 @@ GNU General Public License for more details.
                 </div>
                 <div style="clear:both;"></div>
                 <label class="occurrence_repeat occurrence_repeat_count">{% trans "Total Occurrences" %} <small>({% trans "Limited about 40 occurrences for each submit" %})</small><br />
-                {{ recurrence_form.count }} 
+                {{ recurrence_form.count }}
                 </label>
                 <label class="occurrence_repeat occurrence_repeat_until hidden">{% trans "End Time" %}</label>
                 <div class="occurrence_repeat occurrence_repeat_until hidden">
                 {{ recurrence_form.until }}
                 </div>
             </fieldset>
-            
+
             <fieldset>
             <legend>{% trans "Occurrence Frequency" %}</legend>
                 <label>{% trans "Frequency Period" %}</label>
@@ -190,13 +177,13 @@ GNU General Public License for more details.
                 {{ recurrence_form.interval }}
                 </label>
             </fieldset>
-     
+
             <fieldset class="occurrence_freq occurrence_freq_2">
             <legend>{% trans "Weekly Options" %}</legend>
                 <label>{% trans "Days of the week" %}<br />
                 {{ recurrence_form.week_days }}
                 </label>
-            </fieldset>       
+            </fieldset>
 
             <fieldset class="occurrence_freq occurrence_freq_1 hidden">
             <legend>{% trans "Monthly options" %}</legend>
@@ -213,11 +200,11 @@ GNU General Public License for more details.
                 </label>
                 <div class="occurrence_monthly occurrence_monthly_each">
                 <label>{% trans "Event repeat on these days of the month" %}
-                
+
                 </label>
                 {{ recurrence_form.each_month_day }}
                 </div>
-            </fieldset>    
+            </fieldset>
 
 
             <fieldset class="occurrence_freq occurrence_freq_0 hidden">
@@ -235,10 +222,10 @@ GNU General Public License for more details.
                 <label class="is_year_month_ordinal hidden">{% trans "Year month ordinal day" %}<br />
                 {{ recurrence_form.year_month_ordinal_day }}
                 </label>
-            </fieldset> 
+            </fieldset>
     <div style="clear:both;"></div>
     <br />
-      </div>      
+      </div>
 
     <div id="sidebar" class="sidebar">
             <div class="bg_blue">

@@ -150,10 +150,11 @@ def add_event(
                     # by pack
                     payment.covenant_pack_size = x.event_time if x.charge == 2 else 0
 
-                    payment.covenant_payment_way_options = []
+                    # clear all
+                    payment.covenant_payment_way_options = ''
                     for pw in x.payment_way.all():
-                        x = '%s,%s' % (pw.name, pw.id)
-                        payment.covenant_payment_way_options.append(x)
+                        x = "(%s,'%s')," % ( pw.id , pw.name )
+                        payment.covenant_payment_way_options += x
 
                 # add occurrence
                 payment.occurrence.add( event.occurrences().latest('id') )
@@ -258,8 +259,8 @@ def occurrence_view(
             form.save()
             messages.success(request, _('Occurrence updated successfully'))
             return http.HttpResponseRedirect(request.path)
-        else:
-            print form.errors
+        #else:
+            #print form.errors
     else:
         form = form_class(instance=occurrence, initial={'start_time':occurrence.start_time})
         form.fields['device'].queryset = DeviceDetails.objects.filter(Q(room = occurrence.room, mobility="1") | Q(place =  occurrence.room.place, room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=False) | Q(room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=True))

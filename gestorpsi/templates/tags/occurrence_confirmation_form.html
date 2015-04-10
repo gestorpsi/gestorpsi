@@ -53,10 +53,11 @@ hide Date fields and second field
         <!-- payment event -->
         {% for f in payment_list %}
             <fieldset>
-                <legend>{% trans "Payment" %}</legend>
+                <legend>{% trans "Pagamento" %}</legend>
                 {% for field in f %}
-                    <label>{{ field.label }}<br />{{ field }}</label>
-                    {% if field.errors %}preenchimento obrigat&oacute;rio{% endif %}
+                    <label>{{ field.label }}<br />{{ field }}
+                        {% if field.errors %}preenchimento obrigat&oacute;rio{% endif %}
+                    </label>
                 {% endfor %}
             </fieldset>
         {% endfor %}

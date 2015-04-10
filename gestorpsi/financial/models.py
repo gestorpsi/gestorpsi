@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from ast import literal_eval
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 
@@ -47,7 +48,6 @@ class Payment(models.Model):
     name = models.CharField(_('Nome'), max_length=250, null=False, blank=False) # covenant name or billet
     created = models.DateTimeField(_('Criado'), auto_now_add=True, default='2000-12-31 00:00:00')
     status = models.CharField(_(u'Situação'), max_length=2, choices=STATUS, default='0')
-    #payment_way = models.ManyToManyField(PaymentWay, null=False, blank=False, verbose_name='Forma de pagamento')
     price = models.DecimalField(_(u'Valor'), max_digits=6, decimal_places=2, null=False, blank=False) # from covenant
     off = models.DecimalField(_(u'Desconto'), max_digits=6, decimal_places=2, null=False, blank=False)
     total = models.DecimalField(_(u'Total'), max_digits=6, decimal_places=2, null=False, blank=False)
@@ -55,8 +55,8 @@ class Payment(models.Model):
     # from covenant
     covenant_charge = models.PositiveIntegerField(blank=True, null=True)
     covenant_pack_size = models.PositiveIntegerField(blank=True, null=True)
-    covenant_payment_way_options = models.TextField(blank=True, null=True)#, editable=False)
-    covenant_payment_way_selected = models.TextField(blank=True, null=True)#, editable=False)
+    covenant_payment_way_options = models.TextField(blank=True, null=True)
+    covenant_payment_way_selected = models.TextField(blank=True, null=True)
 
     # fk
     occurrence = models.ManyToManyField(Occurrence, null=True, blank=True, editable=False) # contador pacote
@@ -88,3 +88,18 @@ class Payment(models.Model):
 
         if self.status == '3':
             return '<span style="background-color:yellow;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+
+
+    def get_display_payment_way_name_(self):
+        '''
+            covenant_payment_way_select store id from PaymentWay object
+            get obj and return string name
+        '''
+        r = []
+        try: # maybe empty
+            for x in literal_eval(self.covenant_payment_way_selected):
+                r.append(PaymentWay.objects.get(pk=x).name)
+        except:
+            pass
+
+        return r

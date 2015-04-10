@@ -362,7 +362,7 @@ GNU General Public License for more details.
                 <small>
                     {{ x.status_color_|safe }}
 
-                    {{ x.name }} - {% ifnotequal x.covenant_pack_size 0 %}<b><i>Pacote</i></b> ({{ x.id }}) com {{ x.covenant_pack_size }} Sess&otilde;es.<b>{{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% endifnotequal %}</b> | <b><i>Total</i></b> {{ x.total }} | <b><i>Situa&ccedil;&atilde;o</i></b> {{ x.get_status_display }} | <b><i>Forma pagto</i></b> {% for x in x.payment_way.all %} {{ x }}, {% endfor %} 
+                    {{ x.name }} - {% ifequal x.charge 2 %}<b><i>Pacote</i></b> ({{ x.id }}) com {{ x.covenant_pack_size }} Sess&otilde;es.<b>{{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% endifequal %}</b> | <b><i>Total</i></b> {{ x.total }} | <b><i>Situa&ccedil;&atilde;o</i></b> {{ x.get_status_display }} | <b><i>Forma pagto</i></b> {% for x in x.get_display_payment_way_name_ %} {{ x }}, {% endfor %} 
 
                     <br />
 
@@ -385,7 +385,7 @@ GNU General Public License for more details.
                     {% for x in pay.1 %}
                         {{ x.status_color_|safe }}
 
-                        {{ x.name }} | <b><i>Total</i></b> {{ x.total }} | <b><i>Situa&ccedil;&atilde;o</i></b> {{ x.get_status_display }} | <b><i>Forma pagto</i></b> {% for x in x.payment_way.all %} {{ x }} | {% endfor %} {% ifnotequal x.covenant_pack_size 0 %}<b><i>Pacote</i></b> {{ x.covenant_pack_size }} Sess&otilde;es ({{ x.id }}) {{ x.terminated_|yesno:"Finalizado,Aberto" }} {% endifnotequal %}
+                        {{ x.name }} | <b><i>Total</i></b> {{ x.total }} | <b><i>Situa&ccedil;&atilde;o</i></b> {{ x.get_status_display }} | <b><i>Forma pagto</i></b> {% for x in x.get_display_payment_way_name_ %} {{ x }}, {% endfor %} {% ifequal x.charge 2 %}<b><i>Pacote</i></b> {{ x.covenant_pack_size }} Sess&otilde;es ({{ x.id }}) {{ x.terminated_|yesno:"Finalizado,Aberto" }} {% endifequal %}
                         <br />
                     {% endfor %}
               </small>
@@ -403,7 +403,7 @@ GNU General Public License for more details.
                     {% for x in pay.1 %}
                         {{ x.status_color_|safe }}
 
-                        {{ x.name }} | <b><i>Total</i></b> {{ x.total }} | <b><i>Situa&ccedil;&atilde;o</i></b> {{ x.get_status_display }} | <b><i>Forma pagto</i></b> {% for x in x.payment_way.all %} {{ x }} | {% endfor %} {% ifnotequal x.covenant_pack_size 0 %}<b><i>Pacote</i></b> {{ x.covenant_pack_size }} Sess&otilde;es ({{ x.id }}) {{ x.terminated_|yesno:"Finalizado,Aberto" }} {% endifnotequal %}
+                        {{ x.name }} | <b><i>Total</i></b> {{ x.total }} | <b><i>Situa&ccedil;&atilde;o</i></b> {{ x.get_status_display }} | <b><i>Forma pagto</i></b> {% for x in x.payment_way.all %} {{ x }} | {% endfor %} {% ifequal x.charge 2 %}<b><i>Pacote</i></b> {{ x.covenant_pack_size }} Sess&otilde;es ({{ x.id }}) {{ x.terminated_|yesno:"Finalizado,Aberto" }} {% endifequal %}
                         <br />
                     {% endfor %}
               </small>

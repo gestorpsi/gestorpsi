@@ -14,8 +14,21 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from ast import literal_eval
 from django import forms
 from gestorpsi.financial.models import Payment, PaymentWay
+
+
+
+def get_choices(obj):
+    '''
+        obj : Payment()
+    '''
+    obj = Payment.objects.get( pk=obj.initial['id'] )
+    try:
+        return literal_eval(obj.covenant_payment_way_options)
+    except:
+        return PaymentWay.objects.none()
 
 
 class PaymentForm(forms.ModelForm):
@@ -24,14 +37,16 @@ class PaymentForm(forms.ModelForm):
     off = forms.DecimalField(label=u"Desconto", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'1.234,56'} ))
     total = forms.DecimalField(label=u"Total", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','readonly':'true'} ) )
 
-    #payment_way = forms.Select( 
-            ##label='Forma de pagamento',
-            ##required=True,
-            ##widget=forms.Select(attrs={'class':'big'}),
-            ##queryset=PaymentWay.objects.all() 
-            #)
-    #covenant_payment_way_options = forms.ChoiceField( required=True, widget=forms.CheckboxInput( attrs={'class':'extrabig'} ))
-
     class Meta:
         model = Payment
-        exclude = ['occurrence','covenant_pack_size','covenant_charge','covenant_payment_way_options','covenant_payment_way_selected']
+        exclude = ['occurrence','covenant_pack_size','covenant_charge','covenant_payment_way_options']
+
+
+    def __init__(self, *args, **kwargs):
+        super(PaymentForm, self).__init__(*args, **kwargs)
+        self.fields['covenant_payment_way_selected'] = forms.MultipleChoiceField(
+            label=u'Forma de pagamento',
+            required=False,
+            widget=forms.CheckboxSelectMultiple( attrs={ 'class':'small' }),
+            choices = get_choices( self )
+        )

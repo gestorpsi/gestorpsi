@@ -23,7 +23,7 @@ import unittest
 
 class PlaceTest(unittest.TestCase):
     def setUp(self):
-        self.place = Place(label='testing place', visible=True)
+        self.place = Place(label='testing place')
         place_type = PlaceType(description='a place type')
         place_type.save()
         self.place.place_type = place_type

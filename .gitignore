@@ -2,3 +2,5 @@
 *.po
 gestorpsi/settings.py
 .coverage
+*.swp
+*~

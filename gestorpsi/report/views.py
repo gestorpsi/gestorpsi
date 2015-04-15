@@ -65,15 +65,32 @@ def admission_data(request, template='report/report_table.html'):
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 
+
+
 @permission_required_with_403('report.report_list')
 def referral_data(request, template='report/report_table.html'):
     """
     load referral dashboard reports
     """
-    
     data, date_start,date_end,service = Report().get_referral_range(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('service'), request.GET.get('accumulated'))
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))
+
+
+@permission_required_with_403('report.report_list')
+def payment_data(request, template='report/report_table.html'):
+    """
+    load referral dashboard reports
+    """
+
+    print '------------- VIEW payment data'
+    print request.GET.get('professional'), request.GET.get('payment'), request.GET.get('service')
+
+    data, date_start, date_end,service = Report().get_payment_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('service') , request.GET.get('accumulated') , request.GET.get('professional') , request.GET.get('payment') )
+
+    return render_to_response(template, locals(), context_instance=RequestContext(request))
+
+
 
 @permission_required_with_403('report.report_list')
 def report_client_list(request, report_class, view, filter):
@@ -176,6 +193,7 @@ def report_export(request):
             if request.POST.get('clients'):
                 report_clients = ReportAdmission.objects.clients_all(request.user, request.POST.get('date_start'), request.POST.get('date_end'))
             data, chart_url, date_start,date_end = data
+
         if request.POST.get('view') == '2': # referral
             title = _('Referral Report')
             if request.POST.get('service'):

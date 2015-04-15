@@ -18,6 +18,8 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from gestorpsi.report.models import Report, ReportsSaved, VIEWS_CHOICES
 from gestorpsi.service.models import Service
+from gestorpsi.financial.models import STATUS
+from gestorpsi.careprofessional.models import CareProfessional
 from datetime import datetime
 
 EXPORT_FORMATS = (
@@ -48,6 +50,8 @@ class ReportForm(forms.ModelForm):
     clients = forms.BooleanField(label=_('Include client list'), help_text=_('If selected will a list of clients for each report sub-item'))
     accumulated = forms.ChoiceField(label=_('Accumulated Graph'), choices=GRAPH_ACCUMULATED, help_text=_('Acummulated graph?'))
     export_graph_type = forms.ChoiceField(label=_('Graph Type format'), choices=GRAPH_TYPE, help_text=_('Here you can choose which type of graph you need. Note: only for HTML format'))
+    payment_status = forms.ChoiceField(label=_('Status do pagamento'), choices=STATUS, help_text=_('Status do pagamento'))
+    professional = forms.ModelChoiceField(label=_('Profissional'), queryset=CareProfessional.objects.all() )
 
     class Meta:
         model = Report
@@ -58,10 +62,22 @@ class ReportForm(forms.ModelForm):
         self.fields['accumulated'].initial = True # acummulated graph as default
         self.fields['date_start'].initial = date_start.strftime('%d/%m/%Y')
         self.fields['date_end'].initial = date_end.strftime('%d/%m/%Y')
-        choices = [('',_('------ All Services ------'))]
+
+        # services
+        choices = [('',_('--- Todos ---'))]
         for i in Service.objects.filter(organization=organization, active=True):
             choices.append((i.pk, i.name))
         self.fields['service'].choices = choices
+
+        # payment status
+        self.fields['payment_status'].choices = tuple([(u'all', '--- Todos ---')] + list(STATUS))
+
+        # professional
+        choices = [('all',_('--- Todos ---'))]
+        for i in CareProfessional.objects.filter(person__organization=organization, active=True):
+            choices.append((i.pk, i.person.name))
+        self.fields['professional'].choices = choices
+        
 
 class ReportSaveForm(forms.ModelForm):
     """
@@ -123,5 +139,3 @@ class ReportSaveReferralForm(ReportSaveForm):
         data.organization = organization
         data.save()
         return data
-
-

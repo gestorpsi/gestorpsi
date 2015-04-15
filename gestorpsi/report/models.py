@@ -43,7 +43,7 @@ from gestorpsi.util.views import percentage
 VIEWS_CHOICES = (
     (1, _('Admisssions')),
     (2, _('Referrals')),
-    #(3, _('Schedules')),
+    (3, _('Pagamento')),
 )
 
 PIE_CHART_WIDTH = 620
@@ -107,6 +107,36 @@ class Report(models.Model):
             return admission, chart_url, date_start,date_end
         
         return None, None, None, None
+
+
+
+    def get_payment_(self, organization, date_start, date_end, service, accumulated):
+        """
+        get referral 'universe'
+        all referrals that could be find in range
+        """
+        print '------------- REFERRAL MODELS '
+        
+        """
+        Simple helper to set/get date
+        """
+
+        date_start,date_end = self.set_date(organization, date_start, date_end)
+        
+        """
+        get referral range in organization between dates
+        """
+        
+        range = Referral.objects_inrange.all(organization, date_start, date_end, service)
+        
+        if range:
+            data = ReportReferral.objects.all(range, date_start, date_end, organization, service, accumulated)
+            
+            return data,date_start,date_end, service
+        
+        return [], None, None, None
+
+
 
     def get_referral_range(self, organization, date_start, date_end, service, accumulated):
         """

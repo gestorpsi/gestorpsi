@@ -53,17 +53,30 @@ GNU General Public License for more details.
         <p class="description">{% trans "Displaying reports. Use the controls below to customize this page and save it on the tab My Reports" %}</p>
         <div class="report_filter_nav">
         <form method="post" id="report_filter" action="{% url report_export %}">
+
             {% trans "Reports for" %} {{ form.view }} 
             {% trans "between" %} {{ form.date_start }} {% trans "and" %} {{ form.date_end }}
             {{ form.accumulated }}
-            <div class="subscription_filter hidden">
-            {% trans "Filtering by" %} {{ form.service }}
+
+            <div class="professional_filter hidden">
+                {% trans "Profissional" %} {{ form.professional }}
             </div>
+
+            <div class="subscription_filter hidden">
+                {% trans "Servi&ccedil;o" %} {{ form.service }}
+            </div>
+
+            <div class="payment_status_filter hidden">
+                {% trans "Pagamento" %} {{ form.payment_status }}
+            </div>
+
             <div style="margin-top:20px;margin-right:30px;" class="float_right">
                 <button type="submit" class="dashboard_overview" name="save" class="form_mini_noinsert save_report_button">{% trans "Save Report" %}</button>
                 <button type="submit" class="dashboard_overview" name="update">{% trans "Update" %}</button>
             </div>
+
             <div style="clear:both;"></div>
+
             <div class="export_data_form hidden">
                 <br />
                 <label><b>{{ form.clients.label }}</b></label><br />

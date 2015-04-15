@@ -33,10 +33,19 @@ $(function() {
      */
     
     $('#report_filter select[name=view]').change(function() {
-        if($(this).val()==2) {
-            $('div.subscription_filter').fadeIn();
+        if($(this).val()==2 || $(this).val()==3) {
+            $('div.subscription_filter').show();
         } else {
             $('div.subscription_filter').hide();
+        }
+
+        // select payment status 
+        if( $(this).val()==3 ){
+            $('div.payment_status_filter').show();
+            $('div.professional_filter').show();
+        } else {
+            $('div.payment_status_filter').hide();
+            $('div.professional_filter').hide();
         }
     });
 
@@ -113,11 +122,26 @@ $(function() {
         
         var data = 'date_start=' + date_start + '&date_end=' + date_end + '&accumulated=' + accumulated;
         
+        // admission
         if($('#report_filter [name = view]').val() == 1) updateAdmission(data);
+
+        // referral
         if($('#report_filter [name = view]').val() == 2) {
-            var service =$('#report_filter [name=service]').val();
+            var service = $('#report_filter [name=service]').val();
             data += '&service=' + service;
             updateReferral(data);
+        }
+
+        // financial
+        if ( $('#report_filter [name = view]').val() == 3 ){ 
+
+            var service = $('select#id_service').val();
+            var payment_status = $('select#id_payment_status').val();
+            var professional = $('select#id_professional').val();
+
+            // method get url
+            data += '&service=' + service + '&professional=' + professional + '&payment=' + payment_status;
+            updatePayment(data);
         }
 
         return false;

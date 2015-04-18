@@ -39,6 +39,7 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, Indication as ReferralIndication, IndicationChoice as ReferralIndicationChoice, ReferralDischargeReason, ReferralDischarge
 from gestorpsi.util.views import percentage
+from gestorpsi.financial.models import Payment
 
 VIEWS_CHOICES = (
     (1, _('Admisssions')),
@@ -116,6 +117,7 @@ class Report(models.Model):
         all referrals that could be find in range
         """
         print '------------- REFERRAL MODELS '
+        print
         
         """
         Simple helper to set/get date
@@ -126,12 +128,25 @@ class Report(models.Model):
         """
         get referral range in organization between dates
         """
+        data = []
+
+        aberto = Payment.objects.filter(covenant_charge=0).count()
+        pago = Payment.objects.filter(covenant_charge=1).count()
+        faturado = Payment.objects.filter(covenant_charge=2).count()
+        cancelado = Payment.objects.filter(covenant_charge=3).count()
+        total = aberto+pago+faturado+cancelado
+
+        data.append({'name': _('Aberto'), 'total': aberto, 'percentage': percentage(aberto, total)})
+        data.append({'name': _('Pago'), 'total': pago, 'percentage': percentage(pago, total)})
+        data.append({'name': _('Faturado'), 'total': faturado, 'percentage': percentage(faturado, total)})
+        data.append({'name': _('Cancelado'), 'total': cancelado, 'percentage': percentage(cancelado, total)})
+
+        #return data
         
-        range = Referral.objects_inrange.all(organization, date_start, date_end, service)
-        
-        if range:
-            data = ReportReferral.objects.all(range, date_start, date_end, organization, service, accumulated)
-            
+        #range = Referral.objects_inrange.all(organization, date_start, date_end, service)
+        if data:
+            #data = ReportReferral.objects.all(range, date_start, date_end, organization, service, accumulated)
+            print '--------------- OUT '
             return data,date_start,date_end, service
         
         return [], None, None, None
@@ -1012,7 +1027,7 @@ class ReportDemographicManager(models.Manager):
         total = len(client_pk_in)
 
         data.append({'name': _('Male'), 'total': male, 'percentage': percentage(male, total)})
-        data.append({'name': _('Female'), 'total': female, 'percentage': percentage(male, total)})
+        data.append({'name': _('Female'), 'total': female, 'percentage': percentage(female, total)})
         data.append({'name': _('Unknown'), 'total': unknown, 'percentage': percentage(unknown, total)})
 
         return data

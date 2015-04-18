@@ -128,9 +128,6 @@ class ReferralInRangeManager(models.Manager):
         if service:
             r = r.filter(Q(service__pk=service) | Q(referral__service__pk=service))
 
-        #if service:
-            #r = r.filter(service__pk=service)
-
         return r
 
 class Referral(Event):

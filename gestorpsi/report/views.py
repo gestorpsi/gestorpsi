@@ -80,19 +80,14 @@ def referral_data(request, template='report/report_table.html'):
 @permission_required_with_403('report.report_list')
 def payment_data(request, template='report/report_graphic.html'):
     """
-    load referral dashboard reports
+    payment
     """
-    print '------------- VIEW payment data'
-    print request.GET.get('professional'), request.GET.get('payment'), request.GET.get('service')
-    print template
-
     #data, date_start, date_end,service = Report().get_payment_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('service') , request.GET.get('accumulated') , request.GET.get('professional') , request.GET.get('payment') )
     data, date_start, date_end,service = Report().get_payment_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('service') , request.GET.get('accumulated') )
 
-    # ok
-    #from django.shortcuts import render
-    #return render(request, template)
-    MSG = 'É NOIZ!'
+    # variables of JS
+    option_title = 'Payment graphic!'
+    option_rows = [ ['a',1] , ['b',2] , ['c',3] ] # array format
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 

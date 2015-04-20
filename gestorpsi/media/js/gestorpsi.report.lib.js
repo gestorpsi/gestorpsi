@@ -236,7 +236,7 @@ function updatePayment(data) {
     data += chart_type_to_url();
 
     /**
-     * update payment data
+     * update payment data, call view
      */
     $('div#report_table').load('/report/payment/?'+data);
 

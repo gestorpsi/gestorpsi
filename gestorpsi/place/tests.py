@@ -29,10 +29,9 @@ class PlaceTest(unittest.TestCase):
         place_type.save()
         self.place.place_type = place_type
         phone_type = PhoneType(description='phone type test')
-        phone = Phone(area='23', phoneNumber='45679078', ext='4444',
+        self.phone = Phone(area='23', phoneNumber='45679078', ext='4444',
                       phoneType=phone_type)
-        phone.content_object = self.place
-
+        self.phone.content_object = self.place
         addressType = AddressType(description='Home')
         addressType.save()
         address = Address()
@@ -54,6 +53,22 @@ class PlaceTest(unittest.TestCase):
         address.content_object = self.place
 
         self.place.save()
+
+    def testTypeReturnHoursWork(self):
+        self.assertEquals(type(self.place.hours_work()), type([]))
+
+
+    def testReturnHoursWork(self):
+        self.assertEquals(self.place.hours_work(), [07, 00, 12.0])
+
+    def testGetFisrtPhone(self):
+        self.assertEquals(self.place.get_first_phone(), '')
+
+    def testInvalidFirst(self):
+        pass
+
+    def testoccurrences(self):
+        self.assertEquals(self.place.occurrences(),[])
 
     def testDefaultPlace(self):
         #get all places stored in the database and put them in a list

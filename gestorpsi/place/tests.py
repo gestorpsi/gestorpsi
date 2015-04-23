@@ -18,6 +18,7 @@ from gestorpsi.address.models import Address
 from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.place.models import PlaceType, Place
 from gestorpsi.address.models import City, State, Country, AddressType
+from django.test import Client
 import unittest
 
 
@@ -66,16 +67,19 @@ class ViewPlaceTest(unittest.TestCase):
     urls = 'gestorpsi.place.urls'
 
     def setUp(self):
-        print 'setup'
+        #print 'setup'
+        pass
 
     def testIndex(self):
-        #c= Client()
+        c=Client()
         #print "%s" % c.post( '/index/', { 'joaoajoa': 2 } )
-        #self.assertEquals( 200, response.status_code )
+        response = c.post('/accounts/login/?next=/')
+        self.assertEquals( 200, response.status_code )
         pass
 
     def tearDown(self):
-        print 'teardown'
+        #print 'teardown'
+        pass
 
 
 def suite():

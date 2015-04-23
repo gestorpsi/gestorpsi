@@ -102,6 +102,15 @@ PaymentType.objects.all()
 # output -> [<PaymentType: Teste 1>, <PaymentType: Teste 4>]
 ```
 
+##Enabling locale
+
+In order to be able to execute the makemessages/compilemessages commando, you must enter the gestorpsi folder where the locale folder is a child
+```bash
+$ cd gestorpsi
+$ python ../manage.py makemessages --all
+$ python ../manage.py compilemessages
+```
+
 ##Running server and executing system
 ```bash
 $ python manage.py runserver

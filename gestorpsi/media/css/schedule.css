@@ -27,19 +27,19 @@ GNU General Public License for more details.
 	background: url(/media/img/arrow_back.png) no-repeat 0 0;
 }
 #nav_back.disable {background: url(/media/img/arrow_back_disable.png)}
-#nav_back:hover { 
-	background: url(/media/img/arrow_back_on.png) no-repeat 0 0; 
-	text-decoration: none; 
+#nav_back:hover {
+	background: url(/media/img/arrow_back_on.png) no-repeat 0 0;
+	text-decoration: none;
 }
 #nav_fwd {
 	padding: 32px 36px 12px 6px;
     margin-top: -100px;
-	background: url(/media/img/arrow_fwd.png) no-repeat 0 0; 
+	background: url(/media/img/arrow_fwd.png) no-repeat 0 0;
 }
 #nav_fwd.disable {background: url(/media/img/arrow_fwd_disable.png) no-repeat;}
 #nav_fwd:hover {
 	background: url(/media/img/arrow_fwd_on.png) no-repeat 0 0;
-	text-decoration: none; 
+	text-decoration: none;
 }
 
 table.schedule_results.daily th, table.schedule_results.weekly th {
@@ -58,11 +58,11 @@ table.schedule_results.daily td, table.schedule_results.weekly td {
 }
 th.schedule a {
 	color: #999999;
-	padding: 0 20px 0 0; 
-    font-size: 10px; 
-    background: url(/media/img/bg_options.gif) no-repeat right top; 
+	padding: 0 20px 0 0;
+    font-size: 10px;
+    background: url(/media/img/bg_options.gif) no-repeat right top;
     font-family: Verdana, Geneva, Kalimati, sans-serif;
-    	
+
 }
 td.hour {
 	font-size: 12px;
@@ -91,7 +91,7 @@ a.book, a.book:visited, a.book:hover {
 }
 
 a.booked { text-decoration:none;}
-td.clean:hover, div.clean:hover, table.events td:hover  { 
+td.clean:hover, div.clean:hover, table.events td:hover  {
 	filter:alpha(opacity=90);
 	-moz-opacity:0.9;
 	-khtml-opacity: 0.9;
@@ -157,10 +157,10 @@ div.filter.professional td span {	cursor: pointer; position: relative; padding-l
 
 h2.title_schedule span a.option {
 	color: #999999;
-	padding: 0 20px 0 10px; 
-    font-size: 10px; 
-    background: url(/media/img/bg_options.gif) no-repeat right top; 
-    vertical-align: text-top; 
+	padding: 0 20px 0 10px;
+    font-size: 10px;
+    background: url(/media/img/bg_options.gif) no-repeat right top;
+    vertical-align: text-top;
     font-family: Verdana, Geneva, Kalimati, sans-serif;
 }
 
@@ -245,6 +245,11 @@ div.sidebar_client_schedule {
     height: 125px;
     background-color: white;
     z-index: 0;
+}
+
+.schedule_settings {
+    position: static !important;
+    height: 60px !important;
 }
 
 #schedule_week td {  background:#efefef; }

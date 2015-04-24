@@ -2,3 +2,4 @@
 *.po
 gestorpsi/settings.py
 .coverage
+*.po

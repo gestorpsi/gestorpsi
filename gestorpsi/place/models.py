@@ -143,14 +143,14 @@ class Place(models.Model):
             return ''
 
     def occurrences(self):
-        o = []
+        occurrences = []
         for room in self.room_set.filter(active=True):
             for i in room.scheduleoccurrence_set.filter(
                 start_time__gte=datetime.now()).exclude(
                     occurrenceconfirmation__presence=4).exclude(
                     occurrenceconfirmation__presence=5):
-                o.append(i)
-        return o
+                occurrences.append(i)
+        return occurrences
 
     class Meta:
         ordering = ['label']

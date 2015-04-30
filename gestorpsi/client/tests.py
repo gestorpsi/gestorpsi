@@ -16,16 +16,26 @@ GNU General Public License for more details.
 
 from gestorpsi.client.models import Client
 from gestorpsi.client.models import Person
-#from gestorpsi.organization.models  import Organization
+# from gestorpsi.organization.models  import Organization
 
 import unittest
 
-class ClientTest(unittest.TestCase):
-	
-	def setUp(self):
-#		organization = Organization(name='Organizacao Teste',short_name='OT')
-		person = Person(name='Levi Moraes')
-		self.client = Client(person=person)
 
-	def testEmployeeReturn(self):
-		self.assertEquals(self.client.person.name, 'Levi Moraes')
+class ClientTest(unittest.TestCase):
+    def setUp(self):
+        #		organization = Organization(name='Organizacao Teste',short_name='OT')
+        person = Person(name='Levi Moraes')
+        self.client = Client(person=person)
+        self.active = True
+
+    def testEmployeeReturn(self):
+        self.assertEqual(self.client.person.name, 'Levi Moraes')
+
+    def testIsActiveMethod(self):
+        self.assertEqual(self.client.is_active(), True)
+
+    def testListItemTitle(self):
+        pass
+
+    def testListItemTitleAditional(self):
+        pass

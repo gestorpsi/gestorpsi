@@ -16,15 +16,15 @@ GNU General Public License for more details.
 
 from gestorpsi.client.models import Client
 from gestorpsi.client.models import Person
-from gestorpsi.organization  import organization
-from gestorpsi.person.models import CompanyClient
+#from gestorpsi.organization.models  import Organization
+
 import unittest
 
 class ClientTest(unittest.TestCase):
 	
 	def setUp(self):
-		organization = Organization(name='Organizacao Teste',short_name='OT')
-		person = Person(name='Levi Moraes', organization=organization)
+#		organization = Organization(name='Organizacao Teste',short_name='OT')
+		person = Person(name='Levi Moraes')
 		self.client = Client(person=person)
 
 	def testEmployeeReturn(self):

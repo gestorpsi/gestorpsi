@@ -12,14 +12,14 @@ from gestorpsi.address.models import City, State, Country, AddressType
 
 
 class ScheduleTest(unittest.TestCase):
-    
+
     def setUp(self):
         self.schedule = ScheduleOccurrence()
         self.schedule.reserve = True
         self.schedule.annotation = "this is schedule test"
         self.schedule.start_time = datetime.now()
         self.schedule.end_time = datetime.now()
-        
+
         self.place = Place(label='testing place')
         place_type = PlaceType(description='a place type')
         place_type.save()
@@ -37,32 +37,23 @@ class ScheduleTest(unittest.TestCase):
         address.neighborhood = 'Centro'
         address.zipCode = '12345-123'
         address.addressType = AddressType.objects.get(pk=1)
-
         country = Country(name='test', nationality='testing')
         country.save()
         state = State(name='test', shortName='t', country=country)
         state.save()
         city = City(name='test', state=state)
         city.save()
-
         address.city = city
         address.content_object = self.place
-
         self.place.save()
-        
         self.room = Room()
-        
         self.room.place = self.place
-        
         room_type = RoomType()
-        
         self.room.room_type = room_type
-        
         self.room.furniture = "tree table"
-        
         self.schedule.room = self.room
-        
-    
+
+
     def test_start_time_less_than_end_time(self):
         start_time = timedelta(hours=8, minutes=30, seconds=0)
         end_time = timedelta(hours=9, minutes=30, seconds=0)
@@ -72,22 +63,20 @@ class ScheduleTest(unittest.TestCase):
     def test_start_time_equal_to_end_time(self):
         start_time = timedelta(hours=8, minutes=30, seconds=0)
         end_time = timedelta(hours=8, minutes=30, seconds=0)
-
         self.assertEquals(invalid_delta_time(start_time, end_time), True)
 
     def test_start_time_greater_than_end_time(self):
         start_time = timedelta(hours=9, minutes=30, seconds=0)
         end_time = timedelta(hours=8, minutes=30, seconds=0)
-
         self.assertEquals(invalid_delta_time(start_time, end_time), True)
 
     def test_verify_client(self):
-
         self.assertEquals(verify_client(1), True)
-
         self.assertEquals(verify_client(23), True)
-
         self.assertEquals(verify_client(None), False)
-    
+
     def test_is_past(self):
         self.assertEquals(self.schedule.is_past(), True)
+
+    def test_was_confirmed(self):
+        self.assertEquals(self.schedule.was_confirmed(), False)

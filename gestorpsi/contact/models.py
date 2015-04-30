@@ -238,5 +238,3 @@ class Contact(object):
     org_type = property(_get_org_type)
     profession = property(_get_professional_profession)
     organization = property(_get_professional_organizations)
-    
-

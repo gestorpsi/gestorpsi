@@ -80,3 +80,10 @@ class ScheduleTest(unittest.TestCase):
 
     def test_was_confirmed(self):
         self.assertEquals(self.schedule.was_confirmed(), False)
+    
+    def test_have_session(self):
+        self.assertEquals(self.schedule.have_session(), False)
+        
+    def test_schedule_occurrences(self):
+        print schedule_occurrences()
+        self.assertEquals(schedule_occurrences(),[])

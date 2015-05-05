@@ -26,5 +26,11 @@ class CountryTest(TestCase):
 	def testUnicode(self):
 		self.assertEquals(self.name, unicode(self.country))
 
+class StateTest(TestCase):
+	def setUp(self):
+		self.state = State(name="Goias")
+		self.name = "Goias"
 
+	def testUnicode(self):
+		self.assertEquals(self.name, unicode(self.state))
 

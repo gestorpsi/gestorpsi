@@ -14,7 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from gestorpsi.client.models import Client
+from gestorpsi.client.models import Client, ClientManager
 from gestorpsi.client.models import Person
 # from gestorpsi.organization.models  import Organization
 
@@ -23,19 +23,24 @@ import unittest
 
 class ClientTest(unittest.TestCase):
     def setUp(self):
-        #		organization = Organization(name='Organizacao Teste',short_name='OT')
+        #organization = Organization(name='Organizacao Teste',short_name='OT')
         person = Person(name='Levi Moraes')
+        person.id = 01
+        person.active = True
         self.client = Client(person=person)
-        self.active = True
 
     def testEmployeeReturn(self):
         self.assertEqual(self.client.person.name, 'Levi Moraes')
 
     def testIsActiveMethod(self):
-        self.assertEqual(self.client.is_active(), True)
+        self.assertTrue(self.client.is_active())
 
     def testListItemTitle(self):
-        pass
+        self.assertEqual(self.client.list_item_title(), 'Levi Moraes')
+
+    def testIsActive(self):
+
+        self.assertEqual(self.client.is_active(),True)
 
     def testListItemTitleAditional(self):
         pass

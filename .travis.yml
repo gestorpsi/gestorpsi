@@ -17,7 +17,7 @@ script:
   - coverage run --source=gestorpsi manage.py test
   - flake8 gestorpsi
 
-after_success:
+after_script:
     - coveralls
 
 notifications:

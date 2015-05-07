@@ -15,8 +15,11 @@ GNU General Public License for more details.
 """
 
 from django.db import models
-from gestorpsi.address.models import Country, State, City, Address, AddressType
 from django.test import TestCase
+
+
+from .models import Country, State, City, Address, AddressType
+from .views import address_list
 
 
 class CountryTest(TestCase):
@@ -87,3 +90,54 @@ class AddressTest(TestCase):
             self.address.zipCode, self.address.neighborhood, self.address.city, '' if not hasattr(self.address.city, 'state') else self.address.city.state.shortName, '' if not hasattr(self.address.city, 'state') else self.address.city.state.country, self.address.addressType\
         )
         self.assertEquals(expected_result, unicode(self.address))
+
+
+class AddressViewTest(TestCase):
+    def setUp(self):
+        self.country = Country(name='test', nationality='testing')
+        self.country.save()
+        self.state = State(name='test', shortName='t', country=self.country)
+        self.state.save()
+        self.city = City(name='test', state=self.state)
+        self.city.save()
+        self.address_type = AddressType(description="Quadra 1")
+        self.address_type.save()
+
+    def testEmptyAddressList(self):
+        expected_result = address_list([],[],[], [], [], [], [], [],
+                                       [], [], [], [])
+        self.assertListEqual(expected_result, [])
+
+    def testOneAddressInAddressList(self):
+        id = ["12345"]
+        addressPrefix = ["Prefix"]
+        addressLine1 = ["addressLine1"]
+        addressLine2 = ["addressLine2"]
+        addressNumbers = [123]
+        neighborhoods = ["DSAD"]
+        zipCodes = ["72000-000"]
+        addressTypeIds = [self.address_type.id]
+        cityIds = [self.city.id]
+        countryIds =  [self.country.id]
+        foreignCityChars = [""]
+        foreignStateChars = [""]
+
+        expected_result = address_list(id, addressPrefix, addressLine1, addressLine2,
+                                       addressNumbers, neighborhoods, zipCodes,
+                                       addressTypeIds, cityIds, countryIds,
+                                       foreignCityChars, foreignStateChars)
+
+        address = Address(id=id[0], addressPrefix=addressPrefix[0],
+                          addressLine1=addressLine1[0],
+                          addressLine2=addressLine2[0],
+                          addressNumber=addressNumbers[0],
+                          neighborhood=neighborhoods[0],
+                          zipCode=zipCodes[0],
+                          addressType=AddressType.objects.get(pk=addressTypeIds[0]),
+                          city=City.objects.get(pk=cityIds[0]))
+
+        self.assertIsNotNone(expected_result)
+        self.assertEquals(len(expected_result), 1)
+        self.assertIsInstance(expected_result[0], Address)
+        self.assertIn(address, expected_result)
+

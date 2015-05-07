@@ -15,12 +15,13 @@ GNU General Public License for more details.
 """
 
 from gestorpsi.internet.models import EmailType, Email, Site, InstantMessenger
-from gestorpsi.internet.models import IMNetwork 
+from gestorpsi.internet.models import IMNetwork
 import unittest
 
-class EmailTest(unittest.TestCase):
-    def setUp(self):
 
+class EmailTest(unittest.TestCase):
+
+    def setUp(self):
         self.email = Email(email='test')
         emailWork = EmailType(description='Work')
         emailWork.save()
@@ -39,11 +40,11 @@ class EmailTest(unittest.TestCase):
     def testUnicode(self):
         self.assertEquals(self.email.email, unicode(self.emailTest.email))
 
+
 class SiteTest(unittest.TestCase):
+
     def setUp(self):
-
         self.site = Site(description='Test', site='random site')
-
         self.anotherSite = Site(description='Test', site='random site')
 
     def testCmp(self):
@@ -53,12 +54,31 @@ class SiteTest(unittest.TestCase):
 
     def testUnicode(self):
         self.assertEquals(self.site.site, unicode(self.site.site))
-        
-class TestIMNetwork(unittest.TestCase):
+
+
+class IMNetworkTest(unittest.TestCase):
+
     def setUp(self):
-        
         self.IMNetwork = IMNetwork(description="Test Description")
 
     def testUnicode(self):
         self.assertEquals(self.IMNetwork.description,
                           unicode(self.IMNetwork.description))
+
+
+class InstantMessengerTest(unittest.TestCase):
+
+    def setUp(self):
+        self.net = IMNetwork(description="Test Description")
+        self.instant = InstantMessenger(identity='Test', network=self.net)
+        self.instant2 = InstantMessenger(identity='Test', network=self.net)
+
+    def testCmp(self):
+        self.assertEquals(cmp(self.instant.identity,
+                          self.instant2.identity), 0)
+        self.assertEquals(cmp(self.instant.network,
+                          self.instant2.network), 0)
+
+    def testUnicode(self):
+        self.assertEquals(self.instant.identity,
+                          unicode(self.instant.identity))

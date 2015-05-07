@@ -24,8 +24,10 @@ GNU General Public License for more details.
 from django.contrib import admin
 from gestorpsi.internet.models import EmailType, IMNetwork
 
+
 class EmailTypeAdmin(admin.ModelAdmin):
     pass
+
 
 class IMNetworkAdmin(admin.ModelAdmin):
     pass

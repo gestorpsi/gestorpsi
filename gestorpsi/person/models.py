@@ -176,12 +176,6 @@ class Person(models.Model):
         else:
             return self.birthPlace.state.country
 
-    def get_first_phone(self):
-        if ( len( self.phones.all() ) != 0 ):
-            return self.phones.all()[0]
-        else:
-            return ''
-    
     def get_first_email(self):
         if ( len( self.emails.all() ) != 0 ):
             return self.emails.all()[0]

@@ -22,7 +22,7 @@ from gestorpsi.phone.models import Phone
 import unittest
 
 
-class ClientTest(unittest.TestCase):
+class ClientModelTest(unittest.TestCase):
     def setUp(self):
         #organization = Organization(name='Organizacao Teste',short_name='OT')
         person = Person()
@@ -60,3 +60,11 @@ class ClientTest(unittest.TestCase):
 
     def testListItemDescription(self):
         self.assertEqual(self.client.list_item_description(),'')
+
+    def tearDown(self):
+        del self.client
+
+
+class ClientViewTest():
+    def setup(self):
+        pass

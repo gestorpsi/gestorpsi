@@ -6,7 +6,7 @@ PUSH_COMMAND=`ps -ocommand= -p $PPID`
 PROTECTED_BRANCHES="^(master|unb)"
 
 if [[ "$BRANCH" =~ $PROTECTED_BRANCHES ]]; then
-  echo "Prevented force-push to protected branch \"$BRANCH\" by pre-push hook"
+  echo "Prevented push to protected branch \"$BRANCH\" by pre-push hook"
   exit 1
 fi
 

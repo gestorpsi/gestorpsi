@@ -117,3 +117,10 @@ class ActualPersonTestCase(TestCase):
 
     def testGetActualSite(self):
         self.assertEqual(self.p.get_first_site().site, "www.google.com.br")
+
+    def testGetAge(self):
+        self.assertEqual(self.p.get_age(), 24)
+
+    def testGetInternet(self):
+        text = "E-mail: email@email.com | Web Page: www.google.com.br"
+        self.assertEqual(self.p.get_internet(), text)

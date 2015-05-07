@@ -14,7 +14,7 @@ before_script:
 # command to run tests, e.g. python setup.py test
 script:
   # - python manage.py test schedule
-  - coverage run --source=gestorpsi manage.py test
+  - ./run_tests.sh
   - flake8 gestorpsi
 
 after_script:

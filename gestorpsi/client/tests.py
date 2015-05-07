@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 from gestorpsi.client.models import Client, ClientManager
 from gestorpsi.client.models import Person
+from gestorpsi.phone.models import Phone
 # from gestorpsi.organization.models  import Organization
 
 import unittest
@@ -24,10 +25,20 @@ import unittest
 class ClientTest(unittest.TestCase):
     def setUp(self):
         #organization = Organization(name='Organizacao Teste',short_name='OT')
-        person = Person(name='Levi Moraes')
+        person = Person()
+        person.name = 'Levi Moraes'
         person.id = 01
         person.active = True
-        self.client = Client(person=person)
+
+        phone = Phone()
+        phone.phoneNumber = '12344321'
+
+        #person.phones = phone
+
+        self.client = Client()
+        self.client.person = person
+
+        self.client
 
     def testEmployeeReturn(self):
         self.assertEqual(self.client.person.name, 'Levi Moraes')
@@ -35,12 +46,17 @@ class ClientTest(unittest.TestCase):
     def testIsActiveMethod(self):
         self.assertTrue(self.client.is_active())
 
+    def testIsNotActive(self):
+        pass
+
     def testListItemTitle(self):
         self.assertEqual(self.client.list_item_title(), 'Levi Moraes')
 
     def testIsActive(self):
-
         self.assertEqual(self.client.is_active(),True)
 
     def testListItemTitleAditional(self):
-        pass
+        self.assertEqual(self.client.list_item_title_aditional(),'')
+
+    def testListItemDescription(self):
+        self.assertEqual(self.client.list_item_description(),'')

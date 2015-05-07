@@ -1,0 +1,13 @@
+#!/bin/bash
+# Prevents pushing to some "protected" branches
+
+BRANCH=`git rev-parse --abbrev-ref HEAD`
+PUSH_COMMAND=`ps -ocommand= -p $PPID`
+PROTECTED_BRANCHES="^(master|unb)"
+
+if [[ "$BRANCH" =~ $PROTECTED_BRANCHES ]]; then
+  echo "Prevented force-push to protected branch \"$BRANCH\" by pre-push hook"
+  exit 1
+fi
+
+exit 0

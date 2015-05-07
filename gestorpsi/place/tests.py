@@ -19,7 +19,9 @@ from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.place.models import PlaceType, Place
 from gestorpsi.address.models import City, State, Country, AddressType
 from django.test import Client
+from django.test import TestCase
 import unittest
+
 
 
 class PlaceTest(unittest.TestCase):
@@ -78,23 +80,14 @@ class PlaceTest(unittest.TestCase):
                           'place has not been appropriately saved')
 
 
-class ViewPlaceTest(unittest.TestCase):
+class ViewPlaceTest(TestCase):
     urls = 'gestorpsi.place.urls'
-
-    def setUp(self):
-        #print 'setup'
-        pass
 
     def testIndex(self):
         c=Client()
         #print "%s" % c.post( '/index/', { 'joaoajoa': 2 } )
         response = c.post('/accounts/login/?next=/')
         self.assertEquals( 200, response.status_code )
-        pass
-
-    def tearDown(self):
-        #print 'teardown'
-        pass
 
 
 def suite():

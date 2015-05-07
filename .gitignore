@@ -1,5 +1,5 @@
 *.pyc
-*.po
+*.mo
 gestorpsi/settings.py
 .coverage
-*.po
+htmlcov/

@@ -1,15 +1,14 @@
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from gestorpsi.person.models import Person
+from .models import Person
+from .views import person_save, person_type_url
+from gestorpsi.client.models import Client
 from gestorpsi.internet.models import EmailType, Email, Site
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 import subprocess
 
-# para usar request usar requestfactory do django que 
-# esta dentro de django.test.client
-
-class PersonEmptyTestCase(TestCase):
+class TestPersonModelEmptyValues(TestCase):
     def setUp(self):
 		
         User.objects.create(username="user1", password="password")		
@@ -51,6 +50,9 @@ class PersonEmptyTestCase(TestCase):
     def testGetBirthdate(self):
         self.assertEqual(self.person.get_birthdate(), '')
 
+    def testGetEmptyAge(self):
+        self.assertEqual(self.person.get_age(), None)
+
     def testGetBirthPlace(self):
         self.assertEqual(self.person.get_birth_place(), u"None - None")
 
@@ -61,7 +63,7 @@ class PersonEmptyTestCase(TestCase):
         self.assertEqual(self.person.get_first_site(), '')
 
 
-class ActualPersonTestCase(TestCase):
+class TestPersonModelActualValues(TestCase):
     def setUp(self):
         person = Person()
 		
@@ -124,3 +126,28 @@ class ActualPersonTestCase(TestCase):
     def testGetInternet(self):
         text = "E-mail: email@email.com | Web Page: www.google.com.br"
         self.assertEqual(self.p.get_internet(), text)
+
+    '''
+    TO DO: add test for get_phones and get_address methods
+    '''
+
+class TestPersonView(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        p = Person()
+
+        User.objects.create(username="user1", password="password")      
+        p.user = User.objects.get(username="user1")
+
+        p.save()
+
+        client = Client(person=p, idRecord=1)
+        client.save()
+
+        self.person = Person.objects.get(user_id=p.user.id)
+
+    def testPersonTypeURL(self):
+        client = self.person.client
+        returned_url = person_type_url(self.person)
+        expected_url = "/client/%s/" % client.id
+        self.assertEqual(returned_url, expected_url)

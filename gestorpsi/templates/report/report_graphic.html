@@ -1,7 +1,28 @@
 <script type="text/javascript">
 
+    function make_graphic0(option_title , rows){ 
 
-    function make_graphic(option_title , rows){ 
+            var data = google.visualization.arrayToDataTable([
+                ['Year', 'Sales', 'Expenses'],
+                ['2013',  1000,      400],
+                ['2014',  1170,      460],
+                ['2015',  660,       1120],
+                ['2016',  1030,      540]
+            ]);
+                    
+            var options = {
+                             title: 'Company Performance',
+                             hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
+                             vAxis: {minValue: 0}
+            };
+                
+            var chart = new google.visualization.AreaChart(document.getElementById('payment0'));
+            chart.draw(data, options);
+    }
+                                            
+
+
+    function make_graphic1(option_title , rows){ 
 
         // Create the data table.
         var data = new google.visualization.DataTable();
@@ -13,16 +34,14 @@
 
         // Set chart options
         var options = {'title': option_title,
-                        'width':600,
-                        'height':600,
-                        is3D: true,
+                       'width':600,
+                       'height':600,
         };
 
-
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('report_table'));
+        //var chart = new google.visualization.PieChart(document.getElementById('report_table'));
+        var chart = new google.visualization.PieChart(document.getElementById('payment1'));
         chart.draw(data, options);
-
     }
 
     // convert Python array to JS array
@@ -30,6 +49,23 @@
     {% for i in option_rows %} rows.push( [ "{{ i.0 }}" , {{ i.1 }} ] ); {% endfor %}
 
     // call function
-    make_graphic("{{ option_title }}", rows );
+    make_graphic0("{{ option_title }}", rows );
+    make_graphic1("{{ option_title }}", rows );
+
+    $('#report_table').append('<table class="report">lixo</table>');
 
 </script>
+
+    <h1> Lista de clientes</h1>
+    {% for x in list_payment %}
+
+        {{ x.0 }} <br />
+
+        {% for c in x.1 %}
+            {{ c.occurrence.all.0.event.referral.client.all.0 }} - {{ c.total }} - {{ c.occurrence.all.0.event.referral.service }}<br />
+        {% endfor %}
+
+        <br />
+        <br />
+
+    {% endfor %}

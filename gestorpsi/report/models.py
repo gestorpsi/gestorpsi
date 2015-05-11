@@ -111,47 +111,45 @@ class Report(models.Model):
 
 
 
-    def get_payment_(self, organization, date_start, date_end, service, accumulated):
-        """
-        get referral 'universe'
-        all referrals that could be find in range
-        """
-        print '------------- REFERRAL MODELS '
-        print
-        
-        """
-        Simple helper to set/get date
-        """
+    def get_payment_(self, organization, date_start, date_end, accumulated, professional, payment, service ):
+        date_start , date_end = self.set_date(organization, date_start, date_end)
 
-        date_start,date_end = self.set_date(organization, date_start, date_end)
-        
-        """
-        get referral range in organization between dates
-        """
         data = []
+        list_payment = []
 
-        aberto = Payment.objects.filter(covenant_charge=0).count()
-        pago = Payment.objects.filter(covenant_charge=1).count()
-        faturado = Payment.objects.filter(covenant_charge=2).count()
-        cancelado = Payment.objects.filter(covenant_charge=3).count()
-        total = aberto+pago+faturado+cancelado
+        # date
+        aberto = Payment.objects.filter(covenant_charge=0, created__gte=date_start, created__lte=date_end )
+        pago = Payment.objects.filter(covenant_charge=1, created__gte=date_start, created__lte=date_end )
+        faturado = Payment.objects.filter(covenant_charge=2, created__gte=date_start, created__lte=date_end )
+        cancelado = Payment.objects.filter(covenant_charge=3, created__gte=date_start, created__lte=date_end )
 
-        data.append({'name': _('Aberto'), 'total': aberto, 'percentage': percentage(aberto, total)})
-        data.append({'name': _('Pago'), 'total': pago, 'percentage': percentage(pago, total)})
-        data.append({'name': _('Faturado'), 'total': faturado, 'percentage': percentage(faturado, total)})
-        data.append({'name': _('Cancelado'), 'total': cancelado, 'percentage': percentage(cancelado, total)})
+        if not service == 'all':
+            aberto = aberto.filter(covenant_charge=0, occurrence__event__referral__service=service )
+            pago = pago.filter(covenant_charge=1, occurrence__event__referral__service=service )
+            faturado = faturado.filter(covenant_charge=2, occurrence__event__referral__service=service )
+            cancelado = cancelado.filter(covenant_charge=3, occurrence__event__referral__service=service )
 
-        #return data
+        if not professional == 'all':
+            aberto = aberto.filter(covenant_charge=0, occurrence__event__referral__professional__id=professional )
+            pago = pago.filter(covenant_charge=1, occurrence__event__referral__professional__id=professional )
+            faturado = faturado.filter(covenant_charge=2, occurrence__event__referral__professional__id=professional )
+            cancelado = cancelado.filter(covenant_charge=3, occurrence__event__referral__professional__id=professional )
+
+        # list of clients
+        list_payment.append( ['Aberto',aberto] )
+        list_payment.append( ['Pago',pago] )
+        list_payment.append( ['Faturado',faturado] )
+        list_payment.append( ['Cancelado',cancelado] )
+
+        # counter %
+        data.append( ['Aberto',aberto.count()] )
+        data.append( ['Pago',pago.count()] )
+        data.append( ['Faturado',faturado.count()] )
+        data.append( ['Cancelado',cancelado.count()] )
         
-        #range = Referral.objects_inrange.all(organization, date_start, date_end, service)
         if data:
-            #data = ReportReferral.objects.all(range, date_start, date_end, organization, service, accumulated)
-            print '--------------- OUT '
-            return data,date_start,date_end, service
+            return data , date_start , date_end , list_payment
         
-        return [], None, None, None
-
-
 
     def get_referral_range(self, organization, date_start, date_end, service, accumulated):
         """

@@ -14,23 +14,19 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-"""
-   This file contains all configurations for Admin Interface
-   I{These models were created only for testing purposes}
-   @author: Sergio Durand
-   @version: 1.0
-"""
-
-from django.contrib import admin
-from gestorpsi.internet.models import EmailType, IMNetwork
+from gestorpsi.contact.models import Contact
+from django.test import TestCase
 
 
-class EmailTypeAdmin(admin.ModelAdmin):
-    pass
+class TestContact(TestCase):
+    def setUp(self):
 
+        self.contact = Contact()
 
-class IMNetworkAdmin(admin.ModelAdmin):
-    pass
-
-admin.site.register(EmailType, EmailTypeAdmin)
-admin.site.register(IMNetwork, IMNetworkAdmin)
+        self.contact.type = 1
+        
+    def testIs_organization(self):
+        self.assertEquals(self.contact.is_organization(), True)
+        
+    def testIs_professional(self):
+        self.assertEquals(self.contact.is_professional(), False)

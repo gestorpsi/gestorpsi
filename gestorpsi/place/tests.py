@@ -16,19 +16,56 @@ GNU General Public License for more details.
 
 from gestorpsi.address.models import Address
 from gestorpsi.phone.models import Phone, PhoneType
-from gestorpsi.place.models import PlaceType, Place
-from gestorpsi.address.models import City, State, Country, AddressType
+from gestorpsi.place.models import PlaceType, Place, RoomType
+from gestorpsi.address.models import City, State, Country, AddressType, Address
+from django.core.urlresolvers import reverse
+from gestorpsi.contact.models import Contact
 from django.test import Client
 import unittest
+from gestorpsi.gcm.models.plan import *
+from gestorpsi.gcm.models.payment import *
+from gestorpsi.document.models import *
 
 
 class PlaceTest(unittest.TestCase):
     def setUp(self):
         self.place = Place(label='testing place')
-        place_type = PlaceType(description='a place type')
-        place_type.save()
+        
+        if len(PlaceType.objects.all())==0:
+            place_type = PlaceType(description='Matriz')
+            place_type.save()
+            document = TypeDocument(description='CPF')
+            document.save()
+            a = AddressType(description='Comercial')
+            a.save()
+            room_type = RoomType()
+            room_type.description = 'sala test'
+            room_type.save()
+            plan = Plan()
+            plan.name = 'Teste 1'
+            plan.value = 324.00
+            plan.duration = 1
+            plan.staff_size = 1
+            plan.save()
+            p = PaymentType()
+            p.id = 1
+            p.name = 'Teste 1'
+            p.save()
+            p  = PaymentType()
+            p.id = 4
+            p.name = 'Teste 4'
+            p.save()
+            country = Country(name='test', nationality='testing')
+            country.save()
+            state = State(name='test', shortName='t', country=country)
+            state.save()
+            city = City(name='test', state=state)
+            city.save()
+        else:
+            place_type = PlaceType.objects.get(description='Matriz')
         self.place.place_type = place_type
         phone_type = PhoneType(description='phone type test')
+        phone_type.save()
         self.phone = Phone(area='23', phoneNumber='45679078', ext='4444',
                       phoneType=phone_type)
         self.phone.content_object = self.place
@@ -53,6 +90,8 @@ class PlaceTest(unittest.TestCase):
         address.content_object = self.place
 
         self.place.save()
+        
+        
 
     def testTypeReturnHoursWork(self):
         self.assertEquals(type(self.place.hours_work()), type([]))
@@ -85,11 +124,18 @@ class ViewPlaceTest(unittest.TestCase):
         #print 'setup'
         pass
 
-    def testIndex(self):
+    def testLogin(self):
         c=Client()
         #print "%s" % c.post( '/index/', { 'joaoajoa': 2 } )
-        response = c.post('/accounts/login/?next=/')
-        self.assertEquals( 200, response.status_code )
+        responseR = c.post('/accounts/register/',{"username":u'usermane',"city":u'1',"password2":u'password',"name":u'asd',"address_number":u'111',"password1":u'password',"zipcode":u'11111-111',"cpf":u'111.111.111-11',"phone":u'(11) 1111-11111',"state":u'1',"plan":u'1',"address":u'1111',"organization":u'asd',"shortname":u'asd',"email":u'asd@asd.com'})
+        #print "%s " % responseR
+        self.assertEquals( 302, responseR.status_code )
+        response = c.post('/accounts/authentication/',{"username":u'usermane',"password":u'password'})
+        #print "%s " % response
+        self.assertEquals( 302, response.status_code )
+        #response = c.post('/contact/')
+        #print "%s " % response
+        #self.assertEquals(200,response.status_code)
         pass
 
     def tearDown(self):
@@ -99,5 +145,5 @@ class ViewPlaceTest(unittest.TestCase):
 
 def suite():
     suite = unittest.TestLoader().loadTestsFromTestCase(PlaceTest)
-    suite.addTest(ViewPlaceTest('testIndex'))
+    suite.addTest(ViewPlaceTest('testLogin'))
     return suite

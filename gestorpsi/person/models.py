@@ -150,7 +150,7 @@ class Person(models.Model):
         #    return "%simg/organization/%s/.thumb-whitebg/%s" % (MEDIA_ROOT, self.organization.id, self.photo)
         #else:
         #    return "%simg/%s" % (MEDIA_ROOT, 'male_generic_photo.png')
-        return "%simg/%s" % (MEDIA_ROOT, 'male_generic_photo.png')
+        return "%s/img/%s" % (MEDIA_ROOT, 'male_generic_photo.png')
 
     def get_birthdate(self):
         if self.birthDate == None:
@@ -176,12 +176,6 @@ class Person(models.Model):
         else:
             return self.birthPlace.state.country
 
-    def get_first_phone(self):
-        if ( len( self.phones.all() ) != 0 ):
-            return self.phones.all()[0]
-        else:
-            return ''
-    
     def get_first_email(self):
         if ( len( self.emails.all() ) != 0 ):
             return self.emails.all()[0]
@@ -192,15 +186,16 @@ class Person(models.Model):
         if ( len( self.sites.all() ) != 0 ):
             return self.sites.all()[0]
         else:
-            return ''        
+            return ''
 
-    def _age(self):
+    def get_age(self):
         if not self.birthDate:
             return None
 
         today = datetime.today()
         return (today.year - self.birthDate.year) - int((today.month, today.day) < (self.birthDate.month, self.birthDate.day))
-    age = property(_age)
+
+    age = property(get_age)
 
     def is_company(self):
         return True if hasattr(self, 'company') else False

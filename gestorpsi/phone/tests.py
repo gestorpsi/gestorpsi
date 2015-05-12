@@ -1,32 +1,53 @@
-__author__ = 'levi'
+# -*- coding: utf-8 -*-
 
+"""
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+"""
+
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
+from django.contrib.auth.models import User
+from gestorpsi.person.models import Person
 from gestorpsi.phone.models import Phone, PhoneType
-from gestorpsi.phone.views import *
+from gestorpsi.phone.views import is_equal, phone_delete
+from gestorpsi.organization.models import Organization
+from gestorpsi.internet.models import EmailType, Email
+from django.test.client import Client
+from django.test import TestCase, RequestFactory
 import unittest
 
-class PhoneTest(unittest.TestCase):
-    phone = None
-    def setup(self):
-        self.phone = Phone()
-        self.phone.phoneNumber = '81111111'
-        self.phone.area = 'DF'
+class testPhoneView(unittest.TestCase):
+	def setUp(self):
+		self.organization = Organization(name='testing organization')
+		self.phone_type=PhoneType(description= 'description phone')
+		self.phone_type.save()
+		self.phone= Phone(area='21', phoneNumber='11111111',ext='111', 
+			phoneType= self.phone_type, content_object = self.organization)
+		self.phone.save()
+		self.phone2 = Phone()
+		self.phone2.phoneNumber = '81111111'
+		self.phone2.area = 'DF'
+	
+	def testIsEqual(self):
+	   self.assertFalse(is_equal(self.phone2))
+	
+	def testIfPhoneIsEqual(self):
+		expected=is_equal(self.phone)
+		self.assertEqual(expected, True)
+		self.assertTrue(is_equal(self.phone))
 
-    def testIsEqual(self):
-        self.assertFalse(is_equal(self.phone))
-
-    def testPhoneList(self):
-
-      '''  areas = [61, 62, 11]
-        numbers = ['6787-2342', '8989-9889', '7907-8909']
-        types = [1, 2, 3]
-
-        phones = phone_list(ids=[None, None, None], exts=[None, None, None], areas=areas, numbers=numbers, types=types)
-        for phone in phones:
-            if (phone.area in areas) and (phone.phoneNumber in numbers):
-
-                None
-               #self.assertTrue(PhoneType.objects.get(1) == phone.phoneType)
-
-    '''
-      pass
-    
+	def testIfPhoneIsDeleting(self):
+		phone= Phone(area='21', phoneNumber='0',ext='111', 
+			phoneType= self.phone_type, content_object = self.organization)
+		self.phone.save()
+		self.assertIsNone(phone_delete(phone.id, phone.phoneNumber))

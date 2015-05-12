@@ -49,23 +49,50 @@
     {% for i in option_rows %} rows.push( [ "{{ i.0 }}" , {{ i.1 }} ] ); {% endfor %}
 
     // call function
-    make_graphic0("{{ option_title }}", rows );
+    //make_graphic0("{{ option_title }}", rows );
     make_graphic1("{{ option_title }}", rows );
 
-    $('#report_table').append('<table class="report">lixo</table>');
+    //$('#report_table').append('<table class="report">lixo</table>');
 
 </script>
 
-    <h1> Lista de clientes</h1>
-    {% for x in list_payment %}
+    <div class="main_area contact">
+        <div class="service_search  active " id="search_header">
+    
+           <h1> Lista de clientes</h1>
 
-        {{ x.0 }} <br />
+           {% for x in list_payment %}
+                {% if x.1 %}
+                   <h3>{{ x.0 }}</h3>
+                   <table class="report">
+                     <tbody>
+                        <tr class="legend"> 
+                            <th>Nome</th> 
+                            <th>Data</th> 
+                            <th>Servi&ccedil;o</th> 
+                            <th>Valor</th> 
+                        </tr> 
 
-        {% for c in x.1 %}
-            {{ c.occurrence.all.0.event.referral.client.all.0 }} - {{ c.total }} - {{ c.occurrence.all.0.event.referral.service }}<br />
-        {% endfor %}
+                        {% for c in x.1 %}
+                            <tr class="{% cycle 'odd' 'even' %}">
+                                <td>
+                                    {{ c.occurrence.all.0.event.referral.client.all.0 }}
+                                </td>
+                                <td>
+                                    {{ c.created|date:"D, d b Y" }}
+                                </td>
+                                <td>
+                                    {{ c.occurrence.all.0.event.referral.service }}
+                                </td>
+                                <td>
+                                    {{ c.total }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                     </tbody>
+                   </table>
+                {% endif %}
+           {% endfor %}
 
-        <br />
-        <br />
-
-    {% endfor %}
+        </div>
+    </div>

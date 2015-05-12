@@ -51,7 +51,6 @@ class ReportForm(forms.ModelForm):
     accumulated = forms.ChoiceField(label=_('Accumulated Graph'), choices=GRAPH_ACCUMULATED, help_text=_('Acummulated graph?'))
     export_graph_type = forms.ChoiceField(label=_('Graph Type format'), choices=GRAPH_TYPE, help_text=_('Here you can choose which type of graph you need. Note: only for HTML format'))
     payment_status = forms.ChoiceField(label=_('Status do pagamento'), choices=STATUS, help_text=_('Status do pagamento'))
-    professional = forms.ModelChoiceField(label=_('Profissional'), queryset=CareProfessional.objects.all() )
 
     class Meta:
         model = Report
@@ -72,12 +71,6 @@ class ReportForm(forms.ModelForm):
         # payment status
         self.fields['payment_status'].choices = tuple([(u'all', '--- Todos ---')] + list(STATUS))
 
-        # professional
-        choices = [('all',_('--- Todos ---'))]
-        for i in CareProfessional.objects.filter(person__organization=organization, active=True):
-            choices.append((i.pk, i.person.name))
-        self.fields['professional'].choices = choices
-        
 
 class ReportSaveForm(forms.ModelForm):
     """

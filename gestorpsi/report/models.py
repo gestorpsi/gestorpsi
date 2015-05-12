@@ -116,73 +116,76 @@ class Report(models.Model):
 
         data = []
         list_payment = []
-        payment_ar = [] # array
+        payment_ar = []
 
-        # date, all professional and services
+        # overview of all status
+        # date range, all professional and all services
+        aberto = Payment.objects.filter(status=0, created__gte=date_start, created__lte=date_end )
+        pago = Payment.objects.filter(status=1, created__gte=date_start, created__lte=date_end )
+        faturado = Payment.objects.filter(status=2, created__gte=date_start, created__lte=date_end )
+        cancelado = Payment.objects.filter(status=3, created__gte=date_start, created__lte=date_end )
+
+        # graphic
+        
+        if aberto.count():
+            data.append( ['Aberto',aberto.count()] )
+
+        if pago.count():
+            data.append( ['Pago',pago.count()] )
+
+        if faturado.count():
+            data.append( ['Faturado',faturado.count()] )
+
+        if cancelado.count():
+            data.append( ['Cancelado',cancelado.count()] )
+
         if payment == 'all':
-            aberto = Payment.objects.filter(covenant_charge=0, created__gte=date_start, created__lte=date_end )
-            pago = Payment.objects.filter(covenant_charge=1, created__gte=date_start, created__lte=date_end )
-            faturado = Payment.objects.filter(covenant_charge=2, created__gte=date_start, created__lte=date_end )
-            cancelado = Payment.objects.filter(covenant_charge=3, created__gte=date_start, created__lte=date_end )
             payment_ar = ['0','1','2','3'] # all
         else:
             if payment == '0':
-                aberto = Payment.objects.filter(covenant_charge=0, created__gte=date_start, created__lte=date_end )
+                aberto = Payment.objects.filter(status=0, created__gte=date_start, created__lte=date_end )
                 payment_ar.append('0')
 
             if payment == '1':
-                pago = Payment.objects.filter(covenant_charge=1, created__gte=date_start, created__lte=date_end )
+                pago = Payment.objects.filter(status=1, created__gte=date_start, created__lte=date_end )
                 payment_ar.append('1')
 
             if payment == '2':
-                faturado = Payment.objects.filter(covenant_charge=2, created__gte=date_start, created__lte=date_end )
+                faturado = Payment.objects.filter(status=2, created__gte=date_start, created__lte=date_end )
                 payment_ar.append('2')
 
             if payment == '3':
-                cancelado = Payment.objects.filter(covenant_charge=3, created__gte=date_start, created__lte=date_end )
+                cancelado = Payment.objects.filter(status=3, created__gte=date_start, created__lte=date_end )
                 payment_ar.append('3')
 
         # filter by service
         if not service == 'all':
             if '0' in payment_ar :
-                aberto = aberto.filter(covenant_charge=0, occurrence__event__referral__service=service )
+                aberto = aberto.filter(occurrence__event__referral__service=service )
             if '1' in payment_ar :
-                pago = pago.filter(covenant_charge=1, occurrence__event__referral__service=service )
+                pago = pago.filter(occurrence__event__referral__service=service )
             if '2' in payment_ar :
-                faturado = faturado.filter(covenant_charge=2, occurrence__event__referral__service=service )
+                faturado = faturado.filter(occurrence__event__referral__service=service )
             if '3' in payment_ar :
-                cancelado = cancelado.filter(covenant_charge=3, occurrence__event__referral__service=service )
-
-        # filter by professional
-        if not professional == 'all':
-            if '0' in payment_ar :
-                aberto = aberto.filter(covenant_charge=0, occurrence__event__referral__professional__id=professional )
-            if '1' in payment_ar :
-                pago = pago.filter(covenant_charge=1, occurrence__event__referral__professional__id=professional )
-            if '2' in payment_ar :
-                faturado = faturado.filter(covenant_charge=2, occurrence__event__referral__professional__id=professional )
-            if '3' in payment_ar :
-                cancelado = cancelado.filter(covenant_charge=3, occurrence__event__referral__professional__id=professional )
+                cancelado = cancelado.filter(occurrence__event__referral__service=service )
 
         # list of clients and counter %
         if '0' in payment_ar :
             list_payment.append( ['Aberto',aberto] )
-            data.append( ['Aberto',aberto.count()] )
 
         if '1' in payment_ar :
             list_payment.append( ['Pago',pago] )
-            data.append( ['Pago',pago.count()] )
 
         if '2' in payment_ar :
             list_payment.append( ['Faturado',faturado] )
-            data.append( ['Faturado',faturado.count()] )
 
         if '3' in payment_ar :
             list_payment.append( ['Cancelado',cancelado] )
-            data.append( ['Cancelado',cancelado.count()] )
-        
-        if data:
-            return data , date_start , date_end , list_payment
+
+        if not data:
+            data = False
+
+        return data , date_start , date_end , list_payment
         
 
     def get_referral_range(self, organization, date_start, date_end, service, accumulated):

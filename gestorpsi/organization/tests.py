@@ -13,19 +13,22 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
-
+from django.contrib.auth.models import User
+from gestorpsi.person.models import Person
 from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.organization.models import Organization
 from gestorpsi.internet.models import EmailType, Email
-from django.test import Client
-import unittest
+from django.test.client import Client
+from django.test import TestCase
+from django.core.urlresolvers import reverse 
 
 
-class OrganizationTest(unittest.TestCase):
+
+class OrganizationModelTest(TestCase):
     def setUp(self):
+    	self.name= 'testing organization'
         self.organization = Organization(name='testing organization')
-        
-         
+
     def testGetFisrtPhoneFull(self):
     	self.phone_type = PhoneType(description='phone type test')
         self.phone_type.save()
@@ -36,7 +39,6 @@ class OrganizationTest(unittest.TestCase):
         self.assertEquals(self.organization.get_first_phone(), self.phone)
     def testGetFisrtPhoneEmpty(self):    
         self.assertEquals(self.organization.get_first_phone(), '')
-
    
     def testGetFisrtEmailFull(self):
     	self.email_type = EmailType(description='type email')
@@ -46,7 +48,37 @@ class OrganizationTest(unittest.TestCase):
     	self.assertEquals(self.organization.get_first_email(), self.email)
 
     def testGetFisrtEmailEmpty(self):    
-        self.assertEquals(self.organization.get_first_email(), '')	
+        self.assertEquals(self.organization.get_first_email(), '')
 
+    def testUnicode(self):
+    	self.assertEquals(self.name, unicode(self.organization))   
 
+    def testClientNotExist(self):
+    	self.assertFalse(self.organization.clients().exists())
+    	#self.assertQuerysetEqual(self.organization.clients(), []) 
+    
+    '''
+    def testClientExist(self):
+    	User.objects.create(username="user1", password="password")		
+        user = User.objects.get(username="user1")
+        Person.objects.create(user_id=user.id)
+        self.person = Person.objects.get(user_id=user.id)
+
+    	self.assertEqual(Tag.objects.get_for_object(Person.objects.get(pk=1).count(), 1)
+    '''
+class OrganizationViewTest(TestCase):
+	def setUp(self):
+
+		self.client=Client()
+		#response = self.client.get('/login/', {'username': 'rangel', 'password': '123'})
+		#print (response)
+
+	def testShowFormOnGet(self):
+		#self.client.login(username='vinicius', password ='123')
+		response= self.client.get(reverse('organization-signature'))
+		#print(response)
+		self.assertEquals(302,response.status_code)
+		#self.assertTemplateUsed(response, 'organization_signature.html')
+		
+		
 

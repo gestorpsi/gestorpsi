@@ -34,6 +34,12 @@ class testPhoneView(unittest.TestCase):
 		self.phone= Phone(area='21', phoneNumber='11111111',ext='111', 
 			phoneType= self.phone_type, content_object = self.organization)
 		self.phone.save()
+		self.phone2 = Phone()
+		self.phone2.phoneNumber = '81111111'
+		self.phone2.area = 'DF'
+	
+	def testIsEqual(self):
+	   self.assertFalse(is_equal(self.phone2))
 	
 	def testIfPhoneIsEqual(self):
 		expected=is_equal(self.phone)

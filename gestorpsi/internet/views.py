@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from gestorpsi.internet.models import Email, EmailType
-from gestorpsi.internet.moddels import Site, InstantMessenger, IMNetwork
+from gestorpsi.internet.models import Site, InstantMessenger, IMNetwork
 
 """ ************** Email section ************** """
 

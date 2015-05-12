@@ -16,10 +16,11 @@ GNU General Public License for more details.
 
 from gestorpsi.internet.models import EmailType, Email, Site, InstantMessenger
 from gestorpsi.internet.models import IMNetwork
-import unittest
+from gestorpsi.internet.views import email_list
+from django.test import TestCase
 
 
-class EmailTest(unittest.TestCase):
+class EmailTest(TestCase):
 
     def setUp(self):
         self.email = Email(email='test')
@@ -41,7 +42,31 @@ class EmailTest(unittest.TestCase):
         self.assertEquals(self.email.email, unicode(self.emailTest.email))
 
 
-class SiteTest(unittest.TestCase):
+    def testEmptyEmailList(self):
+        expected_result = email_list([],[],[])
+        self.assertListEqual(expected_result, [])
+
+'''
+>For future improvement 
+
+    def testOneEmailInList(self):
+        id = ["1312"]
+        email = [self.email]
+        email_typeId = [self.email.emailType.id]
+        
+        expected_result = email_list(id, email, email_typeId)
+
+        email = Email(id=id[0],
+                      email=email[0],
+                      email_type=EmailType.objects.get(pk=emailTypeId[0]))
+
+        self.assertIsNotNone(expected_result)
+        self.assertEquals(len(expected_result), 1)
+        self.assertIsInstance(expected_result[0], Email)
+        self.assertIn(email, expected_result) 
+'''
+
+class SiteTest(TestCase):
 
     def setUp(self):
         self.site = Site(description='Test', site='random site')
@@ -56,7 +81,7 @@ class SiteTest(unittest.TestCase):
         self.assertEquals(self.site.site, unicode(self.site.site))
 
 
-class IMNetworkTest(unittest.TestCase):
+class IMNetworkTest(TestCase):
 
     def setUp(self):
         self.IMNetwork = IMNetwork(description="Test Description")
@@ -66,7 +91,7 @@ class IMNetworkTest(unittest.TestCase):
                           unicode(self.IMNetwork.description))
 
 
-class InstantMessengerTest(unittest.TestCase):
+class InstantMessengerTest(TestCase):
 
     def setUp(self):
         self.net = IMNetwork(description="Test Description")

@@ -20,6 +20,8 @@ from django.test import TestCase
 
 from .models import Country, State, City, Address, AddressType
 from .views import address_list
+from django.contrib.contenttypes.models import ContentType
+from gestorpsi.address.views import *
 
 
 class CountryTest(TestCase):
@@ -140,4 +142,27 @@ class AddressViewTest(TestCase):
         self.assertEquals(len(expected_result), 1)
         self.assertIsInstance(expected_result[0], Address)
         self.assertIn(address, expected_result)
+
+    def testIsEqual(self):
+        addressPrefix = "prefix"
+
+        validAdress = Address(addressType=self.address_type,
+            addressPrefix=addressPrefix)
+        validAdress.content_type = ContentType.objects.get(app_label="address",
+            model="Address")
+        validAdress.save()
+
+        result = is_equal(validAdress)
+        self.assertTrue(result)
+
+    def testNotIsEqual(self):
+        addressPrefix = "invalid prefix"
+
+        invalidAdress = Address(addressType=self.address_type,
+            addressPrefix=addressPrefix)
+        invalidAdress.content_type = ContentType.objects.get(
+            app_label="address", model="Address")
+
+        result = is_equal(invalidAdress)
+        self.assertFalse(result)
 

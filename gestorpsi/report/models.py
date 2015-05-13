@@ -114,6 +114,11 @@ class Report(models.Model):
     def get_payment_(self, organization, date_start, date_end, accumulated, professional, payment, service ):
         date_start , date_end = self.set_date(organization, date_start, date_end)
 
+        '''
+            data : array or False
+            data return False when no numbers to make a graphic
+        '''
+
         data = []
         list_payment = []
         payment_ar = []

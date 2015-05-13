@@ -22,8 +22,10 @@ div.report_main { width: 715px; margin: 0 0 10px 20px; float: left; position: re
 */
 
 table.report { width: 680px; margin: 15px 20px 2px 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; border: 2px solid #aaaaaa; padding: 0px 10px 20px 10px; }
+table.report_list { width: 680px; margin: 15px 20px 2px 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; padding: 0px 10px 20px 10px; }
 table.report tr.title { text-align:left; height: 30px;}
 table.report tr.odd, ul li.odd { background-color: #ececec; }
+table.report_list tr.odd, ul li.odd { background-color: #ececec; }
 table.report tr.legend td { text-align:center; }
 table.report th.close_report  {  display:none; text-align:right; }
 table.report th.close_report a, a.close_dialog  { font-size:16px; color: #999999; text-decoration: none;}

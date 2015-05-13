@@ -1354,6 +1354,7 @@ select.country {
         border: 1px solid #999999;
         letter-spacing: 2px;
         margin-top: 580px;
+        margin-bottom: 25px;
 }
 #footer span {
         display: none;

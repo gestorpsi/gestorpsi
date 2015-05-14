@@ -129,9 +129,9 @@ class Report(models.Model):
         pago = Payment.objects.filter(status=1, created__gte=date_start, created__lte=date_end )
         faturado = Payment.objects.filter(status=2, created__gte=date_start, created__lte=date_end )
         cancelado = Payment.objects.filter(status=3, created__gte=date_start, created__lte=date_end )
+        total_payment = aberto.count()+pago.count()+faturado.count()+cancelado.count()
 
         # graphic
-        
         if aberto.count():
             data.append( ['Aberto',aberto.count()] )
 
@@ -174,23 +174,40 @@ class Report(models.Model):
             if '3' in payment_ar :
                 cancelado = cancelado.filter(occurrence__event__referral__service=service )
 
+        # amount of earch status
+        total_aberto = 0
+        for x in aberto:
+            total_aberto += x.total
+
+        total_pago = 0
+        for x in pago:
+            total_pago += x.total
+
+        total_faturado = 0
+        for x in faturado:
+            total_faturado += x.total
+
+        total_cancelado = 0
+        for x in cancelado:
+            total_cancelado += x.total
+
         # list of clients and counter %
         if '0' in payment_ar :
-            list_payment.append( ['Aberto',aberto] )
+            list_payment.append( ['Aberto',aberto,'red',total_aberto] )
 
         if '1' in payment_ar :
-            list_payment.append( ['Pago',pago] )
+            list_payment.append( ['Pago',pago,'green',total_pago] )
 
         if '2' in payment_ar :
-            list_payment.append( ['Faturado',faturado] )
+            list_payment.append( ['Faturado',faturado,'orange',total_faturado] )
 
         if '3' in payment_ar :
-            list_payment.append( ['Cancelado',cancelado] )
+            list_payment.append( ['Cancelado',cancelado,'blue',total_cancelado] )
 
         if not data:
             data = False
 
-        return data , date_start , date_end , list_payment
+        return data , date_start , date_end , list_payment, total_payment
         
 
     def get_referral_range(self, organization, date_start, date_end, service, accumulated):

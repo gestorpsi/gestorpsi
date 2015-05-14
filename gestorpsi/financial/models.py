@@ -87,7 +87,7 @@ class Payment(models.Model):
             return '<span style="background-color:orange;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
 
         if self.status == '3':
-            return '<span style="background-color:yellow;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+            return '<span style="background-color:blue;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
 
 
     def get_display_payment_way_name_(self):

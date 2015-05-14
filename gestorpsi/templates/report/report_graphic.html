@@ -2,7 +2,7 @@
 
 <script type="text/javascript">
 
-    function make_graphic1(option_title , rows){ 
+    function make_graphic1(rows){ 
 
         // Create the data table.
         var data = new google.visualization.DataTable();
@@ -13,9 +13,9 @@
         data.addRows( rows );
 
         // Set chart options
-        var options = {'title': option_title,
-                       'width':500,
+        var options = {'width':500,
                        'height':330,
+                       colors: ['red', 'green', 'orange', 'blue'],
         };
 
         // Instantiate and draw our chart, passing in some options.
@@ -30,18 +30,28 @@
 
         <table class='report'>
             <tr>
+                <th>&nbsp;</th>
+            </tr>
+            <tr>
+                <th>Estat&iacute;stica de todos os prof&iacute;ssionais, servi&ccedil;os e pagamentos para o per&iacute;odo escolhido.</th>
+            </tr>
+            <tr>
                 <th id='graphic'></th>
+            </tr>
+            <tr>
+                <th>Total de pagamentos: {{ total_payment }}</th>
             </tr>
         </table>
 
         <div style="text-align:center; margin-top: 35px;">
-            <h1>Lista de clientes</h1>
+            <h1>Lista de pagamentos</h1>
         </div>
 
         {% for x in list_payment %}
             {% if x.1 %}
-               <h3>{{ x.0 }}</h3>
-               <hr></hr>
+
+               <div style='background-color:{{ x.2 }}; vertical-align:middle; padding: 0 15px; font-size: 15px; font-weight: bold; color: white; '>{{ x.0 }}</div>
+
                <table class="report_list">
 
                  <tbody>
@@ -54,20 +64,37 @@
 
                     {% for c in x.1 %}
                         <tr class="{% cycle 'odd' 'even' %}">
-                            <td>
+                            <td style="text-align:center;">
                                 {{ c.occurrence.all.0.event.referral.client.all.0 }}
                             </td>
-                            <td>
+                            <td style="text-align:center;">
                                 {{ c.created|date:"D, d b Y" }}
                             </td>
-                            <td>
+                            <td style="text-align:center;">
                                 {{ c.occurrence.all.0.event.referral.service }}
                             </td>
-                            <td>
+                            <td style="text-align:center;">
                                 {{ c.total }}
                             </td>
                         </tr>
                     {% endfor %}
+
+                    <!-- total -->
+                        <tr><td>&nbsp;</td></tr>
+                        <tr class="odd">
+                            <td style="text-align:center; font-weight:bold;">
+                                Valor Total
+                            </td>
+                            <td style="text-align:center; font-weight:bold;">
+                                Todos
+                            </td>
+                            <td style="text-align:center; font-weight:bold;">
+                                Todos
+                            </td>
+                            <td style="text-align:center;">
+                                {{ x.3 }}
+                            </td>
+                        </tr>
 
                  </tbody>
                </table>
@@ -79,7 +106,7 @@
             var rows = [];
             {% for i in option_rows %} rows.push( [ "{{ i.0 }}" , {{ i.1 }} ] ); {% endfor %}
             // call graphic function 
-            make_graphic1("{{ option_title }}", rows );
+            make_graphic1(rows);
         </script>
 
 {% else %}

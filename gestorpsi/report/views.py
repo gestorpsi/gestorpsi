@@ -82,7 +82,7 @@ def payment_data(request, template='report/report_graphic.html'):
     """
     payment
     """
-    data, date_start, date_end, list_payment = Report().get_payment_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('accumulated') , request.GET.get('professional') , request.GET.get('payment') , request.GET.get('service') )
+    data, date_start, date_end, list_payment, total_payment = Report().get_payment_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('accumulated') , request.GET.get('professional') , request.GET.get('payment') , request.GET.get('service') )
 
     # variables of JS
     option_title = u'Estatística de todos os profíssionais, serviços e pagamentos para o período escolhido.'

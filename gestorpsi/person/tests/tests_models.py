@@ -41,7 +41,7 @@ class TestPersonModelEmptyValues(TestCase):
         self.assertEqual(self.person.get_address(), '')
                          
     def testGetFirstPhone(self):
-        self.assertEqual(self.person.get_first_phone(), '')
+        self.assertEqual(self.person.get_first_phone(), "")
 
     def testGetPhoto(self):
         files = subprocess.check_output(["locate", "male_generic_photo.png"]).split('\n')
@@ -121,10 +121,10 @@ class TestPersonModelActualValues(TestCase):
         self.assertEqual(self.p.get_first_site().site, "www.google.com.br")
 
     def testGetAge(self):
-        self.assertEqual(self.p.get_age(), 24)
+        self.assertEqual(self.p.get_age(), 25)
 
     def testGetInternet(self):
-        text = "E-mail: email@email.com | Web Page: www.google.com.br"
+        text = "e-mail: email@email.com | Web Page: www.google.com.br"
         self.assertEqual(self.p.get_internet(), text)
 
     '''

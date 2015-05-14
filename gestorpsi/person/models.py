@@ -159,7 +159,7 @@ class Person(models.Model):
             return self.birthDate.strftime('%d/%m/%Y')
 
     def get_first_phone(self):
-        if self.phones.count:
+        if self.phones.all().count():
             return self.phones.all()[0]
         else:
             return ""

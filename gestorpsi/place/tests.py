@@ -21,12 +21,10 @@ from gestorpsi.address.models import City, State, Country, AddressType, Address
 from django.core.urlresolvers import reverse
 from gestorpsi.contact.models import Contact
 from django.test import Client
-from django.test import TestCase
 import unittest
 from gestorpsi.gcm.models.plan import *
 from gestorpsi.gcm.models.payment import *
 from gestorpsi.document.models import *
-
 
 
 class PlaceTest(unittest.TestCase):
@@ -92,9 +90,12 @@ class PlaceTest(unittest.TestCase):
         address.content_object = self.place
 
         self.place.save()
+        
+        
 
     def testTypeReturnHoursWork(self):
         self.assertEquals(type(self.place.hours_work()), type([]))
+
 
     def testReturnHoursWork(self):
         self.assertEquals(self.place.hours_work(), [07, 00, 12.0])
@@ -116,18 +117,12 @@ class PlaceTest(unittest.TestCase):
                           'place has not been appropriately saved')
 
 
-class ViewPlaceTest(TestCase):
+class ViewPlaceTest(unittest.TestCase):
     urls = 'gestorpsi.place.urls'
 
     def setUp(self):
         #print 'setup'
         pass
-
-    def testIndex(self):
-        c=Client()
-        #print "%s" % c.post( '/index/', { 'joaoajoa': 2 } )
-        response = c.post('/accounts/login/?next=/')
-        self.assertEquals( 200, response.status_code )
 
     def testLogin(self):
         c=Client()
@@ -143,14 +138,12 @@ class ViewPlaceTest(TestCase):
         #self.assertEquals(200,response.status_code)
         pass
 
-    def suite():
-        suite = unittest.TestLoader().loadTestsFromTestCase(PlaceTest)
-
-        suite.addTest(ViewPlaceTest('testIndex'))
-        suite.addTest(ViewPlaceTest('testLogin'))
-
-        return suite
-
     def tearDown(self):
         #print 'teardown'
         pass
+
+
+def suite():
+    suite = unittest.TestLoader().loadTestsFromTestCase(PlaceTest)
+    suite.addTest(ViewPlaceTest('testLogin'))
+    return suite

@@ -39,8 +39,9 @@ for x in Invoice.objects.filter(end_date=end):
         boleto 
             termina em um mês ou menos
     """
+
     # non exist
-    if Invoice.objects.filter( end_date=end+relativedelta(months=1) ).count() == 0 :
+    if Invoice.objects.filter( end_date=end+relativedelta(months=1), organization=x.organization ).count() == 0 :
 
         i = Invoice() # new invoice
         i.organization = x.organization

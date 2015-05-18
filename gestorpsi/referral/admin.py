@@ -22,7 +22,8 @@ GNU General Public License for more details.
 """
 
 from django.contrib import admin
-from gestorpsi.referral.models import IndicationChoice, ReferralImpact, ReferralDischargeReason
+from gestorpsi.referral.models import IndicationChoice,\
+    ReferralImpact, ReferralDischargeReason
 
 admin.site.register(IndicationChoice)
 admin.site.register(ReferralImpact)

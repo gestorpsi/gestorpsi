@@ -3,3 +3,5 @@
 gestorpsi/settings.py
 .coverage
 htmlcov/
+*.swp
+*~

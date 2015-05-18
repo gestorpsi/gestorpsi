@@ -1,68 +1,68 @@
-## -*- coding: utf-8 -*-
-#"""
-#Copyright (C) 2008 GestorPsi
+# -*- coding: utf-8 -*-
+# """
+# Copyright (C) 2008 GestorPsi
 #
-#This program is free software; you can redistribute it and/or
-#modify it under the terms of the GNU General Public License
-#as published by the Free Software Foundation; either version 2
-#of the License, or (at your option) any later version.
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
 #
-#This program is distributed in the hope that it will be useful,
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#GNU General Public License for more details.
-#"""
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# """
 #
-#from PIL import Image as PILImage
-#from reportlab.lib.units import cm
-#from reportlab.lib.pagesizes import A4
-#from geraldo import Report, ReportBand
-#from geraldo import Image, Line, Label, ObjectValue
+# from PIL import Image as PILImage
+# from reportlab.lib.units import cm
+# from reportlab.lib.pagesizes import A4
+# from geraldo import Report, ReportBand
+# from geraldo import Image, Line, Label, ObjectValue
 #
-#class ClientListBandBegin(ReportBand):
-#    height = 0.5*cm
-#    default_style = {'fontName': 'Helvetica-Bold', 'fontSize': 10}
-#    elements = [
-#        Label(text="Name", top=0.1*cm, left=0),
-#        Label(text="Birthdate", top=0.1*cm, left=11*cm),
-#        Label(text="Phone", top=0.1*cm, left=15*cm), ]
+# class ClientListBandBegin(ReportBand):
+#     height = 0.5*cm
+#     default_style = {'fontName': 'Helvetica-Bold', 'fontSize': 10}
+#     elements = [
+#         Label(text="Name", top=0.1*cm, left=0),
+#         Label(text="Birthdate", top=0.1*cm, left=11*cm),
+#         Label(text="Phone", top=0.1*cm, left=15*cm), ]
 #
-#class ClientListBandDetail(ReportBand):
-#    height = 0.5*cm
-#    default_style = {'fontName': 'Helvetica', 'fontSize': 10}
-#    elements = [
-#        ObjectValue(attribute_name='person', top=0, left=0*cm, width=10*cm),
-#        ObjectValue(top=0, left=11*cm, get_value=lambda instance: instance.person.get_birthdate()),
-#        ObjectValue(top=0, left=15*cm, get_value=lambda instance: instance.person.get_first_phone()), ]
+# class ClientListBandDetail(ReportBand):
+#     height = 0.5*cm
+#     default_style = {'fontName': 'Helvetica', 'fontSize': 10}
+#     elements = [
+#         ObjectValue(attribute_name='person', top=0, left=0*cm, width=10*cm),
+#         ObjectValue(top=0, left=11*cm, get_value=lambda instance: instance.person.get_birthdate()),
+#         ObjectValue(top=0, left=15*cm, get_value=lambda instance: instance.person.get_first_phone()), ]
 #
-#class ClientList(Report):
-#    page_size = A4
-#    band_begin = ClientListBandBegin
-#    band_detail = ClientListBandDetail
-#    print_if_empty = True
+# class ClientList(Report):
+#     page_size = A4
+#     band_begin = ClientListBandBegin
+#     band_detail = ClientListBandDetail
+#     print_if_empty = True
 #
-#def client_record_gen(blocks):
-#    class ClientRecordBandDetail(ReportBand):
-#        top = 0.0*cm
-#        def print_section(self):
-#            retorno = self.top
-#            self.top += 0.3*cm
-#            return retorno
+# def client_record_gen(blocks):
+#     class ClientRecordBandDetail(ReportBand):
+#         top = 0.0*cm
+#         def print_section(self):
+#             retorno = self.top
+#             self.top += 0.3*cm
+#             return retorno
 #
-#        def print_line(self):
-#            retorno = self.top
-#            self.top += 0.2*cm
-#            return retorno
+#         def print_line(self):
+#             retorno = self.top
+#             self.top += 0.2*cm
+#             return retorno
 #
-#        def print_label(self):
-#            retorno = self.top
-#            self.top += 0.3*cm
-#            return retorno
+#         def print_label(self):
+#             retorno = self.top
+#             self.top += 0.3*cm
+#             return retorno
 #
-#        def print_content(self):
-#            retorno = self.top
-#            self.top += 0.7*cm
-#            return retorno
+#         def print_content(self):
+#             retorno = self.top
+#             self.top += 0.7*cm
+#             return retorno
 #
 #        height = 8.5*cm
 #        label_style = {'fontName': 'Helvetica-Bold', 'fontSize': 8}
@@ -155,7 +155,7 @@
 #
 #    return c
 #
-#class ClientRecord(Report):
+# class ClientRecord(Report):
 #    page_size = A4
 #    band_detail = client_record_gen(['block1', 'block2', 'block3', 'block4', 'block5', 'block6', 'block7'])
 #    print_if_empty = True

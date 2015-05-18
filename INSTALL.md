@@ -81,9 +81,9 @@ $ pip install -r requirements.txt
 $ python manage.py syncdb
 $ python manage.py migrate
 $ cd scripts
-$ creategroups.py
+$ python creategroups.py
 $ cd ..
-$ manage.py shell
+$ python manage.py shell
 ```
 
 This part you're going to type it inside the opened python interactive shell

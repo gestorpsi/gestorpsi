@@ -7,13 +7,18 @@
 '''
 
 import sys
+import locale
 from os import environ
-
-environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
-sys.path.append('..')
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
+locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+
+environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
+sys.path.append("/home/redepsi/lib/python2.7")
+sys.path.append("/home/redepsi/webapps/gestorpsi_app/git.gestorpsi.com.br")
+sys.path.append("/home/redepsi/webapps/gestorpsi_app/git.gestorpsi.com.br/gestorpsi")
+sys.path.append("/home/redepsi/webapps/gestorpsi_app/git.gestorpsi.com.br/gestorpsi/gestorpsi")
 
 from dateutil.relativedelta import relativedelta
 from datetime import date, timedelta
@@ -39,7 +44,6 @@ for x in Invoice.objects.filter(end_date=end):
         boleto 
             termina em um mês ou menos
     """
-
     # non exist
     if Invoice.objects.filter( end_date=end+relativedelta(months=1), organization=x.organization ).count() == 0 :
 
@@ -54,11 +58,14 @@ for x in Invoice.objects.filter(end_date=end):
         i.save()
 
     to = [] # send mail to
-    # administratror
+    bcc = []
+    bcc.append('teagom@gmail.com')
+
+    # administratror of org
     for e in x.organization.administrators_():
         if not e.profile.user.email in to:
             to.append(e.profile.user.email) 
-    # secretary
+    # secretary of org
     for e in x.organization.secretary_():
         if not e.profile.user.email in to:
             to.append(e.profile.user.email) 
@@ -71,11 +78,12 @@ for x in Invoice.objects.filter(end_date=end):
         3 = URL contato
         4 = assinatura gestorPSI
     """
-    text = u"Bom dia.\n\nSua próxima assinatura já está disponível para pagamento em %s/organization/signature/ Sua assinatura atual vence dia %s, evite ter o seu plano suspenso, pague até esta data.\n\nQualquer dúvida entre em contato pelo link %s/contato/\n\n" % ( URL_APP , end.strftime("%d %B %Y, %A") , URL_HOME )
+    text = u"Bom dia.\n\nSua próxima assinatura já está disponível para pagamento em %s/organization/signature/\nSua assinatura atual vence dia %s. Evite ter o seu plano suspenso, pague até esta data.\n\nQualquer dúvida entre em contato pelo link %s/contato/\n\n" % ( URL_APP , end.strftime("%d %B %Y, %A") , URL_HOME )
     text += u"Quer suspender sua assinatura? Clique aqui %s/organization/suspension/\n\n%s" % ( URL_APP, SIGNATURE )
 
     msg = EmailMessage()
     msg.subject = u'Assinatura disponível para pagamento - gestorpsi.com.br'
     msg.body = text
     msg.to = to
+    msg.bcc = bcc
     msg.send()

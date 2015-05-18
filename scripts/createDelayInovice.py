@@ -9,11 +9,11 @@
 import sys
 from os import environ
 
-environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
-sys.path.append('..')
-
 reload(sys)
 sys.setdefaultencoding("utf-8")
+
+environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
+sys.path.append('..')
 
 from dateutil.relativedelta import relativedelta
 from datetime import date, timedelta

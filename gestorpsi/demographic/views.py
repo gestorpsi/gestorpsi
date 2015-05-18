@@ -118,6 +118,7 @@ def occupation_save(request, object_id, occupation_id=0):
         profession.profession = Occupation.objects.get(cbo_code=ocup)
         profession.client = object
         profession.save()
+        profession_form.instance = None
         messages.success(request, _('Occupation saved successfully'))
         professions = [p for p in object.profession_set.all()]
         return render_to_response('demographic/demographic_occupation.html', {

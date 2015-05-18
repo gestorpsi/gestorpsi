@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-09 18:13-0300\n"
+"POT-Creation-Date: 2015-05-18 15:50-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1814,11 +1814,11 @@ msgstr ""
 msgid "Company"
 msgstr ""
 
-#: person/models.py:258
+#: person/models.py:253
 msgid "Company Size"
 msgstr ""
 
-#: person/models.py:259
+#: person/models.py:254
 msgid "CNAE Subclass Code"
 msgstr ""
 
@@ -3068,7 +3068,6 @@ msgstr ""
 #: templates/client/client_referral_ext.html:63
 #: templates/client/client_referral_form.html:81
 #: templates/client/client_referral_form.html:83
-#: templates/tags/schedule_form.html:126
 msgid "Select Professional"
 msgstr ""
 
@@ -4410,7 +4409,7 @@ msgstr ""
 
 #: templates/client/client_referral_form.html:144
 #: templates/client/client_referral_plus_form.html:103
-#: templates/tags/schedule_form.html:148
+#: templates/tags/schedule_form.html:134
 #: templates/tags/schedule_sidebar.html:26
 msgid "Clients"
 msgstr ""
@@ -4791,7 +4790,7 @@ msgstr ""
 msgid "Inform the equipment details then click on Save button"
 msgstr ""
 
-#: templates/device/device_form.html:58 templates/tags/schedule_form.html:158
+#: templates/device/device_form.html:58 templates/tags/schedule_form.html:144
 msgid "Devices"
 msgstr ""
 
@@ -5705,7 +5704,7 @@ msgstr ""
 
 #: templates/referral/referral_details.html:225
 #: templates/schedule/schedule_settings.html:37
-#: templates/tags/schedule_form.html:154
+#: templates/tags/schedule_form.html:140
 msgid "Schedule Details"
 msgstr ""
 
@@ -6217,7 +6216,7 @@ msgid "Occurrences"
 msgstr ""
 
 #: templates/schedule/schedule_occurrence_form.html:43
-#: templates/tags/schedule_form.html:165
+#: templates/tags/schedule_form.html:151
 msgid "Occurrence Details"
 msgstr ""
 
@@ -6227,13 +6226,13 @@ msgid "Start Time"
 msgstr ""
 
 #: templates/schedule/schedule_occurrence_form.html:50
-#: templates/tags/schedule_form.html:45 templates/tags/schedule_form.html:174
+#: templates/tags/schedule_form.html:45 templates/tags/schedule_form.html:160
 msgid "End Time"
 msgstr ""
 
 #: templates/schedule/schedule_occurrence_form.html:56
 #: templates/tags/occurrence_confirmation_form.html:75
-#: templates/tags/schedule_form.html:155
+#: templates/tags/schedule_form.html:141
 msgid "Notes"
 msgstr ""
 
@@ -6624,6 +6623,7 @@ msgid "Adding new Professional"
 msgstr ""
 
 #: templates/tags/address_book_professional_mini.html:34
+#: templates/tags/schedule_form.html:126
 msgid "Professional Details"
 msgstr ""
 
@@ -6937,75 +6937,75 @@ msgstr ""
 msgid "Schedule a single client?"
 msgstr ""
 
-#: templates/tags/schedule_form.html:166
+#: templates/tags/schedule_form.html:152
 msgid "Occurrence Format"
 msgstr ""
 
-#: templates/tags/schedule_form.html:171
+#: templates/tags/schedule_form.html:157
 msgid "Total Occurrences"
 msgstr ""
 
-#: templates/tags/schedule_form.html:171
+#: templates/tags/schedule_form.html:157
 msgid "Limited about 40 occurrences for each submit"
 msgstr ""
 
-#: templates/tags/schedule_form.html:181
+#: templates/tags/schedule_form.html:167
 msgid "Occurrence Frequency"
 msgstr ""
 
-#: templates/tags/schedule_form.html:182
+#: templates/tags/schedule_form.html:168
 msgid "Frequency Period"
 msgstr ""
 
-#: templates/tags/schedule_form.html:190
+#: templates/tags/schedule_form.html:176
 msgid "Interval"
 msgstr ""
 
-#: templates/tags/schedule_form.html:196
+#: templates/tags/schedule_form.html:182
 msgid "Weekly Options"
 msgstr ""
 
-#: templates/tags/schedule_form.html:197
+#: templates/tags/schedule_form.html:183
 msgid "Days of the week"
 msgstr ""
 
-#: templates/tags/schedule_form.html:203
+#: templates/tags/schedule_form.html:189
 msgid "Monthly options"
 msgstr ""
 
-#: templates/tags/schedule_form.html:204
+#: templates/tags/schedule_form.html:190
 msgid "Repeat"
 msgstr ""
 
-#: templates/tags/schedule_form.html:209
+#: templates/tags/schedule_form.html:195
 msgid "Month ordinal"
 msgstr ""
 
-#: templates/tags/schedule_form.html:212
+#: templates/tags/schedule_form.html:198
 msgid "Month ordinal day"
 msgstr ""
 
-#: templates/tags/schedule_form.html:216
+#: templates/tags/schedule_form.html:202
 msgid "Event repeat on these days of the month"
 msgstr ""
 
-#: templates/tags/schedule_form.html:225
+#: templates/tags/schedule_form.html:211
 msgid "Yearly options"
 msgstr ""
 
-#: templates/tags/schedule_form.html:226
+#: templates/tags/schedule_form.html:212
 msgid "Event repeat on these months of year"
 msgstr ""
 
-#: templates/tags/schedule_form.html:229
+#: templates/tags/schedule_form.html:215
 msgid "Is year month ordinal"
 msgstr ""
 
-#: templates/tags/schedule_form.html:233
+#: templates/tags/schedule_form.html:219
 msgid "Year month ordinal"
 msgstr ""
 
-#: templates/tags/schedule_form.html:236
+#: templates/tags/schedule_form.html:222
 msgid "Year month ordinal day"
 msgstr ""
 

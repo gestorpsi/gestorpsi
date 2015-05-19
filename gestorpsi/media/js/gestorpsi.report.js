@@ -43,9 +43,11 @@ $(function() {
         if( $(this).val()==3 ){
             $('div.payment_status_filter').show();
             $('div.professional_filter').show();
+            $('select#id_accumulated').hide();
         } else {
             $('div.payment_status_filter').hide();
             $('div.professional_filter').hide();
+            $('select#id_accumulated').show();
         }
     });
 

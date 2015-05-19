@@ -122,7 +122,8 @@ def add_event(
 
 
             '''
-                create a payment
+                Create a payment when evet is by pack ou occurrence
+                Event per period will be created by script run by crontab everyday
             '''
             # Filter payment by pack or occurrence
             for x in referral.covenant.filter(Q(charge=1) | Q(charge=2) ).distinct():
@@ -153,7 +154,7 @@ def add_event(
                     # clear all
                     payment.covenant_payment_way_options = ''
                     for pw in x.payment_way.all():
-                        x = "(%s,'%s')," % ( pw.id , pw.name )
+                        x = "(%s,'%s')," % ( pw.id , pw.name ) # need be a dict
                         payment.covenant_payment_way_options += x
 
                 # add occurrence

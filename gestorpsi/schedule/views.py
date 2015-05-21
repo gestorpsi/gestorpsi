@@ -92,16 +92,20 @@ def add_event(
         redirect_to = None
     ):
 
-    # have to contains dtstart variable in URL. URL from schedule have to contains date and time informations.
+    # have to contains dtstart variable in URL. URL from schedule have to contains date and time data.
     if not 'dtstart' in request.GET:
         return http.HttpResponseRedirect('/schedule/')
 
+
     if request.method == 'POST':
-        if int(request.POST.get('count')) > 40: # limit occurrence repeat
+
+        # limit occurrence repeat
+        if int(request.POST.get('count')) > 40:
             return render_to_response('403.html', {'object':_('Sorry. You can not book more than 40 occurrence at the same time')})
 
         recurrence_form = recurrence_form_class(request.POST)
 
+        # valid form
         if recurrence_form.is_valid():
             if not request.POST.get('group'): # booking single client
 
@@ -122,56 +126,60 @@ def add_event(
 
 
             '''
-                Create a payment when evet is by pack ou occurrence
+                Create a payment for each event when event is by pack or occurrence
                 Event per period will be created by script run by crontab everyday
             '''
-            # Filter payment by pack or occurrence
-            for x in referral.covenant.filter(Q(charge=1) | Q(charge=2) ).distinct():
+            # check if occurrences have one payment by pack or event
+            for o in referral.occurrences():
+                # exist a payment for event?
+                if Payment.objects.filter(occurrence=o).count() == 0 :
 
-                payment = Payment() # new
+                    # Filter payment by pack or occurrence
+                    for x in referral.covenant.filter(Q(charge=1) | Q(charge=2) ).distinct():
 
-                # by pack
-                if x.charge == 2:
-                    # check not terminated pack of same referral
-                    for p in Payment.objects.filter(occurrence__event=event, covenant_charge=2):
-                        if not p.terminated_():
-                            # not terminated pack
-                            payment = p
+                        payment = Payment() # new
 
-                # by occurrence
-                # new
-                if not payment.id:
-                    payment.name = x.name
-                    payment.price = x.price
-                    payment.off = 0
-                    payment.total = x.price
-                    payment.covenant_charge = x.charge
-                    payment.save()
+                        # by pack
+                        if x.charge == 2:
+                            # check not terminated pack of same referral
+                            for p in Payment.objects.filter(occurrence__event=event, covenant_charge=2):
+                                if not p.terminated_():
+                                    # not terminated pack
+                                    payment = p
 
-                    # by pack
-                    payment.covenant_pack_size = x.event_time if x.charge == 2 else 0
+                        # by occurrence
+                        # new
+                        if not payment.id:
+                            payment.name = x.name
+                            payment.price = x.price
+                            payment.off = 0
+                            payment.total = x.price
+                            payment.covenant_charge = x.charge
+                            payment.save()
 
-                    # clear all
-                    payment.covenant_payment_way_options = ''
-                    for pw in x.payment_way.all():
-                        x = "(%s,'%s')," % ( pw.id , pw.name ) # need be a dict
-                        payment.covenant_payment_way_options += x
+                            # by pack
+                            payment.covenant_pack_size = x.event_time if x.charge == 2 else 0
 
-                # add occurrence
-                payment.occurrence.add( event.occurrences().latest('id') )
-                # update m2m
-                payment.save()
+                            # clear all
+                            payment.covenant_payment_way_options = ''
+                            for pw in x.payment_way.all():
+                                x = "(%s,'%s')," % ( pw.id , pw.name ) # need be a dict
+                                payment.covenant_payment_way_options += x
 
+                        # add occurrence
+                        payment.occurrence.add(o)
+                        # update m2m
+                        payment.save()
 
-            if not event.errors:
-                messages.success(request, _('Schedule saved successfully'))
-                return http.HttpResponseRedirect(redirect_to or '/schedule/')
-            else:
-                return render_to_response(
-                    'schedule/event_detail.html', 
-                    dict(event=event),
-                    context_instance=RequestContext(request)
-                )
+        if not event.errors:
+            messages.success(request, _('Schedule saved successfully'))
+            return http.HttpResponseRedirect(redirect_to or '/schedule/')
+        else:
+            return render_to_response(
+                'schedule/event_detail.html', 
+                dict(event=event),
+                context_instance=RequestContext(request)
+            )
     else:
 
         dtstart = parser.parse( request.GET['dtstart'] )
@@ -180,28 +188,29 @@ def add_event(
         referral = get_object_or_None(Referral, pk = request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
         event_form = event_form_class
 
-        recurrence_form = recurrence_form_class(initial=dict(
-                dtstart=dtstart, 
-                day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"), 
-                until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
-                room=room.id,
-            ))
+        recurrence_form = recurrence_form_class( initial = dict(
+                                                                dtstart=dtstart, 
+                                                                day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"), 
+                                                                until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
+                                                                room=room.id,
+                                                            )
+            )
 
         recurrence_form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=room) | Q(mobility="2", lendable=True) | Q(place=room.place, mobility="2", lendable=False))]
 
-    return render_to_response(
-        template,
-        dict(
-            dtstart=dtstart, 
-            event_form=event_form, 
-            recurrence_form=recurrence_form, 
-            group  = ServiceGroup.objects.filter(service__organization = request.user.get_profile().org_active, active=True),
-            room = room,
-            object = client,
-            referral = referral,
-            room_id=room.id,
-            ),
-        context_instance=RequestContext(request)
+
+    return render_to_response( template,
+                               dict(
+                                        dtstart=dtstart, 
+                                        event_form=event_form, 
+                                        recurrence_form=recurrence_form, 
+                                        group  = ServiceGroup.objects.filter(service__organization = request.user.get_profile().org_active, active=True),
+                                        room = room,
+                                        object = client,
+                                        referral = referral,
+                                        room_id=room.id,
+                                    ),
+                               context_instance=RequestContext(request)
     )
 
 

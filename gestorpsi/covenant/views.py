@@ -192,3 +192,25 @@ def list_filter(request, active=True):
     initials = string.uppercase
 
     return render_to_response('tags/list_item_covenant.html', locals(), context_instance=RequestContext(request))
+
+
+
+def order(request, obj=False):
+    """
+        active or deactive a covenant
+    """
+    if obj:
+
+        obj = get_object_or_404(Covenant, pk=obj)
+
+        if obj.active:
+            obj.active = False
+            messages.success(request, _(u'Convênio desativado com sucesso!'))
+        else:
+            obj.active = True
+            messages.success(request, _(u'Convênio ativado com sucesso!'))
+
+        obj.save()
+        return HttpResponseRedirect('/covenant/%s/' % obj.id )
+
+    return False

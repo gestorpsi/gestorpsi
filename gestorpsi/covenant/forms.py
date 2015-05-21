@@ -27,3 +27,4 @@ class CovenantForm(forms.ModelForm):
 
     class Meta:
         model = Covenant
+        exclude = ['active']

@@ -48,13 +48,27 @@ class ReferralForm(forms.ModelForm):
         model = Referral
     
     def __init__(self, request, *args, **kwargs):
+
+        '''
+            request : Django session request
+        '''
         super(ReferralForm, self).__init__(*args, **kwargs)
 
-        # query covenant of org
-        self.fields['covenant'] = forms.ModelMultipleChoiceField(
-                                    queryset=Covenant.objects.filter( organization=request.user.get_profile().org_active, active=True),
-                                    required=False,
-                                )
+        # show or not the covenant of service
+        # update register
+        try:
+            ref = Referral.objects.get(pk=kwargs['instance'].id )
+            # query covenant of org
+            self.fields['covenant'] = forms.ModelMultipleChoiceField(
+                                        queryset=Covenant.objects.filter( organization=request.user.get_profile().org_active, active=True, service=ref.service),
+                                        required=False,
+                                    )
+        # new register
+        except:
+            self.fields['covenant'] = forms.ModelMultipleChoiceField(
+                                        queryset=Covenant.objects.none(),
+                                        required=False,
+                                    )
 
         if hasattr(self,'instance') and self.instance.id:
             if self.instance.service.is_group:

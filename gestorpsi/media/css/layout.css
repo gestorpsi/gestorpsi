@@ -420,10 +420,12 @@ div.main_area h1 {
 
 #msg_area a.close_link { float:right; margin-top:5px;}
 #msg_area.alert, #helping, .msg_area.alert {
-        background:#FFFFCC;
+        background:green;
+        color: white;
 }
 #msg_area.error, .msg_area.error {
-        background:#FFCCCC;
+        background:red;
+        color: white;
 }
 
 #msg_area ul, .msg_area ul {

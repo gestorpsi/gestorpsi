@@ -78,13 +78,6 @@ GNU General Public License for more details.
                     </label>
 
                     <div style='margin-left:0px;'>
-                        <label>{% trans "Ativo" %} 
-                            <input type="checkbox" name="active" {% if obj.active %} checked {% endif %} />
-                        </label>
-                    </div>
-
-	
-                    <div style='margin-left:0px;'>
                         <label>{% trans "Descri&ccedil;&atilde;o" %} <br />
                             {{ form.description }}
                         </label>
@@ -130,6 +123,11 @@ GNU General Public License for more details.
                 {% endif %}
             </div>
 
+            {% if obj.id %}
+                <div id="sidebar" class="sidebar_client">
+                    {% include "tags/covenant_sidebar.html" %}
+                </div>
+            {% endif %}
         </form>
 
 {% endblock %}

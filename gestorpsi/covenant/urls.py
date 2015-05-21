@@ -17,7 +17,7 @@ GNU General Public License for more details.
 from django.conf.urls.defaults import *
 from gestorpsi.authentication.views import login_check
 
-from gestorpsi.covenant.views import index, form, list_filter, list_json
+from gestorpsi.covenant.views import index, form, list_filter, list_json, order
 
 urlpatterns = patterns('',
     url(r'^$', login_check(index), name='covenant-index'), # index, active list
@@ -32,4 +32,6 @@ urlpatterns = patterns('',
     url(r'^list/deactive/(?P<filter>\w+)/$', login_check(list_filter)), # search method get
     # referral form client
     url(r'^list/service/(?P<service>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(list_json) ), # return all covenant of service
+    # active or deatice
+    url(r'^(?P<obj>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/order/$', login_check(order), name='covenant-order' ), # return all covenant of service
 )

@@ -29,7 +29,6 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.views import login as django_login
 from django.core.mail import EmailMessage
 
-
 from gestorpsi.settings import SITE_DISABLED, ADMIN_URL, ADMINS_REGISTRATION, URL_APP, URL_HOME, SIGNATURE, URL_DEMO
 
 from gestorpsi.organization.models import Organization, ProfessionalResponsible
@@ -37,8 +36,6 @@ from gestorpsi.gcm.models.invoice import Invoice
 
 from gestorpsi.authentication.forms import RegistrationForm
 from registration.models import RegistrationProfile
-
-
 
 #
 # login_check decorator
@@ -54,55 +51,76 @@ def login_check(f):
     return wrap
 
 
+#def unblocked_user(username):
+
+    ## user can't exist
+    #user = get_object_or_404(User, username=username)
+
+    #if user.is_staff or user.is_superuser:
+        #return True
+    
+    #profile = user.get_profile()
+    #value = profile.try_login
+
+    #if (value >= settings.PASSWORD_RETIRES):            
+        #return False
+    
+    #return True
+
+
 def user_authentication(request):
+
     if SITE_DISABLED:
         return render_to_response('core/site_disabled.html')
-    if request.method != "POST":
+
+    if not request.method == "POST":
         return render_to_response('registration/login.html', {'form': AuthenticationForm() })
+
     form = AuthenticationForm(data=request.POST)
-    username = request.POST.get('username').strip().lower()
+    username = request.POST.get('username').strip().lower() # convert to lower string
     password = request.POST.get('password')
     
-    if (unblocked_user(username)):
-        user = authenticate(username=username, password=password)
-        
-        # user does not exist
-        if user is None:
-            set_trylogin(username)
-            form_messages = _('Invalid username or password')
-            return render_to_response('registration/login.html', {'form': form, 'form_messages': form_messages })
-        else:
-            request.session['user_aux_id'] = user.id
-        if user.is_staff or user.is_superuser:
-            login(request, user)
-            return HttpResponseRedirect(ADMIN_URL)
+    user = authenticate(username=username, password=password)
 
-        # user has not confirmed registration yet
-        if user.registrationprofile_set.all()[0].activation_key != 'ALREADY_ACTIVATED':
-            form_messages = _('Your account has not been confirmated yet. Please check your email and use your activation code to continue')
-            return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
-        
-        if not user.is_active:
-            form_messages = _('Your account has been disable. Please contact our support')
-            return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
-        else:
-            clear_login(user)
-            profile = user.get_profile()
-            if profile.organization.distinct().count() > 1:
-                try:
-                    organization = profile.organization.get(short_name__iexact = request.POST.get('shortname'))
-                    profile.org_active = organization
-                    profile.save()
-                    user.groups.clear()
-                    for role in user.get_profile().role_set.filter(organization=organization):
-                        user.groups.add(role.group)
-                    login(request, user)
-                    return HttpResponseRedirect('/')
-                except Organization.DoesNotExist:
-                    request.session['temp_user'] = user
-                    return render_to_response('registration/select_organization.html', { 'objects': profile.organization.distinct() })
-            login(request, user)
-            return HttpResponseRedirect(request.POST.get('next') or '/')
+    # user does not exist
+    if user is None:
+        set_trylogin(username)
+        form_messages = _('Invalid username or password')
+        return render_to_response('registration/login.html', {'form': form, 'form_messages': form_messages })
+    else:
+        request.session['user_aux_id'] = user.id
+
+    # redirect to admin page
+    if user.is_staff or user.is_superuser:
+        login(request, user)
+        return HttpResponseRedirect(ADMIN_URL)
+
+    # user has not confirmed registration yet
+    if user.registrationprofile_set.all()[0].activation_key != 'ALREADY_ACTIVATED':
+        form_messages = _('Your account has not been confirmated yet. Please check your email and use your activation code to continue')
+        return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
+    
+    if not user.is_active:
+        form_messages = _('Your account has been disable. Please contact our support')
+        return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
+    else:
+        clear_login(user)
+        profile = user.get_profile()
+        if profile.organization.distinct().count() > 1:
+            try:
+                organization = profile.organization.get(short_name__iexact = request.POST.get('shortname'))
+                profile.org_active = organization
+                profile.save()
+                user.groups.clear()
+                for role in user.get_profile().role_set.filter(organization=organization):
+                    user.groups.add(role.group)
+                login(request, user)
+                return HttpResponseRedirect('/')
+            except Organization.DoesNotExist:
+                request.session['temp_user'] = user
+                return render_to_response('registration/select_organization.html', { 'objects': profile.organization.distinct() })
+        login(request, user)
+        return HttpResponseRedirect(request.POST.get('next') or '/')
 
 
 
@@ -187,21 +205,6 @@ def change_password(user,current_password, new_password):
         user.get_profile().org_active = None
         user.save()
         user.get_profile().org_active = org       
-
-
-    
-def unblocked_user(username):
-    user = get_object_or_404(User, username=username)
-    
-    if user.is_staff or user.is_superuser:
-        return True
-    
-    profile = user.get_profile()
-    value = profile.try_login
-    if (value >= settings.PASSWORD_RETIRES):            
-        return False
-    
-    return True
 
 
 
@@ -296,6 +299,8 @@ def register(request, success_url=None,
                 msg.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( i.start_date.strftime("%d/%m/%Y"), i.end_date.strftime("%d/%m/%Y") )
                 msg.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % URL_APP
 
+                msg.body += u"IMPORTANTE: As informações inseridas no sistema podem ser editadas mas não apagadas. Por isso, se for necessário fazer testes com informações fictícias para entender como o sistema funciona, utilize a nossa versão de demostração: http://demo.gestorpsi.com.br\n\n"
+
                 msg.body += u"Endereço do GestorPSI: %s\n" % URL_APP
                 msg.body += u"Usuário/Login  %s\n" % request.POST.get('username')
                 msg.body += u"Senha  %s\n\n" % request.POST.get('password1')
@@ -332,9 +337,9 @@ def complete(request, success_url=None, extra_context=None):
     from gestorpsi.settings import URL_APP, URL_HOME
 
     return render_to_response('registration/registration_complete.html',
-                locals(),
-                context_instance=RequestContext(request)
-            )
+                                locals(),
+                                context_instance=RequestContext(request)
+                            )
 
     '''
     from gestorpsi.boleto.functions import gera_boleto_bradesco_inscricao

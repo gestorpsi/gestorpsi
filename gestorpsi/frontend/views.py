@@ -23,8 +23,16 @@ from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.schedule.views import schedule_occurrences
 from gestorpsi.referral.models import Queue
 
+from gestorpsi.settings import ADMIN_URL
+
 def start(request):
-    profile = request.user.get_profile()
+
+    # admin do not have profile
+    try:
+        profile = request.user.get_profile()
+    except:
+        return HttpResponseRedirect(ADMIN_URL)
+
     date = datetime.now()
 
     #code for testing the charging system

@@ -126,7 +126,7 @@ def add_event(
 
 
             '''
-                Create a payment for each event when event is by pack or occurrence
+                Create a payment for each event when event by pack or occurrence
                 Event per period will be created by script run by crontab everyday
             '''
             # check if occurrences have one payment by pack or event

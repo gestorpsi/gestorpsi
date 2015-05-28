@@ -19,7 +19,24 @@ from django.utils.translation import ugettext_lazy as _
 from django.db import models
 
 from gestorpsi.client.models import Client
+#from gestorpsi.covenant.models import CHARGE
 from swingtime.models import Occurrence
+
+CHARGE = ( 
+            (1, _(u'Por evento')),
+            (2, _(u'Por pacote')),
+                
+            (u'Por período', 
+                (
+                    (10,u'Semanal'),
+                    (11,u'Quinzenal'),
+                    (12,u'Mensal'),
+                    (13,u'Bimestral'),
+                    (14,u'Semestral'), 
+                )
+             ),
+)
+
 
 STATUS = ( 
         ('0',_(u'Aberto')),
@@ -53,13 +70,14 @@ class Payment(models.Model):
     total = models.DecimalField(_(u'Total'), max_digits=6, decimal_places=2, null=False, blank=False)
 
     # from covenant
-    covenant_charge = models.PositiveIntegerField(blank=True, null=True)
+    covenant_charge = models.PositiveIntegerField(blank=True, null=True, choices=CHARGE)
     covenant_pack_size = models.PositiveIntegerField(blank=True, null=True)
     covenant_payment_way_options = models.TextField(blank=True, null=True)
     covenant_payment_way_selected = models.TextField(blank=True, null=True)
 
     # fk
-    occurrence = models.ManyToManyField(Occurrence, null=True, blank=True, editable=False) # contador pacote
+    occurrence = models.ManyToManyField(Occurrence, null=True, blank=True, editable=False) # por evento, inscrição e evento.
+    referral = models.ForeignKey("referral.Referral", null=True, blank=True, editable=False) # por periodo, apenas inscrição.
 
 
     def __unicode__(self):

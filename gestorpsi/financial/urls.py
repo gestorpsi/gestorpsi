@@ -16,13 +16,14 @@ GNU General Public License for more details.
 
 from django.conf.urls.defaults import *
 from gestorpsi.authentication.views import login_check
-#from gestorpsi.covenant.views import index, form, list_filter, list_json
+from gestorpsi.financial.views import payment_form
 
 urlpatterns = patterns('',
+    #url(r'^(?P<obj>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(payment_form), name='payment-form'), 
+    url(r'^(?P<obj>(\d)+)/$', login_check(payment_form), name='payment-form'), 
     #url(r'^$', login_check(index), name='covenant-index'), # index, active list
     #url(r'^deactive/$', login_check(index), {'active':False}, name='covenant-list-deactive'), # deactive list
     #url(r'^add/$', login_check(form), name='covenant-add'), # add
-    #url(r'^(?P<obj>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form), name='covenant-edit'), # edit 
     ## list
     #url(r'^list/active/$', login_check(list_filter)), # return all ACTIVE covenant of organization
     #url(r'^list/deactive/$', login_check(list_filter), {'active':False}), # return all DEACTIVE covenant of organization

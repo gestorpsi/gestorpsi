@@ -108,7 +108,7 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     payment_pack = Payment.objects.filter(covenant_charge=2, occurrence__event__referral=referral).distinct()
 
     # period
-    payment_time = Payment.objects.filter(covenant_charge__gte=10, occurrence__event__referral=referral).distinct()
+    payment_time = Payment.objects.filter(covenant_charge__gte=10, referral=referral).distinct()
 
     try:
         discharged = ReferralDischarge.objects.get(referral=referral)

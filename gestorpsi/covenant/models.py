@@ -62,12 +62,20 @@ class Covenant(models.Model):
     description = models.TextField(u'Descrição', null=True, blank=True)
     organization = models.ForeignKey(Organization, editable=False, null=False, blank=False)
 
+
     def __unicode__(self):
         # return need show as this format, relation m2m.
         if self.event_time:
-            return u"%s %s (%s) R$%s" % ( self.name, self.get_charge_display(), self.event_time, self.price )
+            return u"%s - %s (%s) - R$%s" % ( self.name, self.get_charge_display(), self.event_time, self.price )
         else:
-            return u"%s %s R$%s" % ( self.name, self.get_charge_display(), self.price )
+            return u"%s - %s - R$%s" % ( self.name, self.get_charge_display(), self.price )
+
+
+    def save(self, *args, **kwargs):
+        if not self.charge == 2:
+            self.event_time = None
+        super(Covenant, self).save(*args, **kwargs)
+
 
     class Meta:
         ordering = ['name']

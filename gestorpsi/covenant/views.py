@@ -134,6 +134,8 @@ def list_json(request, service=False):
             'id': o.id,
             'name': u'%s' % o.name,
             'price': u'%s' % o.price,
+            'charge': u'%s' % o.get_charge_display(),
+            'events': u'%s' % o.event_time,
         }
         c += 1
 

@@ -126,7 +126,7 @@ function bindMask() {
 }
 
     /**
-     * referral new. Show professional subscription and covenant of service when change service.
+     * New referral. Show professional subscription and covenant of service when change service.
      * upate Tiago de Souza Moraes / 27 11 2014
      **/
 
@@ -180,7 +180,12 @@ function referral_edit(select_field) {
             var TEMP='';
             $.getJSON("/covenant/list/service/" + select_field.val() + "/", function(json) {
                 jQuery.each(json, function(){
-                            TEMP += '<option value="' + this.id + '">' + this.name + '</option>';
+
+                            if (this.events > 0 ){ 
+                                TEMP += '<option value="' + this.id + '">' + this.name +' - '+ this.charge +' (' + this.events + ') - R$ '+ this.price + '</option>';
+                            } else { 
+                                TEMP += '<option value="' + this.id + '">' + this.name +' - '+ this.charge +' - R$ '+ this.price + '</option>';
+                            }
                 });
                 // add new elements in select
                 $('select#id_covenant').html(TEMP);

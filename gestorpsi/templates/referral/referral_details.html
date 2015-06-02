@@ -408,7 +408,7 @@ GNU General Public License for more details.
             <p><h2 class='red'>Periodo</h2>
             {% for pay in payment_time %}
                 <p>
-                {{ pay.status_color_|safe }} <a href="/payment/{{ pay.id }}/"><small>Conv&ecirc;nio</small> {{ pay.name }} <small>Periodo</small> {{ pay.get_covenant_charge_display }} <small>criado</small> {{ pay.created|date:"l d F Y" }}</a>
+                {{ pay.status_color_|safe }} <a href="{% url financial-payment-form pay.id %}"><small>Conv&ecirc;nio</small> {{ pay.name }} <small>Periodo</small> {{ pay.get_covenant_charge_display }} <small>criado</small> {{ pay.created|date:"l d F Y" }}</a>
                 </p>
             {% endfor %}
             </p>

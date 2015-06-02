@@ -22,9 +22,10 @@ from gestorpsi.financial.models import Payment, PaymentWay
 
 def get_choices(obj):
     '''
-        obj : Payment()
+        obj : Payment.id
     '''
-    obj = Payment.objects.get( pk=obj.initial['id'] )
+    obj = Payment.objects.get( pk=obj )
+
     try:
         return literal_eval(obj.covenant_payment_way_options)
     except:
@@ -43,10 +44,12 @@ class PaymentForm(forms.ModelForm):
 
 
     def __init__(self, *args, **kwargs):
+
         super(PaymentForm, self).__init__(*args, **kwargs)
+
         self.fields['covenant_payment_way_selected'] = forms.MultipleChoiceField(
             label=u'Forma de pagamento',
             required=False,
             widget=forms.CheckboxSelectMultiple( attrs={ 'class':'small' }),
-            choices = get_choices( self )
+            choices = get_choices( kwargs['instance'] )
         )

@@ -33,16 +33,17 @@ from gestorpsi.referral.models import Referral
 '''
     Covenant.charge = 12 : Monthly
 '''
+covenant_charge = 12
 
 # main code
-for r in Referral.objects.filter(covenant__isnull=False, covenant__charge=12, referraldischarge__isnull=True): 
+for r in Referral.objects.filter(covenant__isnull=False, covenant__charge=covenant_charge, referraldischarge__isnull=True): 
 
     '''
         filter for all referall that don't have discharge
     '''
     
     # create a payment for each covenant of referral
-    for c in r.covenant.all():
+    for c in r.covenant.filter(charge=covenant_charge):
 
         # new
         payment = Payment()

@@ -38,6 +38,7 @@ from gestorpsi.referral.models import Referral
     filter by:
     (today - 6Monthly) = referral.date
 '''
+covenant_charge = 14
 
 # today - 6 months
 year = (datetime.today()-relativedelta(months=6)).year
@@ -45,14 +46,14 @@ month = (datetime.today()-relativedelta(months=6)).month
 day = (datetime.today()-relativedelta(months=6)).day
 
 # main code
-for r in Referral.objects.filter(covenant__isnull=False, covenant__charge=14, referraldischarge__isnull=True, date__year=year, date__month=month, date__day=day):
+for r in Referral.objects.filter(covenant__isnull=False, covenant__charge=covenant_charge, referraldischarge__isnull=True, date__year=year, date__month=month, date__day=day):
 
     '''
         filter for all referall that don't have discharge
     '''
     
     # create a payment for each covenant of referral
-    for c in r.covenant.all():
+    for c in r.covenant.filter(charge=covenant_charge):
 
         # new
         payment = Payment()

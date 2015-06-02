@@ -68,7 +68,6 @@ def form(request, obj=False):
 
     if request.POST:
 
-
         # new
         if not obj:
             form = CovenantForm(request.POST)

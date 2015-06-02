@@ -18,6 +18,7 @@ from ast import literal_eval
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 
+from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.client.models import Client
 #from gestorpsi.covenant.models import CHARGE
 from swingtime.models import Occurrence
@@ -62,6 +63,7 @@ class Payment(models.Model):
             to pay, phone, internet, monthly bullet
         informations about payment, payment way, check, value, dead line and others
     '''
+    id = UuidField(primary_key=True)
     name = models.CharField(_('Nome'), max_length=250, null=False, blank=False) # covenant name or billet
     created = models.DateTimeField(_('Criado'), auto_now_add=True, default='2000-12-31 00:00:00')
     status = models.CharField(_(u'Situação'), max_length=2, choices=STATUS, default='0')

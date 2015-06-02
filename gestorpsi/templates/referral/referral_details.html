@@ -106,7 +106,13 @@ GNU General Public License for more details.
             {% endif %}
             </i>
         <br /><br />
-        {% trans "Client subscribed on this service since" %} {{ referral.revision_created.date_created|date:"d/m/Y" }}
+
+        {% comment %}
+            {% trans "Client subscribed on this service since" %} {{ referral.revision_created.date_created|date:"d/m/Y" }}
+            <br />
+        {% endcomment %}
+
+        {% trans "Client subscribed on this service since" %} {{ referral.date|date:"d/m/Y" }}
        </small>
 
 <br />	

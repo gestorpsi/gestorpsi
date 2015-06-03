@@ -328,7 +328,7 @@ def occurrence_confirmation_form(
 
         for x in Payment.objects.filter(occurrence=occurrence):
 
-            pfx = 'payment_form-%s' % x.id # hardcore Jquery 
+            pfx = 'payment_form---%s' % x.id # hardcore Jquery 
             form_payment = PaymentForm(request.POST, instance=x, prefix=pfx)
 
             payment_list.append(form_payment)
@@ -390,7 +390,7 @@ def occurrence_confirmation_form(
 
         # payment form
         for x in Payment.objects.filter(occurrence=occurrence):
-            pfx = 'payment_form-%s' % x.id
+            pfx = 'payment_form---%s' % x.id
             payment_list.append( PaymentForm(instance=x, prefix=pfx) )
 
 

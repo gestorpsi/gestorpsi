@@ -39,18 +39,19 @@ $(document).ready(function() {
     /*
      * When change input OFF update total
      * 
-     * <input name="payment_form-59-off" placeholder="1.234,56" required="required" type="text" class="big" value="20,50" id="id_payment_form-59-off" />
-     * Any input contains the word "off" in name. Pattern: *-ID-off; str.split('-')[1] = ID
+     * <input name="payment_form---59-off" placeholder="1.234,56" required="required" type="text" class="big" value="20,50" id="id_payment_form---59-off" />
+     * Any input contains the word "off" in name. Pattern: *---ID-off; str.split('---')[1] = ID
      *
      */
     $('input[name*="off"]').keyup( function(){ 
 
         // get id
-        idc = this.name.split("-")[1];
+        idc = this.name.split("-off")[0];
+        idc = idc.split("---")[1];
 
         // get values
-        var off = parseFloat( $('input[name=payment_form-'+idc+'-off]').val().replace(",", ".") );
-        var price = parseFloat( $('input[name=payment_form-'+idc+'-price]').val().replace(",",".") );
+        var off = parseFloat( $('input[name=payment_form---'+idc+'-off]').val().replace(",", ".") );
+        var price = parseFloat( $('input[name=payment_form---'+idc+'-price]').val().replace(",",".") );
 
         // sum values
         if ( isNaN(off) == true ){ 
@@ -62,7 +63,7 @@ $(document).ready(function() {
         // convert to currency
         tt = total.toFixed(2).replace(".",",");
 
-        $('input[name=payment_form-'+idc+'-total]').val(tt);
+        $('input[name=payment_form---'+idc+'-total]').val(tt);
     });
 
 });

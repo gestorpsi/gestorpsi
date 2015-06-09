@@ -408,7 +408,13 @@ GNU General Public License for more details.
             <p><h2 class='red'>Periodo</h2>
             {% for pay in payment_time %}
                 <p>
-                {{ pay.status_color_|safe }} <a href="{% url financial-payment-form pay.id %}"><small>Conv&ecirc;nio</small> {{ pay.name }} <small>Periodo</small> {{ pay.get_covenant_charge_display }} <small>criado</small> {{ pay.created|date:"l d F Y" }}</a>
+                  <a href="{% url financial-payment-form pay.id %}">{{ pay.created|date:"l, d F Y" }}</a>
+                  <br />
+                  <small>
+                    {{ pay.status_color_|safe }}
+                    {{ pay.name }} | <b><i>Total</i></b> {{ pay.total }} | <b><i>Situa&ccedil;&atilde;o</i></b> {{ pay.get_status_display }} | <b><i>Forma pagto</i></b> {% for x in pay.get_display_payment_way_name_ %} {{ x }}, {% endfor %} 
+                    <br />
+                  </small>
                 </p>
             {% endfor %}
             </p>

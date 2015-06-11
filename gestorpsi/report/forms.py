@@ -18,6 +18,8 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from gestorpsi.report.models import Report, ReportsSaved, VIEWS_CHOICES
 from gestorpsi.service.models import Service
+from gestorpsi.financial.models import STATUS
+from gestorpsi.careprofessional.models import CareProfessional
 from datetime import datetime
 
 EXPORT_FORMATS = (
@@ -48,7 +50,10 @@ class ReportForm(forms.ModelForm):
     clients = forms.BooleanField(label=_('Include client list'), help_text=_('If selected will a list of clients for each report sub-item'))
     accumulated = forms.ChoiceField(label=_('Accumulated Graph'), choices=GRAPH_ACCUMULATED, help_text=_('Acummulated graph?'))
     export_graph_type = forms.ChoiceField(label=_('Graph Type format'), choices=GRAPH_TYPE, help_text=_('Here you can choose which type of graph you need. Note: only for HTML format'))
+    payment_status = forms.ChoiceField(label=_('Status do pagamento'), choices=STATUS, help_text=_('Status do pagamento'))
+    professional = forms.ModelChoiceField(label=_('Profissional'), queryset=CareProfessional.objects.all() )
 
+    
     class Meta:
         model = Report
 

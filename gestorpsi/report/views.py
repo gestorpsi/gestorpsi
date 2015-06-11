@@ -76,6 +76,33 @@ def referral_data(request, template='report/report_table.html'):
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('report.report_list')
+def payment_data(request, template='report/report_graphic.html'):
+    """
+    payment
+    """
+    #data, date_start, date_end,service = Report().get_payment_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('service') , request.GET.get('accumulated') , request.GET.get('professional') , request.GET.get('payment') )
+    data, date_start, date_end,service = Report().get_payment_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('service') , request.GET.get('accumulated') )
+
+    # variables of JS
+    option_title = 'Payment graphic!'
+    option_rows = [ ['a',1] , ['b',2] , ['c',3] ] # array format
+
+    return render_to_response(template, locals(), context_instance=RequestContext(request))
+    
+@permission_required_with_403('report.report_list')
+def occurrence_data(request, template='report/report_graphic.html'):
+    """
+    occurrence
+    """
+    data, date_start, date_end,service = Report().get_occurrence_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('service') , request.GET.get('accumulated') )
+    # variables of JS
+    option_title = 'Occurrence graphic!'
+    option_rows = [ ['a',1] , ['b',2] , ['c',3] ] # array format
+
+    return render_to_response(template, locals(), context_instance=RequestContext(request))
+
+
+@permission_required_with_403('report.report_list')
 def report_client_list(request, report_class, view, filter):
     """
     fetch client list from selected admission report

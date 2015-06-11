@@ -39,11 +39,14 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, Indication as ReferralIndication, IndicationChoice as ReferralIndicationChoice, ReferralDischargeReason, ReferralDischarge
 from gestorpsi.util.views import percentage
+from gestorpsi.financial.models import Payment
+from gestorpsi.schedule.models import OccurrenceConfirmation
 
 VIEWS_CHOICES = (
     (1, _('Admisssions')),
     (2, _('Referrals')),
-    #(3, _('Schedules')),
+    (3, _('Payment')),
+    (4, _('Occurrence')),
 )
 
 PIE_CHART_WIDTH = 620
@@ -246,6 +249,94 @@ class Report(models.Model):
             self.get_chart_x_axis_label(date_start, date_end))
         
         return chart.get_url()
+        
+    def get_payment_(self, organization, date_start, date_end, service, accumulated):
+        """
+        get referral 'universe'
+        all referrals that could be find in range
+        """
+        print '------------- REFERRAL MODELS '
+        print
+        
+        """
+        Simple helper to set/get date
+        """
+
+        date_start,date_end = self.set_date(organization, date_start, date_end)
+        
+        """
+        get referral range in organization between dates
+        """
+        data = []
+
+        aberto = Payment.objects.filter(covenant_charge=0).count()
+        pago = Payment.objects.filter(covenant_charge=1).count()
+        faturado = Payment.objects.filter(covenant_charge=2).count()
+        cancelado = Payment.objects.filter(covenant_charge=3).count()
+        total = aberto+pago+faturado+cancelado
+
+        data.append({'name': _('Aberto'), 'total': aberto, 'percentage': percentage(aberto, total)})
+        data.append({'name': _('Pago'), 'total': pago, 'percentage': percentage(pago, total)})
+        data.append({'name': _('Faturado'), 'total': faturado, 'percentage': percentage(faturado, total)})
+        data.append({'name': _('Cancelado'), 'total': cancelado, 'percentage': percentage(cancelado, total)})
+
+        #return data
+        
+        #range = Referral.objects_inrange.all(organization, date_start, date_end, service)
+        if data:
+            #data = ReportReferral.objects.all(range, date_start, date_end, organization, service, accumulated)
+            print '--------------- OUT '
+            return data,date_start,date_end, service
+        
+        return [], None, None, None
+        
+    def get_occurrence_(self, organization, date_start, date_end, service, accumulated):
+        
+        ON_TIME = 1
+        LATE = 2
+        ARRIVED = 3
+        UNMARKED = 4
+        RESCHEDULED = 5
+        """
+        get referral 'universe'
+        all referrals that could be find in range
+        """
+        print '------------- REFERRAL MODELS '
+        print
+        
+        """
+        Simple helper to set/get date
+        """
+
+        date_start,date_end = self.set_date(organization, date_start, date_end)
+        
+        """
+        get referral range in organization between dates
+        """
+        data = []
+        
+        on_time = OccurrenceConfirmation.objects.filter(occurrence_id=ON_TIME).count()
+        late = OccurrenceConfirmation.objects.filter(occurrence_id=LATE).count()
+        arrived = OccurrenceConfirmation.objects.filter(occurrence_id=ARRIVED).count()
+        unmarked = OccurrenceConfirmation.objects.filter(occurrence_id=UNMARKED).count()
+        rescheduled = OccurrenceConfirmation.objects.filter(occurrence_id=RESCHEDULED).count()
+        total = on_time+late+arrived+unmarked+rescheduled
+
+        data.append({'name': _('on_time'), 'total': on_time, 'percentage': percentage(on_time, total)})
+        data.append({'name': _('late'), 'total': late, 'percentage': percentage(late, total)})
+        data.append({'name': _('arrived'), 'total': arrived, 'percentage': percentage(arrived, total)})
+        data.append({'name': _('unmarked'), 'total': unmarked, 'percentage': percentage(unmarked, total)})
+        data.append({'name': _('rescheduled'), 'total': rescheduled, 'percentage': percentage(rescheduled, total)})
+
+        #return data
+        
+        #range = Referral.objects_inrange.all(organization, date_start, date_end, service)
+        if data:
+            #data = ReportReferral.objects.all(range, date_start, date_end, organization, service, accumulated)
+            print '--------------- OUT '
+            return data,date_start,date_end, service
+        
+        return [], None, None, None
 
 
 class ReportsSavedManager(models.Manager):

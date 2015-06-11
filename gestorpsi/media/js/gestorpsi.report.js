@@ -33,10 +33,19 @@ $(function() {
      */
     
     $('#report_filter select[name=view]').change(function() {
-        if($(this).val()==2) {
-            $('div.subscription_filter').fadeIn();
+        if($(this).val()!=1) {
+            $('div.subscription_filter').show();
         } else {
             $('div.subscription_filter').hide();
+        }
+
+        // select payment status 
+        if( $(this).val()==3 ){
+            $('div.payment_status_filter').show();
+            $('div.professional_filter').hide();
+        } else {
+            $('div.payment_status_filter').hide();
+            $('div.professional_filter').hide();
         }
     });
 
@@ -119,6 +128,26 @@ $(function() {
             data += '&service=' + service;
             updateReferral(data);
         }
+        // financial
+        if($('#report_filter [name = view]').val() == 3){ 
+            var service = $('select#id_service').val();
+            var payment_status = $('select#id_payment_status').val();
+            var professional = $('select#id_professional').val();
+
+            // method get url
+            data += '&service=' + service + '&professional=' + professional + '&payment=' + payment_status;
+            updatePayment(data);
+        }
+        // Occurrence
+        if($('#report_filter [name = view]').val() == 4){ 
+            var service = $('select#id_service').val();
+            var occurrence_status = $('select#id_occurrence_status').val();
+            var professional = $('select#id_professional').val();
+            // method get url
+            data += '&service=' + service + '&professional=' + professional + '&occurrence=' + occurrence_status;
+            updateOccurrence(data);
+        }
+        
 
         return false;
     }); 
@@ -205,8 +234,30 @@ $(function() {
     $('a.report_filter').click(function() {
         if($('form#report_filter select[name=view]').val() == 1) // admission
             updateAdmission('view=admission' + $(this).attr('data') + '&accumulated=' +$('#report_filter [name=accumulated]').val());
-        if($('form#report_filter select[name=view]').val() == 2) // referral
+        if($('form#report_filter select[name=view]').val() == 2){
+            // referral
             updateReferral('view=referral' + $(this).attr('data') + '&service=' + $('#report_filter [name=service]').val() + '&accumulated=' +$('#report_filter [name=accumulated]').val());
+        }
+        // financial
+        if($('form#report_filter select[name=view]').val() == 3){ 
+            var service = $('select#id_service').val();
+            var payment_status = $('select#id_payment_status').val();
+            var professional = $('select#id_professional').val();
+
+            // method get url
+            data += '&service=' + service + '&professional=' + professional + '&payment=' + payment_status;
+            updatePayment(data);
+        }
+        // Occurrence
+        if($('form#report_filter select[name = view]').val() == 4){ 
+            var service = $('select#id_service').val();
+            var occurrence_status = $('select#id_occurrence_status').val();
+            var professional = $('select#id_professional').val();
+            // method get url
+            data += '&service=' + service + '&professional=' + professional + '&occurrence=' + occurrence_status;
+            updateOccurrence(data);
+        }
+
 
         $('div.loaded_report_title').hide();
         return false;

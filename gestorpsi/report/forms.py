@@ -21,6 +21,7 @@ from gestorpsi.service.models import Service
 from gestorpsi.financial.models import STATUS
 from gestorpsi.careprofessional.models import CareProfessional
 from datetime import datetime
+from gestorpsi.schedule.models import OCCURRENCE_CONFIRMATION_PRESENCE
 
 EXPORT_FORMATS = (
     (1, 'HTML'),
@@ -50,9 +51,8 @@ class ReportForm(forms.ModelForm):
     clients = forms.BooleanField(label=_('Include client list'), help_text=_('If selected will a list of clients for each report sub-item'))
     accumulated = forms.ChoiceField(label=_('Accumulated Graph'), choices=GRAPH_ACCUMULATED, help_text=_('Acummulated graph?'))
     export_graph_type = forms.ChoiceField(label=_('Graph Type format'), choices=GRAPH_TYPE, help_text=_('Here you can choose which type of graph you need. Note: only for HTML format'))
-    payment_status = forms.ChoiceField(label=_('Status do pagamento'), choices=STATUS, help_text=_('Status do pagamento'))
     professional = forms.ModelChoiceField(label=_('Profissional'), queryset=CareProfessional.objects.all() )
-
+    occurrence_status = forms.ChoiceField(label=_('Status do evento'), choices=OCCURRENCE_CONFIRMATION_PRESENCE, help_text=_('Status do evento'))
     
     class Meta:
         model = Report
@@ -66,7 +66,21 @@ class ReportForm(forms.ModelForm):
         choices = [('',_('------ All Services ------'))]
         for i in Service.objects.filter(organization=organization, active=True):
             choices.append((i.pk, i.name))
+        # services
+        choices = [('',_('--- Todos ---'))]
+        for i in Service.objects.filter(organization=organization, active=True):
+            choices.append((i.pk, i.name))
         self.fields['service'].choices = choices
+
+        # professional
+        choices = [('all',_('--- Todos ---'))]
+        for i in CareProfessional.objects.filter(person__organization=organization, active=True):
+            choices.append((i.pk, i.person.name))
+        self.fields['professional'].choices = choices
+        
+        # occurrence
+        self.fields['occurrence_status'].choices = tuple([(u'all', '--- Todos ---')] + list(OCCURRENCE_CONFIRMATION_PRESENCE))
+
 
 class ReportSaveForm(forms.ModelForm):
     """

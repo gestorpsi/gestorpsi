@@ -65,6 +65,11 @@ GNU General Public License for more details.
             <div class="payment_status_filter hidden" >
             {% trans "Pagamento"%} {{form.payment_status}}
             </div>    
+            
+            <div class="occurrence_status_filter hidden">
+                {% trans "Occurrence" %} {{ form.occurrence_status }}
+            </div>
+            
             <div style="margin-top:20px;margin-right:30px;" class="float_right">
                 <button type="submit" class="dashboard_overview" name="save" class="form_mini_noinsert save_report_button">{% trans "Save Report" %}</button>
                 <button type="submit" class="dashboard_overview" name="update">{% trans "Update" %}</button>

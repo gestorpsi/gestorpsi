@@ -45,8 +45,7 @@ from gestorpsi.schedule.models import OccurrenceConfirmation
 VIEWS_CHOICES = (
     (1, _('Admisssions')),
     (2, _('Referrals')),
-    (3, _('Payment')),
-    (4, _('Occurrence')),
+    (3, _('Occurrence')),
 )
 
 PIE_CHART_WIDTH = 620
@@ -250,46 +249,7 @@ class Report(models.Model):
         
         return chart.get_url()
         
-    def get_payment_(self, organization, date_start, date_end, service, accumulated):
-        """
-        get referral 'universe'
-        all referrals that could be find in range
-        """
-        print '------------- REFERRAL MODELS '
-        print
-        
-        """
-        Simple helper to set/get date
-        """
-
-        date_start,date_end = self.set_date(organization, date_start, date_end)
-        
-        """
-        get referral range in organization between dates
-        """
-        data = []
-
-        aberto = Payment.objects.filter(covenant_charge=0).count()
-        pago = Payment.objects.filter(covenant_charge=1).count()
-        faturado = Payment.objects.filter(covenant_charge=2).count()
-        cancelado = Payment.objects.filter(covenant_charge=3).count()
-        total = aberto+pago+faturado+cancelado
-
-        data.append({'name': _('Aberto'), 'total': aberto, 'percentage': percentage(aberto, total)})
-        data.append({'name': _('Pago'), 'total': pago, 'percentage': percentage(pago, total)})
-        data.append({'name': _('Faturado'), 'total': faturado, 'percentage': percentage(faturado, total)})
-        data.append({'name': _('Cancelado'), 'total': cancelado, 'percentage': percentage(cancelado, total)})
-
-        #return data
-        
-        #range = Referral.objects_inrange.all(organization, date_start, date_end, service)
-        if data:
-            #data = ReportReferral.objects.all(range, date_start, date_end, organization, service, accumulated)
-            print '--------------- OUT '
-            return data,date_start,date_end, service
-        
-        return [], None, None, None
-        
+   
     def get_occurrence_(self, organization, date_start, date_end, service, accumulated):
         
         ON_TIME = 1
@@ -297,22 +257,12 @@ class Report(models.Model):
         ARRIVED = 3
         UNMARKED = 4
         RESCHEDULED = 5
-        """
-        get referral 'universe'
-        all referrals that could be find in range
-        """
+
         print '------------- REFERRAL MODELS '
         print
-        
-        """
-        Simple helper to set/get date
-        """
 
         date_start,date_end = self.set_date(organization, date_start, date_end)
-        
-        """
-        get referral range in organization between dates
-        """
+
         data = []
         
         on_time = OccurrenceConfirmation.objects.filter(occurrence_id=ON_TIME).count()
@@ -328,6 +278,8 @@ class Report(models.Model):
         data.append({'name': _('unmarked'), 'total': unmarked, 'percentage': percentage(unmarked, total)})
         data.append({'name': _('rescheduled'), 'total': rescheduled, 'percentage': percentage(rescheduled, total)})
 
+        print data
+        
         #return data
         
         #range = Referral.objects_inrange.all(organization, date_start, date_end, service)

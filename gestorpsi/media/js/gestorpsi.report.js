@@ -39,14 +39,14 @@ $(function() {
             $('div.subscription_filter').hide();
         }
 
-        // select payment status 
+        
+        
         if( $(this).val()==3 ){
-            $('div.payment_status_filter').show();
-            $('div.professional_filter').hide();
-        } else {
-            $('div.payment_status_filter').hide();
-            $('div.professional_filter').hide();
+            $('div.occurrence_status_filter').show();
+        }else{
+            $('div.occurrence_status_filter').hide();
         }
+        
     });
 
     /**
@@ -128,23 +128,12 @@ $(function() {
             data += '&service=' + service;
             updateReferral(data);
         }
-        // financial
+        // Occurrence
         if($('#report_filter [name = view]').val() == 3){ 
             var service = $('select#id_service').val();
-            var payment_status = $('select#id_payment_status').val();
-            var professional = $('select#id_professional').val();
-
-            // method get url
-            data += '&service=' + service + '&professional=' + professional + '&payment=' + payment_status;
-            updatePayment(data);
-        }
-        // Occurrence
-        if($('#report_filter [name = view]').val() == 4){ 
-            var service = $('select#id_service').val();
             var occurrence_status = $('select#id_occurrence_status').val();
-            var professional = $('select#id_professional').val();
             // method get url
-            data += '&service=' + service + '&professional=' + professional + '&occurrence=' + occurrence_status;
+            data += '&service=' + service + '&occurrence=' + occurrence_status;
             updateOccurrence(data);
         }
         
@@ -238,18 +227,8 @@ $(function() {
             // referral
             updateReferral('view=referral' + $(this).attr('data') + '&service=' + $('#report_filter [name=service]').val() + '&accumulated=' +$('#report_filter [name=accumulated]').val());
         }
-        // financial
-        if($('form#report_filter select[name=view]').val() == 3){ 
-            var service = $('select#id_service').val();
-            var payment_status = $('select#id_payment_status').val();
-            var professional = $('select#id_professional').val();
-
-            // method get url
-            data += '&service=' + service + '&professional=' + professional + '&payment=' + payment_status;
-            updatePayment(data);
-        }
         // Occurrence
-        if($('form#report_filter select[name = view]').val() == 4){ 
+        if($('form#report_filter select[name = view]').val() == 3){ 
             var service = $('select#id_service').val();
             var occurrence_status = $('select#id_occurrence_status').val();
             var professional = $('select#id_professional').val();

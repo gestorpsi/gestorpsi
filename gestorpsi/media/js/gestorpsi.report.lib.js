@@ -221,42 +221,6 @@ function updateSavedReports() {
     });
 }
 
-
-
-function updatePayment(data) {
-
-    /**
-     * update all payment data
-     */
-    if(!data) data = '';
-    
-    /**
-     * append chart types view to url
-     */
-    data += chart_type_to_url();
-
-    /**
-     * update payment data, call view
-     */
-    $('div#report_table').load('/report/payment/?'+data);
-
-    /**
-     * update save form
-     */
-    /*$('div#save_form').load('/report/payment/save/?'+data)*/
-    
-    /**
-     * get date then update form fields
-     */
-    $.getJSON('/report/date/?'+data, function(json) {
-        $('.report_main [name=date_start]').val(json['date_start']);
-        $('.report_main [name=date_end]').val(json['date_end']);
-        if(json['accumulated']) {
-            $('.report_main [name=accumulated]').val(json['accumulated']);
-        }
-    });
-}
-
 function updateOccurrence(data) {
 
 

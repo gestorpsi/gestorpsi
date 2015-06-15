@@ -27,7 +27,7 @@ GNU General Public License for more details.
         
         {% if not d.data %}
             <tr><td colspan="{% if not without_percentage %}3{% else %}2{% endif %}" style="text-align:left;">
-            {% trans "No data founded" %}
+            {% trans "no data found" %}
             </td></tr>
         {% else %}
             {% with d.data as table_data %}

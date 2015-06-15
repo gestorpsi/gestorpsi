@@ -6132,7 +6132,7 @@ msgid "There is no data report in this range"
 msgstr ""
 
 #: templates/report/report_table.html:30
-msgid "No data founded"
+msgid "no data found"
 msgstr ""
 
 #: templates/schedule/event_detail.html:25

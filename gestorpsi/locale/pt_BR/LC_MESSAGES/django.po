@@ -6251,7 +6251,7 @@ msgid "There is no data report in this range"
 msgstr "Não há relato de dados nesta faixa"
 
 #: templates/report/report_table.html:30
-msgid "No data founded"
+msgid "no data found"
 msgstr "Nenhum dado encontrado"
 
 #: templates/schedule/event_detail.html:25

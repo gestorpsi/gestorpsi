@@ -77,7 +77,7 @@ class ReportForm(forms.ModelForm):
         for i in CareProfessional.objects.filter(person__organization=organization, active=True):
             choices.append((i.pk, i.person.name))
         self.fields['professional'].choices = choices
-        
+
         # occurrence
         self.fields['occurrence_status'].choices = tuple([(u'all', '--- Todos ---')] + list(OCCURRENCE_CONFIRMATION_PRESENCE))
 

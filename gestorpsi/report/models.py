@@ -249,17 +249,12 @@ class Report(models.Model):
         
         return chart.get_url()
         
-   
     def get_occurrence_(self, organization, date_start, date_end, service, accumulated):
-        
         ON_TIME = 1
         LATE = 2
         ARRIVED = 3
         UNMARKED = 4
         RESCHEDULED = 5
-
-        print '------------- REFERRAL MODELS '
-        print
 
         date_start,date_end = self.set_date(organization, date_start, date_end)
 
@@ -278,16 +273,11 @@ class Report(models.Model):
         data.append({'name': _('unmarked'), 'total': unmarked, 'percentage': percentage(unmarked, total)})
         data.append({'name': _('rescheduled'), 'total': rescheduled, 'percentage': percentage(rescheduled, total)})
 
-        print data
-        
-        #return data
-        
-        #range = Referral.objects_inrange.all(organization, date_start, date_end, service)
         if data:
             #data = ReportReferral.objects.all(range, date_start, date_end, organization, service, accumulated)
             print '--------------- OUT '
-            return data,date_start,date_end, service
-        
+            return data, date_start, date_end, service
+
         return [], None, None, None
 
 
@@ -1072,14 +1062,3 @@ class ReportReferral(object):
         abstract = True
 
     objects = ReportReferralManager()
-
-
-#>>> for m in MaritalStatus.objects.all():
-#...  print m, Client.objects.filter(person__maritalStatus=m).count()
-#... 
-#Casado(a) 0
-#Divorciado(a) 0
-#Separado(a) Judicial 2
-#Solteiro(a) 2
-#União Estável 1
-#Viúvo(a) 0

@@ -40,7 +40,7 @@ urlpatterns = patterns('',
     #url(r'^admission/chart/$', login_check(chart), {'view':'admission'}),
     #url(r'^referral/chart/$', login_check(chart), {'view':'referral'}),
     url(r'^referral/$', login_check(referral_data), {'template':'report/report_table.html'}),
-    url(r'^occurrence/$', login_check(occurrence_data) ),
+    url(r'^occurrence/$', login_check(occurrence_data)),
     
     ## list of clients from admissions
     url(r'^admission/client/overview/total/$', login_check(report_client_list), {'report_class': ReportAdmission, 'view':'overview', 'filter':'total'}, name='admission_client_overview_total'),

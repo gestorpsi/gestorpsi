@@ -30,76 +30,6 @@ function chart_type_to_url() {
 }
 
 
-function updateChart(json, force_type) {
-
-    alert('updateChart');
-
-    /**
-     * update chart
-     * read data from json, then bind graph
-     */
-
-    var graphs = new Array();
-
-    if(!json) {
-        $('#report_chart').hide();
-    } else {
-
-        /**
-         * chart type fetch by json, or forced by jquery without request
-         */
-
-        lines_show = false;
-        bars_show = false;
-        points_show = false;
-        
-        if (!force_type) {
-            if(json[0]['type']['lines'] == 'true') lines_show = true;
-            if(json[0]['type']['bars'] == 'true') bars_show = true;
-            if(json[0]['type']['points'] == 'true') points_show = true;
-        } else {
-            if(force_type['lines']) lines_show = true;
-            if(force_type['bars']) bars_show = true;
-            if(force_type['points']) points_show = true;
-        }
-        
-        for (var i in json) {
-            i = parseInt(i);
-            var plot_ticks = new Array();
-            var plot_data = new Array();
-
-            for (var col in json[i]['data']) {
-                col = parseInt(col);
-                axis_x = json[i]['data'][col][0];
-                axis_y = json[i]['data'][col][1];
-                if(bars_show)
-                    plot_ticks.push([col+0.5, axis_x]);
-                else
-                    plot_ticks.push([col, axis_x]);
-                plot_data.push([col, axis_y]);
-            }
-
-            graphs[i] = {
-                 label: json[i]['title'], 
-                 data: plot_data,
-                 lines: { 'show': lines_show },
-                 bars: { 'show': bars_show },
-                 points: { 'show': points_show }
-            };
-        }
-
-        $.plot($("#report_chart"),
-            graphs, 
-            { 
-                 xaxis: { 
-                   ticks: plot_ticks 
-                } 
-             } 
-         );
-            $('#report_chart').show();
-    }
-}
-
 function updateAdmission(data) {
 
     /**
@@ -115,27 +45,10 @@ function updateAdmission(data) {
     data += chart_type_to_url();
 
     /**
-     * updated chart
-     * note: moved to google API chart (server side)
-     */
-
-    //$.getJSON('/report/admission/chart/?' + data, function(json) { 
-        //updateChart(json);
-        //json_data = json; // save json callback in a global variable
-    //});
-
-    /**
      * update admission data
      */
 
     $('div#report_table').load('/report/admission/?'+data);
-
-    /**
-     * update demographic data
-     */
-    
-    //$('div#admission_demographic_data').load('/report/admission/demographic/?'+data);
-        
 
     /**
      * update save form
@@ -171,26 +84,10 @@ function updateReferral(data) {
     data += chart_type_to_url();
 
     /**
-     * updated chart 
-     * note: moved to google API chart (server side)
-     */
-
-    //$.getJSON('/report/referral/chart/?' + data, function(json) { 
-        //updateChart(json);
-        //json_data = json; // save json callback in a global variable
-    //});
-
-    /**
      * update admission data
      */
     
     $('div#report_table').load('/report/referral/?'+data);
-    /**
-     * update demographic data
-     */
-    
-    //$('div#admission_demographic_data').load('/report/admission/demographic/?'+data);
-        
 
     /**
      * update save form
@@ -228,12 +125,4 @@ function updateOccurrence(data) {
     data += chart_type_to_url();
 
     $('div#report_table').load('/report/occurrence/?'+data);
-
-    $.getJSON('/report/date/?'+data, function(json) {
-        $('.report_main [name=date_start]').val(json['date_start']);
-        $('.report_main [name=date_end]').val(json['date_end']);
-        if(json['accumulated']) {
-            $('.report_main [name=accumulated]').val(json['accumulated']);
-        }
-    });
 }

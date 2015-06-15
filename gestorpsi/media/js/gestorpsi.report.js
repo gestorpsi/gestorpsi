@@ -48,22 +48,7 @@ $(function() {
         }
         
     });
-
-    /**
-     * chart type changing
-     * update chart image
-     */
     
-
-    //$('input[type=radio][name=chart_type]').click(function() {
-        //types = []
-        //$('input[type=radio][name=chart_type]').each(function() {
-            //types[$(this).val()] = $(this).attr('checked');
-        //});
-        //updateChart(json_data, types);
-       
-    //});
-
     /**
      * bind any click to hide message are if exists
      */

@@ -265,20 +265,14 @@ class Report(models.Model):
         arrived = OccurrenceConfirmation.objects.filter(occurrence_id=ARRIVED).count()
         unmarked = OccurrenceConfirmation.objects.filter(occurrence_id=UNMARKED).count()
         rescheduled = OccurrenceConfirmation.objects.filter(occurrence_id=RESCHEDULED).count()
-        total = on_time+late+arrived+unmarked+rescheduled
 
-        data.append({'name': _('on_time'), 'total': on_time, 'percentage': percentage(on_time, total)})
-        data.append({'name': _('late'), 'total': late, 'percentage': percentage(late, total)})
-        data.append({'name': _('arrived'), 'total': arrived, 'percentage': percentage(arrived, total)})
-        data.append({'name': _('unmarked'), 'total': unmarked, 'percentage': percentage(unmarked, total)})
-        data.append({'name': _('rescheduled'), 'total': rescheduled, 'percentage': percentage(rescheduled, total)})
+        data.append({'occurrence_type': _('on_time'), 'total': on_time })
+        data.append({'occurrence_type': _('late'), 'total': late })
+        data.append({'occurrence_type': _('arrived'), 'total': arrived })
+        data.append({'occurrence_type': _('unmarked'), 'total': unmarked })
+        data.append({'occurrence_type': _('rescheduled'), 'total': rescheduled })
 
-        if data:
-            #data = ReportReferral.objects.all(range, date_start, date_end, organization, service, accumulated)
-            print '--------------- OUT '
-            return data, date_start, date_end, service
-
-        return [], None, None, None
+        return data
 
 
 class ReportsSavedManager(models.Manager):

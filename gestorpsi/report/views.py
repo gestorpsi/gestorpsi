@@ -80,10 +80,12 @@ def occurrence_data(request, template='report/report_graphic.html'):
     """
     occurrence
     """
-    data, date_start, date_end,service = Report().get_occurrence_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('service') , request.GET.get('accumulated') )
+    data = Report().get_occurrence_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('service') , request.GET.get('accumulated') )
     # variables of JS
-    option_title = 'Occurrence graphic!'
-    option_rows = [ ['a',1] , ['b',2] , ['c',3] ] # array format
+    option_title = 'Occurrence graphic from selected service'
+    option_rows = [] # array format
+    for occurrence in data:
+        option_rows.append([occurrence['occurrence_type'], occurrence['total']])
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 
 

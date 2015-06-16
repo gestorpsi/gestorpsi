@@ -47,9 +47,18 @@ class PaymentForm(forms.ModelForm):
 
         super(PaymentForm, self).__init__(*args, **kwargs)
 
-        self.fields['covenant_payment_way_selected'] = forms.MultipleChoiceField(
-            label=u'Forma de pagamento',
-            required=False,
-            widget=forms.CheckboxSelectMultiple( attrs={ 'class':'small' }),
-            choices = get_choices( kwargs['instance'] )
-        )
+        # payment exist, update and get payment ways.
+        try:
+            self.fields['covenant_payment_way_selected'] = forms.MultipleChoiceField(
+                label=u'Forma de pagamento',
+                required=False,
+                widget=forms.CheckboxSelectMultiple( attrs={ 'class':'small' }),
+                choices = get_choices( kwargs['instance'] )
+            )
+        # payment non exist. New payment form
+        except:
+            self.fields['covenant_payment_way_selected'] = forms.MultipleChoiceField(
+                label=u'Forma de pagamento',
+                required=False,
+                widget=forms.CheckboxSelectMultiple( attrs={ 'class':'small' }),
+            )

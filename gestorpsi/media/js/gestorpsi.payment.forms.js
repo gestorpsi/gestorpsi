@@ -66,4 +66,16 @@ $(document).ready(function() {
         $('input[name=payment_form---'+idc+'-total]').val(tt);
     });
 
+
+    /*
+     * confirmation event for a member of group
+     * new payment form
+     * change covenant select
+     *      update payment fields
+     */
+
+    $('select[name=select_covenant_payment]').change( function(){
+        alert(this);
+    });
+
 });

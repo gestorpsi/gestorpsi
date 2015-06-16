@@ -949,7 +949,7 @@ $(function() {
     });
 
     /********
-    *  OCUPATION SEARCH 
+    *  ocupation search 
     *********/
 
         $('a.show_ocup_search').click(function() {
@@ -1031,5 +1031,5 @@ $('.form_client.autocomplete input[name=name]').result(function(event, data, for
     });
     
     
-/* MAIN FUNCTION */ 
+/* main function */ 
 });

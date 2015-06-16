@@ -141,7 +141,7 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
             name += " (%s)" % _('Group')
         array[i] = {
             'id': o.id,
-            'name': o.name_html,
+            'name': o.name,
             'is_group': False if not o.is_group else True,
             'description': u'%s' % o.description,
             'email': '',

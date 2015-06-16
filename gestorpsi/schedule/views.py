@@ -125,51 +125,52 @@ def add_event(
                                 event = recurrence_form.save(group_member.referral, True) # ignore busy check
 
 
-            '''
-                Create a payment for each event when event by pack or occurrence
-                Event per period will be created by script run by crontab everyday
-            '''
-            # check if occurrences have one payment by pack or event
-            for o in referral.occurrences():
-                # exist a payment for event?
-                if Payment.objects.filter(occurrence=o).count() == 0 :
+            if not request.POST.get('group'): # booking single client
+                '''
+                    Create a payment for each event when event by pack or occurrence
+                    Event per period will be created by script run by crontab everyday
+                '''
+                # check if occurrences have one payment by pack or event
+                for o in referral.occurrences():
+                    # exist a payment for event?
+                    if Payment.objects.filter(occurrence=o).count() == 0 :
 
-                    # Filter payment by pack or occurrence
-                    for x in referral.covenant.filter(Q(charge=1) | Q(charge=2) ).distinct():
+                        # Filter payment by pack or occurrence
+                        for x in referral.covenant.filter(Q(charge=1) | Q(charge=2) ).distinct():
 
-                        payment = Payment() # new
-
-                        # by pack
-                        if x.charge == 2:
-                            # check not terminated pack of same referral
-                            for p in Payment.objects.filter(occurrence__event=event, covenant_charge=2):
-                                if not p.terminated_():
-                                    # not terminated pack
-                                    payment = p
-
-                        # by occurrence
-                        # new
-                        if not payment.id:
-                            payment.name = x.name
-                            payment.price = x.price
-                            payment.off = 0
-                            payment.total = x.price
-                            payment.covenant_charge = x.charge
-                            payment.save()
+                            payment = Payment() # new
 
                             # by pack
-                            payment.covenant_pack_size = x.event_time if x.charge == 2 else 0
+                            if x.charge == 2:
+                                # check not terminated pack of same referral
+                                for p in Payment.objects.filter(occurrence__event=event, covenant_charge=2):
+                                    if not p.terminated_():
+                                        # not terminated pack
+                                        payment = p
 
-                            # clear all
-                            payment.covenant_payment_way_options = ''
-                            for pw in x.payment_way.all():
-                                x = "(%s,'%s')," % ( pw.id , pw.name ) # need be a dict
-                                payment.covenant_payment_way_options += x
+                            # by occurrence
+                            # new
+                            if not payment.id:
+                                payment.name = x.name
+                                payment.price = x.price
+                                payment.off = 0
+                                payment.total = x.price
+                                payment.covenant_charge = x.charge
+                                payment.save()
 
-                        # add occurrence
-                        payment.occurrence.add(o)
-                        # update m2m
-                        payment.save()
+                                # by pack
+                                payment.covenant_pack_size = x.event_time if x.charge == 2 else 0
+
+                                # clear all
+                                payment.covenant_payment_way_options = ''
+                                for pw in x.payment_way.all():
+                                    x = "(%s,'%s')," % ( pw.id , pw.name ) # need be a dict
+                                    payment.covenant_payment_way_options += x
+
+                            # add occurrence
+                            payment.occurrence.add(o)
+                            # update m2m
+                            payment.save()
 
         if not event.errors:
             messages.success(request, _('Schedule saved successfully'))
@@ -281,19 +282,25 @@ def occurrence_view(
     )
 
 
+
 @permission_required_with_403('schedule.schedule_write')
-def occurrence_confirmation_form(
+def occurrence_confirmation_form_group(
         request, 
         pk, 
-        template='schedule/schedule_occurrence_confirmation_form.html',
+        template='schedule/schedule_occurrence_confirmation_form_group.html',
         form_class=OccurrenceConfirmationForm,
         client_id = None,
         redirect_to = None,
     ):
 
+    '''
+        confirmation event for a member of group
+        choose a convenat of service and create a payment based in covenant
+    '''
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
     payment_list = []
-    
+    covenant_list = occurrence.event.referral.service.covenant.all().order_by('name')
+
     if not occurrence.scheduleoccurrence.was_confirmed():
         initial_device = [device.pk for device in occurrence.device.all()]
     else:
@@ -393,6 +400,139 @@ def occurrence_confirmation_form(
             pfx = 'payment_form---%s' % x.id
             payment_list.append( PaymentForm(instance=x, prefix=pfx) )
 
+    return render_to_response(
+        template,
+        dict(
+                occurrence=occurrence,
+                form=form,
+                object=object,
+                referral=occurrence.event.referral,
+                occurrence_confirmation=occurrence_confirmation,
+                hide_date_field=True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None,
+                denied_to_write = denied_to_write,
+                payment_list = payment_list,
+                covenant_list = covenant_list,
+                payment_new_form = PaymentForm(prefix='payment_form---TEMPID999FORM'),
+            ),
+        context_instance=RequestContext(request)
+    )
+
+
+
+@permission_required_with_403('schedule.schedule_write')
+def occurrence_confirmation_form(
+        request, 
+        pk, 
+        template='schedule/schedule_occurrence_confirmation_form.html',
+        form_class=OccurrenceConfirmationForm,
+        client_id = None,
+        redirect_to = None,
+    ):
+
+    '''
+        confirmation event
+    '''
+
+    occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
+    payment_list = []
+    
+    if not occurrence.scheduleoccurrence.was_confirmed():
+        initial_device = [device.pk for device in occurrence.device.all()]
+    else:
+        initial_device = [device.pk for device in occurrence.occurrenceconfirmation.device.all()]
+        
+    # check if requested user have perms to read it
+    if not _access_check_by_occurrence(request, occurrence):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    try:
+        occurrence_confirmation = OccurrenceConfirmation.objects.get(pk = occurrence.occurrenceconfirmation.id)
+    except:
+        occurrence_confirmation = None
+    
+    object = get_object_or_None(Client, pk = client_id, person__organization=request.user.get_profile().org_active)
+
+    from gestorpsi.client.views import _access_check_referral_write
+    denied_to_write = None
+
+    if not _access_check_referral_write(request, occurrence.event.referral):
+        denied_to_write = True
+
+    if request.method == 'POST':
+
+        if denied_to_write:
+            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+        form = form_class(request.POST, instance = occurrence_confirmation, initial={ 'device':initial_device, })
+
+        # payment
+        payment_valid = True
+
+        for x in Payment.objects.filter(occurrence=occurrence):
+
+            pfx = 'payment_form---%s' % x.id # hardcore Jquery 
+            form_payment = PaymentForm(request.POST, instance=x, prefix=pfx)
+
+            payment_list.append(form_payment)
+
+            if form_payment.is_valid():
+                fp = form_payment.save()
+            else:
+                payment_valid = False
+
+        if form.is_valid() and payment_valid :
+
+            data = form.save(commit=False)
+            data.occurrence = occurrence
+
+            if int(data.presence) not in (1,2): # client not arrive, dont save datetime field
+                data.date_started = None
+                data.date_finished = None
+
+            data.save()
+            form.save_m2m()
+
+            # save occurrence comment
+            occurrence.annotation = request.POST['occurrence_annotation']
+            occurrence.save()
+
+            messages.success(request, _('Occurrence confirmation updated successfully'))
+            return http.HttpResponseRedirect(redirect_to or request.path)
+
+        else:
+
+            form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility=2, lendable=True) | Q(place =  occurrence.room.place, mobility=2, lendable=False))]
+
+            messages.error(request, _(u'Campo inválido ou obrigatório'))
+
+            return render_to_response(
+                template,
+                dict(occurrence=occurrence,
+                    form=form,
+                    object=object,
+                    referral=occurrence.event.referral,
+                    payment_list=payment_list,
+                    ),
+                context_instance=RequestContext(request)
+            )
+    else:
+        if hasattr(occurrence_confirmation, 'presence') and int(occurrence_confirmation.presence) not in (1,2): # load initial data if client dont arrive
+            occurrence_confirmation.date_started = occurrence.start_time
+            occurrence_confirmation.date_finished = occurrence.end_time
+
+        form = form_class(instance=occurrence_confirmation, initial={
+            'occurrence':occurrence, 
+            'start_time':occurrence.start_time, 
+            'end_time':occurrence.end_time,
+            'device': initial_device,
+            })
+
+        form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility="2", lendable=True) | Q(place=occurrence.room.place, mobility="2", lendable=False))]
+
+        # payment form
+        for x in Payment.objects.filter(occurrence=occurrence):
+            pfx = 'payment_form---%s' % x.id
+            payment_list.append( PaymentForm(instance=x, prefix=pfx) )
 
     return render_to_response(
         template,
@@ -408,6 +548,7 @@ def occurrence_confirmation_form(
             ),
         context_instance=RequestContext(request)
     )
+
 
 @permission_required_with_403('schedule.schedule_read')
 def occurrence_group(
@@ -432,6 +573,8 @@ def occurrence_group(
         #dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral, occurrence_confirmation = occurrence_confirmation, hide_date_field = True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None ),
         context_instance=RequestContext(request)
     )
+
+
 
 @permission_required_with_403('schedule.schedule_list')
 def _datetime_view(

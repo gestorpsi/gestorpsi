@@ -1,0 +1,17 @@
+doc-warnings: yes
+test-warnings: no
+strictness: veryhigh
+uses:
+  - django
+pep8:
+  full: true
+pylint:
+  run: true
+mccabe:
+  max-complexity: 5
+  run: true
+autodetect: yes
+requirements:
+  - requirements.txt
+ignore-patterns:
+  - (^|/).*_test\.py(/|$)ºw

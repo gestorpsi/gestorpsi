@@ -29,16 +29,16 @@ CATEGORY = (
 )
 
 CHARGE = ( 
-    (1, _(u'Por evento')),
-    (2, _(u'Por pacote')),
+    (1, _(u'Por evento (individual ou grupo)')),
+    (2, _(u'Por pacote (individual)')),
 
     (u'Por período', 
         (
-            (10,u'Semanal'),
-            (11,u'Quinzenal'),
-            (12,u'Mensal'),
-            (13,u'Bimestral'),
-            (14,u'Semestral'), 
+            (10,u'Semanal (individual)'),
+            (11,u'Quinzenal (individual)'),
+            (12,u'Mensal (individual)'),
+            (13,u'Bimestral (individual)'),
+            (14,u'Semestral (individual)'), 
         )
     ),
 )

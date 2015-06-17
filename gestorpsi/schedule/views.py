@@ -41,7 +41,7 @@ from gestorpsi.schedule.forms import OccurrenceConfirmationForm
 from gestorpsi.device.models import DeviceDetails
 from gestorpsi.organization.models import TIME_SLOT_SCHEDULE
 from gestorpsi.financial.models import Payment
-from gestorpsi.financial.forms import PaymentForm
+from gestorpsi.financial.forms import PaymentFormUpdate, PaymentFormNew
 
 
 def _access_check_by_occurrence(request, occurrence):
@@ -297,6 +297,9 @@ def occurrence_confirmation_form_group(
         confirmation event for a member of group
         choose a convenat of service and create a payment based in covenant
     '''
+
+    print '-------------- CONFIRM GROUP '
+
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
     payment_list = []
     covenant_list = occurrence.event.referral.service.covenant.all().order_by('name')
@@ -330,13 +333,27 @@ def occurrence_confirmation_form_group(
 
         form = form_class(request.POST, instance = occurrence_confirmation, initial={ 'device':initial_device, })
 
-        # payment
+        # new payment form, not required
+        pfx = 'payment_form---TEMPID999FORM' # hardcore Jquery 
+        form_payment_new = PaymentFormNew(request.POST, prefix=pfx)
+
+        if form_payment_new.is_valid():
+            fpn = form_payment_new.save()
+        else:
+            payment_new_valid = False
+
+        # payment way
+        print request.POST.getlist('TEMPID999FORM-pw')
+        # occurrence or evet
+        # payment_way_options from covenant
+
+        # update payments
         payment_valid = True
 
         for x in Payment.objects.filter(occurrence=occurrence):
 
             pfx = 'payment_form---%s' % x.id # hardcore Jquery 
-            form_payment = PaymentForm(request.POST, instance=x, prefix=pfx)
+            form_payment = PaymentFormUpdate(request.POST, instance=x, prefix=pfx)
 
             payment_list.append(form_payment)
 
@@ -345,7 +362,8 @@ def occurrence_confirmation_form_group(
             else:
                 payment_valid = False
 
-        if form.is_valid() and payment_valid :
+        # occurrence
+        if form.is_valid() and payment_valid:
 
             data = form.save(commit=False)
             data.occurrence = occurrence
@@ -398,7 +416,7 @@ def occurrence_confirmation_form_group(
         # payment form
         for x in Payment.objects.filter(occurrence=occurrence):
             pfx = 'payment_form---%s' % x.id
-            payment_list.append( PaymentForm(instance=x, prefix=pfx) )
+            payment_list.append( PaymentFormUpdate(instance=x, prefix=pfx) )
 
     return render_to_response(
         template,
@@ -412,7 +430,7 @@ def occurrence_confirmation_form_group(
                 denied_to_write = denied_to_write,
                 payment_list = payment_list,
                 covenant_list = covenant_list,
-                payment_new_form = PaymentForm(prefix='payment_form---TEMPID999FORM'),
+                payment_new_form = PaymentFormNew(prefix='payment_form---TEMPID999FORM'),
             ),
         context_instance=RequestContext(request)
     )
@@ -471,7 +489,7 @@ def occurrence_confirmation_form(
         for x in Payment.objects.filter(occurrence=occurrence):
 
             pfx = 'payment_form---%s' % x.id # hardcore Jquery 
-            form_payment = PaymentForm(request.POST, instance=x, prefix=pfx)
+            form_payment = PaymentFormUpdate(request.POST, instance=x, prefix=pfx)
 
             payment_list.append(form_payment)
 
@@ -480,6 +498,7 @@ def occurrence_confirmation_form(
             else:
                 payment_valid = False
 
+        # occurrence
         if form.is_valid() and payment_valid :
 
             data = form.save(commit=False)
@@ -532,7 +551,7 @@ def occurrence_confirmation_form(
         # payment form
         for x in Payment.objects.filter(occurrence=occurrence):
             pfx = 'payment_form---%s' % x.id
-            payment_list.append( PaymentForm(instance=x, prefix=pfx) )
+            payment_list.append( PaymentFormUpdate(instance=x, prefix=pfx) )
 
     return render_to_response(
         template,

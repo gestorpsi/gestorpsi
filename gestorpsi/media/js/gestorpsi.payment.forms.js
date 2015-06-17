@@ -70,12 +70,27 @@ $(document).ready(function() {
     /*
      * confirmation event for a member of group
      * new payment form
-     * change covenant select
-     *      update payment fields
+     * change covenant select and update payment fields
+     * TEMPID999FORM = temporary id for new payment form
      */
-
     $('select[name=select_covenant_payment]').change( function(){
-        alert(this);
+        if ( this.value != '000' ){ 
+            $.getJSON("/covenant/" + this.value + "/get/", function(json) {
+                jQuery.each(json,  function(){
+                    $('input#id_payment_form---TEMPID999FORM-name').val(this.name);
+                    $('input#id_payment_form---TEMPID999FORM-price').val(this.price);
+                    $('input#id_payment_form---TEMPID999FORM-off').val('0,00');
+                    $('input#id_payment_form---TEMPID999FORM-total').val(this.price);
+                    $('label[for=TEMPID999FORM-pw] ul').html(this.payment_way);
+                });
+            });
+        } else {  // clear fields
+            $('input#id_payment_form---TEMPID999FORM-name').val('');
+            $('input#id_payment_form---TEMPID999FORM-price').val('');
+            $('input#id_payment_form---TEMPID999FORM-off').val('0,00');
+            $('input#id_payment_form---TEMPID999FORM-total').val('');
+            $('label[for=TEMPID999FORM-pw] ul').html("");
+        }
     });
 
 });

@@ -120,23 +120,47 @@ def form(request, obj=False):
 
 
 
-def list_json(request, service=False):
+def list_json(request, service=False, obj=False):
     '''
         return json
         return all covenant when choosen a service in referral client form, subscription a service.
+
+        service : Service.id
+        obj: Covenant.id
     '''
     c = 0
     covenant = {} # json
-    
-    for o in Covenant.objects.filter(active=True, organization=request.user.get_profile().org_active, service__id=service):
-        covenant[c] = {
-            'id': o.id,
-            'name': u'%s' % o.name,
-            'price': u'%s' % o.price,
-            'charge': u'%s' % o.get_charge_display(),
-            'events': u'%s' % o.event_time,
-        }
-        c += 1
+
+    # return all covenant of a service
+    if service:
+        for o in Covenant.objects.filter(active=True, organization=request.user.get_profile().org_active, service__id=service):
+            covenant[c] = {
+                'id': o.id,
+                'name': u'%s' % o.name,
+                'price': u'%s' % o.price,
+                'charge': u'%s' % o.get_charge_display(),
+                'events': u'%s' % o.event_time,
+            }
+            c += 1
+
+    # get Covenant and return informations
+    if obj:
+        for o in Covenant.objects.filter(organization=request.user.get_profile().org_active, pk=obj):
+
+            # mount html checkbox
+            payment = ''
+            for x in o.payment_way.all():
+                payment += '<li><label><input type="checkbox" value="%s" name="TEMPID999FORM-pw" class="small" />&nbsp;%s</label></li>' % (x.id, x.name)
+
+            covenant[c] = {
+                'id': o.id,
+                'name': u'%s' % o.name,
+                'price': u'%s' % o.price,
+                'charge': u'%s' % o.get_charge_display(),
+                'events': u'%s' % o.event_time,
+                'payment_way':u'%s' % payment,
+            }
+            c += 1
 
     return HttpResponse(simplejson.dumps(covenant, encoding = 'iso8859-1'), mimetype='application/json')
 

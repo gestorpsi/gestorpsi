@@ -21,7 +21,7 @@ from django.template import RequestContext
 from django.contrib import messages
 
 from gestorpsi.financial.models import Payment
-from gestorpsi.financial.forms import PaymentForm
+from gestorpsi.financial.forms import PaymentFormUpdate
 
 def payment_form(request, obj=False):
 
@@ -30,7 +30,7 @@ def payment_form(request, obj=False):
 
     if request.POST:
 
-        form = PaymentForm(request.POST , instance=obj, prefix=pfx)
+        form = PaymentFormUpdate(request.POST , instance=obj, prefix=pfx)
 
         if form.is_valid():
             obj = form.save()
@@ -39,7 +39,7 @@ def payment_form(request, obj=False):
 
     # mount form
     else:
-        form = PaymentForm(instance=obj, prefix=pfx)
+        form = PaymentFormUpdate(instance=obj, prefix=pfx)
 
 
     # mount form or not valid form

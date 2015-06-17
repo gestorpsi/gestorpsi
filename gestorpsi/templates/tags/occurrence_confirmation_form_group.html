@@ -49,13 +49,13 @@ hide Date fields and second field
             <div style="clear:both"></div>
         </fieldset>
 
-        <!-- covenant -->
+        <!-- new payment -->
         <fieldset>
-            <legend>{% trans "Criar novo pagamento" %}</legend>
+            <legend>{% trans "Novo Pagamento" %}</legend>
             <div class="date_fields">
                 <label>Conv&ecirc;nio dispon&iacute;vel<br />
                     <select name='select_covenant_payment' class="big">
-                        <option value="000">- - -</option>
+                        <option value="000" selected="selected" >- - -</option>
                         {% for x in covenant_list %}
                             <option value="{{ x.id }}">{{ x.name }}</option>
                         {% endfor %}
@@ -70,11 +70,16 @@ hide Date fields and second field
                     </label>
                 {% endfor %}
 
+                <!-- out of form -->
+                <label for="TEMPID999FORM-pw">Forma de pagamento<br>
+                    <ul></ul>
+                </label>
+
             </div>
         </fieldset>
 
 
-        <!-- payment event -->
+        <!-- update payment event -->
         {% for f in payment_list %}
             <fieldset>
                 <legend>{% trans "Pagamento" %}</legend>

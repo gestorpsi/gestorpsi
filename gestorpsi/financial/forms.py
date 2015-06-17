@@ -32,7 +32,11 @@ def get_choices(obj):
         return PaymentWay.objects.none()
 
 
-class PaymentForm(forms.ModelForm):
+'''
+    update a payment
+    payment way exist
+'''
+class PaymentFormUpdate(forms.ModelForm):
     name = forms.CharField(label=u'Nome convênio', max_length=250, widget=forms.TextInput( attrs={ 'readonly':'true' , 'class':'big' }) );
     price = forms.DecimalField(label=u"Valor", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','readonly':'true'} ) )
     off = forms.DecimalField(label=u"Desconto", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'1.234,56'} ))
@@ -45,20 +49,26 @@ class PaymentForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
 
-        super(PaymentForm, self).__init__(*args, **kwargs)
+        super(PaymentFormUpdate, self).__init__(*args, **kwargs)
 
-        # payment exist, update and get payment ways.
-        try:
-            self.fields['covenant_payment_way_selected'] = forms.MultipleChoiceField(
-                label=u'Forma de pagamento',
-                required=False,
-                widget=forms.CheckboxSelectMultiple( attrs={ 'class':'small' }),
-                choices = get_choices( kwargs['instance'] )
-            )
-        # payment non exist. New payment form
-        except:
-            self.fields['covenant_payment_way_selected'] = forms.MultipleChoiceField(
-                label=u'Forma de pagamento',
-                required=False,
-                widget=forms.CheckboxSelectMultiple( attrs={ 'class':'small' }),
-            )
+        self.fields['covenant_payment_way_selected'] = forms.MultipleChoiceField(
+            label=u'Forma de pagamento',
+            required=False,
+            widget=forms.CheckboxSelectMultiple( attrs={ 'class':'small' }),
+            choices = get_choices( kwargs['instance'] )
+        )
+
+
+'''
+    for group, create a payment
+    payment way non exist becouse does't no the covenant
+'''
+class PaymentFormNew(forms.ModelForm):
+    name = forms.CharField(label=u'Nome convênio', max_length=250, widget=forms.TextInput( attrs={ 'readonly':'true' , 'class':'big' }) );
+    price = forms.DecimalField(label=u"Valor", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','readonly':'true'} ) )
+    off = forms.DecimalField(label=u"Desconto", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'1.234,56'} ))
+    total = forms.DecimalField(label=u"Total", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','readonly':'true'} ) )
+
+    class Meta:
+        model = Payment
+        exclude = ['occurrence','covenant_pack_size','covenant_charge','covenant_payment_way_options','covenant_payment_way_selected']

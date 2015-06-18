@@ -28,21 +28,11 @@ GNU General Public License for more details.
 	</label>
 			
 	<label>{% trans "Type" %}<br />
-	{% if not PhoneTypes %}
-		{% trans "There is no types available to choice" %}
-	{% else %}
-	<select name="phoneType" class="medium">
-	{% for phoneType in PhoneTypes %}
-		<option value="{{ phoneType.id }}"{% ifequal phone.phoneType.id phoneType.id %} selected{% endifequal %}>{{ phoneType }}</option>
-	{% endfor %}
+	<select name="payment_condition" class="medium">
+	<option value="1">Payer</option>
+	<option value="2">Exempted</option>
+	<option value="3">Temporarily exempted</option>
 	</select>
-	{% endif %}
 	</label>
-	<label>
-	<br /><a class="notajax remove_from_form" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a>
-	</label>
+
 </div>
-
-
-
-

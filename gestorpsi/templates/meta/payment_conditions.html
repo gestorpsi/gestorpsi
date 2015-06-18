@@ -23,11 +23,5 @@ people payment conditions
         
 <fieldset>
         <legend>{% trans "Payment Conditions" %}</legend>
-                {% if not payment_conditions %}
-                        {% include "tags/payment_condition.html" %}
-                {% else %}
-                        {% for phone in payment_conditions %}
-                                {% include "tags/payment_condition.html" %}
-                        {% endfor %}
-                {% endif %}
+                {% include "tags/payment_condition.html" %}
 </fieldset>

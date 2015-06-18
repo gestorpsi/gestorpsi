@@ -55,6 +55,11 @@ FAMILY_RELATION_REVERSE = (
     (13, _('Others')),
 )
 
+COMPANY_SIZE = (
+    (1, _('Payer')),
+    (2, _('Exempted')),
+    (3, _('Temporarily exempted')),
+)
 
 class MaritalStatus(models.Model):
     description = models.CharField(max_length=20)

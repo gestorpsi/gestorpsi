@@ -17,14 +17,13 @@ GNU General Public License for more details.
 {% load i18n %}
 
 <div>
-	<input type="hidden" name="payment_condition_id" value="{{ payment_condition.id }}" />
 	
 	<label>{% trans "Salary" %}<br />
-	<input type="text" maxlength="8" class="medium" name="salary" value="{{ person.salary }}" mask="?9?9999,99" />
+	<input type="text" maxlength="8" class="medium" name="salary" value="{{ person.salary }}" mask="?9?9999.99" />
 	</label>
 
 	<label>{% trans "Value for payment" %}<br />
-	<input type="text" maxlength="6"  class="medium" name="value_for_payment" value="{{ client.value_for_payment }}" mask="?9?9?9,99" />
+	<input type="text" maxlength="6"  class="medium" name="value_for_payment" value="{{ client.value_for_payment }}" mask="?9?9?9.99" />
 	</label>
 			
 	<label>{% trans "Type" %}<br />

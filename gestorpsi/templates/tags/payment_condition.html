@@ -1,0 +1,48 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<div>
+	<input type="hidden" name="payment_condition_id" value="{{ payment_condition.id }}" />
+	
+	<label>{% trans "Salary" %}<br />
+	<input type="text" maxlength="8" class="medium" name="salary" value="{{ person.salary }}" mask="?9?9999,99" />
+	</label>
+
+	<label>{% trans "Value for payment" %}<br />
+	<input type="text" maxlength="6"  class="medium" name="value_for_payment" value="{{ client.value_for_payment }}" mask="?9?9?9,99" />
+	</label>
+			
+	<label>{% trans "Type" %}<br />
+	{% if not PhoneTypes %}
+		{% trans "There is no types available to choice" %}
+	{% else %}
+	<select name="phoneType" class="medium">
+	{% for phoneType in PhoneTypes %}
+		<option value="{{ phoneType.id }}"{% ifequal phone.phoneType.id phoneType.id %} selected{% endifequal %}>{{ phoneType }}</option>
+	{% endfor %}
+	</select>
+	{% endif %}
+	</label>
+	<label>
+	<br /><a class="notajax remove_from_form" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a>
+	</label>
+</div>
+
+
+
+

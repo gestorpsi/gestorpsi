@@ -65,9 +65,9 @@ class PaymentFormUpdate(forms.ModelForm):
 '''
 class PaymentFormNew(forms.ModelForm):
     name = forms.CharField(label=u'Nome convênio', max_length=250, widget=forms.TextInput( attrs={ 'readonly':'true' , 'class':'big' }) );
-    price = forms.DecimalField(label=u"Valor", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','readonly':'true'} ) )
-    off = forms.DecimalField(label=u"Desconto", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'1.234,56'} ))
-    total = forms.DecimalField(label=u"Total", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','readonly':'true'} ) )
+    price = forms.DecimalField(label=u"Valor", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','readonly':'true'} ) )
+    off = forms.DecimalField(label=u"Desconto", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','placeholder':'1.234,56'} ))
+    total = forms.DecimalField(label=u"Total", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','readonly':'true'} ) )
 
     class Meta:
         model = Payment

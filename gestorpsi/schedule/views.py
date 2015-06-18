@@ -42,6 +42,7 @@ from gestorpsi.device.models import DeviceDetails
 from gestorpsi.organization.models import TIME_SLOT_SCHEDULE
 from gestorpsi.financial.models import Payment
 from gestorpsi.financial.forms import PaymentFormUpdate, PaymentFormNew
+from gestorpsi.covenant.models import Covenant
 
 
 def _access_check_by_occurrence(request, occurrence):
@@ -298,8 +299,6 @@ def occurrence_confirmation_form_group(
         choose a convenat of service and create a payment based in covenant
     '''
 
-    print '-------------- CONFIRM GROUP '
-
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
     payment_list = []
     covenant_list = occurrence.event.referral.service.covenant.all().order_by('name')
@@ -326,30 +325,38 @@ def occurrence_confirmation_form_group(
     if not _access_check_referral_write(request, occurrence.event.referral):
         denied_to_write = True
 
+    # update occurrence and payments or new payment.
     if request.method == 'POST':
 
+        # permission
         if denied_to_write:
             return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
-        form = form_class(request.POST, instance = occurrence_confirmation, initial={ 'device':initial_device, })
 
-        # new payment form, not required
-        pfx = 'payment_form---TEMPID999FORM' # hardcore Jquery 
-        form_payment_new = PaymentFormNew(request.POST, prefix=pfx)
+        # new payment form, not required.
+        if not request.POST.get('select_covenant_payment') == '000' :
 
-        if form_payment_new.is_valid():
-            fpn = form_payment_new.save()
-        else:
-            payment_new_valid = False
+            covenant = Covenant.objects.get( pk=request.POST.get('select_covenant_payment'), organization=request.user.get_profile().org_active ) 
 
-        # payment way
-        print request.POST.getlist('TEMPID999FORM-pw')
-        # occurrence or evet
-        # payment_way_options from covenant
+            pfx = 'payment_form---TEMPID999FORM' # hardcore Jquery 
+            form_payment_new = PaymentFormNew(request.POST, prefix=pfx)
+
+            if form_payment_new.is_valid():
+
+                fpn = form_payment_new.save()
+                fpn.occurrence.add(occurrence)
+
+                # from covenant
+                fpn.covenant_payment_way_options = ''
+                for pw in covenant.payment_way.all():
+                    x = "(%s,'%s')," % ( pw.id , pw.name ) # need be a dict
+                    fpn.covenant_payment_way_options += x
+
+                fpn.covenant_payment_way_selected = request.POST.getlist('TEMPID999FORM-pw')
+                fpn.save()
+
 
         # update payments
-        payment_valid = True
-
         for x in Payment.objects.filter(occurrence=occurrence):
 
             pfx = 'payment_form---%s' % x.id # hardcore Jquery 
@@ -359,11 +366,12 @@ def occurrence_confirmation_form_group(
 
             if form_payment.is_valid():
                 fp = form_payment.save()
-            else:
-                payment_valid = False
+
 
         # occurrence
-        if form.is_valid() and payment_valid:
+        form = form_class(request.POST, instance = occurrence_confirmation, initial={ 'device':initial_device, })
+
+        if form.is_valid():
 
             data = form.save(commit=False)
             data.occurrence = occurrence
@@ -412,10 +420,9 @@ def occurrence_confirmation_form_group(
 
         form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility="2", lendable=True) | Q(place=occurrence.room.place, mobility="2", lendable=False))]
 
-
-        # payment form
+        # payments of occurrence, update form.
         for x in Payment.objects.filter(occurrence=occurrence):
-            pfx = 'payment_form---%s' % x.id
+            pfx = 'payment_form---%s' % x.id # for many forms and one submit.
             payment_list.append( PaymentFormUpdate(instance=x, prefix=pfx) )
 
     return render_to_response(

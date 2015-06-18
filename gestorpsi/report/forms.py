@@ -52,7 +52,7 @@ class ReportForm(forms.ModelForm):
     accumulated = forms.ChoiceField(label=_('Accumulated Graph'), choices=GRAPH_ACCUMULATED, help_text=_('Acummulated graph?'))
     export_graph_type = forms.ChoiceField(label=_('Graph Type format'), choices=GRAPH_TYPE, help_text=_('Here you can choose which type of graph you need. Note: only for HTML format'))
     professional = forms.ModelChoiceField(label=_('Profissional'), queryset=CareProfessional.objects.all() )
-    occurrence_status = forms.ChoiceField(label=_('Status do evento'), choices=OCCURRENCE_CONFIRMATION_PRESENCE, help_text=_('Status do evento'))
+    occurrence_status = forms.ChoiceField(label=_('Payment Status'), choices=OCCURRENCE_CONFIRMATION_PRESENCE, help_text=_('Payment Status'))
     
     class Meta:
         model = Report
@@ -67,19 +67,19 @@ class ReportForm(forms.ModelForm):
         for i in Service.objects.filter(organization=organization, active=True):
             choices.append((i.pk, i.name))
         # services
-        choices = [('',_('--- Todos ---'))]
+        choices = [('',_('------ All Services ------'))]
         for i in Service.objects.filter(organization=organization, active=True):
             choices.append((i.pk, i.name))
         self.fields['service'].choices = choices
 
         # professional
-        choices = [('all',_('--- Todos ---'))]
+        choices = [('all',_('------ All Services ------'))]
         for i in CareProfessional.objects.filter(person__organization=organization, active=True):
             choices.append((i.pk, i.person.name))
         self.fields['professional'].choices = choices
 
         # occurrence
-        self.fields['occurrence_status'].choices = tuple([(u'all', '--- Todos ---')] + list(OCCURRENCE_CONFIRMATION_PRESENCE))
+        self.fields['occurrence_status'].choices = tuple([(u'all', '------ All Services ------')] + list(OCCURRENCE_CONFIRMATION_PRESENCE))
 
 
 class ReportSaveForm(forms.ModelForm):

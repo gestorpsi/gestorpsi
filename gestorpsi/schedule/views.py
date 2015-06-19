@@ -296,12 +296,12 @@ def occurrence_confirmation_form_group(
 
     '''
         confirmation event for a member of group
-        choose a convenat of service and create a payment based in covenant
+        choose a covenant of service and create a payment based in covenant
     '''
 
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
-    payment_list = []
     covenant_list = occurrence.event.referral.service.covenant.all().order_by('name')
+    payment_list = []
 
     if not occurrence.scheduleoccurrence.was_confirmed():
         initial_device = [device.pk for device in occurrence.device.all()]
@@ -356,7 +356,7 @@ def occurrence_confirmation_form_group(
                 fpn.save()
 
 
-        # update payments
+        # update payments, not required.
         for x in Payment.objects.filter(occurrence=occurrence):
 
             pfx = 'payment_form---%s' % x.id # hardcore Jquery 
@@ -396,16 +396,6 @@ def occurrence_confirmation_form_group(
 
             messages.error(request, _(u'Campo inválido ou obrigatório'))
 
-            return render_to_response(
-                template,
-                dict(occurrence=occurrence,
-                    form=form,
-                    object=object,
-                    referral=occurrence.event.referral,
-                    payment_list=payment_list,
-                    ),
-                context_instance=RequestContext(request)
-            )
     else:
         if hasattr(occurrence_confirmation, 'presence') and int(occurrence_confirmation.presence) not in (1,2): # load initial data if client dont arrive
             occurrence_confirmation.date_started = occurrence.start_time
@@ -425,6 +415,8 @@ def occurrence_confirmation_form_group(
             pfx = 'payment_form---%s' % x.id # for many forms and one submit.
             payment_list.append( PaymentFormUpdate(instance=x, prefix=pfx) )
 
+
+    # just one out if errors
     return render_to_response(
         template,
         dict(
@@ -531,16 +523,16 @@ def occurrence_confirmation_form(
 
             messages.error(request, _(u'Campo inválido ou obrigatório'))
 
-            return render_to_response(
-                template,
-                dict(occurrence=occurrence,
-                    form=form,
-                    object=object,
-                    referral=occurrence.event.referral,
-                    payment_list=payment_list,
-                    ),
-                context_instance=RequestContext(request)
-            )
+            #return render_to_response(
+                #template,
+                #dict(occurrence=occurrence,
+                    #form=form,
+                    #object=object,
+                    #referral=occurrence.event.referral,
+                    #payment_list=payment_list,
+                    #),
+                #context_instance=RequestContext(request)
+            #)
     else:
         if hasattr(occurrence_confirmation, 'presence') and int(occurrence_confirmation.presence) not in (1,2): # load initial data if client dont arrive
             occurrence_confirmation.date_started = occurrence.start_time

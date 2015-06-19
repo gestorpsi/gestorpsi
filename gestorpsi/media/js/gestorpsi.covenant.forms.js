@@ -35,4 +35,22 @@ $(document).ready(function() {
     // event number positive
     $("#event_time").maskMoney({ allowZero:false, thousands:'', decimal:'' });
 
+
+    /*
+     * filter service by group or not
+     */
+    $('select#id_charge').change( function(){ 
+        alert(this.value);
+
+        /*$('div#ms-id_service ul').html('');*/
+
+        $('select#id_service').html('');
+        $('select#id_service').html('<option value="2ebfcd82-1cd5-4958-8811-f1cb97b49758">Fisioterapia1</option>');
+
+        $('div.ms-selectable ul').html('');
+        $('div.ms-selection ul').html('');
+
+        $('select#id_service').multiSelect();
+    });
+
 });

@@ -60,11 +60,18 @@ def form(request, obj=False):
         obj: Covenant.id
     """
     tab = 'form' # new register
-    service_list = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
+
+    # all services
+    service_list = Service.objects.filter( active=True, organization=request.user.get_profile().org_active)
 
     if obj: # update register
-        obj = get_object_or_404(Covenant, pk=obj)
+
         tab = 'edit' # edit register
+        obj = get_object_or_404(Covenant, pk=obj)
+
+        # individual services
+        if obj.charge > 1:
+            service_list = Service.objects.filter(is_group=False, active=True, organization=request.user.get_profile().org_active)
 
     if request.POST:
 
@@ -120,16 +127,44 @@ def form(request, obj=False):
 
 
 
-def list_json(request, service=False, obj=False):
+def list_json(request, service=False, obj=False, order=False):
     '''
         return json
         return all covenant when choosen a service in referral client form, subscription a service.
 
         service : Service.id
         obj: Covenant.id
+
+        order: string. 'all' or 'group'
+            group: All active covenant for a group, by event.
+            all: All active covenants
     '''
     c = 0
     covenant = {} # json
+
+    # return all active covenant for a group
+    if order == 'group':
+        for o in Covenant.objects.filter(charge=1, active=True, organization=request.user.get_profile().org_active):
+            covenant[c] = {
+                'id': o.id,
+                'name': u'%s' % o.name,
+                'price': u'%s' % o.price,
+                'charge': u'%s' % o.get_charge_display(),
+                'events': u'%s' % o.event_time,
+            }
+            c += 1
+
+    # return all active covenants
+    if order == 'all':
+        for o in Covenant.objects.filter(active=True, organization=request.user.get_profile().org_active):
+            covenant[c] = {
+                'id': o.id,
+                'name': u'%s' % o.name,
+                'price': u'%s' % o.price,
+                'charge': u'%s' % o.get_charge_display(),
+                'events': u'%s' % o.event_time,
+            }
+            c += 1
 
     # return all covenant of a service
     if service:

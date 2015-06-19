@@ -163,6 +163,9 @@ def select_area(request, object_id=''):
 
 @permission_required_with_403('service.service_read')
 def form(request, object_id=None):
+
+    print '------------- FORM '
+
     object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active) if object_id else Service()
     selected_area = get_object_or_None(Area, area_code=request.POST.get('area')) or object.area
 
@@ -177,6 +180,12 @@ def form(request, object_id=None):
     if selected_area.area_code == 'organizational':
         form_area = OrganizationalAreaForm(instance=object)
         form_area.fields['hierarchical_level'].queryset = selected_area.hierarchical_level.all()
+
+    # filter covenants for group or invidual
+    if object.is_group:
+        covenant_list = Covenant.objects.filter( charge=1, active=True, organization=request.user.get_profile().org_active )
+    else:
+        covenant_list = Covenant.objects.filter( active=True, organization=request.user.get_profile().org_active )
 
     form_area.fields['service_type'].queryset = selected_area.service_type.all()
     form_area.fields['modalities'].queryset = selected_area.modalities.all()
@@ -208,7 +217,7 @@ def form(request, object_id=None):
         'queue_list': _queue_list(request,object),
         'can_list_groups': False if not len(_group_list(request, object)) else True,
         'can_write_group': False if not _can_write_group(request, object) else True,
-        'covenant_list': Covenant.objects.filter( organization=request.user.get_profile().org_active ),
+        'covenant_list': covenant_list,
         }, context_instance=RequestContext(request) )
 
 @permission_required_with_403('service.service_write')

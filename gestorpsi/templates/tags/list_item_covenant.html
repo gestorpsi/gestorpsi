@@ -66,8 +66,8 @@ GNU General Public License for more details.
                     <a href="{% url covenant-edit i.id %}" title="{{ i.name }}">{{ i.name }}</a>
                     <span style="font-weight:normal;">{% for s in i.service_set.all %} <br />{{ s }}  {% endfor %}</span>
                 </td>
-                <td><span>{{ i.get_charge_display }} {% ifequal i.charge 2 %} - {{ i.event_time }}{% endifequal %}</span></td>
-                <td><span>R$ {{ i.price }}</span></td>
+                <td class='extramedium'>{{ i.get_charge_display }} {% ifequal i.charge 2 %} - {{ i.event_time }}{% endifequal %}</td>
+                <td class='normal'><span>R$ {{ i.price }}</span></td>
             </tr>
         {% endfor %}
     </tbody>

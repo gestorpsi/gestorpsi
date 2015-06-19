@@ -32,8 +32,14 @@ urlpatterns = patterns('',
     url(r'^list/deactive/(?P<filter>\w+)/$', login_check(list_filter)), # search method get
     # active or deactive
     url(r'^(?P<obj>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/order/$', login_check(order), name='covenant-order' ), # return all covenant of service
+
+    # json
     # referral form client
     url(r'^list/service/(?P<service>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(list_json) ), # return all covenant of service
     # get informations of covenant
     url(r'^(?P<obj>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/get/$', login_check(list_json) ), # return all covenant of service
+    # return all covenants
+    url(r'^list/all/$', login_check(list_json), { 'order':'all'} ),
+    # return all covenants for groups
+    url(r'^list/group/$', login_check(list_json), { 'order':'group'} ),
 )

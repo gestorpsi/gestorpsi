@@ -22,6 +22,10 @@ GNU General Public License for more details.
 
 {% block vertical_menu %} - {% trans "Services" %}{% endblock %}
 
+{% block extrahead %}
+    <script type="text/javascript" src="/media/js/gestorpsi.service.forms.js"></script>
+{% endblock extrahead %}
+
 {% block submenu %}
     <ul>
         <li><a class="first" href="/service/">{% trans "all" %}</a></li>
@@ -160,7 +164,7 @@ GNU General Public License for more details.
                 <div style="clear:both;"></div>	
                 <li><label>{% trans "Este servi&ccedil;o pode ser pago com o seguinte conv&ecirc;nio" %}</label></li><br />
 
-                <div class="overflow">
+                <div class="overflow" id='id_covenant_list'>
                     <ul>
                         {% for l in covenant_list %}
                         <li><label><input {% for r in object.covenant.all %}{% ifequal r.id l.id %} checked {% endifequal %}{% endfor %} value="{{ l.pk }}" type="checkbox" name="service_covenant" />{{ l.name }} - {{ l.get_charge_display }} {% if l.event_time %} ({{ l.event_time }}) {% endif %} - Valor R${{ l.price }} </label></li>

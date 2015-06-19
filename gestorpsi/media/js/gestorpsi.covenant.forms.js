@@ -14,6 +14,11 @@ GNU General Public License for more details.
 
 */
 
+// create new combobox after load new options
+function reload_combobox(){ 
+    $('select#id_service').multiSelect();
+}
+
 $(document).ready(function() {
 
     // show and hide event numnber input
@@ -37,20 +42,33 @@ $(document).ready(function() {
 
 
     /*
-     * filter service by group or not
+     * filter service. Individual or all.
      */
     $('select#id_charge').change( function(){ 
-        alert(this.value);
 
-        /*$('div#ms-id_service ul').html('');*/
-
+        // clear
         $('select#id_service').html('');
-        $('select#id_service').html('<option value="2ebfcd82-1cd5-4958-8811-f1cb97b49758">Fisioterapia1</option>');
+        // remove
+        $('div#ms-id_service').remove();
 
-        $('div.ms-selectable ul').html('');
-        $('div.ms-selection ul').html('');
+        // get all services. Individual and group
+        if ( this.value == '1'){ 
+            $.getJSON("/service/list/all/" , function(json) {
+                jQuery.each(json,  function(){
+                    $('select#id_service').append('<option value="' + this.id + '">' + this.name + '</option>');
+                });
+            });
+        // get individual services
+        } else { 
+            $.getJSON("/service/list/indiv/" , function(json) {
+                jQuery.each(json,  function(){
+                    $('select#id_service').append('<option value="' + this.id + '">' + this.name + '</option>');
+                });
+            });
+        }
 
-        $('select#id_service').multiSelect();
+        // reload_combobox must have a delay
+        setTimeout(reload_combobox, 50);
     });
 
 });

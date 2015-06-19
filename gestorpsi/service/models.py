@@ -102,6 +102,11 @@ class Service(models.Model):
         if self.is_group:
             u += " (%s)" % _('Group')
         return u
+
+    def label_group_(self):
+        if self.is_group:
+            return u'%s (grupo)' % self.name
+        return u'%s' % self.name
     
     def _name_html(self):
         return u"<div class='service_name_html' style='background-color:#%s;'>&nbsp;</div> %s" % (self.color, self.name)

@@ -98,7 +98,7 @@ GNU General Public License for more details.
                 <div style="clear:both; margin-left:10px;">
                     <select multiple="multiple" id="id_service" name="services">
                         {% for x in service_list.all %}
-                            <option value="{{ x.id }}" {% if x in obj.service_set.all %} selected {% endif %}>{{ x.name }}</option>
+                            <option value="{{ x.id }}" {% if x in obj.service_set.all %} selected {% endif %}>{{ x.label_group_ }}</option>
                         {% endfor %}
                     </select>
                 </div>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-09 15:15-0300\n"
+"POT-Creation-Date: 2015-06-18 15:28-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: settings.py:82
+#: settings.py:81
 msgid "Brazilian Portuguese"
 msgstr ""
 
-#: settings.py:83
+#: settings.py:82
 msgid "English"
 msgstr ""
 
@@ -734,7 +734,7 @@ msgstr ""
 msgid "Parents"
 msgstr ""
 
-#: client/models.py:28 client/models.py:43 report/models.py:1000
+#: client/models.py:28 client/models.py:43 report/models.py:1027
 msgid "Children"
 msgstr ""
 
@@ -1082,11 +1082,11 @@ msgstr ""
 msgid "Education saved successfully"
 msgstr ""
 
-#: demographic/views.py:121
+#: demographic/views.py:124
 msgid "Occupation saved successfully"
 msgstr ""
 
-#: demographic/views.py:131
+#: demographic/views.py:134
 msgid "Occupation not found"
 msgstr ""
 
@@ -1357,8 +1357,8 @@ msgstr ""
 msgid "Confirmed by the professional"
 msgstr ""
 
-#: ehr/models.py:72 referral/models.py:76 report/models.py:986
-#: report/models.py:1004
+#: ehr/models.py:72 referral/models.py:76 report/models.py:1013
+#: report/models.py:1031
 msgid "Unknown"
 msgstr ""
 
@@ -1621,7 +1621,8 @@ msgstr ""
 msgid "Profissional responsavel"
 msgstr ""
 
-#: gcm/templates/gcm/org_list.html:39
+#: gcm/templates/gcm/org_list.html:39 report/forms.py:54
+#: templates/report/report_index.html:63
 msgid "Profissional"
 msgstr ""
 
@@ -2019,61 +2020,65 @@ msgstr ""
 msgid " - Student"
 msgstr ""
 
-#: report/forms.py:35 report/forms.py:49
+#: report/forms.py:38 report/forms.py:52
 msgid "Accumulated Graph"
 msgstr ""
 
-#: report/forms.py:36
+#: report/forms.py:39
 msgid "Not accumulated Graph"
 msgstr ""
 
-#: report/forms.py:46 report/views.py:182
+#: report/forms.py:49 report/views.py:196
 #: templates/service/service_client_list.html:23
 #: templates/tags/schedule_form.html:66 templates/tags/schedule_form.html:106
 #: templates/tags/schedule_form.html:108
 msgid "Service"
 msgstr ""
 
-#: report/forms.py:47
+#: report/forms.py:50
 msgid "Export format"
 msgstr ""
 
-#: report/forms.py:47
+#: report/forms.py:50
 msgid ""
 "Here you can choose which format you want to export the data. For printing "
 "graphics please use HTML format"
 msgstr ""
 
-#: report/forms.py:48
+#: report/forms.py:51
 msgid "Include client list"
 msgstr ""
 
-#: report/forms.py:48
+#: report/forms.py:51
 msgid "If selected will a list of clients for each report sub-item"
 msgstr ""
 
-#: report/forms.py:49
+#: report/forms.py:52
 msgid "Acummulated graph?"
 msgstr ""
 
-#: report/forms.py:50
+#: report/forms.py:53
 msgid "Graph Type format"
 msgstr ""
 
-#: report/forms.py:50
+#: report/forms.py:53
 msgid ""
 "Here you can choose which type of graph you need. Note: only for HTML format"
 msgstr ""
 
-#: report/forms.py:61
+#: report/forms.py:55
+msgid "Payment Status"
+msgstr ""
+
+#: report/forms.py:66 report/forms.py:70 report/forms.py:76
 msgid "------ All Services ------"
 msgstr ""
 
-#: report/forms.py:93
+#: report/forms.py:112
 msgid "Admission between"
 msgstr ""
 
-#: report/forms.py:93 report/forms.py:116 report/views.py:196
+#: report/forms.py:112 report/forms.py:135 report/views.py:210
 #: templates/report/report_client_list.html:23
 #: templates/report/report_export.html:142
 #: templates/report/report_export.html:150
@@ -2081,298 +2086,328 @@ msgstr ""
 msgid "and"
 msgstr ""
 
-#: report/forms.py:116
+#: report/forms.py:135
 msgid "Referrals between"
 msgstr ""
 
-#: report/models.py:44
+#: report/models.py:46
 msgid "Admisssions"
 msgstr ""
 
-#: report/models.py:45
+#: report/models.py:47
 msgid "Referrals"
 msgstr ""
 
-#: report/models.py:80
-msgid "This Month"
-msgstr ""
-
-#: report/models.py:81
-msgid "Last three months"
+#: report/models.py:48 templates/client/client_print.html:377
+#: templates/ehr/ehr_diagnosis_list_item.html:33
+#: templates/report/report_index.html:70
+msgid "Occurrence"
 msgstr ""
 
 #: report/models.py:82
-msgid "Last six months"
+msgid "This Month"
 msgstr ""
 
 #: report/models.py:83
+msgid "Last three months"
+msgstr ""
+
+#: report/models.py:84
+msgid "Last six months"
+msgstr ""
+
+#: report/models.py:85
 msgid "This year"
 msgstr ""
 
-#: report/models.py:269
+#: report/models.py:269 schedule/models.py:29
+msgid "Client arrived on time"
+msgstr ""
+
+#: report/models.py:270 schedule/models.py:30
+msgid "Client arrived Late"
+msgstr ""
+
+#: report/models.py:271 schedule/models.py:31
+msgid "Client not arrived"
+msgstr ""
+
+#: report/models.py:272 schedule/models.py:32
+msgid "Occurrence unmarked"
+msgstr ""
+
+#: report/models.py:273 schedule/models.py:33
+msgid "Occurrence rescheduled"
+msgstr ""
+
+#: report/models.py:296
 msgid "Report name to save"
 msgstr ""
 
-#: report/models.py:297
+#: report/models.py:324
 msgid "Individuals"
 msgstr ""
 
-#: report/models.py:298
+#: report/models.py:325
 msgid "Companies"
 msgstr ""
 
-#: report/models.py:299 templates/report/report_client_list.html:29
+#: report/models.py:326 templates/report/report_client_list.html:29
 #: templates/report/report_saved.html:34 templates/report/report_saved.html:50
 msgid "Total"
 msgstr ""
 
-#: report/models.py:317 report/models.py:368
+#: report/models.py:344 report/models.py:395
 msgid "Admission Signed"
 msgstr ""
 
-#: report/models.py:317
+#: report/models.py:344
 msgid "Admission Not Signed"
 msgstr ""
 
-#: report/models.py:320
+#: report/models.py:347
 msgid "Signed"
 msgstr ""
 
-#: report/models.py:321
+#: report/models.py:348
 msgid "Not Signed"
 msgstr ""
 
-#: report/models.py:365
+#: report/models.py:392
 msgid "Admission Overview"
 msgstr ""
 
-#: report/models.py:371 templates/client/client_print.html:111
+#: report/models.py:398 templates/client/client_print.html:111
 msgid "Admission Knowledge"
 msgstr ""
 
-#: report/models.py:387
+#: report/models.py:414
 msgid "Admission report - Individuals"
 msgstr ""
 
-#: report/models.py:391
+#: report/models.py:418
 msgid "Admission report - Companies"
 msgstr ""
 
-#: report/models.py:394
+#: report/models.py:421
 msgid "Admission report - Total"
 msgstr ""
 
-#: report/models.py:399
+#: report/models.py:426
 msgid "Admission report - Signed by client"
 msgstr ""
 
-#: report/models.py:403
+#: report/models.py:430
 msgid "Admission report - Not signed by client"
 msgstr ""
 
-#: report/models.py:408
+#: report/models.py:435
 #, python-format
 msgid "Admission report - Knowledge - %s"
 msgstr ""
 
-#: report/models.py:463
+#: report/models.py:490
 msgid "Subscriptions"
 msgstr ""
 
-#: report/models.py:464
+#: report/models.py:491
 msgid "Subscriptions Discharged"
 msgstr ""
 
-#: report/models.py:465
+#: report/models.py:492
 msgid "Internal Referrals"
 msgstr ""
 
-#: report/models.py:466 templates/client/client_print.html:258
+#: report/models.py:493 templates/client/client_print.html:258
 msgid "External Referrals"
 msgstr ""
 
-#: report/models.py:491
+#: report/models.py:518
 msgid "Referral Discharge Discussed with client"
 msgstr ""
 
-#: report/models.py:491
+#: report/models.py:518
 msgid "Referral Discharge Not discussed with client"
 msgstr ""
 
-#: report/models.py:495
+#: report/models.py:522
 msgid "Discussed with client"
 msgstr ""
 
-#: report/models.py:496
+#: report/models.py:523
 msgid "Not discussed with client"
 msgstr ""
 
-#: report/models.py:805
+#: report/models.py:832
 msgid "Subscriptions Overview"
 msgstr ""
 
-#: report/models.py:808
+#: report/models.py:835
 msgid "Service Subscriptions"
 msgstr ""
 
-#: report/models.py:809
+#: report/models.py:836
 msgid "Discharges from Services"
 msgstr ""
 
-#: report/models.py:811
+#: report/models.py:838
 msgid "Subscriptions Discharged Discussed"
 msgstr ""
 
-#: report/models.py:812
+#: report/models.py:839
 msgid "Subscriptions Indications"
 msgstr ""
 
-#: report/models.py:812
+#: report/models.py:839
 msgid "Excluding internal referrals"
 msgstr ""
 
-#: report/models.py:814
+#: report/models.py:841
 msgid "Internal Referrals to Services"
 msgstr ""
 
-#: report/models.py:815
+#: report/models.py:842
 msgid "Internal Referrals from Services"
 msgstr ""
 
-#: report/models.py:818
+#: report/models.py:845
 msgid "Externals Referrals from Services"
 msgstr ""
 
-#: report/models.py:820
+#: report/models.py:847
 msgid "Discharges Reason"
 msgstr ""
 
-#: report/models.py:823
+#: report/models.py:850
 msgid "Discharges Discussed with Client"
 msgstr ""
 
-#: report/models.py:825
+#: report/models.py:852
 msgid "Professional Subscriptions"
 msgstr ""
 
-#: report/models.py:847
+#: report/models.py:874
 msgid "Referral Total"
 msgstr ""
 
-#: report/models.py:851
+#: report/models.py:878
 msgid "Referral Charged"
 msgstr ""
 
-#: report/models.py:855 templates/client/client_home.html:125
+#: report/models.py:882 templates/client/client_home.html:125
 msgid "Referral Discharged"
 msgstr ""
 
-#: report/models.py:859
+#: report/models.py:886
 msgid "Referral Discharged Discussed"
 msgstr ""
 
-#: report/models.py:863
+#: report/models.py:890
 msgid "Referral Discharged Not Discussed"
 msgstr ""
 
-#: report/models.py:867
+#: report/models.py:894
 msgid "Referral Internals"
 msgstr ""
 
-#: report/models.py:871
+#: report/models.py:898
 msgid "Referral Externals"
 msgstr ""
 
-#: report/models.py:876
+#: report/models.py:903
 #, python-format
 msgid "Referral Knowledge - %s"
 msgstr ""
 
-#: report/models.py:881
+#: report/models.py:908
 #, python-format
 msgid "Referral Service - %s"
 msgstr ""
 
-#: report/models.py:889
+#: report/models.py:916
 #, python-format
 msgid "Referral Internal to Service %s"
 msgstr ""
 
-#: report/models.py:894
+#: report/models.py:921
 #, python-format
 msgid "Referral Internal from Service %s"
 msgstr ""
 
-#: report/models.py:899
+#: report/models.py:926
 #, python-format
 msgid "Referral External from Service %s"
 msgstr ""
 
-#: report/models.py:904
+#: report/models.py:931
 #, python-format
 msgid "Discharges from Service %s"
 msgstr ""
 
-#: report/models.py:909
+#: report/models.py:936
 #, python-format
 msgid "Discharged by reason %s"
 msgstr ""
 
-#: report/models.py:914
+#: report/models.py:941
 #, python-format
 msgid "Discharges discussed from Service %s"
 msgstr ""
 
-#: report/models.py:919
+#: report/models.py:946
 #, python-format
 msgid "Subscriptions to professional %s"
 msgstr ""
 
-#: report/models.py:984 templates/client/client_print_record_data_tag.html:8
+#: report/models.py:1011 templates/client/client_print_record_data_tag.html:8
 #: templates/meta/people_indentification.html:21
 #: templates/tags/people_identification.html:30
 msgid "Male"
 msgstr ""
 
-#: report/models.py:985 templates/client/client_print_record_data_tag.html:7
+#: report/models.py:1012 templates/client/client_print_record_data_tag.html:7
 #: templates/meta/people_indentification.html:22
 #: templates/tags/people_identification.html:33
 msgid "Female"
 msgstr ""
 
-#: report/models.py:1001
+#: report/models.py:1028
 msgid "Teen"
 msgstr ""
 
-#: report/models.py:1002
+#: report/models.py:1029
 msgid "Adult"
 msgstr ""
 
-#: report/models.py:1003
+#: report/models.py:1030
 msgid "Elderly"
 msgstr ""
 
-#: report/models.py:1013 templates/client/client_print_record_data_tag.html:6
+#: report/models.py:1040 templates/client/client_print_record_data_tag.html:6
 msgid "Gender"
 msgstr ""
 
-#: report/models.py:1014 templates/meta/people_profile.html:34
+#: report/models.py:1041 templates/meta/people_profile.html:34
 msgid "Age"
 msgstr ""
 
-#: report/views.py:119
+#: report/views.py:85
+msgid "Occurrence graphic from selected service"
+msgstr ""
+
+#: report/views.py:133
 msgid "Error to save register"
 msgstr ""
 
-#: report/views.py:172
+#: report/views.py:186
 msgid "Admission Report"
 msgstr ""
 
-#: report/views.py:180
+#: report/views.py:194
 msgid "Referral Report"
 msgstr ""
 
-#: report/views.py:196
+#: report/views.py:210
 msgid "report-between"
 msgstr ""
 
@@ -2398,26 +2433,6 @@ msgstr ""
 
 #: schedule/forms.py:187
 msgid "Anotation"
-msgstr ""
-
-#: schedule/models.py:29
-msgid "Client arrived on time"
-msgstr ""
-
-#: schedule/models.py:30
-msgid "Client arrived Late"
-msgstr ""
-
-#: schedule/models.py:31
-msgid "Client not arrived"
-msgstr ""
-
-#: schedule/models.py:32
-msgid "Occurrence unmarked"
-msgstr ""
-
-#: schedule/models.py:33
-msgid "Occurrence rescheduled"
 msgstr ""
 
 #: schedule/models.py:162
@@ -3119,7 +3134,7 @@ msgstr ""
 #: templates/client/client_referral_plus_form.html:83
 #: templates/contact/contact_list.html:75
 #: templates/contact/contact_list_external.html:75
-#: templates/core/main.html:181 templates/schedule/schedule_filter.html:100
+#: templates/core/main.html:188 templates/schedule/schedule_filter.html:100
 #: templates/service/service_client_list.html:71
 #: templates/service/service_form.html:138
 #: templates/service/service_queue.html:64
@@ -3277,7 +3292,7 @@ msgstr ""
 
 #: templates/careprofessional/careprofessional_form.html:132
 #: templates/careprofessional/student_form.html:98
-#: templates/core/main.html:180
+#: templates/core/main.html:187
 #: templates/profile/profile_careprofessional.html:118
 #: templates/schedule/schedule_filter.html:79
 #: templates/service/select_area.html:23
@@ -3470,7 +3485,7 @@ msgstr ""
 
 #: templates/careprofessional/student_form.html:23
 #: templates/careprofessional/student_list.html:23
-#: templates/core/main.html:182
+#: templates/core/main.html:189
 msgid "Students"
 msgstr ""
 
@@ -4135,11 +4150,6 @@ msgstr ""
 msgid "Occurrence confirmed rescheduled"
 msgstr ""
 
-#: templates/client/client_print.html:377
-#: templates/ehr/ehr_diagnosis_list_item.html:33
-msgid "Occurrence"
-msgstr ""
-
 #: templates/client/client_print.html:379
 #: templates/device/device_form.html:163
 #: templates/schedule/schedule_events.html:45
@@ -4521,7 +4531,7 @@ msgstr ""
 
 #: templates/contact/contact_list.html:76
 #: templates/contact/contact_list_external.html:76
-#: templates/core/main.html:183 templates/employee/employee_form.html:23
+#: templates/core/main.html:190 templates/employee/employee_form.html:23
 #: templates/employee/employee_list.html:23
 #: templates/tags/client_sidebar.html:34
 #: templates/tags/occurrence_employee_form.html:19
@@ -4610,103 +4620,103 @@ msgstr ""
 msgid "Sistema de Gestão de Serviços em Psicologia"
 msgstr ""
 
-#: templates/core/main.html:99
+#: templates/core/main.html:106
 msgid ""
 "Organization running is READ ONLY MODE. Data can not be writed. For "
 "questions about please use the"
 msgstr ""
 
-#: templates/core/main.html:99
+#: templates/core/main.html:106
 msgid "support form"
 msgstr ""
 
-#: templates/core/main.html:123
+#: templates/core/main.html:130
 msgid "My record"
 msgstr ""
 
-#: templates/core/main.html:125
+#: templates/core/main.html:132
 msgid "Help"
 msgstr ""
 
-#: templates/core/main.html:127
+#: templates/core/main.html:134
 msgid "Support"
 msgstr ""
 
-#: templates/core/main.html:129
+#: templates/core/main.html:136
 msgid "Quit"
 msgstr ""
 
-#: templates/core/main.html:138
+#: templates/core/main.html:145
 msgid "email"
 msgstr ""
 
-#: templates/core/main.html:140
+#: templates/core/main.html:147
 msgid "at"
 msgstr ""
 
-#: templates/core/main.html:163 templates/core/main.html.py:168
+#: templates/core/main.html:170 templates/core/main.html.py:175
 msgid "start"
 msgstr ""
 
-#: templates/core/main.html:164
+#: templates/core/main.html:171
 msgid "My Referrals"
 msgstr ""
 
-#: templates/core/main.html:165
+#: templates/core/main.html:172
 msgid "My profile"
 msgstr ""
 
-#: templates/core/main.html:169
+#: templates/core/main.html:176
 msgid "calendar"
 msgstr ""
 
-#: templates/core/main.html:170
+#: templates/core/main.html:177
 msgid "clients"
 msgstr ""
 
-#: templates/core/main.html:171
+#: templates/core/main.html:178
 msgid "contacts"
 msgstr ""
 
-#: templates/core/main.html:172
+#: templates/core/main.html:179
 msgid "Reports"
 msgstr ""
 
-#: templates/core/main.html:173
+#: templates/core/main.html:180
 msgid "Configurations"
 msgstr ""
 
-#: templates/core/main.html:175
+#: templates/core/main.html:182
 #: templates/organization/organization_form.html:23
 #: templates/organization/organization_signature.html:21
 #: templates/organization/organization_signature_suspension.html:21
 msgid "My Organization"
 msgstr ""
 
-#: templates/core/main.html:176
+#: templates/core/main.html:183
 msgid "Assinatura"
 msgstr ""
 
-#: templates/core/main.html:177 templates/place/place_form.html:23
+#: templates/core/main.html:184 templates/place/place_form.html:23
 #: templates/place/place_list.html:23
 #: templates/schedule/schedule_filter.html:19
 msgid "Places"
 msgstr ""
 
-#: templates/core/main.html:178 templates/place/place_room_form.html:23
+#: templates/core/main.html:185 templates/place/place_room_form.html:23
 #: templates/place/place_room_list.html:23
 #: templates/schedule/schedule_filter.html:56
 msgid "Rooms"
 msgstr ""
 
-#: templates/core/main.html:179 templates/device/device_form.html:23
+#: templates/core/main.html:186 templates/device/device_form.html:23
 #: templates/device/device_list.html:23
 #: templates/device/device_type_form.html:23
 #: templates/device/device_type_list.html:23
 msgid "Equipments"
 msgstr ""
 
-#: templates/core/main.html:184 templates/users/users_form.html:23
+#: templates/core/main.html:191 templates/users/users_form.html:23
 #: templates/users/users_list.html:23
 msgid "Users"
 msgstr ""
@@ -6071,27 +6081,31 @@ msgstr ""
 msgid "Filtering by"
 msgstr ""
 
-#: templates/report/report_index.html:63
+#: templates/report/report_index.html:66
+msgid "Pagamento"
+msgstr ""
+
+#: templates/report/report_index.html:74
 msgid "Save Report"
 msgstr ""
 
-#: templates/report/report_index.html:64
+#: templates/report/report_index.html:75
 msgid "Update"
 msgstr ""
 
-#: templates/report/report_index.html:75 templates/report/report_menu.html:22
+#: templates/report/report_index.html:86 templates/report/report_menu.html:22
 msgid "Export Data"
 msgstr ""
 
-#: templates/report/report_index.html:83
+#: templates/report/report_index.html:94
 msgid "Report saved successfully with label"
 msgstr ""
 
-#: templates/report/report_index.html:89
+#: templates/report/report_index.html:100
 msgid "Saved at"
 msgstr ""
 
-#: templates/report/report_index.html:102
+#: templates/report/report_index.html:113
 msgid "Report filters"
 msgstr ""
 

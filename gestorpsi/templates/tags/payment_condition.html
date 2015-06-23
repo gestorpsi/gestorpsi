@@ -19,19 +19,18 @@ GNU General Public License for more details.
 <div>
 	
 	<label>{% trans "Salary" %}<br />
-	<input type="text" maxlength="8" class="medium" name="salary" value="{{ person.salary }}" mask="?9?9999.99" />
+	<input type="text" maxlength="8" class="medium" name="salary" id="salary" value="{{ object.person.salary }}" mask="?9?9999.99" />
 	</label>
 
 	<label>{% trans "Value for payment" %}<br />
-	<input type="text" maxlength="6"  class="medium" name="value_for_payment" value="{{ client.value_for_payment }}" mask="?9?9?9.99" />
+	<input type="text" maxlength="6"  class="medium" name="value_for_payment" id="value_payment" value="{{ object.payment_condition.value_for_payment }}" mask="?9?9?9.99" />
 	</label>
 			
 	<label>{% trans "Type" %}<br />
 	<select name="payment_condition" class="medium">
-	<option value="1">Payer</option>
-	<option value="2">Exempted</option>
-	<option value="3">Temporarily exempted</option>
+	{% for payment_condition in payment_conditions %}
+		<option value="{{payment_condition.0}}">{{payment_condition.1}}</option>
+	{%endfor%}
 	</select>
 	</label>
-
 </div>

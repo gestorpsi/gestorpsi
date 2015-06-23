@@ -55,7 +55,7 @@ FAMILY_RELATION_REVERSE = (
     (13, _('Others')),
 )
 
-COMPANY_SIZE = (
+PAYMENT_CONDITION = (
     (1, _('Payer')),
     (2, _('Exempted')),
     (3, _('Temporarily exempted')),
@@ -86,6 +86,13 @@ class Family(models.Model):
 
     def __unicode__(self):
         return u"%s" % self.get_relation_level_display()
+
+
+class PaymentCondition(models.Model):
+    payment_condition = models.CharField(choices=PAYMENT_CONDITION,
+                                         max_length=25)
+    value_for_payment = models.DecimalField(max_digits=7, decimal_places=2, default=0.00)
+
 
 ''' class not in use! moved to parents relations to class Family.
 removing soon  '''
@@ -267,6 +274,7 @@ class Client(models.Model):
     active = models.BooleanField(default=True)
     comments = models.TextField(blank=True)
     objects = ClientManager()
+    payment_condition = models.ForeignKey('PaymentCondition')
 
     def __unicode__(self):
         return (u"%s" % (self.person.name.title(), )) \

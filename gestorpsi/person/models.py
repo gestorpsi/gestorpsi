@@ -41,12 +41,14 @@ COMPANY_SIZE = (
     (3, _('Big')),
 )
 
+
 class MaritalStatus(models.Model):
     description = models.CharField(max_length=20)
     def __unicode__(self):
         return u"%s" % self.description
     class Meta:
         ordering = ['description']
+
 
 class Person(models.Model):
     id = UuidField(primary_key=True)

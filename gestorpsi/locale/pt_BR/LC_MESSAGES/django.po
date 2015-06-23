@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-09 15:15-0300\n"
+"POT-Creation-Date: 2015-06-23 14:25-0300\n"
 "PO-Revision-Date: 2013-01-31 17:29\n"
 "Last-Translator:   <danielcj@doois.com.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Translated-Using: django-rosetta 0.6.8\n"
 
-#: settings.py:82
+#: settings.py:91
 msgid "Brazilian Portuguese"
 msgstr "Português Brasileiro"
 
-#: settings.py:83
+#: settings.py:92
 msgid "English"
 msgstr "Inglês"
 
@@ -81,7 +81,7 @@ msgstr "Admissão salva com sucesso"
 #: templates/tags/address_book_organization_mini.html:24
 #: templates/tags/address_book_professional_mini.html:35
 #: templates/tags/careprofessional_mini.html:23 templates/tags/invoice.html:58
-#: templates/users/users_form.html:58
+#: templates/users/users_form.html:65
 msgid "Name"
 msgstr "Nome"
 
@@ -100,8 +100,8 @@ msgid "Your email address"
 msgstr "Endereço de e-mail"
 
 #: authentication/forms.py:44 templates/registration/login.html:37
-#: templates/users/users_form.html:80 templates/users/users_form.html.py:83
-#: templates/users/users_form.html:225 templates/users/users_form.html:228
+#: templates/users/users_form.html:89 templates/users/users_form.html.py:92
+#: templates/users/users_form.html:235 templates/users/users_form.html:239
 msgid "Password"
 msgstr "Senha"
 
@@ -118,7 +118,7 @@ msgid "Type password again"
 msgstr "Digite novamente sua senha"
 
 #: authentication/forms.py:46 templates/registration/login.html:36
-#: templates/users/users_form.html:70
+#: templates/users/users_form.html:77
 msgid "Username"
 msgstr "Nome de Usuário"
 
@@ -724,13 +724,13 @@ msgid "<br />Active services: <b>%s</b>"
 msgstr "<br />Serviços ativos: <b>%s</b> "
 
 #: careprofessional/views.py:276 client/views.py:437 service/views.py:283
-#: templates/service/service_form.html:149 templates/users/users_form.html:168
+#: templates/service/service_form.html:149 templates/users/users_form.html:177
 msgid "Student"
 msgstr "Estagiário"
 
 #: careprofessional/views.py:276
 #: templates/contact/contact_professional_form.html:47
-#: templates/users/users_form.html:160
+#: templates/users/users_form.html:169
 msgid "Professional"
 msgstr "Profissional"
 
@@ -893,11 +893,11 @@ msgstr "Razão Social"
 msgid " (Disabled)"
 msgstr "(Desativado)"
 
-#: client/views.py:899 users/views.py:398
+#: client/views.py:899 users/views.py:388
 msgid "User activated successfully"
 msgstr "Usuário ativado com sucesso."
 
-#: client/views.py:904 users/views.py:398
+#: client/views.py:904 users/views.py:388
 msgid "User deactivated successfully"
 msgstr "Usuário desativado com sucesso."
 
@@ -1115,11 +1115,11 @@ msgstr "Grau de Escolaridade"
 msgid "Education saved successfully"
 msgstr "Nível educacional salvo com sucesso"
 
-#: demographic/views.py:121
+#: demographic/views.py:124
 msgid "Occupation saved successfully"
 msgstr "Ocupação salva com sucesso."
 
-#: demographic/views.py:131
+#: demographic/views.py:134
 msgid "Occupation not found"
 msgstr "Ocupação não encontrada"
 
@@ -3222,7 +3222,7 @@ msgstr "Profissionais"
 #: templates/service/service_form.html:27
 #: templates/service/service_group_form.html:27
 #: templates/service/service_list.html:27
-#: templates/service/service_queue.html:27 templates/users/users_form.html:27
+#: templates/service/service_queue.html:27 templates/users/users_form.html:34
 #: templates/users/users_list.html:27
 msgid "all"
 msgstr "Todos"
@@ -3399,7 +3399,7 @@ msgstr ""
 #: templates/tags/careprofessional_mini.html:45
 #: templates/tags/device_mini.html:28 templates/tags/organization_mini.html:30
 #: templates/tags/place_mini.html:34 templates/tags/upload.html:25
-#: templates/users/users_form.html:233 templates/users/users_form.html:256
+#: templates/users/users_form.html:245 templates/users/users_form.html:266
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -3588,7 +3588,7 @@ msgstr "Adicionar empresa"
 #: templates/place/place_list.html:31 templates/place/place_room_form.html:31
 #: templates/place/place_room_list.html:31
 #: templates/service/service_form.html:32
-#: templates/service/service_list.html:31 templates/users/users_form.html:28
+#: templates/service/service_list.html:31 templates/users/users_form.html:35
 #: templates/users/users_list.html:28
 msgid "all Deactive"
 msgstr "Desativados"
@@ -3736,7 +3736,7 @@ msgstr "Adicionar outro familiar"
 #: templates/ehr/ehr_save_button.html:23 templates/ehr/ehr_save_button.html:32
 #: templates/report/report_admission_save.html:28
 #: templates/report/report_save_form.html:28 templates/tags/save.html:18
-#: templates/users/users_form.html:193
+#: templates/users/users_form.html:202
 msgid "Save"
 msgstr "Salvar"
 
@@ -4346,7 +4346,7 @@ msgid "Print"
 msgstr "Imprimir"
 
 #: templates/client/client_print_form.html:109 templates/tags/save.html:19
-#: templates/users/users_form.html:194
+#: templates/users/users_form.html:203
 msgid "Back"
 msgstr "Voltar"
 
@@ -4791,7 +4791,7 @@ msgstr "Salas"
 msgid "Equipments"
 msgstr "Equipamentos"
 
-#: templates/core/main.html:184 templates/users/users_form.html:23
+#: templates/core/main.html:184 templates/users/users_form.html:30
 #: templates/users/users_list.html:23
 msgid "Users"
 msgstr "Usuários"
@@ -5401,7 +5401,7 @@ msgid "Add Document"
 msgstr "Adicionar Documento"
 
 #: templates/meta/people_indentification.html:36
-#: templates/users/users_form.html:57
+#: templates/users/users_form.html:64
 msgid "Personal Identification"
 msgstr "Identificação Pessoal"
 
@@ -5469,7 +5469,7 @@ msgid "Corporate Identity"
 msgstr "Identificação Institucional"
 
 #: templates/organization/organization_form.html:80
-#: templates/users/users_form.html:73
+#: templates/users/users_form.html:80
 msgid "Not available"
 msgstr "Indisponível"
 
@@ -5719,7 +5719,7 @@ msgstr "Órgão Emissor"
 #: templates/profile/profile_change_pass.html:36
 #: templates/profile/profile_change_pass.html:41
 #: templates/profile/profile_person.html:27
-#: templates/tags/profile_sidebar.html:23 templates/users/users_form.html:218
+#: templates/tags/profile_sidebar.html:23 templates/users/users_form.html:227
 msgid "Change password"
 msgstr "Alterar Senha"
 
@@ -6994,7 +6994,7 @@ msgstr "Ações"
 msgid "Active for work?"
 msgstr "Ativo?"
 
-#: templates/tags/save.html:25 templates/users/users_form.html:200
+#: templates/tags/save.html:25 templates/users/users_form.html:209
 msgid "This register are not saved yet. Click Save to register it."
 msgstr "Este registro ainda não está salvo. Clique em salvar para registrar."
 
@@ -7046,7 +7046,7 @@ msgstr "Online"
 msgid "Existing Referral"
 msgstr "Agendamento"
 
-#: templates/tags/schedule_form.html:61 templates/users/users_form.html:136
+#: templates/tags/schedule_form.html:61 templates/users/users_form.html:145
 msgid "Client"
 msgstr "Cliente"
 
@@ -7202,48 +7202,52 @@ msgstr "Entrada em"
 msgid "Client subscribed in this service since"
 msgstr "Cliente inscrito no serviço desde"
 
-#: templates/users/users_form.html:40
+#: templates/users/users_form.html:47
 msgid "Adding New User"
 msgstr "Adicionar novo usuário"
 
-#: templates/users/users_form.html:41
+#: templates/users/users_form.html:48
 msgid "Inform the user details then click on Save button"
 msgstr "Informe os dados do usuário e clique em salvar"
 
-#: templates/users/users_form.html:51 templates/users/users_form.html.py:53
+#: templates/users/users_form.html:58 templates/users/users_form.html.py:60
 msgid "User registration"
 msgstr "Registro de usuário"
 
-#: templates/users/users_form.html:78
+#: templates/users/users_form.html:85
 msgid "Change Password"
 msgstr "Alterar Senha"
 
-#: templates/users/users_form.html:83 templates/users/users_form.html:228
-#: templates/users/users_form.html:251
+#: templates/users/users_form.html:86 templates/users/users_form.html:255
+msgid "Change e-mail"
+msgstr "Alterar E-mail"
+
+#: templates/users/users_form.html:92 templates/users/users_form.html:239
+#: templates/users/users_form.html:261
 msgid "Again"
 msgstr "Novamente"
 
-#: templates/users/users_form.html:90
+#: templates/users/users_form.html:99
 msgid "Registered user e-mail"
 msgstr "E-mail de usuário registrado"
 
-#: templates/users/users_form.html:97
+#: templates/users/users_form.html:106
 msgid "Select one e-mail to procede with your registration"
 msgstr "Selecione um e-mail para seu registro"
 
-#: templates/users/users_form.html:106
+#: templates/users/users_form.html:115
 msgid "Type an e-mail to procede with your registration"
 msgstr "Digite um e-mail para seu registro"
 
-#: templates/users/users_form.html:116 templates/users/users_form.html:117
+#: templates/users/users_form.html:125 templates/users/users_form.html:126
 msgid "Expiration Date"
 msgstr "Data de Expiração"
 
-#: templates/users/users_form.html:125 templates/users/users_form.html:128
+#: templates/users/users_form.html:134 templates/users/users_form.html:137
 msgid "Role"
 msgstr "Papel"
 
-#: templates/users/users_form.html:126
+#: templates/users/users_form.html:135
 msgid ""
 "You are the only Administrator on organization. You can't change your "
 "permission at this time."
@@ -7251,11 +7255,11 @@ msgstr ""
 "Você é o único administrador do estabelecimento. Você não pode alterar sua "
 "permissão neste momento."
 
-#: templates/users/users_form.html:129
+#: templates/users/users_form.html:138
 msgid "Permissions"
 msgstr "Permissões"
 
-#: templates/users/users_form.html:137 templates/users/users_form.html:145
+#: templates/users/users_form.html:146 templates/users/users_form.html:154
 msgid "Give a user full access in system."
 msgstr ""
 "* <b>Leitura e Escrita:</b> Cadastro do Estabelecimento, Locais, "
@@ -7264,15 +7268,15 @@ msgstr ""
 "* <b>Leitura e Escrita:</b> Cadastro de Clientes<br>\n"
 "* <b>Leitura e Escrita:</b> Prontuários<br>"
 
-#: templates/users/users_form.html:144
+#: templates/users/users_form.html:153
 msgid "Administrator"
 msgstr "Administrador"
 
-#: templates/users/users_form.html:152
+#: templates/users/users_form.html:161
 msgid "Secretary"
 msgstr "Secretária"
 
-#: templates/users/users_form.html:153
+#: templates/users/users_form.html:162
 msgid ""
 "Give a user access to Organization, Places, Devices, Users, Professionals, "
 "Students, Employees, Contacts, Client and Schedule."
@@ -7283,7 +7287,7 @@ msgstr ""
 "* <b>Leitura e Escrita:</b> Cadastro de Clientes<br>\n"
 "* <b>Sem acesso:</b> Prontuários<br>"
 
-#: templates/users/users_form.html:161
+#: templates/users/users_form.html:170
 msgid ""
 "Give a user access to Online Messages, Electronic Health Record, Admission, "
 "Referral, Schedule, Contacts, Device and read-only access to Client, "
@@ -7305,7 +7309,7 @@ msgstr ""
 "a todos os prontuários e clientes inscritos nos serviços que ele é "
 "responsável.<br>"
 
-#: templates/users/users_form.html:169
+#: templates/users/users_form.html:178
 msgid ""
 "Give a user to Online Messages, Electronic Health Record, Admission, "
 "Referral and read-only access to the same professional access."
@@ -7320,33 +7324,29 @@ msgstr ""
 "estagiário)<br>\n"
 "* <b>Sem acesso:</b> Prontuários (não vinculados ao estagiário)<br>"
 
-#: templates/users/users_form.html:202
+#: templates/users/users_form.html:211
 msgid "User created at"
 msgstr "Usuário criado em"
 
-#: templates/users/users_form.html:220
+#: templates/users/users_form.html:229
 msgid "Password not match. Try again."
 msgstr "Senha não confere. Tente novamente."
 
-#: templates/users/users_form.html:222 templates/users/users_form.html:245
+#: templates/users/users_form.html:231
 #, fuzzy
 msgid "Old Password"
-msgstr "Senha"
+msgstr "Senha antiga"
 
-#: templates/users/users_form.html:232 templates/users/users_form.html:255
+#: templates/users/users_form.html:244 templates/users/users_form.html:265
 msgid "Change"
 msgstr "Editar"
 
-#: templates/users/users_form.html:242
-msgid "Change e-mail"
-msgstr "Alterar E-mail"
-
-#: templates/users/users_form.html:244
+#: templates/users/users_form.html:257
 #, fuzzy
 msgid "E-mail not match. Try again."
 msgstr "Senha não confere. Tente novamente."
 
-#: templates/users/users_form.html:248 templates/users/users_form.html:251
+#: templates/users/users_form.html:258 templates/users/users_form.html:261
 #, fuzzy
 msgid "E-mail"
 msgstr "E-mail"
@@ -7384,7 +7384,7 @@ msgstr ""
 msgid "User updated successfully"
 msgstr "Usuário atualizado com sucesso."
 
-#: users/views.py:318 users/views.py:349
+#: users/views.py:318
 #, fuzzy
 msgid "Password Incorrect"
 msgstr "Redefinir Senha"
@@ -7393,8 +7393,14 @@ msgstr "Redefinir Senha"
 msgid "Password updated successfully!"
 msgstr "Senha atualizada com sucesso!"
 
-#: users/views.py:357
-msgid "email updated successfully!"
+#: users/views.py:339
+#, fuzzy
+msgid "Emails Invalid"
+msgstr "E-mails"
+
+#: users/views.py:351
+#, fuzzy
+msgid "Email updated successfully!"
 msgstr "E-mail alterado com sucesso!"
 
 #~ msgid ""

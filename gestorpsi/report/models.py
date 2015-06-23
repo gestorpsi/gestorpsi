@@ -260,17 +260,17 @@ class Report(models.Model):
 
         data = []
         
-        on_time = OccurrenceConfirmation.objects.filter(occurrence_id=ON_TIME).count()
-        late = OccurrenceConfirmation.objects.filter(occurrence_id=LATE).count()
-        arrived = OccurrenceConfirmation.objects.filter(occurrence_id=ARRIVED).count()
-        unmarked = OccurrenceConfirmation.objects.filter(occurrence_id=UNMARKED).count()
-        rescheduled = OccurrenceConfirmation.objects.filter(occurrence_id=RESCHEDULED).count()
+        on_time = OccurrenceConfirmation.objects.filter(presence=ON_TIME).count()
+        late = OccurrenceConfirmation.objects.filter(presence=LATE).count()
+        arrived = OccurrenceConfirmation.objects.filter(presence=ARRIVED).count()
+        unmarked = OccurrenceConfirmation.objects.filter(presence=UNMARKED).count()
+        rescheduled = OccurrenceConfirmation.objects.filter(presence=RESCHEDULED).count()
 
-        data.append({'occurrence_type': _('on_time'), 'total': on_time })
-        data.append({'occurrence_type': _('late'), 'total': late })
-        data.append({'occurrence_type': _('arrived'), 'total': arrived })
-        data.append({'occurrence_type': _('unmarked'), 'total': unmarked })
-        data.append({'occurrence_type': _('rescheduled'), 'total': rescheduled })
+        data.append({'occurrence_type': _("Client arrived on time"), 'total': on_time })
+        data.append({'occurrence_type': _("Client arrived Late"), 'total': late })
+        data.append({'occurrence_type': _("Client not arrived"), 'total': arrived })
+        data.append({'occurrence_type': _("Occurrence unmarked"), 'total': unmarked })
+        data.append({'occurrence_type': _("Occurrence rescheduled"), 'total': rescheduled })
 
         return data
 

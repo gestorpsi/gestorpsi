@@ -73,6 +73,30 @@ $(function() {
           });
      });
 
+     $('form.email').each(function() {
+          $(this).validate({event:"submit",
+              rules: {
+                   email_mini: {
+                          required: true
+                   },
+
+                    email_mini_conf: {
+                          required: true
+                   }
+              },
+
+              messages: {
+                  email_mini: 'Preenchimento Necessário',
+                  email_mini_conf: 'Necessário confirmar email',
+              },
+
+              submitHandler: function(form) {
+                    $(form).ajaxSubmit(form_user_options_mini);
+              }
+          });
+     });
+
+
     $('form.form_user').validate({
         rules: {
             id_person: "required",

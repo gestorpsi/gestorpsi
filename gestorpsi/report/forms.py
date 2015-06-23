@@ -63,11 +63,11 @@ class ReportForm(forms.ModelForm):
         self.fields['accumulated'].initial = True # acummulated graph as default
         self.fields['date_start'].initial = date_start.strftime('%d/%m/%Y')
         self.fields['date_end'].initial = date_end.strftime('%d/%m/%Y')
-        choices = [('',_('------ All Services ------'))]
+        choices = [('all',_('------ All Services ------'))]
         for i in Service.objects.filter(organization=organization, active=True):
             choices.append((i.pk, i.name))
         # services
-        choices = [('',_('------ All Services ------'))]
+        choices = [('all',_('------ All Services ------'))]
         for i in Service.objects.filter(organization=organization, active=True):
             choices.append((i.pk, i.name))
         self.fields['service'].choices = choices

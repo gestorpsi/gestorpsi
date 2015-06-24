@@ -76,16 +76,32 @@ GNU General Public License for more details.
             <small>({% trans "if selected will print client EHR data" %})</small>
         </label>
         {% endif %}
-    
+
+        <div style="clear:both"></div>
+        <label><b>{% trans "Financeiro:" %}</label>
+
+        <div style="clear:both"></div>
+
+        <label><input type="checkbox" name="all_payments" value="True" />&nbsp; <b>
+        {% trans "Todos os pagamentos" %}</b>
+        </label>
+
+        <label><input type="checkbox" name="all_covenants" value="True" />&nbsp; <b>
+        {% trans "Todos os conv&ecirc;nios" %}</b>
+        </label>
+
         <div style="clear:both"></div>
         <label><b>{% trans "Signed by" %}</b><br /></label>
+
         <div style="clear:both"></div>
         <label><input type="checkbox" name="signed_professionals" value="True" checked />&nbsp; <b>
         {% trans "Professionals from referral" %}</b>
         </label>
+
         <label><input type="checkbox" name="signed_professional_responsible" value="True" checked />&nbsp; <b>
         {% trans "Responsible Professionals from Service" %}</b>
         </label>
+
         <label><input type="checkbox" name="signed_organization_reponsibles" value="True" checked />&nbsp; <b>
         {% trans "Organization Responsibles" %}</b>
         </label>

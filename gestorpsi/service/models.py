@@ -97,6 +97,9 @@ class Service(models.Model):
     covenant = models.ManyToManyField(Covenant, null=True, blank=True)
     objects = ServiceManager()
 
+    class Meta:
+        ordering = ['name']
+
     def __unicode__(self):
         u = u"%s" % (self.name)
         if self.is_group:

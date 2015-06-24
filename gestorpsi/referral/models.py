@@ -149,6 +149,9 @@ class Referral(Event):
     objects = ReferralManager()
     objects_inrange = ReferralInRangeManager()
 
+    class Meta:
+        ordering = ['service__name']
+
     def __init__(self, *args, **kwargs):
         super(Referral, self).__init__(*args, **kwargs)
         try: self.event_type = EventType.objects.all()[0]

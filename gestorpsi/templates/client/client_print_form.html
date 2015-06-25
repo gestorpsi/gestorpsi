@@ -82,11 +82,11 @@ GNU General Public License for more details.
 
         <div style="clear:both"></div>
 
-        <label><input type="checkbox" name="all_payments" value="True" />&nbsp; <b>
+        <label><input type="checkbox" name="all_payments" {% if all_payments %} checked {% endif %} />&nbsp; <b>
         {% trans "Todos os pagamentos" %}</b>
         </label>
 
-        <label><input type="checkbox" name="all_covenants" value="True" />&nbsp; <b>
+        <label><input type="checkbox" name="all_covenants" {% if all_covenants %} checked {% endif %}/>&nbsp; <b>
         {% trans "Todos os conv&ecirc;nios" %}</b>
         </label>
 

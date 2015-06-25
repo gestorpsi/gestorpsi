@@ -821,7 +821,8 @@ def save(request, object_id=None, is_company = False):
 
 @permission_required_with_403('client.client_read')
 def client_print(request, object_id = None):
-    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+
+    object = get_object_or_404( Client, pk=object_id, person__organization=request.user.get_profile().org_active )
 
     # check access by requested user
     if not _access_check(request, object):
@@ -829,9 +830,8 @@ def client_print(request, object_id = None):
 
     have_ehr_read_perms = False if not _access_ehr_check_read(request, object) else True
     
-    if not request.POST:
-        return render_to_response('client/client_print_form.html', locals(), context_instance=RequestContext(request))
-    else:
+    if request.POST:
+
         referral = object.referral_set.filter(pk__in=request.POST.getlist('referral'))
         print_schedule = None if not request.POST.get('schedule') else True
         print_demographic = None if not request.POST.get('demographic') else True
@@ -839,11 +839,11 @@ def client_print(request, object_id = None):
         signed_professional_responsible = None if not request.POST.get('signed_professional_responsible') else True
         signed_professionals = None if not request.POST.get('signed_professionals') else True
         signed_organization_reponsibles = None if not request.POST.get('signed_organization_reponsibles') else True
-        #company_related_clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active) if object.is_company else None
+
         company_related_clients = []
         if object.is_company():
             company_related_clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active)
-    
+
         dict = {
             'referral': referral,
             'print_schedule': print_schedule,
@@ -860,12 +860,21 @@ def client_print(request, object_id = None):
             'MEDIA_URL': MEDIA_URL if request.POST.get('output') == 'html' else MEDIA_ROOT.replace('\\','/') + '/', 
             'company_related_clients': company_related_clients,
             'have_ehr_read_perms': have_ehr_read_perms,
+            'all_covenants': request.POST.get('all_covenants'),
+            'all_payments': request.POST.get('all_payments'),
             }
 
+        # output format
         if request.POST.get('output') == 'html':
             return render_to_response('client/client_print.html', dict, context_instance=RequestContext(request))
-        
-        return write_pdf('client/client_print.html', dict, '%s.pdf' % slugify(object.person.name))
+
+        if request.POST.get('output') == 'pdf':
+            return write_pdf('client/client_print.html', dict, '%s.pdf' % slugify(object.person.name))
+
+    else:
+
+        return render_to_response('client/client_print_form.html', locals(), context_instance=RequestContext(request))
+
 
 @permission_required_with_403('client.client_read')
 def organization_clients(request):

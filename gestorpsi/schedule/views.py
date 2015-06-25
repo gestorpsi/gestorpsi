@@ -93,12 +93,16 @@ def add_event(
         redirect_to = None
     ):
 
+    print  '--------------- ADD '
+
     # have to contains dtstart variable in URL. URL from schedule have to contains date and time data.
     if not 'dtstart' in request.GET:
         return http.HttpResponseRedirect('/schedule/')
 
 
     if request.method == 'POST':
+
+        print '----------------------------- POST '
 
         # limit occurrence repeat
         if int(request.POST.get('count')) > 40:
@@ -131,13 +135,27 @@ def add_event(
                     Create a payment for each event when event by pack or occurrence
                     Event per period will be created by script run by crontab everyday
                 '''
-                # check if occurrences have one payment by pack or event
+                # check if occurrences have one payment by pack or event opened
                 for o in referral.occurrences():
+                    print event, event.id
+                    print type(event)
+
+                    print '------------------- 0'
+                    print referral.occurrences()
+                    print referral.occurrences().count()
+                    print
                     # exist a payment for event?
                     if Payment.objects.filter(occurrence=o).count() == 0 :
+                        print '------------------- 1'
+                        print Payment.objects.filter(occurrence=o).count()
+                        print
 
                         # Filter payment by pack or occurrence
                         for x in referral.covenant.filter(Q(charge=1) | Q(charge=2) ).distinct():
+
+                            print '------------------- 2'
+                            print Payment.objects.filter(occurrence=o).count()
+                            print referral.covenant.filter(Q(charge=1) | Q(charge=2) ).distinct()
 
                             payment = Payment() # new
 
@@ -186,8 +204,8 @@ def add_event(
 
         dtstart = parser.parse( request.GET['dtstart'] )
         room = get_object_or_None(Room, pk=request.GET.get('room'), place__organization=request.user.get_profile().org_active)
-        client = get_object_or_None(Client, pk = request.GET.get('client'), person__organization=request.user.get_profile().org_active)
-        referral = get_object_or_None(Referral, pk = request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
+        client = get_object_or_None(Client, pk=request.GET.get('client'), person__organization=request.user.get_profile().org_active)
+        referral = get_object_or_None(Referral, pk=request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
         event_form = event_form_class
 
         recurrence_form = recurrence_form_class( initial = dict(
@@ -203,14 +221,14 @@ def add_event(
 
     return render_to_response( template,
                                dict(
-                                        dtstart=dtstart, 
-                                        event_form=event_form, 
-                                        recurrence_form=recurrence_form, 
-                                        group  = ServiceGroup.objects.filter(service__organization = request.user.get_profile().org_active, active=True),
+                                        dtstart = dtstart, 
+                                        event_form = event_form, 
+                                        recurrence_form = recurrence_form, 
+                                        group = ServiceGroup.objects.filter(service__organization = request.user.get_profile().org_active, active=True),
                                         room = room,
                                         object = client,
                                         referral = referral,
-                                        room_id=room.id,
+                                        room_id = room.id,
                                     ),
                                context_instance=RequestContext(request)
     )

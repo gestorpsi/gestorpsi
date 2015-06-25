@@ -492,8 +492,8 @@
             <table style="width:100%; text-align:center;">
                 <tbody>
                     <tr>
-                        <th style="width:auto;">Nome conv&ecirc;nio</th> 
-                        <th style="width:20%;">Data atendimento</th> 
+                        <th style="width:35%;">Nome conv&ecirc;nio</th> 
+                        <th style="width:35%;">Data atendimento</th> 
                         <th style="width:20%;">Data pagamento</th> 
                         <th style="width:5%;">Cor pagamento</th> 
                         <th style="width:10%;">Situa&ccedil;&atilde;o</th> 
@@ -503,8 +503,8 @@
                     {% for x in i.occurrence_set.all %}
                         {% for xx in x.payment_set.all %}
                             <tr style="background-color:{% cycle '#ececec' '#0000' %}">
-                                <td style="width:auto%;">{{ xx.name }}</td>
-                                <td style="width:20%;">{{ xx.occurrence.all.0.start_time|date:"D, d b Y - H:i" }}</td>
+                                <td style="width:35%;">{{ xx.name }}</td>
+                                <td style="width:35%;">{{ xx.occurrence.all.0.start_time|date:"D, d b Y - H:i" }}</td>
                                 <td style="width:20%;">{{ xx.created|date:"D, d b Y" }}</td>
                                 <td style="width:5%;">{{ xx.status_color_|safe }}</td>
                                 <td style="width:10%;">{{ xx.get_status_display }}</td>

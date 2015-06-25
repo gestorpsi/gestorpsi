@@ -136,7 +136,9 @@ def add_event(
                     Event per period will be created by script run by crontab everyday
                 '''
                 # check if occurrences have one payment by pack or event opened
-                for o in referral.occurrences():
+                #for o in referral.occurrences():
+                for o in referral.upcoming_occurrences():
+
                     print event, event.id
                     print type(event)
 

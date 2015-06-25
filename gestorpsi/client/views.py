@@ -763,36 +763,37 @@ def save(request, object_id=None, is_company = False):
     if not request.POST:
         return HttpResponseRedirect('/client/add/')
 
-    if object_id:
-        object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
-        person = object.person
-
-        # check access by requested user
-        if not _access_check(request, object):
-            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
-
-    else:
+    if not object_id:
         object = Client()
         person = Person()
-
-        # Id Record
-        org = get_object_or_404(Organization, pk=user.get_profile().org_active.id )
-        org.last_id_record = org.last_id_record + 1
-        org.save()
-
         payment_condition = PaymentCondition()
-        payment_condition.payment_condition = request.POST["payment_condition"]
-        payment_condition.value_for_payment = request.POST["value_for_payment"]
-        payment_condition.save()
-        object.payment_condition = payment_condition
-        
-        # Admission date
-        object.idRecord = org.last_id_record + 1
-        object.admission_date = datetime.now()
-        object.person = person_save(request, person)
-        object.person.salary = request.POST["salary"]
-        object.person.save()
-        object.save()
+
+    else:        
+        object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+        person = object.person
+        payment_condition = object.payment_condition
+
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    # Id Record
+    org = get_object_or_404(Organization, pk=user.get_profile().org_active.id )
+    org.last_id_record = org.last_id_record + 1
+    org.save()
+
+    payment_condition.payment_condition = request.POST["payment_condition"]
+    payment_condition.value_for_payment = request.POST["value_for_payment"]
+    payment_condition.save()
+    object.payment_condition = payment_condition
+    
+    # Admission date
+    object.idRecord = org.last_id_record + 1
+    object.admission_date = datetime.now()
+    object.person = person_save(request, person)
+    object.person.salary = request.POST["salary"]
+    object.person.save()
+    object.save()
 
     if is_company:
         company_form = CompanyForm(request.POST) if not object_id else CompanyForm(request.POST, instance=object.person.company)

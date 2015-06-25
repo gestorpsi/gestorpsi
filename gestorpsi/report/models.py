@@ -39,7 +39,6 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, Indication as ReferralIndication, IndicationChoice as ReferralIndicationChoice, ReferralDischargeReason, ReferralDischarge
 from gestorpsi.util.views import percentage
-from gestorpsi.financial.models import Payment
 from gestorpsi.schedule.models import OccurrenceConfirmation
 
 VIEWS_CHOICES = (

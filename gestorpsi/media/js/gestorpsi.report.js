@@ -43,8 +43,14 @@ $(function() {
         
         if( $(this).val()==3 ){
             $('div.occurrence_status_filter').show();
+            $('div#occurrence').show();
+            $('div#report_table').hide();
+            $('select#id_accumulated').hide();
         }else{
             $('div.occurrence_status_filter').hide();
+            $('div#occurrence').hide();
+            $('div#report_table').show();
+            $('select#id_accumulated').show();
         }
         
     });

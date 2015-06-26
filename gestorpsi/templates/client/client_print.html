@@ -511,21 +511,21 @@
             <table style="width:100%; text-align:center;">
                 <tbody>
                     <tr>
-                        <th style="width:35%;">Nome conv&ecirc;nio</th> 
-                        <th style="width:35%;">Data atendimento</th> 
-                        <th style="width:15%;">Data pagamento</th> 
+                        <th style="width:25%;">Nome conv&ecirc;nio</th> 
+                        <th style="width:25%;">Data atendimento</th> 
+                        <th style="width:25%;">Data pagamento</th> 
                         <th style="width:10%;">Situa&ccedil;&atilde;o</th> 
-                        <th style="width:5%;">Valor total</th> 
+                        <th style="width:15%;">Valor total</th> 
                     </tr> 
 
                     {% for x in i.occurrence_set.all %}
                         {% for xx in x.payment_set.all %}
                             <tr style="background-color:{% cycle '#ececec' '#0000' %}">
-                                <td style="width:35%;">{{ xx.name }}</td>
-                                <td style="width:35%;">{{ xx.occurrence.all.0.start_time|date:"D, d b Y - H:i" }}</td>
-                                <td style="width:15%;">{{ xx.created|date:"D, d b Y" }}</td>
+                                <td style="width:25%;">{{ xx.name }}</td>
+                                <td style="width:25%;">{{ xx.occurrence.all.0.start_time|date:"D, d b Y - H:i" }}</td>
+                                <td style="width:25%;">{{ xx.created|date:"D, d b Y" }}</td>
                                 <td style="width:10%;">{{ xx.get_status_display }}</td>
-                                <td style="width:5%;">{{ xx.total }}</td>
+                                <td style="width:15%;">{{ xx.total }}</td>
                             </tr>
                         {% endfor %}
                     {% endfor %}

@@ -64,7 +64,6 @@ from gestorpsi.util.views import get_object_or_None, write_pdf
 from gestorpsi.util.models import Cnae
 from gestorpsi.ehr.views import _access_ehr_check_read
 from gestorpsi.place.models import Place
-from gestorpsi.covenant.models import Covenant
 
 def _access_check(request, object=None):
     """
@@ -860,7 +859,6 @@ def client_print(request, object_id = None):
             'MEDIA_URL': MEDIA_URL if request.POST.get('output') == 'html' else MEDIA_ROOT.replace('\\','/') + '/', 
             'company_related_clients': company_related_clients,
             'have_ehr_read_perms': have_ehr_read_perms,
-            'all_covenants': request.POST.get('all_covenants'),
             'all_payments': request.POST.get('all_payments'),
             }
 

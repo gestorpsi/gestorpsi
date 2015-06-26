@@ -106,34 +106,42 @@
             <tr>
                 <td style="width: 626px; vertical-align: top; padding: 0px;">
                       
-                      <h1 class="nome">{{ object.person.name|title }}</h1>
-                      <strong>{% trans "ID record" %}: </strong>{{ object.idRecord }}<br />
-                      <strong>{% trans "Subscribed since" %}:</strong> {{ object.admission_date|date:"d/m/Y" }}<br />
-                      {% if object.legacyRecord %}<strong>{% trans "Legacy record" %}: </strong>{{ object.legacyRecord }}<br />{% endif %}
-                      
-                      <strong>{% trans "Admission Knowledge" %}: </strong>{% for i in object.admissionreferral_set.all %}
-                                {{ i.referral_choice }} 
-                                {% if i.referral_organization or i.referral_professional %} 
-                                    ({% if i.referral_organization.name %}{{ i.referral_organization.name }}{% endif %}{% if i.referral_professional %}{{ i.referral_professional }}{% endif %})
-                                {% endif %}
-                                {% if not forloop.last %},{% endif %}
-                            {% endfor %}
-                            <br />
-                        {% for a in object.admissionreferral_set.all %}
-                            <strong>{% trans "Signed by the client" %}:</strong> {% if not a.signed_bythe_client %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}<br />
+                    <!-- client -->
+
+                    <h1 class="nome">{{ object.person.name|title }}</h1>
+                    <strong>{% trans "ID record" %}: </strong>{{ object.idRecord }}<br />
+                    <strong>{% trans "Subscribed since" %}:</strong> {{ object.admission_date|date:"d/m/Y" }}<br />
+                    {% if object.legacyRecord %}<strong>{% trans "Legacy record" %}: </strong>{{ object.legacyRecord }}<br />{% endif %}
+
+                    <strong>{% trans "Admission Knowledge" %}: </strong>
+
+                    {% for i in object.admissionreferral_set.all %}
+                        {{ i.referral_choice }} 
+                        {% if i.referral_organization or i.referral_professional %} 
+                            ({% if i.referral_organization.name %}{{ i.referral_organization.name }}{% endif %}{% if i.referral_professional %}{{ i.referral_professional }}{% endif %})
+                        {% endif %}
+                        {% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                    <br />
+
+                    {% for a in object.admissionreferral_set.all %}
+                        {% if a.signed_bythe_client %}
+                            <strong>{% trans "Signed by the client" %}:</strong>{% trans "Yes" %}
+                        {% endif %}<br />
+                    {% endfor %}
+
+                    {% if object.attach_set.all %}
+                        <strong>{% trans "Attached Files" %}: </strong>
+                        {% for attach in object.attach_set.all %}
+                            {{ attach.get_type_display }} {% trans "sent at" %} {{ attach.date|date:"d/m/Y" }} {% if attach.description %}({{ attach.description }}){%endif%}{% if not forloop.last %}, {% endif %}
                         {% endfor %}
-                        {% if object.attach_set.all %}
-                            <strong>{% trans "Attached Files" %}: </strong>
-                            {% for attach in object.attach_set.all %}
-                                {{ attach.get_type_display }} {% trans "sent at" %} {{ attach.date|date:"d/m/Y" }} {% if attach.description %}({{ attach.description }}){%endif%}{% if not forloop.last %}, {% endif %}
-                            {% endfor %}
-                        {% endif %}
+                    {% endif %}
 
-                        {% if object.comments %}
+                    {% if object.comments %}
                         <small>{{ object.comments }}</small>
-                        {% endif %}
-
+                    {% endif %}
                 </td>
+
                 <td>
                 {% if DEBUG  %}
                     <div  style="border:1px solid black">
@@ -150,10 +158,11 @@
             </tr>
         </table>
 
-        <!-- demographic -->
-        <br />
+
+    <!-- demographic -->
+    <br />
     {% if print_demographic %}
-    <h1>{% trans "Record Data" %}</h1>
+        <h1>{% trans "Record Data" %}</h1>
 
         {% with object as item %}
             {% include "client/client_print_record_data_tag.html" %}
@@ -161,34 +170,33 @@
 
         {% if object.is_company %}
             {% if company_related_clients %}
-            <h1>{% trans "Employees Related" %}: </h1>
-            {% for i in company_related_clients %}
-                <h3>{{ i.client }}</h3> 
-                
-                <div style="margin-left:20px;">
-                    {% with i.client as item %}
-                        <strong>{% trans "Active" %}: </strong> {% if i.active %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
-                        <br />
-                        <strong>{% trans "Responsible" %}: </strong> {% if i.responsible %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
-                        <br />
-                        {% include "client/client_print_record_data_tag.html" %}
-                    {% endwith %}
-                </div>
+                <h1>{% trans "Employees Related" %}: </h1>
+                {% for i in company_related_clients %}
+                    <h3>{{ i.client }}</h3> 
+                    
+                    <div style="margin-left:20px;">
+                        {% with i.client as item %}
 
-            {% endfor %}
+                            <strong>{% trans "Active" %}: </strong> {% if i.active %}{% trans "Yes" %}{% endif %}
+                            <br />
+                            <strong>{% trans "Responsible" %}: </strong> {% if i.responsible %}{% trans "Yes" %}{% endif %}
+                            <br />
+                            {% include "client/client_print_record_data_tag.html" %}
+                        {% endwith %}
+                    </div>
+                {% endfor %}
             {% endif %}
         {% else%}
             {% if object.family_members_active %}
                 <h1>{% trans "Members Family" %}</h1>
                 {% for i in object.family_members_active %}
                     <h3>{{ i.1 }}</h3> 
-                    
                     <div style="margin-left:20px;">
-                        <strong>{% trans "Active" %}: </strong> {% if i.5 %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
+                        <strong>{% trans "Active" %}: </strong> {% if i.5 %}{% trans "Yes" %}{% endif %}
                         <br />
                         <strong>{% trans "Family Relation" %}: </strong> {{ i.2 }}
                         <br />
-                        <strong>{% trans "Responsible" %}: </strong> {% if i.3 %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
+                        <strong>{% trans "Responsible" %}: </strong> {% if i.3 %}{% trans "Yes" %}{% endif %}
                         <br />
                         {% with i.1 as item %}
                             {% include "client/client_print_record_data_tag.html" %}
@@ -241,11 +249,11 @@
         <h1>{{ i }}</h1>
 
         <strong>{% trans "Status" %}: </strong>
-                {% if i.referraldischarge_set.all %}
-                    {% trans "Referral is discharged" %}
-                {% else %}
-                    {% trans "Service is charged" %}
-                {% endif %}
+        {% if i.referraldischarge_set.all %}
+            {% trans "Referral is discharged" %}
+        {% else %}
+            {% trans "Service is charged" %}
+        {% endif %}
 
         <br />
         <strong>{% trans "Tipo do servi&ccedil;o" %}: </strong>{{ i.service.service_type }}
@@ -258,26 +266,11 @@
             {% endfor %}
 
         <br />
-        <strong>{% trans "Profiss&otilde;es" %}: </strong>
-            {% for x in i.service.professions.all %}
-                {{ x }}
-                {% if not forloop.last %},{% endif %}
-            {% endfor %}
-
-        {% if all_covenants %}
-            <br />
-            <strong>{% trans "Conv&ecirc;nios" %}: </strong>
-            {% for x in i.service.covenant.all %}
-                {{ x }}{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        {% endif %}
-
-        <br />
         {% if i.referraldischarge_set.all %}
             {% for d in i.referraldischarge_set.all %}
                 <strong>{% trans "Discharge Date" %} #{{ forloop.counter }}: </strong> {{ d.date|date:"d/m/Y" }}<br />
                 <strong>{% trans "Discharge Reason" %} #{{ forloop.counter }}: </strong> {% if not d.reason %}{% trans "Not informed" %}{% else %}{{ d.reason }}{% endif %}<br />
-                <strong>{% trans "Was discussed with client" %} #{{ forloop.counter }}: </strong> {% if not d.was_discussed_with_client %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}<br />
+                <strong>{% trans "Was discussed with client" %} #{{ forloop.counter }}: </strong> {% if d.was_discussed_with_client %}{% trans "Yes" %}{% endif %}<br />
                 {% if d.details %}<strong>{% trans "Discharge Details" %} #{{ forloop.counter }}: </strong>{{ d.details }}<br />{% endif %}
                 {% if d.description %}<strong>{% trans "Discharge Description" %} #{{ forloop.counter }}: </strong> {{ d.description }}<br />{% endif %}
             {% endfor %}
@@ -288,71 +281,97 @@
         {% if i.referral %}<strong>{% trans "Referral Source" %}: </strong>{{ i.referral }}<br />{% endif %}
         {% if i.referralexternal_set.all %}<strong>{% trans "External Referrals" %}: </strong>{{ i.referralexternal_set.all|join:", " }}<br />{% endif %}
 
-        <strong>{% trans "Service is academic related" %}: </strong>{% if i.service.academic_related %} {% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}<br />
-
         {% if i.service.keywords %}
             <strong>{% trans "Palavras chaves" %}: </strong> {{ i.service.keywords }}
         {% endif %}
 
-        <br />
         {% if i.service.description %}
+            <br />
             <strong>{% trans "Descri&ccedil;&atilde;o" %}: </strong> {{ i.service.description }}
         {% endif %}
 
-        <br />
-        <strong>{% trans "Aceita chat e mensagens on-line" %}: </strong>{% if i.service.is_online %} {% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
+        {% if i.service.is_online %}
+            <br />
+            <strong>{% trans "Aceita chat e mensagens on-line" %}: </strong>{% trans "Yes" %}
+        {% endif %}
 
-        <br />
-        <strong>{% trans "Este servi&ccedil;o est&aacute; vinculado a um projeto de pesquisa" %}: </strong>{% if i.service.research_project %} {% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
+        {% if i.service.research_project %}
+            <br />
+            <strong>{% trans "Este servi&ccedil;o est&aacute; vinculado a um projeto de pesquisa" %}: </strong>{% trans "Yes" %}
+        {% endif %}
 
-        <br />
-        <strong>{% trans "Servi&ccedil;o acad&ecirc;mico (est&aacute;gio supervisionado)" %}: </strong>{% if i.service.academic_related %} {% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
+        {% if i.service.academic_related %}
+            <br>
+            <strong>{% trans "Service is academic related" %}: </strong>{% trans "Yes" %}
+        {% endif %}
 
-        {% if i.group %}<strong>{% trans "Group" %}: {{ i.group }}</strong><br />{% endif %}
-        <br />
-        <strong>{% trans "Reason" %}: </strong>{% if not i.referral_reason %}{% trans "Not informed" %}{% else %}{{ i.referral_reason }}{% endif %}<br />
-        <strong>{% trans "Priority" %}: </strong>{% if not i.priority %}{% trans "Not informed" %}{% else %}{{ i.priority }}{% endif %}<br />
-        <strong>{% trans "Impact" %}: </strong>{% if not i.impact %}{% trans "Not informed" %}{% else %}{{ i.impact }}{% endif %}<br />
+        {% if i.group %}
+            <br />
+            <strong>{% trans "Group" %}:</strong>{{ i.group }}
+        {% endif %}
+
+        {% if i.referral_reason %}
+            <br />
+            <strong>{% trans "Reason" %}:</strong>
+            {{ i.referral_reason }}
+        {% endif %}
+        
+        {% if i.priority %}
+            <br />
+            <strong>{% trans "Priority" %}: </strong>
+            {{ i.priority }}
+        {% endif %}
+        
+        {% if i.impact %}
+            <br />
+            <strong>{% trans "Impact" %}:</strong>
+            {{ i.impact }}
+        {% endif %}
+
         {% if i.available_time %}
-        <strong>{% trans "Available Time" %}: </strong>{{ i.available_time }}<br />
+            <br />
+            <strong>{% trans "Available Time" %}: </strong>
+            {{ i.available_time }}
         {% endif %}
+
         {% if i.annotation %}
-        <br />{{ i.annotation }}
+            <br />{{ i.annotation }}
         {% endif %}
 
 
-
-        <br />
         <!-- professionals -->
-        <strong>{% trans "Professionals Responsible" %}: </strong>
-                    {% if not i.service.responsibles.all %}
-                        {% trans "This referral have no responsible professional" %}
-                    {% else %}
-                        {% for p in i.service.responsibles.all %}
-                            {{ p.person.name }} {{ p.professionalIdentification.profession.symbol }} {{ p.professionalIdentification.registerNumber }}
-                            {% if not forloop.last %},{% endif %}
-                        {% endfor %}
-                    {% endif %}
+        {% if i.service.responsibles.all %}
+            <br />
+            <strong>{% trans "Professionals Responsible" %}: </strong>
+            {% for p in i.service.responsibles.all %}
+                {{ p.person.name }} {{ p.professionalIdentification.profession.symbol }} {{ p.professionalIdentification.registerNumber }}
+                {% if not forloop.last %},{% endif %}
+            {% endfor %}
+        {% endif %}
+
 
         <br />
         <strong>{% trans "Professionals" %}: </strong>
-                {% if not i.service.professionals.all %}&nbsp;{% else %}
-                    {% for p in i.service.professionals.all %}
-                        {{ p.person.name }}
-                            {% if not p.is_student %}
-                                {{ p.person.name }} {{ p.professionalIdentification.profession.symbol }} {{ p.professionalIdentification.registerNumber }}
-                            {% else %}
-                                ({{ p.studentprofile.lecture_class.academic_name }})
-                            {% endif %}
-                            {% if not forloop.last %},{% endif %}
+
+                {% if i.professional.all %}
+                    {% for p in i.professional.all %}
+                        {% if not p.is_student %}
+                            {{ p.person.name }} {{ p.professionalIdentification.profession.symbol }} {{ p.professionalIdentification.registerNumber }}
+                        {% else %}
+                            ({{ p.studentprofile.lecture_class.academic_name }})
+                        {% endif %}
+                        {% if not forloop.last %},{% endif %}
                     {% endfor %}
                 {% endif %}
 
-        <br />
-        <br />
-        <strong>{% trans "Coment&aacute;rios" %}: </strong>
-        {{ i.service.comments }}
+        {% if i.service.comments %}
+            <br />
+            <strong>{% trans "Coment&aacute;rios" %}: </strong>
+            {{ i.service.comments }}
+        {% endif %}
 
+
+        <!-- queue details -->
         <br />
         {% for q in i.queue_set.all %}
         <strong>{% trans "Queue Details" %}#{{ forloop.counter }}: </strong>
@@ -374,7 +393,7 @@
                     {% if o.occurrence.start_time %}<strong>{% trans "Date" %}: </strong>{{ o.occurrence.start_time|date:"d/m/Y H:i" }} - {{ o.occurrence.end_time|date:"H:i" }}{% trans "hs" %}<br />{% endif %}
                     <strong>{% trans "Status" %}: </strong>{{ o.get_demand_status_display }}<br />
                     <strong>{% trans "Demand" %}: </strong>{{ o.demand }}<br />
-                    <strong>{% trans "Initial complaint" %}: </strong>{% if not o.initial_complaint %}{% trans "No" %}{% else %}{% trans "Yes" %}{% endif %}<br />
+                    <strong>{% trans "Initial complaint" %}: </strong>{% if o.initial_complaint %}{% trans "Yes" %}{% endif %}<br />
                     {% if o.how_long_it_happens %}<strong>{% trans "How long it happens" %}: </strong>{{ o.how_long_it_happens.unit }} {{ o.how_long_it_happens.get_time_display }}<br />{% endif %}
                     {% if o.frequency.get_time_display %}<strong>{% trans "Frequency" %} </strong>{{ o.frequency.unit }} {{ o.frequency.get_time_display }}<br />{% endif %}
                     <strong>{% trans "Severity" %}: </strong>{{ o.get_severity_display }}<br />
@@ -488,14 +507,13 @@
 
         <!-- payment list -->
         {% if all_payments %}
-            <h1>Pagamentos desse servi&ccedil;o</h1>
+            <h1>Pagamentos desta inscri&ccedil;&atilde;o</h1>
             <table style="width:100%; text-align:center;">
                 <tbody>
                     <tr>
                         <th style="width:35%;">Nome conv&ecirc;nio</th> 
                         <th style="width:35%;">Data atendimento</th> 
-                        <th style="width:20%;">Data pagamento</th> 
-                        <th style="width:5%;">Cor pagamento</th> 
+                        <th style="width:15%;">Data pagamento</th> 
                         <th style="width:10%;">Situa&ccedil;&atilde;o</th> 
                         <th style="width:5%;">Valor total</th> 
                     </tr> 
@@ -505,8 +523,7 @@
                             <tr style="background-color:{% cycle '#ececec' '#0000' %}">
                                 <td style="width:35%;">{{ xx.name }}</td>
                                 <td style="width:35%;">{{ xx.occurrence.all.0.start_time|date:"D, d b Y - H:i" }}</td>
-                                <td style="width:20%;">{{ xx.created|date:"D, d b Y" }}</td>
-                                <td style="width:5%;">{{ xx.status_color_|safe }}</td>
+                                <td style="width:15%;">{{ xx.created|date:"D, d b Y" }}</td>
                                 <td style="width:10%;">{{ xx.get_status_display }}</td>
                                 <td style="width:5%;">{{ xx.total }}</td>
                             </tr>
@@ -516,6 +533,7 @@
                 </tbody>
             </table>
         {% endif %}
+
 
         <!-- signature -->
         <h1>Assinatura dos respons&aacute;veis</h1>

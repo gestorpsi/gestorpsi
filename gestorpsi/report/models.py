@@ -264,10 +264,11 @@ class Report(models.Model):
         data = []
         
         for presence_type in presence_types:
-            occurrence = OccurrenceConfirmation.objects.filter(presence=presence_type['value'], occurrence__start_time__gte=date_start, occurrence__start_time__lte=date_end)
+            occurrences = OccurrenceConfirmation.objects.filter(presence=presence_type['value'], occurrence__start_time__gte=date_start, occurrence__start_time__lte=date_end)
             if service != 'all':
-                occurrence = occurrence.filter(occurrence__event__referral__service=service)
-            data.append({'occurrence_type': _(presence_type['text']),  'total': occurrence.count() })
+                occurrences = occurrences.filter(occurrence__event__referral__service=service)
+            data.append({'occurrence_type': _(presence_type['text']),
+                'total': occurrences.count(), 'occurrences' : occurrences })
         return data
 
 

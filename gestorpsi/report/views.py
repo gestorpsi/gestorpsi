@@ -84,8 +84,8 @@ def occurrence_data(request, template='report/report_graphic.html'):
     # variables of JS
     option_title = _('Occurrence graphic from selected service')
     option_rows = [] # array format
-    for occurrence in data:
-        option_rows.append([occurrence['occurrence_type'], occurrence['total']])
+    for occurrences in data:
+        option_rows.append([occurrences['occurrence_type'], occurrences['total'], occurrences["occurrences"]])
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 
 

@@ -1,5 +1,6 @@
+{% load i18n %}
 <script type="text/javascript">
-function make_graphic(option_title , rows){
+    function make_graphic(option_title , rows){
         // Create the data table.
         var data = new google.visualization.DataTable();
 
@@ -26,6 +27,34 @@ function make_graphic(option_title , rows){
 
     // call function
     make_graphic("{{ option_title }}", rows );
+    $("div#occurrence").append($("#occurrence_table"));
 </script>
 
-<h1> Lista de clientes</h1>
+<div id="occurrence_table">
+    <h1 align="center">{% trans "List of events" %}</h1>
+    {% for row in option_rows %}
+        {% if row.2 %}
+            <h3> {{ row.0 }}</h3>
+            <table style="width:100%; text-align:center;">
+                <thead>
+                    <tr>
+                        <td><h4>{% trans "Name" %}</h4></td>
+                        <td><h4>{% trans "Date" %}</h4></td>
+                        <td><h4>{% trans "Service" %}</h4></td>
+                    </tr>
+                </thead>
+                {% for occurrence in row.2 %}
+                    <tbody>
+                        <tr>
+                            {% with referral=occurrence.occurrence.event.referral %}
+                            <td> {{ referral.client.all.0 }} </td> 
+                            <td> {{ occurrence.occurrence.start_time }} </td>
+                            <td> {{ referral.service }} </td>
+                            {% endwith %}
+                        </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+        {% endif %}
+    {% endfor %}
+</div>

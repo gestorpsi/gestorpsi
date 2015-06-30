@@ -39,9 +39,11 @@ from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from gestorpsi.schedule.models import OccurrenceConfirmation
 
+
 @permission_required_with_403('careprofessional.careprofessional_list')
 def index(request, template_name='careprofessional/careprofessional_list.html', deactive = False):
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
+
   
 @permission_required_with_403('careprofessional.careprofessional_list')
 def list(request, page = 1, deactive = False, filter = None, initial = None, no_paging = False, is_student = False ):
@@ -64,8 +66,10 @@ def list(request, page = 1, deactive = False, filter = None, initial = None, no_
 
     return HttpResponse(simplejson.dumps(person_json_list(request, object, 'careprofessional.careprofessional_read', page), sort_keys=True), mimetype='application/json')
 
+
 @permission_required_with_403('careprofessional.careprofessional_read')
 def form(request, object_id=None, template_name='careprofessional/careprofessional_form.html', is_student = False):
+
     if object_id:
         object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
     else:
@@ -118,6 +122,7 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
                               context_instance=RequestContext(request)
                               )
 
+
 @permission_required_with_403('careprofessional.careprofessional_write')
 def save_careprof(request, object_id, save_person, is_student=False):
     """
@@ -127,6 +132,7 @@ def save_careprof(request, object_id, save_person, is_student=False):
     @param object: it is the tyoe of CareProfessional that must be filled.
     @type object: an instance of the built-in type C{CareProfessional}.            
     """
+
     if object_id:
         object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
     else:
@@ -136,35 +142,32 @@ def save_careprof(request, object_id, save_person, is_student=False):
         object.person = person_save(request, get_object_or_None(Person, pk=object.person_id) or Person())
     object.save()
 
-    #exist_referral="False"
-    list_from_form = request.POST.getlist('professional_service')
+    # list of service from form, add or remove.
+    list_service = [] # object Service
+    for x in request.POST.getlist('professional_service'):
+        list_service.append( Service.objects.get(pk=x) )
 
-    # MAKE A LIST WHIT ID SERVICE
-    list_db = []
-    for y in object.prof_services.filter(organization=request.user.get_profile().org_active):
-        list_db.append(y.id)
+    # add new service to professional
+    for x in list_service:
+        object.prof_services.add(x) # no problem to replace
 
-    # IF LIST_FROM_FORM > 0 THEN ADDED SERVICE 
-    if len(list_from_form) > 0:
-        for ps_id in list_from_form:
-            ps = Service.objects.get(pk=ps_id)
-            object.prof_services.add(ps)
+    object.save() # update
 
-    # COMPARES THE LIST_DB AND LIST_FORM, THE RESULT WILL BE SERVICES THAT WILL BE REMOVED
-    if len(list_from_form) > 0:
-        for x in list_from_form:
-            try:
-                indice = list_db.remove(x)
-            except:
-                pass
+    # check if service have referral before remove.
+    list_to_remove = []
 
-    ## REMOVE SERVICE 
-    #if len(list_db) > 0:
-        #for o in list_db:
-            #if Referral.objects.charged().filter(professional = object, service = o, status = '01').count() > 0:
-                #exist_referral="True"
-            #else:
-                #object.prof_services.remove(o)
+    # compare lists
+    for x in object.prof_services.all(): # professional
+        if not x in list_service: # form
+            list_to_remove.append(x) # add to list to check referral
+
+    # remove service 
+    # all service that are in list_service cannot be removed because it have referral. Create a error message for service and show to user.
+    for o in list_to_remove:
+        # check referral
+        if not Referral.objects.charged().filter( professional=object, service=o, status='01'): # check this filter
+            object.prof_services.remove(o) # remove from professional
+            list_to_remove.remove(o) # remove from check list
 
     profile = get_object_or_None(ProfessionalProfile, pk=object.professionalProfile_id) or ProfessionalProfile()
     profile.initialProfessionalActivities = request.POST.get('professional_initialActivitiesDate')
@@ -199,20 +202,20 @@ def save_careprof(request, object_id, save_person, is_student=False):
             object.professionalIdentification = identification
 
     object.save()
-    return object
+    return object, list_to_remove
+
 
 @permission_required_with_403('careprofessional.careprofessional_write')
 def save(request, object_id=None, save_person=True, is_student=False):
-    
+
     if is_student: # verify if student can join in service
         for ps in request.POST.getlist('professional_service'):
             if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active, academic_related=True, pk=ps):
                 return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
-    object = save_careprof(request, object_id, save_person, is_student)
+    object, list_to_remove = save_careprof(request, object_id, save_person, is_student)
     clss = request.GET.get('clss')
-    #exist_referral = object[1]
-    #object = object[0]
+
     if is_student:
         student_form = StudentProfileForm(request.POST, instance=object.studentprofile) if object_id else StudentProfileForm(request.POST)
         if student_form.is_valid():
@@ -220,14 +223,26 @@ def save(request, object_id=None, save_person=True, is_student=False):
             data.professional = object
             data.save()
 
-    #if exist_referral == "False":
-        #messages.success(request, _('Professional saved successfully') if not is_student else _('Student saved successfully'))
-        #return HttpResponseRedirect(('/careprofessional/%s/' % object.id) if not is_student else ('/careprofessional/student/%s/' % object.id))
-    messages.success(request, _('Professional saved successfully') if not is_student else _('Student saved successfully'))
-    return HttpResponseRedirect(('/careprofessional/%s/' % object.id) if not is_student else ('/careprofessional/student/%s/' % object.id))
-    #else:
-        #messages.success(request, _('Impossible discharged of the service. Exist referral to this professional.'))
+    # one of service have referral and can't be removed from professional.
+    if list_to_remove:
+
+        # msg error
+        for x in list_to_remove:
+            try:
+                msg += u', %s' % x.name
+            except:
+                msg = u'%s' % x.name
+
+        # english error message
+        #messages.error(request, _('Impossible discharged of the service. Exist referral to this professional. Service(s) <br /> %s' % msg ))
         #return HttpResponseRedirect(('/careprofessional/%s/?clss=error' % object.id))
+
+        messages.error(request, _(u'Serviço não pode ser desligado. Existe inscrição para esse profissional. Serviço<br />%s' % msg ))
+        return HttpResponseRedirect(('/careprofessional/%s/?clss=error' % object.id))
+    else:
+        messages.success(request, _('Professional saved successfully') if not is_student else _('Student saved successfully'))
+        return HttpResponseRedirect(('/careprofessional/%s/' % object.id) if not is_student else ('/careprofessional/student/%s/' % object.id))
+
 
 @permission_required_with_403('careprofessional.careprofessional_write')
 def order(request, object_id=None, is_student=False):

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-18 15:28-0300\n"
+"POT-Creation-Date: 2015-06-30 16:23-0300\n"
 "PO-Revision-Date: 2013-01-31 17:29\n"
 "Last-Translator:   <danielcj@doois.com.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,6 +77,7 @@ msgstr "Admissão salva com sucesso"
 #: templates/contact/contact_professional_form.html:77
 #: templates/device/device_type_form.html:57
 #: templates/meta/people_indentification.html:37
+#: templates/report/report_graphic.html:41
 #: templates/service/service_form.html:89
 #: templates/tags/address_book_organization_mini.html:24
 #: templates/tags/address_book_professional_mini.html:35
@@ -750,7 +751,7 @@ msgstr "sucesso"
 msgid "Parents"
 msgstr "Pai / Mãe"
 
-#: client/models.py:28 client/models.py:43 report/models.py:1027
+#: client/models.py:28 client/models.py:43 report/models.py:1024
 msgid "Children"
 msgstr "Filho(a)"
 
@@ -1392,8 +1393,8 @@ msgstr "Confimação de profissional pendente"
 msgid "Confirmed by the professional"
 msgstr "Confirmado pelo profissional "
 
-#: ehr/models.py:72 referral/models.py:76 report/models.py:1013
-#: report/models.py:1031
+#: ehr/models.py:72 referral/models.py:76 report/models.py:1010
+#: report/models.py:1028
 msgid "Unknown"
 msgstr "Desconhecido"
 
@@ -2087,6 +2088,7 @@ msgid "Not accumulated Graph"
 msgstr "Gráfico não acumulado"
 
 #: report/forms.py:49 report/views.py:196
+#: templates/report/report_graphic.html:43
 #: templates/service/service_client_list.html:23
 #: templates/tags/schedule_form.html:66 templates/tags/schedule_form.html:106
 #: templates/tags/schedule_form.html:108
@@ -2163,7 +2165,6 @@ msgstr "Inscrição"
 
 #: report/models.py:48 templates/client/client_print.html:377
 #: templates/ehr/ehr_diagnosis_list_item.html:33
-#: templates/report/report_index.html:70
 msgid "Occurrence"
 msgstr "Evento"
 
@@ -2183,277 +2184,257 @@ msgstr "Últimos 6 meses"
 msgid "This year"
 msgstr "Ano atual"
 
-#: report/models.py:269 schedule/models.py:29
-msgid "Client arrived on time"
-msgstr "Cliente chegou no horário"
-
-#: report/models.py:270 schedule/models.py:30
-msgid "Client arrived Late"
-msgstr "Cliente chegou atrasado"
-
-#: report/models.py:271 schedule/models.py:31
-msgid "Client not arrived"
-msgstr "Cliente não compareceu"
-
-#: report/models.py:272 schedule/models.py:32
-msgid "Occurrence unmarked"
-msgstr "Evento desmarcado"
-
-#: report/models.py:273 schedule/models.py:33
-msgid "Occurrence rescheduled"
-msgstr "Evento remarcado"
-
-#: report/models.py:296
+#: report/models.py:293
 msgid "Report name to save"
 msgstr "... para salvar"
 
-#: report/models.py:324
+#: report/models.py:321
 msgid "Individuals"
 msgstr "Individuais"
 
-#: report/models.py:325
+#: report/models.py:322
 msgid "Companies"
 msgstr "Estabelecimentos"
 
-#: report/models.py:326 templates/report/report_client_list.html:29
+#: report/models.py:323 templates/report/report_client_list.html:29
 #: templates/report/report_saved.html:34 templates/report/report_saved.html:50
 msgid "Total"
 msgstr "Total"
 
-#: report/models.py:344 report/models.py:395
+#: report/models.py:341 report/models.py:392
 msgid "Admission Signed"
 msgstr "Admissão assinada"
 
-#: report/models.py:344
+#: report/models.py:341
 #, fuzzy
 msgid "Admission Not Signed"
 msgstr "Admissão assinada"
 
-#: report/models.py:347
+#: report/models.py:344
 msgid "Signed"
 msgstr "Assinado"
 
-#: report/models.py:348
+#: report/models.py:345
 msgid "Not Signed"
 msgstr "Não assinado"
 
-#: report/models.py:392
+#: report/models.py:389
 msgid "Admission Overview"
 msgstr "Admissões"
 
-#: report/models.py:398 templates/client/client_print.html:111
+#: report/models.py:395 templates/client/client_print.html:111
 msgid "Admission Knowledge"
 msgstr "Indicação"
 
-#: report/models.py:414
+#: report/models.py:411
 msgid "Admission report - Individuals"
 msgstr "Individuais"
 
-#: report/models.py:418
+#: report/models.py:415
 msgid "Admission report - Companies"
 msgstr "Estabelecimentos"
 
-#: report/models.py:421
+#: report/models.py:418
 msgid "Admission report - Total"
 msgstr "Total"
 
-#: report/models.py:426
+#: report/models.py:423
 msgid "Admission report - Signed by client"
 msgstr "Assinado pelo cliente "
 
-#: report/models.py:430
+#: report/models.py:427
 msgid "Admission report - Not signed by client"
 msgstr "Não assinado pelo cliente "
 
-#: report/models.py:435
+#: report/models.py:432
 #, python-format
 msgid "Admission report - Knowledge - %s"
 msgstr "Indicação %s"
 
-#: report/models.py:490
+#: report/models.py:487
 msgid "Subscriptions"
 msgstr "Inscrições"
 
-#: report/models.py:491
+#: report/models.py:488
 msgid "Subscriptions Discharged"
 msgstr "Desligamentos"
 
-#: report/models.py:492
+#: report/models.py:489
 msgid "Internal Referrals"
 msgstr "Encaminhamentos internos"
 
-#: report/models.py:493 templates/client/client_print.html:258
+#: report/models.py:490 templates/client/client_print.html:258
 msgid "External Referrals"
 msgstr "Encaminhamento externo"
 
-#: report/models.py:518
+#: report/models.py:515
 #, fuzzy
 msgid "Referral Discharge Discussed with client"
 msgstr "Desligamento discutido com o cliente"
 
-#: report/models.py:518
+#: report/models.py:515
 #, fuzzy
 msgid "Referral Discharge Not discussed with client"
 msgstr "Desligamento discutido com o cliente"
 
-#: report/models.py:522
+#: report/models.py:519
 msgid "Discussed with client"
 msgstr "Discutido junto ao cliente"
 
-#: report/models.py:523
+#: report/models.py:520
 msgid "Not discussed with client"
 msgstr "Não discutido com cliente"
 
-#: report/models.py:832
+#: report/models.py:829
 msgid "Subscriptions Overview"
 msgstr "Detalhes da Inscrição"
 
-#: report/models.py:835
+#: report/models.py:832
 msgid "Service Subscriptions"
 msgstr "Inscrições no serviço"
 
-#: report/models.py:836
+#: report/models.py:833
 msgid "Discharges from Services"
 msgstr "Inscrições desligadas"
 
-#: report/models.py:838
+#: report/models.py:835
 msgid "Subscriptions Discharged Discussed"
 msgstr "Desligamento discutido com o cliente"
 
-#: report/models.py:839
+#: report/models.py:836
 msgid "Subscriptions Indications"
 msgstr "Indicação da inscrição"
 
-#: report/models.py:839
+#: report/models.py:836
 msgid "Excluding internal referrals"
 msgstr "Removendo referências internas"
 
-#: report/models.py:841
+#: report/models.py:838
 msgid "Internal Referrals to Services"
 msgstr "Encaminhamentos internos para serviços"
 
-#: report/models.py:842
+#: report/models.py:839
 msgid "Internal Referrals from Services"
 msgstr "Encaminhamentos internos de serviços"
 
-#: report/models.py:845
+#: report/models.py:842
 msgid "Externals Referrals from Services"
 msgstr "Referências externas de Serviços"
 
-#: report/models.py:847
+#: report/models.py:844
 msgid "Discharges Reason"
 msgstr "Motivo do desligamento"
 
-#: report/models.py:850
+#: report/models.py:847
 msgid "Discharges Discussed with Client"
 msgstr "Desligamento discutido com o cliente"
 
-#: report/models.py:852
+#: report/models.py:849
 msgid "Professional Subscriptions"
 msgstr "Inscrições para profissionais"
 
-#: report/models.py:874
+#: report/models.py:871
 msgid "Referral Total"
 msgstr "Inscrições"
 
-#: report/models.py:878
+#: report/models.py:875
 msgid "Referral Charged"
 msgstr "Inscrições ativas"
 
-#: report/models.py:882 templates/client/client_home.html:125
+#: report/models.py:879 templates/client/client_home.html:125
 msgid "Referral Discharged"
 msgstr "Serviço Desligado"
 
-#: report/models.py:886
+#: report/models.py:883
 msgid "Referral Discharged Discussed"
 msgstr "Desligamento discutido com o cliente"
 
-#: report/models.py:890
+#: report/models.py:887
 msgid "Referral Discharged Not Discussed"
 msgstr "Desligamento não discutido"
 
-#: report/models.py:894
+#: report/models.py:891
 msgid "Referral Internals"
 msgstr "Encaminhamento Interno"
 
-#: report/models.py:898
+#: report/models.py:895
 msgid "Referral Externals"
 msgstr "Encaminhamento Externo"
 
-#: report/models.py:903
+#: report/models.py:900
 #, python-format
 msgid "Referral Knowledge - %s"
 msgstr "Referência - %s"
 
-#: report/models.py:908
+#: report/models.py:905
 #, python-format
 msgid "Referral Service - %s"
 msgstr "Serviço encaminhado- %s"
 
-#: report/models.py:916
+#: report/models.py:913
 #, python-format
 msgid "Referral Internal to Service %s"
 msgstr "Encaminhamento interno para serviço %s"
 
-#: report/models.py:921
+#: report/models.py:918
 #, python-format
 msgid "Referral Internal from Service %s"
 msgstr "Encaminhamento interno do serviço %s"
 
-#: report/models.py:926
+#: report/models.py:923
 #, python-format
 msgid "Referral External from Service %s"
 msgstr "Encaminhamento externo do serviço %s"
 
-#: report/models.py:931
+#: report/models.py:928
 #, python-format
 msgid "Discharges from Service %s"
 msgstr "Desligamentos do serviço %s"
 
-#: report/models.py:936
+#: report/models.py:933
 #, python-format
 msgid "Discharged by reason %s"
 msgstr "Motivo do desligamento %s"
 
-#: report/models.py:941
+#: report/models.py:938
 #, python-format
 msgid "Discharges discussed from Service %s"
 msgstr "Desligamentos discutidos do serviço %s"
 
-#: report/models.py:946
+#: report/models.py:943
 #, python-format
 msgid "Subscriptions to professional %s"
 msgstr "Inscrições para o profissional %s"
 
-#: report/models.py:1011 templates/client/client_print_record_data_tag.html:8
+#: report/models.py:1008 templates/client/client_print_record_data_tag.html:8
 #: templates/meta/people_indentification.html:21
 #: templates/tags/people_identification.html:30
 msgid "Male"
 msgstr "Masculino"
 
-#: report/models.py:1012 templates/client/client_print_record_data_tag.html:7
+#: report/models.py:1009 templates/client/client_print_record_data_tag.html:7
 #: templates/meta/people_indentification.html:22
 #: templates/tags/people_identification.html:33
 msgid "Female"
 msgstr "Feminino"
 
-#: report/models.py:1028
+#: report/models.py:1025
 msgid "Teen"
 msgstr "Adolescente"
 
-#: report/models.py:1029
+#: report/models.py:1026
 msgid "Adult"
 msgstr "Adulto"
 
-#: report/models.py:1030
+#: report/models.py:1027
 msgid "Elderly"
 msgstr "Idoso"
 
-#: report/models.py:1040 templates/client/client_print_record_data_tag.html:6
+#: report/models.py:1037 templates/client/client_print_record_data_tag.html:6
 msgid "Gender"
 msgstr "Gênero"
 
-#: report/models.py:1041 templates/meta/people_profile.html:34
+#: report/models.py:1038 templates/meta/people_profile.html:34
 msgid "Age"
 msgstr "Idade"
 
@@ -2500,6 +2481,26 @@ msgstr "Motivo (se existir)"
 #: schedule/forms.py:187
 msgid "Anotation"
 msgstr "Notas"
+
+#: schedule/models.py:29
+msgid "Client arrived on time"
+msgstr "Cliente chegou no horário"
+
+#: schedule/models.py:30
+msgid "Client arrived Late"
+msgstr "Cliente chegou atrasado"
+
+#: schedule/models.py:31
+msgid "Client not arrived"
+msgstr "Cliente não compareceu"
+
+#: schedule/models.py:32
+msgid "Occurrence unmarked"
+msgstr "Evento desmarcado"
+
+#: schedule/models.py:33
+msgid "Occurrence rescheduled"
+msgstr "Evento remarcado"
 
 #: schedule/models.py:162
 msgid "Occurrence Date Started"
@@ -4140,7 +4141,8 @@ msgstr "Nenhum problema registrado."
 #: templates/client/client_print.html:378
 #: templates/client/client_print.html:417 templates/messages/trash.html:24
 #: templates/messages/view.html:27
-#: templates/referral/referral_details.html:151 templates/tags/invoice.html:24
+#: templates/referral/referral_details.html:151
+#: templates/report/report_graphic.html:42 templates/tags/invoice.html:24
 msgid "Date"
 msgstr "Data"
 
@@ -6174,6 +6176,10 @@ msgstr "entre"
 msgid "List of clients between"
 msgstr "Lista de clientes entre"
 
+#: templates/report/report_graphic.html:34
+msgid "List of events"
+msgstr "Lista de eventos"
+
 #: templates/report/report_index.html:34
 msgid "Report for"
 msgstr "Relatório para"
@@ -6206,27 +6212,27 @@ msgstr "Filtragem por"
 msgid "Pagamento"
 msgstr "Pagamento em dia"
 
-#: templates/report/report_index.html:74
+#: templates/report/report_index.html:70
 msgid "Save Report"
 msgstr "Salvar Relatório"
 
-#: templates/report/report_index.html:75
+#: templates/report/report_index.html:71
 msgid "Update"
 msgstr "Atualizar"
 
-#: templates/report/report_index.html:86 templates/report/report_menu.html:22
+#: templates/report/report_index.html:82 templates/report/report_menu.html:22
 msgid "Export Data"
 msgstr "Exportar dados"
 
-#: templates/report/report_index.html:94
+#: templates/report/report_index.html:90
 msgid "Report saved successfully with label"
 msgstr "Relatório salvo com sucesso."
 
-#: templates/report/report_index.html:100
+#: templates/report/report_index.html:96
 msgid "Saved at"
 msgstr "Salvar como"
 
-#: templates/report/report_index.html:113
+#: templates/report/report_index.html:110
 msgid "Report filters"
 msgstr "Filtros de relatório"
 

@@ -126,7 +126,7 @@ def list_filter_covenant(request, indiv=False, alls=False):
 
 
 @permission_required_with_403('service.service_list')
-def list(request, page=1, initial=False, filter=False, no_paging=False, deactive=False, group=False):
+def list(request, page=1, initial=False, filter=False, no_paging=False, deactive=False, group=True):
 
     if deactive:
         object = Service.objects.filter( active=False, organization=request.user.get_profile().org_active )
@@ -137,12 +137,7 @@ def list(request, page=1, initial=False, filter=False, no_paging=False, deactive
         object = object.filter(name__istartswith=initial).distinct()
         
     if filter:
-        object = object.filter(Q(name__icontains = filter) | Q(referral__client__person__name__icontains=filter)).distinct()
-
-    if group:
-        object = object.filter( is_group=True, organization=request.user.get_profile().org_active )
-    else:
-        object = object.filter( is_group=False, organization=request.user.get_profile().org_active )
+        object = object.filter( Q(name__icontains = filter) ).distinct()
 
     # paginator
     object_length = len(object)

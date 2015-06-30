@@ -19,17 +19,21 @@ GNU General Public License for more details.
 <div>
 	
 	<label>{% trans "Salary" %}<br />
-	<input type="number" maxlength="8" class="medium" dir="rtl" min="0.00" max="99999.99" step="5.00" name="salary" id="salary" value="{{ object.person.salary }}" />
+	<input type="number" maxlength="8" min="0.00" max="99999.99" class="medium" dir="rtl" name="salary" id="salary" value="{{ object.person.salary }}" step="50.00"/>
 	</label>
 
 	<label>{% trans "Value for payment" %}<br />
-	<input type="text" maxlength="6"  class="medium" dir="rtl" min="0.00" max="999.99" step="1.00" name="value_for_payment" id="value_payment" value="{{ object.payment_condition.value_for_payment }}" mask="?9?9.999" />
+	<input type="number" maxlength="6" min="0.00" max="999.99" dir="rtl" name="value_for_payment" id="value_payment" value="{{ object.payment_condition.value_for_payment }}" step="1.00" />
 	</label>
 			
 	<label>{% trans "Type" %}<br />
 	<select name="payment_condition" class="medium">
+
 	{% for payment_condition in payment_conditions %}
-		<option value="{{payment_condition.0}}">{{payment_condition.1}}</option>
+		<option value="{{payment_condition.0}}" 
+		{% ifequal object.payment_condition.payment_condition|stringformat:"s" payment_condition.0|stringformat:"s" %} 
+			selected 
+	    {% endifequal %} >{{payment_condition.1}}</option>
 	{%endfor%}
 	</select>
 	</label>

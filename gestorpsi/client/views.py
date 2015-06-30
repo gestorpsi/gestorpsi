@@ -783,7 +783,7 @@ def save(request, object_id=None, is_company = False):
     org.save()
 
     payment_condition.payment_condition = request.POST["payment_condition"]
-    payment_condition.value_for_payment = request.POST["value_for_payment"]
+    payment_condition.value_for_payment = request.POST["value_for_payment"] if payment_condition.payment_condition == PAYMENT_CONDITION[0][0] else float(0)
     payment_condition.save()
     object.payment_condition = payment_condition
     

@@ -19,11 +19,11 @@ GNU General Public License for more details.
 <div>
 	
 	<label>{% trans "Salary" %}<br />
-	<input type="text" maxlength="8" class="medium" dir="rtl" name="salary" id="salary" value="{{ object.person.salary }}" mask="?9?9.99999"/>
+	<input type="number" maxlength="8" class="medium" dir="rtl" min="0.00" max="99999.99" step="5.00" name="salary" id="salary" value="{{ object.person.salary }}" />
 	</label>
 
 	<label>{% trans "Value for payment" %}<br />
-	<input type="text" maxlength="6"  class="medium" dir="rtl" name="value_for_payment" id="value_payment" value="{{ object.payment_condition.value_for_payment }}" mask="?9?9.999" />
+	<input type="text" maxlength="6"  class="medium" dir="rtl" min="0.00" max="999.99" step="1.00" name="value_for_payment" id="value_payment" value="{{ object.payment_condition.value_for_payment }}" mask="?9?9.999" />
 	</label>
 			
 	<label>{% trans "Type" %}<br />

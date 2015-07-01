@@ -174,17 +174,19 @@ def save_careprof(request, object_id, save_person, is_student=False):
     profile.save()
     object.professionalProfile = profile
 
-    if (len(request.POST.getlist('professional_workplace'))):
-        for o in profile.workplace.filter(organization=request.user.get_profile().org_active):
-            profile.workplace.remove(o)
-        for wplace_id in request.POST.getlist('professional_workplace'):
-            profile.workplace.add(Place.objects.get(pk=wplace_id))
+    # remove all workplace
+    profile.workplace.clear()
+    # update workplace
+    for x in request.POST.getlist('professional_workplace'):
+        profile.workplace.add( Place.objects.get( pk=x, organization=request.user.get_profile().org_active ) )
 
     if not is_student:
-        if (len(request.POST.getlist('professional_agreement'))):
-            profile.agreement.clear()
-            for agreemt_id in request.POST.getlist('professional_agreement'):
-                profile.agreement.add(Agreement.objects.get(pk=agreemt_id))
+
+        # remove all
+        profile.agreement.clear()
+        # update 
+        for x in request.POST.getlist('professional_agreement'):
+            profile.agreement.add( Agreement.objects.get( pk=x ) )
 
         if request.POST.get('professional_registerNumber') or request.POST.get('professional_area'):
             if not object.professionalIdentification:

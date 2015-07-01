@@ -93,16 +93,12 @@ def add_event(
         redirect_to = None
     ):
 
-    print  '--------------- ADD '
-
     # have to contains dtstart variable in URL. URL from schedule have to contains date and time data.
     if not 'dtstart' in request.GET:
         return http.HttpResponseRedirect('/schedule/')
 
 
     if request.method == 'POST':
-
-        print '----------------------------- POST '
 
         # limit occurrence repeat
         if int(request.POST.get('count')) > 40:
@@ -136,28 +132,13 @@ def add_event(
                     Event per period will be created by script run by crontab everyday
                 '''
                 # check if occurrences have one payment by pack or event opened
-                #for o in referral.occurrences():
-                for o in referral.upcoming_occurrences():
+                for o in referral.upcoming_nopayment_occurrences():
 
-                    print event, event.id
-                    print type(event)
-
-                    print '------------------- 0'
-                    print referral.occurrences()
-                    print referral.occurrences().count()
-                    print
                     # exist a payment for event?
                     if Payment.objects.filter(occurrence=o).count() == 0 :
-                        print '------------------- 1'
-                        print Payment.objects.filter(occurrence=o).count()
-                        print
 
                         # Filter payment by pack or occurrence
                         for x in referral.covenant.filter(Q(charge=1) | Q(charge=2) ).distinct():
-
-                            print '------------------- 2'
-                            print Payment.objects.filter(occurrence=o).count()
-                            print referral.covenant.filter(Q(charge=1) | Q(charge=2) ).distinct()
 
                             payment = Payment() # new
 

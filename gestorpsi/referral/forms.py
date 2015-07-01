@@ -42,6 +42,7 @@ class ReferralForm(forms.ModelForm):
     available_time = forms.CharField(widget=forms.Textarea(), required = False)
     priority = forms.ModelChoiceField(queryset=ReferralPriority.objects.all(), required = False, widget=forms.Select(attrs={'class':'extramedium', }))
     impact = forms.ModelChoiceField(queryset=ReferralImpact.objects.all(), required = False, widget=forms.Select(attrs={'class':'giant', }))
+    covenant = forms.ModelMultipleChoiceField( queryset=Covenant.objects.none(), required=False )
     
     class Meta:
         fields = ('client', 'service', 'professional', 'annotation', 'referral', 'annotation', 'referral_reason', 'available_time', 'priority', 'impact', 'covenant')

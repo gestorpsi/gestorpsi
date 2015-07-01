@@ -142,32 +142,27 @@ def save_careprof(request, object_id, save_person, is_student=False):
         object.person = person_save(request, get_object_or_None(Person, pk=object.person_id) or Person())
     object.save()
 
-    # list of service from form, add or remove.
-    list_service = [] # object Service
-    for x in request.POST.getlist('professional_service'):
-        list_service.append( Service.objects.get(pk=x) )
-
-    # add new service to professional
-    for x in list_service:
-        object.prof_services.add(x) # no problem to replace
-
-    object.save() # update
-
-    # check if service have referral before remove.
+    '''
+        remove service before add
+        check if service have referral before remove.
+        cannot be removed if have referral.
+    '''
+    # all service that are in list_service cannot be removed because it have referral. Create a error message for service and show to user.
     list_to_remove = []
 
-    # compare lists
+    # remove service, compare from form and db.
     for x in object.prof_services.all(): # professional
-        if not x in list_service: # form
-            list_to_remove.append(x) # add to list to check referral
+        if not x.id in request.POST.getlist('professional_service'):
+            # check referral
+            if Referral.objects.charged().filter( professional=object, service=x, status='01'):
+                list_to_remove.append(x) # add to msg
+            else:
+                object.prof_services.remove(x) # remove from professional
 
-    # remove service 
-    # all service that are in list_service cannot be removed because it have referral. Create a error message for service and show to user.
-    for o in list_to_remove:
-        # check referral
-        if not Referral.objects.charged().filter( professional=object, service=o, status='01'): # check this filter
-            object.prof_services.remove(o) # remove from professional
-            list_to_remove.remove(o) # remove from check list
+    # add new service to professional
+    for x in request.POST.getlist('professional_service'):
+        object.prof_services.add(x) # no problem to replace
+
 
     profile = get_object_or_None(ProfessionalProfile, pk=object.professionalProfile_id) or ProfessionalProfile()
     profile.initialProfessionalActivities = request.POST.get('professional_initialActivitiesDate')

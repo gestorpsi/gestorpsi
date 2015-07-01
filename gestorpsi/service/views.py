@@ -301,10 +301,33 @@ def save(request, object_id=''):
     for hierarc in request.POST.getlist('hierarchical_level'):
         object.hierarchical_level.add(HierarchicalLevel.objects.get(pk=hierarc))
 
+
     """ Professionals list """
-    object.professionals.clear()
+    # remove professional before add professional
+    # check referral before remove
+    for x in object.professionals.all(): # from db
+        if not x.id in request.POST.getlist('service_professionals'):
+            # check if professional have referral in this service
+            if Referral.objects.charged().filter( professional=x, service=object, status='01' ):
+                # to create msg erro
+                try:
+                    msg += u", %s" % x.person.name
+                except:
+                    msg = u"%s" % x.person.name
+            # no referral, remove from list.
+            else:
+                object.professionals.remove( x )
+
+    # erro msg
+    try:
+        messages.error(request, _(u'Profissional não pode ser desligado desse serviço. Existe inscrição para esse profissional. Profissional:<br /> %s' % msg ))
+    except:
+        pass
+
+    # add professional
     for p in request.POST.getlist('service_professionals'):
-        object.professionals.add(CareProfessional.objects.get(pk=p))
+        object.professionals.add( CareProfessional.objects.get(pk=p) )
+
 
     """ Covenant list """
     object.covenant.clear()
@@ -338,7 +361,7 @@ def order(request, object_id=None):
     object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active)
     url = "/service/form/%s/"
 
-    """ CHECK QUEUE AND REFERRAL """
+    """ check queue and referral """
     if ( Referral.objects.charged().filter(service = object).count()) == 0:
         if (Queue.objects.filter(referral__service = object_id, date_out = None).order_by('date_in').order_by('priority').count()) == 0:
             if object.active == True:
@@ -495,5 +518,4 @@ def group_form(request, object_id=None, group_id=None):
                                 'have_write_perms': False if not _can_write_group(request, object) else True,
                                },
                               context_instance=RequestContext(request)
-                              )
-
+        )

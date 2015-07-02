@@ -7580,6 +7580,21 @@ msgstr "Primeiro horário"
 msgid "End last hour"
 msgstr "Fim do último horário"
 
+msgid "Workplace available"
+msgstr "Área de trabalho disponível"
+
+msgid "Workplace selected"
+msgstr "Área de trabalho selecionado"
+
+msgid "Service available"
+msgstr "Serviço disponível"
+
+msgid "Service selected"
+msgstr "Serviço selecionado"
+
+msgid "Add new"
+msgstr "Adicionar novo"
+
 #~ msgid "Detalhes da Fatura"
 #~ msgstr "Detalhes da Fatura"
 

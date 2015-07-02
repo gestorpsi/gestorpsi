@@ -632,7 +632,7 @@ a.prase_edit {
 }
 
 
-.main_area input[type=text], input[type=submit].mini, input[type=password], textarea {
+.main_area input[type=text], input[type=submit].mini, input[type=password],input[type=email], textarea {
         font-size: 16px;
         padding: 5px;
         border: 2px solid #F9F9F9;
@@ -646,7 +646,7 @@ input[type=submit].mini, a.submit,button.submit {
         cursor: pointer;
 }
 
-.main_area input[type=text]:focus, input[type=password]:focus, textarea:focus {
+.main_area input[type=text]:focus, input[type=password]:focus,input[type=email]:focus, textarea:focus {
         border: 2px solid #2688ae;
         background: #fff6d5;
 }
@@ -1406,7 +1406,13 @@ a.submit, div.form_mini input[type=submit], div.form_mini_noinsert input[type=su
 
 a.submit { padding-top: 3px; padding-bottom:8px; text-decoration:none;}
 
-div.form_mini select, div.form_mini input[type=text], div.form_mini input[type=password],
+div.form_mini select, div.form_mini input[type=text], div.form_mini input[type=password], div.form_mini input[type=email] {
+        font-size: 16px;
+        padding: 4px 5px 4px 5px;
+        color: #999;
+        border: 1px solid #999999;
+}
+
 div.form_mini_noinsert select, div.form_mini_noinsert input[type=text], div.form_mini_noinsert input[type=password] {
         border: 1px solid #999999;
 }

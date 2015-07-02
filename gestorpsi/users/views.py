@@ -330,37 +330,27 @@ def update_pwd(request, object_id=0):
 
 @permission_required_with_403('users.users_write')
 def update_email(request, object_id=0):
-    invalid_emails = verify_requests(
-        request.POST.get('actual_password_mini'),
-        request.POST.get('email_mini'),
-        request.POST.get('email_mini_conf')
-        )
-
-    if invalid_emails != "":
-        messages.error(request, _(invalid_emails))
+    
+    email=request.POST.get('email_mini')
+    email_conf=request.POST.get('email_mini_conf')
+    
+    
+    if email != email_conf or email == '' or email_conf == '':
+        messages.error(request, _('Emails Invalid'))
         return HttpResponseRedirect('/user/%s/' % object_id)
-
+    
     user = Profile.objects.get(
         person=object_id,
-        person__organization=request.user.get_profile().org_active
-        ).user
-
-    if not user.check_password(request.POST.get('actual_password_mini')):
-        messages.error(request, _('Password Incorrect'))
-        return HttpResponseRedirect('/user/%s/' % object_id)
-
-    user.email = request.POST.get('email_mini')
-    user.profile.temp = request.POST.get('email_mini')  # temporary field(LDAP)
+        person__organization=request.user.get_profile().org_active).user
+    
+    user.email=email
+    user.profile.temp = email  # temporary field(LDAP)
     user.profile.save()
     user.save(force_update=True)
-
-    messages.success(request, _('email updated successfully!'))
-    # return render_to_response(
-    #     '/user/%s/' % object_id,
-    #     {'profile': user.profile},
-    #     context_instance=RequestContext(request))
-    # update_user(request, objecti_id)
+    
+    messages.success(request, _('Email updated successfully!'))
     return HttpResponseRedirect('/user/%s/' % object_id)
+
 
 
 @permission_required_with_403('users.users_write')

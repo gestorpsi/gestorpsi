@@ -186,6 +186,7 @@ def update_user(request, object_id):
 
     return HttpResponseRedirect('/user/%s/' % profile.person.id)
 
+
 @permission_required_with_403('users.users_write')
 def update_pwd(request, object_id=0):
     if not request.POST.get('password_mini') or not request.POST.get('password_mini_conf'):
@@ -204,6 +205,7 @@ def update_pwd(request, object_id=0):
 
     messages.success(request, _('Password updated successfully!'))
     return HttpResponseRedirect('/user/%s/' % object_id)
+
 
 @permission_required_with_403('users.users_write')
 def set_form_user(request, object_id=0):
@@ -247,6 +249,7 @@ def delete(request, profile_id = None):
     return HttpResponseRedirect('/user/')
 '''
 
+
 @permission_required_with_403('organization.organization_read')
 def username_is_available(request, user):
     """
@@ -258,3 +261,24 @@ def username_is_available(request, user):
             return HttpResponse("0")
     else:
             return HttpResponse("1")
+
+
+@permission_required_with_403('users.users_write')
+def update_email(request, object_id=0):
+    
+    email=request.POST.get('email_mini')
+    email_conf=request.POST.get('email_mini_conf')
+    
+    if email != email_conf or email == '' or email_conf == '':
+        messages.error(request, _('Emails Invalid'))
+        return HttpResponseRedirect('/user/%s/' % object_id)
+    
+    user = Profile.objects.get( person=object_id, person__organization=request.user.get_profile().org_active ).user
+    
+    user.email=email
+    user.save()
+    user.profile.temp = email
+    user.profile.save()
+    
+    messages.success(request, _('Email updated successfully!'))
+    return HttpResponseRedirect('/user/%s/' % object_id)

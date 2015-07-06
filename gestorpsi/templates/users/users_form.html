@@ -18,6 +18,10 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
+{% block extrahead %}
+    <script type="text/javascript" src="/media/js/gestorpsi.user.js"></script>
+{% endblock extrahead %}
+
 {% block menu_myoffice %}active{% endblock %}
 
 {% block vertical_menu %} - {% trans "Users" %}{% endblock %}
@@ -33,7 +37,13 @@ GNU General Public License for more details.
 
 {% block core %}
 
-    {% if profile.id %}<h2 class="title_clients title">{{ profile.person.name }}</h2><p class="description">{{ profile.user.username }} {{ profile.user.email }}<br />{% else %}<h2 class="title_clients title">{% trans "Adding New User" %}</h2><p class="description">{% trans "Inform the user details then click on Save button" %}</p>{% endif %}
+    {% if profile.id %}
+        <h2 class="title_clients title">{{ profile.person.name }}</h2>
+        <p class="description">{{ profile.user.username }} {{ profile.user.email }}<br />
+    {% else %}
+        <h2 class="title_clients title">{% trans "Adding New User" %}</h2>
+        <p class="description">{% trans "Inform the user details then click on Save button" %}</p>
+    {% endif %}
 
     {% if profile.id %} <form action="/user/{{ profile.person.id }}/save/" method="post" id="form_user" class="form_user"> {% else %} <form action="/user/save/" method="post" id="form_user" class="form_user">{% endif %}
 
@@ -66,7 +76,9 @@ GNU General Public License for more details.
                 </label>
 
                 {% if profile.id %}
-                    <label><a class="form_mini" display="pwd_mini">{% trans "Change Password" %}</a></label>
+                    <label><a class="form_mini" display="pwd_mini">{% trans "Change Password" %}</a>
+                    &nbsp;&nbsp;|</label>
+                    <label><a class="form_mini" display="email_mini">{% trans "Change e-mail" %}</a></label>
                 {% else %}
                     <label>{% trans "Password" %}<br />
                         <input type="password" name="password" class="extramedium" value="" id="id_password" />
@@ -227,5 +239,29 @@ GNU General Public License for more details.
             </fieldset>
         </form>
     </div>
+
+
+    <!-- change e-mail -->
+    <div class="form_mini email_mini">
+        <form action="/user/{{ profile.person.id }}/saveemail/" method="post" class="email" id="email_change_form">
+            <fieldset>
+                <legend>{% trans "Change e-mail" %}</legend>
+
+                <div id="msg_area" class="error" style="opacity: 1; display: none;">{% trans "E-mail not match. Try again."%}</div>
+
+                <label>{% trans "E-mail" %}<br />
+                    <input type="email" name="email_mini" class="big" required />
+                </label>
+                <label>{% trans "E-mail" %} <small>({% trans "Again" %})</small><br />
+                    <input type="email" name="email_mini_conf" class="big tabtitle" required />
+                </label>
+                <label>
+                     <input type="submit" name="submit" value="{% trans "Salvar" %}" class="mini" id="change_email_form" onClick="jsupdateemail()"/>
+                     <input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />
+                </label>
+            </fieldset>
+        </form>
+    </div>
+
 
 {% endblock %}

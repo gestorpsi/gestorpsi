@@ -70,7 +70,7 @@ def schedule_occurrence_listing(request, year = 1, month = 1, day = None,
         dict(
             extra_context, 
             occurrences=occurrences,
-            places = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
+            places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
             services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
             professionals = CareProfessional.objects.active(request.user.get_profile().org_active.id),
             tab_event_class = 'active',
@@ -694,7 +694,7 @@ def week_view(request,
     ):
 
     return render_to_response('schedule/schedule_week.html', dict(
-                places = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
+                places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
                 rooms = Room.objects.active().filter(place__organization=request.user.get_profile().org_active.id),
                 services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
                 professionals = CareProfessional.objects.active_all(request.user.get_profile().org_active.id),

@@ -630,7 +630,7 @@ a.prase_edit {
 }
 
 
-.main_area input[type=text], input[type=submit].mini, input[type=password], textarea {
+.main_area input[type=text], input[type=submit].mini, input[type=password], input[type=email], textarea {
         font-size: 16px;
         padding: 5px;
         border: 2px solid #F9F9F9;
@@ -799,9 +799,9 @@ select.high {
 
 .sidebar_client {
         margin-left:750px;
-        margin-top :130px;
+        /*margin-top :130px;*/
         width: 240px;
-        position: fixed;
+        /*position: fixed;*/
         max-height: 500px;
         overflow: scroll;
 }
@@ -809,7 +809,7 @@ select.high {
 .sidebar_save {
         margin-left:750px;
         width: 240px;
-        position: fixed;
+        /*position: fixed;*/
 }
 
 
@@ -1355,8 +1355,8 @@ select.country {
         color: #000000;
         border: 1px solid #999999;
         letter-spacing: 2px;
-        margin-top: 580px;
-        margin-bottom: 25px;
+        /*margin-top: 580px;*/
+        /*margin-bottom: 25px;*/
 }
 #footer span {
         display: none;
@@ -1459,12 +1459,12 @@ a.submit, div.form_mini input[type=submit], div.form_mini_noinsert input[type=su
 
 a.submit { padding-top: 3px; padding-bottom:8px; text-decoration:none;}
 
-div.form_mini select, div.form_mini input[type=text], div.form_mini input[type=password],
+div.form_mini select, div.form_mini input[type=text], div.form_mini input[type=password], div.form_mini input[type=email],
 div.form_mini_noinsert select, div.form_mini_noinsert input[type=text], div.form_mini_noinsert input[type=password] {
         border: 1px solid #999999;
 }
 
-div.form_mini input[type=text], div.form_mini_noinsert input[type=text] {
+div.form_mini input[type=text], div.form_mini_noinsert input[type=text], div.form_mini input[type=email], {
         font-size: 16px;
         padding: 4px 5px 4px 5px;
         color: #999;

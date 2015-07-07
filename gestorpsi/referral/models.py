@@ -330,7 +330,7 @@ class Referral(Event):
             ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 4 # unmarked
             ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 5) # re-marked
 
-    def upcoming__nopayment_occurrences(self):
+    def upcoming_nopayment_occurrences_(self):
         return self.occurrence_set.filter(start_time__gte=datetime.now(), payment__isnull=True
             ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 4 # unmarked
             ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 5) # re-marked

@@ -132,7 +132,7 @@ def add_event(
                     Event per period will be created by script run by crontab everyday
                 '''
                 # check if occurrences have one payment by pack or event opened
-                for o in referral.upcoming_nopayment_occurrences():
+                for o in referral.upcoming_nopayment_occurrences_():
 
                     # exist a payment for event?
                     if Payment.objects.filter(occurrence=o).count() == 0 :

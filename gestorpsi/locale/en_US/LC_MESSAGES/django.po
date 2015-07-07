@@ -7420,3 +7420,7 @@ msgstr ""
 #: users/views.py:237
 msgid "User removed successfully"
 msgstr ""
+
+#: users/views.py:351
+msgid "Email updated successfully!"
+msgstr ""

@@ -2253,6 +2253,14 @@ msgstr "A confirmação da senha está incorreta."
 msgid "Password updated successfully"
 msgstr "Senha atualizada com sucesso."
 
+#: users/views.py:339
+msgid "Email address do not match"
+msgstr "Endereços de e-mails são diferentes."
+
+#: users/views.py:351
+msgid "Email updated successfully!"
+msgstr "E-mail alterado com sucesso!"
+
 #: referral/models.py:51
 msgid "High"
 msgstr "Alto"
@@ -7430,9 +7438,19 @@ msgstr "Registro de usuário"
 msgid "Change Password"
 msgstr "Alterar Senha"
 
+#: templates/users/users_form.html:86 templates/users/users_form.html:255
+msgid "Change e-mail"
+msgstr "Alterar E-mail"
+
 #: templates/users/users_form.html:83 templates/users/users_form.html:225
 msgid "Again"
 msgstr "Novamente"
+
+msgid "Sorry, you can not disable yourself"
+msgstr "Desculpe, você não pode desligar você mesmo."
+
+msgid "Confirmation"
+msgstr "Confirmação"
 
 #: templates/users/users_form.html:90
 msgid "Registered user e-mail"

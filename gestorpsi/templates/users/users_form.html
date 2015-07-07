@@ -18,10 +18,6 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-{% block extrahead %}
-    <script type="text/javascript" src="/media/js/gestorpsi.user.js"></script>
-{% endblock extrahead %}
-
 {% block menu_myoffice %}active{% endblock %}
 
 {% block vertical_menu %} - {% trans "Users" %}{% endblock %}
@@ -75,11 +71,7 @@ GNU General Public License for more details.
                     </div>
                 </label>
 
-                {% if profile.id %}
-                    <label><a class="form_mini" display="pwd_mini">{% trans "Change Password" %}</a>
-                    &nbsp;&nbsp;|</label>
-                    <label><a class="form_mini" display="email_mini">{% trans "Change e-mail" %}</a></label>
-                {% else %}
+                {% if not profile.id %}
                     <label>{% trans "Password" %}<br />
                         <input type="password" name="password" class="extramedium" value="" id="id_password" />
                     </label>
@@ -224,16 +216,14 @@ GNU General Public License for more details.
             <fieldset>
                 <legend>{% trans "Change password" %}</legend>
 
-                <div id="msg_area" class="error" style="opacity: 1; display: none;">{% trans "Password not match. Try again."%}</div>
-
                 <label>{% trans "Password" %}<br />
-                    <input type="password" name="password_mini" class="big" value=""     />
+                    <input type="password" name="password_mini" class="big" required />
                 </label>
-                <label>{% trans "Password" %} <small>({% trans "Again" %})</small><br />
-                    <input type="password" name="password_mini_conf" class="big tabtitle" value=""    />
+                <label>{% trans "Password" %} <small>({% trans "Confirmation" %})</small><br />
+                    <input type="password" name="password_mini_conf" class="big tabtitle" required />
                 </label>
                 <label>
-                     <input type="submit" name="submit" value="{% trans "Change" %}" class="mini" />
+                     <input type="submit" name="submit" value="{% trans "Save" %}" class="mini" />
                      <input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />
                 </label>
             </fieldset>
@@ -243,20 +233,18 @@ GNU General Public License for more details.
 
     <!-- change e-mail -->
     <div class="form_mini email_mini">
-        <form action="/user/{{ profile.person.id }}/saveemail/" method="post" class="email" id="email_change_form">
+        <form action="/user/{{ profile.person.id }}/saveemail/" method="post" class="pwd">
             <fieldset>
                 <legend>{% trans "Change e-mail" %}</legend>
-
-                <div id="msg_area" class="error" style="opacity: 1; display: none;">{% trans "E-mail not match. Try again."%}</div>
 
                 <label>{% trans "E-mail" %}<br />
                     <input type="email" name="email_mini" class="big" required />
                 </label>
-                <label>{% trans "E-mail" %} <small>({% trans "Again" %})</small><br />
+                <label>{% trans "E-mail" %} <small>({% trans "Confirmation" %})</small><br />
                     <input type="email" name="email_mini_conf" class="big tabtitle" required />
                 </label>
                 <label>
-                     <input type="submit" name="submit" value="{% trans "Salvar" %}" class="mini" id="change_email_form" onClick="jsupdateemail()"/>
+                     <input type="submit" name="submit" value="{% trans "Salvar" %}" class="mini" />
                      <input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />
                 </label>
             </fieldset>

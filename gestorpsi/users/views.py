@@ -188,23 +188,29 @@ def update_user(request, object_id):
 
 
 @permission_required_with_403('users.users_write')
-def update_pwd(request, object_id=0):
+def update_pwd(request, obj=False):
+
+    if not obj:
+        return HttpResponseRedirect('/')
+
+    # check blank fields
     if not request.POST.get('password_mini') or not request.POST.get('password_mini_conf'):
         messages.error(request, _('All fields are required'))
-        return HttpResponseRedirect('/user/%s/' % object_id)
+        return HttpResponseRedirect('/user/%s/' % obj)
         
+    # check match fields
     if request.POST.get('password_mini') != request.POST.get('password_mini_conf'):
         messages.error(request, _('Password confirmation does not match. Please try again'))
-        return HttpResponseRedirect('/user/%s/' % object_id)
+        return HttpResponseRedirect('/user/%s/' % obj)
 
-    user = Profile.objects.get(person = object_id, person__organization=request.user.get_profile().org_active).user
+    user = Profile.objects.get(person = obj, person__organization=request.user.get_profile().org_active).user
     user.set_password(request.POST.get('password_mini'))
     user.profile.temp = request.POST.get('password_mini')    # temporary field (LDAP)
     user.profile.save()
     user.save(force_update=True)
 
     messages.success(request, _('Password updated successfully!'))
-    return HttpResponseRedirect('/user/%s/' % object_id)
+    return HttpResponseRedirect('/user/%s/' % obj)
 
 
 @permission_required_with_403('users.users_write')
@@ -221,7 +227,7 @@ def set_form_user(request, object_id=0):
 def order(request, profile_id = None):
     object = Profile.objects.get(pk = profile_id, person__organization=request.user.get_profile().org_active)
     if request.user.get_profile() == object:
-        messages.success(request, ('Sorry, you can not disable yourself!'))
+        messages.error(request, _('Sorry, you can not disable yourself'))
     else:
         if object.user.is_active:
             object.user.is_active = False
@@ -264,21 +270,26 @@ def username_is_available(request, user):
 
 
 @permission_required_with_403('users.users_write')
-def update_email(request, object_id=0):
+def update_email(request, obj=False):
+
+    # obj format is required by urls.py
+    if not obj:
+        return HttpResponseRedirect('/')
     
-    email=request.POST.get('email_mini')
-    email_conf=request.POST.get('email_mini_conf')
+    if not request.POST.get('email_mini') == request.POST.get('email_mini_conf') \
+            or not request.POST.get('email_mini') \
+            or not request.POST.get('email_mini_conf'):
+
+        messages.error(request, _('Email address do not match'))
+        return HttpResponseRedirect( '/user/%s/' % obj )
     
-    if email != email_conf or email == '' or email_conf == '':
-        messages.error(request, _('Emails Invalid'))
-        return HttpResponseRedirect('/user/%s/' % object_id)
+    user = Profile.objects.get( person=obj, person__organization=request.user.get_profile().org_active ).user
     
-    user = Profile.objects.get( person=object_id, person__organization=request.user.get_profile().org_active ).user
-    
-    user.email=email
+    user.email=request.POST.get('email_mini')
     user.save()
-    user.profile.temp = email
+
+    user.profile.temp = request.POST.get('email_mini')
     user.profile.save()
     
     messages.success(request, _('Email updated successfully!'))
-    return HttpResponseRedirect('/user/%s/' % object_id)
+    return HttpResponseRedirect('/user/%s/' % obj)

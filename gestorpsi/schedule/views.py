@@ -128,7 +128,7 @@ def add_event(
 
             if not request.POST.get('group'): # booking single client
                 '''
-                    Create a payment for each event when event by pack or occurrence
+                    Create a payment for each upcoming event when event by pack or occurrence
                     Event per period will be created by script run by crontab everyday
                 '''
                 # check if occurrences have one payment by pack or event opened

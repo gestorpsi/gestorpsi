@@ -24,10 +24,19 @@ $(document).ready(function(){
    */
 	var userAgent = navigator.userAgent.toLowerCase(); 
 	$.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
+
+    alert($.browser.chrome);
+    alert($.browser.msie);
+    alert(window.navigator.userAgent);
+
 	if($.browser.chrome)
 	{
 		$('div.login .ff_not_ok').hide();
 	}
+
+    if ( !$.browser.msie ) {
+      alert( $.browser.version );
+    }
 });
 
 

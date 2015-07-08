@@ -21,16 +21,34 @@ GNU General Public License for more details.
 {% block title %}{% trans "Log in" %}{% endblock %}
 
 {% block content %}
-    <h1>{% trans "Welcome to GestorPsi" %}</h1>
 
-    <div class="ff_not_ok" style="text-align: left;">
-        <img src="/media/img/logos/chrome-icon.png" style="width: 128px; height: 128px; margin-top: 15px; margin-right: 10px;">
-        <br>
-        {% trans "Your browser is not compatible with and some functions can not work well" %}.
-        <br>
-        {% trans "Please, get the latest version of" %} <a target="_blank" href="https://www.google.com/chrome">{% trans "Google Chrome" %}</a> {% trans "to get all features running" %}
-        {% trans "or" %} {% trans "continue with restricted features" %}.<br /><span class="read_more"><a href="http://www.gestorpsi.com.br/trac/wiki/Chrome" target="_blank">{% trans "Read more" %}</a>
+    <div class="browser_alert" style="float:none; text-align:justify; background:#ececec none repeat scroll 0 0; padding:25px; display:none;" >
+        <p style="font-weight: bold; font-size:15px;">
+            {% trans "Your browser is not compatible with and some functions can not work well" %}
+        </p>
+
+        <br />
+
+        <p style="font-weight: bold; font-size:15px;">
+            {% trans "Please, do free download of latest version of your preferred browser." %}
+        </p>
     </div>
+
+    <div class="browser_alert" style="height:110px; border:0px dotted; display:block; background:#ececec none repeat scroll 0 0; display:none;" >
+        <div style="width:50%; float: left;">
+            <a href="https://www.google.com/chrome" target="_blank">
+                <img src="/media/img/logos/chrome-icon.png" >
+            </a>
+        </div>
+
+        <div style="width:50%; float: left;">
+            <a href="https://www.mozilla.org/pt-BR/firefox/new/" target="_blank">
+                <img src="/media/img/logos/firefox-icon.png" >
+            </a>
+        </div>
+    </div>
+
+    <h1>{% trans "Welcome to GestorPsi" %}</h1>
 
     <form method="post" action="/accounts/authentication/" id="form_login" class="ff_ok">
 

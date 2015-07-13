@@ -23,7 +23,7 @@ from swingtime.models import Occurrence
 
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
-from gestorpsi.referral.models import Referral, Queue, ReferralExternal, ReferralAttach
+from gestorpsi.referral.models import Referral, Queue, ReferralExternal, ReferralAttach, REFERRAL_ATTACH_TYPE
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.financial.models import Payment
 
@@ -121,6 +121,17 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
         indication = None
 
     attachs = ReferralAttach.objects.filter(referral = referral_id)
+
+    # Finding if the user is a secretary or a psychologist.
+    is_secretary = user.get_profile().person.is_secretary()
+    is_professional = user.get_profile().person.is_careprofessional()
+    is_psychologist = False
+
+    if is_professional:
+        if str(user.get_profile().person.careprofessional.professionalIdentification.profession) == "Psicólogo":
+            is_psychologist = True
+
+    types = REFERRAL_ATTACH_TYPE
 
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
     

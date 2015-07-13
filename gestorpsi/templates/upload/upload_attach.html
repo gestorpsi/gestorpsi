@@ -25,73 +25,127 @@ GNU General Public License for more details.
 {% endblock %}
 
 {% block core %}
-<input type="hidden" name="object_id" value="{{ object.id }}" />
 
-<h2 id="title_addressbook" style="display:none"></h2>
+    <h2 id="title_addressbook" style="display:none"></h2>
 
 	<h2 class="title_clients title">{{ object.person.name }} {% trans "in" %} {{ referral }}</h2>
-	<p class="description">{% trans "Client subscribed in this service since" %} {{ referral.date|date:"d" }} {% trans "of" %} {{ referral.date|date:"F" }} {% trans "of" %} {{ referral.date|date:"Y" }}<br />	
+	<p class="description">{% trans "Client subscribed in this service since" %} {{ referral.date|date:"d" }} {% trans "of" %} {{ referral.date|date:"F" }} {% trans "of" %} {{ referral.date|date:"Y" }}<br /></p>
 
-</p>
+    <div class="main_area">
 
-<div class="main_area">
-<form action="/upload/{{ object.id}}/{{ referral.id }}/attach/save/" method="post" name="attach" enctype="multipart/form-data" class="upload_referral">
+        <form action="/upload/{{ object.id}}/{{ referral.id }}/attach/save/" method="post" name="attach" enctype="multipart/form-data" class="upload_referral">
 
-<fieldset>
- <legend>Mídias</legend>
-        <div id="documents">
-                <!-- Aparece quando "Anexar Documento", desaparece após
- enviar arquivo, podem haver vários-->
-                <div class="documents_form">
-                <label>Arquivo<br />
+            <input type="hidden" name="object_id" value="{{ object.id }}" />
+            <input type="hidden" name="client_id" value="{{ object.id }}" />
 
-                <input type="file" class="file" name="file" required />
+            <fieldset>
+                <legend>Novo anexo</legend>
+                <div id="documents">
+                    <div class="documents_form">
 
-                </label>
-                <label>Tipo de documento<br />
-                <select name="doc_type" class="big">
-                        {% for type in types %}
-                            <option value="{{ type.0 }}">{{ type.1 }}</option>
-                        {% endfor %}
-                </select></label>
+                        <label>Arquivo<br /><input type="file" class="file" name="file" required /></label>
 
-                <label>Assunto do documento<br />
-                <input name="description" type="text" class="big" /></label>
-                <label><input name="" type="submit" class="btn" value="Enviar Arquivo" /></label>
+                        <label>Permiss&atilde;o de leitura
+                            <br /><input type="checkbox" id="onlyprofessionals" name="onlyprofessionals" value="True" />&nbsp;Profissional
+                            <br /><input type="checkbox" id="onlypsychologists" name="onlypsychologists" value="True" />&nbsp;Psicólogo
+                        </label>
+
+                        <label>Tipo de documento<br />
+                            <select name="doc_type" class="big">
+                                    {% for type in types %}
+                                        <option value="{{ type.0 }}">{{ type.1 }}</option>
+                                    {% endfor %}
+                            </select>
+                        </label>
+
+                        <label>Assunto do documento<br /><input name="description" type="text" class="big" /></label>
+
+                        <label><input type="submit" class="btn" value="Enviar Arquivo" /></label>
+
+                    </div>
+
+                    <br class="newline" />
+                    <br />
+
                 </div>
+            </fieldset>
+        </form>
 
-                <br class="newline" />
-                <br />
 
-    {% if attachs %}
-        {% for a in attachs %}
-                <table class="nozebra">
-                        <tr>
-                                <td nowrap="nowrap"><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
-                                <td><span  class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
-                                <td><span>{% for t in types %}
-                                            {% ifequal a.type t.0 %}</span>{{ t.1 }}:<br /> {{ a.description }} </td> {% endifequal %} {% endfor %}
-                                <td> {# <a href="" class="edit" title="editar"><span>Edit</span></a> #}</td>
-                                <td> {# <a href="" class="delete" title="delete" ><span>Delete</span></a> #}</td>
-                        </tr>
-                        <tr>
-                </table>
-        {% endfor %}
-    {% else %}
+        {% if attachs %}
+          <form> <!-- just for layout right -->
+            <fieldset>
+                <legend>Anexos</legend>
+                <div id="documents">
+                    <div class="documents_form">
+                        <table>
+
+                            <!-- title column table -->
+                            <tr>
+                                <td>Data</td>
+                                <td>Arquivo</td>
+                                <td>Assunto</td>
+                                <td>Permiss&atilde;o leitura</td>
+                            </tr>
+
+                            {% for a in attachs %}
+                                <tr width="300px;">
+
+                                    <td style="width:15%" ><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
+
+                                    <td style="width:25%"><span class="pdf">
+                                                
+                                        {% if is_psychologist %}
+                                                    <a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename|truncatechars:25 }}</a></span></td>
+                                        {% elif is_secretary and a.only_psychologists%}
+                                            {{ a.filename|truncatechars:20 }}
+                                        {% elif is_secretary and a.only_professionals %}
+                                            {{ a.filename|truncatechars:20 }}
+                                        {% elif  is_professional and  a.only_psychologists %}
+                                            {{ a.filename|truncatechars:20 }}
+                                        {% else %}
+                                            <a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a>
+                                        {% endif %}
+
+                                    </td>
+
+                                    <td style="width:40%">
+                                        {% for t in types %}{% ifequal a.type t.0 %}<span>{{ t.1 }}<br />{{ a.description }}</span> {% endifequal %}{% endfor %}
+                                    </td>
+
+                                    <td style="width:15%">
+                                        <span>
+                                            {% if a.only_psychologists %}
+                                                psicologo<br/>
+                                            {% endif %}
+
+                                            {% if a.only_professionals %}
+                                                Profissional
+                                            {% endif %}
+                                        </span>
+                                    </td>
+                                    
+                                </tr>
+                            {% endfor %}
+
+                        </table>
+                    </div>
+                </div>
+            </fieldset>
+            <br />
+          </form>
+
+        {% else %}
              <p class="empty">Nenhum documento anexado</p>
-             <br />
-    {% endif %}
+        {% endif %}
 
-   </fieldset>
-  </form>
- <br />
-</div>
+    </div><!-- main area -->
 
-<div id="sidebar" class="sidebar_client_top">
-    {% if object.id %}
-        {% include "tags/client_sidebar.html" %}
-    {% endif %}
-</div>
-<input type="hidden" name="client_id" value="{{ object.id }}" />
+
+    <div id="sidebar" class="sidebar_client_top">
+        {% if object.id %}
+            {% include "tags/client_sidebar.html" %}
+        {% endif %}
+    </div>
 
 {% endblock %}

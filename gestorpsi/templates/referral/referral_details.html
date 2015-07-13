@@ -191,23 +191,58 @@ GNU General Public License for more details.
 {% endif %}
 
 {% if attachs %}
-<div class="main_area home">
-	<h3><span>{% trans "Attach" %}</span></h3>
-    
-        {% for a in attachs %}
-                <table class="nozebra">
-                        <tr>
-                                <td nowrap="nowrap"><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
-                                <td><span  class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
-                                <td><span>{% for t in types %}
-                                            {% ifequal a.type t.0 %}</span>{{ t.1 }}:<br /> {{ a.description }} </td> {% endifequal %} {% endfor %}
-                                <td>{# <a href="" class="edit" title="editar"><span>Edit</span></a> #}</td>
-                                <td>{# <a href="" class="delete" title="delete" ><span>Delete</span></a> #}</td>
+    <div class="main_area home">
+        <h3><span>{% trans "Attach" %}</span></h3>
+
+        <div id="documents">
+            <div class="documents_form">
+                <table>
+
+                    {% for a in attachs %}
+                        <tr width="300px;">
+
+                            <td style="width:15%" ><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
+
+                            <td style="width:25%"><span class="pdf">
+                                        
+                                {% if is_psychologist %}
+                                            <a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename|truncatechars:25 }}</a></span></td>
+                                {% elif is_secretary and a.only_psychologists%}
+                                    {{ a.filename|truncatechars:20 }}
+                                {% elif is_secretary and a.only_professionals %}
+                                    {{ a.filename|truncatechars:20 }}
+                                {% elif  is_professional and  a.only_psychologists %}
+                                    {{ a.filename|truncatechars:20 }}
+                                {% else %}
+                                    <a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a>
+                                {% endif %}
+
+                            </td>
+
+                            <td style="width:40%">
+                                {% for t in types %}{% ifequal a.type t.0 %}<span>{{ t.1 }}<br />{{ a.description }}</span> {% endifequal %}{% endfor %}
+                            </td>
+
+                            <td style="width:15%">
+                                <span>
+                                    {% if a.only_psychologists %}
+                                        psicologo<br/>
+                                    {% endif %}
+
+                                    {% if a.only_professionals %}
+                                        Profissional
+                                    {% endif %}
+                                </span>
+                            </td>
+                            
                         </tr>
-                        <tr>
+                    {% endfor %}
+
                 </table>
-        {% endfor %}
-</div>
+            </div>
+        </div>
+        
+    </div>
 {% endif %}
 
 

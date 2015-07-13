@@ -40,9 +40,8 @@ class ReferralForm(forms.ModelForm):
     annotation = forms.CharField(widget=forms.Textarea(), required = False)
     referral_reason = forms.CharField(widget=forms.Textarea(), required = False)
     available_time = forms.CharField(widget=forms.Textarea(), required = False)
-    priority = forms.ModelChoiceField(queryset=ReferralPriority.objects.all(), required = False, widget=forms.Select(attrs={'class':'extramedium', }))
-    impact = forms.ModelChoiceField(queryset=ReferralImpact.objects.all(), required = False, widget=forms.Select(attrs={'class':'giant', }))
-    covenant = forms.ModelMultipleChoiceField( queryset=Covenant.objects.none(), required=False )
+    priority = forms.ModelChoiceField(queryset=ReferralPriority.objects.all(), required=False, widget=forms.Select(attrs={'class':'extramedium', }))
+    impact = forms.ModelChoiceField(queryset=ReferralImpact.objects.all(), required=False, widget=forms.Select(attrs={'class':'giant', }))
     
     class Meta:
         fields = ('client', 'service', 'professional', 'annotation', 'referral', 'annotation', 'referral_reason', 'available_time', 'priority', 'impact', 'covenant')
@@ -67,9 +66,11 @@ class ReferralForm(forms.ModelForm):
         # new register
         except:
             self.fields['covenant'] = forms.ModelMultipleChoiceField(
-                                        queryset=Covenant.objects.none(),
+                                        queryset=Covenant.objects.filter( organization=request.user.get_profile().org_active, active=True ),
                                         required=False,
                                     )
+            pass
+
 
         if hasattr(self,'instance') and self.instance.id:
             if self.instance.service.is_group:

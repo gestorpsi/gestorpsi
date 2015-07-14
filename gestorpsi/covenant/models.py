@@ -37,8 +37,8 @@ CHARGE = (
             (10,u'Semanal (individual)'),
             (11,u'Quinzenal (individual)'),
             (12,u'Mensal (individual)'),
-            (13,u'Bimestral (individual)'),
-            (14,u'Semestral (individual)'), 
+            #(13,u'Bimestral (individual)'),
+            #(14,u'Semestral (individual)'), 
         )
     ),
 )

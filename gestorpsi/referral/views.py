@@ -91,7 +91,7 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     '''
     # event
     payment_event = []
-    for o in Occurrence.objects.filter(payment__covenant_charge=1, event__referral=referral).order_by('-id'):
+    for o in Occurrence.objects.filter(payment__covenant_charge=1, event__referral=referral).order_by('id'):
         tmp = []
         tmp.append(o)
 

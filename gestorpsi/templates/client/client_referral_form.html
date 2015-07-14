@@ -133,31 +133,33 @@ GNU General Public License for more details.
             </label>
         </fieldset>
 
-            
         <!-- profissional combobox -->
-        <label style="margin-right:235px;" for="id_professional">{% trans "Professionals available" %}</label>
-        <label for="id_professional">{% trans "Professionals selected" %}</label>
-        <div style="clear:both; margin-left:10px;" class="referral_form_professional{% if referral.id %} check_change{% endif %}{% if not referral.id %} hide_on_first{% endif %}">
-            {{ referral_form.professional }}
-        </div> 
-        {% if referral_form.instance %}
-            <script>
-                $('select#id_professional').multiSelect();
-            </script>
-        {% endif %}
-
+        <div id='professional-div-id' style="{% if not referral.id %} display:none; {% endif %}" >
+            <label style="margin-right:235px;" for="id_professional">{% trans "Professionals available" %}</label>
+            <label for="id_professional">{% trans "Professionals selected" %}</label>
+            <div style="clear:both; margin-left:10px;" class="referral_form_professional{% if referral.id %} check_change{% endif %}{% if not referral.id %} hide_on_first{% endif %}">
+                {{ referral_form.professional }}
+            </div> 
+            {% if referral_form.instance %}
+                <script>
+                    $('select#id_professional').multiSelect();
+                </script>
+            {% endif %}
+        </div>
 
         <!-- covenant combobox -->
-        <label style="margin-right:255px;" for="id_covenant">{% trans "Conv&ecirc;nio dispon&iacute;vel" %}</label>
-        <label for="id_covenant">{% trans "Conv&ecirc;nio selecionado" %}</label>
-        <div style="clear:both; margin-left:10px;" class="referral_form_covenant">
-            {{ referral_form.covenant }}
-        </div> 
-        {% if referral_form.instance %}
-            <script>
-                $('select#id_covenant').multiSelect();
-            </script>
-        {% endif %}
+        <div id='covenant-div-id' style="{% if not referral.id %} display:none; {% endif %}" >
+            <label style="margin-right:255px;" for="id_covenant">{% trans "Conv&ecirc;nio dispon&iacute;vel" %}</label>
+            <label for="id_covenant">{% trans "Conv&ecirc;nio selecionado" %}</label>
+            <div style="clear:both; margin-left:10px;" class="referral_form_covenant">
+                {{ referral_form.covenant }}
+            </div> 
+            {% if referral_form.instance %}
+                <script>
+                    $('select#id_covenant').multiSelect();
+                </script>
+            {% endif %}
+        </div>
 
         <label style="display:none">{% trans "Clients" %}<br /> {{ referral_form.client }} </label>
 

@@ -404,7 +404,7 @@ GNU General Public License for more details.
                     <small>
                         {{ x.status_color_|safe }}
 
-                        {{ x.name }} - {% ifequal x.covenant_charge 2 %}<b><i>Pacote</i></b> ({{ x.id }}) com {{ x.covenant_pack_size }} Sess&otilde;es.<b>{{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% endifequal %}</b> | <b><i>Total</i></b> {{ x.total }} | <b><i>Situa&ccedil;&atilde;o</i></b> {{ x.get_status_display }} | <b><i>Forma pagto</i></b> {% for x in x.get_display_payment_way_name_ %} {{ x }}, {% endfor %} 
+                        {{ x.name }} - {% ifequal x.covenant_charge 2 %}<b><i>Pacote</i></b> com {{ x.covenant_pack_size }} Sess&otilde;es.<b>{{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% endifequal %}</b> | <b><i>Total</i></b> {{ x.total }} | <b><i>Situa&ccedil;&atilde;o</i></b> {{ x.get_status_display }} | <b><i>Forma pagto</i></b> {% for x in x.get_display_payment_way_name_ %} {{ x }}, {% endfor %} 
 
                         <br />
 

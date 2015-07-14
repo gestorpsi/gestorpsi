@@ -197,6 +197,10 @@ function referral_edit(select_field) {
             $('label[for="id_covenant"]').show();
             $('label[for="id_professional"]').show();
         }
+
+        // show selects
+        $('div#covenant-div-id').show();
+        $('div#professional-div-id').show();
 }
 
 

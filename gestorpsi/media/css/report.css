@@ -41,6 +41,13 @@ table.saved_itens tbody { overflow: auto; height: 200px; overflowy: scroll; }
 div.report_main h3 { margin: 40px 0 10px 20px;}
 
 div.loaded_report_title { padding: 0px 0px 0px 15px; color: #444444;}
+
+/*
+ * report payment
+ */
+table.report_list_payment { width: 100%; padding: 10px 0px 20px 0px; }
+table.report_list_payment tr.odd, ul li.odd { background-color: #ececec; }
+
 /**
 * report forms
 */

@@ -14,13 +14,13 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from datetime import datetime
 from ast import literal_eval
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.client.models import Client
-#from gestorpsi.covenant.models import CHARGE
 from swingtime.models import Occurrence
 
 CHARGE = ( 
@@ -123,3 +123,9 @@ class Payment(models.Model):
             pass
 
         return r
+
+
+    def save(self, *args, **kwargs):
+        self.created = datetime.now()
+        # real save
+        super(Payment, self).save(*args, **kwargs)

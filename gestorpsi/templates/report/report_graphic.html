@@ -13,7 +13,7 @@
         data.addRows( rows );
 
         // Set chart options
-        var options = {'width':500,
+        var options = {'width':920,
                        'height':330,
                        colors: ['red', 'green', 'orange', 'blue'],
         };
@@ -44,7 +44,7 @@
         </table>
 
         <div style="text-align:center; margin-top: 35px;">
-            <h1>Lista de pagamentos</h1>
+            <h1>Lista de pagamento</h1>
             <br />
             <br />
         </div>
@@ -54,27 +54,61 @@
 
                <div style='background-color:{{ x.2 }}; vertical-align:middle; padding: 0 15px; font-size: 15px; font-weight: bold; color: white; '>{{ x.0 }}</div>
 
-               <table class="report_list">
+               <table class="report_list_payment">
 
                  <tbody>
                     <tr class="legend"> 
-                        <th>Nome</th> 
-                        <th>Data</th> 
+                        <th>Cliente</th> 
+                        <th>Conv&ecirc;nio</th> 
+                        <th>Cobran&ccedil;a</th> 
+                        <th>Data lan&ccedil;amento</th> 
+                        <th>Data evento</th> 
                         <th>Servi&ccedil;o</th> 
-                        <th>Valor</th> 
+                        <th>Valor R$</th> 
                     </tr> 
 
                     {% for c in x.1 %}
                         <tr class="{% cycle 'odd' 'even' %}">
+
                             <td style="text-align:center;">
-                                {{ c.occurrence.all.0.event.referral.client.all.0 }}
+                                {% if c.referral %}
+                                    <a href="/client/{{ c.referral.client.all.0.id }}/home/" target="_blank">{{ c.referral.client.all.0 }}</a>
+                                    
+                                {% else %}
+                                    <a href="/client/{{ c.occurrence.all.0.event.referral.client.all.0.id }}/home/" target="_blank">{{ c.occurrence.all.0.event.referral.client.all.0 }}</a>
+                                {% endif %}
                             </td>
+
+                            <td style="text-align:center;">
+                                {{ c.name }}
+                            </td>
+
+                            <td style="text-align:center;">
+                                {% ifequal c.covenant_charge 2 %}
+                                {{ c.get_covenant_charge_display }} ({{ c.covenant_pack_size }}) {% if c.terminated_ %}F{% else %}NF{% endif %}
+                                {% else %}
+                                    {{ c.get_covenant_charge_display }}
+                                {% endifequal %}
+                            </td>
+
                             <td style="text-align:center;">
                                 {{ c.created|date:"D, d b Y" }}
                             </td>
+
                             <td style="text-align:center;">
-                                {{ c.occurrence.all.0.event.referral.service }}
+                                {% if c.occurrence.all.0.id %}
+                                    <a href="/schedule/events/{{ c.occurrence.all.0.id }}/confirmation/" target="_blank">{{ c.occurrence.all.0.start_time|date:"D, d b Y - H:i" }}</a>
+                                {% endif %}
                             </td>
+
+                            <td style="text-align:center;">
+                                {% if c.referral %}
+                                    <a href="/client/{{ c.referral.client.all.0.id }}/referral/{{ c.referral.id }}/" target="_blank">{{ c.referral.service }} #{{ c.referral.seq }}</a>
+                                {% else %}
+                                    <a href="/client/{{ c.occurrence.all.0.event.referral.client.all.0.id }}/referral/{{ c.occurrence.all.0.event.referral.id }}/" target="_blank">{{ c.occurrence.all.0.event.referral.service }} #{{ c.occurrence.all.0.event.referral.seq }}</a>
+                                {% endif %}
+                            </td>
+
                             <td style="text-align:center;">
                                 {{ c.total }}
                             </td>
@@ -82,10 +116,18 @@
                     {% endfor %}
 
                     <!-- total -->
-                        <tr><td>&nbsp;</td></tr>
                         <tr class="odd">
                             <td style="text-align:center; font-weight:bold;">
                                 Valor total
+                            </td>
+                            <td style="text-align:center; font-weight:bold;">
+                                Todos
+                            </td>
+                            <td style="text-align:center; font-weight:bold;">
+                                Todos
+                            </td>
+                            <td style="text-align:center; font-weight:bold;">
+                                Todos
                             </td>
                             <td style="text-align:center; font-weight:bold;">
                                 Todos
@@ -100,6 +142,7 @@
 
                  </tbody>
                </table>
+
             {% endif %}
         {% endfor %}
 

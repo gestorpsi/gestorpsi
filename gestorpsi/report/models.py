@@ -125,10 +125,10 @@ class Report(models.Model):
 
         # overview of all status
         # date range, all professional and all services
-        aberto = Payment.objects.filter(status=0, created__gte=date_start, created__lte=date_end )
-        pago = Payment.objects.filter(status=1, created__gte=date_start, created__lte=date_end )
-        faturado = Payment.objects.filter(status=2, created__gte=date_start, created__lte=date_end )
-        cancelado = Payment.objects.filter(status=3, created__gte=date_start, created__lte=date_end )
+        aberto = Payment.objects.filter(status=0, created__gte=date_start, created__lte=date_end ).order_by('-created')
+        pago = Payment.objects.filter(status=1, created__gte=date_start, created__lte=date_end ).order_by('-created')
+        faturado = Payment.objects.filter(status=2, created__gte=date_start, created__lte=date_end ).order_by('-created')
+        cancelado = Payment.objects.filter(status=3, created__gte=date_start, created__lte=date_end ).order_by('-created')
         total_payment = aberto.count()+pago.count()+faturado.count()+cancelado.count()
 
         # graphic
@@ -148,19 +148,19 @@ class Report(models.Model):
             payment_ar = ['0','1','2','3'] # all
         else:
             if payment == '0':
-                aberto = Payment.objects.filter(status=0, created__gte=date_start, created__lte=date_end )
+                #aberto = Payment.objects.filter(status=0, created__gte=date_start, created__lte=date_end )
                 payment_ar.append('0')
 
             if payment == '1':
-                pago = Payment.objects.filter(status=1, created__gte=date_start, created__lte=date_end )
+                #pago = Payment.objects.filter(status=1, created__gte=date_start, created__lte=date_end )
                 payment_ar.append('1')
 
             if payment == '2':
-                faturado = Payment.objects.filter(status=2, created__gte=date_start, created__lte=date_end )
+                #faturado = Payment.objects.filter(status=2, created__gte=date_start, created__lte=date_end )
                 payment_ar.append('2')
 
             if payment == '3':
-                cancelado = Payment.objects.filter(status=3, created__gte=date_start, created__lte=date_end )
+                #cancelado = Payment.objects.filter(status=3, created__gte=date_start, created__lte=date_end )
                 payment_ar.append('3')
 
         # filter by service
@@ -190,6 +190,14 @@ class Report(models.Model):
         total_cancelado = 0
         for x in cancelado:
             total_cancelado += x.total
+
+        '''
+            array
+                0 = Status label
+                1 = list of payment. Payment object
+                2 = color of status
+                3 = sum total of status
+        '''
 
         # list of clients and counter %
         if '0' in payment_ar :

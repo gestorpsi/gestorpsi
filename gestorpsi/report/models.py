@@ -148,31 +148,27 @@ class Report(models.Model):
             payment_ar = ['0','1','2','3'] # all
         else:
             if payment == '0':
-                #aberto = Payment.objects.filter(status=0, created__gte=date_start, created__lte=date_end )
                 payment_ar.append('0')
 
             if payment == '1':
-                #pago = Payment.objects.filter(status=1, created__gte=date_start, created__lte=date_end )
                 payment_ar.append('1')
 
             if payment == '2':
-                #faturado = Payment.objects.filter(status=2, created__gte=date_start, created__lte=date_end )
                 payment_ar.append('2')
 
             if payment == '3':
-                #cancelado = Payment.objects.filter(status=3, created__gte=date_start, created__lte=date_end )
                 payment_ar.append('3')
 
         # filter by service
-        if not service == 'all':
+        if not service == '':
             if '0' in payment_ar :
-                aberto = aberto.filter(occurrence__event__referral__service=service )
+                aberto = aberto.filter(occurrence__event__referral__service=service ).distinct()
             if '1' in payment_ar :
-                pago = pago.filter(occurrence__event__referral__service=service )
+                pago = pago.filter(occurrence__event__referral__service=service ).distinct()
             if '2' in payment_ar :
-                faturado = faturado.filter(occurrence__event__referral__service=service )
+                faturado = faturado.filter(occurrence__event__referral__service=service ).distinct()
             if '3' in payment_ar :
-                cancelado = cancelado.filter(occurrence__event__referral__service=service )
+                cancelado = cancelado.filter(occurrence__event__referral__service=service ).distinct()
 
         # amount of earch status
         total_aberto = 0
@@ -932,6 +928,7 @@ class ReportReferralManager(models.Manager):
         if not service:
             data.append({'title': _('Discharges Discussed with Client'), 'data': ReportReferral.objects.service_discharges(range, organization, date_start, date_end, True, False, service), 'chart_url': ReportReferral.objects.service_discharges(range, organization, date_start, date_end, True, True, service)})
 
+        #print range, organization
         data.append({'title': _('Professional Subscriptions'), 'data': ReportReferral.objects.professionals(range, organization)})
 
         return data
@@ -1139,14 +1136,3 @@ class ReportReferral(object):
         abstract = True
 
     objects = ReportReferralManager()
-
-
-#>>> for m in MaritalStatus.objects.all():
-#...  print m, Client.objects.filter(person__maritalStatus=m).count()
-#... 
-#Casado(a) 0
-#Divorciado(a) 0
-#Separado(a) Judicial 2
-#Solteiro(a) 2
-#União Estável 1
-#Viúvo(a) 0

@@ -135,7 +135,9 @@ def report_save(request, form_class=ReportSaveAdmissionForm, view='admission', t
             raise Exception(_('Error to save register'))
 
     report = Report()
+
     date_start,date_end = report.set_date(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'))
+
     form = form_class(date_start=date_start, date_end=date_end, service=Service.objects.get(organization = request.user.get_profile().org_active, pk=request.GET.get('service')) if request.GET.get('service') else None, accumulated=request.GET.get('accumulated'))
     
     url_post = reverse('report_%s_save' % view) # url to post form

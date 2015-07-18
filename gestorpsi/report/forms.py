@@ -63,7 +63,7 @@ class ReportForm(forms.ModelForm):
         self.fields['date_end'].initial = date_end.strftime('%d/%m/%Y')
 
         # services
-        choices = [('all',_('--- Todos ---'))]
+        choices = [('',_('--- Todos ---'))]
         for i in Service.objects.filter(organization=organization, active=True):
             choices.append((i.pk, i.name))
         self.fields['service'].choices = choices

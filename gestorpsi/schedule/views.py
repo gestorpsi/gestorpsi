@@ -97,17 +97,73 @@ def add_event(
     if not 'dtstart' in request.GET:
         return http.HttpResponseRedirect('/schedule/')
 
+    if request.POST:
 
-    if request.method == 'POST':
-
-        # limit occurrence repeat
-        if int(request.POST.get('count')) > 40:
-            return render_to_response('403.html', {'object':_('Sorry. You can not book more than 40 occurrence at the same time')})
-
+        # instance form
         recurrence_form = recurrence_form_class(request.POST)
 
+        # check if co is integer
+        co = request.POST.get('count')
+        try:
+            int(co)
+        except:
+            co = 1
+
+        # limit occurrence repeat
+        if int(co) > 40:
+            #return render_to_response('403.html', {'object':_('Sorry. You can not book more than 40 occurrence at the same time')})
+            messages.error(request, _('Sorry. You can not book more than 40 occurrence at the same time'))
+
+            dtstart = parser.parse( request.GET['dtstart'] )
+            room = get_object_or_None(Room, pk=request.GET.get('room'), place__organization=request.user.get_profile().org_active)
+            client = get_object_or_None(Client, pk=request.GET.get('client'), person__organization=request.user.get_profile().org_active)
+            referral = get_object_or_None(Referral, pk=request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
+            event_form = event_form_class
+
+            return render_to_response( template,
+                                       dict(
+                                                dtstart = dtstart, 
+                                                event_form = event_form, 
+                                                recurrence_form = recurrence_form, 
+                                                group = ServiceGroup.objects.filter(service__organization = request.user.get_profile().org_active, active=True),
+                                                room = room,
+                                                object = client,
+                                                referral = referral,
+                                                room_id = room.id,
+                                            ),
+                                       context_instance=RequestContext(request)
+                    )
+
         # valid form
-        if recurrence_form.is_valid():
+        if not recurrence_form.is_valid():
+
+            #recurrence_form = recurrence_form_class( initial = dict(
+                                                                    #dtstart=dtstart, 
+                                                                    #day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"), 
+                                                                    #until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
+                                                                    #room=room.id,
+                                                                #)
+                #)
+
+            #recurrence_form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=room) | Q(mobility="2", lendable=True) | Q(place=room.place, mobility="2", lendable=False))]
+
+            return render_to_response( template,
+                                       dict(
+                                                dtstart = dtstart, 
+                                                event_form = event_form, 
+                                                recurrence_form = recurrence_form, 
+                                                group = ServiceGroup.objects.filter(service__organization = request.user.get_profile().org_active, active=True),
+                                                room = room,
+                                                object = client,
+                                                referral = referral,
+                                                room_id = room.id,
+                                            ),
+                                       context_instance=RequestContext(request)
+                    )
+
+
+        else:
+
             if not request.POST.get('group'): # booking single client
 
                 referral = get_object_or_404(Referral, pk=request.POST.get('referral'), service__organization=request.user.get_profile().org_active)
@@ -124,7 +180,6 @@ def add_event(
                         else:
                             if not event.errors:
                                 event = recurrence_form.save(group_member.referral, True) # ignore busy check
-
 
             if not request.POST.get('group'): # booking single client
                 '''
@@ -174,6 +229,7 @@ def add_event(
                             # update m2m
                             payment.save()
 
+
         if not event.errors:
             messages.success(request, _('Schedule saved successfully'))
             return http.HttpResponseRedirect(redirect_to or '/schedule/')
@@ -200,7 +256,6 @@ def add_event(
             )
 
         recurrence_form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=room) | Q(mobility="2", lendable=True) | Q(place=room.place, mobility="2", lendable=False))]
-
 
     return render_to_response( template,
                                dict(

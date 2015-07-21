@@ -7288,7 +7288,7 @@ msgstr "Número de eventos"
 
 #: templates/tags/schedule_form.html:112
 msgid "Limited about 40 occurrences for each submit"
-msgstr "Limite de 40 ocorrências para cada apresentação"
+msgstr "Máximo de 40 ocorrências para cada apresentação"
 
 #: templates/tags/schedule_form.html:122
 msgid "Occurrence Frequency"

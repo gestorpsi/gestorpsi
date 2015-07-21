@@ -928,7 +928,6 @@ class ReportReferralManager(models.Manager):
         if not service:
             data.append({'title': _('Discharges Discussed with Client'), 'data': ReportReferral.objects.service_discharges(range, organization, date_start, date_end, True, False, service), 'chart_url': ReportReferral.objects.service_discharges(range, organization, date_start, date_end, True, True, service)})
 
-        #print range, organization
         data.append({'title': _('Professional Subscriptions'), 'data': ReportReferral.objects.professionals(range, organization)})
 
         return data

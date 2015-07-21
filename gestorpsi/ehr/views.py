@@ -467,10 +467,8 @@ def session_form(request, client_id, referral_id, session_id=0):
             session.client_id = client.id
             session.referral_id = referral.id
             session.occurrence_id = ScheduleOccurrence.objects.get(pk=request.POST.get('occurrence')).id
-
             session.edit_status = _ehr_set_edit_status(request)
-
-            session.save()
+            session.save() # true commit
 
             url = '/client/%s/%s/session/%s/item/' % (client_id, referral_id, session.pk)
             return HttpResponse(simplejson.dumps({'occurrence_pk':request.POST.get('occurrence'), 'url':url}))

@@ -110,18 +110,15 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
         widget=forms.Select(choices=default_timeslot_offset_options_end)
     )
 
-    # rewrite fields from swing time for required field
+    # rewrite fields of swing time, select to avoid errors of fill. 
+    CHOICES = [(i,i) for i in range(1,121)]
     interval = forms.IntegerField(
-        required=True,
-        initial='1',
-        widget=forms.TextInput(attrs={ 'size':3, 'max_length':3, 'required':'required' , 'class':'small'} ),
+        widget=forms.Select(choices=CHOICES),
     )
 
+    CHOICES = [(i,i) for i in range(1,51)]
     count = forms.IntegerField(
-        label=_(u'Total Occurrences'),
-        initial=1,
-        required=True,
-        widget=forms.TextInput(attrs={ 'size':2, 'max_length':2, 'required':'required' , 'class':'small'} ),
+        widget=forms.Select(choices=CHOICES),
     )
     
     

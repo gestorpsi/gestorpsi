@@ -21,7 +21,7 @@ from gestorpsi.client.views import index, list, form, save, client_print, \
         referral_form, referral_discharge_form, schedule_daily, schedule_add, \
         occurrence_view, referral_occurrences, referral_plus_form, referral_plus_save, referral_queue, \
         referral_queue_save, referral_queue_remove, referral_ext_form, referral_ext_save, family, family_form, \
-        add_company, company_related, company_related_form
+        add_company, company_related, company_related_form, referral_occurrences_action
 from gestorpsi.online_messages.views import referral_messages, occurrence_chat, chat_message, update_chat_message, exit_chat, client_messages, new_message_topic, topic_messages, new_topic_message, chat_messages_history
 from gestorpsi.authentication.views import login_check
 from gestorpsi.organization.views import list_prof_org
@@ -69,6 +69,7 @@ urlpatterns = patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/plus/save/$', login_check(referral_plus_save)), # referral add plus
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/save/$', login_check(referral_save)), # referral save
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/$', login_check(referral_list)), # charged referrals list
+    url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/action/$', login_check(referral_occurrences_action), name="referral-occurrences-action"), # uncheck a event or lot.
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/(?P<type>upcoming)/$', login_check(referral_occurrences)), # upcoming occurences
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/(?P<type>past)/$', login_check(referral_occurrences)), # past occurences
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<discharged>discharged)/$', login_check(referral_list)), # descharged referrals list

@@ -58,7 +58,7 @@ from gestorpsi.schedule.forms import ScheduleOccurrenceForm
 from gestorpsi.schedule.views import add_event
 from gestorpsi.schedule.views import occurrence_confirmation_form
 from gestorpsi.schedule.forms import OccurrenceConfirmationForm
-from gestorpsi.schedule.models import ScheduleOccurrence, Occurrence
+from gestorpsi.schedule.models import ScheduleOccurrence, Occurrence, OccurrenceConfirmation
 from gestorpsi.contact.models import Contact
 from gestorpsi.util.views import get_object_or_None, write_pdf
 from gestorpsi.util.models import Cnae
@@ -990,6 +990,36 @@ def referral_occurrences(request, object_id=None, referral_id=None, type='upcomi
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     return _referral_occurrences(request, object_id, referral_id, type, 'client/client_referral_occurrences.html')
+
+
+@permission_required_with_403('schedule.schedule_list')
+def referral_occurrences_action(request, object_id=None, referral_id=None):
+    '''
+        confirmation of one or lot of occurrences
+    '''
+
+    msg = False
+    c = 0
+
+    for x in request.POST.getlist('list_occurrence'):
+
+        # get object and check org to avoid hack.
+        oc = get_object_or_404( ScheduleOccurrence, pk=x, event__referral__organization=request.user.get_profile().org_active )
+
+        ocf = OccurrenceConfirmation()
+        ocf.occurrence = oc
+        ocf.presence = request.POST.get('id_action')
+        ocf.reason = request.POST.get('reason')
+        ocf.save()
+
+        c += 1
+        msg = True
+
+    if msg:
+        messages.success(request, _(u'Ocorrência salvo com sucesso! Total de %s' % c ))
+
+    # return to list of futures events
+    return HttpResponseRedirect('/client/%s/referral/%s/upcoming/' % (object_id, referral_id) )
 
     
 @permission_required_with_403('referral.referral_read')

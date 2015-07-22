@@ -19,59 +19,94 @@ GNU General Public License for more details.
 <div class="registers_available">
 
     <h2 class="title_schedule title">{% trans "Upcoming occurrences for this referral" %}</h2>
-
     <p class="description"><a href="/careprofessional/{{ event.professional.all.0.id }}/">{{ referral.professional.all|join:", " }}</a></p>
 
-    <div class="main_area contact">
+    <form action="/client/{{ object.id }}/referral/{{ referral.id }}/action/" method="post" />
+        <div class="main_area contact">
 
-        {% if not occurrences %}
-            <div id="msg_area" class="alert no_registers_available">
-                {% trans "There is no registers available." %}<br />
-            </div>
-        {% else %}
+            {% if not occurrences %}
 
-            <fieldset>
-                <legend>Desmarcar em lote</legend>
+                <div id="msg_area" class="alert no_registers_available">
+                    {% trans "There is no registers available." %}<br />
+                </div>
 
-                <label> Motivo <br />
-                    <select>
-                        <option>Desmacar evento</option>
-                    </select>
-                </label>
-            </fieldset>
+            {% else %}
 
-            <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+                <fieldset>
+                    <legend>A&ccedil;&atilde;o em lote</legend>
 
-                <thead> 
-                    <tr> 
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr> 
-                </thead>
+                    {% comment %}
+                        id of select from class OccurrenceConfirmation
+                    {% endcomment %}
 
-                <tbody>
-                    {% for o in occurrences %}
-                        <tr class="zebra_{% cycle 0 1 %}">
-                            <td>
-                                <a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"l, d" }} {% trans "of" %} {{ o.start_time|date:"F" }} {% trans "of" %} {{ o.start_time|date:"Y" }}</a>
-                                    {% if o.scheduleoccurrence.employees_active %}<br />
-                                        {% for e in o.scheduleoccurrence.employees_active %}
-                                            <a href="/client/{{e.id }}/home/">{{ e }}</a>{% if not forloop.last %}, {% endif%}
-                                        {% endfor %}
-                                    {% endif %}
-                            </td>
+                    <label>Motivo<br>
+                        <select name="id_action" class="extrabig" id="id_category">
+                            <option value="4">Evento desmarcado</option>
+                            <option value="5">Evento remarcado</option>
+                        </select>
+                    </label>
 
-                            <td>{{ o.start_time|date:"H:i" }} - {{ o.end_time|date:"H:i" }} hs<br />{{ o.scheduleoccurrence.room }}</td>
+                    <br />
 
-                            <td><input type='checkbox' name=""></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
+                    <label>A&ccedil;&atilde;o<br />
+                        <a href="#" class="select-all-future">Marcar todos</a>
+                        |
+                        <a href="#" class="unselect-all-future">Desmarcar todos</a>
+                    </label>
 
-            </table>
-        {% endif %}
-        <br />    
+                    <label>Observa&ccedil;&atilde;o<br />
+                        <textarea cols="59" rows="2" name="reason"></textarea>
+                    </label>
 
-    </div>
+                </fieldset>
+
+                <br />
+                    Total de {{ occurrences.count }} ocorr&ecirc;ncia(s)
+                <br />
+                <br />
+
+                <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+
+                    <thead> 
+                        <tr> 
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr> 
+                    </thead>
+
+                    <tbody>
+                        {% for o in occurrences %}
+                            <tr class="zebra_{% cycle 0 1 %}">
+                                <td>
+                                    <a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"l, d" }} {% trans "of" %} {{ o.start_time|date:"F" }} {% trans "of" %} {{ o.start_time|date:"Y" }}</a>
+                                        {% if o.scheduleoccurrence.employees_active %}<br />
+                                            {% for e in o.scheduleoccurrence.employees_active %}
+                                                <a href="/client/{{e.id }}/home/">{{ e }}</a>{% if not forloop.last %}, {% endif%}
+                                            {% endfor %}
+                                        {% endif %}
+                                </td>
+                                <td>{{ o.start_time|date:"H:i" }} - {{ o.end_time|date:"H:i" }} hs<br />{{ o.scheduleoccurrence.room }}</td>
+                                <td><input type='checkbox' value="{{ o.id }}" class="occurrence_future" name="list_occurrence"></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            {% endif %}
+            <br />    
+
+        </div>
+
+        <!-- save buttom -->
+        <div id="sidebar" class="sidebar_save">
+            {% if perms.place.place_write %}
+                <div class="bg_blue">
+                    <input type="hidden" name="place" value="{{ object.id }}" />
+                    {% include "tags/save.html" %}
+                </div>    
+            {% endif %}
+        </div>
+
+    </form>
 </div>

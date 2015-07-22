@@ -15,24 +15,41 @@ GNU General Public License for more details.
 {% endcomment %}
 
 <tr>
-<td colspan="3">
-<img src="{{ d.chart_url }}" style="float:left; padding-bottom: 10px;" />
-</td>
+    <td colspan="3">
+        <img src="{{ d.chart_url }}" style="float:left; padding-bottom: 10px;" />
+    </td>
 </tr>
 
 <tr class="legend">
+
     <td>&nbsp;</td>
+
     <td>N</td>
-    {% if not d.without_percentage %}<td>%</td>{% endif %}
-</tr>
-{% for i in table_data %}
-<tr class="{% cycle 'odd' 'even' %}">
-    <td class="left" width="80%">{% if i.color %}<span style="background-color:#{{ i.color }};float:left;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;{% endif %}{% if not remove_links %}<a class="pointer report_clients"{% if i.url and i.total %} href="{{ i.url }}?date_start={{date_start|date:"d/m/Y"}}&date_end={{date_end|date:"d/m/Y"}}&service={{service}}"{% endif %}>{% endif %}{{ i.name|title }}{% if not remove_links %}</a>{% endif %}</td>
-    <td width="10%">{{ i.total }}</td>
-    {% if not d.without_percentage %}
-    <td width="10%">{{ i.percentage }}</td>
-    {% endif %}
+        {% if not d.without_percentage %}
+            <td>%</td>
+        {% endif %}
 </tr>
 
+{% for i in table_data %}
+
+    <tr class="{% cycle 'odd' 'even' %}">
+
+        <td class="left" width="80%">
+            {% if i.color %}
+                <span style="background-color:#{{ i.color }};float:left;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;
+            {% endif %}
+            
+            {% if not remove_links %}
+                <a class="pointer report_clients"{% if i.url and i.total %} href="{{ i.url }}?date_start={{date_start|date:"d/m/Y"}}&date_end={{date_end|date:"d/m/Y"}}&service={{service}}"{% endif %}>{% endif %}{{ i.name|title }}{% if not remove_links %}</a>
+            {% endif %}
+        </td>
+
+        <td width="10%">{{ i.total }}</td>
+
+        {% if not d.without_percentage %}
+            <td width="10%">{{ i.percentage }}</td>
+        {% endif %}
+
+    </tr>
 {% endfor %}
 

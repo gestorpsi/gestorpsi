@@ -26,7 +26,11 @@ GNU General Public License for more details.
 
 {% block core %}
 
-{% include "referral/referral_occurrences.html"%}
+{% ifequal  type 'upcoming' %}
+    {% include "referral/referral_occurrences_future.html" %}
+{% else %}
+    {% include "referral/referral_occurrences_past.html" %}
+{% endifequal %}
 
 {% if object.id %}
     <div id="sidebar" class="sidebar_client_top">

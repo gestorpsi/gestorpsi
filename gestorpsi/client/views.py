@@ -982,12 +982,15 @@ def occurrence_view(request, object_id = None, occurrence_id = None):
         redirect_to = '/client/%s/referral/%s/' % (object_id, occurrence.event.referral.id)
         )
 
+
 @permission_required_with_403('schedule.schedule_list')
-def referral_occurrences(request, object_id = None, referral_id = None, type = 'upcoming'):
+def referral_occurrences(request, object_id=None, referral_id=None, type='upcoming'):
+
     if not _access_check(request, get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     return _referral_occurrences(request, object_id, referral_id, type, 'client/client_referral_occurrences.html')
+
     
 @permission_required_with_403('referral.referral_read')
 def referral_queue(request, object_id = '',  referral_id = ''):

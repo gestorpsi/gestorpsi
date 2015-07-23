@@ -44,7 +44,7 @@ from gestorpsi.financial.models import Payment
 VIEWS_CHOICES = (
     (1, _('Admisssions')),
     (2, _('Referrals')),
-    (3, _('Pagamento')),
+    (3, _('Faturamento')),
 )
 
 PIE_CHART_WIDTH = 620
@@ -136,7 +136,7 @@ class Report(models.Model):
             data.append( ['Aberto',aberto.count()] )
 
         if pago.count():
-            data.append( ['Pago',pago.count()] )
+            data.append( ['Recebido',pago.count()] )
 
         if faturado.count():
             data.append( ['Faturado',faturado.count()] )
@@ -200,7 +200,7 @@ class Report(models.Model):
             list_payment.append( ['Aberto',aberto,'red',total_aberto] )
 
         if '1' in payment_ar :
-            list_payment.append( ['Pago',pago,'green',total_pago] )
+            list_payment.append( ['Recebido',pago,'green',total_pago] )
 
         if '2' in payment_ar :
             list_payment.append( ['Faturado',faturado,'orange',total_faturado] )

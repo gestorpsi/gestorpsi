@@ -19,7 +19,7 @@ GNU General Public License for more details.
 <div class="registers_available">
 
     <h2 class="title_schedule title">{% trans "Upcoming occurrences for this referral" %}</h2>
-    <p class="description"><a href="/careprofessional/{{ event.professional.all.0.id }}/">{{ referral.professional.all|join:", " }}</a></p>
+    <p class="description">Total de {{ occurrences.count }} ocorr&ecirc;ncia(s)</p>
 
     <form action="/client/{{ object.id }}/referral/{{ referral.id }}/action/" method="post" />
         <div class="main_area contact">
@@ -60,9 +60,6 @@ GNU General Public License for more details.
 
                 </fieldset>
 
-                <br />
-                    Total de {{ occurrences.count }} ocorr&ecirc;ncia(s)
-                <br />
                 <br />
 
                 <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">

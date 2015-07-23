@@ -33,7 +33,7 @@
                 <th>&nbsp;</th>
             </tr>
             <tr>
-                <th>Estat&iacute;stica de todos os prof&iacute;ssionais, servi&ccedil;os e pagamentos para o per&iacute;odo escolhido.</th>
+                <th>Estat&iacute;stica de todos os prof&iacute;ssionais, servi&ccedil;os e faturamentos para o per&iacute;odo escolhido.</th>
             </tr>
             <tr>
                 <th id='graphic'></th>
@@ -44,7 +44,7 @@
         </table>
 
         <div style="text-align:center; margin-top: 35px;">
-            <h1>Lista de pagamento</h1>
+            <h1>Faturamento no per&iacute;odo</h1>
         </div>
 
         <h4>Conbran&ccedil;a por pacote</h4>
@@ -89,7 +89,7 @@
 
                             <td style="text-align:center;">
                                 {% ifequal c.covenant_charge 2 %}
-                                {{ c.get_covenant_charge_display }} ({{ c.covenant_pack_size }}) {% if c.terminated_ %}F{% else %}NF{% endif %}
+                                    {{ c.get_covenant_charge_display }} ({{ c.covenant_pack_size }}) {% if c.terminated_ %}F{% else %}NF{% endif %}
                                 {% else %}
                                     {{ c.get_covenant_charge_display }}
                                 {% endifequal %}

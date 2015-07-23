@@ -41,11 +41,11 @@ $(function() {
 
         // select payment status 
         if( $(this).val()==3 ){
-            $('div.payment_status_filter').show();
+            $('div.receipt_status_filter').show();
             $('div.professional_filter').show();
             $('select#id_accumulated').hide();
         } else {
-            $('div.payment_status_filter').hide();
+            $('div.receipt_status_filter').hide();
             $('div.professional_filter').hide();
             $('select#id_accumulated').show();
         }
@@ -138,11 +138,11 @@ $(function() {
         if ( $('#report_filter [name = view]').val() == 3 ){ 
 
             var service = $('select#id_service').val();
-            var payment_status = $('select#id_payment_status').val();
+            var receipt_status = $('select#id_receipt_status').val();
             var professional = $('select#id_professional').val();
 
             // method get url
-            data += '&service=' + service + '&professional=' + professional + '&payment=' + payment_status;
+            data += '&service=' + service + '&professional=' + professional + '&payment=' + receipt_status;
             updatePayment(data);
         }
 

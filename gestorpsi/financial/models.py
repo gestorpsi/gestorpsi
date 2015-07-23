@@ -32,8 +32,8 @@ CHARGE = (
                     (10,u'Semanal'),
                     (11,u'Quinzenal'),
                     (12,u'Mensal'),
-                    (13,u'Bimestral'),
-                    (14,u'Semestral'), 
+                    #(13,u'Bimestral'),
+                    #(14,u'Semestral'), 
                 )
              ),
 )
@@ -41,7 +41,7 @@ CHARGE = (
 
 STATUS = ( 
         ('0',_(u'Aberto')),
-        ('1',_(u'Pago')),
+        ('1',_(u'Recebido')),
         ('2',_(u'Faturado')),
         ('3',_(u'Cancelado')),
 )

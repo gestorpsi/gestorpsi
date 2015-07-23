@@ -52,7 +52,7 @@ class PaymentFormUpdate(forms.ModelForm):
         super(PaymentFormUpdate, self).__init__(*args, **kwargs)
 
         self.fields['covenant_payment_way_selected'] = forms.MultipleChoiceField(
-            label=u'Forma de pagamento',
+            label=u'Forma de recebimento',
             required=False,
             widget=forms.CheckboxSelectMultiple( attrs={ 'class':'small' }),
             choices = get_choices( kwargs['instance'] )

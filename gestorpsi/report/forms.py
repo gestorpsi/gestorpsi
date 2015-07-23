@@ -50,7 +50,7 @@ class ReportForm(forms.ModelForm):
     clients = forms.BooleanField(label=_('Include client list'), help_text=_('If selected will a list of clients for each report sub-item'))
     accumulated = forms.ChoiceField(label=_('Accumulated Graph'), choices=GRAPH_ACCUMULATED, help_text=_('Acummulated graph?'))
     export_graph_type = forms.ChoiceField(label=_('Graph Type format'), choices=GRAPH_TYPE, help_text=_('Here you can choose which type of graph you need. Note: only for HTML format'))
-    payment_status = forms.ChoiceField(label=_('Status do pagamento'), choices=STATUS, help_text=_('Status do pagamento'))
+    receipt_status = forms.ChoiceField(label=_('Status do faturamento'), choices=STATUS, help_text=_('Status do faturamento'))
 
     class Meta:
         model = Report
@@ -69,7 +69,7 @@ class ReportForm(forms.ModelForm):
         self.fields['service'].choices = choices
 
         # payment status
-        self.fields['payment_status'].choices = tuple([(u'all', '--- Todos ---')] + list(STATUS))
+        self.fields['receipt_status'].choices = tuple([(u'all', '--- Todos ---')] + list(STATUS))
 
 
 class ReportSaveForm(forms.ModelForm):

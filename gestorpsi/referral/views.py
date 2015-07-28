@@ -20,6 +20,7 @@ from django.utils import simplejson
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from swingtime.models import Occurrence
+from datetime import datetime
 
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
@@ -82,33 +83,14 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     referrals = ReferralExternal.objects.filter(referral=referral_id)
     payments = Payment.objects.filter(occurrence__event__referral=referral)
 
-    '''
-        payment have None, 1 or N occurrences
-        array[0] = occurrence
-        array[1] = array of Payments
-        array[1][0] = Payment
-        array[1][N] = Payment
-    '''
-    # event
-    payment_event = []
-    for o in Occurrence.objects.filter(payment__covenant_charge=1, event__referral=referral).order_by('id'):
-        tmp = []
-        tmp.append(o)
+    # upcoming
+    payment_upcoming5 = Payment.objects.filter(occurrence__start_time__gte=datetime.today()).order_by('-occurrence__start_time').distinct()[0:5]
+    payment_upcoming_all = Payment.objects.filter(occurrence__start_time__gte=datetime.today()).order_by('-occurrence__start_time').distinct()[5:]
 
-        tmpp = []
-        for p in Payment.objects.filter(occurrence=o, covenant_charge=1):
-            tmpp.append(p)
-        
-        tmp.append( tmpp )
-        payment_event.append(tmp)
-        del(tmp)
-        del(tmpp)
+    # past
+    payment_past5 = Payment.objects.filter(occurrence__start_time__lte=datetime.today()).order_by('-occurrence__start_time').distinct()[0:5]
+    payment_past_all = Payment.objects.filter(occurrence__start_time__lte=datetime.today()).order_by('-occurrence__start_time').distinct()[5:]
 
-    # pack
-    payment_pack = Payment.objects.filter(covenant_charge=2, occurrence__event__referral=referral).distinct()
-
-    # period
-    payment_time = Payment.objects.filter(covenant_charge__gte=10, referral=referral).distinct()
 
     try:
         discharged = ReferralDischarge.objects.get(referral=referral)

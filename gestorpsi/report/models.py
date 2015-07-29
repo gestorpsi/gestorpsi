@@ -122,62 +122,79 @@ class Report(models.Model):
         data = []
         list_payment = []
         payment_ar = []
+        total_payment = 0
+        colors = []
 
         # overview of all status
         # date range, all professional and all services
-        aberto = Payment.objects.filter(status=0, created__gte=date_start, created__lte=date_end ).order_by('-created')
-        pago = Payment.objects.filter(status=1, created__gte=date_start, created__lte=date_end ).order_by('-created')
+        recebido = Payment.objects.filter(status=1, created__gte=date_start, created__lte=date_end ).order_by('-created')
         faturado = Payment.objects.filter(status=2, created__gte=date_start, created__lte=date_end ).order_by('-created')
         cancelado = Payment.objects.filter(status=3, created__gte=date_start, created__lte=date_end ).order_by('-created')
-        total_payment = aberto.count()+pago.count()+faturado.count()+cancelado.count()
-
-        # graphic
-        if aberto.count():
-            data.append( ['Aberto',aberto.count()] )
-
-        if pago.count():
-            data.append( ['Recebido',pago.count()] )
-
-        if faturado.count():
-            data.append( ['Faturado',faturado.count()] )
-
-        if cancelado.count():
-            data.append( ['Cancelado',cancelado.count()] )
-
-        if payment == 'all':
-            payment_ar = ['0','1','2','3'] # all
-        else:
-            if payment == '0':
-                payment_ar.append('0')
-
-            if payment == '1':
-                payment_ar.append('1')
-
-            if payment == '2':
-                payment_ar.append('2')
-
-            if payment == '3':
-                payment_ar.append('3')
+        aberto = Payment.objects.filter(status=0, created__gte=date_start, created__lte=date_end ).order_by('-created')
 
         # filter by service
         if not service == '':
+
             if '0' in payment_ar :
                 aberto = aberto.filter(occurrence__event__referral__service=service ).distinct()
+
             if '1' in payment_ar :
-                pago = pago.filter(occurrence__event__referral__service=service ).distinct()
+                recebido = recebido.filter(occurrence__event__referral__service=service ).distinct()
+
             if '2' in payment_ar :
                 faturado = faturado.filter(occurrence__event__referral__service=service ).distinct()
+
             if '3' in payment_ar :
                 cancelado = cancelado.filter(occurrence__event__referral__service=service ).distinct()
 
-        # amount of earch status
+        if payment == 'all':
+
+            payment_ar = ['0','1','2','3'] # all
+
+            # graphic pizza
+            data.append( ['Aberto',aberto.count()] )
+            data.append( ['Recebido',recebido.count()] )
+            data.append( ['Faturado',faturado.count()] )
+            data.append( ['Cancelado',cancelado.count()] )
+
+            total_payment = aberto.count()+recebido.count()+faturado.count()+cancelado.count()
+
+            colors = ['red', 'green', 'orange', 'blue']
+
+        else:
+
+            if payment == '0':
+                payment_ar.append('0')
+                data.append( ['Aberto',aberto.count()] )
+                total_payment += aberto.count()
+                colors.append('red')
+
+            if payment == '1':
+                payment_ar.append('1')
+                data.append( ['Recebido',recebido.count()] )
+                total_payment += recebido.count()
+                colors.append('green')
+
+            if payment == '2':
+                payment_ar.append('2')
+                data.append( ['Faturado',faturado.count()] )
+                total_payment += faturado.count()
+                colors.append('orange')
+
+            if payment == '3':
+                payment_ar.append('3')
+                data.append( ['Cancelado',cancelado.count()] )
+                total_payment += cancelado.count()
+                colors.append('blue')
+
+        # amount of earch status, total column
         total_aberto = 0
         for x in aberto:
             total_aberto += x.total
 
-        total_pago = 0
-        for x in pago:
-            total_pago += x.total
+        total_recebido = 0
+        for x in recebido:
+            total_recebido += x.total
 
         total_faturado = 0
         for x in faturado:
@@ -187,6 +204,7 @@ class Report(models.Model):
         for x in cancelado:
             total_cancelado += x.total
 
+
         '''
             array
                 0 = Status label
@@ -194,13 +212,12 @@ class Report(models.Model):
                 2 = color of status
                 3 = sum total of status
         '''
-
         # list of clients and counter %
         if '0' in payment_ar :
             list_payment.append( ['Aberto',aberto,'red',total_aberto] )
 
         if '1' in payment_ar :
-            list_payment.append( ['Recebido',pago,'green',total_pago] )
+            list_payment.append( ['Recebido',recebido,'green',total_recebido] )
 
         if '2' in payment_ar :
             list_payment.append( ['Faturado',faturado,'orange',total_faturado] )
@@ -211,7 +228,7 @@ class Report(models.Model):
         if not data:
             data = False
 
-        return data , date_start , date_end , list_payment, total_payment
+        return data , colors , date_start , date_end , list_payment, total_payment
         
 
     def get_referral_range(self, organization, date_start, date_end, service, accumulated):

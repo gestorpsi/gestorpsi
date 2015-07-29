@@ -443,7 +443,9 @@ GNU General Public License for more details.
             {% endif %}
         </div>
 
-        <p><a class="payment_upcoming_all">Mostrar / Esconder todos </a></p>
+        {% if payment_upcoming_all %}
+            <p><a class="payment_upcoming_all">Mostrar / Esconder todos </a></p>
+        {% endif %}
 
 
         <!-- eventos passados -->
@@ -459,7 +461,7 @@ GNU General Public License for more details.
                         <br />
 
                         {% for o in x.occurrence.all %}
-                            ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> |
+                            ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a>{% if not forloop.last %} | {% endif %}
                         {% endfor %}
                   </small>
                 </p>
@@ -479,7 +481,7 @@ GNU General Public License for more details.
                             <br />
 
                             {% for o in x.occurrence.all %}
-                                ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> |
+                            ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
                             {% endfor %}
                       </small>
                     </p>
@@ -488,7 +490,9 @@ GNU General Public License for more details.
             {% endif %}
         </div>
 
-        <p><a class="payment_past_all">Mostrar / Esconder todos </a></p>
+        {% if payment_past_all %}
+            <p><a class="payment_past_all">Mostrar / Esconder todos </a></p>
+        {% endif %}
 
     </div>
 {% endif %}

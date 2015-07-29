@@ -2,7 +2,7 @@
 
 <script type="text/javascript">
 
-    function make_graphic1(rows){ 
+    function make_graphic1(rows, colors){ 
 
         // Create the data table.
         var data = new google.visualization.DataTable();
@@ -15,7 +15,7 @@
         // Set chart options
         var options = {'width':920,
                        'height':330,
-                       colors: ['red', 'green', 'orange', 'blue'],
+                       colors: colors, 
         };
 
         // Instantiate and draw our chart, passing in some options.
@@ -154,8 +154,12 @@
             // convert Python array to JS array
             var rows = [];
             {% for i in option_rows %} rows.push( [ "{{ i.0 }}" , {{ i.1 }} ] ); {% endfor %}
+
+            var colors = [];
+            {% for i in option_colors %} colors.push( [ "{{ i }}" ] ); {% endfor %}
+
             // call graphic function 
-            make_graphic1(rows);
+            make_graphic1(rows, colors);
         </script>
 
 {% else %}

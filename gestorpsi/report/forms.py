@@ -17,6 +17,7 @@ GNU General Public License for more details.
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from gestorpsi.report.models import Report, ReportsSaved, VIEWS_CHOICES
+from gestorpsi.covenant.models import Covenant
 from gestorpsi.service.models import Service
 from gestorpsi.financial.models import STATUS, PaymentWay
 from gestorpsi.careprofessional.models import CareProfessional
@@ -52,6 +53,7 @@ class ReportForm(forms.ModelForm):
     export_graph_type = forms.ChoiceField(label=_('Graph Type format'), choices=GRAPH_TYPE, help_text=_('Here you can choose which type of graph you need. Note: only for HTML format'))
     receipt_status = forms.ChoiceField(label=_('Status do faturamento'), choices=STATUS, help_text=_('Status do faturamento'))
     payment_way = forms.ChoiceField(label=_('Forma de pagamento'), help_text=_('Forma de pagamento'))
+    cove = forms.ChoiceField( label=_(u'Convenio') )
 
     class Meta:
         model = Report
@@ -62,6 +64,12 @@ class ReportForm(forms.ModelForm):
         self.fields['accumulated'].initial = True # acummulated graph as default
         self.fields['date_start'].initial = date_start.strftime('%d/%m/%Y')
         self.fields['date_end'].initial = date_end.strftime('%d/%m/%Y')
+
+        # covenant
+        choices = [(u'all',_('--- Todos ---'))]
+        for i in Covenant.objects.filter( organization=organization, active=True ):
+            choices.append((i.pk , i ))
+        self.fields['cove'].choices = choices
 
         # services
         choices = [('',_('--- Todos ---'))]

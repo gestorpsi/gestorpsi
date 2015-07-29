@@ -58,12 +58,16 @@ GNU General Public License for more details.
                 {% trans "between" %} {{ form.date_start }} {% trans "and" %} {{ form.date_end }}
                 {{ form.accumulated }}
 
-                <div class="subscription_filter hidden" style="float:none;">
+                <div class="subscription_filter hidden" style="float:left;">
                     {% trans "Servi&ccedil;o" %} {{ form.service }}
                 </div>
 
                 <div class="payment_way_filter hidden">
                     {% trans "Forma pagamento" %} {{ form.payment_way }}
+                </div>
+
+                <div class="covenant_filter hidden" style="float:left;">
+                    {% trans "Conv&ecirc;nio" %} {{ form.cove }}
                 </div>
 
                 <div class="receipt_status_filter hidden">

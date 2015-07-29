@@ -68,6 +68,7 @@
                         <th>Data lan&ccedil;amento</th> 
                         <th>Data evento</th> 
                         <th>Servi&ccedil;o</th> 
+                        <th>Forma pagto</th> 
                         <th>Valor R$</th> 
                     </tr> 
 
@@ -114,6 +115,12 @@
                             </td>
 
                             <td style="text-align:center;">
+                                {% for x in c.get_display_payment_way_name_ %}
+                                    {{ x }} {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>
+
+                            <td style="text-align:center;">
                                 {{ c.total }}
                             </td>
                         </tr>
@@ -123,6 +130,9 @@
                         <tr class="odd">
                             <td style="text-align:center; font-weight:bold;">
                                 Valor total
+                            </td>
+                            <td style="text-align:center; font-weight:bold;">
+                                Todos
                             </td>
                             <td style="text-align:center; font-weight:bold;">
                                 Todos

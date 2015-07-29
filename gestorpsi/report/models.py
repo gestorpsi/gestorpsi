@@ -22,15 +22,19 @@ GNU General Public License for more details.
 from datetime import datetime, timedelta
 from decimal import Decimal
 from dateutil.relativedelta import relativedelta
+
+from django.db.models import Q
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.core.urlresolvers import reverse
+
 from pygooglechart import PieChart3D
 from pygooglechart import Chart
 from pygooglechart import SimpleLineChart
 from pygooglechart import Axis
+
 from gestorpsi.util.views import get_object_or_None, color_rand
 from gestorpsi.admission.models import AdmissionReferral, ReferralChoice as AdmissionIndication
 from gestorpsi.client.models import Client
@@ -111,16 +115,13 @@ class Report(models.Model):
 
 
 
-    def get_payment_(self, organization, date_start, date_end, accumulated, professional, payment, service, pway ):
+    def get_payment_(self, organization, date_start, date_end, accumulated, professional, payment, service, pway, covenant ):
         date_start , date_end = self.set_date(organization, date_start, date_end)
-
-
-        print '-------------- models '
-        print pway
 
         '''
             data : array or False
             data return False when no numbers to make a graphic
+            covenant : Covenant.id
 
             PaymentWay hardcode
                 Dinheiro 1
@@ -139,28 +140,56 @@ class Report(models.Model):
 
         # overview of all status
         # date range, all professional and all services
+        aberto = Payment.objects.filter(status=0, created__gte=date_start, created__lte=date_end ).order_by('-created')
         recebido = Payment.objects.filter(status=1, created__gte=date_start, created__lte=date_end ).order_by('-created')
         faturado = Payment.objects.filter(status=2, created__gte=date_start, created__lte=date_end ).order_by('-created')
         cancelado = Payment.objects.filter(status=3, created__gte=date_start, created__lte=date_end ).order_by('-created')
-        aberto = Payment.objects.filter(status=0, created__gte=date_start, created__lte=date_end ).order_by('-created')
+
+        # covenant
+        if not covenant == 'all':
+            aberto = aberto.filter( Q(referral__covenant__id=covenant) | Q(occurrence__event__referral__covenant=covenant) ).distinct()
+            recebido = recebido.filter( Q(referral__covenant__id=covenant) | Q(occurrence__event__referral__covenant=covenant) ).distinct()
+            faturado = faturado.filter( Q(referral__covenant__id=covenant) | Q(occurrence__event__referral__covenant=covenant) ).distinct()
+            cancelado = cancelado.filter( Q(referral__covenant__id=covenant) | Q(occurrence__event__referral__covenant=covenant) ).distinct()
 
         # payment_way 
         if not pway == 'all':
 
             if pway == '1':
                 aberto = aberto.filter(covenant_payment_way_selected__icontains='1').distinct()
+                recebido = recebido.filter(covenant_payment_way_selected__icontains='1').distinct()
+                faturado = faturado.filter(covenant_payment_way_selected__icontains='1').distinct()
+                cancelado = cancelado.filter(covenant_payment_way_selected__icontains='1').distinct()
 
             if pway == '2':
-                aberto = aberto.filter(covenant_payment_way_selected__icontains='1').distinct()
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='2').distinct()
+                recebido = recebido.filter(covenant_payment_way_selected__icontains='2').distinct()
+                faturado = faturado.filter(covenant_payment_way_selected__icontains='2').distinct()
+                cancelado = cancelado.filter(covenant_payment_way_selected__icontains='2').distinct()
 
-            if pway == '2':
-                aberto = aberto.filter(covenant_payment_way_selected__icontains='1').distinct()
+            if pway == '3':
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='3').distinct()
+                recebido = recebido.filter(covenant_payment_way_selected__icontains='3').distinct()
+                faturado = faturado.filter(covenant_payment_way_selected__icontains='3').distinct()
+                cancelado = cancelado.filter(covenant_payment_way_selected__icontains='3').distinct()
 
-            if pway == '2':
-                aberto = aberto.filter(covenant_payment_way_selected__icontains='1').distinct()
+            if pway == '4':
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='4').distinct()
+                recebido = recebido.filter(covenant_payment_way_selected__icontains='4').distinct()
+                faturado = faturado.filter(covenant_payment_way_selected__icontains='4').distinct()
+                cancelado = cancelado.filter(covenant_payment_way_selected__icontains='4').distinct()
 
-            if pway == '2':
-                aberto = aberto.filter(covenant_payment_way_selected__icontains='1').distinct()
+            if pway == '5':
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='5').distinct()
+                recebido = recebido.filter(covenant_payment_way_selected__icontains='5').distinct()
+                faturado = faturado.filter(covenant_payment_way_selected__icontains='5').distinct()
+                cancelado = cancelado.filter(covenant_payment_way_selected__icontains='5').distinct()
+
+            if pway == '6':
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='6').distinct()
+                recebido = recebido.filter(covenant_payment_way_selected__icontains='6').distinct()
+                faturado = faturado.filter(covenant_payment_way_selected__icontains='6').distinct()
+                cancelado = cancelado.filter(covenant_payment_way_selected__icontains='6').distinct()
 
         # filter by service
         if not service == '':

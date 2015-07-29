@@ -111,12 +111,24 @@ class Report(models.Model):
 
 
 
-    def get_payment_(self, organization, date_start, date_end, accumulated, professional, payment, service ):
+    def get_payment_(self, organization, date_start, date_end, accumulated, professional, payment, service, pway ):
         date_start , date_end = self.set_date(organization, date_start, date_end)
+
+
+        print '-------------- models '
+        print pway
 
         '''
             data : array or False
             data return False when no numbers to make a graphic
+
+            PaymentWay hardcode
+                Dinheiro 1
+                Cheque 2
+                Cartão débito 3
+                Cartão crédito 4
+                Boleto 5
+                Depósito em conta 6
         '''
 
         data = []
@@ -131,6 +143,24 @@ class Report(models.Model):
         faturado = Payment.objects.filter(status=2, created__gte=date_start, created__lte=date_end ).order_by('-created')
         cancelado = Payment.objects.filter(status=3, created__gte=date_start, created__lte=date_end ).order_by('-created')
         aberto = Payment.objects.filter(status=0, created__gte=date_start, created__lte=date_end ).order_by('-created')
+
+        # payment_way 
+        if not pway == 'all':
+
+            if pway == '1':
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='1').distinct()
+
+            if pway == '2':
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='1').distinct()
+
+            if pway == '2':
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='1').distinct()
+
+            if pway == '2':
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='1').distinct()
+
+            if pway == '2':
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='1').distinct()
 
         # filter by service
         if not service == '':
@@ -147,7 +177,7 @@ class Report(models.Model):
             if '3' in payment_ar :
                 cancelado = cancelado.filter(occurrence__event__referral__service=service ).distinct()
 
-        if payment == 'all':
+        if payment == 'all': # payment status
 
             payment_ar = ['0','1','2','3'] # all
 
@@ -225,7 +255,7 @@ class Report(models.Model):
         if '3' in payment_ar :
             list_payment.append( ['Cancelado',cancelado,'blue',total_cancelado] )
 
-        if not data:
+        if total_payment == 0 :  # no data
             data = False
 
         return data , colors , date_start , date_end , list_payment, total_payment

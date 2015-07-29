@@ -18,7 +18,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from gestorpsi.report.models import Report, ReportsSaved, VIEWS_CHOICES
 from gestorpsi.service.models import Service
-from gestorpsi.financial.models import STATUS
+from gestorpsi.financial.models import STATUS, PaymentWay
 from gestorpsi.careprofessional.models import CareProfessional
 from datetime import datetime
 
@@ -51,6 +51,7 @@ class ReportForm(forms.ModelForm):
     accumulated = forms.ChoiceField(label=_('Accumulated Graph'), choices=GRAPH_ACCUMULATED, help_text=_('Acummulated graph?'))
     export_graph_type = forms.ChoiceField(label=_('Graph Type format'), choices=GRAPH_TYPE, help_text=_('Here you can choose which type of graph you need. Note: only for HTML format'))
     receipt_status = forms.ChoiceField(label=_('Status do faturamento'), choices=STATUS, help_text=_('Status do faturamento'))
+    payment_way = forms.ChoiceField(label=_('Forma de pagamento'), help_text=_('Forma de pagamento'))
 
     class Meta:
         model = Report
@@ -70,6 +71,12 @@ class ReportForm(forms.ModelForm):
 
         # payment status
         self.fields['receipt_status'].choices = tuple([(u'all', '--- Todos ---')] + list(STATUS))
+
+        # payment way
+        choices = [(u'all',_('--- Todos ---'))]
+        for i in PaymentWay.objects.filter():
+            choices.append((i.pk, i.name))
+        self.fields['payment_way'].choices = choices
 
 
 class ReportSaveForm(forms.ModelForm):

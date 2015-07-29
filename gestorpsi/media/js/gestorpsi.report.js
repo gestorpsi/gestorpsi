@@ -42,10 +42,12 @@ $(function() {
         // select payment status 
         if( $(this).val()==3 ){
             $('div.receipt_status_filter').show();
+            $('div.payment_way_filter').show();
             $('div.professional_filter').show();
             $('select#id_accumulated').hide();
         } else {
             $('div.receipt_status_filter').hide();
+            $('div.payment_way_filter').hide();
             $('div.professional_filter').hide();
             $('select#id_accumulated').show();
         }
@@ -140,9 +142,10 @@ $(function() {
             var service = $('select#id_service').val();
             var receipt_status = $('select#id_receipt_status').val();
             var professional = $('select#id_professional').val();
+            var payment_way = $('select#id_payment_way').val();
 
             // method get url
-            data += '&service=' + service + '&professional=' + professional + '&payment=' + receipt_status;
+            data += '&service=' + service + '&professional=' + professional + '&payment=' + receipt_status + '&pway=' + payment_way ;
             updatePayment(data);
         }
 

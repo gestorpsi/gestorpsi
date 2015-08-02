@@ -243,7 +243,7 @@ function updatePayment(data) {
     /**
      * update save form
      */
-    /*$('div#save_form').load('/report/payment/save/?'+data)*/
+    $('div#save_form').load('/report/payment/save/?'+data)
     
     /**
      * get date then update form fields

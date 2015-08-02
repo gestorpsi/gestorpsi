@@ -20,6 +20,7 @@ from gestorpsi.report.forms import *
 from gestorpsi.authentication.views import login_check
 from gestorpsi.report.models import ReportAdmission, ReportReferral
 
+# report urls save
 admission_save = {
     'form_class': ReportSaveAdmissionForm,
     'view': 'admission',
@@ -75,14 +76,12 @@ urlpatterns = patterns('',
     #url(r'^referral/client/signed/signed/$', login_check(report_client_list), {'report_class': ReportReferral, 'view':'signed', 'filter':'signed'}, name='admission_client_signed_signed'),
     #url(r'^referral/client/signed/notsigned/$', login_check(report_client_list), {'report_class': ReportReferral, 'view':'signed', 'filter':'notsigned'}, name='admission_client_signed_notsigned'),
 
-
-
-
     # admission export
     #url(r'^admission/export/$', login_check(admission_export), name='report_admission_export'),
     url(r'^export/$', login_check(report_export), name='report_export'),
 
     # save and saved reports
+    url(r'^financial/save/$', login_check(report_save), admission_save, name='financial_save'),
     url(r'^admission/save/$', login_check(report_save), admission_save, name='report_admission_save'),
     url(r'^referral/save/$', login_check(report_save), referral_save, name='report_referral_save'),
     url(r'^saved/$', login_check(reports_saved)),

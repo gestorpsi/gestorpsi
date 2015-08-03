@@ -78,7 +78,7 @@ def referral_data(request, template='report/report_table.html'):
 
 
 @permission_required_with_403('report.report_list')
-def receive_data(request, template='report/report_graphic.html'):
+def receive_data(request, template='report/report_receive.html'):
     """
     receive
     """

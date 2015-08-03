@@ -133,7 +133,7 @@ class Report(models.Model):
         '''
 
         data = []
-        receive_payment = []
+        receive_list = []
         payment_ar = []
         total_receive = 0
         colors = []

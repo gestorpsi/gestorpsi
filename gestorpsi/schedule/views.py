@@ -136,7 +136,7 @@ def add_event(
                         # Filter payment by pack or occurrence
                         for x in referral.covenant.filter(Q(charge=1) | Q(charge=2) ).distinct():
 
-                            payment = Payment() # new
+                            receive = Receive() # new
 
                             # by pack
                             if x.charge == 2:
@@ -144,31 +144,31 @@ def add_event(
                                 for p in Receive.objects.filter(occurrence__event=event, covenant_charge=2):
                                     if not p.terminated_():
                                         # not terminated pack
-                                        payment = p
+                                        receive = p
 
                             # by occurrence
                             # new
-                            if not payment.id:
-                                payment.name = x.name
-                                payment.price = x.price
-                                payment.off = 0
-                                payment.total = x.price
-                                payment.covenant_charge = x.charge
-                                payment.save()
+                            if not receive.id:
+                                receive.name = x.name
+                                receive.price = x.price
+                                receive.off = 0
+                                receive.total = x.price
+                                receive.covenant_charge = x.charge
+                                receive.save()
 
                                 # by pack
-                                payment.covenant_pack_size = x.event_time if x.charge == 2 else 0
+                                receive.covenant_pack_size = x.event_time if x.charge == 2 else 0
 
                                 # clear all
-                                payment.covenant_payment_way_options = ''
+                                receive.covenant_payment_way_options = ''
                                 for pw in x.payment_way.all():
                                     x = "(%s,'%s')," % ( pw.id , pw.name ) # need be a dict
-                                    payment.covenant_payment_way_options += x
+                                    receive.covenant_payment_way_options += x
 
                             # add occurrence
-                            payment.occurrence.add(o)
+                            receive.occurrence.add(o)
                             # update m2m
-                            payment.save()
+                            receive.save()
 
 
             if not event.errors:

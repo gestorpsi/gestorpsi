@@ -24,6 +24,9 @@ msgstr "Português Brasileiro"
 msgid "English"
 msgstr "Inglês"
 
+msgid "Close"
+msgstr "Fechar"
+
 #: admission/models.py:32 referral/models.py:66
 #: templates/admission/admission_form.html:157
 msgid "Termo de Consentimento Livre e Esclarecido (TCLE)"
@@ -2462,10 +2465,6 @@ msgstr ""
 msgid "------ All Services ------"
 msgstr "--- Todos os serviços ---"
 
-#: report/forms.py:93
-msgid "Admission between"
-msgstr "Admissões entre"
-
 #: report/forms.py:93 report/forms.py:116 report/views.py:196
 #: templates/report/report_client_list.html:23
 #: templates/report/report_export.html:142
@@ -2474,9 +2473,13 @@ msgstr "Admissões entre"
 msgid "and"
 msgstr "e"
 
-#: report/forms.py:116
-msgid "Referrals between"
-msgstr "Encaminhamentos entre"
+#: report/forms.py:93
+msgid "Admission between"
+msgstr "Admissões entre"
+
+#: report/forms.py
+msgid "Revenues between"
+msgstr "Faturamento entre"
 
 #: report/models.py:44
 msgid "Admisssions"

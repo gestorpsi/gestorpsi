@@ -22,17 +22,17 @@ GNU General Public License for more details.
 {% endif %}
 
 {% if reports %}
-<div class="saved_table">
-    <h1 class="pointer">{% trans "Reports saved" %}</h1>
-    <div style="clear:both;"></div>
-    <br />
-    <ul>
-        {% for i in reports %}
-            <li class="{% cycle 'odd' '' %}"><span class="title">{{ i }}<span class="tools"><a class="pointer report_load" view="{{ i.view}}" title="{{ i.label }}" date="{{ i.date|date:"d/m/Y H:i" }}" data="{{ i.data }}">{% trans "load report" %}</a>&nbsp;<a href="{% url report_del i.id %}" class="del_report">{% trans "del" %}</a></span></li>
-        {% endfor %}
-    </ul>
-    <small>{% trans "Total" %} {{ reports|length }}</small>
-</div>
+    <div class="saved_table">
+        <h1 class="pointer">{% trans "Reports saved" %}</h1>
+        <div style="clear:both;"></div>
+        <br />
+        <ul>
+            {% for i in reports %}
+                <li class="{% cycle 'odd' '' %}"><span class="title">{{ i }}<span class="tools"><a class="pointer report_load" view="{{ i.view}}" title="{{ i.label }}" date="{{ i.date|date:"d/m/Y H:i" }}" data="{{ i.data }}">{% trans "load report" %}</a>&nbsp;|&nbsp;<a href="{% url report_del i.id %}" class="del_report">{% trans "del" %}</a></span></li>
+            {% endfor %}
+        </ul>
+        <small>{% trans "Total" %} {{ reports|length }}</small>
+    </div>
 {% endif %}
 
 <div style="clear:both;"></div>

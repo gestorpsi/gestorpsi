@@ -31,6 +31,11 @@ referral_save = {
     'view': 'referral',
 }
 
+receive_save = {
+    'form_class': ReportSaveReceiveForm,
+    'view': 'receive',
+}
+
 urlpatterns = patterns('',
     url(r'^$', login_check(index)),
     url(r'^date/$', login_check(report_date)),
@@ -81,7 +86,7 @@ urlpatterns = patterns('',
     url(r'^export/$', login_check(report_export), name='report_export'),
 
     # save and saved reports
-    url(r'^receive/save/$', login_check(report_save), admission_save, name='receive_save'),
+    url(r'^receive/save/$', login_check(report_save), receive_save, name='report_receive_save'),
     url(r'^admission/save/$', login_check(report_save), admission_save, name='report_admission_save'),
     url(r'^referral/save/$', login_check(report_save), referral_save, name='report_referral_save'),
     url(r'^saved/$', login_check(reports_saved)),

@@ -49,11 +49,15 @@ def index(request):
     
     return render_to_response('report/report_index.html', locals(), context_instance=RequestContext(request))
 
+
 @permission_required_with_403('report.report_list')
 def report_date(request):
+
     date_start,date_end = Report().set_date(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'))
     accumulated = request.GET.get('accumulated')
+
     return HttpResponse(simplejson.dumps({'date_start':date_start.strftime('%d/%m/%Y'), 'date_end':date_end.strftime('%d/%m/%Y'), 'accumulated': accumulated}))
+
 
 @permission_required_with_403('report.report_list')
 def admission_data(request, template='report/report_table.html'):
@@ -121,8 +125,10 @@ def demographic_data(request, view='admission'):
     
     return render_to_response('report/report_demographic_table.html', locals(), context_instance=RequestContext(request))
 
+
 @permission_required_with_403('report.report_write')
-def report_save(request, form_class=ReportSaveAdmissionForm, view='admission', template='report/report_save_form.html'):
+def report_save(request, form_class=None, view=None, template='report/report_save_form.html'):
+
     """
     save new report
     """
@@ -144,6 +150,7 @@ def report_save(request, form_class=ReportSaveAdmissionForm, view='admission', t
     url_post = reverse('report_%s_save' % view) # url to post form
     
     return render_to_response(template, locals(), context_instance=RequestContext(request))
+
 
 @permission_required_with_403('report.report_write')
 def reports_saved(request, view='admission'):

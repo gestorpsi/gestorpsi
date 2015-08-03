@@ -121,6 +121,7 @@ class ReportSaveAdmissionForm(ReportSaveForm):
         data = super(ReportSaveAdmissionForm, self).save(commit=False, *args, **kwargs)
         data.view = 1 # admission
         data.user = user
+
         data.organization = organization
         data.save()
         return data
@@ -137,7 +138,7 @@ class ReportSaveReferralForm(ReportSaveForm):
         accumulated = kwargs.pop('accumulated', None)
         super(ReportSaveReferralForm, self).__init__(*args, **kwargs)
         if date_start and date_end:
-            self.fields['label'].initial = u'%s%s %s %s %s' % ('' if not service else (u'%s - ' % service), _('Referrals between'), date_start.strftime("%d/%m/%Y"),  _('and'), date_end.strftime("%d/%m/%Y"))
+            self.fields['label'].initial = u'%s%s %s %s %s' % ('' if not service else (u'%s - ' % service), _('Inscricao entre'), date_start.strftime("%d/%m/%Y"),  _('and'), date_end.strftime("%d/%m/%Y"))
             self.fields['data'].initial = 'view=referral&date_start=%s&date_end=%s&service=%s&accumulated=%s'% (date_start.strftime("%d/%m/%Y"), date_end.strftime("%d/%m/%Y"), '' if not service else service.pk, accumulated)
 
     def save(self, user, organization, *args, **kwargs):
@@ -149,9 +150,9 @@ class ReportSaveReferralForm(ReportSaveForm):
         return data
 
 
-class ReportSaveRevenuesForm(ReportSaveForm):
+class ReportSaveReceiveForm(ReportSaveForm):
     """
-    admission form save report view
+    receive form save report view
     'save reports' function
     """
     def __init__(self, *args, **kwargs):
@@ -159,14 +160,17 @@ class ReportSaveRevenuesForm(ReportSaveForm):
         date_end = kwargs.pop('date_end', None)
         service = kwargs.pop('service', None)
         accumulated = kwargs.pop('accumulated', None)
-        super(ReportSaveReferralForm, self).__init__(*args, **kwargs)
+        super(ReportSaveReceiveForm, self).__init__(*args, **kwargs)
+
         if date_start and date_end:
-            self.fields['label'].initial = u'%s%s %s %s %s' % ('' if not service else (u'%s - ' % service), _('Referrals between'), date_start.strftime("%d/%m/%Y"),  _('and'), date_end.strftime("%d/%m/%Y"))
-            self.fields['data'].initial = 'view=referral&date_start=%s&date_end=%s&service=%s&accumulated=%s'% (date_start.strftime("%d/%m/%Y"), date_end.strftime("%d/%m/%Y"), '' if not service else service.pk, accumulated)
+
+            self.fields['label'].initial = u'%s %s %s %s' % ( _(u'Revenues between'), date_start.strftime("%d/%m/%Y"),  _('and'), date_end.strftime("%d/%m/%Y") )
+            self.fields['data'].initial = 'view=receive&date_start=%s&date_end=%s&service=%s&accumulated=%s'% (date_start.strftime("%d/%m/%Y"), date_end.strftime("%d/%m/%Y"), '' if not service else service.pk, accumulated)
+
             # service , payment way, convent, paid?
 
     def save(self, user, organization, *args, **kwargs):
-        data = super(ReportSaveReferralForm, self).save(commit=False, *args, **kwargs)
+        data = super(ReportSaveReceiveForm, self).save(commit=False, *args, **kwargs)
         data.view = 3 # faturamento
         data.user = user
         data.organization = organization

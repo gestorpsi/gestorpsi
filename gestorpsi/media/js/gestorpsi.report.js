@@ -226,6 +226,11 @@ $(function() {
             updateReferral($(this).attr('data'));
             $('form#report_filter select[name=view]').val('2');
         }
+
+        if($(this).attr('view')==3) { // revenues/faturamento
+            updateReceive($(this).attr('data'));
+            $('form#report_filter select[name=view]').val('3');
+        }
         
         return false;
     });
@@ -235,10 +240,15 @@ $(function() {
      */
     
     $('a.report_filter').click(function() {
+
         if($('form#report_filter select[name=view]').val() == 1) // admission
             updateAdmission('view=admission' + $(this).attr('data') + '&accumulated=' +$('#report_filter [name=accumulated]').val());
+
         if($('form#report_filter select[name=view]').val() == 2) // referral
             updateReferral('view=referral' + $(this).attr('data') + '&service=' + $('#report_filter [name=service]').val() + '&accumulated=' +$('#report_filter [name=accumulated]').val());
+
+        if($('form#report_filter select[name=view]').val() == 3) // revenues / faturamente
+            updateReceive('view=receive' + $(this).attr('data') + '&service=' + $('#report_filter [name=service]').val() + '&accumulated=' +$('#report_filter [name=accumulated]').val());
 
         $('div.loaded_report_title').hide();
         return false;

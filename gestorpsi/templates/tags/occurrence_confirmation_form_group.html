@@ -54,7 +54,7 @@ hide Date fields and second field
             <legend>{% trans "Novo Pagamento" %}</legend>
             <div class="date_fields">
                 <label>Conv&ecirc;nio dispon&iacute;vel<br />
-                    <select name='select_covenant_payment' class="big">
+                    <select name='select_covenant_receive' class="big">
                         <option value="000" selected="selected" >- - -</option>
                         {% for x in covenant_list %}
                             <option value="{{ x.id }}">{{ x.name }}</option>
@@ -64,7 +64,7 @@ hide Date fields and second field
 
                 <br />
 
-                {% for field in payment_new_form %}
+                {% for field in receive_new_form %}
                     <label>{{ field.label }}<br />{{ field }}
                         {% if field.errors %}preenchimento obrigat&oacute;rio{% endif %}
                     </label>

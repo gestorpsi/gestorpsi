@@ -41,7 +41,7 @@ urlpatterns = patterns('',
     #url(r'^admission/chart/$', login_check(chart), {'view':'admission'}),
     #url(r'^referral/chart/$', login_check(chart), {'view':'referral'}),
     url(r'^referral/$', login_check(referral_data), {'template':'report/report_table.html'}),
-    url(r'^payment/$', login_check(payment_data) ),
+    url(r'^receive/$', login_check(receive_data) ),
 
     ## list of clients from admissions
     url(r'^admission/client/overview/total/$', login_check(report_client_list), {'report_class': ReportAdmission, 'view':'overview', 'filter':'total'}, name='admission_client_overview_total'),
@@ -81,7 +81,7 @@ urlpatterns = patterns('',
     url(r'^export/$', login_check(report_export), name='report_export'),
 
     # save and saved reports
-    url(r'^financial/save/$', login_check(report_save), admission_save, name='financial_save'),
+    url(r'^receive/save/$', login_check(report_save), admission_save, name='receive_save'),
     url(r'^admission/save/$', login_check(report_save), admission_save, name='report_admission_save'),
     url(r'^referral/save/$', login_check(report_save), referral_save, name='report_referral_save'),
     url(r'^saved/$', login_check(reports_saved)),

@@ -47,6 +47,7 @@ STATUS = (
 )
 
 
+#class ReceiveWay(models.Model):
 class PaymentWay(models.Model):
     name = models.CharField(_(u"Name"), max_length=100)
     is_active = models.BooleanField(u'Disponível', default=True)
@@ -56,12 +57,13 @@ class PaymentWay(models.Model):
         return u"%s" % self.name
 
 
-class Payment(models.Model):
+#class Payment(models.Model):
+class Receive(models.Model):
     '''
-        receive payment
+        receive
             referral covenant
             to pay, phone, internet, monthly bullet
-        informations about payment, payment way, check, value, dead line and others
+        informations about receive, payment way, check, value, dead line and others
     '''
     id = UuidField(primary_key=True)
     name = models.CharField(_('Nome'), max_length=250, null=False, blank=False) # covenant name or billet
@@ -128,4 +130,4 @@ class Payment(models.Model):
     def save(self, *args, **kwargs):
         self.created = datetime.now()
         # real save
-        super(Payment, self).save(*args, **kwargs)
+        super(Receive, self).save(*args, **kwargs)

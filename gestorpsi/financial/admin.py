@@ -15,11 +15,11 @@ GNU General Public License for more details.
 """
 
 from django.contrib import admin
-from gestorpsi.financial.models import PaymentWay, Payment
+from gestorpsi.financial.models import PaymentWay, Receive
 
-class PaymentAdmin(admin.ModelAdmin):
+class ReceiveAdmin(admin.ModelAdmin):
     pass
-admin.site.register(Payment, PaymentAdmin)
+admin.site.register(Receive, ReceiveAdmin)
 
 class PaymentWayAdmin(admin.ModelAdmin):
     pass

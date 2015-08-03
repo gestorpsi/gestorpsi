@@ -39,7 +39,7 @@ $(document).ready(function() {
     /*
      * When change input OFF update total
      * 
-     * <input name="payment_form---59-off" placeholder="1.234,56" required="required" type="text" class="big" value="20,50" id="id_payment_form---59-off" />
+     * <input name="receive_form---59-off" placeholder="1.234,56" required="required" type="text" class="big" value="20,50" id="id_receive_form---59-off" />
      * Any input contains the word "off" in name. Pattern: *---ID-off; str.split('---')[1] = ID
      *
      */
@@ -50,8 +50,8 @@ $(document).ready(function() {
         idc = idc.split("---")[1];
 
         // get values
-        var off = parseFloat( $('input[name=payment_form---'+idc+'-off]').val().replace(",", ".") );
-        var price = parseFloat( $('input[name=payment_form---'+idc+'-price]').val().replace(",",".") );
+        var off = parseFloat( $('input[name=receive_form---'+idc+'-off]').val().replace(",", ".") );
+        var price = parseFloat( $('input[name=receive_form---'+idc+'-price]').val().replace(",",".") );
 
         // sum values
         if ( isNaN(off) == true ){ 
@@ -63,32 +63,32 @@ $(document).ready(function() {
         // convert to currency
         tt = total.toFixed(2).replace(".",",");
 
-        $('input[name=payment_form---'+idc+'-total]').val(tt);
+        $('input[name=receive_form---'+idc+'-total]').val(tt);
     });
 
 
     /*
      * confirmation event for a member of group
-     * new payment form
-     * change covenant select and update payment fields
-     * TEMPID999FORM = temporary id for new payment form
+     * new receive form
+     * change covenant select and update receive fields
+     * TEMPID999FORM = temporary id for new receive form
      */
-    $('select[name=select_covenant_payment]').change( function(){
+    $('select[name=select_covenant_receive]').change( function(){
         if ( this.value != '000' ){ 
             $.getJSON("/covenant/" + this.value + "/get/", function(json) {
                 jQuery.each(json,  function(){
-                    $('input#id_payment_form---TEMPID999FORM-name').val(this.name);
-                    $('input#id_payment_form---TEMPID999FORM-price').val(this.price);
-                    $('input#id_payment_form---TEMPID999FORM-off').val('0,00');
-                    $('input#id_payment_form---TEMPID999FORM-total').val(this.price);
+                    $('input#id_receive_form---TEMPID999FORM-name').val(this.name);
+                    $('input#id_receive_form---TEMPID999FORM-price').val(this.price);
+                    $('input#id_receive_form---TEMPID999FORM-off').val('0,00');
+                    $('input#id_receive_form---TEMPID999FORM-total').val(this.price);
                     $('label[for=TEMPID999FORM-pw] ul').html(this.payment_way);
                 });
             });
         } else {  // clear fields
-            $('input#id_payment_form---TEMPID999FORM-name').val('');
-            $('input#id_payment_form---TEMPID999FORM-price').val('');
-            $('input#id_payment_form---TEMPID999FORM-off').val('0,00');
-            $('input#id_payment_form---TEMPID999FORM-total').val('');
+            $('input#id_receive_form---TEMPID999FORM-name').val('');
+            $('input#id_receive_form---TEMPID999FORM-price').val('');
+            $('input#id_receive_form---TEMPID999FORM-off').val('0,00');
+            $('input#id_receive_form---TEMPID999FORM-total').val('');
             $('label[for=TEMPID999FORM-pw] ul').html("");
         }
     });

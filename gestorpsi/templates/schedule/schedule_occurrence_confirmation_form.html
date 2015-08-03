@@ -21,18 +21,18 @@ GNU General Public License for more details.
 {% block menu_schedule %}active{% endblock %}
 
 {% block submenu %}
- <ul id="sub_schedule">
-    <li><a class="first" href="/schedule/">{% trans "daily" %}</a></li>
-    <li><a href="/schedule/week/">{% trans "Weekly" %}</a></li>
-    <li><a href="/schedule/events/">{% trans "events" %}</a></li>
-    {% if occurrence.id %}<li><a class="active">{{ occurrence.event.referral }} - {{ occurrence.room }}</a></li>{% endif %}
-</ul>
+     <ul id="sub_schedule">
+        <li><a class="first" href="/schedule/">{% trans "daily" %}</a></li>
+        <li><a href="/schedule/week/">{% trans "Weekly" %}</a></li>
+        <li><a href="/schedule/events/">{% trans "events" %}</a></li>
+        {% if occurrence.id %}<li><a class="active">{{ occurrence.event.referral }} - {{ occurrence.room }}</a></li>{% endif %}
+    </ul>
 {% endblock %}
 
 
 {% block extrahead %}
     <script type="text/javascript" src="/media/js/jquery.maskMoney.min.js"></script>
-    <script type="text/javascript" src="/media/js/gestorpsi.payment.forms.js"></script>
+    <script type="text/javascript" src="/media/js/gestorpsi.receive.forms.js"></script>
 {% endblock %}
 
 

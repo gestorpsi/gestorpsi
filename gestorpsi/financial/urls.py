@@ -16,8 +16,8 @@ GNU General Public License for more details.
 
 from django.conf.urls.defaults import *
 from gestorpsi.authentication.views import login_check
-from gestorpsi.financial.views import payment_form
+from gestorpsi.financial.views import receive_form
 
 urlpatterns = patterns('',
-    url(r'^payment/(?P<obj>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(payment_form), name='financial-payment-form'), 
+    url(r'^receive/(?P<obj>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(receive_form), name='financial-receive-form'), 
 )

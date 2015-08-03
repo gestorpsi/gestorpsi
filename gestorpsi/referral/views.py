@@ -26,7 +26,7 @@ from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, Queue, ReferralExternal, ReferralAttach, REFERRAL_ATTACH_TYPE
 from gestorpsi.util.decorators import permission_required_with_403
-from gestorpsi.financial.models import Payment
+from gestorpsi.financial.models import Receive
 
 @permission_required_with_403('referral.referral_list')
 def referral_off(request, object_id=None):
@@ -81,15 +81,15 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     organization = user.get_profile().org_active.id
     queues = Queue.objects.filter(referral=referral_id, client=object)
     referrals = ReferralExternal.objects.filter(referral=referral_id)
-    payments = Payment.objects.filter(occurrence__event__referral=referral)
+    payments = Receive.objects.filter(occurrence__event__referral=referral)
 
     # upcoming
-    payment_upcoming5 = Payment.objects.filter(occurrence__start_time__gte=datetime.today()).order_by('-occurrence__start_time').distinct()[0:5]
-    payment_upcoming_all = Payment.objects.filter(occurrence__start_time__gte=datetime.today()).order_by('-occurrence__start_time').distinct()[5:]
+    payment_upcoming5 = Receive.objects.filter(occurrence__start_time__gte=datetime.today()).order_by('-occurrence__start_time').distinct()[0:5]
+    payment_upcoming_all = Receive.objects.filter(occurrence__start_time__gte=datetime.today()).order_by('-occurrence__start_time').distinct()[5:]
 
     # past
-    payment_past5 = Payment.objects.filter(occurrence__start_time__lte=datetime.today()).order_by('-occurrence__start_time').distinct()[0:5]
-    payment_past_all = Payment.objects.filter(occurrence__start_time__lte=datetime.today()).order_by('-occurrence__start_time').distinct()[5:]
+    payment_past5 = Receive.objects.filter(occurrence__start_time__lte=datetime.today()).order_by('-occurrence__start_time').distinct()[0:5]
+    payment_past_all = Receive.objects.filter(occurrence__start_time__lte=datetime.today()).order_by('-occurrence__start_time').distinct()[5:]
 
 
     try:

@@ -32,8 +32,6 @@ function chart_type_to_url() {
 
 function updateChart(json, force_type) {
 
-    alert('updateChart');
-
     /**
      * update chart
      * read data from json, then bind graph
@@ -223,10 +221,10 @@ function updateSavedReports() {
 
 
 
-function updatePayment(data) {
+function updateReceive(data) {
 
     /**
-     * update all payment data
+     * update all receive data
      */
     if(!data) data = '';
     
@@ -236,14 +234,14 @@ function updatePayment(data) {
     data += chart_type_to_url();
 
     /**
-     * update payment data, call view
+     * update receive data, call view
      */
-    $('div#report_table').load('/report/payment/?'+data);
+    $('div#report_table').load('/report/receive/?'+data);
 
     /**
      * update save form
      */
-    $('div#save_form').load('/report/payment/save/?'+data)
+    $('div#save_form').load('/report/receive/save/?'+data)
     
     /**
      * get date then update form fields

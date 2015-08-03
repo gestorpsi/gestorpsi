@@ -43,7 +43,7 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, Indication as ReferralIndication, IndicationChoice as ReferralIndicationChoice, ReferralDischargeReason, ReferralDischarge
 from gestorpsi.util.views import percentage
-from gestorpsi.financial.models import Payment
+from gestorpsi.financial.models import Receive
 
 VIEWS_CHOICES = (
     (1, _('Admisssions')),
@@ -115,7 +115,7 @@ class Report(models.Model):
 
 
 
-    def get_payment_(self, organization, date_start, date_end, accumulated, professional, payment, service, pway, covenant ):
+    def get_receive_(self, organization, date_start, date_end, accumulated, professional, payment, service, pway, covenant ):
         date_start , date_end = self.set_date(organization, date_start, date_end)
 
         '''
@@ -133,17 +133,17 @@ class Report(models.Model):
         '''
 
         data = []
-        list_payment = []
+        receive_payment = []
         payment_ar = []
-        total_payment = 0
+        total_receive = 0
         colors = []
 
         # overview of all status
         # date range, all professional and all services
-        aberto = Payment.objects.filter(status=0, created__gte=date_start, created__lte=date_end ).order_by('-created')
-        recebido = Payment.objects.filter(status=1, created__gte=date_start, created__lte=date_end ).order_by('-created')
-        faturado = Payment.objects.filter(status=2, created__gte=date_start, created__lte=date_end ).order_by('-created')
-        cancelado = Payment.objects.filter(status=3, created__gte=date_start, created__lte=date_end ).order_by('-created')
+        aberto = Receive.objects.filter(status=0, created__gte=date_start, created__lte=date_end ).order_by('-created')
+        recebido = Receive.objects.filter(status=1, created__gte=date_start, created__lte=date_end ).order_by('-created')
+        faturado = Receive.objects.filter(status=2, created__gte=date_start, created__lte=date_end ).order_by('-created')
+        cancelado = Receive.objects.filter(status=3, created__gte=date_start, created__lte=date_end ).order_by('-created')
 
         # covenant
         if not covenant == 'all':
@@ -216,7 +216,7 @@ class Report(models.Model):
             data.append( ['Faturado',faturado.count()] )
             data.append( ['Cancelado',cancelado.count()] )
 
-            total_payment = aberto.count()+recebido.count()+faturado.count()+cancelado.count()
+            total_receive = aberto.count()+recebido.count()+faturado.count()+cancelado.count()
 
             colors = ['red', 'green', 'orange', 'blue']
 
@@ -225,25 +225,25 @@ class Report(models.Model):
             if payment == '0':
                 payment_ar.append('0')
                 data.append( ['Aberto',aberto.count()] )
-                total_payment += aberto.count()
+                total_receive += aberto.count()
                 colors.append('red')
 
             if payment == '1':
                 payment_ar.append('1')
                 data.append( ['Recebido',recebido.count()] )
-                total_payment += recebido.count()
+                total_receive += recebido.count()
                 colors.append('green')
 
             if payment == '2':
                 payment_ar.append('2')
                 data.append( ['Faturado',faturado.count()] )
-                total_payment += faturado.count()
+                total_receive += faturado.count()
                 colors.append('orange')
 
             if payment == '3':
                 payment_ar.append('3')
                 data.append( ['Cancelado',cancelado.count()] )
-                total_payment += cancelado.count()
+                total_receive += cancelado.count()
                 colors.append('blue')
 
         # amount of earch status, total column
@@ -273,21 +273,21 @@ class Report(models.Model):
         '''
         # list of clients and counter %
         if '0' in payment_ar :
-            list_payment.append( ['Aberto',aberto,'red',total_aberto] )
+            receive_list.append( ['Aberto',aberto,'red',total_aberto] )
 
         if '1' in payment_ar :
-            list_payment.append( ['Recebido',recebido,'green',total_recebido] )
+            receive_list.append( ['Recebido',recebido,'green',total_recebido] )
 
         if '2' in payment_ar :
-            list_payment.append( ['Faturado',faturado,'orange',total_faturado] )
+            receive_list.append( ['Faturado',faturado,'orange',total_faturado] )
 
         if '3' in payment_ar :
-            list_payment.append( ['Cancelado',cancelado,'blue',total_cancelado] )
+            receive_list.append( ['Cancelado',cancelado,'blue',total_cancelado] )
 
-        if total_payment == 0 :  # no data
+        if total_receive == 0 :  # no data
             data = False
 
-        return data , colors , date_start , date_end , list_payment, total_payment
+        return data , colors , date_start , date_end , receive_list, total_receive
         
 
     def get_referral_range(self, organization, date_start, date_end, service, accumulated):

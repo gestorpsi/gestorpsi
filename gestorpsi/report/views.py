@@ -78,11 +78,11 @@ def referral_data(request, template='report/report_table.html'):
 
 
 @permission_required_with_403('report.report_list')
-def payment_data(request, template='report/report_graphic.html'):
+def receive_data(request, template='report/report_graphic.html'):
     """
-    payment
+    receive
     """
-    data , colors , date_start, date_end, list_payment, total_payment = Report().get_payment_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('accumulated') , request.GET.get('professional') , request.GET.get('payment') , request.GET.get('service'), request.GET.get('pway'), request.GET.get('covenant') )
+    data , colors , date_start, date_end, list_receive, total_receive = Report().get_receive_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('accumulated') , request.GET.get('professional') , request.GET.get('receive') , request.GET.get('service'), request.GET.get('pway'), request.GET.get('covenant') )
 
     # variables of JS
     option_title = u'Estatística de todos os profíssionais, serviços e pagamentos para o período escolhido.'

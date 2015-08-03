@@ -40,8 +40,8 @@ from gestorpsi.util.views import get_object_or_None
 from gestorpsi.schedule.forms import OccurrenceConfirmationForm
 from gestorpsi.device.models import DeviceDetails
 from gestorpsi.organization.models import TIME_SLOT_SCHEDULE
-from gestorpsi.financial.models import Payment
-from gestorpsi.financial.forms import PaymentFormUpdate, PaymentFormNew
+from gestorpsi.financial.models import Receive
+from gestorpsi.financial.forms import ReceiveFormUpdate, ReceiveFormNew
 from gestorpsi.covenant.models import Covenant
 
 
@@ -131,7 +131,7 @@ def add_event(
                 for o in referral.upcoming_nopayment_occurrences_():
 
                     # exist a payment for event?
-                    if Payment.objects.filter(occurrence=o).count() == 0 :
+                    if Receive.objects.filter(occurrence=o).count() == 0 :
 
                         # Filter payment by pack or occurrence
                         for x in referral.covenant.filter(Q(charge=1) | Q(charge=2) ).distinct():
@@ -141,7 +141,7 @@ def add_event(
                             # by pack
                             if x.charge == 2:
                                 # check not terminated pack of same referral
-                                for p in Payment.objects.filter(occurrence__event=event, covenant_charge=2):
+                                for p in Receive.objects.filter(occurrence__event=event, covenant_charge=2):
                                     if not p.terminated_():
                                         # not terminated pack
                                         payment = p
@@ -301,7 +301,7 @@ def occurrence_confirmation_form_group(
 
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
     covenant_list = occurrence.event.referral.service.covenant.all().order_by('name')
-    payment_list = []
+    receive_list = []
 
     if not occurrence.scheduleoccurrence.was_confirmed():
         initial_device = [device.pk for device in occurrence.device.all()]
@@ -334,16 +334,16 @@ def occurrence_confirmation_form_group(
 
 
         # new payment form, not required.
-        if not request.POST.get('select_covenant_payment') == '000' :
+        if not request.POST.get('select_covenant_receive') == '000' :
 
-            covenant = Covenant.objects.get( pk=request.POST.get('select_covenant_payment'), organization=request.user.get_profile().org_active ) 
+            covenant = Covenant.objects.get( pk=request.POST.get('select_covenant_receive'), organization=request.user.get_profile().org_active ) 
 
-            pfx = 'payment_form---TEMPID999FORM' # hardcore Jquery 
-            form_payment_new = PaymentFormNew(request.POST, prefix=pfx)
+            pfx = 'receive_form---TEMPID999FORM' # hardcore Jquery 
+            form_receive_new = ReceiveFormNew(request.POST, prefix=pfx)
 
-            if form_payment_new.is_valid():
+            if form_receive_new.is_valid():
 
-                fpn = form_payment_new.save()
+                fpn = form_receive_new.save()
                 fpn.occurrence.add(occurrence)
 
                 # from covenant
@@ -357,15 +357,15 @@ def occurrence_confirmation_form_group(
 
 
         # update payments, not required.
-        for x in Payment.objects.filter(occurrence=occurrence):
+        for x in Receive.objects.filter(occurrence=occurrence):
 
-            pfx = 'payment_form---%s' % x.id # hardcore Jquery 
-            form_payment = PaymentFormUpdate(request.POST, instance=x, prefix=pfx)
+            pfx = 'receive_form---%s' % x.id # hardcore Jquery 
+            form_receive = ReceiveFormUpdate(request.POST, instance=x, prefix=pfx)
 
-            payment_list.append(form_payment)
+            receive_list.append(form_receive)
 
-            if form_payment.is_valid():
-                fp = form_payment.save()
+            if form_receive.is_valid():
+                fp = form_receive.save()
 
 
         # occurrence
@@ -411,9 +411,9 @@ def occurrence_confirmation_form_group(
         form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility="2", lendable=True) | Q(place=occurrence.room.place, mobility="2", lendable=False))]
 
         # payments of occurrence, update form.
-        for x in Payment.objects.filter(occurrence=occurrence):
-            pfx = 'payment_form---%s' % x.id # for many forms and one submit.
-            payment_list.append( PaymentFormUpdate(instance=x, prefix=pfx) )
+        for x in Receive.objects.filter(occurrence=occurrence):
+            pfx = 'receive_form---%s' % x.id # for many forms and one submit.
+            receive_list.append( ReceiveFormUpdate(instance=x, prefix=pfx) )
 
 
     # just one out if errors
@@ -427,9 +427,9 @@ def occurrence_confirmation_form_group(
                 occurrence_confirmation=occurrence_confirmation,
                 hide_date_field=True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None,
                 denied_to_write = denied_to_write,
-                payment_list = payment_list,
+                receive_list = receive_list,
                 covenant_list = covenant_list,
-                payment_new_form = PaymentFormNew(prefix='payment_form---TEMPID999FORM'),
+                receive_new_form = ReceiveFormNew(prefix='receive_form---TEMPID999FORM'),
             ),
         context_instance=RequestContext(request)
     )
@@ -451,7 +451,7 @@ def occurrence_confirmation_form(
     '''
 
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
-    payment_list = []
+    receive_list = []
     
     if not occurrence.scheduleoccurrence.was_confirmed():
         initial_device = [device.pk for device in occurrence.device.all()]
@@ -482,18 +482,18 @@ def occurrence_confirmation_form(
 
         form = form_class(request.POST, instance = occurrence_confirmation, initial={ 'device':initial_device, })
 
-        # payment
+        # receive
         payment_valid = True
 
-        for x in Payment.objects.filter(occurrence=occurrence):
+        for x in Receive.objects.filter(occurrence=occurrence):
 
-            pfx = 'payment_form---%s' % x.id # hardcore Jquery 
-            form_payment = PaymentFormUpdate(request.POST, instance=x, prefix=pfx)
+            pfx = 'receive_form---%s' % x.id # hardcore Jquery 
+            form_receive = ReceiveFormUpdate(request.POST, instance=x, prefix=pfx)
 
-            payment_list.append(form_payment)
+            receive_list.append(form_receive)
 
-            if form_payment.is_valid():
-                fp = form_payment.save()
+            if form_receive.is_valid():
+                fp = form_receive.save()
             else:
                 payment_valid = False
 
@@ -548,9 +548,9 @@ def occurrence_confirmation_form(
         form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility="2", lendable=True) | Q(place=occurrence.room.place, mobility="2", lendable=False))]
 
         # payment form
-        for x in Payment.objects.filter(occurrence=occurrence):
-            pfx = 'payment_form---%s' % x.id
-            payment_list.append( PaymentFormUpdate(instance=x, prefix=pfx) )
+        for x in Receive.objects.filter(occurrence=occurrence):
+            pfx = 'receive_form---%s' % x.id
+            receive_list.append( ReceiveFormUpdate(instance=x, prefix=pfx) )
 
     return render_to_response(
         template,
@@ -562,7 +562,7 @@ def occurrence_confirmation_form(
                 occurrence_confirmation=occurrence_confirmation,
                 hide_date_field=True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None,
                 denied_to_write = denied_to_write,
-                payment_list = payment_list,
+                receive_list = receive_list,
             ),
         context_instance=RequestContext(request)
     )

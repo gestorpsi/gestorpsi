@@ -39,7 +39,7 @@
                 <th id='graphic'></th>
             </tr>
             <tr>
-                <th>Total de pagamentos: {{ total_payment }}</th>
+                <th>Total de pagamentos: {{ total_receive }}</th>
             </tr>
         </table>
 
@@ -53,12 +53,12 @@
 
         <br />
 
-        {% for x in list_payment %}
+        {% for x in list_receive %}
             {% if x.1 %}
 
                <div style='background-color:{{ x.2 }}; vertical-align:middle; padding: 0 15px; font-size: 15px; font-weight: bold; color: white; '>{{ x.0 }}</div>
 
-               <table class="report_list_payment">
+               <table class="report_list_receive">
 
                  <tbody>
                     <tr class="legend"> 
@@ -115,7 +115,7 @@
                             </td>
 
                             <td style="text-align:center;">
-                                {% for x in c.get_display_payment_way_name_ %}
+                                {% for x in c.get_display_receive_way_name_ %}
                                     {{ x }} {% if not forloop.last %}, {% endif %}
                                 {% endfor %}
                             </td>

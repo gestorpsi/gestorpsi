@@ -16,15 +16,15 @@ GNU General Public License for more details.
 
 from ast import literal_eval
 from django import forms
-from gestorpsi.financial.models import Payment, PaymentWay
+from gestorpsi.financial.models import Receive, PaymentWay
 
 
 
 def get_choices(obj):
     '''
-        obj : Payment.id
+        obj : Receive.id
     '''
-    obj = Payment.objects.get( pk=obj )
+    obj = Receive.objects.get( pk=obj )
 
     try:
         return literal_eval(obj.covenant_payment_way_options)
@@ -33,23 +33,23 @@ def get_choices(obj):
 
 
 '''
-    update a payment
+    update a receive
     payment way exist
 '''
-class PaymentFormUpdate(forms.ModelForm):
+class ReceiveFormUpdate(forms.ModelForm):
     name = forms.CharField(label=u'Nome convênio', max_length=250, widget=forms.TextInput( attrs={ 'readonly':'true' , 'class':'big' }) );
     price = forms.DecimalField(label=u"Valor", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','readonly':'true'} ) )
     off = forms.DecimalField(label=u"Desconto", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'1.234,56'} ))
     total = forms.DecimalField(label=u"Total", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','readonly':'true'} ) )
 
     class Meta:
-        model = Payment
+        model = Receive
         exclude = ['occurrence','covenant_pack_size','covenant_charge','covenant_payment_way_options']
 
 
     def __init__(self, *args, **kwargs):
 
-        super(PaymentFormUpdate, self).__init__(*args, **kwargs)
+        super(ReceiveFormUpdate, self).__init__(*args, **kwargs)
 
         self.fields['covenant_payment_way_selected'] = forms.MultipleChoiceField(
             label=u'Forma de recebimento',
@@ -60,15 +60,15 @@ class PaymentFormUpdate(forms.ModelForm):
 
 
 '''
-    for group, create a payment
+    for group, create a receive
     payment way non exist becouse does't no the covenant
 '''
-class PaymentFormNew(forms.ModelForm):
+class ReceiveFormNew(forms.ModelForm):
     name = forms.CharField(label=u'Nome convênio', max_length=250, widget=forms.TextInput( attrs={ 'readonly':'true' , 'class':'big' }) );
     price = forms.DecimalField(label=u"Valor", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','readonly':'true'} ) )
     off = forms.DecimalField(label=u"Desconto", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','placeholder':'1.234,56'} ))
     total = forms.DecimalField(label=u"Total", max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','readonly':'true'} ) )
 
     class Meta:
-        model = Payment
+        model = Receive
         exclude = ['occurrence','covenant_pack_size','covenant_charge','covenant_payment_way_options','covenant_payment_way_selected']

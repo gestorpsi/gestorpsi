@@ -39,7 +39,7 @@ $(function() {
             $('div.subscription_filter').hide();
         }
 
-        // select payment status 
+        // select receive status 
         if( $(this).val()==3 ){
             $('div.receipt_status_filter').show();
             $('div.payment_way_filter').show();
@@ -148,8 +148,8 @@ $(function() {
             var covenant = $('select#id_cove').val();
 
             // method get url
-            data += '&service=' + service + '&professional=' + professional + '&payment=' + receipt_status + '&pway=' + payment_way + '&covenant=' + covenant;
-            updatePayment(data);
+            data += '&service=' + service + '&professional=' + professional + '&receive=' + receipt_status + '&pway=' + payment_way + '&covenant=' + covenant;
+            updateReceive(data);
         }
 
         return false;

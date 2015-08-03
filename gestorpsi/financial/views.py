@@ -20,30 +20,30 @@ from django.utils.translation import ugettext as _
 from django.template import RequestContext
 from django.contrib import messages
 
-from gestorpsi.financial.models import Payment
-from gestorpsi.financial.forms import PaymentFormUpdate
+from gestorpsi.financial.models import Receive
+from gestorpsi.financial.forms import ReceiveFormUpdate
 
-def payment_form(request, obj=False):
+def receive_form(request, obj=False):
 
-    obj = get_object_or_404(Payment, pk=obj)
-    pfx = 'payment_form---%s' % obj.id # hardcore Jquery, mask currency
+    obj = get_object_or_404(Receive, pk=obj)
+    pfx = 'receive_form---%s' % obj.id # hardcore Jquery, mask currency
 
     if request.POST:
 
-        form = PaymentFormUpdate(request.POST , instance=obj, prefix=pfx)
+        form = ReceiveFormUpdate(request.POST , instance=obj, prefix=pfx)
 
         if form.is_valid():
             obj = form.save()
             messages.success(request, _(u'Salvo com sucesso!'))
-            return HttpResponseRedirect('/financial/payment/%s/' % obj.id )
+            return HttpResponseRedirect('/financial/receive/%s/' % obj.id )
 
     # mount form
     else:
-        form = PaymentFormUpdate(instance=obj, prefix=pfx)
+        form = ReceiveFormUpdate(instance=obj, prefix=pfx)
 
 
     # mount form or not valid form
-    return render_to_response( 'financial/financial_payment_form.html', { 
+    return render_to_response( 'financial/financial_receive_form.html', { 
             'form':form,
             'obj':obj
         }, context_instance=RequestContext(request) )

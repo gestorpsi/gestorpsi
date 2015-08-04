@@ -249,8 +249,5 @@ function updateReceive(data) {
     $.getJSON('/report/date/?'+data, function(json) {
         $('.report_main [name=date_start]').val(json['date_start']);
         $('.report_main [name=date_end]').val(json['date_end']);
-        if(json['accumulated']) {
-            $('.report_main [name=accumulated]').val(json['accumulated']);
-        }
     });
 }

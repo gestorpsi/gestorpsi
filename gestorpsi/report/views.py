@@ -86,7 +86,7 @@ def receive_data(request, template='report/report_receive.html'):
     """
     receive
     """
-    data , colors , date_start, date_end, list_receive, total_receive = Report().get_receive_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('accumulated') , request.GET.get('professional') , request.GET.get('receive') , request.GET.get('service'), request.GET.get('pway'), request.GET.get('covenant') )
+    data , colors , date_start, date_end, list_receive, total_receive = Report().get_receive_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('receive') , request.GET.get('service'), request.GET.get('pway'), request.GET.get('covenant') )
 
     # variables of JS
     option_title = u'Estatística de todos os profíssionais, serviços e pagamentos para o período escolhido.'
@@ -195,7 +195,9 @@ def report_export(request):
     """
     export admission data in html or pdf
     """
+
     if request.method == 'POST':
+
         r = Report()
         org_active = request.user.get_profile().org_active
         
@@ -220,14 +222,34 @@ def report_export(request):
                 report_clients = ReportReferral.objects.clients_all(request.user, request.POST.get('date_start'), request.POST.get('date_end'))
             
             data,date_start,date_end, service = data
-        
+
+
+        if request.POST.get('view') == '3': # renevues / faturamento
+
+            print request.POST
+
+            view = 'receive'
+            title = _('Revenues Report')
+
+            if request.POST.get('service'):
+                sub_title = u'%s %s' % (_('Service'), Service.objects.get(organization=request.user.get_profile().org_active, pk=request.POST.get('service')))
+
+            #if request.POST.get('clients'):
+                #report_clients = ReportReferral.objects.clients_all(request.user, request.POST.get('date_start'), request.POST.get('date_end'))
+            
+            #data = Report().get_referral_range(org_active, request.POST.get('date_start'), request.POST.get('date_end'), request.POST.get('service'), request.POST.get('accumulated'))
+
+            data , colors , date_start , date_end , receive_list , total_receive = Report().get_receive_( org_active, request.POST.get('date_start'), request.POST.get('date_end'), request.POST.get('professional'), request.POST.get('receive'), request.POST.get('service'), request.POST.get('payment_way'), request.POST.get('covenant') )
 
         IMG_PREFIX = '/media/' if int(request.POST.get('format')) == 1 else MEDIA_ROOT.replace('\\','/') + '/' # this a path bug fix. format == 1 (html)
 
         if int(request.POST.get('format')) == 2: # pdf print
-            user = request.user
-            return write_pdf('report/report_export.html', locals(), ('%s-%s-%s-%s-%s.pdf' % (view, slugify(_('report-between')), request.POST.get('date_start').replace('/','-'), _('and'), request.POST.get('date_end').replace('/','-'))))
 
+            user = request.user
+
+            return write_pdf('report/report_receive.html', locals(), ('%s-%s-%s-%s-%s.pdf' % (view, slugify(_('report-between')), request.POST.get('date_start').replace('/','-'), _('and'), request.POST.get('date_end').replace('/','-'))))
+
+        # out html format
         remove_links = True
         export_graph_type = request.POST.get('export_graph_type')
         return render_to_response('report/report_export.html', locals(), context_instance=RequestContext(request))

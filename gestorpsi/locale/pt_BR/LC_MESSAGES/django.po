@@ -2760,6 +2760,9 @@ msgstr "Relatório de Admissão"
 msgid "Referral Report"
 msgstr "Relatório de encaminhamento"
 
+msgid "Revenues Report"
+msgstr "Relatório de faturamento"
+
 #: report/views.py:196
 msgid "report-between"
 msgstr "relatório entre"

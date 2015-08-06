@@ -1,0 +1,273 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+    <head>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <script type="text/javascript" src="/media/js/jquery-1.6.4.min.js"></script> <!-- JQuery Core Library -->
+        <script type="text/javascript" src="/media/js/jquery-ui-1.8.2.custom.min.js"></script> <!-- JQuery UI with Draggable -->
+
+        <style media="all">
+        @page {
+          size:  portrait;
+          margin: 1cm;
+        } 
+
+        body {
+                font-family: Verdana, Arial, Helvetica, sans-serif;
+                font-size: 12px;
+        }
+
+        hr {
+            margin-top: 0px;
+            clear: both;
+        }
+
+        a { color: black; text-decoration:none;}
+
+        table.report {
+             border: 0px;
+            width: 680px;
+            margin: 30px 20px 20px 20px;
+        }
+
+        table.report td {
+           text-align:center;
+           padding-top: 3px;
+           padding-left: 5px;
+           padding-right: 5px;
+        }
+
+        table.report td.left {
+            text-align:left;
+        }
+
+        table.report th {
+            font-size: 14px;
+            background-color: #fff;
+            text-align:left;
+        }
+
+        th.close_report a { display:none; }
+
+        .odd { background-color: #ececec;}
+
+        tr.title{
+            background: #e6e6e6;
+            text-align: center;
+            font-weight: bold;
+            font-size: 10px;
+        }
+
+
+
+        .zebra_1 {
+            background: #F9F9F9;
+        }
+
+        table.signature {
+            font-size: 11px;
+            text-align: center;
+            margin-right: 20px;
+        }
+
+        /**
+         * from pisa documentation: 
+         * "Pisa is not able to split table cells that are larger than the available space. 
+         * To work around it you may define what should happen in this case. 
+         * The -pdf-keep-in-frame-mode can be one of: "error", "overflow", "shrink", "truncate", where "shrink" 
+         * is the default value."
+         */
+
+        /*
+        table {
+            -pdf-keep-in-frame-mode: shrink;
+        }
+        */
+        </style>
+
+        <!--
+        <link rel="stylesheet" type="text/css" href="/media/css/report.css" media="print"/>
+        -->
+
+        <title>{{ title }}{% if sub_title %} - {{sub_title }}{% endif %}</title>
+    </head>
+
+    <body>
+
+        <table width="100%">
+            <tr>
+
+                <td width="5%">
+                    {% if org_active.photo %}
+                        {% if DEBUG  %}
+                            <div  style="border:1px solid black">
+                            <small>{% trans "Image not available when Debug=True and server running in localhost" %}</small>
+                            </div>
+                        {% else %}
+                            <img width="134px" alt="{{ org_active.trade_name }}" src="{{ IMG_PREFIX }}img/organization/{{ org_active.id}}/.thumb/{{ org_active.photo }}">
+                        {% endif %}
+                    {% endif %}
+                </td>
+
+                <td style="padding-left: 5px; font-size: 12px;">
+                    <b>{{ org_active.trade_name }}</b><br>
+                    {% if org_active.get_first_address %} {{ org_active.get_first_address|safe }} {% endif %}<br>
+                    {% if org_active.phones.all %} {{ org_active.phones.all|join:", "}} {% endif %}<br>
+                </td>
+
+                <td style="text-align:right;font-size: 12px;">
+                    <b>{{ title }} {% trans "Report" %}</b><br>
+                    {% trans "generated at" %} {% now "d/m/Y H:i" %} hs<br>
+                    {% trans "by " %} {{ request.user.get_profile.person.name }}<br>
+                </td>
+
+            </tr>
+        </table>
+
+        <h2>{{ title }} {% trans "between" %} {{ date_start|date:"d/m/Y" }} {% trans "and" %} {{ date_end|date:"d/m/Y" }}</h2>
+
+        <hr></hr>
+
+        <!-- list of clients -->
+        {% if option_rows %}
+
+                <h4>Conbran&ccedil;a por pacote</h4>
+                NF : N&atilde;o finalizado<br />
+                F  : Finalizado<br />
+
+                <br />
+
+                {% for x in list_receive %}
+                    {% if x.1 %}
+
+                       <div style='background-color:{{ x.2 }}; vertical-align:middle; padding: 0 15px; font-size: 15px; font-weight: bold; color: white; '>{{ x.0 }}</div>
+
+                       <table class="report_list_receive">
+
+                         <tbody>
+                            <tr class="legend"> 
+                                <th>Cliente</th> 
+                                <th>Conv&ecirc;nio</th> 
+                                <th>Cobran&ccedil;a</th> 
+                                <th>Data lan&ccedil;amento</th> 
+                                <th>Data evento</th> 
+                                <th>Servi&ccedil;o</th> 
+                                <th>Forma pagto</th> 
+                                <th>Valor R$</th> 
+                            </tr> 
+
+                            {% for c in x.1 %}
+                                <tr class="{% cycle 'odd' 'even' %}">
+
+                                    <td style="text-align:center;">
+                                        {% if c.referral %}
+                                            <a href="/client/{{ c.referral.client.all.0.id }}/home/" target="_blank">{{ c.referral.client.all.0 }}</a>
+                                            
+                                        {% else %}
+                                            <a href="/client/{{ c.occurrence.all.0.event.referral.client.all.0.id }}/home/" target="_blank">{{ c.occurrence.all.0.event.referral.client.all.0 }}</a>
+                                        {% endif %}
+                                    </td>
+
+                                    <td style="text-align:center;">
+                                        {{ c.name }}
+                                    </td>
+
+                                    <td style="text-align:center;">
+                                        {% ifequal c.covenant_charge 2 %}
+                                            {{ c.get_covenant_charge_display }} ({{ c.covenant_pack_size }}) {% if c.terminated_ %}F{% else %}NF{% endif %}
+                                        {% else %}
+                                            {{ c.get_covenant_charge_display }}
+                                        {% endifequal %}
+                                    </td>
+
+                                    <td style="text-align:center;">
+                                        {{ c.created|date:"D, d b Y" }}
+                                    </td>
+
+                                    <td style="text-align:center;">
+                                        {% if c.occurrence.all.0.id %}
+                                            <a href="/schedule/events/{{ c.occurrence.all.0.id }}/confirmation/" target="_blank">{{ c.occurrence.all.0.start_time|date:"D, d b Y - H:i" }}</a>
+                                        {% endif %}
+                                    </td>
+
+                                    <td style="text-align:center;">
+                                        {% if c.referral %}
+                                            <a href="/client/{{ c.referral.client.all.0.id }}/referral/{{ c.referral.id }}/" target="_blank">{{ c.referral.service }} #{{ c.referral.seq }}</a>
+                                        {% else %}
+                                            <a href="/client/{{ c.occurrence.all.0.event.referral.client.all.0.id }}/referral/{{ c.occurrence.all.0.event.referral.id }}/" target="_blank">{{ c.occurrence.all.0.event.referral.service }} #{{ c.occurrence.all.0.event.referral.seq }}</a>
+                                        {% endif %}
+                                    </td>
+
+                                    <td style="text-align:center;">
+                                        {% for x in c.get_display_payment_way_name_ %}
+                                            {{ x }} {% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+
+                                    <td style="text-align:center;">
+                                        {{ c.total }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            <!-- total -->
+                                <tr class="odd">
+                                    <td style="text-align:center; font-weight:bold;">
+                                        Valor total
+                                    </td>
+                                    <td style="text-align:center; font-weight:bold;">
+                                        Todos
+                                    </td>
+                                    <td style="text-align:center; font-weight:bold;">
+                                        Todos
+                                    </td>
+                                    <td style="text-align:center; font-weight:bold;">
+                                        Todos
+                                    </td>
+                                    <td style="text-align:center; font-weight:bold;">
+                                        Todos
+                                    </td>
+                                    <td style="text-align:center; font-weight:bold;">
+                                        Todos
+                                    </td>
+                                    <td style="text-align:center; font-weight:bold;">
+                                        Todos
+                                    </td>
+                                    <td style="text-align:center;">
+                                        {{ x.3 }}
+                                    </td>
+                                </tr>
+
+                         </tbody>
+                       </table>
+
+                    {% endif %}
+                {% endfor %}
+
+        {% else %}
+            <script>
+                $('#report_table').append('<h3>N&atilde;o h&aacute; relato de dados para o periodo escolhido.</h3>');
+            </script>
+        {% endif %}
+
+    </body>
+</html>

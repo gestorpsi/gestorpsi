@@ -391,7 +391,7 @@ GNU General Public License for more details.
 {% if payment_upcoming5 or payment_past5 %}
     <div class="main_area home">
 
-        <h3><span>{% trans "Pagamentos" %}</span></h3>
+        <h3><span>{% trans "Faturamento" %}</span></h3>
 
         <p>
             <b>Legenda</b><br />
@@ -403,7 +403,7 @@ GNU General Public License for more details.
 
         <!-- eventos futuros -->
         {% if payment_upcoming5 %}
-            <p><h2 class='red'>Eventos futuros</h2>
+            <p><h2 class='red'>Futuros</h2>
             {% for x in payment_upcoming5 %}
                 <p>
                     <small>
@@ -450,7 +450,7 @@ GNU General Public License for more details.
 
         <!-- eventos passados -->
         {% if payment_past5 %}
-            <p><h2 class='red'>Eventos passados</h2>
+            <p><h2 class='red'>Passados</h2>
             {% for x in payment_past5 %}
                 <p>
                     <small>

@@ -43,11 +43,6 @@ CHARGE = (
     ),
 )
 
-DEADLINE = (
-    (1, _(u'A vista')),
-    (2, _(u'Faturado')),
-)
-
 class Covenant(models.Model):
     id = UuidField(primary_key=True)
     date_join = models.DateField(auto_now_add=True, null=False, editable=False)
@@ -56,7 +51,6 @@ class Covenant(models.Model):
     category = models.IntegerField(u'Categoria', choices=CATEGORY, null=False, blank=False)
     charge = models.IntegerField(u'Cobrança', choices=CHARGE, null=False, blank=False)
     payment_way = models.ManyToManyField(PaymentWay, null=False, blank=False )
-    deadline = models.IntegerField(u'Prazo', choices=DEADLINE, null=False, blank=False)
     event_time = models.PositiveIntegerField(u'Número de eventos', null=True, blank=True) # if charge=2, show this field
     price = models.DecimalField(u'Valor', max_digits=6, decimal_places=2, null=False, blank=False)
     description = models.TextField(u'Descrição', null=True, blank=True)

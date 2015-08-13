@@ -14,6 +14,36 @@ GNU General Public License for more details.
 
 */
 
+// return msg
+function charge_msg(){ 
+
+    var id = $('select#id_charge').val();
+    var msg = '';
+
+    if ( id == '1' ){ 
+        msg = 'Para cada evento na agenda, uma nova fatura é criada.';
+    }
+
+    if ( id == '2' ){ 
+        msg = 'Para cada pacote de eventos, uma nova fatura é criada a partir do primeiro evento do pacote.';
+    }
+
+    if ( id == '10' ){ 
+        msg = 'Uma fatura é criada todo domingo, independente do número de eventos agendados.';
+    }
+
+    if ( id == '11' ){ 
+        msg = 'Uma fatura é criada todo dia 01 e 15 do mês, independente do número de eventos agendados.';
+    }
+
+    if ( id == '12' ){ 
+        msg = 'Uma fatura é criada todo dia 01 do mês, independente do número de eventos.'; 
+    }
+
+    $("label[for='charge_text'] p").html(msg);
+}
+
+
 // create new combobox after load new options
 function reload_combobox(){ 
     $('select#id_service').multiSelect();
@@ -69,6 +99,15 @@ $(document).ready(function() {
 
         // reload_combobox must have a delay
         setTimeout(reload_combobox, 500);
+    });
+
+
+    // change text about charge
+    // mount html form
+    charge_msg();
+    // change
+    $('select#id_charge').change( function(){ 
+        charge_msg();
     });
 
 });

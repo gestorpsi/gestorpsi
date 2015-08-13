@@ -207,36 +207,49 @@ GNU General Public License for more details.
 
                             <td style="width:15%" ><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
 
-                            <td style="width:25%"><span class="pdf">
+                            <td style="width:35%"><span class="pdf">
                                         
-                                {% if is_psychologist %}
-                                            <a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename|truncatechars:25 }}</a></span></td>
-                                {% elif is_secretary and a.only_psychologists%}
-                                    {{ a.filename|truncatechars:20 }}
-                                {% elif is_secretary and a.only_professionals %}
-                                    {{ a.filename|truncatechars:20 }}
-                                {% elif  is_professional and  a.only_psychologists %}
-                                    {{ a.filename|truncatechars:20 }}
-                                {% else %}
-                                    <a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a>
-                                {% endif %}
+                                <!-- psycologist is a professional -->
+                                {% ifequal a.permission '1' %}
+                                    {% if is_professional or is_psychologist %}
+                                        <a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename|truncatechars:25 }}</a></span></td>
+                                    {% endif %}
+                                {% endifequal %}
+
+                                <!-- just psycologist -->
+                                {% ifequal a.permission '2' %}
+                                    {% if is_psychologist %}
+                                        <a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename|truncatechars:25 }}</a></span></td>
+                                    {% endif %}
+                                {% endifequal %}
 
                             </td>
 
-                            <td style="width:40%">
+                            <td style="width:25%">
                                 {% for t in types %}{% ifequal a.type t.0 %}<span>{{ t.1 }}<br />{{ a.description }}</span> {% endifequal %}{% endfor %}
                             </td>
 
-                            <td style="width:15%">
+                            <td style="width:25%">
                                 <span>
-                                    {% if a.only_psychologists %}
-                                        psicologo<br/>
-                                    {% endif %}
-
-                                    {% if a.only_professionals %}
-                                        Profissional
-                                    {% endif %}
+                                    {{ a.get_permission_display }}
+                                    <br />
                                 </span>
+                            </td>
+
+                            <td>
+                                <!-- psycologist is a professional -->
+                                {% ifequal a.permission '1' %}
+                                    {% if is_professional or is_psychologist %}
+                                        <a href="" target="_blank"><img alt="Editar" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Text-x-generic_with_pencil.svg/48px-Text-x-generic_with_pencil.svg.png" width="24px;" height="24px;">Editar</a>
+                                    {% endif %}
+                                {% endifequal %}
+
+                                <!-- just psycologist -->
+                                {% ifequal a.permission '2' %}
+                                    {% if is_psychologist %}
+                                        <a href="" target="_blank"><img alt="Editar" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Text-x-generic_with_pencil.svg/48px-Text-x-generic_with_pencil.svg.png" width="24px;" height="24px;">Editar</a>
+                                    {% endif %}
+                                {% endifequal %}
                             </td>
                             
                         </tr>

@@ -68,6 +68,12 @@ GNU General Public License for more details.
                         <input type="text" maxlength="3" id="event_time" name="event_time" class="small" value="{% if obj.event_time %}{{ obj.event_time }}{% endif %}" {% ifequal obj.charge 2 %} required="required" {% endifequal %} />
                     </label>
 
+                    <label for="charge_text">{% trans "Explicativo" %} <br />
+                        <p style="font-size: 15px;">
+                            Para cada evento na agenda, uma nova fatura &eacute; criada.
+                        </p>
+                    </label>
+
                     <label>{% trans "Valor" %} 
                         R$&nbsp;&nbsp;{{ form.price }}
                         {{ form.price.errors }}

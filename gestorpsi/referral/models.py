@@ -54,12 +54,21 @@ QUEUE_PRIORITY= (
     ('03', _('Low')),
 )
 
+
+PERMISSION_ATTACH = (
+    ('1', _('Todos os profissionais')),
+    ('2', _(u'Apenas psicólogo')),
+)
+
+
 REFERRAL_ATTACH_TYPE = (
+    ('12', _('Atestado')),
     ('01', _('Drawing')),
     ('02', _('Diagnosis')),
     ('03', _('Medical Examination')),
     ('04', _('Reference')),
     ('05', _('Results sheet')),
+    ('13', _(u'Relatório técnico')),
     ('06', _('Test sheet')),
     ('07', _('Photo')),
     ('08', _('Laudo')),
@@ -110,9 +119,8 @@ class ReferralAttach(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     file = models.CharField(max_length=200)
     type = models.CharField(max_length=2, blank=True, null=True, choices=REFERRAL_ATTACH_TYPE) 
+    permission = models.CharField(max_length=2, default=1, blank=False, null=False, choices=PERMISSION_ATTACH) 
     referral = models.ForeignKey('Referral')
-    only_professionals = models.BooleanField()
-    only_psychologists = models.BooleanField()
 
     def __unicode__(self):
         return u'%s' % (self.file)

@@ -135,7 +135,7 @@ GNU General Public License for more details.
             {% endif %}
 
             <li><a class="client_messages" href="/client/{{ object.id }}/referral/{{ referral.id }}/messages/" title="{{ object.person.name }}">{% trans "Messages" %}</a></li>
-            <li><a href="/upload/client/{{ object.id }}/attach/{{ referral.id }}" title="{{ object.person.name }}">{% trans "Attach Document" %}</a></li>
+            <li><a href="/upload/client/{{ object.id }}/referral/{{ referral.id }}/" title="{{ object.person.name }}">{% trans "Attach Document" %}</a></li>
 
             {% if not user.profile.person.careprofessional.studentprofile  and access_check_referral_write %}
                 <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/queue/" title="{{ object.person.name }}">{% trans "Queue (add/remove)" %}</a></li>

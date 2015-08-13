@@ -104,8 +104,7 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
 
     attachs = ReferralAttach.objects.filter(referral = referral_id)
 
-    # Finding if the user is a secretary or a psychologist.
-    is_secretary = user.get_profile().person.is_secretary()
+    # permission to read file, user can be is a professional and/or a psychologist.
     is_professional = user.get_profile().person.is_careprofessional()
     is_psychologist = False
 

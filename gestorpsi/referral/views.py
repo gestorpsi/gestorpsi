@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from django.db.models.query_utils import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils import simplejson
@@ -84,12 +85,12 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     payments = Receive.objects.filter(occurrence__event__referral=referral)
 
     # upcoming
-    payment_upcoming5 = Receive.objects.filter(occurrence__start_time__gte=datetime.today()).order_by('-occurrence__start_time').distinct()[0:5]
-    payment_upcoming_all = Receive.objects.filter(occurrence__start_time__gte=datetime.today()).order_by('-occurrence__start_time').distinct()[5:]
+    payment_upcoming5 = Receive.objects.filter( occurrence__start_time__gte=datetime.today() ).filter( Q(occurrence__event__referral=referral) | Q(referral=referral) ).order_by('-occurrence__start_time').distinct()[0:5]
+    payment_upcoming_all = Receive.objects.filter( occurrence__start_time__gte=datetime.today() ).filter( Q(occurrence__event__referral=referral)|Q(referral=referral) ).order_by('-occurrence__start_time').distinct()[5:]
 
     # past
-    payment_past5 = Receive.objects.filter(occurrence__start_time__lte=datetime.today()).order_by('-occurrence__start_time').distinct()[0:5]
-    payment_past_all = Receive.objects.filter(occurrence__start_time__lte=datetime.today()).order_by('-occurrence__start_time').distinct()[5:]
+    payment_past5 = Receive.objects.filter( occurrence__start_time__lte=datetime.today() ).filter( Q(occurrence__event__referral=referral)|Q(referral=referral) ).order_by('-occurrence__start_time').distinct()[0:5]
+    payment_past_all = Receive.objects.filter(occurrence__start_time__lte=datetime.today() ).filter( Q(occurrence__event__referral=referral)|Q(referral=referral) ).order_by('-occurrence__start_time').distinct()[5:]
 
 
     try:

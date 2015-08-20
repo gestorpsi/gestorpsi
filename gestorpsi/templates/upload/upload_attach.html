@@ -141,14 +141,14 @@ GNU General Public License for more details.
                                         <!-- psycologist is a professional -->
                                         {% ifequal a.permission '1' %}
                                             {% if is_professional or is_psychologist %}
-                                                <a href="/upload/client/{{ object.id }}/referral/{{ referral.id }}/attach/{{ a.id }}/" target="_blank"><img alt="Editar" src="/media/img/22/edit-attach.png">Editar</a>
+                                                <a href="/upload/client/{{ object.id }}/referral/{{ referral.id }}/attach/{{ a.id }}/" ><img alt="Editar" src="/media/img/22/edit-attach.png">Editar</a>
                                             {% endif %}
                                         {% endifequal %}
 
                                         <!-- just psycologist -->
                                         {% ifequal a.permission '2' %}
                                             {% if is_psychologist %}
-                                                <a href="/upload/client/{{ object.id }}/referral/{{ referral.id }}/attach/{{ a.id }}/" target="_blank"><img alt="Editar" src="/media/img/22/edit-attach.png">Editar</a>
+                                                <a href="/upload/client/{{ object.id }}/referral/{{ referral.id }}/attach/{{ a.id }}/" ><img alt="Editar" src="/media/img/22/edit-attach.png">Editar</a>
                                             {% endif %}
                                         {% endifequal %}
                                     </td>

@@ -27,105 +27,104 @@ GNU General Public License for more details.
 
 {% block core %}
 
-<script type="text/javascript" src="/media/js/gestorpsi.report.lib.js"></script>
-<script type="text/javascript" src="/media/js/gestorpsi.report.js"></script>
-<script type="text/javascript" src="/media/js/gestorpsi.report.forms.js"></script>
+    <script type="text/javascript" src="/media/js/gestorpsi.report.lib.js"></script>
+    <script type="text/javascript" src="/media/js/gestorpsi.report.js"></script>
+    <script type="text/javascript" src="/media/js/gestorpsi.report.forms.js"></script>
 
-<h2 class="title_report title">{% trans "Report for" %} {{ user.get_profile.org_active }}</h2>
+    <h2 class="title_report title">{% trans "Report for" %} {{ user.get_profile.org_active }}</h2>
 
-<!-- save report form  -->
-<div id="save_form">
-</div>
+    <!-- save report form  -->
+    <div id="save_form"></div>
 
-<!-- client list dialog  -->
-<div id="report_clients">
-</div>
+    <!-- client list dialog  -->
+    <div id="report_clients"></div>
 
-<div class="report_main">
-    <div class="tab_content reports_saved" style="display:none;">
-        <p class="description">{% trans "Displaying saved reports. Here you can load saved data into report dashboard" %}</p>
-        <div id="reports_saved_html">
-        {# saved tables loaded here by jquery #}
+    <div class="report_main">
+
+        <div class="tab_content reports_saved" style="display:none;">
+            <p class="description">{% trans "Displaying saved reports. Here you can load saved data into report dashboard" %}</p>
+            <div id="reports_saved_html">
+            {# saved tables loaded here by jquery #}
+            </div>
         </div>
-    </div>
-    
-    <div class="tab_content dashboard">
-        <p class="description">{% trans "Displaying reports. Use the controls below to customize this page and save it on the tab My Reports" %}</p>
-        <div class="report_filter_nav">
-            <form method="post" id="report_filter" action="{% url report_export %}">
+        
+        <div class="tab_content dashboard">
+            <p class="description">{% trans "Displaying reports. Use the controls below to customize this page and save it on the tab My Reports" %}</p>
+            <div class="report_filter_nav">
+                <form method="post" id="report_filter" action="{% url report_export %}">
 
-                {% trans "Reports for" %} {{ form.view }} 
-                {% trans "between" %} {{ form.date_start }} {% trans "and" %} {{ form.date_end }}
-                {{ form.accumulated }}
+                    {% trans "Reports for" %} {{ form.view }} 
+                    {% trans "between" %} {{ form.date_start }} {% trans "and" %} {{ form.date_end }}
+                    {{ form.accumulated }}
 
-                <div class="service_filter hidden" style="float:left;">
-                    {% trans "Servi&ccedil;o" %} {{ form.service }}
-                </div>
+                    <div class="service_filter hidden" style="float:left;">
+                        {% trans "Servi&ccedil;o" %} {{ form.service }}
+                    </div>
 
-                <div class="professional_filter hidden">
-                    {% trans "Profissional" %} {{ form.professional }}
-                </div>
+                    <div class="professional_filter hidden">
+                        {% trans "Profissional" %} {{ form.professional }}
+                    </div>
 
-                <div class="covenant_filter hidden" >
-                    {% trans "Conv&ecirc;nio" %} {{ form.cove }}
-                </div>
+                    <div class="covenant_filter hidden" >
+                        {% trans "Conv&ecirc;nio" %} {{ form.cove }}
+                    </div>
 
-                <div class="payment_way_filter hidden" style="float:left;">
-                    {% trans "Forma pagamento" %} {{ form.payment_way }}
-                </div>
+                    <div class="payment_way_filter hidden" style="float:left;">
+                        {% trans "Forma pagamento" %} {{ form.payment_way }}
+                    </div>
 
-                <div class="receipt_status_filter hidden">
-                    {% trans "Recebimento" %} {{ form.receipt_status }}
-                </div>
+                    <div class="receipt_status_filter hidden">
+                        {% trans "Recebimento" %} {{ form.receipt_status }}
+                    </div>
 
-                <div style="margin-top:20px;margin-right:30px;" class="float_right">
-                    <button type="submit" class="dashboard_overview" name="save" class="form_mini_noinsert save_report_button">{% trans "Save Report" %}</button>
-                    <button type="submit" class="dashboard_overview" name="update">{% trans "Update" %}</button>
+                    <div style="margin-top:20px;margin-right:30px;" class="float_right">
+                        <button type="submit" class="dashboard_overview" name="save" class="form_mini_noinsert save_report_button">{% trans "Save Report" %}</button>
+                        <button type="submit" class="dashboard_overview" name="update">{% trans "Update" %}</button>
+                    </div>
+
+                    <div style="clear:both;"></div>
+
+                    <div class="export_data_form hidden">
+                        <br />
+                        <label><b>{{ form.clients.label }}</b></label><br />
+                        <br />{{ form.clients }}&nbsp;<small>{{ form.clients.help_text }}</small>
+                        <br /><br />
+                        <label><b>{{ form.format.label }}</b></label><br />
+                        <br />{{ form.format }}&nbsp;<small>{{ form.format.help_text }}</small>
+                        <br /><br />
+                        <button type="submit" name="export" class="report_submit_export">{% trans "Export Data" %}</button>
+                    </div>
+                    <br />
+                    <!-- referral filters goes here! -->
+                </form>
+            </div>
+
+            <div class="alert saved_successfully" style="display:none;">
+                {% trans "Report saved successfully with label" %} <b></b>
+            </div>
+
+            <div class="dashboard_overview">
+                <div class="loaded_report_title hidden">
+                    <h4></h4>
+                    <small>{% trans "Saved at" %} <span></span> hs</small>
                 </div>
 
                 <div style="clear:both;"></div>
-
-                <div class="export_data_form hidden">
-                    <br />
-                    <label><b>{{ form.clients.label }}</b></label><br />
-                    <br />{{ form.clients }}&nbsp;<small>{{ form.clients.help_text }}</small>
-                    <br /><br />
-                    <label><b>{{ form.format.label }}</b></label><br />
-                    <br />{{ form.format }}&nbsp;<small>{{ form.format.help_text }}</small>
-                    <br /><br />
-                    <button type="submit" name="export" class="report_submit_export">{% trans "Export Data" %}</button>
-                </div>
-                <br />
-                <!-- referral filters goes here! -->
-            </form>
-        </div>
-
-    <div class="alert saved_successfully" style="display:none;">
-        {% trans "Report saved successfully with label" %} <b></b>
-    </div>
-
-        <div class="dashboard_overview">
-            <div class="loaded_report_title hidden">
-                <h4></h4>
-                <small>{% trans "Saved at" %} <span></span> hs</small>
             </div>
+        </div><!-- tab_content dashboard -->
 
-            <div style="clear:both;"></div>
-            
-        </div>
+        <!-- out of main div to explore more space -->
+        <div id="report_table" style="width:965px;"></div>
+
+    </div><!-- report main -->
+
+    <div id="sidebar" class="sidebar_client_top">
+        <h3>{% trans "Report filters" %}</h3>
+        <ul>
+            {% for f in filters %}
+                <li><a class="pointer report_filter" data="&date_start={{f.date_start|date:"d/m/Y"}}&date_end={{f.date_end|date:"d/m/Y"}}">{{ f.name }}</a></li>
+            {% endfor %}
+        </ul>
     </div>
 
-    <!-- out of main div to explore more space -->
-    <div id="report_table" style="width:965px;"></div>
-
-</div>
-
-<div id="sidebar" class="sidebar_client_top">
-    <h3>{% trans "Report filters" %}</h3>
-    <ul>
-        {% for f in filters %}
-            <li><a class="pointer report_filter" data="&date_start={{f.date_start|date:"d/m/Y"}}&date_end={{f.date_end|date:"d/m/Y"}}">{{ f.name }}</a></li>
-        {% endfor %}
-    </ul>
-</div>
 {% endblock %}

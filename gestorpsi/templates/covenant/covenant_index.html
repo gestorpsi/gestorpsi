@@ -28,26 +28,26 @@ GNU General Public License for more details.
 
 {% block core %}
     <div class="registers_available">
-            <h2 class="title_covenant">{% trans "Conv&ecirc;nio(s)" %}</h2>
-            <p class="description">{% trans "Displaying" %} <span id="object_length"></span> {% trans "Conv&ecirc;nio(s)" %}.<span id="pageof"></span></p>
-              
-            <div class="main_area contact">
+        <h2 class="title_covenant">{% trans "Conv&ecirc;nios" %}</h2>
+        <p class="description">{% trans "Displaying" %} <span id="object_length"></span> {% trans "Conv&ecirc;nio(s)" %}.<span id="pageof"></span></p>
+          
+        <div class="main_area contact">
 
-            <!-- mount result of search -->
-            <div class="main_area contact" id="page_results"></div>
+        <!-- mount result of search -->
+        <div class="main_area contact" id="page_results"></div>
 
-            <!-- call JS function -->
-            <script>
-                $(function() {
-                    $('#page_results').load('{{ list_url_base }}',function(responseTxt,statusTxt,xhr){
-                        if(statusTxt=="success") {
-                            $('#pageof').text($('.pagination span.current').text());
-                            $('#object_length').text($('input[name=result_count]').val());
-                        }
-                        if(statusTxt=="error")
-                            alert("Error: "+xhr.status+": "+xhr.statusText);
-                    });
+        <!-- call JS function -->
+        <script>
+            $(function() {
+                $('#page_results').load('{{ list_url_base }}',function(responseTxt,statusTxt,xhr){
+                    if(statusTxt=="success") {
+                        $('#pageof').text($('.pagination span.current').text());
+                        $('#object_length').text($('input[name=result_count]').val());
+                    }
+                    if(statusTxt=="error")
+                        alert("Error: "+xhr.status+": "+xhr.statusText);
                 });
-            </script>
+            });
+        </script>
     </div>
 {% endblock %}

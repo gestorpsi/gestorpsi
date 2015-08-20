@@ -47,7 +47,6 @@ STATUS = (
 )
 
 
-#class ReceiveWay(models.Model):
 class PaymentWay(models.Model):
     name = models.CharField(_(u"Name"), max_length=100)
     is_active = models.BooleanField(u'Disponível', default=True)
@@ -57,7 +56,6 @@ class PaymentWay(models.Model):
         return u"%s" % self.name
 
 
-#class Payment(models.Model):
 class Receive(models.Model):
     '''
         receive

@@ -15,6 +15,7 @@ GNU General Public License for more details.
 """
 
 from datetime import datetime
+
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
@@ -23,6 +24,8 @@ from django.utils.translation import ugettext as _
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import slugify
 from django.utils import simplejson
+from django.db.models import Q
+
 from gestorpsi.admission.models import AdmissionReferral
 from gestorpsi.report.forms import ReportForm, ReportSaveAdmissionForm
 from gestorpsi.report.models import ReportAdmission, ReportsSaved, Report, ReportReferral
@@ -36,10 +39,28 @@ from gestorpsi.util.decorators import permission_required_with_403
 def index(request):
     """
     display initial templates
+
+    permission:
+        all:
+        administrator or secretary can use all.
+
+        professional:
+        professional can filter just yours own services and covenant.
+
+        False:
+        others can't user report
     """
 
     form = ReportForm(request.user.get_profile().org_active.created(), datetime.now(), request.user.get_profile().org_active)
-    
+
+    # permission
+    permission = False
+
+    if request.user.groups.filter(Q(name__icontains='administrator')|Q(name__icontains='secretary')).distinct():
+        permission = 'all'
+    if request.user.groups.filter(name__icontains='professional'):
+        permission = 'professional'
+
     """
     pass filter itens in right bar
     """
@@ -86,6 +107,7 @@ def receive_data(request, template='report/report_receive.html'):
     """
     receive
     """
+
     data , colors , date_start, date_end, list_receive, total_receive = Report().get_receive_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('receive') , request.GET.get('service'), request.GET.get('pway'), request.GET.get('covenant') )
 
     # variables of JS

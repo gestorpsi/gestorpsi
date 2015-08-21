@@ -62,7 +62,16 @@ GNU General Public License for more details.
                     </div>
 
                     <div class="professional_filter hidden">
-                        {% trans "Profissional" %} {{ form.professional }}
+                        {% ifequal permission 'all' %}
+                            {% trans "Profissional" %} {{ form.professional }}
+                        {% endifequal %}
+
+                        {% ifequal permission 'professional' %}
+                            Professional
+                            <select name="professional" id="id_professional">
+                                <option value="{{ request.user.profile.person.careprofessional.id }}" selected>{{ request.user.profile.person.name }}</option>
+                            </select>
+                        {% endifequal %}
                     </div>
 
                     <div class="covenant_filter hidden" >

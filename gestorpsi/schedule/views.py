@@ -698,6 +698,7 @@ def week_view(request,
                 services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
                 professionals = CareProfessional.objects.active_all(request.user.get_profile().org_active.id),
                 tab_week_class = 'active',
+                place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0]
             ), context_instance=RequestContext(request))
 
 def week_view_table(request,

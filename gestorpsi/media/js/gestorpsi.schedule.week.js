@@ -34,6 +34,5 @@ $('div.schedule').ready(function() {
         $("div#mini_calendar").datepicker(schedule_options);
         updateGrid('/schedule/occurrences/');
     });
-
     
 });

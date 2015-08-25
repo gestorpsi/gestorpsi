@@ -692,13 +692,20 @@ def week_view(request,
         day = datetime.now().strftime("%d"),
     ):
 
+    print 
+    print '-------------- WEEK VIEW '
+    for x in Place.objects.filter(organization=request.user.get_profile().org_active): print x
+    print 
+    print Place.objects.active().filter(organization=request.user.get_profile().org_active.id)
+
     return render_to_response('schedule/schedule_week.html', dict(
                 places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
                 rooms = Room.objects.active().filter(place__organization=request.user.get_profile().org_active.id),
                 services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
                 professionals = CareProfessional.objects.active_all(request.user.get_profile().org_active.id),
                 tab_week_class = 'active',
-                place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0]
+                place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0],
+                #place = Place.objects.filter(organization=request.user.get_profile().org_active),
             ), context_instance=RequestContext(request))
 
 def week_view_table(request,

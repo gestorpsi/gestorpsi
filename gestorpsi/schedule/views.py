@@ -623,11 +623,19 @@ def _datetime_view(
         object = ''
 
     place = Place.objects.get( pk=place )
+    print
+    print place.hours_work()
 
     user = request.user
     timeslot_factory = timeslot_factory or create_timeslot_table
 
     params = params or {}
+    '''
+    timeslots=timeslot_factory(dt, items, start_time=datetime_.time( place.hours_work()[0], place.hours_work()[1]),\
+                end_time_delta=timedelta(hours=place.hours_work()[2] ),\
+                time_delta=timedelta( minutes=int(user.get_profile().org_active.time_slot_schedule) ),\
+                **params),
+    '''
     data = dict(
 
         day=dt, 
@@ -636,10 +644,8 @@ def _datetime_view(
 
         # get start_time and end_time_delta from place
         # get schedule slot time from organization
-        timeslots=timeslot_factory(dt, items, start_time=datetime_.time( place.hours_work()[0], place.hours_work()[1]),\
-                    end_time_delta=timedelta(hours=place.hours_work()[2] ),\
-                    time_delta=timedelta( minutes=int(user.get_profile().org_active.time_slot_schedule) ),\
-                    **params),
+        timeslots=timeslot_factory(dt, items,time_delta=timedelta( minutes=int(user.get_profile().org_active.time_slot_schedule) ),**params),
+
 
         places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
         place = place,
@@ -665,10 +671,12 @@ def schedule_index(request,
         year = datetime.now().strftime("%Y"), 
         month = datetime.now().strftime("%m"), 
         day = datetime.now().strftime("%d"), 
+        place=None,
         template='schedule/schedule_daily.html',
-        place = None,
         **params
     ):
+    
+    print '----------- INDEX '
 
     if place == None:
         # Possible to exist more than one place as matriz or none, filter and get first element
@@ -678,10 +686,13 @@ def schedule_index(request,
         else:
             place = Place.objects.filter(organization=request.user.get_profile().org_active)[0].id
     
+    places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id)
+
     # Test if clinic administrator has registered referrals before access schedule page.
     if not Referral.objects.filter(status='01', organization=request.user.get_profile().org_active).count():
         return render_to_response('schedule/schedule_referral_alert.html', context_instance=RequestContext(request))    
 
+    #return _datetime_view(request, template, datetime(int(year), int(month), int(day)), place, **params)
     return _datetime_view(request, template, datetime(int(year), int(month), int(day)), place, **params)
 
 

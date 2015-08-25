@@ -18,7 +18,7 @@ var schedule_options = {
     dateFormat: 'yymmdd',
     'onSelect': function(date) {
         $("div#mini_calendar").hide();
-        return updateGrid('/schedule/occurrences/' + date.substr(0,4) + '/' + date.substr(4,2) + '/' + date.substr(6,2) + '/place/' + $('input[name="current_place_id"]').val() );
+        return updateGrid('/schedule/occurrences/' + date.substr(0,4) + '/' + date.substr(4,2) + '/' + date.substr(6,2) );
     }
 }
 
@@ -88,11 +88,10 @@ function updateGrid(url) {
         });
 
         // - - CHECKED 
-        
-        /*$('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/');*/
-        /*$('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/');*/
-        $('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/place/'+json['util']['place']+'/');
-        $('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/place/'+json['util']['place']+'/');
+        $('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/');
+        $('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/');
+        /*$('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/place/'+json['util']['place']+'/');*/
+        /*$('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/place/'+json['util']['place']+'/');*/
         jQuery.each(json,  function(){
     
             $('table.zebra tr:odd').addClass('zebra_0');

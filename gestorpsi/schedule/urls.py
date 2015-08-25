@@ -44,7 +44,8 @@ urlpatterns = patterns('',
     
     # return JSON
     url(
-        r'^occurrences/(?P<year>(\d)+)/(?P<month>(\d)+)/(?P<day>(\d)+)/place/(?P<place>([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}))/$', 
+        #r'^occurrences/(?P<year>(\d)+)/(?P<month>(\d)+)/(?P<day>(\d)+)/place/(?P<place>([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}))/$', 
+        r'^occurrences/(?P<year>(\d)+)/(?P<month>(\d)+)/(?P<day>(\d)+)/$', 
         login_check(daily_occurrences),
         name='schedule-daily-occurrences'
     ),

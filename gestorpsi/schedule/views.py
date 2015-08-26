@@ -44,9 +44,11 @@ from gestorpsi.financial.models import Receive
 from gestorpsi.financial.forms import ReceiveFormUpdate, ReceiveFormNew
 from gestorpsi.covenant.models import Covenant
 
+import locale
+locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+
 
 def _access_check_by_occurrence(request, occurrence):
-    #from gestorpsi.client.views import _access_check_referral_write, _access_check
     from gestorpsi.client.views import _access_check
     denied_to_read = None
     for c in occurrence.event.referral.client.all():
@@ -58,10 +60,9 @@ def _access_check_by_occurrence(request, occurrence):
 
     return True
 
+
 @permission_required_with_403('schedule.schedule_list')
-def schedule_occurrence_listing(request, year = 1, month = 1, day = None, 
-    template='schedule/schedule_events.html',
-    **extra_context):
+def schedule_occurrence_listing(request, year=1, month=1, day=None, template='schedule/schedule_events.html', **extra_context):
 
     occurrences = schedule_occurrences(request, year, month, day)
 
@@ -523,16 +524,6 @@ def occurrence_confirmation_form(
 
             messages.error(request, _(u'Campo inválido ou obrigatório'))
 
-            #return render_to_response(
-                #template,
-                #dict(occurrence=occurrence,
-                    #form=form,
-                    #object=object,
-                    #referral=occurrence.event.referral,
-                    #payment_list=payment_list,
-                    #),
-                #context_instance=RequestContext(request)
-            #)
     else:
         if hasattr(occurrence_confirmation, 'presence') and int(occurrence_confirmation.presence) not in (1,2): # load initial data if client dont arrive
             occurrence_confirmation.date_started = occurrence.start_time
@@ -588,7 +579,6 @@ def occurrence_group(
     return render_to_response(
         template,
         locals(),
-        #dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral, occurrence_confirmation = occurrence_confirmation, hide_date_field = True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None ),
         context_instance=RequestContext(request)
     )
 
@@ -630,12 +620,6 @@ def _datetime_view(
     timeslot_factory = timeslot_factory or create_timeslot_table
 
     params = params or {}
-    '''
-    timeslots=timeslot_factory(dt, items, start_time=datetime_.time( place.hours_work()[0], place.hours_work()[1]),\
-                end_time_delta=timedelta(hours=place.hours_work()[2] ),\
-                time_delta=timedelta( minutes=int(user.get_profile().org_active.time_slot_schedule) ),\
-                **params),
-    '''
     data = dict(
 
         day=dt, 
@@ -644,8 +628,10 @@ def _datetime_view(
 
         # get start_time and end_time_delta from place
         # get schedule slot time from organization
-        timeslots=timeslot_factory(dt, items,time_delta=timedelta( minutes=int(user.get_profile().org_active.time_slot_schedule) ),**params),
-
+        timeslots=timeslot_factory(dt, items, start_time=datetime_.time( place.hours_work()[0], place.hours_work()[1]),\
+                end_time_delta=timedelta(hours=place.hours_work()[2] ),\
+                time_delta=timedelta( minutes=int(user.get_profile().org_active.time_slot_schedule) ),\
+                **params),
 
         places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
         place = place,
@@ -676,8 +662,6 @@ def schedule_index(request,
         **params
     ):
     
-    print '----------- INDEX '
-
     if place == None:
         # Possible to exist more than one place as matriz or none, filter and get first element
         if Place.objects.filter( place_type=1, organization=request.user.get_profile().org_active):
@@ -692,7 +676,6 @@ def schedule_index(request,
     if not Referral.objects.filter(status='01', organization=request.user.get_profile().org_active).count():
         return render_to_response('schedule/schedule_referral_alert.html', context_instance=RequestContext(request))    
 
-    #return _datetime_view(request, template, datetime(int(year), int(month), int(day)), place, **params)
     return _datetime_view(request, template, datetime(int(year), int(month), int(day)), place, **params)
 
 
@@ -703,12 +686,6 @@ def week_view(request,
         day = datetime.now().strftime("%d"),
     ):
 
-    print 
-    print '-------------- WEEK VIEW '
-    for x in Place.objects.filter(organization=request.user.get_profile().org_active): print x
-    print 
-    print Place.objects.active().filter(organization=request.user.get_profile().org_active.id)
-
     return render_to_response('schedule/schedule_week.html', dict(
                 places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
                 rooms = Room.objects.active().filter(place__organization=request.user.get_profile().org_active.id),
@@ -716,8 +693,8 @@ def week_view(request,
                 professionals = CareProfessional.objects.active_all(request.user.get_profile().org_active.id),
                 tab_week_class = 'active',
                 place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0],
-                #place = Place.objects.filter(organization=request.user.get_profile().org_active),
             ), context_instance=RequestContext(request))
+
 
 def week_view_table(request,
     year = datetime.now().strftime("%Y"), 
@@ -795,11 +772,8 @@ def schedule_occurrences(request, year = 1, month = 1, day = None):
     return objs
     
 @permission_required_with_403('schedule.schedule_list')
-def daily_occurrences(request, year = 1, month = 1, day = None, place = None):
+def daily_occurrences(request, year=1, month=1, day=None, place=None):
 
-    #locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
-    #locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
-    #locale.setlocale(locale.LC_ALL,'pt_BR.ISO8859-1')
     occurrences = schedule_occurrences(request, year, month, day)
 
     array = {} #json

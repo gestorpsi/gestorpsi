@@ -29,14 +29,16 @@ GNU General Public License for more details.
             </tr>
 
             {% for o in places_list %}
-                <tr>
-                    <td nowrap="nowrap">
-                        <a href="#" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a>
-                    </td>
-                    <td>
-                        <span style="background-color:#{{ o.color }};">&nbsp;&nbsp;</span>
-                    </td>
-                </tr>
+                {% if o.room_active %}
+                    <tr>
+                        <td nowrap="nowrap">
+                            <a href="#" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a>
+                        </td>
+                        <td>
+                            <span style="background-color:#{{ o.color }};">&nbsp;&nbsp;</span>
+                        </td>
+                    </tr>
+                {% endif %}
             {% endfor %}
         </table>
     </div>
@@ -53,7 +55,7 @@ GNU General Public License for more details.
                 <td colspan="2"><hr /></td>
             </tr>
             {% for p in places_list %}
-                {% for o in p.room_set.all %}
+                {% for o in p.room_active %}
                     <tr place="{{ p.id }}" class="room_itens">
                         <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="room" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
                         <td><span style="background-color: #{{ o.color }};">&nbsp;&nbsp;</span></td>

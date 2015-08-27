@@ -53,13 +53,14 @@ def index(request):
 
     form = ReportForm(request.user.get_profile().org_active.created(), datetime.now(), request.user.get_profile().org_active)
 
-    # permission
-    permission = False
+    # permission, can't use professional filter
+    permission = False 
+
+    if request.user.groups.filter(name__icontains='professional'):
+        permission = 'professional'
 
     if request.user.groups.filter(Q(name__icontains='administrator')|Q(name__icontains='secretary')).distinct():
         permission = 'all'
-    if request.user.groups.filter(name__icontains='professional'):
-        permission = 'professional'
 
     """
     pass filter itens in right bar

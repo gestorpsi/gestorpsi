@@ -23,7 +23,7 @@ body {
         font-family: Verdana, Arial, Helvetica, sans-serif;
         font-size: 12px;
         min-width: 1000px;
-        overflow-y:hidden;
+        overflow-y: visible;
         height: 100%;
 }
 img { border:0px;}

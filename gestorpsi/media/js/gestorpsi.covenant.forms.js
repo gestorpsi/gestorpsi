@@ -98,7 +98,7 @@ $(document).ready(function() {
         }
 
         // reload_combobox must have a delay
-        setTimeout(reload_combobox, 500);
+        setTimeout(reload_combobox, 900);
     });
 
 

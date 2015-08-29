@@ -805,13 +805,6 @@ def save(request, object_id=None, is_company = False):
     if object.admissionreferral_set.all():
         a = object.admissionreferral_set.all()[0]
 
-<<<<<<< HEAD
-    # save all
-=======
-    # save update
->>>>>>> d3b19049f4ff94b496bba590bae493b49e0c7483
-    object.save()
-
     a.referral_choice_id = AdmissionChoice.objects.all().order_by('weight')[0].id
     object.admissionreferral_set.add(a)
 

@@ -69,15 +69,15 @@ class Invoice(models.Model):
     bank = models.CharField(_('Que banco recebeu?'), choices=BANK, max_length=3, null=True, blank=True)
     payment_detail = models.TextField(_(u'Detalhes do pagamento'), null=True, blank=True)
     
+
     class Meta:
         app_label = 'gcm'
         ordering = ['organization', '-date', ]
+
     
     def __unicode__(self):
         return u'%s - %s %s' % (self.organization, self.date.strftime('%d/%m/%Y'), self.plan)
     
-    #def dued(self):
-        #return self.due_date < datetime.today()
     
     def save(self, *args, **kargs):
 

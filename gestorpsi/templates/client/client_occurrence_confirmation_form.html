@@ -25,16 +25,22 @@ GNU General Public License for more details.
 {% endblock %}
 
 {% block core %}
+
+{% include "tags/occurrence_confirmation_form.html" %}
+
 {% if occurrence.is_past %}
-    {% include "tags/occurrence_confirmation_form.html" %}
-    <div id="sidebar" class="sidebar">
-                <div class="bg_blue">
-                    {% include "tags/save.html" %}
-                </div>
-    {% if object.id %}
-        {% include "tags/client_sidebar.html" %}
-    {% endif %}
+    <div id="sidebar" class="sidebar_save">
+        <div class="bg_blue">
+            {% include "tags/save.html" %}
+        </div>
     </div>
-</form>
 {% endif %}
+
+{% if object.id %}
+    <div id="sidebar" class="sidebar_client">
+        {% include "tags/client_sidebar.html" %}
+    </div>
+{% endif %}
+
+</form>
 {% endblock %}

@@ -20,30 +20,25 @@ GNU General Public License for more details.
     <div class="filter incols place" style="display:none">
         <table>
 
-            {% comment %}
-            show just one place at filter
+            <!-- show just one place at filter -->
             <tr>
                 <td nowrap="nowrap" class="all"><a href="#" status="on" class="filter_by all" type="place"><img src="/media/img/chk.png" />{% trans "All Places" %}</a></td>
             </tr>
             <tr>
                 <td colspan="2"><hr /></td>
             </tr>
-            {% endcomment %}
 
             {% for o in places_list %}
-                <tr>
-                    <td nowrap="nowrap">
-                        {% if o == place %}
+                {% if o.room_active %}
+                    <tr>
+                        <td nowrap="nowrap">
                             <a href="#" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a>
-                        {% else %}
-                            {% comment %}
-                            <a href="/schedule/occurrences/{{ day.year }}/{{ day.month }}/{{ day.day }}/place/{{ o.id }}/" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="/media/img/chk_off.png" />{{ o }}</a>
-                            {% endcomment %}
-                            <a href="/schedule/place/{{ o.id }}/" class="filter_by" status="on" type="place" uuid="{{ o.id }}"><img src="/media/img/chk_off.png" />{{ o }}</a>
-                        {% endif %}
-                    </td>
-                    <td><span style="background-color:#{{ o.color }};">&nbsp;&nbsp;</span></td>
-                </tr>
+                        </td>
+                        <td>
+                            <span style="background-color:#{{ o.color }};">&nbsp;&nbsp;</span>
+                        </td>
+                    </tr>
+                {% endif %}
             {% endfor %}
         </table>
     </div>
@@ -59,13 +54,13 @@ GNU General Public License for more details.
             <tr>
                 <td colspan="2"><hr /></td>
             </tr>
-            {% for o in place.room_set.all %}
-                {% if o.active %}
-                    <tr place="{{ place.id }}" class="room_itens">
+            {% for p in places_list %}
+                {% for o in p.room_active %}
+                    <tr place="{{ p.id }}" class="room_itens">
                         <td nowrap="nowrap"><a href="#" class="filter_by" status="on" type="room" uuid="{{ o.id }}"><img src="/media/img/chk.png" />{{ o }}</a></td>
                         <td><span style="background-color: #{{ o.color }};">&nbsp;&nbsp;</span></td>
                     </tr>
-                {% endif %}
+                {% endfor %}
             {% endfor %}
         </table>
     </div>

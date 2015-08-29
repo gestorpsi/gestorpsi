@@ -246,6 +246,7 @@ ul.myoffice li a:hover { -moz-border-radius: 0px !important; background-color:#F
 #main_menu a#student {background: url(/media/img/16/people-student.png) no-repeat 25px 4px;}
 #main_menu a#users {background: url(/media/img/16/system-users.png) no-repeat 25px 4px;}
 #main_menu a#payment {background: url(/media/img/16/shopping_cart_green.png) no-repeat 25px 4px;}
+#main_menu a#covenant {background: url(/media/img/16/health_covenant.png) no-repeat 25px 4px;}
 
 #main_menu ul li {
         position: relative;
@@ -386,6 +387,7 @@ div.main_area h1 {
 #content h2.title_fronted {background: url(/media/img/42/user-desktop.png) no-repeat 20px 15px;}
 #content h2.title_report {background: url(/media/img/42/report.png) no-repeat 20px 15px;}
 #content h2.title_signature {background: url(/media/img/42/shopping_cart_green.png) no-repeat 20px 15px;}
+#content h2.title_covenant {background: url(/media/img/42/health_covenant.png) no-repeat 20px 15px;}
 
 #content p.description {
         font-size: 9px;
@@ -418,10 +420,12 @@ div.main_area h1 {
 
 #msg_area a.close_link { float:right; margin-top:5px;}
 #msg_area.alert, #helping, .msg_area.alert {
-        background:#FFFFCC;
+        background:green;
+        color: white;
 }
 #msg_area.error, .msg_area.error {
-        background:#FFCCCC;
+        background:red;
+        color: white;
 }
 
 #msg_area ul, .msg_area ul {
@@ -626,7 +630,7 @@ a.prase_edit {
 }
 
 
-.main_area input[type=text], input[type=submit].mini, input[type=password], textarea {
+.main_area input[type=text], input[type=submit].mini, input[type=password], input[type=email], textarea {
         font-size: 16px;
         padding: 5px;
         border: 2px solid #F9F9F9;
@@ -751,14 +755,65 @@ select.state {
 select.high {
     height: 300px;
 }
+.sidebar_client_top .bg_blue input:hover {
+        background: #45ACD4;
+        color: #E6E6E6;
+        cursor: pointer;
+}
 
-.sidebar {
+.sidebar_client_top p {
+        margin: 5px;
+        font-size: 10px;
+        padding: 0
+}
+.sidebar_client_top h3 {
+        border-bottom: 1px solid #000000;
+        margin-top: 10px;
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 16px;
+        font-weight: normal;
+        padding-bottom: 2px;
+        letter-spacing: 0.05em;
+}
+.sidebar_client_top ul {
+        margin: 10px 0;
+}
+.sidebar_client_top li {
+        list-style: none;
+        padding-left: 2px;
+}
+.sidebar_client_top li a {
+        line-height: 20px;
+        padding: 5px 0 5px 1px;
+        color: #000000;
+}
+
+.sidebar_client_top {
+        margin-left:750px;
+        /*margin-top :0px;*/
+        /*width: 240px;*/
+        /*position: fixed;*/
+        /*max-height: 500px;*/
+        /*overflow: scroll;*/
+}
+
+.sidebar_client {
+        margin-left:750px;
+        /*margin-top :130px;*/
+        /*width: 240px;*/
+        /*position: fixed;*/
+        /*max-height: 500px;*/
+        /*overflow: scroll;*/
+}
+
+.sidebar_save {
         margin-left:750px;
         width: 240px;
+        /*position: fixed;*/
 }
 
 
-.sidebar .bg_blue {
+.sidebar_save .bg_blue {
         background: #005A7D;
         border: 1px solid black;
         color: #FFFFFF;
@@ -766,10 +821,10 @@ select.high {
 
 }
 
-.sidebar .bg_blue p, .sidebar .bg_blue p span {
+.sidebar_save .bg_blue p, .sidebar .bg_blue p span {
         color: #FFF;
 }
-.sidebar .bg_blue input {
+.sidebar_save .bg_blue input {
         background: #E6E6E6;
         border: 1px solid #FFFFFF;
         padding: 10px 15px;
@@ -787,18 +842,18 @@ select.high {
         font-weight: bold;
         cursor: pointer;
 }
-.sidebar .bg_blue input:hover {
+.sidebar_client .bg_blue input:hover {
         background: #45ACD4;
         color: #E6E6E6;
         cursor: pointer;
 }
 
-.sidebar p {
+.sidebar_client p {
         margin: 5px;
         font-size: 10px;
         padding: 0
 }
-.sidebar h3 {
+.sidebar_client h3 {
         border-bottom: 1px solid #000000;
         margin-top: 10px;
         font-family: Georgia, "Times New Roman", Times, serif;
@@ -807,14 +862,14 @@ select.high {
         padding-bottom: 2px;
         letter-spacing: 0.05em;
 }
-.sidebar ul {
+.sidebar_client ul {
         margin: 10px 0;
 }
-.sidebar li {
+.sidebar_client li {
         list-style: none;
         padding-left: 2px;
 }
-.sidebar li a {
+.sidebar_client li a {
         line-height: 20px;
         padding: 5px 0 5px 1px;
         color: #000000;
@@ -1292,12 +1347,16 @@ select.country {
 
 #footer {
         clear: both;
-        display: block;
         text-align: center;
         padding: 8px;
-        margin-top: 20px;
-        font-size: 10px;
-        color: #cccccc;
+        font-size: 9px;
+        font-weight: bold;
+        background: none repeat scroll 0 0 #ececec;
+        color: #000000;
+        border: 1px solid #999999;
+        letter-spacing: 2px;
+        /*margin-top: 580px;*/
+        /*margin-bottom: 25px;*/
 }
 #footer span {
         display: none;
@@ -1400,12 +1459,12 @@ a.submit, div.form_mini input[type=submit], div.form_mini_noinsert input[type=su
 
 a.submit { padding-top: 3px; padding-bottom:8px; text-decoration:none;}
 
-div.form_mini select, div.form_mini input[type=text], div.form_mini input[type=password],
+div.form_mini select, div.form_mini input[type=text], div.form_mini input[type=password], div.form_mini input[type=email],
 div.form_mini_noinsert select, div.form_mini_noinsert input[type=text], div.form_mini_noinsert input[type=password] {
         border: 1px solid #999999;
 }
 
-div.form_mini input[type=text], div.form_mini_noinsert input[type=text] {
+div.form_mini input[type=text], div.form_mini_noinsert input[type=text], div.form_mini input[type=email], {
         font-size: 16px;
         padding: 4px 5px 4px 5px;
         color: #999;
@@ -1583,10 +1642,6 @@ fieldset div {
 .block {
         clear: both !important;
         display: block;
-}
-
-div.login div.ff_not_ok img {
-    float: left;
 }
 
 textarea.terms_of_service {

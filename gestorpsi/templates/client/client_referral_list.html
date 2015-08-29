@@ -37,15 +37,17 @@ GNU General Public License for more details.
     {% else %}
         <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
         <thead> 
-                <tr> 
+            <tr> 
                 <th></th> 
                 <th></th> 
-                </tr> 
+            </tr> 
         </thead>
         <tbody>
             {% for r in referrals %}
             <tr class="zebra_{% cycle '0' '1' %}">
-                <td class="title"><a href="/client/{{ object.id }}/referral/{{ r.id }}/" title="{{ r }}">{{ r.service_name_html|safe }}</a><br></td>
+                <td class="title"><a href="/client/{{ object.id }}/referral/{{ r.id }}/" title="{{ r }}">{{ r.service_name_html|safe }}</a>
+                    <span style="font-weight:normal;">{% for s in r.covenant.all %}<br />{{ s }}{% endfor %}</span>
+                </td>
                 <td><span class="phone">{% if r.professional.all.0 %}{{ r.professional.all.0 }}{% endif %}</span><br><span class="email">{% trans "subscribed at" %} <b>{{ r.revision.date_created|date:"r"|slice:":-15"}}</b></span></td>
             </tr>
             {% endfor %}
@@ -56,8 +58,8 @@ GNU General Public License for more details.
     </div>
 </div>
 
-<div id="sidebar" class="sidebar">
-        {% include "tags/client_sidebar.html" %}
+<div id="sidebar" class="sidebar_client_top">
+    {% include "tags/client_sidebar.html" %}
 </div>
 
 {% endblock %}

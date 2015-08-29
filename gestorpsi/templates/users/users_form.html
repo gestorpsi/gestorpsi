@@ -33,205 +33,223 @@ GNU General Public License for more details.
 
 {% block core %}
 
-{% if profile.id %}
-	<h2 class="title_clients title">{{ profile.person.name }}</h2>
-    <p class="description">{{ profile.user.username }} {{ profile.user.email }}<br />
-{% else %}
-	<h2 class="title_clients title">{% trans "Adding New User" %}</h2>
-	<p class="description">{% trans "Inform the user details then click on Save button" %}</p>
-{% endif %}
-
-{% if profile.id %}
-    <form action="/user/{{ profile.person.id }}/save/" method="post" id="form_user" class="form_user">
-{% else %}
-    <form action="/user/save/" method="post" id="form_user" class="form_user">
-{% endif %}
-
-<div class="main_area">
-	<h3><span id="client_add_infotypes">{% trans "User registration" %}</span></h3>
-	<ul id="form_options" class="float_menu" style="display:none;">
-		<li><label><input name="this" type="radio" value="" checked/>{% trans "User registration" %}</label></li>
-	</ul>
-
-<fieldset>
-    <legend>{% trans "Personal Identification" %}</legend>
-    <label>{% trans "Name" %}<br />
-        {% if person_list %}
-            <select name="id_person" class="giant get_user_json">
-                {% for o in person_list %}
-                    <option id="" value="{{ o.id }}"> {{ o.name }} </option>
-                {% endfor %}
-            </select>
-        {% else %}
-            <input type="text" class="giant" readonly="1" value="{{ profile.person.name }}">
-        {% endif %}
-    </label>
-
-    <label>{% trans "Username" %}<br />
-        <input type="text" name="username" class="giant" value="{{ profile.user.username }}" id="id_username" {% if profile.user.username %} readonly="1" {% endif %} />
-        <div class="check_available_user" style="display:none">
-            {% trans "Not available" %}
-        </div>
-    </label>
-
     {% if profile.id %}
-        <label><a class="form_mini" display="pwd_mini">{% trans "Change Password" %}</a></label>
+        <h2 class="title_clients title">{{ profile.person.name }}</h2>
+        <p class="description">{{ profile.user.username }} {{ profile.user.email }}<br />
     {% else %}
-        <label>{% trans "Password" %}<br />
-            <input type="password" name="password" class="extramedium" value="" id="id_password" />
-        </label>
-        <label>{% trans "Password" %} <small>({% trans "Again" %})</small><br />
-            <input type="password" name="pwd_conf" class="extramedium" value="" id="id_pwd_conf" />
-        </label>
+        <h2 class="title_clients title">{% trans "Adding New User" %}</h2>
+        <p class="description">{% trans "Inform the user details then click on Save button" %}</p>
     {% endif %}
 
-    {% if profile.user.email %}
-        <label style="clear: both;">
-            {% trans "Registered user e-mail" %}<br />
-			<input type="text" name="email" value="{{ profile.user.email }}" class="extramedium"  readonly>
-		</label>
-	{% else %}
-    
-	{% if emails %}
-        <label>
-            {% trans "Select one e-mail to procede with your registration" %}<br />
-			<select name="email" id="email">
-				{% for email in emails %}
-                    <option class="email_send_user" name="email_send_user" value="{{ email }}">&nbsp;{{ email }}&nbsp;</option>
-                {% endfor %}
-			</select>
-		</label>
-    {% else %}
-        <label>
-            {% trans "Type an e-mail to procede with your registration" %}<br />
-            <input class="extramedium email_send_user" type="text" name="email_send_user" value="">
-        </label>
-    {% endif %}		    
-    {% endif %}
-</fieldset>
+    {% if profile.id %} <form action="/user/{{ profile.person.id }}/save/" method="post" id="form_user" class="form_user"> {% else %} <form action="/user/save/" method="post" id="form_user" class="form_user">{% endif %}
 
-{# comment #}
-<!-- TO BE IMPLEMENTED!
-<fieldset>
-        <legend>{% trans "Expiration Date" %}</legend>
-        <label>{% trans "Expiration Date" %}<br />
-        <input type="text" class="calendar" name="expiration_date" value="{{ profile.person.birthDate|date:"d/m/Y" }}" mask="99/99/9999" />
-</fieldset>
--->
-{# endcomment #}
+        <div class="main_area">
 
-<!-- <fieldset> -->
-        {% ifequal show "True" %}
-<!--            <legend>{% trans "Role" %} {{ list_adm }}</legend> -->
-                <h4 align="center">{% trans "You are the only Administrator on organization. You can't change your permission at this time." %} </h4>
-        {% else %}
-<!--                <legend>{% trans "Role" %}</legend> -->
-                <h2 class="title_clients title">{% trans "Permissions" %}</h2>
+            <h3><span id="client_add_infotypes">{% trans "User registration" %}</span></h3>
+            <ul id="form_options" class="float_menu" style="display:none;">
+                <li><label><input name="this" type="radio" value="" checked/>{% trans "User registration" %}</label></li>
+            </ul>
 
-<div class="contact">
-                <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+            <fieldset>
+                <legend>{% trans "Personal Identification" %}</legend>
+                <label>{% trans "Name" %}<br />
+                    {% if person_list %}
+                        <select name="id_person" class="giant get_user_json">
+                            {% for o in person_list %}
+                                <option id="" value="{{ o.id }}"> {{ o.name }} </option>
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        <input type="text" class="giant" readonly="1" value="{{ profile.person.name }}">
+                    {% endif %}
+                </label>
 
-                {% if person.is_client %}
-                    <tr>
-                        <td><input class="group" type="checkbox" id="4" name="perms" value="client" {% if groups.3 %}checked{% endif %}> {% trans "Client" %}<br />
-                            {% trans "Give a user full access in system." %}</td>
-                        <td>&nbsp;</td>
-                    </tr>
+                <label>{% trans "Username" %}<br />
+                    <input type="text" name="username" class="giant" value="{{ profile.user.username }}" id="id_username" {% if profile.user.username %} readonly="1" {% endif %} />
+                    <div class="check_available_user" style="display:none">
+                        {% trans "Not available" %}
+                    </div>
+                </label>
+
+                {% if not profile.id %}
+                    <label>{% trans "Password" %}<br />
+                        <input type="password" name="password" class="extramedium" value="" id="id_password" />
+                    </label>
+                    <label>{% trans "Password" %} <small>({% trans "Again" %})</small><br />
+                        <input type="password" name="pwd_conf" class="extramedium" value="" id="id_pwd_conf" />
+                    </label>
                 {% endif %}
 
-                {% if not person.is_client %}
-                    <tr>
-                        <td><input class="group" type="checkbox" id="1" name="perms" value="administrator" {% if groups.0 %}checked{% endif %}> {% trans "Administrator" %}<br />
-                            {% trans "Give a user full access in system." %}</td>
-                        <td>&nbsp;</td>
-                    </tr>
-                {% endif %}
+                {% if profile.user.email %}
+                    <label style="clear: both;">
+                        {% trans "Registered user e-mail" %}<br />
+                        <input type="text" name="email" value="{{ profile.user.email }}" class="extramedium"  readonly>
+                    </label>
+                {% else %}
                 
-                {% if not person.is_client %}
-                    <tr>
-                        <td><input class="group" type="checkbox" id="3" name="perms" value="secretary" {% if groups.2 %}checked{% endif %}> {% trans "Secretary" %}<br />
-                            {% trans "Give a user access to Organization, Places, Devices, Users, Professionals, Students, Employees, Contacts, Client and Schedule." %} .</td>
-                        <td>&nbsp;</td>
-                    </tr>
+                {% if emails %}
+                    <label>
+                        {% trans "Select one e-mail to procede with your registration" %}<br />
+                        <select name="email" id="email">
+                            {% for email in emails %}
+                                <option class="email_send_user" name="email_send_user" value="{{ email }}">&nbsp;{{ email }}&nbsp;</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                {% else %}
+                    <label>
+                        {% trans "Type an e-mail to procede with your registration" %}<br />
+                        <input class="extramedium email_send_user" type="text" name="email_send_user" value="">
+                    </label>
+                {% endif %}		    
                 {% endif %}
-                
-                {% if not person.is_client %}
-                    <tr>
-                        <td><input class="group" type="checkbox" id="2" name="perms" value="professional" {% if groups.1 %}checked{% endif %}> {% trans "Professional" %}<br />
-                            {% trans "Give a user access to Online Messages, Electronic Health Record, Admission, Referral, Schedule, Contacts, Device and read-only access to Client, Professionals, Students and Employee." %}</td>
-                        <td>&nbsp;</td>
-                    </tr>
-                {% endif %}
-                
-                {% if not person.is_client %}
-                    <tr>
-                        <td><input class="group" type="checkbox" id="4" name="perms" value="student" {% if groups.4 %}checked{% endif %}> {% trans "Student" %}<br />
-                            {% trans "Give a user to Online Messages, Electronic Health Record, Admission, Referral and read-only access to the same professional access." %}</td>
-                        <td>&nbsp;</td>
-                    </tr>
-                {% endif %}
-                
-                </table>
-</div>
+            </fieldset>
 
-{% comment %}
-                {% if person.is_client %}<p><input class="group" type="checkbox" id="4" name="perms" value="client" {% if groups.3 %}checked{% endif %}>{% trans "Client" %}</p>{% endif %}
-                {% if not person.is_client %}<p><input class="group" type="checkbox" id="1" name="perms" value="administrator" {% if groups.0 %}checked{% endif %}>{% trans "Administrator" %}</p>{% endif %}
-                {% if not person.is_client %}<p><input class="group" type="checkbox" id="3" name="perms" value="secretary" {% if groups.2 %}checked{% endif %}>{% trans "Secretary" %}</p>{% endif %}
-                {% if not person.is_client %}<p><input class="group" type="checkbox" id="2" name="perms" value="professional" {% if groups.1 %}checked{% endif %}>{% trans "Professional" %}</p>{% endif %}
-                {% if not person.is_client %}<p><input class="group" type="checkbox" id="4" name="perms" value="student" {% if groups.4 %}checked{% endif %}>{% trans "Student" %}</p>{% endif %}
-{% endcomment %}
-        {% endifequal %}
-<!-- </fieldset> -->
+            {# comment #}
+            <!-- TO BE IMPLEMENTED!
+            <fieldset>
+                    <legend>{% trans "Expiration Date" %}</legend>
+                    <label>{% trans "Expiration Date" %}<br />
+                    <input type="text" class="calendar" name="expiration_date" value="{{ profile.person.birthDate|date:"d/m/Y" }}" mask="99/99/9999" />
+            </fieldset>
+            -->
+            {# endcomment #}
 
-	
-<br />	
-</div>
+            <!-- <fieldset> -->
+                {% ifequal show "True" %}
+                    <!-- <legend>{% trans "Role" %} {{ list_adm }}</legend> -->
+                    <h4 align="center">{% trans "You are the only Administrator on organization. You can't change your permission at this time." %} </h4>
+                {% else %}
+                    <!-- <legend>{% trans "Role" %}</legend> -->
+                    <h2 class="title_clients title">{% trans "Permissions" %}</h2>
+            
+                    <div class="contact">
+                        <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+                            {% if person.is_client %}
+                                <tr>
+                                    <td><input class="group" type="checkbox" id="4" name="perms" value="client" {% if groups.3 %}checked{% endif %}> {% trans "Client" %}<br />
+                                        {% trans "Give a user full access in system." %}</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            {% endif %}
 
-<div id="sidebar" class="sidebar">
-    {% if perms.users.users_write %}<div class="bg_blue">
-    <input class="save_button" name="save" type="submit" value="{% trans 'Save' %}" />
-    <input class="save_button" name="cancel" id="cancel_button" type="button" value="{% trans 'Back' %}" onclick="javascript:history.go(-1)" />
+                            {% if not person.is_client %}
+                                <tr>
+                                    <td><input class="group" type="checkbox" id="1" name="perms" value="administrator" {% if groups.0 %}checked{% endif %}> {% trans "Administrator" %}<br />
+                                        {% trans "Give a user full access in system." %}</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            {% endif %}
+                        
+                            {% if not person.is_client %}
+                                <tr>
+                                    <td><input class="group" type="checkbox" id="3" name="perms" value="secretary" {% if groups.2 %}checked{% endif %}> {% trans "Secretary" %}<br />
+                                        {% trans "Give a user access to Organization, Places, Devices, Users, Professionals, Students, Employees, Contacts, Client and Schedule." %} .</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            {% endif %}
+                        
+                            {% if not person.is_client %}
+                                <tr>
+                                    <td><input class="group" type="checkbox" id="2" name="perms" value="professional" {% if groups.1 %}checked{% endif %}> {% trans "Professional" %}<br />
+                                        {% trans "Give a user access to Online Messages, Electronic Health Record, Admission, Referral, Schedule, Contacts, Device and read-only access to Client, Professionals, Students and Employee." %}</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            {% endif %}
+                            
+                            {% if not person.is_client %}
+                                <tr>
+                                    <td><input class="group" type="checkbox" id="4" name="perms" value="student" {% if groups.4 %}checked{% endif %}> {% trans "Student" %}<br />
+                                        {% trans "Give a user to Online Messages, Electronic Health Record, Admission, Referral and read-only access to the same professional access." %}</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            {% endif %}
+                        
+                        </table>
+                    </div>
 
-    <div id="msg_info">
-        <p>
-            <span>
-        {% if not profile.user.date_joined %}
-                {% trans "This register are not saved yet. Click Save to register it." %}
-            {% else %}
-            {% trans 'User created at' %} 
-            {{ profile.user.date_joined|date:"r"|slice:":-9"}}&nbsp;hs
+                        {% comment %}
+                        {% if person.is_client %}<p><input class="group" type="checkbox" id="4" name="perms" value="client" {% if groups.3 %}checked{% endif %}>{% trans "Client" %}</p>{% endif %}
+                        {% if not person.is_client %}<p><input class="group" type="checkbox" id="1" name="perms" value="administrator" {% if groups.0 %}checked{% endif %}>{% trans "Administrator" %}</p>{% endif %}
+                        {% if not person.is_client %}<p><input class="group" type="checkbox" id="3" name="perms" value="secretary" {% if groups.2 %}checked{% endif %}>{% trans "Secretary" %}</p>{% endif %}
+                        {% if not person.is_client %}<p><input class="group" type="checkbox" id="2" name="perms" value="professional" {% if groups.1 %}checked{% endif %}>{% trans "Professional" %}</p>{% endif %}
+                        {% if not person.is_client %}<p><input class="group" type="checkbox" id="4" name="perms" value="student" {% if groups.4 %}checked{% endif %}>{% trans "Student" %}</p>{% endif %}
+                        {% endcomment %}
+
+                {% endifequal %}
+        </div><!-- main -->
+
+        {% if perms.users.users_write %}
+            <div id="sidebar" class="sidebar_save">
+                <div class="bg_blue">
+                    <input class="save_button" name="save" type="submit" value="{% trans 'Save' %}" />
+                    <input class="save_button" name="cancel" id="cancel_button" type="button" value="{% trans 'Back' %}" onclick="javascript:history.go(-1)" />
+
+                    <div id="msg_info">
+                        <p>
+                            <span>
+                                {% if not profile.user.date_joined %}
+                                    {% trans "This register are not saved yet. Click Save to register it." %}
+                                {% else %}
+                                    {% trans 'User created at' %} 
+                                    {{ profile.user.date_joined|date:"r"|slice:":-9"}}&nbsp;hs
+                                {% endif %}
+                            </span>
+                        </p>
+                    </div>    
+                </div>
+            </div>
+
+            {% if profile %}
+                <div id="sidebar" class="sidebar_client">
+                    {% include "tags/user_sidebar.html" %}
+                </div>
             {% endif %}
-            </span>
-        </p>
-    </div>    
-    
-    </div>{% endif %}
-    {% include "tags/user_sidebar.html" %}
-</div>
 
-</form>
+        {% endif %}
 
-<div class="form_mini pwd_mini">
-    <form action="/user/{{ profile.person.id }}/savepwd/" method="post" class="pwd">
-        <fieldset>
-            <legend>{% trans "Change password" %}</legend>
-
-            <div id="msg_area" class="error" style="opacity: 1; display: none;">{% trans "Password not match. Try again."%}</div>
-
-            <label>{% trans "Password" %}<br />
-                <input type="password" name="password_mini" class="big" value=""     />
-            </label>
-            <label>{% trans "Password" %} <small>({% trans "Again" %})</small><br />
-                <input type="password" name="password_mini_conf" class="big tabtitle" value=""    />
-            </label>
-            <label>
-                 <input type="submit" name="submit" value="{% trans "Change" %}" class="mini" />
-                 <input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />
-            </label>
-        </fieldset>
     </form>
-</div>
+
+    <!-- change password -->
+    <div class="form_mini pwd_mini">
+        <form action="/user/{{ profile.person.id }}/savepwd/" method="post" class="pwd">
+            <fieldset>
+                <legend>{% trans "Change password" %}</legend>
+
+                <label>{% trans "Password" %}<br />
+                    <input type="password" name="password_mini" class="big" required />
+                </label>
+                <label>{% trans "Password" %} <small>({% trans "Confirmation" %})</small><br />
+                    <input type="password" name="password_mini_conf" class="big tabtitle" required />
+                </label>
+                <label>
+                     <input type="submit" name="submit" value="{% trans "Save" %}" class="mini" />
+                     <input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />
+                </label>
+            </fieldset>
+        </form>
+    </div>
+
+
+    <!-- change e-mail -->
+    <div class="form_mini email_mini">
+        <form action="/user/{{ profile.person.id }}/saveemail/" method="post" class="pwd">
+            <fieldset>
+                <legend>{% trans "Change e-mail" %}</legend>
+
+                <label>{% trans "E-mail" %}<br />
+                    <input type="email" name="email_mini" class="big" required />
+                </label>
+                <label>{% trans "E-mail" %} <small>({% trans "Confirmation" %})</small><br />
+                    <input type="email" name="email_mini_conf" class="big tabtitle" required />
+                </label>
+                <label>
+                     <input type="submit" name="submit" value="{% trans "Salvar" %}" class="mini" />
+                     <input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />
+                </label>
+            </fieldset>
+        </form>
+    </div>
 
 
 {% endblock %}

@@ -17,6 +17,10 @@ GNU General Public License for more details.
 {% load i18n %}
 {% load calculate_age %}
 
+{% block extrahead %}
+    <script type="text/javascript" src="/media/js/gestorpsi.referral_home.js"></script>
+{% endblock %}
+
 <input type="hidden" name="object_id" value="{{ object.id }}" />
 
 <h2 id="title_addressbook" style="display:none"></h2>
@@ -66,7 +70,10 @@ GNU General Public License for more details.
                     <i><a href="{{ p.url_form }}">{{ p }}</a><small>{% if p.professionalIdentification.profession %} {{ p.professionalIdentification.profession }}{% endif %}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %}{% if p.professionalIdentification.profession.symbol %} - {{ p.professionalIdentification.profession.symbol }}{% endif %}{% if p.professionalIdentification.registerNumber %} {{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</small></i>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
             {% endif %}
-            
+
+            <br />
+            <br />
+            <small><i><b>{% trans "Covenant" %}:</b> {% for c in referral.covenant.all %} {{ c }} <br />  {% endfor %}</i></small>
             
             <br>
             {% for g in referral.service.servicegroup_set.all %}{% for cl in g.client.all %}{% ifequal cl object %} {% trans "Group" %}: <a href="/service/{{ referral.service.id}}/group/{{ g.id }}/form/">{{ g }}</a><br />{% endifequal %}{% endfor %}{% endfor %}
@@ -103,7 +110,13 @@ GNU General Public License for more details.
             {% endif %}
             </i>
         <br /><br />
-        {% trans "Client subscribed on this service since" %} {{ referral.revision_created.date_created|date:"d/m/Y" }}
+
+        {% comment %}
+            {% trans "Client subscribed on this service since" %} {{ referral.revision_created.date_created|date:"d/m/Y" }}
+            <br />
+        {% endcomment %}
+
+        {% trans "Client subscribed on this service since" %} {{ referral.date|date:"d/m/Y" }}
        </small>
 
 <br />	
@@ -182,23 +195,71 @@ GNU General Public License for more details.
 {% endif %}
 
 {% if attachs %}
-<div class="main_area home">
-	<h3><span>{% trans "Attach" %}</span></h3>
-    
-        {% for a in attachs %}
-                <table class="nozebra">
-                        <tr>
-                                <td nowrap="nowrap"><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
-                                <td><span  class="pdf"><a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename }}</a></span></td>
-                                <td><span>{% for t in types %}
-                                            {% ifequal a.type t.0 %}</span>{{ t.1 }}:<br /> {{ a.description }} </td> {% endifequal %} {% endfor %}
-                                <td>{# <a href="" class="edit" title="editar"><span>Edit</span></a> #}</td>
-                                <td>{# <a href="" class="delete" title="delete" ><span>Delete</span></a> #}</td>
+    <div class="main_area home">
+        <h3><span>{% trans "Attach" %}</span></h3>
+
+        <div id="documents">
+            <div class="documents_form">
+                <table>
+
+                    {% for a in attachs %}
+                        <tr width="300px;">
+
+                            <td style="width:15%" ><span class="date">{{ a.date|date:"d-m-Y" }} </span><br /><span class="time">{{ a.date|date:"P" }}</span></td>
+
+                            <td style="width:35%"><span class="pdf">
+                                        
+                                <!-- psycologist is a professional -->
+                                {% ifequal a.permission '1' %}
+                                    {% if is_professional or is_psychologist %}
+                                        <a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename|truncatechars:25 }}</a></span></td>
+                                    {% endif %}
+                                {% endifequal %}
+
+                                <!-- just psycologist -->
+                                {% ifequal a.permission '2' %}
+                                    {% if is_psychologist %}
+                                        <a href="/media/img/organization/{{ organization }}/attach/{{ a.file }}" target="_blank">{{ a.filename|truncatechars:25 }}</a></span></td>
+                                    {% endif %}
+                                {% endifequal %}
+
+                            </td>
+
+                            <td style="width:25%">
+                                {% for t in types %}{% ifequal a.type t.0 %}<span>{{ t.1 }}<br />{{ a.description }}</span> {% endifequal %}{% endfor %}
+                            </td>
+
+                            <td style="width:25%">
+                                <span>
+                                    {{ a.get_permission_display }}
+                                    <br />
+                                </span>
+                            </td>
+
+                            <td>
+                                <!-- psycologist is a professional -->
+                                {% ifequal a.permission '1' %}
+                                    {% if is_professional or is_psychologist %}
+                                        <a href="/upload/client/{{ object.id }}/referral/{{ referral.id }}/attach/{{ a.id }}/" target="_blank"><img alt="Editar" src="/media/img/22/edit-attach.png">Editar</a>
+                                    {% endif %}
+                                {% endifequal %}
+
+                                <!-- just psycologist -->
+                                {% ifequal a.permission '2' %}
+                                    {% if is_psychologist %}
+                                        <a href="/upload/client/{{ object.id }}/referral/{{ referral.id }}/attach/{{ a.id }}/" target="_blank"><img alt="Editar" src="/media/img/22/edit-attach.png">Editar</a>
+                                    {% endif %}
+                                {% endifequal %}
+                            </td>
+                            
                         </tr>
-                        <tr>
+                    {% endfor %}
+
                 </table>
-        {% endfor %}
-</div>
+            </div>
+        </div>
+        
+    </div>
 {% endif %}
 
 
@@ -274,11 +335,12 @@ GNU General Public License for more details.
              </p>
         {% endfor %}
     <p>
-    <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}referral/{{ referral.id }}/upcoming/">{% trans "See all" %}</a>
-    {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
-        <a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}" title="{% trans "Book new" %}">{% trans "Book new" %}</a>
-    {% endif %}
-    {% endif %}
+        <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}referral/{{ referral.id }}/upcoming/">{% trans "See all" %}</a>
+        <br />
+        {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
+            <a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}" title="{% trans "Book new" %}">{% trans "Book new" %}</a>
+        {% endif %}
+        {% endif %}
     </p>
 
     <h2 class="red">{% trans "Past schedules for this service" %}</h2>
@@ -336,8 +398,116 @@ GNU General Public License for more details.
         </p>
     {% endif %}
     </p>
-
-<br />	
 </div>
 
 
+{% if payment_upcoming5 or payment_past5 %}
+    <div class="main_area home">
+
+        <h3><span>{% trans "Faturamento" %}</span></h3>
+
+        <p>
+            <b>Legenda</b><br />
+            <span style="background-color:red;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Aberto
+            <span style="background-color:green;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Pago
+            <span style="background-color:orange;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Faturado
+            <span style="background-color:blue;" class="service_name_html_inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Cancelado
+        </p>
+
+        <!-- eventos futuros -->
+        {% if payment_upcoming5 %}
+            <p><h2 class='red'>Futuros</h2>
+            {% for x in payment_upcoming5 %}
+                <p>
+                    <small>
+                        {{ x.status_color_|safe }}
+
+                        {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} {% for x in x.get_display_payment_way_name_ %} - {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
+
+                        <br />
+
+                        {% for o in x.occurrence.all %}
+                            ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a>
+                        {% endfor %}
+                  </small>
+                </p>
+            {% endfor %}
+            </p>
+        {% endif %}
+
+        <div id="payment_upcoming_all" style="display:none;">
+            {% if payment_upcoming_all %}
+                {% for x in payment_upcoming_all %}
+                    <p>
+                        <small>
+                            {{ x.status_color_|safe }}
+
+                            {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} {% for x in x.get_display_payment_way_name_ %} - {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
+
+                            <br />
+
+                            {% for o in x.occurrence.all %}
+                                ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a>
+                            {% endfor %}
+                      </small>
+                    </p>
+                {% endfor %}
+                </p>
+            {% endif %}
+        </div>
+
+        {% if payment_upcoming_all %}
+            <p><a class="payment_upcoming_all">Mostrar / Esconder todos </a></p>
+        {% endif %}
+
+
+        <!-- eventos passados -->
+        {% if payment_past5 %}
+            <p><h2 class='red'>Passados</h2>
+            {% for x in payment_past5 %}
+                <p>
+                    <small>
+                        {{ x.status_color_|safe }}
+
+                        {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} {% for x in x.get_display_payment_way_name_ %} - {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
+
+                        <br />
+
+                        {% for o in x.occurrence.all %}
+                            ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a>{% if not forloop.last %} | {% endif %}
+                        {% endfor %}
+                  </small>
+                </p>
+            {% endfor %}
+            </p>
+        {% endif %}
+
+        <div id="payment_past_all" style="display:none;">
+            {% if payment_past_all %}
+                {% for x in payment_past_all %}
+                    <p>
+                        <small>
+                            {{ x.status_color_|safe }}
+
+                            {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} {% for x in x.get_display_payment_way_name_ %} - {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
+
+                            <br />
+
+                            {% for o in x.occurrence.all %}
+                            ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
+                            {% endfor %}
+                      </small>
+                    </p>
+                {% endfor %}
+                </p>
+            {% endif %}
+        </div>
+
+        {% if payment_past_all %}
+            <p><a class="payment_past_all">Mostrar / Esconder todos </a></p>
+        {% endif %}
+
+    </div>
+{% endif %}
+
+<br />	

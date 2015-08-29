@@ -19,21 +19,25 @@ GNU General Public License for more details.
 {% if not data %}
 
     <p>{% trans "There is no data report in this range" %}</p>
-{% else %}
-    {% for d in data %}
 
-    <table class="report">
-        <tr class="title"><th colspan="2">{{ d.title }}</th><th class="close_report"><a href="#">x</a></th></tr>
-        
-        {% if not d.data %}
-            <tr><td colspan="{% if not without_percentage %}3{% else %}2{% endif %}" style="text-align:left;">
-            {% trans "No data founded" %}
-            </td></tr>
-        {% else %}
-            {% with d.data as table_data %}
-                {% include "report/report_table_tag.html" %}
-            {% endwith %}
-        {% endif %}
-    </table>
+{% else %}
+
+    {% for d in data %}
+        <table class="report">
+
+            <tr class="title"><th colspan="2">{{ d.title }}</th><th class="close_report"><a href="#">x</a></th></tr>
+            
+            {% if not d.data %}
+                <tr><td colspan="{% if not without_percentage %}3{% else %}2{% endif %}" style="text-align:left;">
+                {% trans "No data founded" %}
+                </td></tr>
+            {% else %}
+                {% with d.data as table_data %}
+                    {% include "report/report_table_tag.html" %}
+                {% endwith %}
+            {% endif %}
+
+        </table>
     {% endfor  %}
+
 {% endif %}

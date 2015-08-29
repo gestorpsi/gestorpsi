@@ -15,9 +15,8 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.service.views import select_area, index, form, save, disable, list, list_professional, order, queue, client_list_index
 from gestorpsi.authentication.views import login_check
-from gestorpsi.service.views import group_form, group_list
+from gestorpsi.service.views import select_area, index, form, save, disable, list, list_professional, order, queue, client_list_index, list_filter_covenant, group_form, group_list
 
 urlpatterns= patterns('',
     (r'^$', login_check(index)),
@@ -37,13 +36,12 @@ urlpatterns= patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/group/(?P<group_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/form/$', login_check(group_form)),
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/group/$', login_check(group_list)),    
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/group/json/$', login_check(group_list), {'return_json':True}),
-    # DEACTIVE
+    # deactive
     (r'^deactive/$', login_check(index), {'deactive': True} ),
     (r'^page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), #list objects
 
-    # LIST CLIENT - ACTIVE 
+    # list client - active 
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/clientlist/$', login_check(client_list_index)), # mount html client list
-    
     url(r'initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)),
     url(r'initial/(?P<initial>[a-zA-Z])/deactive/$', login_check(list), {'deactive': True}),
     url(r'initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive': True}),
@@ -51,4 +49,7 @@ urlpatterns= patterns('',
     url(r'filter/(?P<filter>\w+)/page(?P<page>(\d)+)/$', login_check(list)),
     url(r'filter/(?P<filter>\w+)/deactive/$', login_check(list), {'deactive': True} ),
     url(r'filter/(?P<filter>\w+)/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive': True}),
+    #  filter covenant form
+    url(r'list/all/$', login_check(list_filter_covenant), {'alls': True} ), # all services
+    url(r'list/indiv/$', login_check(list_filter_covenant), {'indiv': True} ), # just group services
 )

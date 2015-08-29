@@ -1,0 +1,179 @@
+<!-- all of this content will be to id report_table in main core -->
+
+<script type="text/javascript">
+
+    function make_graphic1(rows, colors){ 
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+
+        data.addRows( rows );
+
+        // Set chart options
+        var options = {'width':920,
+                       'height':330,
+                       colors: colors, 
+        };
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('graphic'));
+        chart.draw(data, options);
+    }
+
+</script>
+
+<!-- list of clients -->
+{% if option_rows %}
+
+        <table class='report'>
+            <tr>
+                <th>&nbsp;</th>
+            </tr>
+            <tr>
+                <th>Estat&iacute;stica de todos os prof&iacute;ssionais, servi&ccedil;os e faturamentos para o per&iacute;odo escolhido.</th>
+            </tr>
+            <tr>
+                <th id='graphic'></th>
+            </tr>
+            <tr>
+                <th>Total de pagamentos: {{ total_receive }}</th>
+            </tr>
+        </table>
+
+        <div style="text-align:center; margin-top: 35px;">
+            <h1>Faturamento no per&iacute;odo</h1>
+        </div>
+
+        <h4>Conbran&ccedil;a por pacote</h4>
+        NF : N&atilde;o finalizado<br />
+        F : Finalizado<br />
+
+        <br />
+
+        {% for x in list_receive %}
+            {% if x.1 %}
+
+               <div style='background-color:{{ x.2 }}; vertical-align:middle; padding: 0 15px; font-size: 15px; font-weight: bold; color: white; '>{{ x.0 }}</div>
+
+               <table class="report_list_receive">
+
+                 <tbody>
+                    <tr class="legend"> 
+                        <th>Cliente</th> 
+                        <th>Conv&ecirc;nio</th> 
+                        <th>Cobran&ccedil;a</th> 
+                        <th>Data lan&ccedil;amento</th> 
+                        <th>Data evento</th> 
+                        <th>Servi&ccedil;o</th> 
+                        <th>Forma pagto</th> 
+                        <th>Valor R$</th> 
+                    </tr> 
+
+                    {% for c in x.1 %}
+                        <tr class="{% cycle 'odd' 'even' %}">
+
+                            <td style="text-align:center;">
+                                {% if c.referral %}
+                                    <a href="/client/{{ c.referral.client.all.0.id }}/home/" target="_blank">{{ c.referral.client.all.0 }}</a>
+                                    
+                                {% else %}
+                                    <a href="/client/{{ c.occurrence.all.0.event.referral.client.all.0.id }}/home/" target="_blank">{{ c.occurrence.all.0.event.referral.client.all.0 }}</a>
+                                {% endif %}
+                            </td>
+
+                            <td style="text-align:center;">
+                                {{ c.name }}
+                            </td>
+
+                            <td style="text-align:center;">
+                                {% ifequal c.covenant_charge 2 %}
+                                    {{ c.get_covenant_charge_display }} ({{ c.covenant_pack_size }}) {% if c.terminated_ %}F{% else %}NF{% endif %}
+                                {% else %}
+                                    {{ c.get_covenant_charge_display }}
+                                {% endifequal %}
+                            </td>
+
+                            <td style="text-align:center;">
+                                {{ c.created|date:"D, d b Y" }}
+                            </td>
+
+                            <td style="text-align:center;">
+                                {% if c.occurrence.all.0.id %}
+                                    <a href="/schedule/events/{{ c.occurrence.all.0.id }}/confirmation/" target="_blank">{{ c.occurrence.all.0.start_time|date:"D, d b Y - H:i" }}</a>
+                                {% endif %}
+                            </td>
+
+                            <td style="text-align:center;">
+                                {% if c.referral %}
+                                    <a href="/client/{{ c.referral.client.all.0.id }}/referral/{{ c.referral.id }}/" target="_blank">{{ c.referral.service }} #{{ c.referral.seq }}</a>
+                                {% else %}
+                                    <a href="/client/{{ c.occurrence.all.0.event.referral.client.all.0.id }}/referral/{{ c.occurrence.all.0.event.referral.id }}/" target="_blank">{{ c.occurrence.all.0.event.referral.service }} #{{ c.occurrence.all.0.event.referral.seq }}</a>
+                                {% endif %}
+                            </td>
+
+                            <td style="text-align:center;">
+                                {% for x in c.get_display_payment_way_name_ %}
+                                    {{ x }} {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>
+
+                            <td style="text-align:center;">
+                                {{ c.total }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                    <!-- total -->
+                        <tr class="odd">
+                            <td style="text-align:center; font-weight:bold;">
+                                Valor total
+                            </td>
+                            <td style="text-align:center; font-weight:bold;">
+                                Todos
+                            </td>
+                            <td style="text-align:center; font-weight:bold;">
+                                Todos
+                            </td>
+                            <td style="text-align:center; font-weight:bold;">
+                                Todos
+                            </td>
+                            <td style="text-align:center; font-weight:bold;">
+                                Todos
+                            </td>
+                            <td style="text-align:center; font-weight:bold;">
+                                Todos
+                            </td>
+                            <td style="text-align:center; font-weight:bold;">
+                                Todos
+                            </td>
+                            <td style="text-align:center;">
+                                {{ x.3 }}
+                            </td>
+                        </tr>
+
+                 </tbody>
+               </table>
+
+            {% endif %}
+        {% endfor %}
+
+        <script>
+            // convert Python array to JS array
+            var rows = [];
+            {% for i in option_rows %} rows.push( [ "{{ i.0 }}" , {{ i.1 }} ] ); {% endfor %}
+
+            var colors = [];
+            {% for i in option_colors %} colors.push( [ "{{ i }}" ] ); {% endfor %}
+
+            // call graphic function 
+            make_graphic1(rows, colors);
+        </script>
+
+{% else %}
+    <script>
+        $('#report_table').append('<h3>N&atilde;o h&aacute; relato de dados para o periodo escolhido.</h3>');
+    </script>
+{% endif %}

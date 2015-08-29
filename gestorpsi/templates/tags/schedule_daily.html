@@ -25,33 +25,31 @@ GNU General Public License for more details.
 </div>
 
 <div id="daily" class="schedule">
+
     <input type="hidden" name="referral" value="{{ referral.id }}" />
     <input type="hidden" name="client" value="{{ object.id }}" />
+
     <table class="schedule_results daily zebra" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <th class="schedule"></th>
-            {% for room in place.room_set.all %}
-                {% if room.active %}
-                    <th room="{{ room.id }}" place="{{ place.id }}">{{ room }}</th>
-                {% endif %}
-            {% endfor %}
+                {% for room in place.room_set.all %}
+                    {% if room.active %}
+                        <th room="{{ room.id }}" place="{{ p.id }}">{{ room }}</th>
+                    {% endif %}
+                {% endfor %}
         </tr>
+
         {% for tm,cells in timeslots %}
-        <tr hour="{{ tm|date:"H:i:s" }}">
-            <td class="hour">{{ tm|date:"H:i" }}</td>
-            {% for room in place.room_set.all %}
-                {% if room.active %}
-                    <td class="clean" room="{{ room.id }}" place="{{ place.id }}">
-                        <a href="#" class="book">{% trans "Free" %}</a>
-                    </td>
-                {% endif %}
-            {% endfor %}
-        </tr>
+            <tr hour="{{ tm|date:"H:i:s" }}">
+                <td class="hour">{{ tm|date:"H:i" }}</td>
+                {% for room in place.room_set.all %}
+                    {% if room.active %}
+                        <td class="clean" room="{{ room.id }}" place="{{ p.id }}">
+                            <a href="#" class="book">{% trans "Free" %}</a>
+                        </td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
         {% endfor %}
     </table>
 </div>
-
-
-    
-    
-

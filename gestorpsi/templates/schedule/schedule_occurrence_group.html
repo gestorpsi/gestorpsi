@@ -21,53 +21,52 @@ GNU General Public License for more details.
 {% block menu_schedule %}active{% endblock %}
 
 {% block submenu %}
- <ul id="sub_schedule">
-    <li><a class="first" href="/schedule/">{% trans "daily" %}</a></li>
-    <li><a class="" href="/schedule/week/">{% trans "Weekly" %}</a></li>
-    <li><a href="/schedule/events/">{% trans "events" %}</a></li>
-    {% if group %}<li><a class="active">{{ event }} - {{ occurrence.room }}</a></li>{% endif %}
-</ul>
+     <ul id="sub_schedule">
+        <li><a class="first" href="/schedule/">{% trans "daily" %}</a></li>
+        <li><a class="" href="/schedule/week/">{% trans "Weekly" %}</a></li>
+        <li><a href="/schedule/events/">{% trans "events" %}</a></li>
+        {% if group %}<li><a class="active">{{ event }} - {{ occurrence.room }}</a></li>{% endif %}
+    </ul>
 {% endblock %}
 
 {% block core %}
 
 <div class="registers_available">
-<h2 class="title_schedule title">{{ event }}</h2>
-<p class="description">{{ occurrence.start_time|date:"d" }} {% trans "of" %} {{ occurrence.start_time|date:"F" }} {% trans "of" %} {{ occurrence.start_time|date:"Y" }} - {{ occurrence.start_time|date:"H:i" }} {{ occurrence.end_time|date:"H:i" }}hs
+    <h2 class="title_schedule title">{{ event }}</h2>
+    <p class="description">{{ occurrence.start_time|date:"d" }} {% trans "of" %} {{ occurrence.start_time|date:"F" }} {% trans "of" %} {{ occurrence.start_time|date:"Y" }} - {{ occurrence.start_time|date:"H:i" }} {{ occurrence.end_time|date:"H:i" }}hs
 
     <div class="main_area contact">
-
-    {% if not group.members.all %}
-        <div id="msg_area" class="alert no_registers_available">
-            {% trans "There is no registers available." %}<br />
-        </div>
-    {% else %}
-        <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-        <thead> 
+        {% if not group.members.all %}
+            <div id="msg_area" class="alert no_registers_available">
+                {% trans "There is no registers available." %}<br />
+            </div>
+        {% else %}
+            <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+            <thead> 
                 <tr> 
-                <th></th> 
-                <th></th>
-                <th></th>
+                    <th></th> 
+                    <th></th>
+                    <th></th>
                 </tr> 
-        </thead>
-        <tbody>
-            {% for o in group_occurrences %}
-                <tr class="zebra_{% cycle 0 1 %}">
-                <td><a href="/client/{{ o.event.referral.client.all.0.id }}/home/">{{ o.event.referral.client.all.0 }}</a><br />
-                {% if not o.was_confirmed %}
-                <a href="/schedule/events/{{ o.id }}/confirmation/">{% trans "Confirm occurrence for this client" %}</a>
-                {% else %}
-                {% trans "Occurrence already confirmed" %} - <a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.occurrenceconfirmation }}</a>
-                {% endif %}
-                </td>
-                <td></td>
-                <td></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-        </table>
-    {% endif %}
-    <br />    
-</div>
+            </thead>
+            <tbody>
+                {% for o in group_occurrences %}
+                    <tr class="zebra_{% cycle 0 1 %}">
+                        <td><a href="/client/{{ o.event.referral.client.all.0.id }}/home/">{{ o.event.referral.client.all.0 }}</a><br />
+                            {% if not o.was_confirmed %}
+                                <a href="{% url swingtime-occurrence-confirmation-group o.id %}">{% trans "Confirm occurrence for this client" %}</a>
+                            {% else %}
+                                {% trans "Occurrence already confirmed" %} - <a href="{% url swingtime-occurrence-confirmation-group o.id %}">{{ o.occurrenceconfirmation }}</a>
+                            {% endif %}
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        {% endif %}
+        <br />    
+    </div>
 </div>
 {% endblock %}

@@ -78,31 +78,36 @@ GNU General Public License for more details.
         </label>
     </fieldset>
 
-	<fieldset id="fieldset_professional_workplace">
-		<legend>{% trans "Professional Workplaces" %}</legend>
-			
-			<label>{% trans "Workplaces" %}<br />
-			<select name="professional_workplace" multiple="multiple" class="select multiple extrabig asm">
-				{% for l in WorkPlacesTypes %}
-				<option value="{{ l.id }}"{% for w in object.professionalProfile.workplace.all %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
-				{% endfor %}
-			</select>
-			</label>
-			<br />
-			<label><a class="form_mini" display="place_mini">{% trans "Add New Workplace" %}</a></label>
-	</fieldset>
+    <!-- workplaces select -->
+    <label style="margin-right:141px;" for="id_professional">
+        {% trans "Workplace available" %} | <a class="form_mini" display="place_mini">{% trans "Add new" %}</a>
+    </label>
+    <label for="id_professional">{% trans "Workplace selected" %}</label>
+    <div style="clear:both; margin-left:10px;">
+        <select name="professional_workplace" multiple="multiple" class="select multiple extrabig asm" id="id_professional_workplace">
+            {% for l in WorkPlacesTypes %}
+                <option value="{{ l.id }}"{% for w in object.professionalProfile.workplace.all %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-	<fieldset>
-		<legend>{% trans "Professional Services" %}</legend>
-			
-			<label>{% trans "Services" %}<br />
-			<select name="professional_service" multiple="multiple" class="select multiple extrabig asm">
-				{% for l in ServiceTypes %}
-				<option value="{{ l.id }}"{% for sc in object.prof_services.all %}{% ifequal sc.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
-				{% endfor %}
-			</select>
-			</label>
-	</fieldset>
+    <!-- service select -->
+    <label style="margin-right:253px;" for="id_professional">{% trans "Services available" %}</label>
+    <label for="id_professional">{% trans "Services selected" %}</label>
+    <div style="clear:both; margin-left:10px;">
+        <select name="professional_service" multiple="multiple" class="select multiple extrabig asm" id="id_professional_service">
+            {% for l in ServiceTypes %}
+                <option value="{{ l.id }}"{% for sc in object.prof_services.all %}{% ifequal sc.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- mount combox -->
+    <script>
+        $('select#id_professional_service').multiSelect();
+        $('select#id_professional_workplace').multiSelect();
+    </script>
+                            
     {% include "meta/phones.html" %}
 	{% include "meta/people_profile.html" %}
     {% include "meta/people_documents.html" %}

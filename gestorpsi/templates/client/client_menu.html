@@ -21,6 +21,6 @@ GNU General Public License for more details.
     <li><a href="/client/add">{% trans "add" %}</a></li>
     <li><a href="/client/add/company/">{% trans "add company" %}</a></li>
     <li><a class="{% if deactive %} active {% endif %}" href="/client/deactive/">{% trans "all Deactive" %}</a></li>
-
     {% if object.id %}<li><a class="active">{{ object.person.name }}{% if referral %} - {{ referral }}{% endif %}</a></li>{% endif %}
+    {% if obj.referral %}<li><a class="active">{% trans "Pagamento" %}</a></li>{% endif %}
 </ul>

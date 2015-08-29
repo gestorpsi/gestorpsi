@@ -33,10 +33,33 @@ $(function() {
      */
     
     $('#report_filter select[name=view]').change(function() {
-        if($(this).val()==2) {
-            $('div.subscription_filter').fadeIn();
-        } else {
-            $('div.subscription_filter').hide();
+
+        // reset to hide all
+        $('div.service_filter').hide();
+        $('div.receipt_status_filter').hide();
+        $('div.payment_way_filter').hide();
+        $('div.professional_filter').hide();
+        $('div.covenant_filter').hide();
+        $('div.service_filter').hide();
+        $('select#id_accumulated').hide();
+
+        // admission
+        if( $(this).val() == 1 ){
+            $('select#id_accumulated').show();
+        }
+
+        // referral
+        if( $(this).val() == 2 ){
+            $('div.service_filter').show();
+        }
+
+        // select receive status 
+        if( $(this).val()==3 ){
+            $('div.service_filter').show();
+            $('div.receipt_status_filter').show();
+            $('div.payment_way_filter').show();
+            $('div.professional_filter').show();
+            $('div.covenant_filter').show();
         }
     });
 
@@ -106,18 +129,35 @@ $(function() {
     
     $('#report_filter [name=update]').click(function() {
         $('div.loaded_report_title').hide();
-        
+
         var date_start =$('form#report_filter [name=date_start]').val();
         var date_end =$('form#report_filter [name=date_end]').val();
         var accumulated =$('form#report_filter [name=accumulated]').val();
         
         var data = 'date_start=' + date_start + '&date_end=' + date_end + '&accumulated=' + accumulated;
         
+        // admission
         if($('#report_filter [name = view]').val() == 1) updateAdmission(data);
+
+        // referral
         if($('#report_filter [name = view]').val() == 2) {
-            var service =$('#report_filter [name=service]').val();
+            var service = $('#report_filter [name=service]').val();
             data += '&service=' + service;
             updateReferral(data);
+        }
+
+        // financial
+        if ( $('#report_filter [name = view]').val() == 3 ){ 
+
+            var service = $('select#id_service').val();
+            var professional = $('select#id_professional').val();
+            var receipt_status = $('select#id_receipt_status').val();
+            var payment_way = $('select#id_payment_way').val();
+            var covenant = $('select#id_cove').val();
+
+            // method get url
+            data += '&service=' + service + '&professional=' + professional + '&receive=' + receipt_status + '&pway=' + payment_way + '&covenant=' + covenant;
+            updateReceive(data);
         }
 
         return false;
@@ -194,6 +234,19 @@ $(function() {
             updateReferral($(this).attr('data'));
             $('form#report_filter select[name=view]').val('2');
         }
+
+        if($(this).attr('view')==3) { // revenues/faturamento
+            // show and hide 
+            $('div.service_filter').show();
+            $('div.receipt_status_filter').show();
+            $('div.payment_way_filter').show();
+            $('div.professional_filter').show();
+            $('div.covenant_filter').show();
+            $('select#id_accumulated').hide();
+
+            updateReceive($(this).attr('data'));
+            $('form#report_filter select[name=view]').val('3');
+        }
         
         return false;
     });
@@ -203,10 +256,15 @@ $(function() {
      */
     
     $('a.report_filter').click(function() {
+
         if($('form#report_filter select[name=view]').val() == 1) // admission
             updateAdmission('view=admission' + $(this).attr('data') + '&accumulated=' +$('#report_filter [name=accumulated]').val());
+
         if($('form#report_filter select[name=view]').val() == 2) // referral
             updateReferral('view=referral' + $(this).attr('data') + '&service=' + $('#report_filter [name=service]').val() + '&accumulated=' +$('#report_filter [name=accumulated]').val());
+
+        if($('form#report_filter select[name=view]').val() == 3) // revenues / faturamente
+            updateReceive('view=receive' + $(this).attr('data') + '&service=' + $('#report_filter [name=service]').val() + '&accumulated=' +$('#report_filter [name=accumulated]').val());
 
         $('div.loaded_report_title').hide();
         return false;
@@ -238,5 +296,3 @@ $(function() {
      */
 
 });
-
-

@@ -100,42 +100,50 @@ GNU General Public License for more details.
             {% endcomment %}
 	</fieldset>
 
-	<fieldset id="fieldset_professional_agreement">
-		<legend>{% trans "Professional Agreements" %}</legend>
-			<label>{% trans "Agreements" %}<br />
-			<select name="professional_agreement" multiple="multiple" class="select multiple extrabig asm">
-				{% for l in AgreementTypes %}
-				<option value="{{ l.id }}"{% for a in object.professionalProfile.agreement.all %}{% ifequal a.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
-				{% endfor %}
-			</select>
-			</label>
-	</fieldset>
+    <!-- covenant select -->
+    <label style="margin-right:255px;" for="id_professional">{% trans "Conv&ecirc;nio dispon&iacute;vel" %}</label>
+    <label for="id_professional">{% trans "Conv&ecirc;nio selecionado" %}</label>
 
-	<fieldset id="fieldset_professional_workplace">
-		<legend>{% trans "Professional Workplaces" %}</legend>
-			
-			<label>{% trans "Workplaces" %}<br />
-			<select name="professional_workplace" multiple="multiple" class="select multiple extrabig asm">
-				{% for l in WorkPlacesTypes %}
-				<option value="{{ l.id }}"{% for w in object.professionalProfile.workplace.all %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
-				{% endfor %}
-			</select>
-			</label>
-			<br />
-			<label><a class="form_mini" display="place_mini">{% trans "Add New Workplace" %}</a></label>
-	</fieldset>
+    <div style="clear:both; margin-left:10px;">
+        <select name="professional_agreement" multiple="multiple" class="select multiple extrabig asm" id="id_professional_agreement">
+            {% for l in AgreementTypes %}
+                <option value="{{ l.id }}"{% for a in object.professionalProfile.agreement.all %}{% ifequal a.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-	<fieldset>
-		<legend>{% trans "Professional Services" %}</legend>
-			
-			<label>{% trans "Services" %}<br />
-			<select name="professional_service" multiple="multiple" class="select multiple extrabig asm">
-				{% for l in ServiceTypes %}
-				<option value="{{ l.id }}"{% for sc in object.prof_services.all %}{% ifequal sc.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
-				{% endfor %}
-			</select>
-			</label>
-	</fieldset>
+    <!-- workplaces select -->
+    <label style="margin-right:142px;" for="id_professional">
+        {% trans "Workplace available" %} | <a class="form_mini" display="place_mini">{% trans "Add new" %}</a>
+    </label>
+
+    <label for="id_professional">{% trans "Workplace selected" %}</label>
+    <div style="clear:both; margin-left:10px;">
+        <select name="professional_workplace" multiple="multiple" class="select multiple extrabig asm" id="id_professional_workplace">
+            {% for l in WorkPlacesTypes %}
+                <option value="{{ l.id }}"{% for w in object.professionalProfile.workplace.all %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- service select -->
+    <label style="margin-right:251px;" for="id_professional">{% trans "Services available" %}</label>
+    <label for="id_professional">{% trans "Services selected" %}</label>
+    <div style="clear:both; margin-left:10px;">
+        <select name="professional_service" multiple="multiple" class="select multiple extrabig asm" id="id_professional_service">
+            {% for l in ServiceTypes %}
+                <option value="{{ l.id }}"{% for sc in object.prof_services.all %}{% ifequal sc.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- mount combox -->
+    <script>
+        $('select#id_professional_service').multiSelect();
+        $('select#id_professional_workplace').multiSelect();
+        $('select#id_professional_agreement').multiSelect();
+    </script>
+                                                        
     {% include "meta/phones.html" %}
 	{% include "meta/people_profile.html" %}
     {% include "meta/people_documents.html" %}

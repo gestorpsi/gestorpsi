@@ -57,22 +57,35 @@ GNU General Public License for more details.
 
                 <div style="clear:both;"></div>
                     <div style="margin-left:39px;">
-                    {% if i.referral %}
-                        <i>{% trans "Internal referral from" %} <a href="/client/{{ object.id }}/referral/{{ i.referral.pk }}/">{{ i.referral }}</a></i>
-                        <br />
-                    {% endif %}
-                    {% for p in i.professional.all %}
-                        <i><a href="{{ p.url_form }}">{{ p }}</a><small>{% if p.professionalIdentification.profession %} {{ p.professionalIdentification.profession }}{% endif %}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %}{% if p.professionalIdentification.profession.symbol %} {{ p.professionalIdentification.profession.symbol }}{% endif %}{% if p.professionalIdentification.registerNumber %} {{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</small></i>{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                    <div style="clear:both;"></div>
-                    {% if i.next_occurrence %}
-                        {% trans "Next occurrence" %}:
-                        {{ i.next_occurrence.start_time|date:"l, d" }} {% trans "of" %} {{ i.next_occurrence.start_time|date:"F" }} {% trans "of" %} {{ i.next_occurrence.start_time|date:"Y" }} {{ i.next_occurrence.start_time|date:"H:i" }} - {{ i.next_occurrence.end_time|date:"H:i" }}
-                    {% else %}
-                        {% trans "There is no upcoming occurrences for this service" %} <a href="/client/schedule/daily/?referral={{ i.id }}&client={{ object.id }}" class="small">{% trans "book it now?" %}</a>
-                    {% endif %}
+
+                        <!-- service -->
+                        {% if i.referral %}
+                            <i>{% trans "Internal referral from" %} <a href="/client/{{ object.id }}/referral/{{ i.referral.pk }}/">{{ i.referral }}</a></i>
+                            <br />
+                        {% endif %}
+
+                        <!-- professional -->
+                        {% for p in i.professional.all %}
+                            <i>- <a href="{{ p.url_form }}">{{ p }}</a><small>{% if p.professionalIdentification.profession %} {{ p.professionalIdentification.profession }}{% endif %}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %}{% if p.professionalIdentification.profession.symbol %} {{ p.professionalIdentification.profession.symbol }}{% endif %}{% if p.professionalIdentification.registerNumber %} {{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</small></i>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                        <div style="clear:both;"></div>
+
+                        <!-- ocurrence -->
+                        {% if i.next_occurrence %}
+                            {% trans "Next occurrence" %}:
+                            {{ i.next_occurrence.start_time|date:"l, d" }} {% trans "of" %} {{ i.next_occurrence.start_time|date:"F" }} {% trans "of" %} {{ i.next_occurrence.start_time|date:"Y" }} {{ i.next_occurrence.start_time|date:"H:i" }} - {{ i.next_occurrence.end_time|date:"H:i" }}
+                        {% else %}
+                            - {% trans "There is no upcoming occurrences for this service" %} <a href="/client/schedule/daily/?referral={{ i.id }}&client={{ object.id }}" class="small">{% trans "book it now?" %}</a>
+                        {% endif %}
+
+                        <!-- covenant -->
+                        <div style="clear:both;"></div>
+                        {% if i.covenant.all.0 %} 
+                        - {% for c in i.covenant.all %} {{ c }}; {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
+
             {% endfor %}
         <p>
         {% if perms.service.service_write %}
@@ -157,7 +170,7 @@ GNU General Public License for more details.
     {% endif %}
 </div>
 
-<div id="sidebar" class="sidebar">
+<div id="sidebar" class="sidebar_client_top">
     {% if object.id %}
         {% include "tags/client_sidebar.html" %}
     {% endif %}

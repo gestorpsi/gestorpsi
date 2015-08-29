@@ -1,0 +1,8 @@
+{% load i18n %}
+
+<ul>
+    <li><a class="first {% ifequal tab 'active' %} active {% endifequal %}" href="{% url covenant-index %}">{% trans "all" %}</a></li>
+    <li><a class="{% ifequal tab 'form' %} active {% endifequal %}" href="{% url covenant-add %}">{% trans "add" %}</a></li>
+    <li><a class="{% ifequal tab 'deactive' %} active {% endifequal %}" href="{% url covenant-list-deactive %}">{% trans "all Deactive" %}</a></li>
+    {% ifequal tab 'edit' %}<li><a class="active">{{ obj.name }}</a></li>{% endifequal %}
+</ul>

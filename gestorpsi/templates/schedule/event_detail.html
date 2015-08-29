@@ -40,7 +40,7 @@ GNU General Public License for more details.
         <div class="msg_area error">
         {% trans "Some occurrences could not be registered due to conflict errors." %}<br />
         {% trans "Follow below a list with these conflits and their reasons:" %}
-        <ul>
+        <ul style="color:black;">
             {% for i in event.errors %}
             <li>{{ i.start_time|date:"r"|slice:":-9" }} - {{ i.end_time|date:"H:i" }}hs<br /><small> {{ i.error_message|join:". " }}</small></li>
             {% endfor %}

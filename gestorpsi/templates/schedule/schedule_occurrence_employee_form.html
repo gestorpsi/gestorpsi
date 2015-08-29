@@ -30,12 +30,13 @@ GNU General Public License for more details.
 
 {% block core %}
     {% include "tags/occurrence_employee_form.html" %}
-    <div id="sidebar" class="sidebar">
+    <div id="sidebar" class="sidebar_save">
         <div class="bg_blue">
             {% include "tags/save.html" %}
         </div>
+    </div>
+    <div id="sidebar" class="sidebar_client">
         {% include "tags/schedule_sidebar.html"%}
-
     </div>
 </form>
 {% endblock %}

@@ -1,0 +1,56 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_schedule %}active{% endblock %}
+
+{% block submenu %}
+ <ul id="sub_schedule">
+    <li><a class="first" href="/schedule/">{% trans "daily" %}</a></li>
+    <li><a href="/schedule/week/">{% trans "Weekly" %}</a></li>
+    <li><a href="/schedule/events/">{% trans "events" %}</a></li>
+    {% if occurrence.id %}<li><a class="active">{{ occurrence.event.referral }} - {{ occurrence.room }}</a></li>{% endif %}
+</ul>
+{% endblock %}
+
+
+{% block extrahead %}
+    <script type="text/javascript" src="/media/js/jquery.maskMoney.min.js"></script>
+    <script type="text/javascript" src="/media/js/gestorpsi.receive.forms.js"></script>
+{% endblock %}
+
+
+{% block core %}
+    {% include "tags/occurrence_confirmation_form_group.html" %}
+
+    {% if not denied_to_write %}
+        <div id="sidebar" class="sidebar_save">
+            <div class="bg_blue">
+                {% include "tags/save.html" %}
+            </div>
+        </div>
+    {% endif %}
+
+    <div id="sidebar" class="sidebar_client">
+        {% include "tags/schedule_sidebar.html"%}
+    </div>
+
+</form>
+
+{% endblock %}

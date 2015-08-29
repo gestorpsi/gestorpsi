@@ -22,15 +22,19 @@ GNU General Public License for more details.
 from datetime import datetime, timedelta
 from decimal import Decimal
 from dateutil.relativedelta import relativedelta
+
+from django.db.models import Q
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.core.urlresolvers import reverse
+
 from pygooglechart import PieChart3D
 from pygooglechart import Chart
 from pygooglechart import SimpleLineChart
 from pygooglechart import Axis
+
 from gestorpsi.util.views import get_object_or_None, color_rand
 from gestorpsi.admission.models import AdmissionReferral, ReferralChoice as AdmissionIndication
 from gestorpsi.client.models import Client
@@ -39,11 +43,12 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, Indication as ReferralIndication, IndicationChoice as ReferralIndicationChoice, ReferralDischargeReason, ReferralDischarge
 from gestorpsi.util.views import percentage
+from gestorpsi.financial.models import Receive
 
 VIEWS_CHOICES = (
     (1, _('Admisssions')),
     (2, _('Referrals')),
-    #(3, _('Schedules')),
+    (3, _('Faturamento')),
 )
 
 PIE_CHART_WIDTH = 620
@@ -107,6 +112,193 @@ class Report(models.Model):
             return admission, chart_url, date_start,date_end
         
         return None, None, None, None
+
+
+
+    def get_receive_(self, organization, date_start, date_end, professional, receive, service, pway, covenant ):
+        date_start , date_end = self.set_date(organization, date_start, date_end)
+
+        '''
+            data : array or False
+            data return False when no numbers to make a graphic
+            covenant : Covenant.id
+
+            PaymentWay hardcode
+                Dinheiro 1
+                Cheque 2
+                Cartão débito 3
+                Cartão crédito 4
+                Boleto 5
+                Depósito em conta 6
+        '''
+
+        data = []
+        receive_list = []
+        receive_ar = []
+        total_receive = 0
+        colors = []
+
+        # overview of all status
+        # date range, all professional and all services
+        aberto = Receive.objects.filter(status=0, created__gte=date_start, created__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).distinct().order_by('-created')
+
+        recebido = Receive.objects.filter(status=1, created__gte=date_start, created__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).distinct().order_by('-created')
+
+        faturado = Receive.objects.filter(status=2, created__gte=date_start, created__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).distinct().order_by('-created')
+
+        cancelado = Receive.objects.filter(status=3, created__gte=date_start, created__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).distinct().order_by('-created')
+
+        # professional
+        if not professional == 'all':
+            aberto = aberto.filter( Q( occurrence__event__referral__professional__id=professional )| Q( referral__professional__id=professional ) ).distinct()
+            recebido = recebido.filter( Q( occurrence__event__referral__professional__id=professional )| Q( referral__professional__id=professional ) ).distinct()
+            faturado = faturado.filter( Q( occurrence__event__referral__professional__id=professional )| Q( referral__professional__id=professional ) ).distinct()
+            cancelado = cancelado.filter( Q( occurrence__event__referral__professional__id=professional )| Q( referral__professional__id=professional ) ).distinct()
+
+        # covenant
+        if not covenant == 'all':
+            aberto = aberto.filter( Q(referral__covenant__id=covenant) | Q(occurrence__event__referral__covenant=covenant) ).distinct()
+            recebido = recebido.filter( Q(referral__covenant__id=covenant) | Q(occurrence__event__referral__covenant=covenant) ).distinct()
+            faturado = faturado.filter( Q(referral__covenant__id=covenant) | Q(occurrence__event__referral__covenant=covenant) ).distinct()
+            cancelado = cancelado.filter( Q(referral__covenant__id=covenant) | Q(occurrence__event__referral__covenant=covenant) ).distinct()
+
+        # payment_way 
+        if not pway == 'all':
+
+            if pway == '1':
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='1').distinct()
+                recebido = recebido.filter(covenant_payment_way_selected__icontains='1').distinct()
+                faturado = faturado.filter(covenant_payment_way_selected__icontains='1').distinct()
+                cancelado = cancelado.filter(covenant_payment_way_selected__icontains='1').distinct()
+
+            if pway == '2':
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='2').distinct()
+                recebido = recebido.filter(covenant_payment_way_selected__icontains='2').distinct()
+                faturado = faturado.filter(covenant_payment_way_selected__icontains='2').distinct()
+                cancelado = cancelado.filter(covenant_payment_way_selected__icontains='2').distinct()
+
+            if pway == '3':
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='3').distinct()
+                recebido = recebido.filter(covenant_payment_way_selected__icontains='3').distinct()
+                faturado = faturado.filter(covenant_payment_way_selected__icontains='3').distinct()
+                cancelado = cancelado.filter(covenant_payment_way_selected__icontains='3').distinct()
+
+            if pway == '4':
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='4').distinct()
+                recebido = recebido.filter(covenant_payment_way_selected__icontains='4').distinct()
+                faturado = faturado.filter(covenant_payment_way_selected__icontains='4').distinct()
+                cancelado = cancelado.filter(covenant_payment_way_selected__icontains='4').distinct()
+
+            if pway == '5':
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='5').distinct()
+                recebido = recebido.filter(covenant_payment_way_selected__icontains='5').distinct()
+                faturado = faturado.filter(covenant_payment_way_selected__icontains='5').distinct()
+                cancelado = cancelado.filter(covenant_payment_way_selected__icontains='5').distinct()
+
+            if pway == '6':
+                aberto = aberto.filter(covenant_payment_way_selected__icontains='6').distinct()
+                recebido = recebido.filter(covenant_payment_way_selected__icontains='6').distinct()
+                faturado = faturado.filter(covenant_payment_way_selected__icontains='6').distinct()
+                cancelado = cancelado.filter(covenant_payment_way_selected__icontains='6').distinct()
+
+        # filter by service
+        if not service == '':
+
+            if '0' in receive_ar :
+                aberto = aberto.filter(occurrence__event__referral__service=service ).distinct()
+
+            if '1' in receive_ar :
+                recebido = recebido.filter(occurrence__event__referral__service=service ).distinct()
+
+            if '2' in receive_ar :
+                faturado = faturado.filter(occurrence__event__referral__service=service ).distinct()
+
+            if '3' in receive_ar :
+                cancelado = cancelado.filter(occurrence__event__referral__service=service ).distinct()
+
+        if receive == 'all': # receive status
+
+            receive_ar = ['0','1','2','3'] # all
+
+            # graphic pizza
+            data.append( ['Aberto',aberto.count()] )
+            data.append( ['Recebido',recebido.count()] )
+            data.append( ['Faturado',faturado.count()] )
+            data.append( ['Cancelado',cancelado.count()] )
+
+            total_receive = aberto.count()+recebido.count()+faturado.count()+cancelado.count()
+
+            colors = ['red', 'green', 'orange', 'blue']
+
+        else:
+
+            if receive == '0':
+                receive_ar.append('0')
+                data.append( ['Aberto',aberto.count()] )
+                total_receive += aberto.count()
+                colors.append('red')
+
+            if receive == '1':
+                receive_ar.append('1')
+                data.append( ['Recebido',recebido.count()] )
+                total_receive += recebido.count()
+                colors.append('green')
+
+            if receive == '2':
+                receive_ar.append('2')
+                data.append( ['Faturado',faturado.count()] )
+                total_receive += faturado.count()
+                colors.append('orange')
+
+            if receive == '3':
+                receive_ar.append('3')
+                data.append( ['Cancelado',cancelado.count()] )
+                total_receive += cancelado.count()
+                colors.append('blue')
+
+        # amount of earch status, total column
+        total_aberto = 0
+        for x in aberto:
+            total_aberto += x.total
+
+        total_recebido = 0
+        for x in recebido:
+            total_recebido += x.total
+
+        total_faturado = 0
+        for x in faturado:
+            total_faturado += x.total
+
+        total_cancelado = 0
+        for x in cancelado:
+            total_cancelado += x.total
+
+
+        '''
+            array
+                0 = Status label
+                1 = list of payment. Payment object
+                2 = color of status
+                3 = sum total of status
+        '''
+        # list of clients and counter %
+        if '0' in receive_ar :
+            receive_list.append( ['Aberto',aberto,'red',total_aberto] )
+
+        if '1' in receive_ar :
+            receive_list.append( ['Recebido',recebido,'green',total_recebido] )
+
+        if '2' in receive_ar :
+            receive_list.append( ['Faturado',faturado,'orange',total_faturado] )
+
+        if '3' in receive_ar :
+            receive_list.append( ['Cancelado',cancelado,'blue',total_cancelado] )
+
+        if total_receive == 0 :  # no data
+            data = False
+
+        return data, colors, date_start, date_end, receive_list, total_receive
+        
 
     def get_referral_range(self, organization, date_start, date_end, service, accumulated):
         """
@@ -982,7 +1174,7 @@ class ReportDemographicManager(models.Manager):
         total = len(client_pk_in)
 
         data.append({'name': _('Male'), 'total': male, 'percentage': percentage(male, total)})
-        data.append({'name': _('Female'), 'total': female, 'percentage': percentage(male, total)})
+        data.append({'name': _('Female'), 'total': female, 'percentage': percentage(female, total)})
         data.append({'name': _('Unknown'), 'total': unknown, 'percentage': percentage(unknown, total)})
 
         return data
@@ -1029,14 +1221,3 @@ class ReportReferral(object):
         abstract = True
 
     objects = ReportReferralManager()
-
-
-#>>> for m in MaritalStatus.objects.all():
-#...  print m, Client.objects.filter(person__maritalStatus=m).count()
-#... 
-#Casado(a) 0
-#Divorciado(a) 0
-#Separado(a) Judicial 2
-#Solteiro(a) 2
-#União Estável 1
-#Viúvo(a) 0

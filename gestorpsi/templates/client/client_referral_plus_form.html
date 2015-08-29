@@ -26,123 +26,128 @@ GNU General Public License for more details.
 
 {% block core %}
 
-<h2 id="title_addressbook" style="display:none"></h2>
+    <h2 id="title_addressbook" style="display:none"></h2>
 
-{% if object.id %}
-	<h2 class="title_clients title">{{ object.person.name }} - {{ referral }}</h2>
-	<p class="description">{% trans "Referral Details" %}<br />	
-{% else %}
-	<h2 class="title_clients title">{% trans "New Admission" %}</h2>
-	<p class="description">{% trans "Inform the referral details then click on Save button" %}</p>
-{% endif %}
+    {% if object.id %}
+        <h2 class="title_clients title">{{ object.person.name }} - {{ referral }}</h2>
+        <p class="description">{% trans "Referral Details" %}<br />	</p>
+    {% else %}
+        <h2 class="title_clients title">{% trans "New Admission" %}</h2>
+        <p class="description">{% trans "Inform the referral details then click on Save button" %}</p>
+    {% endif %}
 
-</p>
-<h2 id="title_contacts" style="display:none"></h2>
-<h2 id="title_myoffice" style="display:none"></h2>
+    <h2 id="title_contacts" style="display:none"></h2>
+    <h2 id="title_myoffice" style="display:none"></h2>
 
-<form action="/client/{{ object.id }}/referral/plus/save/" method="post" id="client_referral_form" class="client_referral">
-<input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
-<div class="main_area">
-    <a href="" id=help>&nbsp;</a>
-    <h3><span>{% trans "Referral Details" %}</span></h3>
-    
-    
-    <fieldset>
-    <legend>{% trans "Referral Details" %}</legend>
+    <form action="/client/{{ object.id }}/referral/plus/save/" method="post" id="client_referral_form" class="client_referral">
+        <input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
+        <div class="main_area">
+            <a href="" id=help>&nbsp;</a>
+            <h3><span>{% trans "Referral Details" %}</span></h3>
+            
+            <fieldset>
+                <legend>{% trans "Referral Details" %}</legend>
 
-            <label class="referral_type_referral">{% trans "Last Referral" %}<br />
-                <select name="referral" class="extrabig asm referral_list" {% if object.id %} id="id_referral" {% endif %} >
-                        <option value="{{ referral.id }}"> {{ referral }} 
-                            {% if referral.professional.all %}
-                                ( {{ referral.professional.all|join:"," }} )
-                            {% endif %}
-                        </option>
-                </select>
-                <label><div class="error_select" style="display:none;"><h3><font color="red">{% trans "This fields is required." %}</font></div></label>
-            </label>
+                <label class="referral_type_referral">{% trans "Last Referral" %}<br />
+                    <select name="referral" class="extrabig asm referral_list" {% if object.id %} id="id_referral" {% endif %} >
+                            <option value="{{ referral.id }}"> {{ referral }} 
+                                {% if referral.professional.all %}
+                                    ( {{ referral.professional.all|join:"," }} )
+                                {% endif %}
+                            </option>
+                    </select>
+                    <label><div class="error_select" style="display:none;"><h3><font color="red">{% trans "This fields is required." %}</font></div></label>
+                </label>
 
-            <label{% if referral_form.id %} style="display:none"{% endif %}>{% trans "To Service" %}<br />
-                <select id="id_service" class="extrabig asm" name="service">
-                    <option value="">---------</option>
-                    {% for s in services %}
-                    <option value="{{ s.id }}" is_group="{% if s.is_group %}True{% else %}False{% endif %}"{% if s.is_group and not s.servicegroup_set.all %} disabled{% endif %}>{{ s }}{% if s.is_group and not s.servicegroup_set.all %} ({% trans "Empty" %}){% endif %}</option>
-                    {% endfor %}
-                </select>
-            </label>
-
-        <label class="referral_group" style="display:none;">{% trans "Subscribe this customer in a group" %}<br />
-            <select name="group" class="extrabig">
-                {% for g in groups %}
-                <option value="{{ g.id }}" service="{{ g.service.id }}"> {{ g }} </option>
-                {% endfor %}
-            </select>
-        </label>
-
-
-            <div style="clear:both;"></div>
-            <label>{% trans "Professionals" %}<br />
-                <div class="overflow referral_form_professional{% if not referral.id %} hide_on_first{% endif %}">
-                    {{ referral_form.professional }}
-                </div> 
-            </label>
-
-        {% comment %}
-            {% if not referral %}
-                <label>{% trans "Professionals" %}<br />
-                    <select name="professional" class="extrabig multiple asm" id="id_professional" multiple="multiple">
+                <label{% if referral_form.id %} style="display:none"{% endif %}>{% trans "To Service" %}<br />
+                    <select id="id_service" class="extrabig asm" name="service">
+                        <option value="">---------</option>
+                        {% for s in services %}
+                        <option value="{{ s.id }}" is_group="{% if s.is_group %}True{% else %}False{% endif %}"{% if s.is_group and not s.servicegroup_set.all %} disabled{% endif %}>{{ s }}{% if s.is_group and not s.servicegroup_set.all %} ({% trans "Empty" %}){% endif %}</option>
+                        {% endfor %}
                     </select>
                 </label>
-            {% else %}
-                <label>{% trans "Professionals" %}<br />
-                    {{ referral_form.professional }}
-                </label>            
+
+                <label class="referral_group" style="display:none;">{% trans "Subscribe this customer in a group" %}<br />
+                    <select name="group" class="extrabig">
+                        {% for g in groups %}
+                        <option value="{{ g.id }}" service="{{ g.service.id }}"> {{ g }} </option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </fieldset>
+
+
+            <!-- profissional combobox -->
+            <label style="margin-right:235px;" for="id_professional">{% trans "Professionals available" %}</label>
+            <label for="id_professional">{% trans "Professionals selected" %}</label>
+            <div style="clear:both; margin-left:10px;" class="referral_form_professional{% if referral.id %} check_change{% endif %}{% if not referral.id %} hide_on_first{% endif %}">
+                {{ referral_form.professional }}
+            </div> 
+            {% if referral_form.instance %}
+                <script>
+                    $('select#id_professional').multiSelect();
+                </script>
             {% endif %}
-        {% endcomment %}
 
-        <label style="display:none">{% trans "Clients" %}<br />
-        {{ referral_form.client }}
-        </label>
-    </fieldset>
+            {% comment %}
+                {% if not referral %}
+                    <label>{% trans "Professionals" %}<br />
+                        <select name="professional" class="extrabig multiple asm" id="id_professional" multiple="multiple">
+                        </select>
+                    </label>
+                {% else %}
+                    <label>{% trans "Professionals" %}<br />
+                        {{ referral_form.professional }}
+                    </label>            
+                {% endif %}
+            {% endcomment %}
 
-    <fieldset>
-    <legend>{% trans "Referral Additional Infos" %}</legend>
-        <label>{% trans "Referral Reason" %}<br />
-        {{ referral_form.referral_reason }}
-        </label>
-        <label>{% trans "Priority" %}<br />
-        {{ referral_form.priority }}
-        </label>
-        <label>{% trans "Impact" %}<br />
-        {{ referral_form.impact }}
-        </label>        
-        <label>{% trans "Available Time" %}<br />
-        {{ referral_form.available_time }}
-        </label>
-        <label>{% trans "Comments" %}<br />
-        {{ referral_form.annotation }}
-        </label>
-    </fieldset>
-    
-<br />
-    
-</div>
+            <label style="display:none">{% trans "Clients" %}<br />
+            {{ referral_form.client }}
+            </label>
 
-<div id="sidebar" class="sidebar">
-    {% if perms.client.client_write %}
-        <div class="bg_blue">
-            {% include "tags/save.html" %}
-        </div>
-    {% endif %}
-    {% if object.id %}
-        <br />
-        {% include "tags/client_sidebar.html" %}
-    {% endif %}
-</div>
-<input type="hidden" name="client_id" value="{{ object.id }}" />
-</form>
+            <fieldset>
+                <legend>{% trans "Referral Additional Infos" %}</legend>
+                <label>{% trans "Referral Reason" %}<br />
+                {{ referral_form.referral_reason }}
+                </label>
+                <label>{% trans "Priority" %}<br />
+                {{ referral_form.priority }}
+                </label>
+                <label>{% trans "Impact" %}<br />
+                {{ referral_form.impact }}
+                </label>        
+                <label>{% trans "Available Time" %}<br />
+                {{ referral_form.available_time }}
+                </label>
+                <label>{% trans "Comments" %}<br />
+                {{ referral_form.annotation }}
+                </label>
+            </fieldset>
+            
+            <br />
+            
+        </div><!-- main area -->
 
-{% include "tags/address_book_professional_mini.html" %} 
-{% include "tags/address_book_organization_mini.html" %}
+        {% if perms.client.client_write %}
+            <div id="sidebar" class="sidebar_save">
+                <div class="bg_blue">
+                    {% include "tags/save.html" %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if object.id %}
+            <div id="sidebar" class="sidebar_client">
+                {% include "tags/client_sidebar.html" %}
+            </div>
+        {% endif %}
+
+        <input type="hidden" name="client_id" value="{{ object.id }}" />
+    </form>
+
+    {% include "tags/address_book_professional_mini.html" %} 
+    {% include "tags/address_book_organization_mini.html" %}
 
 {% endblock %}
-

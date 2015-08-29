@@ -32,8 +32,7 @@ $('div.schedule').ready(function() {
     // load today daily occurrences and mini-calendar
     $('table.weekly').unbind().ready(function() {
         $("div#mini_calendar").datepicker(schedule_options);
-        //updateGrid('/schedule/occurrences/');
+        updateGrid('/schedule/occurrences/');
     });
-
     
 });

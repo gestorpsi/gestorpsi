@@ -26,9 +26,15 @@ GNU General Public License for more details.
                 {% else %}
                     <li><a href="/user/{{ profile.id }}/order/" class="client_order" title="{{ profile.person.name }}">{% if profile.user.is_active %} {% trans "Disable" %} {% else %} {% trans "Enable" %} {% endif %} </a></li>
                 {% endifequal %}
+
+                <li><a class="form_mini" display="pwd_mini">{% trans "Change Password" %}</a></li>
+                <li><a class="form_mini" display="email_mini">{% trans "Change e-mail" %}</a></li>
+
                 {% comment %}
                 <li><a href="{% url user_delete profile.id %}" class="user_delete confirm" title="{{ profile.person.name }}" msg="{% trans "Confirmar exclusão de usuário?" %}">{% trans "Delete User" %}</a></li>
                 {% endcomment %}
+
+                {% else %}
         {% endif %}
     </ul>
 </div>

@@ -21,6 +21,7 @@ from gestorpsi.organization.models import Organization, Agreement, AgeGroup, Edu
 from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.client.models import Client
 from gestorpsi.util.uuid_field import UuidField 
+from gestorpsi.covenant.models import Covenant
 
 class ServiceType(models.Model):
     name = models.CharField(max_length=100)
@@ -93,14 +94,22 @@ class Service(models.Model):
     academic_related = models.BooleanField(_('Academic (supervised) related service'), default=False)
     is_online = models.BooleanField(default=False)
     color = models.CharField(_('Color'), max_length=6, null=True, help_text=_('Color in HEX Format. Ex: 662393'), default=0)
-    
+    covenant = models.ManyToManyField(Covenant, null=True, blank=True)
     objects = ServiceManager()
+
+    class Meta:
+        ordering = ['name']
 
     def __unicode__(self):
         u = u"%s" % (self.name)
         if self.is_group:
             u += " (%s)" % _('Group')
         return u
+
+    def label_group_(self):
+        if self.is_group:
+            return u'%s (grupo)' % self.name
+        return u'%s' % self.name
     
     def _name_html(self):
         return u"<div class='service_name_html' style='background-color:#%s;'>&nbsp;</div> %s" % (self.color, self.name)

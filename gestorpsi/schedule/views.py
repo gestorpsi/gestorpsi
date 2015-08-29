@@ -40,10 +40,15 @@ from gestorpsi.util.views import get_object_or_None
 from gestorpsi.schedule.forms import OccurrenceConfirmationForm
 from gestorpsi.device.models import DeviceDetails
 from gestorpsi.organization.models import TIME_SLOT_SCHEDULE
+from gestorpsi.financial.models import Receive
+from gestorpsi.financial.forms import ReceiveFormUpdate, ReceiveFormNew
+from gestorpsi.covenant.models import Covenant
+
+import locale
+locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
 
 def _access_check_by_occurrence(request, occurrence):
-    #from gestorpsi.client.views import _access_check_referral_write, _access_check
     from gestorpsi.client.views import _access_check
     denied_to_read = None
     for c in occurrence.event.referral.client.all():
@@ -55,10 +60,9 @@ def _access_check_by_occurrence(request, occurrence):
 
     return True
 
+
 @permission_required_with_403('schedule.schedule_list')
-def schedule_occurrence_listing(request, year = 1, month = 1, day = None, 
-    template='schedule/schedule_events.html',
-    **extra_context):
+def schedule_occurrence_listing(request, year=1, month=1, day=None, template='schedule/schedule_events.html', **extra_context):
 
     occurrences = schedule_occurrences(request, year, month, day)
 
@@ -67,7 +71,7 @@ def schedule_occurrence_listing(request, year = 1, month = 1, day = None,
         dict(
             extra_context, 
             occurrences=occurrences,
-            places = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
+            places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
             services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
             professionals = CareProfessional.objects.active(request.user.get_profile().org_active.id),
             tab_event_class = 'active',
@@ -90,19 +94,23 @@ def add_event(
         redirect_to = None
     ):
 
-    # have to contains dtstart variable in URL. URL from schedule have to contains date and time informations.
+    # have to contains dtstart variable in URL. URL from schedule have to contains date and time data.
     if not 'dtstart' in request.GET:
         return http.HttpResponseRedirect('/schedule/')
 
-    if request.method == 'POST':
-        if int(request.POST.get('count')) > 40: # limit occurrence repeat
-            return render_to_response('403.html', {'object':_('Sorry. You can not book more than 40 occurrence at the same time')})
+    if request.POST:
+
+        # instance form
         recurrence_form = recurrence_form_class(request.POST)
 
+        # no errors found, form is valid.
         if recurrence_form.is_valid():
+
             if not request.POST.get('group'): # booking single client
+
                 referral = get_object_or_404(Referral, pk=request.POST.get('referral'), service__organization=request.user.get_profile().org_active)
                 event = recurrence_form.save(referral)
+
             else: # booking a group
                 group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active, active=True)
                 if group.charged_members(): # this check is already done in template. just to prevent empty groups
@@ -114,7 +122,56 @@ def add_event(
                         else:
                             if not event.errors:
                                 event = recurrence_form.save(group_member.referral, True) # ignore busy check
-    
+
+            if not request.POST.get('group'): # booking single client
+                '''
+                    Create a payment for each upcoming event when event by pack or occurrence
+                    Event per period will be created by script run by crontab everyday
+                '''
+                # check if occurrences have one payment by pack or event opened
+                for o in referral.upcoming_nopayment_occurrences_():
+
+                    # exist a payment for event?
+                    if Receive.objects.filter(occurrence=o).count() == 0 :
+
+                        # Filter payment by pack or occurrence
+                        for x in referral.covenant.filter(Q(charge=1) | Q(charge=2) ).distinct():
+
+                            receive = Receive() # new
+
+                            # by pack
+                            if x.charge == 2:
+                                # check not terminated pack of same referral
+                                for p in Receive.objects.filter(occurrence__event=event, covenant_charge=2):
+                                    if not p.terminated_():
+                                        # not terminated pack
+                                        receive = p
+
+                            # by occurrence
+                            # new
+                            if not receive.id:
+                                receive.name = x.name
+                                receive.price = x.price
+                                receive.off = 0
+                                receive.total = x.price
+                                receive.covenant_charge = x.charge
+                                receive.save()
+
+                                # by pack
+                                receive.covenant_pack_size = x.event_time if x.charge == 2 else 0
+
+                                # clear all
+                                receive.covenant_payment_way_options = ''
+                                for pw in x.payment_way.all():
+                                    x = "(%s,'%s')," % ( pw.id , pw.name ) # need be a dict
+                                    receive.covenant_payment_way_options += x
+
+                            # add occurrence
+                            receive.occurrence.add(o)
+                            # update m2m
+                            receive.save()
+
+
             if not event.errors:
                 messages.success(request, _('Schedule saved successfully'))
                 return http.HttpResponseRedirect(redirect_to or '/schedule/')
@@ -124,36 +181,39 @@ def add_event(
                     dict(event=event),
                     context_instance=RequestContext(request)
                 )
-    else:
 
-        dtstart = parser.parse( request.GET['dtstart'] )
-        room = get_object_or_None(Room, pk=request.GET.get('room'), place__organization=request.user.get_profile().org_active)
-        client = get_object_or_None(Client, pk = request.GET.get('client'), person__organization=request.user.get_profile().org_active)
-        referral = get_object_or_None(Referral, pk = request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
-        event_form = event_form_class()
 
-        recurrence_form = recurrence_form_class(initial=dict(
-                dtstart=dtstart, 
-                day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"), 
-                until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
-                room=room.id,
-            ))
+    # mount form or return form errors
 
-        recurrence_form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=room) | Q(mobility="2", lendable=True) | Q(place=room.place, mobility="2", lendable=False))]
+    # get from url
+    dtstart = parser.parse( request.GET['dtstart'] )
+    room = get_object_or_None(Room, pk=request.GET.get('room'), place__organization=request.user.get_profile().org_active)
+    client = get_object_or_None(Client, pk=request.GET.get('client'), person__organization=request.user.get_profile().org_active)
+    referral = get_object_or_None(Referral, pk=request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
+    event_form = event_form_class
 
-    return render_to_response(
-        template,
-        dict(
-            dtstart=dtstart, 
-            event_form=event_form, 
-            recurrence_form=recurrence_form, 
-            group  = ServiceGroup.objects.filter(service__organization = request.user.get_profile().org_active, active=True),
-            room = room,
-            object = client,
-            referral = referral,
-            room_id=room.id,
-            ),
-        context_instance=RequestContext(request)
+    recurrence_form = recurrence_form_class( initial = dict(
+                                                            dtstart=dtstart, 
+                                                            day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"), 
+                                                            until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
+                                                            room=room.id,
+                                                        )
+    )
+
+    recurrence_form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=room) | Q(mobility="2", lendable=True) | Q(place=room.place, mobility="2", lendable=False))]
+
+    return render_to_response( template,
+                               dict(
+                                        dtstart = dtstart, 
+                                        event_form = event_form, 
+                                        recurrence_form = recurrence_form, 
+                                        group = ServiceGroup.objects.filter(service__organization = request.user.get_profile().org_active, active=True),
+                                        room = room,
+                                        object = client,
+                                        referral = referral,
+                                        room_id = room.id,
+                                    ),
+                                context_instance=RequestContext(request)
     )
 
 
@@ -212,8 +272,8 @@ def occurrence_view(
             form.save()
             messages.success(request, _('Occurrence updated successfully'))
             return http.HttpResponseRedirect(request.path)
-        else:
-            print form.errors
+        #else:
+            #print form.errors
     else:
         form = form_class(instance=occurrence, initial={'start_time':occurrence.start_time})
         form.fields['device'].queryset = DeviceDetails.objects.filter(Q(room = occurrence.room, mobility="1") | Q(place =  occurrence.room.place, room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=False) | Q(room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=True))
@@ -222,6 +282,159 @@ def occurrence_view(
         dict(occurrence=occurrence, form=form),
         context_instance=RequestContext(request)
     )
+
+
+
+@permission_required_with_403('schedule.schedule_write')
+def occurrence_confirmation_form_group(
+        request, 
+        pk, 
+        template='schedule/schedule_occurrence_confirmation_form_group.html',
+        form_class=OccurrenceConfirmationForm,
+        client_id = None,
+        redirect_to = None,
+    ):
+
+    '''
+        confirmation event for a member of group
+        choose a covenant of service and create a payment based in covenant
+    '''
+
+    occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
+    covenant_list = occurrence.event.referral.service.covenant.all().order_by('name')
+    receive_list = []
+
+    if not occurrence.scheduleoccurrence.was_confirmed():
+        initial_device = [device.pk for device in occurrence.device.all()]
+    else:
+        initial_device = [device.pk for device in occurrence.occurrenceconfirmation.device.all()]
+        
+    # check if requested user have perms to read it
+    if not _access_check_by_occurrence(request, occurrence):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    try:
+        occurrence_confirmation = OccurrenceConfirmation.objects.get(pk = occurrence.occurrenceconfirmation.id)
+    except:
+        occurrence_confirmation = None
+    
+    object = get_object_or_None(Client, pk = client_id, person__organization=request.user.get_profile().org_active)
+
+    from gestorpsi.client.views import _access_check_referral_write
+    denied_to_write = None
+
+    if not _access_check_referral_write(request, occurrence.event.referral):
+        denied_to_write = True
+
+    # update occurrence and payments or new payment.
+    if request.method == 'POST':
+
+        # permission
+        if denied_to_write:
+            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+
+        # new payment form, not required.
+        if not request.POST.get('select_covenant_receive') == '000' :
+
+            covenant = Covenant.objects.get( pk=request.POST.get('select_covenant_receive'), organization=request.user.get_profile().org_active ) 
+
+            pfx = 'receive_form---TEMPID999FORM' # hardcore Jquery 
+            form_receive_new = ReceiveFormNew(request.POST, prefix=pfx)
+
+            if form_receive_new.is_valid():
+
+                fpn = form_receive_new.save()
+                fpn.occurrence.add(occurrence)
+
+                # from covenant
+                fpn.covenant_payment_way_options = ''
+                for pw in covenant.payment_way.all():
+                    x = "(%s,'%s')," % ( pw.id , pw.name ) # need be a dict
+                    fpn.covenant_payment_way_options += x
+
+                fpn.covenant_payment_way_selected = request.POST.getlist('TEMPID999FORM-pw')
+                fpn.save()
+
+
+        # update payments, not required.
+        for x in Receive.objects.filter(occurrence=occurrence):
+
+            pfx = 'receive_form---%s' % x.id # hardcore Jquery 
+            form_receive = ReceiveFormUpdate(request.POST, instance=x, prefix=pfx)
+
+            receive_list.append(form_receive)
+
+            if form_receive.is_valid():
+                fp = form_receive.save()
+
+
+        # occurrence
+        form = form_class(request.POST, instance = occurrence_confirmation, initial={ 'device':initial_device, })
+
+        if form.is_valid():
+
+            data = form.save(commit=False)
+            data.occurrence = occurrence
+
+            if int(data.presence) not in (1,2): # client not arrive, dont save datetime field
+                data.date_started = None
+                data.date_finished = None
+
+            data.save()
+            form.save_m2m()
+
+            # save occurrence comment
+            occurrence.annotation = request.POST['occurrence_annotation']
+            occurrence.save()
+
+            messages.success(request, _('Occurrence confirmation updated successfully'))
+            return http.HttpResponseRedirect(redirect_to or request.path)
+
+        else:
+
+            form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility=2, lendable=True) | Q(place =  occurrence.room.place, mobility=2, lendable=False))]
+
+            messages.error(request, _(u'Campo inválido ou obrigatório'))
+
+    else:
+        if hasattr(occurrence_confirmation, 'presence') and int(occurrence_confirmation.presence) not in (1,2): # load initial data if client dont arrive
+            occurrence_confirmation.date_started = occurrence.start_time
+            occurrence_confirmation.date_finished = occurrence.end_time
+
+        form = form_class(instance=occurrence_confirmation, initial={
+            'occurrence':occurrence, 
+            'start_time':occurrence.start_time, 
+            'end_time':occurrence.end_time,
+            'device': initial_device,
+            })
+
+        form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility="2", lendable=True) | Q(place=occurrence.room.place, mobility="2", lendable=False))]
+
+        # payments of occurrence, update form.
+        for x in Receive.objects.filter(occurrence=occurrence):
+            pfx = 'receive_form---%s' % x.id # for many forms and one submit.
+            receive_list.append( ReceiveFormUpdate(instance=x, prefix=pfx) )
+
+
+    # just one out if errors
+    return render_to_response(
+        template,
+        dict(
+                occurrence=occurrence,
+                form=form,
+                object=object,
+                referral=occurrence.event.referral,
+                occurrence_confirmation=occurrence_confirmation,
+                hide_date_field=True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None,
+                denied_to_write = denied_to_write,
+                receive_list = receive_list,
+                covenant_list = covenant_list,
+                receive_new_form = ReceiveFormNew(prefix='receive_form---TEMPID999FORM'),
+            ),
+        context_instance=RequestContext(request)
+    )
+
 
 
 @permission_required_with_403('schedule.schedule_write')
@@ -234,7 +447,12 @@ def occurrence_confirmation_form(
         redirect_to = None,
     ):
 
+    '''
+        confirmation event
+    '''
+
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
+    receive_list = []
     
     if not occurrence.scheduleoccurrence.was_confirmed():
         initial_device = [device.pk for device in occurrence.device.all()]
@@ -252,37 +470,60 @@ def occurrence_confirmation_form(
     
     object = get_object_or_None(Client, pk = client_id, person__organization=request.user.get_profile().org_active)
 
-    from gestorpsi.client.views import  _access_check_referral_write
+    from gestorpsi.client.views import _access_check_referral_write
     denied_to_write = None
 
     if not _access_check_referral_write(request, occurrence.event.referral):
         denied_to_write = True
 
     if request.method == 'POST':
+
         if denied_to_write:
             return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
         form = form_class(request.POST, instance = occurrence_confirmation, initial={ 'device':initial_device, })
-        if form.is_valid():
+
+        # receive
+        payment_valid = True
+
+        for x in Receive.objects.filter(occurrence=occurrence):
+
+            pfx = 'receive_form---%s' % x.id # hardcore Jquery 
+            form_receive = ReceiveFormUpdate(request.POST, instance=x, prefix=pfx)
+
+            receive_list.append(form_receive)
+
+            if form_receive.is_valid():
+                fp = form_receive.save()
+            else:
+                payment_valid = False
+
+        # occurrence
+        if form.is_valid() and payment_valid :
+
             data = form.save(commit=False)
             data.occurrence = occurrence
+
             if int(data.presence) not in (1,2): # client not arrive, dont save datetime field
                 data.date_started = None
                 data.date_finished = None
+
             data.save()
             form.save_m2m()
 
             # save occurrence comment
             occurrence.annotation = request.POST['occurrence_annotation']
             occurrence.save()
+
             messages.success(request, _('Occurrence confirmation updated successfully'))
             return http.HttpResponseRedirect(redirect_to or request.path)
+
         else:
+
             form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility=2, lendable=True) | Q(place =  occurrence.room.place, mobility=2, lendable=False))]
-            return render_to_response(
-                template,
-                dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral),
-                context_instance=RequestContext(request)
-            )
+
+            messages.error(request, _(u'Campo inválido ou obrigatório'))
+
     else:
         if hasattr(occurrence_confirmation, 'presence') and int(occurrence_confirmation.presence) not in (1,2): # load initial data if client dont arrive
             occurrence_confirmation.date_started = occurrence.start_time
@@ -297,11 +538,26 @@ def occurrence_confirmation_form(
 
         form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility="2", lendable=True) | Q(place=occurrence.room.place, mobility="2", lendable=False))]
 
+        # payment form
+        for x in Receive.objects.filter(occurrence=occurrence):
+            pfx = 'receive_form---%s' % x.id
+            receive_list.append( ReceiveFormUpdate(instance=x, prefix=pfx) )
+
     return render_to_response(
         template,
-        dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral, occurrence_confirmation = occurrence_confirmation, hide_date_field = True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None, denied_to_write = denied_to_write ),
+        dict(
+                occurrence=occurrence,
+                form=form,
+                object=object,
+                referral=occurrence.event.referral,
+                occurrence_confirmation=occurrence_confirmation,
+                hide_date_field=True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None,
+                denied_to_write = denied_to_write,
+                receive_list = receive_list,
+            ),
         context_instance=RequestContext(request)
     )
+
 
 @permission_required_with_403('schedule.schedule_read')
 def occurrence_group(
@@ -323,9 +579,10 @@ def occurrence_group(
     return render_to_response(
         template,
         locals(),
-        #dict(occurrence=occurrence, form=form, object = object, referral = occurrence.event.referral, occurrence_confirmation = occurrence_confirmation, hide_date_field = True if occurrence_confirmation and int(occurrence_confirmation.presence) > 2 else None ),
         context_instance=RequestContext(request)
     )
+
+
 
 @permission_required_with_403('schedule.schedule_list')
 def _datetime_view(
@@ -356,6 +613,8 @@ def _datetime_view(
         object = ''
 
     place = Place.objects.get( pk=place )
+    print
+    print place.hours_work()
 
     user = request.user
     timeslot_factory = timeslot_factory or create_timeslot_table
@@ -370,9 +629,9 @@ def _datetime_view(
         # get start_time and end_time_delta from place
         # get schedule slot time from organization
         timeslots=timeslot_factory(dt, items, start_time=datetime_.time( place.hours_work()[0], place.hours_work()[1]),\
-                    end_time_delta=timedelta(hours=place.hours_work()[2] ),\
-                    time_delta=timedelta( minutes=int(user.get_profile().org_active.time_slot_schedule) ),\
-                    **params),
+                end_time_delta=timedelta(hours=place.hours_work()[2] ),\
+                time_delta=timedelta( minutes=int(user.get_profile().org_active.time_slot_schedule) ),\
+                **params),
 
         places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
         place = place,
@@ -398,11 +657,11 @@ def schedule_index(request,
         year = datetime.now().strftime("%Y"), 
         month = datetime.now().strftime("%m"), 
         day = datetime.now().strftime("%d"), 
+        place=None,
         template='schedule/schedule_daily.html',
-        place = None,
         **params
     ):
-
+    
     if place == None:
         # Possible to exist more than one place as matriz or none, filter and get first element
         if Place.objects.filter( place_type=1, organization=request.user.get_profile().org_active):
@@ -411,6 +670,8 @@ def schedule_index(request,
         else:
             place = Place.objects.filter(organization=request.user.get_profile().org_active)[0].id
     
+    places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id)
+
     # Test if clinic administrator has registered referrals before access schedule page.
     if not Referral.objects.filter(status='01', organization=request.user.get_profile().org_active).count():
         return render_to_response('schedule/schedule_referral_alert.html', context_instance=RequestContext(request))    
@@ -426,12 +687,14 @@ def week_view(request,
     ):
 
     return render_to_response('schedule/schedule_week.html', dict(
-                places = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
+                places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
                 rooms = Room.objects.active().filter(place__organization=request.user.get_profile().org_active.id),
                 services = Service.objects.active().filter(organization=request.user.get_profile().org_active.id),
                 professionals = CareProfessional.objects.active_all(request.user.get_profile().org_active.id),
                 tab_week_class = 'active',
+                place = Place.objects.filter(place_type=1, organization=request.user.get_profile().org_active)[0],
             ), context_instance=RequestContext(request))
+
 
 def week_view_table(request,
     year = datetime.now().strftime("%Y"), 
@@ -509,11 +772,8 @@ def schedule_occurrences(request, year = 1, month = 1, day = None):
     return objs
     
 @permission_required_with_403('schedule.schedule_list')
-def daily_occurrences(request, year = 1, month = 1, day = None, place = None):
+def daily_occurrences(request, year=1, month=1, day=None, place=None):
 
-    #locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
-    #locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
-    #locale.setlocale(locale.LC_ALL,'pt_BR.ISO8859-1')
     occurrences = schedule_occurrences(request, year, month, day)
 
     array = {} #json

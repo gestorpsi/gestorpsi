@@ -96,7 +96,7 @@ GNU General Public License for more details.
 
         <!-- save buttom -->
         {% if perms.organization.organization_write %}
-            <div id="sidebar" class="sidebar">
+            <div id="sidebar" class="sidebar_save">
                 <div class="bg_blue">
                     {% include "tags/save.html" %}
                 </div>
@@ -120,6 +120,8 @@ GNU General Public License for more details.
                 <legend>{% trans "Hist&oacute;rico das faturas e pagamentos" %}</legend>
 
                 <!-- invoices -->
+
+                <!-- future -->
                 {% if obj.invoice_.0 %}
                     <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
                         <h3>Pr&oacute;xima assinatura</h3>
@@ -139,6 +141,7 @@ GNU General Public License for more details.
                                         <th style='width:15%; font-weight: normal; background-color: yellow;'>{{ x.start_date|date:"d M Y" }}</th>
                                         <th style='width:15%; font-weight: normal;'>{{ x.end_date|date:"d M Y" }}</th>
                                         <th style='width:40%; font-weight: normal;'>
+
                                             {% ifequal x.status 0 %}
 
                                                 <!-- boleto -->
@@ -182,6 +185,7 @@ GNU General Public License for more details.
                 {% endif %}
 
 
+                <!-- current -->
                 {% if obj.invoice_.1 %}
                     <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
                         <h3>Assinatura atual</h3>
@@ -226,7 +230,7 @@ GNU General Public License for more details.
                                                         <input name="senderEmail" type="hidden" value="{{ obj.administrator.0.get_first_email }}">  
 
                                                         <!-- submit do form (obrigat&oacute;rio) -->  
-                                                        <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/184x42-pagar-cinza-assina.gif"/>  
+                                                        <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/184x42-pagar-cinza-assina.gif"/>
                                                     </form>
                                                 {% endifequal %}
 
@@ -246,6 +250,7 @@ GNU General Public License for more details.
                 {% endif %}
 
 
+                <!-- pass -->
                 {% if obj.invoice_.3 %}
                     <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
                         <h3>Assinatura vencida</h3>

@@ -15,17 +15,20 @@ GNU General Public License for more details.
 """
 
 import os
-from django.http import HttpResponse  
-from gestorpsi.settings import MEDIA_ROOT
 import uuid
 from PIL import Image
+
+from django.http import HttpResponse  
 from django.utils.translation import ugettext as _
-from gestorpsi.util.decorators import permission_required_with_403
-from gestorpsi.referral.models import ReferralAttach, Referral, REFERRAL_ATTACH_TYPE
-from gestorpsi.client.models import Client
+from django.contrib import messages
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+
+from gestorpsi.settings import MEDIA_ROOT
+from gestorpsi.util.decorators import permission_required_with_403
+from gestorpsi.referral.models import ReferralAttach, Referral, REFERRAL_ATTACH_TYPE
+from gestorpsi.client.models import Client
 from gestorpsi.client.views import  _access_check_referral_write
 
 @permission_required_with_403('upload.upload_write')
@@ -93,45 +96,81 @@ def send(request):
 
 
 @permission_required_with_403('upload.upload_write')
-def attach_form(request, object_id = '', referral_id = ''):
-    user = request.user
-    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
-    organization = user.get_profile().org_active.id
+def attach_form(request, object_id=None, referral_id=None, attach_id=None):
+    '''
+        object_id  : Person.id
+        referra_id : Referral.id
+        attach_id  : ReferralAttach.id
+    '''
 
+    # html variables
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
+    attach_list = ReferralAttach.objects.filter( referral=referral_id, referral__service__organization=request.user.get_profile().org_active )
+    object = Client.objects.get(pk=object_id, person__organization=request.user.get_profile().org_active)
+    types = REFERRAL_ATTACH_TYPE
+
+    # permission to write
     if not _access_check_referral_write(request, referral):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
-    types = REFERRAL_ATTACH_TYPE
+    # update 
+    if attach_id:
+        attach = ReferralAttach.objects.get( pk=attach_id, referral=referral_id, referral__service__organization=request.user.get_profile().org_active )
+        attach_list = ReferralAttach.objects.filter( referral=referral_id, referral__service__organization=request.user.get_profile().org_active ).exclude(id=attach.id)
 
-    #indication = Indication.objects.get(referral = object_id)
-    attachs = ReferralAttach.objects.filter(referral = referral_id, referral__service__organization=request.user.get_profile().org_active)
-    object = Client.objects.get(pk = object_id, person__organization=request.user.get_profile().org_active)
+    # permission to read file, user is a professional and/or psychologist.
+    is_professional = request.user.get_profile().person.is_careprofessional() 
+    is_psychologist = False
+    
+    if is_professional:
+        if str(request.user.get_profile().person.careprofessional.professionalIdentification.profession) == "Psicólogo": # hardcode
+            is_psychologist = True
 
     return render_to_response('upload/upload_attach.html', locals(), context_instance=RequestContext(request))
 
-@permission_required_with_403('upload.upload_write')
-def attach_save(request, object_id = None, client_id = None):
 
-    referral = get_object_or_404(Referral, pk=object_id, service__organization=request.user.get_profile().org_active)
+@permission_required_with_403('upload.upload_write')
+def attach_save(request, referral_id=None, object_id=None, attach_id=None):
+
+    '''
+        object_id  : Person.id
+        referra_id : Referral.id
+        attach_id  : ReferralAttach.id
+    '''
+
+    # html variables
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
+    types = REFERRAL_ATTACH_TYPE
+
+    # update 
+    if attach_id:
+        attach = ReferralAttach.objects.get( pk=attach_id, referral=referral_id, referral__service__organization=request.user.get_profile().org_active )
+
     if not _access_check_referral_write(request, referral):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     if request.method == 'POST':
+
         user = request.user
-        filename = ''
 
-        if 'file' in request.FILES:
-            path = '%s/img/organization/%s' % (MEDIA_ROOT, user.get_profile().org_active.id)
-            if not os.path.exists(path):
-                os.mkdir(path)
-                os.chmod(path, 0777)
+        # new attach 
+        if not attach_id :
 
-            path = '%s/img/organization/%s/attach' % (MEDIA_ROOT, user.get_profile().org_active.id)
-            if not os.path.exists(path):
-                os.mkdir(path)
-                os.chmod(path, 0777)
+            filename = ''
 
-            try:
+            if 'file' in request.FILES:
+
+                path = '%s/img/organization/%s' % (MEDIA_ROOT, user.get_profile().org_active.id)
+                if not os.path.exists(path):
+                    os.mkdir(path)
+                    os.chmod(path, 0777)
+
+                path = '%s/img/organization/%s/attach' % (MEDIA_ROOT, user.get_profile().org_active.id)
+                if not os.path.exists(path):
+                    os.mkdir(path)
+                    os.chmod(path, 0777)
+
+                try:
                     filename = request.FILES['file']
                     file = str(uuid.uuid4()) + '.'+ (str(filename).split('.')[-1])
                     destination = open('%s/%s' % (path,  file), 'w+')
@@ -139,17 +178,27 @@ def attach_save(request, object_id = None, client_id = None):
                         destination.write(chunk)
                     destination.close()
                         
-                    attachs = ReferralAttach.objects.filter(referral = object_id, referral__service__organization=request.user.get_profile().org_active)
-
                     attach = ReferralAttach()
                     attach.filename = '%s' % request.FILES['file']
                     attach.file = '%s' % file
                     attach.description = request.POST.get('description')
                     attach.type = request.POST.get('doc_type')
-                    attach.referral = Referral.objects.get(pk = object_id, service__organization=request.user.get_profile().org_active)
-                    attach.save()
-    
-            except IOError:
-                print "error sending file"
+                    attach.permission = request.POST.get('permission')
+                    attach.referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active)
 
-        return HttpResponseRedirect('/upload/client/%s/attach/%s/' % (client_id, object_id))
+                    attach.save()
+        
+                except IOError:
+                    print "error sending file"
+
+        # update 
+        else:
+
+            attach.description = request.POST.get('description')
+            attach.type = request.POST.get('doc_type')
+            attach.permission = request.POST.get('permission')
+            attach.save()
+
+        messages.success(request,  _('Documento salvo com sucesso!'))
+
+        return HttpResponseRedirect('/upload/client/%s/referral/%s/' % (object_id, referral_id) )

@@ -31,6 +31,7 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.place.models import Room
 from gestorpsi.settings import REFERRAL_DISCHARGE_REASON_CANCELED
+from gestorpsi.covenant.models import Covenant
 
 fs = FileSystemStorage(location='/tmp')
 
@@ -53,12 +54,21 @@ QUEUE_PRIORITY= (
     ('03', _('Low')),
 )
 
+
+PERMISSION_ATTACH = (
+    ('1', _('Todos os profissionais')),
+    ('2', _(u'Apenas psicólogo')),
+)
+
+
 REFERRAL_ATTACH_TYPE = (
+    ('12', _('Atestado')),
     ('01', _('Drawing')),
     ('02', _('Diagnosis')),
     ('03', _('Medical Examination')),
     ('04', _('Reference')),
     ('05', _('Results sheet')),
+    ('13', _(u'Relatório técnico')),
     ('06', _('Test sheet')),
     ('07', _('Photo')),
     ('08', _('Laudo')),
@@ -109,6 +119,7 @@ class ReferralAttach(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     file = models.CharField(max_length=200)
     type = models.CharField(max_length=2, blank=True, null=True, choices=REFERRAL_ATTACH_TYPE) 
+    permission = models.CharField(max_length=2, default=1, blank=False, null=False, choices=PERMISSION_ATTACH) 
     referral = models.ForeignKey('Referral')
 
     def __unicode__(self):
@@ -127,9 +138,6 @@ class ReferralInRangeManager(models.Manager):
         if service:
             r = r.filter(Q(service__pk=service) | Q(referral__service__pk=service))
 
-        #if service:
-            #r = r.filter(service__pk=service)
-
         return r
 
 class Referral(Event):
@@ -147,9 +155,12 @@ class Referral(Event):
     impact = models.ForeignKey(ReferralImpact, null=True)
     organization = models.ForeignKey(Organization, null= True, blank= True)
     status = models.CharField(max_length=2, blank=True, null=True, choices=REFERRAL_STATUS)
-
+    covenant = models.ManyToManyField(Covenant, null=True, blank=True) # selected covenant available for service
     objects = ReferralManager()
     objects_inrange = ReferralInRangeManager()
+
+    class Meta:
+        ordering = ['service__name']
 
     def __init__(self, *args, **kwargs):
         super(Referral, self).__init__(*args, **kwargs)
@@ -326,6 +337,13 @@ class Referral(Event):
 
     def upcoming_occurrences(self):
         return self.occurrence_set.filter(start_time__gte=datetime.now()
+            ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 4 # unmarked
+            ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 5) # re-marked
+
+    def upcoming_nopayment_occurrences_(self):
+        # today from 00:00
+        d = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
+        return self.occurrence_set.filter(start_time__gte=d, receive__isnull=True
             ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 4 # unmarked
             ).exclude(scheduleoccurrence__occurrenceconfirmation__presence = 5) # re-marked
 

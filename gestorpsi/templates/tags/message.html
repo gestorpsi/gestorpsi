@@ -1,0 +1,24 @@
+{% for m in messages %}
+    
+    {% if 'erro' in m.tags %} 
+        <div id='msg_area' class="msg_area_top error">
+            <strong>{{ m|safe }}</strong>
+            <a class="close_link"><img src="/media/img/close.gif" /></a>
+        </div>
+    {% endif %} 
+    
+    {% if 'success' in m.tags %}
+        <div id='msg_area' class="msg_area_top alert">
+            <strong>{{ m|safe }}</strong>
+            <a class="close_link"><img src="/media/img/close.gif" /></a>
+        </div>
+    {% endif %}
+
+    {% if 'info' in m.tags %}
+        <div id='msg_area' class="msg_area_top alert">
+            <strong>{{ m|safe }}</strong>
+            <a class="close_link"><img src="/media/img/close.gif" /></a>
+        </div>
+    {% endif %}
+
+{% endfor %}

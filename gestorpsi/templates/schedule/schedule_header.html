@@ -18,10 +18,10 @@ GNU General Public License for more details.
 
 
 <h2 class="title_schedule">{% trans "Daily view" %} 
-    {% include "schedule/schedule_filter.html" %}
+    {% include "schedule/schedule_daily_filter.html" %}
 </h2>
 
-<!-- current place to JQUERY / mini calendar -->
+<!-- current place to JQUERY / mini calendar  -->
 <input type='hidden' value="{{ place.id }}" name="current_place_id">
 
 <p class="description">{% trans "O dia de hoje possui" %} <span id="occurrences_total"></span> {% trans "consulta(s)." %}</p>

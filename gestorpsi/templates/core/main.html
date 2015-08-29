@@ -59,13 +59,22 @@ GNU General Public License for more details.
     <!-- multiplebox combobox -->
     <link href="/media/lou/css/multi-select.css" media="screen,projection,print" type="text/css" rel="stylesheet">
     <script src="/media/lou/js/jquery.multi-select.js" type="text/javascript"></script>
+
+    <!-- google chart -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <!-- Load the Visualization API and the piechart package. -->
+    <script type="text/javascript">
+       google.load('visualization', '1.0', {'packages':['corechart']});
+    </script>
+
     
 {% else %}
     <script type="text/javascript" src="/media/js/gestorpsi.browser.js"></script>
 {% endif %}
 
-{% block extrahead %}
-{% endblock extrahead %}
+    <!-- extra head -->
+    {% block extrahead %}
+    {% endblock extrahead %}
 
 <style type="text/css" media="all">
 @import "/media/css/layout.css";
@@ -104,6 +113,10 @@ GNU General Public License for more details.
     </div>
 {% endif %}
 
+
+{% include "tags/message.html" %}
+
+{% comment %}
 {% if messages %}
     <div id="msg_area" class="{% if clss %}{{ clss }}{% else %}alert{% endif%} msg_area_top">
         {% for message in messages %}
@@ -112,6 +125,7 @@ GNU General Public License for more details.
         <a class="close_link"><img src="/media/img/close.gif" /></a>
     </div>
 {% endif %}
+{% endcomment %}
 
 <a name="top"></a>
 <div id="over" style="display:none">
@@ -177,6 +191,7 @@ GNU General Public License for more details.
                         <ul style="display:none" class="myoffice">
                             {% if perms.organization.organization_read %}<li><a id="organization" href="/organization/">{% trans "My Organization" %}</a></li>{% endif %}
                             {% if perms.organization.organization_read %}<li><a id="payment" href="/organization/signature/">{% trans "Assinatura" %}</a></li>{% endif %}
+                            {% if perms.organization.organization_read %}<li><a id="covenant" href="/covenant/">{% trans "Conv&ecirc;nios" %}</a></li>{% endif %}
                             {% if perms.place.place_list %}<li><a id="places" href="/place/" display="list">{% trans "Places" %}</a></li>{% endif %}
                             {% if perms.place.place_list %}<li><a id="rooms" href="/place/room/" display="list">{% trans "Rooms" %}</a></li>{% endif %}
                             {% if perms.device.device_list %}<li><a id="devices" href="/device/" display="list">{% trans "Equipments" %}</a></li>{% endif %}
@@ -203,7 +218,7 @@ GNU General Public License for more details.
 		</div>
 	</div>
 	<div id="footer">
-		2009 GestorPsi©
+        GestorPsi &copy; Prontu&aacute;rios Eletr&ocirc;nicos e Gest&atilde;o de Servi&ccedil;os em Psicologia. Desde 2009.
 	</div>
 </body>
 </html>

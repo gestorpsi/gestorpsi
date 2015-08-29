@@ -37,6 +37,8 @@ from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.service.models import Service, Area, ServiceType, Modality, ServiceGroup
 from gestorpsi.service.forms import ServiceGroupForm, GenericAreaForm, SchoolAreaForm, OrganizationalAreaForm, GENERIC_AREA #, ClinicAreaForm
 from gestorpsi.client.forms import Client
+from gestorpsi.covenant.models import Covenant
+
 
 def _can_view_group(request, group=None, service=None):
     """
@@ -96,19 +98,48 @@ def index(request, deactive = False):
     """
     return render_to_response( "service/service_list.html", locals(), context_instance=RequestContext(request))
 
+
 @permission_required_with_403('service.service_list')
-def list(request, page = 1, initial = None, filter = None, no_paging = False, deactive = False):
+def list_filter_covenant(request, indiv=False, alls=False):
+    '''
+        covenant form, select invidual and/or group.
+    '''
+    # just group service
+    if indiv:
+        service_list = Service.objects.filter( is_group=False, active=True, organization=request.user.get_profile().org_active )
+
+    # all services
+    if alls:
+        service_list = Service.objects.filter( active=True, organization=request.user.get_profile().org_active )
+
+    array = {} #json
+    i = 0
+
+    for o in service_list:
+        array[i] = {
+            'id': o.id,
+            'name': o.label_group_(),
+        }
+        i = i + 1
+
+    return HttpResponse(simplejson.dumps(array, sort_keys=True), mimetype='application/json')
+
+
+@permission_required_with_403('service.service_list')
+def list(request, page=1, initial=False, filter=False, no_paging=False, deactive=False, group=True):
+
     if deactive:
         object = Service.objects.filter( active=False, organization=request.user.get_profile().org_active )
     else:
         object = Service.objects.filter( active=True, organization=request.user.get_profile().org_active )
         
     if initial:
-        object = object.filter(name__istartswith = initial)
+        object = object.filter(name__istartswith=initial).distinct()
         
     if filter:
-        object = object.filter(Q(name__icontains = filter) | Q(referral__client__person__name__icontains=filter)).distinct()
+        object = object.filter( Q(name__icontains = filter) ).distinct()
 
+    # paginator
     object_length = len(object)
     paginator = Paginator(object, settings.PAGE_RESULTS)
     object = paginator.page(page)
@@ -139,7 +170,7 @@ def list(request, page = 1, initial = None, filter = None, no_paging = False, de
             name += " (%s)" % _('Group')
         array[i] = {
             'id': o.id,
-            'name': o.name_html,
+            'name': o.name,
             'is_group': False if not o.is_group else True,
             'description': u'%s' % o.description,
             'email': '',
@@ -161,6 +192,7 @@ def select_area(request, object_id=''):
 
 @permission_required_with_403('service.service_read')
 def form(request, object_id=None):
+
     object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active) if object_id else Service()
     selected_area = get_object_or_None(Area, area_code=request.POST.get('area')) or object.area
 
@@ -175,6 +207,12 @@ def form(request, object_id=None):
     if selected_area.area_code == 'organizational':
         form_area = OrganizationalAreaForm(instance=object)
         form_area.fields['hierarchical_level'].queryset = selected_area.hierarchical_level.all()
+
+    # filter covenants for group or invidual
+    if object.is_group:
+        covenant_list = Covenant.objects.filter( charge=1, active=True, organization=request.user.get_profile().org_active )
+    else:
+        covenant_list = Covenant.objects.filter( active=True, organization=request.user.get_profile().org_active )
 
     form_area.fields['service_type'].queryset = selected_area.service_type.all()
     form_area.fields['modalities'].queryset = selected_area.modalities.all()
@@ -206,6 +244,7 @@ def form(request, object_id=None):
         'queue_list': _queue_list(request,object),
         'can_list_groups': False if not len(_group_list(request, object)) else True,
         'can_write_group': False if not _can_write_group(request, object) else True,
+        'covenant_list': covenant_list,
         }, context_instance=RequestContext(request) )
 
 @permission_required_with_403('service.service_write')
@@ -262,10 +301,38 @@ def save(request, object_id=''):
     for hierarc in request.POST.getlist('hierarchical_level'):
         object.hierarchical_level.add(HierarchicalLevel.objects.get(pk=hierarc))
 
+
     """ Professionals list """
-    object.professionals.clear()
+    # remove professional before add professional
+    # check referral before remove
+    for x in object.professionals.all(): # from db
+        if not x.id in request.POST.getlist('service_professionals'):
+            # check if professional have referral in this service
+            if Referral.objects.charged().filter( professional=x, service=object, status='01' ):
+                # to create msg erro
+                try:
+                    msg += u", %s" % x.person.name
+                except:
+                    msg = u"%s" % x.person.name
+            # no referral, remove from list.
+            else:
+                object.professionals.remove( x )
+
+    # erro msg
+    try:
+        messages.error(request, _(u'Profissional não pode ser desligado desse serviço. Existe inscrição para esse profissional. Profissional:<br /> %s' % msg ))
+    except:
+        pass
+
+    # add professional
     for p in request.POST.getlist('service_professionals'):
-        object.professionals.add(CareProfessional.objects.get(pk=p))
+        object.professionals.add( CareProfessional.objects.get(pk=p) )
+
+
+    """ Covenant list """
+    object.covenant.clear()
+    for p in request.POST.getlist('service_covenant'):
+        object.covenant.add( Covenant.objects.get(pk=p) )
 
     object.save()
     messages.success(request, _('Service saved successfully'))
@@ -294,7 +361,7 @@ def order(request, object_id=None):
     object = get_object_or_404(Service, pk=object_id, organization=request.user.get_profile().org_active)
     url = "/service/form/%s/"
 
-    """ CHECK QUEUE AND REFERRAL """
+    """ check queue and referral """
     if ( Referral.objects.charged().filter(service = object).count()) == 0:
         if (Queue.objects.filter(referral__service = object_id, date_out = None).order_by('date_in').order_by('priority').count()) == 0:
             if object.active == True:
@@ -451,5 +518,4 @@ def group_form(request, object_id=None, group_id=None):
                                 'have_write_perms': False if not _can_write_group(request, object) else True,
                                },
                               context_instance=RequestContext(request)
-                              )
-
+        )

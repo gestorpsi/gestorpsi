@@ -45,15 +45,14 @@ GNU General Public License for more details.
 <br />	
 </div>
 
-<div id="sidebar" class="sidebar">
-        <div class="bg_blue">
-            <input class="save_button" name="save" type="submit" value="{% trans 'Send' %}" />
-            <input class="save_button" name="cancel" id="cancel_button" type="button" value="{% trans 'Cancel' %}" />
-        </div>
+<div id="sidebar" class="sidebar_save">
+    <div class="bg_blue">
+        <input class="save_button" name="save" type="submit" value="{% trans 'Send' %}" />
+        <input class="save_button" name="cancel" id="cancel_button" type="button" value="{% trans 'Cancel' %}" />
+    </div>
 </div>
 <input type="hidden" name="msg_area" value="{% trans "Request Support submitted successfully." %}" />
 </form>
 </div>
 
 {% endblock %}
-

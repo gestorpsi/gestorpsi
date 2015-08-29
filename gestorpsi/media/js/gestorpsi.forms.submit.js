@@ -318,16 +318,7 @@ $(function() {
      *
      */
 
-    $('form.client_referral').validate({
-        rules: {
-            service: "required"//,
-            //client: "required"
-        },
-        messages: {
-            name: 'Preenchimento Necessário'
-        }
-    });
-
+    $('form.client_referral').validate();
 
      /**
       *
@@ -528,5 +519,12 @@ $(function() {
             }
           });
      });
+
+
+
+     /*
+      * covenant valid form
+      */
+     $('form.form_covenant').validate();
 
 });

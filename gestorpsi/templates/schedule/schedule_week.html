@@ -20,57 +20,52 @@ GNU General Public License for more details.
 
 {% block menu_schedule %}active{% endblock %}
 
-
 {% block submenu %}
     {% include "schedule/schedule_submenu.html" %}
 {% endblock %}
 
-
 {% block core %}
-<script type="text/javascript" src="/media/js/gestorpsi.schedule.filter.js"></script>
-<script type="text/javascript" src="/media/js/gestorpsi.schedule.week.js"></script>
-<div class="schedule">
-    <a id="calendar_link" href="#"></a>
-    <div id="mini_calendar" style="display:none;"></div>
+    <script type="text/javascript" src="/media/js/gestorpsi.schedule.filter.js"></script>
+    <script type="text/javascript" src="/media/js/gestorpsi.schedule.week.js"></script>
 
+    <div class="schedule">
 
-    <div id="schedule_header">
-        <h2 class="title_schedule">{% trans "Weekly view" %} 
-            {% include "schedule/schedule_filter.html" %}
-        </h2>
+        <a id="calendar_link" href="#"></a>
+        <div id="mini_calendar" style="display:none;"></div>
+
+        <div id="schedule_header">
+            <h2 class="title_schedule">{% trans "Weekly view" %} 
+                {% include "schedule/schedule_week_filter.html" %}
+            </h2>
+        </div>
+
+        <div id="schedule_week">
+            {# load template/schedule/schedule_week_table.html by jquery in media/jss/gestorpsi.schedule.js #}
+            <script>
+                $('#schedule_week').load('/schedule/week/today/');
+            </script>
+        </div>
     </div>
 
-    <div id="schedule_week">
+    <div class="form_mini schedule_room_mini">
+        <form action="/contact/save_mini/" method="GET">
+            <fieldset>
+                <legend>{% trans "Room Selection" %}</legend>
+                <label>{% trans "Please, choose one room to book" %}<br />
+                    <select name="choose_room" class="big">
+                        <option selected>----</option>
+                        {% for i in rooms %}
+                            <option value="{{ i.pk }}">{{ i.place }} - {{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <label class="error hidden room_required">{% trans "Selecione uma sala antes de continuar" %}</label>
+                </label>
 
-    {# load template/schedule/schedule_week_table.html by jquery in media/jss/gestorpsi.schedule.js #}
-    <script>
-        $('#schedule_week').load('/schedule/week/today/');
-    </script>
-    
+                <label>
+                    <a class="submit" id="schedule_room_href">{% trans "Continue" %}</a>
+                    <input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />	
+                </label>
+            </fieldset>
+        </form>
     </div>
-</div>
-
-<div class="form_mini schedule_room_mini">
-<form action="/contact/save_mini/" method="GET">
-	<fieldset>
-	<legend>{% trans "Room Selection" %}</legend>
-	<label>{% trans "Please, choose one room to book" %}<br />
-    <select name="choose_room" class="big">
-        <option selected>----</option>
-        {% for i in rooms %}
-            <option value="{{ i.pk }}">{{ i.place }} - {{ i }}</option>
-        {% endfor %}
-    </select>
-
-    <label class="error hidden room_required">{% trans "Selecione uma sala antes de continuar" %}</label>
-    </label>
-
-    <label>
-	<a class="submit" id="schedule_room_href">{% trans "Continue" %}</a>
-	<input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />	
-	</label>
-	</fieldset>
-</form>
-</div>
-
 {% endblock %}

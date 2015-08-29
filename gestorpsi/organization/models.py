@@ -421,9 +421,9 @@ class Organization(models.Model):
         r[1] = self.invoice_set.filter( start_date__lte=date.today(), end_date__gte=date.today() )
 
         # past
-        # 1t all overdue invoices
+        # 1t of all overdue invoices
         r[2] = []
-        for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today(), status=0 ).order_by('-date'):
+        for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today(), status=0 ).order_by('-end_date'):
             r[2].append(x)
 
         # copy r2

@@ -14,21 +14,18 @@ GNU General Public License for more details.
 
 */
 
-/**
- * verify mozilla user
- */
-
 $(document).ready(function(){
+
   /**
-   * not chrome
+   * if found any version of browser MSIE
    */
+
 	var userAgent = navigator.userAgent.toLowerCase(); 
-	$.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
-	if($.browser.chrome)
+	$.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
+
+	if($.browser.msie)
 	{
-		$('div.login .ff_not_ok').hide();
+		$('div.login .browser_alert').show();
 	}
+
 });
-
-
-

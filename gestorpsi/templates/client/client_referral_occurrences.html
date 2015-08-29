@@ -20,18 +20,26 @@ GNU General Public License for more details.
 
 {% block menu_client %}active{% endblock %}
 
+{% block extrahead %}
+    <script type="text/javascript" src="/media/js/gestorpsi.referral.future.js"></script>
+{% endblock %}
+
 {% block submenu %}
     {% include "client/client_menu.html" %}
 {% endblock %}
 
 {% block core %}
 
-{% include "referral/referral_occurrences.html"%}
+{% ifequal  type 'upcoming' %}
+    {% include "referral/referral_occurrences_future.html" %}
+{% else %}
+    {% include "referral/referral_occurrences_past.html" %}
+{% endifequal %}
 
-<div id="sidebar" class="sidebar">
-    {% if object.id %}
+{% if object.id %}
+    <div id="sidebar" class="sidebar_client_top">
         {% include "tags/client_sidebar.html" %}
-    {% endif %}
-</div>
+    </div>
+{% endif %}
 
 {% endblock %}

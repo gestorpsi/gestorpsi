@@ -63,14 +63,14 @@ GNU General Public License for more details.
         <br />
 </div>
 
-<div id="sidebar" class="sidebar">
-    {% if perms.device.device_write %}
+{% if perms.device.device_write %}
+    <div id="sidebar" class="sidebar_save">
     	<div class="bg_blue">
         	<input type="hidden" name="place" value="{{ device_details.id }}" />
             {% include "tags/save.html" %}
     	</div>
-    {% endif %}
-</div>
+    </div>
+{% endif %}
+
 </form>
 {% endblock %}
-

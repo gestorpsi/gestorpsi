@@ -83,6 +83,7 @@ class SplitDateTimeWidget(forms.MultiWidget):
         
         return [None, None]
 
+
 class ScheduleSingleOccurrenceForm(SingleOccurrenceForm):
     room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=forms.Select(attrs={'class':'extramedium asm', }))
     device = forms.ModelMultipleChoiceField(required = False, queryset=DeviceDetails.objects.all(), widget=forms.SelectMultiple(attrs={'class':'multiselectable', }))
@@ -90,6 +91,7 @@ class ScheduleSingleOccurrenceForm(SingleOccurrenceForm):
     
     class Meta:
         model = ScheduleOccurrence
+
 
 class ScheduleOccurrenceForm(MultipleOccurrenceForm):
     room = forms.ModelChoiceField(queryset=Room.objects.all(), widget=forms.Select(attrs={'class':'extramedium asm', }))
@@ -107,6 +109,18 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
         label='End time',
         widget=forms.Select(choices=default_timeslot_offset_options_end)
     )
+
+    # rewrite fields of swing time, select to avoid errors of fill. 
+    CHOICES = [(i,i) for i in range(1,121)]
+    interval = forms.IntegerField(
+        widget=forms.Select(choices=CHOICES),
+    )
+
+    CHOICES = [(i,i) for i in range(1,51)]
+    count = forms.IntegerField(
+        widget=forms.Select(choices=CHOICES),
+    )
+    
     
     class Meta:
         model = ScheduleOccurrence
@@ -133,8 +147,9 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
 
         return event
 
+
 class OccurrenceConfirmationForm(forms.ModelForm):
-    presence = forms.CharField(label=_('Presence'), required=True, widget=forms.RadioSelect(choices=OCCURRENCE_CONFIRMATION_PRESENCE))
+    presence = forms.CharField(label=_('Presence'), required=True, widget=forms.RadioSelect(choices=OCCURRENCE_CONFIRMATION_PRESENCE, attrs={'required':'required'}) )
     date_started = forms.DateTimeField(label=_('Time Started'), required=False, widget=SplitSelectDateTimeWidget(minute_step=5))
     date_finished = forms.DateTimeField(label=_('Time Finished'), required=False, widget=SplitSelectDateTimeWidget(minute_step=5))
     device = forms.MultipleChoiceField(label=_('Devices utilized in this session'), required=False, widget=forms.CheckboxSelectMultiple, choices = (
@@ -153,5 +168,3 @@ class OccurrenceConfirmationForm(forms.ModelForm):
     class Meta:
         model = OccurrenceConfirmation
         fields = ('date_started', 'date_finished', 'presence', 'reason', 'device')
-    
-    

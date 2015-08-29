@@ -20,6 +20,7 @@ from gestorpsi.report.forms import *
 from gestorpsi.authentication.views import login_check
 from gestorpsi.report.models import ReportAdmission, ReportReferral
 
+# report urls save
 admission_save = {
     'form_class': ReportSaveAdmissionForm,
     'view': 'admission',
@@ -28,6 +29,11 @@ admission_save = {
 referral_save = {
     'form_class': ReportSaveReferralForm,
     'view': 'referral',
+}
+
+receive_save = {
+    'form_class': ReportSaveReceiveForm,
+    'view': 'receive',
 }
 
 urlpatterns = patterns('',
@@ -40,6 +46,7 @@ urlpatterns = patterns('',
     #url(r'^admission/chart/$', login_check(chart), {'view':'admission'}),
     #url(r'^referral/chart/$', login_check(chart), {'view':'referral'}),
     url(r'^referral/$', login_check(referral_data), {'template':'report/report_table.html'}),
+    url(r'^receive/$', login_check(receive_data) ),
 
     ## list of clients from admissions
     url(r'^admission/client/overview/total/$', login_check(report_client_list), {'report_class': ReportAdmission, 'view':'overview', 'filter':'total'}, name='admission_client_overview_total'),
@@ -74,14 +81,12 @@ urlpatterns = patterns('',
     #url(r'^referral/client/signed/signed/$', login_check(report_client_list), {'report_class': ReportReferral, 'view':'signed', 'filter':'signed'}, name='admission_client_signed_signed'),
     #url(r'^referral/client/signed/notsigned/$', login_check(report_client_list), {'report_class': ReportReferral, 'view':'signed', 'filter':'notsigned'}, name='admission_client_signed_notsigned'),
 
-
-
-
     # admission export
     #url(r'^admission/export/$', login_check(admission_export), name='report_admission_export'),
     url(r'^export/$', login_check(report_export), name='report_export'),
 
     # save and saved reports
+    url(r'^receive/save/$', login_check(report_save), receive_save, name='report_receive_save'),
     url(r'^admission/save/$', login_check(report_save), admission_save, name='report_admission_save'),
     url(r'^referral/save/$', login_check(report_save), referral_save, name='report_referral_save'),
     url(r'^saved/$', login_check(reports_saved)),

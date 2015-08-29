@@ -17,17 +17,19 @@ GNU General Public License for more details.
 {% load i18n %}
 
 <div class="form_mini_noinsert report_save_container">
-<form action="{{ url_post }}" class="report_save" method="post"> 
-	<fieldset>
-	<legend>{% trans "Saving report view" %}</legend>
-	<label>{% trans "Please choice a name to this report" %}<br />
-		{{ form.label }}
-	</label>
-	<label>
-    {{ form.data }}
-	<input type="submit" name="submit" value="{% trans "Save" %}" class="mini" />
-	<input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />
-	</label>
-	</fieldset>
-</form>
+    <form action="{{ url_post }}" class="report_save" method="post"> 
+        <fieldset>
+            <legend>{% trans "Saving report view" %}</legend>
+
+            <label>{% trans "Please choice a name to this report" %}<br />
+                {{ form.label }}
+            </label>
+
+            <label>
+                {{ form.data }}
+                <input type="submit" name="submit" value="{% trans "Save" %}" class="mini" />
+                <input type="submit" name="cancel" value="{% trans "Close" %}" class="mini cancel" />
+            </label>
+        </fieldset>
+    </form>
 </div>

@@ -1,0 +1,152 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<div id="search_header" class="client_search {% if deactive %} deactive {% else %} active {% endif %}">
+    {% if not initial_prev and not initial_next %}
+        <a initial="A" href="#" id="letter_fwd" class="arrow initial">A</a>
+    {% endif %}
+    
+    {% if initial_next %}
+        <a initial="{{ initial_next }}" href="#" id="letter_fwd" class="arrow initial">{{ initial_next }}</a>
+    {% endif %}
+    
+    {% if initial_prev %}
+        <a initial="{{ initial_prev }}" href="#" id="letter_back" class="arrow initial">{{ initial_prev }}</a>
+    {% endif %}
+
+    <input name="quick_search" type="text" class="quick_search" id="quick_search" value="{{ search }}" /><a class="quick_search"></a> <a href="#" id="cleanup"></a>
+
+    <table id="letter_menu" border="0" cellspacing="0" cellpadding="2">
+        <tr>
+            <td><a initial="" class="initial pointer">#</a></td>
+            {% for i in initials %}
+                <td>
+                    <a initial="{{ i }}" class="initial pointer"{% if i|upper == initial|upper %} style="color:#333"{% endif %}>
+                        {{ i }}
+                    </a>
+                </td>
+            {% endfor %}
+    </table>
+    <input type="hidden" name="initial" value="{{ initial }}" />
+</div>
+
+<div class="search_header_aditional">
+    <select name="service">
+        <option value="">Todos os serviços</option>
+        {% for s in service_list %}
+            <option value="{{ s.pk }}"{% if s.pk == service %} selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div id="msg_area" class="alert no_registers_available" style={% if object_list %}"display:none;"{% else %}"display:block;"{% endif %} >
+    {% trans "There is no registers available." %}<br />{% if active %}<br />{% trans "Click" %} <a href="{% url covenant-add %}">{% trans "here" %}</a> {% trans "if you want to add a new one." %}{% endif %}
+</div>
+
+<table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+    <tbody>
+        {% for i in object_list %}
+            <tr class="zebra_{% cycle 0,1 %}">
+                <td>
+                    <a href="{% url covenant-edit i.id %}" title="{{ i.name }}">{{ i.name }}</a>
+                    <span style="font-weight:normal;">{% for s in i.service_set.all %} <br />{{ s }}  {% endfor %}</span>
+                </td>
+                <td class='extramedium'>{{ i.get_charge_display }} {% ifequal i.charge 2 %} - {{ i.event_time }}{% endifequal %}</td>
+                <td class='normal'><span>R$ {{ i.price }}</span></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page.has_previous %}
+            <a href="{{ list_url_base }}?page={{ page.previous_page_number }}{{ url_extra }}">{% trans "Previous" %}</a>
+        {% endif %}
+
+        <span class="current">
+            {% trans "Page" %} {{ page.number }} {% trans "of" %} {{ page.paginator.num_pages }}
+        </span>
+
+        {% if page.has_next %}
+            <a href="{{ list_url_base }}?page={{ page.next_page_number }}{{ url_extra }}">{% trans "Next" %}</a>
+        {% endif %}
+        
+    </span>
+    <input type="hidden" name="result_count" value="{{ p.count }}" />
+</div>
+
+
+<!-- JS value of list_url_base is came from view, need be mounted before run JS. -->
+<script>
+
+    function updateResults(url, initial) {
+
+        if(!url) {
+            if(!initial) {
+                initial = ''
+            }
+            var url = '{{ list_url_base }}?search=' + encodeURIComponent($("#quick_search").val()) + "&initial=" + initial + '&service=' + $('select[name=service]').val();
+        }
+        $('#page_results').load(url,function(responseTxt,statusTxt,xhr){
+                if(statusTxt=="success") {
+                    $('#pageof').text($('.pagination span.current').text());
+                    $('#object_length').text($('input[name=result_count]').val());
+                    }
+                if(statusTxt=="error")
+                    alert("Error: "+xhr.status+": "+xhr.statusText);
+        });
+    }
+
+    $(function() {
+        $('#quick_search').focus();
+
+        $('#page_results .pagination a').click(function() {
+            updateResults($(this).attr('href'));
+            return false;
+        });
+
+        $('a.quick_search').click(function() {
+            updateResults();
+            return false;
+        });
+
+        $('a.initial').click(function() {
+            updateResults(null, $(this).attr("initial"));
+            return false;
+        });
+
+        $('select[name=service]').change(function() {
+            updateResults();
+            return false;
+        });
+
+        $('a#cleanup').click(function() {
+            $('input#quick_search').val(""); // reset
+            updateResults();
+            return false;
+        });
+
+        $('#quick_search').keydown(function(e) {
+            var KC = (window.Event) ? e.which : e.keyCode;
+            if (KC == 13) { // enter to submit
+                $('a.quick_search').click();
+            }
+        });
+    });
+</script>

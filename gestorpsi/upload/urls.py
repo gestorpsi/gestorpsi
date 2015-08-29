@@ -23,6 +23,11 @@ from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
     (r'^send/$', login_required(send)), 
-    (r'^client/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/attach/(?P<referral_id>\d+)/$' , login_check(attach_form)),
-    (r'^(?P<client_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/(?P<object_id>\d+)/attach/save/$' , login_check(attach_save))
+    # new attach
+    (r'^client/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/$' , login_check(attach_form)),
+    # update attach
+    (r'^client/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/attach/(?P<attach_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$' , login_check(attach_form)),
+    # save post form, new or update
+    (r'^client/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/save/$' , login_check(attach_save)),
+    (r'^client/(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/attach/(?P<attach_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$' , login_check(attach_save)),
 )

@@ -177,6 +177,11 @@ class Place( models.Model ):
 
         r[2] = x
         return r 
+
+
+    # return all active rooms
+    def room_active(self):
+        return self.room_set.filter(active=True)
         
 reversion.register(Place, follow=['address', 'phones'])
 

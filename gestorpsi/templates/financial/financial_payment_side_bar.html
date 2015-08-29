@@ -1,0 +1,31 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<div class="people_actions">
+
+    <h3>{% trans 'Client Details' %}</h3>
+    <ul>
+        <li><a href="/client/{{ obj.referral.client.all.0.id }}/home/" class="client_home" title="{{ obj.referral.client.all.0.person.name }}">{% trans "Client Home" %}</a></li>
+    </ul>
+
+    <h3>{% trans 'Referral Details' %}</h3>
+    <ul>
+        <li><a href="/client/{{ obj.referral.client.all.0.id }}/referral/{{ obj.referral.id }}/" class="client_services" title="{{ obj.referral.client.all.0.person.name }}">{% trans "Referral Home" %}</a></li>
+    </ul>
+
+</div>

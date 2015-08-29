@@ -22,8 +22,10 @@ div.report_main { width: 715px; margin: 0 0 10px 20px; float: left; position: re
 */
 
 table.report { width: 680px; margin: 15px 20px 2px 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; border: 2px solid #aaaaaa; padding: 0px 10px 20px 10px; }
+table.report_list { width: 680px; margin: 15px 20px 2px 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; padding: 0px 10px 20px 10px; }
 table.report tr.title { text-align:left; height: 30px;}
 table.report tr.odd, ul li.odd { background-color: #ececec; }
+table.report_list tr.odd, ul li.odd { background-color: #ececec; }
 table.report tr.legend td { text-align:center; }
 table.report th.close_report  {  display:none; text-align:right; }
 table.report th.close_report a, a.close_dialog  { font-size:16px; color: #999999; text-decoration: none;}
@@ -39,6 +41,13 @@ table.saved_itens tbody { overflow: auto; height: 200px; overflowy: scroll; }
 div.report_main h3 { margin: 40px 0 10px 20px;}
 
 div.loaded_report_title { padding: 0px 0px 0px 15px; color: #444444;}
+
+/*
+ * report payment
+ */
+table.report_list_receive { width: 100%; padding: 10px 0px 20px 0px; }
+table.report_list_receive tr.odd, ul li.odd { background-color: #ececec; }
+
 /**
 * report forms
 */
@@ -82,7 +91,7 @@ div.client_dialog small, div.saved_table small { color: #666;}
 .saved_successfully {text-align:center;}
 
 div#chart_type { text-align:right; margin-right:25px;}
-div.subscription_filter { margin-top: 10px;}
+/*div.subscription_filter { margin-top: 10px;}*/
 /**
 * utils
 */

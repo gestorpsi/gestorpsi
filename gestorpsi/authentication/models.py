@@ -23,9 +23,8 @@ from gestorpsi.util.uuid_field import UuidField
 
 class Profile(models.Model):
     user = models.OneToOneField(User, unique=True)
-    #organization = models.ManyToManyField(Organization, null=True)
     organization = models.ManyToManyField(Organization, through='Role', null=True)
-    try_login = models.IntegerField(default = 0, null=True)
+    try_login = models.IntegerField(default=0, null=True)
     crypt_temp = models.CharField(max_length=256, blank=True, null=True)
     org_active = models.ForeignKey(Organization, related_name="org_active", null=True)
     person = models.OneToOneField(Person, null=True)

@@ -1,0 +1,116 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<h2 class="title_schedule title">{% if occurrence.event.referral.referralgroup_set.all %}<a href="/service/group/{{ occurrence.event.referral.referralgroup_set.all.0.id }}/form/">{{ occurrence.event.referral.group_name }}</a>{% else %}{{ occurrence.event.referral.client.all.0 }}{% endif %} - {{ occurrence.event.referral }}</h2>
+<p class="description">{{ occurrence.start_time|date:"d" }} {% trans "of" %} {{ occurrence.start_time|date:"F" }} {% trans "of" %} {{ occurrence.start_time|date:"Y" }}
+
+{% comment %}
+hide Date fields and second field
+{% endcomment %}
+
+<form method="post" action="" class="schedule_occurrence">
+    <div class="main_area">
+
+        <!-- confirm occurrence -->
+        <fieldset>
+            <legend>{% trans "Occurrence Confirmation Details" %}</legend>
+            <label>
+                {{ form.presence.label }}<br />
+                {{ form.presence }}
+                {{ form.presence.errors }}
+            </label>
+
+            <div style="clear:both"></div>
+
+            <div class="date_fields{% if hide_date_field %} hidden{% endif %}">
+                <label>{{ form.date_started.label }}<br />
+                    <div class="nomargin">{{ form.date_started }}</div>
+                </label>
+                <label>{{ form.date_finished.label }}<br />
+                    <div class="nomargin">{{ form.date_finished }}</div>
+                </label>
+            </div>
+
+            <div style="clear:both"></div>
+        </fieldset>
+
+        <!-- new payment -->
+        <fieldset>
+            <legend>{% trans "Novo Pagamento" %}</legend>
+            <div class="date_fields">
+                <label>Conv&ecirc;nio dispon&iacute;vel<br />
+                    <select name='select_covenant_receive' class="big">
+                        <option value="000" selected="selected" >- - -</option>
+                        {% for x in covenant_list %}
+                            <option value="{{ x.id }}">{{ x.name }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <br />
+
+                {% for field in receive_new_form %}
+                    <label>{{ field.label }}<br />{{ field }}
+                        {% if field.errors %}preenchimento obrigat&oacute;rio{% endif %}
+                    </label>
+                {% endfor %}
+
+                <!-- out of form -->
+                <label for="TEMPID999FORM-pw">Forma de pagamento<br>
+                    <ul></ul>
+                </label>
+
+            </div>
+        </fieldset>
+
+
+        <!-- update payment event -->
+        {% for f in payment_list %}
+            <fieldset>
+                <legend>{% trans "Pagamento" %}</legend>
+                {% for field in f %}
+                    <label>{{ field.label }}<br />{{ field }}
+                        {% if field.errors %}preenchimento obrigat&oacute;rio{% endif %}
+                    </label>
+                {% endfor %}
+            </fieldset>
+        {% endfor %}
+            
+
+        <fieldset>
+            <label>
+                {{ form.reason.label }}<br />
+                {{ form.reason }}
+            </label>
+
+            <label>{{ form.device.label }}<br /></label>
+            <div class="overflow">
+                {{ form.device }}
+            </div>        
+
+            <label>
+                {% trans "Notes" %}<br />
+                <textarea rows="10" name="occurrence_annotation" class="giant">{% if occurrence.annotation %}{{ occurrence.annotation }}{% endif %}</textarea>
+            </label>            
+
+        </fieldset>
+
+
+      <br />
+    </div>
+<!-- </form> will be close in another file -->

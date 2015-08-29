@@ -23,24 +23,11 @@ GNU General Public License for more details.
 hide Date fields and second field
 {% endcomment %}
 
-<script>
-    $(function() {
-        $('select#id_date_started_0_month, select#id_date_started_0_day, select#id_date_started_0_year, select#id_date_started_1_second').hide();
-        $('select#id_date_finished_0_month, select#id_date_finished_0_day, select#id_date_finished_0_year, select#id_date_finished_1_second').hide();
-        $('form input[name=presence]').click(function(){
-            if($(this).val()>2) {
-                $('div.date_fields').hide();
-            } else {
-                $('div.date_fields').show();
-            }
-        });
-    });
-</script>
-
 <form method="post" action="" class="schedule_occurrence">
     <div class="main_area">
-        <fieldset>
 
+        <!-- confirm occurrence -->
+        <fieldset>
             <legend>{% trans "Occurrence Confirmation Details" %}</legend>
             <label>
                 {{ form.presence.label }}<br />
@@ -60,7 +47,23 @@ hide Date fields and second field
             </div>
 
             <div style="clear:both"></div>
+        </fieldset>
 
+
+        <!-- payment event -->
+        {% for f in receive_list %}
+            <fieldset>
+                <legend>{% trans "Recebimento" %}</legend>
+                {% for field in f %}
+                    <label>{{ field.label }}<br />{{ field }}
+                        {% if field.errors %}preenchimento obrigat&oacute;rio{% endif %}
+                    </label>
+                {% endfor %}
+            </fieldset>
+        {% endfor %}
+            
+
+        <fieldset>
             <label>
                 {{ form.reason.label }}<br />
                 {{ form.reason }}
@@ -77,6 +80,8 @@ hide Date fields and second field
             </label>            
 
         </fieldset>
+
+
       <br />
     </div>
 <!-- </form> will be close in another file -->

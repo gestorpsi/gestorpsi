@@ -99,16 +99,19 @@ GNU General Public License for more details.
         
     </div>
 
-    <div id="sidebar" class="sidebar">
-        {% if have_write_perms %}
+    {% if have_write_perms %}
+        <div id="sidebar" class="sidebar_save">
             <div class="bg_blue">
                 {% include "tags/save.html" %}
             </div>
-        {% endif %}
-        {% if object.id %}
+        </div>
+    {% endif %}
+
+    {% if object.id %}
+        <div id="sidebar" class="sidebar_client">
             {% include "tags/service_sidebar.html" %}
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 
     </form>
 {% endif %}

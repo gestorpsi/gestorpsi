@@ -126,21 +126,32 @@ function bindMask() {
 }
 
     /**
-     * referral new. Show professional subscription when change service.
-     * upate Tiago de Souza Moraes / 19 02 2014
+     * New referral. Show professional subscription and covenant of service when change service.
+     * upate Tiago de Souza Moraes / 27 11 2014
      **/
 
 function referral_edit(select_field) {
 
-        // remove all professional from select
+        // remove all professional of select
         $('select#id_professional').html('');
         // delete combobox 
         $('div#ms-id_professional').remove();
+        // hide
+        $('label[for="id_professional"]').hide();
+
+
+        // remove all covenant of select
+        $('select#id_covenant').html('');
+        // delete combobox 
+        $('div#ms-id_covenant').remove();
+        // hide
+        $('label[for="id_covenant"]').hide();
+
 
         if ( select_field.val() != '' ){ 
 
+            // professionals
             var HTML='';
-
             $.getJSON("/service/" + select_field.val() + "/listprofessional/", function(json) {
                 jQuery.each(json,  function(){
                     HTML += '<option value="' + this.id + '">' + this.name + '</option>';
@@ -163,7 +174,33 @@ function referral_edit(select_field) {
             } else {
                 $('label.referral_group').hide();
             }
+            
+
+            // covenant of service
+            var TEMP='';
+            $.getJSON("/covenant/list/service/" + select_field.val() + "/", function(json) {
+                jQuery.each(json, function(){
+
+                            if (this.events > 0 ){ 
+                                TEMP += '<option value="' + this.id + '">' + this.name +' - '+ this.charge +' (' + this.events + ') - R$ '+ this.price + '</option>';
+                            } else { 
+                                TEMP += '<option value="' + this.id + '">' + this.name +' - '+ this.charge +' - R$ '+ this.price + '</option>';
+                            }
+                });
+                // add new elements in select
+                $('select#id_covenant').html(TEMP);
+                // reload combobox
+                $('select#id_covenant').multiSelect();
+            });
+
+            // show
+            $('label[for="id_covenant"]').show();
+            $('label[for="id_professional"]').show();
         }
+
+        // show selects
+        $('div#covenant-div-id').show();
+        $('div#professional-div-id').show();
 }
 
 
@@ -214,7 +251,7 @@ $(function() {
      });
 
      /**
-      * VALID IF EXIST A SHORT NAME IN FORM ORGANIZATION
+      * valid if exist a short name in form organization
       */
      $('input.short_search').unbind().keyup(function() {
          $.ajax({
@@ -231,7 +268,7 @@ $(function() {
      });
 
      /**
-      * VALID IF EXIST A USER NAME
+      * valid if exist a user name
       */
      $('input#id_username').unbind().keyup(function() {
          $.ajax({
@@ -552,6 +589,7 @@ $(function() {
      });
      
      $('a.form_mini').live('click', function() {
+          $('div.form_mini').hide(); // hide all mini form
           var form_mini = $('div.'+$(this).attr('display')).effect('slide', {'direction':'up'});
           
           if(!$(this).hasClass('choose_room')) {
@@ -718,7 +756,7 @@ $(function() {
      */
      
      /**
-      * USER - Return unsername slugify and firts email
+      * user - return unsername slugify and firts email
       */
 
     $('#form select.get_user_json option').unbind().click(function() {
@@ -753,14 +791,14 @@ $(function() {
 
     // Confirm_yes
     $('div#edit_form div.edit_form div.client_referral_list a.confirm_yes').click(function() {
-        // REMOVE ID SELECTED
+        // remove id selected
         //$('div#edit_form div.edit_form div.client_referral_list tr[id='+ this.id +']').remove();
         $('div#edit_form div.edit_form div.client_referral_list tr[id='+ this.id +'] td').addClass('c_referral_off');
         $('div#edit_form div.edit_form div.client_referral_list tr[id='+ this.id +'] td div').remove();
-        // REMOVE FROM DB
+        // remove from db
         $.getJSON("/referral/" + $(this).attr("id") + "/off/", function(json) {
                 //$('div#edit_form div.edit_form div.client_referral_list tr[id='+ $(this).attr("id") +']').remove();
-                // RETURN ALL HREF THE NORMAL STATUS
+                // return all href the normal status
                 $("div#edit_form div.edit_form div.client_referral_list div.button_disable a").show();
                 $("div#edit_form div.edit_form div.client_referral_list div.confirm_disable").hide();
                 alert("Cliente desligado com sucesso!");
@@ -768,17 +806,18 @@ $(function() {
     });
      
 
-    
+    /*
+     * select to choose service - referral client
+     */
     $('div.hide_on_first li').hide();
-    $('form#client_referral_form select[name=service]:not(.check_change select, select.check_change)').change(function(){
+    $('form#client_referral_form select[name=service]:not(.check_change select, select.check_change)').bind("keyup change", function(){
         referral_edit($(this));
     });
     
+
     /**
      * check if combo state has been changed, then bind save button
      */
-    
-    
     $('select.check_change, .check_change select').change(function () {
         if(!confirm($('input[name=message_referral_changing]').val())) { 
             // reset to original state
@@ -799,10 +838,10 @@ $(function() {
 
 
     /**
-     * ADMISSION - SHOW OR HIDE SELECT OPTION / Referral and Indication
+     * admission - show or hide select option / referral and indication
      **/
       
-    // REFERRAL
+    // referral
     $("div.admission_referral select[name=referral]").unbind().change(function(){
 
         if (this.value == '7' || this.value == '8' ){
@@ -814,13 +853,13 @@ $(function() {
                     $("div.admission_ref_org").hide()
             }
         } else {
-            // NEVER  7 OR 8 
+            // never  7 or 8 
             $("div.admission_ref_prof").hide()
             $("div.admission_ref_org").hide()
         }
     });
 
-    // INDICATION
+    // indication
     $("div.admission_indication select[name=indication]").unbind().change(function(){
         if (this.value == '3' || this.value == '4' ){
             if (this.value == '3'){
@@ -831,7 +870,7 @@ $(function() {
                 $("div.admission_ind_org").hide()
             }
         } else {
-            // NEVER 3 OR 4 
+            // never 3 or 4 
             $("div.admission_ind_prof").hide()
             $("div.admission_ind_org").hide()
         }
@@ -839,7 +878,7 @@ $(function() {
 
 
     /**
-     * REFERRAL - SHOW DETAILS OF CLIENT
+     * referral - show details of client
      **/
 
     $("a.referral_details").click( function() {
@@ -860,10 +899,10 @@ $(function() {
     
 
     /**
-    * DEVICES - CHANGE SELECT TO FIXED WHEN LANDABLE CHEKBOX IS CHECKED, VICE-VERSA
+    * devices - change select to fixed when landable chekbox is checked, vice-versa
+    * edit device form
+    * check box 
     **/
-   /// EDIT DEVICE FORM
-   //  CHECK BOX 
     $('form.edit_device input[id=id_lendable]').click(function(){
         if (this.checked == true ){
             if ($('form.edit_device div#device_form select[name=select_mobility_type]').val() == "1"){
@@ -873,15 +912,15 @@ $(function() {
         }
     });
 
-    // SELECT TYPE
+    // select type
     $('form.edit_device div#device_form select[name=select_mobility_type]').change(function(){
         if (this.value == "1"){
             $('form.edit_device input[id=id_lendable]').removeAttr("checked");
         }
     });
 
-   /// NEW DEVICE FORM
-   //  CHECK BOX 
+   // new device form
+   //  check box 
     $('form.new_device_form div#device_form input[id=id_lendable]').click(function(){
         if (this.checked == true ){
             if ($('form.new_device_form div#device_form select[name=select_mobility_type]').val() == "1"){
@@ -891,7 +930,7 @@ $(function() {
         }
     });
 
-    // SELECT TYPE
+    // select type
     $('form.new_device_form div#device_form select[name=select_mobility_type]').change(function(){
         if (this.value == "1"){
             $('form.new_device_form div#device_form input[id=id_lendable]').removeAttr("checked");
@@ -915,7 +954,7 @@ $(function() {
     });
 
     /********
-    *  OCUPATION SEARCH 
+    *  ocupation search 
     *********/
 
         $('a.show_ocup_search').click(function() {
@@ -997,5 +1036,5 @@ $('.form_client.autocomplete input[name=name]').result(function(event, data, for
     });
     
     
-/* MAIN FUNCTION */ 
+/* main function */ 
 });

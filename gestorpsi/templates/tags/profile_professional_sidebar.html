@@ -16,11 +16,10 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<div id="sidebar" class="sidebar">
-    {% if perms.careprofessional.careprofessional_write %}
+{% if perms.careprofessional.careprofessional_write %}
+    <div id="sidebar" class="sidebar_save">
         <div class="bg_blue">
             {% include "tags/save.html" %}
         </div>
-    {% endif %}
-
-</div>
+    </div>
+{% endif %}

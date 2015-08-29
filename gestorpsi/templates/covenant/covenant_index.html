@@ -1,0 +1,53 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Conv&ecirc;nio" %}{% endblock %}
+
+{% block submenu %}
+    {% include "covenant/covenant_submenu.html" %}
+{% endblock %}
+
+{% block core %}
+    <div class="registers_available">
+        <h2 class="title_covenant">{% trans "Conv&ecirc;nios" %}</h2>
+        <p class="description">{% trans "Displaying" %} <span id="object_length"></span> {% trans "Conv&ecirc;nio(s)" %}.<span id="pageof"></span></p>
+          
+        <div class="main_area contact">
+
+        <!-- mount result of search -->
+        <div class="main_area contact" id="page_results"></div>
+
+        <!-- call JS function -->
+        <script>
+            $(function() {
+                $('#page_results').load('{{ list_url_base }}',function(responseTxt,statusTxt,xhr){
+                    if(statusTxt=="success") {
+                        $('#pageof').text($('.pagination span.current').text());
+                        $('#object_length').text($('input[name=result_count]').val());
+                    }
+                    if(statusTxt=="error")
+                        alert("Error: "+xhr.status+": "+xhr.statusText);
+                });
+            });
+        </script>
+    </div>
+{% endblock %}

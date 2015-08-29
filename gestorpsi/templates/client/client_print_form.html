@@ -76,16 +76,28 @@ GNU General Public License for more details.
             <small>({% trans "if selected will print client EHR data" %})</small>
         </label>
         {% endif %}
-    
+
+        <div style="clear:both"></div>
+        <label><b>{% trans "Financeiro:" %}</label>
+
+        <div style="clear:both"></div>
+
+        <label><input type="checkbox" name="all_payments" {% if all_payments %} checked {% endif %} />&nbsp; <b>
+        {% trans "Todos os pagamentos" %}</b>
+        </label>
+
         <div style="clear:both"></div>
         <label><b>{% trans "Signed by" %}</b><br /></label>
+
         <div style="clear:both"></div>
         <label><input type="checkbox" name="signed_professionals" value="True" checked />&nbsp; <b>
         {% trans "Professionals from referral" %}</b>
         </label>
+
         <label><input type="checkbox" name="signed_professional_responsible" value="True" checked />&nbsp; <b>
         {% trans "Responsible Professionals from Service" %}</b>
         </label>
+
         <label><input type="checkbox" name="signed_organization_reponsibles" value="True" checked />&nbsp; <b>
         {% trans "Organization Responsibles" %}</b>
         </label>
@@ -102,24 +114,20 @@ GNU General Public License for more details.
 </div>
 
 
-<div id="sidebar" class="sidebar">
-    {% if perms.client.client_write %}
+{% if perms.client.client_write %}
+    <div id="sidebar" class="sidebar_save">
         <div class="bg_blue">
-        <input class="save_button" name="save" type="submit" value="{% trans 'Print' %}" />
-        <input class="save_button" name="cancel" id="cancel_button" type="button" value="{% trans 'Back' %}" onclick="javascript:history.go(-1)" />
-        
-        <div id="msg_info">
-            <p>
-            </p>
+            <input class="save_button" name="save" type="submit" value="Print" />
+            <input class="save_button" name="cancel" id="cancel_button" type="button" value="{% trans 'Back' %}" onclick="javascript:history.go(-1)" />
         </div>
-        </div>
-    {% endif %}
-    {% if object.id %}
+    </div>
+{% endif %}
+
+{% if object.id %}
+    <div id="sidebar" class="sidebar_client">
         {% include "tags/client_sidebar.html" %}
-    {% endif %}
-</div>
-
-
+    </div>
+{% endif %}
 
 </form>
 {% include "tags/upload.html" %}

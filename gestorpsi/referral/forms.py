@@ -16,10 +16,10 @@ GNU General Public License for more details.
 
 from django import forms
 from gestorpsi.referral.models import Referral, ReferralPriority, ReferralImpact, ReferralDischarge, Queue, ReferralExternal
-from gestorpsi.careprofessional.models import CareProfessional
+#from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client 
 from gestorpsi.service.models import Service, ServiceGroup
-
+from gestorpsi.covenant.models import Covenant
 
 
 '''
@@ -40,15 +40,38 @@ class ReferralForm(forms.ModelForm):
     annotation = forms.CharField(widget=forms.Textarea(), required = False)
     referral_reason = forms.CharField(widget=forms.Textarea(), required = False)
     available_time = forms.CharField(widget=forms.Textarea(), required = False)
-    priority = forms.ModelChoiceField(queryset=ReferralPriority.objects.all(), required = False, widget=forms.Select(attrs={'class':'extramedium', }))
-    impact = forms.ModelChoiceField(queryset=ReferralImpact.objects.all(), required = False, widget=forms.Select(attrs={'class':'giant', }))
+    priority = forms.ModelChoiceField(queryset=ReferralPriority.objects.all(), required=False, widget=forms.Select(attrs={'class':'extramedium', }))
+    impact = forms.ModelChoiceField(queryset=ReferralImpact.objects.all(), required=False, widget=forms.Select(attrs={'class':'giant', }))
     
     class Meta:
-        fields = ('client', 'service', 'professional', 'annotation', 'referral', 'annotation', 'referral_reason', 'available_time', 'priority', 'impact')
+        fields = ('client', 'service', 'professional', 'annotation', 'referral', 'annotation', 'referral_reason', 'available_time', 'priority', 'impact', 'covenant')
         model = Referral
     
-    def __init__(self, *args, **kwargs):
+    def __init__(self, request, *args, **kwargs):
+
+        '''
+            request : Django session request
+        '''
         super(ReferralForm, self).__init__(*args, **kwargs)
+
+        # show or not the covenant of service
+        # update register
+        try:
+            ref = Referral.objects.get(pk=kwargs['instance'].id )
+            # query covenant of org
+            self.fields['covenant'] = forms.ModelMultipleChoiceField(
+                                        queryset=Covenant.objects.filter( organization=request.user.get_profile().org_active, active=True, service=ref.service),
+                                        required=False,
+                                    )
+        # new register
+        except:
+            self.fields['covenant'] = forms.ModelMultipleChoiceField(
+                                        queryset=Covenant.objects.filter( organization=request.user.get_profile().org_active, active=True ),
+                                        required=False,
+                                    )
+            pass
+
+
         if hasattr(self,'instance') and self.instance.id:
             if self.instance.service.is_group:
             #if self.instance.service.is_group and self.instance.group:

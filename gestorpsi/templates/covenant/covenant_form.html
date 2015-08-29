@@ -1,0 +1,135 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block extrahead %}
+    <script type="text/javascript" src="/media/js/jquery.maskMoney.min.js"></script>
+    <script type="text/javascript" src="/media/js/gestorpsi.covenant.forms.js"></script>
+{% endblock %}
+
+{% block menu_myoffice %}active{% endblock %}
+
+{% block vertical_menu %} - {% trans "Conv&ecirc;nio" %}{% endblock %}
+
+{% block submenu %}
+    {% include "covenant/covenant_submenu.html" %}
+{% endblock %}
+
+{% block core %}
+
+    {% if obj.id %}
+        <h2 class="title_covenant title">{{ obj.name }}</h2>
+        <p class="description"><br /></p>
+    {% else %}
+        <h2 class="title_covenant title">{% trans "Adicionar conv&ecirc;nio" %}</h2>
+        <p class="description">{% trans "Preencha as informa&ccedil;&otilde;es do conv&ecirc;nio e clique no bot&atilde;o Salvar" %}</p>
+    {% endif %}
+
+    {% if obj.id %}
+        <form action="{% url covenant-edit obj.id %}" method="post" class="collapsable form_covenant">	
+    {% else %}
+        <form action="{% url covenant-add %}" method="post" class="collapsable form_covenant">	
+    {% endif %}
+
+            <div class="main_area">
+                <fieldset>
+                    <legend>{% trans "Informa&ccedil;&otilde;es do conv&ecirc;nio" %}</legend>
+
+                    <label>{% trans "Nome" %} <br />
+                        <input type="text" maxlength="80" name="name" class="extrabig" value="{{ obj.name }}" required placeholder="nome" />
+                    </label>
+
+                    <label>{% trans "Categoria" %} <br />
+                        {{ form.category }}
+                    </label>
+
+                    <label>{% trans "Cobran&ccedil;a" %} <br />
+                        {{ form.charge }}
+                    </label>
+
+                    <!-- if charge equal 2, show this field else hide -->
+                    <label for='event_time' style='display:{% ifequal obj.charge 2 %}block{% else %}none{% endifequal %};'>{% trans "N&uacute;mero de eventos" %} <br />
+                        <input type="text" maxlength="3" id="event_time" name="event_time" class="small" value="{% if obj.event_time %}{{ obj.event_time }}{% endif %}" {% ifequal obj.charge 2 %} required="required" {% endifequal %} />
+                    </label>
+
+                    <label for="charge_text">{% trans "Explicativo" %} <br />
+                        <p style="font-size: 15px;">
+                            Para cada evento na agenda, uma nova fatura &eacute; criada.
+                        </p>
+                    </label>
+
+                    <label>{% trans "Valor" %} 
+                        R$&nbsp;&nbsp;{{ form.price }}
+                        {{ form.price.errors }}
+                    </label>
+
+                    <div style='margin-left:0px;'>
+                        <label>{% trans "Descri&ccedil;&atilde;o" %} <br />
+                            {{ form.description }}
+                        </label>
+                    </div>
+
+                </fieldset>
+
+                <!-- payment way -->
+                <label style="margin-right:192px;">{% trans "Forma de recebimento dispon&iacute;vel" %} </label>
+                <label>{% trans "Forma de recebimento selecionado" %}</label>
+                <div style="clear:both; margin-left:10px;">
+                    {{ form.payment_way }}
+                </div>
+
+                <!-- select services -->
+                <label style="margin-right:251px;" for="id_professional">{% trans "Services available" %}</label>
+                <label for="id_professional">{% trans "Services selected" %}</label>
+                <div style="clear:both; margin-left:10px;">
+                    <select multiple="multiple" id="id_service" name="services">
+                        {% for x in service_list.all %}
+                            <option value="{{ x.id }}" {% if x in obj.service_set.all %} selected {% endif %}>{{ x.label_group_ }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- mount combox -->
+                <script>
+                    $('select#id_service').multiSelect();
+                    $('select#id_payment_way').multiSelect();
+                </script>
+
+                <br />
+
+            </div>
+
+            <!-- save buttom -->
+            <div id="sidebar" class="sidebar_save">
+                {% if perms.place.place_write %}
+                    <div class="bg_blue">
+                        <input type="hidden" name="place" value="{{ object.id }}" />
+                        {% include "tags/save.html" %}
+                    </div>    
+                {% endif %}
+            </div>
+
+            {% if obj.id %}
+                <div id="sidebar" class="sidebar_client">
+                    {% include "tags/covenant_sidebar.html" %}
+                </div>
+            {% endif %}
+        </form>
+
+{% endblock %}

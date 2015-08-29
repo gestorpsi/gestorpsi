@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 TYPE = ( 
         ('1','Cartão crédito / Pagamento recorrente'),
-        ('2','Boleto / Vencimento todo dia 28'),
+        ('2','Boleto'),
         ('3','Depósito em conta'),
         ('99','Outro'),
 )

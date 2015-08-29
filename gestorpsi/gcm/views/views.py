@@ -105,8 +105,9 @@ def org_object_list(request):
         # create email list of result, all organization
         export_email_count = 0
         export_email = ''
+
         for o in object_list:
-            for p in o.profile_set.all().filter( Q(user__groups__name__icontains='administrator') | Q(user__groups__name__icontains='secretary') ):
+            for p in o.person_set.filter( Q(user__groups__name__icontains='administrator') | Q(user__groups__name__icontains='secretary') ).filter(user__is_active=True, careprofessional__active=True).distinct():
                 if not p.user.email in export_email:
                     export_email += u"%s, " % p.user.email
                     export_email_count += 1

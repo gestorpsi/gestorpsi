@@ -7604,11 +7604,11 @@ msgstr "Primeiro horário"
 msgid "End last hour"
 msgstr "Fim do último horário"
 
-msgid "Workplace available"
-msgstr "Área de trabalho disponível"
+msgid "Profession Workplace available"
+msgstr "Local de trabalho disponível"
 
-msgid "Workplace selected"
-msgstr "Área de trabalho selecionado"
+msgid "Profession Workplace selected"
+msgstr "Local de trabalho selecionado"
 
 msgid "Service available"
 msgstr "Serviço disponível"

@@ -248,12 +248,6 @@ class Organization(models.Model):
     prefered_plan.verbose_name = _("Preferred plan")
     prefered_plan.help_text= _("The plan the organization will use next time the system gives a billet.")
     
-    # is old, to remove next alteration. Can be used org.invoice_() method to check
-    #current_invoice = models.ForeignKey(Invoice, null=True, blank=True, related_name='current_invoice')
-    #current_invoice.verbose_name = _("Current invoice")
-    #current_invoice.help_text= _("Field used by the system DON'T change it.")
-    #current_invoice.editable = False
-
     payment_type = models.ForeignKey(PaymentType, null=True, blank=True)
     payment_type.verbose_name = _("Tipo de pagamento")
     payment_detail = models.TextField(u'Detalhes do pagamento. Usado pelo ADM gestorPSI.', null=True, blank=True)
@@ -446,29 +440,6 @@ class Organization(models.Model):
 
 reversion.register(Organization, follow=['provided_type', 'phones', 'address', 'emails', 'sites', 'instantMessengers'])
 
-class AgreementType(models.Model):
-    """
-    This class represents an agreement type.
-    @author: Vinicius H. S. Durelli
-    @version: 1.0
-    """
-    description= models.CharField( max_length= 80 )
-    def __unicode__(self):
-        return u'%s' % self.description
-    class Meta:
-        ordering = ['description']
-
-class Agreement(models.Model):
-    """
-    This class represents an agreement type that the careprofessional works
-    @author: Danilo S. Sanches
-    @version: 1.0
-    """
-    description = models.CharField(max_length=50, null=True)
-    def __unicode__(self):
-        return u"%s" % self.description
-    class Meta:
-        ordering = ['description']
 
 class AgeGroup(models.Model):
     """

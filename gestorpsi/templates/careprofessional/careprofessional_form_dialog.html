@@ -18,34 +18,43 @@ GNU General Public License for more details.
 
 <div id="dialog" class="hidden">
     <h2>{% trans "This professional have active referrals!" %}</h2>
+
     <p>
-    {% trans "It will be excluded from" %} {{ object.referrals_charged|length }} {% trans "active referrals" %}{% if object.upcoming_occurrences%}, {% trans "and also" %} <b>{{ object.upcoming_occurrences|length }} {% trans "schedules will flagged as unmarked" %}{% endif %}.
+        {% trans "It will be excluded from" %} {{ object.referrals_charged|length }} {% trans "active referrals" %}{% if object.upcoming_occurrences%}, {% trans "and also" %} <b>{{ object.upcoming_occurrences|length }} {% trans "schedules will flagged as unmarked" %}{% endif %}.
     </p>
+
     <ul>
-    {% for i in object.referrals_charged %}
-	<li><a href="/client/{{ i.client.all.0.pk}}/referral/{{ i.pk }}/">{{ i }} {{ i.client.all.0 }}</a></li>
-    {% endfor %}
+        {% for i in object.referrals_charged %}
+	        <li><a href="/client/{{ i.client.all.0.pk}}/referral/{{ i.pk }}/">{{ i }} {{ i.client.all.0 }}</a></li>
+        {% endfor %}
     </ul>
-    <p>
-    <h3>{% trans "If this is the only professional, the referral will be disabled" %}.</h3>
-    </p>
-    <p>
-    {% trans "To continue, select the discharge reason then click Continue, otherwise click Cancel to close the box and not make any change." %}
-    </p>
+
     <br />
+    <h3>{% trans "If this is the only professional, the referral will be disabled" %}.</h3>
+
+    <p>
+        {% trans "To continue, select the discharge reason then click Continue, otherwise click Cancel to close the box and not make any change." %}
+    </p>
+
+    <br />
+
     <form action="/careprofessional/{{ object.pk }}/order/" method="post">
-    <select name="reason">
-    {% for i in ReferralDischargeReason %}
-	<option value="{{ i.pk }}">{{ i }}</option>
-    {% endfor %}
-    </select>
-    <label>{% trans "Discharge Details" %}
-    <textarea name="details"></textarea>
-    </label>
-    <div style="clear:both"></div>
-    <div class="float_right">
-	<button class="submit" onclick="$('div#dialog, #over').hide();return false;">{% trans "Cancel" %}</button>
-	<input type="submit" name="submit" class="submit" value="{% trans "Continue" %}" />
-    </div>
+        <select name="reason">
+            {% for i in ReferralDischargeReason %}
+                <option value="{{ i.pk }}">{{ i }}</option>
+            {% endfor %}
+        </select>
+
+        <label>{% trans "Discharge Details" %}
+            <textarea name="details"></textarea>
+        </label>
+
+        <div style="clear:both"></div>
+
+        <div class="float_right">
+            <button class="submit" onclick="$('div#dialog, #over').hide();return false;">{% trans "Cancel" %}</button>
+            <input type="submit" name="submit" class="submit" value="{% trans "Continue" %}" />
+        </div>
+
     </form>
 </div>

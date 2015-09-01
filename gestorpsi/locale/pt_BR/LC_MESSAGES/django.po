@@ -6040,7 +6040,7 @@ msgstr "Órgão Emissor"
 #: templates/profile/profile_change_pass.html:36
 #: templates/profile/profile_change_pass.html:41
 #: templates/profile/profile_person.html:27
-#: templates/tags/profile_sidebar.html:23 templates/users/users_form.html:218
+#: templates/users/users_form.html:218
 msgid "Change password"
 msgstr "Alterar Senha"
 
@@ -7203,7 +7203,6 @@ msgstr "Nome do Profissional"
 msgid "Professional Organization Subscription"
 msgstr "Registro do Estabelecimento"
 
-#: templates/tags/profile_sidebar.html:21
 #: templates/tags/service_sidebar.html:40
 msgid "Actions"
 msgstr "Ações"

@@ -105,13 +105,14 @@ def change_pass(request):
         object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
 
     if request.POST.get('c_pass'):
+
         if not request.user.check_password(request.POST.get("c_pass")):
-            messages.success(request, _('The current password is wrong'))
-            return HttpResponseRedirect('/profile/chpass/?clss=error')
+            messages.error(request, _('The current password is wrong'))
+            return HttpResponseRedirect('/profile/chpass/')
         else:
             if request.POST.get("n_pass") != request.POST.get("n_pass0"):
-                messages.success(request, _('The confirmation of the new password is wrong'))
-                return HttpResponseRedirect('/profile/chpass/?clss=error')
+                messages.error(request, _('The confirmation of the new password is wrong'))
+                return HttpResponseRedirect('/profile/chpass/')
             else:
                 request.user.set_password(request.POST.get('n_pass'))
                 request.user.get_profile().temp = request.POST.get('n_pass')    # temporary field (LDAP)

@@ -103,6 +103,8 @@
                             <td style="text-align:center;">
                                 {% if c.occurrence.all.0.id %}
                                     <a href="/schedule/events/{{ c.occurrence.all.0.id }}/confirmation/" target="_blank">{{ c.occurrence.all.0.start_time|date:"D, d b Y - H:i" }}</a>
+                                {% else %}
+                                    <a href="{% url financial-receive-form c.id %}">{{ c.created|date:"D, d b Y" }}</a>
                                 {% endif %}
                             </td>
 

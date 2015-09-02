@@ -84,13 +84,28 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     referrals = ReferralExternal.objects.filter(referral=referral_id)
     payments = Receive.objects.filter(occurrence__event__referral=referral)
 
+    '''
+        avoid duplicate payment when is package
+        distinct() doen't work because order_by
+    '''
     # upcoming
-    payment_upcoming5 = Receive.objects.filter( occurrence__start_time__gte=datetime.today() ).filter( Q(occurrence__event__referral=referral) | Q(referral=referral) ).order_by('-occurrence__start_time').distinct()[0:5]
-    payment_upcoming_all = Receive.objects.filter( occurrence__start_time__gte=datetime.today() ).filter( Q(occurrence__event__referral=referral)|Q(referral=referral) ).order_by('-occurrence__start_time').distinct()[5:]
+    tmp = []
+    for x in Receive.objects.filter( occurrence__start_time__gte=datetime.today() ).filter( Q(occurrence__event__referral=referral) | Q(referral=referral) ).order_by('-occurrence__start_time'):
+        if not x in tmp:
+            tmp.append(x)
+
+    payment_upcoming5 = tmp[0:5]
+    payment_upcoming_all = tmp[6:]
 
     # past
-    payment_past5 = Receive.objects.filter( occurrence__start_time__lte=datetime.today() ).filter( Q(occurrence__event__referral=referral)|Q(referral=referral) ).order_by('-occurrence__start_time').distinct()[0:5]
-    payment_past_all = Receive.objects.filter(occurrence__start_time__lte=datetime.today() ).filter( Q(occurrence__event__referral=referral)|Q(referral=referral) ).order_by('-occurrence__start_time').distinct()[5:]
+    del(tmp)
+    tmp = []
+    for x in Receive.objects.filter( occurrence__start_time__lte=datetime.today() ).filter( Q(occurrence__event__referral=referral)|Q(referral=referral) ).order_by('-occurrence__start_time'):
+        if not x in tmp:
+            tmp.append(x)
+
+    payment_past5 = tmp[0:5]
+    payment_past_all = tmp[6:]
 
 
     try:

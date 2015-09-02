@@ -59,38 +59,30 @@ GNU General Public License for more details.
             <!-- Professional infos -->
             <fieldset id="fieldset_professional_identification">
                 <legend>{% trans "Professional Identification" %}</legend>
-                    <label>{% trans "Profession" %}<br />
-                      {% if object.professionalIdentification.profession %}
-                            <input type="text" name="profession_read_only" value="{{  object.professionalIdentification.profession }}" readonly />
-                      {% else %}
-                        <select name="professional_area" class="medium profession_type" id="0">
-                         <option symbol="" value="0" disabled="disabled">------</option>
-                            {% for l in PROFESSIONAL_AREAS %}
-                                <option symbol="{{ l.symbol }}" value="{{ l.id }}" {% ifequal object.professionalIdentification.profession.symbol l.symbol%} selected {% endifequal %}>{{ l }}</option>
-                            {% endfor %}
-                        </select>
-                    {% endif %}
-                    </label>
 
-                    <label>{% trans "Symbol" %}<br />
-                        <input id="" type="text" name="symbol" class="profession_symbol small" readonly="1" {% if object.professionalIdentification.profession.symbol %} value="{{ object.professionalIdentification.profession.symbol }}" {% endif %}>
-                    </label>
+                <label>{% trans "Profession" %}<br />
+                    <select name="professional_area" class="medium profession_type" id="0">
+                     <option symbol="" value="0" disabled="disabled">------</option>
+                        {% for l in PROFESSIONAL_AREAS %}
+                            <option symbol="{{ l.symbol }}" value="{{ l.id }}" {% ifequal object.professionalIdentification.profession.symbol l.symbol%} selected {% endifequal %}>{{ l }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
 
-                    <label>{% trans "Professional Subscription" %}<br />
-                        <input type="text" name="professional_registerNumber" maxlength="50" value="{% if object.professionalIdentification.registerNumber %}{{ object.professionalIdentification.registerNumber }}{% endif %}" {% if object.professionalIdentification.registerNumber %} readonly="1" {% endif %} />
-                    </label>
+                <label>{% trans "Symbol" %}<br />
+                    <input id="" type="text" name="symbol" class="profession_symbol small" readonly="1" {% if object.professionalIdentification.profession.symbol %} value="{{ object.professionalIdentification.profession.symbol }}" {% endif %}>
+                </label>
+
+                <label>{% trans "Professional Subscription" %}<br />
+                    <input type="text" name="professional_registerNumber" maxlength="100" value="{% if object.professionalIdentification.registerNumber %}{{ object.professionalIdentification.registerNumber }}{% endif %}" />
+                </label>
             </fieldset>
 
             <fieldset id="fieldset_professional_profile">
                 <legend>{% trans "Professional Profile" %}</legend>
-                    <label>{% trans "Inital Activities Date" %}<br />
-                        <input type="text" maxlength="10" name="professional_initialActivitiesDate" value="{% ifnotequal object.professionalProfile.initialProfessionalActivities 'None' %}{{ object.professionalProfile.initialProfessionalActivities }}{% endifnotequal %}" class="initialActivities calendar" />
-                    </label>
-                    {% comment %}
-                    <label>{% trans "Available Time" %}<br />
-                        <input type="text" name="professional_availableTime" value="{{ object.professionalProfile.availableTime }}" />
-                    </label>
-                    {% endcomment %}
+                <label>{% trans "Inital Activities Date" %}<br />
+                    <input type="text" maxlength="10" name="professional_initialActivitiesDate" value="{% ifnotequal object.professionalProfile.initialProfessionalActivities 'None' %}{{ object.professionalProfile.initialProfessionalActivities }}{% endifnotequal %}" class="initialActivities calendar" />
+                </label>
             </fieldset>
 
             <!-- workplaces select -->

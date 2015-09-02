@@ -2803,6 +2803,10 @@ msgstr "Cliente chegou atrasado"
 msgid "Client not arrived"
 msgstr "Cliente não compareceu"
 
+#: schedule/models.py:34
+msgid "Professional not arrived"
+msgstr "Profissional não compareceu"
+
 #: schedule/models.py:32
 msgid "Occurrence unmarked"
 msgstr "Evento desmarcado"

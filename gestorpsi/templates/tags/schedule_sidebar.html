@@ -20,7 +20,10 @@ GNU General Public License for more details.
 
     <h3>{% trans 'Event Informations' %}</h3>
     <ul>
+        {% comment %}
         <li><a href="/schedule/events/{{ occurrence.event.id }}/" title="{% trans "Upcomming Occurrences from this event" %}">{% trans "Upcomming Occurrences from this event" %}</a></li>
+        {% endcomment %}
+        <li><a href="/client/{{ occurrence.event.referral.client.all.0.id }}/referral/{{ referral.id }}/upcoming/" class="client_calendar" title="{{ object.person.name }}">{% trans "Upcoming Occurrences" %}</a></li>
     </ul>
 
     <h3>{% trans 'Clients' %}</h3>

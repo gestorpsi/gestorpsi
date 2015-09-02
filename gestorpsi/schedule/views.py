@@ -524,6 +524,7 @@ def occurrence_confirmation_form(
 
             messages.error(request, _(u'Campo inválido ou obrigatório'))
 
+    # not request.POST
     else:
         if hasattr(occurrence_confirmation, 'presence') and int(occurrence_confirmation.presence) not in (1,2): # load initial data if client dont arrive
             occurrence_confirmation.date_started = occurrence.start_time
@@ -613,8 +614,6 @@ def _datetime_view(
         object = ''
 
     place = Place.objects.get( pk=place )
-    print
-    print place.hours_work()
 
     user = request.user
     timeslot_factory = timeslot_factory or create_timeslot_table

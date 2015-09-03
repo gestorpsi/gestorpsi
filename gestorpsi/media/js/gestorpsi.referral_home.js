@@ -16,12 +16,12 @@ GNU General Public License for more details.
 
 $(document).ready(function() {
 
-    $('a.payment_upcoming_all').click( function() { 
-        $("div#payment_upcoming_all").toggle();
+    $('a.receive_upcoming_all').click( function() { 
+        $("div#receive_upcoming_all").toggle();
     });
 
-    $('a.payment_past_all').click( function() { 
-        $("div#payment_past_all").toggle();
+    $('a.receive_past_all').click( function() { 
+        $("div#receive_past_all").toggle();
     });
 
 });

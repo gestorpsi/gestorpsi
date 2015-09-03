@@ -74,6 +74,7 @@ def client_referrals(request, object_id = None):
     
     return HttpResponse(array, mimetype='application/json')
 
+
 def _referral_view(request, object_id = None, referral_id = None, template_name = 'client/client_referral_home.html', access_check_referral_write = None):
     clss = request.GET.get("clss")
     user = request.user
@@ -86,26 +87,25 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
 
     '''
         avoid duplicate payment when is package
-        distinct() doen't work because order_by
     '''
-    # upcoming
-    tmp = []
-    for x in Receive.objects.filter( occurrence__start_time__gte=datetime.today() ).filter( Q(occurrence__event__referral=referral) | Q(referral=referral) ).order_by('-occurrence__start_time'):
-        if not x in tmp:
-            tmp.append(x)
+    tmpp = [] # past
+    tmpu = [] # upcoming
 
-    payment_upcoming5 = tmp[0:5]
-    payment_upcoming_all = tmp[6:]
+    for x in Receive.objects.filter( Q(occurrence__event__referral=referral) | Q(referral=referral) ).order_by('-occurrence__start_time','-id').distinct():
 
-    # past
-    del(tmp)
-    tmp = []
-    for x in Receive.objects.filter( occurrence__start_time__lte=datetime.today() ).filter( Q(occurrence__event__referral=referral)|Q(referral=referral) ).order_by('-occurrence__start_time'):
-        if not x in tmp:
-            tmp.append(x)
+        # past
+        if x.is_conclude(): 
+            if not x in tmpp:
+                tmpp.append(x)
+        # upcoming
+        else:
+            if not x in tmpu:
+                tmpu.append(x)
 
-    payment_past5 = tmp[0:5]
-    payment_past_all = tmp[6:]
+    receive_upcoming_small = tmpu[0:5]
+    receive_upcoming_all = tmpu[5:]
+    receive_past_small = tmpp[0:5]
+    receive_past_all = tmpp[5:]
 
 
     try:

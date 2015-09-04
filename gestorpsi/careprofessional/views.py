@@ -23,7 +23,6 @@ from django.contrib import messages
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.person.views import person_json_list, person_save
 from gestorpsi.careprofessional.models import ProfessionalProfile, ProfessionalIdentification, CareProfessional, Profession
-from gestorpsi.organization.models import Agreement
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType, City
 from gestorpsi.internet.models import EmailType, IMNetwork
@@ -33,10 +32,7 @@ from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, ReferralDischargeReason, ReferralDischarge
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
-from gestorpsi.authentication.models import Profile, Role
 from gestorpsi.careprofessional.forms import StudentProfileForm
-from django.contrib.auth.models import User, Group
-from django.contrib import messages
 from gestorpsi.schedule.models import OccurrenceConfirmation
 
 
@@ -103,7 +99,6 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
                                     'websites' : None if not hasattr(object, 'person') else object.person.sites.all(),
                                     'ims' : None if not hasattr(object, 'person') else object.person.instantMessengers.all(),
                                     'PROFESSIONAL_AREAS': Profession.objects.all(),
-                                    'AgreementTypes': Agreement.objects.all(),
                                     'WorkPlacesTypes': Place.objects.active().filter(organization = request.user.get_profile().org_active.id),
                                     'countries': Country.objects.all(),
                                     'PhoneTypes': PhoneType.objects.all(),
@@ -177,12 +172,6 @@ def save_careprof(request, object_id, save_person, is_student=False):
 
     if not is_student:
 
-        # remove all
-        profile.agreement.clear()
-        # update 
-        for x in request.POST.getlist('professional_agreement'):
-            profile.agreement.add( Agreement.objects.get( pk=x ) )
-
         if request.POST.get('professional_registerNumber') or request.POST.get('professional_area'):
             if not object.professionalIdentification:
                 identification = ProfessionalIdentification()
@@ -211,7 +200,6 @@ def save(request, object_id=None, save_person=True, is_student=False):
                 return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     object, list_to_remove = save_careprof(request, object_id, save_person, is_student)
-    clss = request.GET.get('clss')
 
     if is_student:
         student_form = StudentProfileForm(request.POST, instance=object.studentprofile) if object_id else StudentProfileForm(request.POST)

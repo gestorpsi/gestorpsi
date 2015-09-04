@@ -16,13 +16,11 @@ GNU General Public License for more details.
 
 import reversion
 from django.db import models
-from django.db.models import Q 
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from gestorpsi.person.models import Person
 from gestorpsi.place.models import Place
 from gestorpsi.util.uuid_field import UuidField
-from gestorpsi.organization.models import Agreement
 
 class InstitutionType(models.Model):
     """    
@@ -112,7 +110,6 @@ class ProfessionalProfile(models.Model):
     id= UuidField( primary_key= True )
     academicResume = models.OneToOneField(AcademicResume, null=True)
     initialProfessionalActivities = models.CharField(max_length=10, null=True)
-    agreement = models.ManyToManyField(Agreement, null=True)
     profession = models.OneToOneField(Profession, null=True)
     services = models.CharField(max_length=100, null=True)
     availableTime = models.CharField(max_length=100, null=True)

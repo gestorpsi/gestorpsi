@@ -26,16 +26,18 @@ from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.person.models import MaritalStatus
 from gestorpsi.person.views import person_save
 from gestorpsi.careprofessional.models import CareProfessional, Profession
-from gestorpsi.organization.models import Agreement
 from gestorpsi.place.models import Place, PlaceType
 from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.views import save_careprof
+
 
 def form(request):
     try:
         object = request.user.get_profile()
     except:
         raise Http404
+
+    tab = 'profile'
     
     countries = Country.objects.all()
     PhoneTypes = PhoneType.objects.all()
@@ -56,22 +58,22 @@ def form(request):
 
     return render_to_response('profile/profile_person.html', locals(), context_instance=RequestContext(request))
 
+
 def form_careprofessional(request):
     object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
     workplaces = object.professionalProfile.workplace.all()
-    agreements = object.professionalProfile.agreement.all()
 
     return render_to_response('profile/profile_careprofessional.html', {
                                     'object': object,
                                     'PROFESSIONAL_AREAS': Profession.objects.all(),
-                                    'AgreementTypes': Agreement.objects.all(),
                                     'WorkPlacesTypes': Place.objects.filter(organization = request.user.get_profile().org_active.id),
                                     'workplaces': workplaces,
-                                    'agreements': agreements,
                                     'ServiceTypes': Service.objects.filter( active=True, organization=request.user.get_profile().org_active ),
                                     'PlaceTypes': PlaceType.objects.all(),
+                                    'tab':'careprof',
                                     },
                               context_instance=RequestContext(request))
+
 
 def save(request):
     if not request.method == 'POST':
@@ -85,28 +87,32 @@ def save(request):
     messages.success(request, _('Profile updated successfully'))
     return HttpResponseRedirect('/profile/')
     
+
 def save_careprofessional(request):
     object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
     object = save_careprof(request, object.id, False)
     messages.success(request, _('Professional profile saved successfully'))
     return HttpResponseRedirect('/profile/careprofessional/')
 
-def change_pass(request):
-    #if request.user.get_profile().person.is_careprofessional:
-        #object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
-    #if request.user.get_profile().person.is_careprofessional:
-        #object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
 
-    clss = request.GET.get("clss")
+def change_pass(request):
+
+    tab = 'changepass'
+
+    if request.user.get_profile().person.is_careprofessional:
+        object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
+    if request.user.get_profile().person.is_careprofessional:
+        object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
 
     if request.POST.get('c_pass'):
+
         if not request.user.check_password(request.POST.get("c_pass")):
-            messages.success(request, _('The current password is wrong'))
-            return HttpResponseRedirect('/profile/chpass/?clss=error')
+            messages.error(request, _('The current password is wrong'))
+            return HttpResponseRedirect('/profile/chpass/')
         else:
             if request.POST.get("n_pass") != request.POST.get("n_pass0"):
-                messages.success(request, _('The confirmation of the new password is wrong'))
-                return HttpResponseRedirect('/profile/chpass/?clss=error')
+                messages.error(request, _('The confirmation of the new password is wrong'))
+                return HttpResponseRedirect('/profile/chpass/')
             else:
                 request.user.set_password(request.POST.get('n_pass'))
                 request.user.get_profile().temp = request.POST.get('n_pass')    # temporary field (LDAP)

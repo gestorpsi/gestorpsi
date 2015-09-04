@@ -17,7 +17,7 @@ GNU General Public License for more details.
 import reversion
 from django.db import models
 from django.utils.translation import ugettext as _
-from gestorpsi.organization.models import Organization, Agreement, AgeGroup, EducationLevel, HierarchicalLevel
+from gestorpsi.organization.models import Organization, AgeGroup, EducationLevel, HierarchicalLevel
 from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.client.models import Client
 from gestorpsi.util.uuid_field import UuidField 
@@ -97,8 +97,6 @@ class Service(models.Model):
     covenant = models.ManyToManyField(Covenant, null=True, blank=True)
     objects = ServiceManager()
 
-    class Meta:
-        ordering = ['name']
 
     def __unicode__(self):
         u = u"%s" % (self.name)

@@ -401,7 +401,7 @@ GNU General Public License for more details.
 </div>
 
 
-{% if payment_upcoming5 or payment_past5 %}
+{% if receive_upcoming_small or receive_past_small %}
     <div class="main_area home">
 
         <h3><span>{% trans "Faturamento" %}</span></h3>
@@ -415,40 +415,47 @@ GNU General Public License for more details.
         </p>
 
         <!-- eventos futuros -->
-        {% if payment_upcoming5 %}
+        {% if receive_upcoming_small %}
             <p><h2 class='red'>Futuros</h2>
-            {% for x in payment_upcoming5 %}
+            {% for x in receive_upcoming_small %}
                 <p>
                     <small>
                         {{ x.status_color_|safe }}
 
-                        {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} {% for x in x.get_display_payment_way_name_ %} - {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
+                        {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} - {% for x in x.get_display_payment_way_name_ %} {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
 
                         <br />
 
-                        {% for o in x.occurrence.all %}
-                            ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a>
-                        {% endfor %}
+                        {% if x.occurrence.all.0 %}
+                            {% for o in x.occurrence.all %}
+                                ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <a href="{% url financial-receive-form x.id %}" target="_blank">{{ x.created|date:"D, d b Y" }}</a>
+                        {% endif %}
                   </small>
                 </p>
             {% endfor %}
             </p>
         {% endif %}
 
-        <div id="payment_upcoming_all" style="display:none;">
-            {% if payment_upcoming_all %}
-                {% for x in payment_upcoming_all %}
+        <div id="receive_upcoming_all" style="display:none;">
+            {% if receive_upcoming_all %}
+                {% for x in receive_upcoming_all %}
                     <p>
                         <small>
                             {{ x.status_color_|safe }}
 
-                            {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} {% for x in x.get_display_payment_way_name_ %} - {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
-
+                            {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} - {% for x in x.get_display_payment_way_name_ %} {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
                             <br />
 
-                            {% for o in x.occurrence.all %}
-                                ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a>
-                            {% endfor %}
+                            {% if x.occurrence.all.0 %}
+                                {% for o in x.occurrence.all %}
+                                    ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <a href="{% url financial-receive-form x.id %}" target="_blank">{{ x.created|date:"D, d b Y" }}</a>
+                            {% endif %}
                       </small>
                     </p>
                 {% endfor %}
@@ -456,46 +463,54 @@ GNU General Public License for more details.
             {% endif %}
         </div>
 
-        {% if payment_upcoming_all %}
-            <p><a class="payment_upcoming_all">Mostrar / Esconder todos </a></p>
+        {% if receive_upcoming_all %}
+            <p><a class="receive_upcoming_all">Mostrar / Esconder todos </a></p>
         {% endif %}
 
 
         <!-- eventos passados -->
-        {% if payment_past5 %}
+        {% if receive_past_small %}
             <p><h2 class='red'>Passados</h2>
-            {% for x in payment_past5 %}
+            {% for x in receive_past_small %}
                 <p>
                     <small>
                         {{ x.status_color_|safe }}
 
-                        {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} {% for x in x.get_display_payment_way_name_ %} - {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
+                        {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} - {% for x in x.get_display_payment_way_name_ %} {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
 
                         <br />
 
-                        {% for o in x.occurrence.all %}
-                            ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a>{% if not forloop.last %} | {% endif %}
-                        {% endfor %}
+                        {% if x.occurrence.all.0 %}
+                            {% for o in x.occurrence.all %}
+                                ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <a href="{% url financial-receive-form x.id %}" target="_blank">{{ x.created|date:"D, d b Y" }}</a>
+                        {% endif %}
                   </small>
                 </p>
             {% endfor %}
             </p>
         {% endif %}
 
-        <div id="payment_past_all" style="display:none;">
-            {% if payment_past_all %}
-                {% for x in payment_past_all %}
+        <div id="receive_past_all" style="display:none;">
+            {% if receive_past_all %}
+                {% for x in receive_past_all %}
                     <p>
                         <small>
                             {{ x.status_color_|safe }}
 
-                            {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} {% for x in x.get_display_payment_way_name_ %} - {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
-
+                            {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} - {% for x in x.get_display_payment_way_name_ %} {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
                             <br />
 
-                            {% for o in x.occurrence.all %}
-                            ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
-                            {% endfor %}
+                            {% if x.occurrence.all.0 %}
+                                {% for o in x.occurrence.all %}
+                                    ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <a href="{% url financial-receive-form x.id %}" target="_blank">{{ x.created|date:"D, d b Y" }}</a>
+                            {% endif %}
+
                       </small>
                     </p>
                 {% endfor %}
@@ -503,8 +518,8 @@ GNU General Public License for more details.
             {% endif %}
         </div>
 
-        {% if payment_past_all %}
-            <p><a class="payment_past_all">Mostrar / Esconder todos </a></p>
+        {% if receive_past_all %}
+            <p><a class="receive_past_all">Mostrar / Esconder todos </a></p>
         {% endif %}
 
     </div>

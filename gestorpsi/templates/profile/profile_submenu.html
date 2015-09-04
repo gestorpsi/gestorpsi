@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<ul>
+    <li><a class="first {% ifequal tab 'profile' %}active{% endifequal %}" href="/profile/">{% trans "Personal Profile" %}</a></li>
+
+    {% if object.person.is_careprofessional %}
+        <li><a class="{% ifequal tab 'careprof' %}active{% endifequal %}" href="/profile/careprofessional/">{% trans "Professional Profile" %}</a></li>
+    {% endif %}
+
+    <li><a class="{% ifequal tab 'changepass' %}active{% endifequal %}" href="/profile/chpass/">{% trans "Change password" %}</a></li>
+</ul>

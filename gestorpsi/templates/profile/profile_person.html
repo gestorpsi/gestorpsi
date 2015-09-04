@@ -17,45 +17,35 @@ GNU General Public License for more details.
 {% endcomment %}
 
 {% load i18n %}
+
 {% if user.get_profile.person.is_client %}
-{% block menu_client_profile %}active{% endblock %}
+    {% block menu_client_profile %}active{% endblock %}
 {% endif %}
+
 {% block submenu %}
-    <ul>
-        <li><a class="first active" href="/profile/">{% trans "Personal Profile" %}</a></li>
-        {% if object.person.is_careprofessional %}<li><a href="/profile/careprofessional/">{% trans "Professional Profile" %}</a></li>{% endif %}
-        <li><a href="/profile/chpass/">{% trans "Change password" %}</a></li>
-    </ul>
+    {% include "profile/profile_submenu.html" %}
 {% endblock %}
 
 {% block core %}
 
-<h2 id="title_addressbook" style="display:none"></h2>
+    <h2 id="title_addressbook" style="display:none"></h2>
 
-<h2 class="title_myoffice title">{{ object.person.name }}</h2>
-<p class="description">{% trans "Personal profile" %}</p>
+    <h2 class="title_myoffice title">{{ object.person.name }}</h2>
+    <p class="description">{% trans "Personal profile" %}</p>
 
-</p>
+    <form action="/profile/save/" method="post" class="form_people">	
+        <div class="main_area">
+            {% include "meta/people.html" %}
+        <br />	
+        </div>
 
-<form action="/profile/save/" method="post" class="form_people">	
-<div class="main_area">
-	{% include "meta/people.html" %}
-<br />	
-</div>
+        <div id="sidebar" class="sidebar_save">
+            <div class="bg_blue">
+                {% include "tags/save.html" %}
+            </div>
+        </div>
+    </form>
 
-<div id="sidebar" class="sidebar_save">
-    <div class="bg_blue">
-        {% include "tags/save.html" %}
-    </div>
-</div>
-
-<div id="sidebar" class="sidebar_client">
-    {% include "tags/profile_sidebar.html" %}
-    </div>
-</div>
-
-</form>
-
-{% include "tags/upload.html" %}
+    {% include "tags/upload.html" %}
 
 {% endblock %}

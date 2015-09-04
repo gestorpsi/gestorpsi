@@ -81,8 +81,8 @@ class ProfessionalResponsibleAdmin(admin.ModelAdmin):
     form = ProfessionalResponsibleForm
 
 
-admin.site.register(Agreement)
-admin.site.register(AgreementType)
+#admin.site.register(Agreement)
+#admin.site.register(AgreementType)
 admin.site.register(PersonType)
 admin.site.register(AdministrationEnvironment)
 admin.site.register(Source)

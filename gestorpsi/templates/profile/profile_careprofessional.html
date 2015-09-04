@@ -19,115 +19,99 @@ GNU General Public License for more details.
 {% load i18n %}
 
 {% block submenu %}
-    <ul>
-        <li><a class="first" href="/profile/">{% trans "Personal Profile" %}</a></li>
-        {% if object.person.is_careprofessional %}<li><a class="active" href="/profile/careprofessional/">{% trans "Professional Profile" %}</a></li>{% endif %}
-    </ul>
+    {% include "profile/profile_submenu.html" %}
 {% endblock %}
 
 {% block core %}
 
-<h2 id="title_addressbook" style="display:none"></h2>
+    <h2 id="title_addressbook" style="display:none"></h2>
 
-{% if object.id %}
-	<h2 class="title_professional">{{ object.person.name }}</h2>
-    <p class="description">{% trans "Professional profile" %}</p>
-{% else %}
-	<h2 class="title_professional">{% trans "Adding New Profesional" %}</h2>
-	<p class="description">{% trans "Inform the professional details then click on Save button" %}</p>
-{% endif %}
+    {% if object.id %}
+        <h2 class="title_professional">{{ object.person.name }}</h2>
+        <p class="description">{% trans "Professional profile" %}</p>
+    {% else %}
+        <h2 class="title_professional">{% trans "Adding New Profesional" %}</h2>
+        <p class="description">{% trans "Inform the professional details then click on Save button" %}</p>
+    {% endif %}
 
+    <h2 id="title_contacts" style="display:none"></h2>
+    <h2 id="title_myoffice" style="display:none"></h2>
 
-</p>
-<h2 id="title_contacts" style="display:none"></h2>
-<h2 id="title_myoffice" style="display:none"></h2>
+    <form action="/profile/save/careprofessional/" method="post" >
+        <div class="main_area">
+            <input type="hidden" name="name" value="{{ object.person.name }}" />
+            <input type="hidden" name="nickname" value="{{ object.person.nickname }}" />
+            <input type="hidden" name="photo" value="{{ object.person.photo }}" />
+            <input type="hidden" name="birthDate" value="{{ object.person.birthDate }}" />
 
-
-<form action="/profile/save/careprofessional/" method="post" class="">	
-<div class="main_area">
-	<input type="hidden" name="name" value="{{ object.person.name }}" />
-	<input type="hidden" name="nickname" value="{{ object.person.nickname }}" />
-	<input type="hidden" name="photo" value="{{ object.person.photo }}" />
-	<input type="hidden" name="birthDate" value="{{ object.person.birthDate }}" />
-	<!--
-	Professional infos
-	-->
+            <!-- Professional infos -->
 	
-	<fieldset id="fieldset_professional_identification">
-		<legend>{% trans "Professional Identification" %}</legend>
-			<label>{% trans "Profession" %}<br />
-			<select name="professional_area" {% if object.professionalIdentification.profession %}disabled{% endif %} class="medium profession_type" id="0">
-                    <option value="">------</option>
-				{% for l in PROFESSIONAL_AREAS %}
-					<option value="{{ l.id }}" symbol="{{ l.symbol }}" {% ifequal object.professionalIdentification.profession.symbol l.symbol%} selected {% endifequal %}>{{ l }}</option>
-				{% endfor %}
-			</select>
-			</label>
-			<label>{% trans "Licence" %}<br />
-			    <input id="0" {% if object.professionalIdentification.profession %}disabled{% endif %} type="text" name="symbol" class="small profession_symbol" readonly="1" {% if object.professionalIdentification.profession.symbol %} value="{{ object.professionalIdentification.profession.symbol }}" {% endif %}>
-			</label>
-			<label>{% trans "Professional Subscription" %}<br />
-				<input type="text" {% if object.professionalIdentification.profession %}disabled{% endif %} name="professional_registerNumber" maxlength="50" value="{{ object.professionalIdentification.registerNumber }}" />
-			</label>
-	</fieldset>
+            <fieldset id="fieldset_professional_identification">
 
-	<fieldset id="fieldset_professional_profile">
-		<legend>{% trans "Professional Profile" %}</legend>
-			<label>{% trans "Inital Activities Date" %}<br />
-				<input type="text" maxlength="10" name="professional_initialActivitiesDate" value="{{ object.professionalProfile.initialProfessionalActivities }}" class="initialActivities" />
-			</label>
-            {% comment %}
-			<label>{% trans "Available Time" %}<br />
-				<input type="text" name="professional_availableTime" value="{{ object.professionalProfile.availableTime }}" />
-			</label>
-            {% endcomment %}
-	</fieldset>
+                <legend>{% trans "Professional Identification" %}</legend>
 
-	<fieldset id="fieldset_professional_agreement">
-		<legend>{% trans "Professional Agreements" %}</legend>
-			<label>{% trans "Agreements" %}<br />
-			<select name="professional_agreement" multiple="multiple" class="select multiple extrabig asm">
-				{% for l in AgreementTypes %}
-				<option value="{{ l.id }}"{% for a in agreements %}{% ifequal a.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
-				{% endfor %}
-			</select>
-			</label>
-	</fieldset>
+                <label>{% trans "Profession" %}<br />
+                    <select name="professional_area" class="medium profession_type">
+                        <option value="">------</option>
+                        {% for l in PROFESSIONAL_AREAS %}
+                            <option value="{{ l.id }}" symbol="{{ l.symbol }}" {% ifequal object.professionalIdentification.profession.symbol l.symbol%} selected {% endifequal %}>{{ l }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
 
-	<fieldset id="fieldset_professional_workplace">
-		<legend>{% trans "Professional Workplaces" %}</legend>
-			
-			<label>{% trans "Workplaces" %}<br />
-			<select name="professional_workplace" multiple="multiple" class="select multiple extrabig asm">
-				{% for l in WorkPlacesTypes %}
-				<option value="{{ l.id }}"{% for w in workplaces %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
-				{% endfor %}
-			</select>
-			</label>
-			<br />
-            {% comment %}
-			<label><a class="form_mini" display="place_mini">{% trans "Add New Workplace" %}</a></label>
-            {% endcomment %}
-	</fieldset>
+                <label>{% trans "Licence" %}<br />
+                    <input type="text" name="symbol" class="small profession_symbol" value="{{ object.professionalIdentification.profession.symbol }}" >
+                </label>
 
-	<fieldset>
-		<legend>{% trans "Professional Services" %}</legend>
-			
-			<label>{% trans "Services" %}<br />
-			<select name="professional_service" multiple="multiple" class="select multiple extrabig asm">
-				{% for l in ServiceTypes %}
-				<option value="{{ l.id }}"{% for sc in object.prof_services.all %}{% ifequal sc.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
-				{% endfor %}
-			</select>
-			</label>
-	</fieldset>
+                <label>{% trans "Professional Subscription" %}<br />
+                    <input type="text" name="professional_registerNumber" maxlength="50" value="{{ object.professionalIdentification.registerNumber }}" />
+                </label>
+            </fieldset>
 
-<br />	
-</div>
-{% include "tags/profile_professional_sidebar.html" %}
+            <fieldset id="fieldset_professional_profile">
+                <legend>{% trans "Professional Profile" %}</legend>
+                    <label>{% trans "Inital Activities Date" %}<br />
+                        <input type="text" maxlength="10" name="professional_initialActivitiesDate" value="{{ object.professionalProfile.initialProfessionalActivities }}" class="initialActivities calendar" />
+                    </label>
+            </fieldset>
 
-</form>
+            <!-- workplaces -->
+            <label style="margin-right:215px;" >{% trans "Profession Workplace available" %}</label>
+            <label>{% trans "Profession Workplace selected" %}</label>
+            <div style="clear:both; margin-left:10px;">
+                <select name="professional_workplace" multiple="multiple" class="select multiple extrabig asm" id="id_professional_workplace">
+                    {% for l in WorkPlacesTypes %}
+                        <option value="{{ l.id }}"{% for w in workplaces %}{% ifequal w.id l.id %} selected {% endifequal %}{% endfor %}>{{ l }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-{% include "tags/place_mini.html" %}
+            <br />
+
+            <!-- services -->
+            <label style="margin-right:260px;" >{% trans "Service available" %}</label>
+            <label>{% trans "Service selected" %}</label>
+            <div style="clear:both; margin-left:10px;">
+                <select name="professional_service" multiple="multiple" class="select multiple extrabig asm" id="id_professional_service">
+                    {% for l in ServiceTypes %}
+                        <option value="{{ l.id }}" {% for sc in object.prof_services.all %}{% ifequal sc.id l.id %} selected {% endifequal %}{% endfor %}>{{ l }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+        <br />	
+        </div> <!-- main area -->
+
+        {% include "tags/profile_professional_sidebar.html" %}
+
+    </form>
+
+    <!-- mount combox -->
+    <script>
+        $('select#id_professional_workplace').multiSelect();
+        $('select#id_professional_service').multiSelect();
+    </script>
+
+    {% include "tags/place_mini.html" %}
 
 {% endblock %}

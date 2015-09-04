@@ -39,6 +39,7 @@ for r in Referral.objects.filter(covenant__isnull=False, covenant__charge=covena
         receive.off = 0
         receive.total = c.price
         receive.covenant_charge = c.charge
+        receive.covenant_id = c.id
 
         # clear all
         receive.covenant_payment_way_options = ''

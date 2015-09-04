@@ -72,6 +72,7 @@ class Receive(models.Model):
     total = models.DecimalField(_(u'Total'), max_digits=6, decimal_places=2, null=False, blank=False)
 
     # from covenant
+    covenant_id = models.CharField( max_length=36, blank=False, null=False )
     covenant_charge = models.PositiveIntegerField(blank=True, null=True, choices=CHARGE)
     covenant_pack_size = models.PositiveIntegerField(blank=True, null=True)
     covenant_payment_way_options = models.TextField(blank=True, null=True)
@@ -129,3 +130,28 @@ class Receive(models.Model):
         self.created = datetime.now()
         # real save
         super(Receive, self).save(*args, **kwargs)
+
+    
+    def get_is_conclude_(self):
+        '''
+            is package or event? 
+            both have occurrence
+            conclude if all occurrences are past
+            return True or False, conclude or not.
+        '''
+        if self.covenant_charge == 1 or self.covenant_charge == 2 : # package(2) or event(1)
+            if self.occurrence.filter( start_time__gte=datetime.today() ):
+                return False
+            else:
+                return True
+
+        '''
+            by period do not have occurrence date, start_time.
+            conclude if created(date) less than igual today
+            return True or False, conclude or not.
+        '''
+        if self.covenant_charge == 10 or self.covenant_charge == 11 or self.covenant_charge == 12 : # week, fortnightly or monthly
+            if self.created > datetime.today() :
+                return False
+            else:
+                return True

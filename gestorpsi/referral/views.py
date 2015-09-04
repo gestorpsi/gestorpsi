@@ -74,6 +74,7 @@ def client_referrals(request, object_id = None):
     
     return HttpResponse(array, mimetype='application/json')
 
+
 def _referral_view(request, object_id = None, referral_id = None, template_name = 'client/client_referral_home.html', access_check_referral_write = None):
     clss = request.GET.get("clss")
     user = request.user
@@ -84,13 +85,27 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     referrals = ReferralExternal.objects.filter(referral=referral_id)
     payments = Receive.objects.filter(occurrence__event__referral=referral)
 
-    # upcoming
-    payment_upcoming5 = Receive.objects.filter( occurrence__start_time__gte=datetime.today() ).filter( Q(occurrence__event__referral=referral) | Q(referral=referral) ).order_by('-occurrence__start_time').distinct()[0:5]
-    payment_upcoming_all = Receive.objects.filter( occurrence__start_time__gte=datetime.today() ).filter( Q(occurrence__event__referral=referral)|Q(referral=referral) ).order_by('-occurrence__start_time').distinct()[5:]
+    '''
+        avoid duplicate payment when is package
+    '''
+    tmpp = [] # past
+    tmpu = [] # upcoming
 
-    # past
-    payment_past5 = Receive.objects.filter( occurrence__start_time__lte=datetime.today() ).filter( Q(occurrence__event__referral=referral)|Q(referral=referral) ).order_by('-occurrence__start_time').distinct()[0:5]
-    payment_past_all = Receive.objects.filter(occurrence__start_time__lte=datetime.today() ).filter( Q(occurrence__event__referral=referral)|Q(referral=referral) ).order_by('-occurrence__start_time').distinct()[5:]
+    for x in Receive.objects.filter( Q(occurrence__event__referral=referral) | Q(referral=referral) ).order_by('-occurrence__start_time','-id').distinct():
+
+        # past
+        if x.get_is_conclude_(): 
+            if not x in tmpp:
+                tmpp.append(x)
+        # upcoming
+        else:
+            if not x in tmpu:
+                tmpu.append(x)
+
+    receive_upcoming_small = tmpu[0:5]
+    receive_upcoming_all = tmpu[5:]
+    receive_past_small = tmpp[0:5]
+    receive_past_all = tmpp[5:]
 
 
     try:

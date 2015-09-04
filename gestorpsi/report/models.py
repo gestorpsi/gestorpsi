@@ -157,10 +157,10 @@ class Report(models.Model):
 
         # covenant
         if not covenant == 'all':
-            aberto = aberto.filter( Q(referral__covenant__id=covenant) | Q(occurrence__event__referral__covenant=covenant) ).distinct()
-            recebido = recebido.filter( Q(referral__covenant__id=covenant) | Q(occurrence__event__referral__covenant=covenant) ).distinct()
-            faturado = faturado.filter( Q(referral__covenant__id=covenant) | Q(occurrence__event__referral__covenant=covenant) ).distinct()
-            cancelado = cancelado.filter( Q(referral__covenant__id=covenant) | Q(occurrence__event__referral__covenant=covenant) ).distinct()
+            aberto = aberto.filter( covenant_id=covenant )
+            recebido = recebido.filter( covenant_id=covenant )
+            faturado = faturado.filter( covenant_id=covenant )
+            cancelado = cancelado.filter( covenant_id=covenant )
 
         # payment_way 
         if not pway == 'all':
@@ -201,21 +201,6 @@ class Report(models.Model):
                 faturado = faturado.filter(covenant_payment_way_selected__icontains='6').distinct()
                 cancelado = cancelado.filter(covenant_payment_way_selected__icontains='6').distinct()
 
-        # filter by service
-        if not service == '':
-
-            if '0' in receive_ar :
-                aberto = aberto.filter(occurrence__event__referral__service=service ).distinct()
-
-            if '1' in receive_ar :
-                recebido = recebido.filter(occurrence__event__referral__service=service ).distinct()
-
-            if '2' in receive_ar :
-                faturado = faturado.filter(occurrence__event__referral__service=service ).distinct()
-
-            if '3' in receive_ar :
-                cancelado = cancelado.filter(occurrence__event__referral__service=service ).distinct()
-
         if receive == 'all': # receive status
 
             receive_ar = ['0','1','2','3'] # all
@@ -255,6 +240,23 @@ class Report(models.Model):
                 data.append( ['Cancelado',cancelado.count()] )
                 total_receive += cancelado.count()
                 colors.append('blue')
+
+
+        # filter by service
+        if not service == '':
+
+            if '0' in receive_ar :
+                aberto = aberto.filter(Q(occurrence__event__referral__service=service)|Q(referral__service=service) ).distinct()
+
+            if '1' in receive_ar :
+                recebido = recebido.filter(Q(occurrence__event__referral__service=service)|Q(referral__service=service) ).distinct()
+
+            if '2' in receive_ar :
+                faturado = faturado.filter(Q(occurrence__event__referral__service=service)|Q(referral__service=service) ).distinct()
+
+            if '3' in receive_ar :
+                cancelado = cancelado.filter(Q(occurrence__event__referral__service=service)|Q(referral__service=service) ).distinct()
+
 
         # amount of earch status, total column
         total_aberto = 0

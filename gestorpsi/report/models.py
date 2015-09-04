@@ -118,9 +118,6 @@ class Report(models.Model):
     def get_receive_(self, organization, date_start, date_end, professional, receive, service, pway, covenant ):
         date_start , date_end = self.set_date(organization, date_start, date_end)
 
-        print '-------------------- MODELS '
-        print
-
         '''
             data : array or False
             data return False when no numbers to make a graphic
@@ -158,17 +155,12 @@ class Report(models.Model):
             faturado = faturado.filter( Q( occurrence__event__referral__professional__id=professional )| Q( referral__professional__id=professional ) ).distinct()
             cancelado = cancelado.filter( Q( occurrence__event__referral__professional__id=professional )| Q( referral__professional__id=professional ) ).distinct()
 
-        print '------------- COVENANT', covenant
         # covenant
         if not covenant == 'all':
-            print '------------ filter'
-            print len(aberto)
-            aberto = aberto.filter( Q(referral__service__covenant__id=covenant) | Q(occurrence__event__referral__service__covenant__id=covenant) )
-            print len(aberto)
-
-            recebido = recebido.filter( Q(referral__service__covenant__id=covenant) | Q(occurrence__event__referral__service__covenant__id=covenant) ).distinct()
-            faturado = faturado.filter( Q(referral__service__covenant__id=covenant) | Q(occurrence__event__referral__service__covenant__id=covenant) ).distinct()
-            cancelado = cancelado.filter( Q(referral__service__covenant__id=covenant) | Q(occurrence__event__referral__service__covenant__id=covenant) ).distinct()
+            aberto = aberto.filter( covenant_id=covenant )
+            recebido = recebido.filter( covenant_id=covenant )
+            faturado = faturado.filter( covenant_id=covenant )
+            cancelado = cancelado.filter( covenant_id=covenant )
 
         # payment_way 
         if not pway == 'all':

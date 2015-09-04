@@ -109,10 +109,6 @@ def receive_data(request, template='report/report_receive.html'):
     receive
     """
 
-    print
-    print request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('receive') , request.GET.get('service'), request.GET.get('pway'), request.GET.get('covenant')
-    print
-
     data , colors , date_start, date_end, list_receive, total_receive = Report().get_receive_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('receive') , request.GET.get('service'), request.GET.get('pway'), request.GET.get('covenant') )
 
     # variables of JS

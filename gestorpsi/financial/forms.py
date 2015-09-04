@@ -44,7 +44,7 @@ class ReceiveFormUpdate(forms.ModelForm):
 
     class Meta:
         model = Receive
-        exclude = ['occurrence','covenant_pack_size','covenant_charge','covenant_payment_way_options']
+        exclude = ['occurrence','covenant_pack_size','covenant_charge','covenant_payment_way_options','covenant_id']
 
 
     def __init__(self, *args, **kwargs):
@@ -71,4 +71,4 @@ class ReceiveFormNew(forms.ModelForm):
 
     class Meta:
         model = Receive
-        exclude = ['occurrence','covenant_pack_size','covenant_charge','covenant_payment_way_options','covenant_payment_way_selected']
+        exclude = ['occurrence','covenant_pack_size','covenant_charge','covenant_payment_way_options','covenant_payment_way_selected','covenant_id']

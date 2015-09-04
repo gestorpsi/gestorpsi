@@ -72,6 +72,10 @@ class Receive(models.Model):
     total = models.DecimalField(_(u'Total'), max_digits=6, decimal_places=2, null=False, blank=False)
 
     # from covenant
+    '''
+        covenant can be changed, price, name and others. 
+        To store fields of covenant to compare when financial report filter are used.
+    '''
     covenant_id = models.CharField( max_length=36, blank=False, null=False )
     covenant_charge = models.PositiveIntegerField(blank=True, null=True, choices=CHARGE)
     covenant_pack_size = models.PositiveIntegerField(blank=True, null=True)

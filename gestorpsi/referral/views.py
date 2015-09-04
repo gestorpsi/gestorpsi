@@ -94,7 +94,7 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     for x in Receive.objects.filter( Q(occurrence__event__referral=referral) | Q(referral=referral) ).order_by('-occurrence__start_time','-id').distinct():
 
         # past
-        if x.is_conclude(): 
+        if x.get_is_conclude_(): 
             if not x in tmpp:
                 tmpp.append(x)
         # upcoming

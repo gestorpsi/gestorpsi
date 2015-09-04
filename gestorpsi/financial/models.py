@@ -131,7 +131,7 @@ class Receive(models.Model):
         super(Receive, self).save(*args, **kwargs)
 
     
-    def is_conclude(self):
+    def get_is_conclude_(self):
         '''
             is package or event? 
             both have occurrence

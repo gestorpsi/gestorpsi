@@ -155,6 +155,7 @@ def add_event(
                                 receive.off = 0
                                 receive.total = x.price
                                 receive.covenant_charge = x.charge
+                                receive.covenant_id = x.id
                                 receive.save()
 
                                 # by pack

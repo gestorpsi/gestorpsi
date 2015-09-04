@@ -33,12 +33,13 @@ for r in Referral.objects.filter(covenant__isnull=False, covenant__charge=covena
 
         # new
         receive = Receive()
-        receive .created = datetime
-        receive .name = c.name
-        receive .price = c.price
-        receive .off = 0
-        receive .total = c.price
-        receive .covenant_charge = c.charge
+        receive.created = datetime
+        receive.name = c.name
+        receive.price = c.price
+        receive.off = 0
+        receive.total = c.price
+        receive.covenant_charge = c.charge
+        receive.covenant_id = c.id
 
         # clear all
         receive.covenant_payment_way_options = ''

@@ -72,12 +72,15 @@ class Receive(models.Model):
     total = models.DecimalField(_(u'Total'), max_digits=6, decimal_places=2, null=False, blank=False)
 
     # from covenant
+    '''
+        covenant can be changed, price, name and others. 
+        To store fields of covenant to compare when financial report filter are used.
+    '''
     covenant_id = models.CharField(max_length=36, blank=False, null=False)
     covenant_charge = models.PositiveIntegerField(blank=False, null=False, choices=CHARGE)
-    covenant_pack_size = models.PositiveIntegerField(blank=False, null=False)
+    covenant_pack_size = models.PositiveIntegerField(blank=True, null=True)
     covenant_payment_way_options = models.TextField(blank=False, null=False)
     covenant_payment_way_selected = models.TextField(blank=False, null=False)
-
     # fk
     occurrence = models.ManyToManyField(Occurrence, null=True, blank=True, editable=False) # por evento, inscrição e evento.
     referral = models.ForeignKey("referral.Referral", null=True, blank=True, editable=False) # por periodo, apenas inscrição.

@@ -5115,7 +5115,7 @@ msgstr "Usuários"
 #: templates/core/site_disabled.html:24 templates/registration/login.html:24
 #: templates/registration/password_reset_form.html:24
 msgid "Welcome to GestorPsi"
-msgstr "Bem vindo ao GestorPsi!"
+msgstr "Bem vindo ao GestorPsi"
 
 #: templates/core/site_disabled.html:26
 msgid ""

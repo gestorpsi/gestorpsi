@@ -44,7 +44,7 @@ class ReceiveFormUpdate(forms.ModelForm):
 
     class Meta:
         model = Receive
-        exclude = ['occurrence','covenant_pack_size','covenant_charge','covenant_payment_way_options']
+        exclude = ['occurrence','covenant_pack_size','covenant_charge','covenant_payment_way_options','covenant_id']
 
 
     def __init__(self, *args, **kwargs):
@@ -61,7 +61,7 @@ class ReceiveFormUpdate(forms.ModelForm):
 
 '''
     for group, create a receive
-    payment way non exist becouse does't no the covenant
+    payment way non exist becouse I don't know what covenant will be used
 '''
 class ReceiveFormNew(forms.ModelForm):
     name = forms.CharField(label=u'Nome convênio', max_length=250, widget=forms.TextInput( attrs={ 'readonly':'true' , 'class':'big' }) );
@@ -71,4 +71,4 @@ class ReceiveFormNew(forms.ModelForm):
 
     class Meta:
         model = Receive
-        exclude = ['occurrence','covenant_pack_size','covenant_charge','covenant_payment_way_options','covenant_payment_way_selected']
+        exclude = ['occurrence','covenant_pack_size','covenant_charge','covenant_payment_way_options','covenant_payment_way_selected','covenant_id']

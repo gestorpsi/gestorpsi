@@ -72,11 +72,11 @@ class Receive(models.Model):
     total = models.DecimalField(_(u'Total'), max_digits=6, decimal_places=2, null=False, blank=False)
 
     # from covenant
-    covenant_id = models.CharField( max_length=36, blank=False, null=False )
-    covenant_charge = models.PositiveIntegerField(blank=True, null=True, choices=CHARGE)
-    covenant_pack_size = models.PositiveIntegerField(blank=True, null=True)
-    covenant_payment_way_options = models.TextField(blank=True, null=True)
-    covenant_payment_way_selected = models.TextField(blank=True, null=True)
+    covenant_id = models.CharField(max_length=36, blank=False, null=False)
+    covenant_charge = models.PositiveIntegerField(blank=False, null=False, choices=CHARGE)
+    covenant_pack_size = models.PositiveIntegerField(blank=False, null=False)
+    covenant_payment_way_options = models.TextField(blank=False, null=False)
+    covenant_payment_way_selected = models.TextField(blank=False, null=False)
 
     # fk
     occurrence = models.ManyToManyField(Occurrence, null=True, blank=True, editable=False) # por evento, inscrição e evento.

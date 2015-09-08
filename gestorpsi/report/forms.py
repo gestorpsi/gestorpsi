@@ -18,7 +18,6 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from gestorpsi.report.models import Report, ReportsSaved, VIEWS_CHOICES
 from gestorpsi.service.models import Service
-from gestorpsi.financial.models import STATUS
 from gestorpsi.careprofessional.models import CareProfessional
 from datetime import datetime
 from gestorpsi.schedule.models import OCCURRENCE_CONFIRMATION_PRESENCE

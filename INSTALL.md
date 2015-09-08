@@ -35,35 +35,6 @@ $ cd gestorpsi
 $ cp settings.py.DIST settings.py
 ```
 
-This is the part where you're going to change inside settings.py file(remember to set you username and password, if you have set one):
-```python
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',# Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'gestorpsi',             # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                 # Not used with sqlite3.
-        'HOST': '',                 # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
-
-SERVER_EMAIL = '' # your email
-DEFAULT_FROM_EMAIL = '' # your email
-FROM_EMAIL = '' # your email
-
-EMAIL_FROM = ''# your email
-EMAIL_HOST = ''# your email host
-EMAIL_HOST_USER = '' # your email
-EMAIL_HOST_PASSWORD = '' # your email password
-EMAIL_HOST_PORT = 587 # 465 or 587
-EMAIL_USE_TLS = True
-
-# Development environment only, comment this if you're going to use this in production environment
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend' # change way to write email instead of sending to the real email it writes to file
-EMAIL_FILE_PATH = './emails' # change this to a proper location or create this folder, since it's going to be the folder where the emails are going to be written
-```
-
 ##Installing project requirements
 Make sure you're inside GestorPsi's virtualenv
 ```bash

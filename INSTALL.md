@@ -61,13 +61,7 @@ EMAIL_USE_TLS = True
 
 # Development environment only, comment this if you're going to use this in production environment
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend' # change way to write email instead of sending to the real email it writes to file
-EMAIL_FILE_PATH = '/tmp/gestorpsi-emails' # change this to a proper location or create this folder, since it's going to be the folder where the emails are going to be written
-```
-
-###Creating emails folder
-```bash
-$ mkdir /tmp/gestorpsi-emails # or the name you want to
-$ chmod ugo+rwx /tmp/gestorpsi-emails # dangerous move, but no need to worry here
+EMAIL_FILE_PATH = './emails' # change this to a proper location or create this folder, since it's going to be the folder where the emails are going to be written
 ```
 
 ##Installing project requirements

@@ -77,6 +77,11 @@ class Invoice(models.Model):
     
     def __unicode__(self):
         return u'%s - %s %s' % (self.organization, self.date.strftime('%d/%m/%Y'), self.plan)
+
+
+    # replace comma for dot
+    def get_ammount_decimal_dot_(self): 
+        return u"%s".replace(",",".") % self.ammount
     
     
     def save(self, *args, **kargs):

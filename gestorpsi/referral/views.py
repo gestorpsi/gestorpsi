@@ -132,9 +132,11 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
 
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
     
-def _referral_occurrences(request, object_id = None, referral_id = None, type = 'upcoming', template_name='client/client_referral_occurrences.html'):
+
+def _referral_occurrences(request, object_id=None, referral_id=None, type='upcoming', template_name='client/client_referral_occurrences.html'):
+
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
-    occurrences = referral.past_occurrences_all() if type == 'past' else  referral.upcoming_occurrences()
+    occurrences = referral.past_occurrences_all() if type=='past' else  referral.upcoming_occurrences()
     
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-08 15:55-0300\n"
+"POT-Creation-Date: 2015-09-10 13:19-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: settings.py:77
+#: settings.py:84
 msgid "Brazilian Portuguese"
 msgstr ""
 
-#: settings.py:78
+#: settings.py:85
 msgid "English"
 msgstr ""
 
@@ -202,9 +202,8 @@ msgid "Enter your state/region here"
 msgstr ""
 
 #: authentication/forms.py:124 boleto/admin.py:133 boleto/models.py:72
-#: templates/meta/people_profile.html:92
-#: templates/meta/people_profile.html:101 templates/tags/address.html:69
-#: templates/tags/address.html.py:80
+#: templates/meta/people_profile.html:92 templates/meta/people_profile.html:101
+#: templates/tags/address.html:69 templates/tags/address.html.py:80
 msgid "City"
 msgstr ""
 
@@ -1212,8 +1211,7 @@ msgstr ""
 msgid "Diagnosis Resolution Date"
 msgstr ""
 
-#: ehr/forms.py:48 referral/models.py:60
-#: templates/client/client_print.html:341
+#: ehr/forms.py:48 referral/models.py:60 templates/client/client_print.html:341
 #: templates/client/client_print.html:346
 #: templates/referral/referral_details.html:28
 msgid "Diagnosis"
@@ -3153,8 +3151,8 @@ msgstr ""
 #: templates/client/client_print.html:260
 #: templates/client/client_referral_plus_form.html:83
 #: templates/contact/contact_list.html:75
-#: templates/contact/contact_list_external.html:75
-#: templates/core/main.html:188 templates/schedule/schedule_filter.html:100
+#: templates/contact/contact_list_external.html:75 templates/core/main.html:188
+#: templates/schedule/schedule_filter.html:100
 #: templates/service/service_client_list.html:71
 #: templates/service/service_form.html:138
 #: templates/service/service_queue.html:64
@@ -3211,8 +3209,7 @@ msgstr ""
 #: templates/employee/employee_list.html:29 templates/place/place_form.html:29
 #: templates/place/place_list.html:29 templates/place/place_room_form.html:29
 #: templates/place/place_room_list.html:29
-#: templates/service/select_area.html:28
-#: templates/service/service_list.html:29
+#: templates/service/select_area.html:28 templates/service/service_list.html:29
 msgid "add"
 msgstr ""
 
@@ -3311,12 +3308,10 @@ msgid "Professional Services"
 msgstr ""
 
 #: templates/careprofessional/careprofessional_form.html:132
-#: templates/careprofessional/student_form.html:98
-#: templates/core/main.html:187
+#: templates/careprofessional/student_form.html:98 templates/core/main.html:187
 #: templates/profile/profile_careprofessional.html:118
 #: templates/schedule/schedule_filter.html:79
-#: templates/service/select_area.html:23
-#: templates/service/service_form.html:23
+#: templates/service/select_area.html:23 templates/service/service_form.html:23
 #: templates/service/service_group_form.html:23
 #: templates/service/service_group_list.html:23
 #: templates/service/service_list.html:23
@@ -3504,8 +3499,7 @@ msgid "if you want to add a new one."
 msgstr ""
 
 #: templates/careprofessional/student_form.html:23
-#: templates/careprofessional/student_list.html:23
-#: templates/core/main.html:189
+#: templates/careprofessional/student_list.html:23 templates/core/main.html:189
 msgid "Students"
 msgstr ""
 
@@ -3655,8 +3649,7 @@ msgstr ""
 msgid "This client have no family member yet."
 msgstr ""
 
-#: templates/client/client_family.html:79
-#: templates/client/client_home.html:149
+#: templates/client/client_family.html:79 templates/client/client_home.html:149
 #: templates/tags/people_identification.html:62
 #: templates/tags/people_identification.html:64
 msgid "edit"
@@ -3851,8 +3844,7 @@ msgstr ""
 msgid "Discharge was discussed with client"
 msgstr ""
 
-#: templates/client/client_home.html:144
-#: templates/client/client_print.html:120
+#: templates/client/client_home.html:144 templates/client/client_print.html:120
 #: templates/client/client_print.html:167
 #: templates/client/client_print.html:169
 #: templates/client/client_print.html:184
@@ -3863,8 +3855,7 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: templates/client/client_home.html:144
-#: templates/client/client_print.html:120
+#: templates/client/client_home.html:144 templates/client/client_print.html:120
 #: templates/client/client_print.html:167
 #: templates/client/client_print.html:169
 #: templates/client/client_print.html:184
@@ -3905,8 +3896,7 @@ msgstr ""
 msgid "customer(s)"
 msgstr ""
 
-#: templates/client/client_print.html:81
-#: templates/client/client_print.html:137
+#: templates/client/client_print.html:81 templates/client/client_print.html:137
 #: templates/report/report_export.html:118
 msgid "Image not available when Debug=True and server running in localhost"
 msgstr ""
@@ -3941,8 +3931,7 @@ msgstr ""
 msgid "Attached Files"
 msgstr ""
 
-#: templates/client/client_print.html:153
-#: templates/tags/client_sidebar.html:26
+#: templates/client/client_print.html:153 templates/tags/client_sidebar.html:26
 msgid "Record Data"
 msgstr ""
 
@@ -3958,8 +3947,8 @@ msgstr ""
 msgid "Family Relation"
 msgstr ""
 
-#: templates/client/client_print.html:211
-#: templates/tags/client_sidebar.html:28 templates/tags/client_sidebar.html:53
+#: templates/client/client_print.html:211 templates/tags/client_sidebar.html:28
+#: templates/tags/client_sidebar.html:53
 msgid "Demographic Data"
 msgstr ""
 
@@ -4082,8 +4071,8 @@ msgstr ""
 #: templates/client/client_print.html:314
 #: templates/client/client_print.html:378
 #: templates/client/client_print.html:417 templates/messages/trash.html:24
-#: templates/messages/view.html:27
-#: templates/referral/referral_details.html:151 templates/tags/invoice.html:24
+#: templates/messages/view.html:27 templates/referral/referral_details.html:151
+#: templates/tags/invoice.html:24
 msgid "Date"
 msgstr ""
 
@@ -4096,18 +4085,15 @@ msgstr ""
 msgid "hs"
 msgstr ""
 
-#: templates/client/client_print.html:318
-#: templates/ehr/ehr_demand_form.html:44
+#: templates/client/client_print.html:318 templates/ehr/ehr_demand_form.html:44
 msgid "How long it happens"
 msgstr ""
 
-#: templates/client/client_print.html:319
-#: templates/ehr/ehr_demand_form.html:49
+#: templates/client/client_print.html:319 templates/ehr/ehr_demand_form.html:49
 msgid "Frequency"
 msgstr ""
 
-#: templates/client/client_print.html:321
-#: templates/ehr/ehr_demand_form.html:58
+#: templates/client/client_print.html:321 templates/ehr/ehr_demand_form.html:58
 #: templates/ehr/ehr_demand_list_item.html:34 templates/tags/invoice.html:68
 msgid "Duration"
 msgstr ""
@@ -4170,8 +4156,7 @@ msgstr ""
 msgid "Occurrence confirmed rescheduled"
 msgstr ""
 
-#: templates/client/client_print.html:379
-#: templates/device/device_form.html:163
+#: templates/client/client_print.html:379 templates/device/device_form.html:163
 #: templates/schedule/schedule_events.html:45
 #: templates/schedule/schedule_occurrence_form.html:53
 msgid "Room"
@@ -4550,8 +4535,8 @@ msgid "view remote contacts"
 msgstr ""
 
 #: templates/contact/contact_list.html:76
-#: templates/contact/contact_list_external.html:76
-#: templates/core/main.html:190 templates/employee/employee_form.html:23
+#: templates/contact/contact_list_external.html:76 templates/core/main.html:190
+#: templates/employee/employee_form.html:23
 #: templates/employee/employee_list.html:23
 #: templates/tags/client_sidebar.html:34
 #: templates/tags/occurrence_employee_form.html:19
@@ -4587,9 +4572,8 @@ msgstr ""
 
 #: templates/contact/contact_organization_form.html:87
 #: templates/contact/contact_professional_form.html:123
-#: templates/tags/contact_sidebar.html:20
-#: templates/tags/device_sidebar.html:20 templates/tags/place_sidebar.html:20
-#: templates/tags/room_sidebar.html:20
+#: templates/tags/contact_sidebar.html:20 templates/tags/device_sidebar.html:20
+#: templates/tags/place_sidebar.html:20 templates/tags/room_sidebar.html:20
 msgid "Object Actions"
 msgstr ""
 
@@ -4602,24 +4586,22 @@ msgstr ""
 #: templates/contact/contact_organization_form.html:89
 #: templates/contact/contact_professional_form.html:125
 #: templates/tags/careprofessional_sidebar.html:28
-#: templates/tags/client_sidebar.html:91
-#: templates/tags/contact_sidebar.html:23
+#: templates/tags/client_sidebar.html:91 templates/tags/contact_sidebar.html:23
 #: templates/tags/device_sidebar.html:22
-#: templates/tags/employee_sidebar.html:28
-#: templates/tags/place_sidebar.html:23 templates/tags/room_sidebar.html:23
-#: templates/tags/service_sidebar.html:46 templates/tags/user_sidebar.html:27
+#: templates/tags/employee_sidebar.html:28 templates/tags/place_sidebar.html:23
+#: templates/tags/room_sidebar.html:23 templates/tags/service_sidebar.html:46
+#: templates/tags/user_sidebar.html:27
 msgid "Disable"
 msgstr ""
 
 #: templates/contact/contact_organization_form.html:89
 #: templates/contact/contact_professional_form.html:125
 #: templates/tags/careprofessional_sidebar.html:28
-#: templates/tags/client_sidebar.html:91
-#: templates/tags/contact_sidebar.html:23
+#: templates/tags/client_sidebar.html:91 templates/tags/contact_sidebar.html:23
 #: templates/tags/device_sidebar.html:22
-#: templates/tags/employee_sidebar.html:28
-#: templates/tags/place_sidebar.html:23 templates/tags/room_sidebar.html:23
-#: templates/tags/service_sidebar.html:46 templates/tags/user_sidebar.html:27
+#: templates/tags/employee_sidebar.html:28 templates/tags/place_sidebar.html:23
+#: templates/tags/room_sidebar.html:23 templates/tags/service_sidebar.html:46
+#: templates/tags/user_sidebar.html:27
 msgid "Enable"
 msgstr ""
 
@@ -6366,8 +6348,7 @@ msgstr ""
 msgid "Book on this day"
 msgstr ""
 
-#: templates/service/select_area.html:40
-#: templates/service/service_form.html:44
+#: templates/service/select_area.html:40 templates/service/service_form.html:44
 msgid "Adding New Service"
 msgstr ""
 
@@ -6703,8 +6684,7 @@ msgstr ""
 msgid "Add Family Member"
 msgstr ""
 
-#: templates/tags/client_sidebar.html:93
-#: templates/tags/contact_sidebar.html:24
+#: templates/tags/client_sidebar.html:93 templates/tags/contact_sidebar.html:24
 #: templates/tags/device_sidebar.html:23 templates/tags/place_sidebar.html:24
 #: templates/tags/room_sidebar.html:24
 msgid "Print Record"
@@ -7123,11 +7103,11 @@ msgstr ""
 msgid "Change Password"
 msgstr ""
 
-#: templates/users/users_form.html:86 templates/users/users_form.html:255
+#: templates/users/users_form.html:86 templates/users/users_form.html.py:255
 msgid "Change e-mail"
 msgstr ""
 
-#: templates/users/users_form.html:92 templates/users/users_form.html:239
+#: templates/users/users_form.html:92 templates/users/users_form.html.py:239
 #: templates/users/users_form.html:261
 msgid "Again"
 msgstr ""

@@ -64,10 +64,6 @@ GNU General Public License for more details.
             </div>
             <div class="payment_status_filter hidden" >
             {% trans "Pagamento"%} {{form.payment_status}}
-            </div>    
-            
-            <div class="occurrence_status_filter hidden">
-                {% trans "Occurrence" %} {{ form.occurrence_status }}
             </div>
             
             <div style="margin-top:20px;margin-right:30px;" class="float_right">
@@ -101,9 +97,8 @@ GNU General Public License for more details.
             </div>
 
             <div style="clear:both;"></div>
-            <div id="report_table">
-            {# {% include "report/report_table.html" %} #}
-            </div>
+            <div id="occurrence"></div>
+            <div id="report_table"></div>
             
         </div>
     </div>
@@ -113,7 +108,7 @@ GNU General Public License for more details.
     <h3>{% trans "Report filters" %}</h3>
     <ul>
         {% for f in filters %}
-        <li><a class="pointer report_filter" data="&date_start={{f.date_start|date:"d/m/Y"}}&date_end={{f.date_end|date:"d/m/Y"}}">{{ f.name }}</a></li>
+            <li><a class="pointer report_filter" data="&date_start={{f.date_start|date:"d/m/Y"}}&date_end={{f.date_end|date:"d/m/Y"}}">{{ f.name }}</a></li>
         {% endfor %}
     </ul>
 </div>

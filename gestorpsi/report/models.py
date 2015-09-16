@@ -249,28 +249,25 @@ class Report(models.Model):
         return chart.get_url()
         
     def get_occurrence_(self, organization, date_start, date_end, service, accumulated):
-        ON_TIME = 1
-        LATE = 2
-        ARRIVED = 3
-        UNMARKED = 4
-        RESCHEDULED = 5
+        
+        ON_TIME = {'value': 1, 'text': 'Client arrived on time' }
+        LATE = {'value': 2, 'text': 'Client arrived Late' }
+        DID_NOT_ARRIVE = {'value': 3, 'text': 'Client not arrived' }
+        UNMARKED = {'value': 4, 'text': 'Occurrence unmarked' }
+        RESCHEDULED = {'value': 5, 'text': 'Occurrence rescheduled' }
+
+        presence_types = [ON_TIME, LATE, DID_NOT_ARRIVE, UNMARKED, RESCHEDULED]
 
         date_start,date_end = self.set_date(organization, date_start, date_end)
 
         data = []
         
-        on_time = OccurrenceConfirmation.objects.filter(occurrence_id=ON_TIME).count()
-        late = OccurrenceConfirmation.objects.filter(occurrence_id=LATE).count()
-        arrived = OccurrenceConfirmation.objects.filter(occurrence_id=ARRIVED).count()
-        unmarked = OccurrenceConfirmation.objects.filter(occurrence_id=UNMARKED).count()
-        rescheduled = OccurrenceConfirmation.objects.filter(occurrence_id=RESCHEDULED).count()
-
-        data.append({'occurrence_type': _('on_time'), 'total': on_time })
-        data.append({'occurrence_type': _('late'), 'total': late })
-        data.append({'occurrence_type': _('arrived'), 'total': arrived })
-        data.append({'occurrence_type': _('unmarked'), 'total': unmarked })
-        data.append({'occurrence_type': _('rescheduled'), 'total': rescheduled })
-
+        for presence_type in presence_types:
+            occurrences = OccurrenceConfirmation.objects.filter(presence=presence_type['value'], occurrence__start_time__gte=date_start, occurrence__start_time__lte=date_end)
+            if service != 'all':
+                occurrences = occurrences.filter(occurrence__event__referral__service=service)
+            data.append({'occurrence_type': _(presence_type['text']),
+                'total': occurrences.count(), 'occurrences' : occurrences })
         return data
 
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-10 13:19-0300\n"
+"POT-Creation-Date: 2015-09-16 10:52-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: settings.py:84
+#: settings.py:83
 msgid "Brazilian Portuguese"
 msgstr ""
 
-#: settings.py:85
+#: settings.py:84
 msgid "English"
 msgstr ""
 
@@ -42,15 +42,15 @@ msgstr ""
 
 #: admission/views.py:42 admission/views.py:91 admission/views.py:119
 #: careprofessional/views.py:73 careprofessional/views.py:210
-#: client/views.py:146 client/views.py:340 client/views.py:434
-#: client/views.py:469 client/views.py:477 client/views.py:623
-#: client/views.py:671 client/views.py:723 client/views.py:743
-#: client/views.py:770 client/views.py:815 client/views.py:894
-#: client/views.py:925 client/views.py:945 client/views.py:968
-#: client/views.py:978 client/views.py:983 client/views.py:1002
-#: client/views.py:1045 client/views.py:1065 client/views.py:1083
-#: client/views.py:1108 client/views.py:1118 client/views.py:1170
-#: client/views.py:1182 demographic/views.py:36 demographic/views.py:48
+#: client/views.py:146 client/views.py:341 client/views.py:436
+#: client/views.py:471 client/views.py:479 client/views.py:625
+#: client/views.py:673 client/views.py:725 client/views.py:745
+#: client/views.py:778 client/views.py:827 client/views.py:906
+#: client/views.py:937 client/views.py:957 client/views.py:980
+#: client/views.py:990 client/views.py:995 client/views.py:1014
+#: client/views.py:1057 client/views.py:1077 client/views.py:1095
+#: client/views.py:1120 client/views.py:1130 client/views.py:1182
+#: client/views.py:1194 demographic/views.py:36 demographic/views.py:48
 #: demographic/views.py:66 demographic/views.py:88 demographic/views.py:108
 #: ehr/views.py:146 ehr/views.py:166 ehr/views.py:185 ehr/views.py:264
 #: ehr/views.py:285 ehr/views.py:303 ehr/views.py:325 ehr/views.py:340
@@ -77,6 +77,7 @@ msgstr ""
 #: templates/contact/contact_professional_form.html:77
 #: templates/device/device_type_form.html:57
 #: templates/meta/people_indentification.html:37
+#: templates/report/report_graphic.html:41
 #: templates/service/service_form.html:89
 #: templates/tags/address_book_organization_mini.html:24
 #: templates/tags/address_book_professional_mini.html:35
@@ -706,7 +707,7 @@ msgstr ""
 msgid "<br />Active services: <b>%s</b>"
 msgstr ""
 
-#: careprofessional/views.py:276 client/views.py:437 service/views.py:283
+#: careprofessional/views.py:276 client/views.py:439 service/views.py:283
 #: templates/service/service_form.html:149 templates/users/users_form.html:177
 msgid "Student"
 msgstr ""
@@ -733,7 +734,7 @@ msgstr ""
 msgid "Parents"
 msgstr ""
 
-#: client/models.py:28 client/models.py:43 report/models.py:1026
+#: client/models.py:28 client/models.py:43 report/models.py:1023
 msgid "Children"
 msgstr ""
 
@@ -782,7 +783,19 @@ msgstr ""
 msgid "Others"
 msgstr ""
 
-#: client/models.py:80 demographic/forms.py:28 demographic/forms.py:36
+#: client/models.py:59
+msgid "Payer"
+msgstr ""
+
+#: client/models.py:60
+msgid "Exempted"
+msgstr ""
+
+#: client/models.py:61
+msgid "Temporarily exempted"
+msgstr ""
+
+#: client/models.py:85 demographic/forms.py:28 demographic/forms.py:36
 #: ehr/forms.py:39 ehr/forms.py:56 ehr/forms.py:65 referral/models.py:453
 #: templates/admission/admission_form.html:148
 #: templates/careprofessional/careprofessional_form.html:148
@@ -794,8 +807,8 @@ msgstr ""
 #: templates/client/client_referral_form.html:160
 #: templates/client/client_referral_plus_form.html:122
 #: templates/device/device_form.html:87
-#: templates/employee/employee_form.html:82 templates/meta/people.html:27
-#: templates/meta/people.html.py:28
+#: templates/employee/employee_form.html:82 templates/meta/people.html:28
+#: templates/meta/people.html.py:29
 #: templates/organization/organization_form.html:262
 #: templates/place/place_form.html:132 templates/place/place_form.html:133
 #: templates/place/place_room_form.html:92
@@ -803,11 +816,11 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
-#: client/models.py:378
+#: client/models.py:391
 msgid "years"
 msgstr ""
 
-#: client/models.py:393 templates/admission/admission_form.html:33
+#: client/models.py:406 templates/admission/admission_form.html:33
 #: templates/admission/admission_form.html:46
 msgid "Admission Details"
 msgstr ""
@@ -821,108 +834,108 @@ msgstr ""
 msgid "This client is not enabled."
 msgstr ""
 
-#: client/views.py:472
+#: client/views.py:474
 msgid "Sorry! You can not save referral for disabled clients!"
 msgstr ""
 
-#: client/views.py:516 client/views.py:612 client/views.py:654
+#: client/views.py:518 client/views.py:614 client/views.py:656
 msgid "Referral saved successfully"
 msgstr ""
 
-#: client/views.py:528
+#: client/views.py:530
 msgid "(Student)"
 msgstr ""
 
-#: client/views.py:657
+#: client/views.py:659
 msgid "Service is deactive. Impossible register a referral."
 msgstr ""
 
-#: client/views.py:674
+#: client/views.py:676
 msgid ""
 "Sorry, you can not discharge a queued referral. Remove it from queue first "
 "before to continue"
 msgstr ""
 
-#: client/views.py:698
+#: client/views.py:700
 msgid "Client discharged successfully"
 msgstr ""
 
-#: client/views.py:700
+#: client/views.py:702
 msgid "Referral discharge updated successfully"
 msgstr ""
 
-#: client/views.py:703
+#: client/views.py:705
 msgid "Form Error"
 msgstr ""
 
-#: client/views.py:714
+#: client/views.py:716
 msgid "Registered have hour in the schedule"
 msgstr ""
 
-#: client/views.py:804
+#: client/views.py:816
 msgid "Client saved successfully"
 msgstr ""
 
-#: client/views.py:878
+#: client/views.py:890
 msgid " (Company)"
 msgstr ""
 
-#: client/views.py:878
+#: client/views.py:890
 msgid " (Disabled)"
 msgstr ""
 
-#: client/views.py:899 users/views.py:388
+#: client/views.py:911 users/views.py:388
 msgid "User activated successfully"
 msgstr ""
 
-#: client/views.py:904 users/views.py:388
+#: client/views.py:916 users/views.py:388
 msgid "User deactivated successfully"
 msgstr ""
 
-#: client/views.py:906
+#: client/views.py:918
 msgid "Sorry, you can not deactivate a client with registered referral"
 msgstr ""
 
-#: client/views.py:928
+#: client/views.py:940
 msgid ""
 "Sorry, you can not book a queued client. Remove it first from queue before "
 "continue"
 msgstr ""
 
-#: client/views.py:986 client/views.py:1007
+#: client/views.py:998 client/views.py:1019
 msgid "Error adding to queue! Referral is already queued"
 msgstr ""
 
-#: client/views.py:990
+#: client/views.py:1002
 msgid "Error adding to queue! Referral have upcoming occurrences"
 msgstr ""
 
-#: client/views.py:1011
+#: client/views.py:1023
 msgid ""
 "Subscript in the queue not is possible. Referral have upcoming occurrences"
 msgstr ""
 
-#: client/views.py:1034
+#: client/views.py:1046
 msgid "Referral added to queue successfully"
 msgstr ""
 
-#: client/views.py:1055
+#: client/views.py:1067
 msgid "Client removed from queue successfully"
 msgstr ""
 
-#: client/views.py:1099
+#: client/views.py:1111
 msgid "External Referral saved successfully"
 msgstr ""
 
-#: client/views.py:1139
+#: client/views.py:1151
 msgid "Family member added successfully"
 msgstr ""
 
-#: client/views.py:1199
+#: client/views.py:1211
 msgid "Employee already registered on this company"
 msgstr ""
 
-#: client/views.py:1209
+#: client/views.py:1221
 msgid "Related client added successfully to this company"
 msgstr ""
 
@@ -1109,7 +1122,8 @@ msgstr ""
 #: templates/device/device_form.html:125 templates/device/device_form.html:146
 #: templates/place/place_room_form.html:73 templates/tags/address.html:88
 #: templates/tags/document.html:22 templates/tags/email.html:25
-#: templates/tags/phone.html:34 templates/tags/room.html:31
+#: templates/tags/payment_condition.html:29 templates/tags/phone.html:34
+#: templates/tags/room.html:31
 msgid "Type"
 msgstr ""
 
@@ -1355,8 +1369,8 @@ msgstr ""
 msgid "Confirmed by the professional"
 msgstr ""
 
-#: ehr/models.py:72 referral/models.py:76 report/models.py:1012
-#: report/models.py:1030
+#: ehr/models.py:72 referral/models.py:76 report/models.py:1009
+#: report/models.py:1027
 msgid "Unknown"
 msgstr ""
 
@@ -1809,15 +1823,15 @@ msgstr ""
 msgid "Big"
 msgstr ""
 
-#: person/models.py:78 templates/organization/organization_form.html:74
+#: person/models.py:81 templates/organization/organization_form.html:74
 msgid "Company"
 msgstr ""
 
-#: person/models.py:253
+#: person/models.py:256
 msgid "Company Size"
 msgstr ""
 
-#: person/models.py:254
+#: person/models.py:257
 msgid "CNAE Subclass Code"
 msgstr ""
 
@@ -2027,6 +2041,7 @@ msgid "Not accumulated Graph"
 msgstr ""
 
 #: report/forms.py:48 report/views.py:196
+#: templates/report/report_graphic.html:43
 #: templates/service/service_client_list.html:23
 #: templates/tags/schedule_form.html:66 templates/tags/schedule_form.html:106
 #: templates/tags/schedule_form.html:108
@@ -2065,15 +2080,11 @@ msgid ""
 msgstr ""
 
 #: report/forms.py:54
-msgid "Status do evento"
+msgid "Payment Status"
 msgstr ""
 
-#: report/forms.py:65
+#: report/forms.py:65 report/forms.py:69 report/forms.py:75
 msgid "------ All Services ------"
-msgstr ""
-
-#: report/forms.py:69 report/forms.py:75
-msgid "--- Todos ---"
 msgstr ""
 
 #: report/forms.py:111
@@ -2102,7 +2113,6 @@ msgstr ""
 
 #: report/models.py:47 templates/client/client_print.html:377
 #: templates/ehr/ehr_diagnosis_list_item.html:33
-#: templates/report/report_index.html:70
 msgid "Occurrence"
 msgstr ""
 
@@ -2122,275 +2132,259 @@ msgstr ""
 msgid "This year"
 msgstr ""
 
-#: report/models.py:268
-msgid "on_time"
-msgstr ""
-
-#: report/models.py:269
-msgid "late"
-msgstr ""
-
-#: report/models.py:270
-msgid "arrived"
-msgstr ""
-
-#: report/models.py:271
-msgid "unmarked"
-msgstr ""
-
-#: report/models.py:272
-msgid "rescheduled"
-msgstr ""
-
-#: report/models.py:295
+#: report/models.py:292
 msgid "Report name to save"
 msgstr ""
 
-#: report/models.py:323
+#: report/models.py:320
 msgid "Individuals"
 msgstr ""
 
-#: report/models.py:324
+#: report/models.py:321
 msgid "Companies"
 msgstr ""
 
-#: report/models.py:325 templates/report/report_client_list.html:29
+#: report/models.py:322 templates/report/report_client_list.html:29
 #: templates/report/report_saved.html:34 templates/report/report_saved.html:50
 msgid "Total"
 msgstr ""
 
-#: report/models.py:343 report/models.py:394
+#: report/models.py:340 report/models.py:391
 msgid "Admission Signed"
 msgstr ""
 
-#: report/models.py:343
+#: report/models.py:340
 msgid "Admission Not Signed"
 msgstr ""
 
-#: report/models.py:346
+#: report/models.py:343
 msgid "Signed"
 msgstr ""
 
-#: report/models.py:347
+#: report/models.py:344
 msgid "Not Signed"
 msgstr ""
 
-#: report/models.py:391
+#: report/models.py:388
 msgid "Admission Overview"
 msgstr ""
 
-#: report/models.py:397 templates/client/client_print.html:111
+#: report/models.py:394 templates/client/client_print.html:111
 msgid "Admission Knowledge"
 msgstr ""
 
-#: report/models.py:413
+#: report/models.py:410
 msgid "Admission report - Individuals"
 msgstr ""
 
-#: report/models.py:417
+#: report/models.py:414
 msgid "Admission report - Companies"
 msgstr ""
 
-#: report/models.py:420
+#: report/models.py:417
 msgid "Admission report - Total"
 msgstr ""
 
-#: report/models.py:425
+#: report/models.py:422
 msgid "Admission report - Signed by client"
 msgstr ""
 
-#: report/models.py:429
+#: report/models.py:426
 msgid "Admission report - Not signed by client"
 msgstr ""
 
-#: report/models.py:434
+#: report/models.py:431
 #, python-format
 msgid "Admission report - Knowledge - %s"
 msgstr ""
 
-#: report/models.py:489
+#: report/models.py:486
 msgid "Subscriptions"
 msgstr ""
 
-#: report/models.py:490
+#: report/models.py:487
 msgid "Subscriptions Discharged"
 msgstr ""
 
-#: report/models.py:491
+#: report/models.py:488
 msgid "Internal Referrals"
 msgstr ""
 
-#: report/models.py:492 templates/client/client_print.html:258
+#: report/models.py:489 templates/client/client_print.html:258
 msgid "External Referrals"
 msgstr ""
 
-#: report/models.py:517
+#: report/models.py:514
 msgid "Referral Discharge Discussed with client"
 msgstr ""
 
-#: report/models.py:517
+#: report/models.py:514
 msgid "Referral Discharge Not discussed with client"
 msgstr ""
 
-#: report/models.py:521
+#: report/models.py:518
 msgid "Discussed with client"
 msgstr ""
 
-#: report/models.py:522
+#: report/models.py:519
 msgid "Not discussed with client"
 msgstr ""
 
-#: report/models.py:831
+#: report/models.py:828
 msgid "Subscriptions Overview"
 msgstr ""
 
-#: report/models.py:834
+#: report/models.py:831
 msgid "Service Subscriptions"
 msgstr ""
 
-#: report/models.py:835
+#: report/models.py:832
 msgid "Discharges from Services"
 msgstr ""
 
-#: report/models.py:837
+#: report/models.py:834
 msgid "Subscriptions Discharged Discussed"
 msgstr ""
 
-#: report/models.py:838
+#: report/models.py:835
 msgid "Subscriptions Indications"
 msgstr ""
 
-#: report/models.py:838
+#: report/models.py:835
 msgid "Excluding internal referrals"
 msgstr ""
 
-#: report/models.py:840
+#: report/models.py:837
 msgid "Internal Referrals to Services"
 msgstr ""
 
-#: report/models.py:841
+#: report/models.py:838
 msgid "Internal Referrals from Services"
 msgstr ""
 
-#: report/models.py:844
+#: report/models.py:841
 msgid "Externals Referrals from Services"
 msgstr ""
 
-#: report/models.py:846
+#: report/models.py:843
 msgid "Discharges Reason"
 msgstr ""
 
-#: report/models.py:849
+#: report/models.py:846
 msgid "Discharges Discussed with Client"
 msgstr ""
 
-#: report/models.py:851
+#: report/models.py:848
 msgid "Professional Subscriptions"
 msgstr ""
 
-#: report/models.py:873
+#: report/models.py:870
 msgid "Referral Total"
 msgstr ""
 
-#: report/models.py:877
+#: report/models.py:874
 msgid "Referral Charged"
 msgstr ""
 
-#: report/models.py:881 templates/client/client_home.html:125
+#: report/models.py:878 templates/client/client_home.html:125
 msgid "Referral Discharged"
 msgstr ""
 
-#: report/models.py:885
+#: report/models.py:882
 msgid "Referral Discharged Discussed"
 msgstr ""
 
-#: report/models.py:889
+#: report/models.py:886
 msgid "Referral Discharged Not Discussed"
 msgstr ""
 
-#: report/models.py:893
+#: report/models.py:890
 msgid "Referral Internals"
 msgstr ""
 
-#: report/models.py:897
+#: report/models.py:894
 msgid "Referral Externals"
 msgstr ""
 
-#: report/models.py:902
+#: report/models.py:899
 #, python-format
 msgid "Referral Knowledge - %s"
 msgstr ""
 
-#: report/models.py:907
+#: report/models.py:904
 #, python-format
 msgid "Referral Service - %s"
 msgstr ""
 
-#: report/models.py:915
+#: report/models.py:912
 #, python-format
 msgid "Referral Internal to Service %s"
 msgstr ""
 
-#: report/models.py:920
+#: report/models.py:917
 #, python-format
 msgid "Referral Internal from Service %s"
 msgstr ""
 
-#: report/models.py:925
+#: report/models.py:922
 #, python-format
 msgid "Referral External from Service %s"
 msgstr ""
 
-#: report/models.py:930
+#: report/models.py:927
 #, python-format
 msgid "Discharges from Service %s"
 msgstr ""
 
-#: report/models.py:935
+#: report/models.py:932
 #, python-format
 msgid "Discharged by reason %s"
 msgstr ""
 
-#: report/models.py:940
+#: report/models.py:937
 #, python-format
 msgid "Discharges discussed from Service %s"
 msgstr ""
 
-#: report/models.py:945
+#: report/models.py:942
 #, python-format
 msgid "Subscriptions to professional %s"
 msgstr ""
 
-#: report/models.py:1010 templates/client/client_print_record_data_tag.html:8
+#: report/models.py:1007 templates/client/client_print_record_data_tag.html:8
 #: templates/meta/people_indentification.html:21
 #: templates/tags/people_identification.html:30
 msgid "Male"
 msgstr ""
 
-#: report/models.py:1011 templates/client/client_print_record_data_tag.html:7
+#: report/models.py:1008 templates/client/client_print_record_data_tag.html:7
 #: templates/meta/people_indentification.html:22
 #: templates/tags/people_identification.html:33
 msgid "Female"
 msgstr ""
 
-#: report/models.py:1027
+#: report/models.py:1024
 msgid "Teen"
 msgstr ""
 
-#: report/models.py:1028
+#: report/models.py:1025
 msgid "Adult"
 msgstr ""
 
-#: report/models.py:1029
+#: report/models.py:1026
 msgid "Elderly"
 msgstr ""
 
-#: report/models.py:1039 templates/client/client_print_record_data_tag.html:6
+#: report/models.py:1036 templates/client/client_print_record_data_tag.html:6
 msgid "Gender"
 msgstr ""
 
-#: report/models.py:1040 templates/meta/people_profile.html:34
+#: report/models.py:1037 templates/meta/people_profile.html:34
 msgid "Age"
+msgstr ""
+
+#: report/views.py:85
+msgid "Occurrence graphic from selected service"
 msgstr ""
 
 #: report/views.py:133
@@ -4072,7 +4066,7 @@ msgstr ""
 #: templates/client/client_print.html:378
 #: templates/client/client_print.html:417 templates/messages/trash.html:24
 #: templates/messages/view.html:27 templates/referral/referral_details.html:151
-#: templates/tags/invoice.html:24
+#: templates/report/report_graphic.html:42 templates/tags/invoice.html:24
 msgid "Date"
 msgstr ""
 
@@ -5311,6 +5305,10 @@ msgstr ""
 msgid "Add IM"
 msgstr ""
 
+#: templates/meta/payment_conditions.html:25
+msgid "Payment Conditions"
+msgstr ""
+
 #: templates/meta/people_documents.html:25
 msgid "Documents"
 msgstr ""
@@ -6060,6 +6058,10 @@ msgstr ""
 msgid "List of clients between"
 msgstr ""
 
+#: templates/report/report_graphic.html:34
+msgid "List of events"
+msgstr ""
+
 #: templates/report/report_index.html:34
 msgid "Report for"
 msgstr ""
@@ -6087,27 +6089,27 @@ msgstr ""
 msgid "Pagamento"
 msgstr ""
 
-#: templates/report/report_index.html:74
+#: templates/report/report_index.html:70
 msgid "Save Report"
 msgstr ""
 
-#: templates/report/report_index.html:75
+#: templates/report/report_index.html:71
 msgid "Update"
 msgstr ""
 
-#: templates/report/report_index.html:86 templates/report/report_menu.html:22
+#: templates/report/report_index.html:82 templates/report/report_menu.html:22
 msgid "Export Data"
 msgstr ""
 
-#: templates/report/report_index.html:94
+#: templates/report/report_index.html:90
 msgid "Report saved successfully with label"
 msgstr ""
 
-#: templates/report/report_index.html:100
+#: templates/report/report_index.html:96
 msgid "Saved at"
 msgstr ""
 
-#: templates/report/report_index.html:113
+#: templates/report/report_index.html:108
 msgid "Report filters"
 msgstr ""
 
@@ -6836,6 +6838,14 @@ msgstr ""
 
 #: templates/tags/occurrence_family_form.html:32
 msgid "The client does not have member family registered."
+msgstr ""
+
+#: templates/tags/payment_condition.html:21
+msgid "Salary"
+msgstr ""
+
+#: templates/tags/payment_condition.html:25
+msgid "Value for payment"
 msgstr ""
 
 #: templates/tags/people_identification.html:26

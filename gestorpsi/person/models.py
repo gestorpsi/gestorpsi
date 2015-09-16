@@ -41,12 +41,14 @@ COMPANY_SIZE = (
     (3, _('Big')),
 )
 
+
 class MaritalStatus(models.Model):
     description = models.CharField(max_length=20)
     def __unicode__(self):
         return u"%s" % self.description
     class Meta:
         ordering = ['description']
+
 
 class Person(models.Model):
     id = UuidField(primary_key=True)
@@ -68,6 +70,7 @@ class Person(models.Model):
     comments = models.TextField(blank=True)
     active = models.BooleanField(default=True)
     organization = models.ManyToManyField(Organization)
+    salary = models.DecimalField(max_digits=7, decimal_places=2, default=0.00)
 
     # the fields below were added in order to deal with foreign ones
     birthForeignCity = models.CharField(max_length=100, null=True)

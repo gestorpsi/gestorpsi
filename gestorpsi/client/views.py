@@ -34,7 +34,7 @@ from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
 from gestorpsi.service.models import Service, ServiceGroup, GroupMembers
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.careprofessional.views import Profession
-from gestorpsi.client.models import Client, Relation
+from gestorpsi.client.models import Client, Relation, PAYMENT_CONDITION, PaymentCondition
 from gestorpsi.client.forms import FamilyForm
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.internet.models import EmailType, IMNetwork
@@ -194,6 +194,7 @@ def add(request):
                                         'ReferralChoices': ReferralChoice.objects.all(),
                                         'Relations': Relation.objects.all(),
                                         'cnae': Cnae.objects.all(),
+                                        'payment_conditions': PAYMENT_CONDITION,
                                          },
                                         context_instance=RequestContext(request))
 
@@ -389,6 +390,7 @@ def form(request, object_id=''):
                                 'clss': request.GET.get('clss'),
                                 'company_form': company_form,
                                 'cnae': cnae,
+                                'payment_conditions': PAYMENT_CONDITION,
                                },
                               context_instance=RequestContext(request)
                               )
@@ -761,28 +763,37 @@ def save(request, object_id=None, is_company = False):
     if not request.POST:
         return HttpResponseRedirect('/client/add/')
 
-    if object_id:
-        object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
-        person = object.person
-
-        # check access by requested user
-        if not _access_check(request, object):
-            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
-
-    else:
+    if not object_id:
         object = Client()
         person = Person()
+        payment_condition = PaymentCondition()
 
-        # Id Record
-        org = get_object_or_404(Organization, pk=user.get_profile().org_active.id )
-        org.last_id_record = org.last_id_record + 1
-        org.save()
+    else:        
+        object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+        person = object.person
+        payment_condition = object.payment_condition
 
-        # Admission date
-        object.idRecord = org.last_id_record + 1
-        object.admission_date = datetime.now()
-        object.person = person_save(request, person)
-        object.save()
+    # check access by requested user
+    if not _access_check(request, object):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    # Id Record
+    org = get_object_or_404(Organization, pk=user.get_profile().org_active.id )
+    org.last_id_record = org.last_id_record + 1
+    org.save()
+
+    payment_condition.payment_condition = request.POST["payment_condition"]
+    payment_condition.value_for_payment = request.POST["value_for_payment"] if payment_condition.payment_condition == PAYMENT_CONDITION[0][0] else float(0)
+    payment_condition.save()
+    object.payment_condition = payment_condition
+    
+    # Admission date
+    object.idRecord = org.last_id_record + 1
+    object.admission_date = datetime.now()
+    object.person = person_save(request, person)
+    object.person.salary = request.POST["salary"]
+    object.person.save()
+    object.save()
 
     if is_company:
         company_form = CompanyForm(request.POST) if not object_id else CompanyForm(request.POST, instance=object.person.company)
@@ -799,6 +810,7 @@ def save(request, object_id=None, is_company = False):
 
     a.referral_choice_id = AdmissionChoice.objects.all().order_by('weight')[0].id
     object.admissionreferral_set.add(a)
+
     object.save()
 
     messages.success(request, _('Client saved successfully'))

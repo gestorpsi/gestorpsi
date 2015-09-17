@@ -25,37 +25,40 @@ from .models import Profile, Role
 class ProfileTest(TestCase):
 
     def setUp(self):
-        tobias = User
-        joaquim = Person
-        mcdonalds = Organization
+        tobias = User()
+        joaquim = Person()
+        mcdonalds = Organization()
+        papel = Role()
 
-        self.user = tobias
-        self.organization = [mcdonalds]
-        self.try_login = 10
         self.crypt_temp = "cryptografia"
         self.org_active = models.ForeignKey(
             mcdonalds, related_name="org_active", null=True)
         self.person = joaquim
         self.objects = UserManager()
 
-        self.perfil = Profile
-        self.perfil.user = self.user
-        self.perfil.organization = self.organization
-        self.perfil.try_login = self.try_login
-        self.perfil.crypt_temp = self.crypt_temp
-        self.perfil.org_active = self.org_active
-        self.perfil.person = self.person
-        self.perfil.objects = self.objects
+        self.perfil = Profile()
+        self.perfil.user = tobias
+    #  self.perfil.organization = [mcdonalds]
+        # self.perfil.crypt_temp = self.crypt_temp
+        # self.perfil.org_active = self.org_active
+        # self.perfil.person = self.person
+        # self.perfil.objects = self.objects
 
     def test_user_is_set(self):
-        self.assertTrue(issubclass(self.perfil.user, User))
+        self.assertIsInstance(self.perfil.user, User)
 
     def test_user_parms_is_avaible(self):
-        self.assertIsNotNone(self.perfil.user.pk)
+        self.assertIsNone(self.perfil.user.id)
 
     # def test_organization_is_set(self):
-    #     self.assertIsInstance(
-    #         self.perfil.organization, Organization)
+    #     self.assertTrue(issubclass(
+    #         self.perfil.organization, Organization))
+
+    # def test_organization_params_is_avaible(self):
+    #     self.assertIsNotNone(self.perfil.organization.pk)
+
+    # def test_try_login_is_set(self):
+    #     self.assertIsNotNone(self.perfil.try_login)
 
     # def test_try_login_is_set(self):
     #     self.assertEquals(self.perfil.try_login, 10)

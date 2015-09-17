@@ -40,33 +40,43 @@ class ProfileTest(TestCase):
         self.person = models.OneToOneField(joaquim, null=True)
         self.objects = UserManager()
 
-        self.profile = Profile
-        self.profile.user = self.user
-        self.profile.organization = self.organization
-        self.profile.try_login = self.try_login
-        self.profile.crypt_temp = self.crypt_temp
-        self.profile.org_active = self.org_active
-        self.profile.person = self.person
-        self.profile.objects = self.objects
+        self.perfil = Profile
+        self.perfil.user = self.user
+        self.perfil.organization = self.organization
+        self.perfil.try_login = self.try_login
+        self.perfil.crypt_temp = self.crypt_temp
+        self.perfil.org_active = self.org_active
+        self.perfil.person = self.person
+        self.perfil.objects = self.objects
 
     def test_user_is_set(self):
-        self.assertIsInstance(self.profile.user, models.OneToOneField)
+        self.assertIsInstance(self.perfil.user, models.OneToOneField)
 
     def test_organization_is_set(self):
         self.assertIsInstance(
-            self.profile.organization, models.ManyToManyField)
+            self.perfil.organization, models.ManyToManyField)
 
     def test_try_login_is_set(self):
-        self.assertIsInstance(self.profile.try_login, models.IntegerField)
+        self.assertIsInstance(self.perfil.try_login, models.IntegerField)
 
     def test_crypt_temp_is_set(self):
-        self.assertIsInstance(self.profile.crypt_temp, models.CharField)
+        self.assertIsInstance(self.perfil.crypt_temp, models.CharField)
 
     def test_org_active_is_set(self):
-        self.assertIsInstance(self.profile.org_active, models.ForeignKey)
+        self.assertIsInstance(self.perfil.org_active, models.ForeignKey)
 
     def test_person_is_set(self):
-        self.assertIsInstance(self.profile.person, models.OneToOneField)
+        self.assertIsInstance(self.perfil.person, models.OneToOneField)
 
     def test_objects_is_set(self):
-        self.assertIsInstance(self.profile.objects, UserManager)
+        self.assertIsInstance(self.perfil.objects, UserManager)
+
+
+class RoleTest(TestCase):
+
+    def setUp(self):
+        tobias = Group
+        joaquim = Person
+        mcdonalds = Organization
+
+        self.profile = models.ForeignKey(joaquim)

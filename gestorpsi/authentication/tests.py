@@ -25,18 +25,48 @@ from .models import Profile
 class ProfileTest(TestCase):
 
     def setUp(self):
-        self.user = models.OneToOneField(User, unique=True)
+        tobias = User
+        joaquim = Person
+        mcdonalds = Organization
+
+        self.user = models.OneToOneField(tobias)
         self.organization = models.ManyToManyField(
-            Organization, through='Role', null=True)
+            mcdonalds, through='Role', null=True)
         self.try_login = models.IntegerField(default=0, null=True)
         self.crypt_temp = models.CharField(
             max_length=256, blank=True, null=True)
         self.org_active = models.ForeignKey(
-            Organization, related_name="org_active", null=True)
-        self.person = models.OneToOneField(Person, null=True)
+            mcdonalds, related_name="org_active", null=True)
+        self.person = models.OneToOneField(joaquim, null=True)
         self.objects = UserManager()
 
-        self.profile = Profile(user=self.user)
+        self.profile = Profile
+        self.profile.user = self.user
+        self.profile.organization = self.organization
+        self.profile.try_login = self.try_login
+        self.profile.crypt_temp = self.crypt_temp
+        self.profile.org_active = self.org_active
+        self.profile.person = self.person
+        self.profile.objects = self.objects
 
-    def testuser(self):
-        self.assertIsInstance(self.user, models.OneToOneField)
+    def test_user_is_set(self):
+        self.assertIsInstance(self.profile.user, models.OneToOneField)
+
+    def test_organization_is_set(self):
+        self.assertIsInstance(
+            self.profile.organization, models.ManyToManyField)
+
+    def test_try_login_is_set(self):
+        self.assertIsInstance(self.profile.try_login, models.IntegerField)
+
+    def test_crypt_temp_is_set(self):
+        self.assertIsInstance(self.profile.crypt_temp, models.CharField)
+
+    def test_org_active_is_set(self):
+        self.assertIsInstance(self.profile.org_active, models.ForeignKey)
+
+    def test_person_is_set(self):
+        self.assertIsInstance(self.profile.person, models.OneToOneField)
+
+    def test_objects_is_set(self):
+        self.assertIsInstance(self.profile.objects, UserManager)

@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/caep-unb/gestorpsi.svg)](https://travis-ci.org/caep-unb/gestorpsi)
 [![Code Climate](https://codeclimate.com/github/CAEP-UnB/gestorpsi/badges/gpa.svg)](https://codeclimate.com/github/CAEP-UnB/gestorpsi)
 [![Code Health](https://landscape.io/github/CAEP-UnB/gestorpsi/unb/landscape.svg?style=flat)](https://landscape.io/github/CAEP-UnB/gestorpsi/unb)
-[![Coverage Status](https://coveralls.io/repos/caep-unb/gestorpsi/badge.svg?branch=unb)](https://coveralls.io/r/caep-unb/gestorpsi)
+[![Coverage Status](https://coveralls.io/repos/caep-unb/gestorpsi/badge.svg?branch=unb&service=github)](https://coveralls.io/github/caep-unb/gestorpsi?branch=unb)
 [![Join the chat at https://gitter.im/caep-unb/gestorpsi](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/caep-unb/gestorpsi?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ##About
 GestorPsi is a system to management one, or many clinic organizations.

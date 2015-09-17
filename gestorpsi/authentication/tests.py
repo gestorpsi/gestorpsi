@@ -17,9 +17,9 @@ GNU General Public License for more details.
 from django.db import models
 from gestorpsi.person.models import Person
 from gestorpsi.organization.models import Organization
-from django.contrib.auth.models import User, UserManager
+from django.contrib.auth.models import User, UserManager, Group
 from django.test import TestCase
-from .models import Profile
+from .models import Profile, Role
 
 
 class ProfileTest(TestCase):
@@ -29,15 +29,13 @@ class ProfileTest(TestCase):
         joaquim = Person
         mcdonalds = Organization
 
-        self.user = models.OneToOneField(tobias)
-        self.organization = models.ManyToManyField(
-            mcdonalds, through='Role', null=True)
-        self.try_login = models.IntegerField(default=0, null=True)
-        self.crypt_temp = models.CharField(
-            max_length=256, blank=True, null=True)
+        self.user = tobias
+        self.organization = [mcdonalds]
+        self.try_login = 10
+        self.crypt_temp = "cryptografia"
         self.org_active = models.ForeignKey(
             mcdonalds, related_name="org_active", null=True)
-        self.person = models.OneToOneField(joaquim, null=True)
+        self.person = joaquim
         self.objects = UserManager()
 
         self.perfil = Profile
@@ -50,33 +48,53 @@ class ProfileTest(TestCase):
         self.perfil.objects = self.objects
 
     def test_user_is_set(self):
-        self.assertIsInstance(self.perfil.user, models.OneToOneField)
+        self.assertTrue(issubclass(self.perfil.user, User))
 
-    def test_organization_is_set(self):
-        self.assertIsInstance(
-            self.perfil.organization, models.ManyToManyField)
+    def test_user_parms_is_avaible(self):
+        self.assertIsNotNone(self.perfil.user.pk)
 
-    def test_try_login_is_set(self):
-        self.assertIsInstance(self.perfil.try_login, models.IntegerField)
+    # def test_organization_is_set(self):
+    #     self.assertIsInstance(
+    #         self.perfil.organization, Organization)
 
-    def test_crypt_temp_is_set(self):
-        self.assertIsInstance(self.perfil.crypt_temp, models.CharField)
+    # def test_try_login_is_set(self):
+    #     self.assertEquals(self.perfil.try_login, 10)
 
-    def test_org_active_is_set(self):
-        self.assertIsInstance(self.perfil.org_active, models.ForeignKey)
+    # def test_crypt_temp_is_set(self):
+    #     self.assertEquals(self.perfil.crypt_temp, "cryptografia")
 
-    def test_person_is_set(self):
-        self.assertIsInstance(self.perfil.person, models.OneToOneField)
+    # def test_org_active_is_set(self):
+    #     self.assertIsInstance(self.perfil.org_active, models.ForeignKey)
 
-    def test_objects_is_set(self):
-        self.assertIsInstance(self.perfil.objects, UserManager)
+    # def test_person_is_set(self):
+    #     self.assertIsInstance(self.perfil.person, models.OneToOneField)
+
+    # def test_objects_is_set(self):
+    #     self.assertIsInstance(self.perfil.objects, UserManager)
 
 
-class RoleTest(TestCase):
+# class RoleTest(TestCase):
 
-    def setUp(self):
-        tobias = Group
-        joaquim = Person
-        mcdonalds = Organization
+#     def setUp(self):
+#         self.tobias = Group
+#         self.joaquim = Profile
+#         self.mcdonalds = Organization
 
-        self.profile = models.ForeignKey(joaquim)
+#         self.papel = Role
+
+#         self.papel.profile = models.ForeignKey(self.joaquim)
+#         self.papel.organization = models.ForeignKey(self.mcdonalds)
+#         self.papel.group = models.ForeignKey(self.tobias)
+
+#     def test_profile_is_set(self):
+#         self.assertIsInstance(self.papel.profile, models.ForeignKey)
+
+#     def test_organization_is_set(self):
+#         self.assertIsInstance(self.papel.organization, models.ForeignKey)
+
+#     def test_group_is_set(self):
+#         self.assertIsInstance(self.papel.group, models.ForeignKey)
+
+#     def test_unicode(self):
+#         saida = u"%s | %s | %s" % (self.joaquim, self.mcdonalds, self.tobias)
+#         self.assertEquals(self.papel.__unicode__, saida)

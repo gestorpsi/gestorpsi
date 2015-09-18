@@ -30,15 +30,15 @@ class ProfileTest(TestCase):
         mcdonalds = Organization()
         papel = Role()
 
-        self.crypt_temp = "cryptografia"
-        self.org_active = models.ForeignKey(
-            mcdonalds, related_name="org_active", null=True)
-        self.person = joaquim
-        self.objects = UserManager()
+        # self.crypt_temp = "cryptografia"
+        # self.org_active = models.ForeignKey(
+        #     mcdonalds, related_name="org_active", null=True)
+        # self.person = joaquim
+        # self.objects = UserManager()
 
         self.perfil = Profile()
         self.perfil.user = tobias
-    #  self.perfil.organization = [mcdonalds]
+        self.perfil.pk = 99
         # self.perfil.crypt_temp = self.crypt_temp
         # self.perfil.org_active = self.org_active
         # self.perfil.person = self.person
@@ -47,8 +47,17 @@ class ProfileTest(TestCase):
     def test_user_is_set(self):
         self.assertIsInstance(self.perfil.user, User)
 
-    def test_user_parms_is_avaible(self):
+    def test_user_parms_are_avaible(self):
         self.assertIsNone(self.perfil.user.id)
+
+    def test_organization_is_set(self):
+        self.assertIsNotNone(self.perfil.organization)
+
+    def test_try_login_is_set(self):
+        self.assertFalse(self.perfil.try_login)
+
+    def test_crypt_temp_is_set(self):
+        self.assertIsNone(self.perfil.crypt_temp)
 
     # def test_organization_is_set(self):
     #     self.assertTrue(issubclass(

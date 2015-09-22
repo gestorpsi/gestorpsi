@@ -13,7 +13,7 @@ GNU General Public License for more details.
 """
 
 from django.test import TestCase
-from .models import Occupation
+from .models import Occupation, Synonyms
 
 
 class OccupationTest(TestCase):
@@ -22,11 +22,33 @@ class OccupationTest(TestCase):
         self.occupation = Occupation(id=1,
                                      cbo_code="cbo_code", title="title")
 
-        self.id = 1
-        self.cbo_code = "cbo_code"
+        self.id = 2
+        self.cbo_code = "CBO_CODE"
         self.title = "title"
 
     def testUnicode(self):
         self.assertEquals(self.title, unicode(self.occupation))
-        self.assertEquals(1, self.id)
-        self.assertEquals("cbo_code", self.cbo_code)
+        self.assertEquals(2, self.id)
+        self.assertEquals("CBO_CODE", self.cbo_code)
+
+
+class SynonymsTest(TestCase):
+
+    def setUp(self):
+        self.occupation = Occupation(id=1,
+                                     cbo_code="cbo_code", title="title")
+        self.synonyms = Synonyms(
+            id=1, title="title", occupation=self.occupation)
+
+        self.id = 2
+        self.title = "title"
+        self.synonyms.occupation.id = 3
+        self.synonyms.occupation.cbo_code = "CBO_CODE"
+        self.synonyms.occupation.title = "TITLE"
+
+    def testUnicode(self):
+        self.assertEquals(self.title, unicode(self.synonyms))
+        self.assertEquals(2, self.id)
+        self.assertEquals(3, self.synonyms.occupation.id)
+        self.assertEquals("CBO_CODE", self.synonyms.occupation.cbo_code)
+        self.assertEquals("TITLE", self.synonyms.occupation.title)

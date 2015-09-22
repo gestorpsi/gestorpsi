@@ -28,7 +28,6 @@ class ProfileTest(TestCase):
         tobias = User()
         joaquim = Person()
         mcdonalds = Organization()
-        papel = Role()
 
         self.perfil = Profile()
         self.perfil.user = tobias
@@ -70,3 +69,36 @@ class ProfileTest(TestCase):
 
     def test_get_temp(self):
         self.assertEquals(self.perfil._get_temp(), "abacate")
+
+
+class RoleTest(TestCase):
+
+    def setUp(self):
+        perfil = Profile()
+        perfil.pk = 10
+        tabajara = Organization()
+        tabajara.pk = 555
+        grupo = Group()
+        grupo.pk = 19
+        joao = User()
+        joao.username = "Joao"
+        perfil.user = joao
+        tabajara.name = "zueira"
+        grupo.name = "grupo1"
+        self.papel = Role()
+        self.papel.profile = perfil
+        self.papel.organization = tabajara
+        self.papel.group = grupo
+
+    def test_profile_is_set(self):
+        self.assertEquals(self.papel.profile_id, 10)
+
+    def test_organization_is_set(self):
+        self.assertEquals(self.papel.organization_id, 555)
+
+    def test_group_is_set(self):
+        self.assertEquals(self.papel.group_id, 19)
+
+    def test_role_unicode(self):
+        self.assertEquals(u"%s | %s | %s" % (
+            self.papel.profile, self.papel.organization, self.papel.group), unicode(self.papel))

@@ -45,3 +45,19 @@ class ProfessionTest(TestCase):
         self.assertEquals("working_hours", self.working_hours)
         self.assertEquals(True, self.status)
         self.assertEquals("comments", self.comments)
+
+
+class EducationalLevelTest(TestCase):
+
+    def setUp(self):
+
+        self.educational_level = EducationalLevel(
+            school_grade="School_Grade", comments="Comments")
+
+        self.school_grade = "SCHOOL_GRADE"
+        self.comments = "COMMENTS"
+
+    def testUnicode(self):
+
+        self.assertEquals(self.school_grade, unicode(self.school_grade))
+        self.assertEquals("COMMENTS", self.comments)

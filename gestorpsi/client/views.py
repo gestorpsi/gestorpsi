@@ -73,7 +73,7 @@ def _access_check(request, object=None):
     """
         
     # check if user is professional and not admin or secretary. 
-    if request.user.groups.filter(name='administrator') or request.user.groups.filter(name='secretary'):
+    if request.user.groups.filter(name='administrator') or request.user.groups.filter(name='secretary') or request.user.groups.filter(name='administrator_ro'):
         return True
 
     # check if professional

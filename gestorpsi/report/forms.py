@@ -19,6 +19,7 @@ from django.utils.translation import gettext_lazy as _
 from gestorpsi.report.models import Report, ReportsSaved, VIEWS_CHOICES
 from gestorpsi.covenant.models import Covenant
 from gestorpsi.service.models import Service
+from gestorpsi.schedule.models import OCCURRENCE_CONFIRMATION_PRESENCE
 from gestorpsi.financial.models import STATUS, PaymentWay
 from gestorpsi.careprofessional.models import CareProfessional
 from datetime import datetime
@@ -55,6 +56,7 @@ class ReportForm(forms.ModelForm):
     payment_way = forms.ChoiceField(label=_('Forma de pagamento'), help_text=_('Forma de pagamento'))
     cove = forms.ChoiceField( label=_(u'Convênio') )
     professional = forms.ChoiceField( label=_(u'Profissional') )
+    confirmation_status = forms.ChoiceField( label=_(u'Confirmação'), widget=forms.CheckboxSelectMultiple  )
 
     class Meta:
         model = Report
@@ -92,6 +94,9 @@ class ReportForm(forms.ModelForm):
         for i in PaymentWay.objects.filter():
             choices.append((i.pk, i.name))
         self.fields['payment_way'].choices = choices
+
+        # confirmation event
+        self.fields['confirmation_status'].choices = tuple( [(u'all', 'Todos'), (u'not','Não confirmado')] + list(OCCURRENCE_CONFIRMATION_PRESENCE) )
 
 
 class ReportSaveForm(forms.ModelForm):

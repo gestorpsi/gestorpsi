@@ -69,6 +69,7 @@ def index(request):
     r = Report()
     filters = r.filters()
     
+    print '----------- index '
     return render_to_response('report/report_index.html', locals(), context_instance=RequestContext(request))
 
 
@@ -86,6 +87,8 @@ def admission_data(request, template='report/report_table.html'):
     """
     load admission dashboard reports
     """
+
+    print '----------------- adminission '
     
     data, chart_url, date_start,date_end = Report().get_admissions_range(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('accumulated'))
 
@@ -113,6 +116,25 @@ def receive_data(request, template='report/report_receive.html'):
 
     # variables of JS
     option_title = u'Estatística de todos os profíssionais, serviços e pagamentos para o período escolhido.'
+    option_rows = data 
+    option_colors = colors
+
+    return render_to_response(template, locals(), context_instance=RequestContext(request))
+
+
+@permission_required_with_403('report.report_list')
+def event_data(request, template='report/report_receive.html'):
+    """
+    event
+    """
+    print '--------------------- EVENT VIEWS '
+    print request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('service'), request.GET.get('status')
+    print
+
+    data , colors , date_start, date_end, list_receive, total_receive = Report().get_event_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('service'), request.GET.get('status') )
+
+    # variables of JS
+    option_title = u'Estatística dos profíssionais, serviços e tipo de confirmação para o período escolhido.'
     option_rows = data 
     option_colors = colors
 
@@ -218,6 +240,8 @@ def report_export(request):
     """
     export admission data in html or pdf
     """
+
+    print '-------------------- export '
 
     html = 'report/report_export.html'
 

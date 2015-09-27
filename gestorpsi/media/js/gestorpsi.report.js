@@ -42,6 +42,7 @@ $(function() {
         $('div.covenant_filter').hide();
         $('div.service_filter').hide();
         $('select#id_accumulated').hide();
+        $('div.confirmation_status_filter').hide();
 
         // admission
         if( $(this).val() == 1 ){
@@ -54,12 +55,19 @@ $(function() {
         }
 
         // select receive status 
-        if( $(this).val()==3 ){
+        if( $(this).val() == 3 ){
             $('div.service_filter').show();
             $('div.receipt_status_filter').show();
             $('div.payment_way_filter').show();
             $('div.professional_filter').show();
             $('div.covenant_filter').show();
+        }
+        
+        // select event filter
+        if( $(this).val() == 4 ){
+            $('div.service_filter').show();
+            $('div.professional_filter').show();
+            $('div.confirmation_status_filter').show();
         }
     });
 
@@ -158,6 +166,23 @@ $(function() {
             // method get url
             data += '&service=' + service + '&professional=' + professional + '&receive=' + receipt_status + '&pway=' + payment_way + '&covenant=' + covenant;
             updateReceive(data);
+        }
+        
+        // event
+        if ( $('#report_filter [name=view]').val() == 4 ){ 
+
+            /*var confirmation_status = $('input:checkbox[name=confirmation_status]:checked').val();*/
+            var service = $('select#id_service').val();
+            var professional = $('select#id_professional').val();
+
+            var confirmation_status = new Array();
+            $("input:checkbox[name=confirmation_status]:checked").each(function() {
+                confirmation_status.push($(this).val());
+            });
+
+            // get url
+            data += '&service=' + service + '&professional=' + professional + '&status=' + confirmation_status;
+            updateEvent(data);
         }
 
         return false;

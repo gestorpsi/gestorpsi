@@ -49,6 +49,7 @@ VIEWS_CHOICES = (
     (1, _('Admisssions')),
     (2, _('Referrals')),
     (3, _('Faturamento')),
+    (4, _('Evento')),
 )
 
 PIE_CHART_WIDTH = 620
@@ -113,6 +114,21 @@ class Report(models.Model):
         
         return None, None, None, None
 
+
+    def get_event_(self, organization, date_start, date_end, professional, service, status):
+        date_start , date_end = self.set_date(organization, date_start, date_end)
+
+        # filter
+
+        # not confirmaed
+        l = ScheduleOccurrence.objects.filter(occurrenceconfirmation__isnull=True, event__referral__organization=organization).count()
+
+        # confirmaed
+        l = ScheduleOccurrence.objects.filter(occurrenceconfirmation__isnull=False, event__referral__organization=organization).count()
+
+        # filter presence
+        l = ScheduleOccurrence.objects.filter(occurrenceconfirmation__presence=4, occurrenceconfirmation__isnull=False, event__referral__organization=o)
+        
 
 
     def get_receive_(self, organization, date_start, date_end, professional, receive, service, pway, covenant ):

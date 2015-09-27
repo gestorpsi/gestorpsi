@@ -251,3 +251,36 @@ function updateReceive(data) {
         $('.report_main [name=date_end]').val(json['date_end']);
     });
 }
+
+
+
+function updateEvent(data) {
+
+    /**
+     * update all receive data
+     */
+    if(!data) data = '';
+    
+    /**
+     * append chart types view to url
+     */
+    data += chart_type_to_url();
+
+    /**
+     * update receive data, call view
+     */
+    $('div#report_table').load('/report/event/?'+data);
+
+    /**
+     * update save form
+     */
+    $('div#save_form').load('/report/event/save/?'+data)
+    
+    /**
+     * get date then update form fields
+     */
+    $.getJSON('/report/date/?'+data, function(json) {
+        $('.report_main [name=date_start]').val(json['date_start']);
+        $('.report_main [name=date_end]').val(json['date_end']);
+    });
+}

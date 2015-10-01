@@ -88,8 +88,6 @@ def admission_data(request, template='report/report_table.html'):
     load admission dashboard reports
     """
 
-    print '----------------- adminission '
-    
     data, chart_url, date_start,date_end = Report().get_admissions_range(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('accumulated'))
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))
@@ -123,15 +121,15 @@ def receive_data(request, template='report/report_receive.html'):
 
 
 @permission_required_with_403('report.report_list')
-def event_data(request, template='report/report_receive.html'):
+def event_data(request, template='report/report_event.html'):
     """
     event
     """
     print '--------------------- EVENT VIEWS '
-    print request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('service'), request.GET.get('status')
+    print request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('service'), request.GET.get('status'), request.GET.get('accumulated')
     print
 
-    data , colors , date_start, date_end, list_receive, total_receive = Report().get_event_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('service'), request.GET.get('status') )
+    data, colors, date_start, date_end, sch_list = Report().get_event_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('service'), request.GET.get('status'), request.GET.get('accumulated') )
 
     # variables of JS
     option_title = u'Estatística dos profíssionais, serviços e tipo de confirmação para o período escolhido.'

@@ -31,7 +31,7 @@ for o in Organization.objects.filter(suspension=False, organization=None):
     # last invoice
     li = Invoice.objects.filter(organization=o).latest('id')
 
-    while li.end_date < date.today():
+    while li.end_date < date.today()+relativedelta(months=1) and li.start_date < date.today():
 
         i = Invoice() # new invoice
         i.organization = li.organization

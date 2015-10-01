@@ -68,6 +68,7 @@ $(function() {
             $('div.service_filter').show();
             $('div.professional_filter').show();
             $('div.confirmation_status_filter').show();
+            $('select#id_accumulated').show();
         }
     });
 
@@ -138,9 +139,9 @@ $(function() {
     $('#report_filter [name=update]').click(function() {
         $('div.loaded_report_title').hide();
 
-        var date_start =$('form#report_filter [name=date_start]').val();
-        var date_end =$('form#report_filter [name=date_end]').val();
-        var accumulated =$('form#report_filter [name=accumulated]').val();
+        var date_start = $('form#report_filter [name=date_start]').val();
+        var date_end = $('form#report_filter [name=date_end]').val();
+        var accumulated = $('form#report_filter [name=accumulated]').val();
         
         var data = 'date_start=' + date_start + '&date_end=' + date_end + '&accumulated=' + accumulated;
         
@@ -174,6 +175,7 @@ $(function() {
             /*var confirmation_status = $('input:checkbox[name=confirmation_status]:checked').val();*/
             var service = $('select#id_service').val();
             var professional = $('select#id_professional').val();
+            var accumulated = $('form#report_filter [name=accumulated]').val();
 
             var confirmation_status = new Array();
             $("input:checkbox[name=confirmation_status]:checked").each(function() {
@@ -181,7 +183,7 @@ $(function() {
             });
 
             // get url
-            data += '&service=' + service + '&professional=' + professional + '&status=' + confirmation_status;
+            data += '&service=' + service + '&professional=' + professional + '&status=' + confirmation_status + '&accumulated=' + accumulated;
             updateEvent(data);
         }
 

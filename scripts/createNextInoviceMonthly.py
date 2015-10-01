@@ -15,6 +15,7 @@ sys.setdefaultencoding("utf-8")
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
 environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
+sys.path.append('..')
 sys.path.append("/home/redepsi/lib/python2.7")
 sys.path.append("/home/redepsi/webapps/gestorpsi_app/git.gestorpsi.com.br")
 sys.path.append("/home/redepsi/webapps/gestorpsi_app/git.gestorpsi.com.br/gestorpsi")

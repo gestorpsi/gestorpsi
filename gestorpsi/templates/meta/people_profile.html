@@ -18,19 +18,20 @@ GNU General Public License for more details.
 
 {% load calculate_age %}
 
-	
 <!--
 People Personal Profile Form	
 -->
-        
+
+
+
 <fieldset>
         <legend>{% trans "Personal Profile" %}</legend>
 
             <label>{% trans "Birthdate" %} ( dd/mm/yyyy )<br />
-                <input mask="99/99/9999" class="medium" type="text" name="dateBirth" id="dateBirth" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate|date:"d/m/Y" }}{% endifnotequal %}" />
+                <input mask="99/99/9999" class="datepicker" type="text" name="dateBirth" id="dateBirth" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate|date:"d/m/Y" }}{% endifnotequal %}" />
             </label>
 
-
+            
         <label> {% trans "Age" %} <br />
             <input class="small" type="text" name="Years" id="Years" onchange="displayAge();" value="{% if object.person.birthDate %}{{ object.person.birthDate|age }}{% endif %}"/>
         </label>

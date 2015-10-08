@@ -791,7 +791,10 @@ def save(request, object_id=None, is_company = False):
     object.idRecord = org.last_id_record + 1
     object.admission_date = datetime.now()
     object.person = person_save(request, person)
-    object.person.salary = request.POST["salary"]
+    if request.POST["salary"] == "":
+        object.person.salary = 0
+    else:
+        object.person.salary = request.POST["salary"]
     object.person.save()
     object.save()
 

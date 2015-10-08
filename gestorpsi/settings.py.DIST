@@ -54,17 +54,27 @@ if DEBUG:
 
 MANAGERS = ADMINS
 
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_ROOT_PATH, 'db.sqlite3'),
-        'TEST': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(PROJECT_ROOT_PATH, 'test_db.sqlite3'),
-        }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'gestorpsi',
+        'USER': 'root',
     }
 }
+
+import sys
+# Detect if executed under test
+TESTING = any(test in sys.argv for test in (
+    'test', 'csslint', 'jenkins', 'jslint',
+    'jtest', 'lettuce', 'pep8', 'pyflakes',
+    'pylint', 'sloccount',
+))
+
+if TESTING:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(PROJECT_ROOT_PATH, 'test_db.sqlite3'),
+    }
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

@@ -5,3 +5,4 @@ gestorpsi/settings.py
 htmlcov/
 *.swp
 *~
+*.sqlite3

@@ -754,7 +754,7 @@ def referral_home(request, object_id = None, referral_id = None):
 
 
 @permission_required_with_403('client.client_write')
-def save(request, object_id=None, is_company = False):
+def save(request, object_id = None, is_company = False):
     """
        Save or Update a client record
     """
@@ -783,7 +783,7 @@ def save(request, object_id=None, is_company = False):
     org.save()
 
     payment_condition.payment_condition = request.POST["payment_condition"]
-    payment_condition.value_for_payment = request.POST["value_for_payment"] if payment_condition.payment_condition == PAYMENT_CONDITION[0][0] else float(0)
+    payment_condition.value_for_payment = request.POST["value_for_payment"] if float(payment_condition.payment_condition) == PAYMENT_CONDITION[0][0] else float(0)
     payment_condition.save()
     object.payment_condition = payment_condition
     
@@ -791,7 +791,10 @@ def save(request, object_id=None, is_company = False):
     object.idRecord = org.last_id_record + 1
     object.admission_date = datetime.now()
     object.person = person_save(request, person)
-    object.person.salary = request.POST["salary"]
+    if request.POST["salary"] == "":
+        object.person.salary = 0
+    else:
+        object.person.salary = request.POST["salary"]
     object.person.save()
     object.save()
 

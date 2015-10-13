@@ -7,8 +7,7 @@ install:
     - pip install coveralls unittest2
 before_script:
   - mv gestorpsi/settings.py.TRAVIS gestorpsi/settings.py
-  - python manage.py syncdb --noinput
-  - python manage.py migrate
+  - python manage.py syncdb --noinput --migrate
 
 script:
   - ./run_tests.sh

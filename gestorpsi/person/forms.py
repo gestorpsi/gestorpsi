@@ -73,3 +73,9 @@ class CompanyClientForm(forms.ModelForm):
         company_client.save()
 
         return company_client
+
+class BirthDateForm(forms.Form):
+    birthDate = forms.DateField(widget=forms.TextInput(attrs=
+                                {
+                                    'class':'datepicker'
+                                }))

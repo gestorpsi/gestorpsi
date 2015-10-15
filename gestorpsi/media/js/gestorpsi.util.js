@@ -32,8 +32,7 @@ function personInLine(list) {
     return str
     
 }
-
-
+    
 $(document).ready(function() {
     $('a.load_html').live('click', function() {
         var element = $(this).attr('element');
@@ -82,6 +81,18 @@ $('.colorpicker_open').ColorPicker({
     
 });
 
+$( ".datepicker" ).datepicker({
+    onChange: function(){
+         dBirth = $(this).datepicker({ dateFormat: 'dd-mm-yy' }).val();
+    },
+      dateFormat: 'dd/mm/yy',
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1950:2100",
+
+      // You can put more options here.
+
+    });
 
 
 });
@@ -103,13 +114,12 @@ function dateOrAge() {
     }
 }
 function CalcAge() {
-
-    dBirth = document.getElementById('dateBirth').value;
+    dBirth = document.getElementById('dateBirth').value
     x = dBirth.split("/");
+    //window.alert(dBirth);
     var mm = x[1];
     var dd = x[0];
     var yy = x[2];
-    
     var thedate = new Date()
     var mm2 = thedate.getMonth() + 1;
     var dd2 = thedate.getDate();
@@ -124,6 +134,7 @@ function CalcAge() {
             yourage = yourage - 1;
             }
         }
+
     if(yourage > 0)
         return yourage;
     else

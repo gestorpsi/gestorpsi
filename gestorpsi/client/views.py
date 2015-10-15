@@ -40,7 +40,7 @@ from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.organization.models import Organization
 from gestorpsi.person.models import Person, MaritalStatus, CompanyClient
-from gestorpsi.person.forms import CompanyForm, CompanyClientForm
+from gestorpsi.person.forms import CompanyForm, CompanyClientForm, BirthDateForm
 from gestorpsi.person.views import person_save
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, ReferralAttach, REFERRAL_ATTACH_TYPE, Queue, ReferralExternal, ReferralDischarge

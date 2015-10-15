@@ -82,7 +82,7 @@ $('.colorpicker_open').ColorPicker({
 });
 
 $( ".datepicker" ).datepicker({
-    onSelect: function(){
+    onChange: function(){
          dBirth = $(this).datepicker({ dateFormat: 'dd-mm-yy' }).val();
     },
       dateFormat: 'dd/mm/yy',
@@ -114,8 +114,9 @@ function dateOrAge() {
     }
 }
 function CalcAge() {
+    dBirth = document.getElementById('dateBirth').value
     x = dBirth.split("/");
-    window.alert(dBirth);
+    //window.alert(dBirth);
     var mm = x[1];
     var dd = x[0];
     var yy = x[2];

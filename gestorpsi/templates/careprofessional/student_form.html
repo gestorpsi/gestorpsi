@@ -51,14 +51,14 @@ GNU General Public License for more details.
 <h2 id="title_myoffice" style="display:none"></h2>
 
 
-<form action="/careprofessional/student/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="form_people collapsable form_careprofessional">	
+<form action="/careprofessional/student/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="form_people collapsable form_careprofessional">
 <div class="main_area">
 
 	<!-- <a href="" id="help">&nbsp;</a> -->
 	<!-- DataTypes form menu -->
-	
+
 	{% include "meta/people_indentification.html" %}
-	
+
     <fieldset>
         <legend>{% trans "Student Profile" %}</legend>
         <label>{{ student_form.lecture_class.label }}<br />
@@ -76,11 +76,14 @@ GNU General Public License for more details.
         <label>{{ student_form.class_duration.label }}<br />
             {{ student_form.class_duration }}
         </label>
+        <label>{{ student_form.supervisor.label }}<br />
+            {{ student_form.supervisor }}
+        </label>
     </fieldset>
 
 	<fieldset id="fieldset_professional_workplace">
 		<legend>{% trans "Professional Workplaces" %}</legend>
-			
+
 			<label>{% trans "Workplaces" %}<br />
 			<select name="professional_workplace" multiple="multiple" class="select multiple extrabig asm">
 				{% for l in WorkPlacesTypes %}
@@ -94,7 +97,7 @@ GNU General Public License for more details.
 
 	<fieldset>
 		<legend>{% trans "Professional Services" %}</legend>
-			
+
 			<label>{% trans "Services" %}<br />
 			<select name="professional_service" multiple="multiple" class="select multiple extrabig asm">
 				{% for l in ServiceTypes %}
@@ -119,7 +122,7 @@ GNU General Public License for more details.
 </fieldset>
 
 
-<br />	
+<br />
 </div>
 
 {% include "tags/careprofessional_sidebar.html" %}

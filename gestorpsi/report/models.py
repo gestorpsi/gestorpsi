@@ -117,19 +117,19 @@ class Report(models.Model):
 
 
     def get_event_(self, organization, date_start, date_end, professional, service, status, accumulated):
+
         date_start , date_end = self.set_date(organization, date_start, date_end)
 
         # filter by date range, all professional and all presence 
         sch_objs = ScheduleOccurrence.objects.filter(start_time__gte=date_start, start_time__lte=date_end, event__referral__organization=organization)
 
-        labels = [u'Cliente chegou no horário',u'Cliente chegou atrasado',u'Cliente não compareceu',u'Evento desmarcado',u'Evento remarcado',u'Profissional não compareceu']
+        labels = [u'Cliente chegou no horário',u'Cliente chegou atrasado',u'Cliente não compareceu',u'Evento desmarcado',u'Evento remarcado',u'Profissional não compareceu',u'Não confirmado']
 
         # professional
         if not 'all' in professional:
             sch_objs = sch_objs.filter(event__referral__professional__id=professional)
-            color = labels
 
-        sch_list = []
+        sch_list = [] # list of objects for earch presence
         lines = [] # label for lines
 
         '''
@@ -141,8 +141,8 @@ class Report(models.Model):
         '''
 
         # all confirmed and not confirmed
-        if '999' in status:
-            status = "1,2,3,4,5,6,000" # Filter for each presence id
+        if '999' in status or not status:
+            status = "1,2,3,4,5,6,000" # Filter for each presence id end "not confirmed"
 
         # all not confirmed
         if '000' in status:
@@ -151,6 +151,9 @@ class Report(models.Model):
             lines.append(lb)
             sch_list.append( [lb,l] )
 
+            if not lb in lines:
+                lines.append(lb)
+
         # all confirmed
         if '111' in status:
             l = sch_objs.filter(occurrenceconfirmation__isnull=False)
@@ -158,39 +161,40 @@ class Report(models.Model):
             lines.append(lb)
             sch_list.append( [lb,l] )
 
+            if not lb in lines:
+                lines.append(lb)
+
         # filter presence
         if status:
 
-            #import operator
-            #query = [] # array
-
             for x in status.split(','): # for earch word
-                print '--------- status ' , x
-                #query.append( Q(occurrenceconfirmation__presence=x) ) 
-                #l = sch_list.filter( reduce(operator.or_, query) ).distinct()
                 l = sch_objs.filter( occurrenceconfirmation__presence=x ).distinct()
-                lb = labels[ int(x)-1 ]
-                lines.append(lb)
-                sch_list.append( [lb,l] )
 
-            # confirmaed
-            #l = ScheduleOccurrence.objects.filter(occurrenceconfirmation__isnull=False, event__referral__organization=organization).count()
+                try:
+                    lb = labels[ int(x)-1 ]
+                    lines.append(lb)
+                    sch_list.append( [lb,l] )
+                    print '-ok'
+                except:
+                    print '-erro'
 
-            # filter presence
-            #l = ScheduleOccurrence.objects.filter(occurrenceconfirmation__presence=4, occurrenceconfirmation__isnull=False, event__referral__organization=o)
-            #l = ScheduleOccurrence.objects.filter(occurrenceconfirmation__presence=4, occurrenceconfirmation__isnull=False)
-
-        # graphics
+        # graphic google chart
         data = []
-        color = []
 
         while date_start < date_end :
 
+            '''
+                tmp = []
+                tmp[0] = time line
+                tmp[1] = 1 presence selected
+                tmp[2] = 2 presence selected
+                tmp[N] = N presence selected
+            '''
             tmp = []
-            tmp.append(u"%s" % date_start) # added time line
+            tmp.append(date_start.month) # added time line
 
             for x in status.split(','):
-                t = ScheduleOccurrence.objects.filter(occurrenceconfirmation__presence=x, start_time__month=date_start.month).count()
+                t = ScheduleOccurrence.objects.filter(occurrenceconfirmation__presence=x, start_time__gte=date_start, end_time__lte=date_start+relativedelta(months=1)).count()
                 tmp.append(t)
 
             data.append(tmp)
@@ -198,11 +202,13 @@ class Report(models.Model):
             
             date_start += relativedelta(months=1)
 
+        print
         print data
         print
-        print sch_list
+        print lines
+        print
 
-        return data, color, date_start, date_end, sch_list
+        return data, lines, date_start, date_end, sch_list
 
 
     def get_receive_(self, organization, date_start, date_end, professional, receive, service, pway, covenant ):

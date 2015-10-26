@@ -69,7 +69,6 @@ def index(request):
     r = Report()
     filters = r.filters()
     
-    print '----------- index '
     return render_to_response('report/report_index.html', locals(), context_instance=RequestContext(request))
 
 
@@ -125,16 +124,12 @@ def event_data(request, template='report/report_event.html'):
     """
     event
     """
-    print '--------------------- EVENT VIEWS '
-    print request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('service'), request.GET.get('status'), request.GET.get('accumulated')
-    print
-
-    data, colors, date_start, date_end, sch_list = Report().get_event_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('service'), request.GET.get('status'), request.GET.get('accumulated') )
+    data, lines, date_start, date_end, sch_list = Report().get_event_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('service'), request.GET.get('status'), request.GET.get('accumulated') )
 
     # variables of JS
     option_title = u'Estatística dos profíssionais, serviços e tipo de confirmação para o período escolhido.'
     option_rows = data 
-    option_colors = colors
+    column = lines
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 
@@ -238,8 +233,6 @@ def report_export(request):
     """
     export admission data in html or pdf
     """
-
-    print '-------------------- export '
 
     html = 'report/report_export.html'
 

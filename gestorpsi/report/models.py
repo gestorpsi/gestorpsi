@@ -122,7 +122,6 @@ class Report(models.Model):
 
         # filter by date range, all professional and all presence 
         sch_objs = ScheduleOccurrence.objects.filter(start_time__gte=date_start, start_time__lte=date_end, event__referral__organization=organization)
-
         labels = [u'Cliente chegou no horário',u'Cliente chegou atrasado',u'Cliente não compareceu',u'Evento desmarcado',u'Evento remarcado',u'Profissional não compareceu',u'Não confirmado']
 
         # professional
@@ -165,22 +164,16 @@ class Report(models.Model):
                 lines.append(lb)
 
         # filter presence
-        print sch_list
         if status:
 
             for x in status.split(','): # for earch word
-                print 
-                print x
                 l = sch_objs.filter( occurrenceconfirmation__presence=x ).distinct()
 
-                try:
-                    lb = labels[ int(x)-1 ]
+                lb = labels[ int(x)-1 ]
+                sch_list.append( [lb,l] )
+
+                if not lb in lines:
                     lines.append(lb)
-                    sch_list.append( [lb,l] )
-                    print '-ok', lb
-                    print sch_list
-                except:
-                    print '-erro'
 
         # graphic google chart
         data = []
@@ -198,9 +191,6 @@ class Report(models.Model):
             tmp.append(date_start.month) # added time line
 
             for x in status.split(','):
-                print x
-                print ScheduleOccurrence.objects.filter(occurrenceconfirmation__presence=x, start_time__gte=date_start, end_time__lte=date_start+relativedelta(months=1)).count()
-
                 t = ScheduleOccurrence.objects.filter(occurrenceconfirmation__presence=x, start_time__gte=date_start, end_time__lte=date_start+relativedelta(months=1)).count()
                 tmp.append(t)
 
@@ -208,11 +198,6 @@ class Report(models.Model):
             del(tmp)
             
             date_start += relativedelta(months=1)
-
-        print
-        print data
-        print
-        print lines
 
         return data, lines, date_start, date_end, sch_list
 

@@ -170,15 +170,6 @@
         {% endfor %}
 
         <script>
-            // call graphic function, clear graphic.
-            //var rows = [1,2,3];
-            //var lines = ['0','1'];
-            //make_graphic1(rows, lines);
-
-            // convert Python array to JS array
-            // var rows = [];
-            //{% for i in option_rows %} rows.push( [ {{ i.0 }} , {{ i.1 }} , {{ i.2 }} , {{ i.3 }} , {{ i.4 }} , {{ i.5 }} ] ); {% endfor %}
-            //{% for i in option_rows %} rows.push( [ {{ i.0 }} , {{ i.1 }} , {{ i.2 }} ] ); {% endfor %}
             var rows = {{ option_rows }}
 
             var lines = [];

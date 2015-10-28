@@ -165,16 +165,20 @@ class Report(models.Model):
                 lines.append(lb)
 
         # filter presence
+        print sch_list
         if status:
 
             for x in status.split(','): # for earch word
+                print 
+                print x
                 l = sch_objs.filter( occurrenceconfirmation__presence=x ).distinct()
 
                 try:
                     lb = labels[ int(x)-1 ]
                     lines.append(lb)
                     sch_list.append( [lb,l] )
-                    print '-ok'
+                    print '-ok', lb
+                    print sch_list
                 except:
                     print '-erro'
 
@@ -194,6 +198,9 @@ class Report(models.Model):
             tmp.append(date_start.month) # added time line
 
             for x in status.split(','):
+                print x
+                print ScheduleOccurrence.objects.filter(occurrenceconfirmation__presence=x, start_time__gte=date_start, end_time__lte=date_start+relativedelta(months=1)).count()
+
                 t = ScheduleOccurrence.objects.filter(occurrenceconfirmation__presence=x, start_time__gte=date_start, end_time__lte=date_start+relativedelta(months=1)).count()
                 tmp.append(t)
 
@@ -206,7 +213,6 @@ class Report(models.Model):
         print data
         print
         print lines
-        print
 
         return data, lines, date_start, date_end, sch_list
 

@@ -118,6 +118,9 @@ class Report(models.Model):
 
     def get_event_(self, organization, date_start, date_end, professional, service, status, accumulated):
 
+        sch_list = [] # list of objects for earch presence
+        lines = [] # label for lines
+
         date_start , date_end = self.set_date(organization, date_start, date_end)
 
         # filter by date range, all professional and all presence 
@@ -126,10 +129,11 @@ class Report(models.Model):
 
         # professional
         if not 'all' in professional:
-            sch_objs = sch_objs.filter(event__referral__professional__id=professional)
+            sch_objs = sch_objs.filter( event__referral__professional__id=professional )
 
-        sch_list = [] # list of objects for earch presence
-        lines = [] # label for lines
+        # service
+        if service:
+            sch_objs = sch_objs.filter( event__referral__service__id=service )
 
         '''
             array to print each presence list
@@ -169,11 +173,14 @@ class Report(models.Model):
             for x in status.split(','): # for earch word
                 l = sch_objs.filter( occurrenceconfirmation__presence=x ).distinct()
 
-                lb = labels[ int(x)-1 ]
-                sch_list.append( [lb,l] )
+                try:
+                    lb = labels[ int(x)-1 ]
+                    sch_list.append( [lb,l] )
 
-                if not lb in lines:
-                    lines.append(lb)
+                    if not lb in lines:
+                        lines.append(lb)
+                except:
+                    pass
 
         # graphic google chart
         data = []
@@ -191,7 +198,16 @@ class Report(models.Model):
             tmp.append(date_start.month) # added time line
 
             for x in status.split(','):
-                t = ScheduleOccurrence.objects.filter(occurrenceconfirmation__presence=x, start_time__gte=date_start, end_time__lte=date_start+relativedelta(months=1)).count()
+
+                t = sch_objs.filter(occurrenceconfirmation__presence=x, start_time__gte=date_start, end_time__lte=date_start+relativedelta(months=1)).count()
+
+                # confirmed
+                if x == '111':
+                    t = sch_objs.filter(occurrenceconfirmation__isnull=False, start_time__gte=date_start, end_time__lte=date_start+relativedelta(months=1)).count()
+                # not confirmed
+                if x == '000':
+                    t = sch_objs.filter(occurrenceconfirmation__isnull=True, start_time__gte=date_start, end_time__lte=date_start+relativedelta(months=1)).count()
+
                 tmp.append(t)
 
             data.append(tmp)

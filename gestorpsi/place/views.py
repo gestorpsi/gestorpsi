@@ -134,7 +134,6 @@ def form(request, object_id=None):
                                'AddressTypes': AddressType.objects.all(),
                                'countries': Country.objects.all(),
                                'RoomTypes': RoomType.objects.all(),
-                               'CareProfessionals': CareProfessional.objects.all(),
                                'States': State.objects.all(),
                                'Cities': cities,
                                'Hours': HOURS, },

@@ -56,7 +56,7 @@ GNU General Public License for more details.
             <label>{% trans "Select a Place" %}<br />
             <select name="place_id" class="giant">
                 {% for place in Places %}
-                    <option value="{{ place.idRoomTypes }}"{% ifequal place.id object.place.id %} selected{% endifequal %}> {{ place }} &nbsp; </option>
+                    <option value="{{ place.id }}"{% ifequal place.id object.place.id %} selected{% endifequal %}> {{ place }} &nbsp; </option>
                 {% endfor %}
                 </select>
             </label>

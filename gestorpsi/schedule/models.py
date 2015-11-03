@@ -31,6 +31,9 @@ OCCURRENCE_CONFIRMATION_PRESENCE = (
     (3, _('Client not arrived')),
     (4, _('Occurrence unmarked')),
     (5, _('Occurrence rescheduled')),
+    (6, _('Professional arrived on time')),
+    (7, _('Professional arrived Late')),
+    (8, _('Professional not arrived')),
 )
 
 

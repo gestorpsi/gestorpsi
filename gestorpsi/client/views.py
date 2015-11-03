@@ -781,9 +781,15 @@ def save(request, object_id = None, is_company = False):
     org = get_object_or_404(Organization, pk=user.get_profile().org_active.id )
     org.last_id_record = org.last_id_record + 1
     org.save()
-
     payment_condition.payment_condition = request.POST["payment_condition"]
-    payment_condition.value_for_payment = request.POST["value_for_payment"] if float(payment_condition.payment_condition) == PAYMENT_CONDITION[0][0] else float(0)
+
+    if int(payment_condition.payment_condition) == PAYMENT_CONDITION[0][0]:
+        payment_condition.value_for_payment = request.POST["value_for_payment"] 
+        print "-"*30
+        print int(payment_condition.payment_condition) == PAYMENT_CONDITION[0][0]
+        print "-"*30
+    else:
+        payment_condition.value_for_payment = float(0)
     payment_condition.save()
     object.payment_condition = payment_condition
     
@@ -791,8 +797,9 @@ def save(request, object_id = None, is_company = False):
     object.idRecord = org.last_id_record + 1
     object.admission_date = datetime.now()
     object.person = person_save(request, person)
+
     if request.POST["salary"] == "":
-        object.person.salary = 0
+        object.person.salary = float(0)
     else:
         object.person.salary = request.POST["salary"]
     object.person.save()

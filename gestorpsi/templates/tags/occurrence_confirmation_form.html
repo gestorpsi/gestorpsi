@@ -28,10 +28,17 @@ hide Date fields and second field
         $('select#id_date_started_0_month, select#id_date_started_0_day, select#id_date_started_0_year, select#id_date_started_1_second').hide();
         $('select#id_date_finished_0_month, select#id_date_finished_0_day, select#id_date_finished_0_year, select#id_date_finished_1_second').hide();
         $('form input[name=presence]').click(function(){
-            if($(this).val()>2) {
-                $('div.date_fields').hide();
-            } else {
+            
+            // Should show the date field only to:
+            // 1 = Client arrived on time
+            // 2 = Client arrived Late
+            // 6 = Professional arrived on time
+            // 7 = Professional arrived Late
+
+            if(($(this).val()==1) || ($(this).val()==2) || ($(this).val()==6) || ($(this).val()==7)) {
                 $('div.date_fields').show();
+            } else {
+                $('div.date_fields').hide();
             }
         });
     });

@@ -511,19 +511,24 @@ def occurrence_confirmation_form(
                         mobility="2",
                         lendable=False))]
 
-    return render_to_response(
-        template,
-        dict(
+        #Validating the events to be dated with input and output
+        if (occurrence_confirmation and int(occurrence_confirmation.presence)) == (1 or 2 or 5 or 6):
+            occurrences_that_require_dates = True
+        else:
+            occurrences_that_require_dates = None
+
+        #Creating dictionaries to return instance to template
+        events_for_return = dict(
             occurrence=occurrence,
             form=form,
             object=object,
             referral=occurrence.event.referral,
             occurrence_confirmation=occurrence_confirmation,
-            hide_date_field=True if occurrence_confirmation and int(
-                occurrence_confirmation.presence) > 2 else None,
-            denied_to_write=denied_to_write),
-        context_instance=RequestContext(request)
-    )
+            hide_date_field=occurrences_that_require_dates,
+            #True if occurrence_confirmation and int(occurrence_confirmation.presence) > 7 else None,
+            denied_to_write=denied_to_write)
+
+    return render_to_response(template, events_for_return, context_instance=RequestContext(request))
 
 
 @permission_required_with_403('schedule.schedule_read')

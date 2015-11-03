@@ -17,7 +17,7 @@ GNU General Public License for more details.
 from django.db import models
 from django.test import TestCase
 
-from .models import TimeUnit, Demand
+from .models import TimeUnit, Demand, Diagnosis
 from gestorpsi.client.models import Client
 from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.referral.models import Referral
@@ -65,3 +65,22 @@ class DemandTest(TestCase):
 
 	def test_duration_is_set(self):
 		self.assertEquals(self.duration, TimeUnit)
+
+class DiagnosisTest(TestCase):
+	def setUp(self):
+		clientD = Client()
+		referralD = Referral()
+		scheduleD = ScheduleOccurrence()
+
+		self.diagnosisD = Diagnosis(date_created=datetime(2015, 10, 15, 12, 12, 12),
+							 date_modified=datetime(2015, 10, 15, 13, 13, 13),
+							 edit_status="edit", diagnosis_date=datetime(2015, 10, 15, 11, 11, 11),
+							 diagnosis_resolution=datetime(2015, 10, 15, 11, 11, 11),
+							 diagnosis="diagnosis", diagnosis_status="status", diagnosis_status2="status2", 
+							 clinical_description="desc", severity="severity", treatment_indicated="treatment_indicated",
+							 bibliography="bibliography", related_sites="related_sites", comments="comments",
+							 client=clientD, referral=referralD, occurrence=scheduleD)
+		self.diagnosis = "diagnosis"
+
+	def testUnicode(self):
+		self.assertEquals(self.diagnosis, unicode(self.diagnosisD))

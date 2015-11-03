@@ -17,14 +17,14 @@ GNU General Public License for more details.
 from django import forms
 # It's unused
 # from django.utils.translation import ugettext_lazy as _
-from gestorpsi.careprofessional.models import StudentProfile, Profession
+from gestorpsi.careprofessional.models import StudentProfile, Profession, CareProfessional
 
 
 class StudentProfileForm(forms.ModelForm):
     class Meta:
         model = StudentProfile
         fields = (
-            'lecture_class', 'period', 'class_duration', 'register_number')
+            'lecture_class', 'period', 'class_duration', 'register_number','supervisor',)
 
     def __init__(self, *args, **kwargs):
         super(StudentProfileForm, self).__init__(*args, **kwargs)
@@ -32,3 +32,5 @@ class StudentProfileForm(forms.ModelForm):
             i.id, i.academic_name) for i in Profession.objects.all()]
         self.fields['lecture_class'].widget.attrs = {'class': 'medium'}
         self.fields['register_number'].widget.attrs = {'class': 'big'}
+        self.fields['supervisor'].choices = [(professional.id, professional.person.name)
+         for professional in CareProfessional.objects.all() if professional.is_student == False]

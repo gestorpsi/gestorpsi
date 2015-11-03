@@ -62,7 +62,7 @@ GNU General Public License for more details.
         <div class="admission_ind_org" {% ifnotequal referral.indication_set.all.0.indication_choice_id 3 %} style="display:none" {% endifnotequal %} >
          <label class="organization">{% trans "Select Organization" %} {% if not referral %}, {% trans "or" %} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a>{% endif %}<br />
           <select name="indication_organization" class="select extrabig asm">
-            {% if contact_professionals %}
+            {% if contact_organizations %}
                <option>{% trans "Select Organization"%}...</option>
                <optgroup label="{% trans "Local Contacts" %}">
                 {% for org in contact_organizations %}

@@ -25,9 +25,10 @@ from gestorpsi.internet.views import email_save, site_save, im_save
 from datetime import datetime
 from exceptions import ValueError
 
+
 def person_save(request, person):
 
-    person.name= request.POST['name']
+    person.name = request.POST['name']
     person.nickname = request.POST['nickname']
     person.comments = request.POST.get('comments')
 
@@ -38,16 +39,18 @@ def person_save(request, person):
 
     """ AGE """
     try:
-            if(request.POST.get('dateBirth')):
-                person.birthDate = datetime.strptime(request.POST.get('dateBirth'),'%d/%m/%Y')
+        if(request.POST.get('dateBirth')):
+            person.birthDate = datetime.strptime(
+                request.POST.get('dateBirth'), '%d/%m/%Y')
     except ValueError as error:
         print error
     else:
         if request.POST.get('Years'):
-            birthYear = (( int(datetime.now().strftime("%Y")) ) - ( int(request.POST.get('Years')) ) ) 
+            birthYear = (
+                (int(datetime.now().strftime("%Y"))) - (int(request.POST.get('Years'))))
             today = (datetime.now().strftime("%d/%m/"))
             dt = "%s%s" % (today, birthYear)
-            person.birthDate = datetime.strptime(dt ,'%d/%m/%Y')
+            person.birthDate = datetime.strptime(dt, '%d/%m/%Y')
 
     if(request.POST.get('aprox')):
         person.birthDateSupposed = True
@@ -56,63 +59,99 @@ def person_save(request, person):
     """ AGE """
 
     person.gender = request.POST['gender']
-    
+
     # maritalStatus
     try:
         if not (request.POST['maritalStatus']):
             person.maritalStatus = None
         else:
-            person.maritalStatus = MaritalStatus.objects.get(pk = request.POST['maritalStatus'])
+            person.maritalStatus = MaritalStatus.objects.get(
+                pk=request.POST['maritalStatus'])
     except:
         person.maritalStatus = None
 
     # birthPlace (Naturality)
-    person.birthForeignCity= ''
-    person.birthForeignState= ''
-    person.birthForeignCountry= None
-    
+    person.birthForeignCity = ''
+    person.birthForeignState = ''
+    person.birthForeignCountry = None
+
     try:
-        person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
+        person.birthPlace = City.objects.get(pk=request.POST['birthPlace'])
     except:
         person.birthPlace = None
         try:
-            person.birthForeignCity= request.POST['birthForeignCity']
+            person.birthForeignCity = request.POST['birthForeignCity']
         except:
             person.birthForeignCity = None
         try:
-            person.birthForeignState= request.POST['birthForeignState']
+            person.birthForeignState = request.POST['birthForeignState']
         except:
             person.birthForeignState = None
         try:
-            person.birthForeignCountry= request.POST['birthForeignCountry']
+            person.birthForeignCountry = request.POST['birthForeignCountry']
         except:
-            person.birthForeignCountry= None
+            person.birthForeignCountry = None
 
-
-    person.save()    
+    person.save()
     user = request.user
     person.organization.add(user.get_profile().org_active)
 
     # save phone numbers (using Phone APP)
-    phone_save(person, request.POST.getlist('phoneId'), request.POST.getlist('area'), request.POST.getlist('phoneNumber'), request.POST.getlist('ext'), request.POST.getlist('phoneType'))
+    phone_save(person,
+               request.POST.getlist('phoneId'),
+               request.POST.getlist('area'),
+               request.POST.getlist('phoneNumber'),
+               request.POST.getlist('ext'),
+               request.POST.getlist('phoneType')
+               )
 
     # save addresses (using Address APP)
-    address_save(person, request.POST.getlist('addressId'), request.POST.getlist('addressPrefix'),
-                 request.POST.getlist('addressLine1'), request.POST.getlist('addressLine2'),
-                 request.POST.getlist('addressNumber'), request.POST.getlist('neighborhood'),
-                 request.POST.getlist('zipCode'), request.POST.getlist('addressType'),
-                 request.POST.getlist('city'), request.POST.getlist('foreignCountry'),
-                 request.POST.getlist('foreignState'), request.POST.getlist('foreignCity'))
-    
-    # save documents (using Document APP) 
-    document_save(person, request.POST.getlist('documentId'), request.POST.getlist('document_typeDocument'), request.POST.getlist('document_document'), request.POST.getlist('document_issuer'), request.POST.getlist('document_state'))
-    
+    address_save(person,
+                 request.POST.getlist('addressId'),
+                 request.POST.getlist('addressPrefix'),
+                 request.POST.getlist('addressLine1'),
+                 request.POST.getlist('addressLine2'),
+                 request.POST.getlist('addressNumber'),
+                 request.POST.getlist('neighborhood'),
+                 request.POST.getlist('zipCode'),
+                 request.POST.getlist('addressType'),
+                 request.POST.getlist('city'),
+                 request.POST.getlist('foreignCountry'),
+                 request.POST.getlist('foreignState'),
+                 request.POST.getlist('foreignCity')
+                 )
+
+    # save documents (using Document APP)
+    document_save(person,
+                  request.POST.getlist('documentId'),
+                  request.POST.getlist('document_typeDocument'),
+                  request.POST.getlist('document_document'),
+                  request.POST.getlist('document_identifier'),
+                  request.POST.getlist('document_issuer'),
+                  request.POST.getlist('document_state')
+                  )
+
     # save internet data
-    email_save(person, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
-    site_save(person, request.POST.getlist('site_id'), request.POST.getlist('site_description'), request.POST.getlist('site_site'))
-    im_save(person, request.POST.getlist('im_id'), request.POST.getlist('im_identity'), request.POST.getlist('im_network'))
+    email_save(person,
+               request.POST.getlist('email_id'),
+               request.POST.getlist('email_email'),
+               request.POST.getlist('email_type')
+               )
+
+    site_save(person,
+              request.POST.getlist('site_id'),
+              request.POST.getlist('site_description'),
+              request.POST.getlist('site_site')
+              )
+
+    im_save(person,
+            request.POST.getlist('im_id'),
+            request.POST.getlist('im_identity'),
+            request.POST.getlist('im_network')
+            )
 
     return person
+
 
 def person_type_url(person):
     """ Return an URL linking to a Client, Care Professional or an Employee form """
@@ -121,23 +160,24 @@ def person_type_url(person):
         return "/client/%s/" % x.id
     except:
         pass
-        
+
     try:
         x = person.careprofessional
         return "/careprofessional/%s/" % x.id
     except:
         pass
-        
+
     try:
         x = person.employee
         return "/employee/%s/" % x.id
     except:
         pass
 
-def person_json_list(request, object, perm, page, no_paging = False, with_client_services = False):
+
+def person_json_list(request, object, perm, page, no_paging=False, with_client_services=False):
     object_length = len(object)
-    
-    array = {} #json
+
+    array = {}  # json
     i = 0
 
     if not no_paging:
@@ -150,7 +190,7 @@ def person_json_list(request, object, perm, page, no_paging = False, with_client
         paginator_next_page_number = object.next_page_number().real
         paginator_actual_page = object.number
         paginator_num_pages = paginator.num_pages
-        
+
         array['paginator'] = {}
         for p in paginator.page_range:
             array['paginator'][p] = p
@@ -173,13 +213,13 @@ def person_json_list(request, object, perm, page, no_paging = False, with_client
         'paginator_num_pages': paginator_num_pages,
         'object_length': object_length,
     }
-    
+
     for c in object_list:
         try:
             username = c.user.username
         except:
             username = ''
-        
+
         array[i] = {
             'id': c.id,
             'person_id': c.person.id,
@@ -189,14 +229,15 @@ def person_json_list(request, object, perm, page, no_paging = False, with_client
             'username': username,
             'age': c.person.age,
         }
-        
+
         if with_client_services:
             html = ''
             for r in c.referrals_charged():
-                html += u"<a title='%s' href='/client/%s/referral/%s/' style='color:#%s;'><div class='service_name_html' style='background-color:#%s;'>&nbsp;</div></a>" % (r, c.pk, r.pk, r.service.font_color, r.service.color)
-            
+                html += u"<a title='%s' href='/client/%s/referral/%s/' style='color:#%s;'><div class='service_name_html' style='background-color:#%s;'>&nbsp;</div></a>" % (
+                    r, c.pk, r.pk, r.service.font_color, r.service.color)
+
             array[i]['services_html'] = html
-        
+
         i = i + 1
 
     return array

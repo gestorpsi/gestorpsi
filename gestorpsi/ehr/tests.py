@@ -24,7 +24,6 @@ from gestorpsi.referral.models import Referral
 from datetime import datetime
 
 
-
 class DemandTest(TestCase):
 	def setUp(self):
 		timeunit = TimeUnit(unit="u", time="time")
@@ -41,7 +40,28 @@ class DemandTest(TestCase):
 							 related_sites="related_sites", comments="comments",
 							 client=clientD, referral=referralD, occurrence=scheduleD)
 
-		self.demand = "demand"
+		self.demand = "demand"		
+		self.frequency = TimeUnit
+		self.how_long_it_happens = TimeUnit
+		self.duration = TimeUnit
+		
+
+		clientD.pk = 11
+		referralD.pk = 22
+		scheduleD.pk = 33
+
+		self.demandD.client = clientD
+		self.demandD.referral = referralD
+		self.demandD.occurrence = scheduleD
 
 	def testUnicode(self):
 		self.assertEquals(self.demand, unicode(self.demandD))
+
+	def test_frequency_is_set(self):
+		self.assertEquals(self.frequency, TimeUnit)
+
+	def test_how_long_it_happens_is_set(self):
+		self.assertEquals(self.how_long_it_happens, TimeUnit)
+
+	def test_duration_is_set(self):
+		self.assertEquals(self.duration, TimeUnit)

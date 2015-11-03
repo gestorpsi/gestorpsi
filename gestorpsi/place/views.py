@@ -28,6 +28,7 @@ from gestorpsi.address.views import address_save
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.phone.views import phone_save
 from gestorpsi.util.decorators import permission_required_with_403
+from gestorpsi.careprofessional.models import CareProfessional
 
 
 @permission_required_with_403('place.place_list')
@@ -133,6 +134,7 @@ def form(request, object_id=None):
                                'AddressTypes': AddressType.objects.all(),
                                'countries': Country.objects.all(),
                                'RoomTypes': RoomType.objects.all(),
+                               'CareProfessionals': CareProfessional.objects.all(),
                                'States': State.objects.all(),
                                'Cities': cities,
                                'Hours': HOURS, },
@@ -292,6 +294,7 @@ def room_form(request, object_id=None):
     return render_to_response(
         'place/place_room_form.html',
         {'object': object, 'RoomTypes': RoomType.objects.all(),
+        'CareProfessionals': CareProfessional.objects.all(),
          'Places': Place.objects.filter(organization=request.
                                         user.get_profile().org_active.id), },
         context_instance=RequestContext(request))

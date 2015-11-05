@@ -23,7 +23,7 @@ GNU General Public License for more details.
 	{% if not TypeDocuments %}
 		{% trans "There is no types available to choice" %}
 	{% else %}
-	<select name="document_typeDocument" class="medium">
+	<select name="document_typeDocument" class="small">
 	{% for TypeDocument in TypeDocuments %}
 		<option value="{{ TypeDocument.id }}" mask="{{ TypeDocument.mask}}"{% ifequal document.typeDocument.id TypeDocument.id %} selected{% endifequal %}>{{ TypeDocument }}</option>
 	{% endfor %}
@@ -35,7 +35,7 @@ GNU General Public License for more details.
 	<label>{% trans "Document" %}<br />
 	<input type="text" maxlength="20" name="document_document" class="medium" value="{{ document.document }}" id="id_document" mask="{{ document.mask }}" />
 	</label>
-		
+
 	<label>{% trans "Issuer" %}<br />
 	{% if not Issuers %}
 		{% trans "There is no types available to choice" %}
@@ -48,6 +48,7 @@ GNU General Public License for more details.
 	</select>
 	{% endif %}
 	</label>
+
 	<label>{% trans "State" %}<br />
 		<select name="document_state" class="state">
 		<option></option>
@@ -56,6 +57,11 @@ GNU General Public License for more details.
 		{% endfor %}
 		</select>
 	</label>
+
+	<label>{% trans "Identifier" %}<br />
+	<input type="text" maxlength="10" name="document_identifier" class="small" value="{{ document.document_identifier }}" id="document_identifier" />
+	</label>
+		
 	<label><br /><a class="notajax remove_from_form" delete="document_{{ forloop.counter }}" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a></label>
 </div>
 

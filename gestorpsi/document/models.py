@@ -26,20 +26,27 @@ DOCUMENT_TYPE = (
     (2, _('Company Document')),
 )
 
+
 class Issuer(models.Model):
     description = models.CharField(max_length=100)
+
     def __unicode__(self):
         return u"%s" % self.description
+
     class Meta:
         ordering = ['description']
+
 
 class TypeDocument(models.Model):
     description = models.CharField(max_length=30)
     source = models.IntegerField(choices=DOCUMENT_TYPE, default=1)
+
     def __unicode__(self):
         return u"%s" % (self.description)
+
     class Meta:
         ordering = ['description']
+
 
 class Document(models.Model):
     id = UuidField(primary_key=True)
@@ -47,11 +54,12 @@ class Document(models.Model):
     document = models.CharField(max_length=20)
     issuer = models.ForeignKey(Issuer, null=True, blank=True)
     state = models.ForeignKey(State, null=True, blank=True)
-    
+    document_identifier = models.CharField(max_length=20)
+
     content_type = models.ForeignKey(ContentType)
-    object_id = models.CharField( max_length=36 )
+    object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
-    
+
     def __cmp__(self, other):
         if (self.typeDocument == other.typeDocument) and \
            (self.document == other.document) and \
@@ -63,9 +71,8 @@ class Document(models.Model):
 
     def __unicode__(self):
         text = u"%s %s" % (self.typeDocument, self.document)
-        if self.issuer != None:
+        if self.issuer is not None:
             text += u" %s" % self.issuer
-        if self.state != None:
+        if self.state is not None:
             text += u" %s" % self.state.shortName
         return text
-

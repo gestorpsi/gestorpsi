@@ -26,7 +26,7 @@ class EmployeeManager(models.Manager):
         return super(EmployeeManager, self).get_query_set().filter(active=False, person__organization = organization).order_by('person__name')
 
 class Employee(models.Model):
-    id= UuidField(primary_key=True)
+    id = UuidField(primary_key=True)
     person = models.OneToOneField(Person)
     hiredate = models.DateField(blank=True, null=True)
     job = models.CharField(max_length=30, blank=True)

@@ -250,15 +250,19 @@ class Report(models.Model):
         
     def get_occurrence_(self, organization, date_start, date_end, service, accumulated):
         
-        ON_TIME = {'value': 1, 'text': 'Client arrived on time' }
-        LATE = {'value': 2, 'text': 'Client arrived Late' }
-        DID_NOT_ARRIVE = {'value': 3, 'text': 'Client not arrived' }
+        CLIENT_ON_TIME = {'value': 1, 'text': 'Client arrived on time' }
+        CLIENT_LATE = {'value': 2, 'text': 'Client arrived Late' }
+        CLIENT_DID_NOT_ARRIVE = {'value': 3, 'text': 'Client not arrived' }
         UNMARKED = {'value': 4, 'text': 'Occurrence unmarked' }
         RESCHEDULED = {'value': 5, 'text': 'Occurrence rescheduled' }
+        PROFESSIONAL_ON_TIME = {'value':6, 'text': 'Professional arrived on time' }
+        PROFESSIONAL_LATE = {'value': 7, 'text': 'Professional arrived Late' }
+        PROFESSIONAL_DID_NOT_ARRIVE = {'value': 8, 'text': 'Professional not arrived' }
+        
+        presence_types = [CLIENT_ON_TIME, CLIENT_LATE, CLIENT_DID_NOT_ARRIVE,
+        UNMARKED, RESCHEDULED, PROFESSIONAL_ON_TIME, PROFESSIONAL_LATE, PROFESSIONAL_DID_NOT_ARRIVE]
 
-        presence_types = [ON_TIME, LATE, DID_NOT_ARRIVE, UNMARKED, RESCHEDULED]
-
-        date_start,date_end = self.set_date(organization, date_start, date_end)
+        date_start, date_end = self.set_date(organization, date_start, date_end)
 
         data = []
         

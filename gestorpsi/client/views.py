@@ -783,13 +783,7 @@ def save(request, object_id = None, is_company = False):
     org.save()
     payment_condition.payment_condition = request.POST["payment_condition"]
 
-    if int(payment_condition.payment_condition) == PAYMENT_CONDITION[0][0]:
-        payment_condition.value_for_payment = request.POST["value_for_payment"] 
-        print "-"*30
-        print int(payment_condition.payment_condition) == PAYMENT_CONDITION[0][0]
-        print "-"*30
-    else:
-        payment_condition.value_for_payment = float(0)
+    payment_condition.value_for_payment = request.POST["value_for_payment"] if float(payment_condition.payment_condition) == PAYMENT_CONDITION[0][0] else float(0)
     payment_condition.save()
     object.payment_condition = payment_condition
     
@@ -799,7 +793,7 @@ def save(request, object_id = None, is_company = False):
     object.person = person_save(request, person)
 
     if request.POST["salary"] == "":
-        object.person.salary = float(0)
+        object.person.salary = 0
     else:
         object.person.salary = request.POST["salary"]
     object.person.save()

@@ -38,7 +38,7 @@ GNU General Public License for more details.
 
 {% if object.id %}
 	<h2 class="title_rooms title">{{ object }}</h2>
-	<p class="description"><br />	
+	<p class="description"><br />
 {% else %}
 	<h2 class="title_rooms title">{% trans "Adding New Room" %}</h2>
 	<p class="description">{% trans "Inform the room details then click on Save button" %}</p>
@@ -52,24 +52,24 @@ GNU General Public License for more details.
 	<fieldset id="fieldset_room_identification">
 		<legend>{% trans "Room Identification" %}</legend>
 			<input type="hidden" name="room_id" value="{{ object.id }}" />
-            
+
             <label>{% trans "Select a Place" %}<br />
-            <select name="place_id" class="giant"> 
+            <select name="place_id" class="giant">
                 {% for place in Places %}
                     <option value="{{ place.id }}"{% ifequal place.id object.place.id %} selected{% endifequal %}> {{ place }} &nbsp; </option>
                 {% endfor %}
                 </select>
             </label>
-            
+
 			<label>{% trans "Room Name" %}<br />
 			<input type="text" maxlength="80" class="big update_name" name="description" value="{{ object.description }}" />
 			</label>
-			
+
 			<label>{% trans "Dimension" %}<br />
 			<input type="text" maxlength="10" class="medium" name="dimension" value="{% ifnotequal object.dimension 'None' %}{{ object.dimension }}{% endifnotequal %}" />
 			</label>
-				
-					
+
+
 			<label>{% trans "Type" %}<br />
 			{% if not RoomTypes %}
 				{% trans "There is no types available to choice" %}
@@ -82,9 +82,21 @@ GNU General Public License for more details.
 			{% endif %}
 			</label>
 
+      <label>{% trans "Responsible" %}<br />
+      {% if not CareProfessionals %}
+        {% trans "There is no Professionals available for choice" %}
+      {% else %}
+      <select name="careprofessional_id" class="big">
+      {% for professional in CareProfessionals %}
+        <option value="{{ professional.id }}" {% ifequal professional.id object.professional.id %} selected {% endifequal %}>{{ professional }}</option>
+      {% endfor %}
+      </select>
+      {% endif %}
+      </label>
+
 			<label>{% trans "Furniture" %}<br />
 			<textarea name="furniture" class="giant">{{ object.furniture }}</textarea>
-			
+
 			</label>
         </fieldset>
 

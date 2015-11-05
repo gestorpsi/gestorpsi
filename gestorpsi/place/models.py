@@ -23,7 +23,6 @@ from django.contrib.contenttypes import generic
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 
-
 class PlaceType(models.Model):
     """
     This class represents place types.
@@ -237,6 +236,7 @@ class Room(models.Model):
     furniture = models.TextField()
     active = models.BooleanField(default=True)
     comments = models.TextField(blank=True)
+    responsible =  models.ForeignKey('careprofessional.CareProfessional', null=True, blank=True)
 
     objects = RoomManager()
 

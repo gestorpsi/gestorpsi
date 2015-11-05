@@ -23,6 +23,7 @@ from gestorpsi.person.models import MaritalStatus
 from gestorpsi.phone.views import phone_save
 from gestorpsi.internet.views import email_save, site_save, im_save
 from datetime import datetime
+from exceptions import ValueError
 
 def person_save(request, person):
 
@@ -36,8 +37,11 @@ def person_save(request, person):
         person.photo = ''
 
     """ AGE """
-    if(request.POST.get('dateBirth')):
-        person.birthDate = datetime.strptime(request.POST.get('dateBirth'),'%d/%m/%Y')
+    try:
+            if(request.POST.get('dateBirth')):
+                person.birthDate = datetime.strptime(request.POST.get('dateBirth'),'%d/%m/%Y')
+    except ValueError as error:
+        print error
     else:
         if request.POST.get('Years'):
             birthYear = (( int(datetime.now().strftime("%Y")) ) - ( int(request.POST.get('Years')) ) ) 

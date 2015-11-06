@@ -124,10 +124,9 @@ def event_data(request, template='report/report_event.html'):
     """
     event
     """
-    data, lines, date_start, date_end, sch_list = Report().get_event_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('service'), request.GET.get('status'), request.GET.get('accumulated') )
+    data, lines, date_start, date_end, sch_list, total_events = Report().get_event_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('service'), request.GET.get('status'), request.GET.get('accumulated') )
 
     # variables of JS
-    option_title = u'Estatística dos profíssionais, serviços e tipo de confirmação para o período escolhido.'
     option_rows = data 
     column = lines
 

@@ -119,7 +119,16 @@ class Report(models.Model):
     def get_event_(self, organization, date_start, date_end, professional, service, status, accumulated):
 
         sch_list = [] # list of objects for earch presence
-        lines = [] # label for lines
+
+        '''
+            array to print each presence list
+            sch_list = []
+            sch_list[0] = []
+            sch_list[0][0] = label/line
+            sch_list[0][1] = ScheduleOccurrence.objects
+        '''
+        lines = [] # label for graphic lines
+        total_events = 0 # total of all events
 
         date_start , date_end = self.set_date(organization, date_start, date_end)
 
@@ -135,14 +144,6 @@ class Report(models.Model):
         if service:
             sch_objs = sch_objs.filter( event__referral__service__id=service )
 
-        '''
-            array to print each presence list
-            sch_list = []
-            sch_list[0] = []
-            sch_list[0][0] = label/line
-            sch_list[0][1] = ScheduleOccurrence.objects
-        '''
-
         # all confirmed and not confirmed
         if '999' in status or not status:
             status = "1,2,3,4,5,6,000" # Filter for each presence id end "not confirmed"
@@ -153,6 +154,7 @@ class Report(models.Model):
             lb = u'Não confirmado'
             lines.append(lb)
             sch_list.append( [lb,l] )
+            total_events += l.count()
 
             if not lb in lines:
                 lines.append(lb)
@@ -163,6 +165,7 @@ class Report(models.Model):
             lb = u'Confirmado'
             lines.append(lb)
             sch_list.append( [lb,l] )
+            total_events += l.count()
 
             if not lb in lines:
                 lines.append(lb)
@@ -175,17 +178,19 @@ class Report(models.Model):
 
                 try:
                     lb = labels[ int(x)-1 ]
-                    sch_list.append( [lb,l] )
 
                     if not lb in lines:
                         lines.append(lb)
+                        sch_list.append( [lb,l] )
+                        total_events += l.count()
                 except:
                     pass
 
         # graphic google chart
         data = []
+        ds = date_start
 
-        while date_start < date_end :
+        while ds < date_end :
 
             '''
                 tmp = []
@@ -195,27 +200,27 @@ class Report(models.Model):
                 tmp[N] = N presence selected
             '''
             tmp = []
-            tmp.append(date_start.month) # added time line
+            tmp.append(ds.month) # added time line
 
             for x in status.split(','):
 
-                t = sch_objs.filter(occurrenceconfirmation__presence=x, start_time__gte=date_start, end_time__lte=date_start+relativedelta(months=1)).count()
+                t = sch_objs.filter(occurrenceconfirmation__presence=x, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
 
                 # confirmed
                 if x == '111':
-                    t = sch_objs.filter(occurrenceconfirmation__isnull=False, start_time__gte=date_start, end_time__lte=date_start+relativedelta(months=1)).count()
+                    t = sch_objs.filter(occurrenceconfirmation__isnull=False, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
                 # not confirmed
                 if x == '000':
-                    t = sch_objs.filter(occurrenceconfirmation__isnull=True, start_time__gte=date_start, end_time__lte=date_start+relativedelta(months=1)).count()
+                    t = sch_objs.filter(occurrenceconfirmation__isnull=True, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
 
                 tmp.append(t)
 
             data.append(tmp)
             del(tmp)
             
-            date_start += relativedelta(months=1)
+            ds += relativedelta(months=1)
 
-        return data, lines, date_start, date_end, sch_list
+        return data, lines, date_start, date_end, sch_list, total_events
 
 
     def get_receive_(self, organization, date_start, date_end, professional, receive, service, pway, covenant ):

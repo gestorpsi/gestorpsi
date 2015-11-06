@@ -1,5 +1,7 @@
 <!-- all of this content will be to id report_table in main core -->
 
+{% load i18n %}
+
 <script type="text/javascript">
 
     function make_graphic1(rows, column){ 
@@ -39,137 +41,79 @@
 <!-- list of clients -->
 {% if option_rows %}
 
+       <!-- dialog -->
+       {% for x in sch_list %}
+           <div class="client_dialog dialog">
+                <h1 class="pointer">{{ x.0 }}</h1><a class="close_dialog">x</a>
+                <div style="clear:both;"></div>
+                <div class="date_range">{% trans "Client list between" %} {{ date_start|date:"d/m/Y" }} {% trans "and" %} {{ date_end|date:"d/m/Y" }}*</div>
+                <ul id="client_dialog" class="">
+                    {% for i in x.1 %}
+                        <li class="{% cycle 'odd' 'even' %}"><a href="/client/{{ i.id }}/home/">{{ i.event.referral.client.all.0 }}</a> <small style="float:right; padding-right: 10px;">{% if i.active %}{% trans "Active" %}{% else %}{% trans "Deactive" %}{% endif %}</small></li>
+                    {% endfor %}
+                </ul>
+                <small>{% trans "Total" %} {{ x.1.count }}</small>
+           </div>
+       {% endfor %}
+
         <table class='report'>
             <tr>
                 <th>&nbsp;</th>
             </tr>
             <tr>
-                <th>Estat&iacute;stica de todos os prof&iacute;ssionais, servi&ccedil;os e faturamentos para o per&iacute;odo escolhido.</th>
+                <th>Estat&iacute;stica para o profissional, servi&ccedil;o, tipo de confirma&ccedil;&atilde;o e per&iacute;odo escolhido.</th>
             </tr>
             <tr>
                 <th id='graphic'></th>
             </tr>
-            <tr>
-                <th>Total de pagamentos: {{ total_receive }}</th>
-            </tr>
         </table>
 
         <div style="text-align:center; margin-top: 35px;">
-            <h1>Faturamento no per&iacute;odo</h1>
+            <h1>Eventos no per&iacute;odo</h1>
         </div>
 
         <br />
 
-        {% for x in list_receive %}
-            {% if x.1 %}
+        <div style="text-align:center;">
+        <table class="report">
+         <tbody>
 
-               <div style='background-color:{{ x.2 }}; vertical-align:middle; padding: 0 15px; font-size: 15px; font-weight: bold; color: white; '>{{ x.0 }}</div>
+            <tr class="legend"> 
+                <th>Confirma&ccedil;&atilde;o</th> 
+                <th>Quantidade</th> 
+            </tr> 
 
-               <table class="report_list_receive">
+            {% for x in sch_list %}
+                <tr class="{% cycle 'odd' 'even' %}">
+                    <td style="text-align:center;">
+                        <a href="{{ x.0 }}">{{ x.0 }}</a>
+                    </td>
 
-                 <tbody>
-                    <tr class="legend"> 
-                        <th>Cliente</th> 
-                        <th>Conv&ecirc;nio</th> 
-                        <th>Cobran&ccedil;a</th> 
-                        <th>Data lan&ccedil;amento</th> 
-                        <th>Data evento</th> 
-                        <th>Servi&ccedil;o</th> 
-                        <th>Forma pagto</th> 
-                        <th>Valor R$</th> 
-                    </tr> 
+                    <td style="text-align:center;">
+                        {{ x.1.count }}
+                    </td>
+                </tr>
 
-                    {% for c in x.1 %}
-                        <tr class="{% cycle 'odd' 'even' %}">
+            {% endfor %}
+                <tr class="{% cycle 'odd' 'even' %}"></tr>
 
-                            <td style="text-align:center;">
-                                {% if c.referral %}
-                                    <a href="/client/{{ c.referral.client.all.0.id }}/home/" target="_blank">{{ c.referral.client.all.0 }}</a>
-                                    
-                                {% else %}
-                                    <a href="/client/{{ c.occurrence.all.0.event.referral.client.all.0.id }}/home/" target="_blank">{{ c.occurrence.all.0.event.referral.client.all.0 }}</a>
-                                {% endif %}
-                            </td>
+                <!-- total -->
+                <tr class="odd">
+                    <td style="text-align:center; font-weight:bold;">
+                        Total
+                    </td>
+                    <td style="text-align:center;">
+                        {{ total_events }}
+                    </td>
+                </tr>
 
-                            <td style="text-align:center;">
-                                {{ c.name }}
-                            </td>
+         </tbody>
+       </table>
+       </div>
 
-                            <td style="text-align:center;">
-                                {% ifequal c.covenant_charge 2 %}
-                                    {{ c.get_covenant_charge_display }} ({{ c.covenant_pack_size }}) {% if c.terminated_ %}F{% else %}NF{% endif %}
-                                {% else %}
-                                    {{ c.get_covenant_charge_display }}
-                                {% endifequal %}
-                            </td>
 
-                            <td style="text-align:center;">
-                                {{ c.created|date:"D, d b Y" }}
-                            </td>
-
-                            <td style="text-align:center;">
-                                {% if c.occurrence.all.0.id %}
-                                    <a href="/schedule/events/{{ c.occurrence.all.0.id }}/confirmation/" target="_blank">{{ c.occurrence.all.0.start_time|date:"D, d b Y - H:i" }}</a>
-                                {% else %}
-                                    <a href="{% url financial-receive-form c.id %}" target="_blank">{{ c.created|date:"D, d b Y" }}</a>
-                                {% endif %}
-                            </td>
-
-                            <td style="text-align:center;">
-                                {% if c.referral %}
-                                    <a href="/client/{{ c.referral.client.all.0.id }}/referral/{{ c.referral.id }}/" target="_blank">{{ c.referral.service }} #{{ c.referral.seq }}</a>
-                                {% else %}
-                                    <a href="/client/{{ c.occurrence.all.0.event.referral.client.all.0.id }}/referral/{{ c.occurrence.all.0.event.referral.id }}/" target="_blank">{{ c.occurrence.all.0.event.referral.service }} #{{ c.occurrence.all.0.event.referral.seq }}</a>
-                                {% endif %}
-                            </td>
-
-                            <td style="text-align:center;">
-                                {% for x in c.get_display_payment_way_name_ %}
-                                    {{ x }} {% if not forloop.last %}, {% endif %}
-                                {% endfor %}
-                            </td>
-
-                            <td style="text-align:center;">
-                                {{ c.total }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-
-                    <!-- total -->
-                        <tr class="odd">
-                            <td style="text-align:center; font-weight:bold;">
-                                Valor total
-                            </td>
-                            <td style="text-align:center; font-weight:bold;">
-                                Todos
-                            </td>
-                            <td style="text-align:center; font-weight:bold;">
-                                Todos
-                            </td>
-                            <td style="text-align:center; font-weight:bold;">
-                                Todos
-                            </td>
-                            <td style="text-align:center; font-weight:bold;">
-                                Todos
-                            </td>
-                            <td style="text-align:center; font-weight:bold;">
-                                Todos
-                            </td>
-                            <td style="text-align:center; font-weight:bold;">
-                                Todos
-                            </td>
-                            <td style="text-align:center;">
-                                {{ x.3 }}
-                            </td>
-                        </tr>
-
-                 </tbody>
-               </table>
-
-            {% endif %}
-        {% endfor %}
-
-        <script>
+       <!-- call graphics -->
+       <script>
             var rows = {{ option_rows }}
 
             var lines = [];
@@ -177,7 +121,7 @@
 
             // call graphic function 
             make_graphic1(rows, lines);
-        </script>
+       </script>
 
 {% else %}
     <script>

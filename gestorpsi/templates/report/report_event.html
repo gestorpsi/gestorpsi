@@ -43,13 +43,16 @@
 
        <!-- dialog -->
        {% for x in sch_list %}
-       <div class="client_dialog dialog" id="{{ forloop.counter0 }}">
+       <div class="client_dialog dialog" id="{{ forloop.counter0 }}" style="display:none;">
                 <h1 class="pointer">{{ x.0 }}</h1><a class="close_dialog">x</a>
                 <div style="clear:both;"></div>
                 <div class="date_range">{% trans "Client list between" %} {{ date_start|date:"d/m/Y" }} {% trans "and" %} {{ date_end|date:"d/m/Y" }}*</div>
                 <ul id="client_dialog" class="">
                     {% for i in x.1 %}
-                        <li class="{% cycle 'odd' 'even' %}"><a href="/client/{{ i.id }}/home/">{{ i.event.referral.client.all.0 }}</a> <small style="float:right; padding-right: 10px;">{% if i.active %}{% trans "Active" %}{% else %}{% trans "Deactive" %}{% endif %}</small></li>
+                        <li class="{% cycle 'odd' 'even' %}">
+                            <a href="/client/{{ i.id }}/home/">{{ i.event.referral.client.all.0 }}</a>
+                            <small style="float:right; padding-right: 10px;">{% if i.active %}{% trans "Active" %}{% else %}{% trans "Deactive" %}{% endif %}</small>
+                        </li>
                     {% endfor %}
                 </ul>
                 <small>{% trans "Total" %} {{ x.1.count }}</small>
@@ -86,7 +89,7 @@
             {% for x in sch_list %}
                 <tr class="{% cycle 'odd' 'even' %}">
                     <td style="text-align:center;">
-                        <a href="#top" class="showdialog" name="{{ forloop.counter0 }}">{{ x.0 }}</a>
+                        <a href="#" class="showdialog" name="{{ forloop.counter0 }}">{{ x.0 }}</a>
                     </td>
                     <td style="text-align:center;">
                         {{ x.1.count }}

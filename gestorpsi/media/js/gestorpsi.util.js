@@ -67,22 +67,27 @@ $(document).ready(function() {
      
      //$('#colorpickerHolder').ColorPicker({flat: true});
 
-$('.colorpicker_open').ColorPicker({
-	onSubmit: function(hsb, hex, rgb, el) {
-		$(el).val(hex);
-		$(el).ColorPickerHide();
-        $('div.colorpicker_preview').css('background-color','#'+hex);
-	},
-	onBeforeShow: function () {
-		$(this).ColorPickerSetColor(this.value);
-	}
-})
-.bind('keyup', function(){
-	$(this).ColorPickerSetColor(this.value);
-    
-});
+    $('.colorpicker_open').ColorPicker({
+        onSubmit: function(hsb, hex, rgb, el) {
+            $(el).val(hex);
+            $(el).ColorPickerHide();
+            $('div.colorpicker_preview').css('background-color','#'+hex);
+        },
+        onBeforeShow: function () {
+            $(this).ColorPickerSetColor(this.value);
+        }
+    })
 
+    .bind('keyup', function(){
+        $(this).ColorPickerSetColor(this.value);
+        
+    });
 
+    // report event - show and hide list of clients
+    $('a.showdialog').live('click', function(){ 
+        $('div.client_dialog').hide();
+        $('div.client_dialog[id=' + this.name + ']').show();
+    });
 
 });
 

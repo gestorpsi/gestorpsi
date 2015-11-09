@@ -43,7 +43,7 @@
 
        <!-- dialog -->
        {% for x in sch_list %}
-           <div class="client_dialog dialog">
+       <div class="client_dialog dialog" id="{{ forloop.counter0 }}">
                 <h1 class="pointer">{{ x.0 }}</h1><a class="close_dialog">x</a>
                 <div style="clear:both;"></div>
                 <div class="date_range">{% trans "Client list between" %} {{ date_start|date:"d/m/Y" }} {% trans "and" %} {{ date_end|date:"d/m/Y" }}*</div>
@@ -86,9 +86,8 @@
             {% for x in sch_list %}
                 <tr class="{% cycle 'odd' 'even' %}">
                     <td style="text-align:center;">
-                        <a href="{{ x.0 }}">{{ x.0 }}</a>
+                        <a href="#top" class="showdialog" name="{{ forloop.counter0 }}">{{ x.0 }}</a>
                     </td>
-
                     <td style="text-align:center;">
                         {{ x.1.count }}
                     </td>

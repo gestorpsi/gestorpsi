@@ -133,7 +133,7 @@ class Report(models.Model):
         date_start , date_end = self.set_date(organization, date_start, date_end)
 
         # filter by date range, all professional and all presence 
-        sch_objs = ScheduleOccurrence.objects.filter(start_time__gte=date_start, start_time__lte=date_end, event__referral__organization=organization)
+        sch_objs = ScheduleOccurrence.objects.filter(start_time__gte=date_start, start_time__lte=date_end, event__referral__organization=organization).order_by('event__referral__client')
         labels = [u'Cliente chegou no horário',u'Cliente chegou atrasado',u'Cliente não compareceu',u'Evento desmarcado',u'Evento remarcado',u'Profissional não compareceu',u'Não confirmado']
 
         # professional

@@ -69,10 +69,11 @@ div.client_dialog, div.saved_table {
 }
 
 div.client_dialog {
-        position: fixed;
+        position: absolute;
         background:  url("/media/img/transp75.png") white;
         z-index: 6;
         margin-left: 120px; 
+        margin-top: 10px; 
         width: 520px;
 }
 

@@ -512,7 +512,9 @@ def occurrence_confirmation_form(
                         lendable=False))]
 
         #Validating the events to be dated with input and output
-        if (occurrence_confirmation and int(occurrence_confirmation.presence)) == (1 or 2 or 5 or 6):
+        if (((occurrence_confirmation and int(occurrence_confirmation.presence)) > 2 ) and
+            ((occurrence_confirmation and int(occurrence_confirmation.presence)) < 6) or
+            ((occurrence_confirmation and int(occurrence_confirmation.presence)) > 7)):
             occurrences_that_require_dates = True
         else:
             occurrences_that_require_dates = None

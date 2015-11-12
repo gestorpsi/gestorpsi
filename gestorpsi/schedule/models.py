@@ -119,8 +119,8 @@ class ScheduleOccurrence(Occurrence):
                 'revision__date_created').revision
 
     def __unicode__(self):
-        return u"%s %s" % (datetime.strftime(
-            self.start_time, '%d/%m/%Y %H:%M'), self.reserve)
+        return u"%s" % (datetime.strftime(
+            self.start_time, '%d/%m/%Y %H:%M'))
 
     def have_company(self):
         have_company = False

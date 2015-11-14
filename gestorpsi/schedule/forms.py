@@ -43,13 +43,16 @@ def timeslot_offset_options(
     '''
     dt = datetime.combine(date.today(), time(0))
     dtstart = datetime.combine(dt.date(), start_time)
+
     if type == 'end':
-        dtstart = dtstart + timedelta(hours=+0.5)
+        dtstart = dtstart + interval
+
     dtend = dtstart + end_delta
     options = []
 
     delta = utils.time_delta_total_seconds(dtstart - dt)
     seconds = utils.time_delta_total_seconds(interval)
+
     while dtstart <= dtend:
         options.append((delta, dtstart.strftime('%H:%M')))
         dtstart += interval
@@ -68,7 +71,6 @@ class SplitDateTimeWidget(forms.MultiWidget):
     Select widget for times.
     
     '''
-    #---------------------------------------------------------------------------
     def __init__(self, attrs=None):
         widgets = (
             SelectDateWidget(attrs=attrs), 
@@ -76,7 +78,7 @@ class SplitDateTimeWidget(forms.MultiWidget):
         )
         super(SplitDateTimeWidget, self).__init__(widgets, attrs)
 
-    #---------------------------------------------------------------------------
+
     def decompress(self, value):
         if value:
             return [value.date(), value.time().replace(microsecond=0)]
@@ -100,30 +102,26 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
         ))    
     annotation = forms.CharField(required = False, widget=forms.Textarea())
     is_online = forms.BooleanField(required = False)
-    start_time_delta = forms.IntegerField(
-        label='Start time',
-        widget=forms.Select(choices=default_timeslot_offset_options_start)
-    )
-    
-    end_time_delta = forms.IntegerField(
-        label='End time',
-        widget=forms.Select(choices=default_timeslot_offset_options_end)
-    )
 
-    # rewrite fields of swing time, select to avoid errors of fill. 
-    CHOICES = [(i,i) for i in range(1,121)]
-    interval = forms.IntegerField(
-        widget=forms.Select(choices=CHOICES),
-    )
-
-    CHOICES = [(i,i) for i in range(1,51)]
-    count = forms.IntegerField(
-        widget=forms.Select(choices=CHOICES),
-    )
-    
-    
     class Meta:
         model = ScheduleOccurrence
+
+
+    def __init__(self, request, *args, **kwargs):
+        super(ScheduleOccurrenceForm, self).__init__(*args, **kwargs)
+
+        # rewrite slot time based in the settings of organization schedule
+        self.fields['start_time_delta'] = forms.IntegerField(
+            label='Start time',
+            widget=forms.Select(choices=timeslot_offset_options(type='start', interval=timedelta(minutes=int(request.user.get_profile().org_active.time_slot_schedule))) )
+        )
+        
+        # rewrite slot time based in the settings of organization schedule
+        self.fields['end_time_delta'] = forms.IntegerField(
+            label='End time',
+            widget=forms.Select(choices=timeslot_offset_options(type='end', interval=timedelta(minutes=int(request.user.get_profile().org_active.time_slot_schedule))) )
+        )
+
 
     def save(self, event, disable_check_busy = False):
         if self.cleaned_data['repeats'] == 'no':

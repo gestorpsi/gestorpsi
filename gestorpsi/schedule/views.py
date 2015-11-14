@@ -101,7 +101,7 @@ def add_event(
     if request.POST:
 
         # instance form
-        recurrence_form = recurrence_form_class(request.POST)
+        recurrence_form = recurrence_form_class(request.POST, request)
 
         # no errors found, form is valid.
         if recurrence_form.is_valid():
@@ -193,7 +193,8 @@ def add_event(
     referral = get_object_or_None(Referral, pk=request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
     event_form = event_form_class
 
-    recurrence_form = recurrence_form_class( initial = dict(
+    recurrence_form = recurrence_form_class( request,
+                                             initial = dict(
                                                             dtstart=dtstart, 
                                                             day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"), 
                                                             until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
@@ -236,7 +237,7 @@ def event_view(
                 event_form.save(event)
                 return http.HttpResponseRedirect(request.path)
         elif '_add' in request.POST:
-            recurrence_form = recurrence_form_class(request.POST)
+            recurrence_form = recurrence_form_class(request.POST, request)
             if recurrence_form.is_valid():
                 recurrence_form.save(event)
                 return http.HttpResponseRedirect(request.path)
@@ -246,6 +247,7 @@ def event_view(
     event_form = event_form or event_form_class(instance=event)
     if not recurrence_form:
         recurrence_form = recurrence_form_class(
+            request,
             initial=dict(dtstart=datetime.now())
         )
             

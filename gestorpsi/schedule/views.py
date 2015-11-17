@@ -456,7 +456,7 @@ def occurrence_confirmation_form(
             data = form.save(commit=False)
             data.occurrence = occurrence
             # client not arrive, dont save datetime field
-            if int(data.presence) not in (1, 2):
+            if int(data.presence) not in (1, 2, 6, 7):
                 data.date_started = None
                 data.date_finished = None
             data.save()
@@ -490,7 +490,7 @@ def occurrence_confirmation_form(
     else:
         # load initial data if client dont arrive
         if hasattr(occurrence_confirmation, 'presence') and int(
-                occurrence_confirmation.presence) not in (1, 2):
+            occurrence_confirmation.presence) not in (1, 2, 6, 7):
             occurrence_confirmation.date_started = occurrence.start_time
             occurrence_confirmation.date_finished = occurrence.end_time
 

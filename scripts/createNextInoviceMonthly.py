@@ -62,13 +62,17 @@ for x in Invoice.objects.filter(end_date=end):
     bcc = []
     bcc.append('teagom@gmail.com')
 
+    '''
+        send mail just to user is_active = True
+    '''
     # administratror of org
     for e in x.organization.administrators_():
-        if not e.profile.user.email in to:
+        if e.profile.user.is_active and not e.profile.user.email in to:
             to.append(e.profile.user.email) 
+
     # secretary of org
     for e in x.organization.secretary_():
-        if not e.profile.user.email in to:
+        if e.profile.user.is_active and not e.profile.user.email in to:
             to.append(e.profile.user.email) 
 
     # send email

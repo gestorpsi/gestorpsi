@@ -101,7 +101,7 @@ def add_event(
     if request.POST:
 
         # instance form
-        recurrence_form = recurrence_form_class(request.POST, request)
+        recurrence_form = recurrence_form_class(request, request.POST)
 
         # no errors found, form is valid.
         if recurrence_form.is_valid():
@@ -237,7 +237,7 @@ def event_view(
                 event_form.save(event)
                 return http.HttpResponseRedirect(request.path)
         elif '_add' in request.POST:
-            recurrence_form = recurrence_form_class(request.POST, request)
+            recurrence_form = recurrence_form_class(request, request.POST)
             if recurrence_form.is_valid():
                 recurrence_form.save(event)
                 return http.HttpResponseRedirect(request.path)

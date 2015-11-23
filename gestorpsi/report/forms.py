@@ -56,8 +56,8 @@ class ReportForm(forms.ModelForm):
     payment_way = forms.ChoiceField(label=_('Forma de pagamento'), help_text=_('Forma de pagamento'))
     cove = forms.ChoiceField( label=_(u'Convênio') )
     professional = forms.ChoiceField( label=_(u'Profissional') )
-    confirmation_status = forms.ChoiceField( label=_(u'Confirmação'), widget=forms.CheckboxSelectMultiple  )
-
+    confirmation_status = forms.ChoiceField( label=_(u'Confirmação'), widget=forms.CheckboxSelectMultiple(attrs={'class':'confirmation_select'}) )
+    
     class Meta:
         model = Report
 

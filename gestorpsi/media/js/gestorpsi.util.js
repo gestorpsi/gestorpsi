@@ -89,6 +89,81 @@ $(document).ready(function() {
         $('div.client_dialog[id=' + this.name + ']').show();
     });
 
+    $('input.confirmation_select').click( function(){ 
+
+       if (this.value == '999'){ 
+
+           if ( this.checked ) { 
+               $('input#id_confirmation_status_1').attr("checked","checked");
+               $('input#id_confirmation_status_1').attr("disabled",true);
+               $('input#id_confirmation_status_2').attr("disabled",true);
+               $('input#id_confirmation_status_3').attr("checked","checked");
+               $('input#id_confirmation_status_3').attr("disabled",true);
+               $('input#id_confirmation_status_4').attr("checked","checked");
+               $('input#id_confirmation_status_4').attr("disabled",true);
+               $('input#id_confirmation_status_5').attr("checked","checked");
+               $('input#id_confirmation_status_5').attr("disabled",true);
+               $('input#id_confirmation_status_6').attr("checked","checked");
+               $('input#id_confirmation_status_6').attr("disabled",true);
+               $('input#id_confirmation_status_7').attr("checked","checked");
+               $('input#id_confirmation_status_7').attr("disabled",true);
+               $('input#id_confirmation_status_8').attr("checked","checked");
+               $('input#id_confirmation_status_8').attr("disabled",true);
+           } else { 
+               $('input#id_confirmation_status_1').removeAttr("checked");
+               $('input#id_confirmation_status_1').attr("disabled",false);
+               $('input#id_confirmation_status_2').attr("disabled",false);
+               $('input#id_confirmation_status_3').removeAttr("checked");
+               $('input#id_confirmation_status_3').attr("disabled",false);
+               $('input#id_confirmation_status_4').removeAttr("checked");
+               $('input#id_confirmation_status_4').attr("disabled",false);
+               $('input#id_confirmation_status_5').removeAttr("checked");
+               $('input#id_confirmation_status_5').attr("disabled",false);
+               $('input#id_confirmation_status_6').removeAttr("checked");
+               $('input#id_confirmation_status_6').attr("disabled",false);
+               $('input#id_confirmation_status_7').removeAttr("checked");
+               $('input#id_confirmation_status_7').attr("disabled",false);
+               $('input#id_confirmation_status_8').removeAttr("checked");
+               $('input#id_confirmation_status_8').attr("disabled",false);
+           }
+       }
+
+       // confirmado - all confirmation options
+       if (this.value == '111'){ 
+
+           if ( this.checked ) { 
+               $('input#id_confirmation_status_0').attr("disabled",true);
+               $('input#id_confirmation_status_3').attr("checked","checked");
+               $('input#id_confirmation_status_3').attr("disabled",true);
+               $('input#id_confirmation_status_4').attr("checked","checked");
+               $('input#id_confirmation_status_4').attr("disabled",true);
+               $('input#id_confirmation_status_5').attr("checked","checked");
+               $('input#id_confirmation_status_5').attr("disabled",true);
+               $('input#id_confirmation_status_6').attr("checked","checked");
+               $('input#id_confirmation_status_6').attr("disabled",true);
+               $('input#id_confirmation_status_7').attr("checked","checked");
+               $('input#id_confirmation_status_7').attr("disabled",true);
+               $('input#id_confirmation_status_8').attr("checked","checked");
+               $('input#id_confirmation_status_8').attr("disabled",true);
+           } else { 
+               $('input#id_confirmation_status_0').attr("disabled",false);
+               $('input#id_confirmation_status_3').removeAttr("checked");
+               $('input#id_confirmation_status_3').attr("disabled",false);
+               $('input#id_confirmation_status_4').removeAttr("checked");
+               $('input#id_confirmation_status_4').attr("disabled",false);
+               $('input#id_confirmation_status_5').removeAttr("checked");
+               $('input#id_confirmation_status_5').attr("disabled",false);
+               $('input#id_confirmation_status_6').removeAttr("checked");
+               $('input#id_confirmation_status_6').attr("disabled",false);
+               $('input#id_confirmation_status_7').removeAttr("checked");
+               $('input#id_confirmation_status_7').attr("disabled",false);
+               $('input#id_confirmation_status_8').removeAttr("checked");
+               $('input#id_confirmation_status_8').attr("disabled",false);
+           }
+       }
+
+    });
+
 });
 
 

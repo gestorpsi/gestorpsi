@@ -28,7 +28,9 @@ from django.forms.util import ErrorList
 from django.utils.translation import ugettext as _
 from django.contrib.auth.views import login as django_login
 from django.core.mail import EmailMessage
-
+from django.db.models.query import QuerySet
+from django.db.models.manager import Manager
+from django.db.models.base import ModelBase
 
 from gestorpsi.settings import SITE_DISABLED, ADMIN_URL, ADMINS_REGISTRATION, URL_APP, URL_HOME, SIGNATURE, URL_DEMO
 
@@ -65,7 +67,6 @@ def user_authentication(request):
     
     if (unblocked_user(username)):
         user = authenticate(username=username, password=password)
-        
         # user does not exist
         if user is None:
             set_trylogin(username)
@@ -103,7 +104,12 @@ def user_authentication(request):
                     return render_to_response('registration/select_organization.html', { 'objects': profile.organization.distinct() })
             login(request, user)
             return HttpResponseRedirect(request.POST.get('next') or '/')
+    else:
+        form_messages = _('Invalid username or password')
+        return render_to_response('registration/login.html', {'form': form, 'form_messages': form_messages })
+        
 
+    
 
 
 
@@ -191,19 +197,46 @@ def change_password(user,current_password, new_password):
 
     
 def unblocked_user(username):
-    user = get_object_or_404(User, username=username)
-    
+    user = get_object_or_None(User, username=username)
+    if user == None:
+        return False
     if user.is_staff or user.is_superuser:
         return True
-    
+        
     profile = user.get_profile()
     value = profile.try_login
     if (value >= settings.PASSWORD_RETIRES):            
         return False
-    
     return True
 
+def _get_queryset(klass):
+    """
+    Returns a QuerySet from a Model, Manager, or QuerySet. Created to make
+    get_object_or_404 and get_list_or_404 more DRY.
 
+    Raises a ValueError if klass is not a Model, Manager, or QuerySet.
+    """
+    if isinstance(klass, QuerySet):
+        return klass
+    elif isinstance(klass, Manager):
+        manager = klass
+    elif isinstance(klass, ModelBase):
+        manager = klass._default_manager
+    else:
+        if isinstance(klass, type):
+            klass__name = klass.__name__
+        else:
+            klass__name = klass.__class__.__name__
+        raise ValueError("Object is of type '%s', but must be a Django Model, "
+                         "Manager, or QuerySet" % klass__name)
+    return manager.all()
+
+def get_object_or_None(klass, *args, **kwargs):
+    queryset = _get_queryset(klass)
+    try:
+        return queryset.get(*args, **kwargs)
+    except queryset.model.DoesNotExist:
+        return None
 
 def gestorpsi_login(request, *args, **kwargs):
     if SITE_DISABLED:

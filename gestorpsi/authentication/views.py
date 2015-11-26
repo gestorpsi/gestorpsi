@@ -70,13 +70,11 @@ def user_authentication(request):
         # user does not exist
         if user is None:
             set_trylogin(username)
-            form_messages = _('Invalid username or password')
-            return render_to_response('registration/login.html', {'form': form, 'form_messages': form_messages })
+            return return_invalid_username(form)
         else:
             request.session['user_aux_id'] = user.id
-        if user.is_staff or user.is_superuser:
-            login(request, user)
-            return HttpResponseRedirect(ADMIN_URL)
+            
+        login_for_admin_or_staff(user, request)
 
         # user has not confirmed registration yet
         if user.registrationprofile_set.all()[0].activation_key != 'ALREADY_ACTIVATED':
@@ -87,28 +85,44 @@ def user_authentication(request):
             form_messages = _('Your account has been disable. Please contact our support')
             return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
         else:
-            clear_login(user)
-            profile = user.get_profile()
-            if profile.organization.distinct().count() > 1:
-                try:
-                    organization = profile.organization.get(short_name__iexact = request.POST.get('shortname'))
-                    profile.org_active = organization
-                    profile.save()
-                    user.groups.clear()
-                    for role in user.get_profile().role_set.filter(organization=organization):
-                        user.groups.add(role.group)
-                    login(request, user)
-                    return HttpResponseRedirect('/')
-                except Organization.DoesNotExist:
-                    request.session['temp_user'] = user
-                    return render_to_response('registration/select_organization.html', { 'objects': profile.organization.distinct() })
-            login(request, user)
-            return HttpResponseRedirect(request.POST.get('next') or '/')
+            return login_user(user, request)
     else:
-        form_messages = _('Invalid username or password')
-        return render_to_response('registration/login.html', {'form': form, 'form_messages': form_messages })
+        return return_invalid_username(form)
 
+def login_for_admin_or_staff(user, request):
+    if user.is_staff or user.is_superuser:
+        login(request, user)
+        return HttpResponseRedirect(ADMIN_URL)
 
+def login_user(user, request):
+    clear_login(user)
+    profile = user.get_profile()
+    if profile.organization.distinct().count() > 1:
+        try:
+            save_organization_shortname(profile, request)
+            assign_role(user, request)
+            return HttpResponseRedirect('/')
+        except Organization.DoesNotExist:
+            request.session['temp_user'] = user
+            return render_to_response('registration/select_organization.html', { 'objects': profile.organization.distinct() })
+    login(request, user)
+    return HttpResponseRedirect(request.POST.get('next') or '/')
+
+def assign_role(user, request):
+    user.groups.clear()
+    for role in user.get_profile().role_set.filter(organization=organization):
+        user.groups.add(role.group)
+    login(request, user)
+
+def return_invalid_username(form):
+    form_messages = _('Invalid username or password')
+    return render_to_response('registration/login.html', {'form': form, 'form_messages': form_messages })
+
+def save_organization_shortname(profile, request):
+    organization = profile.organization.get(short_name__iexact = request.POST.get('shortname'))
+    profile.org_active = organization
+    profile.save()
+    
 def user_organization(request):
     organization = Organization.objects.get(pk=request.POST.get('organization'))
     user = request.session['temp_user']

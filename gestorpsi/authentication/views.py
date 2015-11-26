@@ -204,59 +204,26 @@ def register(request, success_url=None,
 
                 # active automatic
                 org = Organization.objects.filter(organization__isnull=True).filter(person=person)[0]
-                org.active = True
+                org.active = True   
                 org.save()
 
                 activate_each_registered_profile (org)
 
                 save_professional(org, person)
 
-                # invoice
-                i = Invoice()
-                i.organization = org
-                i.status = 2
-                i.save()
+                organzation_invoice = Invoice()
+                save_organization_invoice(organzation_invoice,org)
                 
                 bcc_list = ADMINS_REGISTRATION
 
-                msg = EmailMessage()
-                msg.subject = u'Nova assinatura em %s' % URL_HOME
-                msg.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar %s/gcm/\n\n' % URL_APP
-                msg.body += u'Organização %s' % org
-                msg.to = bcc_list
-                msg.send()
+                send_email_message_new_signature(bcc_list, org)
                 
                 request.session['user_aux_id'] = user.id
 
-                # message for client
-                user = User.objects.get(id=request.session['user_aux_id'])
-                msg = EmailMessage()
-                msg.subject = u"Assinatura GestorPSI.com.br"
+                message_for_client(organzation_invoice, request, bcc_list)
 
-                msg.body = u"Olá, bom dia!\n\n"
-                msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe. Sua conta está pronta para usar! "
-                msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
-
-                msg.body += u"link funcionalidades: %s/funcionalidades/\n" % URL_HOME
-                msg.body += u"link como usar: %s/como-usar/\n" % URL_HOME
-                msg.body += u"link manual: %s/media/manual.pdf\n" % URL_DEMO
-                msg.body += u"link contato: %s/contato/\n\n" % URL_HOME
-                msg.body += u"Instruções no YouTube: https://www.youtube.com/channel/UC03EiqIuX72q-fi0MfWK8WA\n\n"
-
-                msg.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( i.start_date.strftime("%d/%m/%Y"), i.end_date.strftime("%d/%m/%Y") )
-                msg.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % URL_APP
-
-                msg.body += u"Endereço do GestorPSI: %s\n" % URL_APP
-                msg.body += u"Usuário/Login  %s\n" % request.POST.get('username')
-                msg.body += u"Senha  %s\n\n" % request.POST.get('password1')
-
-                msg.body += u"%s" % SIGNATURE
-
-                msg.to = [ user.email, ]
-                msg.bcc =  bcc_list
-                msg.send()
-                
                 return HttpResponseRedirect(success_url or reverse('registration-complete'))
+
     else:
         form = form_class()
     
@@ -270,6 +237,47 @@ def register(request, success_url=None,
                 { 'form': form },
                 context_instance=RequestContext(request)
             )
+
+def message_for_client (organzation_invoice, request, bcc_list):
+    user = User.objects.get(id=request.session['user_aux_id'])
+    message = EmailMessage()
+    message.subject = u"Assinatura GestorPSI.com.br"
+
+    message.body = u"Olá, bom dia!\n\n"
+    message.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe. Sua conta está pronta para usar! "
+    message.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
+
+    message.body += u"link funcionalidades: %s/funcionalidades/\n" % URL_HOME
+    message.body += u"link como usar: %s/como-usar/\n" % URL_HOME
+    message.body += u"link manual: %s/media/manual.pdf\n" % URL_DEMO
+    message.body += u"link contato: %s/contato/\n\n" % URL_HOME
+    message.body += u"Instruções no YouTube: https://www.youtube.com/channel/UC03EiqIuX72q-fi0MfWK8WA\n\n"
+
+    message.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( organzation_invoice.start_date.strftime("%d/%m/%Y"), organzation_invoice.end_date.strftime("%d/%m/%Y") )
+    message.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % URL_APP
+
+    message.body += u"Endereço do GestorPSI: %s\n" % URL_APP
+    message.body += u"Usuário/Login  %s\n" % request.POST.get('username')
+    message.body += u"Senha  %s\n\n" % request.POST.get('password1')
+
+    message.body += u"%s" % SIGNATURE
+
+    message.to = [ user.email, ]
+    message.bcc =  bcc_list
+    message.send()
+
+def save_organization_invoice(organzation_invoice, org):
+    organzation_invoice.organization = org
+    organzation_invoice.status = 2
+    organzation_invoice.save()
+
+def send_email_message_new_signature (bcc_list, org):
+    message = EmailMessage()
+    message.subject = u'Nova assinatura em %s' % URL_HOME
+    message.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar %s/gcm/\n\n' % URL_APP
+    message.body += u'Organização %s' % org
+    message.to = bcc_list
+    message.send()
 
 def save_professional(org, person):
     prof = ProfessionalResponsible()

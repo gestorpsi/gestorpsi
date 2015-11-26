@@ -206,16 +206,10 @@ def register(request, success_url=None,
                 org = Organization.objects.filter(organization__isnull=True).filter(person=person)[0]
                 org.active = True
                 org.save()
-                for p in org.person_set.all():
-                    for rp in p.profile.user.registrationprofile_set.all():
-                        activation_key = rp.activation_key.lower() # Normalize before trying anything with it.
-                        RegistrationProfile.objects.activate_user(activation_key)
 
-                prof = ProfessionalResponsible()
-                prof.organization = org
-                prof.person = person
-                prof.name = person.name
-                prof.save()
+                activate_each_registered_profile (org)
+
+                save_professional(org, person)
 
                 # invoice
                 i = Invoice()
@@ -277,6 +271,18 @@ def register(request, success_url=None,
                 context_instance=RequestContext(request)
             )
 
+def save_professional(org, person):
+    prof = ProfessionalResponsible()
+    prof.organization = org
+    prof.person = person
+    prof.name = person.name
+    prof.save()
+
+def activate_each_registered_profile (org):
+    for p in org.person_set.all():
+        for rp in p.profile.user.registrationprofile_set.all():
+            activation_key = rp.activation_key.lower() # Normalize before trying anything with it.
+            RegistrationProfile.objects.activate_user(activation_key)
 
 '''
     registration complete. New org

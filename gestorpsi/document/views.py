@@ -85,4 +85,4 @@ def document_save(object, ids, type_documents, documents,
                                   document_identifiers, issuers, states):
         document.content_object = object
         document.save()
-    document.save()
+        

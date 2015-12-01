@@ -40,13 +40,6 @@ from gestorpsi.util.views import get_object_or_None
 from gestorpsi.authentication.forms import RegistrationForm
 from registration.models import RegistrationProfile
 
-
-
-#
-# login_check decorator
-# code from http://code.activestate.com/recipes/498217/
-# changed by czd@gestorpsi.com.br
-
 def login_check(f):
     @login_required
     def wrap(request, *args, **kwargs):
@@ -54,7 +47,6 @@ def login_check(f):
     wrap.__doc__=f.__doc__
     wrap.__name__=f.__name__
     return wrap
-
 
 def user_authentication(request):
     if SITE_DISABLED:
@@ -73,18 +65,21 @@ def user_authentication(request):
             return return_invalid_username(form)
         else:
             request.session['user_aux_id'] = user.id
-            
+
         login_for_admin_or_staff(user, request)
 
         user_registration_not_confirmed(user, form)
-        
-        if not user.is_active:
-            form_messages = _('Your account has been disable. Please contact our support')
-            return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
-        else:
-            return login_user(user, request)
+        return login_active_user(user, form, request)
+
     else:
         return return_invalid_username(form)
+
+def login_active_user(user, form, request):
+    if not user.is_active:
+        form_messages = _('Your account has been disable. Please contact our support')
+        return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
+    else:
+        return login_user(user, request)
 
 def user_registration_not_confirmed(user, form):
     if user.registrationprofile_set.all()[0].activation_key != 'ALREADY_ACTIVATED':
@@ -99,6 +94,11 @@ def login_for_admin_or_staff(user, request):
 def login_user(user, request):
     clear_login(user)
     profile = user.get_profile()
+    handle_multiple_organizations(profile, request, user)
+    login(request, user)
+    return HttpResponseRedirect(request.POST.get('next') or '/')
+
+def handle_multiple_organizations(profile, request, user):
     if profile.organization.distinct().count() > 1:
         try:
             save_organization_shortname(profile, request)
@@ -107,8 +107,6 @@ def login_user(user, request):
         except Organization.DoesNotExist:
             request.session['temp_user'] = user
             return render_to_response('registration/select_organization.html', { 'objects': profile.organization.distinct() })
-    login(request, user)
-    return HttpResponseRedirect(request.POST.get('next') or '/')
 
 def assign_role(user, request):
     user.groups.clear()
@@ -140,7 +138,6 @@ def user_organization(request):
     login(request, user)           
     return HttpResponseRedirect('/')
 
-
 def set_trylogin(user):     
     filtered_user = User.objects.filter(username=user)
     if(len(filtered_user)):        
@@ -150,12 +147,10 @@ def set_trylogin(user):
         found_user.get_profile().try_login = old_number
         found_user.save()
 
-
 def clear_login(user):
     user.get_profile().try_login = 0
     user.save()
     
-
 def change_password(user,current_password, new_password):    
     if check_password(current_password):   
         user.set_password(new_password)
@@ -163,7 +158,6 @@ def change_password(user,current_password, new_password):
         user.get_profile().org_active = None
         user.save()
         user.get_profile().org_active = org       
-
 
 def unblocked_user(username):
     user = get_object_or_None(User, username=username)
@@ -311,12 +305,7 @@ def activate_each_registered_profile (org):
             activation_key = rp.activation_key.lower() # Normalize before trying anything with it.
             RegistrationProfile.objects.activate_user(activation_key)
 
-'''
-    registration complete. New org
-'''
 def complete(request, success_url=None, extra_context=None):
-
-    from gestorpsi.settings import URL_APP, URL_HOME
 
     return render_to_response('registration/registration_complete.html',
                 locals(),

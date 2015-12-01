@@ -92,6 +92,7 @@ def user_authentication(request):
 def login_for_admin_or_staff(user, request):
     if user.is_staff or user.is_superuser:
         login(request, user)
+        print 'oi'
         return HttpResponseRedirect(ADMIN_URL)
 
 def login_user(user, request):
@@ -218,8 +219,8 @@ def register(request, success_url=None,
 
                 # active automatic
                 org = Organization.objects.filter(organization__isnull=True).filter(person=person)[0]
-                org.active = True   
-                org.save()
+
+                activate_organization(org)
 
                 activate_each_registered_profile (org)
 
@@ -252,7 +253,11 @@ def register(request, success_url=None,
                 context_instance=RequestContext(request)
             )
 
-def message_for_client (organzation_invoice, request, bcc_list):
+def activate_organization(org):
+    org.active = True   
+    org.save()
+
+def message_for_client(organzation_invoice, request, bcc_list):
     user = User.objects.get(id=request.session['user_aux_id'])
     message = EmailMessage()
     message.subject = u"Assinatura GestorPSI.com.br"

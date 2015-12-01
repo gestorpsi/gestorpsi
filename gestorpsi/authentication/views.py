@@ -76,10 +76,7 @@ def user_authentication(request):
             
         login_for_admin_or_staff(user, request)
 
-        # user has not confirmed registration yet
-        if user.registrationprofile_set.all()[0].activation_key != 'ALREADY_ACTIVATED':
-            form_messages = _('Your account has not been confirmated yet. Please check your email and use your activation code to continue')
-            return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
+        user_registration_not_confirmed(user, form)
         
         if not user.is_active:
             form_messages = _('Your account has been disable. Please contact our support')
@@ -89,10 +86,14 @@ def user_authentication(request):
     else:
         return return_invalid_username(form)
 
+def user_registration_not_confirmed(user, form):
+    if user.registrationprofile_set.all()[0].activation_key != 'ALREADY_ACTIVATED':
+        form_messages = _('Your account has not been confirmated yet. Please check your email and use your activation code to continue')
+        return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
+
 def login_for_admin_or_staff(user, request):
     if user.is_staff or user.is_superuser:
         login(request, user)
-        print 'oi'
         return HttpResponseRedirect(ADMIN_URL)
 
 def login_user(user, request):
@@ -217,7 +218,6 @@ def register(request, success_url=None,
                 profile = user.get_profile()
                 person = profile.person
 
-                # active automatic
                 org = Organization.objects.filter(organization__isnull=True).filter(person=person)[0]
 
                 activate_organization(org)

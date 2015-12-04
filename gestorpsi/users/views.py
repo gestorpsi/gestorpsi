@@ -137,6 +137,17 @@ def add(request):
 
 
 @permission_required_with_403('users.users_write')
+
+def define_user_permission(permissions, profile, organization, role):
+    if permissions.count(role):
+        Role.objects.create(
+            profile=profile,
+            organization=organization,
+            group=Group.objects.get(name=role)
+            )
+        profile.user.groups.add(Group.objects.get(name=role))
+
+
 def create_user(request):
     if not request.method == 'POST':
         raise Http404
@@ -183,45 +194,11 @@ def create_user(request):
     profile.save()
     # profile.organization.add(organization)
 
-    if permissions.count('administrator'):
-        Role.objects.create(
-            profile=profile,
-            organization=organization,
-            group=Group.objects.get(name='administrator')
-            )
-        profile.user.groups.add(Group.objects.get(name='administrator'))
-
-    if permissions.count('professional'):
-        Role.objects.create(
-            profile=profile,
-            organization=organization,
-            group=Group.objects.get(name='professional')
-            )
-        profile.user.groups.add(Group.objects.get(name='professional'))
-
-    if permissions.count('secretary'):
-        Role.objects.create(
-            profile=profile,
-            organization=organization,
-            group=Group.objects.get(name='secretary')
-            )
-        profile.user.groups.add(Group.objects.get(name='secretary'))
-
-    if permissions.count('client'):
-        Role.objects.create(
-            profile=profile,
-            organization=organization,
-            group=Group.objects.get(name='client')
-            )
-        profile.user.groups.add(Group.objects.get(name='client'))
-
-    if permissions.count('student'):
-        Role.objects.create(
-            profile=profile,
-            organization=organization,
-            group=Group.objects.get(name='student')
-            )
-        profile.user.groups.add(Group.objects.get(name='student'))
+    define_user_permission(permissions, profile, organization, 'administrator')
+    define_user_permission(permissions, profile, organization, 'professional')
+    define_user_permission(permissions, profile, organization, 'secretary')
+    define_user_permission(permissions, profile, organization, 'client')
+    define_user_permission(permissions, profile, organization, 'student')
 
     messages.success(request, _('User created successfully. An email will be sent to the user with instructions on how to finish the registration process.'))
 

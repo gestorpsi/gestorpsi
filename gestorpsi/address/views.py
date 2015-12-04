@@ -50,20 +50,16 @@ def address_list(ids, addressPrefixs, addressLines1, addressLines2, addressNumbe
                                    foreignCity=cityChars[i]))
     return objects
 
-# 'address' field blank means that it was deleted by an user
-# So, if len(address) == 0 AND len(id) != 0, delete address using id
-def address_delete(ids, addressLines1): 
-    for i in range(0, len(addressLines1)):
-        if (not len(addressLines1[i]) and len(ids[i])):
-            Address.objects.get(pk=ids[i]).delete()
+def address_blank(address):
+  return not len(address)
 
-# Save address
-#def address_save(object, ids, addressPrefixs, addressLines1, addressLines2, addressNumbers, neighborhoods, zipCodes, addressTypes, city_ids, country_ids, stateChars, cityChars):
-#    address_delete(ids, addressLines1)
-#    for address in address_list(ids, addressPrefixs, addressLines1, addressLines2, addressNumbers, neighborhoods, zipCodes, addressTypes, city_ids, country_ids, stateChars, cityChars):
-#        if not is_equal(address):
-#            address.content_object = object
-#            address.save()
+def address_exists(id):
+  return len(id)
+
+def delete_blank_addresses(ids, addressLines1): 
+    for i in range(0, len(addressLines1)):
+        if (address_blank(addressLines1[i]) and address_exists(ids[i])):
+            Address.objects.get(pk=ids[i]).delete()
 
 def address_save(object, ids, addressPrefixs, addressLines1, addressLines2, addressNumbers, neighborhoods, zipCodes, addressTypes, city_ids, country_ids, stateChars, cityChars):
     object.address.all().delete()

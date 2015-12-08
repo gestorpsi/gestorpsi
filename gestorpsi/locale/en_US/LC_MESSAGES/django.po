@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-16 10:52-0300\n"
+"POT-Creation-Date: 2015-12-01 17:19-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,25 +17,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: settings.py:83
+#: settings.py:95
 msgid "Brazilian Portuguese"
 msgstr ""
 
-#: settings.py:84
+#: settings.py:96
 msgid "English"
 msgstr ""
 
-#: admission/models.py:32 referral/models.py:68
+#: admission/models.py:27 referral/models.py:68
 #: templates/admission/admission_form.html:157
 msgid "Termo de Consentimento Livre e Esclarecido (TCLE)"
 msgstr ""
 
-#: admission/models.py:39 referral/models.py:468 referral/models.py:482
+#: admission/models.py:35 referral/models.py:468 referral/models.py:482
 #: service/models.py:95
 msgid "Color"
 msgstr ""
 
-#: admission/models.py:39 referral/models.py:469 referral/models.py:483
+#: admission/models.py:36 referral/models.py:469 referral/models.py:483
 #: service/models.py:95
 msgid "Color in HEX Format. Ex: 662393"
 msgstr ""
@@ -45,21 +45,21 @@ msgstr ""
 #: client/views.py:146 client/views.py:341 client/views.py:436
 #: client/views.py:471 client/views.py:479 client/views.py:625
 #: client/views.py:673 client/views.py:725 client/views.py:745
-#: client/views.py:778 client/views.py:827 client/views.py:906
-#: client/views.py:937 client/views.py:957 client/views.py:980
-#: client/views.py:990 client/views.py:995 client/views.py:1014
-#: client/views.py:1057 client/views.py:1077 client/views.py:1095
-#: client/views.py:1120 client/views.py:1130 client/views.py:1182
-#: client/views.py:1194 demographic/views.py:36 demographic/views.py:48
+#: client/views.py:778 client/views.py:831 client/views.py:910
+#: client/views.py:941 client/views.py:961 client/views.py:984
+#: client/views.py:994 client/views.py:999 client/views.py:1018
+#: client/views.py:1061 client/views.py:1081 client/views.py:1099
+#: client/views.py:1124 client/views.py:1134 client/views.py:1186
+#: client/views.py:1198 demographic/views.py:36 demographic/views.py:48
 #: demographic/views.py:66 demographic/views.py:88 demographic/views.py:108
 #: ehr/views.py:146 ehr/views.py:166 ehr/views.py:185 ehr/views.py:264
 #: ehr/views.py:285 ehr/views.py:303 ehr/views.py:325 ehr/views.py:340
 #: ehr/views.py:398 ehr/views.py:413 ehr/views.py:434 ehr/views.py:448
 #: employee/views.py:84 online_messages/views.py:94
 #: online_messages/views.py:112 online_messages/views.py:144
-#: online_messages/views.py:172 place/views.py:113 place/views.py:286
-#: schedule/views.py:425 schedule/views.py:449 schedule/views.py:940
-#: schedule/views.py:980 service/views.py:423 service/views.py:436
+#: online_messages/views.py:172 place/views.py:114 place/views.py:287
+#: schedule/views.py:425 schedule/views.py:449 schedule/views.py:945
+#: schedule/views.py:985 service/views.py:423 service/views.py:436
 #: service/views.py:440 upload/views.py:102 upload/views.py:126
 #: util/decorators.py:43
 msgid "Oops! You don't have access for this service!"
@@ -193,7 +193,7 @@ msgstr ""
 msgid "Enter your ZIP Code here"
 msgstr ""
 
-#: authentication/forms.py:123 templates/meta/people_profile.html:82
+#: authentication/forms.py:123 templates/meta/people_profile.html:83
 #: templates/tags/address.html:55
 msgid "State/Region"
 msgstr ""
@@ -203,32 +203,33 @@ msgid "Enter your state/region here"
 msgstr ""
 
 #: authentication/forms.py:124 boleto/admin.py:133 boleto/models.py:72
-#: templates/meta/people_profile.html:92 templates/meta/people_profile.html:101
-#: templates/tags/address.html:69 templates/tags/address.html.py:80
+#: templates/meta/people_profile.html:93
+#: templates/meta/people_profile.html:102 templates/tags/address.html:69
+#: templates/tags/address.html.py:80
 msgid "City"
 msgstr ""
 
-#: authentication/views.py:72
-msgid "Invalid username or password"
-msgstr ""
-
-#: authentication/views.py:82
+#: authentication/views.py:81
 msgid ""
 "Your account has not been confirmated yet. Please check your email and use "
 "your activation code to continue"
 msgstr ""
 
-#: authentication/views.py:86
+#: authentication/views.py:85
 msgid "Your account has been disable. Please contact our support"
 msgstr ""
 
-#: authentication/views.py:234
+#: authentication/views.py:119
+msgid "Invalid username or password"
+msgstr ""
+
+#: authentication/views.py:205
 msgid ""
 "Informed organization is already registered. Please choose another name here "
 "or login with an existing account"
 msgstr ""
 
-#: authentication/views.py:238
+#: authentication/views.py:209
 msgid "Enter a valid username."
 msgstr ""
 
@@ -261,8 +262,8 @@ msgid "Guarantor's CNPJ"
 msgstr ""
 
 #: boleto/admin.py:131 boleto/models.py:69
-#: templates/meta/people_profile.html:105 templates/tags/address.html:84
-#: templates/tags/document.html:51
+#: templates/meta/people_profile.html:106 templates/tags/address.html:84
+#: templates/tags/document.html:52
 msgid "State"
 msgstr ""
 
@@ -669,20 +670,24 @@ msgstr ""
 msgid "[no professional related]"
 msgstr ""
 
-#: careprofessional/models.py:226
+#: careprofessional/models.py:381
 msgid "Lecture Class"
 msgstr ""
 
-#: careprofessional/models.py:228
+#: careprofessional/models.py:383
 msgid "Student Class Period"
 msgstr ""
 
-#: careprofessional/models.py:230
+#: careprofessional/models.py:385
 msgid "Student Class Duration"
 msgstr ""
 
-#: careprofessional/models.py:232
+#: careprofessional/models.py:387
 msgid "Student Register Number"
+msgstr ""
+
+#: careprofessional/models.py:390
+msgid "Supervisor"
 msgstr ""
 
 #: careprofessional/views.py:89
@@ -734,7 +739,7 @@ msgstr ""
 msgid "Parents"
 msgstr ""
 
-#: client/models.py:28 client/models.py:43 report/models.py:1023
+#: client/models.py:28 client/models.py:43 report/models.py:1027
 msgid "Children"
 msgstr ""
 
@@ -799,19 +804,19 @@ msgstr ""
 #: ehr/forms.py:39 ehr/forms.py:56 ehr/forms.py:65 referral/models.py:453
 #: templates/admission/admission_form.html:148
 #: templates/careprofessional/careprofessional_form.html:148
-#: templates/careprofessional/student_form.html:114
-#: templates/careprofessional/student_form.html:115
+#: templates/careprofessional/student_form.html:117
+#: templates/careprofessional/student_form.html:118
 #: templates/client/client_form_company.html:71
 #: templates/client/client_form_company.html:72
 #: templates/client/client_referral_ext.html:72
-#: templates/client/client_referral_form.html:160
+#: templates/client/client_referral_form.html:168
 #: templates/client/client_referral_plus_form.html:122
 #: templates/device/device_form.html:87
 #: templates/employee/employee_form.html:82 templates/meta/people.html:28
 #: templates/meta/people.html.py:29
 #: templates/organization/organization_form.html:262
 #: templates/place/place_form.html:132 templates/place/place_form.html:133
-#: templates/place/place_room_form.html:92
+#: templates/place/place_room_form.html:104
 #: templates/service/service_form.html:170
 msgid "Comments"
 msgstr ""
@@ -872,70 +877,70 @@ msgstr ""
 msgid "Registered have hour in the schedule"
 msgstr ""
 
-#: client/views.py:816
+#: client/views.py:820
 msgid "Client saved successfully"
 msgstr ""
 
-#: client/views.py:890
+#: client/views.py:894
 msgid " (Company)"
 msgstr ""
 
-#: client/views.py:890
+#: client/views.py:894
 msgid " (Disabled)"
 msgstr ""
 
-#: client/views.py:911 users/views.py:388
+#: client/views.py:915 users/views.py:388
 msgid "User activated successfully"
 msgstr ""
 
-#: client/views.py:916 users/views.py:388
+#: client/views.py:920 users/views.py:388
 msgid "User deactivated successfully"
 msgstr ""
 
-#: client/views.py:918
+#: client/views.py:922
 msgid "Sorry, you can not deactivate a client with registered referral"
 msgstr ""
 
-#: client/views.py:940
+#: client/views.py:944
 msgid ""
 "Sorry, you can not book a queued client. Remove it first from queue before "
 "continue"
 msgstr ""
 
-#: client/views.py:998 client/views.py:1019
+#: client/views.py:1002 client/views.py:1023
 msgid "Error adding to queue! Referral is already queued"
 msgstr ""
 
-#: client/views.py:1002
+#: client/views.py:1006
 msgid "Error adding to queue! Referral have upcoming occurrences"
 msgstr ""
 
-#: client/views.py:1023
+#: client/views.py:1027
 msgid ""
 "Subscript in the queue not is possible. Referral have upcoming occurrences"
 msgstr ""
 
-#: client/views.py:1046
+#: client/views.py:1050
 msgid "Referral added to queue successfully"
 msgstr ""
 
-#: client/views.py:1067
+#: client/views.py:1071
 msgid "Client removed from queue successfully"
 msgstr ""
 
-#: client/views.py:1111
+#: client/views.py:1115
 msgid "External Referral saved successfully"
 msgstr ""
 
-#: client/views.py:1151
+#: client/views.py:1155
 msgid "Family member added successfully"
 msgstr ""
 
-#: client/views.py:1211
+#: client/views.py:1215
 msgid "Employee already registered on this company"
 msgstr ""
 
-#: client/views.py:1221
+#: client/views.py:1225
 msgid "Related client added successfully to this company"
 msgstr ""
 
@@ -1225,7 +1230,8 @@ msgstr ""
 msgid "Diagnosis Resolution Date"
 msgstr ""
 
-#: ehr/forms.py:48 referral/models.py:60 templates/client/client_print.html:341
+#: ehr/forms.py:48 referral/models.py:60
+#: templates/client/client_print.html:341
 #: templates/client/client_print.html:346
 #: templates/referral/referral_details.html:28
 msgid "Diagnosis"
@@ -1369,8 +1375,8 @@ msgstr ""
 msgid "Confirmed by the professional"
 msgstr ""
 
-#: ehr/models.py:72 referral/models.py:76 report/models.py:1009
-#: report/models.py:1027
+#: ehr/models.py:72 referral/models.py:76 report/models.py:1013
+#: report/models.py:1031
 msgid "Unknown"
 msgstr ""
 
@@ -1835,37 +1841,37 @@ msgstr ""
 msgid "CNAE Subclass Code"
 msgstr ""
 
-#: place/views.py:192
+#: place/views.py:193
 msgid "Place saved successfully"
 msgstr ""
 
-#: place/views.py:219
+#: place/views.py:220
 msgid "Room saved successfully"
 msgstr ""
 
-#: place/views.py:318
+#: place/views.py:320
 #, python-format
 msgid "You can not disable a place with upcomming occurrences <ul>%s</ul>"
 msgstr ""
 
-#: place/views.py:326
+#: place/views.py:328
 msgid "Place activated successfully"
 msgstr ""
 
-#: place/views.py:328
+#: place/views.py:330
 msgid "Place deactivated successfully"
 msgstr ""
 
-#: place/views.py:344
+#: place/views.py:346
 #, python-format
 msgid "You can not disable a room with upcomming occurrences <ul>%s</ul>"
 msgstr ""
 
-#: place/views.py:352
+#: place/views.py:354
 msgid "Room activated successfully"
 msgstr ""
 
-#: place/views.py:354
+#: place/views.py:356
 msgid "Room deactivated successfully"
 msgstr ""
 
@@ -1987,7 +1993,7 @@ msgid "Data Out"
 msgstr ""
 
 #: referral/models.py:104 templates/client/client_print.html:287
-#: templates/client/client_referral_form.html:151
+#: templates/client/client_referral_form.html:159
 #: templates/client/client_referral_plus_form.html:113
 #: templates/client/client_referral_queue.html:59
 #: templates/frontend/frontend_careprofessional_start.html:163
@@ -2132,254 +2138,254 @@ msgstr ""
 msgid "This year"
 msgstr ""
 
-#: report/models.py:292
+#: report/models.py:296
 msgid "Report name to save"
 msgstr ""
 
-#: report/models.py:320
+#: report/models.py:324
 msgid "Individuals"
 msgstr ""
 
-#: report/models.py:321
+#: report/models.py:325
 msgid "Companies"
 msgstr ""
 
-#: report/models.py:322 templates/report/report_client_list.html:29
+#: report/models.py:326 templates/report/report_client_list.html:29
 #: templates/report/report_saved.html:34 templates/report/report_saved.html:50
 msgid "Total"
 msgstr ""
 
-#: report/models.py:340 report/models.py:391
+#: report/models.py:344 report/models.py:395
 msgid "Admission Signed"
 msgstr ""
 
-#: report/models.py:340
+#: report/models.py:344
 msgid "Admission Not Signed"
 msgstr ""
 
-#: report/models.py:343
+#: report/models.py:347
 msgid "Signed"
 msgstr ""
 
-#: report/models.py:344
+#: report/models.py:348
 msgid "Not Signed"
 msgstr ""
 
-#: report/models.py:388
+#: report/models.py:392
 msgid "Admission Overview"
 msgstr ""
 
-#: report/models.py:394 templates/client/client_print.html:111
+#: report/models.py:398 templates/client/client_print.html:111
 msgid "Admission Knowledge"
 msgstr ""
 
-#: report/models.py:410
+#: report/models.py:414
 msgid "Admission report - Individuals"
 msgstr ""
 
-#: report/models.py:414
+#: report/models.py:418
 msgid "Admission report - Companies"
 msgstr ""
 
-#: report/models.py:417
+#: report/models.py:421
 msgid "Admission report - Total"
 msgstr ""
 
-#: report/models.py:422
+#: report/models.py:426
 msgid "Admission report - Signed by client"
 msgstr ""
 
-#: report/models.py:426
+#: report/models.py:430
 msgid "Admission report - Not signed by client"
 msgstr ""
 
-#: report/models.py:431
+#: report/models.py:435
 #, python-format
 msgid "Admission report - Knowledge - %s"
 msgstr ""
 
-#: report/models.py:486
+#: report/models.py:490
 msgid "Subscriptions"
 msgstr ""
 
-#: report/models.py:487
+#: report/models.py:491
 msgid "Subscriptions Discharged"
 msgstr ""
 
-#: report/models.py:488
+#: report/models.py:492
 msgid "Internal Referrals"
 msgstr ""
 
-#: report/models.py:489 templates/client/client_print.html:258
+#: report/models.py:493 templates/client/client_print.html:258
 msgid "External Referrals"
 msgstr ""
 
-#: report/models.py:514
+#: report/models.py:518
 msgid "Referral Discharge Discussed with client"
 msgstr ""
 
-#: report/models.py:514
+#: report/models.py:518
 msgid "Referral Discharge Not discussed with client"
 msgstr ""
 
-#: report/models.py:518
+#: report/models.py:522
 msgid "Discussed with client"
 msgstr ""
 
-#: report/models.py:519
+#: report/models.py:523
 msgid "Not discussed with client"
 msgstr ""
 
-#: report/models.py:828
+#: report/models.py:832
 msgid "Subscriptions Overview"
 msgstr ""
 
-#: report/models.py:831
+#: report/models.py:835
 msgid "Service Subscriptions"
 msgstr ""
 
-#: report/models.py:832
+#: report/models.py:836
 msgid "Discharges from Services"
 msgstr ""
 
-#: report/models.py:834
+#: report/models.py:838
 msgid "Subscriptions Discharged Discussed"
 msgstr ""
 
-#: report/models.py:835
+#: report/models.py:839
 msgid "Subscriptions Indications"
 msgstr ""
 
-#: report/models.py:835
+#: report/models.py:839
 msgid "Excluding internal referrals"
 msgstr ""
 
-#: report/models.py:837
+#: report/models.py:841
 msgid "Internal Referrals to Services"
 msgstr ""
 
-#: report/models.py:838
+#: report/models.py:842
 msgid "Internal Referrals from Services"
 msgstr ""
 
-#: report/models.py:841
+#: report/models.py:845
 msgid "Externals Referrals from Services"
 msgstr ""
 
-#: report/models.py:843
+#: report/models.py:847
 msgid "Discharges Reason"
 msgstr ""
 
-#: report/models.py:846
+#: report/models.py:850
 msgid "Discharges Discussed with Client"
 msgstr ""
 
-#: report/models.py:848
+#: report/models.py:852
 msgid "Professional Subscriptions"
 msgstr ""
 
-#: report/models.py:870
+#: report/models.py:874
 msgid "Referral Total"
 msgstr ""
 
-#: report/models.py:874
+#: report/models.py:878
 msgid "Referral Charged"
 msgstr ""
 
-#: report/models.py:878 templates/client/client_home.html:125
+#: report/models.py:882 templates/client/client_home.html:125
 msgid "Referral Discharged"
 msgstr ""
 
-#: report/models.py:882
+#: report/models.py:886
 msgid "Referral Discharged Discussed"
 msgstr ""
 
-#: report/models.py:886
+#: report/models.py:890
 msgid "Referral Discharged Not Discussed"
 msgstr ""
 
-#: report/models.py:890
+#: report/models.py:894
 msgid "Referral Internals"
 msgstr ""
 
-#: report/models.py:894
+#: report/models.py:898
 msgid "Referral Externals"
 msgstr ""
 
-#: report/models.py:899
+#: report/models.py:903
 #, python-format
 msgid "Referral Knowledge - %s"
 msgstr ""
 
-#: report/models.py:904
+#: report/models.py:908
 #, python-format
 msgid "Referral Service - %s"
 msgstr ""
 
-#: report/models.py:912
+#: report/models.py:916
 #, python-format
 msgid "Referral Internal to Service %s"
 msgstr ""
 
-#: report/models.py:917
+#: report/models.py:921
 #, python-format
 msgid "Referral Internal from Service %s"
 msgstr ""
 
-#: report/models.py:922
+#: report/models.py:926
 #, python-format
 msgid "Referral External from Service %s"
 msgstr ""
 
-#: report/models.py:927
+#: report/models.py:931
 #, python-format
 msgid "Discharges from Service %s"
 msgstr ""
 
-#: report/models.py:932
+#: report/models.py:936
 #, python-format
 msgid "Discharged by reason %s"
 msgstr ""
 
-#: report/models.py:937
+#: report/models.py:941
 #, python-format
 msgid "Discharges discussed from Service %s"
 msgstr ""
 
-#: report/models.py:942
+#: report/models.py:946
 #, python-format
 msgid "Subscriptions to professional %s"
 msgstr ""
 
-#: report/models.py:1007 templates/client/client_print_record_data_tag.html:8
+#: report/models.py:1011 templates/client/client_print_record_data_tag.html:8
 #: templates/meta/people_indentification.html:21
 #: templates/tags/people_identification.html:30
 msgid "Male"
 msgstr ""
 
-#: report/models.py:1008 templates/client/client_print_record_data_tag.html:7
+#: report/models.py:1012 templates/client/client_print_record_data_tag.html:7
 #: templates/meta/people_indentification.html:22
 #: templates/tags/people_identification.html:33
 msgid "Female"
 msgstr ""
 
-#: report/models.py:1024
+#: report/models.py:1028
 msgid "Teen"
 msgstr ""
 
-#: report/models.py:1025
+#: report/models.py:1029
 msgid "Adult"
 msgstr ""
 
-#: report/models.py:1026
+#: report/models.py:1030
 msgid "Elderly"
 msgstr ""
 
-#: report/models.py:1036 templates/client/client_print_record_data_tag.html:6
+#: report/models.py:1040 templates/client/client_print_record_data_tag.html:6
 msgid "Gender"
 msgstr ""
 
-#: report/models.py:1037 templates/meta/people_profile.html:34
+#: report/models.py:1041 templates/meta/people_profile.html:35
 msgid "Age"
 msgstr ""
 
@@ -2419,7 +2425,7 @@ msgstr ""
 msgid "Devices utilized in this session"
 msgstr ""
 
-#: schedule/forms.py:184 schedule/models.py:169
+#: schedule/forms.py:184 schedule/models.py:172
 msgid "Unmark or Reschedule Reason (if exists)"
 msgstr ""
 
@@ -2447,15 +2453,27 @@ msgstr ""
 msgid "Occurrence rescheduled"
 msgstr ""
 
-#: schedule/models.py:162
+#: schedule/models.py:34
+msgid "Professional arrived on time"
+msgstr ""
+
+#: schedule/models.py:35
+msgid "Professional arrived Late"
+msgstr ""
+
+#: schedule/models.py:36
+msgid "Professional not arrived"
+msgstr ""
+
+#: schedule/models.py:165
 msgid "Occurrence Date Started"
 msgstr ""
 
-#: schedule/models.py:164
+#: schedule/models.py:167
 msgid "Occurrence Date Finished"
 msgstr ""
 
-#: schedule/models.py:166
+#: schedule/models.py:169
 msgid "Presence Confirmation"
 msgstr ""
 
@@ -2483,7 +2501,7 @@ msgstr ""
 msgid "Occurrence confirmation updated successfully"
 msgstr ""
 
-#: schedule/views.py:840
+#: schedule/views.py:845
 #: templates/careprofessional/careprofessional_list.html:49
 #: templates/careprofessional/student_list.html:48
 #: templates/client/client_home.html:70 templates/client/client_search.html:29
@@ -2510,23 +2528,23 @@ msgstr ""
 msgid "of"
 msgstr ""
 
-#: schedule/views.py:945
+#: schedule/views.py:950
 msgid "No member family selected"
 msgstr ""
 
-#: schedule/views.py:961
+#: schedule/views.py:966
 msgid "Family members added successfully"
 msgstr ""
 
-#: schedule/views.py:985
+#: schedule/views.py:990
 msgid "No company employees selected"
 msgstr ""
 
-#: schedule/views.py:1001
+#: schedule/views.py:1006
 msgid "Company employee(s) added successfully"
 msgstr ""
 
-#: schedule/views.py:1020
+#: schedule/views.py:1025
 msgid "Configuração da salvo com sucesso"
 msgstr ""
 
@@ -2980,7 +2998,7 @@ msgid "Go Back"
 msgstr ""
 
 #: templates/403.html:28 templates/client/client_referral_form.html:63
-#: templates/client/client_referral_form.html:81
+#: templates/client/client_referral_form.html:85
 msgid "or"
 msgstr ""
 
@@ -3060,7 +3078,7 @@ msgstr ""
 #: templates/client/client_referral_ext.html:54
 #: templates/client/client_referral_ext.html:63
 #: templates/client/client_referral_form.html:63
-#: templates/client/client_referral_form.html:81
+#: templates/client/client_referral_form.html:85
 #: templates/contact/contact_professional_form.html:65
 #: templates/device/device_form.html:60 templates/tags/schedule_form.html:86
 msgid "add a new one"
@@ -3069,21 +3087,21 @@ msgstr ""
 #: templates/admission/admission_form.html:84
 #: templates/client/client_referral_ext.html:54
 #: templates/client/client_referral_form.html:63
-#: templates/client/client_referral_form.html:65
+#: templates/client/client_referral_form.html:66
 msgid "Select Organization"
 msgstr ""
 
 #: templates/admission/admission_form.html:85
 #: templates/admission/admission_form.html:104
-#: templates/client/client_referral_form.html:66
-#: templates/client/client_referral_form.html:84
+#: templates/client/client_referral_form.html:67
+#: templates/client/client_referral_form.html:89
 msgid "Local Contacts"
 msgstr ""
 
 #: templates/admission/admission_form.html:90
 #: templates/admission/admission_form.html:109
-#: templates/client/client_referral_form.html:71
-#: templates/client/client_referral_form.html:89
+#: templates/client/client_referral_form.html:72
+#: templates/client/client_referral_form.html:94
 msgid "External Contacts"
 msgstr ""
 
@@ -3093,8 +3111,8 @@ msgstr ""
 
 #: templates/admission/admission_form.html:103
 #: templates/client/client_referral_ext.html:63
-#: templates/client/client_referral_form.html:81
-#: templates/client/client_referral_form.html:83
+#: templates/client/client_referral_form.html:85
+#: templates/client/client_referral_form.html:88
 msgid "Select Professional"
 msgstr ""
 
@@ -3145,8 +3163,8 @@ msgstr ""
 #: templates/client/client_print.html:260
 #: templates/client/client_referral_plus_form.html:83
 #: templates/contact/contact_list.html:75
-#: templates/contact/contact_list_external.html:75 templates/core/main.html:188
-#: templates/schedule/schedule_filter.html:100
+#: templates/contact/contact_list_external.html:75
+#: templates/core/main.html:188 templates/schedule/schedule_filter.html:100
 #: templates/service/service_client_list.html:71
 #: templates/service/service_form.html:138
 #: templates/service/service_queue.html:64
@@ -3203,7 +3221,8 @@ msgstr ""
 #: templates/employee/employee_list.html:29 templates/place/place_form.html:29
 #: templates/place/place_list.html:29 templates/place/place_room_form.html:29
 #: templates/place/place_room_list.html:29
-#: templates/service/select_area.html:28 templates/service/service_list.html:29
+#: templates/service/select_area.html:28
+#: templates/service/service_list.html:29
 msgid "add"
 msgstr ""
 
@@ -3279,33 +3298,35 @@ msgid "Agreements"
 msgstr ""
 
 #: templates/careprofessional/careprofessional_form.html:116
-#: templates/careprofessional/student_form.html:82
+#: templates/careprofessional/student_form.html:85
 #: templates/profile/profile_careprofessional.html:99
 msgid "Professional Workplaces"
 msgstr ""
 
 #: templates/careprofessional/careprofessional_form.html:118
-#: templates/careprofessional/student_form.html:84
+#: templates/careprofessional/student_form.html:87
 #: templates/profile/profile_careprofessional.html:101
 msgid "Workplaces"
 msgstr ""
 
 #: templates/careprofessional/careprofessional_form.html:126
-#: templates/careprofessional/student_form.html:92
+#: templates/careprofessional/student_form.html:95
 msgid "Add New Workplace"
 msgstr ""
 
 #: templates/careprofessional/careprofessional_form.html:130
-#: templates/careprofessional/student_form.html:96
+#: templates/careprofessional/student_form.html:99
 #: templates/profile/profile_careprofessional.html:116
 msgid "Professional Services"
 msgstr ""
 
 #: templates/careprofessional/careprofessional_form.html:132
-#: templates/careprofessional/student_form.html:98 templates/core/main.html:187
+#: templates/careprofessional/student_form.html:101
+#: templates/core/main.html:187
 #: templates/profile/profile_careprofessional.html:118
 #: templates/schedule/schedule_filter.html:79
-#: templates/service/select_area.html:23 templates/service/service_form.html:23
+#: templates/service/select_area.html:23
+#: templates/service/service_form.html:23
 #: templates/service/service_group_form.html:23
 #: templates/service/service_group_list.html:23
 #: templates/service/service_list.html:23
@@ -3493,7 +3514,8 @@ msgid "if you want to add a new one."
 msgstr ""
 
 #: templates/careprofessional/student_form.html:23
-#: templates/careprofessional/student_list.html:23 templates/core/main.html:189
+#: templates/careprofessional/student_list.html:23
+#: templates/core/main.html:189
 msgid "Students"
 msgstr ""
 
@@ -3572,6 +3594,7 @@ msgstr ""
 #: templates/client/client_print.html:169
 #: templates/client/client_print.html:188
 #: templates/client/client_related.html:78
+#: templates/place/place_room_form.html:85
 msgid "Responsible"
 msgstr ""
 
@@ -3643,7 +3666,8 @@ msgstr ""
 msgid "This client have no family member yet."
 msgstr ""
 
-#: templates/client/client_family.html:79 templates/client/client_home.html:149
+#: templates/client/client_family.html:79
+#: templates/client/client_home.html:149
 #: templates/tags/people_identification.html:62
 #: templates/tags/people_identification.html:64
 msgid "edit"
@@ -3838,7 +3862,8 @@ msgstr ""
 msgid "Discharge was discussed with client"
 msgstr ""
 
-#: templates/client/client_home.html:144 templates/client/client_print.html:120
+#: templates/client/client_home.html:144
+#: templates/client/client_print.html:120
 #: templates/client/client_print.html:167
 #: templates/client/client_print.html:169
 #: templates/client/client_print.html:184
@@ -3849,7 +3874,8 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: templates/client/client_home.html:144 templates/client/client_print.html:120
+#: templates/client/client_home.html:144
+#: templates/client/client_print.html:120
 #: templates/client/client_print.html:167
 #: templates/client/client_print.html:169
 #: templates/client/client_print.html:184
@@ -3890,7 +3916,8 @@ msgstr ""
 msgid "customer(s)"
 msgstr ""
 
-#: templates/client/client_print.html:81 templates/client/client_print.html:137
+#: templates/client/client_print.html:81
+#: templates/client/client_print.html:137
 #: templates/report/report_export.html:118
 msgid "Image not available when Debug=True and server running in localhost"
 msgstr ""
@@ -3925,7 +3952,8 @@ msgstr ""
 msgid "Attached Files"
 msgstr ""
 
-#: templates/client/client_print.html:153 templates/tags/client_sidebar.html:26
+#: templates/client/client_print.html:153
+#: templates/tags/client_sidebar.html:26
 msgid "Record Data"
 msgstr ""
 
@@ -3941,8 +3969,8 @@ msgstr ""
 msgid "Family Relation"
 msgstr ""
 
-#: templates/client/client_print.html:211 templates/tags/client_sidebar.html:28
-#: templates/tags/client_sidebar.html:53
+#: templates/client/client_print.html:211
+#: templates/tags/client_sidebar.html:28 templates/tags/client_sidebar.html:53
 msgid "Demographic Data"
 msgstr ""
 
@@ -4024,14 +4052,14 @@ msgid "Reason"
 msgstr ""
 
 #: templates/client/client_print.html:288
-#: templates/client/client_referral_form.html:154
+#: templates/client/client_referral_form.html:162
 #: templates/client/client_referral_plus_form.html:116
 #: templates/referral/referral_details.html:80
 msgid "Impact"
 msgstr ""
 
 #: templates/client/client_print.html:290
-#: templates/client/client_referral_form.html:157
+#: templates/client/client_referral_form.html:165
 #: templates/client/client_referral_plus_form.html:119
 #: templates/referral/referral_details.html:91
 msgid "Available Time"
@@ -4065,7 +4093,8 @@ msgstr ""
 #: templates/client/client_print.html:314
 #: templates/client/client_print.html:378
 #: templates/client/client_print.html:417 templates/messages/trash.html:24
-#: templates/messages/view.html:27 templates/referral/referral_details.html:151
+#: templates/messages/view.html:27
+#: templates/referral/referral_details.html:151
 #: templates/report/report_graphic.html:42 templates/tags/invoice.html:24
 msgid "Date"
 msgstr ""
@@ -4079,15 +4108,18 @@ msgstr ""
 msgid "hs"
 msgstr ""
 
-#: templates/client/client_print.html:318 templates/ehr/ehr_demand_form.html:44
+#: templates/client/client_print.html:318
+#: templates/ehr/ehr_demand_form.html:44
 msgid "How long it happens"
 msgstr ""
 
-#: templates/client/client_print.html:319 templates/ehr/ehr_demand_form.html:49
+#: templates/client/client_print.html:319
+#: templates/ehr/ehr_demand_form.html:49
 msgid "Frequency"
 msgstr ""
 
-#: templates/client/client_print.html:321 templates/ehr/ehr_demand_form.html:58
+#: templates/client/client_print.html:321
+#: templates/ehr/ehr_demand_form.html:58
 #: templates/ehr/ehr_demand_list_item.html:34 templates/tags/invoice.html:68
 msgid "Duration"
 msgstr ""
@@ -4150,7 +4182,8 @@ msgstr ""
 msgid "Occurrence confirmed rescheduled"
 msgstr ""
 
-#: templates/client/client_print.html:379 templates/device/device_form.html:163
+#: templates/client/client_print.html:379
+#: templates/device/device_form.html:163
 #: templates/schedule/schedule_events.html:45
 #: templates/schedule/schedule_occurrence_form.html:53
 msgid "Room"
@@ -4282,7 +4315,7 @@ msgid "Back"
 msgstr ""
 
 #: templates/client/client_print_record_data_tag.html:10
-#: templates/meta/people_profile.html:29
+#: templates/meta/people_profile.html:30
 msgid "Birthdate"
 msgstr ""
 
@@ -4296,7 +4329,7 @@ msgid "Birthdate is supposed"
 msgstr ""
 
 #: templates/client/client_print_record_data_tag.html:11
-#: templates/meta/people_profile.html:56
+#: templates/meta/people_profile.html:57
 msgid "Marital Status"
 msgstr ""
 
@@ -4377,58 +4410,66 @@ msgstr ""
 msgid "Indication done by"
 msgstr ""
 
-#: templates/client/client_referral_form.html:103
+#: templates/client/client_referral_form.html:77
+msgid "Clinic not found"
+msgstr ""
+
+#: templates/client/client_referral_form.html:99
+msgid "Professional no found"
+msgstr ""
+
+#: templates/client/client_referral_form.html:111
 msgid "Subscritpion Details"
 msgstr ""
 
-#: templates/client/client_referral_form.html:104
+#: templates/client/client_referral_form.html:112
 #: templates/client/client_referral_plus_form.html:53
 msgid "Last Referral"
 msgstr ""
 
-#: templates/client/client_referral_form.html:115
+#: templates/client/client_referral_form.html:123
 msgid ""
 "This operation will change ALL schedule occurrences. Do you really want to "
 "continue?"
 msgstr ""
 
-#: templates/client/client_referral_form.html:117
+#: templates/client/client_referral_form.html:125
 #: templates/client/client_referral_plus_form.html:64
 msgid "To Service"
 msgstr ""
 
-#: templates/client/client_referral_form.html:121
+#: templates/client/client_referral_form.html:129
 #: templates/client/client_referral_plus_form.html:68
 #: templates/tags/schedule_form.html:90
 msgid "Empty"
 msgstr ""
 
-#: templates/client/client_referral_form.html:126
+#: templates/client/client_referral_form.html:134
 #: templates/client/client_referral_plus_form.html:73
 msgid "Subscribe this customer in a group"
 msgstr ""
 
-#: templates/client/client_referral_form.html:131
+#: templates/client/client_referral_form.html:139
 msgid "Professionals available"
 msgstr ""
 
-#: templates/client/client_referral_form.html:132
+#: templates/client/client_referral_form.html:140
 msgid "Professionals selected"
 msgstr ""
 
-#: templates/client/client_referral_form.html:144
+#: templates/client/client_referral_form.html:152
 #: templates/client/client_referral_plus_form.html:103
 #: templates/tags/schedule_form.html:134
 #: templates/tags/schedule_sidebar.html:26
 msgid "Clients"
 msgstr ""
 
-#: templates/client/client_referral_form.html:147
+#: templates/client/client_referral_form.html:155
 #: templates/client/client_referral_plus_form.html:109
 msgid "Referral Additional Infos"
 msgstr ""
 
-#: templates/client/client_referral_form.html:148
+#: templates/client/client_referral_form.html:156
 #: templates/client/client_referral_plus_form.html:110
 msgid "Referral Reason"
 msgstr ""
@@ -4529,8 +4570,8 @@ msgid "view remote contacts"
 msgstr ""
 
 #: templates/contact/contact_list.html:76
-#: templates/contact/contact_list_external.html:76 templates/core/main.html:190
-#: templates/employee/employee_form.html:23
+#: templates/contact/contact_list_external.html:76
+#: templates/core/main.html:190 templates/employee/employee_form.html:23
 #: templates/employee/employee_list.html:23
 #: templates/tags/client_sidebar.html:34
 #: templates/tags/occurrence_employee_form.html:19
@@ -4566,8 +4607,9 @@ msgstr ""
 
 #: templates/contact/contact_organization_form.html:87
 #: templates/contact/contact_professional_form.html:123
-#: templates/tags/contact_sidebar.html:20 templates/tags/device_sidebar.html:20
-#: templates/tags/place_sidebar.html:20 templates/tags/room_sidebar.html:20
+#: templates/tags/contact_sidebar.html:20
+#: templates/tags/device_sidebar.html:20 templates/tags/place_sidebar.html:20
+#: templates/tags/room_sidebar.html:20
 msgid "Object Actions"
 msgstr ""
 
@@ -4580,22 +4622,24 @@ msgstr ""
 #: templates/contact/contact_organization_form.html:89
 #: templates/contact/contact_professional_form.html:125
 #: templates/tags/careprofessional_sidebar.html:28
-#: templates/tags/client_sidebar.html:91 templates/tags/contact_sidebar.html:23
+#: templates/tags/client_sidebar.html:91
+#: templates/tags/contact_sidebar.html:23
 #: templates/tags/device_sidebar.html:22
-#: templates/tags/employee_sidebar.html:28 templates/tags/place_sidebar.html:23
-#: templates/tags/room_sidebar.html:23 templates/tags/service_sidebar.html:46
-#: templates/tags/user_sidebar.html:27
+#: templates/tags/employee_sidebar.html:28
+#: templates/tags/place_sidebar.html:23 templates/tags/room_sidebar.html:23
+#: templates/tags/service_sidebar.html:46 templates/tags/user_sidebar.html:27
 msgid "Disable"
 msgstr ""
 
 #: templates/contact/contact_organization_form.html:89
 #: templates/contact/contact_professional_form.html:125
 #: templates/tags/careprofessional_sidebar.html:28
-#: templates/tags/client_sidebar.html:91 templates/tags/contact_sidebar.html:23
+#: templates/tags/client_sidebar.html:91
+#: templates/tags/contact_sidebar.html:23
 #: templates/tags/device_sidebar.html:22
-#: templates/tags/employee_sidebar.html:28 templates/tags/place_sidebar.html:23
-#: templates/tags/room_sidebar.html:23 templates/tags/service_sidebar.html:46
-#: templates/tags/user_sidebar.html:27
+#: templates/tags/employee_sidebar.html:28
+#: templates/tags/place_sidebar.html:23 templates/tags/room_sidebar.html:23
+#: templates/tags/service_sidebar.html:46 templates/tags/user_sidebar.html:27
 msgid "Enable"
 msgstr ""
 
@@ -5237,7 +5281,7 @@ msgstr ""
 #: templates/meta/company_indentification.html:23
 #: templates/meta/people_indentification.html:26
 #: templates/organization/organization_form.html:62
-#: templates/tags/address.html:99 templates/tags/document.html:59
+#: templates/tags/address.html:99 templates/tags/document.html:65
 #: templates/tags/email.html:36 templates/tags/im.html:36
 #: templates/tags/people_parent.html:42 templates/tags/phone.html:46
 #: templates/tags/professional.html:48 templates/tags/website.html:27
@@ -5326,7 +5370,7 @@ msgstr ""
 msgid "Nickname"
 msgstr ""
 
-#: templates/meta/people_profile.html:27
+#: templates/meta/people_profile.html:28
 #: templates/profile/profile_add_availability.html:25
 #: templates/profile/profile_careprofessional.html:23
 #: templates/profile/profile_change_pass.html:25
@@ -5334,19 +5378,19 @@ msgstr ""
 msgid "Personal Profile"
 msgstr ""
 
-#: templates/meta/people_profile.html:43
+#: templates/meta/people_profile.html:44
 msgid "Birthdate supposedly from the age"
 msgstr ""
 
-#: templates/meta/people_profile.html:70
+#: templates/meta/people_profile.html:71
 msgid "Naturality"
 msgstr ""
 
-#: templates/meta/people_profile.html:72 templates/tags/address.html:45
+#: templates/meta/people_profile.html:73 templates/tags/address.html:45
 msgid "Country"
 msgstr ""
 
-#: templates/meta/people_profile.html:95
+#: templates/meta/people_profile.html:96
 msgid "Select state first"
 msgstr ""
 
@@ -5597,7 +5641,11 @@ msgstr ""
 msgid "There is no types available to choice"
 msgstr ""
 
-#: templates/place/place_room_form.html:85 templates/tags/room.html:43
+#: templates/place/place_room_form.html:87
+msgid "There is no Professionals available for choice"
+msgstr ""
+
+#: templates/place/place_room_form.html:97 templates/tags/room.html:43
 msgid "Furniture"
 msgstr ""
 
@@ -5944,11 +5992,11 @@ msgstr ""
 msgid "Please go to the following page and choose a new password:"
 msgstr ""
 
-#: templates/registration/password_reset_email.html:6
+#: templates/registration/password_reset_email.html:7
 msgid "Your username, in case you've forgotten:"
 msgstr ""
 
-#: templates/registration/password_reset_email.html:8
+#: templates/registration/password_reset_email.html:9
 msgid "Thanks for using our system!"
 msgstr ""
 
@@ -6249,7 +6297,7 @@ msgid "End Time"
 msgstr ""
 
 #: templates/schedule/schedule_occurrence_form.html:56
-#: templates/tags/occurrence_confirmation_form.html:75
+#: templates/tags/occurrence_confirmation_form.html:82
 #: templates/tags/schedule_form.html:141
 msgid "Notes"
 msgstr ""
@@ -6350,7 +6398,8 @@ msgstr ""
 msgid "Book on this day"
 msgstr ""
 
-#: templates/service/select_area.html:40 templates/service/service_form.html:44
+#: templates/service/select_area.html:40
+#: templates/service/service_form.html:44
 msgid "Adding New Service"
 msgstr ""
 
@@ -6686,7 +6735,8 @@ msgstr ""
 msgid "Add Family Member"
 msgstr ""
 
-#: templates/tags/client_sidebar.html:93 templates/tags/contact_sidebar.html:24
+#: templates/tags/client_sidebar.html:93
+#: templates/tags/contact_sidebar.html:24
 #: templates/tags/device_sidebar.html:23 templates/tags/place_sidebar.html:24
 #: templates/tags/room_sidebar.html:24
 msgid "Print Record"
@@ -6730,6 +6780,10 @@ msgstr ""
 
 #: templates/tags/document.html:39
 msgid "Issuer"
+msgstr ""
+
+#: templates/tags/document.html:61
+msgid "Identifier"
 msgstr ""
 
 #: templates/tags/im.html:25
@@ -6808,7 +6862,7 @@ msgstr ""
 msgid "by"
 msgstr ""
 
-#: templates/tags/occurrence_confirmation_form.html:44
+#: templates/tags/occurrence_confirmation_form.html:51
 msgid "Occurrence Confirmation Details"
 msgstr ""
 
@@ -7113,11 +7167,11 @@ msgstr ""
 msgid "Change Password"
 msgstr ""
 
-#: templates/users/users_form.html:86 templates/users/users_form.html.py:255
+#: templates/users/users_form.html:86 templates/users/users_form.html:255
 msgid "Change e-mail"
 msgstr ""
 
-#: templates/users/users_form.html:92 templates/users/users_form.html.py:239
+#: templates/users/users_form.html:92 templates/users/users_form.html:239
 #: templates/users/users_form.html:261
 msgid "Again"
 msgstr ""

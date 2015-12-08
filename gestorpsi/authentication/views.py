@@ -28,22 +28,17 @@ from django.forms.util import ErrorList
 from django.utils.translation import ugettext as _
 from django.contrib.auth.views import login as django_login
 from django.core.mail import EmailMessage
-
+from django.db.models.query import QuerySet
+from django.db.models.manager import Manager
+from django.db.models.base import ModelBase
 
 from gestorpsi.settings import SITE_DISABLED, ADMIN_URL, ADMINS_REGISTRATION, URL_APP, URL_HOME, SIGNATURE, URL_DEMO
 
 from gestorpsi.organization.models import Organization, ProfessionalResponsible
 from gestorpsi.gcm.models.invoice import Invoice
-
+from gestorpsi.util.views import get_object_or_None
 from gestorpsi.authentication.forms import RegistrationForm
 from registration.models import RegistrationProfile
-
-
-
-#
-# login_check decorator
-# code from http://code.activestate.com/recipes/498217/
-# changed by czd@gestorpsi.com.br
 
 def login_check(f):
     @login_required
@@ -52,7 +47,6 @@ def login_check(f):
     wrap.__doc__=f.__doc__
     wrap.__name__=f.__name__
     return wrap
-
 
 def user_authentication(request):
     if SITE_DISABLED:
@@ -65,48 +59,70 @@ def user_authentication(request):
     
     if (unblocked_user(username)):
         user = authenticate(username=username, password=password)
-        
         # user does not exist
         if user is None:
             set_trylogin(username)
-            form_messages = _('Invalid username or password')
-            return render_to_response('registration/login.html', {'form': form, 'form_messages': form_messages })
+            return return_invalid_username(form)
         else:
             request.session['user_aux_id'] = user.id
-        if user.is_staff or user.is_superuser:
-            login(request, user)
-            return HttpResponseRedirect(ADMIN_URL)
 
-        # user has not confirmed registration yet
-        if user.registrationprofile_set.all()[0].activation_key != 'ALREADY_ACTIVATED':
-            form_messages = _('Your account has not been confirmated yet. Please check your email and use your activation code to continue')
-            return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
-        
-        if not user.is_active:
-            form_messages = _('Your account has been disable. Please contact our support')
-            return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
-        else:
-            clear_login(user)
-            profile = user.get_profile()
-            if profile.organization.distinct().count() > 1:
-                try:
-                    organization = profile.organization.get(short_name__iexact = request.POST.get('shortname'))
-                    profile.org_active = organization
-                    profile.save()
-                    user.groups.clear()
-                    for role in user.get_profile().role_set.filter(organization=organization):
-                        user.groups.add(role.group)
-                    login(request, user)
-                    return HttpResponseRedirect('/')
-                except Organization.DoesNotExist:
-                    request.session['temp_user'] = user
-                    return render_to_response('registration/select_organization.html', { 'objects': profile.organization.distinct() })
-            login(request, user)
-            return HttpResponseRedirect(request.POST.get('next') or '/')
+        login_for_admin_or_staff(user, request)
 
+        user_registration_not_confirmed(user, form)
+        return login_active_user(user, form, request)
 
+    else:
+        return return_invalid_username(form)
 
+def login_active_user(user, form, request):
+    if not user.is_active:
+        form_messages = _('Your account has been disable. Please contact our support')
+        return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
+    else:
+        return login_user(user, request)
 
+def user_registration_not_confirmed(user, form):
+    if user.registrationprofile_set.all()[0].activation_key != 'ALREADY_ACTIVATED':
+        form_messages = _('Your account has not been confirmated yet. Please check your email and use your activation code to continue')
+        return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
+
+def login_for_admin_or_staff(user, request):
+    if user.is_staff or user.is_superuser:
+        login(request, user)
+        return HttpResponseRedirect(ADMIN_URL)
+
+def login_user(user, request):
+    clear_login(user)
+    profile = user.get_profile()
+    handle_multiple_organizations(profile, request, user)
+    login(request, user)
+    return HttpResponseRedirect(request.POST.get('next') or '/')
+
+def handle_multiple_organizations(profile, request, user):
+    if profile.organization.distinct().count() > 1:
+        try:
+            save_organization_shortname(profile, request)
+            assign_role(user, request)
+            return HttpResponseRedirect('/')
+        except Organization.DoesNotExist:
+            request.session['temp_user'] = user
+            return render_to_response('registration/select_organization.html', { 'objects': profile.organization.distinct() })
+
+def assign_role(user, request):
+    user.groups.clear()
+    for role in user.get_profile().role_set.filter(organization=organization):
+        user.groups.add(role.group)
+    login(request, user)
+
+def return_invalid_username(form):
+    form_messages = _('Invalid username or password')
+    return render_to_response('registration/login.html', {'form': form, 'form_messages': form_messages })
+
+def save_organization_shortname(profile, request):
+    organization = profile.organization.get(short_name__iexact = request.POST.get('shortname'))
+    profile.org_active = organization
+    profile.save()
+    
 def user_organization(request):
     organization = Organization.objects.get(pk=request.POST.get('organization'))
     user = request.session['temp_user']
@@ -122,47 +138,6 @@ def user_organization(request):
     login(request, user)           
     return HttpResponseRedirect('/')
 
-
-
-"""
-def old_user_authentication(request):
-    if request.method == "POST":
-        form = AuthenticationForm(data=request.POST)
-        username = request.POST.get('username').strip().lower()
-        password = request.POST.get('password')
-        if(unblocked_user(username)):
-            user = authenticate(username=username, password=password)   
-            if user is not None:
-                if user.is_active:
-                    profile = user.get_profile()
-                    request.session['temp_user'] = user                
-                    clear_login(user)
-                    if len(profile.organization.all()) > 1:                                                           
-                        return render_to_response('registration/select_organization.html', { 'objects': profile.organization.all()}) 
-                    else:
-                        number_org = []
-                        number_org = profile.organization.all()
-                        profile.org_active = number_org[0]
-                        login(request, user)                                        
-                        return HttpResponseRedirect('/')
-            else:
-                    set_trylogin(username)
-                    return render_to_response('registration/login.html', {'form':form })
-    else:
-        form = AuthenticationForm()
-        return render_to_response('registration/login.html', { 'form':form } )
-
-def old_user_organization(request):
-    organization = Organization.objects.get(pk=request.POST.get('organization'))
-    user = request.session['temp_user']
-    del request.session['temp_user']        
-    user.get_profile().org_active = organization
-    user.get_profile().save()
-    login(request, user)           
-    return HttpResponseRedirect('/') 
-"""
-
-
 def set_trylogin(user):     
     filtered_user = User.objects.filter(username=user)
     if(len(filtered_user)):        
@@ -172,14 +147,10 @@ def set_trylogin(user):
         found_user.get_profile().try_login = old_number
         found_user.save()
 
-
-
 def clear_login(user):
     user.get_profile().try_login = 0
     user.save()
     
-
-
 def change_password(user,current_password, new_password):    
     if check_password(current_password):   
         user.set_password(new_password)
@@ -188,28 +159,23 @@ def change_password(user,current_password, new_password):
         user.save()
         user.get_profile().org_active = org       
 
-
-    
 def unblocked_user(username):
-    user = get_object_or_404(User, username=username)
-    
+    user = get_object_or_None(User, username=username)
+    if user == None:
+        return False
     if user.is_staff or user.is_superuser:
         return True
-    
+
     profile = user.get_profile()
     value = profile.try_login
     if (value >= settings.PASSWORD_RETIRES):            
         return False
-    
     return True
-
-
 
 def gestorpsi_login(request, *args, **kwargs):
     if SITE_DISABLED:
         return render_to_response('core/site_disabled.html')
     return django_login(request, *args, **kwargs)
-
 
 
 '''
@@ -246,67 +212,27 @@ def register(request, success_url=None,
                 profile = user.get_profile()
                 person = profile.person
 
-                # active automatic
                 org = Organization.objects.filter(organization__isnull=True).filter(person=person)[0]
-                org.active = True
-                org.save()
-                for p in org.person_set.all():
-                    for rp in p.profile.user.registrationprofile_set.all():
-                        activation_key = rp.activation_key.lower() # Normalize before trying anything with it.
-                        RegistrationProfile.objects.activate_user(activation_key)
 
-                prof = ProfessionalResponsible()
-                prof.organization = org
-                prof.person = person
-                prof.name = person.name
-                prof.save()
+                activate_organization(org)
 
-                # invoice
-                i = Invoice()
-                i.organization = org
-                i.status = 2
-                i.save()
+                activate_each_registered_profile (org)
+
+                save_professional(org, person)
+
+                organzation_invoice = Invoice()
+                save_organization_invoice(organzation_invoice,org)
                 
                 bcc_list = ADMINS_REGISTRATION
 
-                msg = EmailMessage()
-                msg.subject = u'Nova assinatura em %s' % URL_HOME
-                msg.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar %s/gcm/\n\n' % URL_APP
-                msg.body += u'Organização %s' % org
-                msg.to = bcc_list
-                msg.send()
+                send_email_message_new_signature(bcc_list, org)
                 
                 request.session['user_aux_id'] = user.id
 
-                # message for client
-                user = User.objects.get(id=request.session['user_aux_id'])
-                msg = EmailMessage()
-                msg.subject = u"Assinatura GestorPSI.com.br"
+                message_for_client(organzation_invoice, request, bcc_list)
 
-                msg.body = u"Olá, bom dia!\n\n"
-                msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe. Sua conta está pronta para usar! "
-                msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
-
-                msg.body += u"link funcionalidades: %s/funcionalidades/\n" % URL_HOME
-                msg.body += u"link como usar: %s/como-usar/\n" % URL_HOME
-                msg.body += u"link manual: %s/media/manual.pdf\n" % URL_DEMO
-                msg.body += u"link contato: %s/contato/\n\n" % URL_HOME
-                msg.body += u"Instruções no YouTube: https://www.youtube.com/channel/UC03EiqIuX72q-fi0MfWK8WA\n\n"
-
-                msg.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( i.start_date.strftime("%d/%m/%Y"), i.end_date.strftime("%d/%m/%Y") )
-                msg.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % URL_APP
-
-                msg.body += u"Endereço do GestorPSI: %s\n" % URL_APP
-                msg.body += u"Usuário/Login  %s\n" % request.POST.get('username')
-                msg.body += u"Senha  %s\n\n" % request.POST.get('password1')
-
-                msg.body += u"%s" % SIGNATURE
-
-                msg.to = [ user.email, ]
-                msg.bcc =  bcc_list
-                msg.send()
-                
                 return HttpResponseRedirect(success_url or reverse('registration-complete'))
+
     else:
         form = form_class()
     
@@ -321,82 +247,68 @@ def register(request, success_url=None,
                 context_instance=RequestContext(request)
             )
 
+def activate_organization(org):
+    org.active = True   
+    org.save()
 
+def message_for_client(organzation_invoice, request, bcc_list):
+    user = User.objects.get(id=request.session['user_aux_id'])
+    message = EmailMessage()
+    message.subject = u"Assinatura GestorPSI.com.br"
 
+    message.body = u"Olá, bom dia!\n\n"
+    message.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe. Sua conta está pronta para usar! "
+    message.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
 
-'''
-    registration complete. New org
-'''
+    message.body += u"link funcionalidades: %s/funcionalidades/\n" % URL_HOME
+    message.body += u"link como usar: %s/como-usar/\n" % URL_HOME
+    message.body += u"link manual: %s/media/manual.pdf\n" % URL_DEMO
+    message.body += u"link contato: %s/contato/\n\n" % URL_HOME
+    message.body += u"Instruções no YouTube: https://www.youtube.com/channel/UC03EiqIuX72q-fi0MfWK8WA\n\n"
+
+    message.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( organzation_invoice.start_date.strftime("%d/%m/%Y"), organzation_invoice.end_date.strftime("%d/%m/%Y") )
+    message.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % URL_APP
+
+    message.body += u"Endereço do GestorPSI: %s\n" % URL_APP
+    message.body += u"Usuário/Login  %s\n" % request.POST.get('username')
+    message.body += u"Senha  %s\n\n" % request.POST.get('password1')
+
+    message.body += u"%s" % SIGNATURE
+
+    message.to = [ user.email, ]
+    message.bcc =  bcc_list
+    message.send()
+
+def save_organization_invoice(organzation_invoice, org):
+    organzation_invoice.organization = org
+    organzation_invoice.status = 2
+    organzation_invoice.save()
+
+def send_email_message_new_signature (bcc_list, org):
+    message = EmailMessage()
+    message.subject = u'Nova assinatura em %s' % URL_HOME
+    message.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar %s/gcm/\n\n' % URL_APP
+    message.body += u'Organização %s' % org
+    message.to = bcc_list
+    message.send()
+
+def save_professional(org, person):
+    prof = ProfessionalResponsible()
+    prof.organization = org
+    prof.person = person
+    prof.name = person.name
+    prof.save()
+
+def activate_each_registered_profile (org):
+    for p in org.person_set.all():
+        for rp in p.profile.user.registrationprofile_set.all():
+            activation_key = rp.activation_key.lower() # Normalize before trying anything with it.
+            RegistrationProfile.objects.activate_user(activation_key)
+
 def complete(request, success_url=None, extra_context=None):
-
-    from gestorpsi.settings import URL_APP, URL_HOME
 
     return render_to_response('registration/registration_complete.html',
                 locals(),
                 context_instance=RequestContext(request)
             )
 
-    '''
-    from gestorpsi.boleto.functions import gera_boleto_bradesco_inscricao
-    from django.contrib.auth.models import User
-    from gestorpsi.document.models import Document, TypeDocument
-    from gestorpsi.address.models import City, Address, Country
-
-    if 'user_aux_id' in request.session:
-
-        #url_boleto = gera_boleto_bradesco_inscricao(request.session['user_aux_id'])
-
-        user = User.objects.get(id=request.session['user_aux_id'])
-        
-        bcc_list = ['teagom@gmail.com']
-        msg = EmailMessage()
-        msg.subject = u"Assinatura GestorPSI.com.br"
-
-        msg.body = u"Olá, bom dia!\n\n.Primeiramente agradecemos a inscrição no sistema GestorPSI.com.br\n\n"
-        msg.body += u"Em instantes você ira receber um boleto referênte ao plano que você escolheu.\n"
-        msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco pelo link.\n"
-        msg.body += u"link funcionalidades:   http://portal.gestorpsi.com.br/funcionalidades/\nlink como usar:  http://portal.gestorpsi.com.br/como-usar/\nlink manual:     http://demo.gestorpsi.com.br/media/manual.pdf\nlink contato:    http://portal.gestorpsi.com.br/contato/\n\n"
-        msg.body += u"GestorPSI.com.br - Prontuários Eletrônicos e Gestão de Serviços em Psicologia"
-
-        msg.body = u"Olá, bom dia!\n\n"
-        msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe e em breve você receberá outro email após a ativação da sua conta."
-        msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
-
-        msg.body += u"link funcionalidades: http://portal.gestorpsi.com.br/funcionalidades/\n"
-        msg.body += u"link como usar: http://portal.gestorpsi.com.br/como-usar/\n"
-        msg.body += u"link manual: http://demo.gestorpsi.com.br/media/manual.pdf\n"
-        msg.body += u"link contato: http://portal.gestorpsi.com.br/contato/\n\n"
-
-        msg.body += u"GestorPsi - Prontuários Eletrônicos e Gestão de Serviços em Psicologia.\n"
-        msg.body += u"www.gestorpsi.com.br"
-
-        msg.to = [ user.email, ]
-        msg.bcc =  bcc_list
-        msg.send()
-
-    if extra_context is None:
-        extra_context = {}
-    context = RequestContext(request)
-    for key, value in extra_context.items():
-        context[key] = callable(value) and value() or value
-    '''
-
-
-"""
-    confirm register after fill form, receive e-mail.
-def object_activate(request, *args, **kwargs):
-
-    if not request.user.is_superuser:
-        return HttpResponseRedirect('/gcm/login/?next=%s' % request.path)
-
-    o = Organization.objects.get(pk=kwargs['object_id'])
-    o.active = True
-    o.save()
-    for p in o.person_set.all():
-        for rp in p.profile.user.registrationprofile_set.all():
-            activation_key = rp.activation_key.lower() # Normalize before trying anything with it.
-            RegistrationProfile.objects.activate_user(activation_key)
-    
-    messages.success(request, _('Organizacao %s ativada com sucesso') % o.name)
-    return HttpResponseRedirect('/gcm/orgpen/')
-"""

@@ -118,8 +118,7 @@ class Report(models.Model):
 
     def get_event_(self, organization, date_start, date_end, professional, service, status, accumulated):
 
-        sch_list = [] # list of objects for earch presence
-
+        sch_list = [] # list of objects for each presence
         '''
             array to print each presence list
             sch_list = []
@@ -127,14 +126,12 @@ class Report(models.Model):
             sch_list[0][0] = label/line
             sch_list[0][1] = ScheduleOccurrence.objects
         '''
-        lines = [] # label for graphic lines
-        total_events = 0 # total of all events
+        total_events = 0 # total of all events, show in resume
 
         date_start , date_end = self.set_date(organization, date_start, date_end)
 
         # filter by date range, all professional and all presence 
         sch_objs = ScheduleOccurrence.objects.filter(start_time__gte=date_start, start_time__lte=date_end, event__referral__organization=organization).order_by('event__referral__client')
-        labels = [u'Cliente chegou no horário',u'Cliente chegou atrasado',u'Cliente não compareceu',u'Evento desmarcado',u'Evento remarcado',u'Profissional não compareceu',u'Não confirmado']
 
         # professional
         if not 'all' in professional:
@@ -144,51 +141,97 @@ class Report(models.Model):
         if service:
             sch_objs = sch_objs.filter( event__referral__service__id=service )
 
-        # all confirmed and not confirmed
+        #
+        # filter by presence confirmation
+        #
+
+        # all presence options confirmed or none marked
         if '999' in status or not status:
             status = "1,2,3,4,5,6,000" # Filter for each presence id end "not confirmed"
+
+        if '1' in status:
+            l = sch_objs.filter( occurrenceconfirmation__presence=1 ).distinct()
+            sch_list.append([u'Cliente chegou no horário',l])
+            total_events += l.count()
+
+        if '2' in status:
+            l = sch_objs.filter( occurrenceconfirmation__presence=2 ).distinct()
+            sch_list.append([u'Cliente chegou atrasado',l])
+            total_events += l.count()
+
+        if '3' in status:
+            l = sch_objs.filter( occurrenceconfirmation__presence=3 ).distinct()
+            sch_list.append([u'Cliente não compareceu',l])
+            total_events += l.count()
+
+        if '4' in status:
+            l = sch_objs.filter( occurrenceconfirmation__presence=4 ).distinct()
+            sch_list.append([u'Evento desmarcado',l])
+            total_events += l.count()
+
+        if '5' in status:
+            l = sch_objs.filter( occurrenceconfirmation__presence=5 ).distinct()
+            sch_list.append([u'Evento remarcado',l])
+            total_events += l.count()
+
+        if '6' in status:
+            l = sch_objs.filter( occurrenceconfirmation__presence=6 ).distinct()
+            sch_list.append([u'Profissional não compareceu',l])
+            total_events += l.count()
 
         # all not confirmed
         if '000' in status:
             l = sch_objs.filter(occurrenceconfirmation__isnull=True)
-            lb = u'Não confirmado'
-            lines.append(lb)
-            sch_list.append( [lb,l] )
+            sch_list.append([u'Não confirmado',l])
             total_events += l.count()
-
-            if not lb in lines:
-                lines.append(lb)
 
         # all confirmed
         if '111' in status:
             l = sch_objs.filter(occurrenceconfirmation__isnull=False)
-            lb = u'Confirmado'
-            lines.append(lb)
-            sch_list.append( [lb,l] )
+            sch_list.append([u'Confirmado',l])
             total_events += l.count()
 
-            if not lb in lines:
-                lines.append(lb)
+        ## filter presence
+        #if status:
 
-        # filter presence
-        if status:
+            #for x in status.split(','): # for earch word
+                #l = sch_objs.filter( occurrenceconfirmation__presence=x ).distinct()
 
-            for x in status.split(','): # for earch word
-                l = sch_objs.filter( occurrenceconfirmation__presence=x ).distinct()
+                #try:
+                    #lb = labels[ int(x)-1 ]
 
-                try:
-                    lb = labels[ int(x)-1 ]
+                    #if not lb in lines:
+                        #lines.append(lb)
+                        #sch_list.append( [lb,l] )
+                        #total_events += l.count()
+                #except:
+                    #pass
 
-                    if not lb in lines:
-                        lines.append(lb)
-                        sch_list.append( [lb,l] )
-                        total_events += l.count()
-                except:
-                    pass
 
+        #
         # graphic google chart
+        #
         data = []
         ds = date_start
+
+        lines = [] # label for google graphic lines
+
+        if '1' in status:
+            lines.append(u'Cliente chegou no horário')
+        if '2' in status:
+            lines.append(u'Cliente chegou atrasado')
+        if '3' in status:
+            lines.append(u'Cliente não compareceu')
+        if '4' in status:
+            lines.append(u'Evento desmarcado')
+        if '5' in status:
+            lines.append(u'Evento remarcado')
+        if '6' in status:
+            lines.append(u'Profissional não compareceu')
+        if '000' in status:
+            lines.append(u'Não confirmado')
+        if '111' in status:
+            lines.append(u'Confirmado')
 
         while ds < date_end :
 
@@ -200,20 +243,36 @@ class Report(models.Model):
                 tmp[N] = N presence selected
             '''
             tmp = []
-            tmp.append(ds.month) # added time line
+            # tmp[0] = month / integer
+            # tmp[1] = total of objects / integer
 
-            for x in status.split(','):
+            tmp.append(ds.month) # added time line # [0]
 
-                t = sch_objs.filter(occurrenceconfirmation__presence=x, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
+            if '1' in status:
+                tmp.append( sch_objs.filter(occurrenceconfirmation__presence=1, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
 
-                # confirmed
-                if x == '111':
-                    t = sch_objs.filter(occurrenceconfirmation__isnull=False, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
-                # not confirmed
-                if x == '000':
-                    t = sch_objs.filter(occurrenceconfirmation__isnull=True, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
+            if '2' in status:
+                tmp.append( sch_objs.filter(occurrenceconfirmation__presence=2, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
 
-                tmp.append(t)
+            if '3' in status:
+                tmp.append( sch_objs.filter(occurrenceconfirmation__presence=3, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+
+            if '4' in status:
+                tmp.append( sch_objs.filter(occurrenceconfirmation__presence=4, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+
+            if '5' in status:
+                tmp.append( sch_objs.filter(occurrenceconfirmation__presence=5, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+
+            if '6' in status:
+                tmp.append( sch_objs.filter(occurrenceconfirmation__presence=6, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+
+            # confirmed
+            if '111' in status:
+                tmp.append( sch_objs.filter(occurrenceconfirmation__isnull=False, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+
+            # not confirmed
+            if '000' in status:
+                tmp.append( sch_objs.filter(occurrenceconfirmation__isnull=True, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
 
             data.append(tmp)
             del(tmp)

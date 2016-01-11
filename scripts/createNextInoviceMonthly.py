@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-    script used to create next invoice
+    script used to create monthly invoice
     create a new invoice for each organization
 '''
 
@@ -16,10 +16,6 @@ locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
 environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
 sys.path.append('..')
-sys.path.append("/home/redepsi/lib/python2.7")
-sys.path.append("/home/redepsi/webapps/gestorpsi_app/git.gestorpsi.com.br")
-sys.path.append("/home/redepsi/webapps/gestorpsi_app/git.gestorpsi.com.br/gestorpsi")
-sys.path.append("/home/redepsi/webapps/gestorpsi_app/git.gestorpsi.com.br/gestorpsi/gestorpsi")
 
 from dateutil.relativedelta import relativedelta
 from datetime import date, timedelta
@@ -35,7 +31,9 @@ from gestorpsi.gcm.models.invoice import Invoice
 end = date.today() + timedelta(10) # corret
 
 # main code
-for x in Invoice.objects.filter(end_date=end):
+
+# Create next invoice if last was paid
+for x in Invoice.objects.filter(end_date=end, status__gt=0):
 
     """
         contratos

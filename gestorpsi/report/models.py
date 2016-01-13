@@ -114,6 +114,8 @@ class Report(models.Model):
             return admission, chart_url, date_start,date_end
         
         return None, None, None, None
+
+
     def get_event_(self, organization, date_start, date_end, professional, service, status, accumulated):
 
         sch_list = [] # list of objects for each presence
@@ -124,8 +126,8 @@ class Report(models.Model):
             sch_list[0][0] = label/line
             sch_list[0][1] = ScheduleOccurrence.objects
         '''
-        total_events = 0 # total of all events, show in resume
 
+        total_events = 0 # total of all events, show in resume
         date_start , date_end = self.set_date(organization, date_start, date_end)
 
         # filter by date range, all professional and all presence 
@@ -145,7 +147,7 @@ class Report(models.Model):
 
         # all presence options confirmed or none marked
         if '999' in status or not status:
-            status = "1,2,3,4,5,6,000" # Filter for each presence id end "not confirmed"
+            status = "1,2,3,4,5,6,888" # Filter for each presence id end "not confirmed"
 
         if '1' in status:
             l = sch_objs.filter( occurrenceconfirmation__presence=1 ).distinct()
@@ -178,7 +180,7 @@ class Report(models.Model):
             total_events += l.count()
 
         # all not confirmed
-        if '000' in status:
+        if '888' in status:
             l = sch_objs.filter(occurrenceconfirmation__isnull=True)
             sch_list.append([u'Não confirmado',l])
             total_events += l.count()
@@ -189,13 +191,9 @@ class Report(models.Model):
             sch_list.append([u'Confirmado',l])
             total_events += l.count()
 
-
         #
         # graphic google chart
         #
-        data = []
-        ds = date_start
-
         lines = [] # label for google graphic lines
 
         if '1' in status:
@@ -216,52 +214,142 @@ class Report(models.Model):
             lines.append(u'Confirmado')
 
 
-        while ds < date_end :
+        def filter_range_date(presence):
+            ds = date_start
+            l = 0 # store last counter
+            t = []
 
-            '''
+            while ds < date_end :
+                l += sch_objs.filter(occurrenceconfirmation__presence=presence, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
+                t.append( l )
+                ds += relativedelta(months=1)
+
+            return t
+
+
+        if accumulated == 'True':
+
+                # tmp = []
+                # tmp = [ [presence counter] ]
+                # tmp = [ [0,10,25,50,100] , [presence1] , [presenceN] ]
                 tmp = []
-                tmp[0] = time line
-                tmp[1] = 1 presence selected
-                tmp[2] = 2 presence selected
-                tmp[N] = N presence selected
-            '''
-            tmp = []
-            # tmp[0] = month / integer
-            # tmp[1] = total of objects / integer
 
-            tmp.append(ds.month) # added time line # [0]
+                if '1' in status:
+                    tmp.append( filter_range_date(1) )
+                if '2' in status:
+                    tmp.append( filter_range_date(2) )
+                if '3' in status:
+                    tmp.append( filter_range_date(3) )
+                if '4' in status:
+                    tmp.append( filter_range_date(4) )
+                if '5' in status:
+                    tmp.append( filter_range_date(5) )
+                if '6' in status:
+                    tmp.append( filter_range_date(6) )
 
-            if '1' in status:
-                tmp.append( sch_objs.filter(occurrenceconfirmation__presence=1, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                # confirmed
+                if '777' in status:
+                    ds = date_start
+                    l = 0 # last
+                    t = []
 
-            if '2' in status:
-                tmp.append( sch_objs.filter(occurrenceconfirmation__presence=2, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                    while ds < date_end :
+                        l += sch_objs.filter(occurrenceconfirmation__isnull=False, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
+                        t.append( l )
+                        ds += relativedelta(months=1)
 
-            if '3' in status:
-                tmp.append( sch_objs.filter(occurrenceconfirmation__presence=3, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                    tmp.append(t)
 
-            if '4' in status:
-                tmp.append( sch_objs.filter(occurrenceconfirmation__presence=4, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                # not confirmed
+                if '888' in status:
+                    ds = date_start
+                    l = 0 # last
+                    t = []
 
-            if '5' in status:
-                tmp.append( sch_objs.filter(occurrenceconfirmation__presence=5, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                    while ds < date_end :
+                        l += sch_objs.filter(occurrenceconfirmation__isnull=True, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
+                        t.append( l )
+                        ds += relativedelta(months=1)
 
-            if '6' in status:
-                tmp.append( sch_objs.filter(occurrenceconfirmation__presence=6, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                    tmp.append(t)
 
-            # confirmed
-            if '777' in status:
-                tmp.append( sch_objs.filter(occurrenceconfirmation__isnull=False, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                # mount main array for google pie char array
+                data = [] # main array
+                c = 0 # array position
 
-            # not confirmed
-            if '888' in status:
-                tmp.append( sch_objs.filter(occurrenceconfirmation__isnull=True, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                ds = date_start
+                while ds < date_end :
 
-            data.append(tmp)
-            del(tmp)
-            
-            ds += relativedelta(months=1)
+                    tl = [] # time line
+                    tl.append(ds.month) # added time line # [0]
+                    '''
+                        tl = []
+                        tl = [ 1 , 'not confirmed' , 'confirme' , 'reschedule' ]
+                        tl = [ 1 , 10 , 25 , 15  ]
 
+                        tl[0] = time line / month
+                        tl[1] = 1 presence integer counter
+                        tl[2] = 2 presence integer counter
+                        tl[N] = N presence integer counter
+                    '''
+                    for x in tmp:
+                        tl.append( x[c] )
+
+                    ds += relativedelta(months=1)
+                    c += 1
+
+                    data.append(tl)
+                    del(tl)
+
+
+
+        if accumulated == 'False':
+            while ds < date_end :
+
+                '''
+                    tmp = []
+                    tmp[0] = time line
+                    tmp[1] = 1 presence selected
+                    tmp[2] = 2 presence selected
+                    tmp[N] = N presence selected
+                '''
+                tmp = []
+                # tmp[0] = month / integer
+                # tmp[1] = total of objects / integer
+                tmp.append(ds.month) # added time line # [0]
+
+                if '1' in status:
+                    tmp.append( sch_objs.filter(occurrenceconfirmation__presence=1, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+
+                if '2' in status:
+                    tmp.append( sch_objs.filter(occurrenceconfirmation__presence=2, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+
+                if '3' in status:
+                    tmp.append( sch_objs.filter(occurrenceconfirmation__presence=3, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+
+                if '4' in status:
+                    tmp.append( sch_objs.filter(occurrenceconfirmation__presence=4, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+
+                if '5' in status:
+                    tmp.append( sch_objs.filter(occurrenceconfirmation__presence=5, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+
+                if '6' in status:
+                    tmp.append( sch_objs.filter(occurrenceconfirmation__presence=6, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+
+                # confirmed
+                if '777' in status:
+                    tmp.append( sch_objs.filter(occurrenceconfirmation__isnull=False, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+
+                # not confirmed
+                if '888' in status:
+                    tmp.append( sch_objs.filter(occurrenceconfirmation__isnull=True, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+
+                data.append(tmp)
+                del(tmp)
+                
+                ds += relativedelta(months=1)
+
+        # return
         return data, lines, date_start, date_end, sch_list, total_events
 
 

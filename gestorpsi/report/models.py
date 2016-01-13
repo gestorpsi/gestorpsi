@@ -114,8 +114,6 @@ class Report(models.Model):
             return admission, chart_url, date_start,date_end
         
         return None, None, None, None
-
-
     def get_event_(self, organization, date_start, date_end, professional, service, status, accumulated):
 
         sch_list = [] # list of objects for each presence
@@ -186,26 +184,10 @@ class Report(models.Model):
             total_events += l.count()
 
         # all confirmed
-        if '111' in status:
+        if '777' in status:
             l = sch_objs.filter(occurrenceconfirmation__isnull=False)
             sch_list.append([u'Confirmado',l])
             total_events += l.count()
-
-        ## filter presence
-        #if status:
-
-            #for x in status.split(','): # for earch word
-                #l = sch_objs.filter( occurrenceconfirmation__presence=x ).distinct()
-
-                #try:
-                    #lb = labels[ int(x)-1 ]
-
-                    #if not lb in lines:
-                        #lines.append(lb)
-                        #sch_list.append( [lb,l] )
-                        #total_events += l.count()
-                #except:
-                    #pass
 
 
         #
@@ -228,10 +210,11 @@ class Report(models.Model):
             lines.append(u'Evento remarcado')
         if '6' in status:
             lines.append(u'Profissional não compareceu')
-        if '000' in status:
+        if '888' in status:
             lines.append(u'Não confirmado')
-        if '111' in status:
+        if '777' in status:
             lines.append(u'Confirmado')
+
 
         while ds < date_end :
 
@@ -267,11 +250,11 @@ class Report(models.Model):
                 tmp.append( sch_objs.filter(occurrenceconfirmation__presence=6, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
 
             # confirmed
-            if '111' in status:
+            if '777' in status:
                 tmp.append( sch_objs.filter(occurrenceconfirmation__isnull=False, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
 
             # not confirmed
-            if '000' in status:
+            if '888' in status:
                 tmp.append( sch_objs.filter(occurrenceconfirmation__isnull=True, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
 
             data.append(tmp)

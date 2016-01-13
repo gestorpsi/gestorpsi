@@ -96,7 +96,7 @@ class ReportForm(forms.ModelForm):
         self.fields['payment_way'].choices = choices
 
         # confirmation event
-        self.fields['confirmation_status'].choices = tuple( [(u'999', 'Todos'), (u'000','Não confirmado'), (u'111','Confirmado')] + list(OCCURRENCE_CONFIRMATION_PRESENCE) )
+        self.fields['confirmation_status'].choices = tuple( [(u'999', 'Todos'), (u'888','Não confirmado'), (u'777','Confirmado')] + list(OCCURRENCE_CONFIRMATION_PRESENCE) )
 
 
 class ReportSaveForm(forms.ModelForm):

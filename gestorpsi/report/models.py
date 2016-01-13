@@ -127,6 +127,7 @@ class Report(models.Model):
             sch_list[0][1] = ScheduleOccurrence.objects
         '''
 
+        data = [] # main array for google pie char array
         total_events = 0 # total of all events, show in resume
         date_start , date_end = self.set_date(organization, date_start, date_end)
 
@@ -228,7 +229,7 @@ class Report(models.Model):
 
 
         #
-        # choosen accumulated 
+        # accumulated 
         #
 
         if accumulated == 'True':
@@ -277,8 +278,6 @@ class Report(models.Model):
 
                     tmp.append(t)
 
-                # mount main array for google pie char array
-                data = [] # main array
                 c = 0 # array position
 
                 ds = date_start
@@ -308,11 +307,8 @@ class Report(models.Model):
 
 
         #
-        # choosen not accumulated 
+        # not accumulated 
         #
-
-        # mount main array for google pie char array
-        data = [] # main array
         ds = date_start
 
         if accumulated == 'False':

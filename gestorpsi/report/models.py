@@ -227,6 +227,10 @@ class Report(models.Model):
             return t
 
 
+        #
+        # choosen accumulated 
+        #
+
         if accumulated == 'True':
 
                 # tmp = []
@@ -302,6 +306,14 @@ class Report(models.Model):
                     del(tl)
 
 
+
+        #
+        # choosen not accumulated 
+        #
+
+        # mount main array for google pie char array
+        data = [] # main array
+        ds = date_start
 
         if accumulated == 'False':
             while ds < date_end :

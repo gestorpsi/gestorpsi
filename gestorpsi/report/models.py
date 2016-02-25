@@ -302,9 +302,9 @@ class Report(models.Model):
         #
         # not accumulated 
         #
-        ds = date_start
-
         if accumulated == 'False':
+
+            ds = date_start
             data = '([' # open
 
             while ds < date_end :
@@ -330,11 +330,11 @@ class Report(models.Model):
 
                 # confirmed
                 if '777' in status:
-                    tmp += "%s" % sch_objs.filter(occurrenceconfirmation__isnull=False, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
+                    tmp += "%s," % sch_objs.filter(occurrenceconfirmation__isnull=False, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
 
                 # not confirmed
                 if '888' in status:
-                    tmp += "%s" % sch_objs.filter(occurrenceconfirmation__isnull=True, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
+                    tmp += "%s," % sch_objs.filter(occurrenceconfirmation__isnull=True, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
 
                 tl = "[new Date(%s, %s), %s]," % (ds.year, ds.month, tmp)
                 data += tl

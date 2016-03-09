@@ -3,13 +3,13 @@
 {% load i18n %}
 
 <script type="text/javascript">
-
-    function make_graphic1(rows, column){ 
+        
+    function drawChart(rows, column){
 
         // Create the data table.
         var data = new google.visualization.DataTable();
 
-        data.addColumn('number', 'X');
+        data.addColumn('date', 'Time of Day');
         {% for i in column %} data.addColumn('number', "{{ i }}" ); {% endfor %}
 
         data.addRows(rows);
@@ -19,10 +19,13 @@
                        'width':960,
                        'height':330,
                        hAxis: {
-                            title: 'Periodo mensal'
+                            format: 'M/yy',
+                            gridlines: {count: 15}
                        },
                        vAxis: {
-                            title: 'Quantidade'
+                            title: 'Quantidade',
+                            gridlines: {color: 'none'},
+                            minValue: 0
                        },
                        series: {
                             1: {curveType: 'function'}
@@ -123,7 +126,8 @@
             {% for i in column %} lines.push( "{{ i }}" ); {% endfor %}
 
             // call graphic function 
-            make_graphic1(rows, lines);
+            drawChart(rows,lines);
+
        </script>
 
 {% else %}

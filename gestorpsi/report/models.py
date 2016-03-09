@@ -256,7 +256,7 @@ class Report(models.Model):
                 if '777' in status:
                     ds = date_start
                     l = 0 # last
-                    t = []
+                    t = [] # list of counter
 
                     while ds < date_end :
                         l += sch_objs.filter(occurrenceconfirmation__isnull=False, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
@@ -278,84 +278,71 @@ class Report(models.Model):
 
                     tmp.append(t)
 
-                c = 0 # array position
-
+                c = 0 # TMP array position
+                data = '([' # open
                 ds = date_start
+
                 while ds < date_end :
 
-                    tl = [] # time line
-                    tl.append(ds.month) # added time line # [0]
-                    '''
-                        tl = []
-                        tl = [ 1 , 'not confirmed' , 'confirme' , 'reschedule' ]
-                        tl = [ 1 , 10 , 25 , 15  ]
-
-                        tl[0] = time line / month
-                        tl[1] = 1 presence integer counter
-                        tl[2] = 2 presence integer counter
-                        tl[N] = N presence integer counter
-                    '''
+                    t = ""
                     for x in tmp:
-                        tl.append( x[c] )
+                        t += "%s," % x[c]
 
-                    ds += relativedelta(months=1)
+                    tl = "[new Date(%s, %s), %s]," % (ds.year, ds.month, t)
+                    data += tl
+
                     c += 1
+                    ds += relativedelta(months=1)
 
-                    data.append(tl)
                     del(tl)
 
+                data += '])' # close
 
 
         #
         # not accumulated 
         #
-        ds = date_start
-
         if accumulated == 'False':
-            while ds < date_end :
 
-                '''
-                    tmp = []
-                    tmp[0] = time line
-                    tmp[1] = 1 presence selected
-                    tmp[2] = 2 presence selected
-                    tmp[N] = N presence selected
-                '''
-                tmp = []
-                # tmp[0] = month / integer
-                # tmp[1] = total of objects / integer
-                tmp.append(ds.month) # added time line # [0]
+            ds = date_start
+            data = '([' # open
+
+            while ds < date_end :
+                tmp = ""
 
                 if '1' in status:
-                    tmp.append( sch_objs.filter(occurrenceconfirmation__presence=1, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                    tmp += "%s," % sch_objs.filter(occurrenceconfirmation__presence=1, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
 
                 if '2' in status:
-                    tmp.append( sch_objs.filter(occurrenceconfirmation__presence=2, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                    tmp += "%s," % sch_objs.filter(occurrenceconfirmation__presence=2, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
 
                 if '3' in status:
-                    tmp.append( sch_objs.filter(occurrenceconfirmation__presence=3, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                    tmp += "%s," % sch_objs.filter(occurrenceconfirmation__presence=3, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
 
                 if '4' in status:
-                    tmp.append( sch_objs.filter(occurrenceconfirmation__presence=4, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                    tmp += "%s," % sch_objs.filter(occurrenceconfirmation__presence=4, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
 
                 if '5' in status:
-                    tmp.append( sch_objs.filter(occurrenceconfirmation__presence=5, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                    tmp += "%s," % sch_objs.filter(occurrenceconfirmation__presence=5, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
 
                 if '6' in status:
-                    tmp.append( sch_objs.filter(occurrenceconfirmation__presence=6, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                    tmp += "%s," % sch_objs.filter(occurrenceconfirmation__presence=6, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
 
                 # confirmed
                 if '777' in status:
-                    tmp.append( sch_objs.filter(occurrenceconfirmation__isnull=False, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                    tmp += "%s," % sch_objs.filter(occurrenceconfirmation__isnull=False, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
 
                 # not confirmed
                 if '888' in status:
-                    tmp.append( sch_objs.filter(occurrenceconfirmation__isnull=True, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count() )
+                    tmp += "%s," % sch_objs.filter(occurrenceconfirmation__isnull=True, start_time__gte=ds, end_time__lte=ds+relativedelta(months=1)).count()
 
-                data.append(tmp)
+                tl = "[new Date(%s, %s), %s]," % (ds.year, ds.month, tmp)
+                data += tl
                 del(tmp)
                 
                 ds += relativedelta(months=1)
+
+            data += '])' # close
 
         # return
         return data, lines, date_start, date_end, sch_list, total_events

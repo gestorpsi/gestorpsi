@@ -61,13 +61,12 @@ GNU General Public License for more details.
     <script src="/media/lou/js/jquery.multi-select.js" type="text/javascript"></script>
 
     <!-- google chart -->
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <!-- Load the Visualization API and the piechart package. -->
-    <script type="text/javascript">
-       google.load('visualization', '1.0', {'packages':['corechart','line']});
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {'packages':['corechart']});
     </script>
 
-    
+        
 {% else %}
     <script type="text/javascript" src="/media/js/gestorpsi.browser.js"></script>
 {% endif %}

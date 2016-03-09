@@ -46,10 +46,10 @@ class Invoice(models.Model):
     date_payed = models.DateField(_(u'Data do Pagamento'), null=True, blank=True)
     date_payed.help_text=_('Preencher apenas quando efetuado pagamento. Formato aaaa/mm/dd Ex: 2014-12-31')
     
-    start_date = models.DateField(_(u'Data início periodo'), null=False, blank=False)
+    start_date = models.DateField(_(u'Data início periodo'), null=False, blank=False, default='2000-01-01')
     start_date.help_text=_('Formato aaaa/mm/dd Ex: 2014-12-31')
 
-    end_date = models.DateField(_(u'Data do fim Periodo'), null=False, blank=False) # vencimento e sem acesso ao sistema
+    end_date = models.DateField(_(u'Data do fim Periodo'), null=False, blank=False, default='2000-01-01') # vencimento e sem acesso ao sistema
     end_date.help_text=_(u'Formato aaaa/mm/dd Ex: 2014-12-31. Organização modo apenas leitura.')
     
     expiry_date = models.DateField(_('Data de Expiracao'), null=True, blank=True)
@@ -61,7 +61,7 @@ class Invoice(models.Model):
     discount = models.DecimalField(_('Desconto'), decimal_places=2, max_digits=8, null=True, blank=True)
     discount.help_text=_('Valor para desconto. Utilizar apenas valores decimais aqui, NAO porcentagem. Ex.: 5.90')
     
-    payment_type = models.ForeignKey(PaymentType, null=False, blank=False, related_name='payment_type', verbose_name='Forma de pagamento') # from org choosen
+    payment_type = models.ForeignKey(PaymentType, null=False, blank=False, related_name='payment_type', verbose_name='Forma de pagamento', default='2') # from org choosen
 
     status = models.IntegerField(_(u'Situação'), choices=INVOICE_STATUS_CHOICES, default=0)
     plan = models.ForeignKey(Plan, verbose_name=_('Plan'), null=True, blank=True)

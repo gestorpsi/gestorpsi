@@ -37,35 +37,18 @@ from gestorpsi.gcm.models.invoice import Invoice
 from gestorpsi.authentication.forms import RegistrationForm
 from registration.models import RegistrationProfile
 
-#
-# login_check decorator
-# code from http://code.activestate.com/recipes/498217/
-# changed by czd@gestorpsi.com.br
-
 def login_check(f):
+    '''
+        login_check decorator
+        code from http://code.activestate.com/recipes/498217/
+        changed by czd@gestorpsi.com.br
+    '''
     @login_required
     def wrap(request, *args, **kwargs):
         return f(request, *args, **kwargs)
     wrap.__doc__=f.__doc__
     wrap.__name__=f.__name__
     return wrap
-
-
-#def unblocked_user(username):
-
-    ## user can't exist
-    #user = get_object_or_404(User, username=username)
-
-    #if user.is_staff or user.is_superuser:
-        #return True
-    
-    #profile = user.get_profile()
-    #value = profile.try_login
-
-    #if (value >= settings.PASSWORD_RETIRES):            
-        #return False
-    
-    #return True
 
 
 def user_authentication(request):

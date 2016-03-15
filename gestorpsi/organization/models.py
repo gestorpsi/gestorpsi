@@ -29,7 +29,6 @@ from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.address.models import Address
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util.first_capitalized import first_capitalized
-from gestorpsi.boleto.models import BradescoBilletData
 
 from gestorpsi.gcm.models.plan import Plan
 from gestorpsi.gcm.models.invoice import Invoice
@@ -179,12 +178,6 @@ class OrganizationManager(models.Manager):
         return super(OrganizationManager, self).get_query_set().filter(active=True, organization__isnull=True)
 
 
-try:
-    DEFAULT_PAYMENT_DAY = BradescoBilletData.objects.all()[0].default_payment_day
-except:
-    DEFAULT_PAYMENT_DAY = 10
-
-
 TIME_SLOT_SCHEDULE = ( 
             ("30",'30'),
             ("40",'40'),
@@ -252,7 +245,7 @@ class Organization(models.Model):
     payment_type.verbose_name = _("Tipo de pagamento")
     payment_detail = models.TextField(u'Detalhes do pagamento. Usado pelo ADM gestorPSI.', null=True, blank=True)
     
-    default_payment_day = models.PositiveIntegerField(validators=[MaxValueValidator(28), MinValueValidator(1)], default=DEFAULT_PAYMENT_DAY)
+    default_payment_day = models.PositiveIntegerField(validators=[MaxValueValidator(28), MinValueValidator(1)], default=10)
     default_payment_day.verbose_name = _("Default payment day")
     default_payment_day.help_text= _("The default day in which the billets have to be paid at the most by this organization.")
 

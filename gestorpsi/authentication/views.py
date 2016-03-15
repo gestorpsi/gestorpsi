@@ -141,46 +141,6 @@ def user_organization(request):
     return HttpResponseRedirect('/')
 
 
-
-"""
-def old_user_authentication(request):
-    if request.method == "POST":
-        form = AuthenticationForm(data=request.POST)
-        username = request.POST.get('username').strip().lower()
-        password = request.POST.get('password')
-        if(unblocked_user(username)):
-            user = authenticate(username=username, password=password)   
-            if user is not None:
-                if user.is_active:
-                    profile = user.get_profile()
-                    request.session['temp_user'] = user                
-                    clear_login(user)
-                    if len(profile.organization.all()) > 1:                                                           
-                        return render_to_response('registration/select_organization.html', { 'objects': profile.organization.all()}) 
-                    else:
-                        number_org = []
-                        number_org = profile.organization.all()
-                        profile.org_active = number_org[0]
-                        login(request, user)                                        
-                        return HttpResponseRedirect('/')
-            else:
-                    set_trylogin(username)
-                    return render_to_response('registration/login.html', {'form':form })
-    else:
-        form = AuthenticationForm()
-        return render_to_response('registration/login.html', { 'form':form } )
-
-def old_user_organization(request):
-    organization = Organization.objects.get(pk=request.POST.get('organization'))
-    user = request.session['temp_user']
-    del request.session['temp_user']        
-    user.get_profile().org_active = organization
-    user.get_profile().save()
-    login(request, user)           
-    return HttpResponseRedirect('/') 
-"""
-
-
 def set_trylogin(user):     
     filtered_user = User.objects.filter(username=user)
     if(len(filtered_user)):        
@@ -191,11 +151,9 @@ def set_trylogin(user):
         found_user.save()
 
 
-
 def clear_login(user):
     user.get_profile().try_login = 0
     user.save()
-    
 
 
 def change_password(user,current_password, new_password):    
@@ -207,12 +165,10 @@ def change_password(user,current_password, new_password):
         user.get_profile().org_active = org       
 
 
-
 def gestorpsi_login(request, *args, **kwargs):
     if SITE_DISABLED:
         return render_to_response('core/site_disabled.html')
     return django_login(request, *args, **kwargs)
-
 
 
 '''
@@ -327,8 +283,6 @@ def register(request, success_url=None,
             )
 
 
-
-
 '''
     registration complete. New org
 '''
@@ -340,68 +294,3 @@ def complete(request, success_url=None, extra_context=None):
                                 locals(),
                                 context_instance=RequestContext(request)
                             )
-
-    '''
-    from gestorpsi.boleto.functions import gera_boleto_bradesco_inscricao
-    from django.contrib.auth.models import User
-    from gestorpsi.document.models import Document, TypeDocument
-    from gestorpsi.address.models import City, Address, Country
-
-    if 'user_aux_id' in request.session:
-
-        #url_boleto = gera_boleto_bradesco_inscricao(request.session['user_aux_id'])
-
-        user = User.objects.get(id=request.session['user_aux_id'])
-        
-        bcc_list = ['teagom@gmail.com']
-        msg = EmailMessage()
-        msg.subject = u"Assinatura GestorPSI.com.br"
-
-        msg.body = u"Olá, bom dia!\n\n.Primeiramente agradecemos a inscrição no sistema GestorPSI.com.br\n\n"
-        msg.body += u"Em instantes você ira receber um boleto referênte ao plano que você escolheu.\n"
-        msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco pelo link.\n"
-        msg.body += u"link funcionalidades:   http://portal.gestorpsi.com.br/funcionalidades/\nlink como usar:  http://portal.gestorpsi.com.br/como-usar/\nlink manual:     http://demo.gestorpsi.com.br/media/manual.pdf\nlink contato:    http://portal.gestorpsi.com.br/contato/\n\n"
-        msg.body += u"GestorPSI.com.br - Prontuários Eletrônicos e Gestão de Serviços em Psicologia"
-
-        msg.body = u"Olá, bom dia!\n\n"
-        msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe e em breve você receberá outro email após a ativação da sua conta."
-        msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
-
-        msg.body += u"link funcionalidades: http://portal.gestorpsi.com.br/funcionalidades/\n"
-        msg.body += u"link como usar: http://portal.gestorpsi.com.br/como-usar/\n"
-        msg.body += u"link manual: http://demo.gestorpsi.com.br/media/manual.pdf\n"
-        msg.body += u"link contato: http://portal.gestorpsi.com.br/contato/\n\n"
-
-        msg.body += u"GestorPsi - Prontuários Eletrônicos e Gestão de Serviços em Psicologia.\n"
-        msg.body += u"www.gestorpsi.com.br"
-
-        msg.to = [ user.email, ]
-        msg.bcc =  bcc_list
-        msg.send()
-
-    if extra_context is None:
-        extra_context = {}
-    context = RequestContext(request)
-    for key, value in extra_context.items():
-        context[key] = callable(value) and value() or value
-    '''
-
-
-"""
-    confirm register after fill form, receive e-mail.
-def object_activate(request, *args, **kwargs):
-
-    if not request.user.is_superuser:
-        return HttpResponseRedirect('/gcm/login/?next=%s' % request.path)
-
-    o = Organization.objects.get(pk=kwargs['object_id'])
-    o.active = True
-    o.save()
-    for p in o.person_set.all():
-        for rp in p.profile.user.registrationprofile_set.all():
-            activation_key = rp.activation_key.lower() # Normalize before trying anything with it.
-            RegistrationProfile.objects.activate_user(activation_key)
-    
-    messages.success(request, _('Organizacao %s ativada com sucesso') % o.name)
-    return HttpResponseRedirect('/gcm/orgpen/')
-"""

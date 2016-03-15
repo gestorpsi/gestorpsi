@@ -158,7 +158,6 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(PROJECT_ROOT_PATH, "templates"),
     os.path.join(PROJECT_ROOT_PATH, "async_tasks/templates"),
-    os.path.join(PROJECT_ROOT_PATH, "boleto/templates"),
     os.path.join(PROJECT_ROOT_PATH, "gcm/templates"),
     os.path.join(PROJECT_ROOT_PATH, "util/templatetags"),
 )
@@ -196,7 +195,6 @@ INSTALLED_APPS = (
     #'gestorpsi.socioeconomic',  <--- TO BE IMPLEMENTED SOON
     'gestorpsi.ehr',
     'gestorpsi.report',
-    'gestorpsi.boleto',
     'gestorpsi.covenant',
     'gestorpsi.financial',
     'swingtime',

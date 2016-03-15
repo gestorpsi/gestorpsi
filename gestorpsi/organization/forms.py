@@ -31,12 +31,9 @@ from smart_selects.db_fields import ChainedForeignKey
 
 from gestorpsi import settings
 from gestorpsi.organization.models import *
-#from gestorpsi.boleto.return_file import *
 from gestorpsi.gcm.models.plan import Plan
 
 
 class OrganizationForm(forms.ModelForm):
     class Meta:
         model = Organization
-
-

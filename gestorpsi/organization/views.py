@@ -31,14 +31,10 @@ from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.careprofessional.models import Profession, CareProfessional
 from gestorpsi.util.views import get_object_or_None
 
-from gestorpsi.gcm.models import Invoice, INVOICE_STATUS_CHOICES
 from gestorpsi.gcm.models.plan import Plan
 from gestorpsi.gcm.models.payment import PaymentType
 
-from datetime import datetime, timedelta
-from gestorpsi.boleto.functions import gera_boleto_bradesco
-from gestorpsi.boleto.models import BradescoBilletData
-
+from datetime import datetime
 
 @permission_required_with_403('organization.organization_write')
 def professional_responsible_save(request, object, ids, names, subscriptions, organization_subscriptions, professions):
@@ -95,39 +91,6 @@ def form(request):
         'Professions': Profession.objects.all(),
         },
         context_instance=RequestContext(request))
-
-
-@permission_required_with_403('organization.organization_write')
-def make_second_copy(request, invoice):
-    user = request.user
-
-    invoice = Invoice.objects.get(pk=invoice)
-    aux = Invoice.objects.filter(status=1, organization=invoice.organization, due_date__gt=datetime.now()).count()
-    if aux <= 0:
-        inv = Invoice()
-        inv.organization = invoice.organization
-        inv.due_date = datetime.now() + timedelta(days=7)
-        inv.expiry_date = invoice.expiry_date
-        inv.ammount = invoice.ammount
-        inv.discount = invoice.discount
-        inv.status = 1
-        inv.plan = invoice.plan
-        inv.save()
-        
-        invoice.status = 3
-        invoice.save()
-        
-        data = BradescoBilletData.objects.all()[0]
-        billet_url = gera_boleto_bradesco(request.user.id, inv, days=data.default_second_copy_days, second_copy=True)
-        inv.billet_url = billet_url
-        inv.save()
-        aux = True
-        message = 'Second copy details saved successfully'
-    else:
-        message = 'Second copy not generated: there are billets that still requiring payment.'
-        aux = False 
-        
-    return render_to_response('organization/second_copy.html', locals(), context_instance=RequestContext(request))
 
 
 @permission_required_with_403('organization.organization_write')

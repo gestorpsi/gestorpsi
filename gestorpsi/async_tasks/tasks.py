@@ -14,7 +14,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 
 from gestorpsi.address.models import City, Address, Country
-from gestorpsi.boleto.functions import gera_boleto_bradesco
+#from gestorpsi.boleto.functions import gera_boleto_bradesco
 from gestorpsi.document.models import Document, TypeDocument
 from gestorpsi.gcm.models import Plan, Invoice
 from gestorpsi.organization.models import Organization, ProfessionalResponsible, Activitie

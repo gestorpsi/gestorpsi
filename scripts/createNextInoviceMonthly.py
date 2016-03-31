@@ -32,9 +32,8 @@ end = date.today() + timedelta(10) # corret
 
 # main code
 
-# Create next invoice if last was paid
-for x in Invoice.objects.filter(end_date=end, status__gt=0):
-
+# Create next invoice if last was paid and organization is not suspension
+for x in Invoice.objects.filter(end_date=end, status__gt=0, organization__suspension=False):
     """
         contratos
             - seram avisados um mes antes de vencer

@@ -358,7 +358,7 @@
                         {% if not p.is_student %}
                             {{ p.person.name }} {{ p.professionalIdentification.profession.symbol }} {{ p.professionalIdentification.registerNumber }}
                         {% else %}
-                            ({{ p.studentprofile.lecture_class.academic_name }})
+                            {{ p.person.name }} - {{ p.studentprofile.register_number }} ( {{ p.studentprofile.lecture_class.academic_name }} )
                         {% endif %}
                         {% if not forloop.last %},{% endif %}
                     {% endfor %}

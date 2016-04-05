@@ -37,9 +37,18 @@ GNU General Public License for more details.
                 <legend>{% trans "Schedule Details" %}</legend>
                 <label>
                     Intervalo padr&atilde;o para agendamento &nbsp;
-                    <select name="time_slot_schedule" class='medium asm'>
+                    <select name="time_slot_schedule" class='big asm'>
                          {% for k,v in time_slot_schedule %}
                             <option {% ifequal object.time_slot_schedule k %} selected {% endifequal %} value="{{ k }}"/>{{ v }} minutos
+                         {% endfor %}
+                    </select>
+                </label>
+
+                <label>
+                    {% trans "Visualiza&ccedil;&atilde;o padr&atilde;o" %}
+                    <select name="default_schedule_view" class='big asm'>
+                         {% for k,v in default_schedule_view %}
+                            <option {% ifequal object.default_schedule_view k %} selected {% endifequal %} value="{{ k }}"/>{{ v }}
                          {% endfor %}
                     </select>
                 </label>

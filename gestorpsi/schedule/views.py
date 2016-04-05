@@ -39,7 +39,7 @@ from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.schedule.forms import OccurrenceConfirmationForm
 from gestorpsi.device.models import DeviceDetails
-from gestorpsi.organization.models import TIME_SLOT_SCHEDULE
+from gestorpsi.organization.models import TIME_SLOT_SCHEDULE, DEFAULT_SCHEDULE_VIEW
 from gestorpsi.financial.models import Receive
 from gestorpsi.financial.forms import ReceiveFormUpdate, ReceiveFormNew
 from gestorpsi.covenant.models import Covenant
@@ -653,9 +653,21 @@ def _datetime_view(
     )
 
 
+@permission_required_with_403('schedule.schedule_list')
+def schedule_index(request):
+
+    if request.user.get_profile().org_active.default_schedule_view == '0':
+        return http.HttpResponseRedirect('/schedule/diary/')
+
+    if request.user.get_profile().org_active.default_schedule_view == '1':
+        return http.HttpResponseRedirect('/schedule/week/')
+
+    if request.user.get_profile().org_active.default_schedule_view == '2':
+        return http.HttpResponseRedirect('/schedule/events/')
+
 
 @permission_required_with_403('schedule.schedule_list')
-def schedule_index(request, 
+def diary_view(request, 
         year = datetime.now().strftime("%Y"), 
         month = datetime.now().strftime("%m"), 
         day = datetime.now().strftime("%d"), 
@@ -929,7 +941,6 @@ def occurrence_employee_form(request, occurence_id = None, template=None):
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 
 
-
 @permission_required_with_403('schedule.schedule_write')
 def schedule_settings(request):
     """
@@ -940,12 +951,14 @@ def schedule_settings(request):
     object = request.user.get_profile().org_active
 
     if request.POST:
-        messages.success(request, _(u'Configuração da salvo com sucesso'))
+        messages.success(request, _(u'Configuração gravada com sucesso!'))
         object.time_slot_schedule = request.POST.get('time_slot_schedule')
+        object.default_schedule_view = request.POST.get('default_schedule_view')
         object.save()
 
     return render_to_response('schedule/schedule_settings.html', dict(
                 object = object,
                 time_slot_schedule = TIME_SLOT_SCHEDULE,
+                default_schedule_view = DEFAULT_SCHEDULE_VIEW,
                 tab_settings_class = 'active',
             ), context_instance=RequestContext(request) )

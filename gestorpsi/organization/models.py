@@ -178,6 +178,12 @@ class OrganizationManager(models.Manager):
         return super(OrganizationManager, self).get_query_set().filter(active=True, organization__isnull=True)
 
 
+DEFAULT_SCHEDULE_VIEW = ( 
+        ('0',u'Diária'),
+        ('1',u'Semanal'),
+        ('2',u'Eventos'),
+)
+
 TIME_SLOT_SCHEDULE = ( 
             ("30",'30'),
             ("40",'40'),
@@ -249,7 +255,9 @@ class Organization(models.Model):
     default_payment_day.verbose_name = _("Default payment day")
     default_payment_day.help_text= _("The default day in which the billets have to be paid at the most by this organization.")
 
+    # schedule organization settings
     time_slot_schedule = models.CharField(u"Tempo de cada consulta (minutos)", null=False, blank=False, choices=TIME_SLOT_SCHEDULE, max_length=2, default=30)
+    default_schedule_view = models.CharField(u"Vizualização padrao", null=False, blank=False, choices=DEFAULT_SCHEDULE_VIEW, max_length=2, default=0)
     
     objects = OrganizationManager()
 

@@ -31,7 +31,7 @@ urlpatterns = patterns('',
     url(
         r'^diary/$', 
         login_check(diary_view),
-        name='diary-view'
+        name='schedule-diary-view'
     ),
 
     # settings of schedule
@@ -97,7 +97,7 @@ urlpatterns = patterns('',
     url(
         r'^week/$', 
         login_check(week_view),
-        name='swingtime-week'
+        name='schedule-week-view'
     ),
     url(
         r'^week/(\d{4})/(0?[1-9]|1[012])/([0-3]?\d)/$', 

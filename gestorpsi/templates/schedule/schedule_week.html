@@ -53,6 +53,7 @@ GNU General Public License for more details.
                 <legend>{% trans "Room Selection" %}</legend>
                 <label>{% trans "Please, choose one room to book" %}<br />
                     <select name="choose_room" class="big">
+                        <option value="">- - -</option>
                         {% for i in rooms %}
                             <option value="{{ i.pk }}">{{ i.place }} - {{ i }}</option>
                         {% endfor %}

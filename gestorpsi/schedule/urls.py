@@ -44,8 +44,8 @@ urlpatterns = patterns('',
     # index, not default place
      url(
         r'^place/(?P<place>([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}))/$', 
-        login_check(schedule_index), 
-        name='schedule-index'
+        login_check(diary_view), 
+        name='schedule-diary-view'
     ),
     
     # return JSON

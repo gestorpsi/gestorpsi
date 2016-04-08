@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<p class="description">{% trans "This week have" %} <span id="occurrences_total">{{ occurrences_length }}</span> {% trans "occurrences(s)." %}</p>
+<p class="description">{% trans "This week have" %} <span id="occurrences_total">{{ occurrences_length_total }}</span> {% trans "occurrences(s)." %}</p>
 
 <a id="nav_back" class="load_html" element="#schedule_week" href="/schedule/week/{{ previous_week|date:"Y" }}/{{ previous_week|date:"m" }}/{{ previous_week|date:"d" }}/"></a>
 <a id="nav_fwd" class="load_html" element="#schedule_week" href="/schedule/week/{{ next_week|date:"Y" }}/{{ next_week|date:"m" }}/{{ next_week|date:"d" }}/"></a>
@@ -25,63 +25,67 @@ GNU General Public License for more details.
     <h2><span class="date_selected">{% trans "From" %} {{ first_week_day|date:"d" }} {% trans "to" %} {{ last_week_day|date:"d" }} {{ last_week_day|date:"F" }} {% trans "of" %} {{ last_week_day|date:"Y" }} </span></h2>	
 </div>
 
-<table class="zebra schedule_results weekly" border="0" cellspacing="0" cellpadding="0">
+{% for period in schedule %}
 
-        <!-- label day -->
-        <tr class="zebra_1">
-            {% for day in week %}
-                <th>{{ day|date:"d/m D"}}</th>
-            {% endfor %}
-        </tr>
+    <p style="margin-left:21px;">
+    <h3 style="margin-left:21px; margin-right:10px; float:left;">{{ period.0 }}</h3><span style="font-size:11px;">({{ period.1 }} Agendamentos)</span>
+        <hr size=7 style="margin-left:21px;">
+    </p>
 
-        {% if not occurrences_length %}        
-            <tr><td colspan="7" class="no_events" style="height:200px;">{% trans "There is no occurrence on this week" %}</td></tr>
-        {% else %}
+    <table class="zebra schedule_results weekly" border="0" cellspacing="0" cellpadding="0">
 
-        <tr>
-            {% for day in occurrences %}
-            <td class="weekly_occurrences">
-
-                {% for dict in day %}
-                    {% with dict.data as o %}
-
-                    <div class="tag clean place_{{o.room.place.pk}} room_{{o.room.pk}} {% for p in o.event.referral.professional.all %} professional_{{ p.pk }}{%endfor%} service_{{ o.event.referral.service.pk }}" style="background-color:#{{ o.event.referral.service.color }};" room="{{ o.room.pk }}" place="{{ o.room.place.pk }}">
-
-                        {% if dict.is_group %}
-                            <a style="color:#{{ o.event.referral.service.font_color }};" title="{{ o.start_time|date:"H:i" }}hs - {{o.room}} - {{ o.room.place }} - {{ o.event.referral.client.all|join:", "}} - {{ dict.group_name }}" href="/schedule/events/group/{{ dict.group_pk }}/occurrence/{{ o.pk }}/" class="booked" >
-                        {% else %}
-                            <a style="color:#{{ o.event.referral.service.font_color }};" title="{{ o.start_time|date:"H:i" }}hs - {{o.room}} - {{ o.room.place }} - {{ o.event.referral.client.all|join:", "}} - {{ o }}" href="/schedule/events/{{ o.pk }}/confirmation/" class="booked">
-                        {% endif %}
-
-                        <b>{{ o.start_time|date:"H:i" }} - {{ o.room }}</b><br />
-
-                        {% if dict.is_group %}
-                            {{ dict.group_name }}
-                        {% else %}
-                            {{ o.event.referral.client.all|join:", "}}<br>
-                        {% endif %}
-                        &gt;&gt;
-                        {{ o.event.referral }} <br>{{ o.event.referral.professional.all|join:", "}}<br></a>
-
-                    </div>
-                    {% endwith %}
-
+            <!-- label day -->
+            <tr class="zebra_1">
+                {% for day in week %}
+                    <th>{{ day|date:"d/m D"}}</th>
                 {% endfor %}
-            </td>
-            {% endfor %}
-        </tr>
-{% endif %}
+            </tr>
 
-        <tr>
-            {% for day in week %}
+            {% if x %}        
+                <tr><td colspan="7" class="no_events" style="height:10px;">{% trans "Sem agendamentos" %}</td></tr>
+            {% else %}
+                <tr>
+                    {% for day in period.2 %}
+                    <td class="weekly_occurrences">
+
+                        {% for occurrences in day %}
+                            {% with occurrences.data as o %}
+
+                            <div class="tag clean place_{{o.room.place.pk}} room_{{o.room.pk}} {% for p in o.event.referral.professional.all %} professional_{{ p.pk }}{%endfor%} service_{{ o.event.referral.service.pk }}" style="background-color:#{{ o.event.referral.service.color }};" room="{{ o.room.pk }}" place="{{ o.room.place.pk }}">
+
+                                {% if dict.is_group %}
+                                    <a style="color:#{{ o.event.referral.service.font_color }};" title="{{ o.start_time|date:"H:i" }}hs - {{o.room}} - {{ o.room.place }} - {{ o.event.referral.client.all|join:", "}} - {{ dict.group_name }}" href="/schedule/events/group/{{ dict.group_pk }}/occurrence/{{ o.pk }}/" class="booked" >
+                                {% else %}
+                                    <a style="color:#{{ o.event.referral.service.font_color }};" title="{{ o.start_time|date:"H:i" }}hs - {{o.room}} - {{ o.room.place }} - {{ o.event.referral.client.all|join:", "}} - {{ o }}" href="/schedule/events/{{ o.pk }}/confirmation/" class="booked">
+                                {% endif %}
+
+                                <b>{{ o.start_time|date:"H:i" }} - {{ o.room }}</b><br />
+
+                                {% if dict.is_group %}
+                                    {{ dict.group_name }}
+                                {% else %}
+                                    {{ o.event.referral.client.all|join:", "}}<br>
+                                {% endif %}
+                                &gt;&gt;
+                                {{ o.event.referral }} <br>{{ o.event.referral.professional.all|join:", "}}<br></a>
+
+                            </div>
+                            {% endwith %}
+
+                        {% endfor %}
+                    </td>
+                    {% endfor %}
+                </tr>
+            {% endif %}
+
+            <tr>
+                {% for day in week %}
                     <td class="no_events">
                         <a title="{{ day|date:"d/m/Y" }}" href="/schedule/events/add/?dtstart={{ day|date:"Y-m-d" }}T{{ day|date:"H:i:s" }}" class="book form_mini choose_room" display="schedule_room_mini">{% trans "Book on this day" %}</a>
                     </td>
-            {% endfor %}
-        </tr>
-</table>
+                {% endfor %}
+            </tr>
+    </table>
+    <br />
 
-
-
-            
-
+{% endfor %}

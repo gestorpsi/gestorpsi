@@ -236,7 +236,8 @@ div.sidebar_client_schedule {
 .margin_top_fix { margin-top: 45px; }
 
 #schedule_week td {  background:#efefef; }
-#schedule_week td.weekly_occurrences  { vertical-align:top;height: 500px;}
+/*#schedule_week td.weekly_occurrences  { vertical-align:top;height: 500px;}*/
+#schedule_week td.weekly_occurrences  { vertical-align:top;}
 #schedule_week td div { margin-top:0px; border:1px solid white;}
 td.no_events { text-align:center; padding:20px; color: #777;}
 

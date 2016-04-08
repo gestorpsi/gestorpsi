@@ -723,39 +723,74 @@ def week_view_table(request,
     first_week_day = today - timedelta(days=today.weekday())
 
     week = []
-    occurrences = []
-    occurrences_length = 0
+    schedule = []
+    occurrences_length_total = 0 # show resume top page
+
+    '''
+     period of day
+     array format
+             [0] = label
+             [1] = start time hour
+             [2] = start time minute
+             [3] = end time hour
+             [4] = end time minute
+    '''
+    period = []
+    period.append([u'Manhã 00:00 - 12:00',00,00,12,00])   # manha
+    period.append([u'Tarde 12:00 - 18:00',12,00,18,00])   # tarde
+    period.append([U'Noite 18:00 - 24:00',18,00,23,59])   # noite
     
-    for i in range(7):
-        occurrences_daily = []
-        week_day = first_week_day+timedelta(i)
-        week.append(week_day)
-        groups = []
-        for s in schedule_occurrences(request, week_day.strftime('%Y'), week_day.strftime('%m'), week_day.strftime('%d')):
-            if s.is_group():
-                if s.event.referral.group.pk not in groups:
-                    occurrences_daily.append({
-                        'is_group': True,
-                        'group_name': u'%s' % s.event.referral.group,
-                        'group_pk': s.event.referral.group.pk,
+    # for each period
+    for t in period:
+        
+        occurrences_length = 0 # show resume per period
+        day = [] # array of days of week / new day
+        period = [] # a new period
+        period.append(t[0]) # 0 / add label
+        period.append(0) # 1 / total of occurrences of this period
+
+        # week day
+        for i in range(7):
+
+            week_day = first_week_day+timedelta(i)
+
+            if not week_day in week:
+                week.append(week_day)
+
+            # all occurrences of day
+            groups = []
+            occurrence = [] # occurrences of day
+
+            for s in schedule_occurrences(request, week_day.strftime('%Y'), week_day.strftime('%m'), week_day.strftime('%d'), t[1], t[2], t[3], t[4]):
+                if s.is_group():
+                    if s.event.referral.group.pk not in groups:
+                        occurrence.append({
+                            'is_group': True,
+                            'group_name': u'%s' % s.event.referral.group,
+                            'group_pk': s.event.referral.group.pk,
+                            'data': s,
+                        })
+                        groups.append(s.event.referral.group.pk)
+                        
+                else:
+                    occurrence.append({
+                        'is_group': False,
                         'data': s,
                     })
-                    groups.append(s.event.referral.group.pk)
-                    occurrences_length += 1
-                    
-            else:
-                occurrences_daily.append({
-                    'is_group': False,
-                    'data': s,
-                })
-                occurrences_length += 1
-        
-        occurrences.append(occurrences_daily)
+
+                occurrences_length += 1 # show resume top page
+                occurrences_length_total += 1 # total of occurrences of week
+
+            period[1] = occurrences_length # update occurrences counter of period
+
+            day.append(occurrence) # occurrence of day
+            period.append(day) # day of period
+        schedule.append(period) # period of schedule
 
     previous_week = today-timedelta(weeks=1)
     next_week = today+timedelta(weeks=1)
     last_week_day = first_week_day+timedelta(days=6)
-    
+
     return render_to_response('schedule/schedule_week_table.html', locals(), context_instance=RequestContext(request))
 
 
@@ -766,10 +801,17 @@ def today_occurrences(request):
 
 
 
-def schedule_occurrences(request, year = 1, month = 1, day = None):
+def schedule_occurrences(request, year=1, month=1, day=None, st_timeh=00, st_timem=00, ed_timeh=23, ed_timem=59):
+    '''
+        st_timeh = start time hour : integer
+        st_timem = start time minute : integer
+        ed_timeh = end time hour : integer
+        ed_timem = end time minute : integer
+    '''
+
     if day:
-        date_start = datetime.strptime("%s%s%s" % (year, month, day),"%Y%m%d")
-        date_end = date_start+timedelta(days=+1)
+        date_start = datetime.strptime("%s%s%s%s%s" % (year, month, day, st_timeh, st_timem),"%Y%m%d%H%M")
+        date_end = datetime.strptime("%s%s%s%s%s" % (year, month, day, ed_timeh, ed_timem),"%Y%m%d%H%M")
     else:
         date_start = datetime.strptime("%s%s" % (year, month),"%Y%m")
         date_end = date_start+timedelta( days=calendar.monthrange(int(year), int(month))[1] + 0)

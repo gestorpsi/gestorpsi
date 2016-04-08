@@ -724,6 +724,14 @@ def week_view_table(request,
 
     week = []
     schedule = []
+    '''
+    schedule array
+        schedule = [ [period] ]
+            period = [ label-period, occurrence_total , [days-week] ]
+                days-week = [ [monday] , ... , [sunday] ]
+                    monday = [occurrences objects]
+    
+    '''
     occurrences_length_total = 0 # show resume top page
 
     '''

@@ -28,7 +28,7 @@ GNU General Public License for more details.
 {% for period in schedule %}
 
     <p style="margin-left:21px;">
-    <h3 style="margin-left:21px; margin-right:10px; float:left;">{{ period.0 }}</h3><span style="font-size:11px;">({{ period.1 }} Agendamentos)</span>
+    <h3 style="margin-left:21px; margin-right:10px; float:left;">{{ period.0 }}</h3><span style="font-size:11px;">({{ period.1 }} Agendamento{{ period.1|pluralize }})</span>
         <hr size=7 style="margin-left:21px;">
     </p>
 
@@ -41,8 +41,8 @@ GNU General Public License for more details.
                 {% endfor %}
             </tr>
 
-            {% if x %}        
-                <tr><td colspan="7" class="no_events" style="height:10px;">{% trans "Sem agendamentos" %}</td></tr>
+            {% ifequal period.1 0 %}        
+                <tr><td colspan="7" class="no_events" style="height:10px;">{% trans "Sem agendamento" %}</td></tr>
             {% else %}
                 <tr>
                     {% for day in period.2 %}
@@ -76,7 +76,7 @@ GNU General Public License for more details.
                     </td>
                     {% endfor %}
                 </tr>
-            {% endif %}
+            {% endifequal %}
 
             <tr>
                 {% for day in week %}

@@ -1327,7 +1327,7 @@ msgstr "Informe aqui o número de seu CPF"
 
 #: gcm/forms/auth.py:30
 msgid "Address Street"
-msgstr "Logradouro"
+msgstr "Endereço"
 
 #: gcm/forms/auth.py:30
 msgid "Enter your address here"

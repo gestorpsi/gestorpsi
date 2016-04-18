@@ -43,7 +43,6 @@ class AuthenticationRegistrationForm(RegistrationRegistrationForm):
     email = forms.EmailField(label=_('Email'), help_text=_('Your email address'))
     password1 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=_('Password'), help_text=_('Choice one password'))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=_('Password (again)'), help_text=_('Type password again'))
-    username = forms.CharField(label=_('Username'), help_text=_('Choice one unique identifier'))
     organization = forms.CharField(label=_('Organization'), help_text=_('Name of your organization'))
     shortname = forms.CharField(label=_('Short Name'), help_text=_('Shortname of your organization'))
 
@@ -54,7 +53,7 @@ class AuthenticationRegistrationForm(RegistrationRegistrationForm):
                                                                     site=None,
                                                                     send_email=send_email
                                                                     )
-        user.username = user.username.strip().lower()
+        user.username = user.username.strip() # remove all white space
         user.save()         # remove spaces from username and change all to lowercase
         profile = Profile(user=user)
         profile.save()

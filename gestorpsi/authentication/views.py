@@ -60,7 +60,7 @@ def user_authentication(request):
         return render_to_response('registration/login.html', {'form': AuthenticationForm() })
 
     form = AuthenticationForm(data=request.POST)
-    username = request.POST.get('username').strip().lower() # convert to lower string
+    username = request.POST.get('username').strip() # strip to remove all white space
     password = request.POST.get('password')
     
     user = authenticate(username=username, password=password)
@@ -163,102 +163,115 @@ def register(request, success_url=None,
              form_class=RegistrationForm,
              template_name='registration/registration_form.html',
              extra_context=None):
-    
+
     if request.method == 'POST': #the full process of registration is done here
 
         form = form_class(data=request.POST)
+        error_found = False
 
         # remember state and city if form error
         form.fields['city'].initial = request.POST.get('city')
         form.fields['state'].initial = request.POST.get('state')
 
+        # check organization name
         if Organization.objects.filter(short_name__iexact = slugify(request.POST.get('shortname'))):
             error_msg = _(u"Informed organization is already registered. Please choose another name here or login with an existing account")
             form.errors["organization"] = ErrorList([error_msg])
+            error_found = True
 
-        elif request.POST.get('username') != slugify(request.POST.get('username')):
-            error_msg = _(u"Enter a valid username.")
-            form.errors["username"] = ErrorList([error_msg])
+        # check password
+        if not request.POST.get('password1') == request.POST.get('password2'):
+            error_msg = _(u"The confirmation of the new password is wrong")
+            form.errors["password1"] = ErrorList([error_msg])
+            form.errors["password2"] = ErrorList([error_msg])
+            error_found = True
 
-        else:
-            if form.is_valid():
-                form.save(request)
+        # form is valid and no errors found
+        if form.is_valid() and not error_found:
 
-                user = User.objects.get(username__iexact=form.cleaned_data['username'])
-                profile = user.get_profile()
-                person = profile.person
+            form.save(request)
 
-                # active automatic
-                org = Organization.objects.filter(organization__isnull=True).filter(person=person)[0]
-                org.active = True
-                org.save()
-                for p in org.person_set.all():
-                    for rp in p.profile.user.registrationprofile_set.all():
-                        activation_key = rp.activation_key.lower() # Normalize before trying anything with it.
-                        RegistrationProfile.objects.activate_user(activation_key)
+            user = User.objects.get(username__iexact=form.cleaned_data['username'])
+            profile = user.get_profile()
+            person = profile.person
 
-                prof = ProfessionalResponsible()
-                prof.organization = org
-                prof.person = person
-                prof.name = person.name
-                prof.save()
+            # active automatic
+            org = Organization.objects.filter(organization__isnull=True).filter(person=person)[0]
+            org.active = True
+            org.save()
+            for p in org.person_set.all():
+                for rp in p.profile.user.registrationprofile_set.all():
+                    activation_key = rp.activation_key.lower() # Normalize before trying anything with it.
+                    RegistrationProfile.objects.activate_user(activation_key)
 
-                # invoice
-                i = Invoice()
-                i.organization = org
-                i.status = 2
-                i.save()
-                
-                bcc_list = ADMINS_REGISTRATION
+            prof = ProfessionalResponsible()
+            prof.organization = org
+            prof.person = person
+            prof.name = person.name
+            prof.save()
 
-                msg = EmailMessage()
-                msg.subject = u'Nova assinatura em %s' % URL_HOME
-                msg.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar %s/gcm/\n\n' % URL_APP
-                msg.body += u'Organização %s' % org
-                msg.to = bcc_list
-                msg.send()
-                
-                request.session['user_aux_id'] = user.id
+            # invoice
+            i = Invoice()
+            i.organization = org
+            i.status = 2
+            i.save()
+            
+            bcc_list = ADMINS_REGISTRATION
 
-                # message for client
-                user = User.objects.get(id=request.session['user_aux_id'])
-                msg = EmailMessage()
-                msg.subject = u"Assinatura GestorPSI.com.br"
+            msg = EmailMessage()
+            msg.subject = u'Nova assinatura em %s' % URL_HOME
+            msg.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar %s/gcm/\n\n' % URL_APP
+            msg.body += u'Organização %s' % org
+            msg.to = bcc_list
+            msg.send()
+            
+            request.session['user_aux_id'] = user.id
 
-                msg.body = u"Olá, bom dia!\n\n"
-                msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe. Sua conta está pronta para usar! "
-                msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
+            # message for client
+            user = User.objects.get(id=request.session['user_aux_id'])
+            msg = EmailMessage()
+            msg.subject = u"Assinatura GestorPSI.com.br"
 
-                msg.body += u"link funcionalidades: %s/funcionalidades/\n" % URL_HOME
-                msg.body += u"link como usar: %s/como-usar/\n" % URL_HOME
-                msg.body += u"link manual: %s/media/manual.pdf\n" % URL_DEMO
-                msg.body += u"link contato: %s/contato/\n\n" % URL_HOME
-                msg.body += u"Instruções no YouTube: https://www.youtube.com/channel/UC03EiqIuX72q-fi0MfWK8WA\n\n"
+            msg.body = u"Olá, bom dia!\n\n"
+            msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe. Sua conta está pronta para usar! "
+            msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
 
-                msg.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( i.start_date.strftime("%d/%m/%Y"), i.end_date.strftime("%d/%m/%Y") )
-                msg.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % URL_APP
+            msg.body += u"link funcionalidades: %s/funcionalidades/\n" % URL_HOME
+            msg.body += u"link como usar: %s/como-usar/\n" % URL_HOME
+            msg.body += u"link manual: %s/media/manual.pdf\n" % URL_DEMO
+            msg.body += u"link contato: %s/contato/\n\n" % URL_HOME
+            msg.body += u"Instruções no YouTube: https://www.youtube.com/channel/UC03EiqIuX72q-fi0MfWK8WA\n\n"
 
-                msg.body += u"IMPORTANTE: As informações inseridas no sistema podem ser editadas mas não apagadas. Por isso, se for necessário fazer testes com informações fictícias para entender como o sistema funciona, utilize a nossa versão de demonstração: http://demo.gestorpsi.com.br\n\n"
+            msg.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( i.start_date.strftime("%d/%m/%Y"), i.end_date.strftime("%d/%m/%Y") )
+            msg.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % URL_APP
 
-                msg.body += u"Endereço do GestorPSI: %s\n" % URL_APP
-                msg.body += u"Usuário/Login  %s\n" % request.POST.get('username')
-                msg.body += u"Senha  %s\n\n" % request.POST.get('password1')
+            msg.body += u"IMPORTANTE: As informações inseridas no sistema podem ser editadas mas não apagadas. Por isso, se for necessário fazer testes com informações fictícias para entender como o sistema funciona, utilize a nossa versão de demonstração: http://demo.gestorpsi.com.br\n\n"
 
-                msg.body += u"%s" % SIGNATURE
+            msg.body += u"Endereço do GestorPSI: %s\n" % URL_APP
+            msg.body += u"Usuário/Login  %s\n" % request.POST.get('username')
+            msg.body += u"Senha  %s\n\n" % request.POST.get('password1')
 
-                msg.to = [ user.email, ]
-                msg.bcc =  bcc_list
-                msg.send()
-                
-                return HttpResponseRedirect(success_url or reverse('registration-complete'))
+            msg.body += u"%s" % SIGNATURE
+
+            msg.to = [ user.email, ]
+            msg.bcc =  bcc_list
+            msg.send()
+            
+            return HttpResponseRedirect(success_url or reverse('registration-complete'))
+
+    # mount form, new register
     else:
         form = form_class()
     
+    # WHY THIS CODE ???
     if extra_context is None:
         extra_context = {}
+
     context = RequestContext(request)
+
     for key, value in extra_context.items():
         context[key] = callable(value) and value() or value
+
     return render_to_response(
                 template_name,
                 { 'form': form },

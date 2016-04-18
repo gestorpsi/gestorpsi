@@ -97,7 +97,7 @@ def create_user(request):
     if not request.method == 'POST':
         raise Http404
 
-    if User.objects.filter(username=request.POST.get('username').strip().lower()):
+    if User.objects.filter(username=request.POST.get('username').strip()): #.lower()):
         messages.success(request, _('Error adding user <b>%s</b>: Username already exists.') % request.POST.get('username').strip().lower())
         return HttpResponseRedirect('/user/add/?clss=error')
         

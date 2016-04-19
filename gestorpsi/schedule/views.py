@@ -711,9 +711,10 @@ def week_view(request,
 
 
 def week_view_table(request,
-    year = datetime.now().strftime("%Y"), 
-    month = datetime.now().strftime("%m"), 
-    day = datetime.now().strftime("%d"), ):
+        year = datetime.now().strftime("%Y"), 
+        month = datetime.now().strftime("%m"), 
+        day = datetime.now().strftime("%d"), 
+    ):
 
     if not year or not month or not day:
         today = datetime.now()
@@ -727,9 +728,10 @@ def week_view_table(request,
     '''
     schedule array
         schedule = [ [period] ]
-            period = [ label-period, occurrence_total , [days-week] ]
-                days-week = [ [monday] , ... , [sunday] ]
-                    monday = [occurrences objects]
+            period = [ [period_list], occurrence_total , [days-week] ]
+                occurrence_total = total of occurrence of period; integer
+                    days-week = [ [monday] , ... , [sunday] ]
+                        monday = [occurrences objects]
     
     '''
     occurrences_length_total = 0 # show resume top page
@@ -742,19 +744,20 @@ def week_view_table(request,
              [2] = start time minute
              [3] = end time hour
              [4] = end time minute
+             [5] = color
     '''
-    period = []
-    period.append([u'Manhã 00:00 - 12:00',00,00,12,00])   # manha
-    period.append([u'Tarde 12:00 - 18:00',12,00,18,00])   # tarde
-    period.append([U'Noite 18:00 - 24:00',18,00,23,59])   # noite
+    period_list = []
+    period_list.append([u'Manhã 00:00 - 12:00',00,00,12,00,'green'])   # manha
+    period_list.append([u'Tarde 12:00 - 18:00',12,00,18,00,'orange'])  # tarde
+    period_list.append([U'Noite 18:00 - 24:00',18,00,23,59,'blue'])    # noite
     
     # for each period
-    for t in period:
-        
+    for t in period_list:
+
         occurrences_length = 0 # show resume per period
         day = [] # array of days of week / new day
         period = [] # a new period
-        period.append(t[0]) # 0 / add label
+        period.append(t) # 0 / add label; time; color;
         period.append(0) # 1 / total of occurrences of this period
 
         # week day

@@ -25,19 +25,30 @@ GNU General Public License for more details.
     <h2><span class="date_selected">{% trans "From" %} {{ first_week_day|date:"d" }} {% trans "to" %} {{ last_week_day|date:"d" }} {{ last_week_day|date:"F" }} {% trans "of" %} {{ last_week_day|date:"Y" }} </span></h2>	
 </div>
 
+<br />
+<table class="schedule_results weekly" border="0" cellspacing="0" cellpadding="0">
+    <tr></tr>
+    <!-- label day -->
+    <tr class="zebra_1">
+        {% for day in week %}
+            <th>{{ day|date:"d / m l"}}</th>
+        {% endfor %}
+    </tr>
+</table>
+
+
 {% for period in schedule %}
 
-    <p style="margin-left:21px;">
-    <h3 style="margin-left:21px; margin-right:10px; float:left;">{{ period.0 }}</h3><span style="font-size:11px;">({{ period.1 }} Agendamento{{ period.1|pluralize }})</span>
-        <hr size=7 style="margin-left:21px;">
-    </p>
+    <br />
+    <h3 style="margin-left:21px; margin-right:10px; display:inline;">{{ period.0.0 }}</h3><span style="font-size:11px;">({{ period.1 }} Agendamento{{ period.1|pluralize }})</span>
 
     <table class="zebra schedule_results weekly" border="0" cellspacing="0" cellpadding="0">
 
-            <!-- label day -->
+            <!-- label day align -->
             <tr class="zebra_1">
                 {% for day in week %}
-                    <th>{{ day|date:"d/m D"}}</th>
+                {% comment %}<th style="font-size:9px;">{{ day|date:"d/m D"}}</th>{% endcomment %}
+                    <th style="background-color:{{ period.0.5 }};"></th>
                 {% endfor %}
             </tr>
 
@@ -86,6 +97,4 @@ GNU General Public License for more details.
                 {% endfor %}
             </tr>
     </table>
-    <br />
-
 {% endfor %}

@@ -80,7 +80,20 @@ GNU General Public License for more details.
         </fieldset>
     </form>
 
-    <p class="ff_ok">{% trans "If you don't have an account, you can" %} <a href="/accounts/register/">{% trans "sign up" %}</a> {% trans "for one" %}.</p>
-    <p class="ff_ok"><a href="/accounts/password/reset/">{% trans "Forgot Password?" %}</a></p>
+    <br />
+
+    <h2>
+        <a href="http://demo.gestorpsi.com.br" style="a:hover {text-decoration:none};">
+            {% trans "Quero testar sem registrar" %}&nbsp;<br />
+            Demonstra&ccedil;&atilde;o Sistema GestorPSI
+        </a>
+    </h2>
+    <hr size="5px">
+
+    <h2><a href="/accounts/register/">{% trans "Quero me cadastrar" %}</a></h2>
+    <hr size="5px">
+
+    <h2><a href="/accounts/password/reset/">{% trans "Esqueci minha senha" %}</a></h2>
+    <hr size="5px">
 
 {% endblock %}

@@ -22,6 +22,12 @@ GNU General Public License for more details.
 
 {% block content %}
 
+    <h1 style="text-align:justify;">
+        Essa vers&atilde;o de demonstra&ccedil;&atilde;o do sistema tem todas as funcionalidades e caracter&iacute;sticas da vers&atilde;o de produ&ccedil;&atilde;o.
+        Os dados inseridos s&atilde;o fict&iacute;cios e servem para testar e experimentar o funcionamento do sistema.
+    </h1>
+    <br />
+
     {% comment %}
     <div class="browser_alert" style="text-align:justify; background:#ececec none repeat scroll 0 0; padding:25px; display:none;" >
         <p style="font-weight: bold; font-size:15px;">
@@ -73,8 +79,8 @@ GNU General Public License for more details.
                     </ul>
                 {% endif %}
 
-                <label>{% trans "Username" %}<br /><input id="id_username" type="text" name="username" maxlength="30" required ></label>
-                <label>{% trans "Password" %}<br /><input type="password" name="password" id="id_password" required></label>
+                <label>{% trans "Username" %}<br /><input id="id_username" type="text" name="username" maxlength="30" required value="demo" ></label>
+                <label>{% trans "Password" %}<br /><input type="password" name="password" id="id_password" required value="demo"></label>
                 <input type="hidden" name="next" value="{{ next }}" />
                 <input type="submit" value="{% trans "Log in" %}" class="btn"/>
             </div>

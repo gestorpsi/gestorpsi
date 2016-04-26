@@ -55,6 +55,17 @@ GNU General Public License for more details.
 
             </fieldset>
             <div style='height: 10px;'></div>
+
+            <fieldset class="organization">
+                <legend>{% trans "Configurar hor&aacute;rio do local" %}</legend>
+                    {% for x in places_list %}
+                        <p style="font-size:12px;">
+                            <a href="/place/{{ x.id }}" target="_blank">{{ x }}</a>
+                        </p>
+                    {% endfor %}
+            </fieldset>
+            <div style='height: 10px;'></div>
+
         </div>
 
         <!-- save buttom -->

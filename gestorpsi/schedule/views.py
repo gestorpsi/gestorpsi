@@ -1014,4 +1014,5 @@ def schedule_settings(request):
                 time_slot_schedule = TIME_SLOT_SCHEDULE,
                 default_schedule_view = DEFAULT_SCHEDULE_VIEW,
                 tab_settings_class = 'active',
+                places_list = Place.objects.active().filter(organization=request.user.get_profile().org_active.id),
             ), context_instance=RequestContext(request) )

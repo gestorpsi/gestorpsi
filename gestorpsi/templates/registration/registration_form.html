@@ -23,19 +23,7 @@
   
 {% block content %}
 
-        <h2>
-            <a href="http://demo.gestorpsi.com.br" style="a:hover {text-decoration:none};">
-                {% trans "Quero testar sem registrar" %}&nbsp;<br />
-                Demonstra&ccedil;&atilde;o Sistema GestorPSI
-            </a>
-        </h2>
-        <hr size="5px">
-
-        <h2><a href="/accounts/login/">{% trans "Eu tenho cadastro" %}</a></h2>
-        <hr size="5px">
-
-        <h2><a href="/accounts/password/reset/">{% trans "Esqueci minha senha" %}</a></h2>
-        <hr size="5px">
+        {% include "tags/extra_links.html" %}
 
         <br />
         <h2>{% trans "New account" %} </h2>

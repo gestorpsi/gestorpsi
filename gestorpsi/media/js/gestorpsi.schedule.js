@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 var schedule_options = {
     dateFormat: 'yymmdd',
+    changeYear: true,
     'onSelect': function(date) {
         $("div#mini_calendar").hide();
         return updateGrid('/schedule/occurrences/' + date.substr(0,4) + '/' + date.substr(4,2) + '/' + date.substr(6,2) + '/place/' + $('input[name="current_place_id"]').val() );

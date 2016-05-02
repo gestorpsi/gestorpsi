@@ -129,7 +129,7 @@ $(function() {
      * bind the datepicker
      */
 
-    $('.report_main [name=date_start], .report_main [name=date_end]').datepicker({ dateFormat: 'dd/mm/yy' });
+    $('.report_main [name=date_start], .report_main [name=date_end]').datepicker({ dateFormat: 'dd/mm/yy', changeYear:true });
 
     /**
      * bind filter form

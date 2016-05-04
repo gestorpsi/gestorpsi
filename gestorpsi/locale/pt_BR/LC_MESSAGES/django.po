@@ -4348,6 +4348,13 @@ msgstr "Ocupação"
 msgid "Workplace"
 msgstr "Local de trabalho"
 
+#: templates/careprofessional/student_form.html
+msgid "Workplace available"
+msgstr "Local de trabalho disponível"
+
+msgid "Workplace selected"
+msgstr "Local de trabalho selecionado"
+
 #: templates/client/client_print.html:225
 msgid "Working Hours"
 msgstr "Horário de trabalho"

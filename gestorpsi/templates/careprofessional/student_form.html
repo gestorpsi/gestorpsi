@@ -38,102 +38,97 @@ GNU General Public License for more details.
 
 <h2 id="title_addressbook" style="display:none"></h2>
 
-{% if object.id %}
-	<h2 class="title_student">{{ object.person.name }}</h2>
-{% else %}
-	<h2 class="title_student">{% trans "Adding New Student" %}</h2>
-	<p class="description">{% trans "Inform the student details then click on Save button" %}</p>
-{% endif %}
+    {% if object.id %}
+        <h2 class="title_student">{{ object.person.name }}</h2>
+    {% else %}
+        <h2 class="title_student">{% trans "Adding New Student" %}</h2>
+        <p class="description">{% trans "Inform the student details then click on Save button" %}</p>
+    {% endif %}
+
+    <h2 id="title_contacts" style="display:none"></h2>
+    <h2 id="title_myoffice" style="display:none"></h2>
+
+    <form action="/careprofessional/student/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="form_people collapsable form_careprofessional">	
+        <div class="main_area">
+
+            <!-- <a href="" id="help">&nbsp;</a> -->
+            <!-- DataTypes form menu -->
+            
+            {% include "meta/people_indentification.html" %}
+            
+            <fieldset>
+                <legend>{% trans "Student Profile" %}</legend>
+                <label>{{ student_form.lecture_class.label }}<br />
+                    {{ student_form.lecture_class }}
+                </label>
+                <label>{{ student_form.register_number.label }}<br />
+                    {{ student_form.register_number }}
+                </label>
+                <label>{{ student_form.period.label }}<br />
+                    {{ student_form.period }}
+                </label>
+                <label>{{ student_form.class_area.label }}<br />
+                    {{ student_form.class_area }}
+                </label>
+                <label>{{ student_form.class_duration.label }}<br />
+                    {{ student_form.class_duration }}
+                </label>
+            </fieldset>
+
+            <!-- workplaces select -->
+            <label style="margin-right:135px;" for="id_professional">
+                {% trans "Workplace available" %} | <a class="form_mini" display="place_mini">{% trans "Add new" %}</a>
+            </label>
+            <label for="id_professional">{% trans "Workplace selected" %}</label>
+            <div style="clear:both; margin-left:10px;">
+                <select name="professional_workplace" multiple="multiple" class="select multiple extrabig asm" id="id_professional_workplace">
+                    {% for l in WorkPlacesTypes %}
+                        <option value="{{ l.id }}"{% for w in object.professionalProfile.workplace.all %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- service select -->
+            <label style="margin-right:253px;" for="id_professional">{% trans "Services available" %}</label>
+            <label for="id_professional">{% trans "Services selected" %}</label>
+            <div style="clear:both; margin-left:10px;">
+                <select name="professional_service" multiple="multiple" class="select multiple extrabig asm" id="id_professional_service">
+                    {% for l in ServiceTypes %}
+                        <option value="{{ l.id }}"{% for sc in object.prof_services.all %}{% ifequal sc.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- mount combox -->
+            <script>
+                $('select#id_professional_service').multiSelect();
+                $('select#id_professional_workplace').multiSelect();
+            </script>
+                                    
+            {% include "meta/phones.html" %}
+            {% include "meta/people_profile.html" %}
+            {% include "meta/people_documents.html" %}
+            {% include "meta/addressbook.html" %}
+            {% include "meta/internet.html" %}
 
 
-</p>
-<h2 id="title_contacts" style="display:none"></h2>
-<h2 id="title_myoffice" style="display:none"></h2>
+            <fieldset class="comment_form">
+                <legend>{% trans "Comments" %}</legend>
+                <label>{% trans "Comments" %}<br />
+                    <textarea name="comments" class="extrabig">{{ object.person.comments }}</textarea>
+                </label>
+            </fieldset>
 
+            <br />	
+        </div>
 
-<form action="/careprofessional/student/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="form_people collapsable form_careprofessional">	
-<div class="main_area">
+        {% include "tags/careprofessional_sidebar.html" %}
 
-	<!-- <a href="" id="help">&nbsp;</a> -->
-	<!-- DataTypes form menu -->
-	
-	{% include "meta/people_indentification.html" %}
-	
-    <fieldset>
-        <legend>{% trans "Student Profile" %}</legend>
-        <label>{{ student_form.lecture_class.label }}<br />
-            {{ student_form.lecture_class }}
-        </label>
-        <label>{{ student_form.register_number.label }}<br />
-            {{ student_form.register_number }}
-        </label>
-        <label>{{ student_form.period.label }}<br />
-            {{ student_form.period }}
-        </label>
-        <label>{{ student_form.class_area.label }}<br />
-            {{ student_form.class_area }}
-        </label>
-        <label>{{ student_form.class_duration.label }}<br />
-            {{ student_form.class_duration }}
-        </label>
-    </fieldset>
+    </form>
 
-    <!-- workplaces select -->
-    <label style="margin-right:141px;" for="id_professional">
-        {% trans "Workplace available" %} | <a class="form_mini" display="place_mini">{% trans "Add new" %}</a>
-    </label>
-    <label for="id_professional">{% trans "Workplace selected" %}</label>
-    <div style="clear:both; margin-left:10px;">
-        <select name="professional_workplace" multiple="multiple" class="select multiple extrabig asm" id="id_professional_workplace">
-            {% for l in WorkPlacesTypes %}
-                <option value="{{ l.id }}"{% for w in object.professionalProfile.workplace.all %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
-            {% endfor %}
-        </select>
-    </div>
+    {% include "tags/upload.html" %}
+    {% include "tags/place_mini.html" %}
 
-    <!-- service select -->
-    <label style="margin-right:253px;" for="id_professional">{% trans "Services available" %}</label>
-    <label for="id_professional">{% trans "Services selected" %}</label>
-    <div style="clear:both; margin-left:10px;">
-        <select name="professional_service" multiple="multiple" class="select multiple extrabig asm" id="id_professional_service">
-            {% for l in ServiceTypes %}
-                <option value="{{ l.id }}"{% for sc in object.prof_services.all %}{% ifequal sc.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <!-- mount combox -->
-    <script>
-        $('select#id_professional_service').multiSelect();
-        $('select#id_professional_workplace').multiSelect();
-    </script>
-                            
-    {% include "meta/phones.html" %}
-	{% include "meta/people_profile.html" %}
-    {% include "meta/people_documents.html" %}
-	{% include "meta/addressbook.html" %}
-	{% include "meta/internet.html" %}
-
-
-<fieldset class="comment_form">
-        <legend>{% trans "Comments" %}</legend>
-        <label>{% trans "Comments" %}<br />
-                <textarea name="comments" class="extrabig">{{ object.person.comments }}</textarea>
-        </label>
-
-</fieldset>
-
-
-<br />	
-</div>
-
-{% include "tags/careprofessional_sidebar.html" %}
-
-</form>
-
-{% include "tags/upload.html" %}
-{% include "tags/place_mini.html" %}
-
-{% include "careprofessional/careprofessional_form_dialog.html" %}
+    {% include "careprofessional/careprofessional_form_dialog.html" %}
 
 {% endblock %}

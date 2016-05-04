@@ -36,127 +36,110 @@ GNU General Public License for more details.
 
 {% block core %}
 
-{% if object.id %}
-	<h2 class="title_places title">{{ object.label }}</h2>
-	<p class="description"><br />	
-{% else %}
-	<h2 class="title_places title">{% trans "Adding New Place" %}</h2>
-	<p class="description">{% trans "Inform the place details then click on Save button" %}</p>
-{% endif %}
+    {% if object.id %}
+        <h2 class="title_places title">{{ object.label }}</h2>
+        <p class="description"><br /></p>
+    {% else %}
+        <h2 class="title_places title">{% trans "Adding New Place" %}</h2>
+        <p class="description">{% trans "Inform the place details then click on Save button" %}</p>
+    {% endif %}
+
+    <form action="/place/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="collapsable form_place">	
+        <div class="main_area">
+
+            <!-- <a href="" id="help">&nbsp;</a> -->
+            <div id="place_form">
+
+                <!-- Places must to have an Identification -->
+                <fieldset id="fieldset_place_identification">
+                    <legend>{% trans "Place Identification" %}</legend>
+                        <label>{% trans "Identification" %}<br />
+                        <input type="text" maxlength="80" name="label" class="big tabtitle" value="{{ object.label }}" id="id_label" />
+                        </label>
+                        <label>{% trans "Place Type" %}<br />
+                        <select name="place_type" class="medium">
+                            {% for pt in PlaceTypes %}
+                            <option value="{{ pt.id }}"{% ifequal object.place_type.id pt.id %} selected{% endifequal %}>{{ pt }}</option>
+                            {% endfor %}
+                        </select>
+                            
+                        </label>
+                </fieldset>
+
+                <!-- horario atendimento -->
+                <fieldset>
+                    <legend>{% trans "Hor&aacute;rio atendimento" %}</legend>
+
+                        <label>{% trans "First hour" %}
+                            <select name="hour_start" class="normal">
+                                {% for h in Hours %}
+                                    <option value="{{ h.1 }}"{% ifequal object.hour_start h.1 %} selected{% endifequal %}>{{ h.0 }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+
+                        <label>{% trans "End last hour" %}
+                            <select name="hour_end" class="normal">
+                                {% for h in Hours %}
+                                    <option value="{{ h.1 }}"{% ifequal object.hour_end h.1 %} selected{% endifequal %}>{{ h.0 }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                </fieldset>
 
 
-</p>
-
-<form action="/place/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="collapsable form_place">	
-<div class="main_area">
-
-	<!-- <a href="" id="help">&nbsp;</a> -->
-
-<div id="place_form">
-
-	<!--
-	Places must to have an Identification 
-	-->
+                <!-- phones -->
+                {% include "meta/phones.html" %}
+                
+                <!-- place have only one address -->
+                {% include "meta/addressbook.html" %}
+                
+                <!-- Places must to have a status -->
 	
-	<fieldset id="fieldset_place_identification">
-		<legend>{% trans "Place Identification" %}</legend>
-			<label>{% trans "Identification" %}<br />
-			<input type="text" maxlength="80" name="label" class="big tabtitle" value="{{ object.label }}" id="id_label" />
-			</label>
-			<label>{% trans "Place Type" %}<br />
-			<select name="place_type" class="medium">
-				{% for pt in PlaceTypes %}
-				<option value="{{ pt.id }}"{% ifequal object.place_type.id pt.id %} selected{% endifequal %}>{{ pt }}</option>
-				{% endfor %}
-			</select>
-				
-			</label>
-	</fieldset>
+            </div><!-- close place form div -->
 
-    <!-- horario atendimento -->
-    <fieldset>
-		<legend>{% trans "Hor&aacute;rio atendimento" %}</legend>
-
-			<label>{% trans "First hour" %}
-                <select name="hour_start" class="normal">
-                    {% for h in Hours %}
-                        <option value="{{ h.1 }}"{% ifequal object.hour_start h.1 %} selected{% endifequal %}>{{ h.0 }}</option>
-                    {% endfor %}
-                </select>
-            </label>
-
-			<label>{% trans "End last hour" %}
-                <select name="hour_end" class="normal">
-                    {% for h in Hours %}
-                        <option value="{{ h.1 }}"{% ifequal object.hour_end h.1 %} selected{% endifequal %}>{{ h.0 }}</option>
-                    {% endfor %}
-                </select>
-			</label>
-	</fieldset>
-
-
-	<!--
-	phones
-	-->
-
-    {% include "meta/phones.html" %}
 	
-	<!--
-	place have only one address
-	-->
-		
-	{% include "meta/addressbook.html" %}
-	
-	<!--
-	Places must to have a status
-	-->
-	
-</div>
-	
-	<fieldset id="fieldset_room_identification" style="display:none">
-	<legend>{% trans "Room Details" %}</legend>
-	
-		{% if not rooms %}
-			{% include "tags/room.html" %}
-		{% else %}
-		{% for room in rooms %}
-			{% include "tags/room.html" %}
-		{% endfor %}
-		{% endif %}
+            <fieldset id="fieldset_room_identification" style="display:none">
+                <legend>{% trans "Room Details" %}</legend>
+            
+                {% if not rooms %}
+                    {% include "tags/room.html" %}
+                {% else %}
+                {% for room in rooms %}
+                    {% include "tags/room.html" %}
+                {% endfor %}
+                {% endif %}
 
-		<div id="room_more"></div>
+                <div id="room_more"></div>
+            </fieldset>
 
-	</fieldset>
+            <fieldset class="comment_form">
+                <legend>{% trans "Comments" %}</legend>
+                <label>{% trans "Comments" %}<br />
+                    <textarea name="comments" class="extrabig">{{ object.comments }}</textarea>
+                </label>
+            </fieldset>
 
-<fieldset class="comment_form">
-        <legend>{% trans "Comments" %}</legend>
-        <label>{% trans "Comments" %}<br />
-                <textarea name="comments" class="extrabig">{{ object.comments }}</textarea>
-        </label>
-</fieldset>
+            <br />	
+        </div><!-- close form div -->
 
-<br />	
-</div>
-
-{% if perms.place.place_write %}
-    <div id="sidebar" class="sidebar_save">
-        <div class="bg_blue">
-            <input type="hidden" name="place" value="{{ object.id }}" />
-            {% include "tags/save.html" %}
-        </div>    
-    </div>
-{% endif %}
-
-{% if perms.place.place_write %}
-    <div id="sidebar" class="sidebar_client">
-        {% if object.id %}
-            {% include "tags/place_sidebar.html" %}
+        {% if perms.place.place_write %}
+            <div id="sidebar" class="sidebar_save">
+                <div class="bg_blue">
+                    <input type="hidden" name="place" value="{{ object.id }}" />
+                    {% include "tags/save.html" %}
+                </div>    
+            </div>
         {% endif %}
-    </div>
-{% endif %}
 
-</form>
+        {% if perms.place.place_write %}
+            <div id="sidebar" class="sidebar_client">
+                {% if object.id %}
+                    {% include "tags/place_sidebar.html" %}
+                {% endif %}
+            </div>
+        {% endif %}
+
+    </form>
 
 {% endblock %}
-
-

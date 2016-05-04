@@ -589,6 +589,7 @@ $(function() {
      });
      
      $('a.form_mini').live('click', function() {
+
           $('div.form_mini').hide(); // hide all mini form
           var form_mini = $('div.'+$(this).attr('display')).effect('slide', {'direction':'up'});
           

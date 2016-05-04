@@ -27,7 +27,7 @@ from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType, City
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.document.models import TypeDocument, Issuer
-from gestorpsi.place.models import Place, PlaceType
+from gestorpsi.place.models import Place, PlaceType, HOURS
 from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, ReferralDischargeReason, ReferralDischarge
 from gestorpsi.util.decorators import permission_required_with_403
@@ -113,6 +113,7 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
                                     'ServiceTypes': ServiceTypes,
                                     'Cities': cities,
                                     'ReferralDischargeReason': None if not object.have_referral_charged else ReferralDischargeReason.objects.all(),
+                                    'hours': HOURS,
                                     },
                               context_instance=RequestContext(request)
                               )

@@ -17,25 +17,43 @@ GNU General Public License for more details.
 {% load i18n %}
 
 <div class="form_mini place_mini">
-<form action="/place/save/" method="post">
-	<fieldset>
-	<legend>{% trans "Adding new Place" %}</legend>
-	<label>{% trans "Place Identification" %}<br />
-	<input type="text" maxlength="80" name="label" class="big tabtitle" value="" />
-	</label>
-	<label>{% trans "Place Type" %}<br />
-	<select name="place_type">
-		{% for pt in PlaceTypes %}
-		<option value="{{ pt.id }}"{% ifequal object.place_type.id pt.id %} selected{% endifequal %}>{{ pt }}</option>
-		{% endfor %}
-	</select>
-	<input type="hidden" name="visible" value="on" />
-	<input type="submit" name="submit" value="{% trans "Add" %}" class="mini" />
-	<input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />	
-	</label>
-	</fieldset>
-</form>
+    <form action="/place/save/" method="post">
+        <fieldset>
+            <legend>{% trans "Adding new Place" %}</legend>
+                <label>{% trans "Place Identification" %}<br />
+                    <input type="text" maxlength="80" name="label" class="big tabtitle" required />
+                </label>
+
+                <!-- horario atendimento -->
+                <label>{% trans "First hour" %}<br />
+                    <select name="hour_start" class="normal">
+                        {% for h in hours %}
+                            <option value="{{ h.1 }}"{% ifequal '08,00' h.1 %} selected{% endifequal %}>{{ h.0 }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <label>{% trans "End last hour" %}<br />
+                    <select name="hour_end" class="normal">
+                        {% for h in hours %}
+                            <option value="{{ h.1 }}"{% ifequal '19,00' h.1 %} selected{% endifequal %}>{{ h.0 }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <label>{% trans "Place Type" %}<br />
+                    <select name="place_type">
+                        {% for pt in PlaceTypes %}
+                            <option value="{{ pt.id }}"{% ifequal object.place_type.id pt.id %} selected{% endifequal %}>{{ pt }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <label><br />
+                    <input type="hidden" name="visible" value="on" />
+                    <input type="submit" name="submit" value="{% trans "Add" %}" class="mini" />
+                    <input type="submit" name="cancel" value="{% trans "Cancel" %}" class="mini cancel" />	
+                </label>
+        </fieldset>
+    </form>
 </div>
-
-
-

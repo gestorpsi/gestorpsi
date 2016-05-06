@@ -28,10 +28,7 @@ GNU General Public License for more details.
 
 </div> 
 
-<!--
-People Personal Identification Form	
--->
-
+<!-- People Personal Identification Form -->
 <fieldset class="fieldset_personal_identification">
         <legend>{% trans "Personal Identification" %}</legend>
                 <label>{% trans "Name" %}<br />
@@ -41,5 +38,3 @@ People Personal Identification Form
                 <input type="text" name="nickname" maxlength="50"  class="big" value="{% ifnotequal object.person.nickname None %}{{ object.person.nickname }}{% endifnotequal %}" id="id_nickname" />
                 </label>
 </fieldset>
-
-

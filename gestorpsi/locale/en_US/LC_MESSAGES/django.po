@@ -75,7 +75,7 @@ msgstr ""
 #: templates/contact/contact_organization_form.html:61
 #: templates/contact/contact_professional_form.html:77
 #: templates/device/device_type_form.html:57
-#: templates/meta/people_indentification.html:37
+#: templates/meta/people_identification.html:37
 #: templates/service/service_form.html:89
 #: templates/tags/address_book_organization_mini.html:24
 #: templates/tags/address_book_professional_mini.html:35
@@ -2230,7 +2230,7 @@ msgid "Test sheet"
 msgstr ""
 
 #: referral/models.py:63 templates/meta/company_indentification.html:21
-#: templates/meta/people_indentification.html:24
+#: templates/meta/people_identification.html:24
 msgid "Photo"
 msgstr ""
 
@@ -2643,13 +2643,13 @@ msgid "Subscriptions to professional %s"
 msgstr ""
 
 #: report/models.py:986 templates/client/client_print_record_data_tag.html:8
-#: templates/meta/people_indentification.html:21
+#: templates/meta/people_identification.html:21
 #: templates/tags/people_identification.html:30
 msgid "Male"
 msgstr ""
 
 #: report/models.py:987 templates/client/client_print_record_data_tag.html:7
-#: templates/meta/people_indentification.html:22
+#: templates/meta/people_identification.html:22
 #: templates/tags/people_identification.html:33
 msgid "Female"
 msgstr ""
@@ -5524,7 +5524,7 @@ msgstr ""
 
 #: templates/messages/view.html:37
 #: templates/meta/company_indentification.html:23
-#: templates/meta/people_indentification.html:26
+#: templates/meta/people_identification.html:26
 #: templates/organization/organization_form.html:70
 #: templates/tags/address.html:99 templates/tags/document.html:59
 #: templates/tags/email.html:36 templates/tags/im.html:36
@@ -5602,12 +5602,12 @@ msgstr ""
 msgid "Add Document"
 msgstr ""
 
-#: templates/meta/people_indentification.html:36
+#: templates/meta/people_identification.html:36
 #: templates/users/users_form.html:57
 msgid "Personal Identification"
 msgstr ""
 
-#: templates/meta/people_indentification.html:40
+#: templates/meta/people_identification.html:40
 msgid "Nickname"
 msgstr ""
 

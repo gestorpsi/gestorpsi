@@ -59,7 +59,7 @@ GNU General Public License for more details.
                     <label>{% trans "Plan" %}<br />
                         <select name="prefered_plan" class="extrabig prefered_plan">
                         {% for p in plans %}
-                            <option value="{{ p.id }}" {% ifequal obj.prefered_plan_id p.id %}selected{% endifequal %} >{{ p.name }} / R$ {{ p.value }} por {{ p.duration }} m&ecirc;s{{ p.duration|pluralize:"es" }}</option>
+                            <option value="{{ p.id }}" {% ifequal obj.prefered_plan_id p.id %}selected{% else %}disabled="true"{% endifequal %} >{{ p.name }} / R$ {{ p.value }} por {{ p.duration }} m&ecirc;s{{ p.duration|pluralize:"es" }}</option>
                         {% endfor %}
                         </select>
                     </label>
@@ -78,7 +78,7 @@ GNU General Public License for more details.
                     <label>{% trans "Forma de pagamento" %}<br />
                         <select name="payment_type" class="extrabig payment_type">
                             {% for p in payment_type %}
-                                <option value="{{ p.id }}" {% ifequal p obj.payment_type %}selected="selected"{% endifequal %} >{{ p.get_name_display }}</option>
+                                <option value="{{ p.id }}" {% ifequal p obj.payment_type %}selected="selected"{% else %}disabled="true"{% endifequal %} >{{ p.get_name_display }}</option>
                             {% endfor %}
                         </select>
 

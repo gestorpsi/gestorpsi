@@ -194,13 +194,13 @@ class Person(models.Model):
         else:
             return ''        
 
-    def _age(self):
+    def age(self):
         if not self.birthDate:
             return None
 
         today = datetime.today()
         return (today.year - self.birthDate.year) - int((today.month, today.day) < (self.birthDate.month, self.birthDate.day))
-    age = property(_age)
+    age = property(age)
 
     def is_company(self):
         return True if hasattr(self, 'company') else False

@@ -144,37 +144,72 @@ GNU General Public License for more details.
 
 
 <div class="main_area">
-<h3>{% trans "My clients in queue" %}</h3>
-<div class="contact">
-  {% if queues %}
-    <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-        <thead>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for queue in queues %}
-                <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
-                    <td class="title">
-                        <a href="/client/{{ queue.client.id }}/referral/{{ queue.referral.id }}/" title="{{ queue.client }}">{{ queue.client }}</a><br />
-                        {% trans "Priority" %} {{ queue.get_priority_display }}<br />
-                        {% trans "Date in" %} {{  queue.date_in|date:"d/m/Y H:i" }}
-                    </td>
-                    <td><span class="phone"></span><br />
-                    <span class="email"></span></td>
-                    <td>{{ queue.referral.service }}
-                    </td>
+    <h3>{% trans "My clients in queue" %}</h3>
+    <div class="contact">
+      {% if queues %}
+        <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-  {% else %}
-     <p>{% trans "There is no queue" %}</p>
-  {% endif %}
+            </thead>
+            <tbody>
+                {% for queue in queues %}
+                    <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
+                        <td class="title">
+                            <a href="/client/{{ queue.client.id }}/referral/{{ queue.referral.id }}/" title="{{ queue.client }}">{{ queue.client }}</a><br />
+                            {% trans "Priority" %} {{ queue.get_priority_display }}<br />
+                            {% trans "Date in" %} {{  queue.date_in|date:"d/m/Y H:i" }}
+                        </td>
+                        <td><span class="phone"></span><br />
+                        <span class="email"></span></td>
+                        <td>{{ queue.referral.service }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      {% else %}
+         <p>{% trans "There is no queue" %}</p>
+      {% endif %}
+    </div>
 </div>
+
+
+<div class="main_area">
+    <h3>{% trans "Aniversariantes de" %} {{ month_string }} | 
+        {% for x in month_list %}
+            <a href="{% url frontend-month forloop.counter %}">{{ x }}</a> | 
+        {% endfor %}
+    </h3>
+
+    <div class="contact">
+      {% if birthdate_list %}
+        <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in birthdate_list %}
+                    <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
+                        <td class="title">
+                            {{ p.name }}<br />
+                            {{ p.birthDate }} | {{ p.age }} anos
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      {% else %}
+         <p>{% trans "There is no queue" %}</p>
+      {% endif %}
+    </div>
 </div>
 
 {% endblock %}

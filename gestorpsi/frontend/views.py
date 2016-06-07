@@ -22,10 +22,11 @@ from gestorpsi.client.models import Client
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.schedule.views import schedule_occurrences
 from gestorpsi.referral.models import Queue
+from gestorpsi.person.models import Person
 
 from gestorpsi.settings import ADMIN_URL
 
-def start(request):
+def start(request, month=False):
 
     # admin do not have profile
     try:
@@ -34,6 +35,20 @@ def start(request):
         return HttpResponseRedirect(ADMIN_URL)
 
     date = datetime.now()
+
+    # current month
+    month_string = datetime.now().strftime("%B")
+    month_list = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']
+
+    if month:
+        month_string = month_list[int(month)-1]
+
+    birthdate_list = [] 
+    # birthDate of month, order by day
+    for d in range(1,32):
+        for p in Person.objects.filter(active=True, birthDate__month=month, birthDate__day=d ).order_by('name'):
+            if not p in birthdate_list:
+                birthdate_list.append(p)
 
     #code for testing the charging system
     #from gestorpsi.async_tasks.tasks import check_and_charge

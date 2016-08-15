@@ -419,6 +419,10 @@ div.main_area h1 {
 
 #msg_area a.close_link { float:right; margin-top:5px;}
 
+.invoice_alert_message { 
+    font-weight: bold;
+}
+
 #msg_area.success, .msg_area.success {
         background:#5CB85C;
         color: white;
@@ -1704,11 +1708,6 @@ form fieldset li {
 
     float: left;
     padding-left:5px;
-}
-
-div.read-only {
-        background:#FFCCCC;
-        padding: 10px;
 }
 
 div.overflow ul li { clear:both; display:block; padding:0px; margin:0px !important; }

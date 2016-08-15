@@ -31,7 +31,6 @@ from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util.first_capitalized import first_capitalized
 
 from gestorpsi.gcm.models.plan import Plan
-from gestorpsi.gcm.models.invoice import Invoice
 from gestorpsi.gcm.models.payment import PaymentType
 
 class ProfessionalResponsible(models.Model):
@@ -390,6 +389,48 @@ class Organization(models.Model):
     def services(self):
         return self.service_set.filter(active=True)
 
+
+    '''
+        show alert message to org become read only
+        return integer, number of days to become read only
+            messagem level:
+                1 : information : days > 2 and days < 8
+                2 : error/danger  days <= 2
+                    if 2 = False : out of range days / dont show message
+                3 : error/dange 
+                    limit date to pay is today!
+    '''
+    def get_alert_to_readonly__(self):
+
+        # last current invoice
+        i = self.invoice_set.filter( start_date__lte=date.today(), end_date__gte=date.today() )[0]
+        days = (i.end_date-(date.today())).days
+
+        """
+            check negative days, -5
+            if days = -10
+                org become read only by script, run everyday.
+            Invoice is overdue!
+        """
+
+        r = [False]*2
+        # 0 : days to read only
+        # 1 : message level
+
+        if not days > 7 :
+
+            r[0] = days
+
+            if days <= 2:
+                r[1] = 2
+            else:
+                r[1] = 1
+
+            # last check, limit is today
+            if days == 0:
+                r[1] = 3
+
+        return r
 
 
     '''

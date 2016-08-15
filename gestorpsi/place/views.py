@@ -259,7 +259,7 @@ def place_order(request, object_id = None):
             occurence_list_html = ''
             for i in object.occurrences():
                 occurence_list_html += u'<li><a href="/schedule/events/%s/confirmation/">%s - %s</a></li>' % (i.pk, i, i.event.referral)
-                messages.success(request, (_('You can not disable a place with upcomming occurrences <ul>%s</ul>') % occurence_list_html))
+                messages.error(request, (_('You can not disable a place with upcomming occurrences <ul>%s</ul>') % occurence_list_html))
                 return HttpResponseRedirect('/place/%s/' % object.id)
         else:
             object.active = False
@@ -279,7 +279,7 @@ def room_order(request, object_id = None):
             occurence_list_html = ''
             for i in object.occurrences():
                 occurence_list_html += u'<li><a href="/schedule/events/%s/confirmation/">%s - %s</a></li>' % (i.pk, i, i.event.referral)
-            messages.success(request, (_('You can not disable a room with upcomming occurrences <ul>%s</ul>') % occurence_list_html))
+            messages.error(request, (_('You can not disable a room with upcomming occurrences <ul>%s</ul>') % occurence_list_html))
             return HttpResponseRedirect('/place/room/%s/' % object.id)
         else:
             object.active = False

@@ -26,7 +26,7 @@ from gestorpsi.person.models import Person
 
 from gestorpsi.settings import ADMIN_URL
 
-def start(request, month=False):
+def start(request):
 
     # admin do not have profile
     try:
@@ -37,16 +37,22 @@ def start(request, month=False):
     date = datetime.now()
 
     # current month
-    month_string = datetime.now().strftime("%B")
+    month = (datetime.now().month) # integer
+    month_string = datetime.now().strftime("%B").capitalize # string
     month_list = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']
+    active=True
 
-    if month:
-        month_string = month_list[int(month)-1]
+    if request.POST:
+        month = int(request.POST.get('month_filter')) # integer
+        month_string  = month_list[int(month)-1]
+
+        active_filter = int(request.POST.get('active_filter')) # integer
+        active=True if active_filter == 1 else False
 
     birthdate_list = [] 
     # birthDate of month, order by day
     for d in range(1,32):
-        for p in Person.objects.filter(active=True, birthDate__month=month, birthDate__day=d ).order_by('name'):
+        for p in Person.objects.filter(client__active=active, birthDate__month=month, birthDate__day=d, organization=request.user.get_profile().org_active ).order_by('name'):
             if not p in birthdate_list:
                 birthdate_list.append(p)
 
@@ -76,5 +82,3 @@ def start(request, month=False):
         return HttpResponseRedirect('/schedule/events/')
 
     raise Http404
-
-

@@ -86,7 +86,7 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
         ServiceTypes = Service.objects.filter( active=True, organization=request.user.get_profile().org_active)
 
     if not object.active:
-        messages.success(request,  _('This professional is not enabled.'))
+        messages.info(request,  _('This professional is not enabled.'))
 
     return render_to_response(template_name, {
                                     'clss':request.GET.get('clss'),

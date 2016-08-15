@@ -8,14 +8,14 @@
     {% endif %} 
     
     {% if 'success' in m.tags %}
-        <div id='msg_area' class="msg_area_top alert">
+        <div id='msg_area' class="msg_area_top success">
             <strong>{{ m|safe }}</strong>
             <a class="close_link"><img src="/media/img/close.gif" /></a>
         </div>
     {% endif %}
 
     {% if 'info' in m.tags %}
-        <div id='msg_area' class="msg_area_top alert">
+        <div id='msg_area' class="msg_area_top info">
             <strong>{{ m|safe }}</strong>
             <a class="close_link"><img src="/media/img/close.gif" /></a>
         </div>

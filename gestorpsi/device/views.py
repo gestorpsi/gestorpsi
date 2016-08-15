@@ -220,7 +220,7 @@ def order(request, object_id=None):
     if object.active == True:
         upcoming_occurrences = object.scheduleoccurrence_set.filter(end_time__gt=datetime.now()).exclude(occurrenceconfirmation__presence=4).exclude(occurrenceconfirmation__presence=3)
         if len(upcoming_occurrences):
-            messages.success(request, _('Sorry, you can not disable a device with upcoming occurrence(s). Total upcoming occurrences %s' % len(upcoming_occurrences)))
+            messages.error(request, _('Sorry, you can not disable a device with upcoming occurrence(s). Total upcoming occurrences %s' % len(upcoming_occurrences)))
             return HttpResponseRedirect('/device/%s/?clss=error' % (object.id))
         else:
             object.active = False

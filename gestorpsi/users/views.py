@@ -94,12 +94,13 @@ def add(request):
 
 @permission_required_with_403('users.users_write')
 def create_user(request):
+
     if not request.method == 'POST':
         raise Http404
 
     if User.objects.filter(username=request.POST.get('username').strip()): #.lower()):
-        messages.success(request, _('Error adding user <b>%s</b>: Username already exists.') % request.POST.get('username').strip().lower())
-        return HttpResponseRedirect('/user/add/?clss=error')
+        messages.error(request, _('Error adding user <b>%s</b>: Username already exists.') % request.POST.get('username').strip().lower())
+        return HttpResponseRedirect('/user/add/')
         
     person = get_object_or_404(Person, pk=request.POST.get('id_person'), organization=request.user.get_profile().org_active)
     organization = request.user.get_profile().org_active
@@ -110,8 +111,8 @@ def create_user(request):
     permissions = request.POST.getlist('perms')
 
     if not password == pwd_conf:
-        messages.success(request, _('Error: Supplied passwords are differents.'))
-        return HttpResponseRedirect('/user/add/?clss=error')
+        messages.erro(request, _('Error: Supplied passwords are differents.'))
+        return HttpResponseRedirect('/user/add/')
     
     site_url = "http://%s" % get_current_site(request).domain if not request.is_secure else "http://%s" % get_current_site(request).domain
     user = RegistrationProfile.objects.create_inactive_user(username, email, password, site_url)
@@ -247,7 +248,7 @@ def order(request, profile_id = None):
 def delete(request, profile_id = None):
     object = Profile.objects.get(pk = profile_id, person__organization=request.user.get_profile().org_active)
     if request.user.get_profile() == object:
-        messages.success(request, ('Sorry, you can not delete yourself!'))
+        messages.error(request, ('Sorry, you can not delete yourself!'))
     else:
         object.user.delete()
         messages.success(request, ('%s' % (_('User removed successfully'))))

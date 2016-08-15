@@ -416,15 +416,19 @@ div.main_area h1 {
 #core #msg_area, #core .msg_area { margin:20px;}
 #core #msg_area, .main_area .msg_area, .main_area #msg_area { text-align:left; font-size: 12px; padding: 15px;}
 .main_area .msg_area.error { border: 2px solid #FF0000; }
-#core #msg_area, .main_area #msg_area.alert,.main_area .msg_area.alert {border: 2px solid #FFFF00; }
 
 #msg_area a.close_link { float:right; margin-top:5px;}
-#msg_area.alert, #helping, .msg_area.alert {
-        background:green;
+
+#msg_area.success, .msg_area.success {
+        background:#5CB85C;
+        color: white;
+}
+#msg_area.info, .msg_area.info {
+        background:#F0AD4E;
         color: white;
 }
 #msg_area.error, .msg_area.error {
-        background:red;
+        background:#D9534F;
         color: white;
 }
 

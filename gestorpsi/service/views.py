@@ -239,7 +239,6 @@ def form(request, object_id=None):
         'Professions': Profession.objects.all(),
         'area': selected_area,
         'form_area': form_area,
-        'clss':request.GET.get('clss'),
         'client_list': _service_clients(request, object),
         'queue_list': _queue_list(request,object),
         'can_list_groups': False if not len(_group_list(request, object)) else True,
@@ -373,11 +372,10 @@ def order(request, object_id=None):
 
             object.save(force_update = True)
         else:
-            messages.success(request, _('You can not disable a service with clients in the queue'))
-            url += '?clss=error'
+            messages.error(request, _('You can not disable a service with clients in the queue'))
     else:
-            messages.success(request, _('You can not disable a service with clients registered in the referral'))
-            url += '?clss=error'
+            messages.error(request, _('You can not disable a service with clients registered in the referral'))
+
     return HttpResponseRedirect(url % object.id)
 
 @permission_required_with_403('service.service_write')

@@ -943,7 +943,7 @@ def occurrence_family_form(request, occurence_id = None, template=None):
 
     if request.POST:
         if not request.POST.getlist('family_members'):
-            messages.success(request, _('No member family selected'))
+            messages.error(request, _('No member family selected'))
             return render_to_response(template, locals(), context_instance=RequestContext(request))
         
         if not hasattr(occurrence, 'occurrencefamily'):
@@ -973,7 +973,7 @@ def occurrence_employee_form(request, occurence_id = None, template=None):
 
     if request.POST:
         if not request.POST.getlist('company_employees'):
-            messages.success(request, _('No company employees selected'))
+            messages.error(request, _('No company employees selected'))
             return render_to_response(template, locals(), context_instance=RequestContext(request))
         
         if not hasattr(occurrence, 'occurrenceemployees'):
@@ -1001,12 +1001,18 @@ def schedule_settings(request):
         Save schedule settings, slot time, format display.
     """
 
+    # organization
     object = request.user.get_profile().org_active
 
     if request.POST:
-        messages.success(request, _(u'Configuração gravada com sucesso!'))
-        object.time_slot_schedule = request.POST.get('time_slot_schedule')
+
         object.default_schedule_view = request.POST.get('default_schedule_view')
+        messages.success(request, _(u'Configuração gravada com sucesso!'))
+
+        if not object.time_slot_schedule == request.POST.get('time_slot_schedule'):
+            object.time_slot_schedule = request.POST.get('time_slot_schedule')
+            messages.info(request, _(u'Com a alteração do intervalo, algumas consultas podem não aparecer na agenda devido a nova grade de horário.'))
+
         object.save()
 
     return render_to_response('schedule/schedule_settings.html', dict(

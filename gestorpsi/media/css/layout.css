@@ -1128,17 +1128,7 @@ hr {
 .search_header_aditional { padding-left:0px; margin-bottom:25px; margin-top:10px }
 .search_header_aditional select { background-color:#fff; border: 2px solid #ccc; padding:6px; color:#444; width:100%}
 div.schedule #search_header {
-        padding-left: 90px;
-}
-
-#nav_back, #nav_fwd {
-        position: absolute;
-        left: 10px;
-        top: 170px;
-        z-index: 3;
-}
-#nav_fwd {
-        left: 60px;
+        padding-left: 105px;
 }
 
 .capital_letter {

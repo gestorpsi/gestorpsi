@@ -22,9 +22,8 @@ GNU General Public License for more details.
     vertical-align: text-bottom;
 }
 #nav_back {
-	padding: 32px 40px 12px 8px;
-    /*margin-bottom: -20px;*/
 	background: url(/media/img/arrow_back.png) no-repeat 0 0;
+    margin-left: 15px;
 }
 #nav_back.disable {background: url(/media/img/arrow_back_disable.png)}
 #nav_back:hover { 
@@ -32,13 +31,21 @@ GNU General Public License for more details.
 	text-decoration: none; 
 }
 #nav_fwd {
-	padding: 32px 36px 12px 6px;
 	background: url(/media/img/arrow_fwd.png) no-repeat 0 0; 
+    margin-left: 15px;
 }
 #nav_fwd.disable {background: url(/media/img/arrow_fwd_disable.png) no-repeat;}
 #nav_fwd:hover {
 	background: url(/media/img/arrow_fwd_on.png) no-repeat 0 0;
 	text-decoration: none; 
+}
+
+#nav_back, #nav_fwd {
+    margin-top:9px;
+    padding: 25px 25px 25px 25px;
+    float:left;
+    position: relative;
+    z-index: 10;
 }
 
 table.schedule_results.daily th, table.schedule_results.weekly th {

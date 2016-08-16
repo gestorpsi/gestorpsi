@@ -133,7 +133,6 @@ def form(request, object_id= None):
                                                           'device_type': Device.objects.filter(organization=request.user.get_profile().org_active),
                                                           'places': Place.objects.filter(organization=request.user.get_profile().org_active.id),
                                                           'PROFESSIONAL_AREAS': Profession.objects.all(), 
-                                                          'clss':request.GET.get('clss'),
                                                           },
                                                           context_instance=RequestContext(request))
 
@@ -221,7 +220,7 @@ def order(request, object_id=None):
         upcoming_occurrences = object.scheduleoccurrence_set.filter(end_time__gt=datetime.now()).exclude(occurrenceconfirmation__presence=4).exclude(occurrenceconfirmation__presence=3)
         if len(upcoming_occurrences):
             messages.error(request, _('Sorry, you can not disable a device with upcoming occurrence(s). Total upcoming occurrences %s' % len(upcoming_occurrences)))
-            return HttpResponseRedirect('/device/%s/?clss=error' % (object.id))
+            return HttpResponseRedirect('/device/%s/' % (object.id))
         else:
             object.active = False
     else:

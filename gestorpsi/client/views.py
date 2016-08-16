@@ -164,7 +164,6 @@ def home(request, object_id=None):
                                         'referrals_discharged': referrals_discharged,
                                         'service_subscribers': Service.objects.filter(referral__client = object).distinct().count(),
                                         'care_delivered': c,
-                    			'clss':request.GET.get('clss'),
                                         },
                                         context_instance=RequestContext(request)
                             )
@@ -387,7 +386,6 @@ def form(request, object_id=''):
                                 'Relations': Relation.objects.all(),
                                 'profile': profile,
                                 'groups': groups,
-                                'clss': request.GET.get('clss'),
                                 'company_form': company_form,
                                 'cnae': cnae,
                                },
@@ -659,7 +657,7 @@ def referral_save(request, object_id = None, referral_id = None):
                 url = '/client/%s/referral/%s/'
                 msg = _('Referral saved successfully')
             else:
-                url = '/client/%s/referral/%s/?clss=error'
+                url = '/client/%s/referral/%s/'
                 msg = _('Service is deactive. Impossible register a referral.')
         else:
             return render_to_response('client/client_referral_form.html', locals(), context_instance=RequestContext(request))
@@ -679,7 +677,7 @@ def referral_discharge_form(request, object_id = None, referral_id = None, disch
 
     if referral.on_queue():
         messages.error(request, _('Sorry, you can not discharge a queued referral. Remove it from queue first before to continue'))
-        return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
+        return HttpResponseRedirect('/client/%s/referral/%s/' % (object.id, referral.id))
 
     instance = None
 
@@ -719,7 +717,7 @@ def referral_discharge_form(request, object_id = None, referral_id = None, disch
 
     else:
         messages.info(request, _('Registered have hour in the schedule'))
-        return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
+        return HttpResponseRedirect('/client/%s/referral/%s/' % (object.id, referral.id))
 
 @permission_required_with_403('referral.referral_list')
 def referral_list(request, object_id = None, discharged = None):
@@ -924,7 +922,6 @@ def order(request, object_id = ''):
             messages.success(request, _('User deactivated successfully'))
         else:
             messages.error(request, _('Sorry, you can not deactivate a client with registered referral'))
-            url += '?clss=error'
         
     return HttpResponseRedirect(url % object.id)
 
@@ -946,7 +943,7 @@ def schedule_daily(
 
     if referral.on_queue():
         messages.error(request, _('Sorry, you can not book a queued client. Remove it first from queue before continue'))
-        return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (request.GET.get('client'), referral.id))
+        return HttpResponseRedirect('/client/%s/referral/%s/' % (request.GET.get('client'), referral.id))
     
     if Place.objects.filter( organization=request.user.get_profile().org_active, place_type__id=1 ):
         place = Place.objects.filter( organization=request.user.get_profile().org_active, place_type__id=1 )[0] # place type = matriz
@@ -1037,11 +1034,11 @@ def referral_queue(request, object_id = '',  referral_id = ''):
 
     if referral.on_queue():
         messages.error(request, _('Error adding to queue! Referral is already queued'))
-        return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
+        return HttpResponseRedirect('/client/%s/referral/%s/' % (object.id, referral.id))
 
     if referral.upcoming_occurrences():
         messages.error(request, _('Error adding to queue! Referral have upcoming occurrences'))
-        return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
+        return HttpResponseRedirect('/client/%s/referral/%s/' % (object.id, referral.id))
 
     form=QueueForm()
     return render_to_response("client/client_referral_queue.html", locals(), context_instance=RequestContext(request))
@@ -1058,11 +1055,11 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
 
     if referral.on_queue():
         messages.error(request, _('Error adding to queue! Referral is already queued'))
-        return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
+        return HttpResponseRedirect('/client/%s/referral/%s/' % (object.id, referral.id))
 
     if referral.upcoming_occurrences():
         messages.error(request, _('Subscript in the queue not is possible. Referral have upcoming occurrences'))
-        return HttpResponseRedirect('/client/%s/referral/%s/?clss=error' % (object.id, referral.id))
+        return HttpResponseRedirect('/client/%s/referral/%s/' % (object.id, referral.id))
 
     form = QueueForm(request.POST)
 

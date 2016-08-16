@@ -65,8 +65,6 @@ GNU General Public License for more details.
         <script>
             google.charts.load('current', {'packages':['corechart']});
         </script>
-
-            
     {% else %}
         <script type="text/javascript" src="/media/js/gestorpsi.browser.js"></script>
     {% endif %}
@@ -101,152 +99,143 @@ GNU General Public License for more details.
         <!--[if IE 7]>
         <link href="/media/css/main_ie7.css" rel="stylesheet" type="text/css" />
         <![endif]-->
-        
     </head>
 
     <body>
 
-    <!-- message for signature -->
-    {% if user.is_authenticated %} 
-        <!-- is active -->
-        {% if user.profile.org_active.active %}
-            <!-- show alert for invoice -->
-            {% if user.profile.org_active.get_alert_to_readonly__.1 %}
+        <!-- signature alert message -->
+        {% if user.is_authenticated %} 
+            <!-- is active -->
+            {% if user.profile.org_active.active %}
+                <!-- show alert for invoice -->
+                {% if user.profile.org_active.get_alert_to_readonly__.1 %}
 
-                {% ifequal user.profile.org_active.get_alert_to_readonly__.1 1 %}
-                    <!-- warning -->
-                    <div class="msg_area info invoice_alert_message">
-                        Organiza&ccedil;&atilde;o vai passar para modo APENAS-LEITURA em {{ user.profile.org_active.get_alert_to_readonly__.0 }} dias.
-                {% endifequal %}
+                    {% ifequal user.profile.org_active.get_alert_to_readonly__.1 1 %}
+                        <!-- warning -->
+                        <div class="msg_area info invoice_alert_message">
+                            Sua assinatura vence em {{ user.profile.org_active.get_alert_to_readonly__.0 }} dia{{ user.profile.org_active.get_alert_to_readonly__.0|pluralize }}.
+                    {% endifequal %}
 
-                {% ifequal user.profile.org_active.get_alert_to_readonly__.1 2 %}
-                    <!-- error/danger -->
-                    <div class="msg_area error invoice_alert_message">
-                        Sua assinatura vence em {{ user.profile.org_active.get_alert_to_readonly__.0 }} dia{{ user.profile.org_active.get_alert_to_readonly__.0|pluralize }}.
-                {% endifequal %}
+                    {% ifequal user.profile.org_active.get_alert_to_readonly__.1 2 %}
+                        <!-- error/danger -->
+                        <div class="msg_area error invoice_alert_message">
+                            Sua assinatura vence em {{ user.profile.org_active.get_alert_to_readonly__.0 }} dia{{ user.profile.org_active.get_alert_to_readonly__.0|pluralize }}.
+                    {% endifequal %}
 
-                {% ifequal user.profile.org_active.get_alert_to_readonly__.1 3 %}
-                    <!-- error/danger -->
-                    <div class="msg_area error invoice_alert_message">
-                        Sua assinatura vence HOJE!
-                {% endifequal %}
+                    {% ifequal user.profile.org_active.get_alert_to_readonly__.1 3 %}
+                        <!-- error/danger -->
+                        <div class="msg_area error invoice_alert_message">
+                            Sua assinatura vence HOJE!
+                    {% endifequal %}
 
-                <!-- close message and div -->
-                Verifique o pagamento da sua <a href='/organization/signature/'>assinatura</a>.
+                    <!-- close message and div -->
+                    Verifique o pagamento da sua <a href='/organization/signature/'>assinatura</a>.
+                    </div>
+
+                {% endif %}
+            <!-- is not active -->
+            {% else %}
+                <div class="msg_area error">
+                   {% trans "Organization running is READ ONLY MODE. Data can not be writed. For questions about please use the" %} <a href="/support/ticket/form/">{% trans "support form" %}</a>
+                   Verifique o pagamento da sua <a href='/organization/signature/'>assinatura</a>
                 </div>
-
             {% endif %}
-        <!-- is not active -->
-        {% else %}
-            <div class="msg_area error">
-               {% trans "Organization running is READ ONLY MODE. Data can not be writed. For questions about please use the" %} <a href="/support/ticket/form/">{% trans "support form" %}</a>
-               Verifique o pagamento da sua <a href='/organization/signature/'>assinatura</a>
+        {% endif %}
+
+        {% include "tags/message.html" %}
+
+        <a name="top"></a>
+        <div id="over" style="display:none;"></div>
+        <div id="disable_menu" style="display:none"></div>
+        <div id="loading" style="display:none">&nbsp;</div>
+
+        <div id="bar">
+            <h1>[GestorPsi]</h1>
+            {% if user.is_authenticated %}
+                <ul>
+                    <li><a href="/profile/" id="profile" class="main_menu" display="form" title="{{ profile.person.name }}">{% trans "My record" %}</a></li>
+                    |
+                    <li><a href="/media/manual.pdf" class="main_menu">{% trans "Help" %}</a></li>
+                    |
+                    <li><a href="/support/ticket/form/" class="support ajaxable">{% trans "Support" %}</a></li>
+                    |<li><a href="/accounts/logout" class="logout">{% trans "Quit" %}</a></li>
+                </ul>
+            {% endif %}
+        </div>
+
+        {% if user.is_authenticated %}
+            <div id="menu_log">
+                <ul>
+                    <!-- <li><a href="#email">{% trans "email" %}</a></li>| -->
+                    <li id="logged"><small><b>{{ user.username }}</b> {% trans "at" %} <b>{{ user.profile.org_active.short_name }}</b></small></li>
+                </ul>
+            </div>
+
+            <div id="logotype">
+            <!-- {{ MEDIA_URL }}img/organization/{{ profile.org_active.id }}/.thumb/{{ profile.org_active.photo }} -->
+            <!-- <img src="/media/img/generic_photo.gif" width="71" height="83" /> -->
+            {% if user.profile.org_active.photo %}
+                <img src="{{ MEDIA_URL }}img/organization/{{ user.profile.org_active.id }}/.thumb/{{ user.profile.org_active.photo }}" width="71" height="83" />
+            {% else %}
+                <img src="/media/img/generic_photo.gif" width="71" height="83" />
+            {% endif %}
+
+                <span>
+                    <b>{{ user.profile.org_active.trade_name }}</b><br />
+                    {{ user.profile.org_active.get_first_address|safe }}<br />
+                    {{ user.profile.org_active.get_first_phone }}
+                </span>
+            </div>
+
+            <div id="menus">
+                <div id="main_menu">
+                    <ul>
+                        {% if user.get_profile.person.is_client %}
+                            <li><a id="start" class="main_menu {% block menu_client_start %}{% endblock %}" href="/frontend/">{% trans "start" %}</a></li>
+                            <li><a id="schedule" class="main_menu {% block menu_client_referral %}{% endblock %}" href="/profile/client/referral/">{% trans "My Referrals" %}</a></li>
+                            <li><a id="customers" class="main_menu {% block menu_client_profile %}{% endblock %}" href="/profile/">{% trans "My profile" %}</a></li>
+                            {# <li><a id="schedule" class="main_menu {% block menu_client_schedule %}{% endblock %}" href="/schedule/">{% trans "calendar" %}</a></li> #}
+                        {% else %}
+                            <li><a id="start" class="main_menu {% block menu_start %}{% endblock %}" href="/frontend/">{% trans "start" %}</a></li>
+                            {% if perms.schedule.schedule_list %}<li><a id="schedule" class="main_menu {% block menu_schedule %}{% endblock %}" href="/schedule/">{% trans "calendar" %}</a></li>{% endif %}
+                            {% if perms.client.client_list %}<li><a id="customers" class="main_menu {% block menu_client %}{% endblock %}" href="/client/">{% trans "clients" %}</a></li>{% endif %}
+                            {% if perms.contact.contact_list %}<li><a id="contacts" class="main_menu {% block menu_contact %}{% endblock %}"  href="/contact/">{% trans "contacts" %}</a></li>{% endif %}
+                            {% if perms.report.report_list %}<li><a id="report" class="main_menu {% block menu_report %}{% endblock %}"  href="/report/">{% trans "Reports" %}</a></li>{% endif %}
+                            <li><a id="myoffice" class="main_menu notajax vertical {% block menu_myoffice %}{% endblock %}">{% if not user.profile.org_active.short_name %}{% trans "Configurations" %}{% else %}{{ user.profile.org_active.short_name }}{% endif %}{% block vertical_menu %}{% endblock %}</a>
+                                <ul style="display:none" class="myoffice">
+                                    {% if perms.organization.organization_read %}<li><a id="organization" href="/organization/">{% trans "My Organization" %}</a></li>{% endif %}
+                                    {% if perms.organization.organization_read %}<li><a id="payment" href="/organization/signature/">{% trans "Assinatura" %}</a></li>{% endif %}
+                                    {% if perms.organization.organization_read %}<li><a id="covenant" href="/covenant/">{% trans "Conv&ecirc;nios" %}</a></li>{% endif %}
+                                    {% if perms.place.place_list %}<li><a id="places" href="/place/" display="list">{% trans "Places" %}</a></li>{% endif %}
+                                    {% if perms.place.place_list %}<li><a id="rooms" href="/place/room/" display="list">{% trans "Rooms" %}</a></li>{% endif %}
+                                    {% if perms.device.device_list %}<li><a id="devices" href="/device/" display="list">{% trans "Equipments" %}</a></li>{% endif %}
+                                    {% if perms.service.service_list %}<li><a id="services" href="/service/" display="list">{% trans "Services" %}</a></li>{% endif %}
+                                    {% if perms.careprofessional.careprofessional_list %}<li><a id="careprofessional" href="/careprofessional/" display="list">{% trans "Professionals" %}</a></li>{% endif %}
+                                    {% if perms.careprofessional.careprofessional_list %}<li><a id="student" href="/careprofessional/student/" display="list">{% trans "Students" %}</a></li>{% endif %}
+                                    {% if perms.employee.employee_list %}<li><a id="employees" href="/employee/" display="list">{% trans "Employees" %}</a></li>{% endif %}
+                                    {% if perms.users.users_list %}<li><a id="users" href="/user/" display="list">{% trans "Users" %}</a></li>{% endif %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div id="sub_menu">
+                    {% block submenu %}{% endblock %}
+                </div>
             </div>
         {% endif %}
-    {% endif %}
 
-    {% comment %}
-    <!-- message for signature -->
-    {% if user.is_authenticated and not user.profile.org_active.active %}
-        <div class="read-only">
-           {% trans "Organization running is READ ONLY MODE. Data can not be writed. For questions about please use the" %} <a href="/support/ticket/form/">{% trans "support form" %}</a>
-           Verifique o pagamento da sua <a href='/organization/signature/'>assinatura</a>
+        {% block registration %}{% endblock %}
+
+        <div id="content">
+            <div id="core">
+                {% block core %}{% endblock %}
+            </div>
         </div>
-    {% endif %}
-    {% endcomment %}
 
-
-    {% include "tags/message.html" %}
-
-    <a name="top"></a>
-    <div id="over" style="display:none;"></div>
-    <div id="disable_menu" style="display:none"></div>
-    <div id="loading" style="display:none">&nbsp;</div>
-
-    <div id="bar">
-        <h1>[GestorPsi]</h1>
-        {% if user.is_authenticated %}
-            <ul>
-                <li><a href="/profile/" id="profile" class="main_menu" display="form" title="{{ profile.person.name }}">{% trans "My record" %}</a></li>
-                |
-                <li><a href="/media/manual.pdf" class="main_menu">{% trans "Help" %}</a></li>
-                |
-                <li><a href="/support/ticket/form/" class="support ajaxable">{% trans "Support" %}</a></li>
-                |<li><a href="/accounts/logout" class="logout">{% trans "Quit" %}</a></li>
-            </ul>
-        {% endif %}
-    </div>
-
-{% if user.is_authenticated %}
-	<div id="menu_log">
-		<ul>
-            <!-- <li><a href="#email">{% trans "email" %}</a></li>| -->
-            <li id="logged"><small><b>{{ user.username }}</b> {% trans "at" %} <b>{{ user.profile.org_active.short_name }}</b></small></li>
-		</ul>
-	</div>
-
-    <div id="logotype">
-    <!-- {{ MEDIA_URL }}img/organization/{{ profile.org_active.id }}/.thumb/{{ profile.org_active.photo }} -->
-    <!-- <img src="/media/img/generic_photo.gif" width="71" height="83" /> -->
-    {% if user.profile.org_active.photo %}
-        <img src="{{ MEDIA_URL }}img/organization/{{ user.profile.org_active.id }}/.thumb/{{ user.profile.org_active.photo }}" width="71" height="83" />
-    {% else %}
-        <img src="/media/img/generic_photo.gif" width="71" height="83" />
-    {% endif %}
-
-        <span>
-            <b>{{ user.profile.org_active.trade_name }}</b><br />
-            {{ user.profile.org_active.get_first_address|safe }}<br />
-            {{ user.profile.org_active.get_first_phone }}
-        </span>
-    </div>
-
-	<div id="menus">
-        <div id="main_menu">
-            <ul>
-                {% if user.get_profile.person.is_client %}
-                    <li><a id="start" class="main_menu {% block menu_client_start %}{% endblock %}" href="/frontend/">{% trans "start" %}</a></li>
-                    <li><a id="schedule" class="main_menu {% block menu_client_referral %}{% endblock %}" href="/profile/client/referral/">{% trans "My Referrals" %}</a></li>
-                    <li><a id="customers" class="main_menu {% block menu_client_profile %}{% endblock %}" href="/profile/">{% trans "My profile" %}</a></li>
-                    {# <li><a id="schedule" class="main_menu {% block menu_client_schedule %}{% endblock %}" href="/schedule/">{% trans "calendar" %}</a></li> #}
-                {% else %}
-                    <li><a id="start" class="main_menu {% block menu_start %}{% endblock %}" href="/frontend/">{% trans "start" %}</a></li>
-                    {% if perms.schedule.schedule_list %}<li><a id="schedule" class="main_menu {% block menu_schedule %}{% endblock %}" href="/schedule/">{% trans "calendar" %}</a></li>{% endif %}
-                    {% if perms.client.client_list %}<li><a id="customers" class="main_menu {% block menu_client %}{% endblock %}" href="/client/">{% trans "clients" %}</a></li>{% endif %}
-                    {% if perms.contact.contact_list %}<li><a id="contacts" class="main_menu {% block menu_contact %}{% endblock %}"  href="/contact/">{% trans "contacts" %}</a></li>{% endif %}
-                    {% if perms.report.report_list %}<li><a id="report" class="main_menu {% block menu_report %}{% endblock %}"  href="/report/">{% trans "Reports" %}</a></li>{% endif %}
-                    <li><a id="myoffice" class="main_menu notajax vertical {% block menu_myoffice %}{% endblock %}">{% if not user.profile.org_active.short_name %}{% trans "Configurations" %}{% else %}{{ user.profile.org_active.short_name }}{% endif %}{% block vertical_menu %}{% endblock %}</a>
-                        <ul style="display:none" class="myoffice">
-                            {% if perms.organization.organization_read %}<li><a id="organization" href="/organization/">{% trans "My Organization" %}</a></li>{% endif %}
-                            {% if perms.organization.organization_read %}<li><a id="payment" href="/organization/signature/">{% trans "Assinatura" %}</a></li>{% endif %}
-                            {% if perms.organization.organization_read %}<li><a id="covenant" href="/covenant/">{% trans "Conv&ecirc;nios" %}</a></li>{% endif %}
-                            {% if perms.place.place_list %}<li><a id="places" href="/place/" display="list">{% trans "Places" %}</a></li>{% endif %}
-                            {% if perms.place.place_list %}<li><a id="rooms" href="/place/room/" display="list">{% trans "Rooms" %}</a></li>{% endif %}
-                            {% if perms.device.device_list %}<li><a id="devices" href="/device/" display="list">{% trans "Equipments" %}</a></li>{% endif %}
-                            {% if perms.service.service_list %}<li><a id="services" href="/service/" display="list">{% trans "Services" %}</a></li>{% endif %}
-                            {% if perms.careprofessional.careprofessional_list %}<li><a id="careprofessional" href="/careprofessional/" display="list">{% trans "Professionals" %}</a></li>{% endif %}
-                            {% if perms.careprofessional.careprofessional_list %}<li><a id="student" href="/careprofessional/student/" display="list">{% trans "Students" %}</a></li>{% endif %}
-                            {% if perms.employee.employee_list %}<li><a id="employees" href="/employee/" display="list">{% trans "Employees" %}</a></li>{% endif %}
-                            {% if perms.users.users_list %}<li><a id="users" href="/user/" display="list">{% trans "Users" %}</a></li>{% endif %}
-                        </ul>
-                    </li>
-                {% endif %}
-            </ul>
+        <div id="footer">
+            GestorPsi &copy; Prontu&aacute;rios Eletr&ocirc;nicos e Gest&atilde;o de Servi&ccedil;os em Psicologia. Desde 2009.
         </div>
-        <div id="sub_menu">
-            {% block submenu %}{% endblock %}
-        </div>
-	</div>
-{% endif %}
 
-	{% block registration %}{% endblock %}
-	<div id="content">
-		<div id="core">
-            {% block core %}{% endblock %}
-		</div>
-	</div>
-	<div id="footer">
-        GestorPsi &copy; Prontu&aacute;rios Eletr&ocirc;nicos e Gest&atilde;o de Servi&ccedil;os em Psicologia. Desde 2009.
-	</div>
-</body>
+    </body>
 </html>

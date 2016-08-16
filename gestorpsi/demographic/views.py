@@ -135,5 +135,4 @@ def occupation_save(request, object_id, occupation_id=0):
                                         'demographic_menu': True,
                                         'professions': professions,
                                         'profession_form': profession_form,
-                                        'clss': 'error',
                                         }, context_instance=RequestContext(request))

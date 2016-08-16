@@ -186,8 +186,6 @@ def contact_organization_form(request, object_id = None):
     websites     = object.sites.all()
     ims = object.instantMessengers.all()
 
-    clss = request.GET.get('clss')
-
     return render_to_response('contact/contact_organization_form.html', locals(),
                                      context_instance=RequestContext(request)
                                      )
@@ -259,7 +257,7 @@ def contact_organization_save(request, object_id = None):
         from django.db import connection
         connection.close()
         messages.success(request, _('This organization has already been registered'))
-        return HttpResponseRedirect('/contact/form/organization/?clss=error')
+        return HttpResponseRedirect('/contact/form/organization/')
 
     object = extra_data_save(request, object)
     

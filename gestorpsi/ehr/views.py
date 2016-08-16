@@ -195,7 +195,6 @@ def demand_form(request, client_id, referral_id, demand_id=0):
                                 'howlong_form': howlong_form,
                                 'frequency_form': frequency_form,
                                 'duration_form': duration_form,
-                                'clss':request.GET.get('clss'),
                                 'have_perms_to_write': have_perms_to_write,
                                 }, context_instance=RequestContext(request))
         else:
@@ -210,7 +209,7 @@ def demand_form(request, client_id, referral_id, demand_id=0):
                 howlong_form = TimeUnitForm(request.POST, instance=demand.how_long_it_happens if demand.how_long_it_happens else TimeUnit(), prefix="howlong")
                 if not howlong_form.is_valid():
                     messages.error(request, _("There's an error in 'How long it happens' field."))
-                    return HttpResponseRedirect('/client/%s/%s/demand/%s/?clss=error' % (client_id, referral_id, demand.id)) if demand.id else HttpResponseRedirect('/client/%s/%s/demand/add/?clss=error' % (client_id, referral_id))
+                    return HttpResponseRedirect('/client/%s/%s/demand/%s/' % (client_id, referral_id, demand.id)) if demand.id else HttpResponseRedirect('/client/%s/%s/demand/add/' % (client_id, referral_id))
                 demand.how_long_it_happens = howlong_form.save()
             else:
                 demand.how_long_it_happens = None
@@ -219,7 +218,7 @@ def demand_form(request, client_id, referral_id, demand_id=0):
                 frequency_form = TimeUnitForm(request.POST, instance=demand.frequency if demand.frequency else TimeUnit(), prefix="frequency")
                 if not frequency_form.is_valid():
                     messages.error(request, _("There's an error in 'Frequency' field."))
-                    return HttpResponseRedirect('/client/%s/%s/demand/%s/?clss=error' % (client_id, referral_id, demand.id)) if demand.id else HttpResponseRedirect('/client/%s/%s/demand/add/?clss=error' % (client_id, referral_id))
+                    return HttpResponseRedirect('/client/%s/%s/demand/%s/' % (client_id, referral_id, demand.id)) if demand.id else HttpResponseRedirect('/client/%s/%s/demand/add/' % (client_id, referral_id))
                 demand.frequency = frequency_form.save()
             else:
                 demand.frequency = None
@@ -228,7 +227,7 @@ def demand_form(request, client_id, referral_id, demand_id=0):
                 duration_form = TimeUnitForm(request.POST, instance=demand.duration if demand.duration else TimeUnit(), prefix="duration")
                 if not duration_form.is_valid():
                     messages.error(request, _("There's an error in 'Duration' field."))
-                    return HttpResponseRedirect('/client/%s/%s/demand/%s/?clss=error' % (client_id, referral_id, demand.id)) if demand.id else HttpResponseRedirect('/client/%s/%s/demand/add/?clss=error' % (client_id, referral_id))
+                    return HttpResponseRedirect('/client/%s/%s/demand/%s/' % (client_id, referral_id, demand.id)) if demand.id else HttpResponseRedirect('/client/%s/%s/demand/add/' % (client_id, referral_id))
                 demand.duration = duration_form.save()
             else:
                 demand.duration = None
@@ -251,7 +250,6 @@ def demand_form(request, client_id, referral_id, demand_id=0):
                                         'howlong_form': howlong_form,
                                         'frequency_form': frequency_form,
                                         'duration_form': duration_form,
-                                        'clss':request.GET.get('clss'),
                                         'have_perms_to_write': have_perms_to_write,
                                         }, context_instance=RequestContext(request))
 
@@ -385,7 +383,6 @@ def diagnosis_form(request, client_id, referral_id, diagnosis_id=0):
                                         'object': client,
                                         'referral': referral,
                                         'form': form,
-                                        'clss':request.GET.get('clss'),
                                         'have_perms_to_write': have_perms_to_write,
                                         }, context_instance=RequestContext(request))
 
@@ -458,7 +455,6 @@ def session_form(request, client_id, referral_id, session_id=0):
                                             'referral': referral,
                                             'session': session,
                                             'form': form,
-                                            'clss':request.GET.get('clss'),
                                             'have_perms_to_write': have_perms_to_write,
                                             }, context_instance=RequestContext(request))
 
@@ -489,6 +485,5 @@ def session_form(request, client_id, referral_id, session_id=0):
                                         'referral': referral,
                                         'session': session,
                                         'form': form,
-                                        'clss':request.GET.get('clss'),
                                         'have_perms_to_write': have_perms_to_write,
                                         }, context_instance=RequestContext(request))

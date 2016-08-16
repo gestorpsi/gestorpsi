@@ -89,7 +89,6 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
         messages.info(request,  _('This professional is not enabled.'))
 
     return render_to_response(template_name, {
-                                    'clss':request.GET.get('clss'),
                                     'object': object,
                                     'student_form': student_form if is_student else None,
                                     'phones' : None if not hasattr(object, 'person') else object.person.phones.all(),
@@ -221,10 +220,10 @@ def save(request, object_id=None, save_person=True, is_student=False):
 
         # english error message
         #messages.error(request, _('Impossible discharged of the service. Exist referral to this professional. Service(s) <br /> %s' % msg ))
-        #return HttpResponseRedirect(('/careprofessional/%s/?clss=error' % object.id))
+        #return HttpResponseRedirect(('/careprofessional/%s/' % object.id))
 
         messages.error(request, _(u'Serviço não pode ser desligado. Existe inscrição para esse profissional. Serviço<br />%s' % msg ))
-        return HttpResponseRedirect(('/careprofessional/%s/?clss=error' % object.id))
+        return HttpResponseRedirect(('/careprofessional/%s/' % object.id))
     else:
         messages.success(request, _('Professional saved successfully') if not is_student else _('Student saved successfully'))
         return HttpResponseRedirect(('/careprofessional/%s/' % object.id) if not is_student else ('/careprofessional/student/%s/' % object.id))

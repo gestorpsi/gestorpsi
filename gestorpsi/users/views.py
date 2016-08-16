@@ -82,14 +82,12 @@ def form(request, object_id=None):
         return render_to_response('users/users_form.html', {
                             'person_list': Person.objects.filter(pk=object_id, organization=request.user.get_profile().org_active, profile=None),
                             'person': Person.objects.get(pk=object_id, organization=request.user.get_profile().org_active),
-                            'clss':request.GET.get('clss'),
                             }, context_instance=RequestContext(request))
 
 @permission_required_with_403('users.users_read')
 def add(request):
     return render_to_response('users/users_form.html', {
                             'person_list': Person.objects.filter(organization = request.user.get_profile().org_active, profile = None),
-                            'clss':request.GET.get('clss'),
                             }, context_instance=RequestContext(request))
 
 @permission_required_with_403('users.users_write')

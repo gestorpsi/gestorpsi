@@ -15,6 +15,8 @@ GNU General Public License for more details.
 """
 
 from django import forms
+from django.utils.translation import ugettext as _
+
 from gestorpsi.referral.models import Referral, ReferralPriority, ReferralImpact, ReferralDischarge, Queue, ReferralExternal
 #from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client 
@@ -81,8 +83,8 @@ class ReferralForm(forms.ModelForm):
 
         
 class ReferralDischargeForm(forms.ModelForm):
-    details = forms.CharField(widget = forms.Textarea(attrs={'class':'giant'}), required = False)
-    description = forms.CharField(widget = forms.Textarea(attrs={'class':'giant'}), required = False)
+    details = forms.CharField(label=_('Details'), widget=forms.Textarea(attrs={'class':'giant'}), required=False)
+    description = forms.CharField(label=_('Description'), widget=forms.Textarea(attrs={'class':'giant'}), required=False)
 
     class Meta:
         fields = ('reason', 'was_discussed_with_client', 'details', 'status', 'description', )

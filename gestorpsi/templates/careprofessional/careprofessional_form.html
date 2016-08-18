@@ -23,16 +23,8 @@ GNU General Public License for more details.
 {% block vertical_menu %} - {% trans "Professionals" %}{% endblock %}
 
 {% block submenu %}
-    <ul>
-        <li><a class="first" href="/careprofessional/">{% trans "all" %}</a></li>
-        {% if perms.careprofessional.careprofessional_write %}
-            <li><a class="{% if not object.id %}active{% endif %}" href="/careprofessional/add/">{% trans "add" %}</a></li>
-        {% endif %}
-        <li><a href="/careprofessional/deactive/">{% trans "Deactives" %}</a></li>
-        {% if object.id %}<li><a class="active">{{ object.person.name }}</a></li>{% endif %}
-    </ul>
+    {% include "careprofessional/careprofessional_submenu.html" %}
 {% endblock %}
-
 
 {% block core %}
 
@@ -132,7 +124,7 @@ GNU General Public License for more details.
             <br />	
         </div>
 
-        {% include "tags/careprofessional_sidebar.html" %}
+        {% include "careprofessional/careprofessional_sidebar.html" %}
 
     </form>
 

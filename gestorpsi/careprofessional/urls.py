@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.careprofessional.views import index, form, list, order, save
+from gestorpsi.careprofessional.views import index, form, list, order, save, client_list
 from gestorpsi.authentication.views import login_check
 
 professional_index = { 'template_name':'careprofessional/careprofessional_list.html' }
@@ -30,13 +30,13 @@ student_form = { 'template_name':'careprofessional/student_form.html', 'is_stude
 student_save = { 'is_student':True, }
 
 urlpatterns = patterns('',
-    url(r'^$', login_check(index), professional_index),
+    url(r'^$', login_check(index), professional_index, name='careprofessional-index'),
     url(r'^page(?P<page>(\d)+)$', login_check(list)),
-    url(r'^deactive/$', login_check(index), professional_list_deactive ),
+    url(r'^deactive/$', login_check(index), professional_list_deactive, name='careprofessional-deactive' ),
     url(r'^page(?P<page>(\d)+)/deactive/$', login_check(list), professional_list_deactive ),
-    url(r'^add/$', login_check(form), professional_form),
+    url(r'^add/$', login_check(form), professional_form, name='careprofessional-add'),
     url(r'^save/$', login_check(save)),
-    url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form), professional_form, name='professional_form'),
+    url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form), professional_form, name='careprofessional-form'),
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save)),
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/order/$', login_check(order), name='professional_order'),
     url(r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)),
@@ -62,4 +62,8 @@ urlpatterns = patterns('',
     url(r'^student/filter/(?P<filter>\w+)/page(?P<page>(\d)+)/$', login_check(list), student_list),
     url(r'^student/filter/(?P<filter>\w+)/deactive/$', login_check(list), student_list_deactive ),
     url(r'^student/filter/(?P<filter>\w+)/page(?P<page>(\d)+)/deactive/$', login_check(list), student_list_deactive ),
+    # list of clients of careprofessional
+    url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/clientlist/active/(?P<active>(\d)+)/$', login_check(client_list), name="careprofessional-client-list"),
+    # list of clients of careprofessional index
+    url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/clientlist/$', login_check(client_list), name="careprofessional-client-list-index"),
 )

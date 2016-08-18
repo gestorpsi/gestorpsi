@@ -29,7 +29,11 @@ GNU General Public License for more details.
         <ul>
             <li><a {% if not object.active or not object.have_referral_charged %}href="/careprofessional/{% if object.is_student %}student/{% endif %}{{ object.id}}/order/"{% endif %} class="client_order{% if object.active and object.have_referral_charged %} dialog_disable_form{% endif %}" title="{{ object.person.name }}">{% if object.active %} {% trans "Disable" %} {% else %} {% trans "Enable" %} {% endif %} </a></li>
             {% if perms.users.users_read %}<li><a href="/user/{{ object.person.id }}/" class="client_form" title="{% trans "User" %}">{% trans "User" %}</a></li>{% endif %}
+
+            <!-- missing permission -->
+            <li><a href="{% url careprofessional-client-list object.id 1 %}" class="client_form" title="{% trans "Include client list" %}">{% trans "Include client list" %}</a></li>
         </ul>
+
         <script>
         $(function() {
             $('a.dialog_disable_form').click(function() {
@@ -38,5 +42,6 @@ GNU General Public License for more details.
             });
         });
         </script>
+
     </div>
 {% endif %}

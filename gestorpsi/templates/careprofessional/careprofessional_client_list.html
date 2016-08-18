@@ -20,31 +20,24 @@ GNU General Public License for more details.
 
 {% block menu_myoffice %}active{% endblock %}
 
-{% block vertical_menu %} - {% trans "Service" %}{% endblock %}
+{% block vertical_menu %} - {% trans "Professionals" %}{% endblock %}
 
 {% block submenu %}
-    <ul>
-        <li><a class="first" href="/service/">{% trans "all" %}</a></li>
-
-        {% if perms.service.service_write %}
-            <li><a class="{% if not object.id %}active{% endif %}" href="/service/add/">{% trans "Add Service" %}</a></li>
-        {% endif %}
-
-        {% if object.id %}<li><a class="active">{% trans "Client list" %}&nbsp;-&nbsp;{{ object }}</a></li>{% endif %}
-    </ul>
+    {% include "careprofessional/careprofessional_submenu.html" %}
 {% endblock %}
 
 {% block core %}
     <div class="registers_available">
 
-        <h2 class="title_clients">{% trans "Client list" %}&nbsp;-&nbsp;{{ object.name_html_inline|safe }}</h2>
-        <p class="description">{% trans "Displaying" %} <span id="object_length">{{ client_list|length }}</span> {% trans "clients(s)" %}.</p>
+        <h2 class="title_clients">{% trans "Client list" %} <b>{{ client_list_filter }}</b>&nbsp;-&nbsp;{{ object.person.name }} </h2>
+        <p class="description">{% trans "Displaying" %} <span id="object_length">{{ client_list|length }}</span> {% trans "clients" %}{{ client_list|pluralize }}.</p>
             
         <div class="main_area contact">
+
             {% if not client_list %}
 
                 <div id="msg_area" class="alert no_registers_available">
-                    {% trans "There is no client subscribed in this service." %}<br />
+                    {% trans "There is no client subscribed in this professional." %}<br />
                 </div>
 
             {% else %}
@@ -79,14 +72,11 @@ GNU General Public License for more details.
                         </tbody>
                 </table>
 
-            {# {% include "tags/paginator.html"%} #}
             {% endif %}
 
         </div>
 
-        <div id="sidebar" class="sidebar_client_top">
-            {% include "tags/service_sidebar.html" %}
-        </div>
+        {% include "careprofessional/careprofessional_client_list_sidebar.html" %}
 
     </div>
 {% endblock %}

@@ -23,15 +23,7 @@ GNU General Public License for more details.
 {% block vertical_menu %} - {% trans "Professionals" %}{% endblock %}
 
 {% block submenu %}
-    <ul>
-        <li><a class="first {%if not deactive %} active {% endif %}" href="/careprofessional/">{% trans "all" %}</a></li>
-        {% if perms.careprofessional.careprofessional_write %}
-            <li><a href="/careprofessional/add/">{% trans "add" %}</a></li>
-        {% endif %}
-        <li><a class="{% if deactive %}active{% endif %}" href="/careprofessional/deactive/">{% trans "All deactive" %}
-</a></li>
-
-    </ul>
+    {% include "careprofessional/careprofessional_submenu.html" %}
 {% endblock %}
 
 {% block core %}

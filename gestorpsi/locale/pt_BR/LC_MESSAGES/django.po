@@ -2401,7 +2401,7 @@ msgstr "Detalhes do Desligamento"
 #: templates/organization/organization_form.html:366
 #: templates/service/service_group_form.html:74 templates/tags/invoice.html:47
 msgid "Status"
-msgstr "Status"
+msgstr "Situação"
 
 #: referral/views.py:63
 msgid " - Student"
@@ -2441,6 +2441,12 @@ msgstr ""
 #: report/forms.py:48
 msgid "Include client list"
 msgstr "Lista de Clientes"
+
+msgid "Include client list active"
+msgstr "Lista de Cliente ativo"
+
+msgid "Include client list inactive"
+msgstr "Lista de Cliente inativo"
 
 #: report/forms.py:48
 msgid "If selected will a list of clients for each report sub-item"
@@ -6746,6 +6752,10 @@ msgstr "Lista de Clientes"
 #: templates/service/service_client_list.html:51
 msgid "There is no client subscribed in this service."
 msgstr "Não há cliente inscrito neste serviço."
+
+#: templates/careprofessional/careprofessional_client_list.html
+msgid "There is no client subscribed in this professional."
+msgstr "Não há cliente inscrito neste profissional."
 
 #: templates/service/service_client_list.html:70
 msgid "Referral ID"

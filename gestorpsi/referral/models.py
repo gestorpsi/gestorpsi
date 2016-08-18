@@ -381,10 +381,10 @@ class ReferralDischarge(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     was_discussed_with_client =  models.BooleanField(_('Was Discussed With Client'), default=False)
     #reason = models.CharField(_('Discharge Reason'), max_length=2, blank=True, null=True, choices=REFERRAL_DISCHARGE_TYPE)
-    reason = models.ForeignKey('ReferralDischargeReason', verbose_name=('Discharge Reason'), blank=True, null=True)
-    details = models.TextField(_('Discharge Details'), blank=True)
+    reason = models.ForeignKey('ReferralDischargeReason', verbose_name=_(u'Discharge Reason'), blank=True, null=True)
+    details = models.TextField(blank=True)
     status = models.CharField(_('Status'), max_length=2, blank=True, null=True, choices=REFERRAL_DISCHARGE_STATUS)
-    description = models.TextField(_('Comments'), blank=True)
+    description = models.TextField(blank=True)
     
     def __unicode__(self):
         return u'%s - %s' % (self.client, self.referral.service)

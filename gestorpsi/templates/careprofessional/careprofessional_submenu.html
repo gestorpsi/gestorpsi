@@ -1,0 +1,35 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<ul>
+    <li><a class="first {% if action_tab_index %}active{% endif %}" href="{% url careprofessional-index %}">{% trans "all" %}</a></li>
+
+    {% if perms.careprofessional.careprofessional_write %}
+        <li><a href="{% url careprofessional-add %}" class="{% if action_tab_add %}active{% endif %}">{% trans "add" %}</a></li>
+    {% endif %}
+
+    <li><a href="{% url careprofessional-deactive %}" class="{% if action_tab_deactive %}active{% endif %}">{% trans "Deactives" %}</a></li>
+
+    {% if object.id %}
+        <li><a href="{% url careprofessional-form object.id %}" class="{% if action_tab_edit %}active{% endif %}">{{ object.person.name }}</a></li>
+    {% endif %}
+
+    {% if action_tab_client_list %}
+        <li><a href="{% url careprofessional-client-list object.id 1 %}" class="active">{% trans "Include client list" %} - {{ object.person.name }}</a></li>
+    {% endif %}
+</ul>

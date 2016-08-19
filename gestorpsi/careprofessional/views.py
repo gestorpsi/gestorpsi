@@ -23,6 +23,7 @@ from django.contrib import messages
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.person.views import person_json_list, person_save
 from gestorpsi.careprofessional.models import ProfessionalProfile, ProfessionalIdentification, CareProfessional, Profession
+from gestorpsi.careprofessional.forms import StudentProfileForm
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType, City
 from gestorpsi.internet.models import EmailType, IMNetwork
@@ -32,25 +33,33 @@ from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, ReferralDischargeReason, ReferralDischarge
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
-from gestorpsi.careprofessional.forms import StudentProfileForm
 from gestorpsi.schedule.models import OccurrenceConfirmation
+from gestorpsi.client.models import Client
 
 
 @permission_required_with_403('careprofessional.careprofessional_list')
-def index(request, template_name='careprofessional/careprofessional_list.html', deactive = False):
-    action_tab_index = True # show active tab
+def index(request, template_name='careprofessional/careprofessional_list.html', deactive=False):
+
+    # show active tab
+    if deactive:
+        action_tab_deactive = True
+    else:
+        action_tab_index = True
+
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
 
   
 @permission_required_with_403('careprofessional.careprofessional_list')
 def list(request, page=1, deactive=False, filter=None, initial=None, no_paging=False, is_student=False ):
 
-    if not is_student: # professional
+    # professional
+    if not is_student:
         if deactive:
             object = CareProfessional.objects.deactive(request.user.get_profile().org_active)
         else:
             object = CareProfessional.objects.active(request.user.get_profile().org_active)
-    else: # stundent
+    # stundent
+    else:
         if deactive:
             object = CareProfessional.objects.students_deactive(request.user.get_profile().org_active)
         else:
@@ -70,10 +79,12 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
 
     if object_id:
         object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
+        tab = 'edit'
     else:
         if not request.user.has_perm('careprofessional.careprofessional_write'):
             return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
+        tab = 'add'
         object = CareProfessional()
 
     try:
@@ -115,7 +126,8 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
                                     'Cities': cities,
                                     'ReferralDischargeReason': None if not object.have_referral_charged else ReferralDischargeReason.objects.all(),
                                     'hours': HOURS,
-                                    },
+                                    'action_tab_form': tab, # show tab active
+                                    }, 
                               context_instance=RequestContext(request)
                               )
 
@@ -298,11 +310,10 @@ def client_list(request, object_id=False, active=True):
     object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
 
     """
-        referral have professional and client
-        get all referral of professional, then, we have all clients.
+        referral have professional and client.
+        get all clients of professional by referral.
     """
-
-    ## filter by ReferralDischarger
+    # filter by ReferralDischarger
     #if active == str(1):
         #client_list = Referral.objects.filter(professional=object, organization=request.user.get_profile().org_active, referraldischarge__isnull=False)
     #else:
@@ -310,8 +321,8 @@ def client_list(request, object_id=False, active=True):
 
     # filter by Client.active
     if active == str(1):
-        r = Referral.objects.filter(professional=object, organization=request.user.get_profile().org_active, client__active=True).order_by('client__person__name').distinct()
+        client_list = Client.objects.filter(referral__professional=object, person__organization=request.user.get_profile().org_active, active=True).order_by('person__name').distinct()
     else:
-        r = Referral.objects.filter(professional=object, organization=request.user.get_profile().org_active, client__active=False).order_by('client__person__name').distinct()
+        client_list = Client.objects.filter(referral__professional=object, person__organization=request.user.get_profile().org_active, active=False).order_by('person__name').distinct()
 
     return render_to_response('careprofessional/careprofessional_client_list.html', locals(), context_instance=RequestContext(request))

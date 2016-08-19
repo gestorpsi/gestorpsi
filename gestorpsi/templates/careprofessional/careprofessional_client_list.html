@@ -33,7 +33,6 @@ GNU General Public License for more details.
         <p class="description">{% trans "Displaying" %} <span id="object_length">{{ client_list|length }}</span> {% trans "clients" %}{{ client_list|pluralize }}.</p>
             
         <div class="main_area contact">
-
             {% if not client_list %}
 
                 <div id="msg_area" class="alert no_registers_available">
@@ -43,41 +42,26 @@ GNU General Public License for more details.
             {% else %}
 
                 <table id="search_results" class="zebra newtab" border="0" cellpadding="0" cellspacing="0">
-                    <input name="service_id" id="service_id" value="e6617255-dc9f-4f7f-a518-f22f451f4bc1" type="hidden">
-                        <thead> 
-                            <tr class="zebra_1"> 
-                                <th></th> 
-                                <th></th> 
-                            </tr> 
-                        </thead>
+                    <thead> 
+                        <tr class="zebra_1"> 
+                            <th></th> 
+                            <th></th> 
+                        </tr> 
+                    </thead>
 
-                        <tbody>
-                            {% for i in client_list %}
-                                <tr class="zebra_{% cycle 0,1 %}">
-                                    <td class="title">
-                                        <a href="/client/{{ i.client.all.0.id }}/">{{ i.client.all.0.person.name }}</a>
-
-                                        {% comment %}
-                                        {% for rc in i.referrals_charged %}
-                                            {% if rc.service == object %}
-                                                <br />
-                                                {% trans "Referral ID" %}: <b><a href="/client/{{ i.id }}/referral/{{ rc.pk }}/">#{{ rc.pk }}</a></b>
-                                                {% if rc.professional.all %}<br />{% trans "Professionals" %}:</b> {% for p in rc.professional.all %}<a href="/careprofessional/{{ p.id }}/">{{ p }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}
-                                                <br />{% trans "all past occurrences (inclunding unmarked e remarked)" %}:</b> {{ rc.past_occurrences_all|length }}
-                                                <br />
-                                            {% endif %}
-                                        {% endfor %}
-                                        {% endcomment %}
-                                    </td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            {% endfor%}
-
-                        </tbody>
+                    <tbody>
+                        {% for i in client_list %}
+                            <tr class="zebra_{% cycle 0,1 %}">
+                                <td class="title">
+                                    <a href="/client/{{ i.id }}/">{{ i.person.name }}</a>
+                                </td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        {% endfor%}
+                    </tbody>
                 </table>
 
             {% endif %}
-
         </div>
 
         {% include "careprofessional/careprofessional_client_list_sidebar.html" %}

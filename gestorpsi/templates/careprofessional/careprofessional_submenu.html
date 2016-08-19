@@ -20,13 +20,13 @@ GNU General Public License for more details.
     <li><a class="first {% if action_tab_index %}active{% endif %}" href="{% url careprofessional-index %}">{% trans "all" %}</a></li>
 
     {% if perms.careprofessional.careprofessional_write %}
-        <li><a href="{% url careprofessional-add %}" class="{% if action_tab_add %}active{% endif %}">{% trans "add" %}</a></li>
+        <li><a href="{% url careprofessional-add %}" class="{% ifequal action_tab_form 'add' %}active{% endifequal %}">{% trans "add" %}</a></li>
     {% endif %}
 
     <li><a href="{% url careprofessional-deactive %}" class="{% if action_tab_deactive %}active{% endif %}">{% trans "Deactives" %}</a></li>
 
     {% if object.id %}
-        <li><a href="{% url careprofessional-form object.id %}" class="{% if action_tab_edit %}active{% endif %}">{{ object.person.name }}</a></li>
+        <li><a href="{% url careprofessional-form object.id %}" class="{% ifequal action_tab_form 'edit' %}active{% endifequal %}">{{ object.person.name }}</a></li>
     {% endif %}
 
     {% if action_tab_client_list %}

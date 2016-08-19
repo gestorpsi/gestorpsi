@@ -40,7 +40,12 @@ GNU General Public License for more details.
     <h2 id="title_contacts" style="display:none"></h2>
     <h2 id="title_myoffice" style="display:none"></h2>
 
-    <form action="/careprofessional/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="form_people collapsable form_careprofessional">	
+    {% if object.id %}
+        <form action="{% url careprofessional-save-update object.id %}" method="post" />
+    {% else %}
+        <form action="{% url careprofessional-save-new %}" method="post" />
+    {% endif %}
+
         <div class="main_area">
 
             <!-- <a href="" id="help">&nbsp;</a> -->

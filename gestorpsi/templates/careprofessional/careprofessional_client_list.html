@@ -54,7 +54,10 @@ GNU General Public License for more details.
                         <tbody>
                             {% for i in client_list %}
                                 <tr class="zebra_{% cycle 0,1 %}">
-                                    <td class="title"><a href="/client/{{i.id}}/home/">{{ i }}</a> {% if not i.active %}({% trans "deactivated" %}){% endif %}
+                                    <td class="title">
+                                        <a href="/client/{{ i.client.all.0.id }}/">{{ i.client.all.0.person.name }}</a>
+
+                                        {% comment %}
                                         {% for rc in i.referrals_charged %}
                                             {% if rc.service == object %}
                                                 <br />
@@ -64,6 +67,7 @@ GNU General Public License for more details.
                                                 <br />
                                             {% endif %}
                                         {% endfor %}
+                                        {% endcomment %}
                                     </td>
                                     <td>&nbsp;</td>
                                 </tr>

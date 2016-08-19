@@ -296,6 +296,22 @@ def client_list(request, object_id=False, active=True):
 
     # fix filter
     object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
-    client_list = Referral.objects.filter(professional=object)
+
+    """
+        referral have professional and client
+        get all referral of professional, then, we have all clients.
+    """
+
+    ## filter by ReferralDischarger
+    #if active == str(1):
+        #client_list = Referral.objects.filter(professional=object, organization=request.user.get_profile().org_active, referraldischarge__isnull=False)
+    #else:
+        #client_list = Referral.objects.filter(professional=object, organization=request.user.get_profile().org_active, referraldischarge__isnull=True)
+
+    # filter by Client.active
+    if active == str(1):
+        r = Referral.objects.filter(professional=object, organization=request.user.get_profile().org_active, client__active=True).order_by('client__person__name').distinct()
+    else:
+        r = Referral.objects.filter(professional=object, organization=request.user.get_profile().org_active, client__active=False).order_by('client__person__name').distinct()
 
     return render_to_response('careprofessional/careprofessional_client_list.html', locals(), context_instance=RequestContext(request))

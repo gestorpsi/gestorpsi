@@ -22,9 +22,12 @@ GNU General Public License for more details.
 """
 
 from django.contrib import admin
-from gestorpsi.authentication.models import Profile
+from gestorpsi.authentication.models import Profile, Role
 
 class ProfileAdmin(admin.ModelAdmin):
-    pass
-
+    search_fields = ['user__username','organization__name']
 admin.site.register(Profile, ProfileAdmin)    
+
+class RoleAdmin(admin.ModelAdmin):
+    search_fields = ['profile__user__username','profile__organization__name']
+admin.site.register(Role, RoleAdmin)

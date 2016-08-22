@@ -19,7 +19,6 @@ from django.contrib.auth.models import User, UserManager, Group
 from gestorpsi.organization.models import Organization
 from gestorpsi.person.models import Person
 from gestorpsi.util import CryptographicUtils as cryptoUtils
-from gestorpsi.util.uuid_field import UuidField
 
 class Profile(models.Model):
     user = models.OneToOneField(User, unique=True)

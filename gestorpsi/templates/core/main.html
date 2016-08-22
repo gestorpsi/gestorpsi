@@ -104,7 +104,7 @@ GNU General Public License for more details.
     <body>
 
         <!-- signature alert message -->
-        {% if user.is_authenticated %} 
+        {% if user.is_authenticated %}
             <!-- is active -->
             {% if user.profile.org_active.active %}
                 <!-- show alert for invoice -->
@@ -167,18 +167,16 @@ GNU General Public License for more details.
             <div id="menu_log">
                 <ul>
                     <!-- <li><a href="#email">{% trans "email" %}</a></li>| -->
-                    <li id="logged"><small><b>{{ user.username }}</b> {% trans "at" %} <b>{{ user.profile.org_active.short_name }}</b></small></li>
+                    <li id="logged"><small><b>{{ user.username }}</b> ( {% for x in user.groups.all %}{{ x.name }} {% endfor %}) | {% trans "at" %} <b> {{ user.profile.org_active.short_name }} </b></small>|<small><b><a href="{% url authentication-logout %}">Logout</a></b></small></li>
                 </ul>
             </div>
 
             <div id="logotype">
-            <!-- {{ MEDIA_URL }}img/organization/{{ profile.org_active.id }}/.thumb/{{ profile.org_active.photo }} -->
-            <!-- <img src="/media/img/generic_photo.gif" width="71" height="83" /> -->
-            {% if user.profile.org_active.photo %}
-                <img src="{{ MEDIA_URL }}img/organization/{{ user.profile.org_active.id }}/.thumb/{{ user.profile.org_active.photo }}" width="71" height="83" />
-            {% else %}
-                <img src="/media/img/generic_photo.gif" width="71" height="83" />
-            {% endif %}
+                {% if user.profile.org_active.photo %}
+                    <img src="{{ MEDIA_URL }}img/organization/{{ user.profile.org_active.id }}/.thumb/{{ user.profile.org_active.photo }}" width="71" height="83" />
+                {% else %}
+                    <img src="/media/img/generic_photo.gif" width="71" height="83" />
+                {% endif %}
 
                 <span>
                     <b>{{ user.profile.org_active.trade_name }}</b><br />

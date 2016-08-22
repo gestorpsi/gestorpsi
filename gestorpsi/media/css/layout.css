@@ -1672,12 +1672,15 @@ ul.paginator li.next {
 /**
  django forms
 */
+.terms_of_service { 
+    padding: 0px 5px 0px 5px;
+}
 
 ul.errorlist li {
     color: red;
-    list-style: none;
+    /*list-style: none;*/
     padding: 0px;
-    margin-top: 15px;
+    /*margin-top: 15px;*/
     margin-left: 10px;
     font-weight: bold;
 }

@@ -176,7 +176,7 @@ def register(request, success_url=None,
         # check organization name
         if Organization.objects.filter(short_name__iexact = slugify(request.POST.get('shortname'))):
             error_msg = _(u"Informed organization is already registered. Please choose another name here or login with an existing account")
-            form.errors["organization"] = ErrorList([error_msg])
+            form.errors["shortname"] = ErrorList([error_msg])
             error_found = True
 
         # check password

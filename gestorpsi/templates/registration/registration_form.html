@@ -30,45 +30,37 @@
         <br />
         <h4 style="text-align:justify;">{% trans "Fill out the form to the left (all fields are required), and your account will be created; you'll be sent an email with instructions on how to finish your registration" %}</h4>
 
-        {% if form.errors %}<ul class="errorlist"><li>{% trans "Form errors! Please correct errors below and try again" %}</li></ul>{% endif %}
         <br />
+        {% if form.errors %}{% trans "Form errors! Please correct errors below and try again" %}{% endif %}
 
+        <br />
         <form method="post" action="">
 
             <fieldset class="orgField">
-                {{ form.organization.errors }}<br /><label>{{ form.organization.help_text }}<br />{{ form.organization }}</label>
-                {{ form.shortname.errors }}<label>{{ form.shortname.label }}<br />{{ form.shortname }}</label>
+                <label>{{ form.organization.help_text }}<br />{{ form.organization }}<br />{{ form.organization.errors }}</label>
+                <label>{{ form.shortname.label }}<br />{{ form.shortname }}<br /></label>{{ form.shortname.errors }}
             </fieldset>
 
             <fieldset class="userField">
-                    {{ form.name.errors }}<label>{{ form.name.help_text }}<br />{{ form.name }}</label>
-                    <br />
-                    {{ form.email.errors }}<label>{% trans "Your email address" %}<br />{{ form.email }}</label>
-                    <br />
-                    {{ form.cpf.errors }}<label>{{ form.cpf.label }}<br />{{ form.cpf }}</label>
-                    <br />
-                    {{ form.address.errors }}<label>{{ form.address.label }}<br />{{ form.address }}</label>
-                    <br />
-                    {{ form.address_number.errors }}<label>{{ form.address_number.help_text }}<br />{{ form.address_number }}</label>
-                    <br />
-                    {{ form.zipcode.errors }}<label>{{ form.zipcode.label }}<br />{{ form.zipcode }}</label>
-                    <br />
-                    {{ form.state.errors }}<label class="autocomplete state">{{ form.state.label }}<br />{{ form.state }}</label>
-                    <br />
-                    {{ form.city.errors }}<label class="city">{{ form.city.label }}<br />{{ form.city }}</label>
-                    <br />
-                    {{ form.phone.errors }}<label>{{ form.phone.label }}<br />{{ form.phone }}</label>
-                    <br />
-                    {{ form.plan.errors }}<label>{{ form.plan.label }}<br />{{ form.plan }}</label>
-                    <br />
-                    {{ form.username.errors }}<label>{{ form.username.label }}<br />{{ form.username }}</label>
-                    <br />
-                    {{ form.password1.errors }}<label>{{ form.password1.label }}<br />{{ form.password1 }}</label>
-                    <br />
-                    {{ form.password2.errors }}<label>{{ form.password2.label }}<br />{{ form.password2 }}</label>
-                    <br />
-                    <p>
+                    <label>{{ form.name.help_text }}<br />{{ form.name }}</label>{{ form.name.errors }}
+                    <label>{% trans "Your email address" %}<br />{{ form.email }}</label>{{ form.email.errors }}
+                    <label>{{ form.cpf.label }}<br />{{ form.cpf }}</label>{{ form.cpf.errors }}
+                    <label>{{ form.address.label }}<br />{{ form.address }}</label>{{ form.address.errors }}
+                    <label>{{ form.address_number.help_text }}<br />{{ form.address_number }}</label>{{ form.address_number.errors }}
+                    <label>{{ form.zipcode.label }}<br />{{ form.zipcode }}</label>{{ form.zipcode.errors }}
+                    <label class="autocomplete state">{{ form.state.label }}<br />{{ form.state }}</label>{{ form.state.errors }}
+                    <label class="city">{{ form.city.label }}<br />{{ form.city }}</label>{{ form.city.errors }}
+                    <label>{{ form.phone.label }}<br />{{ form.phone }}</label>{{ form.phone.errors }}
+                    <label>{{ form.plan.label }}<br />{{ form.plan }}</label>{{ form.plan.errors }}
+                    <label>{{ form.username.label }}<br />{{ form.username }}</label>{{ form.username.errors }}
+                    <label>{{ form.password1.label }}<br />{{ form.password1 }}</label>{{ form.password1.errors }}
+                    <label>{{ form.password2.label }}<br />{{ form.password2 }}</label>{{ form.password2.errors }}
+              </fieldset>
+
+              <fieldset>
+                    <div class="terms_of_service">
                         <label for="id_terms_of_service">{% trans "terms of service" %}</label>
+                        <br />
                         <textarea class="small_fonts terms_of_service" readonly>
                                 CONTRATO DE LICENÇA DE USO DE HOSPEDAGEM PRONTUÁRIOS ELETRÔNICOS
 
@@ -183,12 +175,13 @@
                                 Fica eleito desde já, com exclusão de qualquer outro, por mais privilegiado que seja, o foro Cível da Comarca do Município de São Carlos (SP), para dirimir toda e qualquer dúvida ou litígio e pendência oriunda deste contrato.
 
                         </textarea>
-                    </p>
+                    </div>
 
+                    <br />
                     <br />
 
                     <p>
-                        {% trans "By clicking the Signup button below, you agree that you have read and agree to the" %} <a href="http://www.gestorpsi.com.br/trac/wiki/GestorPsi/TermosdeUso" target="_blank">{% trans "terms of service" %}</a>
+                    {% trans "By clicking the Signup button below, you agree that you have read and agree to the" %} <a href="http://www.gestorpsi.com.br/trac/wiki/GestorPsi/TermosdeUso" target="_blank">{% trans "terms of service" %}</a>
                     </p>
                     <p class="submit"><input type="submit" value="{% trans "Accept terms and register" %}" class="btn" /></p>
             </fieldset>

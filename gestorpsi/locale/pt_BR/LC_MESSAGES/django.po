@@ -6689,7 +6689,7 @@ msgstr "Identificação da Sala"
 
 #: templates/schedule/schedule_week.html:59
 msgid "Please, choose one room to book"
-msgstr "Escolha um nome para o relatório."
+msgstr "Escolha uma sala."
 
 #: templates/schedule/schedule_week.html:67
 msgid "Selecione uma sala antes de continuar"

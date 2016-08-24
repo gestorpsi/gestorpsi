@@ -1011,7 +1011,7 @@ def schedule_settings(request):
 
         if not object.time_slot_schedule == request.POST.get('time_slot_schedule'):
             object.time_slot_schedule = request.POST.get('time_slot_schedule')
-            messages.info(request, _(u'Com a alteração do intervalo, algumas consultas podem não aparecer na agenda devido a nova grade de horário.'))
+            messages.info(request, _(u'Com a alteração do intervalo, alguns eventos podem não aparecer na agenda diária devido a nova grade de horário.'))
 
         object.save()
 

@@ -136,8 +136,9 @@ GNU General Public License for more details.
             <!-- is not active -->
             {% else %}
                 <div class="msg_area error">
-                   {% trans "Organization running is READ ONLY MODE. Data can not be writed. For questions about please use the" %} <a href="/support/ticket/form/">{% trans "support form" %}</a>
-                   Verifique o pagamento da sua <a href='/organization/signature/'>assinatura</a>
+                    <b>{% trans "Organization running is READ ONLY MODE. Data can not be writed. For questions about please use the" %}</b> <a href="/support/ticket/form/">{% trans "support form" %}</a>
+                    <br />
+                    <b>Verifique o pagamento da sua</b>  <a href='/organization/signature/'>assinatura</a>
                 </div>
             {% endif %}
         {% endif %}

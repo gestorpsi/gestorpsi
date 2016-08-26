@@ -18,35 +18,35 @@ GNU General Public License for more details.
 
 {% if not user.profile.person.careprofessional.studentprofile %}
     {% if can_list_groups or queue_list or client_list %}
-    <div class="service_actions">
-    <h3>{% trans "Details" %}</h3>
-    <ul>
-        {% if can_list_groups %}
-            <li><a href="/service/{% if object.referral.service.id %}{{ object.referral.service.id }}{% else %}{{ object.id }}{% endif %}/group/">{% trans "List groups from this service" %}</a></li>
-        {% endif %}
-        {% if queue_list %}
-            <li><a href="/service/{{ object.id }}/queue/" title="{{ object.name }}">{% trans "Queue" %}</a></li>
-        {% endif %}
-        {% if client_list %}
-            <li><a href="/service/{{ object.id }}/clientlist/" title="{{ object.name }}">{% trans "Client list" %}</a></li>
-        {% endif %}
-    </ul>
-    </div>
+        <div class="service_actions">
+            <h3>{% trans 'Action' %}</h3> 
+            <ul>
+                {% if can_list_groups %}
+                    <li><a href="/service/{% if object.referral.service.id %}{{ object.referral.service.id }}{% else %}{{ object.id }}{% endif %}/group/">{% trans "List groups from this service" %}</a></li>
+                {% endif %}
+                {% if queue_list %}
+                    <li><a href="/service/{{ object.id }}/queue/" title="{{ object.name }}">{% trans "Queue" %}</a></li>
+                {% endif %}
+                {% if client_list %}
+                    <li><a href="/service/{{ object.id }}/clientlist/" title="{{ object.name }}">{% trans "Client list" %}</a></li>
+                {% endif %}
+            </ul>
+        </div>
     {% endif %}
 
     {% if not hide_service_actions and can_write_group %}
-    {% if object.is_group or perms.service.service_write %}
-        <div class="service_actions"> 
-            <h3>{% trans 'Actions' %}</h3> 
-            <ul>
-                {% if object.is_group and object.active %}
-                    <li><a href="/service/{% if object.referral.service.id %}{{ object.referral.service.id }}{% else %}{{ object.id }}{% endif %}/group/add/">{% trans "Add group on this service" %}</a></li> 
-                {% endif %}
-                {% if perms.service.service_write %}
-                <li><a href="/service/{{ object.id }}/order/" title="{{ object.name }}">{% if object.active %} {% trans "Disable" %} {% else %} {% trans "Enable" %} {% endif %} </a></li> 
-                {% endif %}
-            </ul> 
-        </div> 
-    {% endif %}
+        {% if object.is_group or perms.service.service_write %}
+            <div class="service_actions"> 
+                <h3>{% trans 'Actions' %}</h3> 
+                <ul>
+                    {% if object.is_group and object.active %}
+                        <li><a href="/service/{% if object.referral.service.id %}{{ object.referral.service.id }}{% else %}{{ object.id }}{% endif %}/group/add/">{% trans "Add group on this service" %}</a></li> 
+                    {% endif %}
+                    {% if perms.service.service_write %}
+                    <li><a href="/service/{{ object.id }}/order/" title="{{ object.name }}">{% if object.active %} {% trans "Disable" %} {% else %} {% trans "Enable" %} {% endif %} </a></li> 
+                    {% endif %}
+                </ul> 
+            </div> 
+        {% endif %}
     {% endif %}
 {% endif %}

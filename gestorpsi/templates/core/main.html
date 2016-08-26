@@ -168,7 +168,8 @@ GNU General Public License for more details.
             <div id="menu_log">
                 <ul>
                     <!-- <li><a href="#email">{% trans "email" %}</a></li>| -->
-                    <li id="logged"><small><b>{{ user.username }}</b> ( {% for x in user.groups.all %}{{ x.name }} {% endfor %}) | {% trans "at" %} <b> {{ user.profile.org_active.short_name }} </b></small>|<small><b><a href="{% url authentication-select-organization %}">Logout</a></b></small></li>
+                    <li id="logged"><small><b>{{ user.username }}</b> ( {% for x in user.groups.all %}{{ x.name }} {% endfor %}) | {% trans "at" %} <b> {{ user.profile.org_active.short_name }} </b></small>{% if user.get_profile.organization.distinct.count > 1 %}|<small><b><a href="{% url authentication-select-organization %}">Logout</a></b></small>{% endif %}
+                    </li>
                 </ul>
             </div>
 

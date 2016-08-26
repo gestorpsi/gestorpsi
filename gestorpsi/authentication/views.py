@@ -17,9 +17,9 @@ GNU General Public License for more details.
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
-from django.conf import settings
+#from django.conf import settings
 from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.contrib.auth.forms import AuthenticationForm
@@ -30,7 +30,7 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.views import login as django_login
 from django.core.mail import EmailMessage
 
-from gestorpsi.settings import SITE_DISABLED, ADMIN_URL, ADMINS_REGISTRATION, URL_APP, URL_HOME, SIGNATURE, URL_DEMO
+from gestorpsi.settings import SITE_DISABLED, ADMIN_URL, ADMINS_REGISTRATION, SIGNATURE, URL_DEMO, URL_APP, URL_HOME
 
 from gestorpsi.organization.models import Organization, ProfessionalResponsible
 from gestorpsi.gcm.models.invoice import Invoice
@@ -68,7 +68,7 @@ def user_authentication(request):
     user = authenticate(username=username, password=password)
 
     # user does not exist
-    if user is None:
+    if not user:
         set_trylogin(username)
         messages.error(request, _('Invalid username or password'))
         return render_to_response('registration/login.html', {'form': form }, context_instance=RequestContext(request))
@@ -91,27 +91,23 @@ def user_authentication(request):
 
     # none restriction to login from where.
     clear_login(user)
-    profile = user.get_profile()
+    # django login, user.profile is required
+    login(request, user)
 
     # choose a organization
-    if profile.organization.distinct().count() > 1:
-        # django login, user.profile is required
-        login(request, user)
-        # temp until load permissions based in org choice
-        request.session['temp_user'] = user
-
+    if user.profile.organization.distinct().count() > 1:
         # redirect to select org page
         return HttpResponseRedirect(reverse('authentication-select-organization'))
 
     # just one organization
     else: 
         # load profile user
-        profile.org_active = profile.organization.all()[0] # just one org
-        profile.save()
+        user.profile.org_active = user.profile.organization.all()[0] # just one org
+        user.profile.save()
 
         # new role
         user.groups.clear()
-        for role in user.get_profile().role_set.filter(organization=profile.org_active):
+        for role in user.get_profile().role_set.filter(organization=user.profile.org_active):
             user.groups.add(role.group)
 
         # django login
@@ -304,9 +300,10 @@ def register(request, success_url=None,
 '''
 def complete(request, success_url=None, extra_context=None):
 
-    from gestorpsi.settings import URL_APP, URL_HOME
-
     return render_to_response('registration/registration_complete.html',
-                                locals(),
+                                {
+                                    'URL_APP': URL_APP,
+                                    'URL_HOME': URL_HOME,
+                                },
                                 context_instance=RequestContext(request)
                             )

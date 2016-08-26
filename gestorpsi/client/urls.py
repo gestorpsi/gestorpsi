@@ -14,7 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, url
 from django.contrib.auth.decorators import login_required
 from gestorpsi.client.views import index, list, form, save, client_print, \
         organization_clients, add, home, order, referral_save, referral_list, referral_home, \
@@ -22,7 +22,7 @@ from gestorpsi.client.views import index, list, form, save, client_print, \
         occurrence_view, referral_occurrences, referral_plus_form, referral_plus_save, referral_queue, \
         referral_queue_save, referral_queue_remove, referral_ext_form, referral_ext_save, family, family_form, \
         add_company, company_related, company_related_form, referral_occurrences_action
-from gestorpsi.online_messages.views import referral_messages, occurrence_chat, chat_message, update_chat_message, exit_chat, client_messages, new_message_topic, topic_messages, new_topic_message, chat_messages_history
+from gestorpsi.online_messages.views import referral_messages, occurrence_chat, chat_message, update_chat_message, exit_chat, new_message_topic, topic_messages, new_topic_message, chat_messages_history
 from gestorpsi.authentication.views import login_check
 from gestorpsi.organization.views import list_prof_org
 
@@ -73,7 +73,7 @@ urlpatterns = patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/(?P<type>upcoming)/$', login_check(referral_occurrences)), # upcoming occurences
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/(?P<type>past)/$', login_check(referral_occurrences)), # past occurences
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<discharged>discharged)/$', login_check(referral_list)), # descharged referrals list
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/$', login_check(referral_home)), # referral home
+    url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/$', login_check(referral_home), name='client-referral-home'), # referral home
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/discharge/$', login_check(referral_discharge_form)), # referral shutdown
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/discharge/(?P<discharge_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/edit/$', login_check(referral_discharge_form), name='referral_discharge_edit'), # referral shutdown
 #    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/occurence/(?P<occurrence_id>\d+)/confirmation/$', login_check(occurrence_confirmation)), # occurence confirmation

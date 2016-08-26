@@ -61,14 +61,27 @@ GNU General Public License for more details.
                         <tbody>
                             {% for i in client_list %}
                                 <tr class="zebra_{% cycle 0,1 %}">
-                                    <td class="title"><a href="/client/{{i.id}}/home/">{{ i }}</a> {% if not i.active %}({% trans "deactivated" %}){% endif %}
+                                    <td class="title">
+                                        
+                                        <a href="{% url client-home i.id %}">{{ i.person.name }}</a> {% if not i.active %}({% trans "deactivated" %}){% endif %}
+
                                         {% for rc in i.referrals_charged %}
                                             {% if rc.service == object %}
+
                                                 <br />
-                                                {% trans "Referral ID" %}: <b><a href="/client/{{ i.id }}/referral/{{ rc.pk }}/">#{{ rc.pk }}</a></b>
-                                                {% if rc.professional.all %}<br />{% trans "Professionals" %}:</b> {% for p in rc.professional.all %}<a href="/careprofessional/{{ p.id }}/">{{ p }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}
-                                                <br />{% trans "all past occurrences (inclunding unmarked e remarked)" %}:</b> {{ rc.past_occurrences_all|length }}
+                                                {% trans "Referral ID" %}: <a href="{% url client-referral-home i.id  rc.pk %}"><b>#{{ rc.pk }}</b></a>
+
+                                                {% if rc.professional.all.0 %}
+                                                    <br />
+                                                    {% trans "Professionals" %}:
+                                                    {% for p in rc.professional.all %}<a href="{% url careprofessional-form p.id %}"><b>{{ p }}</b></a>
+                                                        {% if not forloop.last %}, {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+
                                                 <br />
+                                                {% trans "all past occurrences (inclunding unmarked e remarked)" %}: <b>{{ rc.past_occurrences_all|length }}</b>
+
                                             {% endif %}
                                         {% endfor %}
                                     </td>

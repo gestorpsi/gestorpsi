@@ -53,7 +53,18 @@ GNU General Public License for more details.
                         {% for i in client_list %}
                             <tr class="zebra_{% cycle 0,1 %}">
                                 <td class="title">
-                                    <a href="/client/{{ i.id }}/">{{ i.person.name }}</a>
+                                    <a href="{% url client-home i.id %}">{{ i.person.name }}</a>
+
+                                    {% for rc in i.referrals_charged %}
+                                        <br />
+                                        {% trans "Referral ID" %}: <a href="{% url client-referral-home i.id rc.pk %}"><b>#{{ rc.pk }}</b></a>
+
+                                        <br />
+                                        {% trans "Professionals" %}: {% for p in rc.professional.all %}<a href="{% url careprofessional-form p.id %}"><b>{{ p }}</b></a>{% if not forloop.last %}, {% endif %}{% endfor %}
+                                        <br />
+                                        {% trans "all past occurrences (inclunding unmarked e remarked)" %}: <b>{{ rc.past_occurrences_all|length }}</b>
+                                    {% endfor %}
+
                                 </td>
                                 <td>&nbsp;</td>
                             </tr>

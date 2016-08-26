@@ -313,12 +313,6 @@ def client_list(request, object_id=False, active=True):
         referral have professional and client.
         get all clients of professional by referral.
     """
-    # filter by ReferralDischarger
-    #if active == str(1):
-        #client_list = Referral.objects.filter(professional=object, organization=request.user.get_profile().org_active, referraldischarge__isnull=False)
-    #else:
-        #client_list = Referral.objects.filter(professional=object, organization=request.user.get_profile().org_active, referraldischarge__isnull=True)
-
     # filter by Client.active
     if active == str(1):
         client_list = Client.objects.filter(referral__professional=object, person__organization=request.user.get_profile().org_active, active=True).order_by('person__name').distinct()

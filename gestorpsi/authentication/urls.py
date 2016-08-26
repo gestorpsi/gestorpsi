@@ -19,8 +19,8 @@ from django.contrib.auth.views import password_reset, password_reset_done, passw
 from django.views.generic.simple import direct_to_template
 
 urlpatterns = patterns('gestorpsi.authentication.views',
-    (r'^authentication', 'user_authentication'),
-    url(r'^select_user_organization', 'user_organization', name='authentication-logout'),
+    url(r'^authentication', 'user_authentication', name='authentication-login-form'),
+    url(r'^select_organization/$', 'select_organization', name='authentication-select-organization'),
     url(r'^activate/complete/$', direct_to_template, {'template': 'registration/user_registration_complete.html'}, name='registration_activation_complete'),
     url(r'^password/reset/$', password_reset, {'template_name': 'registration/password_reset_form.html'}),
     url(r'^password/reset/done/$', password_reset_done, {'template_name': 'registration/password_reset_done.html'}),

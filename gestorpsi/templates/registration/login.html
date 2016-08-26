@@ -22,63 +22,16 @@ GNU General Public License for more details.
 
 {% block content %}
 
-    {% comment %}
-    <div class="browser_alert" style="text-align:justify; background:#ececec none repeat scroll 0 0; padding:25px; display:none;" >
-        <p style="font-weight: bold; font-size:15px;">
-            {% trans "Your browser is not compatible with and some functions can not work well" %}
-        </p>
-
-        <br />
-
-        <p style="font-weight: bold; font-size:15px;">
-            {% trans "Please, do free download of latest version of your preferred browser." %}
-        </p>
-    </div>
-
-    <div class="browser_alert" style="height:110px; border:0px dotted; display:block; background:#ececec none repeat scroll 0 0; display:none;" >
-        <div style="width:34%; float: left;">
-            <a href="https://www.google.com/chrome" target="_blank">
-                <img src="/media/img/logos/chrome-icon.png" >
-            </a>
-        </div>
-
-        <div style="width:33%; float: left;">
-            <a href="https://www.mozilla.org/pt-BR/firefox/new/" target="_blank">
-                <img src="/media/img/logos/firefox-icon.png" >
-            </a>
-        </div>
-
-        <div style="width:32%; float: left;">
-            <a href="https://support.apple.com/downloads/safari/" target="_blank">
-                <img src="/media/img/logos/safari-logo.png" >
-            </a>
-        </div>
-    </div>
-    {% endcomment %}
-
     <h1>{% trans "Welcome to GestorPsi" %}</h1>
 
-    <form method="post" action="/accounts/authentication/" id="form_login" class="ff_ok">
-
-        <fieldset class="orgField">
-            <label>{% trans "Short Name" %}<br /><input type="text" name="shortname" /></label>
-        </fieldset>
-
-        <fieldset class="userField">
-
+    <form method="post" action="{% url authentication-login-form %}" id="form_login" class="ff_ok">
+        <fieldset>
             <div class="ie_block">
-                {% if form_messages %}
-                    <ul class="errorlist">
-                        <li>{{ form_messages }}</li>
-                    </ul>
-                {% endif %}
-
-                <label>{% trans "Username" %}<br /><input id="id_username" type="text" name="username" maxlength="30" required ></label>
-                <label>{% trans "Password" %}<br /><input type="password" name="password" id="id_password" required></label>
+                <label>{% trans "Username" %}<br /><input type="text" name="username" id="id_username" maxlength="30" required ></label>
+                <label>{% trans "Password" %}<br /><input type="password" name="password" id="id_password" maxlength="30" required></label>
                 <input type="hidden" name="next" value="{{ next }}" />
                 <input type="submit" value="{% trans "Log in" %}" class="btn"/>
             </div>
-
         </fieldset>
     </form>
 

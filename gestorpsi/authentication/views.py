@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render_to_response, get_object_or_404
@@ -63,13 +64,14 @@ def user_authentication(request):
     username = request.POST.get('username').strip() # strip to remove all white space
     password = request.POST.get('password')
     
+    # login Django, open session.
     user = authenticate(username=username, password=password)
 
     # user does not exist
     if user is None:
         set_trylogin(username)
-        form_messages = _('Invalid username or password')
-        return render_to_response('registration/login.html', {'form': form, 'form_messages': form_messages })
+        messages.error(request, _('Invalid username or password'))
+        return render_to_response('registration/login.html', {'form': form }, context_instance=RequestContext(request))
     else:
         request.session['user_aux_id'] = user.id
 
@@ -86,42 +88,60 @@ def user_authentication(request):
     if not user.is_active:
         form_messages = _('Your account has been disable. Please contact our support')
         return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
-    else:
-        clear_login(user)
-        profile = user.get_profile()
-        if profile.organization.distinct().count() > 1:
-            try:
-                organization = profile.organization.get(short_name__iexact = request.POST.get('shortname'))
-                profile.org_active = organization
-                profile.save()
-                user.groups.clear()
-                for role in user.get_profile().role_set.filter(organization=organization):
-                    user.groups.add(role.group)
-                login(request, user)
-                return HttpResponseRedirect('/')
-            except Organization.DoesNotExist:
-                request.session['temp_user'] = user
-                return render_to_response('registration/select_organization.html', { 'objects': profile.organization.distinct() })
+
+    # none restriction to login from where.
+    clear_login(user)
+    profile = user.get_profile()
+
+    # choose a organization
+    if profile.organization.distinct().count() > 1:
+        # django login, user.profile is required
         login(request, user)
-        return HttpResponseRedirect(request.POST.get('next') or '/')
+        # temp until load permissions based in org choice
+        request.session['temp_user'] = user
+
+        # redirect to select org page
+        return HttpResponseRedirect(reverse('authentication-select-organization'))
+
+    # just one organization
+    else: 
+        # load profile user
+        profile.org_active = profile.organization.all()[0] # just one org
+        profile.save()
+
+        # new role
+        user.groups.clear()
+        for role in user.get_profile().role_set.filter(organization=profile.org_active):
+            user.groups.add(role.group)
+
+        # django login
+        login(request, user)
+        return HttpResponseRedirect('/')
 
 
+def select_organization(request):
+    """
+        Select organization when user have more than one org.
+        Change organization without logout of GPSI.
+    """
 
+    if not request.POST:
+        return render_to_response('registration/select_organization.html', { 'objects': request.user.profile.organization.distinct() })
 
-def user_organization(request):
-    organization = Organization.objects.get(pk=request.POST.get('organization'))
-    user = request.session['temp_user']
-    del request.session['temp_user']        
-    user.get_profile().org_active = organization
-    user.get_profile().save()
+    if request.POST:
+        # selected org
+        organization = Organization.objects.get(pk=request.POST.get('organization'))
 
-    """ Update roles according to selected organization """
-    user.groups.clear()
-    for role in user.get_profile().role_set.filter(organization=organization):
-        user.groups.add(role.group)
+        # load selected org
+        request.user.get_profile().org_active = organization
+        request.user.get_profile().save()
 
-    login(request, user)           
-    return HttpResponseRedirect('/')
+        # update roles according selected organization
+        request.user.groups.clear()
+        for role in request.user.get_profile().role_set.filter(organization=organization):
+            request.user.groups.add(role.group)
+
+        return HttpResponseRedirect('/')
 
 
 def set_trylogin(user):     

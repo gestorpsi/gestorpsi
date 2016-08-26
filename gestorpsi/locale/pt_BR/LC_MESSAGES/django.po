@@ -153,7 +153,7 @@ msgstr "Sigla do estabelecimento"
 
 #: authentication/views.py:63
 msgid "Invalid username or password"
-msgstr "Nome de usuário ou senha inválida"
+msgstr "Nome de usuário ou senha inválido."
 
 #: authentication/views.py:73
 msgid ""

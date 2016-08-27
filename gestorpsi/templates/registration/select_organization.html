@@ -1,4 +1,4 @@
-{% extends "registration/base.html" %}
+{% extends "core/main.html" %}
 
 {% comment %}
 
@@ -18,20 +18,16 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-{% block content %}
-
+{% block registration %}
+    <div class="main_area select_org">
         <h2>{% trans "Select Organization" %}</h2>
-        <br />
-
-        <div align="center" id="main_area" class="login">
-            <form name="loginform" id="loginform" action="{% url authentication-select-organization %}" method="post">
-                <select name="organization" class="large" id="organization" >
-                    {% for object in objects %}
-                        <option value="{{ object.id }}"> {{ object.name }} </option>
-                    {% endfor %}
-                </select>
-                <input type="submit" name="enter" id="enter" value="Entrar" tabindex="100" class="btn" />
-            </form>
-        </div>
-
+        <form name="loginform" id="loginform" action="{% url authentication-select-organization %}" method="post">
+            <select name="organization" class="large" id="organization" >
+                {% for object in objects %}
+                    <option value="{{ object.id }}"> {{ object.name }} </option>
+                {% endfor %}
+            </select>
+            <input type="submit" name="enter" id="enter" value="Entrar" tabindex="100" class="btn" />
+        </form>
+    </div>
 {% endblock %}

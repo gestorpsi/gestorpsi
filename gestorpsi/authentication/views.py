@@ -18,23 +18,21 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render_to_response
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-#from django.conf import settings
 from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.contrib.auth.forms import AuthenticationForm
 from django.template.defaultfilters import slugify
-from django.core.urlresolvers import reverse
 from django.forms.util import ErrorList
 from django.utils.translation import ugettext as _
 from django.contrib.auth.views import login as django_login
 from django.core.mail import EmailMessage
 
+from gestorpsi.util.views import get_object_or_None
 from gestorpsi.settings import SITE_DISABLED, ADMIN_URL, ADMINS_REGISTRATION, SIGNATURE, URL_DEMO, URL_APP, URL_HOME
-
 from gestorpsi.organization.models import Organization, ProfessionalResponsible
 from gestorpsi.gcm.models.invoice import Invoice
-
 from gestorpsi.authentication.forms import RegistrationForm
 from registration.models import RegistrationProfile
 
@@ -125,17 +123,28 @@ def select_organization(request):
         return render_to_response('registration/select_organization.html', { 'objects': request.user.profile.organization.distinct() })
 
     if request.POST:
+
         # selected org
-        organization = Organization.objects.get(pk=request.POST.get('organization'))
+        # check selected org, org cant be a user org list
+        organization = get_object_or_None( Organization, pk=request.POST.get('organization') )
 
-        # load selected org
-        request.user.get_profile().org_active = organization
-        request.user.get_profile().save()
+        if not organization in request.user.profile.organization.distinct():
+            messages.error(request, _(u'Organização inválida e/ou não existe.'))
+            return HttpResponseRedirect(reverse('authentication-select-organization'))
 
-        # update roles according selected organization
-        request.user.groups.clear()
-        for role in request.user.get_profile().role_set.filter(organization=organization):
-            request.user.groups.add(role.group)
+
+        # logoff and login of current org is not selected organization
+        if not request.user.get_profile().org_active == organization:
+            # load selected org
+            request.user.get_profile().org_active = organization
+            request.user.get_profile().save()
+
+            # update roles according selected organization
+            request.user.groups.clear()
+            for role in request.user.get_profile().role_set.filter(organization=organization):
+                request.user.groups.add(role.group)
+
+            messages.success(request, _(u'Logoff do estabelecimento feito com sucesso.'))
 
         return HttpResponseRedirect('/')
 

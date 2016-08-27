@@ -1891,3 +1891,12 @@ table.sign_history tbody tr.even {
 }
 
 form.schedule_occurrence li { float:none !important;}
+
+.title_gpsi { 
+    font-size: 30px;
+    background-color: #005a7d;
+    color:white;
+    letter-spacing: 5px;
+    font-weight: bold;
+    margin: 10px 10px 0;
+}

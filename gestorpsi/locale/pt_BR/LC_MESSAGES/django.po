@@ -5441,7 +5441,7 @@ msgstr "Funcionário(s)"
 #: templates/frontend/frontend_careprofessional_start.html:24
 #: templates/frontend/frontend_start.html:24
 msgid "Welcome"
-msgstr "Bem Vindo ao GestorPsi!"
+msgstr "Bem vindo"
 
 #: templates/frontend/frontend_careprofessional_start.html:27
 msgid "My services"

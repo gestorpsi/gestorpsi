@@ -22,7 +22,9 @@ GNU General Public License for more details.
 
 {% block content %}
 
-    <h1>{% trans "Welcome to GestorPsi" %}</h1>
+    <div class="title_gpsi">GestorPSI</div>
+    <br />
+    <h2>{% trans "Welcome" %}</h2>
 
     <form method="post" action="{% url authentication-login-form %}" id="form_login" class="ff_ok">
         <fieldset>
@@ -34,8 +36,6 @@ GNU General Public License for more details.
             </div>
         </fieldset>
     </form>
-
-    <br />
 
     {% include "tags/extra_links.html" %}
 

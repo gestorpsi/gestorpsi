@@ -22,9 +22,9 @@ from django.contrib.auth.decorators import login_required
 from gestorpsi.authentication.views import select_organization
 
 urlpatterns = patterns('gestorpsi.authentication.views',
-    url(r'^authentication', 'user_authentication', name='authentication-login-form'),
+    url(r'^authentication/$', 'user_authentication', name='authentication-login-form'),
     url(r'^selectorganization/$', login_required(select_organization), name='authentication-select-organization'),
-    url(r'^activate/complete/$', direct_to_template, {'template': 'registration/user_registration_complete.html'}, name='registration_activation_complete'),
+    url(r'^activate/complete/$', direct_to_template, {'template': 'registration/user_registration_complete.html'}, name='registration-activation-complete'),
     url(r'^password/reset/$', password_reset, {'template_name': 'registration/password_reset_form.html'}),
     url(r'^password/reset/done/$', password_reset_done, {'template_name': 'registration/password_reset_done.html'}),
     url(r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', password_reset_confirm, {'template_name': 'registration/password_reset_confirm.html'}, name='auth_password_reset_confim'),

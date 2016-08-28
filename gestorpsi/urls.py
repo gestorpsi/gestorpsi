@@ -16,9 +16,9 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # url
     (r'^$', login_required(frontend_start)),
-    url(r'^accounts/login/$', 'gestorpsi.authentication.views.gestorpsi_login', {'template_name': 'registration/login.html'}, name='auth_login'),
 
     # registration org form
+    url(r'^accounts/login/$', 'gestorpsi.authentication.views.gestorpsi_login', {'template_name': 'authentication/authentication_login_form.html'}, name='accounts-login-form'),
     url(r'^accounts/register/$', 'gestorpsi.authentication.views.register', name='registration-register'),
     url(r'^accounts/complete/$', 'gestorpsi.authentication.views.complete', name='registration-complete'),
 

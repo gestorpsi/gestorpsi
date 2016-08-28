@@ -1,4 +1,4 @@
-{% extends "registration/base.html" %}
+{% extends "core/main.html" %}
 
 {% comment %}
 
@@ -20,9 +20,11 @@ GNU General Public License for more details.
 
 {% block title %}{% trans "Log in" %}{% endblock %}
 
-{% block content %}
-<h1>{% trans "Welcome to GestorPsi" %}</h1>
-<br>
-{% trans "We are sorry, but the system is currently under maintenance. Please try again later. " %}
-<br>
+{% block registration %}
+    <div class="main_area login">
+        <h1>{% trans "Welcome to GestorPsi" %}</h1>
+        <br>
+        {% trans "We are sorry, but the system is currently under maintenance. Please try again later. " %}
+        <br>
+    </div>
 {% endblock %}

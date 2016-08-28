@@ -9,7 +9,7 @@ modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
 of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
+his program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
@@ -24,18 +24,16 @@ GNU General Public License for more details.
     <div class="main_area login">
 
         {% include "core/title.html" %}
-
         <br />
-        <h4>{% trans "Enter your e-mail address below, and we'll e-mail instructions for setting a new one." %}</h4>
-
-        <form action="" method="post" class="yform big">
-            {% csrf_token %}
+        <h2>{% trans "Welcome" %}</h2>
+        <form method="post" action="{% url authentication-login-form %}" id="form_login" class="ff_ok">
             <fieldset>
-                {{ form.email.errors }}
-                <label>{% trans 'E-mail address:' %}<br />
-                    {{ form.email }}
-                </label>
-            <input type="submit" class="btn" value="{% trans 'Reset password' %}" />
+                <div class="ie_block">
+                    <label>{% trans "Username" %}<br /><input type="text" name="username" id="id_username" maxlength="30" required ></label>
+                    <label>{% trans "Password" %}<br /><input type="password" name="password" id="id_password" maxlength="30" required></label>
+                    <input type="hidden" name="next" value="{{ next }}" />
+                    <input type="submit" value="{% trans "Log in" %}" class="btn"/>
+                </div>
             </fieldset>
         </form>
         {% include "tags/extra_links.html" %}

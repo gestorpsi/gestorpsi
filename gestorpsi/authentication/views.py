@@ -56,7 +56,7 @@ def user_authentication(request):
         return render_to_response('core/site_disabled.html')
 
     if not request.method == "POST":
-        return render_to_response('registration/login.html', {'form': AuthenticationForm() })
+        return render_to_response('authentication/authentication_login_form.html', {'form': AuthenticationForm() })
 
     form = AuthenticationForm(data=request.POST)
     username = request.POST.get('username').strip() # strip to remove all white space
@@ -69,7 +69,7 @@ def user_authentication(request):
     if not user:
         set_trylogin(username)
         messages.error(request, _('Invalid username or password'))
-        return render_to_response('registration/login.html', {'form': form }, context_instance=RequestContext(request))
+        return render_to_response('authentication/authentication_login_form.html', {'form': form }, context_instance=RequestContext(request))
     else:
         request.session['user_aux_id'] = user.id
 
@@ -81,11 +81,11 @@ def user_authentication(request):
     # user has not confirmed registration yet
     if user.registrationprofile_set.all()[0].activation_key != 'ALREADY_ACTIVATED':
         form_messages = _('Your account has not been confirmated yet. Please check your email and use your activation code to continue')
-        return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
+        return render_to_response('authentication/authentication_login_form.html', {'form':form, 'form_messages': form_messages })
     
     if not user.is_active:
         form_messages = _('Your account has been disable. Please contact our support')
-        return render_to_response('registration/login.html', {'form':form, 'form_messages': form_messages })
+        return render_to_response('authentication/authentication_login_form.html', {'form':form, 'form_messages': form_messages })
 
     # none restriction to login from where.
     clear_login(user)
@@ -120,7 +120,7 @@ def select_organization(request):
     """
 
     if not request.POST:
-        return render_to_response('registration/select_organization.html', { 'objects': request.user.profile.organization.distinct() })
+        return render_to_response('authentication/authentication_select_organization.html', { 'objects': request.user.profile.organization.distinct() })
 
     if request.POST:
 
@@ -186,7 +186,7 @@ def gestorpsi_login(request, *args, **kwargs):
 
 def register(request, success_url=None,
              form_class=RegistrationForm,
-             template_name='registration/registration_form.html',
+             template_name='registration/registration_organization_form.html',
              extra_context=None):
 
     if request.method == 'POST': #the full process of registration is done here
@@ -282,7 +282,7 @@ def register(request, success_url=None,
             msg.bcc =  bcc_list
             msg.send()
             
-            return HttpResponseRedirect(success_url or reverse('registration-complete'))
+            return HttpResponseRedirect(reverse('registration-complete'))
 
     # mount form, new register
     else:
@@ -307,12 +307,5 @@ def register(request, success_url=None,
 '''
     registration complete. New org
 '''
-def complete(request, success_url=None, extra_context=None):
-
-    return render_to_response('registration/registration_complete.html',
-                                {
-                                    'URL_APP': URL_APP,
-                                    'URL_HOME': URL_HOME,
-                                },
-                                context_instance=RequestContext(request)
-                            )
+def complete(request):
+    return render_to_response('registration/registration_organization_complete.html', context_instance=RequestContext(request) )

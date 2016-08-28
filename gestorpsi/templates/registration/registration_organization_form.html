@@ -1,4 +1,4 @@
-{% extends "registration/base.html" %}
+{% extends "core/main.html" %}
 
 {% comment %}
     Copyright (C) 2008 GestorPsi
@@ -14,14 +14,14 @@
     GNU General Public License for more details.
 {% endcomment %}
 
-
 {% load i18n %}
 
 {% block extrahead %}
     <script type="text/javascript" src="/media/js/gestorpsi.gcm_registration_form.js"></script>
 {% endblock extrahead %}
   
-{% block content %}
+{% block registration %}
+    <div class="main_area login">
 
         {% include "tags/extra_links.html" %}
 
@@ -187,4 +187,5 @@
             </fieldset>
         </form>
 
+    </div>
 {% endblock %}

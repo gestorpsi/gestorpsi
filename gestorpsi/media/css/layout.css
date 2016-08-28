@@ -1552,6 +1552,15 @@ body .main_area.login {
         text-align: center;
 }
 
+.select_org {
+        width: 100%;
+        margin: 50px auto;
+        float: none;
+        border: none;
+        background: none;
+        text-align: center;
+}
+
 body .main_area.login form fieldset {
         background:#ECECEC;
         padding: 25px;
@@ -1899,4 +1908,5 @@ form.schedule_occurrence li { float:none !important;}
     letter-spacing: 5px;
     font-weight: bold;
     margin: 10px 10px 0;
+    padding: 5px;
 }

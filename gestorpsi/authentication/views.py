@@ -144,7 +144,7 @@ def select_organization(request):
             for role in request.user.get_profile().role_set.filter(organization=organization):
                 request.user.groups.add(role.group)
 
-            messages.success(request, _(u'Logoff do estabelecimento feito com sucesso.'))
+            messages.success(request, _(u'Login para %s feito com sucesso.') % organization.name )
 
         return HttpResponseRedirect('/')
 

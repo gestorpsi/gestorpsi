@@ -860,7 +860,7 @@ def daily_occurrences(request, year=1, month=1, day=None, place=None):
     array['util'] = {
         'date': ('%s-%s-%s' % (year, month, day)),
         'date_field': ('%s/%s/%s' % (year, month, day)),
-        u'str_date': '%s, %s %s %s %s %s' % (date.strftime("%A").decode('utf-8'), date.strftime("%d"), _('of'), date.strftime("%B").decode('utf-8'), _('of'), date.strftime("%Y")),
+        u'str_date': '%s, %s %s %s %s %s' % (date.strftime("%A").decode('utf-8').capitalize(), date.strftime("%d"), _('of'), date.strftime("%B").decode('utf-8'), _('of'), date.strftime("%Y")),
         'next_day': (date + timedelta(days=+1)).strftime("%Y/%m/%d"),
         'prev_day': (date + timedelta(days=-1)).strftime("%Y/%m/%d"),
         'weekday': date.weekday(),

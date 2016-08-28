@@ -5916,7 +5916,7 @@ msgstr "Histórico de uso"
 #: templates/referral/referral_details.html:147
 #: templates/schedule/schedule_week_table.html:23
 msgid "From"
-msgstr "de"
+msgstr "De"
 
 #: templates/organization/organization_form.html:317
 #: templates/organization/organization_form.html:363

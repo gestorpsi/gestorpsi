@@ -24,9 +24,9 @@ from gestorpsi.authentication.views import select_organization
 urlpatterns = patterns('gestorpsi.authentication.views',
     url(r'^authentication/$', 'user_authentication', name='authentication-login-form'),
     url(r'^selectorganization/$', login_required(select_organization), name='authentication-select-organization'),
-    url(r'^activate/complete/$', direct_to_template, {'template': 'registration/user_registration_complete.html'}, name='registration-activation-complete'),
-    url(r'^password/reset/$', password_reset, {'template_name': 'registration/password_reset_form.html'}),
-    url(r'^password/reset/done/$', password_reset_done, {'template_name': 'registration/password_reset_done.html'}),
-    url(r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', password_reset_confirm, {'template_name': 'registration/password_reset_confirm.html'}, name='auth_password_reset_confim'),
+    url(r'^activate/complete/$', direct_to_template, {'template': 'registration/user_registration_complete.html'}, name='user-registration-complete'),
+    url(r'^password/reset/$', password_reset, {'template_name':'registration/password_reset_form.html'}, name='authentication-password-reset'),
+    url(r'^password/reset/done/$', password_reset_done, {'template_name': 'registration/password_reset_done.html'}, name='authentication-password-reset-done'),
+    url(r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', password_reset_confirm, {'template_name': 'registration/password_reset_confirm.html'}, name='authentication-password-reset-confirm'),
     url(r'^password/reset/complete/$', password_reset_complete, {'template_name': 'registration/password_reset_complete.html'}, name='auth_password_reset_complete'),
 )

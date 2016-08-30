@@ -22,7 +22,6 @@ GNU General Public License for more details.
 """
 
 from django.contrib import admin
-
 from datetime import datetime
 
 from gestorpsi.gcm.models.invoice import Invoice
@@ -30,11 +29,40 @@ from gestorpsi.gcm.models.plan import Plan
 from gestorpsi.gcm.models.payment import PaymentType
 from gestorpsi.gcm.forms.invoice import InvoiceForm
 
+'''
+    filter and action for Plan
+'''
+# ativo
+def ativo(modeladmin, request, queryset):
+    for obj in queryset:
+        obj.active = True
+        obj.save()
+ativo.short_description = u"Ativar planos"
+
+def inativo(modeladmin, request, queryset):
+    for obj in queryset:
+        obj.active = False
+        obj.save()
+inativo.short_description = u"Inativar planos"
+
+# visivel para client
+def visible_client(modeladmin, request, queryset):
+    for obj in queryset:
+        obj.visible_client = True
+        obj.save()
+visible_client.short_description = u"Tornar visivel para cliente"
+
+def not_visible_client(modeladmin, request, queryset):
+    for obj in queryset:
+        obj.visible_client = False
+        obj.save()
+not_visible_client.short_description = u"Tornar nao visivel para cliente"
+
 
 class PlanAdmin(admin.ModelAdmin):
-    list_display = ('name', 'value','duration','staff_size','active')
-    list_filter = ('active',)
-    pass
+    list_display = ('name', 'value','duration','staff_size','active','visible_client')
+    list_filter = ('active','visible_client')
+    actions = [ativo, inativo, visible_client, not_visible_client]
 admin.site.register(Plan, PlanAdmin)
 
 

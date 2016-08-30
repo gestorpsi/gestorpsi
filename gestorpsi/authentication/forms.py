@@ -113,7 +113,7 @@ class AuthenticationRegistrationForm(RegistrationRegistrationForm):
 """
 class RegistrationForm(AuthenticationRegistrationForm):
 
-    plan = forms.ModelChoiceField(label=_('Access Plan'), help_text=_('Choice one access plan'), queryset=Plan.objects.filter(active=True))
+    plan = forms.ModelChoiceField(label=_('Access Plan'), help_text=_('Choice one access plan'), queryset=Plan.objects.filter(active=True, visible_client=True))
     phone = forms.CharField(max_length=15, label=_('Phone Number'), help_text=_('Enter your phone number with area code here'), widget=forms.TextInput(attrs={'mask':'(99) 9999-9999?9',}))
     cpf = fields.CPFField(label=_('CPF Number'), help_text=_('Enter your CPF number here'), widget=forms.TextInput(attrs={'mask':'999.999.999-99',}))
     address = forms.CharField(max_length=255, label=_('Address Street'), help_text=_('Enter your address here'))

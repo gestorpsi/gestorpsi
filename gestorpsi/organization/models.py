@@ -403,8 +403,18 @@ class Organization(models.Model):
     def get_alert_to_readonly__(self):
 
         # last current invoice
-        i = self.invoice_set.filter( start_date__lte=date.today(), end_date__gte=date.today() )[0]
-        days = (i.end_date-(date.today())).days
+        """
+            current invoice myabe not exist.
+            client suspend signature, than, have just pass invoices.
+            organization, read only.
+        """
+
+        try: # empty invoice
+            i = self.invoice_set.filter( start_date__lte=date.today(), end_date__gte=date.today() )[0]
+            days = (i.end_date-(date.today())).days
+        except:
+            days = 0
+            pass
 
         """
             check negative days, -5

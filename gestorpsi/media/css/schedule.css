@@ -146,8 +146,8 @@ div.filter.professional td span {	cursor: pointer; position: relative; padding-l
 }
 #calendar_link {
     position: absolute;
-    top: 115px;
-    left: 30px;
+    margin-top: 15px;
+    margin-left: 30px;
     display: block;
     height: 35px;
     width: 40px;

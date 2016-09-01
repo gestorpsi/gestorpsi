@@ -77,6 +77,7 @@ def start(request):
     if request.user.get_profile().person.is_employee():
         """
             events of all careprofessional
+            birth date of all persons
         """
         events = schedule_occurrences(request,\
                 datetime.now().strftime('%Y'),\

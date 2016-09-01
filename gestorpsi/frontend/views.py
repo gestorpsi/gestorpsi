@@ -75,10 +75,13 @@ def start(request):
     
     """ user's employee home page """
     if request.user.get_profile().person.is_employee():
-        """ items to be added in secretary home page:
-            - today event list
-            - referrals (complete information)
-            - queue """
-        return HttpResponseRedirect('/schedule/events/')
+        """
+            events of all careprofessional
+        """
+        events = schedule_occurrences(request,\
+                datetime.now().strftime('%Y'),\
+                datetime.now().strftime('%m'),\
+                datetime.now().strftime('%d')).filter(event__referral__professional__person__organization=request.user.get_profile().org_active )
+        return render_to_response('frontend/frontend_secretary.html', locals(), context_instance=RequestContext(request))
 
     raise Http404

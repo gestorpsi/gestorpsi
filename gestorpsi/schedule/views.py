@@ -830,7 +830,7 @@ def schedule_occurrences(request, year=1, month=1, day=None, st_timeh=00, st_tim
     objs = ScheduleOccurrence.objects.filter(
             start_time__gte=date_start,
             start_time__lt=date_end,
-            event__referral__organization=request.user.get_profile().org_active.id
+            event__referral__organization=request.user.get_profile().org_active
             ).exclude(occurrenceconfirmation__presence = 4 # unmarked's
             ).exclude(occurrenceconfirmation__presence = 5 # remarked
             ).exclude(room__place__active = False # exclude not active places

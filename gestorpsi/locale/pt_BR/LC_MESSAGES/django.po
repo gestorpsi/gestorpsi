@@ -5463,6 +5463,9 @@ msgstr "Sem serviços cadastrados"
 msgid "My today's schedule"
 msgstr "Minha agenda"
 
+msgid "Today's schedule"
+msgstr "Agenda de hoje"
+
 #: templates/frontend/frontend_careprofessional_start.html:97
 msgid "There is no events today"
 msgstr "Nenhum evento hoje"

@@ -1,0 +1,67 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<div class="main_area">
+
+    <h3>Aniversariante{{ birthdate_list|pluralize }}</h3>
+
+    <h3>
+        <form action="{% url frontend-home %}" method="post">
+
+            <select name="month_filter" class="normal">
+                {% for x in month_list %}
+                    <option value="{{ forloop.counter }}" {% ifequal x month_string %}selected{% endifequal %}>{{ x }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="active_filter">
+                <option value="1" {% ifequal active_filter 1 %}selected{% endifequal %}>Ativo</option>
+                <option value="0" {% ifequal active_filter 0 %}selected{% endifequal %}>Inativo</option>
+            </select>
+            
+            <input type="submit" value="Filtrar" class="mini">
+        </form>
+    </h3>
+
+
+    <div class="contact">
+      {% if birthdate_list %}
+        <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in birthdate_list %}
+                    <tr class="{% cycle 'zebra_0' 'zebra_1' %}" >
+                        <td class="title">
+                            <a href="/client/{{ p.client.id }}/home" target="_blank">{{ p.name }}</a><br />
+                            {{ p.birthDate }} | {{ p.age }} anos
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      {% else %}
+         <p>{% trans "Nenhum anivers&aacute;riante encontrado." %}</p>
+      {% endif %}
+    </div>
+</div>

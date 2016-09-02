@@ -51,7 +51,7 @@ GNU General Public License for more details.
 
                 <div>
                     <label>{% trans "Inscription date" %}<br />
-                        <input type="text" value="{{ obj.date_created }}" readonly  />
+                        <input type="text" value="{{ obj.date_created }}" readonly class="big" />
                     </label>
                 </div>
                 
@@ -59,7 +59,7 @@ GNU General Public License for more details.
                     <label>{% trans "Plan" %}<br />
                         <select name="prefered_plan" class="extrabig prefered_plan">
                         {% for p in plans %}
-                            <option value="{{ p.id }}" {% ifequal obj.prefered_plan_id p.id %}selected{% else %}disabled="true"{% endifequal %} >{{ p.name }} / R$ {{ p.value }} por {{ p.duration }} m&ecirc;s{{ p.duration|pluralize:"es" }}</option>
+                            <option value="{{ p.id }}" {% ifequal obj.prefered_plan.id p.id %}selected{% else %}disabled="true"{% endifequal %} >{{ p.name }} / R$ {{ p.value }} por {{ p.duration }} m&ecirc;s{{ p.duration|pluralize:"es" }}</option>
                         {% endfor %}
                         </select>
                     </label>
@@ -132,24 +132,23 @@ GNU General Public License for more details.
 
                 <!-- future -->
                 {% if obj.invoice_.0 %}
-                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
+                    <div class='main_area' style="padding-bottom:5px; text-align:center; width:680px; margin-left:5px; margin-top:10px;">
                         <h3>Pr&oacute;xima assinatura</h3>
-                            <table style='margin-left:10px; width:100%;'>
+                            <table style='width:100%;'>
                                 <tr style='width:100%;'>
-                                    <th style='width:30%;'>Plano</th>
-                                    <th style='width:15%'>In&iacute;cio</th>
-                                    <th style='width:15%'>Fim/Vencimento</th>
-                                    <th style='width:40%'>A&ccedil;&atilde;o</th>
+                                    <th>Plano</th>
+                                    <th>In&iacute;cio</th>
+                                    <th>Fim periodo</th>
+                                    <th>Vencimento</th>
+                                    <th>A&ccedil;&atilde;o</th>
                                 </tr>
-                            </table>
-
-                            <table style='margin-left:10px; width:100%;'>
                                 <tr>
                                     {% for x in obj.invoice_.0 %}
-                                        <th style='width:30%; font-weight: normal;'>{{ x.plan }}</th>
-                                        <th style='width:15%; font-weight: normal; background-color: yellow;'>{{ x.start_date|date:"d M Y" }}</th>
-                                        <th style='width:15%; font-weight: normal;'>{{ x.end_date|date:"d M Y" }}</th>
-                                        <th style='width:40%; font-weight: normal;'>
+                                        <th style='font-weight: normal;'>{{ x.plan }}</th>
+                                        <th style='font-weight: normal; background-color: yellow;'>{{ x.start_date|date:"d M Y" }}</th>
+                                        <th style='font-weight: normal;'>{{ x.end_date|date:"d M Y" }}</th>
+                                        <th style='font-weight: normal;'>{{ x.expiry_date|date:"d M Y" }}</th>
+                                        <th style='font-weight: normal;'>
 
                                             {% ifequal x.status 0 %}
 
@@ -196,24 +195,24 @@ GNU General Public License for more details.
 
                 <!-- current -->
                 {% if obj.invoice_.1 %}
-                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
+                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:680px; margin-left:5px; margin-top:10px;">
                         <h3>Assinatura atual</h3>
-                            <table style='margin-left:10px; width:100%;'>
+                            <table style='margin-left:0px; width:100%;'>
                                 <tr style='width:100%;'>
-                                    <th style='width:30%;'>Plano</th>
-                                    <th style='width:15%'>In&iacute;cio</th>
-                                    <th style='width:15%'>Fim/Vencimento</th>
-                                    <th style='width:40%'>A&ccedil;&atilde;o</th>
+                                    <th>Plano</th>
+                                    <th>In&iacute;cio</th>
+                                    <th>Fim periodo</th>
+                                    <th>Vencimento</th>
+                                    <th>A&ccedil;&atilde;o</th>
                                 </tr>
-                            </table>
 
-                            <table style='margin-left:10px; width:100%;'>
-                                    {% for x in obj.invoice_.1 %}
+                                {% for x in obj.invoice_.1 %}
                                     <tr>
-                                        <th style='width:30%; font-weight: normal;'>{{ x.plan }}</th>
-                                        <th style='width:15%; font-weight: normal;'>{{ x.start_date|date:"d M Y" }}</th>
-                                        <th style='width:15%; font-weight: normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.end_date|date:"d M Y" }}</th>
-                                        <th style='width:40%; font-weight: normal;'>
+                                        <th style='font-weight: normal;'>{{ x.plan }}</th>
+                                        <th style='font-weight: normal;'>{{ x.start_date|date:"d M Y" }}</th>
+                                        <th style='font-weight: normal;'>{{ x.end_date|date:"d M Y" }}</th>
+                                        <th style='font-weight: normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.expiry_date|date:"d M Y" }}</th>
+                                        <th style='font-weight: normal;'>
 
                                             {% ifequal x.status 0 %}
                                                 <!-- boleto -->
@@ -251,8 +250,7 @@ GNU General Public License for more details.
                                             {% endifequal %}
 
                                     </tr>
-                                    <tr><th>.</th></tr>
-                                    {% endfor %}
+                                {% endfor %}
                                             
                             </table>
                     </div>
@@ -261,24 +259,24 @@ GNU General Public License for more details.
 
                 <!-- pass -->
                 {% if obj.invoice_.3 %}
-                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
+                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:680px; margin-left:5px; margin-top:10px;">
                         <h3>Assinatura vencida</h3>
                             <table style='margin-left:10px; width:100%;'>
                                 <tr style='width:100%;'>
-                                    <th style='width:30%;'>Plano</th>
-                                    <th style='width:15%'>In&iacute;cio</th>
-                                    <th style='width:15%'>Fim/Vencimento</th>
-                                    <th style='width:40%'>A&ccedil;&atilde;o</th>
+                                    <th>Plano</th>
+                                    <th>In&iacute;cio</th>
+                                    <th>Fim periodo</th>
+                                    <th>Vencimento</th>
+                                    <th>A&ccedil;&atilde;o</th>
                                 </tr>
-                            </table>
 
-                            <table style='margin-left:0px; width:100%;'>
                                 {% for x in obj.invoice_.3 %}
                                     <tr>
-                                        <th style='width:30%; font-weight:normal;'>{{ x.plan }}</th>
-                                        <th style='width:15%; font-weight:normal;'>{{ x.start_date|date:"d M Y" }}</th>
-                                        <th style='width:15%; font-weight:normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.end_date|date:"d M Y" }}</th>
-                                        <th style='width:40%; font-weight:normal;'>
+                                        <th style='font-weight: normal;'>{{ x.plan }}</th>
+                                        <th style='font-weight: normal;'>{{ x.start_date|date:"d M Y" }}</th>
+                                        <th style='font-weight: normal;'>{{ x.end_date|date:"d M Y" }}</th>
+                                        <th style='font-weight: normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.expiry_date|date:"d M Y" }}</th>
+                                        <th style='font-weight: normal;'>
                                             {% ifequal x.status 0 %}
                                                 <!-- boleto -->
                                                 {% ifequal x.payment_type.id 2 %}

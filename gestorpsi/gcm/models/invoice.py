@@ -46,14 +46,14 @@ class Invoice(models.Model):
     date_payed = models.DateField(_(u'Data do Pagamento'), null=True, blank=True)
     date_payed.help_text=_('Preencher apenas quando efetuado pagamento. Formato aaaa/mm/dd Ex: 2014-12-31')
     
-    start_date = models.DateField(_(u'Data início periodo'), null=False, blank=False, default='2000-01-01')
-    start_date.help_text=_('Formato aaaa/mm/dd Ex: 2014-12-31')
+    start_date = models.DateField(_(u'Início periodo'), null=False, blank=False, default='2000-01-01')
+    start_date.help_text=_('Formato dd/mm/aaaa Ex: 31-12-2014')
 
-    end_date = models.DateField(_(u'Data do fim Periodo'), null=False, blank=False, default='2000-01-01') # vencimento e sem acesso ao sistema
-    end_date.help_text=_(u'Formato aaaa/mm/dd Ex: 2014-12-31. Organização modo apenas leitura.')
+    end_date = models.DateField(_(u'Fim Periodo'), null=False, blank=False, default='2000-01-01') # vencimento e sem acesso ao sistema
+    end_date.help_text=_('Formato dd/mm/aaaa Ex: 31-12-2014')
     
-    expiry_date = models.DateField(_('Data de Expiracao'), null=True, blank=True)
-    expiry_date.help_text = _('Formato aaaa/mm/dd  Ex: 2014-12-31 Data em que o plano vence. Conta do cliente modo apenas leitura.')
+    expiry_date = models.DateField(_('Pagamento/Vencimento'), null=True, blank=True)
+    expiry_date.help_text = _('Formato dd/mm/aaaa  Ex: 31-12-2014 Data em que o plano vence, deve ser pago. Conta do cliente modo apenas leitura.')
     
     ammount = models.DecimalField(_('Valor'), decimal_places=2, max_digits=8, null=True, blank=True)
     ammount.help_text=_('Utilizar pontos, nao virgulas. Ex.: 39.90')
@@ -109,7 +109,7 @@ class Invoice(models.Model):
             self.date_payed = date.today()
             self.start_date = self.date_payed
             self.end_date = self.start_date + relativedelta(months=1)
-            self.expiry_date = self.end_date
+            self.expiry_date = self.start_date + relativedelta(days=7)
             self.payment_type = PaymentType.objects.get(pk=4)
 
         super(Invoice, self).save()

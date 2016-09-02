@@ -238,7 +238,7 @@ def register(request, success_url=None,
             # invoice
             i = Invoice()
             i.organization = org
-            i.status = 2
+            i.status = 2 # free
             i.save()
             
             bcc_list = ADMINS_REGISTRATION

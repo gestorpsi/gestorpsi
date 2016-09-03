@@ -148,6 +148,7 @@ MIDDLEWARE_CLASSES = (
     'gestorpsi.extra.UserTracebackMiddleware',
     #'gestorpsi.util.usertimeout.UserTimeout',
     #'gestorpsi.util.showqueries.ShowQueries',
+    'threadlocals.middleware.ThreadLocalMiddleware',
 )
 
 ROOT_URLCONF = 'gestorpsi.urls'

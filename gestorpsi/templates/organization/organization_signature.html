@@ -132,7 +132,7 @@ GNU General Public License for more details.
 
                 <!-- future -->
                 {% if obj.invoice_.0 %}
-                    <div class='main_area' style="padding-bottom:5px; text-align:center; width:680px; margin-left:5px; margin-top:10px;">
+                    <div class='main_area' style="padding-bottom:5px; text-align:center; width:680px; margin-left:0px; margin-top:10px;">
                         <h3>Pr&oacute;xima assinatura</h3>
                             <table style='width:100%;'>
                                 <tr style='width:100%;'>
@@ -195,7 +195,7 @@ GNU General Public License for more details.
 
                 <!-- current -->
                 {% if obj.invoice_.1 %}
-                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:680px; margin-left:5px; margin-top:10px;">
+                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:680px; margin-left:0px; margin-top:10px;">
                         <h3>Assinatura atual</h3>
                             <table style='margin-left:0px; width:100%;'>
                                 <tr style='width:100%;'>
@@ -259,9 +259,9 @@ GNU General Public License for more details.
 
                 <!-- pass -->
                 {% if obj.invoice_.3 %}
-                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:680px; margin-left:5px; margin-top:10px;">
+                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:680px; margin-left:0px; margin-top:10px;">
                         <h3>Assinatura vencida</h3>
-                            <table style='margin-left:10px; width:100%;'>
+                            <table style='margin-left:0px; width:100%;'>
                                 <tr style='width:100%;'>
                                     <th>Plano</th>
                                     <th>In&iacute;cio</th>
@@ -271,7 +271,7 @@ GNU General Public License for more details.
                                 </tr>
 
                                 {% for x in obj.invoice_.3 %}
-                                    <tr>
+                                    <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
                                         <th style='font-weight: normal;'>{{ x.plan }}</th>
                                         <th style='font-weight: normal;'>{{ x.start_date|date:"d M Y" }}</th>
                                         <th style='font-weight: normal;'>{{ x.end_date|date:"d M Y" }}</th>

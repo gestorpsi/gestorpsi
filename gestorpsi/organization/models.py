@@ -296,7 +296,7 @@ class Organization(models.Model):
             self.active = False
         else:
             # read only?
-            if self.invoice_()[2]: # one not payed overdue invoice
+            if self.invoice_()[4]: # one not payed overdue invoice
                 self.active = False
             else:
                 self.active = True
@@ -456,15 +456,17 @@ class Organization(models.Model):
     '''
         retorna todas as faturas
         array
-            0 = proxima
+            0 = proxima/futuro
             1 = corrente/atual
-            2 = vencida
+            2 = passado e pendente
+            3 = passado e paga
+            4 = pendente/vencido/não pago
 
         filter pago ou não no html
     '''
     def invoice_(self):
 
-        r = [False]*4
+        r = [False]*5
 
         # future
         r[0] = self.invoice_set.filter( start_date__gt=date.today() )
@@ -473,16 +475,20 @@ class Organization(models.Model):
         r[1] = self.invoice_set.filter( start_date__lte=date.today(), end_date__gte=date.today() )
 
         # past
-        # 1t of all overdue invoices
+        # 1t passado e pendente
         r[2] = []
         for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today(), status=0 ).order_by('-end_date'):
             r[2].append(x)
 
+        # 2t passado e pago
         # copy r2
         import copy
         r[3] = copy.deepcopy(r[2])
-        for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today, status__gt=0).order_by('-date'):
+        for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today, status__gt=0 ).order_by('-date'):
             r[3].append(x)
+
+        # pendente
+        r[4] = self.invoice_set.filter( expiry_date__lt=date.today(), status=0 )
 
         return r
 

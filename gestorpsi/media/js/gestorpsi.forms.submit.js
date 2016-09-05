@@ -509,9 +509,10 @@ $(function() {
             submitHandler: function(form) {
                  var form_file_options = {
                       success:    function(filename) {
-                         var img = $(form).parent('div').siblings('form:first').children('div').children('div.photo').children('img.img_people');
-                         $(img).attr('src', '/media/img/organization/'  + $(img).attr('organization') + '/.thumb/' + filename);
-                         $(form).parent('div').siblings('form:first').children('div').children('div.photo').children('input.photo').val(filename);
+                         org_id = $('input#my_organization_id').val();
+                         url_img = '/media/img/organization/' + org_id + '/.thumb/' + filename;
+                         $('div.photo input.photo').val(filename); // input form person
+                         $('div.photo img.img_people').attr('src', url_img); // load image in page
                       }
                  };
                  $(form).ajaxSubmit(form_file_options);
@@ -519,7 +520,6 @@ $(function() {
             }
           });
      });
-
 
 
      /*

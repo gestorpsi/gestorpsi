@@ -1,32 +1,31 @@
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
 {% endcomment %}
 
 {% load i18n %}
 
 <div class="photo">
-        <img class="img_people" organization="{{ user.get_profile.org_active.id }}" src="{% if object.person.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
+        <input id="my_organization_id" type="hidden" value="{{ user.get_profile.org_active.id }}">
+        <img class="img_people" src="{% if object.person.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.person.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
         <a class="male notajax gender{% ifequal object.person.gender '2' %} active{% endifequal %}" value="2"><span>{% trans "Male" %}</span></a>
         <a class="female notajax gender{% ifequal object.person.gender '1' %} active{% endifequal %}" value="1"><span>{% trans "Female" %}</span></a>
-
         <a class="clips notajax">{% trans "Photo" %}</a>
         <input type="hidden" name="photo" value="{{ object.person.photo }}" class="photo" />
         <a class="notajax delete" title="delete" onclick="$(this).siblings('input.photo').val(''); $(this).siblings('img.img_people').attr('src', '/media/img/generic_photo.gif');"><span>{% trans "Delete" %}</span></a>
         <input type="hidden" name="gender" value="{{ object.person.gender }}" class="gender" />
-
-</div> 
+</div>
 
 <!-- People Personal Identification Form -->
 <fieldset class="fieldset_personal_identification">

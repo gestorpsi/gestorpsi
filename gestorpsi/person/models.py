@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
+
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 """
 
 import reversion
@@ -251,6 +252,7 @@ class CompanyClient(models.Model):
     class Meta:
         ordering = ['-active', '-responsible', 'client']
         unique_together = (('client', 'company'),)
+        app_label = 'person_company_client'
 
 class Company(models.Model):
     person = models.OneToOneField(Person, blank=True, null=True)
@@ -267,6 +269,9 @@ class Company(models.Model):
             return c[0].cnae_class
         return None
     cnae_class_name = property(_cnae_class_name)
+
+    class Meta:
+        app_label = 'person_company'
 
 reversion.register(Company)
 reversion.register(CompanyClient)

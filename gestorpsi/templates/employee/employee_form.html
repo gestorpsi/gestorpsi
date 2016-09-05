@@ -2,17 +2,17 @@
 
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -30,71 +30,52 @@ GNU General Public License for more details.
         {% endif %}
         <li><a href="/employee/deactive/">{% trans "Deactives" %}</a></li>
         {% if object.id %}<li><a class="active">{{ object.person.name }}</a></li>{% endif %}
-        
     </ul>
 {% endblock %}
 
 {% block core %}
 
-<h2 id="title_addressbook" style="display:none"></h2>
+    <h2 id="title_addressbook" style="display:none"></h2>
 
-{% if object.id %}
-	<h2 class="title_employee title">{{ object.person.name }}</h2>
-{% else %}
-	<h2 class="title_employee title">{% trans "Adding New Employee" %}</h2>
-	<p class="description">{% trans "Inform the employee details then click on Save button" %}</p>
-{% endif %}
+    {% if object.id %}
+        <h2 class="title_employee title">{{ object.person.name }}</h2>
+    {% else %}
+        <h2 class="title_employee title">{% trans "Adding New Employee" %}</h2>
+        <p class="description">{% trans "Inform the employee details then click on Save button" %}</p>
+    {% endif %}
 
+    <h2 id="title_contacts" style="display:none"></h2>
+    <h2 id="title_myoffice" style="display:none"></h2>
 
-</p>
-<h2 id="title_contacts" style="display:none"></h2>
-<h2 id="title_myoffice" style="display:none"></h2>
+    <form action="/employee/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" />
+        <div class="main_area">
 
-
-<form action="/employee/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" id="form_employee" class="form_people collapsable form_employee">	
-<div class="main_area">
-
-	<!-- <a href="" id="help">&nbsp;</a> -->
-	<!-- DataTypes form menu -->
+            {% include "meta/people_identification.html" %}
 	
-	
-	{% include "meta/people_identification.html" %}
-	
-	<!--
-	Employee infos
-	-->
-	
-	<fieldset id="fieldset_employee_details">
-		<legend>{% trans "Professional Identification" %}</legend>
-			<label>{% trans "Job" %}<br />
-			<input type="text" maxlength="30" name="job" class="big" value="{{ object.job }}" id="id_job" />
-			</label>
-			<label>{% trans "Hiredate" %}<br />
-			<input type="text" name="hiredate" class="calendar birthdate" value="{% ifnotequal object.hiredate None %}{{ object.hiredate|date:"d/m/Y" }}{% endifnotequal %}" id="id_hiredate" mask="99/99/9999" />
-			</label>
-	</fieldset>
+            <fieldset id="fieldset_employee_details">
+                <legend>{% trans "Professional Identification" %}</legend>
+                    <label>{% trans "Job" %}<br />
+                        <input type="text" maxlength="30" name="job" class="big" value="{{ object.job }}" id="id_job" />
+                    </label>
+                    <label>{% trans "Hiredate" %}<br />
+                        <input type="text" name="hiredate" class="calendar birthdate" value="{% ifnotequal object.hiredate None %}{{ object.hiredate|date:"d/m/Y" }}{% endifnotequal %}" id="id_hiredate" mask="99/99/9999" />
+                    </label>
+            </fieldset>
 
-	{% include "meta/people_profile.html" %}
-	{% include "meta/addressbook.html" %}
-	{% include "meta/internet.html" %}
+            {% include "meta/people_profile.html" %}
+            {% include "meta/addressbook.html" %}
+            {% include "meta/internet.html" %}
 
-<fieldset class="comment_form">
-        <legend>{% trans "Comments" %}</legend>
-        <label>
-                <textarea name="comments" class="extrabig">{{ object.person.comments }}</textarea>
-        </label>
+            <fieldset class="comment_form">
+                <legend>{% trans "Comments" %}</legend>
+                <label><textarea name="comments" class="extrabig">{{ object.person.comments }}</textarea></label>
+            </fieldset>
 
-</fieldset>
+            <br />	
+        </div>
+        {% include "tags/employee_sidebar.html" %}
+    </form>
 
-
-<br />	
-</div>
-
-{% include "tags/employee_sidebar.html" %}
-
-</form>
-
-{% include "tags/upload.html" %}
+    {% include "tags/upload.html" %}
 
 {% endblock %}
-

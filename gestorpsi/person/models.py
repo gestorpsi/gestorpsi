@@ -147,14 +147,6 @@ class Person(models.Model):
             if len(addr.zipCode): text += " - CEP: %s" % addr.zipCode
         return text
 
-    def get_photo(self):
-        #TODO: NEED FIX THIS BUG WHEN GENERATING CLIENT PDF WITH PHOTO
-        #      PERSON HAS A M2M RELATIONSHIP TO ORGANIZATION, NOT ONE-TO-ONE
-        #if len(self.photo):
-        #    return "%simg/organization/%s/.thumb-whitebg/%s" % (MEDIA_ROOT, self.organization.id, self.photo)
-        #else:
-        #    return "%simg/%s" % (MEDIA_ROOT, 'male_generic_photo.png')
-        return "%simg/%s" % (MEDIA_ROOT, 'male_generic_photo.png')
 
     def get_birthdate(self):
         if self.birthDate == None:

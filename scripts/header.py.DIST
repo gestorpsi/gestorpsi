@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 '''
-    head for script files
+    header file for script files
+    set path : full path to project root folder
 '''
 
 import sys

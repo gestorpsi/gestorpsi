@@ -120,6 +120,7 @@ class InvoiceAdmin(admin.ModelAdmin):
     list_filter = ('status',)
     actions = [pendente, pagoClienteCartao, pagoClienteBoleto, pagoClienteDeposito, pagoGratis]
     search_fields = ['organization__name','organization__id']
+    readonly_fields = ('aud_author','aud_ip','aud_date')
     form = InvoiceForm
 
     class Media:

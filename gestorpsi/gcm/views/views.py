@@ -79,7 +79,7 @@ def org_object_list(request):
             exclude = []
             for x in object_list:
                 # do not have overdue invoice
-                if len(x.invoice_()[2]) == 0 :
+                if len(x.invoice_()[4]) == 0 :
                     exclude.append(x.id)
 
             object_list = object_list.exclude(id__in=exclude)

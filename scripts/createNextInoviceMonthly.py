@@ -56,8 +56,7 @@ for x in Invoice.objects.filter(end_date=end, status__gt=0, organization__suspen
         i.save()
 
     to = [] # send mail to
-    bcc = []
-    bcc.append('teagom@gmail.com')
+    bcc_list = ADMINS_REGISTRATION
 
     '''
         send mail just to user is_active = True

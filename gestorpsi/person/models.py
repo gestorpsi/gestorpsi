@@ -14,10 +14,14 @@ GNU General Public License for more details.
 """
 
 import reversion
+from datetime import datetime
+
 from django.db import models
 from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+
+from gestorpsi.settings import MEDIA_ROOT #, PROJECT_ROOT_PATH
 from gestorpsi.middleware import threadlocals
 from gestorpsi.phone.models import Phone
 from gestorpsi.address.models import City, Address, Country
@@ -27,7 +31,7 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util.first_capitalized import first_capitalized
 from gestorpsi.util.models import Cnae
-from datetime import datetime
+
 
 Gender = (
     ('0','No Information'),
@@ -143,7 +147,6 @@ class Person(models.Model):
         return text
 
     def get_photo(self):
-        from gestorpsi.settings import MEDIA_ROOT #, PROJECT_ROOT_PATH
         #TODO: NEED FIX THIS BUG WHEN GENERATING CLIENT PDF WITH PHOTO
         #      PERSON HAS A M2M RELATIONSHIP TO ORGANIZATION, NOT ONE-TO-ONE
         #if len(self.photo):
@@ -197,9 +200,7 @@ class Person(models.Model):
     def age(self):
         if not self.birthDate:
             return None
-
-        today = datetime.today()
-        return (today.year - self.birthDate.year) - int((today.month, today.day) < (self.birthDate.month, self.birthDate.day))
+        return (datetime.today().year-self.birthDate.year) - int( (datetime.today().month, datetime.today().day) < (self.birthDate.month, self.birthDate.day))
     age = property(age)
 
     def is_company(self):
@@ -239,8 +240,7 @@ class Person(models.Model):
         ordering = ['name']
 
 class CompanyClient(models.Model):
-    from gestorpsi.client.models import Client
-    client = models.ForeignKey(Client)
+    client = models.ForeignKey('gestorpsi.client.models.Client')
     company = models.ForeignKey('Company')
     responsible = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
@@ -253,11 +253,10 @@ class CompanyClient(models.Model):
         unique_together = (('client', 'company'),)
 
 class Company(models.Model):
-    from gestorpsi.client.models import Client
     person = models.OneToOneField(Person, blank=True, null=True)
     size = models.IntegerField(_('Company Size'), blank=True, null=True, choices=COMPANY_SIZE)
     cnae_class = models.CharField(_('CNAE Subclass Code'), blank=True, null=True, max_length=9)
-    client = models.ManyToManyField(Client, blank=True, through='CompanyClient')
+    client = models.ManyToManyField('gestorpsi.client.models.Client', blank=True, through='CompanyClient')
 
     def __unicode__(self):
         return u'%s' % self.person.name

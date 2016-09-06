@@ -35,6 +35,8 @@
 
 {% block core %}
 
+    {% include "tags/upload.html" %}
+
     <h2 id="title_addressbook" style="display:none"></h2>
 
     {% if object.id %}
@@ -75,7 +77,5 @@
         </div>
         {% include "tags/employee_sidebar.html" %}
     </form>
-
-    {% include "tags/upload.html" %}
 
 {% endblock %}

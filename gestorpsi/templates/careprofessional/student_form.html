@@ -38,6 +38,8 @@ GNU General Public License for more details.
 
 <h2 id="title_addressbook" style="display:none"></h2>
 
+    {% include "tags/upload.html" %}
+
     {% if object.id %}
         <h2 class="title_student">{{ object.person.name }}</h2>
     {% else %}
@@ -126,7 +128,6 @@ GNU General Public License for more details.
 
     </form>
 
-    {% include "tags/upload.html" %}
     {% include "tags/place_mini.html" %}
 
     {% include "careprofessional/careprofessional_form_dialog.html" %}

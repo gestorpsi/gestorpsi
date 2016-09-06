@@ -28,6 +28,8 @@ GNU General Public License for more details.
 
 {% block core %}
 
+    {% include "tags/upload.html" %}
+
     <h2 id="title_addressbook" style="display:none"></h2>
 
     {% if object.id %}
@@ -129,7 +131,6 @@ GNU General Public License for more details.
 
     </form>
 
-    {% include "tags/upload.html" %}
     {% include "tags/place_mini.html" %}
     {% include "careprofessional/careprofessional_form_dialog.html" %}
 

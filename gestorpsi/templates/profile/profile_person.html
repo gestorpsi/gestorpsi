@@ -28,6 +28,8 @@ GNU General Public License for more details.
 
 {% block core %}
 
+    {% include "tags/upload.html" %}
+
     <h2 id="title_addressbook" style="display:none"></h2>
 
     <h2 class="title_myoffice title">{{ object.person.name }}</h2>
@@ -45,7 +47,5 @@ GNU General Public License for more details.
             </div>
         </div>
     </form>
-
-    {% include "tags/upload.html" %}
 
 {% endblock %}

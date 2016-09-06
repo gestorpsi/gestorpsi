@@ -1274,13 +1274,15 @@ div.schedule #search_header {
 }
 
 div.photo_form_upload {
+        display:none;
         background-color: #fff;
         border: 1px solid black;
-        padding: 30px 30px 30px 30px;
+        padding: 30px;
         position: absolute;
-        margin-top: -415px;
-        margin-left: 180px;
-        display:none;
+        margin-top: 0;
+        margin-left: 1%;
+        width: 40%;
+        height: 90px;
         z-index: 10;
 }
 
@@ -1288,7 +1290,7 @@ div.photo_form_upload {
         width: 110%;
         position: fixed;
         margin: -55px 0 75px -22px;
-        background-color: #fff;
+        background-color: gray;
         z-index: 6;
         min-height: 1080px;
         opacity: 0.7;

@@ -18,12 +18,13 @@
 
 <!-- upload form -->
 <div class="photo_form_upload">
-	{% trans "Select a picture" %}:
-	<form action="/upload/send/" method="post" name="form_file" enctype="multipart/form-data" class="form_file">
+    <h4>{% trans "Select a picture" %}</h4>
+    <br />
+    <form action="/upload/send/" method="post" name="form_file" enctype="multipart/form-data" class="form_file" />
         <input type="file" class="file" name="file" onchange="$('div#over').hide(); $(this).parent('form').submit()" />
-	</form>
-	<small><a class="notajax" onclick="$('div#over').hide(); $(this).parents('div.photo_form_upload').hide();">{% trans "Cancel" %}</a></small>
-	<br>
-    <br>
+    </form>
     <small>* {% trans "Allowed Formats: JPG, PNG, GIF" %}</small>
+    <br>
+    <br>
+    <h4><a class="notajax" onclick="$('div#over').hide(); $(this).parents('div.photo_form_upload').hide();">{% trans "Cancel" %}</a></h4>
 </div>

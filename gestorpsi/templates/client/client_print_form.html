@@ -32,6 +32,9 @@ GNU General Public License for more details.
 {% endblock %}
 
 {% block core %}
+
+    {% include "tags/upload.html" %}
+
 <input type="hidden" name="object_id" value="{{ object.id }}" />
 
 <h2 id="title_addressbook" style="display:none"></h2>
@@ -130,6 +133,5 @@ GNU General Public License for more details.
 {% endif %}
 
 </form>
-{% include "tags/upload.html" %}
 
 {% endblock %}

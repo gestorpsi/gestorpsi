@@ -47,6 +47,9 @@ GNU General Public License for more details.
 
 {% block core %}
 
+    <!-- upload picture -->
+    {% include "tags/upload.html" %}
+
     <h2 id="title_addressbook" style="display:none"></h2>
     <h2 class="title_organization title">{{ object }}</h2>
     <p class="description"> {% trans "Organization Configuration" %}<br /></p>
@@ -280,7 +283,5 @@ GNU General Public License for more details.
         {% endif %}
 
     </form> <!-- form org save -->
-
-    {% include "tags/upload.html" %}
 
 {% endblock %}

@@ -30,6 +30,8 @@ GNU General Public License for more details.
 
 {% block core %}
 
+    {% include "tags/upload.html" %}
+
     <h2 class="title_clients">{% trans "Client Family" %}</h2>
     <p class="description">{% trans "Adding new family member" %}</p>
 
@@ -89,7 +91,5 @@ GNU General Public License for more details.
         </div>
 
     </form>
-
-    {% include "tags/upload.html" %}
 
 {% endblock %}

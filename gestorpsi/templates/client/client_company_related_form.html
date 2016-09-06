@@ -26,6 +26,8 @@ GNU General Public License for more details.
 
 {% block core %}
 
+    {% include "tags/upload.html" %}
+
 
 <script>
 $(function() {
@@ -130,6 +132,5 @@ $(function() {
 {% endif %}
 
 </form>
-{% include "tags/upload.html" %}
 
 {% endblock %}

@@ -1,13 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+    Copyright (C) 2008 GestorPsi
+     
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+"""
+
 '''
     header file for script files
     set path : full path to project root folder
 '''
 
-import sys
-import locale
+import sys, locale
 from os import environ
 
 reload(sys)
@@ -17,12 +30,12 @@ locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
 sys.path.append('..')
 
-# libray
-sys.path.append("/home/redepsi/lib/python2.7")
+# libray / Full path to libraries
+sys.path.append("/usr/lib/python2.7/dist-packages")
 
-# import hardcode
-path="/home/redepsi/webapps/gestorpsi_app" 
+# project / Full path to root project Django, manage.py
+path="/home/user/Desktop/dev/gestorpsi_github" 
 
-# root project
-sys.path.append("%s/git.gestorpsi.com.br" % path )
-sys.path.append("%s/git.gestorpsi.com.br/gestorpsi" % path)
+# append paths inside of project
+sys.path.append("%s/gestorpsi" % path )
+sys.path.append("%s/scripts" % path)

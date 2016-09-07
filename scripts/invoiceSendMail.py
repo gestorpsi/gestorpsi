@@ -33,8 +33,8 @@ def invoice_sendmail():
     # Invoice filter
     invoice_list = [] # list of Invoice
 
-    # check 4 and 10 days before expiry
-    for d in 4, 10:
+    # check 4 and 7 days before expiry
+    for d in 4, 7:
         # check all invoices that will be expire in 10 days.
         expiry = date.today() + timedelta(d) # corret
 

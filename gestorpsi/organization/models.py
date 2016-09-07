@@ -410,11 +410,12 @@ class Organization(models.Model):
         """
 
         try: # empty invoice
+            # get not paid current invoice
             i = self.invoice_set.filter(status=0, start_date__lte=date.today(), end_date__gte=date.today() )[0]
             days = (i.expiry_date-(date.today())).days
         except:
-            days = 0
-            pass
+            # current invoice is PAID! no message!
+            days = 999
 
         """
             check negative days, -5

@@ -32,7 +32,7 @@ print "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # "
 print "# Invoice - Create new invoice"
 
 # main code
-for o in Organization.objects.filter(suspension=False, organization=None):
+for o in Organization.objects.filter(suspension=False, organization=None, short_name='IPC'):
 
     # last invoice
     li = Invoice.objects.filter(organization=o).latest('id')
@@ -47,7 +47,7 @@ for o in Organization.objects.filter(suspension=False, organization=None):
         i.organization = li.organization
         i.start_date = li.end_date
         i.end_date = li.end_date + relativedelta(months=1)
-        i.expiry_date = li.start_date + relativedelta(days=7)
+        i.expiry_date = i.start_date + relativedelta(days=7)
         i.payment_type = li.organization.payment_type
         i.ammount = li.organization.prefered_plan.value
         i.plan = li.organization.prefered_plan

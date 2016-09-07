@@ -404,14 +404,14 @@ class Organization(models.Model):
 
         # last current invoice
         """
-            current invoice myabe not exist.
+            current invoice maybe not exist.
             client suspend signature, than, have just pass invoices.
             organization, read only.
         """
 
         try: # empty invoice
-            i = self.invoice_set.filter( start_date__lte=date.today(), end_date__gte=date.today() )[0]
-            days = (i.end_date-(date.today())).days
+            i = self.invoice_set.filter(status=0, start_date__lte=date.today(), end_date__gte=date.today() )[0]
+            days = (i.expiry_date-(date.today())).days
         except:
             days = 0
             pass
@@ -426,8 +426,11 @@ class Organization(models.Model):
         r = [False]*2
         # 0 : days to read only
         # 1 : message level
+            # 1 yellow - info
+            # 2,3 red - error/danger
 
-        if not days > 7 :
+        # day = 0,1,2,3,4,5,6 and 7
+        if days < 8 and days > -1 :
 
             r[0] = days
 
@@ -488,7 +491,7 @@ class Organization(models.Model):
             r[3].append(x)
 
         # pendente
-        r[4] = self.invoice_set.filter( expiry_date__lt=date.today(), status=0 )
+        r[4] = self.invoice_set.filter( start_date__lt=date.today(), expiry_date__lt=date.today(), end_date__gt=date.today(), status=0 )
 
         return r
 

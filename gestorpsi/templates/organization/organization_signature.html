@@ -277,7 +277,7 @@ GNU General Public License for more details.
                                         <th style='font-weight: normal;'>{{ x.start_date|date:"d M Y" }}</th>
                                         <th style='font-weight: normal;'>{{ x.end_date|date:"d M Y" }}</th>
                                         <th style='font-weight: normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.expiry_date|date:"d M Y" }}</th>
-                                        <th style='font-weight: normal;'>
+                                        <th style='font-weight: normal;{% ifnotequal x.status 0 %}background-color:green;'{% endifnotequal %}>
                                             {% ifequal x.status 0 %}
                                                 <!-- boleto -->
                                                 {% ifequal x.payment_type.id 2 %}

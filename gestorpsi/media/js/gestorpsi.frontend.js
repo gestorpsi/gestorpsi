@@ -104,9 +104,11 @@ $(function(){
         // organization menu
         $('ul#sub_organization li a.organization').click(function() {
                 $('form .main_area fieldset.organization').hide();
+                $('form .main_area div.organization').hide();
 				$('form .main_area div.photo').hide();
 				if($(this).hasClass('first')) $('.main_area div.photo').show();
                 $('form .main_area fieldset.organization.' + $(this).attr('display')).show();
+                $('form .main_area div.organization.' + $(this).attr('display')).show();
                 if($('form .main_area fieldset.organization.' + $(this).attr('display')).hasClass('comment')) {
                         $('form .main_area fieldset.comment_form').show();
                 } else {

@@ -18,6 +18,7 @@
 
 <!-- upload form -->
 <div class="photo_form_upload">
+    <input id="my_organization_id" type="hidden" value="{{ user.get_profile.org_active.id }}">
     <h4>{% trans "Select a picture" %}</h4>
     <br />
     <form action="/upload/send/" method="post" name="form_file" enctype="multipart/form-data" class="form_file" />

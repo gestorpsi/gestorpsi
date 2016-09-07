@@ -249,6 +249,7 @@ GNU General Public License for more details.
                                                 Pago em {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
                                             {% endifequal %}
 
+                                            <tr><th>.</th></tr>
                                     </tr>
                                 {% endfor %}
                                             

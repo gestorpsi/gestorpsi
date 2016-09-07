@@ -1275,7 +1275,7 @@ div.schedule #search_header {
 
 div.photo_form_upload {
         display:none;
-        /*background-color: #fff;*/
+        background-color: #fff;
         border: 1px solid black;
         padding: 30px;
         position: absolute;

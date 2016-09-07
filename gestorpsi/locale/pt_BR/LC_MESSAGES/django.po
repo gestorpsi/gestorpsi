@@ -1311,7 +1311,7 @@ msgstr "Escolha um plano de acesso"
 
 #: gcm/forms/auth.py:28
 msgid "Phone Number"
-msgstr "Telefone"
+msgstr "Numero Telefone"
 
 #: gcm/forms/auth.py:28
 msgid "Enter your phone number with area code here"
@@ -1754,11 +1754,6 @@ msgstr "Nome"
 msgid "Profissão"
 msgstr "Profissão"
 
-#: gcm/templates/gcm/org_form.html:128 gcm/templates/gcm/org_list.html:36
-#: gcm/templates/gcm/org_pen_list.html:37
-msgid "Fones"
-msgstr "Telefones"
-
 #: gcm/templates/gcm/org_form.html:130
 msgid "Profissional responsável"
 msgstr "Profissional Responsável"
@@ -1828,10 +1823,6 @@ msgstr "Dados do profissional"
 #: gcm/templates/gcm/org_pen_detail.html:26
 msgid "CPF"
 msgstr "CPF"
-
-#: gcm/templates/gcm/org_pen_detail.html:28
-msgid "Fone"
-msgstr "Telefone"
 
 #: gcm/templates/gcm/org_pen_detail.html:30
 msgid "Endereco"
@@ -4723,14 +4714,10 @@ msgstr "CNAE"
 msgid "Document"
 msgstr "Documento(s)"
 
-#: templates/client/client_print_record_data_tag.html:35
-msgid "Phone"
-msgstr "Telefone(s)"
-
 #: templates/client/client_print_record_data_tag.html:40
 #: templates/organization/organization_form.html:29
 msgid "Address"
-msgstr "Endereço(s)"
+msgstr "Endereço"
 
 #: templates/client/client_print_record_data_tag.html:59
 msgid "Website"
@@ -5779,6 +5766,11 @@ msgstr "Selecione um estado"
 msgid "Phones"
 msgstr "Telefones"
 
+#: gcm/templates/gcm/org_form.html:128 gcm/templates/gcm/org_list.html:36
+#: gcm/templates/gcm/org_pen_list.html:37
+msgid "Phone"
+msgstr "Telefone"
+
 #: templates/meta/phones.html:33
 #: templates/organization/organization_form.html:227
 msgid "Add Phone"
@@ -5876,8 +5868,11 @@ msgid "Dependence"
 msgstr "Dependência"
 
 #: templates/organization/organization_form.html:188
-msgid "Care Provided Type"
-msgstr "Tipo de serviço prestado"
+msgid "Care Provided Type Available"
+msgstr "Tipo de serviço prestado disponível"
+
+msgid "Care Provided Type Selected"
+msgstr "Tipo de serviço prestado selecionado"
 
 #: templates/organization/organization_form.html:196
 msgid "Education and Research Activity"

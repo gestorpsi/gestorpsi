@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 """
 
 from datetime import datetime, date
@@ -50,6 +50,22 @@ BANK = (
 
 
 class Invoice(models.Model):
+    """
+        Invoice of plan
+           
+        Future
+            end date > today
+
+        Pass
+            start, end, expiry date < today
+
+        Current
+            start date < today < end date
+
+        Not Paid
+            pass and current invoice
+            start, expiry date < today
+    """
     type = models.CharField(max_length=2, null=False, blank=False, choices=INVOICE_TYPES, default='2')
     
     organization = models.ForeignKey('organization.Organization', verbose_name=_('Organizacao'))

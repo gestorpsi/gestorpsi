@@ -304,6 +304,7 @@ class Organization(models.Model):
 
         super(Organization, self).save(*args, **kwargs)
         
+        # change users for read-only
         if self.id and original_state:
             if original_state.active != self.active and not original_state.organization: # active state has been changed and organization is a real organization
                 if not self.active: # organization has been deactivated, lets set all users as read-only mode
@@ -409,13 +410,12 @@ class Organization(models.Model):
             organization, read only.
         """
 
-        try: # empty invoice
-            # get not paid current invoice
-            i = self.invoice_set.filter(status=0, start_date__lte=date.today(), end_date__gte=date.today() )[0]
+        i = self.invoice_()[1][0] # get last one current invoice
+        # current invoice is PAID! no message!
+        days = 999
+
+        if i.status == 0 :
             days = (i.expiry_date-(date.today())).days
-        except:
-            # current invoice is PAID! no message!
-            days = 999
 
         """
             check negative days, -5
@@ -473,7 +473,7 @@ class Organization(models.Model):
         r = [False]*5
 
         # future
-        r[0] = self.invoice_set.filter( start_date__gt=date.today() )
+        r[0] = self.invoice_set.filter( end_date__gt=date.today() )
 
         # current 
         r[1] = self.invoice_set.filter( start_date__lte=date.today(), end_date__gte=date.today() )
@@ -491,8 +491,8 @@ class Organization(models.Model):
         for x in self.invoice_set.filter( start_date__lt=date.today(), end_date__lt=date.today, status__gt=0 ).order_by('-date'):
             r[3].append(x)
 
-        # pendente
-        r[4] = self.invoice_set.filter( start_date__lt=date.today(), expiry_date__lt=date.today(), end_date__gt=date.today(), status=0 )
+        # pendente / não pago / vencido / current or pass invoice
+        r[4] = self.invoice_set.filter( start_date__lt=date.today(), expiry_date__lt=date.today(), status=0 )
 
         return r
 

@@ -412,7 +412,7 @@ class Organization(models.Model):
 
         i = self.invoice_()[1][0] # get last one current invoice
         # current invoice is PAID! no message!
-        days = 999
+        days = 999 # days left to overdue invoice
 
         if i.status == 0 :
             days = (i.expiry_date-(date.today())).days
@@ -473,7 +473,7 @@ class Organization(models.Model):
         r = [False]*5
 
         # future
-        r[0] = self.invoice_set.filter( end_date__gt=date.today() )
+        r[0] = self.invoice_set.filter( start_date__gt=date.today(), end_date__gt=date.today(), expiry_date__gt=date.today() )
 
         # current 
         r[1] = self.invoice_set.filter( start_date__lte=date.today(), end_date__gte=date.today() )

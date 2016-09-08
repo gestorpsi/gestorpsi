@@ -54,7 +54,7 @@ class Invoice(models.Model):
         Invoice of plan
            
         Future
-            end date > today
+            start, end, expiry date > today
 
         Pass
             start, end, expiry date < today

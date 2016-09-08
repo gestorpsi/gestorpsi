@@ -263,6 +263,9 @@ DECIMAL_SEPARATOR = ','
 THOUSAND_SEPARATOR = '.'
 USE_THOUSAND_SEPARATOR = False
 
+# set invoice
+invoice_check_expiry = [4,7] # send mail for clients 4 and 7 days before expiry date
+
 if not DEBUG:
     import logging
     logging.basicConfig(level=logging.DEBUG)

@@ -473,10 +473,10 @@ class Organization(models.Model):
         r = [False]*5
 
         # future
-        r[0] = self.invoice_set.filter( start_date__gt=date.today(), end_date__gt=date.today(), expiry_date__gt=date.today() )
+        r[0] = self.invoice_set.filter( start_date__gte=date.today(), end_date__gt=date.today(), expiry_date__gt=date.today() )
 
         # current 
-        r[1] = self.invoice_set.filter( start_date__lte=date.today(), end_date__gte=date.today() )
+        r[1] = self.invoice_set.filter( start_date__lt=date.today(), end_date__gte=date.today() )
 
         # past
         # 1t passado e pendente

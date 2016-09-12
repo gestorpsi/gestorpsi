@@ -1,10 +1,11 @@
-Ola,
+Bom dia!
 
-Segue abaixo o endereço para a confirmação de seu cadastro:
+Segue abaixo o endereço para a confirmação de seu cadastro,
+apenas clique, ou copie e cole na barra de endereços do seu navegador de internet.
 
 https://app.gestorpsi.com.br/accounts/activate/{{ activation_key }}/
 
-Apenas clique, ou copie e cole na barra de endereços do seu navegador de internet.
-
 Obrigado por utilizar o GestorPsi!
+
+GestorPsi - Prontuários Eletrônicos e Gestão de Serviços em Psicologia.
 www.gestorpsi.com.br

@@ -6250,20 +6250,13 @@ msgid "log in"
 msgstr "entrar em sua conta."
 
 #: templates/registration/activate.html:11
-msgid "Opppss..."
-msgstr "Opppss..."
+msgid "Sorry"
+msgstr "Desculpa"
 
 #: templates/registration/activate.html:12
-msgid ""
-"Sorry, it didn't work. Either your activation link was incorrect, or the "
-"activation key for your account has expired; activation keys are only valid "
-"for"
-msgstr ""
-"Não foi possível confirmar o seu cadastro. Alguns dos possíveis motivos para"
-" isso são:<br><br><b>Cadastro já confirmado.</b><br><b>Prazo para a "
-"confirmação excedido.</b><br><b>Endereço de ativação inválido</b><br><br><a "
-"href=/accounts/login/>Fazer Log in</a><br><a "
-"href=/accounts/register/>Realizar novo cadastro</a>"
+msgid "It didn't work. Either your activation link was incorrect, or the "
+"activation key for your account has expired; activation keys are only valid for"
+msgstr "Não foi possível confirmar o seu cadastro. Alguns dos possíveis motivos para isso são:<br><br><b>Cadastro já confirmado.</b><br><b>Prazo para a confirmação excedido.</b><br><b>Endereço de ativação inválido</b>"
 
 #: templates/registration/login.html:29
 msgid ""

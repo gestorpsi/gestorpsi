@@ -21,7 +21,7 @@ from django.contrib.auth.models import *
 
 checked_list = [] # list of checked organization
 
-for u in User.objects.filter(last_login__gte='2015-06-01', is_staff=False, is_superuser=False):
+for u in User.objects.filter(last_login__gte='2016-08-25', is_staff=False, is_superuser=False):
     for o in u.profile.person.organization.all():
         if not o in checked_list:
 
@@ -36,4 +36,5 @@ for u in User.objects.filter(last_login__gte='2015-06-01', is_staff=False, is_su
                 print i.get_status_display(), i.date_payed
                 print 'inicio:%s' % i.start_date
                 print 'fim:%s' % i.end_date
+                print 'expiry:%s' % i.expiry_date
                 print i.payment_detail

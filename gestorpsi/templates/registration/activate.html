@@ -9,7 +9,7 @@
     as published by the Free Software Foundation; either version 2
     of the License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    his program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -18,20 +18,23 @@
 
 {% load i18n %}
 
-{% block title %} - {% trans 'Password reset complete' %}{% endblock %}
+{% block title %} - {% trans "Account activated" %}{% endblock %}
 
 {% block registration %}
     <div class="main_area login">
+
         {% include "core/title.html" %}
-
         <br />
-        <h2>{% trans 'Password reset complete' %}.</h2>
 
-        <br />
-        <h4>{% trans "Your password has been set.  You may go ahead and log in now." %}</h4>
+        {% if account %}
+            <h2>{% trans "Account activated" %}</h2>
+        {% else %}
+            <h2>{% trans "Sorry" %}</h2>
+            <br />
+            <h4>{% trans "It didn't work. Either your activation link was incorrect, or the activation key for your account has expired; activation keys are only valid for" %}</h4>
+            <br />
+        {% endif %}
 
-        <br />
         {% include "tags/extra_links.html" %}
-
     </div>
 {% endblock %}

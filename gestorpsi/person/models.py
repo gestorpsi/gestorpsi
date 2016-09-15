@@ -22,7 +22,6 @@ from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
-from gestorpsi.settings import MEDIA_ROOT #, PROJECT_ROOT_PATH
 from gestorpsi.middleware import threadlocals
 from gestorpsi.phone.models import Phone
 from gestorpsi.address.models import City, Address, Country
@@ -154,12 +153,6 @@ class Person(models.Model):
         else:
             return self.birthDate.strftime('%d/%m/%Y')
 
-    def get_first_phone(self):
-        if self.phones.count:
-            return self.phones.all()[0]
-        else:
-            return ""
-
     def get_birth_place(self):
         if self.birthPlace == None:
             return u"%s - %s" % (self.birthForeignCity, self.birthForeignState)
@@ -173,19 +166,19 @@ class Person(models.Model):
             return self.birthPlace.state.country
 
     def get_first_phone(self):
-        if ( len( self.phones.all() ) != 0 ):
+        if self.phones.all():
             return self.phones.all()[0]
         else:
             return ''
     
     def get_first_email(self):
-        if ( len( self.emails.all() ) != 0 ):
+        if self.emails.all():
             return self.emails.all()[0]
         else:
             return ''
         
     def get_first_site(self):
-        if ( len( self.sites.all() ) != 0 ):
+        if self.sites.all():
             return self.sites.all()[0]
         else:
             return ''        
@@ -233,7 +226,9 @@ class Person(models.Model):
         ordering = ['name']
 
 class CompanyClient(models.Model):
-    client = models.ForeignKey('gestorpsi.client.models.Client')
+    # avoid circular import
+    from gestorpsi.client.models import Client as CLIENT
+    client = models.ForeignKey(CLIENT)
     company = models.ForeignKey('Company')
     responsible = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
@@ -244,13 +239,14 @@ class CompanyClient(models.Model):
     class Meta:
         ordering = ['-active', '-responsible', 'client']
         unique_together = (('client', 'company'),)
-        app_label = 'person_company_client'
 
 class Company(models.Model):
+    # avoid circular import
+    from gestorpsi.client.models import Client as CLIENT
+    client = models.ManyToManyField(CLIENT, blank=True, through='CompanyClient')
     person = models.OneToOneField(Person, blank=True, null=True)
     size = models.IntegerField(_('Company Size'), blank=True, null=True, choices=COMPANY_SIZE)
     cnae_class = models.CharField(_('CNAE Subclass Code'), blank=True, null=True, max_length=9)
-    client = models.ManyToManyField('gestorpsi.client.models.Client', blank=True, through='CompanyClient')
 
     def __unicode__(self):
         return u'%s' % self.person.name
@@ -262,8 +258,6 @@ class Company(models.Model):
         return None
     cnae_class_name = property(_cnae_class_name)
 
-    class Meta:
-        app_label = 'person_company'
 
 reversion.register(Company)
 reversion.register(CompanyClient)

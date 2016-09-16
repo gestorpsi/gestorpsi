@@ -1,23 +1,25 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 """
 
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+
 from gestorpsi.client.models import Client
-from gestorpsi.person.models import Person, Company, CompanyClient
+from gestorpsi.person.models import Person
+from gestorpsi.company.models import Company, CompanyClient
 
 class CompanyForm(forms.ModelForm):
     cnae_class = forms.CharField(label=_('CNAE Class Code'), required=False, widget=forms.TextInput(attrs={'mask':'9999-9/99'}))

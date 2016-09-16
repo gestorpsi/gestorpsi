@@ -30,7 +30,6 @@ from gestorpsi.internet.models import Email, Site, InstantMessenger
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util.first_capitalized import first_capitalized
-from gestorpsi.util.models import Cnae
 
 
 Gender = (
@@ -39,18 +38,13 @@ Gender = (
     ('2','Male')
 )
 
-COMPANY_SIZE = (
-    (1, _('Small')),
-    (2, _('Medium')),
-    (3, _('Big')),
-)
-
 class MaritalStatus(models.Model):
     description = models.CharField(max_length=20)
     def __unicode__(self):
         return u"%s" % self.description
     class Meta:
         ordering = ['description']
+
 
 class Person(models.Model):
     id = UuidField(primary_key=True)
@@ -224,41 +218,3 @@ class Person(models.Model):
 
     class Meta:
         ordering = ['name']
-
-class CompanyClient(models.Model):
-    # avoid circular import
-    from gestorpsi.client.models import Client as CLIENT
-    client = models.ForeignKey(CLIENT)
-    company = models.ForeignKey('Company')
-    responsible = models.BooleanField(default=False)
-    active = models.BooleanField(default=True)
-
-    def __unicode__(self):
-        return u'%s' % (self.client)
-
-    class Meta:
-        ordering = ['-active', '-responsible', 'client']
-        unique_together = (('client', 'company'),)
-
-class Company(models.Model):
-    # avoid circular import
-    from gestorpsi.client.models import Client as CLIENT
-    client = models.ManyToManyField(CLIENT, blank=True, through='CompanyClient')
-    person = models.OneToOneField(Person, blank=True, null=True)
-    size = models.IntegerField(_('Company Size'), blank=True, null=True, choices=COMPANY_SIZE)
-    cnae_class = models.CharField(_('CNAE Subclass Code'), blank=True, null=True, max_length=9)
-
-    def __unicode__(self):
-        return u'%s' % self.person.name
-    
-    def _cnae_class_name(self):
-        c = Cnae.objects.filter(id=self.cnae_class)
-        if len(c):
-            return c[0].cnae_class
-        return None
-    cnae_class_name = property(_cnae_class_name)
-
-
-reversion.register(Company)
-reversion.register(CompanyClient)
-reversion.register(Person)

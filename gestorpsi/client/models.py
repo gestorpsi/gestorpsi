@@ -16,10 +16,11 @@ GNU General Public License for more details.
 
 import reversion
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
+from dateutil.relativedelta import relativedelta
+from django.utils.translation import ugettext_lazy as _
+
 from gestorpsi.person.models import Person
 from gestorpsi.util.uuid_field import UuidField
 
@@ -225,8 +226,8 @@ class Client(models.Model):
         return self.referral_set.discharged().filter(client=self)
     
     def employees(self):
-        from gestorpsi.person.models import Person, CompanyClient
-        return CompanyClient.objects.filter(company__person__client = self).filter(client__active=True)
+        from gestorpsi.company.models import CompanyClient
+        return CompanyClient.objects.filter(company__person__client=self).filter(client__active=True)
     
     def family_members(self):
         family_list = []

@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 """
 
 import string
@@ -23,45 +23,50 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
-from django.template.defaultfilters import slugify
-from django.db.models import Q
 from django.contrib import messages
 from django.core.paginator import Paginator
+
 from gestorpsi.settings import DEBUG, MEDIA_URL, MEDIA_ROOT, PAGE_RESULTS
+
 from gestorpsi.address.models import Country, State, AddressType, City
 from gestorpsi.authentication.models import Profile
+
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
-from gestorpsi.service.models import Service, ServiceGroup, GroupMembers
-from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.careprofessional.views import Profession
+
+from gestorpsi.service.models import Service, ServiceGroup, GroupMembers
+
 from gestorpsi.client.models import Client, Relation
 from gestorpsi.client.forms import FamilyForm
+
 from gestorpsi.document.models import TypeDocument, Issuer
 from gestorpsi.internet.models import EmailType, IMNetwork
 from gestorpsi.organization.models import Organization
-from gestorpsi.person.models import Person, MaritalStatus, CompanyClient
-from gestorpsi.person.forms import CompanyForm, CompanyClientForm
+
 from gestorpsi.person.views import person_save
+from gestorpsi.person.models import Person, MaritalStatus
+
+from gestorpsi.company.models import CompanyClient
+from gestorpsi.company.forms import CompanyForm, CompanyClientForm
+
 from gestorpsi.phone.models import PhoneType
-from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, ReferralAttach, REFERRAL_ATTACH_TYPE, Queue, ReferralExternal, ReferralDischarge
 from gestorpsi.admission.models import ReferralChoice as AdmissionChoice, AdmissionReferral
+
+from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, REFERRAL_ATTACH_TYPE, Queue, ReferralExternal, ReferralDischarge
 from gestorpsi.referral.forms import ReferralForm, ReferralDischargeForm, QueueForm, ReferralExtForm
-from gestorpsi.referral.views import _referral_view
-from gestorpsi.referral.views import _referral_occurrences
-#from gestorpsi.reports.header import header_gen
-#from gestorpsi.reports.footer import footer_gen
+from gestorpsi.referral.views import _referral_view, _referral_occurrences
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
-from gestorpsi.person.views import person_json_list
-from gestorpsi.schedule.views import _datetime_view
-from gestorpsi.schedule.forms import ScheduleOccurrenceForm
-from gestorpsi.schedule.views import add_event
-from gestorpsi.schedule.views import occurrence_confirmation_form
-from gestorpsi.schedule.forms import OccurrenceConfirmationForm
-from gestorpsi.schedule.models import ScheduleOccurrence, Occurrence, OccurrenceConfirmation
+
+from gestorpsi.schedule.forms import ScheduleOccurrenceForm, OccurrenceConfirmationForm
+from gestorpsi.schedule.views import add_event, occurrence_confirmation_form, _datetime_view
+from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation
+
 from gestorpsi.contact.models import Contact
-from gestorpsi.util.views import get_object_or_None, write_pdf
+
+from gestorpsi.util.views import write_pdf
 from gestorpsi.util.models import Cnae
+
 from gestorpsi.ehr.views import _access_ehr_check_read
 from gestorpsi.place.models import Place
 
@@ -440,8 +445,6 @@ def referral_plus_form(request, object_id=None, referral_id=None):
     referral_form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
     referral_form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, active = True)
 
-    total_service = Referral.objects.filter(client=object).count()
-
     return render_to_response('client/client_referral_plus_form.html',
                               {'object': object, 
                                 'referral': referral,
@@ -520,10 +523,6 @@ def referral_form(request, object_id=None, referral_id=None):
                 messages.success(request, _(msg))
                 return HttpResponseRedirect(url % (object_id, data.id))
 
-        # for debug
-        #else:
-            #print form.errors
-
     # show just professional that are have subscription in a selected service
     # update 
     if referral.id:
@@ -551,8 +550,6 @@ def referral_form(request, object_id=None, referral_id=None):
     form.fields['referral'].queryset = Referral.objects.filter(client=object)
     form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
     form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, active = True)
-
-    total_service = Referral.objects.filter(client=object).count()
 
     return render_to_response('client/client_referral_form.html',
                               { 'object': object, 
@@ -611,8 +608,6 @@ def referral_plus_save(request, object_id=None):
                 for c in request.POST.getlist('client'):
                     gm = GroupMembers(group=group, client=Client.objects.get(pk = object_id, person__organization=request.user.get_profile().org_active), referral=object)
                     gm.save()
-        #else:
-            #print form.errors
     messages.success(request, _('Referral saved successfully'))
 
     return HttpResponseRedirect('/client/%s/referral/' % (request.POST.get('client_id')))
@@ -887,8 +882,7 @@ def organization_clients(request):
         clients = clients.filter(person__name__istartswith=request.GET.get('q'))
     
     dict = {}
-    array = [] #json
-    i = 0
+    array = []
 
     for o in clients:
         c = {
@@ -1076,10 +1070,6 @@ def referral_queue_save(request, object_id = '',  referral_id = ''):
         except:
             object_q.priority = '03'
         object_q.save()
-    #else:
-        #print form.errors
-
-    queues = Queue.objects.filter(referral=referral_id)
 
     messages.success(request, _('Referral added to queue successfully'))
     return HttpResponseRedirect('/client/%s/referral/%s/' % (object.id, referral.id))
@@ -1099,8 +1089,6 @@ def referral_queue_remove(request, object_id = '',  referral_id = '', queue_id =
     
     queue.date_out = datetime.now()
     queue.save()
-
-    queues = Queue.objects.filter(referral=referral_id)
 
     messages.success(request, _('Client removed from queue successfully'))
     return HttpResponseRedirect('/client/%s/referral/%s/' % (object.id, referral.id))
@@ -1143,8 +1131,6 @@ def referral_ext_save(request, object_id = '', referral_id=''):
         referral_ext.professional = get_object_or_None(CareProfessional, pk = request.POST.get('professional') )
         referral_ext.organization = get_object_or_None(Organization, pk = request.POST.get('organization') )
         referral_ext.save()
-    #else:
-        #print form.errors
 
     messages.success(request, _('External Referral saved successfully'))
     return render_to_response('client/client_referral_home.html', locals(), context_instance=RequestContext(request))

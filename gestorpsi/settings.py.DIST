@@ -192,6 +192,7 @@ INSTALLED_APPS = (
     'gestorpsi.report',
     'gestorpsi.covenant',
     'gestorpsi.financial',
+    'gestorpsi.company',
     'swingtime',
     'registration',
     'south',

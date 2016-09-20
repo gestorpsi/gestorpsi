@@ -47,10 +47,6 @@ for o in Organization.objects.filter(suspension=False, organization=None, date_c
 
     while li.end_date < date.today()+relativedelta(months=1) and li.start_date < date.today():
 
-        # print to email admin
-        print
-        print '-- creating a new invoice: %s %s %s' % (o, li.start_date, li.end_date)
-
         i = Invoice() # new invoice
         i.organization = li.organization
         i.start_date = li.end_date

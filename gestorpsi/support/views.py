@@ -19,18 +19,22 @@ from django.shortcuts import render_to_response
 from django.core.mail import EmailMessage, BadHeaderError
 from django.utils.translation import gettext as _
 from django.template.context import RequestContext
+
+import uuid
 from gestorpsi.support.forms import TicketForm
 from gestorpsi.settings import EMAIL_FROM, ADMINS_REGISTRATION
 
 def ticket_form(request):
     if request.method == 'POST':
+
         form = TicketForm(request.POST, request.FILES)
         if form.is_valid():
             new = form.save(commit=False)
             new.user = request.user.profile.person
             new.save()
             body = ('%s\n\n%s\n%s\n%s') % (request.POST['question'], request.POST['contact_name'], request.POST['contact_phone'], request.POST['contact_email'] )
-            email = EmailMessage(_('[GestorPsi] Support Request'), body, EMAIL_FROM , ADMINS_REGISTRATION, headers = {'Reply-To': request.POST['contact_email']} )
+            subject = u"%s - %s" % ( _('[GestorPsi] Support Request'), str(uuid.uuid1())[:18] )
+            email = EmailMessage(subject, body, EMAIL_FROM , ADMINS_REGISTRATION, headers = {'Reply-To': request.POST['contact_email']} )
 
             try:
                 email.send()

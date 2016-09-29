@@ -1,16 +1,16 @@
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -20,21 +20,8 @@ GNU General Public License for more details.
 
     <h3>{% trans 'User Actions' %}</h3>
     <ul>
-        {% if profile.id %}
-                {% ifequal show "True" %}    
-                    {% trans "Impossible deactive this user." %}
-                {% else %}
-                    <li><a href="/user/{{ profile.id }}/order/" class="client_order" title="{{ profile.person.name }}">{% if profile.user.is_active %} {% trans "Disable" %} {% else %} {% trans "Enable" %} {% endif %} </a></li>
-                {% endifequal %}
-
-                <li><a class="form_mini" display="pwd_mini">{% trans "Change Password" %}</a></li>
-                <li><a class="form_mini" display="email_mini">{% trans "Change e-mail" %}</a></li>
-
-                {% comment %}
-                <li><a href="{% url user_delete profile.id %}" class="user_delete confirm" title="{{ profile.person.name }}" msg="{% trans "Confirmar exclusão de usuário?" %}">{% trans "Delete User" %}</a></li>
-                {% endcomment %}
-
-                {% else %}
-        {% endif %}
+        <li><a href="{% url user-form-order person.profile.id %}" class="client_order" title="{{ person.name }}">{% if person.profile.user.is_active %} {% trans "Disable" %} {% else %} {% trans "Enable" %} {% endif %} </a></li>
+        <li><a class="form_mini" display="pwd_mini">{% trans "Change Password" %}</a></li>
+        <li><a class="form_mini" display="email_mini">{% trans "Change e-mail" %}</a></li>
     </ul>
 </div>

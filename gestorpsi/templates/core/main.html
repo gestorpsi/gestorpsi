@@ -213,7 +213,7 @@ GNU General Public License for more details.
                                     {% if perms.careprofessional.careprofessional_list %}<li><a id="careprofessional" href="/careprofessional/" display="list">{% trans "Professionals" %}</a></li>{% endif %}
                                     {% if perms.careprofessional.careprofessional_list %}<li><a id="student" href="/careprofessional/student/" display="list">{% trans "Students" %}</a></li>{% endif %}
                                     {% if perms.employee.employee_list %}<li><a id="employees" href="/employee/" display="list">{% trans "Employees" %}</a></li>{% endif %}
-                                    {% if perms.users.users_list %}<li><a id="users" href="/user/" display="list">{% trans "Users" %}</a></li>{% endif %}
+                                    {% if perms.users.users_list %}<li><a id="users" href="{% url user-index %}" display="list">{% trans "Users" %}</a></li>{% endif %}
                                 </ul>
                             </li>
                         {% endif %}

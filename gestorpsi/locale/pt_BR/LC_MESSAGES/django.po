@@ -7491,11 +7491,9 @@ msgstr "Papel"
 
 #: templates/users/users_form.html:126
 msgid ""
-"You are the only Administrator on organization. You can't change your "
-"permission at this time."
+"You are the only Administrator on organization. You can't be removed from Administrator group."
 msgstr ""
-"Você é o único administrador do estabelecimento. Você não pode alterar sua "
-"permissão neste momento."
+"Você é o único administrador do estabelecimento. Você não pode ser removido do grupo."
 
 #: templates/users/users_form.html:129
 msgid "Permissions"
@@ -7577,8 +7575,16 @@ msgstr "Usuário(s)"
 
 #: users/views.py:99
 #, python-format
-msgid "Error adding user <b>%s</b>: Username already exists."
-msgstr "Erro ao adicionar usuário <b>%s</b>: Este nome de usuário já existe"
+msgid "Username already exists, try another."
+msgstr "Este nome de usuário já existe, tente outro."
+
+#: user/views.py:99
+#, python-format
+msgid "Cannot be removed of this permission because is the only one. ( %s )"
+msgstr "Não pode ser removido dessa permissão porque é o único. ( %s )"
+
+msgid "Select one or more group permission."
+msgstr "Selecione uma permissão ou mais."
 
 #: users/views.py:111
 msgid "Error: Supplied passwords are differents."

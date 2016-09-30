@@ -2,17 +2,17 @@
 
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -57,25 +57,13 @@ GNU General Public License for more details.
 
                 <!-- username -->
                 <label>{% trans "Name" %}<br />
-
-                    {% comment %}
-                    {% if person_list %}
-                        <select name="id_person" class="giant get_user_json">
-                            {% for o in person_list %}
-                                <option id="" value="{{ o.id }}"> {{ o.name }} </option>
-                            {% endfor %}
-                        </select>
-                    {% else %}
-                        <input type="text" class="giant" readonly="1" value="{{ profile.person.name }}">
-                    {% endif %}
-                    {% endcomment %}
                     <input type="text" class="giant" readonly="1" value="{{ person.name }}">
                 </label>
 
                 <label>{% trans "Username" %}<br />
-                    <input type="text" name="username" class="giant" value="{{ person.profile.user.username }}" id="id_username" {% if person.profile.id %} readonly="1" {% endif %} required />
+                    <input type="text" name="username" class="giant" value="{{ person.profile.user.username }}" id="id_username" required />
                     <div class="check_available_user" style="display:none">
-                        <h2 style="font-weight:bold; color:red">{% trans "Not available" %}</h2>
+                        <h4 style="font-weight:bold; color:red">{% trans "Username already exists, try another." %}</h4>
                     </div>
                 </label>
 

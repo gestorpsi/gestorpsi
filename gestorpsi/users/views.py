@@ -33,24 +33,27 @@ from gestorpsi.person.views import person_json_list
 
 
 @permission_required_with_403('users.users_list')
-def index(request, deactive = False):
+def index(request, deactive=False):
     return render_to_response('users/users_list.html', locals(), context_instance=RequestContext(request))    
 
 
 @permission_required_with_403('users.users_list')
-def list(request, page=1, initial=None, filter=None, deactive=False):
+def list(request, page=1, initial=None, filter=None, deactive=False, permission=False):
     user = request.user
 
     if deactive:
-        object = Profile.objects.filter(org_active = user.get_profile().org_active, user__is_active = False).order_by('user__username')
+        object = Profile.objects.filter(org_active=user.get_profile().org_active, user__is_active=False).order_by('user__username')
     else:
-        object = Profile.objects.filter(org_active = user.get_profile().org_active, user__is_active = True).order_by('user__username')
+        object = Profile.objects.filter(org_active=user.get_profile().org_active, user__is_active=True).order_by('user__username')
 
     if initial:
-        object = object.filter(person__name__istartswith = initial)
+        object = object.filter(person__name__istartswith=initial)
         
     if filter:
-        object = object.filter(person__name__icontains = filter)
+        object = object.filter(person__name__icontains=filter)
+
+    if permission:
+        object = object.filter(user__groups__name=permission)
 
     return HttpResponse( 
                         simplejson.dumps(person_json_list(request, object, 'users.users_read', page), sort_keys=True),
@@ -97,7 +100,7 @@ def set_permission(request, profile, permissions):
         if not profile.user.groups.filter(name=perm):
             profile.user.groups.add(Group.objects.get(name=perm))
 
-    # exclude permission. Rest of cp
+    # Rest of permission in cp will be excluded.
     for perm in current:
         # Are in administrator group?
         if Role.objects.filter(profile=profile, organization=organization, group=Group.objects.get(name=perm)):
@@ -108,7 +111,6 @@ def set_permission(request, profile, permissions):
                 profile.user.groups.remove(Group.objects.get(name=perm))
 
     return profile
-
 
 
 @permission_required_with_403('users.users_read')
@@ -129,24 +131,31 @@ def form(request, object_id=None):
         for x in profile.user.groups.all():
             permissions.append(u"%s" % x.name)
 
-
     # save form
     if request.POST:
 
         permissions = request.POST.getlist('perms')
+        username = slugify(request.POST.get('username'))
+
+        if not permissions:
+            messages.error(request, _('Select one or more group permission.'))
+            errors = True
+
+        if not username:
+            messages.error(request, _('Invalid Username'))
+            errors = True
 
         # update
         if hasattr(person,'profile'):
-            if not permissions:
-                messages.error(request, _('Select one or more group permission.'))
-            else:
+            if not errors:
+                profile.user.username = slugify(request.POST.get('username'))
+                profile.user.save()
                 set_permission(request, profile, permissions)
                 messages.success(request, _('User updated successfully'))
                 return HttpResponseRedirect('/user/%s/' % person.id)
 
         # new
         if not hasattr(person,'profile'):
-            username = slugify(request.POST.get('username'))
             password = request.POST.get('password')
             pwd_conf = request.POST.get('pwd_conf')
             email = request.POST.get('email_send_user')
@@ -169,10 +178,6 @@ def form(request, object_id=None):
             if not password == pwd_conf or not password:
                 user.password = ""
                 messages.error(request, _('Password confirmation does not match. Please try again') )
-                errors = True
-
-            if not permissions:
-                messages.error(request, _(u'Selecione uma ou mais permissões.'))
                 errors = True
 
             if not email:
@@ -222,9 +227,9 @@ def update_pwd(request, obj=False):
 
     user = Profile.objects.get(person = obj, person__organization=request.user.get_profile().org_active).user
     user.set_password(request.POST.get('password_mini'))
+    user.save()
     user.profile.temp = request.POST.get('password_mini')    # temporary field (LDAP)
     user.profile.save()
-    user.save(force_update=True)
 
     messages.success(request, _('Password updated successfully!'))
     return HttpResponseRedirect('/user/%s/' % obj)
@@ -243,20 +248,26 @@ def set_form_user(request, object_id=0):
 
 @permission_required_with_403('users.users_write')
 def order(request, profile_id = None):
-    object = Profile.objects.get(pk = profile_id, person__organization=request.user.get_profile().org_active)
+
+    object = Profile.objects.get( pk=profile_id, person__organization=request.user.get_profile().org_active )
+
     if request.user.get_profile() == object:
         messages.error(request, _('Sorry, you can not disable yourself'))
     else:
-        if object.user.is_active:
-            object.user.is_active = False
+       # to check if is only one administrator 
+        if Role.objects.filter(organization=request.user.get_profile().org_active, group=Group.objects.get(name='administrator')).distinct().count() < 2:
+            messages.error(request, _('Cannot be removed of this permission because is the only one. ( %s )') % 'Administrador')
         else:
-            object.user.is_active = True
-            for i in object.user.registrationprofile_set.exclude(activation_key='ALREADY_ACTIVATED'):
-                i.activation_key = 'ALREADY_ACTIVATED'
-                i.save()
+            if object.user.is_active:
+                object.user.is_active = False
+            else:
+                object.user.is_active = True
+                for i in object.user.registrationprofile_set.exclude(activation_key='ALREADY_ACTIVATED'):
+                    i.activation_key = 'ALREADY_ACTIVATED'
+                    i.save()
 
-        object.user.save(force_update=True)
-        messages.success(request, ('%s' % (_('User activated successfully') if object.user.is_active else _('User deactivated successfully'))))
+            object.user.save()
+            messages.success(request, ('%s' % (_('User activated successfully') if object.user.is_active else _('User deactivated successfully'))))
     
     return HttpResponseRedirect('/user/%s/' % object.person.id)
 

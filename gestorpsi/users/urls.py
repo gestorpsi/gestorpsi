@@ -22,8 +22,11 @@ urlpatterns = patterns('',
     url(r'^$', login_check(index), name='user-index'),
     # search
     (r'^page(?P<page>(\d)+)$', login_check(list)),
+    (r'^page(?P<page>(\d)+)/permission/(?P<permission>[a-z]+)/$', login_check(list)), # filter permission
     (r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
+    (r'^initial/(?P<initial>[a-zA-Z])/permission/(?P<permission>[a-z]+)/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
     (r'^filter/(?P<filter>[a-zA-Z ]+)/page(?P<page>(\d)+)/$', login_check(list)), # quick search
+    (r'^filter/(?P<filter>[a-zA-Z ]+)/permission/(?P<permission>[a-z]+)/page(?P<page>(\d)+)/$', login_check(list)), # quick search and permission
     # form
     (r'^check/(?P<user>.*)/$', login_check(username_is_available)), # check if username are available
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form), name='user-form'), # mount form and save
@@ -31,11 +34,13 @@ urlpatterns = patterns('',
     url(r'^(?P<obj>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/savepwd/$', login_check(update_pwd), name='user-form-password'),
     # deactive or active
     url(r'^(?P<profile_id>(\d)+)/order/$', login_check(order), name='user-form-order'),
-    # deactive ok 
+    # deactive
     url(r'^deactive/$', login_check(index), { 'deactive':True }, name='user-index-deactive'),
     (r'^page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True}),
-    (r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick filter
+    (r'^page(?P<page>(\d)+)/permission/(?P<permission>[a-z]+)/deactive/$', login_check(list), {'deactive':True}), # filter permission
     (r'^initial/(?P<initial>[a-zA-Z])/deactive/$', login_check(list), {'deactive':True} ), # quick filter
+    (r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick filter
+    (r'^initial/(?P<initial>[a-zA-Z])/permission/(?P<permission>[a-z]+)/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick filter
     (r'^filter/(?P<filter>[a-zA-Z ]+)/page(?P<page>(\d)+)/deactive/$', login_check(list), {'deactive':True} ), # quick search
     (r'^filter/(?P<filter>[a-zA-Z ]+)/deactive/$', login_check(list), {'no_paging': True, 'deactive':True } ), # quick search
 )

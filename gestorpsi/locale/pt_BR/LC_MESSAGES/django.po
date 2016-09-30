@@ -127,6 +127,9 @@ msgstr "Digite novamente sua senha"
 msgid "Username"
 msgstr "Nome de Usuário"
 
+msgid "Invalid Username"
+msgstr "Nome de usuário inválido"
+
 #: authentication/forms.py:36
 msgid "Choice one unique identifier"
 msgstr ""
@@ -2864,7 +2867,6 @@ msgstr "Confirmação de evento realizada com sucesso."
 #: templates/tags/occurrence_employee_form.html:20
 #: templates/tags/occurrence_family_form.html:20
 #: templates/tags/schedule_form.html:40 templates/upload/upload_attach.html:33
-#: templates/users/users_list.html:43 templates/users/users_search.html:29
 msgid "of"
 msgstr "de"
 
@@ -3779,7 +3781,6 @@ msgstr "Profissionais"
 #: templates/service/service_list.html:39
 #: templates/service/service_queue.html:41
 #: templates/tags/messages_referral.html:21 templates/users/users_list.html:43
-#: templates/users/users_search.html:29
 msgid "Displaying"
 msgstr "Exibindo"
 
@@ -3797,7 +3798,6 @@ msgstr "Profissional(is)"
 #: templates/employee/employee_list.html:46 templates/place/place_list.html:39
 #: templates/place/place_room_list.html:39
 #: templates/service/service_list.html:39 templates/users/users_list.html:43
-#: templates/users/users_search.html:29
 msgid "Page"
 msgstr "Página"
 
@@ -3819,7 +3819,6 @@ msgstr "Página"
 #: templates/service/service_group_list.html:45
 #: templates/service/service_list.html:44
 #: templates/service/service_queue.html:47 templates/users/users_list.html:52
-#: templates/users/users_search.html:21
 msgid "There is no registers available."
 msgstr "Não existem registros disponíveis"
 
@@ -3836,7 +3835,6 @@ msgstr "Não existem registros disponíveis"
 #: templates/place/place_room_list.html:48
 #: templates/service/service_group_list.html:45
 #: templates/service/service_list.html:46 templates/users/users_list.html:52
-#: templates/users/users_search.html:21
 msgid "Click"
 msgstr "Clique"
 
@@ -3854,7 +3852,6 @@ msgstr "Clique"
 #: templates/place/place_list.html:48 templates/place/place_room_list.html:48
 #: templates/service/service_group_list.html:45
 #: templates/service/service_list.html:46 templates/users/users_list.html:52
-#: templates/users/users_search.html:21
 msgid "here"
 msgstr "aqui"
 
@@ -3871,7 +3868,6 @@ msgstr "aqui"
 #: templates/place/place_room_list.html:48
 #: templates/service/service_group_list.html:45
 #: templates/service/service_list.html:46 templates/users/users_list.html:52
-#: templates/users/users_search.html:21
 msgid "if you want to add a new one."
 msgstr "para adicionar um novo"
 
@@ -4265,12 +4261,10 @@ msgid "with filter"
 msgstr "com filtro"
 
 #: templates/client/client_list.html:41 templates/client/client_search.html:28
-#: templates/users/users_search.html:28
 msgid "All Customers"
 msgstr "Clientes"
 
 #: templates/client/client_list.html:43 templates/client/client_search.html:29
-#: templates/users/users_search.html:29
 msgid "customer(s)"
 msgstr "Cliente(s)"
 
@@ -4859,12 +4853,10 @@ msgid "This company have no related client yet"
 msgstr "Essa Pessoa Jurídica ainda não possui nenhum funcionário cadastrado"
 
 #: templates/client/client_search.html:82 templates/tags/paginator.html:20
-#: templates/users/users_search.html:82
 msgid "Previous"
 msgstr "Anterior"
 
 #: templates/client/client_search.html:84 templates/tags/paginator.html:22
-#: templates/users/users_search.html:84
 msgid "Next"
 msgstr "Próximo"
 

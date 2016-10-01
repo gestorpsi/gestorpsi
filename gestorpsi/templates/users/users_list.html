@@ -2,17 +2,17 @@
 
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -24,13 +24,13 @@ GNU General Public License for more details.
 
 {% block submenu %}
     <ul>
-        <li><a class="first {% if not deactive %} active {% endif %}" href="/user/">{% trans "all" %}</a></li>
-        <li><a class="{% if deactive %} active {% endif %}" href="/user/deactive/">{% trans "all Deactive" %}</a></li>
+        <li><a class="first {% if not deactive %} active {% endif %}" href="{% url user-index %}">{% trans "all" %}</a></li>
+        <li><a class="{% if deactive %} active {% endif %}" href="{% url user-index-deactive %}">{% trans "all Deactive" %}</a></li>
     </ul>
 {% endblock %}
 
 {% block core %}
-<div class="registers_available">
+    <div class="registers_available">
         
         <h2 id="title_addressbook" style="display: none"></h2>
         <h2 id="title_clients" style="display: none"></h2>
@@ -40,37 +40,50 @@ GNU General Public License for more details.
         {% else %}
             <h2 class="title_clients">{% trans "All Users" %}</h2>
         {% endif %}
-        <p class="description">{% trans "Displaying" %} <a href="/user/" display="list"><span id="object_length"></span> {% trans "user(s)" %}</a>.{% trans "Page" %} <b></b> {% trans "of" %} <b></b></p>
+
+        <p class="description">{% trans "Displaying" %} <a href="{% url user-index %}" display="list"><span id="object_length"></span> {% trans "user(s)" %}</a>. {% trans "Page" %} <b></b> {% trans "of" %} <b></b></p>
         <h2 id="title_myoffice" style="display: none"></h2>
         
         <div class="main_area contact">
+
             <div id="search_header" class="user_search {% if deactive %} deactive {% else %} active {% endif %}">
                 {% include "tags/search_header.html" %}
             </div>
 
-        <div class="no_registers_available" style="display:none">
-            <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="/user/" display="form" class="fastmenu notajax" sub_menu="sub_customers">{% trans "here" %}</a> {% trans "if you want to add a new one." %}
+            <div class="search_header_aditional">
+                <select name="filter_permission" id='filter_permission'>
+                    <option value="">Todas as permiss&otilde;es</option>
+                    <option value="administrator">Administrador</option>
+                    <option value="secretary">Secret&aacute;ria</option>
+                    <option value="professional">Professional</option>
+                    <option value="student">Estudante</option>
+                </select>
             </div>
-        </div>
 
-                <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+            <div class="no_registers_available" style="display:none">
+                <div id="msg_area" class="alert">{% trans "There is no registers available." %}<br /><br />{% trans "Click" %} <a href="{% url user-index %}" display="form" class="fastmenu notajax" sub_menu="sub_customers">{% trans "here" %}</a> {% trans "if you want to add a new one." %}
+                </div>
+            </div>
+
+            <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
                 <thead> 
-                        <tr> 
+                    <tr> 
                         <th></th> 
                         <th></th>
-                        </tr> 
+                    </tr> 
                 </thead>
                 <tbody>           
                     <script>
-                    {% if deactive %}
-                        updateUser('/user/page1/deactive/', true);
-                    {% else %}
-                        updateUser('/user/page1');
-                    {% endif %}
+                        {% if deactive %}
+                            updateUser('/user/page1/deactive/', true);
+                        {% else %}
+                            updateUser('/user/page1');
+                        {% endif %}
                     </script>
                 </tbody>
-                </table>
-                {% include "tags/paginator.html" %}
+            </table>
+            {% include "tags/paginator.html" %}
         </div>
-</div>
+
+    </div>
 {% endblock %}

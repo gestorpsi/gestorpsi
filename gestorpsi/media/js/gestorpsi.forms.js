@@ -760,17 +760,17 @@ $(function() {
       * user - return unsername slugify and firts email
       */
 
-    $('#form select.get_user_json option').unbind().click(function() {
-        if ($(this).attr("value")) {
-                $.getJSON("/user/" + $(this).attr("value") + "/setformuser/", function(json) {
-                    $("#form input[name=username]").val(json[0]);
-                    $("#form input[name=email_send_user]").val(json[1]);
-                    });
-       } else {
-                    $("#form input[name=username]").val("");
-                    $("#form input[name=email_send_user]").val("");
-                }
-     });
+    /*$('#form_user select.get_user_json option').unbind().click(function() {*/
+    /*if ($(this).attr("value")) {*/
+    /*$.getJSON("/user/" + $(this).attr("value") + "/setformuser/", function(json) {*/
+    /*$("#form_user input[name=username]").val(json[0]);*/
+    /*$("#form_user input[name=email_send_user]").val(json[1]);*/
+    /*});*/
+    /*} else {*/
+    /*$("#form_user input[name=username]").val("");*/
+    /*$("#form_user input[name=email_send_user]").val("");*/
+    /*}*/
+    /*});*/
      
      /**
       * referral - disable client

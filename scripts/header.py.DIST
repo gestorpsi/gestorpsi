@@ -27,9 +27,6 @@ reload(sys)
 sys.setdefaultencoding("utf-8")
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
-environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
-sys.path.append('..')
-
 # libray / Full path to libraries
 sys.path.append("/usr/lib/python2.7/dist-packages")
 
@@ -37,5 +34,8 @@ sys.path.append("/usr/lib/python2.7/dist-packages")
 path="/home/user/Desktop/dev/gestorpsi_github" 
 
 # append paths inside of project
+sys.path.append("%s" % path)
 sys.path.append("%s/gestorpsi" % path )
 sys.path.append("%s/scripts" % path)
+
+environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'

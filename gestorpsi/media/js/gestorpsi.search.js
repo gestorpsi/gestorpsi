@@ -291,7 +291,12 @@ $(function() {
      */
 
     $('div#search_header.user_search.active table#letter_menu tr td a, div#search_header.user_search.active a#letter_back, div#search_header.user_search.active a#letter_fwd').click(function() {
-        updateUser('/user/initial/' + $(this).attr('initial') + '/page1/', false, 'user/initial/' + $(this).attr('initial'));
+        perm = $('select#filter_permission option:selected').val();
+        if (perm) { 
+            updateUser('/user/initial/' + $(this).attr('initial') + '/permission/' + perm + '/page1/', false, 'user/initial/' + $(this).attr('initial'));
+        } else { 
+            updateUser('/user/initial/' + $(this).attr('initial') + '/page1/', false, 'user/initial/' + $(this).attr('initial'));
+        }
     });
 
     /**
@@ -299,31 +304,46 @@ $(function() {
     */
 
     $('div#search_header.user_search.active a.quick_search').click(function() {
-        ($(this).prev().val().length >= 1) ? updateUser('/user/filter/' + $(this).prev().val() + '/page1/', false, 'user/filter/' + $(this).prev().val()) : updateUser('/device/page1');
+        perm = $('select#filter_permission option:selected').val();
+
+        if (perm) { 
+            ($(this).prev().val().length >= 1) ? updateUser('/user/filter/' + $(this).prev().val() + '/permission/' + perm + '/page1/', false, 'user/filter/' + $(this).prev().val()) : updateUser('/user/page1/permission/' + perm );
+        } else { 
+            ($(this).prev().val().length >= 1) ? updateUser('/user/filter/' + $(this).prev().val() + '/page1/', false, 'user/filter/' + $(this).prev().val()) : updateUser('/user/page1');
+        }
+
     });
 
     /**
      * user clean up active
      */
-
     $('div#search_header.user_search.active a#cleanup').click(function() {
-        updateUser('/device/page1');
+        updateUser('/user/page1');
+        $('select#filter_permission').val(""); // reset permission select
     });
 
     /**
      * user quick filter deactive
      */
-
     $('div#search_header.user_search.deactive table#letter_menu tr td a, div#search_header.user_search.deactive a#letter_back, div#search_header.user_search.deactive a#letter_fwd').click(function() {
-        updateUser('/user/initial/' + $(this).attr('initial') + '/page1/deactive/', true, 'user/initial/' + $(this).attr('initial'));
+        perm = $('select#filter_permission option:selected').val();
+        if (perm) { 
+            updateUser('/user/initial/' + $(this).attr('initial') + '/permission/' + perm + '/page1/deactive/', true, 'user/initial/' + $(this).attr('initial'));
+        } else { 
+            updateUser('/user/initial/' + $(this).attr('initial') + '/page1/deactive/', true, 'user/initial/' + $(this).attr('initial'));
+        }
     });
 
     /**
     * user quick search deactive
     */
-
     $('div#search_header.user_search.deactive a.quick_search').click(function() {
-        ($(this).prev().val().length >= 1) ? updateUser('/user/filter/' + $(this).prev().val() + '/page1/deactive/', true, 'user/filter/' + $(this).prev().val()) : updateUser('/user/page1/deactive/');
+        perm = $('select#filter_permission option:selected').val();
+        if (perm) { 
+            ($(this).prev().val().length >= 1) ? updateUser('/user/filter/' + $(this).prev().val() + '/permission/' + perm + '/page1/deactive/', true, 'user/filter/' + $(this).prev().val()) : updateUser('/user/page1/permission/' + perm + '/deactive/' );
+        } else { 
+            ($(this).prev().val().length >= 1) ? updateUser('/user/filter/' + $(this).prev().val() + '/page1/deactive/', true, 'user/filter/' + $(this).prev().val()) : updateUser('/user/page1/deactive/');
+        }
     });
 
     /**
@@ -332,6 +352,7 @@ $(function() {
 
     $('div#search_header.user_search.deactive a#cleanup').click(function() {
         updateUser('/user/page1/deactive/', true);
+        $('select#filter_permission').val(""); // reset permission select
     });
 
     /**

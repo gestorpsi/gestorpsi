@@ -24,9 +24,6 @@ import header
 
 from datetime import datetime
 
-from django.db.models.loading import get_models
-loaded_models = get_models()
-
 from gestorpsi.financial.models import Receive
 from gestorpsi.referral.models import Referral
 
@@ -34,6 +31,10 @@ from gestorpsi.referral.models import Referral
     Covenant.charge = 11 : Fortnightlyt
 '''
 covenant_charge = 11
+
+print
+print "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # "
+print "# Payment - Creating covenant Fortnightlyt"
 
 # main code
 for r in Referral.objects.filter(covenant__isnull=False, covenant__charge=covenant_charge, referraldischarge__isnull=True): 
@@ -66,3 +67,5 @@ for r in Referral.objects.filter(covenant__isnull=False, covenant__charge=covena
 
         # save
         receive.save()
+
+        print u"--- %s " % receive

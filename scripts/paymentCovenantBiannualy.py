@@ -25,9 +25,6 @@ import header
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-from django.db.models.loading import get_models
-loaded_models = get_models()
-
 from gestorpsi.financial.models import Receive
 from gestorpsi.referral.models import Referral
 
@@ -44,6 +41,10 @@ covenant_charge = 14
 year = (datetime.today()-relativedelta(months=6)).year
 month = (datetime.today()-relativedelta(months=6)).month
 day = (datetime.today()-relativedelta(months=6)).day
+
+print
+print "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # "
+print "# Payment - Creating covenant Biannualy"
 
 # main code
 for r in Referral.objects.filter(covenant__isnull=False, covenant__charge=covenant_charge, referraldischarge__isnull=True, date__year=year, date__month=month, date__day=day):
@@ -76,3 +77,6 @@ for r in Referral.objects.filter(covenant__isnull=False, covenant__charge=covena
 
         # save
         receive.save()
+
+        print u"--- %s " % receive
+        print u"--- %s " % receive

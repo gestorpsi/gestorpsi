@@ -34,6 +34,7 @@ new_format = datetime(2016, 9, 12,0, 0)
     After or equal 12 09 2016, will use new model, Pay and Use.
     Organization.date_created >= 12 09 2016
 """
+print
 print "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # "
 print "# Invoice - Creating invoice new format"
 

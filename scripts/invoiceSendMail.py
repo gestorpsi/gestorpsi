@@ -38,7 +38,7 @@ def invoice_sendmail():
         # check all invoices that will be expire in 10 days.
         expiry = date.today() + timedelta(d) # corret
 
-        print "-- check %s " % expiry
+        print "> check %s " % expiry
         for i in Invoice.objects.filter(expiry_date=expiry, status=0, organization__suspension=False): # corret code
             if not i in invoice_list:
                 invoice_list.append(i)
@@ -81,6 +81,7 @@ def invoice_sendmail():
 
 
 if __name__ == '__main__':
+    print
     print "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # "
     print "# Invoice - Send Mail"
     invoice_sendmail()

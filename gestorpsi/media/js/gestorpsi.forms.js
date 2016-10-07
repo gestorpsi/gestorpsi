@@ -162,26 +162,38 @@ function referral_edit(select_field) {
                 $('select#id_professional').multiSelect();
             });
             
-            // is group
-            $('select[name=group] option').remove();
-            if(select_field.children(':selected').attr('is_group')=='True') {
-                $.getJSON("/service/" + select_field.val() + "/group/json/", function(json) {
-                    jQuery.each(json,  function(){
-                        $('select[name=group]').append(new Option(this.name, this.id));
-                    });
-                });
-                $('label.referral_group').effect('blind', {'mode':'show'});
-            } else {
-                $('label.referral_group').hide();
-            }
-            
+            // to check if is a group service
+            $.ajax({
+                type: "GET",
+                url: "/service/" + select_field.val() + "/group/json/",
+                success: function(msg){
+                    if (msg == 'False'){
+                        $('select#id_group').hide();
+                        $('select#id_group').parent().hide();
+                        $('select#id_group option').remove();
+                    } else {
+                        // clean options
+                        $('select#id_group option').remove();
+                        // reload group select
+                        $.getJSON("/service/" + select_field.val() + "/group/json/", function(json) {
+                            jQuery.each(json,  function(){
+                                $('select#id_group').append(new Option(this.name, this.id));
+                            });
+                        });
+                        // show select and label
+                        $('select#id_group').parent().show();
+                        $('select#id_group').show();
+                    }
+                }
+            });
+                     
 
             // covenant of service
             var TEMP='';
             $.getJSON("/covenant/list/service/" + select_field.val() + "/", function(json) {
                 jQuery.each(json, function(){
 
-                            if (this.events > 0 ){ 
+                            if ( this.events > 0 ){ 
                                 TEMP += '<option value="' + this.id + '">' + this.name +' - '+ this.charge +' (' + this.events + ') - R$ '+ this.price + '</option>';
                             } else { 
                                 TEMP += '<option value="' + this.id + '">' + this.name +' - '+ this.charge +' - R$ '+ this.price + '</option>';
@@ -802,7 +814,6 @@ $(function() {
                 // return all href the normal status
                 $("div#edit_form div.edit_form div.client_referral_list div.button_disable a").show();
                 $("div#edit_form div.edit_form div.client_referral_list div.confirm_disable").hide();
-                alert("Cliente desligado com sucesso!");
         }); 
     });
      
@@ -820,11 +831,11 @@ $(function() {
      * check if combo state has been changed, then bind save button
      */
     $('select.check_change, .check_change select').change(function () {
+
         if(!confirm($('input[name=message_referral_changing]').val())) { 
             // reset to original state
             $(this).children('option').attr('selected', '');
             $(this).children('option[value='+$(this).attr('original_state')+']').attr('selected', 'selected');
-            
             return false; 
         } else {
             if($(this).attr('name') == 'service') {

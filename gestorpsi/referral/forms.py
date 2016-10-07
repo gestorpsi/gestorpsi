@@ -1,87 +1,120 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 """
 
 from django import forms
 from django.utils.translation import ugettext as _
+from threadlocals.threadlocals import get_current_request
 
 from gestorpsi.referral.models import Referral, ReferralPriority, ReferralImpact, ReferralDischarge, Queue, ReferralExternal
-#from gestorpsi.careprofessional.models import CareProfessional
+from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client 
 from gestorpsi.service.models import Service, ServiceGroup
 from gestorpsi.covenant.models import Covenant
 
-
 '''
     Tiago de Souza Moraes / tiago@futuria.com.br
-    update 20 02 2014
+    update 06 10 2016
 '''
 class ReferralForm(forms.ModelForm):
 
-    referral = forms.ModelChoiceField(queryset=Referral.objects.all(), required = False, widget=forms.Select(attrs={'class':'extrabig asm', }))
-    service = forms.ModelChoiceField(queryset=Service.objects.all(), widget=forms.Select(attrs={'class':'extrabig asm', }))
-    group = forms.ModelChoiceField(queryset=ServiceGroup.objects.all(), required=False, widget=forms.Select(attrs={'class':'extrabig asm', }))
+    group = forms.ModelChoiceField(
+            queryset=ServiceGroup.objects.all(),
+            widget=forms.Select(attrs={'class':'extrabig asm', }),
+            required=False
+            )
 
-    #professional = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, choices = (
-        #[(i.id, i) for i in CareProfessional.objects.all()]
-    #))    
+    priority = forms.ModelChoiceField(
+            queryset=ReferralPriority.objects.all(),
+            widget=forms.Select(attrs={'class':'extramedium', }),
+            required=False
+            )
 
-    client = forms.ModelMultipleChoiceField(queryset=Client.objects.all(), required=False,  widget=forms.SelectMultiple(attrs={'class':'extrabig multiple asm', }))
-    annotation = forms.CharField(widget=forms.Textarea(), required = False)
-    referral_reason = forms.CharField(widget=forms.Textarea(), required = False)
-    available_time = forms.CharField(widget=forms.Textarea(), required = False)
-    priority = forms.ModelChoiceField(queryset=ReferralPriority.objects.all(), required=False, widget=forms.Select(attrs={'class':'extramedium', }))
-    impact = forms.ModelChoiceField(queryset=ReferralImpact.objects.all(), required=False, widget=forms.Select(attrs={'class':'giant', }))
-    
+    impact = forms.ModelChoiceField(
+            queryset=ReferralImpact.objects.all(),
+            widget=forms.Select(attrs={'class':'giant', }),
+            required=False
+            )
+
+    referral_reason = forms.CharField( 
+            widget=forms.Textarea(attrs={'cols':'59','rows':'5' }),
+            required=False
+            )
+
+    available_time = forms.CharField( 
+            widget=forms.Textarea(attrs={'cols':'59','rows':'5'}),
+            required=False
+            )
+
+    annotation = forms.CharField(
+            widget=forms.Textarea(attrs={'cols':'59','rows':'5'}),
+            required=False
+            )
+
     class Meta:
-        fields = ('client', 'service', 'professional', 'annotation', 'referral', 'annotation', 'referral_reason', 'available_time', 'priority', 'impact', 'covenant')
+        fields = ('service','professional', 'annotation', 'referral_reason', 'available_time', 'priority', 'impact', 'covenant')
         model = Referral
     
     def __init__(self, request, *args, **kwargs):
-
         '''
             request : Django session request
         '''
         super(ReferralForm, self).__init__(*args, **kwargs)
 
-        # show or not the covenant of service
-        # update register
-        try:
-            ref = Referral.objects.get(pk=kwargs['instance'].id )
-            # query covenant of org
+        self.fields['service'] = forms.ModelChoiceField(
+                    queryset=Service.objects.filter(active=True, organization=request.user.get_profile().org_active),
+                    widget=forms.Select(attrs={'class':'extrabig asm check_change','required':'required' }),
+                    required=True
+                )
+
+        """
+            filter content of select based in service
+            mount form or save
+        """
+        # professional
+        # mount form / show professional of service
+        if self.instance.id and self.instance.service and not request.POST:
+            self.fields['professional'].queryset = CareProfessional.objects.filter(prof_services=self.instance.service, person__organization=request.user.get_profile().org_active)
+        # new / update, allow all professional of org
+        else:
+            self.fields['professional'].queryset = CareProfessional.objects.filter(person__organization=request.user.get_profile().org_active)
+
+
+        # groups of service
+        if self.instance.id and self.instance.service.is_group and not request.POST:
+            self.fields['group'].queryset = ServiceGroup.objects.filter(service=self.instance.service, service__organization=request.user.get_profile().org_active)
+
+            if self.instance.group: # group is not required, can be None/Null
+                self.fields['group'].initial = self.instance.group.id
+        else:
+            self.fields['group'].queryset = ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active)
+
+
+        # covenant of service
+        if self.instance.id and self.instance.service and not request.POST:
             self.fields['covenant'] = forms.ModelMultipleChoiceField(
-                                        queryset=Covenant.objects.filter( organization=request.user.get_profile().org_active, active=True, service=ref.service),
+                                        queryset=Covenant.objects.filter( organization=request.user.get_profile().org_active, active=True, service=self.instance.service),
                                         required=False,
                                     )
-        # new register
-        except:
+        else:
             self.fields['covenant'] = forms.ModelMultipleChoiceField(
                                         queryset=Covenant.objects.filter( organization=request.user.get_profile().org_active, active=True ),
                                         required=False,
                                     )
-            pass
 
 
-        if hasattr(self,'instance') and self.instance.id:
-            if self.instance.service.is_group:
-            #if self.instance.service.is_group and self.instance.group:
-                self.fields['group'].widget.attrs = {'class':'extrabig asm', 'original_state':self.instance.group.id}
-                self.fields['group'].required = True
-                
-
-        
 class ReferralDischargeForm(forms.ModelForm):
     details = forms.CharField(label=_('Details'), widget=forms.Textarea(attrs={'class':'giant'}), required=False)
     description = forms.CharField(label=_('Description'), widget=forms.Textarea(attrs={'class':'giant'}), required=False)

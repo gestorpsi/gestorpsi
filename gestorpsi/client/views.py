@@ -466,7 +466,7 @@ def referral_plus_form(request, object_id=None, referral_id=None):
 def referral_form(request, object_id=None, referral_id=None):
 
     # client
-    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+    object = get_object_or_404( Client, pk=object_id, person__organization=request.user.get_profile().org_active )
 
     # check access by requested user
     if not _access_check(request, object):
@@ -477,27 +477,27 @@ def referral_form(request, object_id=None, referral_id=None):
 
     if referral_id:
         referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
-        if not _access_check_referral_write(request, referral):
-            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
     else:
         referral = Referral()
-    
 
-    # save 
+    # to check permission
+    if not _access_check_referral_write(request, referral):
+        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+    
+    # post
     if request.method == 'POST':
         form = ReferralForm( request, request.POST, instance=referral )
 
         if form.is_valid():
-
             data = form.save(commit=False)
             data.organization = request.user.get_profile().org_active
             data.status = '01'
 
             if data.service.active:
                 data.save()
-                #save professionals
+                # save professionals
                 form.save_m2m()
-                # add client(s)
+                # add client
                 data.client.add(object)
 
                 ''' Indication  Section '''
@@ -507,13 +507,13 @@ def referral_form(request, object_id=None, referral_id=None):
                     indication.indication_choice = IndicationChoice.objects.get(pk=request.POST.get('indication'))
                     indication.referral_organization = get_object_or_None(Organization, id=request.POST.get('indication_organization'))
                     indication.referral_professional = get_object_or_None(CareProfessional, id=request.POST.get('indication_professional'))
-                    # indication.client = Client.objects.get(pk = object_id)
                     indication.referral = Referral.objects.get(pk = data)
                     indication.save()
 
                 ''' if asked, add referral and client to some existing group ''' 
-                GroupMembers.objects.filter(client=Client.objects.get(pk = object_id, person__organization=request.user.get_profile().org_active), referral=data).delete()
-                if data.service.is_group:
+                GroupMembers.objects.filter( client=object, client__person__organization=request.user.get_profile().org_active, referral=data).delete()
+
+                if data.service.is_group and request.POST.get('group'):
                     group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active)
                     gm = GroupMembers(group=group, client=object, referral=data)
                     gm.save()
@@ -523,70 +523,45 @@ def referral_form(request, object_id=None, referral_id=None):
                 messages.success(request, _(msg))
                 return HttpResponseRedirect(url % (object_id, data.id))
 
-    # show just professional that are have subscription in a selected service
-    # update 
-    if referral.id:
-
-        form = ReferralForm(request, instance=referral)
-        form.fields['professional'].choices = [ (p.pk, '%s %s' % (p.person.name, '' if not p.is_student else _('(Student)'))) for p in CareProfessional.objects.filter(active=True, person__organization=request.user.get_profile().org_active, prof_services=referral.service)]
-        referral_list = Referral.objects.filter(client=object, status='01')
-    
-    # new
+    # not post, mount form for new or update register
     else:
-
-        form = ReferralForm(request)
-        # need choose a service to show professional list
-        form.fields['professional'].choices = ()
-        referral_list = None
-
-    # group
-    if referral.group:
-        form.fields['group'].initial = referral.group.id
-        form.fields['group'].queryset = ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active).filter(service=referral.service)
-    else:
-        form.fields['group'].queryset = ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active)
-
-    # of client
-    form.fields['referral'].queryset = Referral.objects.filter(client=object)
-    form.fields['service'].queryset = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
-    form.fields['client'].queryset = Client.objects.filter(person__organization = request.user.get_profile().org_active.id, active = True)
+        if referral.id:
+            referral_form = ReferralForm(request, instance=referral)
+        else:
+            referral_form = ReferralForm(request)
 
     return render_to_response('client/client_referral_form.html',
-                              { 'object': object, 
-                                'referral': referral,
-                                'referral_form': form,
-                                'referral_list': referral_list,
-                                'services': Service.objects.filter(active=True, organization=request.user.get_profile().org_active),
-                                'referrals': Referral.objects.filter(client = object),
-                                'groups': ServiceGroup.objects.filter(service__organization=request.user.get_profile().org_active, active=True),
-                                'IndicationsChoices': IndicationChoice.objects.all(),
-                                'contact_organizations': Contact.objects.filter_internal(
-                                                org_id = request.user.get_profile().org_active.id, 
-                                                person_id = request.user.get_profile().person.id, 
-                                                filter_name = None,
-                                                filter_type = 1
-                                            ),
-                                'contact_professionals': Contact.objects.filter_internal(
-                                                org_id = request.user.get_profile().org_active.id, 
-                                                person_id = request.user.get_profile().person.id, 
-                                                filter_name = None,
-                                                filter_type = 2
-                                            ),
-                                'contact_organizations_external': Contact.objects.filter_external(
-                                                org_id = request.user.get_profile().org_active.id, 
-                                                person_id = request.user.get_profile().person.id, 
-                                                filter_name = None,
-                                                filter_type = 1
-                                            ),
-                                'contact_professionals_external': Contact.objects.filter_external(
-                                                org_id = request.user.get_profile().org_active.id, 
-                                                person_id = request.user.get_profile().person.id, 
-                                                filter_name = None,
-                                                filter_type = 2
-                                            ),
-                                'AttachTypes': REFERRAL_ATTACH_TYPE,
-                               },
-                              context_instance=RequestContext(request)
+                                  { 'object': object, 
+                                    'referral': referral,
+                                    'referral_form': referral_form,
+                                    'referral_list': Referral.objects.filter(client=object, status='01'),
+                                    'IndicationsChoices': IndicationChoice.objects.all(),
+                                    'contact_organizations': Contact.objects.filter_internal(
+                                                    org_id = request.user.get_profile().org_active.id, 
+                                                    person_id = request.user.get_profile().person.id, 
+                                                    filter_name = None,
+                                                    filter_type = 1
+                                                ),
+                                    'contact_professionals': Contact.objects.filter_internal(
+                                                    org_id = request.user.get_profile().org_active.id, 
+                                                    person_id = request.user.get_profile().person.id, 
+                                                    filter_name = None,
+                                                    filter_type = 2
+                                                ),
+                                    'contact_organizations_external': Contact.objects.filter_external(
+                                                    org_id = request.user.get_profile().org_active.id, 
+                                                    person_id = request.user.get_profile().person.id, 
+                                                    filter_name = None,
+                                                    filter_type = 1
+                                                ),
+                                    'contact_professionals_external': Contact.objects.filter_external(
+                                                    org_id = request.user.get_profile().org_active.id, 
+                                                    person_id = request.user.get_profile().person.id, 
+                                                    filter_name = None,
+                                                    filter_type = 2
+                                                ),
+                                   },
+                                   context_instance=RequestContext(request)
                               )
 
 

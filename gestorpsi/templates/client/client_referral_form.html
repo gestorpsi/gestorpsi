@@ -2,17 +2,17 @@
 
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -53,25 +53,25 @@ GNU General Public License for more details.
                 <legend>{% trans "Indications" %}</legend>
                 <label>{% trans "Indication done by" %}<br />
                     <select name="indication" class="big toggle_parent_label">
-                            {% for o in IndicationsChoices %}<option value="{{ o.id }}" nick="{{ o.nick }}" {% ifequal o.id referral.indication_set.all.0.indication_choice_id %} selected{% endifequal %}>{{ o }}</option>{% endfor %}
+                        {% for o in IndicationsChoices %}<option value="{{ o.id }}" nick="{{ o.nick }}" {% ifequal o.id referral.indication_set.all.0.indication_choice_id %} selected{% endifequal %}>{{ o }}</option>{% endfor %}
                     </select>
                 </label>
 
                 <div class="admission_ind_org" {% ifnotequal referral.indication_set.all.0.indication_choice_id 3 %} style="display:none;" {% endifnotequal %} >
                     <label class="organization">{% trans "Select Organization" %} {% if not referral %}, {% trans "or" %} <a class="form_mini" display="address_book_organization_mini">{% trans "add a new one" %}</a>{% endif %}<br />
                         <select name="indication_organization" class="select extrabig asm">
-                           <option>{% trans "Select Organization"%}...</option>
+                            <option>{% trans "Select Organization"%}...</option>
 
-                           <optgroup label="{% trans "Local Contacts" %}">
-                            {% for org in contact_organizations %}
-                                <option value="{{ org.id }}" {% ifequal org.id referral.indication_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org }}</option>
-                            {% endfor %}
+                            <optgroup label="{% trans "Local Contacts" %}">
+                                {% for org in contact_organizations %}
+                                    <option value="{{ org.id }}" {% ifequal org.id referral.indication_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org }}</option>
+                                {% endfor %}
                             </optgroup>
 
                             <optgroup label="{% trans "External Contacts" %}">
-                            {% for org in contact_organizations_external %}
-                                <option value="{{ org.id }}" {% ifequal org.id referral.indication_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org|upper }}</option>
-                            {% endfor %}
+                                {% for org in contact_organizations_external %}
+                                    <option value="{{ org.id }}" {% ifequal org.id referral.indication_set.all.0.referral_organization_id %} selected {% endifequal %}>{{ org|upper }}</option>
+                                {% endfor %}
                             </optgroup>
 
                         </select>
@@ -105,6 +105,7 @@ GNU General Public License for more details.
 
     
         <fieldset>
+
             <legend>{% trans "Subscritpion Details" %}</legend>
             <label class="referral_type_referral hidden">{% trans "Last Referral" %}
                 <select name="referral" class="extrabig asm referral_list" {% if object.id %} id="id_referral" {% endif %} >
@@ -119,18 +120,16 @@ GNU General Public License for more details.
                 
             <input type="hidden" name="message_referral_changing" value="{% trans "This operation will change ALL schedule occurrences. Do you really want to continue?" %}" />
             
-            <!-- service choose -->
-            <label>{% trans "To Service" %}<br />
-                <select id="id_service" class="extrabig asm{% if referral.id %} check_change{% endif %}" name="service" original_state="{{ referral.service.id }}" required="required">
-                    <option value="">---------</option>
-                    {% for s in services %}
-                        <option{% if referral %}{% ifequal referral.service s %} selected {% endifequal %}{% endif %} value="{{ s.id }}" is_group="{% if s.is_group %}True{% else %}False{% endif %}"{% if s.is_group and not s.servicegroup_set.all %} disabled{% endif %}>{{ s }}{% if s.is_group and not s.servicegroup_set.all %} ({% trans "Empty" %}){% endif %}</option>
-                    {% endfor %}
-                </select>
+            <!-- service -->
+            <label>
+                {% trans "To Service" %} <br /> {{ referral_form.service }}
             </label>
-            
-            <label class="referral_group {% if referral.id %} check_change {% endif %} " {% if not referral.service.is_group %} style="display:none;" {% endif %}>{% trans "Subscribe this customer in a group" %} <br /> {{ referral_form.group }}
+
+            <!-- service group -->
+            <label {% if not referral.service.is_group %} style="display:none;" {% endif %}>
+                {% trans "Subscribe this customer in a group" %} <br /> {{ referral_form.group }}
             </label>
+                            
         </fieldset>
 
         <!-- profissional combobox -->
@@ -165,15 +164,15 @@ GNU General Public License for more details.
 
         <fieldset>
         <legend>{% trans "Referral Additional Infos" %}</legend>
-            <label>{% trans "Referral Reason" %}<br />
-                {{ referral_form.referral_reason }}
-            </label>
             <label>{% trans "Priority" %}<br />
                 {{ referral_form.priority }}
             </label>
             <label>{% trans "Impact" %}<br />
                 {{ referral_form.impact }}
             </label>        
+            <label>{% trans "Referral Reason" %}<br />
+                {{ referral_form.referral_reason }}
+            </label>
             <label>{% trans "Available Time" %}<br />
                 {{ referral_form.available_time }}
             </label>

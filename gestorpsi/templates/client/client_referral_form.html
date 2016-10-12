@@ -24,6 +24,10 @@
     {% include "client/client_menu.html" %}
 {% endblock %}
 
+{% block extrahead %}
+    <script type="text/javascript" src="/media/js/gestorpsi.referral.forms.js"></script>
+{% endblock %}
+
 {% block core %}
 
 <h2 id="title_addressbook" style="display:none"></h2>
@@ -39,7 +43,12 @@
 <h2 id="title_contacts" style="display:none"></h2>
 <h2 id="title_myoffice" style="display:none"></h2>
 
-<form action="/client/{{ object.id }}/referral/{% if referral.id %}{{ referral.id }}/{% endif %}form/" method="post" id="client_referral_form" class="{% if not referral.id %}client_referral{% endif %}">
+{% if referral.id %}
+    <form action="{% url client-referral-form object.id  referral.id %}" method="post" id="client_referral_form" class="{% if not referral.id %}client_referral{% endif %}">
+{% else %}
+    <form action="{% url client-referral-new object.id %}" method="post" id="client_referral_form" class="client_referral">
+{% endif %}
+
     <input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
     <div class="main_area home">
 
@@ -136,7 +145,7 @@
         <div id='professional-div-id' style="{% if not referral.id %} display:none; {% endif %}" >
             <label style="margin-right:235px;" for="id_professional">{% trans "Professionals available" %}</label>
             <label for="id_professional">{% trans "Professionals selected" %}</label>
-            <div style="clear:both; margin-left:10px;" class="referral_form_professional{% if referral.id %} check_change{% endif %}{% if not referral.id %} hide_on_first{% endif %}">
+            <div style="clear:both; margin-left:10px;" class="referral_form_professional{% if referral.id %} check_change {% endif %}{% if not referral.id %} hide_on_first {% endif %}">
                 {{ referral_form.professional }}
             </div> 
             {% if referral_form.instance %}

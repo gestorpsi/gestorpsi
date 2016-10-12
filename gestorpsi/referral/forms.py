@@ -73,9 +73,14 @@ class ReferralForm(forms.ModelForm):
         '''
         super(ReferralForm, self).__init__(*args, **kwargs)
 
+        if self.instance.id:
+            wdgt = forms.Select(attrs={'class':'extrabig asm check_change','required':'required' })
+        else:
+            wdgt = forms.Select(attrs={'class':'extrabig asm','required':'required' })
+
         self.fields['service'] = forms.ModelChoiceField(
                     queryset=Service.objects.filter(active=True, organization=request.user.get_profile().org_active),
-                    widget=forms.Select(attrs={'class':'extrabig asm check_change','required':'required' }),
+                    widget=wdgt,
                     required=True
                 )
 
@@ -106,6 +111,7 @@ class ReferralForm(forms.ModelForm):
         if self.instance.id and self.instance.service and not request.POST:
             self.fields['covenant'] = forms.ModelMultipleChoiceField(
                                         queryset=Covenant.objects.filter( organization=request.user.get_profile().org_active, active=True, service=self.instance.service),
+                                        widget = forms.Select(attrs={'class':'check_change'}),
                                         required=False,
                                     )
         else:

@@ -299,11 +299,11 @@ class CareProfessional(models.Model):
             queryset.filter(start_time__gte = start_time, end_time__lte = end_time) \
             else False
 
-    def _url_form(self):
+    def get_url_form_(self):
         if hasattr(self, 'studentprofile'):
-            return reverse('student_form', args=[self.pk])
-        return reverse('professional_form', args=[self.pk])
-    url_form = property(_url_form)
+            return reverse('student-form', args=[self.pk])
+        return reverse('careprofessional-form', args=[self.pk])
+    get_url_form_ = property(get_url_form_)
 
     is_student = property(_is_student)
     

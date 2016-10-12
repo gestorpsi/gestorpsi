@@ -67,7 +67,7 @@ GNU General Public License for more details.
                 {% endif %}
             {% else %}
                 {% for p in referral.professional.all %}
-                    <i><a href="{{ p.url_form }}">{{ p }}</a><small>{% if p.professionalIdentification.profession %} {{ p.professionalIdentification.profession }}{% endif %}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %}{% if p.professionalIdentification.profession.symbol %} - {{ p.professionalIdentification.profession.symbol }}{% endif %}{% if p.professionalIdentification.registerNumber %} {{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</small></i>{% if not forloop.last %}, {% endif %}
+                    <i><a href="{{ p.get_url_form_ }}">{{ p }}</a><small>{% if p.professionalIdentification.profession %} {{ p.professionalIdentification.profession }}{% endif %}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %}{% if p.professionalIdentification.profession.symbol %} - {{ p.professionalIdentification.profession.symbol }}{% endif %}{% if p.professionalIdentification.registerNumber %} {{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</small></i>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
             {% endif %}
 

@@ -94,9 +94,9 @@
                     {% if org_active.phones.all %} {{ org_active.phones.all|join:", "}} {% endif %}<br>
                 </td>
                 <td style="text-align:right;font-size: 12px;">
-                        <b>{% trans "Client Report" %}</b><br>
-                {% trans "generated at" %} {% now "d/m/Y H:i" %} hs<br>
-                {% trans "by " %} {{ user.get_profile.person.name }}<br>
+                    <b>{% trans "Client Report" %}</b><br>
+                    {% trans "generated at" %} {% now "d/m/Y H:i" %} hs<br>
+                    {% trans "by " %} {{ user.get_profile.person.name }}<br>
                 </td>
             </tr>
         </table>
@@ -107,22 +107,10 @@
                 <td style="width: 626px; vertical-align: top; padding: 0px;">
                       
                     <!-- client -->
-
                     <h1 class="nome">{{ object.person.name|title }}</h1>
                     <strong>{% trans "ID record" %}: </strong>{{ object.idRecord }}<br />
                     <strong>{% trans "Subscribed since" %}:</strong> {{ object.admission_date|date:"d/m/Y" }}<br />
                     {% if object.legacyRecord %}<strong>{% trans "Legacy record" %}: </strong>{{ object.legacyRecord }}<br />{% endif %}
-
-                    <strong>{% trans "Admission Knowledge" %}: </strong>
-
-                    {% for i in object.admissionreferral_set.all %}
-                        {{ i.referral_choice }} 
-                        {% if i.referral_organization or i.referral_professional %} 
-                            ({% if i.referral_organization.name %}{{ i.referral_organization.name }}{% endif %}{% if i.referral_professional %}{{ i.referral_professional }}{% endif %})
-                        {% endif %}
-                        {% if not forloop.last %},{% endif %}
-                    {% endfor %}
-                    <br />
 
                     {% for a in object.admissionreferral_set.all %}
                         {% if a.signed_bythe_client %}
@@ -159,7 +147,6 @@
         </table>
 
 
-    <!-- demographic -->
     <br />
     {% if print_demographic %}
         <h1>{% trans "Record Data" %}</h1>
@@ -280,6 +267,18 @@
         <strong>{% trans "Admission" %}: </strong>{{ i.date|date:"d/m/Y" }}<br />
         {% if i.referral %}<strong>{% trans "Referral Source" %}: </strong>{{ i.referral }}<br />{% endif %}
         {% if i.referralexternal_set.all %}<strong>{% trans "External Referrals" %}: </strong>{{ i.referralexternal_set.all|join:", " }}<br />{% endif %}
+
+        <!-- indication choice -->
+        {% if i.indication_set.all.0.indication_choice %}
+        <strong>{% trans "Indication" %}: </strong>{{ i.indication_set.all.0.indication_choice }} - 
+            {% if i.indication_set.all.0.referral_professional %}
+                {{ i.indication_set.all.0.referral_professional }}
+            {% endif %}
+
+            {% if i.indication_set.all.0.referral_organization %}
+                {{ i.indication_set.all.0.referral_organization }}
+            {% endif %}
+        {% endif %}
 
         {% if i.service.keywords %}
             <strong>{% trans "Palavras chaves" %}: </strong> {{ i.service.keywords }}

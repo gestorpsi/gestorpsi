@@ -49,10 +49,12 @@
     <form action="{% url client-referral-new object.id %}" method="post" id="client_referral_form" class="client_referral">
 {% endif %}
 
+    <input type="hidden" name="message_referral_changing" value="{% trans "This operation will change ALL schedule occurrences. Do you really want to continue?" %}" />
     <input type="hidden" class="tabtitle" value="{{ object.person.name }}" />
+
     <div class="main_area home">
 
-        <a href="" id=help>&nbsp;</a>
+        <a id=help>&nbsp;</a>
         <h3><span>{% trans "Subscription Details" %}</span></h3>
 
         <!-- indication -->
@@ -114,20 +116,6 @@
 
     
         <fieldset>
-
-            <legend>{% trans "Subscritpion Details" %}</legend>
-            <label class="referral_type_referral hidden">{% trans "Last Referral" %}
-                <select name="referral" class="extrabig asm referral_list" {% if object.id %} id="id_referral" {% endif %} >
-                    <option value="">---------</option>
-                    {% for r in referral_list %}
-                        <option value="{{ p.id }}"> {{ r }} 
-                            {{ r.professional.all|join:", " }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </label>
-                
-            <input type="hidden" name="message_referral_changing" value="{% trans "This operation will change ALL schedule occurrences. Do you really want to continue?" %}" />
             
             <!-- service -->
             <label>

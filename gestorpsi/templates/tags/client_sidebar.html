@@ -1,16 +1,16 @@
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -126,8 +126,8 @@ GNU General Public License for more details.
             <li><a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}" class="client_calendar" title="{{ object.person.name }}">{% trans "Schedule Client" %}</a></li>
 
             {% if referral.id %}
-                <li><a href="/client/{{ object.id }}/referral/plus/{{ referral.id }}/form/" class="client_referral_form" title="{{ object.person.name }}">{% trans "Internal Referral" %}</a></li>
-                <li><a href="/client/{{ object.id }}/referral/ext/{{ referral.id }}/form/" class="client_referral_ext_form" title="{{ object.person.name }}">{% trans "External Referral" %}</a></li>
+                <li><a href="{% url client-referral-int-form object.id referral.id %}" class="client_referral_form" title="{{ object.person.name }}">{% trans "Internal Referral" %}</a></li>
+                <li><a href="{% url client-referral-ext-form object.id referral.id %}" class="client_referral_ext_form" title="{{ object.person.name }}">{% trans "External Referral" %}</a></li>
             {% endif %}
 
             {% if not referral.referraldischarge_set.all %}

@@ -158,7 +158,7 @@ def form(request, object_id=None):
         if not hasattr(person,'profile'):
             password = request.POST.get('password')
             pwd_conf = request.POST.get('pwd_conf')
-            email = request.POST.get('email_send_user')
+            email = request.POST.get('email')
 
             # temp
             user = User()

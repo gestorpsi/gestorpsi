@@ -20,12 +20,12 @@
 
     <h3>{% trans 'Client Details' %}</h3>
     <ul>
-        <li><a href="/client/{{ object.id }}/home/" class="client_home" title="{% trans "Client Home" %}">{% trans "Client Home" %}</a></li>
+        <li><a href="{% url client-home object.id %}" class="client_home" title="{% trans "Client Home" %}">{% trans "Client Home" %}</a></li>
 
     {% if object.active %} 
-        <li><a href="/client/{{ object.id }}/" class="client_form" title="{% trans "Record Data" %}">{% trans "Record Data" %}</a></li>
+        <li><a href="{% url client-form object.id %}" class="client_form" title="{% trans "Record Data" %}">{% trans "Record Data" %}</a></li>
         {% if not object.is_company %} 
-        <li><a href="/client/{{ object.id }}/demographic/" class="client_form" title="{% trans "Demographic Data" %}">{% trans "Demographic Data" %}</a></li>
+            <li><a href="{% url client-demographic-home object.id %}" class="client_form" title="{% trans "Demographic Data" %}">{% trans "Demographic Data" %}</a></li>
         {% endif %}
 
         {% if not object.is_company %}

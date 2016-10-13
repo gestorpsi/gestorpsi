@@ -25,6 +25,7 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.core.urlresolvers import reverse
 
 from gestorpsi.settings import DEBUG, MEDIA_URL, MEDIA_ROOT, PAGE_RESULTS
 
@@ -52,7 +53,7 @@ from gestorpsi.company.forms import CompanyForm, CompanyClientForm
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.admission.models import ReferralChoice as AdmissionChoice, AdmissionReferral
 
-from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, REFERRAL_ATTACH_TYPE, Queue, ReferralExternal, ReferralDischarge
+from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice, Indication, Queue, ReferralExternal, ReferralDischarge
 from gestorpsi.referral.forms import ReferralForm, ReferralDischargeForm, QueueForm, ReferralExtForm
 from gestorpsi.referral.views import _referral_view, _referral_occurrences
 from gestorpsi.util.decorators import permission_required_with_403
@@ -175,7 +176,7 @@ def home(request, object_id=None):
 
 
 @permission_required_with_403('client.client_read')
-def add(request):
+def client_add(request):
     if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
         msg = _("There's no Service created yet. Please, create one before access Client, ") + " <a href='/service/add'> clique aqui.</a>"
         return render_to_response('client/client_service_alert.html', {'object': msg }, context_instance=RequestContext(request))
@@ -205,14 +206,14 @@ def add(request):
                                         context_instance=RequestContext(request))
 
 
-"""
-    Tiago de Souza Moraes - 06/05/2014
-    retrn: JSON or HTML
-    search person family return JSON
-    search client/initial letter return HTML
-"""
 @permission_required_with_403('client.client_list')
 def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=False, retrn=False):
+    """
+        Tiago de Souza Moraes - 06/05/2014
+        retrn : string, JSON or HTML
+        search person family return JSON
+        search client/initial letter return HTML
+    """
 
     user = request.user
     object_list = Client.objects.from_user(user, 'deactive' if deactive else 'active')
@@ -400,13 +401,17 @@ def form(request, object_id=''):
 
 
 @permission_required_with_403('client.client_read')
-def add_company(request, object_id=''):
-    object = Client() if not object_id else get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+def company_add(request, object_id=None):
+
+    if object_id:
+        get_object_or_404( Client, pk=object_id, person__organization=request.user.get_profile().org_active )
+    else:
+        object = Client()
 
     company_form = CompanyForm()
 
     return render_to_response('client/client_form_company.html',
-                              {'object': object,
+                              { 'object': object,
                                 'phones' : None if not object_id else object.person.phones.all(),
                                 'addresses' : None if not object_id else object.person.address.all(),
                                 'documents' : None if not object_id else object.person.document.all(),
@@ -470,7 +475,7 @@ def referral_int_form(request, object_id=None, referral_id=None):
                 gm.save()
 
         messages.success(request, _('Referral saved successfully'))
-        return HttpResponseRedirect('/client/%s/referral/' % object.id )
+        return HttpResponseRedirect(reverse('client-referral-home', args=[object.id,data.id]) )
 
     else:
         form = ReferralForm(request)
@@ -483,14 +488,13 @@ def referral_int_form(request, object_id=None, referral_id=None):
                                }, context_instance=RequestContext(request))
 
 
-'''
-    referral form for client
-    Tiago de Souza Moraes / tiago@futuria.com.br
-    update 13 10 2016
-'''
-# add or edit form
 @permission_required_with_403('referral.referral_read')
 def referral_form(request, object_id=None, referral_id=None):
+    '''
+        New or edit Referral form
+        object_id : Client.id
+        referral_id : Referral.id
+    '''
 
     # client
     object = get_object_or_404( Client, pk=object_id, person__organization=request.user.get_profile().org_active )
@@ -590,60 +594,6 @@ def referral_form(request, object_id=None, referral_id=None):
                                    },
                                    context_instance=RequestContext(request)
                               )
-
-
-""" *** TODO: manage multiples referrals """
-@permission_required_with_403('referral.referral_write')
-def referral_save(request, object_id = None, referral_id = None):
-
-    print "lixo"
-    print 1/0
-
-    if request.method == 'POST':
-
-        try:
-            referral = Referral.objects.get(pk=referral_id, service__organization=request.user.get_profile().org_active, referraldischarge__isnull=True)
-            if not _access_check_referral_write(request, referral):
-                return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
-            form = ReferralForm(request, request.POST, instance = referral)
-        except:
-            form = ReferralForm(request, request.POST)
-        if form.is_valid():
-            object = form.save(commit=False)
-            object.organization = request.user.get_profile().org_active
-            object.status = '01'
-            if object.service.active:
-                object.save()
-                #''' just save professionals one time '''
-                #if not object.professional.all():
-                form.save_m2m()
-                ''' Indication  Section '''
-                if request.POST.get('indication'):
-                    referral.indication_set.all().delete()
-                    indication = Indication()
-                    indication.indication_choice = IndicationChoice.objects.get(pk=request.POST.get('indication'))
-                    indication.referral_organization = get_object_or_None(Organization, id=request.POST.get('indication_organization'))
-                    indication.referral_professional = get_object_or_None(CareProfessional, id=request.POST.get('indication_professional'))
-                    # indication.client = Client.objects.get(pk = object_id)
-                    indication.referral = Referral.objects.get(pk = object)
-                    indication.save()
-                ''' if asked, add referral and client to some existing group ''' 
-                if object.service.is_group:
-                    group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active)
-                    for c in request.POST.getlist('client'):
-                        gm = GroupMembers(group=group, client=Client.objects.get(pk = object_id, person__organization=request.user.get_profile().org_active), referral=object)
-                        gm.save()
-                
-                url = '/client/%s/referral/%s/'
-                msg = _('Referral saved successfully')
-            else:
-                url = '/client/%s/referral/%s/'
-                msg = _('Service is deactive. Impossible register a referral.')
-        else:
-            return render_to_response('client/client_referral_form.html', locals(), context_instance=RequestContext(request))
-
-    messages.success(request, _(msg))
-    return HttpResponseRedirect( url % (object_id, object.id) )
 
 
 @permission_required_with_403('referral.referral_read')

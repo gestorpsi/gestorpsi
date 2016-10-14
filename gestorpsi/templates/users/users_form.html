@@ -80,23 +80,23 @@
                 {% if person.profile.user.email %}
                     <label style="clear: both;">
                         {% trans "Registered user e-mail" %}<br />
-                        <input type="text" name="email_send_user" value="{{ person.profile.user.email }}" class="extramedium"  readonly>
+                        <input type="text" name="email_send_user" value="{{ person.profile.user.email }}" class="extramedium"  readonly />
                     </label>
                 <!-- new -->
                 {% else %}
                     {% if person.emails.all.0 %}
                         <label>
                             {% trans "Select one e-mail to procede with your registration" %}<br />
-                            <select name="email" id="email">
+                            <select name="email_send_user" id="email">
                                 {% for email in person.emails.all %}
-                                    <option class="email_send_user" name="email_send_user" value="{{ email }}">&nbsp;{{ email }}&nbsp;</option>
+                                    <option value="{{ email }}">&nbsp;{{ email }}&nbsp;</option>
                                 {% endfor %}
                             </select>
                         </label>
                     {% else %}
                         <label>
                             {% trans "Type an e-mail to procede with your registration" %}<br />
-                            <input class="extramedium email_send_user" type="email" name="email_send_user" value="{{ person.profile.user.email }}">
+                            <input class="extramedium" type="email" name="email_send_user" value="{{ person.profile.user.email }}" required />
                         </label>
                     {% endif %}		    
                 {% endif %}

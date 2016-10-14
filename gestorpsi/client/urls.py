@@ -35,7 +35,6 @@ urlpatterns = patterns('',
     #(r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
     url(r'^deactive/$', login_check(index), {'deactive': True}, name='client-list-deactive' ), #list objects
     url(r'^list/deactive/$', login_check(list), {'deactive': True}), #list objects
-
     # client search person family, return JSON
     #(r'^filter/(?P<filter>\w+)/page(?P<page>(\d)+)/$', login_check(list), {'no_paging': True, 'retrn':'json'}), # quick search
     (r'^filter/(?P<filter>\w+)/$', login_check(list), {'no_paging': True, 'retrn':'json'}), # quick search
@@ -46,7 +45,6 @@ urlpatterns = patterns('',
     url(r'^save/$', login_check(save), name='client-form-save'), #save new object
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/form/$', login_check(form), name='client-form'), #render form
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save), name='client-form-save'), #update client
-
     # # # company client
     url(r'^add/company/$', login_check(company_add), name='client-company-form'), #new object form
     url(r'^save/company/$', login_check(save), {'is_company':True}, name='client-company-save'), #save company client
@@ -57,9 +55,7 @@ urlpatterns = patterns('',
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/company/$', login_check(save), {'is_company':True}),  #update company client
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/print/$', login_required(client_print)),  # print record
     url(r'^organization_clients/$', login_required(organization_clients)),  # clients for logged otganization
-
     (r'^org/(?P<org_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/listprofessional/$', login_check(list_prof_org)), # get all professional of organization
-    
     # # # referral
     # home
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/$', login_check(referral_list), name='client-referral-list'), # list
@@ -75,20 +71,17 @@ urlpatterns = patterns('',
     # internal
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/int/(?P<referral_id>\d+)/form/$', login_check(referral_int_form), name='client-referral-int-form'), # internal form
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/int/(?P<referral_id>\d+)/save/$', login_check(referral_int_form), name='client-referral-int-save'), # internal form
-
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/action/$', login_check(referral_occurrences_action), name="referral-occurrences-action"), # uncheck a event or lot.
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/(?P<type>upcoming)/$', login_check(referral_occurrences)), # upcoming occurences
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/(?P<type>past)/$', login_check(referral_occurrences)), # past occurences
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<discharged>discharged)/$', login_check(referral_list)), # descharged referrals list
-    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/discharge/$', login_check(referral_discharge_form)), # referral shutdown
+    # # # discharge
+    url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/discharged/$', login_check(referral_list), {'discharged':True}, name='client-referral-discharged-list'), # discharged referrals list
+    url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/discharge/$', login_check(referral_discharge_form)), # referral shutdown
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/discharge/(?P<discharge_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/edit/$', login_check(referral_discharge_form), name='referral_discharge_edit'), # referral shutdown
-    # # # referral end
-
-#    (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/occurence/(?P<occurrence_id>\d+)/confirmation/$', login_check(occurrence_confirmation)), # occurence confirmation
+    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/occurence/(?P<occurrence_id>\d+)/confirmation/$', login_check(occurrence_confirmation)), # occurence confirmation
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/occurence/(?P<occurrence_id>\d+)/$', login_check(occurrence_view)), # occurence confirmation
     (r'^schedule/daily/$', login_check(schedule_daily)), # book client (schedule daily view)
     (r'^schedule/add/$', login_check(schedule_add)), # book client (schedule add form)
-
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/messages/$', login_check(referral_messages)), # referral messages
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/messages/newtopic$', login_check(new_message_topic), name='messages-newtopic'), # referral messages (new topic)
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/messages/topic/(?P<topic_id>\d+)$', login_check(topic_messages)), # referral topic messages
@@ -99,7 +92,7 @@ urlpatterns = patterns('',
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/messages/chat/update/(?P<messagetopic_id>\d+)/(?P<lastmessage_id>\d+)/$', login_check(update_chat_message)), # event chat
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/messages/chat/exit/(?P<messagetopic_id>\d+)/$', login_check(exit_chat)), # exit chat
     #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/messages/$', login_check(client_messages)), # all messages for this client - inbox
-
+    # queue
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/queue/$', login_check(referral_queue)), # queue form
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/queue/save/$', login_check(referral_queue_save)), # queue form save
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/queue/(?P<queue_id>\d+)/remove/$', login_check(referral_queue_remove)), # queue form remove

@@ -89,9 +89,6 @@ function updateGrid(url) {
             $(this).attr('href',  href);
         });
 
-        // - - CHECKED 
-        /*$('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/');*/
-        /*$('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/');*/
         $('div.schedule a.next_day').attr('href','/schedule/occurrences/'+json['util']['next_day']+'/place/'+json['util']['place']+'/');
         $('div.schedule a.prev_day').attr('href','/schedule/occurrences/'+json['util']['prev_day']+'/place/'+json['util']['place']+'/');
         jQuery.each(json,  function(){
@@ -110,17 +107,14 @@ function updateGrid(url) {
                 var label = '';
                 var label_inline = '';
                 
-                
                 /** 
                  * start daily occurrence
                  */
-                
                 var col = $('table.schedule_results.daily tr[hour="' + this.start_time + '"] td[room="' + this.room + '"]');
                 
                 /** 
                  * start occurrence event
                  */
-                
                 event_line = '<tr><td>'+this.room_name+'</td><td><span class="time">' + this.start_time.substr(0, (this.start_time.length-3)) + '&nbsp;' + this.end_time.substr(0, (this.end_time.length-3)) + '</span></td><td><div></div></td></tr>';
                 $('div.schedule_events table.events tr:last').after(event_line);
                 event = $('div.schedule_events table.events tr:last');
@@ -128,8 +122,7 @@ function updateGrid(url) {
                 /**
                  * append rows titles if NOT in client view
                  */
-                
-                if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {
+                /*if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {*/
                 
                     //append group name or client list
                     if(this.group != '') {
@@ -142,7 +135,6 @@ function updateGrid(url) {
                         });
                         str_client_inline = str_client_inline.substr(0, (str_client_inline.length-2));
                     }
-                    
                     
                     //append professional list
                     jQuery.each(this.professional,  function(){
@@ -174,11 +166,10 @@ function updateGrid(url) {
                         label += str_device_inline;
                         label_inline += ' >> ' + str_device_inline;
                     }
-                    
-                    
-                } else {
-                    label = '<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reservado';
-                }
+
+                    /*} else {*/
+                    /*label = '<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reservado';*/
+                    /*}*/
 
                 /**
                  * populate daily view
@@ -200,7 +191,10 @@ function updateGrid(url) {
 
                 $('table.schedule_results.daily tr[hour="' + this.start_time +'"] td[room="' + this.room + '"] a.book').hide(); // hide free slot 
                 
-                url = (this.group != '')?'/schedule/events/group/' +  this.group_id + '/occurrence/' + this.id + '/':'/schedule/events/' + this.id + '/confirmation/';
+                url = '#';
+                if (this.service != 'RESERVADO'){ 
+                    url = (this.group != '')?'/schedule/events/group/' +  this.group_id + '/occurrence/' + this.id + '/':'/schedule/events/' + this.id + '/confirmation/';
+                }
                 
                 if ($('input[name=restrict_schedule]').val() == "True") {
                     label = "Reservado";
@@ -222,7 +216,6 @@ function updateGrid(url) {
                 /**
                  * populate events view
                  */
-                
                 event.children('td').children('div').css('background-color', '#' + this.color); // service color
                 event.children('td').children('div').addClass('tag'); // tag styles
                 event.addClass('room_' + this.room); // service color

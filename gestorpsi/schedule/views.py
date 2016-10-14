@@ -275,8 +275,6 @@ def occurrence_view(
             form.save()
             messages.success(request, _('Occurrence updated successfully'))
             return http.HttpResponseRedirect(request.path)
-        #else:
-            #print form.errors
     else:
         form = form_class(instance=occurrence, initial={'start_time':occurrence.start_time})
         form.fields['device'].queryset = DeviceDetails.objects.filter(Q(room = occurrence.room, mobility="1") | Q(place =  occurrence.room.place, room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=False) | Q(room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=True))
@@ -838,14 +836,18 @@ def schedule_occurrences(request, year=1, month=1, day=None, st_timeh=00, st_tim
 
     return objs
     
+
 @permission_required_with_403('schedule.schedule_list')
 def daily_occurrences(request, year=1, month=1, day=None, place=None):
-
+    """
+        return JSON
+        filter permission : professional or secretary
+    """
     occurrences = schedule_occurrences(request, year, month, day)
 
-    array = {} #json
     i = 0
     groups = []
+    array = {} #json
 
     date = datetime.strptime(('%s/%s/%s' % (year, month, day)), "%Y/%m/%d")
 
@@ -867,7 +869,27 @@ def daily_occurrences(request, year=1, month=1, day=None, place=None):
         'place': place,
     }
     
+    """
+        secretary and/or admin
+            see all occurrences
+        professional and/or student
+            see event if owner of it OR reservado
+    """
+    # to check each occurence permission
     for o in occurrences:
+
+        full_data = False # show all information or reserved
+
+        if request.user.profile.person.is_secretary() or request.user.profile.person.is_administrator():
+            full_data = True
+
+        # logged careprofessional or student in professional list
+        if request.user.profile.person.is_careprofessional() and request.user.get_profile().person.careprofessional in o.event.referral.professional.all():
+            full_data = True
+
+        if request.user.profile.person.is_student() and request.user.get_profile().person.careprofessional in o.event.referral.professional.all():
+            full_data = True
+
         have_same_group = False
         if hasattr(o.event.referral.group, 'id'):
             if '%s-%s-%s' % (o.event.referral.group.id, o.room_id, o.start_time.strftime('%H:%M:%S')) in groups:
@@ -877,6 +899,7 @@ def daily_occurrences(request, year=1, month=1, day=None, place=None):
             range = o.end_time-o.start_time
             rowspan = range.seconds/1800 # how many blocks of 30min the occurrence have
 
+        if full_data: # to show full data
             array[i] = {
                 'id': o.id,
                 'event_id': o.event.id,
@@ -894,22 +917,37 @@ def daily_occurrences(request, year=1, month=1, day=None, place=None):
                 'rowspan': rowspan,
                 'online': o.is_online,
             }
-            
+        else: # to show as reservado
+            array[i] = {
+                'room': o.room_id,
+                'place': o.room.place_id,
+                'group': u"",
+                'service': "RESERVADO",
+                'service_id':o.event.referral.service.id,
+                'color':o.event.referral.service.color,
+                'font_color':o.event.referral.service.font_color,
+                'start_time': o.start_time.strftime('%H:%M:%S'),
+                'end_time': o.end_time.strftime('%H:%M:%S'),
+                'rowspan': rowspan,
+            }
+        
+        array[i]['professional'] = {}
+        array[i]['client'] = {}
+        array[i]['device'] = {}
+
+        if full_data:
+
             sub_count = 0
-            array[i]['professional'] = {}
             for p in o.event.referral.professional.all():
                 array[i]['professional'][sub_count] = ({'id':p.id, 'name':p.person.name})
                 sub_count = sub_count + 1
-            
+
             sub_count = 0
-            array[i]['client'] = {}
             for c in o.event.referral.client.all():
                 array[i]['client'][sub_count] = ({'id':c.id, 'name':c.person.name})
                 sub_count = sub_count + 1
-            
+        
             sub_count = 0
-            array[i]['device'] = {}
-
             if not o.scheduleoccurrence.was_confirmed():
                 device_list = o.device.all()
             else:
@@ -919,12 +957,12 @@ def daily_occurrences(request, year=1, month=1, day=None, place=None):
                 array[i]['device'][sub_count] = ({'id':o.id, 'name': ("%s - %s - %s" % (o.device.description, o.brand, o.model)) })
                 sub_count = sub_count + 1
 
-            i = i + 1
-
             # concat group id, room id and start time to register in a list and verify in the begin of the loop if the same
             # occurrence already has been registered
             if hasattr(o, 'event') and hasattr(o.event.referral.group, 'id'):
                 groups.append('%s-%s-%s' % (o.event.referral.group.id, o.room_id, o.start_time.strftime('%H:%M:%S')))
+
+        i = i + 1
 
     array['util']['occurrences_total'] = i
     array = simplejson.dumps(array)

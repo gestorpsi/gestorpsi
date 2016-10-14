@@ -29,9 +29,9 @@
         {% endif %}
 
         {% if not object.is_company %}
-            <li><a href="/client/{{ object.id }}/family/" class="client_family" title="{% trans "Client Family" %}">{% trans "Client Family" %}</a></li>
+            <li><a href="{% url client-family-form object.id %}" class="client_family" title="{% trans "Client Family" %}">{% trans "Client Family" %}</a></li>
         {% else %}
-            <li><a href="/client/{{ object.id }}/company_clients/" class="company_clients" title="{% trans "Employees" %}">{% trans "Employees" %}</a></li>
+            <li><a href="{% url client-companyclients object.id %}" class="company_clients" title="{% trans "Employees" %}">{% trans "Employees" %}</a></li>
         {% endif %}
 
         {% if object.active %} 
@@ -41,8 +41,8 @@
         {# <li><a href="/client/{{ object.id }}/socioeconomic/" class="client_form" title="{% trans "Socio-economic" %}">{% trans "Socio-economic" %}</a></li> #}
 
         {% if object.referral_set.all %}
-           <li><a href="/client/{{ object.id }}/referral/" class="client_referral_list" title="{% trans "Subscribed Services" %}">{% trans "Subscribed Services" %}</a></li>
-           <li><a href="/client/{{ object.id }}/referral/discharged/" class="client_referral_discharge" title="{% trans "Discharged Services" %}">{% trans "Discharged Services" %}</a></li>
+            <li><a href="{% url client-referral-list object.id %}" class="client_referral_list" title="{% trans "Subscribed Services" %}">{% trans "Subscribed Services" %}</a></li>
+            <li><a href="{% url client-referral-discharged-list object.id %}" class="client_referral_discharge" title="{% trans "Discharged Services" %}">{% trans "Discharged Services" %}</a></li>
         {% endif %}
 
         {% if perms.users.users_read %}<li><a href="/user/{{ object.person.id }}/" class="client_form" title="{% trans "User" %}">{% trans "User" %}</a></li>{% endif %}

@@ -649,8 +649,9 @@ def referral_discharge_form(request, object_id = None, referral_id = None, disch
         messages.info(request, _('Registered have hour in the schedule'))
         return HttpResponseRedirect('/client/%s/referral/%s/' % (object.id, referral.id))
 
+
 @permission_required_with_403('referral.referral_list')
-def referral_list(request, object_id = None, discharged = None):
+def referral_list(request, object_id=None, discharged=None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
 
     # check access by requested user
@@ -663,11 +664,8 @@ def referral_list(request, object_id = None, discharged = None):
         referrals = object.referrals_charged()
         charged = True
     
-    # not in use anymore. if user have perm to see client, will display every referral
-    #if request.user.groups.filter(name='professional').count() :
-        #referrals = referrals.filter(professional = request.user.profile.person.careprofessional.id)
-    
     return render_to_response('client/client_referral_list.html', locals(), context_instance=RequestContext(request))
+
 
 @permission_required_with_403('referral.referral_read')
 def referral_home(request, object_id = None, referral_id = None):

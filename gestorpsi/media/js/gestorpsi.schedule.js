@@ -122,54 +122,48 @@ function updateGrid(url) {
                 /**
                  * append rows titles if NOT in client view
                  */
-                /*if(!$('input[name=referral]').val() && !$('input[name=client]').val()) {*/
+                //append group name or client list
+                if(this.group != '') {
+                    str_client = this.group + "<br />";
+                    str_client_inline = this.group;
+                } else {
+                    jQuery.each(this.client,  function(){
+                        str_client += this.name + "<br />";
+                        str_client_inline += this.name + ", ";
+                    });
+                    str_client_inline = str_client_inline.substr(0, (str_client_inline.length-2));
+                }
                 
-                    //append group name or client list
-                    if(this.group != '') {
-                        str_client = this.group + "<br />";
-                        str_client_inline = this.group;
-                    } else {
-                        jQuery.each(this.client,  function(){
-                            str_client += this.name + "<br />";
-                            str_client_inline += this.name + ", ";
-                        });
-                        str_client_inline = str_client_inline.substr(0, (str_client_inline.length-2));
-                    }
-                    
-                    //append professional list
-                    jQuery.each(this.professional,  function(){
-                        str_professional += this.name + "<br />" ;
-                        str_professional_inline += this.name + ", " ;
-                        col.addClass('professional_' + this.id); // professionals in cell
-                        event.addClass('professional_' + this.id); // professionals in events
-                    });
-                    str_professional_inline = str_professional_inline.substr(0, (str_professional_inline.length-2))
-                    
-                    //append service
-                    str_service = '>>' + this.service + '<br />';
-                    str_service_inline = ' >> ' + this.service;
-                    
-                    label = str_client + str_service + str_professional;
-                    label_inline = str_client_inline + str_service_inline;
-                    
-                    label_inline += (str_professional_inline) ? ' (' + str_professional_inline + ')' : '';
-                    
-                                        
-                    //append device list
-                    jQuery.each(this.device,  function(){
-                        str_device_inline += this.name + ", " ;
-                        col.addClass('device_' + this.id); // device in cell
-                        event.addClass('device_' + this.id); // devices in events
-                    });
-                    str_device_inline = str_device_inline.substr(0, (str_device_inline.length-2))
-                    if(str_device_inline) {
-                        label += str_device_inline;
-                        label_inline += ' >> ' + str_device_inline;
-                    }
-
-                    /*} else {*/
-                    /*label = '<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reservado';*/
-                    /*}*/
+                //append professional list
+                jQuery.each(this.professional,  function(){
+                    str_professional += this.name + "<br />" ;
+                    str_professional_inline += this.name + ", " ;
+                    col.addClass('professional_' + this.id); // professionals in cell
+                    event.addClass('professional_' + this.id); // professionals in events
+                });
+                str_professional_inline = str_professional_inline.substr(0, (str_professional_inline.length-2))
+                
+                //append service
+                str_service = '>>' + this.service + '<br />';
+                str_service_inline = ' >> ' + this.service;
+                
+                label = str_client + str_service + str_professional;
+                label_inline = str_client_inline + str_service_inline;
+                
+                label_inline += (str_professional_inline) ? ' (' + str_professional_inline + ')' : '';
+                
+                                    
+                //append device list
+                jQuery.each(this.device,  function(){
+                    str_device_inline += this.name + ", " ;
+                    col.addClass('device_' + this.id); // device in cell
+                    event.addClass('device_' + this.id); // devices in events
+                });
+                str_device_inline = str_device_inline.substr(0, (str_device_inline.length-2))
+                if(str_device_inline) {
+                    label += str_device_inline;
+                    label_inline += ' >> ' + str_device_inline;
+                }
 
                 /**
                  * populate daily view
@@ -253,6 +247,18 @@ function updateGrid(url) {
     return false;
 }
 
+
+/** select right time end of slot */
+function setGrid() {
+        var start_time = $('select#id_start_time_delta').val();
+        var slot_time = $('input#id_slot_time').val();
+
+        end_time = ( parseInt( slot_time*60 ) + parseInt(start_time) );
+
+        $('select[name=end_time_delta] option:selected', this).remove();
+        $('select[name=end_time_delta]').children('option[value=' + end_time + ']').attr('selected','selected');
+}
+
 /** 
  * schedule form
  * bind form functions
@@ -262,20 +268,16 @@ $(function() {
 
     // if start time is changed, increment 'increment_end_time' value to end time
     $('div.schedule select[name=start_time_delta] option, div.schedule select[name=start_time1] option').click(function() {
-        var option = $(this);
-        var end_time = (parseInt(increment_end_time) + parseInt(option.attr('value')));
+        setGrid();
+    });
 
-        $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option').attr('selected','');
-        $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option[value=' + end_time + ']').attr('selected','selected');
-        
-        //$(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option').attr('disabled',false)
-        $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option').show();
+    $('div.schedule select[name=end_time_delta]').click(function() {
+        var end = parseInt($(this).val());
+        var start = parseInt($('select#id_start_time_delta').val());
 
-        $(this).parents('fieldset').children('label').children('select[name=end_time_delta]').children('option').each(function(){
-            if (parseInt($(this).val()) <= parseInt(option.val()) ){
-                $(this).hide();
-            }  
-        });
+        if ( start >= end ){  // end hour greater than start, setGrid.
+            setGrid();
+        }
     });
 
     // get clients json list and draw flexbox

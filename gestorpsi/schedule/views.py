@@ -1,17 +1,17 @@
 # -*- coding:utf-8 -*-
 
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 """
 
 import calendar
@@ -25,7 +25,7 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.db.models import Q
 from django.contrib import messages
-from swingtime.utils import create_timeslot_table
+from swingtime.utils import create_timeslot_table, time_delta_total_seconds
 
 from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation, OccurrenceFamily, OccurrenceEmployees
 from gestorpsi.referral.models import Referral
@@ -98,16 +98,21 @@ def add_event(
     if not 'dtstart' in request.GET:
         return http.HttpResponseRedirect('/schedule/')
 
+    # get from url
+    dtstart = parser.parse( request.GET['dtstart'] )
+    room = get_object_or_None(Room, pk=request.GET.get('room'), place__organization=request.user.get_profile().org_active)
+    client = get_object_or_None(Client, pk=request.GET.get('client'), person__organization=request.user.get_profile().org_active)
+    referral = get_object_or_None(Referral, pk=request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
+    event_form = event_form_class
+
     if request.POST:
 
         # instance form
-        recurrence_form = recurrence_form_class(request, request.POST)
+        recurrence_form = recurrence_form_class(request, room.place, request.POST)
 
         # no errors found, form is valid.
         if recurrence_form.is_valid():
-
             if not request.POST.get('group'): # booking single client
-
                 referral = get_object_or_404(Referral, pk=request.POST.get('referral'), service__organization=request.user.get_profile().org_active)
                 event = recurrence_form.save(referral)
 
@@ -185,20 +190,20 @@ def add_event(
 
 
     # mount form or return form errors
-
-    # get from url
-    dtstart = parser.parse( request.GET['dtstart'] )
-    room = get_object_or_None(Room, pk=request.GET.get('room'), place__organization=request.user.get_profile().org_active)
-    client = get_object_or_None(Client, pk=request.GET.get('client'), person__organization=request.user.get_profile().org_active)
-    referral = get_object_or_None(Referral, pk=request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
-    event_form = event_form_class
+    # convert hour:minutes to second to set initial select
+    interval_sec = time_delta_total_seconds( timedelta(minutes=int(request.user.get_profile().org_active.time_slot_schedule)) )
+    start_sec = time_delta_total_seconds( timedelta(hours=dtstart.hour, minutes=dtstart.minute) )
+    end_sec = start_sec + interval_sec
 
     recurrence_form = recurrence_form_class( request,
+                                             room.place, # start, end hour of place, render select in this range.
                                              initial = dict(
                                                             dtstart=dtstart, 
                                                             day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"), 
                                                             until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
                                                             room=room.id,
+                                                            start_time_delta=start_sec,
+                                                            end_time_delta=end_sec,
                                                         )
     )
 
@@ -206,6 +211,7 @@ def add_event(
 
     return render_to_response( template,
                                dict(
+                                        slot_time = request.user.get_profile().org_active.time_slot_schedule,
                                         dtstart = dtstart, 
                                         event_form = event_form, 
                                         recurrence_form = recurrence_form, 

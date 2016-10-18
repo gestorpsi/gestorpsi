@@ -28,28 +28,34 @@ from gestorpsi.util.widgets import SplitSelectDateTimeWidget
 from gestorpsi.schedule.models import OCCURRENCE_CONFIRMATION_PRESENCE 
 
 def timeslot_offset_options(
-    interval=swingtime_settings.TIMESLOT_INTERVAL,
-    start_time=swingtime_settings.TIMESLOT_START_TIME,
-    end_delta=swingtime_settings.TIMESLOT_END_TIME_DURATION,
+    type=False,
+    interval=False,
+    start_time=False,
+    end_time=False,
     fmt=swingtime_settings.TIMESLOT_TIME_FORMAT,
-    type='start',
 ):
     '''
     Create a list of time slot options for use in swingtime forms.
     
     The list is comprised of 2-tuples containing the number of seconds since the
     start of the day and a 12-hour temporal representation of that offset.
+
+    type : string start or end
+    interval : int 
+    start_time : string format 08:45 or 08:00
+    end_time : string format 20:45 or 20:00
     
     '''
     dt = datetime.combine(date.today(), time(0))
-    dtstart = datetime.combine(dt.date(), start_time)
+    interval = timedelta(minutes=interval)
 
-    if type == 'end':
-        dtstart = dtstart + interval
+    H,M = start_time.split(",")
+    dtstart = datetime.combine(dt.date(), time(int(H), int(M)) )
 
-    dtend = dtstart + end_delta
+    H,M = end_time.split(",")
+    dtend = datetime.combine(dt.date(), time(int(H), int(M)) )
+
     options = []
-
     delta = utils.time_delta_total_seconds(dtstart - dt)
     seconds = utils.time_delta_total_seconds(interval)
 
@@ -58,12 +64,14 @@ def timeslot_offset_options(
         dtstart += interval
         delta += seconds
 
+    if type == 'start': # remove last
+        del options[-1]
+
+    if type == 'end': # remove first
+        del options[0]
+
     return options
 
-default_timeslot_options = timeslot_offset_options()
-default_timeslot_offset_options = timeslot_offset_options()
-default_timeslot_offset_options_start = timeslot_offset_options(type='start')
-default_timeslot_offset_options_end = timeslot_offset_options(type='end')
 
 class SplitDateTimeWidget(forms.MultiWidget):
     '''
@@ -107,19 +115,24 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
         model = ScheduleOccurrence
 
 
-    def __init__(self, request, *args, **kwargs):
+    def __init__(self, request, place, *args, **kwargs):
+        """
+            request: request
+            place: Place()
+                get start, end hour of place
+        """
         super(ScheduleOccurrenceForm, self).__init__(*args, **kwargs)
 
         # rewrite slot time based in the settings of organization schedule
         self.fields['start_time_delta'] = forms.IntegerField(
             label='Start time',
-            widget=forms.Select(choices=timeslot_offset_options(type='start', interval=timedelta(minutes=int(request.user.get_profile().org_active.time_slot_schedule))) )
-        )
+            widget=forms.Select(choices=timeslot_offset_options('start', int(request.user.get_profile().org_active.time_slot_schedule), place.hour_start, place.hour_end)) 
+            )
         
         # rewrite slot time based in the settings of organization schedule
         self.fields['end_time_delta'] = forms.IntegerField(
             label='End time',
-            widget=forms.Select(choices=timeslot_offset_options(type='end', interval=timedelta(minutes=int(request.user.get_profile().org_active.time_slot_schedule))) )
+            widget=forms.Select(choices=timeslot_offset_options('end', int(request.user.get_profile().org_active.time_slot_schedule), place.hour_start, place.hour_end)) 
         )
 
 

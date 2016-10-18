@@ -31,6 +31,7 @@ GNU General Public License for more details.
             <input type="hidden" name="day_day" id="id_day_day" value="{{ dtstart|date:"j" }}" />
             <input type="hidden" name="day_year" id="id_day_year" value="{{ dtstart|date:"Y" }}" />
             <input type="hidden" name="room" id="id_room" value="{{ room_id }}" />
+            <input type="hidden" name="slot_time" id="id_slot_time" value="{{ slot_time }}" />
             
             <div class="main_area">
                 {{ event_form.errors }}

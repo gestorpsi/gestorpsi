@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 """
 
 from datetime import datetime, date, time, timedelta
@@ -134,7 +134,6 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
             label='End time',
             widget=forms.Select(choices=timeslot_offset_options('end', int(request.user.get_profile().org_active.time_slot_schedule), place.hour_start, place.hour_end)) 
         )
-
 
     def save(self, event, disable_check_busy = False):
         if self.cleaned_data['repeats'] == 'no':

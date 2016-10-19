@@ -18,6 +18,7 @@ import calendar
 from dateutil import parser
 from datetime import datetime, timedelta
 import datetime as datetime_
+
 from django import http
 from django.template.context import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response, HttpResponse
@@ -25,23 +26,26 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.db.models import Q
 from django.contrib import messages
+
 from swingtime.utils import create_timeslot_table, time_delta_total_seconds
 
-from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation, OccurrenceFamily, OccurrenceEmployees
 from gestorpsi.referral.models import Referral
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.place.models import Place, Room
 from gestorpsi.service.models import Service, ServiceGroup
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client
-from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm
+
+from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation, OccurrenceFamily, OccurrenceEmployees
+from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm, OccurrenceConfirmationForm
+
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
-from gestorpsi.schedule.forms import OccurrenceConfirmationForm
-from gestorpsi.device.models import DeviceDetails
-from gestorpsi.organization.models import TIME_SLOT_SCHEDULE, DEFAULT_SCHEDULE_VIEW
+
 from gestorpsi.financial.models import Receive
 from gestorpsi.financial.forms import ReceiveFormUpdate, ReceiveFormNew
+from gestorpsi.device.models import DeviceDetails
+from gestorpsi.organization.models import TIME_SLOT_SCHEDULE, DEFAULT_SCHEDULE_VIEW
 from gestorpsi.covenant.models import Covenant
 
 import locale
@@ -263,6 +267,7 @@ def event_view(
         context_instance=RequestContext(request)
     )
 
+
 @permission_required_with_403('schedule.schedule_read')
 def occurrence_view(
     request, 
@@ -271,12 +276,12 @@ def occurrence_view(
     template='schedule/schedule_occurrence_form.html',
     form_class=ScheduleSingleOccurrenceForm
 ):
-    user = request.user
 
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__pk=event_pk, event__referral__service__organization=request.user.get_profile().org_active)
+
     if request.method == 'POST':
-        
         form = form_class(request.POST, instance=occurrence)
+
         if form.is_valid():
             form.save()
             messages.success(request, _('Occurrence updated successfully'))
@@ -284,6 +289,7 @@ def occurrence_view(
     else:
         form = form_class(instance=occurrence, initial={'start_time':occurrence.start_time})
         form.fields['device'].queryset = DeviceDetails.objects.filter(Q(room = occurrence.room, mobility="1") | Q(place =  occurrence.room.place, room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=False) | Q(room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=True))
+
     return render_to_response(
         template,
         dict(occurrence=occurrence, form=form),
@@ -634,7 +640,10 @@ def _datetime_view(
 
         # get start_time and end_time_delta from place
         # get schedule slot time from organization
-        timeslots=timeslot_factory(dt, items, start_time=datetime_.time( place.hours_work()[0], place.hours_work()[1]),\
+        timeslots=timeslot_factory(
+                dt,\
+                items,\
+                start_time=datetime_.time( place.hours_work()[0], place.hours_work()[1]),\
                 end_time_delta=timedelta(hours=place.hours_work()[2] ),\
                 time_delta=timedelta( minutes=int(user.get_profile().org_active.time_slot_schedule) ),\
                 **params),
@@ -679,7 +688,7 @@ def diary_view(request,
         template='schedule/schedule_daily.html',
         **params
     ):
-    
+
     if place == None:
         # Possible to exist more than one place as matriz or none, filter and get first element
         if Place.objects.filter( place_type=1, organization=request.user.get_profile().org_active):
@@ -903,7 +912,7 @@ def daily_occurrences(request, year=1, month=1, day=None, place=None):
         
         if not have_same_group:
             range = o.end_time-o.start_time
-            rowspan = range.seconds/1800 # how many blocks of 30min the occurrence have
+            rowspan = range.seconds/time_delta_total_seconds( timedelta(minutes=int(request.user.get_profile().org_active.time_slot_schedule)) )
 
         if full_data: # to show full data
             array[i] = {

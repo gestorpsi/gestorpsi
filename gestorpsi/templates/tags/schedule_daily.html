@@ -42,13 +42,20 @@ GNU General Public License for more details.
         {% for tm,cells in timeslots %}
             <tr hour="{{ tm|date:"H:i:s" }}">
                 <td class="hour">{{ tm|date:"H:i" }}</td>
-                {% for room in place.room_set.all %}
-                    {% if room.active %}
-                        <td class="clean" room="{{ room.id }}" place="{{ p.id }}">
-                            <a href="#" class="book">{% trans "Free" %}</a>
-                        </td>
+
+                    {% comment %}
+                        last slot is end of day, can't book a event.
+                    {% endcomment %}
+
+                    {% if not forloop.last %}
+                        {% for room in place.room_set.all %}
+                            {% if room.active %}
+                                    <td class="clean" room="{{ room.id }}" place="{{ p.id }}">
+                                        <a href="#" class="book">{% trans "Free" %}</a>
+                                    </td>
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
-                {% endfor %}
             </tr>
         {% endfor %}
     </table>

@@ -793,6 +793,7 @@ def week_view_table(request,
                             'group_name': u'%s' % s.event.referral.group,
                             'group_pk': s.event.referral.group.pk,
                             'data': s,
+                            'show': show_event_(request, s),
                         })
                         groups.append(s.event.referral.group.pk)
                         
@@ -800,6 +801,7 @@ def week_view_table(request,
                     occurrence.append({
                         'is_group': False,
                         'data': s,
+                        'show': show_event_(request, s),
                     })
 
                 occurrences_length += 1 # show resume top page
@@ -850,7 +852,30 @@ def schedule_occurrences(request, year=1, month=1, day=None, st_timeh=00, st_tim
             ).exclude(room__active = False) # exclude not active rooms
 
     return objs
-    
+
+
+def show_event_(request, o):
+    """
+        Show all information about event.
+        boolean :   True 
+                    or
+                    False (show as reserved)
+    """
+
+    full_data = False # show all information or reserved
+
+    if request.user.profile.person.is_secretary() or request.user.profile.person.is_administrator():
+        full_data = True
+
+    # logged careprofessional or student in professional list
+    if request.user.profile.person.is_careprofessional() and request.user.get_profile().person.careprofessional in o.event.referral.professional.all():
+        full_data = True
+
+    if request.user.profile.person.is_student() and request.user.get_profile().person.careprofessional in o.event.referral.professional.all():
+        full_data = True
+
+    return full_data
+
 
 @permission_required_with_403('schedule.schedule_list')
 def daily_occurrences(request, year=1, month=1, day=None, place=None):
@@ -893,28 +918,16 @@ def daily_occurrences(request, year=1, month=1, day=None, place=None):
     # to check each occurence permission
     for o in occurrences:
 
-        full_data = False # show all information or reserved
-
-        if request.user.profile.person.is_secretary() or request.user.profile.person.is_administrator():
-            full_data = True
-
-        # logged careprofessional or student in professional list
-        if request.user.profile.person.is_careprofessional() and request.user.get_profile().person.careprofessional in o.event.referral.professional.all():
-            full_data = True
-
-        if request.user.profile.person.is_student() and request.user.get_profile().person.careprofessional in o.event.referral.professional.all():
-            full_data = True
-
         have_same_group = False
         if hasattr(o.event.referral.group, 'id'):
             if '%s-%s-%s' % (o.event.referral.group.id, o.room_id, o.start_time.strftime('%H:%M:%S')) in groups:
                 have_same_group = True
-        
+
         if not have_same_group:
             range = o.end_time-o.start_time
-            rowspan = range.seconds/time_delta_total_seconds( timedelta(minutes=int(request.user.get_profile().org_active.time_slot_schedule)) )
+            rowspan = range.seconds/time_delta_total_seconds( timedelta(minutes=int(request.user.get_profile().org_active.time_slot_schedule)) ) 
 
-        if full_data: # to show full data
+        if show_event_(request, o): # to show full data
             array[i] = {
                 'id': o.id,
                 'event_id': o.event.id,
@@ -935,6 +948,7 @@ def daily_occurrences(request, year=1, month=1, day=None, place=None):
         else: # to show as reservado
             array[i] = {
                 'room': o.room_id,
+                'room_name': (u"%s" % o.room),
                 'place': o.room.place_id,
                 'group': u"",
                 'service': "RESERVADO",
@@ -950,7 +964,7 @@ def daily_occurrences(request, year=1, month=1, day=None, place=None):
         array[i]['client'] = {}
         array[i]['device'] = {}
 
-        if full_data:
+        if show_event_(request, o): # to show full data
 
             sub_count = 0
             for p in o.event.referral.professional.all():

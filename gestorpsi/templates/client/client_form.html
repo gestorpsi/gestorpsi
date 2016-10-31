@@ -51,7 +51,7 @@
     {% if objects.id %}
         <form action="{% url client-form object.id %}" method="post" id="form_client" class="form_people collapsable form_client">	
     {% else %}
-        <form action="{% url client-form-new %}" method="post" id="form_client" class="form_people collapsable form_client autocomplete">	
+        <form action="{% url client-form-save %}" method="post" id="form_client" class="form_people collapsable form_client autocomplete">	
     {% endif %}
 
         <div class="main_area">

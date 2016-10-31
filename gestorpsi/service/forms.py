@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 """
 
 from django import forms
 from django.utils.translation import ugettext as _
-from gestorpsi.service.models import ServiceGroup, Area, ServiceType, Modality
+
+from gestorpsi.service.models import Service, ServiceGroup, Area, ServiceType, Modality
 from gestorpsi.client.models import Client
 from gestorpsi.organization.models import AgeGroup, EducationLevel, HierarchicalLevel
 
@@ -53,6 +54,5 @@ class ServiceGroupForm(forms.ModelForm):
     comments = forms.CharField(widget=forms.Textarea(attrs={'class':'giant', }), required = False)
 
     class Meta:
-        fields = ('description', 'comments', 'active')
+        fields = ('description','comments','active')
         model = ServiceGroup
-

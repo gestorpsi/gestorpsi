@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 """
 
 import reversion
@@ -22,7 +22,9 @@ from django.db import models
 from django.db.models import Q
 from django.utils.translation import ugettext as _
 from django.core.files.storage import FileSystemStorage
+
 from swingtime.models import Event, EventType
+
 from gestorpsi.client.models import Client
 from gestorpsi.service.models import Service
 from gestorpsi.careprofessional.models import CareProfessional
@@ -141,21 +143,21 @@ class ReferralInRangeManager(models.Manager):
         return r
 
 class Referral(Event):
-    #id = UuidField(primary_key=True)
     seq = models.IntegerField(null=True, blank=True, max_length=5, default=0)
-    client = models.ManyToManyField(Client, null=True, blank=True)
-    professional = models.ManyToManyField(CareProfessional, null=True, blank=True)
-    service = models.ForeignKey(Service, null=True)
-    referral = models.ForeignKey('Referral', null=True, blank=True, related_name='referral_children')
     date = models.DateTimeField(auto_now_add=True)
     referral_reason = models.CharField(max_length=765, null=True, blank=True)
     annotation = models.CharField(max_length=765, null=True, blank=True)
     available_time = models.CharField(max_length=765, null=True, blank=True)
-    priority = models.ForeignKey(ReferralPriority, null=True)
-    impact = models.ForeignKey(ReferralImpact, null=True)
-    organization = models.ForeignKey(Organization, null= True, blank= True)
     status = models.CharField(max_length=2, blank=True, null=True, choices=REFERRAL_STATUS)
-    covenant = models.ManyToManyField(Covenant, null=True, blank=True) # selected covenant available for service
+    organization = models.ForeignKey(Organization, null= True, blank= True)
+    client = models.ManyToManyField(Client, null=True, blank=True)
+    professional = models.ManyToManyField(CareProfessional, null=True, blank=True)
+    service = models.ForeignKey(Service, null=True)
+    covenant = models.ManyToManyField(Covenant, null=True, blank=True)
+    referral = models.ForeignKey('Referral', null=True, blank=True, related_name='referral_children')
+    priority = models.ForeignKey(ReferralPriority, null=True, blank=True)
+    impact = models.ForeignKey(ReferralImpact, null=True, blank=True)
+
     objects = ReferralManager()
     objects_inrange = ReferralInRangeManager()
 

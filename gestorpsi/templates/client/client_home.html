@@ -4,15 +4,15 @@
 
 Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -25,155 +25,150 @@ GNU General Public License for more details.
 {% endblock %}
 
 {% block core %}
-<input type="hidden" name="object_id" value="{{ object.id }}" />
 
-<h2 id="title_addressbook" style="display:none"></h2>
+    <input type="hidden" name="object_id" value="{{ object.id }}" />
+    <h2 id="title_addressbook" style="display:none"></h2>
 
-    <h2 class="title_clients title">{% trans "Details of Client"%} </h2>
-    <p class="description">{% trans "Customer subscribed in" %} <a href="/client/{{ object.id }}/referral/">{{ referrals|length }} {% trans "service(s)" %}</a>&nbsp;
+    <h2 class="title_clients title">{% trans "Details of Client"%}</h2>
+    <p class="description">{% trans "Customer subscribed in" %} <a href="{% url client-referral-list object.id %}">{{ referrals|length }} {% trans "service(s)" %}</a>&nbsp;
         {% trans "Admission Date" %} ( {{ object.admission_date|date:"d-m-Y" }} ) &nbsp; 
         {% trans "Subscribers" %} ( {{ service_subscribers }} )  &nbsp; 
         {% trans "Care delivery" %} ( {{ care_delivered }} ) 
     </p>
 
-<div class="main_area home">
-{% include "tags/people_identification.html" %}
-</div>
+    <div class="main_area home">
+        {% include "tags/people_identification.html" %}
+    </div>
 
-<div class="main_area home">
-	<!-- <a href="" id="help">&nbsp;</a> -->
-	<!-- DataTypes form menu -->
-	<h3><span>{% trans "Referrals Details" %}</span></h3>
-    
-    
-    <h2  class="red">{% trans "Subscribed Services" %} ({{ referrals|length }})</h2>
-    {% if not referrals|length %}
-        <p>{% trans "This customer has not been subscribed yet!" %}&nbsp;<a href="/client/{{ object.id}}/referral/form/">{% trans "Subscribe it now?" %}</a></p>
-    {% else %}
+    <div class="main_area home">
+        <!-- <a href="" id="help">&nbsp;</a> -->
+        <!-- DataTypes form menu -->
+        <h3><span>{% trans "Referrals Details" %}</span></h3>
         
+        <h2  class="red">{% trans "Subscribed Services" %} ({{ referrals|length }})</h2>
+        {% if not referrals|length %}
+            <p>{% trans "This customer has not been subscribed yet!" %}&nbsp;<a href="{% url client-referral-new object.id %}">{% trans "Subscribe it now?" %}</a></p>
+        {% else %}
             {% for i in referrals %}
                 <div class="referral_box">
-                <a class="service_title" href="/client/{{ object.id}}/referral/{{ i.id }}/">{{ i.service_name_html|safe }}</a>{% for g in i.service.servicegroup_set.all %}{% for cl in g.client.all %}{% ifequal cl object %} ({{ g }}){% endifequal %}{% endfor %}{% endfor %} {% if i.upcoming_occurrences %} {% trans "with" %} {{ i.upcoming_occurrences|length }} {% trans "occurrences remaining" %}{% endif %}
+                    <a class="service_title" href="{% url client-referral-home object.id i.id %}">{{ i.service_name_html|safe }}</a>{% for g in i.service.servicegroup_set.all %}{% for cl in g.client.all %}{% ifequal cl object %} ({{ g }}){% endifequal %}{% endfor %}{% endfor %} {% if i.upcoming_occurrences %} {% trans "with" %} {{ i.upcoming_occurrences|length }} {% trans "occurrences remaining" %}{% endif %}
 
-                <div style="clear:both;"></div>
+                    <div style="clear:both;"></div>
+                        <div style="margin-left:39px;">
+
+                            <!-- service -->
+                            {% if i.referral %}
+                                <i>{% trans "Internal referral from" %} <a href="{% url client-referral-home object.id i.referral.pk %}">{{ i.referral }}</a></i>
+                                <br />
+                            {% endif %}
+
+                            <!-- professional -->
+                            {% for p in i.professional.all %}
+                                <i><a href="{{ p.get_url_form_ }}">{{ p }}</a><small>{% if p.professionalIdentification.profession %} {{ p.professionalIdentification.profession }}{% endif %}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %}{% if p.professionalIdentification.profession.symbol %} {{ p.professionalIdentification.profession.symbol }}{% endif %}{% if p.professionalIdentification.registerNumber %} {{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</small></i>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                            <div style="clear:both;"></div>
+
+                            <!-- ocurrence -->
+                            {% if i.next_occurrence %}
+                                {% trans "Next occurrence" %}:
+                                {{ i.next_occurrence.start_time|date:"l, d" }} {% trans "of" %} {{ i.next_occurrence.start_time|date:"F" }} {% trans "of" %} {{ i.next_occurrence.start_time|date:"Y" }} {{ i.next_occurrence.start_time|date:"H:i" }} - {{ i.next_occurrence.end_time|date:"H:i" }}
+                            {% else %}
+                                - {% trans "There is no upcoming occurrences for this service" %} <a href="/client/schedule/daily/?referral={{ i.id }}&client={{ object.id }}" class="small">{% trans "book it now?" %}</a>
+                            {% endif %}
+
+                            <!-- covenant -->
+                            <div style="clear:both;"></div>
+                            {% if i.covenant.all.0 %} 
+                            - {% for c in i.covenant.all %} {{ c }}; {% endfor %}
+                            {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+
+            <p>{% if perms.service.service_write %}<br /><a href="{% url client-referral-new object.id %}">{% trans "New subscribe" %}</a><br />{% endif %}</p>
+        {% endif %}
+        
+        <br />	
+    </div>
+
+    {% if object.is_company %}
+        <div class="main_area home">
+
+            <h3><span>{% trans "Company Employees" %}</span></h3> 
+            <h2  class="red">{% trans "Subscribed Employees" %} ({{ object.employees|length }})</h2> 
+
+            {% if not object.employees|length %} 
+                <p>{% trans "This company have no subscribed employees yet!" %}&nbsp;</p> 
+            {% else %} 
+                <ul> 
+                    {% for i in object.employees %} 
+                        <li>
+                            <a href="{% url client-home i.client.id %}">{{ i.client }}</a> 
+                            [<a href="{% url client-companyclients-edit object.id i.id %}"><small>{% if i.active %}{% trans "Active" %}{% else %}{% trans "Deactive" %}{% endif %}{% if i.responsible %}{% trans "/Responsible" %}{% endif %}</small></a>]
+                        </li>         
+                    {% endfor %}
+                </ul> 
+            {% endif %} 
+
+            <br />       
+            <a href="{% url client-companyclients-new object.id %}">{% trans "Subscribe new employee .." %}</a> 
+            <br /><br />
+
+        </div>
+    {% endif %}
+
+    {% if object.company_set.all %}
+        <div class="main_area home">
+            <h3><span>{% trans "Client Companies Subscribed" %}</span></h3> 
+            <h2  class="red">{% trans "Client Companies Subscribed" %} ({{ object.company_set.all|length }})</h2>
+                {% for i in object.company_set.all %} 
+                    <p><a href="{% url client-home i.person.client.id %}">{{ i }}{% if not i.active %} </a>({% trans "Deactive" %}{% endif %})</p>
+                {% endfor %} 
+            </ul> 
+            <br /><br /> 
+        </div>
+    {% endif %}
+
+    <div class="main_area home">
+        <h3><span>{% trans "Referral Discharged" %}</span></h3>
+
+        {% if referrals_discharged %}
+            {% for referral in referrals_discharged %}
+
+                <div class="referral_box">
+                    <a class="service_title" href="{% url client-referral-home object.id referral.referral.id %}" title="{{ referral }}">{{ referral.referral.service_name_html|safe }}</a><br />
                     <div style="margin-left:39px;">
+                        {% if referral.referral.referral %}
+                            <i>{% trans "Internal referral from" %} <a href="{% url client-referral-home object.id referral.referral.referral.pk %}">{{ referral.referral.referral }}</a></i><br />
+                        {% endif %} 
 
-                        <!-- service -->
-                        {% if i.referral %}
-                            <i>{% trans "Internal referral from" %} <a href="/client/{{ object.id }}/referral/{{ i.referral.pk }}/">{{ i.referral }}</a></i>
+                        {% if referral.referral.professional.all %}
+                            {% for p in referral.referral.professional.all %}
+                                <i><a href="{{ p.get_url_form_ }}">{{ p }}</a><small>{% if p.professionalIdentification.profession %} {{ p.professionalIdentification.profession }}{% endif %}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %}{% if p.professionalIdentification.profession.symbol %} {{ p.professionalIdentification.profession.symbol }}{% endif %}{% if p.professionalIdentification.registerNumber %} {{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</small></i>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
                             <br />
                         {% endif %}
+                           
+                        <br /><b>{% trans "Date discharge" %}:</b>&nbsp;{{ referral.referral.referraldischarge_set.all.0.date|date:"d/m/Y" }}
+                        <br /><b>{% trans "Discharge was discussed with client" %}:</b>&nbsp;{% if referral.was_discussed_with_client %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
+                        {% if referral.reason %}<br /><b>{% trans "Reason" %}:</b>&nbsp;{{ referral.reason }}{% endif %}
+                        {% if referral.details %}<br /><b>{% trans "Details" %}:</b>&nbsp;{{ referral.details }}{% endif %}
+                        {% if referral.description %}<br /><b>{% trans "Referral discharge description" %}:</b>&nbsp;{{ referral.description }}{% endif %}
+                        <br /><a href="{% url referral_discharge_edit object.pk referral.referral.pk referral.pk %}">{% trans "edit" %}</a>
 
-                        <!-- professional -->
-                        {% for p in i.professional.all %}
-                            <i>- <a href="{{ p.url_form }}">{{ p }}</a><small>{% if p.professionalIdentification.profession %} {{ p.professionalIdentification.profession }}{% endif %}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %}{% if p.professionalIdentification.profession.symbol %} {{ p.professionalIdentification.profession.symbol }}{% endif %}{% if p.professionalIdentification.registerNumber %} {{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</small></i>{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                        <div style="clear:both;"></div>
-
-                        <!-- ocurrence -->
-                        {% if i.next_occurrence %}
-                            {% trans "Next occurrence" %}:
-                            {{ i.next_occurrence.start_time|date:"l, d" }} {% trans "of" %} {{ i.next_occurrence.start_time|date:"F" }} {% trans "of" %} {{ i.next_occurrence.start_time|date:"Y" }} {{ i.next_occurrence.start_time|date:"H:i" }} - {{ i.next_occurrence.end_time|date:"H:i" }}
-                        {% else %}
-                            - {% trans "There is no upcoming occurrences for this service" %} <a href="/client/schedule/daily/?referral={{ i.id }}&client={{ object.id }}" class="small">{% trans "book it now?" %}</a>
-                        {% endif %}
-
-                        <!-- covenant -->
-                        <div style="clear:both;"></div>
-                        {% if i.covenant.all.0 %} 
-                        - {% for c in i.covenant.all %} {{ c }}; {% endfor %}
-                        {% endif %}
                     </div>
                 </div>
 
             {% endfor %}
-        <p>
-        {% if perms.service.service_write %}
-        <br /><a href="/client/{{ object.id}}/referral/form/">{% trans "New subscribe" %}</a><br />
+        {% else %}    
+            <p class="empty">{% trans "There is no referral discharged" %}</p>
         {% endif %}
-        </p>
-    {% endif %}
-<br />	
+    </div>
 
-</div>
-
-{% if object.is_company %}
-<div class="main_area home">
- <h3><span>{% trans "Company Employees" %}</span></h3> 
- 	<h2  class="red">{% trans "Subscribed Employees" %} ({{ object.employees|length }})</h2> 
- 	{% if not object.employees|length %} 
- 	<p>{% trans "This company have no subscribed employees yet!" %}&nbsp;</p> 
- 	{% else %} 
- 	<ul> 
-        {% for i in object.employees %} 
-            <li>
-                <a href="/client/{{ i.client.id}}/home/">{{ i.client }}</a> 
-                [<a href="/client/{{ object.id }}/company_clients/{{i.id}}/form/"><small>{% if i.active %}{% trans "Active" %}{% else %}{% trans "Deactive" %}{% endif %}{% if i.responsible %}{% trans "/Responsible" %}{% endif %}</small></a>]
-                
-            </li>         
-        {% endfor %}
- 	</ul> 
- 	{% endif %} 
- 	<br />       
- 	<a href="/client/{{ object.id }}/company_clients/form/">{% trans "Subscribe new employee .." %}</a> 
-    <br /><br />
-</div>
-{% endif %}
-
-{% if object.company_set.all %}
-<div class="main_area home">
- <h3><span>{% trans "Client Companies Subscribed" %}</span></h3> 
- 	<h2  class="red">{% trans "Client Companies Subscribed" %} ({{ object.company_set.all|length }})</h2>
-        {% for i in object.company_set.all %} 
-        <p>
-            <a href="/client/{{ i.person.client.id }}/home/">{{ i }}{% if not i.active %} </a>({% trans "Deactive" %}{% endif %})
-        </p>
-        {% endfor %} 
- 	</ul> 
-    <br /><br /> 
-</div>
-{% endif %}
-
-<div class="main_area home">
-	<h3><span>{% trans "Referral Discharged" %}</span></h3>
-    {% if referrals_discharged %}
-            {% for referral in referrals_discharged %}
-               <div class="referral_box">
-                   <a class="service_title" href="/client/{{ object.id }}/referral/{{ referral.referral.id }}/" title="{{ referral }}">{{ referral.referral.service_name_html|safe }}</a><br />
-                    <div style="margin-left:39px;">
-                    {% if referral.referral.referral %}
-                        <i>{% trans "Internal referral from" %} <a href="/client/{{ object.id }}/referral/{{ referral.referral.referral.pk }}/">{{ referral.referral.referral }}</a></i>
-                        <br />
-                    {% endif %} 
-                    {% if referral.referral.professional.all %}
-                    {% for p in referral.referral.professional.all %}
-                        <i><a href="/careprofessional/{{ p.pk }}/">{{ p }}</a><small>{% if p.professionalIdentification.profession %} {{ p.professionalIdentification.profession }}{% endif %}{% if p.professionalIdentification.profession.symbol or p.professionalIdentification %}{% if p.professionalIdentification.profession.symbol %} {{ p.professionalIdentification.profession.symbol }}{% endif %}{% if p.professionalIdentification.registerNumber %} {{ p.professionalIdentification.registerNumber }}{% endif %}{% endif %}</small></i>{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                        <br />
-                    {% endif %}
-                   
-               {% trans "Date discharge" %}:&nbsp;{{ referral.referral.referraldischarge_set.all.0.date|date:"d/m/Y" }}
-               {% if referral.reason %}<br />{{ referral.reason }}{% endif %}
-               <br />{% trans "Discharge was discussed with client" %}:&nbsp;{% if referral.was_discussed_with_client %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
-               {% if referral.details %}<br />{{ referral.details }}{% endif %}
-               
-               {% if referral.description %}{% trans "Referral discharge description" %}:&nbsp;{{ referral.description }}{% endif %}
-               <div style="clear"></div>
-               <a href="{% url referral_discharge_edit object.pk referral.referral.pk referral.pk %}">{% trans "edit" %}</a>
-                    </div>
-               </div>
-            {% endfor %}
-    {% else %}    
-            <p class="empty">
-                {% trans "There is no referral discharged" %}
-            </p>
-    {% endif %}
-</div>
-
-<div id="sidebar" class="sidebar_client_top">
-    {% if object.id %}
-        {% include "tags/client_sidebar.html" %}
-    {% endif %}
-</div>
+    <div id="sidebar" class="sidebar_client_top">
+        {% if object.id %}
+            {% include "tags/client_sidebar.html" %}
+        {% endif %}
+    </div>
 
 {% endblock %}

@@ -1,23 +1,24 @@
 # -*- coding:utf-8 -*-
 
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 """
 
 import calendar
 from dateutil import parser
 from datetime import datetime, timedelta
 import datetime as datetime_
+
 from django import http
 from django.template.context import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response, HttpResponse
@@ -25,23 +26,26 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.db.models import Q
 from django.contrib import messages
-from swingtime.utils import create_timeslot_table
 
-from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation, OccurrenceFamily, OccurrenceEmployees
+from swingtime.utils import create_timeslot_table, time_delta_total_seconds
+
 from gestorpsi.referral.models import Referral
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.place.models import Place, Room
 from gestorpsi.service.models import Service, ServiceGroup
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client
-from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm
+
+from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation, OccurrenceFamily, OccurrenceEmployees
+from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm, OccurrenceConfirmationForm
+
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None
-from gestorpsi.schedule.forms import OccurrenceConfirmationForm
-from gestorpsi.device.models import DeviceDetails
-from gestorpsi.organization.models import TIME_SLOT_SCHEDULE, DEFAULT_SCHEDULE_VIEW
+
 from gestorpsi.financial.models import Receive
 from gestorpsi.financial.forms import ReceiveFormUpdate, ReceiveFormNew
+from gestorpsi.device.models import DeviceDetails
+from gestorpsi.organization.models import TIME_SLOT_SCHEDULE, DEFAULT_SCHEDULE_VIEW
 from gestorpsi.covenant.models import Covenant
 
 import locale
@@ -98,16 +102,21 @@ def add_event(
     if not 'dtstart' in request.GET:
         return http.HttpResponseRedirect('/schedule/')
 
+    # get from url
+    dtstart = parser.parse( request.GET['dtstart'] )
+    room = get_object_or_None(Room, pk=request.GET.get('room'), place__organization=request.user.get_profile().org_active)
+    client = get_object_or_None(Client, pk=request.GET.get('client'), person__organization=request.user.get_profile().org_active)
+    referral = get_object_or_None(Referral, pk=request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
+    event_form = event_form_class
+
     if request.POST:
 
         # instance form
-        recurrence_form = recurrence_form_class(request, request.POST)
+        recurrence_form = recurrence_form_class(request, room.place, request.POST)
 
         # no errors found, form is valid.
         if recurrence_form.is_valid():
-
             if not request.POST.get('group'): # booking single client
-
                 referral = get_object_or_404(Referral, pk=request.POST.get('referral'), service__organization=request.user.get_profile().org_active)
                 event = recurrence_form.save(referral)
 
@@ -185,20 +194,20 @@ def add_event(
 
 
     # mount form or return form errors
-
-    # get from url
-    dtstart = parser.parse( request.GET['dtstart'] )
-    room = get_object_or_None(Room, pk=request.GET.get('room'), place__organization=request.user.get_profile().org_active)
-    client = get_object_or_None(Client, pk=request.GET.get('client'), person__organization=request.user.get_profile().org_active)
-    referral = get_object_or_None(Referral, pk=request.GET.get('referral'), service__organization=request.user.get_profile().org_active)
-    event_form = event_form_class
+    # convert hour:minutes to second to set initial select
+    interval_sec = time_delta_total_seconds( timedelta(minutes=int(request.user.get_profile().org_active.time_slot_schedule)) )
+    start_sec = time_delta_total_seconds( timedelta(hours=dtstart.hour, minutes=dtstart.minute) )
+    end_sec = start_sec + interval_sec
 
     recurrence_form = recurrence_form_class( request,
+                                             room.place, # start, end hour of place, render select in this range.
                                              initial = dict(
                                                             dtstart=dtstart, 
                                                             day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"), 
                                                             until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
                                                             room=room.id,
+                                                            start_time_delta=start_sec,
+                                                            end_time_delta=end_sec,
                                                         )
     )
 
@@ -206,6 +215,7 @@ def add_event(
 
     return render_to_response( template,
                                dict(
+                                        slot_time = request.user.get_profile().org_active.time_slot_schedule,
                                         dtstart = dtstart, 
                                         event_form = event_form, 
                                         recurrence_form = recurrence_form, 
@@ -257,6 +267,7 @@ def event_view(
         context_instance=RequestContext(request)
     )
 
+
 @permission_required_with_403('schedule.schedule_read')
 def occurrence_view(
     request, 
@@ -265,21 +276,20 @@ def occurrence_view(
     template='schedule/schedule_occurrence_form.html',
     form_class=ScheduleSingleOccurrenceForm
 ):
-    user = request.user
 
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__pk=event_pk, event__referral__service__organization=request.user.get_profile().org_active)
+
     if request.method == 'POST':
-        
         form = form_class(request.POST, instance=occurrence)
+
         if form.is_valid():
             form.save()
             messages.success(request, _('Occurrence updated successfully'))
             return http.HttpResponseRedirect(request.path)
-        #else:
-            #print form.errors
     else:
         form = form_class(instance=occurrence, initial={'start_time':occurrence.start_time})
         form.fields['device'].queryset = DeviceDetails.objects.filter(Q(room = occurrence.room, mobility="1") | Q(place =  occurrence.room.place, room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=False) | Q(room__place__organization = request.user.get_profile().org_active, mobility="2", lendable=True))
+
     return render_to_response(
         template,
         dict(occurrence=occurrence, form=form),
@@ -630,7 +640,10 @@ def _datetime_view(
 
         # get start_time and end_time_delta from place
         # get schedule slot time from organization
-        timeslots=timeslot_factory(dt, items, start_time=datetime_.time( place.hours_work()[0], place.hours_work()[1]),\
+        timeslots=timeslot_factory(
+                dt,\
+                items,\
+                start_time=datetime_.time( place.hours_work()[0], place.hours_work()[1]),\
                 end_time_delta=timedelta(hours=place.hours_work()[2] ),\
                 time_delta=timedelta( minutes=int(user.get_profile().org_active.time_slot_schedule) ),\
                 **params),
@@ -675,7 +688,7 @@ def diary_view(request,
         template='schedule/schedule_daily.html',
         **params
     ):
-    
+
     if place == None:
         # Possible to exist more than one place as matriz or none, filter and get first element
         if Place.objects.filter( place_type=1, organization=request.user.get_profile().org_active):
@@ -780,6 +793,7 @@ def week_view_table(request,
                             'group_name': u'%s' % s.event.referral.group,
                             'group_pk': s.event.referral.group.pk,
                             'data': s,
+                            'show': show_event_(request, s),
                         })
                         groups.append(s.event.referral.group.pk)
                         
@@ -787,6 +801,7 @@ def week_view_table(request,
                     occurrence.append({
                         'is_group': False,
                         'data': s,
+                        'show': show_event_(request, s),
                     })
 
                 occurrences_length += 1 # show resume top page
@@ -837,15 +852,42 @@ def schedule_occurrences(request, year=1, month=1, day=None, st_timeh=00, st_tim
             ).exclude(room__active = False) # exclude not active rooms
 
     return objs
-    
+
+
+def show_event_(request, o):
+    """
+        Show all information about event.
+        boolean :   True 
+                    or
+                    False (show as reserved)
+    """
+
+    full_data = False # show all information or reserved
+
+    if request.user.profile.person.is_secretary() or request.user.profile.person.is_administrator():
+        full_data = True
+
+    # logged careprofessional or student in professional list
+    if request.user.profile.person.is_careprofessional() and request.user.get_profile().person.careprofessional in o.event.referral.professional.all():
+        full_data = True
+
+    if request.user.profile.person.is_student() and request.user.get_profile().person.careprofessional in o.event.referral.professional.all():
+        full_data = True
+
+    return full_data
+
+
 @permission_required_with_403('schedule.schedule_list')
 def daily_occurrences(request, year=1, month=1, day=None, place=None):
-
+    """
+        return JSON
+        filter permission : professional or secretary
+    """
     occurrences = schedule_occurrences(request, year, month, day)
 
-    array = {} #json
     i = 0
     groups = []
+    array = {} #json
 
     date = datetime.strptime(('%s/%s/%s' % (year, month, day)), "%Y/%m/%d")
 
@@ -867,16 +909,25 @@ def daily_occurrences(request, year=1, month=1, day=None, place=None):
         'place': place,
     }
     
+    """
+        secretary and/or admin
+            see all occurrences
+        professional and/or student
+            see event if owner of it OR reservado
+    """
+    # to check each occurence permission
     for o in occurrences:
+
         have_same_group = False
         if hasattr(o.event.referral.group, 'id'):
             if '%s-%s-%s' % (o.event.referral.group.id, o.room_id, o.start_time.strftime('%H:%M:%S')) in groups:
                 have_same_group = True
-        
+
         if not have_same_group:
             range = o.end_time-o.start_time
-            rowspan = range.seconds/1800 # how many blocks of 30min the occurrence have
+            rowspan = range.seconds/time_delta_total_seconds( timedelta(minutes=int(request.user.get_profile().org_active.time_slot_schedule)) ) 
 
+        if show_event_(request, o): # to show full data
             array[i] = {
                 'id': o.id,
                 'event_id': o.event.id,
@@ -894,22 +945,38 @@ def daily_occurrences(request, year=1, month=1, day=None, place=None):
                 'rowspan': rowspan,
                 'online': o.is_online,
             }
-            
+        else: # to show as reservado
+            array[i] = {
+                'room': o.room_id,
+                'room_name': (u"%s" % o.room),
+                'place': o.room.place_id,
+                'group': u"",
+                'service': "RESERVADO",
+                'service_id':o.event.referral.service.id,
+                'color':o.event.referral.service.color,
+                'font_color':o.event.referral.service.font_color,
+                'start_time': o.start_time.strftime('%H:%M:%S'),
+                'end_time': o.end_time.strftime('%H:%M:%S'),
+                'rowspan': rowspan,
+            }
+        
+        array[i]['professional'] = {}
+        array[i]['client'] = {}
+        array[i]['device'] = {}
+
+        if show_event_(request, o): # to show full data
+
             sub_count = 0
-            array[i]['professional'] = {}
             for p in o.event.referral.professional.all():
                 array[i]['professional'][sub_count] = ({'id':p.id, 'name':p.person.name})
                 sub_count = sub_count + 1
-            
+
             sub_count = 0
-            array[i]['client'] = {}
             for c in o.event.referral.client.all():
                 array[i]['client'][sub_count] = ({'id':c.id, 'name':c.person.name})
                 sub_count = sub_count + 1
-            
+        
             sub_count = 0
-            array[i]['device'] = {}
-
             if not o.scheduleoccurrence.was_confirmed():
                 device_list = o.device.all()
             else:
@@ -919,12 +986,12 @@ def daily_occurrences(request, year=1, month=1, day=None, place=None):
                 array[i]['device'][sub_count] = ({'id':o.id, 'name': ("%s - %s - %s" % (o.device.description, o.brand, o.model)) })
                 sub_count = sub_count + 1
 
-            i = i + 1
-
             # concat group id, room id and start time to register in a list and verify in the begin of the loop if the same
             # occurrence already has been registered
             if hasattr(o, 'event') and hasattr(o.event.referral.group, 'id'):
                 groups.append('%s-%s-%s' % (o.event.referral.group.id, o.room_id, o.start_time.strftime('%H:%M:%S')))
+
+        i = i + 1
 
     array['util']['occurrences_total'] = i
     array = simplejson.dumps(array)

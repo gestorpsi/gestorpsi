@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 """
 
 from django.utils import simplejson
@@ -22,14 +22,12 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.template import RequestContext
-from django.utils.translation import ugettext as _
 from django.db.models import Q
 from django.contrib import messages
+
 from gestorpsi.service.models import Service, Area, ServiceType, Modality
 from gestorpsi.person.views import person_json_list
-from gestorpsi.careprofessional.models import CareProfessional, Profession
 from gestorpsi.referral.models import Queue, Referral
-from django.utils import simplejson
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.util.views import get_object_or_None, color_rand
 from gestorpsi.organization.models import AgeGroup, EducationLevel, HierarchicalLevel
@@ -440,21 +438,35 @@ def client_list_index(request, object_id = None):
 
     return render_to_response('service/service_client_list.html', locals(), context_instance=RequestContext(request))
 
-# list referral groups
+
 @permission_required_with_403('service.service_list')
 def group_list(request, object_id=None, return_json=False):
+    """
+        Return list of groups of a service
+        Return Json or HTML
+        object_id : Service.id
+        return_json : Boolean
+    """
+
     service = get_object_or_404(Service, pk=object_id, organization = request.user.get_profile().org_active)
+
+    if service.is_group == False:
+        return HttpResponse("False")
+
     object = _group_list(request, service)
 
     if hasattr(request.user.profile.person, 'careprofessional') and request.user.profile.person.careprofessional.is_student:
         return render_to_response('403.html', {'object': _("Sorry! Students have no access to this service!"), }, context_instance=RequestContext(request))
 
     if return_json:
-        i = 0
+
+        i = 1
         array = {} #JSON
+        array[0] = { 'name':'---------' , 'id':"" } # blank, not required when reload groups by json
+
         for o in object:
             array[i] = {
-                    'name': '%s' % o.description,
+                    'name': u'%s' % o.description,
                     'id': o.id,
             }
             i = i + 1

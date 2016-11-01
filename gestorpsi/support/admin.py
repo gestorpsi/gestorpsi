@@ -23,7 +23,7 @@ GNU General Public License for more details.
 
 from django.contrib import admin
 from django import forms
-from gestorpsi.support.models import Documentation
+from gestorpsi.support.models import Documentation, Ticket
 
 class DocumentationAdmin(admin.ModelAdmin):
     def formfield_for_dbfield(self, db_field, **kwargs):
@@ -38,3 +38,16 @@ class DocumentationAdmin(admin.ModelAdmin):
               'js/tiny_mce/textareas.js',)
 
 admin.site.register(Documentation, DocumentationAdmin)
+
+
+class TicketAdmin(admin.ModelAdmin):
+
+    def get_stat_(self):
+        return self.get_status_display()
+
+    list_display = ('user','date',get_stat_,'question')
+    readonly_fields = ('user','date','ticket_id')
+    search_fields = ['user__user__username','question']
+    list_filter = ['date','status']
+
+admin.site.register(Ticket, TicketAdmin)

@@ -168,8 +168,10 @@ msgstr ""
 
 #: authentication/views.py:77
 msgid "Your account has been disable. Please contact our support"
-msgstr ""
-"Sua conta foi desativada. Por favor, entre em contato com nosso suporte."
+msgstr "Sua conta foi desativada. Por favor, entre em contato com nosso suporte."
+
+msgid "Your account has been disable. Please contact your administrator."
+msgstr "Sua conta foi desativada. Por favor, entre em contato com o seu administrador."
 
 #: authentication/views.py:196
 msgid ""
@@ -6288,7 +6290,7 @@ msgid "for one"
 msgstr "aqui"
 
 #: templates/registration/logout.html:23
-msgid "Thanks for use GestorPsi!"
+msgid "Thanks for use GestorPsi"
 msgstr "Obrigado por utilizar o GestorPsi!"
 
 #: templates/registration/password_reset_complete.html:5

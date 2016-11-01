@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 """
 
 from django.contrib import messages
@@ -27,6 +27,7 @@ from django.template.defaultfilters import slugify
 from django.forms.util import ErrorList
 from django.utils.translation import ugettext as _
 from django.contrib.auth.views import login as django_login
+from django.contrib.auth.views import logout as django_logout
 from django.core.mail import EmailMessage
 
 from gestorpsi.util.views import get_object_or_None
@@ -59,7 +60,7 @@ def user_authentication(request):
         return render_to_response('authentication/authentication_login_form.html', {'form': AuthenticationForm() })
 
     form = AuthenticationForm(data=request.POST)
-    username = request.POST.get('username').strip() # strip to remove all white space
+    username = request.POST.get('username')
     password = request.POST.get('password')
     
     # login Django, open session.
@@ -80,12 +81,14 @@ def user_authentication(request):
 
     # user has not confirmed registration yet
     if user.registrationprofile_set.all()[0].activation_key != 'ALREADY_ACTIVATED':
-        form_messages = _('Your account has not been confirmated yet. Please check your email and use your activation code to continue')
-        return render_to_response('authentication/authentication_login_form.html', {'form':form, 'form_messages': form_messages })
+        django_logout(request)
+        messages.error(request, _('Your account has not been confirmated yet. Please check your email and use your activation code to continue'))
+        return render_to_response('authentication/authentication_login_form.html', {'form': form }, context_instance=RequestContext(request))
     
     if not user.is_active:
-        form_messages = _('Your account has been disable. Please contact our support')
-        return render_to_response('authentication/authentication_login_form.html', {'form':form, 'form_messages': form_messages })
+        django_logout(request)
+        messages.error(request, _('Your account has been disable. Please contact your administrator.'))
+        return render_to_response('authentication/authentication_login_form.html', {'form': form }, context_instance=RequestContext(request))
 
     # none restriction to login from where.
     clear_login(user)

@@ -6160,7 +6160,7 @@ msgid "for one"
 msgstr ""
 
 #: templates/registration/logout.html:23
-msgid "Thanks for use GestorPsi!"
+msgid "Thanks for use GestorPsi"
 msgstr ""
 
 #: templates/registration/password_reset_complete.html:5

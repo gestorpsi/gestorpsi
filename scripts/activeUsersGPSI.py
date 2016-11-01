@@ -21,7 +21,7 @@ from django.contrib.auth.models import *
 
 checked_list = [] # list of checked organization
 
-for u in User.objects.filter(last_login__gte='2016-08-25', is_staff=False, is_superuser=False):
+for u in User.objects.filter(last_login__gte='2016-10-15', is_staff=False, is_superuser=False):
     for o in u.profile.person.organization.all():
         if not o in checked_list:
 

@@ -21,9 +21,9 @@ from gestorpsi.person.models import Person
 from gestorpsi.util.uuid_field import UuidField
 
 STATUS= ( 
-    ('1',_('Open')), 
-    ('2', _('Processing')),
-    ('2', _('Closed')),
+        (1,_('Open')), 
+        (2, _('Processing')),
+        (3, _('Closed')),
     )
 
 class Ticket(models.Model):
@@ -32,15 +32,18 @@ class Ticket(models.Model):
     @author: Fabio A Martins
     @version: 1.0
     """
-    id= UuidField(primary_key=True)
+    id = UuidField(primary_key=True)
     user = models.ForeignKey(Person, null=True)
     contact_name = models.CharField(max_length=255)
     contact_email = models.CharField(max_length=255)
     contact_phone = models.CharField(max_length=255)
     ticket_id = models.IntegerField(max_length=8)
     question = models.TextField()
-    status = models.IntegerField( max_length=1, choices=STATUS, default = 1)
-    date = models.DateTimeField(auto_now=True)
+    status = models.IntegerField(max_length=1, choices=STATUS, default=1)
+    date = models.DateTimeField(auto_now=True, editable=True)
+
+    class Meta:
+        ordering = ['-date']
     
     def __unicode__(self):
         return "%s %s" % (self.ticket_id, self.question)

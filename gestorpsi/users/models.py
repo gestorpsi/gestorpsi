@@ -1,4 +1,7 @@
+# -*- coding:utf-8 -*-
+
 from django.contrib.auth.models import User
+
 class Users(User):
     
     class Meta:
@@ -8,6 +11,3 @@ class Users(User):
             ("user_list", "Can list users"),
             ("user_write", "Can write users"),
         )
-        
-
-# Create your models here.

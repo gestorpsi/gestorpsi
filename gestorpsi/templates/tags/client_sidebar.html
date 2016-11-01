@@ -111,7 +111,7 @@
     <h3>{% trans 'Referral Details' %}</h3>
     <ul>
         <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/" class="client_services" title="{{ object.person.name }}">{% trans "Referral Home" %}</a></li>
-        {% if not referral_discharged and access_check_referral_write %}
+        {% if not referral.referraldischarged_set.all.0 and access_check_referral_write %}
             <li><a href="/client/{{ object.id }}/referral/{{ referral.id }}/form/" class="referral_edit" title="{{ object.person.name }}">{% trans "Change Referral" %}</a></li>
         {% endif %}
         {# <li><a href="/client/{{ object.id }}/home/" class="client_home" title="{{ object.person.name }}">{% trans "Schedule" %}</a></li> #}

@@ -109,12 +109,17 @@ def _access_check_referral_write(request, referral=None):
     @referral: referral object
     """
 
+    # new referral form
+    if not referral.id:
+        return True
+
     # check if user is professional and not admin or secretary. if it's true, check if professional has referral with this customer
     if request.user.groups.filter(name='administrator') or request.user.groups.filter(name='secretary'):
         return True
 
-    # check if professional
+    # check if professional or student
     if request.user.groups.filter(name='professional') or request.user.groups.filter(name='student'):
+
         professional_have_referral_with_client = False
         professional_is_responsible_for_service = False
 
@@ -443,6 +448,7 @@ def referral_int_form(request, object_id=None, referral_id=None):
         object_id : Client.id
         referral_id : Referral.id
     """
+
     object = get_object_or_404( Client, pk=object_id, person__organization=request.user.get_profile().org_active )
     referral = get_object_or_404( Referral, pk=referral_id, service__organization=request.user.get_profile().org_active )
 
@@ -495,7 +501,6 @@ def referral_form(request, object_id=None, referral_id=None):
         object_id : Client.id
         referral_id : Referral.id
     '''
-
     # client
     object = get_object_or_404( Client, pk=object_id, person__organization=request.user.get_profile().org_active )
 
@@ -566,6 +571,7 @@ def referral_form(request, object_id=None, referral_id=None):
                                     'referral': referral,
                                     'referral_form': referral_form,
                                     'referral_list': Referral.objects.filter(client=object, status='01'),
+                                    'access_check_referral_write': _access_check_referral_write(request, referral),
                                     'IndicationsChoices': IndicationChoice.objects.all(),
                                     'contact_organizations': Contact.objects.filter_internal(
                                                     org_id = request.user.get_profile().org_active.id, 
@@ -668,20 +674,18 @@ def referral_list(request, object_id=None, discharged=None):
 
 
 @permission_required_with_403('referral.referral_read')
-def referral_home(request, object_id = None, referral_id = None):
-    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+def referral_home(request, object_id=None, referral_id=None):
+    object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
 
     # check access by requested user
     if not _access_check(request, object):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
-    access_check_referral_write = None
+    access_check_referral_write = False
     if _access_check_referral_write(request, get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)):
         access_check_referral_write = True
 
     return _referral_view(request, object_id, referral_id, 'client/client_referral_home.html', access_check_referral_write)
-
-
 
 
 @permission_required_with_403('client.client_write')

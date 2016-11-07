@@ -39,11 +39,11 @@ urlpatterns = patterns('',
     #(r'^filter/(?P<filter>\w+)/page(?P<page>(\d)+)/$', login_check(list), {'no_paging': True, 'retrn':'json'}), # quick search
     (r'^filter/(?P<filter>\w+)/$', login_check(list), {'no_paging': True, 'retrn':'json'}), # quick search
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/order/$', login_check(order)),
-    # ok
+    # # # client
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/home/$', login_check(home), name='client-home'),
     url(r'^add/$', login_check(client_add), name='client-form-new'), #new object form
-    url(r'^save/$', login_check(save), name='client-form-save'), #save new object
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/form/$', login_check(form), name='client-form'), #render form
+    url(r'^save/$', login_check(save), name='client-form-save'), #save new object
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save), name='client-form-save'), #update client
     # # # company client
     url(r'^add/company/$', login_check(company_add), name='client-company-form'), #new object form

@@ -48,10 +48,10 @@
     <h2 id="title_contacts" style="display:none"></h2>
     <h2 id="title_myoffice" style="display:none"></h2>
 
-    {% if objects.id %}
-        <form action="{% url client-form object.id %}" method="post" id="form_client" class="form_people collapsable form_client">	
+    {% if object.id %}
+        <form action="{% url client-form-save object.id %}" method="post" id="form_client" class="form_people collapsable form_client">
     {% else %}
-        <form action="{% url client-form-save %}" method="post" id="form_client" class="form_people collapsable form_client autocomplete">	
+        <form action="{% url client-form-save %}" method="post" id="form_client" class="form_people collapsable form_client autocomplete">
     {% endif %}
 
         <div class="main_area">

@@ -2,17 +2,17 @@
 
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -21,79 +21,85 @@ GNU General Public License for more details.
 {% block menu_client %}active{% endblock %}
 
 {% block submenu %}
-<ul id="sub_customers">
-    <li><a href="/client/">{% trans "all" %}</a></li>
-    <li><a href="/client/add">{% trans "add" %}</a></li>
-    <li><a {% if not object.id %} class="active" {% endif %} href="/client/add/company/">{% trans "add company" %}</a></li>
-    <li><a class="{% if deactive %} active {% endif %}" href="/client/deactive/">{% trans "all Deactive" %}</a></li>
-
-    {% if object.id %}<li><a class="active">{{ object.person.name }}{% if referral %} - {{ referral }}{% endif %}</a></li>{% endif %}
-</ul>
+    <ul id="sub_customers">
+        <li><a href="{% url client-index %}">{% trans "all" %}</a></li>
+        <li><a href="{% url client-form-new %}">{% trans "add" %}</a></li>
+        <li><a {% if not object.id %} class="active" {% endif %} href="{% url client-company-form %}">{% trans "add company" %}</a></li>
+        <li><a class="{% if deactive %} active {% endif %}" href="{% url client-list-deactive %}">{% trans "all Deactive" %}</a></li>
+        {% if object.id %}<li><a class="active">{{ object.person.name }}{% if referral %} - {{ referral }}{% endif %}</a></li>{% endif %}
+    </ul>
 {% endblock %}
 
 {% block core %}
-<input type="hidden" name="object_id" value="{{ object.id }}" />
+    
+    {% include "tags/upload.html" %}
 
-<h2 id="title_addressbook" style="display:none"></h2>
+    <input type="hidden" name="object_id" value="{{ object.id }}" />
+    <h2 id="title_addressbook" style="display:none"></h2>
 
-{% if object.id %}
-	<h2 class="title_clients title">{{ object.person.name }}</h2>
-	<p class="description">{% if total_service %}{% trans "Client subscribed in" %} {{ total_service }} {% trans "services" %}{% else %}{% trans "This client have no subscribed services" %}. <a href="/client/{{ object.id }}/referral/form/">{% trans "Subscribe it now?" %}</a>{% endif %}<br />	
-{% else %}
-	<h2 class="title_clients title">{% trans "Adding New Company Client" %}</h2>
-	<p class="description">{% trans "Inform the client details then click on Save button" %}</p>
-{% endif %}
-
-</p>
-<h2 id="title_contacts" style="display:none"></h2>
-<h2 id="title_myoffice" style="display:none"></h2>
-
-<form action="/client/{% if object.id %}{{ object.id }}/{% endif %}save/company/" method="post" id="form_client" class="form_people collapsable form_client{% if not object.id %} autocomplete{% endif %}">	
-<div class="main_area">
-
-	<!-- <a href="" id="help">&nbsp;</a> -->
-	<!-- DataTypes form menu -->
-	<h3><span id="client_add_infotypes">{% trans "Demographic" %}</span></h3>
-	<ul id="form_options" class="float_menu" style="display:none;">
-		<li><label><input name="this" type="radio" value="" checked/>{% trans "Demographic" %}</label></li>
-		<li><label><input name="this" type="radio" value="" />{% trans "Socio-Demographic" %}</label></li>
-		<li><label><input name="this" type="radio" value="" />{% trans "Socio-Economic" %}</label></li>
-	</ul>
-
-    {% include "meta/company_indentification.html" %}
-    {% include "meta/company_profile.html" %}
-    {% include "meta/phones.html" %}
-    {% include "meta/addressbook.html" %}
-    {% include "meta/internet.html" %}
-    {% include "meta/people_documents.html" %}
-
-    <fieldset class="comment_form">
-            <legend>{% trans "Comments" %}</legend>
-            <label>{% trans "Comments" %}<br />
-                    <textarea name="comments" class="extrabig">{{ object.person.comments }}</textarea>
-            </label>
-
-    </fieldset>
-
-<br />	
-</div>
-
-
-<div id="sidebar" class="sidebar_save">
-    {% if perms.client.client_write %}
-        <div class="bg_blue">
-            {% include "tags/save.html" %}
-        </div>
-    {% endif %}
-</div>
-
-<div id="sidebar" class="sidebar_client">
     {% if object.id %}
-        {% include "tags/client_sidebar.html" %}
+        <h2 class="title_clients title">{{ object.person.name }}</h2>
+        <p class="description">
+            {% if total_service %}
+                {% trans "Client subscribed in" %} {{ total_service }} {% trans "services" %}{% else %}{% trans "This client have no subscribed services" %}. <a href="{% url client-referral-new object.id %}">{% trans "Subscribe it now?" %}</a>
+            {% endif %}
+            <br />	
+        </p>
+    {% else %}
+        <h2 class="title_clients title">{% trans "Adding New Company Client" %}</h2>
+        <p class="description">{% trans "Inform the client details then click on Save button" %}</p>
     {% endif %}
-</div>
 
-</form>
-{% include "tags/upload.html" %}
+    <h2 id="title_contacts" style="display:none"></h2>
+    <h2 id="title_myoffice" style="display:none"></h2>
+
+    {% if object.id %}
+        <form action="{% url client-company-save object.id %}" method="post" id="form_client" class="form_people collapsable form_client">	
+    {% else %}
+        <form action="{% url client-company-save %}" method="post" id="form_client" class="form_people collapsable form_client autocomplete">	
+    {% endif %}
+
+            <div class="main_area">
+                <!-- <a href="" id="help">&nbsp;</a> -->
+                <!-- DataTypes form menu -->
+                <h3><span id="client_add_infotypes">{% trans "Demographic" %}</span></h3>
+                <ul id="form_options" class="float_menu" style="display:none;">
+                    <li><label><input name="this" type="radio" value="" checked/>{% trans "Demographic" %}</label></li>
+                    <li><label><input name="this" type="radio" value="" />{% trans "Socio-Demographic" %}</label></li>
+                    <li><label><input name="this" type="radio" value="" />{% trans "Socio-Economic" %}</label></li>
+                </ul>
+
+                {% include "meta/company_indentification.html" %}
+                {% include "meta/company_profile.html" %}
+                {% include "meta/phones.html" %}
+                {% include "meta/addressbook.html" %}
+                {% include "meta/internet.html" %}
+                {% include "meta/people_documents.html" %}
+
+                <fieldset class="comment_form">
+                        <legend>{% trans "Comments" %}</legend>
+                        <label>{% trans "Comments" %}<br />
+                                <textarea name="comments" class="extrabig">{{ object.person.comments }}</textarea>
+                        </label>
+
+                </fieldset>
+                <br />	
+            </div><!-- close main_area -->
+
+            <div id="sidebar" class="sidebar_save">
+                {% if perms.client.client_write %}
+                    <div class="bg_blue">
+                        {% include "tags/save.html" %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div id="sidebar" class="sidebar_client">
+                {% if object.id %}
+                    {% include "tags/client_sidebar.html" %}
+                {% endif %}
+            </div>
+
+        </form>
 
 {% endblock %}

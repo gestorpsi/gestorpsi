@@ -67,6 +67,10 @@ This tag is used in client (home) view for administrator AND CLIENT users.
     {% if user.get_profile.person.is_client %}
         <a href="{% url profile-form %}" title="{% trans "edit" %}"><span>{% trans "edit" %}</span></a>
     {% else %}
-        <a href="{% url client-form object.id %}" title="{% trans "edit" %}"><span>{% trans "edit" %}</span></a>
+        {% if object.person.is_company %}
+            <a href="{% url client-company-form object.id %}" title="{% trans "edit" %}"><span>{% trans "edit" %}</span></a>
+        {% else %}
+            <a href="{% url client-form object.id %}" title="{% trans "edit" %}"><span>{% trans "edit" %}</span></a>
+        {% endif %}
     {% endif %}
 </p>

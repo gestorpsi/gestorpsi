@@ -181,15 +181,8 @@ def home(request, object_id=None):
 
 
 @permission_required_with_403('client.client_read')
-def client_add(request):
-    if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
-        msg = _("There's no Service created yet. Please, create one before access Client, ") + " <a href='/service/add'> clique aqui.</a>"
-        return render_to_response('client/client_service_alert.html', {'object': msg }, context_instance=RequestContext(request))
-    else:
-        try:
-            cities = City.objects.filter(state=request.user.get_profile().org_active.address.all()[0].city.state)
-        except:
-            cities = {}
+def LIXO_client_add(request):
+
         return render_to_response('client/client_form.html',
                                         {
                                         'countries': Country.objects.all(),
@@ -341,68 +334,115 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
 
 
 
-# edit form
 @permission_required_with_403('client.client_read')
-def form(request, object_id=''):
+def form(request, object_id=False, is_company=False):
+    """
+        Client render form
+        object_id : Client.id
+        is_company : Boolean
+            render form to company
+    """
 
-    object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+    # edit
+    if object_id :
 
-    # check access by requested user
-    if not _access_check(request, object):
-        return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+        object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
 
-    cnae = None
-    # User Registration Code
-    groups = [False, False, False, False]
-    try:
-        profile = get_object_or_404(Profile, person=object.person.id)
-        for g in profile.user.groups.all():
-            if g.name == "administrator": groups[0] = True
-            if g.name == "psychologist":  groups[1] = True
-            if g.name == "secretary":     groups[2] = True
-            if g.name == "client":        groups[3] = True
-    except:
-        profile = Profile()
-        profile.person = get_object_or_404(Person, pk=object.person.id)
-        profile.user = User(username=slugify(profile.person.name))
-    
-    if object.person.is_company():
-        template_name = 'client/client_form_company.html'
-        company_form = CompanyForm(instance=object.person.company)
-        cnae = get_object_or_None(Cnae, pk=object.person.company.cnae_class)
+        # check access by requested user
+        if not _access_check(request, object):
+            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+
+    # new object
     else:
+        object = Client()
+
+    # to check registered service
+    # get current city of org
+    if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
+
+        # lixo
+        msg = _("There's no Service created yet. Please, create one before access Client, ") + " <a href='/service/add'> clique aqui.</a>"
+
+        return render_to_response('client/client_service_alert.html', {'object': msg }, context_instance=RequestContext(request))
+
+    else:
+
+        try:
+            cities = City.objects.filter(state=request.user.get_profile().org_active.address.all()[0].city.state)
+        except:
+            cities = {}
+
+
+    # User Registration Code
+    cnae = None # ???
+
+    if is_company:# or object.person.is_company():
+        print 
+        print "IS COMPANY"
+        template_name = 'client/client_form_company.html'
+
+        if object_id:
+            company_form = CompanyForm(instance=object.person.company)
+            cnae = get_object_or_None(Cnae, pk=object.person.company.cnae_class)
+    else:
+        print 
+        print "IS PERSON"
         template_name = 'client/client_form.html'
         company_form = None
 
-    return render_to_response(template_name,
-                              {'object': object,
-                                'phones' : object.person.phones.all(),
-                                'addresses' : object.person.address.all(),
-                                'documents' : object.person.document.all(),
-                                'emails' : object.person.emails.all(),
-                                'websites' : object.person.sites.all(),
-                                'ims' : object.person.instantMessengers.all(),
-                                'countries': Country.objects.all(),
-                                'PhoneTypes': PhoneType.objects.all(), 
-                                'AddressTypes': AddressType.objects.all(), 
-                                'EmailTypes': EmailType.objects.all(), 
-                                'IMNetworks': IMNetwork.objects.all(), 
-                                'TypeDocuments': TypeDocument.objects.filter(source=1), 
-                                'Issuers': Issuer.objects.all(), 
-                                'States': State.objects.all(), 
-                                'MaritalStatusTypes': MaritalStatus.objects.all(), 
-                                'PROFESSIONAL_AREAS': Profession.objects.all(),
-                                'licenceBoardTypes': LicenceBoard.objects.all(),
-                                'ReferralChoices': ReferralChoice.objects.all(),
-                                'IndicationsChoices': IndicationChoice.objects.all(),
-                                'Relations': Relation.objects.all(),
-                                'profile': profile,
-                                'groups': groups,
-                                'company_form': company_form,
-                                'cnae': cnae,
-                               },
-                              context_instance=RequestContext(request)
-                              )
+    # edit
+    if object_id:
+        return render_to_response(template_name,
+                                  {
+                                    'object': object,
+                                    'phones' : object.person.phones.all(),
+                                    'addresses' : object.person.address.all(),
+                                    'documents' : object.person.document.all(),
+                                    'emails' : object.person.emails.all(),
+                                    'websites' : object.person.sites.all(),
+                                    'ims' : object.person.instantMessengers.all(),
+                                    'countries': Country.objects.all(),
+                                    'PhoneTypes': PhoneType.objects.all(), 
+                                    'AddressTypes': AddressType.objects.all(), 
+                                    'EmailTypes': EmailType.objects.all(), 
+                                    'IMNetworks': IMNetwork.objects.all(), 
+                                    'TypeDocuments': TypeDocument.objects.filter(source=1), 
+                                    'Issuers': Issuer.objects.all(), 
+                                    'States': State.objects.all(), 
+                                    'Relations': Relation.objects.all(),
+                                    'company_form': company_form,
+                                    'cnae': cnae,
+
+                                    'MaritalStatusTypes': MaritalStatus.objects.all(), 
+                                    'PROFESSIONAL_AREAS': Profession.objects.all(),
+                                    'licenceBoardTypes': LicenceBoard.objects.all(),
+                                    'ReferralChoices': ReferralChoice.objects.all(),
+                                    'IndicationsChoices': IndicationChoice.objects.all(),
+                                   },
+                context_instance=RequestContext(request)
+            )
+
+    # new
+    else:
+        return render_to_response(template_name,
+                                        {
+                                        'countries': Country.objects.all(),
+                                        'PhoneTypes': PhoneType.objects.all(), 
+                                        'AddressTypes': AddressType.objects.all(), 
+                                        'EmailTypes': EmailType.objects.all(), 
+                                        'IMNetworks': IMNetwork.objects.all() , 
+                                        'TypeDocuments': TypeDocument.objects.filter(source=1), 
+                                        'Issuers': Issuer.objects.all(), 
+                                        'Cities': cities,
+                                        'States': State.objects.all(), 
+                                        'MaritalStatusTypes': MaritalStatus.objects.all(),
+                                        'PROFESSIONAL_AREAS': Profession.objects.all(),
+                                        'licenceBoardTypes': LicenceBoard.objects.all(),
+                                        'ReferralChoices': ReferralChoice.objects.all(),
+                                        'Relations': Relation.objects.all(),
+                                        'cnae': Cnae.objects.all(),
+                                         },
+                                        context_instance=RequestContext(request))
 
 
 @permission_required_with_403('client.client_read')
@@ -416,27 +456,28 @@ def company_add(request, object_id=None):
     company_form = CompanyForm()
 
     return render_to_response('client/client_form_company.html',
-                              { 'object': object,
-                                'phones' : None if not object_id else object.person.phones.all(),
-                                'addresses' : None if not object_id else object.person.address.all(),
-                                'documents' : None if not object_id else object.person.document.all(),
-                                'emails' : None if not object_id else object.person.emails.all(),
-                                'websites' : None if not object_id else object.person.sites.all(),
-                                'ims' : None if not object_id else object.person.instantMessengers.all(),
-                                'countries': Country.objects.all(),
-                                'PhoneTypes': PhoneType.objects.all(), 
-                                'AddressTypes': AddressType.objects.all(), 
-                                'EmailTypes': EmailType.objects.all(), 
-                                'IMNetworks': IMNetwork.objects.all(), 
-                                'TypeDocuments': TypeDocument.objects.filter(source=2), 
-                                'Issuers': Issuer.objects.all(), 
-                                'States': State.objects.all(), 
-                                'Relations': Relation.objects.all(),
-                                'company_form': company_form,
-                                'cnae': Cnae.objects.all(),
-                               },
-                              context_instance=RequestContext(request)
-                              )
+          {
+                'object': object,
+                'phones' : None if not object_id else object.person.phones.all(),
+                'addresses' : None if not object_id else object.person.address.all(),
+                'documents' : None if not object_id else object.person.document.all(),
+                'emails' : None if not object_id else object.person.emails.all(),
+                'websites' : None if not object_id else object.person.sites.all(),
+                'ims' : None if not object_id else object.person.instantMessengers.all(),
+                'countries': Country.objects.all(),
+                'PhoneTypes': PhoneType.objects.all(), 
+                'AddressTypes': AddressType.objects.all(), 
+                'EmailTypes': EmailType.objects.all(), 
+                'IMNetworks': IMNetwork.objects.all(), 
+                'TypeDocuments': TypeDocument.objects.filter(source=2), 
+                'Issuers': Issuer.objects.all(), 
+                'States': State.objects.all(), 
+                'Relations': Relation.objects.all(),
+                'company_form': company_form,
+                'cnae': Cnae.objects.all(),
+           },
+          context_instance=RequestContext(request)
+          )
 
 
 @permission_required_with_403('referral.referral_read')

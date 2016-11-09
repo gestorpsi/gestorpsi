@@ -1,16 +1,16 @@
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -54,24 +54,29 @@ $(function() {
 
 <fieldset>
     <legend>{% trans "Company Profile" %}</legend>
+
         <label>{{ company_form.size.label }}<br />
             {{ company_form.size }}
         </label>
+
         <label>{{ company_form.cnae_class.label }} <a class="show_cnae_search" style="cursor:pointer;">{% trans "Search Code?" %}</a><br />
             {{ company_form.cnae_class }}
         </label>
-        <label><br />
-        <span class="cnae_name">{{ cnae.cnae_class }}</span>
+
+        <label>
+            <br />
+            <span class="cnae_name">{{ cnae.cnae_class }}</span>
         </label>
-        <label class="cnae_search hidden">{% trans "CNAE Search" %}<br />
-        <input name="cnae_search_key" type="text" class="big" /></label>
+
+        <label class="cnae_search hidden">{% trans "CNAE Search" %}
+            <br />
+            <input name="cnae_search_key" type="text" class="big" />
+        </label>
+
         <div class="overflow cnae_search hidden">
             <table id="cnae_results" class="zebra">
-                    <thead>  
-                    <tr><th></th><th></th></tr> 
-                    </thead>
-                    <tbody>
-                    </tbody>
+                <thead><tr><th></th><th></th></tr></thead>
+                <tbody></tbody>
             </table>
         </div>
 </fieldset>

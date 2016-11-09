@@ -52,28 +52,28 @@ GNU General Public License for more details.
 	
     <!--auto complete city-->
     <label class="autocomplete state"{% if address.foreignCity %} style="display:none"{% endif %}>
-    {% trans "State/Region" %}<br />
-    <select class="city_search extrasmall" city="{{ address.city.id }}">
-        <option></option>
-        {% for s in States %}
-        {% if address %}
-            <option value="{{ s.id }}"{% ifequal address.city.state.id s.id %} selected{% endifequal %}>{{ s.shortName }}</option>
-        {% else %}
-            <option value="{{ s.id }}"{% ifequal user.get_profile.org_active.address.all.0.city.state.id s.id %}selected{% endifequal %}>{{ s.shortName }}</option>
-        {% endif %}
-        {% endfor %}
-    </select>
+        {% trans "State/Region" %}<br />
+        <select class="city_search extrasmall" city="{{ address.city.id }}">
+            <option></option>
+            {% for s in States %}
+                {% if address %}
+                    <option value="{{ s.id }}"{% ifequal address.city.state.id s.id %} selected{% endifequal %}>{{ s.shortName }}</option>
+                {% else %}
+                    <option value="{{ s.id }}"{% ifequal user.get_profile.org_active.address.all.0.city.state.id s.id %}selected{% endifequal %}>{{ s.shortName }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
     </label>
 
     <label class="autocomplete city"{% if address.foreignCity %} style="display:none"{% endif %}>
-    {% trans "City" %}<br />
-    <select name="city" class="extramedium">
-        {% if not address.city.id %}
-            {% for c in Cities %}
+        {% trans "City" %}<br />
+        <select name="city" class="extramedium">
+            {% if not address.city.id %}
+                {% for c in Cities %}
                     <option value="{{ c.id }}"{% ifequal user.get_profile.org_active.address.all.0.city.id c.id %} selected{% endifequal %}>{{ c.name }}</option>
-            {% endfor %}
-        {% endif %}
-    </select>
+                {% endfor %}
+            {% endif %}
+        </select>
     </label>
     
 	<!--not autocomplete-->

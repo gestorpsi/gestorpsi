@@ -21,7 +21,7 @@ from gestorpsi.client.views import index, list, form, save, client_print, \
         referral_form, referral_discharge_form, schedule_daily, schedule_add, \
         occurrence_view, referral_occurrences, referral_int_form, referral_queue, \
         referral_queue_save, referral_queue_remove, referral_ext_form, referral_ext_save, family, family_form, \
-        company_add, company_related, company_related_form, referral_occurrences_action
+        company_related, company_related_form, referral_occurrences_action
 from gestorpsi.online_messages.views import referral_messages, occurrence_chat, chat_message, update_chat_message, exit_chat, new_message_topic, topic_messages, new_topic_message, chat_messages_history
 from gestorpsi.authentication.views import login_check
 from gestorpsi.organization.views import list_prof_org
@@ -39,24 +39,18 @@ urlpatterns = patterns('',
     #(r'^filter/(?P<filter>\w+)/page(?P<page>(\d)+)/$', login_check(list), {'no_paging': True, 'retrn':'json'}), # quick search
     (r'^filter/(?P<filter>\w+)/$', login_check(list), {'no_paging': True, 'retrn':'json'}), # quick search
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/order/$', login_check(order)),
-    # # # client
+    # client form
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/home/$', login_check(home), name='client-home'),
-
-    #url(r'^add/$', login_check(client_add), name='client-form-new'), #new object form
     url(r'^add/$', login_check(form), name='client-form-new'), #new object form
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/form/$', login_check(form), name='client-form'), #render form
-
     url(r'^save/$', login_check(save), name='client-form-save'), #save new object
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save), name='client-form-save'), #update client
-
-    # # # company
+    # company form
     url(r'^add/company/$', login_check(form), {'is_company':True}, name='client-company-form'), #new object form
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/form/company/$', login_check(form), {'is_company':True}, name='client-company-form'),  #update company client
     url(r'^save/company/$', login_check(save), {'is_company':True}, name='client-company-save'), #save company client
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/company/$', login_check(save), {'is_company':True}, name='client-company-save'),  #update company client
-
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/company_clients/$', login_check(company_related), name='client-companyclients'), # company related clients
-
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/company_clients/form/$', login_check(company_related_form)), # company related clients form
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/company_clients/(?P<company_client_id>\d+)/form/$',\
             login_check(company_related_form), name='client-companyclients-edit'), # company related clients form

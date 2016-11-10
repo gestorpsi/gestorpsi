@@ -1031,7 +1031,7 @@ def referral_ext_form(request, object_id ='', referral_id=''):
                                                 )
 
     form = ReferralExtForm()
-    return render_to_response('client/client_referral_ext.html', locals(), context_instance=RequestContext(request))
+    return render_to_response('client/client_referral_ext_form.html', locals(), context_instance=RequestContext(request))
 
 @permission_required_with_403('referral.referral_write')
 def referral_ext_save(request, object_id = '', referral_id=''):

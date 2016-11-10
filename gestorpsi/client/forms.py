@@ -41,4 +41,3 @@ class FamilyForm(forms.ModelForm):
         family.client_related = client_related
         family.save()
         return family
-

@@ -78,7 +78,7 @@ GNU General Public License for more details.
                             <input type="text" maxlength="100"  value="{{ object.name }}" name="name" class="extrabig tabtitle" />
                     </label>
 
-                    <label>{% trans "Short Name" %}<br /><input class="short_search medium tabtitle" maxlength="100" type="text" value="{{ object.short_name }}" name="short_name" /></label>
+                    <label>{% trans "Short Name" %}<br /><input class="short_search medium tabtitle" maxlength="10" type="text" value="{{ object.short_name }}" name="short_name" /></label>
 
                     <label><div name="msg_error" class="error check_available organization" style="display: none;">&nbsp; &nbsp; {% trans "Not available" %}</div></label>
 

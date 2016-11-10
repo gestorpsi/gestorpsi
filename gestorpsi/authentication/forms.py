@@ -44,7 +44,7 @@ class AuthenticationRegistrationForm(RegistrationRegistrationForm):
     password1 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=_('Password'), help_text=_('Choice one password'))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=_('Password (again)'), help_text=_('Type password again'))
     organization = forms.CharField(label=_('Organization'), help_text=_('Name of your organization'))
-    shortname = forms.CharField(label=_('Short Name'), help_text=_('Shortname of your organization'))
+    shortname = forms.CharField(label=_('Short Name'), help_text=_('Shortname of your organization'), widget=forms.TextInput(attrs={"maxlength":"10"}) )
 
     def save(self, send_email=True):
         user = RegistrationProfile.objects.create_inactive_user(username=self.cleaned_data['username'],

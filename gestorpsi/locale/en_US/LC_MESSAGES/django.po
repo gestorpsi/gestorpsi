@@ -745,7 +745,7 @@ msgstr ""
 #: templates/careprofessional/student_form.html:115
 #: templates/client/client_form_company.html:71
 #: templates/client/client_form_company.html:72
-#: templates/client/client_referral_ext.html:72
+#: templates/client/client_referral_ext_form.html:72
 #: templates/client/client_referral_form.html:157
 #: templates/client/client_referral_plus_form.html:122
 #: templates/device/device_form.html:87
@@ -3290,7 +3290,7 @@ msgstr ""
 
 #: templates/admission/admission_form.html:35
 #: templates/client/client_referral_discharge_form.html:35
-#: templates/client/client_referral_ext.html:35
+#: templates/client/client_referral_ext_form.html:35
 #: templates/client/client_referral_form.html:35
 #: templates/client/client_referral_plus_form.html:35
 #: templates/client/client_referral_queue.html:35
@@ -3339,8 +3339,8 @@ msgstr ""
 #: templates/admission/admission_form.html:82
 #: templates/admission/admission_form.html:101
 #: templates/admission/admission_form.html:122
-#: templates/client/client_referral_ext.html:54
-#: templates/client/client_referral_ext.html:63
+#: templates/client/client_referral_ext_form.html:54
+#: templates/client/client_referral_ext_form.html:63
 #: templates/client/client_referral_form.html:64
 #: templates/client/client_referral_form.html:82
 #: templates/contact/contact_professional_form.html:65
@@ -3349,7 +3349,7 @@ msgid "add a new one"
 msgstr ""
 
 #: templates/admission/admission_form.html:84
-#: templates/client/client_referral_ext.html:54
+#: templates/client/client_referral_ext_form.html:54
 #: templates/client/client_referral_form.html:64
 #: templates/client/client_referral_form.html:66
 msgid "Select Organization"
@@ -3374,7 +3374,7 @@ msgid "Select Professional, or"
 msgstr ""
 
 #: templates/admission/admission_form.html:103
-#: templates/client/client_referral_ext.html:63
+#: templates/client/client_referral_ext_form.html:63
 #: templates/client/client_referral_form.html:82
 #: templates/client/client_referral_form.html:84
 msgid "Select Professional"
@@ -4618,7 +4618,7 @@ msgstr ""
 
 #: templates/client/client_referral_discharge_form.html:33
 #: templates/client/client_referral_discharge_form.html:47
-#: templates/client/client_referral_ext.html:33
+#: templates/client/client_referral_ext_form.html:33
 #: templates/client/client_referral_form.html:33
 #: templates/client/client_referral_plus_form.html:33
 #: templates/client/client_referral_plus_form.html:47
@@ -4630,7 +4630,7 @@ msgid "Referral Details"
 msgstr ""
 
 #: templates/client/client_referral_discharge_form.html:36
-#: templates/client/client_referral_ext.html:36
+#: templates/client/client_referral_ext_form.html:36
 #: templates/client/client_referral_form.html:36
 #: templates/client/client_referral_plus_form.html:36
 #: templates/client/client_referral_queue.html:36
@@ -4641,17 +4641,17 @@ msgstr ""
 msgid "Discharge Form Details"
 msgstr ""
 
-#: templates/client/client_referral_ext.html:49
+#: templates/client/client_referral_ext_form.html:49
 #: templates/referral/referral_details.html:141
 #: templates/tags/client_sidebar.html:130
 msgid "External Referral"
 msgstr ""
 
-#: templates/client/client_referral_ext.html:52
+#: templates/client/client_referral_ext_form.html:52
 msgid "External Referral Details"
 msgstr ""
 
-#: templates/client/client_referral_ext.html:65
+#: templates/client/client_referral_ext_form.html:65
 msgid "Choose a organization first"
 msgstr ""
 

@@ -16,17 +16,15 @@
 
 from django import forms
 from django.utils.translation import ugettext as _
-from threadlocals.threadlocals import get_current_request
 
 from gestorpsi.referral.models import Referral, ReferralPriority, ReferralImpact, ReferralDischarge, Queue, ReferralExternal
 from gestorpsi.careprofessional.models import CareProfessional
-from gestorpsi.client.models import Client 
 from gestorpsi.service.models import Service, ServiceGroup
 from gestorpsi.covenant.models import Covenant
 
 '''
     Tiago de Souza Moraes / tiago@futuria.com.br
-    update 06 10 2016
+    update 10 11 2016
 '''
 class ReferralForm(forms.ModelForm):
 
@@ -63,6 +61,7 @@ class ReferralForm(forms.ModelForm):
             required=False
             )
 
+
     class Meta:
         fields = ('service','professional', 'annotation', 'referral_reason', 'available_time', 'priority', 'impact', 'covenant')
         model = Referral
@@ -79,17 +78,17 @@ class ReferralForm(forms.ModelForm):
             wdgt = forms.Select(attrs={'class':'extrabig asm','required':'required' })
 
         self.fields['service'] = forms.ModelChoiceField(
-                    queryset=Service.objects.filter(active=True, organization=request.user.get_profile().org_active),
-                    widget=wdgt,
-                    required=True
-                )
+                                    queryset=Service.objects.filter(active=True, organization=request.user.get_profile().org_active),
+                                    widget=wdgt,
+                                    required=True
+                                )
 
         """
             filter content of select based in service
-            mount form or save
+            render form or save
         """
         # professional
-        # mount form / show professional of service
+        # render form / show professional of service
         if self.instance.id and self.instance.service and not request.POST:
             self.fields['professional'].queryset = CareProfessional.objects.filter(prof_services=self.instance.service, person__organization=request.user.get_profile().org_active)
         # new / update, allow all professional of org
@@ -108,17 +107,14 @@ class ReferralForm(forms.ModelForm):
 
 
         # covenant of service
+        # render form
         if self.instance.id and self.instance.service and not request.POST:
-            self.fields['covenant'] = forms.ModelMultipleChoiceField(
-                                        queryset=Covenant.objects.filter( organization=request.user.get_profile().org_active, active=True, service=self.instance.service),
-                                        widget = forms.Select(attrs={'class':'check_change'}),
-                                        required=False,
-                                    )
+            self.fields['covenant'].queryset = Covenant.objects.filter( organization=request.user.get_profile().org_active, active=True, service=self.instance.service)
+            self.fields['covenant'].required = False
+        # save new or alter data
         else:
-            self.fields['covenant'] = forms.ModelMultipleChoiceField(
-                                        queryset=Covenant.objects.filter( organization=request.user.get_profile().org_active, active=True ),
-                                        required=False,
-                                    )
+            self.fields['covenant'].queryset = Covenant.objects.filter( organization=request.user.get_profile().org_active, active=True )
+            self.fields['covenant'].required = False
 
 
 class ReferralDischargeForm(forms.ModelForm):

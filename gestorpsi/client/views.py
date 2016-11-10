@@ -19,7 +19,6 @@ from datetime import datetime
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
@@ -30,7 +29,6 @@ from django.core.urlresolvers import reverse
 from gestorpsi.settings import DEBUG, MEDIA_URL, MEDIA_ROOT, PAGE_RESULTS
 
 from gestorpsi.address.models import Country, State, AddressType, City
-from gestorpsi.authentication.models import Profile
 
 from gestorpsi.careprofessional.models import LicenceBoard, CareProfessional
 from gestorpsi.careprofessional.views import Profession
@@ -480,7 +478,7 @@ def referral_int_form(request, object_id=None, referral_id=None):
 @permission_required_with_403('referral.referral_read')
 def referral_form(request, object_id=None, referral_id=None):
     '''
-        New or edit Referral form
+        new, alter and save Referral
         object_id : Client.id
         referral_id : Referral.id
     '''
@@ -505,19 +503,22 @@ def referral_form(request, object_id=None, referral_id=None):
     
     # post
     if request.method == 'POST':
-        form = ReferralForm( request, request.POST, instance=referral )
 
-        if form.is_valid():
-            data = form.save(commit=False)
+        referral_form = ReferralForm( request, request.POST, instance=referral )
+
+        if referral_form.is_valid():
+
+            data = referral_form.save(commit=False)
             data.organization = request.user.get_profile().org_active
             data.status = '01'
 
             if data.service.active:
+
                 data.save()
-                # save professionals
-                form.save_m2m()
                 # add client
                 data.client.add(object)
+                # save m2m relation
+                referral_form.save_m2m()
 
                 ''' Indication  Section '''
                 if request.POST.get('indication'):
@@ -542,7 +543,7 @@ def referral_form(request, object_id=None, referral_id=None):
                 messages.success(request, _(msg))
                 return HttpResponseRedirect(url % (object_id, data.id))
 
-    # not post, mount form for new or update register
+    # not post, render form for new or update register.
     else:
         if referral.id:
             referral_form = ReferralForm(request, instance=referral)

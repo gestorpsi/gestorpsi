@@ -1,16 +1,16 @@
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -71,9 +71,10 @@ GNU General Public License for more details.
                 {% endfor %}
             {% endif %}
 
-            <br />
-            <br />
-            <small><i><b>{% trans "Covenant" %}:</b> {% for c in referral.covenant.all %} {{ c }} <br />  {% endfor %}</i></small>
+            {% if referral.covenant.all.0 %}
+                <br />
+                <small><i><b>{% trans "Covenant" %}:</b> {% for c in referral.covenant.all %} {{ c }} <br />  {% endfor %}</i></small>
+            {% endif %}
             
             <br>
             {% for g in referral.service.servicegroup_set.all %}{% for cl in g.client.all %}{% ifequal cl object %} {% trans "Group" %}: <a href="/service/{{ referral.service.id}}/group/{{ g.id }}/form/">{{ g }}</a><br />{% endifequal %}{% endfor %}{% endfor %}

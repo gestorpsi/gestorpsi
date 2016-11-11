@@ -267,7 +267,7 @@ function setGrid() {
 $(function() {
 
     // if start time is changed, increment 'increment_end_time' value to end time
-    $('div.schedule select[name=start_time_delta] option, div.schedule select[name=start_time1] option').click(function() {
+    $('select[name=start_time_delta], div.schedule select[name=start_time1]').live('click', function() {
         setGrid();
     });
 

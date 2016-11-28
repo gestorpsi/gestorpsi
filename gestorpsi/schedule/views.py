@@ -89,6 +89,47 @@ def schedule_occurrence_listing_today(request, template='schedule/schedule_event
     return schedule_occurrence_listing(request, datetime.now().strftime('%Y'), datetime.now().strftime('%m'), datetime.now().strftime('%d'))
 
 
+def schedule_notify_email(object=False):
+    '''
+        Sendmail to client after save event at schedule
+        object = Occurrence()
+    '''
+    from django.template.loader import get_template
+    from django.core.mail import EmailMessage
+    from django.template import Context
+
+    if object:
+        to = []
+
+        # emails address of client
+        for c in object.event.referral.client.all():
+            for e in c.person.emails.all():
+                if not e.email in to:
+                    to.append(e.email)
+
+        # emaisl address of professional
+        for c in object.event.referral.professional.all():
+            for e in c.person.emails.all():
+                if not e.email in to:
+                    to.append(e.email)
+
+        if to:
+            text = Context({'client': object.event.referral.client.all()[0], 'professional': object.event.referral.professional.all()[0]})
+            template = get_template("client/client_schedule_email.html").render(text)
+
+            msg = EmailMessage()
+            msg.subject = u"GestorPsi - Consulta marcada"
+            msg.content_subtype = 'html'
+            msg.encoding = "utf-8"
+            msg.body = template
+            msg.to = to
+            msg.send()
+
+            return True
+
+    return False
+
+
 @permission_required_with_403('schedule.schedule_write')
 def add_event(
         request, 
@@ -465,6 +506,7 @@ def occurrence_confirmation_form(
     '''
 
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
+    schedule_notify_email(occurrence)
     receive_list = []
     
     if not occurrence.scheduleoccurrence.was_confirmed():

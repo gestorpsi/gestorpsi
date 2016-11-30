@@ -108,6 +108,9 @@ def person_save(request, person):
     site_save(person, request.POST.getlist('site_id'), request.POST.getlist('site_description'), request.POST.getlist('site_site'))
     im_save(person, request.POST.getlist('im_id'), request.POST.getlist('im_identity'), request.POST.getlist('im_network'))
 
+    print '---------------- 0 '
+    print request.POST.getlist("notify_notify")
+
     return person
 
 def person_type_url(person):

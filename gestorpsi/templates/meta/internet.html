@@ -1,16 +1,16 @@
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -20,7 +20,6 @@ GNU General Public License for more details.
 <!--
 WebSites
 -->
-        
 <fieldset>
         <legend>{% trans "Websites" %}</legend>
                 {% if not websites %}
@@ -37,7 +36,6 @@ WebSites
 <!--
 emails addresses
 -->
-        
 <fieldset>
         <legend>{% trans "Emails" %}</legend>
                 {% if not emails %}
@@ -50,13 +48,24 @@ emails addresses
         <a class="add_to_form"><span>{% trans "Add Email" %}</span></a>
 </fieldset>
 
-
-
+<!--
+emails addresses to receive notify
+-->
+<fieldset>
+        <legend>{% trans "Enviar notifica&ccedil;&atilde;o" %}</legend>
+                {% if not emails %}
+                    {% include "tags/email.html" %}
+                {% else %}
+                    {% for email in emails %}
+                        <label>{{ email.email }} <input type="checkbox" class="big" name="notify_notify" {% if email.notify %} checked {% endif %} value="{{ email.email }}" /></label>
+                    {% endfor %}
+                {% endif %}
+        <a class="add_to_form"><span>{% trans "Add Email" %}</span></a>
+</fieldset>
 
 <!--
 Instant Messengers
 -->
-        
 <fieldset>
         <legend>{% trans "Instant Messengers" %}</legend>
                 {% if not ims %}

@@ -31,6 +31,7 @@ class Email(models.Model):
     id = UuidField(primary_key= True)
     email = models.CharField(max_length=100, blank=True)
     email_type = models.ForeignKey(EmailType)
+    notify = models.BooleanField(default=False)
     
     # Generic Relation
     content_type = models.ForeignKey(ContentType)

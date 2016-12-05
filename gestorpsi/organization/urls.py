@@ -21,7 +21,7 @@ from gestorpsi.authentication.views import login_check
 urlpatterns = patterns('',
     (r'^$', login_check(form)),
     (r'^save/$', login_check(save)),
-    (r'^check/(?P<short>.*)/$', (shortname_is_available)),  #check short name
+    (r'^check/(?P<short>.*)/$', (shortname_is_available)),  # check short name
     (r'^second_copy/(?P<invoice>.*)/$', (make_second_copy)),
 
     url(r'^signature/$', login_check(signature_save), name='organization-signature'),

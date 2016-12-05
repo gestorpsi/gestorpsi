@@ -2,17 +2,17 @@
 
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+  Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -32,7 +32,6 @@ GNU General Public License for more details.
 		</ul>
 {% endblock %}
 
-
 {% block extrahead %}
     <script language="JavaScript" type="text/javascript">
         $(document).ready(function(){
@@ -47,240 +46,228 @@ GNU General Public License for more details.
 
 {% block core %}
 
-    <h2 id="title_addressbook" style="display:none"></h2>
-    <h2 class="title_organization title">{{ object }}</h2>
-    <p class="description"> {% trans "Organization Configuration" %}<br /></p>
+  <h2 id="title_addressbook" style="display:none"></h2>
+  <h2 class="title_organization title">{{ object }}</h2>
+  <p class="description"> {% trans "Organization Configuration" %}<br /></p>
 
-    <form action="/organization/save/" method="post" class="form_people">	
-        <div class="main_area">
-
-            <div class="photo">
-                    <img class="img_people" organization="{{ user.get_profile.org_active.id }}" src="{% if object.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
-                    {% if perms.organization.organization_write %}
-                        <a class="clips notajax">{% trans "Logo" %}</a>
-                        <input type="hidden" name="photo" value="{{ object.photo }}" class="photo" />
-                        <a class="notajax delete" title="delete" onclick="$(this).siblings('input.photo').val(''); $(this).siblings('img.img_people').attr('src', '/media/img/generic_photo.gif');"><span>{% trans "Delete" %}</span></a>
-                    {% endif %}
-            </div> 
-
-
-            <fieldset class="identity organization first comment fieldset_personal_identification">
-                    <legend>{% trans "Corporate Identity" %}</legend>
-
-                    <label>{% trans "Trade Name" %}<br />
-                            <input type="text" maxlength="100" value="{{ object.trade_name }}" name="trade_name" class="extrabig" />
-                    </label>
-
-                    <label>{% trans "Company" %}<br />
-                            <input type="text" maxlength="100"  value="{{ object.name }}" name="name" class="extrabig tabtitle" />
-                    </label>
-
-                    <label>{% trans "Short Name" %}<br /><input class="short_search medium tabtitle" maxlength="100" type="text" value="{{ object.short_name }}" name="short_name" /></label>
-
-                    <label><div name="msg_error" class="error check_available organization" style="display: none;">&nbsp; &nbsp; {% trans "Not available" %}</div></label>
-                
-                    <label> {{ html }}</label>
-            </fieldset>
-    
-
-
-            <fieldset class="identity organization first comment">
-                <legend>{% trans "Additional Identities" %}</legend>
-                <label>{% trans "Register Number" %}<br />
-                            <input type="text" maxlength="100" value="{{ object.register_number }}" name="register_number" class="medium" />
-                    </label>
-                <label>{% trans "CNES Code" %}<br />
-                            <input type="text" maxlength="100" value="{{ object.cnes }}" name="cnes" class="medium" />
-                    </label>
-                <label>{% trans "State Inscription" %}<br />
-                            <input type="text" maxlength="30" value="{{ object.state_inscription }}" name="state_inscription" class="medium" />
-                    </label>
-                <label>{% trans "City Inscription" %}<br />
-                            <input type="text" maxlength="30" value="{{ object.city_inscription }}" name="city_inscription" class="medium" />
-                    </label>
-            </fieldset>
-
-
-
-            <fieldset class="identity professional organization first">
-                <legend>{% trans "Professional Responsible" %}</legend>
-                {% if not professional_responsible %}
-                    {% include "tags/professional.html" %}
-                {% else %}
-                    {% for professional in professional_responsible %}
-                        {% include "tags/professional.html" %}
-                    {% endfor %}
-                {% endif %}
-                <a class="add_to_form"><span>{% trans "Add Professional" %}</span></a>
-            </fieldset>
-
-
-
-            <fieldset class="profile organization comment hidden">
-                    <legend>{% trans "Corporate Profile" %}</legend>
-
-                    <label>{% trans "Person Type" %}<br />
-                            <select name="person_type" class="medium">
-                                <option value="0"></option>   
-                                    {% for o in PersonType %}
-                                        <option value="{{ o.id }}"{% ifequal object.person_type_id o.id %} selected{% endifequal %}>{{ o }}</option>
-                                    {% endfor %}
-                            </select>
-                    </label>
-                
-                    <label>{% trans "Unit Type" %}<br />
-                            <select name="unit_type" class="extrabig">
-                                <option value="0"></option>   
-                                    {% for o in UnitType %}
-                                <option value="{{ o.id }}"{% ifequal object.unit_type_id o.id %} selected{% endifequal %}>{{ o }}</option>
-                                    {% endfor %}
-                            </select>
-                    </label>		
-
-                    <label>{% trans "Administrative Environment" %}<br />
-                            <select name="environment" class="medium">
-                                <option value="0"></option>   
-                                {% for o in AdministrationEnvironment %}
-                                    <option value="{{ o.id }}"{% ifequal object.environment_id o.id %} selected{% endifequal %}>{{ o }}</option>
-                                {% endfor %}
-                            </select>
-                    </label>
-                
-                    <label>{% trans "Management Type" %}<br />
-                            <select name="management" class="medium">
-                                <option value="0"></option>   
-                                {% for o in Management %}
-                                    <option value="{{ o.id }}"{% ifequal object.management_id o.id %} selected{% endifequal %}>{{ o }}</option>
-                                {% endfor %}
-                            </select>
-                    </label>
-
-                    <label>{% trans "Organization Source" %}<br />
-                            <select name="source" class="extrabig">
-                                <option value="0"></option>   
-                            {% for o in Source %}
-                                <option value="{{ o.id }}"{% ifequal object.source_id o.id %} selected{% endifequal %}>{{ o }}</option>
-                            {% endfor %}
-                            </select>
-                    </label>	
-        
-                    <label>{% trans "Dependence" %}<br />
-                        <select name="dependence" class="medium">
-                                <option value="0"></option>   
-                            {% for o in Dependence %}
-                                <option value="{{ o.id }}"{% ifequal object.dependence_id o.id %} selected{% endifequal %}>{{ o }}</option>
-                            {% endfor %}
-                        </select>
-                    </label>
-                    
-                    <label>{% trans "Care Provided Type" %}<br />
-                        <select name="provided_type" multiple="multiple" class="medium multiple small_fonts">
-                            {% for o in ProvidedType %}
-                                <option value="{{ o.id }}"{% for pc in object.provided_type.values_list %}{% ifequal pc.0 o.id %} selected="selected"{% endifequal %}{% endfor %}>{{ o }}</option>
-                            {% endfor %}
-                        </select>
-                    </label>
-                        
-                    <label>{% trans "Education and Research Activity" %}<br />
-                        <select name="activity" class="big">
-                            <option value="0"></option>   
-                            {% for o in Activitie %}
-                                <option value="{{ o.id }}"{% ifequal object.activity_id o.id %} selected{% endifequal %}>{{ o }}</option>
-                            {% endfor %}
-                        </select>
-                    </label>	
-            </fieldset>
-
-            <fieldset class="address organization set_multirow hidden">
-                <legend>{% trans "Addresses" %}</legend>
-                {% if not addresses %}
-                    {% include "tags/address.html" %}
-                {% else %}
-                    {% for address in addresses %}
-                        {% include "tags/address.html" %}
-                    {% endfor %}
-                {% endif %}	
-                <a class="add_to_form"><span>{% trans "Add Address" %}</span></a>
-            </fieldset>
-
-            <fieldset class="phone organization hidden">
-                <legend>{% trans "Phones" %}</legend>
-                {% if not phones %}
-                    {% include "tags/phone.html" %}
-                {% else %}
-                    {% for phone in phones %}
-                        {% include "tags/phone.html" %}
-                    {% endfor %}
-                {% endif %}
-                <a class="add_to_form"><span>{% trans "Add Phone" %}</span></a>
-            </fieldset>
-
-            <fieldset class="internet organization hidden">
-                <legend>{% trans "Emails" %}</legend>
-                {% if not emails %}
-                    {% include "tags/email.html" %}
-                {% else %}
-                    {% for email in emails %}
-                        {% include "tags/email.html" %}
-                    {% endfor %}
-                {% endif %}
-                <a class="add_to_form"><span>{% trans "Add Email" %}</span></a>
-            </fieldset>
-
-            <fieldset class="internet organization hidden">
-                <legend>{% trans "Websites" %}</legend>
-                {% if not websites %}
-                    {% include "tags/website.html" %}
-                {% else %}
-                    {% for website in websites %}
-                    {% include "tags/website.html" %}
-                    {% endfor %}
-                {% endif %}	
-                <a class="add_to_form"><span>{% trans "Add Website" %}</span></a>
-            </fieldset>
-
-            <fieldset class="internet organization hidden">
-                <legend>{% trans "Instant Messengers" %}</legend>
-                {% if not ims %}
-                    {% include "tags/im.html" %}
-                {% else %}
-                    {% for im in ims %}
-                    {% include "tags/im.html" %}
-                    {% endfor %}
-                {% endif %}
-                <a class="add_to_form"><span>{% trans "Add IM" %}</span></a>
-            </fieldset>
-
-            <fieldset id="fieldset_place_status" class="identity organization">
-               <legend>{% trans "Visible for others" %}</legend>
-                <label>
-                        <input type="checkbox" name="visible" {% if object.visible %} checked {% endif %} /> {% trans "Visible?" %}
-                    </label>
-            </fieldset>
-
-            <fieldset id="fieldset_place_status" class="identity organization">
-                <legend>{% trans "Comments" %}</legend>
-                <label>
-                    <textarea name="comment" class="extrabig">{{ object.comment }}</textarea>
-                </label>
-            </fieldset>
-
-
-            <div style='height: 10px;'></div>
-
-        </div><!-- main area -->
-
-        <!-- save buttom -->
+  <form action="/organization/save/" method="post" class="form_people">
+    <div class="main_area">
+      <div class="photo">
+        <img class="img_people" organization="{{ user.get_profile.org_active.id }}" src="{% if object.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />
         {% if perms.organization.organization_write %}
-            <div id="sidebar" class="sidebar">
-                <div class="bg_blue">
-                    {% include "tags/save.html" %}
-                </div>
-            </div>
+          <a class="clips notajax">{% trans "Logo" %}</a>
+          <input type="hidden" name="photo" value="{{ object.photo }}" class="photo" />
+          <a class="notajax delete" title="delete" onclick="$(this).siblings('input.photo').val(''); $(this).siblings('img.img_people').attr('src', '/media/img/generic_photo.gif');"><span>{% trans "Delete" %}</span></a>
         {% endif %}
+      </div>
 
-    </form> <!-- form org save -->
+      <fieldset class="identity organization first comment fieldset_personal_identification">
+        <legend>{% trans "Corporate Identity" %}</legend>
+        <label>{% trans "Trade Name" %}<br />
+          <input type="text" maxlength="100" value="{{ object.trade_name }}" name="trade_name" class="extrabig" />
+        </label>
+        <label>{% trans "Company" %}<br />
+          <input type="text" maxlength="100"  value="{{ object.name }}" name="name" class="extrabig tabtitle" />
+        </label>
+        <label>{% trans "Short Name" %}<br /><input class="short_search medium tabtitle" maxlength="100" type="text" value="{{ object.short_name }}" name="short_name" /></label>
+        <label><div name="msg_error" class="error check_available organization" style="display: none;">&nbsp; &nbsp; {% trans "Not available" %}</div></label>
+        <label> {{ html }}</label>
+      </fieldset>
 
-    {% include "tags/upload.html" %}
+      <fieldset class="identity organization first comment">
+        <legend>{% trans "Additional Identities" %}</legend>
+        <label>{% trans "Register Number" %}<br />
+          <input type="text" maxlength="100" value="{{ object.register_number }}" name="register_number" class="medium" />
+        </label>
+        <label>{% trans "CNES Code" %}<br />
+          <input type="text" maxlength="100" value="{{ object.cnes }}" name="cnes" class="medium" />
+        </label>
+        <label>{% trans "State Inscription" %}<br />
+          <input type="text" maxlength="30" value="{{ object.state_inscription }}" name="state_inscription" class="medium" />
+        </label>
+        <label>{% trans "City Inscription" %}<br />
+          <input type="text" maxlength="30" value="{{ object.city_inscription }}" name="city_inscription" class="medium" />
+        </label>
+      </fieldset>
+
+      <fieldset class="identity professional organization first">
+        <legend>{% trans "Professional Responsible" %}</legend>
+        {% if not professional_responsible %}
+          {% include "tags/professional.html" %}
+        {% else %}
+          {% for professional in professional_responsible %}
+            {% include "tags/professional.html" %}
+          {% endfor %}
+        {% endif %}
+        <a class="add_to_form"><span>{% trans "Add Professional" %}</span></a>
+      </fieldset>
+
+      <fieldset id="fieldset_place_status" class="identity organization">
+        <legend>{% trans "Visible in the GestorPsi Network" %}</legend>
+        <label>
+          <input type="checkbox" name="visible" {% if object.visible %} checked {% endif %} value="{% trans "Leave the register of my establishment and list of registered professionals visible in the contact area of the other establishments of the network of GestorPsi." %}" /> {% trans "Leave the register of my establishment and list of registered professionals visible in the contact area of the other establishments of the network of GestorPsi." %}
+        </label>
+      </fieldset>
+
+      <fieldset id="fieldset_place_status" class="identity organization">
+        <legend>{% trans "Comments" %}</legend>
+        <label>
+          <textarea name="comment" class="extrabig">{{ object.comment }}</textarea>
+        </label>
+      </fieldset>
+
+      <fieldset class="profile organization comment hidden">
+        <legend>{% trans "Corporate Profile" %}</legend>
+
+        <label>{% trans "Person Type" %}<br />
+          <select name="person_type" class="medium">
+            <option value="0"></option>
+            {% for o in PersonType %}
+              <option value="{{ o.id }}"{% ifequal object.person_type_id o.id %} selected{% endifequal %}>{{ o }}</option>
+            {% endfor %}
+          </select>
+        </label>
+
+        <label>{% trans "Unit Type" %}<br />
+          <select name="unit_type" class="extrabig">
+            <option value="0"></option>
+            {% for o in UnitType %}
+              <option value="{{ o.id }}"{% ifequal object.unit_type_id o.id %} selected{% endifequal %}>{{ o }}</option>
+            {% endfor %}
+          </select>
+        </label>
+
+        <label>{% trans "Administrative Environment" %}<br />
+          <select name="environment" class="medium">
+            <option value="0"></option>
+            {% for o in AdministrationEnvironment %}
+              <option value="{{ o.id }}"{% ifequal object.environment_id o.id %} selected{% endifequal %}>{{ o }}</option>
+            {% endfor %}
+          </select>
+        </label>
+
+        <label>{% trans "Management Type" %}<br />
+          <select name="management" class="medium">
+            <option value="0"></option>
+            {% for o in Management %}
+              <option value="{{ o.id }}"{% ifequal object.management_id o.id %} selected{% endifequal %}>{{ o }}</option>
+            {% endfor %}
+          </select>
+        </label>
+
+        <label>{% trans "Organization Source" %}<br />
+          <select name="source" class="extrabig">
+            <option value="0"></option>
+            {% for o in Source %}
+              <option value="{{ o.id }}"{% ifequal object.source_id o.id %} selected{% endifequal %}>{{ o }}</option>
+            {% endfor %}
+          </select>
+        </label>
+
+        <label>{% trans "Dependence" %}<br />
+          <select name="dependence" class="medium">
+            <option value="0"></option>
+            {% for o in Dependence %}
+              <option value="{{ o.id }}"{% ifequal object.dependence_id o.id %} selected{% endifequal %}>{{ o }}</option>
+            {% endfor %}
+          </select>
+        </label>
+
+        <label>{% trans "Care Provided Type" %}<br />
+          <select name="provided_type" multiple="multiple" class="medium multiple small_fonts">
+            {% for o in ProvidedType %}
+              <option value="{{ o.id }}"{% for pc in object.provided_type.values_list %}{% ifequal pc.0 o.id %} selected="selected"{% endifequal %}{% endfor %}>{{ o }}</option>
+            {% endfor %}
+          </select>
+        </label>
+
+        <label>{% trans "Education and Research Activity" %}<br />
+          <select name="activity" class="big">
+            <option value="0"></option>
+            {% for o in Activitie %}
+              <option value="{{ o.id }}"{% ifequal object.activity_id o.id %} selected{% endifequal %}>{{ o }}</option>
+            {% endfor %}
+          </select>
+        </label>
+
+      </fieldset>
+
+      <fieldset class="address organization set_multirow hidden">
+        <legend>{% trans "Addresses" %}</legend>
+        {% if not addresses %}
+          {% include "tags/address.html" %}
+        {% else %}
+          {% for address in addresses %}
+            {% include "tags/address.html" %}
+          {% endfor %}
+        {% endif %}
+        <a class="add_to_form"><span>{% trans "Add Address" %}</span></a>
+      </fieldset>
+
+      <fieldset class="phone organization hidden">
+        <legend>{% trans "Phones" %}</legend>
+        {% if not phones %}
+          {% include "tags/phone.html" %}
+        {% else %}
+          {% for phone in phones %}
+            {% include "tags/phone.html" %}
+          {% endfor %}
+        {% endif %}
+        <a class="add_to_form"><span>{% trans "Add Phone" %}</span></a>
+      </fieldset>
+
+      <fieldset class="internet organization hidden">
+        <legend>{% trans "Emails" %}</legend>
+        {% if not emails %}
+          {% include "tags/email.html" %}
+        {% else %}
+          {% for email in emails %}
+            {% include "tags/email.html" %}
+          {% endfor %}
+        {% endif %}
+        <a class="add_to_form"><span>{% trans "Add Email" %}</span></a>
+      </fieldset>
+
+      <fieldset class="internet organization hidden">
+        <legend>{% trans "Websites" %}</legend>
+        {% if not websites %}
+          {% include "tags/website.html" %}
+        {% else %}
+          {% for website in websites %}
+            {% include "tags/website.html" %}
+          {% endfor %}
+        {% endif %}
+        <a class="add_to_form"><span>{% trans "Add Website" %}</span></a>
+      </fieldset>
+
+      <fieldset class="internet organization hidden">
+        <legend>{% trans "Instant Messengers" %}</legend>
+        {% if not ims %}
+          {% include "tags/im.html" %}
+        {% else %}
+          {% for im in ims %}
+            {% include "tags/im.html" %}
+          {% endfor %}
+        {% endif %}
+        <a class="add_to_form"><span>{% trans "Add IM" %}</span></a>
+      </fieldset>
+
+
+      <div style='height: 10px;'></div>
+
+    </div><!-- main area -->
+
+    <!-- save buttom -->
+    {% if perms.organization.organization_write %}
+      <div id="sidebar" class="sidebar">
+        <div class="bg_blue">
+          {% include "tags/save.html" %}
+        </div>
+      </div>
+    {% endif %}
+
+  </form> <!-- form org save -->
+
+  {% include "tags/upload.html" %}
 
 {% endblock %}

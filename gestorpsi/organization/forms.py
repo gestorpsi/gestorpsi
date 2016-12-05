@@ -22,7 +22,6 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django import forms
 from django.forms.models import *
-#from django.forms import *
 
 from django.db import models
 from django.utils.translation import ugettext as _
@@ -31,12 +30,10 @@ from smart_selects.db_fields import ChainedForeignKey
 
 from gestorpsi import settings
 from gestorpsi.organization.models import *
-#from gestorpsi.boleto.return_file import *
 from gestorpsi.gcm.models.plan import Plan
 
 
 class OrganizationForm(forms.ModelForm):
     class Meta:
         model = Organization
-
 

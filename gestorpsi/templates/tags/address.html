@@ -1,16 +1,16 @@
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+  Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -19,85 +19,85 @@ GNU General Public License for more details.
 <div>
 	<input type="hidden" name="addressId" value="{{ address.id }}" />
 	<label>{% trans "Prefix" %}<br />
-	<input type="text" maxlength="10" class="small" name="addressPrefix" value="{{ address.addressPrefix }}" />
+	  <input type="text" maxlength="10" class="small" name="addressPrefix" value="{{ address.addressPrefix }}" />
 	</label>
 
 	<label>{% trans "Street" %}<br />
-	<input type="text" maxlength="50" class="big" name="addressLine1" value="{{ address.addressLine1 }}" />
+	  <input type="text" maxlength="50" class="big" name="addressLine1" value="{{ address.addressLine1 }}" />
 	</label>
-	
+
 	<label>{% trans "Number" %}<br />
-	<input type="text" maxlength="10" class="small" name="addressNumber" value="{{ address.addressNumber }}" />
+	  <input type="text" maxlength="10" class="small" name="addressNumber" value="{{ address.addressNumber }}" />
 	</label>
-	
+
 	<label>{% trans "Aditional" %}<br />
-	<input type="text" maxlength="50" class="small" name="addressLine2" value="{{ address.addressLine2 }}" />
-	</label>		
-	
-	<label>{% trans "Neighborhood" %}<br />
-	<input type="text" maxlength="30" class="big" name="neighborhood" value="{{ address.neighborhood }}" />
+	  <input type="text" maxlength="50" class="small" name="addressLine2" value="{{ address.addressLine2 }}" />
 	</label>
-	
+
+	<label>{% trans "Neighborhood" %}<br />
+	  <input type="text" maxlength="30" class="big" name="neighborhood" value="{{ address.neighborhood }}" />
+	</label>
+
 	<label>{% trans "ZIP Code" %}<br />
-	<input type="text" maxlength="10" class="medium" name="zipCode" value="{{ address.zipCode }}" />
+	  <input type="text" maxlength="10" class="medium" name="zipCode" value="{{ address.zipCode }}" />
 	</label>
 
 	<label style="float:left;">{% trans "Country" %}<br />
-	<select name="foreignCountry" class="select country">
-	{% for country in countries %}
-		<option value="{{ country.id }}" {% if not address.foreignCountry_id %}{% ifequal country.id 33 %}selected{% endifequal %}{% else %}{% ifequal country.id address.foreignCountry_id %}selected{% endifequal %}{% endif %}>{{ country.name }}</option>
-	{% endfor %}
-	</select>
+	  <select name="foreignCountry" class="select country">
+	    {% for country in countries %}
+		    <option value="{{ country.id }}" {% if not address.foreignCountry_id %}{% ifequal country.id 33 %}selected{% endifequal %}{% else %}{% ifequal country.id address.foreignCountry_id %}selected{% endifequal %}{% endif %}>{{ country.name }}</option>
+  	  {% endfor %}
+	  </select>
 	</label>
-	
+
     <!--auto complete city-->
     <label class="autocomplete state"{% if address.foreignCity %} style="display:none"{% endif %}>
-    {% trans "State/Region" %}<br />
-    <select class="city_search extrasmall" city="{{ address.city.id }}">
+    {% trans "State" %}<br />
+      <select class="city_search extrasmall" city="{{ address.city.id }}">
         <option></option>
         {% for s in States %}
-        {% if address %}
+          {% if address %}
             <option value="{{ s.id }}"{% ifequal address.city.state.id s.id %} selected{% endifequal %}>{{ s.shortName }}</option>
-        {% else %}
+          {% else %}
             <option value="{{ s.id }}"{% ifequal user.get_profile.org_active.address.all.0.city.state.id s.id %}selected{% endifequal %}>{{ s.shortName }}</option>
-        {% endif %}
+          {% endif %}
         {% endfor %}
-    </select>
+      </select>
     </label>
 
     <label class="autocomplete city"{% if address.foreignCity %} style="display:none"{% endif %}>
     {% trans "City" %}<br />
-    <select name="city" class="extramedium">
+      <select name="city" class="extramedium">
         {% if not address.city.id %}
-            {% for c in Cities %}
-                    <option value="{{ c.id }}"{% ifequal user.get_profile.org_active.address.all.0.city.id c.id %} selected{% endifequal %}>{{ c.name }}</option>
-            {% endfor %}
+          {% for c in Cities %}
+            <option value="{{ c.id }}"{% ifequal user.get_profile.org_active.address.all.0.city.id c.id %} selected{% endifequal %}>{{ c.name }}</option>
+          {% endfor %}
         {% endif %}
-    </select>
+      </select>
     </label>
-    
+
 	<!--not autocomplete-->
 	<label class="noautocomplete"{% if not address.foreignCity %} style="display:none"{% endif %}>{% trans "City" %}<br />
 		<input type="text" maxlength="50" name="foreignCity" class="extramedium address_foreignCity" value="{{ address.foreignCity }}"  />
 	</label>
-	
+
 	<label class="noautocomplete"{% if not address.foreignCity %} style="display:none"{% endif %}>{% trans "State" %}<br />
 		<input type="text" maxlength="20" name="foreignState" id="id_state" class="extrasmall address_foreignState" value="{{ address.foreignState }}" />
 	</label>
 
 	<label>{% trans "Type" %}<br />
-	{% if not AddressTypes %}
-		{% trans "There is no types available to choice" %}
-	{% else %}
-	<select name="addressType" class="normal">
-		{% for AddressType in AddressTypes %}
-			<option value="{{ AddressType.id }}"{% ifequal address.addressType.id AddressType.id %} selected{% endifequal %}>{{ AddressType }}</option>
-		{% endfor %}
-	</select>
-	{% endif %}
+	  {% if not AddressTypes %}
+		  {% trans "There is no types available to choice" %}
+	  {% else %}
+	    <select name="addressType" class="normal">
+		    {% for AddressType in AddressTypes %}
+			    <option value="{{ AddressType.id }}"{% ifequal address.addressType.id AddressType.id %} selected{% endifequal %}>{{ AddressType }}</option>
+		    {% endfor %}
+	    </select>
+	  {% endif %}
 	</label>
-	<label><br /><a class="notajax remove_from_form" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a></label>	
+
+	<label><br /><a class="notajax remove_from_form" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a></label>
 </div>
-	
 
 

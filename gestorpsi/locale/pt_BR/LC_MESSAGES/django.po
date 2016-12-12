@@ -139,7 +139,7 @@ msgstr ""
 #: authentication/forms.py:48 templates/organization/organization_form.html:78
 #: templates/registration/login.html:27
 msgid "Short Name"
-msgstr ""
+msgstr "Sigla do estabelecimento"
 
 #: authentication/forms.py:48
 msgid "Shortname of your organization"
@@ -187,7 +187,7 @@ msgstr ""
 
 #: authentication/forms.py:122 templates/tags/address.html:41
 msgid "ZIP Code"
-msgstr ""
+msgstr "CEP"
 
 #: authentication/forms.py:122
 msgid "Enter your ZIP Code here"
@@ -195,8 +195,11 @@ msgstr ""
 
 #: authentication/forms.py:123 templates/meta/people_profile.html:83
 #: templates/tags/address.html:55
-msgid "State/Region"
-msgstr ""
+#: boleto/admin.py:131 boleto/models.py:69
+#: templates/meta/people_profile.html:106 templates/tags/address.html:84
+#: templates/tags/document.html:52
+msgid "State"
+msgstr "Estado"
 
 #: authentication/forms.py:123 authentication/forms.py:124
 msgid "Enter your state/region here"
@@ -207,7 +210,7 @@ msgstr ""
 #: templates/meta/people_profile.html:102 templates/tags/address.html:69
 #: templates/tags/address.html.py:80
 msgid "City"
-msgstr ""
+msgstr "Cidade"
 
 #: authentication/views.py:81
 msgid ""
@@ -261,12 +264,6 @@ msgstr ""
 msgid "Guarantor's CNPJ"
 msgstr ""
 
-#: boleto/admin.py:131 boleto/models.py:69
-#: templates/meta/people_profile.html:106 templates/tags/address.html:84
-#: templates/tags/document.html:52
-msgid "State"
-msgstr ""
-
 #: boleto/admin.py:132 boleto/models.py:70
 msgid "State where the the guarantor lives."
 msgstr ""
@@ -293,7 +290,7 @@ msgstr ""
 
 #: boleto/admin.py:139 boleto/models.py:82 templates/tags/address.html:25
 msgid "Street"
-msgstr ""
+msgstr "Logradouro"
 
 #: boleto/admin.py:140 boleto/models.py:83
 msgid "Street where the guarantor lives."
@@ -302,7 +299,7 @@ msgstr ""
 #: boleto/admin.py:141 boleto/models.py:85 templates/tags/address.html:29
 #: templates/tags/phone.html:26
 msgid "Number"
-msgstr ""
+msgstr "Número"
 
 #: boleto/admin.py:142 boleto/models.py:86
 msgid "Number of the house where the guarantor lives."
@@ -819,7 +816,7 @@ msgstr ""
 #: templates/place/place_room_form.html:104
 #: templates/service/service_form.html:170
 msgid "Comments"
-msgstr ""
+msgstr "Comentários"
 
 #: client/models.py:391
 msgid "years"
@@ -1130,7 +1127,7 @@ msgstr ""
 #: templates/tags/payment_condition.html:29 templates/tags/phone.html:34
 #: templates/tags/room.html:31
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: device/models.py:111 templates/device/device_form.html:75
 msgid "Model"
@@ -1192,7 +1189,7 @@ msgstr ""
 #: ehr/forms.py:33 templates/client/client_print.html:349
 #: templates/tags/room.html:22 templates/tags/website.html:24
 msgid "Description"
-msgstr ""
+msgstr "Descrição"
 
 #: ehr/forms.py:34 ehr/forms.py:52 templates/client/client_print.html:320
 #: templates/client/client_print.html:347
@@ -1831,7 +1828,7 @@ msgstr ""
 
 #: person/models.py:81 templates/organization/organization_form.html:74
 msgid "Company"
-msgstr ""
+msgstr "Empresa"
 
 #: person/models.py:256
 msgid "Company Size"
@@ -2282,7 +2279,7 @@ msgstr ""
 
 #: report/models.py:852
 msgid "Professional Subscriptions"
-msgstr ""
+msgstr "Registros Profissionais"
 
 #: report/models.py:874
 msgid "Referral Total"
@@ -3258,20 +3255,20 @@ msgstr ""
 #: templates/profile/profile_careprofessional.html:58
 #: templates/service/service_form.html:124 templates/tags/professional.html:26
 msgid "Profession"
-msgstr ""
+msgstr "Profissão"
 
 #: templates/careprofessional/careprofessional_form.html:82
 #: templates/contact/contact_professional_form.html:90
 #: templates/tags/professional.html:35
 msgid "Symbol"
-msgstr ""
+msgstr "Conselho Profissional"
 
 #: templates/careprofessional/careprofessional_form.html:86
 #: templates/contact/contact_professional_form.html:94
 #: templates/profile/profile_careprofessional.html:69
 #: templates/tags/professional.html:39
 msgid "Professional Subscription"
-msgstr ""
+msgstr "Registro profissional"
 
 #: templates/careprofessional/careprofessional_form.html:92
 #: templates/profile/profile_add_availability.html:26
@@ -3377,13 +3374,13 @@ msgstr ""
 #: templates/tags/place_mini.html:34 templates/tags/upload.html:25
 #: templates/users/users_form.html:245 templates/users/users_form.html:266
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: templates/careprofessional/careprofessional_form_dialog.html:48
 #: templates/schedule/schedule_week.html:69
 #: templates/support/ticket_sent.html:27
 msgid "Continue"
-msgstr ""
+msgstr "Continuar"
 
 #: templates/careprofessional/careprofessional_list.html:31
 #: templates/careprofessional/student_list.html:31
@@ -3710,7 +3707,7 @@ msgstr ""
 #: templates/report/report_save_form.html:28 templates/tags/save.html:18
 #: templates/users/users_form.html:202
 msgid "Save"
-msgstr ""
+msgstr "Salvar"
 
 #: templates/client/client_form.html:41
 #: templates/client/client_form_company.html:41
@@ -4312,7 +4309,7 @@ msgstr ""
 #: templates/client/client_print_form.html:109 templates/tags/save.html:19
 #: templates/users/users_form.html:203
 msgid "Back"
-msgstr ""
+msgstr "Voltar"
 
 #: templates/client/client_print_record_data_tag.html:10
 #: templates/meta/people_profile.html:30
@@ -4353,15 +4350,15 @@ msgstr ""
 #: templates/client/client_print_record_data_tag.html:40
 #: templates/organization/organization_form.html:29
 msgid "Address"
-msgstr ""
+msgstr "Endereço"
 
 #: templates/client/client_print_record_data_tag.html:59
 msgid "Website"
-msgstr ""
+msgstr "Páginas da internet"
 
 #: templates/client/client_print_record_data_tag.html:68
 msgid "Instant Messenger"
-msgstr ""
+msgstr "Mensag"
 
 #: templates/client/client_referral_discharge_form.html:33
 #: templates/client/client_referral_discharge_form.html:47
@@ -4657,18 +4654,16 @@ msgstr ""
 
 #: templates/core/main.html:24
 #: templates/registration/select_organization.html:22
-msgid "Sistema de Gestão de Serviços em Psicologia"
-msgstr ""
+msgid "Psychology Services Management System"
+msgstr "Sistema de Gestão de Serviços em Psicologia"
 
 #: templates/core/main.html:106
-msgid ""
-"Organization running is READ ONLY MODE. Data can not be writed. For "
-"questions about please use the"
-msgstr ""
+msgid "Organization running is READ ONLY MODE. Data can not be writed. For questions about please use the"
+msgstr "Organização em execução somente no modo de leitura. Os dados não podem ser escritos. Para a perguntas, por favor use o"
 
 #: templates/core/main.html:106
 msgid "support form"
-msgstr ""
+msgstr "Formulário de suporte"
 
 #: templates/core/main.html:130
 msgid "My record"
@@ -4700,11 +4695,11 @@ msgstr "Iníciar"
 
 #: templates/core/main.html:171
 msgid "My Referrals"
-msgstr ""
+msgstr "Minhas referências"
 
 #: templates/core/main.html:172
 msgid "My profile"
-msgstr ""
+msgstr "Meu perfil"
 
 #: templates/core/main.html:176
 msgid "calendar"
@@ -4724,7 +4719,19 @@ msgstr "Relatórios"
 
 #: templates/core/main.html:180
 msgid "Configurations"
-msgstr ""
+msgstr "Configurações"
+
+#: templates/core/main.html:208
+msgid "GestorPsi © Electronic Records and Service Management in Psychology. Since 2009."
+msgstr "GestorPsi © Prontuários Eletrônicos e Gestão de Serviços em Psicologia. Desde 2009."
+
+#: templates/core/main.html:107
+msgid "Check the payment of your"
+msgstr "Verifique o pagamento da sua"
+
+#:templates/core/main.html:107
+msgid "signature"
+msgstr "assinatura"
 
 #: templates/core/main.html:182
 #: templates/organization/organization_form.html:23
@@ -5253,7 +5260,7 @@ msgstr ""
 
 #: templates/messages/outbox.html:34
 msgid "delete"
-msgstr ""
+msgstr "deletar"
 
 #: templates/messages/trash.html:21
 msgid "Deleted Messages"
@@ -5282,17 +5289,17 @@ msgstr ""
 #: templates/tags/people_parent.html:42 templates/tags/phone.html:46
 #: templates/tags/professional.html:48 templates/tags/website.html:27
 msgid "Delete"
-msgstr ""
+msgstr "Deletar"
 
 #: templates/meta/addressbook.html:24
 #: templates/organization/organization_form.html:195
 msgid "Addresses"
-msgstr ""
+msgstr "Endereços"
 
 #: templates/meta/addressbook.html:32
 #: templates/organization/organization_form.html:203
 msgid "Add Address"
-msgstr ""
+msgstr "Adicionar endereço"
 
 #: templates/meta/company_indentification.html:33
 msgid "Company Identification"
@@ -5301,11 +5308,11 @@ msgstr ""
 #: templates/meta/company_indentification.html:34
 #: templates/organization/organization_form.html:70
 msgid "Trade Name"
-msgstr ""
+msgstr "Nome Comercial"
 
 #: templates/meta/company_indentification.html:37
 msgid "Company Name"
-msgstr ""
+msgstr "Nome da empresa"
 
 #: templates/meta/company_profile.html:56
 msgid "Company Profile"
@@ -5323,27 +5330,27 @@ msgstr ""
 #: templates/meta/internet.html:33
 #: templates/organization/organization_form.html:239
 msgid "Add Website"
-msgstr ""
+msgstr "Adicionar página web"
 
 #: templates/meta/internet.html:42
 #: templates/organization/organization_form.html:219
 msgid "Emails"
-msgstr ""
+msgstr "E-mails"
 
 #: templates/meta/internet.html:50
 #: templates/organization/organization_form.html:227
 msgid "Add Email"
-msgstr ""
+msgstr "Adicionar e-mail"
 
 #: templates/meta/internet.html:61
 #: templates/organization/organization_form.html:243 templates/tags/im.html:21
 msgid "Instant Messengers"
-msgstr ""
+msgstr "Mensagem instantânea"
 
 #: templates/meta/internet.html:69
 #: templates/organization/organization_form.html:251
 msgid "Add IM"
-msgstr ""
+msgstr "Adicionar mensagens instantâneas"
 
 #: templates/meta/payment_conditions.html:25
 msgid "Payment Conditions"
@@ -5384,7 +5391,7 @@ msgstr ""
 
 #: templates/meta/people_profile.html:73 templates/tags/address.html:45
 msgid "Country"
-msgstr ""
+msgstr "País"
 
 #: templates/meta/people_profile.html:96
 msgid "Select state first"
@@ -5394,7 +5401,7 @@ msgstr ""
 #: templates/organization/organization_form.html:30
 #: templates/organization/organization_form.html:207
 msgid "Phones"
-msgstr ""
+msgstr "Telefone"
 
 #: templates/meta/phones.html:33
 #: templates/organization/organization_form.html:215
@@ -5403,27 +5410,27 @@ msgstr ""
 
 #: templates/organization/organization_form.html:27
 msgid "Identity"
-msgstr ""
+msgstr "Identificação"
 
 #: templates/organization/organization_form.html:28
 msgid "Profile"
-msgstr ""
+msgstr "Perfil"
 
 #: templates/organization/organization_form.html:31
 msgid "Internet"
-msgstr ""
+msgstr "Internet"
 
 #: templates/organization/organization_form.html:52
 msgid "Organization Configuration"
-msgstr ""
+msgstr "Dados do estabelecimento"
 
 #: templates/organization/organization_form.html:60
 msgid "Logo"
-msgstr ""
+msgstr "Logo"
 
 #: templates/organization/organization_form.html:68
 msgid "Corporate Identity"
-msgstr ""
+msgstr "Identificação institucional"
 
 #: templates/organization/organization_form.html:80
 #: templates/users/users_form.html:80
@@ -5432,68 +5439,80 @@ msgstr ""
 
 #: templates/organization/organization_form.html:88
 msgid "Additional Identities"
-msgstr ""
+msgstr "Informações adicionais"
 
 #: templates/organization/organization_form.html:89
 #: templates/tags/careprofessional_mini.html:40
 msgid "Register Number"
-msgstr ""
+msgstr "CNPJ/CPF"
 
 #: templates/organization/organization_form.html:92
 msgid "CNES Code"
-msgstr ""
+msgstr "Código CNES"
 
 #: templates/organization/organization_form.html:95
 msgid "State Inscription"
-msgstr ""
+msgstr "Inscrição estadual"
 
 #: templates/organization/organization_form.html:98
 msgid "City Inscription"
-msgstr ""
+msgstr "Inscrição municipal"
 
 #: templates/organization/organization_form.html:106
 msgid "Professional Responsible"
-msgstr ""
+msgstr "Profissional Responsável"
 
 #: templates/organization/organization_form.html:114
 msgid "Add Professional"
-msgstr ""
+msgstr "Adicionar profissional"
+
+#: templates/organization/organization_form.html:106
+msgid "Visible in the GestorPsi Network"
+msgstr "Visível na rede GestoPsi"
+
+#: templates/organization/organization_form.html:108
+msgid "Leave the register of my establishment and list of registered professionals visible in the contact area of the other establishments of the network of GestorPsi."
+msgstr "Deixar o registo do meu estabelecimento e lista de profissionais registados visíveis na área de contacto dos outros estabelecimentos da rede de GestorPsi."
 
 #: templates/organization/organization_form.html:120
 msgid "Corporate Profile"
-msgstr ""
+msgstr "Perfil do estabelecimento"
 
 #: templates/organization/organization_form.html:122
 msgid "Person Type"
-msgstr ""
+msgstr "Personalidade"
 
 #: templates/organization/organization_form.html:131
 msgid "Unit Type"
-msgstr ""
+msgstr "Tipo de unidade"
 
 #: templates/organization/organization_form.html:140
 msgid "Administrative Environment"
-msgstr ""
+msgstr "Esfera administrativa"
 
 #: templates/organization/organization_form.html:149
 msgid "Management Type"
-msgstr ""
+msgstr "Gestão"
 
 #: templates/organization/organization_form.html:158
 msgid "Organization Source"
-msgstr ""
+msgstr "Natureza da organização"
 
 #: templates/organization/organization_form.html:167
 msgid "Dependence"
-msgstr ""
+msgstr "Dependência"
 
 #: templates/organization/organization_form.html:176
-msgid "Care Provided Type"
-msgstr ""
+msgid "Care Provided Type available"
+msgstr "Tipos de serviços prestados disponíveis"
+
+#: templates/organization/organization_form.html:176
+msgid "Care Provided Type selected"
+msgstr "Tipos de serviços prestados prestados"
 
 #: templates/organization/organization_form.html:184
 msgid "Education and Research Activity"
-msgstr ""
+msgstr "Atividades de Ensino e Pesquisa"
 
 #: templates/organization/organization_form.html:255
 msgid "Visible for others"
@@ -5636,7 +5655,7 @@ msgstr ""
 #: templates/tags/people_parent.html:28 templates/tags/phone.html:36
 #: templates/tags/room.html:33
 msgid "There is no types available to choice"
-msgstr ""
+msgstr "Não há nenhum tipo disponível para escolha"
 
 #: templates/place/place_room_form.html:87
 msgid "There is no Professionals available for choice"
@@ -6665,15 +6684,15 @@ msgstr ""
 
 #: templates/tags/address.html:21
 msgid "Prefix"
-msgstr ""
+msgstr "Tipo"
 
 #: templates/tags/address.html:33
 msgid "Aditional"
-msgstr ""
+msgstr "Complemento"
 
 #: templates/tags/address.html:37
 msgid "Neighborhood"
-msgstr ""
+msgstr "Bairro"
 
 #: templates/tags/address_book_organization_mini.html:23
 #: templates/tags/organization_mini.html:22
@@ -6692,7 +6711,7 @@ msgstr ""
 
 #: templates/tags/careprofessional_mini.html:26 templates/tags/phone.html:22
 msgid "Area"
-msgstr ""
+msgstr "Área"
 
 #: templates/tags/careprofessional_sidebar.html:29
 #: templates/tags/client_sidebar.html:48
@@ -6785,7 +6804,7 @@ msgstr ""
 
 #: templates/tags/im.html:25
 msgid "IM Type"
-msgstr ""
+msgstr "Tipo de mensagem Instantânea"
 
 #: templates/tags/invoice.html:21
 msgid "Invoice"
@@ -6917,7 +6936,7 @@ msgstr ""
 
 #: templates/tags/phone.html:30
 msgid "Extension"
-msgstr ""
+msgstr "Extensão"
 
 #: templates/tags/place_mini.html:22
 msgid "Adding new Place"
@@ -6925,11 +6944,11 @@ msgstr ""
 
 #: templates/tags/professional.html:22
 msgid "Professional name"
-msgstr ""
+msgstr "Nome do profissional"
 
 #: templates/tags/professional.html:43
 msgid "Professional Organization Subscription"
-msgstr ""
+msgstr "Registro do Estabelecimento"
 
 #: templates/tags/profile_sidebar.html:21
 #: templates/tags/service_sidebar.html:40
@@ -6942,11 +6961,11 @@ msgstr ""
 
 #: templates/tags/save.html:25 templates/users/users_form.html:209
 msgid "This register are not saved yet. Click Save to register it."
-msgstr ""
+msgstr "Este registro não está salvo ainda. Clique em Salvar para registra-lo"
 
 #: templates/tags/save.html:27
 msgid "Last revision"
-msgstr ""
+msgstr "Última revisão"
 
 #: templates/tags/schedule_daily.html:48
 msgid "Free"
@@ -7122,11 +7141,11 @@ msgstr ""
 
 #: templates/tags/upload.html:21
 msgid "Select a picture"
-msgstr ""
+msgstr "Selecione a figura"
 
 #: templates/tags/upload.html:26
 msgid "Allowed Formats: JPG, PNG, GIF"
-msgstr ""
+msgstr "Formatos permitidos: JPG, PNG e GIF"
 
 #: templates/tags/user_sidebar.html:21
 msgid "User Actions"
@@ -7138,7 +7157,7 @@ msgstr ""
 
 #: templates/tags/website.html:21
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: templates/upload/upload_attach.html:33
 msgid "in"
@@ -7305,7 +7324,4 @@ msgstr ""
 msgid "Email updated successfully!"
 msgstr ""
 
-#: templates/core/main.html:208
-msgid "GestorPsi © Electronic Records and Service Management in Psychology. Since 2009."
-msgstr "GestorPsi © Prontuários Eletrônicos e Gestão de Serviços em Psicologia. Desde 2009."
 

@@ -1,16 +1,16 @@
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+  Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -18,33 +18,33 @@ GNU General Public License for more details.
 
 <div>
 	<input type="hidden" name="professionalId" value="{{ professional.id }}" />
-	
-    <label>{% trans "Professional name" %}<br />
-	    <input type="text" maxlength="50" class="extrabig" name="professional_name" value="{{ professional.name }}" />
+
+  <label>{% trans "Professional name" %}<br />
+	  <input type="text" maxlength="50" class="extrabig" name="professional_name" value="{{ professional.name }}" />
 	</label>
 
-    <label>{% trans "Profession" %}<br />
-        <select id="{{forloop.counter0}}" name="service_profession" class="medium asm profession_type">
-                <option symbol="" value="0" selected="selected" >------</option>
-            {% for p in Professions %}
-                <option symbol="{{ p.symbol }}" value="{{ p.id }}"{% ifequal p professional.profession %} selected="selected"{% endifequal %} >{{ p.type }}</option>
-            {% endfor %}            
-        </select>
-    </label>
-    
-    <label>{% trans "Symbol" %}<br />
-            <input id="{{forloop.counter0}}" type="text" name="symbol" class="profession_symbol small" readonly="1" {% ifnotequal professional.profession.symbol "" %} value="{{ professional.profession.symbol }}" {% endifnotequal %}>
-    </label>
+  <label>{% trans "Profession" %}<br />
+    <select id="{{forloop.counter0}}" name="service_profession" class="medium asm profession_type">
+      <option symbol="" value="0" selected="selected" >------</option>
+      {% for p in Professions %}
+        <option symbol="{{ p.symbol }}" value="{{ p.id }}"{% ifequal p professional.profession %} selected="selected"{% endifequal %} >{{ p.type }}</option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <label>{% trans "Symbol" %}<br />
+    <input id="{{forloop.counter0}}" type="text" name="symbol" class="profession_symbol small" readonly="1" {% ifnotequal professional.profession.symbol "" %} value="{{ professional.profession.symbol }}" {% endifnotequal %}>
+  </label>
 
 	<label>{% trans "Professional Subscription" %}<br />
-	    <input type="text" maxlength="50" class="medium" name="professional_subscription" value="{{ professional.subscription }}" />
+	  <input type="text" maxlength="50" class="medium" name="professional_subscription" value="{{ professional.subscription }}" />
 	</label>
 
 	<label>{% trans "Professional Organization Subscription" %}<br />
-	    <input type="text" maxlength="50" class="medium" name="professional_organization_subscription" value="{{ professional.organization_subscription }}" />
+	  <input type="text" maxlength="50" class="medium" name="professional_organization_subscription" value="{{ professional.organization_subscription }}" />
 	</label>
-	
+
 	<label>
-	    <br /><a class="notajax remove_from_form" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a>
+	  <br /><a class="notajax remove_from_form" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a>
 	</label>
 </div>

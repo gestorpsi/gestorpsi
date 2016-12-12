@@ -173,7 +173,7 @@
           </select>
         </label>
 
-        <label>{% trans "Care Provided Type" %}<br />
+        <label>{% trans "Care Provided Type available" %}<br />
           <select name="provided_type" multiple="multiple" class="medium multiple small_fonts">
             {% for o in ProvidedType %}
               <option value="{{ o.id }}"{% for pc in object.provided_type.values_list %}{% ifequal pc.0 o.id %} selected="selected"{% endifequal %}{% endfor %}>{{ o }}</option>

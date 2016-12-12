@@ -3170,7 +3170,7 @@ msgstr ""
 #: templates/service/service_queue.html:64
 #: templates/tags/schedule_form.html:128
 msgid "Professionals"
-msgstr ""
+msgstr "Profissionais"
 
 #: templates/careprofessional/careprofessional_form.html:27
 #: templates/careprofessional/careprofessional_list.html:27
@@ -3332,7 +3332,7 @@ msgstr ""
 #: templates/service/service_list.html:23
 #: templates/service/service_queue.html:23
 msgid "Services"
-msgstr ""
+msgstr "Serviços"
 
 #: templates/careprofessional/careprofessional_form_dialog.html:20
 msgid "This professional have active referrals!"
@@ -3517,7 +3517,7 @@ msgstr ""
 #: templates/careprofessional/student_list.html:23
 #: templates/core/main.html:189
 msgid "Students"
-msgstr ""
+msgstr "Estagiários"
 
 #: templates/careprofessional/student_form.html:44
 msgid "Adding New Student"
@@ -4576,7 +4576,7 @@ msgstr ""
 #: templates/tags/client_sidebar.html:34
 #: templates/tags/occurrence_employee_form.html:19
 msgid "Employees"
-msgstr ""
+msgstr "Funcionários"
 
 #: templates/contact/contact_list.html:77
 #: templates/contact/contact_list_external.html:77
@@ -4672,19 +4672,19 @@ msgstr ""
 
 #: templates/core/main.html:130
 msgid "My record"
-msgstr ""
+msgstr "Meu registro"
 
 #: templates/core/main.html:132
 msgid "Help"
-msgstr ""
+msgstr "Ajuda"
 
 #: templates/core/main.html:134
 msgid "Support"
-msgstr ""
+msgstr "Suporte"
 
 #: templates/core/main.html:136
 msgid "Quit"
-msgstr ""
+msgstr "Sair"
 
 #: templates/core/main.html:145
 msgid "email"
@@ -4692,11 +4692,11 @@ msgstr ""
 
 #: templates/core/main.html:147
 msgid "at"
-msgstr ""
+msgstr "em"
 
 #: templates/core/main.html:170 templates/core/main.html.py:175
 msgid "start"
-msgstr ""
+msgstr "Iníciar"
 
 #: templates/core/main.html:171
 msgid "My Referrals"
@@ -4708,19 +4708,19 @@ msgstr ""
 
 #: templates/core/main.html:176
 msgid "calendar"
-msgstr ""
+msgstr "Agenda"
 
 #: templates/core/main.html:177
 msgid "clients"
-msgstr ""
+msgstr "Clientes"
 
 #: templates/core/main.html:178
 msgid "contacts"
-msgstr ""
+msgstr "Contatos"
 
 #: templates/core/main.html:179
 msgid "Reports"
-msgstr ""
+msgstr "Relatórios"
 
 #: templates/core/main.html:180
 msgid "Configurations"
@@ -4731,35 +4731,31 @@ msgstr ""
 #: templates/organization/organization_signature.html:21
 #: templates/organization/organization_signature_suspension.html:21
 msgid "My Organization"
-msgstr ""
-
-#: templates/core/main.html:183
-msgid "Assinatura"
-msgstr ""
+msgstr "Organização"
 
 #: templates/core/main.html:184 templates/place/place_form.html:23
 #: templates/place/place_list.html:23
 #: templates/schedule/schedule_filter.html:19
 msgid "Places"
-msgstr ""
+msgstr "Locais"
 
 #: templates/core/main.html:185 templates/place/place_room_form.html:23
 #: templates/place/place_room_list.html:23
 #: templates/schedule/schedule_filter.html:56
 msgid "Rooms"
-msgstr ""
+msgstr "Salas"
 
 #: templates/core/main.html:186 templates/device/device_form.html:23
 #: templates/device/device_list.html:23
 #: templates/device/device_type_form.html:23
 #: templates/device/device_type_list.html:23
 msgid "Equipments"
-msgstr ""
+msgstr "Equipamentos"
 
 #: templates/core/main.html:191 templates/users/users_form.html:30
 #: templates/users/users_list.html:23
 msgid "Users"
-msgstr ""
+msgstr "Usuários"
 
 #: templates/core/site_disabled.html:21 templates/registration/login.html:19
 #: templates/registration/login.html:39
@@ -5510,8 +5506,9 @@ msgstr ""
 #: templates/organization/organization_signature.html:25
 #: templates/organization/organization_signature.html:41
 #: templates/organization/organization_signature_suspension.html:25
+#: templates/core/main.html:183
 msgid "Signature"
-msgstr ""
+msgstr "Assinatura"
 
 #: templates/organization/organization_signature.html:26
 #: templates/organization/organization_signature_suspension.html:26
@@ -7307,3 +7304,8 @@ msgstr ""
 #: users/views.py:351
 msgid "Email updated successfully!"
 msgstr ""
+
+#: templates/core/main.html:208
+msgid "GestorPsi © Electronic Records and Service Management in Psychology. Since 2009."
+msgstr "GestorPsi © Prontuários Eletrônicos e Gestão de Serviços em Psicologia. Desde 2009."
+

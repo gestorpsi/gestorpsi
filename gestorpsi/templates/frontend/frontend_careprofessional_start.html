@@ -2,17 +2,17 @@
 
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+  Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -21,160 +21,154 @@ GNU General Public License for more details.
 {% load i18n %}
 
 {% block core %}
-<h2 class="title_fronted">{% trans "Welcome" %} <b>{{ profile.person.name }}</b>  <br /></h2>
+  <h2 class="title_fronted">{% trans "Welcome" %} <b>{{ profile.person.name }}</b>  <br /></h2>
 
-<div class="main_area">
-<h3>{% trans "My services" %}</h3>
-<div class="contact">
-  {% if object.prof_services.all %}
-    <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-        <thead>
+  <div class="main_area">
+    <h3>{% trans "My services" %}</h3>
+    <div class="contact">
+      {% if object.prof_services.all %}
+        <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+          <thead>
             <tr>
                 <th></th>
                 <th></th>
                 <th></th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             {% for service in object.prof_services.all %}
-                <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
-                    <td class="title">
-                        <a class="title" href="/service/form/{{ service.id }}/" title="{{ service.name }}">{{ service.name_html|safe }}</a><br />
-                        <div style="margin-left:26px;">
-                        <i>{{ service.description }}</i>
-                        </div>
-                    </td>
-                    <td><span class="phone"></span><br />
-                    <span class="email"></span></td>
-                    
-                    <td>
-                        {% if service.is_group %}
-                            <a style="padding-bottom: 5px; text-decoration:none" href="/service/{{ service.id }}/group/" class="group" title="{% trans "List groups in this service" %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                            <a style="padding-bottom: 5px; text-decoration:none" href="/service/{{ service.id }}/group/add/" class="group_add" title="{% trans "Add group in this service" %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                        {% endif %}
-                    </td>
-                </tr>
+              <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
+                <td class="title">
+                  <a class="title" href="/service/form/{{ service.id }}/" title="{{ service.name }}">{{ service.name_html|safe }}</a><br />
+                  <div style="margin-left:26px;">
+                    <i>{{ service.description }}</i>
+                  </div>
+                </td>
+                <td><span class="phone"></span><br />
+                  <span class="email"></span>
+                </td>
+                <td>
+                  {% if service.is_group %}
+                    <a style="padding-bottom: 5px; text-decoration:none" href="/service/{{ service.id }}/group/" class="group" title="{% trans "List groups in this service" %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    <a style="padding-bottom: 5px; text-decoration:none" href="/service/{{ service.id }}/group/add/" class="group_add" title="{% trans "Add group in this service" %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                  {% endif %}
+                </td>
+              </tr>
             {% endfor %}
-        </tbody>
-    </table>
-  {% else %}
-      <p>{% trans "You don't have services" %}</p>
-  {% endif %}
-</div>
-</div>
+          </tbody>
+        </table>
+      {% else %}
+        <p>{% trans "You don't have services" %}</p>
+      {% endif %}
+    </div>
+  </div>
 
-
-
-
-<div class="main_area">
-<h3>{% trans "My today's schedule" %}</h3>
-<div class="contact">
-  {% if events %}
-    <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-        <thead>
+  <div class="main_area">
+    <h3>{% trans "My today's schedule" %}</h3>
+    <div class="contact">
+      {% if events %}
+        <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+          <thead>
             <tr>
                 <th></th>
                 <th></th>
                 <th></th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             {% for event in events %}
-                <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
-                    <td class="title">
-                        <a href="/schedule/events/{{ event.id }}/confirmation/" title="{{ event }}">{{ event }}</a><br />
-                        {{ event.event.referral.client.all|join:", " }}<br />
-                    </td>
-                    <td><span class="phone"></span><br />
-                    <span class="email"></span></td>
-                    <td>{{ event.event.referral.service }}<br />{{ event.room }}
-                    </td>
-                </tr>
+              <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
+                <td class="title">
+                  <a href="/schedule/events/{{ event.id }}/confirmation/" title="{{ event }}">{{ event }}</a><br />
+                  {{ event.event.referral.client.all|join:", " }}<br />
+                </td>
+                <td><span class="phone"></span><br />
+                  <span class="email"></span>
+                </td>
+                <td>
+                  {{ event.event.referral.service }}<br />{{ event.room }}
+                </td>
+              </tr>
             {% endfor %}
-        </tbody>
-    </table>
-  {% else %}
-     <p>{% trans "There is no events today" %}</p>
-  {% endif %}
-</div>
-</div>
+          </tbody>
+        </table>
+      {% else %}
+        <p>{% trans "There is no events today" %}</p>
+      {% endif %}
+    </div>
+  </div>
 
-
-
-<div class="main_area">
-<h3>{% trans "My recent referrals" %}</h3>
-<div class="contact">
-  {% if referrals %}
-    <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-        <thead>
+  <div class="main_area">
+    <h3>{% trans "My recent referrals" %}</h3>
+    <div class="contact">
+      {% if referrals %}
+        <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+          <thead>
             <tr>
                 <th></th>
                 <th></th>
                 <th></th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             {% for referral in referrals %}
-                <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
-                    <td class="title">
-                        {{ referral.service_name_html|safe }}
-                        <br />
-                        <div style="margin-left:25px;">
-                        {% for client in referral.client.all %}
-                            <a href="/client/{{ client.id }}/referral/{{ referral.id }}/"><i>{{ client }}</i></a>
-                           {% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                        </div>
-                    </td>
-                    <td><span class="phone">{{ referral.date|date:"d/m/Y" }}</span><br />
-                    <span class="email"></span></td>
-                    <td><br />
-                    
-                    </td>
-                </tr>
+              <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
+                <td class="title">
+                  {{ referral.service_name_html|safe }}
+                  <br />
+                  <div style="margin-left:25px;">
+                    {% for client in referral.client.all %}
+                      <a href="/client/{{ client.id }}/referral/{{ referral.id }}/"><i>{{ client }}</i></a>
+                      {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                  </div>
+                </td>
+                <td><span class="phone">{{ referral.date|date:"d/m/Y" }}</span><br />
+                  <span class="email"></span>
+                </td>
+                <td><br /></td>
+              </tr>
             {% endfor %}
-        </tbody>
-    </table>
-  {% else %}
-     <p>{% trans "There is no referral" %}</p>
-  {% endif %}
-</div>
-</div>
+          </tbody>
+        </table>
+      {% else %}
+        <p>{% trans "There is no referral" %}</p>
+      {% endif %}
+    </div>
+  </div>
 
-
-
-<div class="main_area">
-<h3>{% trans "My clients in queue" %}</h3>
-<div class="contact">
-  {% if queues %}
-    <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-        <thead>
+  <div class="main_area">
+    <h3>{% trans "My clients in queue" %}</h3>
+    <div class="contact">
+      {% if queues %}
+        <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+          <thead>
             <tr>
                 <th></th>
                 <th></th>
                 <th></th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             {% for queue in queues %}
-                <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
-                    <td class="title">
-                        <a href="/client/{{ queue.client.id }}/referral/{{ queue.referral.id }}/" title="{{ queue.client }}">{{ queue.client }}</a><br />
-                        {% trans "Priority" %} {{ queue.get_priority_display }}<br />
-                        {% trans "Date in" %} {{  queue.date_in|date:"d/m/Y H:i" }}
-                    </td>
-                    <td><span class="phone"></span><br />
-                    <span class="email"></span></td>
-                    <td>{{ queue.referral.service }}
-                    </td>
-                </tr>
+              <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
+                <td class="title">
+                  <a href="/client/{{ queue.client.id }}/referral/{{ queue.referral.id }}/" title="{{ queue.client }}">{{ queue.client }}</a><br />
+                  {% trans "Priority" %} {{ queue.get_priority_display }}<br />
+                  {% trans "Date in" %} {{  queue.date_in|date:"d/m/Y H:i" }}
+                </td>
+                <td><span class="phone"></span><br />
+                  <span class="email"></span>
+                </td>
+                <td>{{ queue.referral.service }}</td>
+              </tr>
             {% endfor %}
-        </tbody>
-    </table>
-  {% else %}
-     <p>{% trans "There is no queue" %}</p>
-  {% endif %}
-</div>
-</div>
+          </tbody>
+        </table>
+      {% else %}
+        <p>{% trans "There is no queue" %}</p>
+      {% endif %}
+    </div>
+  </div>
 
 {% endblock %}

@@ -84,57 +84,57 @@ msgstr ""
 #: templates/tags/careprofessional_mini.html:23 templates/tags/invoice.html:58
 #: templates/users/users_form.html:65
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: authentication/forms.py:42
 msgid "Responsible professional name"
-msgstr ""
+msgstr "Nome do profissional responsável"
 
 #: authentication/forms.py:43
 #: templates/client/client_print_record_data_tag.html:50
 #: templates/tags/email.html:21
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: authentication/forms.py:43 templates/registration/registration_form.html:41
 msgid "Your email address"
-msgstr ""
+msgstr "Seu endereço de email"
 
 #: authentication/forms.py:44 templates/registration/login.html:37
 #: templates/users/users_form.html:89 templates/users/users_form.html.py:92
 #: templates/users/users_form.html:235 templates/users/users_form.html:239
 msgid "Password"
-msgstr ""
+msgstr "Senha"
 
 #: authentication/forms.py:44
 msgid "Choice one password"
-msgstr ""
+msgstr "Escolha uma senha"
 
 #: authentication/forms.py:45
 msgid "Password (again)"
-msgstr ""
+msgstr "Senha (confirmação)"
 
 #: authentication/forms.py:45
 msgid "Type password again"
-msgstr ""
+msgstr "Digite sua senha novamente"
 
 #: authentication/forms.py:46 templates/registration/login.html:36
 #: templates/users/users_form.html:77
 msgid "Username"
-msgstr ""
+msgstr "Nome de Usuário"
 
 #: authentication/forms.py:46
 msgid "Choice one unique identifier"
-msgstr ""
+msgstr "Escolha um identificador único"
 
 #: authentication/forms.py:47
 #: templates/contact/contact_organization_form.html:48
 msgid "Organization"
-msgstr ""
+msgstr "Organização"
 
 #: authentication/forms.py:47
 msgid "Name of your organization"
-msgstr ""
+msgstr "Nome da sua organização"
 
 #: authentication/forms.py:48 templates/organization/organization_form.html:78
 #: templates/registration/login.html:27
@@ -143,47 +143,47 @@ msgstr "Sigla do estabelecimento"
 
 #: authentication/forms.py:48
 msgid "Shortname of your organization"
-msgstr ""
+msgstr "Sigla do seu estabelecimento"
 
 #: authentication/forms.py:117
 msgid "Access Plan"
-msgstr ""
+msgstr "Plano de acesso"
 
 #: authentication/forms.py:117
 msgid "Choice one access plan"
-msgstr ""
+msgstr "Escolha um plano de acesso"
 
 #: authentication/forms.py:118
 msgid "Phone Number"
-msgstr ""
+msgstr "Telefone"
 
 #: authentication/forms.py:118
 msgid "Enter your phone number with area code here"
-msgstr ""
+msgstr "Entre com seu telefone e código de área"
 
 #: authentication/forms.py:119
 msgid "CPF Number"
-msgstr ""
+msgstr "CPF"
 
 #: authentication/forms.py:119
 msgid "Enter your CPF number here"
-msgstr ""
+msgstr "Entre com o número de CPF aqui"
 
 #: authentication/forms.py:120
 msgid "Address Street"
-msgstr ""
+msgstr "Endereço"
 
 #: authentication/forms.py:120
 msgid "Enter your address here"
-msgstr ""
+msgstr "Entre com seu endereço aqui"
 
 #: authentication/forms.py:121
 msgid "Address Number"
-msgstr ""
+msgstr "Complemento"
 
 #: authentication/forms.py:121
 msgid "Enter your address number here"
-msgstr ""
+msgstr "Entre com o complemento do endereço"
 
 #: authentication/forms.py:122 templates/tags/address.html:41
 msgid "ZIP Code"
@@ -191,7 +191,7 @@ msgstr "CEP"
 
 #: authentication/forms.py:122
 msgid "Enter your ZIP Code here"
-msgstr ""
+msgstr "Entre com seu CEP"
 
 #: authentication/forms.py:123 templates/meta/people_profile.html:83
 #: templates/tags/address.html:55
@@ -202,8 +202,8 @@ msgid "State"
 msgstr "Estado"
 
 #: authentication/forms.py:123 authentication/forms.py:124
-msgid "Enter your state/region here"
-msgstr ""
+msgid "Enter your state here"
+msgstr "Entre com o seu estado aqui"
 
 #: authentication/forms.py:124 boleto/admin.py:133 boleto/models.py:72
 #: templates/meta/people_profile.html:93
@@ -211,6 +211,10 @@ msgstr ""
 #: templates/tags/address.html.py:80
 msgid "City"
 msgstr "Cidade"
+
+#: authentication/forms.py:123 authentication/forms.py:124
+msgid "Enter your city here"
+msgstr "Entre com a sua cidade aqui"
 
 #: authentication/views.py:81
 msgid ""
@@ -4769,12 +4773,12 @@ msgstr "Usuários"
 #: templates/registration/password_reset_complete.html:15
 #: templates/registration/password_reset_form.html:21
 msgid "Log in"
-msgstr ""
+msgstr "Login"
 
 #: templates/core/site_disabled.html:24 templates/registration/login.html:23
 #: templates/registration/password_reset_form.html:24
 msgid "Welcome to GestorPsi"
-msgstr ""
+msgstr "Bem-Vindo ao GestorPsi"
 
 #: templates/core/site_disabled.html:26
 msgid ""
@@ -5070,11 +5074,11 @@ msgstr ""
 #: templates/frontend/frontend_careprofessional_start.html:24
 #: templates/frontend/frontend_start.html:24
 msgid "Welcome"
-msgstr ""
+msgstr "Bem vindo"
 
 #: templates/frontend/frontend_careprofessional_start.html:27
 msgid "My services"
-msgstr ""
+msgstr "Meus serviços"
 
 #: templates/frontend/frontend_careprofessional_start.html:52
 msgid "List groups in this service"
@@ -5086,27 +5090,27 @@ msgstr ""
 
 #: templates/frontend/frontend_careprofessional_start.html:61
 msgid "You don't have services"
-msgstr ""
+msgstr "Você não tem nenhum serviço"
 
 #: templates/frontend/frontend_careprofessional_start.html:70
 msgid "My today's schedule"
-msgstr ""
+msgstr "Minha agenda"
 
 #: templates/frontend/frontend_careprofessional_start.html:97
 msgid "There is no events today"
-msgstr ""
+msgstr "Não há evento hoje"
 
 #: templates/frontend/frontend_careprofessional_start.html:105
 msgid "My recent referrals"
-msgstr ""
+msgstr "Inscrições recentes"
 
 #: templates/frontend/frontend_careprofessional_start.html:139
 msgid "There is no referral"
-msgstr ""
+msgstr "Não há inscrições recentes"
 
 #: templates/frontend/frontend_careprofessional_start.html:147
 msgid "My clients in queue"
-msgstr ""
+msgstr "Minha fila de espera"
 
 #: templates/frontend/frontend_careprofessional_start.html:164
 #: templates/service/service_queue.html:71
@@ -5115,7 +5119,7 @@ msgstr ""
 
 #: templates/frontend/frontend_careprofessional_start.html:175
 msgid "There is no queue"
-msgstr ""
+msgstr "Não há fila de espera"
 
 #: templates/frontend/frontend_start.html:33
 msgid "Information about you"
@@ -5911,32 +5915,32 @@ msgstr ""
 
 #: templates/registration/login.html:44
 msgid "If you don't have an account, you can"
-msgstr ""
+msgstr "Se você não tiver uma conta, você pode"
 
 #: templates/registration/login.html:44
 msgid "sign up"
-msgstr ""
+msgstr "cadastrar"
 
 #: templates/registration/login.html:44
 msgid "for one"
-msgstr ""
+msgstr "para ter uma"
 
 #: templates/registration/login.html:45
 #: templates/registration/registration_form.html:181
 msgid "Forgot Password?"
-msgstr ""
+msgstr "Esqueceu sua senha?"
 
 #: templates/registration/logout.html:22
 msgid "You've been logged out."
-msgstr ""
+msgstr "Você foi desconectado"
 
 #: templates/registration/logout.html:23
 msgid "Thanks for use GestorPsi!"
-msgstr ""
+msgstr "Obrigado por usar o GestorPsi!"
 
 #: templates/registration/logout.html:25
 msgid "log in again"
-msgstr ""
+msgstr "Logar novamente"
 
 #: templates/registration/password_reset_complete.html:5
 #: templates/registration/password_reset_confirm.html:6
@@ -6017,18 +6021,16 @@ msgid "Thanks for using our system!"
 msgstr ""
 
 #: templates/registration/password_reset_form.html:26
-msgid ""
-"Enter your e-mail address below, and we'll e-mail instructions for setting a "
-"new one."
-msgstr ""
+msgid "Enter your e-mail address below, and we'll e-mail instructions for setting a new one."
+msgstr "Entre com seu email, e nos vamos mandar as instruções para gerar uma nova senha."
 
 #: templates/registration/password_reset_form.html:32
 msgid "E-mail address:"
-msgstr ""
+msgstr "Endereço de email"
 
 #: templates/registration/password_reset_form.html:35
 msgid "Reset password"
-msgstr ""
+msgstr "Resetar a senha"
 
 #: templates/registration/password_reset_subject.txt:2
 #, python-format
@@ -6043,41 +6045,36 @@ msgstr ""
 #: templates/registration/registration_complete.html:8
 #: templates/registration/user_registration_complete.html:6
 msgid "Your account has been registered successfully."
-msgstr ""
+msgstr "Sua conta foi registrada com sucesso."
 
 #: templates/registration/registration_form.html:26
 msgid "New account"
-msgstr ""
+msgstr "Nova conta"
 
 #: templates/registration/registration_form.html:27
-msgid ""
-"Fill out the form to the left (all fields are required), and your account "
-"will be created; you'll be sent an email with instructions on how to finish "
-"your registration"
-msgstr ""
+msgid "Fill out the form to the left (all fields are required), and your account will be created; you'll be sent an email with instructions on how to finish your registration"
+msgstr "Preencha o formulário à esquerda (todos os campos são obrigatórios) e sua conta será criada; Você receberá um e-mail com instruções sobre como finalizar seu registro."
 
 #: templates/registration/registration_form.html:29
 msgid "Form errors! Please correct errors below and try again"
-msgstr ""
+msgstr "Por favor corrija o erro abaixo e tente novamente"
 
 #: templates/registration/registration_form.html:54
 #: templates/registration/registration_form.html:174
 msgid "terms of service"
-msgstr ""
+msgstr "Termos de serviço"
 
 #: templates/registration/registration_form.html:174
-msgid ""
-"By clicking the Signup button below, you agree that you have read and agree "
-"to the"
-msgstr ""
+msgid "By clicking the Signup button below, you agree that you have read and agree to the"
+msgstr "Ao clicar no botão de cadastrar abaixo, você concorda que você leu e aceitou os"
 
 #: templates/registration/registration_form.html:176
 msgid "Accept terms and register"
-msgstr ""
+msgstr "Aceitar os termos e continuar"
 
 #: templates/registration/registration_form.html:180
 msgid "Already have an account?"
-msgstr ""
+msgstr "Já tem uma conta?"
 
 #: templates/registration/user_registration_complete.html:8
 msgid "You can now login by clicking"
@@ -7324,4 +7321,6 @@ msgstr ""
 msgid "Email updated successfully!"
 msgstr ""
 
-
+#: templates/registration/registration_complete.html:9
+msgid "Click here to start using"
+msgstr "Clique aqui para começar a usar"

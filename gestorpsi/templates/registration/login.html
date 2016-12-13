@@ -20,33 +20,27 @@
 
 {% block content %}
 
-<h1>{% trans "Welcome to GestorPsi" %}</h1>
+  <h1>{% trans "Welcome to GestorPsi" %}</h1>
 
+  <form method="post" action="/accounts/authentication/" id="form_login" class="ff_ok">
+    <fieldset class="orgField"><label>{% trans "Short Name" %}<br /><input type="text" name="shortname" /></label></fieldset>
+    <fieldset class="userField">
+      <div class="ie_block">
+        {% if form_messages %}
+          <ul class="errorlist">
+            <li>{{ form_messages }}</li>
+          </ul>
+        {% endif %}
 
-    <form method="post" action="/accounts/authentication/" id="form_login" class="ff_ok">
-        <fieldset class="orgField"><label>{% trans "Short Name" %}<br /><input type="text" name="shortname" /></label></fieldset>
-        <fieldset class="userField">
-            <div class="ie_block">
-                {% if form_messages %}
-                    <ul class="errorlist"><li>
-                    {{ form_messages }}
-                    </li></ul>
-                {% endif %}
+        <label>{% trans "Username" %}<br />{{ form.username }}</label>
+        <label>{% trans "Password" %}<br />{{ form.password }}</label>
+        <input type="hidden" name="next" value="{{ next}}" />
+        <input type="submit" value="{% trans "Log in" %}" class="btn"/>
+      </div>
+    </fieldset>
+  </form>
 
-                <label>{% trans "Username" %}<br />{{ form.username }}</label>
-                <label>{% trans "Password" %}<br />{{ form.password }}</label>
-                <input type="hidden" name="next" value="{{ next}}" />
-                <input type="submit" value="{% trans "Log in" %}" class="btn"/>
-            </div>
-        </fieldset>
-    </form>
+  <p class="ff_ok">{% trans "If you don't have an account, you can" %} <a href="/accounts/register/">{% trans "sign up" %}</a> {% trans "for one" %}.</p>
+  <p class="ff_ok"><a href="/accounts/password/reset/">{% trans "Forgot Password?" %}</a></p>
 
-    <p class="ff_ok">{% trans "If you don't have an account, you can" %} <a href="/accounts/register/">{% trans "sign up" %}</a> {% trans "for one" %}.</p>
-    <p class="ff_ok"><a href="/accounts/password/reset/">{% trans "Forgot Password?" %}</a></p>
-
-{% endblock %}
-{% block footer %}
- <div id="footer" style="position:relative;bottom:50px">
-2009 GestorPsi©
-</div>
 {% endblock %}

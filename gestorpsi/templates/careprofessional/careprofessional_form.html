@@ -2,17 +2,17 @@
 
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+  Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -23,145 +23,134 @@ GNU General Public License for more details.
 {% block vertical_menu %} - {% trans "Professionals" %}{% endblock %}
 
 {% block submenu %}
-    <ul>
-        <li><a class="first" href="/careprofessional/">{% trans "all" %}</a></li>
-        {% if perms.careprofessional.careprofessional_write %}
-            <li><a class="{% if not object.id %}active{% endif %}" href="/careprofessional/add/">{% trans "add" %}</a></li>
-        {% endif %}
-        <li><a href="/careprofessional/deactive/">{% trans "Deactives" %}</a></li>
-        {% if object.id %}<li><a class="active">{{ object.person.name }}</a></li>{% endif %}
-    </ul>
+  <ul>
+    <li><a class="first" href="/careprofessional/">{% trans "all" %}</a></li>
+    {% if perms.careprofessional.careprofessional_write %}
+      <li><a class="{% if not object.id %}active{% endif %}" href="/careprofessional/add/">{% trans "add" %}</a></li>
+    {% endif %}
+    <li><a href="/careprofessional/deactive/">{% trans "Deactives" %}</a></li>
+    {% if object.id %}<li><a class="active">{{ object.person.name }}</a></li>{% endif %}
+  </ul>
 {% endblock %}
 
 
 {% block core %}
 
-<h2 id="title_addressbook" style="display:none"></h2>
+  <h2 id="title_addressbook" style="display:none"></h2>
 
-{% if object.id %}
-	<h2 class="title_professional">{{ object.person.name }}</h2>
-{% else %}
-	<h2 class="title_professional">{% trans "Adding New Profesional" %}</h2>
-	<p class="description">{% trans "Inform the professional details then click on Save button" %}</p>
-{% endif %}
+  {% if object.id %}
+	  <h2 class="title_professional">{{ object.person.name }}</h2>
+  {% else %}
+	  <h2 class="title_professional">{% trans "Adding New Profesional" %}</h2>
+	  <p class="description">{% trans "Inform the professional details then click on Save button" %}</p>
+  {% endif %}
 
+  <h2 id="title_contacts" style="display:none"></h2>
+  <h2 id="title_myoffice" style="display:none"></h2>
 
-</p>
-<h2 id="title_contacts" style="display:none"></h2>
-<h2 id="title_myoffice" style="display:none"></h2>
+  <form action="/careprofessional/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="form_people collapsable form_careprofessional">
+    <div class="main_area">
 
+	    <!-- <a href="" id="help">&nbsp;</a> -->
+	    <!-- DataTypes form menu -->
 
-<form action="/careprofessional/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="form_people collapsable form_careprofessional">	
-<div class="main_area">
+	    {% include "meta/people_indentification.html" %}
 
-	<!-- <a href="" id="help">&nbsp;</a> -->
-	<!-- DataTypes form menu -->
-	
-	
-	{% include "meta/people_indentification.html" %}
-	
-	<!--
-	Professional infos
-	-->
+	    <!-- Professional infos -->
 
-	<fieldset id="fieldset_professional_identification">
-		<legend>{% trans "Professional Identification" %}</legend>
-			<label>{% trans "Profession" %}<br />
-              {% if object.professionalIdentification.profession %}
-                    <input type="text" name="profession_read_only" value="{{  object.professionalIdentification.profession }}" readonly />
-              {% else %}
-                <select name="professional_area" class="medium profession_type" id="0">
-                 <option symbol="" value="0" disabled="disabled">------</option>
-				    {% for l in PROFESSIONAL_AREAS %}
-                        <option symbol="{{ l.symbol }}" value="{{ l.id }}" {% ifequal object.professionalIdentification.profession.symbol l.symbol%} selected {% endifequal %}>{{ l }}</option>
-				    {% endfor %}
-			    </select>
-            {% endif %}
-			</label>
+	    <fieldset id="fieldset_professional_identification">
+		    <legend>{% trans "Professional Identification" %}</legend>
+			  <label>{% trans "Profession" %}<br />
+          {% if object.professionalIdentification.profession %}
+            <input type="text" name="profession_read_only" value="{{  object.professionalIdentification.profession }}" readonly />
+          {% else %}
+            <select name="professional_area" class="medium profession_type" id="0">
+              <option symbol="" value="0" disabled="disabled">------</option>
+				      {% for l in PROFESSIONAL_AREAS %}
+                <option symbol="{{ l.symbol }}" value="{{ l.id }}" {% ifequal object.professionalIdentification.profession.symbol l.symbol%} selected {% endifequal %}>{{ l }}</option>
+				      {% endfor %}
+			      </select>
+          {% endif %}
+			  </label>
 
-            <label>{% trans "Symbol" %}<br />
-                <input id="" type="text" name="symbol" class="profession_symbol small" readonly="1" {% if object.professionalIdentification.profession.symbol %} value="{{ object.professionalIdentification.profession.symbol }}" {% endif %}>
-            </label>
-
-			<label>{% trans "Professional Subscription" %}<br />
-                <input type="text" name="professional_registerNumber" maxlength="50" value="{% if object.professionalIdentification.registerNumber %}{{ object.professionalIdentification.registerNumber }}{% endif %}" {% if object.professionalIdentification.registerNumber %} readonly="1" {% endif %} />
-			</label>
-	</fieldset>
-
-	<fieldset id="fieldset_professional_profile">
-		<legend>{% trans "Professional Profile" %}</legend>
-			<label>{% trans "Inital Activities Date" %}<br />
-				<input type="text" maxlength="10" name="professional_initialActivitiesDate" value="{% ifnotequal object.professionalProfile.initialProfessionalActivities 'None' %}{{ object.professionalProfile.initialProfessionalActivities }}{% endifnotequal %}" class="initialActivities calendar" />
-			</label>
-            {% comment %}
-			<label>{% trans "Available Time" %}<br />
-				<input type="text" name="professional_availableTime" value="{{ object.professionalProfile.availableTime }}" />
-			</label>
-            {% endcomment %}
-	</fieldset>
-
-	<fieldset id="fieldset_professional_agreement">
-		<legend>{% trans "Professional Agreements" %}</legend>
-			<label>{% trans "Agreements" %}<br />
-			<select name="professional_agreement" multiple="multiple" class="select multiple extrabig asm">
-				{% for l in AgreementTypes %}
-				<option value="{{ l.id }}"{% for a in object.professionalProfile.agreement.all %}{% ifequal a.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
-				{% endfor %}
-			</select>
-			</label>
-	</fieldset>
-
-	<fieldset id="fieldset_professional_workplace">
-		<legend>{% trans "Professional Workplaces" %}</legend>
-			
-			<label>{% trans "Workplaces" %}<br />
-			<select name="professional_workplace" multiple="multiple" class="select multiple extrabig asm">
-				{% for l in WorkPlacesTypes %}
-				<option value="{{ l.id }}"{% for w in object.professionalProfile.workplace.all %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
-				{% endfor %}
-			</select>
-			</label>
-			<br />
-			<label><a class="form_mini" display="place_mini">{% trans "Add New Workplace" %}</a></label>
-	</fieldset>
-
-	<fieldset>
-		<legend>{% trans "Professional Services" %}</legend>
-			
-			<label>{% trans "Services" %}<br />
-			<select name="professional_service" multiple="multiple" class="select multiple extrabig asm">
-				{% for l in ServiceTypes %}
-				<option value="{{ l.id }}"{% for sc in object.prof_services.all %}{% ifequal sc.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
-				{% endfor %}
-			</select>
-			</label>
-	</fieldset>
-    {% include "meta/phones.html" %}
-	{% include "meta/people_profile.html" %}
-    {% include "meta/people_documents.html" %}
-	{% include "meta/addressbook.html" %}
-	{% include "meta/internet.html" %}
-
-
-<fieldset class="comment_form">
-        <legend>{% trans "Comments" %}</legend>
-        <label>
-                <textarea name="comments" class="extrabig">{{ object.person.comments }}</textarea>
+        <label>{% trans "Symbol" %}<br />
+          <input id="" type="text" name="symbol" class="profession_symbol small" readonly="1" {% if object.professionalIdentification.profession.symbol %} value="{{ object.professionalIdentification.profession.symbol }}" {% endif %}>
         </label>
 
-</fieldset>
+			  <label>{% trans "Professional Subscription" %}<br />
+          <input type="text" name="professional_registerNumber" maxlength="50" value="{% if object.professionalIdentification.registerNumber %}{{ object.professionalIdentification.registerNumber }}{% endif %}" {% if object.professionalIdentification.registerNumber %} readonly="1" {% endif %} />
+			  </label>
+	    </fieldset>
+
+	    <fieldset id="fieldset_professional_profile">
+		    <legend>{% trans "Professional Profile" %}</legend>
+			  <label>{% trans "Initial Activities Date" %}<br />
+				  <input type="text" maxlength="10" name="professional_initialActivitiesDate" value="{% ifnotequal object.professionalProfile.initialProfessionalActivities 'None' %}{{ object.professionalProfile.initialProfessionalActivities }}{% endifnotequal %}" class="initialActivities calendar" />
+			  </label>
+        {% comment %}
+			  <label>{% trans "Available Time" %}<br />
+				  <input type="text" name="professional_availableTime" value="{{ object.professionalProfile.availableTime }}" />
+			  </label>
+        {% endcomment %}
+	    </fieldset>
+
+	    <fieldset id="fieldset_professional_agreement">
+		    <legend>{% trans "Professional Agreements" %}</legend>
+			  <label>{% trans "Agreements" %}<br />
+			    <select name="professional_agreement" multiple="multiple" class="select multiple extrabig asm">
+				    {% for l in AgreementTypes %}
+				      <option value="{{ l.id }}"{% for a in object.professionalProfile.agreement.all %}{% ifequal a.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+				    {% endfor %}
+			    </select>
+			  </label>
+	    </fieldset>
+
+	    <fieldset id="fieldset_professional_workplace">
+		    <legend>{% trans "Professional Workplaces" %}</legend>
+			  <label>{% trans "Workplaces" %}<br />
+			    <select name="professional_workplace" multiple="multiple" class="select multiple extrabig asm">
+				    {% for l in WorkPlacesTypes %}
+				      <option value="{{ l.id }}"{% for w in object.professionalProfile.workplace.all %}{% ifequal w.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+				    {% endfor %}
+			    </select>
+			  </label>
+			  <br />
+			  <label><a class="form_mini" display="place_mini">{% trans "Add New Workplace" %}</a></label>
+	    </fieldset>
+
+	    <fieldset>
+		    <legend>{% trans "Professional Services" %}</legend>
+			  <label>{% trans "Services" %}<br />
+			    <select name="professional_service" multiple="multiple" class="select multiple extrabig asm">
+				    {% for l in ServiceTypes %}
+				      <option value="{{ l.id }}"{% for sc in object.prof_services.all %}{% ifequal sc.id l.id %} selected{% endifequal %}{% endfor %}>{{ l }}</option>
+				    {% endfor %}
+			    </select>
+			  </label>
+	    </fieldset>
+      {% include "meta/phones.html" %}
+	    {% include "meta/people_profile.html" %}
+      {% include "meta/people_documents.html" %}
+	    {% include "meta/addressbook.html" %}
+	    {% include "meta/internet.html" %}
 
 
-<br />	
-</div>
+      <fieldset class="comment_form">
+        <legend>{% trans "Comments" %}</legend>
+        <label>
+          <textarea name="comments" class="extrabig">{{ object.person.comments }}</textarea>
+        </label>
+      </fieldset>
 
-{% include "tags/careprofessional_sidebar.html" %}
+      <br />
+    </div>
 
-</form>
+    {% include "tags/careprofessional_sidebar.html" %}
 
-{% include "tags/upload.html" %}
-{% include "tags/place_mini.html" %}
+  </form>
 
-{% include "careprofessional/careprofessional_form_dialog.html" %}
+  {% include "tags/upload.html" %}
+  {% include "tags/place_mini.html" %}
+  {% include "careprofessional/careprofessional_form_dialog.html" %}
 
 {% endblock %}

@@ -2,58 +2,56 @@
 
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+  Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
 {% endcomment %}
 
 {% load i18n %}
 
 {% block core %}
-<div class="ticket_form">
-<h2 class="title_employee title">{% trans "New Support Request" %}</h2>
-<p class="description">{% trans "All fields are required" %}</p>
 
-<form action="/support/ticket/form/" method="post" class="form_support_ticket">	
-<div class="main_area">
-	<fieldset id="fieldset_employee_details">
-		<legend>{% trans "Support Form" %}</legend>
-			<label>{% trans "Contact Name" %}<br />
-			{{ form.contact_name }}
-			</label>
-			<label>{% trans "Contact Phone" %}<br />
-			{{ form.contact_phone }}
-			</label>
-			<label>{% trans "Contact Email" %}<br />
-			{{ form.contact_email }}
-			</label>
-			<label>{% trans "Question" %}<br />
-			{{ form.question }}
-			</label>
+  <div class="ticket_form">
+    <h2 class="title_employee title">{% trans "New Support Request" %}</h2>
+    <p class="description">{% trans "All fields are required" %}</p>
 
-	</fieldset>
+    <form action="/support/ticket/form/" method="post" class="form_support_ticket">
+      <div class="main_area">
+	      <fieldset id="fieldset_employee_details">
+		      <legend>{% trans "Support Form" %}</legend>
+			    <label>{% trans "Contact Name" %}<br />
+			      {{ form.contact_name }}
+			    </label>
+			    <label>{% trans "Contact Phone" %}<br />
+			      {{ form.contact_phone }}
+			    </label>
+			    <label>{% trans "Contact Email" %}<br />
+			      {{ form.contact_email }}
+			    </label>
+			    <label>{% trans "Question" %}<br />
+			      {{ form.question }}
+			    </label>
+	      </fieldset>
+        <br />
+      </div>
 
-<br />	
-</div>
-
-<div id="sidebar" class="sidebar">
+      <div id="sidebar" class="sidebar">
         <div class="bg_blue">
-            <input class="save_button" name="save" type="submit" value="{% trans 'Send' %}" />
-            <input class="save_button" name="cancel" id="cancel_button" type="button" value="{% trans 'Cancel' %}" />
+          <input class="save_button" name="save" type="submit" value="{% trans 'Send' %}" />
+          <input class="save_button" name="cancel" id="cancel_button" type="button" value="{% trans 'Cancel' %}" />
         </div>
-</div>
-<input type="hidden" name="msg_area" value="{% trans "Request Support submitted successfully." %}" />
-</form>
-</div>
-
+      </div>
+      <input type="hidden" name="msg_area" value="{% trans "Request Support submitted successfully." %}" />
+    </form>
+  </div>
 {% endblock %}
 

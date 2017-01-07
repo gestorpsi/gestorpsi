@@ -1,70 +1,70 @@
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+  Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
 {% endcomment %}
 
 {% load i18n %}
 
 <div>
-	<input type="hidden" name="documentId" value="{{ document.id }}" />
-	
+  <input type="hidden" name="documentId" value="{{ document.id }}" />
+
 	<label>{% trans "Type" %}<br />
-	{% if not TypeDocuments %}
-		{% trans "There is no types available to choice" %}
-	{% else %}
-	<select name="document_typeDocument" class="small">
-	{% for TypeDocument in TypeDocuments %}
-		<option value="{{ TypeDocument.id }}" mask="{{ TypeDocument.mask}}"{% ifequal document.typeDocument.id TypeDocument.id %} selected{% endifequal %}>{{ TypeDocument }}</option>
-	{% endfor %}
-	</select>
-	{% endif %}
+	  {% if not TypeDocuments %}
+		  {% trans "There is no types available to choice" %}
+	  {% else %}
+	    <select name="document_typeDocument" class="small">
+	      {% for TypeDocument in TypeDocuments %}
+		      <option value="{{ TypeDocument.id }}" mask="{{ TypeDocument.mask}}"{% ifequal document.typeDocument.id TypeDocument.id %} selected{% endifequal %}>{{ TypeDocument }}</option>
+	      {% endfor %}
+	    </select>
+	  {% endif %}
 	</label>
-	
-	
+
 	<label>{% trans "Document" %}<br />
-	<input type="text" maxlength="20" name="document_document" class="medium" value="{{ document.document }}" id="id_document" mask="{{ document.mask }}" />
+	  <input type="text" maxlength="20" name="document_document" class="medium" value="{{ document.document }}" id="id_document" mask="{{ document.mask }}" />
 	</label>
 
 	<label>{% trans "Issuer" %}<br />
-	{% if not Issuers %}
-		{% trans "There is no types available to choice" %}
-	{% else %}
-	<select name="document_issuer" class="medium">
-		<option></option>
-		{% for Issuer in Issuers %}
-			<option value="{{ Issuer.id }}"{% ifequal document.issuer.id Issuer.id %} selected{% endifequal %}>{{ Issuer }}</option>
-		{% endfor %}
-	</select>
-	{% endif %}
+	  {% if not Issuers %}
+		  {% trans "There is no types available to choice" %}
+	  {% else %}
+	    <select name="document_issuer" class="medium">
+		    <option></option>
+		    {% for Issuer in Issuers %}
+			    <option value="{{ Issuer.id }}"{% ifequal document.issuer.id Issuer.id %} selected{% endifequal %}>{{ Issuer }}</option>
+		    {% endfor %}
+	    </select>
+	  {% endif %}
 	</label>
 
 	<label>{% trans "State" %}<br />
 		<select name="document_state" class="state">
-		<option></option>
-		{% for State in States %}
-			<option value="{{ State.id }}"{% ifequal document.state.id State.id %} selected{% endifequal %}>{{ State.shortName }}</option>
-		{% endfor %}
+		  <option></option>
+		  {% for State in States %}
+			  <option value="{{ State.id }}"{% ifequal document.state.id State.id %} selected{% endifequal %}>{{ State.shortName }}</option>
+		  {% endfor %}
 		</select>
 	</label>
 
 	<label>{% trans "Identifier" %}<br />
-	<input type="text" maxlength="10" name="document_identifier" class="small" value="{{ document.document_identifier }}" id="document_identifier" />
+	  <input type="text" maxlength="10" name="document_identifier" class="small" value="{{ document.document_identifier }}" id="document_identifier" />
 	</label>
-		
-	<label><br /><a class="notajax remove_from_form" delete="document_{{ forloop.counter }}" title="{% trans "Delete" %}"><span>{% trans "Delete" %}</span></a></label>
+
+	<label><br />
+    <a class="notajax remove_from_form" delete="document_{{ forloop.counter }}" title="{% trans "Delete" %}">
+      <span>{% trans "Delete" %}</span>
+    </a>
+  </label>
 </div>
-
-
-
 

@@ -1,16 +1,16 @@
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+  Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -19,92 +19,88 @@ GNU General Public License for more details.
 {% load calculate_age %}
 
 <!--
-People Personal Profile Form	
+People Personal Profile Form
 -->
 
-
-
 <fieldset>
-        <legend>{% trans "Personal Profile" %}</legend>
+  <legend>{% trans "Personal Profile" %}</legend>
 
-            <label>{% trans "Birthdate" %} ( dd/mm/yyyy )<br />
-                <input mask="99/99/9999" class="datepicker" type="text" name="dateBirth" onchange="displayAge()" id="dateBirth" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate|date:"d/m/Y" }}{% endifnotequal %}" readonly/>
-            </label>
+  <label>{% trans "Birthdate" %} ( dd/mm/yyyy )<br />
+    <input mask="99/99/9999" class="datepicker" type="text" name="dateBirth" onchange="displayAge()" id="dateBirth" value="{% ifnotequal object.person.birthDate None %}{{ object.person.birthDate|date:"d/m/Y" }}{% endifnotequal %}" readonly/>
+  </label>
 
-            
-        <label> {% trans "Age" %} <br />
-            <input class="small" type="text" name="Years" id="Years" onchange="displayAge();" value="{% if object.person.birthDate %}{{ object.person.birthDate|age }}{% endif %}"/>
-        </label>
-        
-         <br />
-         <br />
+  <label> {% trans "Age" %} <br />
+    <input class="small" type="text" name="Years" id="Years" onchange="displayAge();" value="{% if object.person.birthDate %}{{ object.person.birthDate|age }}{% endif %}"/>
+  </label>
 
-        <label>
-            <input name="aprox" type="checkbox" id="aprox" {% if object.person.birthDateSupposed  %} checked="checked" {% endif %}  onclick="dateOrAge();" />
-            {% trans "Birthdate supposedly from the age" %} 
-        </label>
-        
-         <br />
-         <br />
+  <br />
+  <br />
 
-        {% comment %}
-        <label>{% trans "Age" %}<br />
-                <input type="text" name="age" class="extrasmall" value="{{ object.age }}" id="id_age" />
-        </label>
+  <label>
+    <input name="aprox" type="checkbox" id="aprox" {% if object.person.birthDateSupposed  %} checked="checked" {% endif %}  onclick="dateOrAge();" />
+    {% trans "Birthdate supposedly from the age" %}
+  </label>
 
-        {% endcomment %}
-        <label>{% trans "Marital Status" %}<br />
-                <select name="maritalStatus" class="select extramedium">
-                        <option></option>
-                        {% for m in MaritalStatusTypes %}
-                                <option value="{{ m.id }}"{% ifequal m.id object.person.maritalStatus_id %} selected{% endifequal %}>{{ m }}</option>
-                        {% endfor %}
-                </select>
-        </label>
+  <br />
+  <br />
 
+  {% comment %}
+  <label>{% trans "Age" %}<br />
+    <input type="text" name="age" class="extrasmall" value="{{ object.age }}" id="id_age" />
+  </label>
+  {% endcomment %}
+
+  <label>{% trans "Marital Status" %}<br />
+    <select name="maritalStatus" class="select extramedium">
+      <option></option>
+      {% for m in MaritalStatusTypes %}
+        <option value="{{ m.id }}"{% ifequal m.id object.person.maritalStatus_id %} selected{% endifequal %}>{{ m }}</option>
+      {% endfor %}
+    </select>
+  </label>
 
 </fieldset>
 
 
 <fieldset>
-        <legend>{% trans "Naturality" %}</legend>
-        <div>
-                <label>{% trans "Country" %}<br />
-                <select name="birthForeignCountry" class="select country">
-                {% for country in countries %}
-                        <option value="{{ country.id }}" {% if object.person.birthForeignCountry %}{% ifequal object.person.birthForeignCountry country.id %}selected{% endifequal %}{% else %}{% ifequal country.id 33 %}selected{% endifequal %}{% endif %}>{{ country.name }}</option>
-                {% endfor %}
-                </select>
-                </label>
-                
-                <!--auto complete city-->
-                <label class="autocomplete state"{% if object.person.birthForeignCity %} style="display:none"{% endif %}>
-                {% trans "State/Region" %}<br />
-                <select class="city_search extrasmall" city="{{ object.person.birthPlace.id }}">
-                    <option></option>
-                    {% for s in States %}
-                    <option value="{{ s.id }}"{% ifequal object.person.birthPlace.state.id s.id %} selected{% endifequal %}>{{ s.shortName }}</option>
-                    {% endfor %}
-                </select>
-                </label>
+  <legend>{% trans "Naturality" %}</legend>
+  <div>
+    <label>{% trans "Country" %}<br />
+      <select name="birthForeignCountry" class="select country">
+        {% for country in countries %}
+          <option value="{{ country.id }}" {% if object.person.birthForeignCountry %}{% ifequal object.person.birthForeignCountry country.id %}selected{% endifequal %}{% else %}{% ifequal country.id 33 %}selected{% endifequal %}{% endif %}>{{ country.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
 
-                <label class="autocomplete city"{% if object.person.birthForeignCity %} style="display:none"{% endif %}>
-                {% trans "City" %}<br />
-                <select name="birthPlace" class="extramedium">
-                    {% if not object.person.birthPlace %}
-                        <option disabled>{% trans "Select state first" %}</option>
-                    {% endif %}
-                </select>
-                </label>
+    <!--auto complete city-->
+    <label class="autocomplete state"{% if object.person.birthForeignCity %} style="display:none"{% endif %}>
+      {% trans "State" %}<br />
+      <select class="city_search extrasmall" city="{{ object.person.birthPlace.id }}">
+        <option></option>
+        {% for s in States %}
+          <option value="{{ s.id }}"{% ifequal object.person.birthPlace.state.id s.id %} selected{% endifequal %}>{{ s.shortName }}</option>
+        {% endfor %}
+      </select>
+    </label>
 
-                <!--not autocomplete-->
-                <label class="noautocomplete"{% if not object.person.birthForeignCity %} style="display:none"{% endif %}>{% trans "City" %}<br />
-                        <input type="text" maxlength="100" name="birthForeignCity" class="extramedium" value="{{ object.person.birthForeignCity }}"  />
-                </label>
-                
-                <label class="noautocomplete"{% if not object.person.birthForeignState %} style="display:none"{% endif %}>{% trans "State" %}<br />
-                        <input type="text" maxlength="100" name="birthForeignState" class="extrasmall" value="{{ object.person.birthForeignState }}" />
-                </label>
-        </div>
+    <label class="autocomplete city"{% if object.person.birthForeignCity %} style="display:none"{% endif %}>
+      {% trans "City" %}<br />
+      <select name="birthPlace" class="extramedium">
+        {% if not object.person.birthPlace %}
+          <option disabled>{% trans "Select state first" %}</option>
+        {% endif %}
+      </select>
+    </label>
+
+    <!--not autocomplete-->
+    <label class="noautocomplete"{% if not object.person.birthForeignCity %} style="display:none"{% endif %}>{% trans "City" %}<br />
+      <input type="text" maxlength="100" name="birthForeignCity" class="extramedium" value="{{ object.person.birthForeignCity }}"  />
+    </label>
+
+    <label class="noautocomplete"{% if not object.person.birthForeignState %} style="display:none"{% endif %}>{% trans "State" %}<br />
+      <input type="text" maxlength="100" name="birthForeignState" class="extrasmall" value="{{ object.person.birthForeignState }}" />
+    </label>
+  </div>
 </fieldset>
 

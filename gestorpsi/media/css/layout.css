@@ -1297,16 +1297,15 @@ select.country {
 }
 
 #footer {
-        clear: both;
-        display: block;
-        text-align: center;
-        padding: 8px;
-        margin-top: 20px;
-        font-size: 10px;
-        color: #cccccc;
-}
-#footer span {
-        display: none;
+  clear: both;
+  text-align: center;
+  padding: 8px;
+  font-size: 9px;
+  font-weight: bold;
+  background: none repeat scroll 0 0 #ececec;
+  color: #000000;
+  border: 1px solid #999999;
+  letter-spacing: 2px;
 }
 .form_document_box {
         padding-bottom: 65px;

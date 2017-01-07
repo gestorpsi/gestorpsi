@@ -2,60 +2,64 @@
 
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+  Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
 {% endcomment %}
 
 {% load i18n %}
+
 {% if user.get_profile.person.is_client %}
-{% block menu_client_profile %}active{% endblock %}
+  {% block menu_client_profile %}active{% endblock %}
 {% endif %}
+
 {% block submenu %}
-    <ul>
-        <li><a class="first" href="/profile/">{% trans "Personal Profile" %}</a></li>
-        {% if object.person.is_careprofessional %}<li><a href="/profile/careprofessional/">{% trans "Professional Profile" %}</a></li>{% endif %}
-        <li><a class="active" href="/profile/chpass/">{% trans "Change password" %}</a></li>
-    </ul>
+  <ul>
+    <li><a class="first" href="/profile/">{% trans "Personal Profile" %}</a></li>
+    {% if object.person.is_careprofessional %}
+      <li><a href="/profile/careprofessional/">{% trans "Professional Profile" %}</a></li>
+    {% endif %}
+    <li><a class="active" href="/profile/chpass/">{% trans "Change password" %}</a></li>
+  </ul>
 {% endblock %}
 
 {% block core %}
 
-<h2 id="title_addressbook" style="display:none"></h2>
+  <h2 id="title_addressbook" style="display:none"></h2>
 
-<h2 class="title_myoffice title">{{ user.get_profile.person.name }}</h2>
-<p class="description">{% trans "Change password" %}</p>
+  <h2 class="title_myoffice title">{{ user.get_profile.person.name }}</h2>
+  <p class="description">{% trans "Change password" %}</p>
 
-<form action="/profile/chpass/" method="post" class="record_chpass">
+  <form action="/profile/chpass/" method="post" class="record_chpass">
     <div class="main_area">
-            <fieldset class="fieldset_personal_identification">
-                <legend>{% trans "Change password" %}</legend>
-                    <label>{% trans "Current password" %}<br/>
-                    <input type="password" class="big" id="c_pass" maxlength="20" name="c_pass"/>
-                    </label>
-                    <label>{% trans "New password" %}<br/>
-                    <input type="password" class="big" id="n_pass" maxlength="20" name="n_pass"/>
-                    </label>
-                    <label>{% trans "Confirm the new password" %}<br/>
-                    <input type="password" class="big" id="n_pass0" maxlength="20" name="n_pass0"/>
-                    </label>
-            </fieldset>
-        <br />
+      <fieldset class="fieldset_personal_identification">
+        <legend>{% trans "Change password" %}</legend>
+        <label>{% trans "Current password" %}<br/>
+          <input type="password" class="big" id="c_pass" maxlength="20" name="c_pass"/>
+        </label>
+        <label>{% trans "New password" %}<br/>
+          <input type="password" class="big" id="n_pass" maxlength="20" name="n_pass"/>
+        </label>
+        <label>{% trans "Confirm the new password" %}<br/>
+          <input type="password" class="big" id="n_pass0" maxlength="20" name="n_pass0"/>
+        </label>
+      </fieldset>
+      <br />
     </div>
 
     <div id="sidebar" class="sidebar">
-              <div class="bg_blue">
-                {% include "tags/save.html" %}
-              </div>
+      <div class="bg_blue">
+        {% include "tags/save.html" %}
+      </div>
     </div>
-</form>
+  </form>
 {% endblock %}

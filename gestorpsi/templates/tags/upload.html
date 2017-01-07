@@ -1,16 +1,16 @@
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+  Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -20,7 +20,7 @@ GNU General Public License for more details.
 <div class="photo_form_upload">
 	{% trans "Select a picture" %}:
 	<form action="/upload/send/" method="post" name="form_file" enctype="multipart/form-data" class="form_file">
-	<input type="file" class="file" name="file" onchange="$('div#over').hide(); $(this).parent('form').submit()" />
+	  <input type="file" class="file" name="file" onchange="$('div#over').hide(); $(this).parent('form').submit()" />
 	</form>
 	<small><a class="notajax" onclick="$('div#over').hide(); $(this).parents('div.photo_form_upload').hide();">{% trans "Cancel" %}</a></small>
 	<br><br><small>* {% trans "Allowed Formats: JPG, PNG, GIF" %}</small>

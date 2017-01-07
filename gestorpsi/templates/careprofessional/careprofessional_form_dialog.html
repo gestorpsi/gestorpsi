@@ -1,51 +1,51 @@
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+  Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
 {% endcomment %}
 
 {% load i18n %}
 
 <div id="dialog" class="hidden">
-    <h2>{% trans "This professional have active referrals!" %}</h2>
-    <p>
+  <h2>{% trans "This professional have active referrals!" %}</h2>
+  <p>
     {% trans "It will be excluded from" %} {{ object.referrals_charged|length }} {% trans "active referrals" %}{% if object.upcoming_occurrences%}, {% trans "and also" %} <b>{{ object.upcoming_occurrences|length }} {% trans "schedules will flagged as unmarked" %}{% endif %}.
-    </p>
-    <ul>
+  </p>
+  <ul>
     {% for i in object.referrals_charged %}
-	<li><a href="/client/{{ i.client.all.0.pk}}/referral/{{ i.pk }}/">{{ i }} {{ i.client.all.0 }}</a></li>
+	    <li><a href="/client/{{ i.client.all.0.pk}}/referral/{{ i.pk }}/">{{ i }} {{ i.client.all.0 }}</a></li>
     {% endfor %}
-    </ul>
-    <p>
+  </ul>
+  <p>
     <h3>{% trans "If this is the only professional, the referral will be disabled" %}.</h3>
-    </p>
-    <p>
+  </p>
+  <p>
     {% trans "To continue, select the discharge reason then click Continue, otherwise click Cancel to close the box and not make any change." %}
-    </p>
-    <br />
-    <form action="/careprofessional/{{ object.pk }}/order/" method="post">
+  </p>
+  <br />
+  <form action="/careprofessional/{{ object.pk }}/order/" method="post">
     <select name="reason">
-    {% for i in ReferralDischargeReason %}
-	<option value="{{ i.pk }}">{{ i }}</option>
-    {% endfor %}
+      {% for i in ReferralDischargeReason %}
+	      <option value="{{ i.pk }}">{{ i }}</option>
+      {% endfor %}
     </select>
     <label>{% trans "Discharge Details" %}
-    <textarea name="details"></textarea>
+      <textarea name="details"></textarea>
     </label>
     <div style="clear:both"></div>
     <div class="float_right">
-	<button class="submit" onclick="$('div#dialog, #over').hide();return false;">{% trans "Cancel" %}</button>
-	<input type="submit" name="submit" class="submit" value="{% trans "Continue" %}" />
+  	  <button class="submit" onclick="$('div#dialog, #over').hide();return false;">{% trans "Cancel" %}</button>
+	    <input type="submit" name="submit" class="submit" value="{% trans "Continue" %}" />
     </div>
-    </form>
+  </form>
 </div>

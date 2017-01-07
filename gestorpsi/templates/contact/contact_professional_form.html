@@ -2,17 +2,17 @@
 
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+  Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -21,116 +21,112 @@ GNU General Public License for more details.
 {% block menu_contact %}active{% endblock %}
 
 {% block submenu %}
-    <ul>
-        <li><a class="first" href="/contact/">{% trans "all" %}</a></li>
-        <li><a class="" href="/contact/form/organization/">{% trans "add organization" %}</a></li>
-        <li><a class="{% if not object.id %}active{% endif %}" href="/contact/form/professional/">{% trans "add professional" %}</a></li>
-        <li><a class="{% if deactive %}active{% endif %}" href="/contact/deactive/">{% trans "all Deactive" %}</a></li>
-        <li><a href="/contact/external/">{% trans "external" %}</a></li>
-        {% if object.id %}<li><a class="active">{{ object }}</a></li>{% endif %}
-    </ul>
+  <ul>
+    <li><a class="first" href="/contact/">{% trans "all" %}</a></li>
+    <li><a class="" href="/contact/form/organization/">{% trans "add organization" %}</a></li>
+    <li><a class="{% if not object.id %}active{% endif %}" href="/contact/form/professional/">{% trans "add professional" %}</a></li>
+    <li><a class="{% if deactive %}active{% endif %}" href="/contact/deactive/">{% trans "all Deactive" %}</a></li>
+    <li><a href="/contact/external/">{% trans "external" %}</a></li>
+    {% if object.id %}<li><a class="active">{{ object }}</a></li>{% endif %}
+  </ul>
 {% endblock %}
 
 {% block core %}
 
-{% if hide_save_buttom %}
+  {% if hide_save_buttom %}
     <script>
-    $(function() {
+      $(function() {
         $('form input, form select, form textarea').attr('readonly', true);
         $('form a.add_to_form, a.remove_from_form').hide();
-    })
+      })
     </script>
-{% endif %}
+  {% endif %}
 
-<h2 id="title_addressbook" style="display:none"></h2>
+  <h2 id="title_addressbook" style="display:none"></h2>
 
-<h2 class="title_contacts title">{% if not object.id %}{% trans "Adding New Contact Professional" %}{% else %}{{ object }} ({% trans "Professional" %}){% endif %}</h2>
-<p class="description">
+  <h2 class="title_contacts title">{% if not object.id %}{% trans "Adding New Contact Professional" %}{% else %}{{ object }} ({% trans "Professional" %}){% endif %}</h2>
+  <p class="description">
     {% if not hide_save_buttom %}
-        {% trans "Inform the professional details then click on Save button" %}
+      {% trans "Inform the professional details then click on Save button" %}
     {% else %}
-        {{ object.person.organization.all|join:", " }}
+      {{ object.person.organization.all|join:", " }}
     {% endif %}</p>
-</p>
-<h2 id="title_contacts" style="display:none"></h2>
-<h2 id="title_myoffice" style="display:none"></h2>
+  </p>
+
+  <h2 id="title_contacts" style="display:none"></h2>
+  <h2 id="title_myoffice" style="display:none"></h2>
 
 
-<form action="/contact/professional/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="collapsable form_contact_professional">	
-<div class="main_area">
+  <form action="/contact/professional/{% if object.id %}{{ object.id }}/{% endif %}save/" method="post" class="collapsable form_contact_professional">
+    <div class="main_area">
 
-{% if not hide_save_buttom %}
-<fieldset class="professional contact">
-<legend>{% trans "Professional Organization" %}</legend>
-		<label>{% trans "Select Professional Organization, or"%} <a class="form_mini" display="organization_mini">{% trans "add a new one" %}</a><br />
-		<select name="organization" class="extrabig asm"{% if not object.active %} disabled{% endif%}>
-			{% for o in organizations %}
-               <option value="{{ o.id }}"{% ifequal object.person.organization.all.0.id o.id %} selected{% endifequal %}>{{ o.name }}</option>
-			{% endfor %}
-		</select>
-		</label>
-</fieldset>
-{% endif %}
+      {% if not hide_save_buttom %}
+        <fieldset class="professional contact">
+          <legend>{% trans "Professional Organization" %}</legend>
+		        <label> {% trans "Select Professional Organization, or"%} <a class="form_mini" display="organization_mini">{% trans "add a new one" %}</a><br />
+		          <select name="organization" class="extrabig asm"{% if not object.active %} disabled{% endif%}>
+			          {% for o in organizations %}
+                  <option value="{{ o.id }}"{% ifequal object.person.organization.all.0.id o.id %} selected{% endifequal %}>{{ o.name }}</option>
+			          {% endfor %}
+		          </select>
+		        </label>
+        </fieldset>
+      {% endif %}
 
-<fieldset class="professional contact">
-<legend>{% trans "Professional Identification" %}</legend>
-    <label>{% trans "Name" %}<br />
-        <input type="text" name="name" class="giant" maxlength="50" value="{{ object.person.name }}" />
-    </label>
-
-    <label>{% trans "Profession" %}<br />
-        <select id="" {% if object.professionalIdentification.profession %}disabled{% endif %} name="service_profession" class="medium asm profession_type">
-                <option symbol="" value="" selected="selected" >------</option>
-            {% for p in professions %}
-                <option symbol="{{ p.symbol }}" value="{{ p.id }}"{% ifequal p object.professionalIdentification.profession %} selected="selected"{% endifequal %} >{{ p.type }}</option>
-            {% endfor %}            
-        </select>
-    </label>
-
-    <label>{% trans "Symbol" %}<br />
-            <input id="{{forloop.counter0}}" {% if object.professionalIdentification.profession %}disabled{% endif %} type="text" name="symbol" class="profession_symbol small" readonly="1" {% ifnotequal object.professionalIdentification.profession.symbol "" %} value="{{ object.professionalIdentification.profession.symbol }}" {% endifnotequal %}>
-    </label>
-
-        <label>{% trans "Professional Subscription" %}<br />
-            <input type="text" {% if object.professionalIdentification.profession %}disabled{% endif %} maxlength="50" class="medium" name="professional_subscription" value="{{ object.professionalIdentification.registerNumber }}" />
+      <fieldset class="professional contact">
+        <legend>{% trans "Professional Identification" %}</legend>
+        <label>{% trans "Name" %}<br />
+          <input type="text" name="name" class="giant" maxlength="50" value="{{ object.person.name }}" />
         </label>
 
+        <label>{% trans "Profession" %}<br />
+          <select id="" {% if object.professionalIdentification.profession %}disabled{% endif %} name="service_profession" class="medium asm profession_type">
+            <option symbol="" value="" selected="selected" >------</option>
+            {% for p in professions %}
+              <option symbol="{{ p.symbol }}" value="{{ p.id }}"{% ifequal p object.professionalIdentification.profession %} selected="selected"{% endifequal %} >{{ p.type }}</option>
+            {% endfor %}
+          </select>
+        </label>
 
-</fieldset>
+        <label>{% trans "Symbol" %}<br />
+          <input id="{{forloop.counter0}}" {% if object.professionalIdentification.profession %}disabled{% endif %} type="text" name="symbol" class="profession_symbol small" readonly="1" {% ifnotequal object.professionalIdentification.profession.symbol "" %} value="{{ object.professionalIdentification.profession.symbol }}" {% endifnotequal %}>
+        </label>
 
-{% include "meta/addressbook.html" %}
-{% include "meta/phones.html" %}
-{% include "meta/internet.html" %}
+        <label>{% trans "Professional Subscription" %}<br />
+          <input type="text" {% if object.professionalIdentification.profession %}disabled{% endif %} maxlength="50" class="medium" name="professional_subscription" value="{{ object.professionalIdentification.registerNumber }}" />
+        </label>
+      </fieldset>
 
-        <fieldset class="comment_form">
-                <legend>Comments</legend>
-                <label>Comments<br/>
-                        <textarea class="extrabig" name="comments"/>{{ object.comments }}</textarea>
-                </label>
-        </fieldset>
+      {% include "meta/addressbook.html" %}
+      {% include "meta/phones.html" %}
+      {% include "meta/internet.html" %}
 
-</div>
+      <fieldset class="comment_form">
+        <legend>Comments</legend>
+        <label>Comments<br/>
+          <textarea class="extrabig" name="comments"/>{{ object.comments }}</textarea>
+        </label>
+      </fieldset>
+    </div>
 
-<div id="sidebar" class="sidebar">
-    {% if perms.contact.contact_write and not hide_save_buttom %}
-      
+    <div id="sidebar" class="sidebar">
+      {% if perms.contact.contact_write and not hide_save_buttom %}
         <div class="bg_blue">
-        {% include "tags/save.html" %}
+          {% include "tags/save.html" %}
         </div>
 
         {% if object.id %}
-            <div class="contact_actions">	
-            <h3>{% trans 'Object Actions' %}</h3>
+          <div class="contact_actions">
+          <h3>{% trans 'Object Actions' %}</h3>
             <ul>
-                <li><a href="/contact/professional/order/{{ object.id }}/" class="contact_order" title="{{ object.name }}">{% if object.active %}{% trans "Disable" %}{% else %}{% trans "Enable" %}{% endif %} </a></li>
+              <li><a href="/contact/professional/order/{{ object.id }}/" class="contact_order" title="{{ object.name }}">{% if object.active %}{% trans "Disable" %}{% else %}{% trans "Enable" %}{% endif %} </a></li>
             </ul>
-            </div>
+          </div>
         {% endif %}
+      {% endif %}
+    </div>
+  </form>
 
-    {% endif %}
-</div>
-</form>
-
-{% include "tags/organization_mini.html" %}
+  {% include "tags/organization_mini.html" %}
 
 {% endblock %}

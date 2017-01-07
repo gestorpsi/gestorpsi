@@ -2,17 +2,17 @@
 
 {% comment %}
 
-Copyright (C) 2008 GestorPsi
+  Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
 {% endcomment %}
 
@@ -21,294 +21,291 @@ GNU General Public License for more details.
 {% block vertical_menu %} - {% trans "My Organization" %}{% endblock %}
 
 {% block submenu %}
-    <ul id="sub_organization">
-        <li><a class="first active" href="{% url organization-signature %}">{% trans "Signature" %}</a></li>
-        <li><a href="{% url organization-suspension %}">{% trans "Suspender" %}</a></li>
-    </ul>
+  <ul id="sub_organization">
+    <li><a class="first active" href="{% url organization-signature %}">{% trans "Signature" %}</a></li>
+    <li><a href="{% url organization-suspension %}">{% trans "Suspend" %}</a></li>
+  </ul>
 {% endblock %}
 
 {% block core %}
 
-    <h2 class="title_signature title">{{ obj }}</h2>
-    <p class="description"> {% trans "Assinatura da organiza&ccedil;&atilde;o" %}<br /></p>
+  <h2 class="title_signature title">{{ obj }}</h2>
+  <p class="description"> {% trans "Organization signature" %}<br /></p>
 
-    <form action="{% url organization-signature %}" method="post" class="form_people">	
-        <div class="main_area">
+  <form action="{% url organization-signature %}" method="post" class="form_people">
+    <div class="main_area">
 
-            <!-- plan and payment area -->
-            <fieldset class="signature organization">
+      <!-- plan and payment area -->
+      <fieldset class="signature organization">
 
-                <legend>{% trans "Signature" %}</legend>
+        <legend>{% trans "Signature" %}</legend>
 
-                <div>
-                    <label>{% trans "Inscription date" %}<br />
-                        <input type="text" value="{{ obj.date_created }}" readonly  />
-                    </label>
-                </div>
-                
-                <div>
-                    <label>{% trans "Plan" %}<br />
-                        <select name="prefered_plan" class="extrabig prefered_plan">
-                        {% for p in plans %}
-                            <option value="{{ p.id }}" {% ifequal obj.prefered_plan_id p.id %}selected{% endifequal %} >{{ p.name }} / R$ {{ p.value }} por {{ p.duration }} m&ecirc;s{{ p.duration|pluralize:"es" }}</option>
-                        {% endfor %}
-                        </select>
-                    </label>
-
-                    <!-- plan id and value -->
-                    {% for p in plans %}
-                        <input type='hidden' value="{{ p.value }}" name="plan_id{{ p.id }}" />
-                        <input type='hidden' value="{{ p.name }}" name="plan_label{{ p.id }}" />
-                    {% endfor %}
-                    
-                    <br />
-
-                    <div><h3>{% trans "The new plan will be effectively applied only when the current signature is over." %}</h3></div>
-
-                    <!-- meios de pagamento -->
-                    <label>{% trans "Forma de pagamento" %}<br />
-                        <select name="payment_type" class="extrabig payment_type">
-                            {% for p in payment_type %}
-                                <option value="{{ p.id }}" {% ifequal p obj.payment_type %}selected="selected"{% endifequal %} >{{ p.get_name_display }}</option>
-                            {% endfor %}
-                        </select>
-
-                        {% for p in payment_type %}
-                            <input type='hidden' value="{{ p.time }}" name="payment_id{{ p.id }}_time" />
-                        {% endfor %}
-                    </label>
-
-                    <br />
-                    <!-- text about -->
-                    {% for p in payment_type %}
-                        <div id='payment_type{{ p.id }}' {% ifnotequal obj.payment_type p %}style='display: none;'{% endifnotequal %}>
-                            <h3>{{ p.detail }}</h3>
-                        </div>
-                    {% endfor %}
-
-                    <div><h3>Para alterar a forma de pagamento ou d&uacute;vida, <a href='/support/ticket/form/'>entre em contato.</a></h3></div>
-
-            </fieldset>
-
-            <div style='height: 10px;'></div>
-
-        </div><!-- main area -->
-
-        <!-- save buttom -->
-        {% if perms.organization.organization_write %}
-            <div id="sidebar" class="sidebar">
-                <div class="bg_blue">
-                    {% include "tags/save.html" %}
-                </div>
-            </div>
-        {% endif %}
-
-            <br />
+        <div>
+          <label>{% trans "Inscription date" %}<br />
+            <input type="text" value="{{ obj.date_created }}" readonly  />
+          </label>
         </div>
-    </form><!-- end form pagamento -->
+
+        <div>
+          <label>{% trans "Plan" %}<br />
+            <select name="prefered_plan" class="extrabig prefered_plan">
+              {% for p in plans %}
+                <option value="{{ p.id }}" {% ifequal obj.prefered_plan_id p.id %}selected{% endifequal %} >{{ p.name }} / R$ {{ p.value }} {% trans "for" %} {{ p.duration }} {% trans "month" %}{{ p.duration|pluralize:"es" }}</option>
+              {% endfor %}
+            </select>
+          </label>
+
+          <!-- plan id and value -->
+          {% for p in plans %}
+            <input type='hidden' value="{{ p.value }}" name="plan_id{{ p.id }}" />
+            <input type='hidden' value="{{ p.name }}" name="plan_label{{ p.id }}" />
+          {% endfor %}
+
+          <br />
+
+          <div><h3>{% trans "The new plan will be effectively applied only when the current signature is over." %}</h3></div>
+
+          <!-- payment options -->
+          <label>{% trans "Payment options" %}<br />
+            <select name="payment_type" class="extrabig payment_type">
+              {% for p in payment_type %}
+                <option value="{{ p.id }}" {% ifequal p obj.payment_type %}selected="selected"{% endifequal %} >{{ p.get_name_display }}</option>
+              {% endfor %}
+            </select>
+
+            {% for p in payment_type %}
+              <input type='hidden' value="{{ p.time }}" name="payment_id{{ p.id }}_time" />
+            {% endfor %}
+          </label>
+
+          <br />
+
+          <!-- text about -->
+          {% for p in payment_type %}
+            <div id='payment_type{{ p.id }}' {% ifnotequal obj.payment_type p %}style='display: none;'{% endifnotequal %}>
+              <h3>{{ p.detail }}</h3>
+            </div>
+          {% endfor %}
+
+          <div><h3>{% trans "To change your form of payment or question" %}, <a href='/support/ticket/form/'>{% trans "contact us" %}.</a></h3></div>
+        </div>
+      </fieldset>
+
+      <div style='height: 10px;'></div>
+
+    </div><!-- main area -->
+
+    <!-- save buttom -->
+    {% if perms.organization.organization_write %}
+      <div id="sidebar" class="sidebar">
+        <div class="bg_blue">
+          {% include "tags/save.html" %}
+        </div>
+      </div>
+    {% endif %}
+
+    <br />
+  </form><!-- end form pagamento -->
 
 
 
-    <!-- faturas historico -->
-    <form>
-        <div class="main_area">
-    </form>
+  <!-- faturas historico -->
+  <form>
+    <div class="main_area">
+  </form>
 
-        <!-- plan and payment area -->
-        <fieldset class="signature organization">
+  <!-- plan and payment area -->
+    <fieldset class="signature organization">
 
-                <legend>{% trans "Hist&oacute;rico das faturas e pagamentos" %}</legend>
+      <legend>{% trans "History of invoices and payments" %}</legend>
 
-                <!-- invoices -->
-                {% if obj.invoice_.0 %}
-                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
-                        <h3>Pr&oacute;xima assinatura</h3>
-                            <table style='margin-left:10px; width:100%;'>
-                                <tr style='width:100%;'>
-                                    <th style='width:30%;'>Plano</th>
-                                    <th style='width:15%'>In&iacute;cio</th>
-                                    <th style='width:15%'>Fim/Vencimento</th>
-                                    <th style='width:40%'>A&ccedil;&atilde;o</th>
-                                </tr>
-                            </table>
+      <!-- invoices -->
+      {% if obj.invoice_.0 %}
+        <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
+          <h3>{% trans "Next signature" %}</h3>
+          <table style='margin-left:10px; width:100%;'>
+            <tr style='width:100%;'>
+              <th style='width:30%;'>{% trans "plan" %}</th>
+              <th style='width:15%'>{% trans "start" %}</th>
+              <th style='width:15%'>{% trans "maturity" %}</th>
+              <th style='width:40%'>{% trans "action" %}</th>
+            </tr>
+          </table>
 
-                            <table style='margin-left:10px; width:100%;'>
-                                <tr>
-                                    {% for x in obj.invoice_.0 %}
-                                        <th style='width:30%; font-weight: normal;'>{{ x.plan }}</th>
-                                        <th style='width:15%; font-weight: normal; background-color: yellow;'>{{ x.start_date|date:"d M Y" }}</th>
-                                        <th style='width:15%; font-weight: normal;'>{{ x.end_date|date:"d M Y" }}</th>
-                                        <th style='width:40%; font-weight: normal;'>
-                                            {% ifequal x.status 0 %}
+          <table style='margin-left:10px; width:100%;'>
+            <tr>
+              {% for x in obj.invoice_.0 %}
+                <th style='width:30%; font-weight: normal;'>{{ x.plan }}</th>
+                <th style='width:15%; font-weight: normal; background-color: yellow;'>{{ x.start_date|date:"d M Y" }}</th>
+                <th style='width:15%; font-weight: normal;'>{{ x.end_date|date:"d M Y" }}</th>
+                <th style='width:40%; font-weight: normal;'>
+                  {% ifequal x.status 0 %}
+                    <!-- boleto -->
+                    {% ifequal x.payment_type.id 2 %}
+                      <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
+                        <!-- Campos obrigat&oacute;rios -->
+                        <input name="receiverEmail" type="hidden" value="ozp@psico.net">
+                        <input name="currency" type="hidden" value="BRL">
 
-                                                <!-- boleto -->
-                                                {% ifequal x.payment_type.id 2 %}
-                                                    <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
-                                                        <!-- Campos obrigat&oacute;rios -->  
-                                                        <input name="receiverEmail" type="hidden" value="ozp@psico.net">  
-                                                        <input name="currency" type="hidden" value="BRL">  
+                        <!-- Itens do pagamento (ao menos um item &eacute; obrigat&oacute;rio) -->
+                        <input name="itemId1" type="hidden" value="0001">
+                        <input name="itemDescription1" type="hidden" value="{{ x.plan }}">
+                        <input name="itemAmount1" type="hidden" value="{{ x.ammount }}">
+                        <input name="itemQuantity1" type="hidden" value="1">
+                        <input name="itemWeight1" type="hidden" value="1000">
 
-                                                        <!-- Itens do pagamento (ao menos um item &eacute; obrigat&oacute;rio) -->  
-                                                        <input name="itemId1" type="hidden" value="0001">  
-                                                        <input name="itemDescription1" type="hidden" value="{{ x.plan }}">  
-                                                        <input name="itemAmount1" type="hidden" value="{{ x.ammount }}">  
-                                                        <input name="itemQuantity1" type="hidden" value="1">  
-                                                        <input name="itemWeight1" type="hidden" value="1000">  
+                        <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->
+                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date|date:"d M Y" }}-fim-{{ x.end_date|date:"d M Y" }}">
 
-                                                        <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->  
-                                                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date|date:"d M Y" }}-fim-{{ x.end_date|date:"d M Y" }}">  
+                        <!-- Dados do comprador (opcionais) -->
+                        <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">
+                        <input name="senderPhone" type="hidden" value="{{ obj.administrator.0.get_firtst_phone }}">
+                        <input name="senderEmail" type="hidden" value="{{ obj.administrator.0.get_first_email }}">
 
-                                                        <!-- Dados do comprador (opcionais) -->  
-                                                        <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">  
-                                                        <input name="senderPhone" type="hidden" value="{{ obj.administrator.0.get_firtst_phone }}">  
-                                                        <input name="senderEmail" type="hidden" value="{{ obj.administrator.0.get_first_email }}">  
+                        <!-- submit do form (obrigat&oacute;rio) -->
+                        <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/184x42-pagar-cinza-assina.gif"/>
+                      </form>
+                    {% endifequal %}
 
-                                                        <!-- submit do form (obrigat&oacute;rio) -->  
-                                                        <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/184x42-pagar-cinza-assina.gif"/>  
-                                                    </form>
-                                                {% endifequal %}
+                    <!-- cartao -->
+                    {% ifequal x.payment_type.id 1 %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
 
-                                                <!-- cartao -->
-                                                {% ifequal x.payment_type.id 1 %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
-
-                                            {% else %}
-                                                Pago em {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
-                                            {% endifequal %}
-                                        </th>
-                                    {% endfor %}
-                                </tr>
-                            </table>
-                    </div>
-                {% endif %}
-
-
-                {% if obj.invoice_.1 %}
-                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
-                        <h3>Assinatura atual</h3>
-                            <table style='margin-left:10px; width:100%;'>
-                                <tr style='width:100%;'>
-                                    <th style='width:30%;'>Plano</th>
-                                    <th style='width:15%'>In&iacute;cio</th>
-                                    <th style='width:15%'>Fim/Vencimento</th>
-                                    <th style='width:40%'>A&ccedil;&atilde;o</th>
-                                </tr>
-                            </table>
-
-                            <table style='margin-left:10px; width:100%;'>
-                                    {% for x in obj.invoice_.1 %}
-                                    <tr>
-                                        <th style='width:30%; font-weight: normal;'>{{ x.plan }}</th>
-                                        <th style='width:15%; font-weight: normal;'>{{ x.start_date|date:"d M Y" }}</th>
-                                        <th style='width:15%; font-weight: normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.end_date|date:"d M Y" }}</th>
-                                        <th style='width:40%; font-weight: normal;'>
-
-                                            {% ifequal x.status 0 %}
-                                                <!-- boleto -->
-                                                {% ifequal x.payment_type.id 2 %}
-                                                    <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
-                                                        <!-- Campos obrigat&oacute;rios -->  
-                                                        <input name="receiverEmail" type="hidden" value="ozp@psico.net">  
-                                                        <input name="currency" type="hidden" value="BRL">  
-
-                                                        <!-- Itens do pagamento (ao menos um item &eacute; obrigat&oacute;rio) -->  
-                                                        <input name="itemId1" type="hidden" value="0001">  
-                                                        <input name="itemDescription1" type="hidden" value="{{ x.plan }}">  
-                                                        <input name="itemAmount1" type="hidden" value="{{ x.ammount }}">  
-                                                        <input name="itemQuantity1" type="hidden" value="1">  
-                                                        <input name="itemWeight1" type="hidden" value="1000">  
-
-                                                        <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->  
-                                                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date|date:"d M Y" }}-fim-{{ x.end_date|date:"d M Y" }}">  
-
-                                                        <!-- Dados do comprador (opcionais) -->  
-                                                        <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">  
-                                                        <input name="senderPhone" type="hidden" value="{{ obj.administrator.0.get_firtst_phone }}">  
-                                                        <input name="senderEmail" type="hidden" value="{{ obj.administrator.0.get_first_email }}">  
-
-                                                        <!-- submit do form (obrigat&oacute;rio) -->  
-                                                        <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/184x42-pagar-cinza-assina.gif"/>  
-                                                    </form>
-                                                {% endifequal %}
-
-                                                <!-- cartao -->
-                                                {% ifequal x.payment_type.id 1 %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
-
-                                            {% else %}
-                                                Pago em {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
-                                            {% endifequal %}
-
-                                    </tr>
-                                    <tr><th>.</th></tr>
-                                    {% endfor %}
-                                            
-                            </table>
-                    </div>
-                {% endif %}
+                  {% else %}
+                  {% trans "Paid in" %} {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
+                  {% endifequal %}
+                </th>
+              {% endfor %}
+            </tr>
+          </table>
+        </div>
+      {% endif %}
 
 
-                {% if obj.invoice_.3 %}
-                    <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
-                        <h3>Assinatura vencida</h3>
-                            <table style='margin-left:10px; width:100%;'>
-                                <tr style='width:100%;'>
-                                    <th style='width:30%;'>Plano</th>
-                                    <th style='width:15%'>In&iacute;cio</th>
-                                    <th style='width:15%'>Fim/Vencimento</th>
-                                    <th style='width:40%'>A&ccedil;&atilde;o</th>
-                                </tr>
-                            </table>
+      {% if obj.invoice_.1 %}
+        <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
+          <h3>Current signature</h3>
+          <table style='margin-left:10px; width:100%;'>
+            <tr style='width:100%;'>
+              <th style='width:30%;'>{% trans "plan" %}</th>
+              <th style='width:15%'>{% trans "start" %}</th>
+              <th style='width:15%'>{% trans "maturity" %}</th>
+              <th style='width:40%'>{% trans "action" %}</th>
+            </tr>
+          </table>
 
-                            <table style='margin-left:0px; width:100%;'>
-                                {% for x in obj.invoice_.3 %}
-                                    <tr>
-                                        <th style='width:30%; font-weight:normal;'>{{ x.plan }}</th>
-                                        <th style='width:15%; font-weight:normal;'>{{ x.start_date|date:"d M Y" }}</th>
-                                        <th style='width:15%; font-weight:normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.end_date|date:"d M Y" }}</th>
-                                        <th style='width:40%; font-weight:normal;'>
-                                            {% ifequal x.status 0 %}
-                                                <!-- boleto -->
-                                                {% ifequal x.payment_type.id 2 %}
-                                                    <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
-                                                        <!-- Campos obrigat&oacute;rios -->  
-                                                        <input name="receiverEmail" type="hidden" value="ozp@psico.net">  
-                                                        <input name="currency" type="hidden" value="BRL">  
+          <table style='margin-left:10px; width:100%;'>
+            {% for x in obj.invoice_.1 %}
+              <tr>
+                <th style='width:30%; font-weight: normal;'>{{ x.plan }}</th>
+                <th style='width:15%; font-weight: normal;'>{{ x.start_date|date:"d M Y" }}</th>
+                <th style='width:15%; font-weight: normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.end_date|date:"d M Y" }}</th>
+                <th style='width:40%; font-weight: normal;'>
+                  {% ifequal x.status 0 %}
+                    <!-- boleto -->
+                    {% ifequal x.payment_type.id 2 %}
+                      <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
+                        <!-- Campos obrigat&oacute;rios -->
+                        <input name="receiverEmail" type="hidden" value="ozp@psico.net">
+                        <input name="currency" type="hidden" value="BRL">
 
-                                                        <!-- Itens do pagamento (ao menos um item &eacute; obrigat&oacute;rio) -->  
-                                                        <input name="itemId1" type="hidden" value="0001">  
-                                                        <input name="itemDescription1" type="hidden" value="{{ x.plan }}">  
-                                                        <input name="itemAmount1" type="hidden" value="{{ x.ammount }}">  
-                                                        <input name="itemQuantity1" type="hidden" value="1">  
-                                                        <input name="itemWeight1" type="hidden" value="1000">  
+                        <!-- Itens do pagamento (ao menos um item &eacute; obrigat&oacute;rio) -->
+                        <input name="itemId1" type="hidden" value="0001">
+                        <input name="itemDescription1" type="hidden" value="{{ x.plan }}">
+                        <input name="itemAmount1" type="hidden" value="{{ x.ammount }}">
+                        <input name="itemQuantity1" type="hidden" value="1">
+                        <input name="itemWeight1" type="hidden" value="1000">
 
-                                                        <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->  
-                                                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date|date:"d M Y" }}-fim-{{ x.end_date|date:"d M Y" }}">  
+                        <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->
+                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date|date:"d M Y" }}-fim-{{ x.end_date|date:"d M Y" }}">
 
-                                                        <!-- Dados do comprador (opcionais) -->  
-                                                        <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">  
-                                                        <input name="senderPhone" type="hidden" value="{{ obj.administrator.0.get_firtst_phone }}">  
-                                                        <input name="senderEmail" type="hidden" value="{{ obj.administrator.0.get_first_email }}">  
+                        <!-- Dados do comprador (opcionais) -->
+                        <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">
+                        <input name="senderPhone" type="hidden" value="{{ obj.administrator.0.get_firtst_phone }}">
+                        <input name="senderEmail" type="hidden" value="{{ obj.administrator.0.get_first_email }}">
 
-                                                        <!-- submit do form (obrigat&oacute;rio) -->  
-                                                        <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/184x42-pagar-cinza-assina.gif"/>  
-                                                    </form>
-                                                {% endifequal %}
+                        <!-- submit do form (obrigat&oacute;rio) -->
+                        <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/184x42-pagar-cinza-assina.gif"/>
+                      </form>
+                    {% endifequal %}
 
-                                                <!-- cartao -->
-                                                {% ifequal x.payment_type.id 1 %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
+                    <!-- cartao -->
+                    {% ifequal x.payment_type.id 1 %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
 
-                                            {% else %}
-                                                Pago em {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
-                                            {% endifequal %}
-                                    </tr>
-                                    <tr><th>.</th></tr>
-                                {% endfor %}
-                            </table>
-                    </div>
-                {% endif %}
+                  {% else %}
+                    {% trans "Paid in" %} {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
+                  {% endifequal %}
+                </th>
+              </tr>
+              <tr><th>.</th></tr>
+            {% endfor %}
+          </table>
+        </div>
+      {% endif %}
 
-            </fieldset>
-            <br />
 
-        </div><!-- main area -->
+      {% if obj.invoice_.3 %}
+        <div class='main_area' style="padding-bottom: 15px; text-align:center; width:670px; margin-left:10px; margin-top:10px;">
+          <h3>{% trans "Signature expired" %}</h3>
+          <table style='margin-left:10px; width:100%;'>
+            <tr style='width:100%;'>
+              <th style='width:30%;'>{% trans "plan" %}</th>
+              <th style='width:15%'>{% trans "start" %}</th>
+              <th style='width:15%'>{% trans "maturity" %}</th>
+              <th style='width:40%'>{% trans "action" %}</th>
+            </tr>
+          </table>
 
+          <table style='margin-left:0px; width:100%;'>
+            {% for x in obj.invoice_.3 %}
+              <tr>
+                <th style='width:30%; font-weight:normal;'>{{ x.plan }}</th>
+                <th style='width:15%; font-weight:normal;'>{{ x.start_date|date:"d M Y" }}</th>
+                <th style='width:15%; font-weight:normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.end_date|date:"d M Y" }}</th>
+                <th style='width:40%; font-weight:normal;'>
+                  {% ifequal x.status 0 %}
+                    <!-- boleto -->
+                    {% ifequal x.payment_type.id 2 %}
+                      <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
+                        <!-- Campos obrigat&oacute;rios -->
+                        <input name="receiverEmail" type="hidden" value="ozp@psico.net">
+                        <input name="currency" type="hidden" value="BRL">
+
+                        <!-- Itens do pagamento (ao menos um item &eacute; obrigat&oacute;rio) -->
+                        <input name="itemId1" type="hidden" value="0001">
+                        <input name="itemDescription1" type="hidden" value="{{ x.plan }}">
+                        <input name="itemAmount1" type="hidden" value="{{ x.ammount }}">
+                        <input name="itemQuantity1" type="hidden" value="1">
+                        <input name="itemWeight1" type="hidden" value="1000">
+
+                        <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->
+                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date|date:"d M Y" }}-fim-{{ x.end_date|date:"d M Y" }}">
+
+                        <!-- Dados do comprador (opcionais) -->
+                        <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">
+                        <input name="senderPhone" type="hidden" value="{{ obj.administrator.0.get_firtst_phone }}">
+                        <input name="senderEmail" type="hidden" value="{{ obj.administrator.0.get_first_email }}">
+
+                        <!-- submit do form (obrigat&oacute;rio) -->
+                        <input alt="Pague com PagSeguro" name="submit"  type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/184x42-pagar-cinza-assina.gif"/>
+                      </form>
+                    {% endifequal %}
+
+                    <!-- cartao -->
+                    {% ifequal x.payment_type.id 1 %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
+
+                  {% else %}
+                    {% trans "Paid in" %} {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
+                  {% endifequal %}
+                </th>
+              </tr>
+              <tr><th>.</th></tr>
+            {% endfor %}
+          </table>
+        </div>
+      {% endif %}
+
+    </fieldset>
+    <br />
+
+  </div><!-- main area -->
 {% endblock %}

@@ -50,7 +50,7 @@
   <h2 class="title_organization title">{{ object }}</h2>
   <p class="description"> {% trans "Organization Configuration" %}<br /></p>
 
-  <form action="/organization/save/" method="post" class="form_people">
+  <form action="/organization/save/" method="post" class="form_people" enctype="multipart/form-data">
     <div class="main_area">
       <div class="photo">
         <img class="img_people" organization="{{ user.get_profile.org_active.id }}" src="{% if object.photo %}/media/img/organization/{{ user.get_profile.org_active.id }}/.thumb/{{ object.photo }}{% else %}/media/img/generic_photo.gif{% endif %}" />

@@ -5987,13 +5987,11 @@ msgstr ""
 #: templates/registration/password_reset_done.html:7
 #: templates/registration/password_reset_done.html:11
 msgid "Password reset successful"
-msgstr ""
+msgstr "Senha resetada com sucesso"
 
 #: templates/registration/password_reset_done.html:13
-msgid ""
-"We've e-mailed you instructions for setting your password to the e-mail "
-"address you submitted. You should be receiving it shortly."
-msgstr ""
+msgid "We've e-mailed you instructions for setting your password to the e-mail address you submitted. You should be receiving it shortly."
+msgstr "Enviámos por e-mail as suas instruções para definir a sua nova senha para o email que enviou. Você deve estar recebendo-o em breve."
 
 #: templates/registration/password_reset_email.html:2
 msgid "Você solicitou uma redefinição de senha"

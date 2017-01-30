@@ -177,8 +177,8 @@
               {% if perms.report.report_list %}<li><a id="report" class="main_menu {% block menu_report %}{% endblock %}"  href="/report/">{% trans "Reports" %}</a></li>{% endif %}
               <li><a id="myoffice" class="main_menu notajax vertical {% block menu_myoffice %}{% endblock %}">{% if not user.profile.org_active.short_name %}{% trans "Configurations" %}{% else %}{{ user.profile.org_active.short_name }}{% endif %}{% block vertical_menu %}{% endblock %}</a>
                 <ul style="display:none" class="myoffice">
-                  {% if perms.organization.organization_read %}<li><a id="organization" href="/organization/">{% trans "My Organization" %}</a></li>{% endif %}
-                  {% if perms.organization.organization_read %}<li><a id="payment" href="/organization/signature/">{% trans "Signature" %}</a></li>{% endif %}
+                  {% if perms.organization.organization_list %}<li><a id="organization" href="/organization/">{% trans "My Organization" %}</a></li>{% endif %}
+                  {% if perms.organization.organization_list %}<li><a id="payment" href="/organization/signature/">{% trans "Signature" %}</a></li>{% endif %}
                   {% if perms.place.place_list %}<li><a id="places" href="/place/" display="list">{% trans "Places" %}</a></li>{% endif %}
                   {% if perms.place.place_list %}<li><a id="rooms" href="/place/room/" display="list">{% trans "Rooms" %}</a></li>{% endif %}
                   {% if perms.device.device_list %}<li><a id="devices" href="/device/" display="list">{% trans "Equipments" %}</a></li>{% endif %}

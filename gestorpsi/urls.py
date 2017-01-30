@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from gestorpsi.authentication.views import gestorpsi_login
 
 from gestorpsi.settings import MEDIA_ROOT
+from django.conf.urls.static import static
 
 admin.autodiscover()
 
@@ -63,3 +64,6 @@ if 'rosetta' in settings.INSTALLED_APPS:
     urlpatterns += patterns('',
         url(r'^rosetta/', include('rosetta.urls')),
     )
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

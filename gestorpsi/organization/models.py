@@ -438,6 +438,7 @@ class Organization(models.Model):
             ("organization_add", "Can add organizations"),
             ("organization_change", "Can change organizations"),
             ("organization_list", "Can list organizations"),
+            ("organization_read", "Can read organizations"),
             ("organization_write", "Can write organizations"),
         )
 

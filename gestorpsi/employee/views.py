@@ -66,7 +66,7 @@ def lista(request, page = 1 , deactive = False):
     return HttpResponse(simplejson.dumps(person_json_list(request, object, 'employee.employee_read', page)),
                             mimetype='application/json')
 
-@permission_required_with_403('employee.employee_read')
+@permission_required_with_403('employee.employee_write')
 def form(request, object_id=None):
     """
     This function view creates an employee form. If the object_id has a value, this form will be fill with employee information.

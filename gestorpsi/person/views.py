@@ -32,8 +32,8 @@ def person_save(request, person):
     person.nickname = request.POST['nickname']
     person.comments = request.POST.get('comments')
 
-    if(request.POST['photo']):
-        person.photo = request.POST['photo']
+    if(request.FILES['photo']):
+        person.photo = request.FILES['photo']
     else:
         person.photo = ''
 

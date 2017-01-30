@@ -30,9 +30,8 @@ from django.utils import simplejson
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.person.views import person_json_list
 
-permission_required_with_403('users.users_list')
 
-
+@permission_required_with_403('users.users_list')
 def index(request, deactive=False):
     return render_to_response(
         'users/users_list.html',

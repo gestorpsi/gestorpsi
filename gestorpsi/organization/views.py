@@ -65,7 +65,7 @@ def professional_responsible_save(request, object, ids, names, subscriptions, or
 
 
 
-@permission_required_with_403('organization.organization_read')
+@permission_required_with_403('organization.organization_change')
 def form(request):
 
     user = request.user
@@ -196,7 +196,7 @@ Tiago de Souza Moraes 20/06/2014
 Organization short name is available?
 return 0=No / 1=Yes
 '''
-@permission_required_with_403('organization.organization_read')
+@permission_required_with_403('organization.organization_write')
 def shortname_is_available(request, short):
     if Organization.objects.filter(short_name__iexact=short).count():
         return HttpResponse("0")
@@ -234,7 +234,7 @@ def list_prof_org(request, org_id=None):
 organization signature save
 Tiago de Souza Moraes 20/06/2014
 '''
-#@permission_required_with_403('organization.organization_write')
+@permission_required_with_403('organization.organization_write')
 def signature_save(request):
 
     user = request.user

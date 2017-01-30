@@ -124,7 +124,7 @@ def list_types(request, page = 1):
     return HttpResponse(simplejson.dumps(array), mimetype='application/json')
 
 
-@permission_required_with_403('device.device_read')
+@permission_required_with_403('device.device_write')
 def form(request, object_id= None):
     object= get_object_or_404(DeviceDetails, pk=object_id, device__organization=request.user.get_profile().org_active) if object_id else DeviceDetails()
 
@@ -142,7 +142,7 @@ def form(request, object_id= None):
 def index_type(request):
     return render_to_response( "device/device_type_list.html", context_instance=RequestContext(request))
 
-@permission_required_with_403('device.device_read')
+@permission_required_with_403('device.device_write')
 def form_type(request, object_id= None):
     object= get_object_or_404(Device, pk=object_id, organization=request.user.get_profile().org_active)
     return render_to_response('device/device_type_form.html', {'object': object }, context_instance=RequestContext(request) )

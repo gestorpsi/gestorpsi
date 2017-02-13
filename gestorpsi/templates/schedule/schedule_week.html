@@ -30,23 +30,12 @@ GNU General Public License for more details.
 <script type="text/javascript" src="/media/js/gestorpsi.schedule.filter.js"></script>
 <script type="text/javascript" src="/media/js/gestorpsi.schedule.week.js"></script>
 <div class="schedule" style="margin-top:150px;">
-    <a id="calendar_link" href="#"></a>
-    <div id="mini_calendar" style="display:none;"></div>
-
-
-    <div id="schedule_header" style="margin-top:-125px">
-        <h2 class="title_schedule">{% trans "Weekly view" %} 
-            {% include "schedule/schedule_filter.html" %}
-        </h2>
-    </div>
 
     <div id="schedule_week">
-
-    {# load template/schedule/schedule_week_table.html by jquery in media/jss/gestorpsi.schedule.js #}
-    <script>
-        $('#schedule_week').load('/schedule/week/today/');
-    </script>
-    
+      {# load template/schedule/schedule_week_table.html by jquery in media/jss/gestorpsi.schedule.js #}
+      <script>
+          $('#schedule_week').load('/schedule/week/today/');
+      </script>
     </div>
 </div>
 

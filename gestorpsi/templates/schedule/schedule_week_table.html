@@ -16,14 +16,22 @@ GNU General Public License for more details.
 
 {% load i18n %}
 
-<p class="description">{% trans "This week have" %} <span id="occurrences_total">{{ occurrences_length }}</span> {% trans "occurrences(s)." %}</p>
+<div id="schedule_header" style="margin-top:-125px">
+    <a id="calendar_link" href="#"></a>
+    <div id="mini_calendar" style="display:none;"></div>
+    <h2 class="title_schedule">{% trans "Weekly view" %}
+        {% include "schedule/schedule_filter.html" %}
+    </h2>
 
-<a id="nav_back" style="margin:0 0 0 95px; " class="load_html" element="#schedule_week" href="/schedule/week/{{ previous_week|date:"Y" }}/{{ previous_week|date:"m" }}/{{ previous_week|date:"d" }}/"></a>
-<a id="nav_fwd" style="margin:0 0 0 95px;" class="load_html" element="#schedule_week" href="/schedule/week/{{ next_week|date:"Y" }}/{{ next_week|date:"m" }}/{{ next_week|date:"d" }}/"></a>
+    <a id="nav_back" style="margin:0 0 95px; " class="load_html" element="#schedule_week" href="/schedule/week/{{ previous_week|date:"Y" }}/{{ previous_week|date:"m" }}/{{ previous_week|date:"d" }}/"></a>
+    <a id="nav_fwd" style="margin:0 0 95px;" class="load_html" element="#schedule_week" href="/schedule/week/{{ next_week|date:"Y" }}/{{ next_week|date:"m" }}/{{ next_week|date:"d" }}/"></a>
+    <div id="search_header">
+        <h2><span class="date_selected">{% trans "From" %} {{ first_week_day|date:"d" }} {% trans "to" %} {{ last_week_day|date:"d" }} {{ last_week_day|date:"F" }} {% trans "of" %} {{ last_week_day|date:"Y" }} </span></h2>
+    </div>
 
-<div id="search_header">
-    <h2><span class="date_selected">{% trans "From" %} {{ first_week_day|date:"d" }} {% trans "to" %} {{ last_week_day|date:"d" }} {{ last_week_day|date:"F" }} {% trans "of" %} {{ last_week_day|date:"Y" }} </span></h2>	
 </div>
+
+<p class="description">{% trans "This week have" %} <span id="occurrences_total">{{ occurrences_length }}</span> {% trans "occurrences(s)." %}</p>
 
 <table class="zebra schedule_results weekly" border="0" cellspacing="0" cellpadding="0">
         <tr class="zebra_1">

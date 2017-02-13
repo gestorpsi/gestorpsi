@@ -23,7 +23,7 @@ GNU General Public License for more details.
 }
 #nav_back {
 	padding: 32px 40px 12px 8px;
-    margin-top: -100px;
+  margin-top: -100px !important;
 	background: url(/media/img/arrow_back.png) no-repeat 0 0;
 }
 #nav_back.disable {background: url(/media/img/arrow_back_disable.png)}
@@ -33,7 +33,7 @@ GNU General Public License for more details.
 }
 #nav_fwd {
 	padding: 32px 36px 12px 6px;
-    margin-top: -100px;
+  margin-top: -100px !important;
 	background: url(/media/img/arrow_fwd.png) no-repeat 0 0;
 }
 #nav_fwd.disable {background: url(/media/img/arrow_fwd_disable.png) no-repeat;}
@@ -234,9 +234,10 @@ div.schedule.client div#daily.schedule {
 div.sidebar_client_schedule {
 	margin-left: 20px;
 	float: left;
+  margin-top: 112px;
 }
 
-.margin_top_fix { margin-top: 45px; }
+.gargin_top_fix { margin-top: 45px; }
 
 #schedule_header{
     position:fixed;
@@ -245,6 +246,10 @@ div.sidebar_client_schedule {
     height: 125px;
     background-color: white;
     z-index: 0;
+}
+
+.schedule_header_client {
+  margin-top: 0 !important;
 }
 
 .schedule_settings {

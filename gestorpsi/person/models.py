@@ -26,7 +26,7 @@ from gestorpsi.middleware import threadlocals
 from gestorpsi.phone.models import Phone
 from gestorpsi.address.models import City, Address, Country
 from gestorpsi.document.models import Document
-from gestorpsi.internet.models import Email, Site, InstantMessenger
+from gestorpsi.internet.models import Email, Site, InstantMessenger, Notify
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.util.first_capitalized import first_capitalized
@@ -61,6 +61,7 @@ class Person(models.Model):
     address = generic.GenericRelation(Address, null=True)
     document = generic.GenericRelation(Document, null=True)
     emails  = generic.GenericRelation(Email, null=True)
+    notify = generic.GenericRelation(Notify, null=True)
     sites = generic.GenericRelation(Site, null=True)
     instantMessengers =generic.GenericRelation(InstantMessenger, null=True)
     comments = models.TextField(blank=True)

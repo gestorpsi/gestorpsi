@@ -21,18 +21,32 @@ from django.contrib.contenttypes import generic
 from gestorpsi.util.uuid_field import UuidField
 
 class EmailType(models.Model):
-    description= models.CharField(max_length=45)
+    description = models.CharField(max_length=45)
     def __unicode__(self):
         return self.description
     class Meta:
         ordering = ['description']
 
-class Email(models.Model):
-    id = UuidField(primary_key= True)
-    email = models.CharField(max_length=100, blank=True)
-    email_type = models.ForeignKey(EmailType)
+class Notify(models.Model):
+    """
+        Email notification
+    """
+    id = UuidField(primary_key=True)
     notify_client_event = models.BooleanField(default=True)
     notify_resume_daily_event = models.BooleanField(default=True)
+
+    # Generic Relation
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.CharField(max_length=36)
+    content_object = generic.GenericForeignKey()
+
+    def __unicode__(self):
+        return self.id
+
+class Email(models.Model):
+    id = UuidField(primary_key=True)
+    email = models.CharField(max_length=100, blank=True)
+    email_type = models.ForeignKey(EmailType)
     
     # Generic Relation
     content_type = models.ForeignKey(ContentType)

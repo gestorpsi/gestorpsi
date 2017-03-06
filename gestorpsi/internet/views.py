@@ -14,7 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from gestorpsi.internet.models import Email, EmailType, Site, InstantMessenger, IMNetwork
+from gestorpsi.internet.models import Email, EmailType, Site, InstantMessenger, IMNetwork, Notify
 
 """ ************** Email section ************** """
 def is_equal_email(email):
@@ -55,6 +55,23 @@ def email_save(object, ids, emails, emails_type):
     for email in email_list(ids, emails, emails_type):
         email.content_object = object
         email.save()
+
+
+def notify_save(object, client_event=False, professional_resume=False):
+    """
+        object : Person()
+    """
+
+    notify = Notify()
+
+    # update or new
+    notify.notify_client_event = True if client_event else False
+    notify.notify_resume_daily_event = True if professional_resume else False
+    notify.content_object = object
+    notify.object_id = object.id
+    notify.save()
+
+    object.save()
 
 """ ************** Site section ************** """
 def is_equal_site(site):

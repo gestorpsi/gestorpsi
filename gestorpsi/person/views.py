@@ -21,7 +21,7 @@ from gestorpsi.address.views import address_save
 from gestorpsi.document.views import document_save
 from gestorpsi.person.models import MaritalStatus
 from gestorpsi.phone.views import phone_save
-from gestorpsi.internet.views import email_save, site_save, im_save
+from gestorpsi.internet.views import email_save, site_save, im_save, notify_save
 from datetime import datetime
 
 def person_save(request, person):
@@ -107,10 +107,7 @@ def person_save(request, person):
     email_save(person, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
     site_save(person, request.POST.getlist('site_id'), request.POST.getlist('site_description'), request.POST.getlist('site_site'))
     im_save(person, request.POST.getlist('im_id'), request.POST.getlist('im_identity'), request.POST.getlist('im_network'))
-
-    print '---------------- 0 '
-    print request.POST.getlist("notify_client_event")
-    print request.POST.getlist("notify_resume_daily_event")
+    notify_save(person, request.POST.get("notify_client_event"), request.POST.get("notify_resume_daily_event") )
 
     return person
 

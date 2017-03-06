@@ -26,7 +26,7 @@ from datetime import datetime
 
 def person_save(request, person):
 
-    person.name= request.POST['name']
+    person.name = request.POST['name']
     person.nickname = request.POST['nickname']
     person.comments = request.POST.get('comments')
 
@@ -63,9 +63,9 @@ def person_save(request, person):
         person.maritalStatus = None
 
     # birthPlace (Naturality)
-    person.birthForeignCity= ''
-    person.birthForeignState= ''
-    person.birthForeignCountry= None
+    person.birthForeignCity = ''
+    person.birthForeignState = ''
+    person.birthForeignCountry = None
     
     try:
         person.birthPlace = City.objects.get(pk = request.POST['birthPlace'])
@@ -109,7 +109,8 @@ def person_save(request, person):
     im_save(person, request.POST.getlist('im_id'), request.POST.getlist('im_identity'), request.POST.getlist('im_network'))
 
     print '---------------- 0 '
-    print request.POST.getlist("notify_notify")
+    print request.POST.getlist("notify_client_event")
+    print request.POST.getlist("notify_resume_daily_event")
 
     return person
 

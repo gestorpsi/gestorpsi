@@ -52,14 +52,18 @@ emails addresses
 emails addresses to receive notify
 -->
 <fieldset>
-        <legend>{% trans "Enviar notifica&ccedil;&atilde;o" %}</legend>
-                {% if not emails %}
-                    {% include "tags/email.html" %}
-                {% else %}
-                    {% for email in emails %}
-                        <label>{{ email.email }} <input type="checkbox" class="big" name="notify_notify" {% if email.notify %} checked {% endif %} value="{{ email.email }}" /></label>
-                    {% endfor %}
-                {% endif %}
+        <legend>{% trans "Notifica&ccedil;&atilde;o por email" %} (Todos os e-mails cadastrados receberam.)</legend>
+
+        <!-- if client -->
+        {% if object.person.is_client %}
+            <label>Lembrar da consulta um (1) dia antes<input type="checkbox" class="big" name="notify_client_event" {% if object.person.email.notify_client_event %} checked {% endif %} /></label>
+        {% endif %}
+
+        <!-- if professional -->
+        {% if object.person.is_careprofessional %}
+            <label>Resumo das consultas um (1) dia antes<input type="checkbox" class="big" name="notify_resume_daily_event" {% if object.person.email.notify_resume_daily_event %} checked {% endif %} /></label>
+        {% endif %}
+
         <a class="add_to_form"><span>{% trans "Add Email" %}</span></a>
 </fieldset>
 

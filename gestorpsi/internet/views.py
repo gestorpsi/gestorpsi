@@ -51,7 +51,7 @@ def email_save(object, ids, emails, emails_type):
         email.save()
 
 
-def notify_save(object, client_e=False, resume_d=False):
+def notify_save(object, client_e=False, resume_d=False, change_e=False):
     """
         object : Person()
     """
@@ -62,6 +62,7 @@ def notify_save(object, client_e=False, resume_d=False):
 
     n.client_event = True if client_e else False
     n.resume_daily_event = True if resume_d else False
+    n.change_event = True if change_e else False
     n.save()
 
 """ ************** Site section ************** """

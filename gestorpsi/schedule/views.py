@@ -52,6 +52,42 @@ import locale
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
 
+def schedule_notify_email(occurrence, occurrence_confirmation):
+    """
+        to nofity by email a careprofessional if occurrence presence is 4 or 5
+    """
+    from django.template.loader import get_template
+    from django.core.mail import EmailMessage
+    from django.template import Context
+
+    to = []
+
+    if occurrence_confirmation.presence == 4:
+        title = _('Occurrence unmarked')
+    if occurrence_confirmation.presence == 5:
+        title = _('Occurrence rescheduled')
+
+    # emails address of all professional
+    for c in occurrence.event.referral.professional.all():
+        if c.person.notify.all()[0].change_event:
+            for e in c.person.emails.all():
+                if not e.email in to:
+                    to.append(e.email)
+
+    if to:
+        text = Context({'event':occurrence, 'title':title, 'client': occurrence.event.referral.client.all()[0], 'professional': occurrence.event.referral.professional.all()[0]})
+        template = get_template("schedule/schedule_notify_careprofessional.html").render(text)
+        msg = EmailMessage()
+        msg.subject = u"GestorPsi - Consulta alterada."
+        msg.content_subtype = 'html'
+        msg.encoding = "utf-8"
+        msg.body = template
+        msg.to = to
+        msg.send()
+
+    return True
+
+
 def _access_check_by_occurrence(request, occurrence):
     from gestorpsi.client.views import _access_check
     denied_to_read = None
@@ -87,47 +123,6 @@ def schedule_occurrence_listing(request, year=1, month=1, day=None, template='sc
 @permission_required_with_403('schedule.schedule_list')
 def schedule_occurrence_listing_today(request, template='schedule/schedule_events.html'):
     return schedule_occurrence_listing(request, datetime.now().strftime('%Y'), datetime.now().strftime('%m'), datetime.now().strftime('%d'))
-
-
-def schedule_notify_email(object=False):
-    '''
-        Sendmail to client after save event at schedule
-        object = Occurrence()
-    '''
-    from django.template.loader import get_template
-    from django.core.mail import EmailMessage
-    from django.template import Context
-
-    if object:
-        to = []
-
-        # emails address of client
-        for c in object.event.referral.client.all():
-            for e in c.person.emails.all():
-                if not e.email in to:
-                    to.append(e.email)
-
-        # emaisl address of professional
-        for c in object.event.referral.professional.all():
-            for e in c.person.emails.all():
-                if not e.email in to:
-                    to.append(e.email)
-
-        if to:
-            text = Context({'client': object.event.referral.client.all()[0], 'professional': object.event.referral.professional.all()[0]})
-            template = get_template("client/client_schedule_email.html").render(text)
-
-            msg = EmailMessage()
-            msg.subject = u"GestorPsi - Consulta marcada"
-            msg.content_subtype = 'html'
-            msg.encoding = "utf-8"
-            msg.body = template
-            msg.to = to
-            msg.send()
-
-            return True
-
-    return False
 
 
 @permission_required_with_403('schedule.schedule_write')
@@ -506,7 +501,7 @@ def occurrence_confirmation_form(
     '''
 
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
-    schedule_notify_email(occurrence)
+    #schedule_notify_email(occurrence)
     receive_list = []
     
     if not occurrence.scheduleoccurrence.was_confirmed():
@@ -519,11 +514,11 @@ def occurrence_confirmation_form(
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
     try:
-        occurrence_confirmation = OccurrenceConfirmation.objects.get(pk = occurrence.occurrenceconfirmation.id)
+        occurrence_confirmation = OccurrenceConfirmation.objects.get(pk=occurrence.occurrenceconfirmation.id)
     except:
         occurrence_confirmation = None
     
-    object = get_object_or_None(Client, pk = client_id, person__organization=request.user.get_profile().org_active)
+    object = get_object_or_None(Client, pk=client_id, person__organization=request.user.get_profile().org_active)
 
     from gestorpsi.client.views import _access_check_referral_write
     denied_to_write = None
@@ -570,13 +565,15 @@ def occurrence_confirmation_form(
             occurrence.annotation = request.POST['occurrence_annotation']
             occurrence.save()
 
+            # sendmail for careprofessional when presence is 4 or 5
+            if occurrence_confirmation.presence == 4 or occurrence_confirmation.presence == 5 :
+                schedule_notify_email(occurrence, occurrence_confirmation)
+
             messages.success(request, _('Occurrence confirmation updated successfully'))
             return http.HttpResponseRedirect(redirect_to or request.path)
 
         else:
-
-            form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility=2, lendable=True) | Q(place =  occurrence.room.place, mobility=2, lendable=False))]
-
+            form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility=2, lendable=True) | Q(place = occurrence.room.place, mobility=2, lendable=False))]
             messages.error(request, _(u'Campo inválido ou obrigatório'))
 
     # not request.POST

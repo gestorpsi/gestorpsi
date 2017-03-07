@@ -62,10 +62,12 @@ emails addresses to receive notify
             <!-- if professional -->
             {% if object.person.is_careprofessional %}
                 <label>Resumo das consultas um (1) dia antes<input type="checkbox" class="big" name="notify_resume_daily_event" {% if notify.resume_daily_event %} checked {% endif %} /></label>
+                <label>Altera&ccedil;&atilde;o na consulta quando desmarcado ou remarcado<input type="checkbox" class="big" name="notify_change_event" {% if notify.change_event %} checked {% endif %} /></label>
             {% endif %}
         {% else %}
             <label>Lembrar da consulta um (1) dia antes<input type="checkbox" class="big" name="notify_client_event" checked /></label>
             <label>Resumo das consultas um (1) dia antes<input type="checkbox" class="big" name="notify_resume_daily_event" checked /></label>
+            <label>Altera&ccedil;&atilde;o na consulta quando desmarcado ou remarcado<input type="checkbox" class="big" name="notify_change_event" checked /></label>
         {% endif %}
 
 </fieldset>

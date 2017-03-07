@@ -377,6 +377,7 @@ def form(request, object_id=False, is_company=False):
                                     'emails' : object.person.emails.all(),
                                     'websites' : object.person.sites.all(),
                                     'ims' : object.person.instantMessengers.all(),
+                                    'notify' : None if not object.person.notify.all() else object.person.notify.all()[0],
                                     'PhoneTypes': PhoneType.objects.all(), 
                                     'AddressTypes': AddressType.objects.all(), 
                                     'EmailTypes': EmailType.objects.all(), 

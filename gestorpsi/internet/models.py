@@ -32,8 +32,8 @@ class Notify(models.Model):
         Email notification
     """
     id = UuidField(primary_key=True)
-    notify_client_event = models.BooleanField(default=True)
-    notify_resume_daily_event = models.BooleanField(default=True)
+    client_event = models.BooleanField(default=True)
+    resume_daily_event = models.BooleanField(default=True)
 
     # Generic Relation
     content_type = models.ForeignKey(ContentType)

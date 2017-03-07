@@ -54,15 +54,20 @@ emails addresses to receive notify
 <fieldset>
         <legend>{% trans "Notifica&ccedil;&atilde;o por email" %} (Todos os e-mails cadastrados receberam.)</legend>
 
-        <!-- if client -->
-        {% if object.person.is_client %}
-            <label>Lembrar da consulta um (1) dia antes<input type="checkbox" class="big" name="notify_client_event" {% if object.person.notify.notify_client_event %} checked {% endif %} /></label>
+        {% if object.person %}
+            <!-- if client -->
+            {% if object.person.is_client %}
+                <label>Lembrar da consulta um (1) dia antes<input type="checkbox" class="big" name="notify_client_event" {% if notify.client_event %} checked {% endif %} /></label>
+            {% endif %}
+            <!-- if professional -->
+            {% if object.person.is_careprofessional %}
+                <label>Resumo das consultas um (1) dia antes<input type="checkbox" class="big" name="notify_resume_daily_event" {% if notify.resume_daily_event %} checked {% endif %} /></label>
+            {% endif %}
+        {% else %}
+            <label>Lembrar da consulta um (1) dia antes<input type="checkbox" class="big" name="notify_client_event" checked /></label>
+            <label>Resumo das consultas um (1) dia antes<input type="checkbox" class="big" name="notify_resume_daily_event" checked /></label>
         {% endif %}
 
-        <!-- if professional -->
-        {% if object.person.is_careprofessional %}
-            <label>Resumo das consultas um (1) dia antes<input type="checkbox" class="big" name="notify_resume_daily_event" {% if object.person.notify.notify_resume_daily_event %} checked {% endif %} /></label>
-        {% endif %}
 </fieldset>
 
 <!--

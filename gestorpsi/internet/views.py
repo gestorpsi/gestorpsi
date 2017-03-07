@@ -43,12 +43,6 @@ def email_delete(ids, emails):
         if (not len(emails[i]) and len(ids[i])):
             Email.objects.get(pk=ids[i]).delete()
 
-#def email_save(object, ids, emails, emails_type):
-#    email_delete(ids, emails)
-#    for email in email_list(ids, emails, emails_type):
-#        if not is_equal_email(email):
-#            email.content_object = object
-#            email.save()
 
 def email_save(object, ids, emails, emails_type):
     object.emails.all().delete()
@@ -57,21 +51,18 @@ def email_save(object, ids, emails, emails_type):
         email.save()
 
 
-def notify_save(object, client_event=False, professional_resume=False):
+def notify_save(object, client_e=False, resume_d=False):
     """
         object : Person()
     """
+    if object.notify.all():
+        n = object.notify.all()[0]
+    else:
+        n = Notify(content_object=object)
 
-    notify = Notify()
-
-    # update or new
-    notify.notify_client_event = True if client_event else False
-    notify.notify_resume_daily_event = True if professional_resume else False
-    notify.content_object = object
-    notify.object_id = object.id
-    notify.save()
-
-    object.save()
+    n.client_event = True if client_e else False
+    n.resume_daily_event = True if resume_d else False
+    n.save()
 
 """ ************** Site section ************** """
 def is_equal_site(site):

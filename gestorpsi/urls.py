@@ -55,7 +55,7 @@ urlpatterns = patterns('',
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT, 'show_indexes': False}),
     (r'^profile/', include('gestorpsi.profile.urls')),
     (r'^util/', include('gestorpsi.util.urls')),
-    (r'^chaining/', include('smart_selects.urls')),
+    # (r'^chaining/', include('smart_selects.urls')),
     (r'^sentry/', include('sentry.web.urls')),
     (r'^gcm/', include('gestorpsi.gcm.urls')),
 )

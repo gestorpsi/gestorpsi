@@ -137,7 +137,7 @@ def index(request, deactive = False):
     return render_to_response('client/client_list.html', locals(), context_instance=RequestContext(request))
 
 # client home
-@permission_required_with_403('client.client_read')
+@permission_required_with_403('client.client_write')
 def home(request, object_id=None):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
 
@@ -167,7 +167,7 @@ def home(request, object_id=None):
                                         context_instance=RequestContext(request)
                             )
 
-@permission_required_with_403('client.client_read')
+@permission_required_with_403('client.client_add')
 def add(request):
     if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
         msg = _("There's no Service created yet. Please, create one before access Client, ") + " <a href='/service/add'> clique aqui.</a>"
@@ -395,7 +395,7 @@ def form(request, object_id=''):
                               context_instance=RequestContext(request)
                               )
 
-@permission_required_with_403('client.client_read')
+@permission_required_with_403('client.client_add')
 def add_company(request, object_id=''):
     object = Client() if not object_id else get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
 

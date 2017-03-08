@@ -152,7 +152,7 @@ def list(request, page = 1, initial = None, filter = None, deactive=False, filte
 
     return HttpResponse(simplejson.dumps(array, sort_keys=True), mimetype='application/json')
 
-@permission_required_with_403('contact.contact_read')
+@permission_required_with_403('contact.contact_write')
 def contact_organization_form(request, object_id = None):
     object = get_object_or_None(Organization, pk=object_id) or Organization()
 
@@ -192,7 +192,7 @@ def contact_organization_form(request, object_id = None):
                                      context_instance=RequestContext(request)
                                      )
 
-@permission_required_with_403('contact.contact_read')
+@permission_required_with_403('contact.contact_write')
 def contact_professional_form(request, object_id = None):
     object = get_object_or_None(CareProfessional, pk=object_id) or CareProfessional()
     organizations = Organization.objects.filter(organization=request.user.get_profile().org_active, visible=True)

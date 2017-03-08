@@ -55,7 +55,7 @@ class Person(models.Model):
     user = models.ForeignKey(User, editable=False, default=threadlocals.get_current_user) # the register owner
     name = models.CharField(max_length=50)
     nickname = models.CharField(max_length=50, null=True, blank=True)
-    photo = models.CharField(max_length=100)
+    photo = models.ImageField(upload_to='Imagens', verbose_name=_("Imagens"))
     birthDate = models.DateField(null=True)
     birthPlace = models.ForeignKey(City, null=True)
     birthDateSupposed = models.BooleanField(default=False)

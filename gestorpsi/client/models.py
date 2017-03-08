@@ -287,6 +287,7 @@ class Client(models.Model):
             ("client_add", "Can add clients"),
             ("client_change", "Can change clients"),
             ("client_list", "Can list clients"),
+            ("client_read", "Can read client"),
             ("client_write", "Can write clients"),
         )
 

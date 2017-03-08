@@ -25,11 +25,44 @@ GNU General Public License for more details.
 {% endblock %}
 
 {% block core %}
-<script type="text/javascript" src="/media/js/gestorpsi.schedule.js"></script>
-<script type="text/javascript" src="/media/js/gestorpsi.schedule.filter.js"></script>
 
 <div class="schedule client">
-    {% include "tags/schedule_daily.html" %}
+    <script type="text/javascript" src="/media/js/gestorpsi.schedule.js"></script>
+    <script type="text/javascript" src="/media/js/gestorpsi.schedule.filter.js"></script>
+    <a id="calendar_link" href="#"></a>
+    <div id="mini_calendar" style="display:none;"></div>
+    <div id="schedule_header" class="schedule_header_client">
+        {% include "schedule/schedule_header.html" %}
+    </div>
+    <div id="daily" class="schedule">
+        <input type="hidden" name="referral" value="{{ referral.id }}" />
+        <input type="hidden" name="client" value="{{ object.id }}" />
+        <input type="hidden" name="occurrences" value="{{ occurrences }}" />
+
+        <input type="hidden" name="restrict_schedule" value="{{ restrict_schedule }}" />
+        <table class="schedule_results daily zebra" border="0" cellspacing="0" cellpadding="0" style="margin-top:120px;">
+            <tr>
+                <th class="schedule"></th>
+                {% for room in place.room_set.all %}
+                    {% if room.active %}
+                        <th room="{{ room.id }}" place="{{ place.id }}">{{ room }}</th>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% for tm,cells in timeslots %}
+            <tr hour="{{ tm|date:"H:i:s" }}">
+                <td class="hour">{{ tm|date:"H:i" }}</td>
+                {% for room in place.room_set.all %}
+                    {% if room.active %}
+                        <td class="clean" room="{{ room.id }}" place="{{ place.id }}">
+                            <a href="#" class="book">{% trans "Free" %}</a>
+                        </td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </div>
 
 <div id="sidebar" class="sidebar sidebar_client_schedule">

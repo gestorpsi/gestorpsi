@@ -98,7 +98,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False,
         mimetype='application/json')
 
 
-@permission_required_with_403('place.place_read')
+@permission_required_with_403('place.place_write')
 def form(request, object_id=None):
 
     if object_id:
@@ -274,7 +274,7 @@ def room_list(request, page=1, initial=None,
                         mimetype='application/json')
 
 
-@permission_required_with_403('place.place_read')
+@permission_required_with_403('place.place_write')
 def room_form(request, object_id=None):
     if object_id:
         object = get_object_or_404(

@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from gestorpsi.authentication.views import gestorpsi_login
 
 from gestorpsi.settings import MEDIA_ROOT
+from django.conf.urls.static import static
 
 admin.autodiscover()
 
@@ -54,7 +55,7 @@ urlpatterns = patterns('',
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT, 'show_indexes': False}),
     (r'^profile/', include('gestorpsi.profile.urls')),
     (r'^util/', include('gestorpsi.util.urls')),
-    (r'^chaining/', include('smart_selects.urls')),
+    # (r'^chaining/', include('smart_selects.urls')),
     (r'^sentry/', include('sentry.web.urls')),
     (r'^gcm/', include('gestorpsi.gcm.urls')),
 )
@@ -63,3 +64,6 @@ if 'rosetta' in settings.INSTALLED_APPS:
     urlpatterns += patterns('',
         url(r'^rosetta/', include('rosetta.urls')),
     )
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

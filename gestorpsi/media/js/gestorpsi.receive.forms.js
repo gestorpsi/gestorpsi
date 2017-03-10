@@ -20,6 +20,13 @@ $(document).ready(function() {
     // http://plentz.github.io/jquery-maskmoney/
     $('input[id*="off"]').maskMoney({ thousands:'', decimal:',', allowZero:true });
 
+    // payment day - open mini-calendar
+    var schedule_options = {
+        dateFormat: 'yy-mm-dd',
+        changeYear: true,
+        }
+    $('input[id*="payment_date"]').datepicker(schedule_options);
+
     /*
      * show and hide date 
      */
@@ -80,6 +87,7 @@ $(document).ready(function() {
                     $('input#id_receive_form---TEMPID999FORM-name').val(this.name);
                     $('input#id_receive_form---TEMPID999FORM-price').val(this.price);
                     $('input#id_receive_form---TEMPID999FORM-off').val('0,00');
+                    $('input#id_receive_form---TEMPID999FORM-payment-date').val('31/12/2000'); ////////
                     $('input#id_receive_form---TEMPID999FORM-total').val(this.price);
                     $('label[for=TEMPID999FORM-pw] ul').html(this.payment_way);
                 });
@@ -88,6 +96,7 @@ $(document).ready(function() {
             $('input#id_receive_form---TEMPID999FORM-name').val('');
             $('input#id_receive_form---TEMPID999FORM-price').val('');
             $('input#id_receive_form---TEMPID999FORM-off').val('0,00');
+            $('input#id_receive_form---TEMPID999FORM-payment-date').val('31/12/2000'); ////////
             $('input#id_receive_form---TEMPID999FORM-total').val('');
             $('label[for=TEMPID999FORM-pw] ul').html("");
         }

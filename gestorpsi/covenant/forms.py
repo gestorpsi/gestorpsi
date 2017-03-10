@@ -23,6 +23,7 @@ class CovenantForm(forms.ModelForm):
     category = forms.ChoiceField( required=True, widget=forms.Select( attrs={'class':'extrabig'} ), choices=CATEGORY)
     charge = forms.ChoiceField( required=True, widget=forms.Select( attrs={'class':'extrabig'} ), choices=CHARGE)
     price = forms.DecimalField(max_digits=10, decimal_places=2, localize=True, widget=forms.TextInput( attrs={'class':'big','required':'required','placeholder':'1.234,56', 'id':"numbersOnly"} ))
+    payment_date = forms.DateTimeField()
 
     class Meta:
         model = Covenant

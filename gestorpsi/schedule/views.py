@@ -388,7 +388,7 @@ def occurrence_confirmation_form_group(
 
             covenant = Covenant.objects.get( pk=request.POST.get('select_covenant_receive'), organization=request.user.get_profile().org_active ) 
 
-            pfx = 'receive_form---TEMPID999FORM' # hardcore Jquery 
+            pfx = 'receive_form---TEMPID999FORM' # hardcode Jquery 
             form_receive_new = ReceiveFormNew(request.POST, prefix=pfx)
 
             if form_receive_new.is_valid():
@@ -419,7 +419,7 @@ def occurrence_confirmation_form_group(
 
 
         # occurrence
-        form = form_class(request.POST, instance = occurrence_confirmation, initial={ 'device':initial_device, })
+        form = form_class(request.POST, instance=occurrence_confirmation, initial={ 'device':initial_device, })
 
         if form.is_valid():
 

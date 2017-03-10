@@ -16,7 +16,7 @@
 
 import calendar
 from dateutil import parser
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import datetime as datetime_
 
 from django import http
@@ -387,9 +387,8 @@ def occurrence_confirmation_form_group(
         if not request.POST.get('select_covenant_receive') == '000' :
 
             covenant = Covenant.objects.get( pk=request.POST.get('select_covenant_receive'), organization=request.user.get_profile().org_active ) 
-
             pfx = 'receive_form---TEMPID999FORM' # hardcode Jquery 
-            form_receive_new = ReceiveFormNew(request.POST, prefix=pfx)
+            form_receive_new = ReceiveFormNew(request.POST, prefix=pfx, initial={ 'payment_date': date.today() })
 
             if form_receive_new.is_valid():
 
@@ -409,10 +408,12 @@ def occurrence_confirmation_form_group(
         # update payments, not required.
         for x in Receive.objects.filter(occurrence=occurrence):
 
-            pfx = 'receive_form---%s' % x.id # hardcore Jquery 
-            form_receive = ReceiveFormUpdate(request.POST, instance=x, prefix=pfx)
-
-            receive_list.append(form_receive)
+            pfx = 'receive_form---%s' % x.id # hardcode Jquery 
+            # new! fill payment date today
+            if not x.payment_date:
+                receive_list.append( ReceiveFormUpdate(request.POST, instance=x, prefix=pfx, initial={'payment_date':date.today()}) )
+            else:
+                receive_list.append( ReceiveFormUpdate(request.POST, instance=x, prefix=pfx) )
 
             if form_receive.is_valid():
                 fp = form_receive.save()
@@ -538,7 +539,7 @@ def occurrence_confirmation_form(
 
         for x in Receive.objects.filter(occurrence=occurrence):
 
-            pfx = 'receive_form---%s' % x.id # hardcore Jquery 
+            pfx = 'receive_form---%s' % x.id # hardcode Jquery 
             form_receive = ReceiveFormUpdate(request.POST, instance=x, prefix=pfx)
 
             receive_list.append(form_receive)
@@ -594,7 +595,12 @@ def occurrence_confirmation_form(
         # payment form
         for x in Receive.objects.filter(occurrence=occurrence):
             pfx = 'receive_form---%s' % x.id
-            receive_list.append( ReceiveFormUpdate(instance=x, prefix=pfx) )
+
+            # new! fill payment date today
+            if not x.payment_date:
+                receive_list.append( ReceiveFormUpdate(instance=x, prefix=pfx, initial={ 'payment_date':date.today() }) )
+            else:
+                receive_list.append( ReceiveFormUpdate(instance=x, prefix=pfx) )
 
     return render_to_response(
         template,

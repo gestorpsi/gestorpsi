@@ -26,6 +26,9 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.db.models import Q
 from django.contrib import messages
+from django.template.loader import get_template
+from django.core.mail import EmailMessage
+from django.template import Context
 
 from swingtime.utils import create_timeslot_table, time_delta_total_seconds
 
@@ -56,11 +59,9 @@ def schedule_notify_email(occurrence, occurrence_confirmation):
     """
         to nofity by email a careprofessional if occurrence presence is 4 or 5
     """
-    from django.template.loader import get_template
-    from django.core.mail import EmailMessage
-    from django.template import Context
-
     to = []
+    oc_list = []
+    oc_list.append(occurrence)
 
     if occurrence_confirmation.presence == 4:
         title = _('Occurrence unmarked')
@@ -75,8 +76,10 @@ def schedule_notify_email(occurrence, occurrence_confirmation):
                     to.append(e.email)
 
     if to:
-        text = Context({'event':occurrence, 'title':title, 'client': occurrence.event.referral.client.all()[0], 'professional': occurrence.event.referral.professional.all()[0]})
+        # render template
+        text = Context({'oc_list':oc_list, 'title':title}) #, 'client': occurrence.event.referral.client.all()[0], 'professional': occurrence.event.referral.professional.all()[0]})
         template = get_template("schedule/schedule_notify_careprofessional.html").render(text)
+        # sendmail
         msg = EmailMessage()
         msg.subject = u"GestorPsi - Consulta alterada."
         msg.content_subtype = 'html'
@@ -566,9 +569,10 @@ def occurrence_confirmation_form(
             occurrence.annotation = request.POST['occurrence_annotation']
             occurrence.save()
 
-            # sendmail for careprofessional when presence is 4 or 5
-            if occurrence_confirmation.presence == 4 or occurrence_confirmation.presence == 5 :
-                schedule_notify_email(occurrence, occurrence_confirmation)
+            ## sendmail for careprofessional when presence is 4 or 5
+            if hasattr(occurrence_confirmation,'presence'):
+                if occurrence_confirmation.presence == 4 or occurrence_confirmation.presence == 5 :
+                    schedule_notify_email(occurrence, occurrence_confirmation)
 
             messages.success(request, _('Occurrence confirmation updated successfully'))
             return http.HttpResponseRedirect(redirect_to or request.path)

@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-    script used to send email for professional
-    resume of events of next day
+    script used to send the resume of events of day for professional
 '''
 
 import sys
@@ -17,23 +16,18 @@ locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
 sys.path.append('..')
 
-from dateutil.relativedelta import relativedelta
 from datetime import date, timedelta
-
 from django.core.mail import EmailMessage
-from django.core.mail import send_mail
+from django.template.loader import get_template
+from django.template import Context
 
-from gestorpsi.settings import URL_HOME, URL_APP, SIGNATURE
-from gestorpsi.organization.models import Organization 
-from gestorpsi.gcm.models.invoice import Invoice
+from gestorpsi.schedule.models import Occurrence
 
-from gestorpsi.schedule.models import *
-
-# check if has events of next day for all professional
+# check if exist events of next day for all professionals
 dt = date.today() + timedelta(1) # correct
-dt = date.today() - timedelta(5) # test
 
 # main code
+week_days = (u'Segunda-feira', u'Terça-feira', u'Quarta-feira', u'Quinta-feira', u'Sexta-feira', u'Sábado', u'Domingo')
 d = dt.day
 m = dt.month
 y = dt.year
@@ -41,41 +35,38 @@ y = dt.year
 # sent professional list
 sent = []
 
-# find events of next day
-#for o in Occurrence.objects.filter(start_time__year=y, start_time__month=m, start_time__day=d): # correct
-for o in Occurrence.objects.filter(start_time__year=y, start_time__month=m, start_time__day=d, event__referral__organization__id='bcbfdb8e-1641-4478-9e7c-3e0f1befbede'): # test
-    """
-        profissional quer receber o resumo do dia?
-    """
+# all occurrence of next day
+for o in Occurrence.objects.filter(start_time__year=y, start_time__month=m, start_time__day=d): # correct
+#for o in Occurrence.objects.filter(start_time__year=y, start_time__month=m, start_time__day=d, event__referral__organization__id='bcbfdb8e-1641-4478-9e7c-3e0f1befbede'): # test
+    # for each professional
     for p in o.event.referral.professional.all():
-        events = []
-        to = []
 
+        to = []
+        oc_list = [] # occurrence list
+
+        # professional whant to receive resume occurrences of next day by email?
         if p.person.notify.all() and p.person.notify.all()[0].resume_daily_event and p not in sent:
-            sent.append(p) # add professional
+            sent.append(p) # to check professional, avoid duplicate
 
             for x in p.person.emails.all():
                 to.append(u'%s' % x.email)
 
             # send email
             if to:
-                text = "GestorPsi - Resumo dos eventos para o dia %s\n\n" % dt
+                title = u"GestorPsi - Resumo dos eventos para %s, %s.\n\n" % (week_days[date.today().weekday()], dt.strftime('%d %b %Y') )
+
                 # render occurrence
-                for x in Occurrence.objects.filter(start_time__year=y, start_time__month=m, start_time__day=d, event__referral__professional=p).order_by('-start_time'):
-                    text += "%s - %s\n" % (x.start_time, x)
-               
-                """
-                    text/body
-                    1 = url pagamento
-                    2 = data vencimento assinatura atual
-                    3 = URL contato
-                    4 = assinatura gestorPSI
-                """
-                #text = u"Bom dia.\n\nSua próxima assinatura já está disponível para pagamento em %s/organization/signature/\nSua assinatura atual vence dia %s. Evite ter o seu plano suspenso, pague até esta data.\n\nQualquer dúvida entre em contato pelo link %s/contato/\n\n" % ( URL_APP , end.strftime("%d %B %Y, %A") , URL_HOME )
-                #text += u"Quer suspender sua assinatura? Clique aqui %s/organization/suspension/\n\n%s" % ( URL_APP, SIGNATURE )
+                for x in Occurrence.objects.filter(start_time__year=y, start_time__month=m, start_time__day=d, event__referral__professional=p).order_by('start_time'):
+                    oc_list.append(x)
+
+                # render html email
+                text = Context({'oc_list':oc_list, 'title':title})
+                template = get_template("schedule/schedule_notify_careprofessional.html").render(text)
+                # sendmail
                 msg = EmailMessage()
+                msg.content_subtype = 'html'
+                msg.encoding = "utf-8"
+                msg.subject = u"GestorPsi - Resumo diário dos eventos."
+                msg.body = template
                 msg.to = to
-                msg.body = text
-                msg.subject = u'GestorPsi - Resumo dos eventos'
-                print '---- SENDMAIL '
                 msg.send()

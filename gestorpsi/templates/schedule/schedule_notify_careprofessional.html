@@ -23,10 +23,14 @@ GNU General Public License for more details.
 {% block registration %}
 
     <h2>{{ title }}</h2>
-    <b>Cliente</b> {{ client.person.name }}
-    <b>Profissional</b> {{ professional.person.name }}
-    <b>Consulta</b> {{ event }}
-    <br />
+
+    {% for o in oc_list %}
+        <b>{{ o.start_time|date:"H:i" }}</b>
+        {% for x in o.event.referral.client.all %}{{ x.person.name }}{% endfor %}
+        <b>{% for x in o.event.referral.professional.all %}{{ x.person.name }}{% endfor %}</b>
+        {% if o.scheduleoccurrence.occurrenceconfirmation.get_presence_display %}<b>***{{ o.scheduleoccurrence.occurrenceconfirmation.get_presence_display }}***</b>{% endif %}
+        <br />
+    {% endfor %}
     <br />
     <a href="http://gestorpsi.com.br" target="_blank">GestorPsi.com.br</a>
 

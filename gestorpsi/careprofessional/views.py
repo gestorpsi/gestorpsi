@@ -110,7 +110,7 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
                                     'emails' : None if not hasattr(object, 'person') else object.person.emails.all(),
                                     'websites' : None if not hasattr(object, 'person') else object.person.sites.all(),
                                     'ims' : None if not hasattr(object, 'person') else object.person.instantMessengers.all(),
-                                    'notify' : None if not object.person.notify.all() else object.person.notify.all()[0],
+                                    'notify' : None if not object.person.notify.filter(org_id=request.user.profile.org_active.id) else object.person.notify.get(org_id=request.user.profile.org_active.id),
                                     'PROFESSIONAL_AREAS': Profession.objects.all(),
                                     'WorkPlacesTypes': Place.objects.active().filter(organization = request.user.get_profile().org_active.id),
                                     'countries': Country.objects.all(),

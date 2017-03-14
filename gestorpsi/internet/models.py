@@ -40,6 +40,7 @@ class Notify(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
+    org_id = models.CharField(max_length=36, null=False, blank=False)
 
     def __unicode__(self):
         return self.id

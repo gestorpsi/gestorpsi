@@ -27,10 +27,20 @@ GNU General Public License for more details.
     {% for o in oc_list %}
         <b>{{ o.start_time|date:"H:i" }}</b>
         {% for x in o.event.referral.client.all %}{{ x.person.name }}{% endfor %}
-        <b>{% for x in o.event.referral.professional.all %}{{ x.person.name }}{% endfor %}</b>
         {% if o.scheduleoccurrence.occurrenceconfirmation.get_presence_display %}<b>***{{ o.scheduleoccurrence.occurrenceconfirmation.get_presence_display }}***</b>{% endif %}
         <br />
     {% endfor %}
+
+    <br />
+    <b>{{ org.name }}</b>
+
+    <br />
+    {% for p in org.phones.all %}{{ p }} - {% endfor %}
+
+    <br />
+    {% for p in org.address.all %}{{ p.get_text_ }} - {% endfor %}
+
+    <br />
     <br />
     <a href="http://gestorpsi.com.br" target="_blank">GestorPsi.com.br</a>
 

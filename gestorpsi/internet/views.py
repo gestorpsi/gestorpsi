@@ -51,14 +51,16 @@ def email_save(object, ids, emails, emails_type):
         email.save()
 
 
-def notify_save(object, client_e=False, resume_d=False, change_e=False):
+def notify_save(object, org, client_e=False, resume_d=False, change_e=False):
     """
         object : Person()
+           org : Organization()
     """
-    if object.notify.all():
-        n = object.notify.all()[0]
+    if object.notify.filter(org_id=org.id):
+        n = object.notify.get(org_id=org.id)
     else:
         n = Notify(content_object=object)
+        n.org_id = org.id
 
     n.client_event = True if client_e else False
     n.resume_daily_event = True if resume_d else False

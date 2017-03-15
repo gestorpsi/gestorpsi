@@ -107,7 +107,7 @@ def person_save(request, person):
     email_save(person, request.POST.getlist('email_id'), request.POST.getlist('email_email'), request.POST.getlist('email_type'))
     site_save(person, request.POST.getlist('site_id'), request.POST.getlist('site_description'), request.POST.getlist('site_site'))
     im_save(person, request.POST.getlist('im_id'), request.POST.getlist('im_identity'), request.POST.getlist('im_network'))
-    notify_save(person, request.POST.get("notify_client_event"), request.POST.get("notify_resume_daily_event"), request.POST.get('notify_change_event') )
+    notify_save(person, request.user.profile.org_active, request.POST.get("notify_client_event"), request.POST.get("notify_resume_daily_event"), request.POST.get('notify_change_event') )
 
     return person
 

@@ -105,4 +105,39 @@ class Address(models.Model):
     def revision(self):
         return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
 
+    # return full address in plain text
+    def get_text_(self):
+        r = ""
+        if self.addressPrefix:
+            r += u'%s' % self.addressPrefix
+            
+        if self.addressLine1:
+            r += u' %s' % self.addressLine1
+            
+        if self.addressNumber:
+            r += u' %s' % self.addressNumber
+             
+        if self.addressLine2:
+            r += u' %s' % self.addressLine2
+
+        if self.zipCode:
+            r += u' CEP %s' % self.zipCode
+            
+        if self.neighborhood:
+            r += u' - %s' % self.neighborhood
+            
+        if self.city:
+            r += u' - %s' % self.city
+            
+        if hasattr(self.city, 'state'):
+            r += u' / %s' % self.city.state.shortName
+                
+        if self.city.state.country:
+            r += u' / %s' % self.city.state.country
+            
+        if self.addressType:
+            r += u' (%s)' % self.addressType
+
+        return r
+
 reversion.register(Address)

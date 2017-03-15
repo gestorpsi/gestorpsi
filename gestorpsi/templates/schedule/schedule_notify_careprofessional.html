@@ -27,7 +27,7 @@ GNU General Public License for more details.
     {% for o in oc_list %}
         <b>{{ o.start_time|date:"H:i" }}</b>
         {% for x in o.event.referral.client.all %}{{ x.person.name }}{% endfor %}
-        {% if o.scheduleoccurrence.occurrenceconfirmation.get_presence_display %}<b>***{{ o.scheduleoccurrence.occurrenceconfirmation.get_presence_display }}***</b>{% endif %}
+        {% if o.annotation %} - {{ o.annotation }}{% endif %}
         <br />
     {% endfor %}
 

@@ -55,7 +55,7 @@ import locale
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
 
-def schedule_notify_email(occurrence, occurrence_confirmation):
+def schedule_notify_email(org, occurrence, occurrence_confirmation):
     """
         to nofity by email a careprofessional if occurrence presence is 4 or 5
     """
@@ -69,19 +69,19 @@ def schedule_notify_email(occurrence, occurrence_confirmation):
         title = _('Occurrence rescheduled')
 
     # emails address of all professional
-    for c in occurrence.event.referral.professional.all():
-        if c.person.notify.all()[0].change_event:
-            for e in c.person.emails.all():
+    for p in occurrence.event.referral.professional.all():
+        if p.person.notify.all() and p.person.notify.get(org_id=org.id).change_event:
+            for e in p.person.emails.all():
                 if not e.email in to:
                     to.append(e.email)
 
     if to:
         # render template
-        text = Context({'oc_list':oc_list, 'title':title}) #, 'client': occurrence.event.referral.client.all()[0], 'professional': occurrence.event.referral.professional.all()[0]})
+        text = Context({'oc_list':oc_list, 'title':title, 'org':org})
         template = get_template("schedule/schedule_notify_careprofessional.html").render(text)
         # sendmail
         msg = EmailMessage()
-        msg.subject = u"GestorPsi - Consulta alterada."
+        msg.subject = u"GestorPsi - %s" % title
         msg.content_subtype = 'html'
         msg.encoding = "utf-8"
         msg.body = template
@@ -505,7 +505,6 @@ def occurrence_confirmation_form(
     '''
 
     occurrence = get_object_or_404(ScheduleOccurrence, pk=pk, event__referral__service__organization=request.user.get_profile().org_active)
-    #schedule_notify_email(occurrence)
     receive_list = []
     
     if not occurrence.scheduleoccurrence.was_confirmed():
@@ -572,7 +571,7 @@ def occurrence_confirmation_form(
             ## sendmail for careprofessional when presence is 4 or 5
             if hasattr(occurrence_confirmation,'presence'):
                 if occurrence_confirmation.presence == 4 or occurrence_confirmation.presence == 5 :
-                    schedule_notify_email(occurrence, occurrence_confirmation)
+                    schedule_notify_email(request.user.get_profile().org_active, occurrence, occurrence_confirmation)
 
             messages.success(request, _('Occurrence confirmation updated successfully'))
             return http.HttpResponseRedirect(redirect_to or request.path)

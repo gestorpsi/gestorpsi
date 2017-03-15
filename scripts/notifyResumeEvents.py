@@ -5,16 +5,7 @@
     script used to send the resume of events of day for professional
 '''
 
-import sys
-import locale
-from os import environ
-
-reload(sys)
-sys.setdefaultencoding("utf-8")
-locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
-
-environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
-sys.path.append('..')
+import header
 
 from datetime import date, timedelta
 from django.core.mail import EmailMessage

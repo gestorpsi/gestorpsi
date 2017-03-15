@@ -81,7 +81,4 @@ def invoice_sendmail():
 
 
 if __name__ == '__main__':
-    print
-    print "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # "
-    print "# Invoice - Send Mail"
     invoice_sendmail()

@@ -101,6 +101,12 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
     if not object.active:
         messages.info(request,  _('This professional is not enabled.'))
 
+    def notify_set():
+        if hasattr(object,'person') and object.person.notify.all():
+            return object.person.notify.get(org_id=request.user.profile.org_active.id)
+        else:
+            return None
+
     return render_to_response(template_name, {
                                     'object': object,
                                     'student_form': student_form if is_student else None,
@@ -110,7 +116,7 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
                                     'emails' : None if not hasattr(object, 'person') else object.person.emails.all(),
                                     'websites' : None if not hasattr(object, 'person') else object.person.sites.all(),
                                     'ims' : None if not hasattr(object, 'person') else object.person.instantMessengers.all(),
-                                    'notify' : None if not hasattr(object,'person') else object.person.notify.get(org_id=request.user.profile.org_active.id),
+                                    'notify' : notify_set(),
                                     'PROFESSIONAL_AREAS': Profession.objects.all(),
                                     'WorkPlacesTypes': Place.objects.active().filter(organization = request.user.get_profile().org_active.id),
                                     'countries': Country.objects.all(),

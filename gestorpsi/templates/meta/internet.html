@@ -46,13 +46,12 @@ emails addresses
                         {% endfor %}
                 {% endif %}
         <a class="add_to_form"><span>{% trans "Add Email" %}</span></a>
-</fieldset>
 
-<!--
-emails addresses to receive notify
--->
-<fieldset>
-        <legend>{% trans "Notifica&ccedil;&atilde;o por email" %} (Todos os e-mails cadastrados receberam.)</legend>
+        <!--
+        emails addresses to receive notify
+        -->
+        <br />
+        <legend><b>{% trans "Notifica&ccedil;&atilde;o por email" %} (Todos os e-mails cadastrados receber&atilde;o)</b></legend>
 
         {% if object.person %}
             <!-- if client -->
@@ -69,7 +68,6 @@ emails addresses to receive notify
             <label>Resumo das consultas um (1) dia antes<input type="checkbox" class="big" name="notify_resume_daily_event" checked /></label>
             <label>Altera&ccedil;&atilde;o na consulta quando desmarcado ou remarcado<input type="checkbox" class="big" name="notify_change_event" checked /></label>
         {% endif %}
-
 </fieldset>
 
 <!--

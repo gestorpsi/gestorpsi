@@ -1,30 +1,33 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+    Copyright (C) 2008 GestorPsi
+     
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+"""
+
 '''
     script used to create monthly invoice
     create a new invoice for each organization
 '''
 
-import sys
-import locale
-from os import environ
-
-reload(sys)
-sys.setdefaultencoding("utf-8")
-locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
-
-environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
-sys.path.append('..')
+import header
 
 from dateutil.relativedelta import relativedelta
 from datetime import date, timedelta
 
 from django.core.mail import EmailMessage
-from django.core.mail import send_mail
 
-from gestorpsi.settings import URL_HOME, URL_APP, SIGNATURE
-from gestorpsi.organization.models import Organization 
+from gestorpsi.settings import URL_HOME, URL_APP, SIGNATURE, ADMINS_REGISTRATION
 from gestorpsi.gcm.models.invoice import Invoice
 
 # check all invoices that will be expire 10 days from today.
@@ -56,7 +59,6 @@ for x in Invoice.objects.filter(end_date=end, status__gt=0, organization__suspen
         i.save()
 
     to = [] # send mail to
-    bcc_list = ADMINS_REGISTRATION
 
     '''
         send mail just to user is_active = True
@@ -86,5 +88,5 @@ for x in Invoice.objects.filter(end_date=end, status__gt=0, organization__suspen
     msg.subject = u'Assinatura disponível para pagamento - gestorpsi.com.br'
     msg.body = text
     msg.to = to
-    msg.bcc = bcc
+    msg.bcc = ADMINS_REGISTRATION
     msg.send()

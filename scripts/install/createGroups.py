@@ -1,34 +1,33 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 """
 
 """
-Description:
-
-Create gestorpsi groups. To use after "syncdb"
-
+    Create gestorpsi groups. To use after "syncdb"
 """
 
+# level above
 import sys
 sys.path.append('..')
 
-from os import environ
+import header
 import re
-environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
+
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import Group, Permission, User
+from django.contrib.auth.models import Group, Permission
 from gestorpsi.settings import INSTALLED_APPS
 
 appnames = []

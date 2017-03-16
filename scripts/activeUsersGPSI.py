@@ -2,22 +2,11 @@
 # -*- coding: utf-8 -*-
 
 '''
-    script used to create next invoice
-    create a new invoice for each organization
+    show last login of user that used GPSI after date
 '''
 
-import sys
-import locale
-from os import environ
-
-reload(sys)
-sys.setdefaultencoding("utf-8")
-locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
-
-environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
-sys.path.append('..')
-
-from django.contrib.auth.models import *
+import header
+from django.contrib.auth.models import User
 
 checked_list = [] # list of checked organization
 

@@ -38,6 +38,7 @@ sys.path.append("/usr/lib/python2.7/dist-packages")
 path="/home/user/Desktop/dev/gestorpsi_github" 
 
 # append paths inside of project
+sys.path.append('..')
 sys.path.append("%s" % path)
 sys.path.append("%s/scripts" % path)
 sys.path.append("%s/gestorpsi" % path)

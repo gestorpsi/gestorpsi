@@ -1,0 +1,45 @@
+{% extends "core/main.html" %}
+
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+his program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Log in" %}{% endblock %}
+
+{% block registration %}
+
+    <h3>{{ title }}</h3>
+
+    <b>{{ oc.start_time|date:"l - j F Y" }} &aacute;s {{ oc.start_time|date:"H:i" }}</b>
+    <br />
+    {% for x in oc.event.referral.client.all %}{{ x.person.name }}{% endfor %}
+    <br />
+    {% for x in oc.event.referral.professional.all %}{{ x.person.name }}{% endfor %}
+
+    <br />
+    <br />
+    <b>{{ org.name }}</b>
+    <br />
+    {% for p in org.phones.all %}{{ p }} - {% endfor %}
+    <br />
+    {% for p in org.address.all %}{{ p.get_text_ }} - {% endfor %}
+
+    <br />
+    <br />
+    <a href="http://gestorpsi.com.br" target="_blank">GestorPsi.com.br</a>
+
+{% endblock %}

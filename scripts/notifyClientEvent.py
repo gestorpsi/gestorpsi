@@ -16,7 +16,7 @@ from django.template import Context
 from gestorpsi.schedule.models import Occurrence
 
 # check if exist events of next day for all professionals
-dt = date.today() + timedelta(2) # correct
+dt = date.today() + timedelta(1) # correct
 
 # main code
 week_days = (u'Segunda-feira', u'Terça-feira', u'Quarta-feira', u'Quinta-feira', u'Sexta-feira', u'Sábado', u'Domingo')
@@ -56,14 +56,14 @@ for oc in Occurrence.objects.filter(start_time__year=y, start_time__month=m, sta
     # send email if not empty list
     if to:
         # render html email
-        title = u"Lembrete da consulta"
+        title = u"Lembrete do atendimento"
         text = Context({'oc':oc, 'title':title, 'org':org})
         template = get_template("schedule/schedule_notify_client_event.html").render(text)
         # sendmail
         msg = EmailMessage()
         msg.content_subtype = 'html'
         msg.encoding = "utf-8"
-        msg.subject = u"GestorPsi - Lembrete da consulta."
+        msg.subject = u"GestorPsi - Lembrete do atendimento com %s." % oc.event.referral.professional.all()[0].person.name
         msg.body = template
         msg.to = to
 

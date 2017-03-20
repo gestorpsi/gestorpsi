@@ -25,7 +25,7 @@ import header
 from datetime import date, timedelta
 from django.core.mail import EmailMessage
 
-from gestorpsi.settings import URL_HOME, URL_APP, SIGNATURE, ADMINS_REGISTRATION, invoice_check_expiry
+from gestorpsi.settings import URL_HOME, URL_APP, SIGNATURE, ADMINS_REGISTRATION, INVOICE_CHECK_EXPIRY
 from gestorpsi.gcm.models.invoice import Invoice
 
 def invoice_sendmail():
@@ -34,7 +34,7 @@ def invoice_sendmail():
     invoice_list = [] # list of Invoice
 
     # check days before expiry
-    for d in invoice_check_expiry :
+    for d in INVOICE_CHECK_EXPIRY :
         # check all invoices that will be expire in 10 days.
         expiry = date.today() + timedelta(d) # corret
 

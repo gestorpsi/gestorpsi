@@ -20,7 +20,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.db import models
 
 from gestorpsi.util.uuid_field import UuidField
-from gestorpsi.client.models import Client
 from swingtime.models import Occurrence
 
 CHARGE = ( 
@@ -130,12 +129,6 @@ class Receive(models.Model):
         return r
 
 
-    def save(self, *args, **kwargs):
-        self.created = datetime.now()
-        # real save
-        super(Receive, self).save(*args, **kwargs)
-
-    
     def get_is_conclude_(self):
         '''
             is package or event? 

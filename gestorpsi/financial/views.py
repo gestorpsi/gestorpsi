@@ -14,6 +14,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from datetime import date
+
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
@@ -39,8 +41,10 @@ def receive_form(request, obj=False):
 
     # mount form
     else:
-        form = ReceiveFormUpdate(instance=obj, prefix=pfx)
-
+        if not obj.payment_date:
+            form = ReceiveFormUpdate(instance=obj, prefix=pfx, initial={ 'payment_date':date.today() })
+        else:
+            form = ReceiveFormUpdate(instance=obj, prefix=pfx)
 
     # mount form or not valid form
     return render_to_response( 'financial/financial_receive_form.html', { 

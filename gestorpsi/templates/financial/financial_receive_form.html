@@ -44,7 +44,7 @@ GNU General Public License for more details.
                         <input type="text" value="{{ obj.referral.client.all.0 }}" readonly class='big'>
                     </label>
 
-                    <label>Data<br />
+                    <label>Data lan&ccedil;amento<br />
                         <input type="text" value="{{ obj.created|date:"l, d F Y." }}" readonly class='big'>
                     </label>
 
@@ -69,12 +69,9 @@ GNU General Public License for more details.
 
             <!-- save buttom -->
             <div id="sidebar" class="sidebar_save">
-                {% if perms.place.place_write %}
-                    <div class="bg_blue">
-                        <input type="hidden" name="place" value="{{ object.id }}" />
-                        {% include "tags/save.html" %}
-                    </div>    
-                {% endif %}
+                <div class="bg_blue">
+                    {% include "tags/save_buttom_financial.html" %}
+                </div>
             </div>
 
             <div id="sidebar" class="sidebar_client">

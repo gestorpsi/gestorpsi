@@ -21,11 +21,11 @@ GNU General Public License for more details.
 <div id="msg_info">
 	<p>
         <span>
-            {% if not object.revision %}
+            {% if not obj.id %}
                 {% trans "This register are not saved yet. Click Save to register it." %}
             {% else %}
-                {% trans 'Last revision' %}
-                {{ object.revision.date_created|date:"r"|slice:":-9"}}&nbsp;hs
+                {% trans 'Last revision' %} 
+                {{ obj.created|date:"r"|slice:":-9"}}&nbsp;hs
             {% endif %}
 		</span>
 	</p>

@@ -25,7 +25,7 @@ $(document).ready(function() {
         dateFormat: 'yy-mm-dd',
         changeYear: true,
         }
-    $('input[id*="payment_date"]').datepicker(schedule_options);
+    $('input[id*="launch_date"]').datepicker(schedule_options);
 
     /*
      * show and hide date 

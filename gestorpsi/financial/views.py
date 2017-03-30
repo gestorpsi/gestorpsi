@@ -41,8 +41,8 @@ def receive_form(request, obj=False):
 
     # mount form
     else:
-        if not obj.payment_date:
-            form = ReceiveFormUpdate(instance=obj, prefix=pfx, initial={ 'payment_date':date.today() })
+        if not obj.launch_date:
+            form = ReceiveFormUpdate(instance=obj, prefix=pfx, initial={ 'launch_date':date.today() })
         else:
             form = ReceiveFormUpdate(instance=obj, prefix=pfx)
 

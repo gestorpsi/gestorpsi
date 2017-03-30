@@ -79,7 +79,6 @@
                             <td style="text-align:center;">
                                 {% if c.referral %}
                                     <a href="/client/{{ c.referral.client.all.0.id }}/home/" target="_blank">{{ c.referral.client.all.0 }}</a>
-                                    
                                 {% else %}
                                     <a href="/client/{{ c.occurrence.all.0.event.referral.client.all.0.id }}/home/" target="_blank">{{ c.occurrence.all.0.event.referral.client.all.0 }}</a>
                                 {% endif %}
@@ -98,14 +97,14 @@
                             </td>
 
                             <td style="text-align:center;">
-                                {{ c.created|date:"D, d b Y" }}
+                                {{ c.launch_date|date:"D, d b Y" }}
                             </td>
 
                             <td style="text-align:center;">
                                 {% if c.occurrence.all.0.id %}
                                     <a href="/schedule/events/{{ c.occurrence.all.0.id }}/confirmation/" target="_blank">{{ c.occurrence.all.0.start_time|date:"D, d b Y - H:i" }}</a>
                                 {% else %}
-                                    <a href="{% url financial-receive-form c.id %}" target="_blank">{{ c.created|date:"D, d b Y" }}</a>
+                                    <a href="{% url financial-receive-form c.id %}">{{ c.created|date:"D, d b Y" }}</a>
                                 {% endif %}
                             </td>
 

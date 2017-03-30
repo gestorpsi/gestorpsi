@@ -391,7 +391,7 @@ def occurrence_confirmation_form_group(
 
             covenant = Covenant.objects.get( pk=request.POST.get('select_covenant_receive'), organization=request.user.get_profile().org_active ) 
             pfx = 'receive_form---TEMPID999FORM' # hardcode Jquery 
-            form_receive_new = ReceiveFormNew(request.POST, prefix=pfx, initial={ 'payment_date': date.today() })
+            form_receive_new = ReceiveFormNew(request.POST, prefix=pfx, initial={ 'launch_date': date.today() })
 
             if form_receive_new.is_valid():
 
@@ -413,8 +413,8 @@ def occurrence_confirmation_form_group(
 
             pfx = 'receive_form---%s' % x.id # hardcode Jquery 
             # new! fill payment date today
-            if not x.payment_date:
-                receive_list.append( ReceiveFormUpdate(request.POST, instance=x, prefix=pfx, initial={'payment_date':date.today()}) )
+            if not x.launch_date:
+                receive_list.append( ReceiveFormUpdate(request.POST, instance=x, prefix=pfx, initial={'launch_date':date.today()}) )
             else:
                 receive_list.append( ReceiveFormUpdate(request.POST, instance=x, prefix=pfx) )
 
@@ -600,8 +600,8 @@ def occurrence_confirmation_form(
             pfx = 'receive_form---%s' % x.id
 
             # new! fill payment date today
-            if not x.payment_date:
-                receive_list.append( ReceiveFormUpdate(instance=x, prefix=pfx, initial={ 'payment_date':date.today() }) )
+            if not x.launch_date:
+                receive_list.append( ReceiveFormUpdate(instance=x, prefix=pfx, initial={ 'launch_date':date.today() }) )
             else:
                 receive_list.append( ReceiveFormUpdate(instance=x, prefix=pfx) )
 

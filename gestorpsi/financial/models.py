@@ -69,7 +69,7 @@ class Receive(models.Model):
     price = models.DecimalField(_(u'Valor'), max_digits=6, decimal_places=2, null=False, blank=False) # from covenant
     off = models.DecimalField(_(u'Desconto'), max_digits=6, decimal_places=2, null=False, blank=False)
     total = models.DecimalField(_(u'Total'), max_digits=6, decimal_places=2, null=False, blank=False)
-    payment_date = models.DateField(u'Data do pagemento', auto_now_add=False, null=True, blank=True)
+    launch_date = models.DateField(u'Data do pagemento', auto_now_add=False, null=True, blank=True)
 
     # from covenant
     '''

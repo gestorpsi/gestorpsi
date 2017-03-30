@@ -432,7 +432,7 @@
                                 ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
                             {% endfor %}
                         {% else %}
-                            <a href="{% url financial-receive-form x.id %}" target="_blank">{{ x.created|date:"D, d b Y" }}</a>
+                            <a href="{% url financial-receive-form x.id %}">{{ x.created|date:"D, d b Y" }}</a>
                         {% endif %}
                   </small>
                 </p>
@@ -455,7 +455,7 @@
                                     ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
                                 {% endfor %}
                             {% else %}
-                                <a href="{% url financial-receive-form x.id %}" target="_blank">{{ x.created|date:"D, d b Y" }}</a>
+                                <a href="{% url financial-receive-form x.id %}">{{ x.created|date:"D, d b Y" }}</a>
                             {% endif %}
                       </small>
                     </p>
@@ -486,7 +486,7 @@
                                 ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
                             {% endfor %}
                         {% else %}
-                            <a href="{% url financial-receive-form x.id %}" target="_blank">{{ x.created|date:"D, d b Y" }}</a>
+                            <a href="{% url financial-receive-form x.id %}">{{ x.created|date:"D, d b Y" }}</a>
                         {% endif %}
                   </small>
                 </p>
@@ -509,7 +509,7 @@
                                     ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
                                 {% endfor %}
                             {% else %}
-                                <a href="{% url financial-receive-form x.id %}" target="_blank">{{ x.created|date:"D, d b Y" }}</a>
+                                <a href="{% url financial-receive-form x.id %}">{{ x.created|date:"D, d b Y" }}</a>
                             {% endif %}
 
                       </small>

@@ -58,7 +58,8 @@ for r in Referral.objects.filter(covenant__isnull=False, covenant__charge=covena
 
         # new
         receive = Receive()
-        receive.created = datetime
+        receive.created = datetime.today()
+        receive.launch_date = datetime.today()
         receive.name = c.name
         receive.price = c.price
         receive.off = 0

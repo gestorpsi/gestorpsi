@@ -367,13 +367,19 @@ class Organization(models.Model):
         return text
 
     def clients(self):
-        return self.person_set.filter(client__isnull = False, client__active = True)
+        return self.person_set.filter(client__isnull=False, client__active=True)
 
     def care_professionals(self):
-        return self.person_set.filter(careprofessional__isnull = False, careprofessional__active = True)
+        return self.person_set.filter(careprofessional__isnull=False, careprofessional__active=True)
+
+    def get_student_(self):
+        '''
+            return a list of active's' student of org
+        '''
+        return self.person_set.filter(careprofessional__isnull=False, careprofessional__active=True, careprofessional__studentprofile__isnull=False)
 
     def employees(self):
-        return self.person_set.filter(employee__isnull = False, employee__active = True)
+        return self.person_set.filter(employee__isnull=False, employee__active=True)
 
     def is_real(self):
         return True if not self.organization else False

@@ -16,19 +16,45 @@
 """
 
 import header
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
+from django.core.mail import EmailMessage
 
 from gestorpsi.organization.models import Organization 
 from gestorpsi.gcm.models.invoice import Invoice, PaymentType
+from gestorpsi.settings import ADMINS_REGISTRATION, URL_APP
 
 # main code
 '''
     Check all org. If org have one or more not payed invoice and overdue
     call object.save() to check. Method save check not payed invoices.
 '''
+s = ""
+
 for o in Organization.objects.filter(suspension=False, organization=None):
     o.save()
 
+    # to check if resources of chosen plan are over of limit.
+    if o.active: 
+        if o.prefered_plan.staff_size and o.care_professionals().count() > o.prefered_plan.staff_size or o.prefered_plan.student_size and o.get_student_().count() > o.prefered_plan.student_size:
+            s += u"--- %s - %s/admin/organization/organization/%s/\n" % (o.name, URL_APP, o.id)
+
+            if o.prefered_plan.staff_size and o.care_professionals().count() > o.prefered_plan.staff_size:
+                s += u"Professional %s Plan %s\n" % (o.care_professionals().count(), o.prefered_plan.staff_size)
+
+            if o.prefered_plan.student_size and  o.get_student_().count() > o.prefered_plan.student_size:
+                s += u"Student %s Plan %s\n" % (o.get_student_().count(), o.prefered_plan.student_size)
+
+            s += u'\n'
+
+# send email if not empty list for both
+if s and ADMINS_REGISTRATION:
+    # sendmail
+    msg = EmailMessage()
+    msg.encoding = "utf-8"
+    msg.subject = u"GestorPsi - orgs over of limit - %s " % datetime.today()
+    msg.body = s
+    msg.to = ADMINS_REGISTRATION
+    msg.send()
 
 '''
     Check all invoices. If is a overdue invoice, payment way will be billet.

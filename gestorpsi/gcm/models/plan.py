@@ -9,7 +9,8 @@ from django.utils.translation import ugettext_lazy as _
 
 class Plan(models.Model):
     name = models.CharField(_('Nome do Plano'), help_text=_('Ex: de 1 a 9 profissionais'), max_length=255)
-    staff_size = models.IntegerField(_('Tamanho da equipe'), null=True, blank=True, help_text=_('Numero de profissionais'))
+    staff_size = models.IntegerField(_('Qtade profissionais'), null=True, blank=True, help_text=_(u'No máximo de profissionais ativos'))
+    student_size = models.IntegerField(_('Qtade estudantes'), null=True, blank=True, help_text=_(u'No máximo de estudantes ativos'))
     value = models.DecimalField(_('Valor em R$'), max_digits=8, decimal_places=2, help_text=_('Utilizar pontos, nao virgulas'))
     duration = models.IntegerField(_('Duracao'), help_text=_('Duracao em MESES do plano. Preencher 1 para plano mensal, 3 para trimestral etc'))
     weight = models.IntegerField(_('Peso'), max_length=4, null=True, blank=True)

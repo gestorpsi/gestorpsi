@@ -59,7 +59,7 @@ def _access_ehr_check_read(request, object=None):
                 professional_is_responsible_for_service = True
 
         # check if client is referred by professional or if professional is owner of this record
-        if professional_have_referral_with_client or professional_is_responsible_for_service or object.revision().user == request.user:
+        if professional_have_referral_with_client or professional_is_responsible_for_service or object.revision() and object.revision().user == request.user:
             return True
 
     return False
@@ -121,8 +121,6 @@ def _ehr_can_save(request, object):
     @request: request
     @object: session, demand, diagnosis
     """
-    
-    status = 99 # unknown
     
     if not object.pk: # adding new
         return True

@@ -153,13 +153,20 @@ def select_organization(request):
 
 
 def set_trylogin(user):     
-    filtered_user = User.objects.filter(username=user)
-    if(len(filtered_user)):        
-        found_user = filtered_user[0]    
-        old_number = found_user.get_profile().try_login
-        old_number += 1
-        found_user.get_profile().try_login = old_number
-        found_user.save()
+    users = User.objects.filter(username=user)
+
+    if users:
+        u = users[0] # get first
+
+        # django admin, superadmin, don't has profile.
+        try:
+            u.get_profile().try_login += 1
+            u.save()
+            return True
+        except:
+            pass
+
+    return False
 
 
 def clear_login(user):
@@ -167,14 +174,13 @@ def clear_login(user):
     user.save()
 
 
-def change_password(user,current_password, new_password):    
-    if check_password(current_password):   
-        user.set_password(new_password)
-        org = user.get_profile().org_active
-        user.get_profile().org_active = None
-        user.save()
-        user.get_profile().org_active = org       
-
+#def change_password(user ,current_password, new_password):    
+    #if check_password(current_password):   
+        #user.set_password(new_password)
+        #org = user.get_profile().org_active
+        #user.get_profile().org_active = None
+        #user.save()
+        #user.get_profile().org_active = org       
 
 def gestorpsi_login(request, *args, **kwargs):
     if SITE_DISABLED:

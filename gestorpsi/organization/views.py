@@ -231,7 +231,7 @@ def suspension(request):
 
     if request.POST and request.POST.get('suspension_confirm'):
 
-        r = u"Conta suspensa dia %s\n\n" %  datetime.today().strftime("%d %B %Y, %H:%m")
+        r = u"Conta suspensa dia %s\n\n" % datetime.today().strftime("%d %B %Y, %H:%m").decode('utf-8')
         for x in request.POST.getlist('suspension_reason'):
             r += u"%s\n\n" % x
 

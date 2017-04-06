@@ -415,8 +415,11 @@ class Organization(models.Model):
             client suspend signature, than, have just pass invoices.
             organization, read only.
         """
+        try:
+            i = self.invoice_()[1][0] # get last one current invoice
+        except: # not exist current invoice, get last one.
+            i = self.invoice_()[0][0] # get last one
 
-        i = self.invoice_()[1][0] # get last one current invoice
         # current invoice is PAID! no message!
         days = 999 # days left to overdue invoice
 

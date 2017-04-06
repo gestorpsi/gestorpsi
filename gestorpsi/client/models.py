@@ -214,7 +214,9 @@ class Client(models.Model):
         )
 
     def revision(self):
-        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        if reversion.get_for_object(self):
+            return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return False
 
     def revision_created(self):
         return reversion.get_for_object(self).order_by('revision__date_created').latest('revision__date_created').revision

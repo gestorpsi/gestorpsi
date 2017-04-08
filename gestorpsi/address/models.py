@@ -127,16 +127,16 @@ class Address(models.Model):
             r += u' - %s' % self.neighborhood
             
         if self.city:
-            r += u' - %s' % self.city
+            r += u' - %s' % self.city.name
             
-        if hasattr(self.city, 'state'):
-            r += u' / %s' % self.city.state.shortName
-                
-        if self.city.state.country:
-            r += u' / %s' % self.city.state.country
+            if hasattr(self.city,'state') and self.city.state:
+                r += u' / %s' % self.city.state.shortName
+                    
+                if hasattr(self.city.state,'country') and self.city.state.country:
+                    r += u' / %s' % self.city.state.country.name
             
         if self.addressType:
-            r += u' (%s)' % self.addressType
+            r += u' - (%s)' % self.addressType
 
         return r
 

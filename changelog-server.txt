@@ -1,0 +1,55 @@
+
+--- Change Log for Upgrade GPsi Production Server
+	Django 1.4.22
+
+--- initial migration tables (South)
+
+	- clean Migration history
+		$ ./manage.py dbshell
+		$ select * from south_migrationhistory;
+		$ delete from south_migrationhistory;
+
+	- to remove migrations folder
+		$ find . -name migrations -exec rm -rf '{}' \;
+		$ find . -name migrations
+			result have to be none
+
+	- fake initial tables schema, current scheme database before upgrade.
+		$ for x in `cat app.list`; do echo; echo "--- Migrating $x"; ./manage.py schemamigration $x --initial; ./manage.py migrate $x --fake; done
+
+	- git pull
+		$ git pull
+
+	- get new scheme databases
+		$ for x in `cat app.list`; do echo; echo "--- Migrating $x"; ./manage.py schemamigration $x --auto ; ./manage.py migrate $x; done
+
+
+--- update all apps tables
+	- git pull
+		$ git pull
+
+	- get new scheme databases
+		$ for x in `cat app.list`; do echo; echo "--- Migrating $x"; ./manage.py schemamigration $x --auto ; ./manage.py migrate $x; done
+
+
+--- full date
+	commit version
+	update apps tables
+	settings.py
+	crontab
+	
+
+--- 11 April 2017 
+	commit ff1b184e06bf5e130c92d702a61be61d8a91c275
+
+	update tables app
+		financial (student_size field)
+		internet (qnotify table)
+
+	settings.py .See or compare DIST
+		added new 2 variables and change one for uppercase. 
+		# set invoice
+		INVOICE_CHECK_EXPIRY = [4,7] # send mail for clients 4 and 7 days before expiry date
+		# set notify
+		NOTIFY_CLIENT_EVENT = 1 # days, send mail for client to remember about your event days before event.
+		NOTIFY_EVENTS_PROFESSIONAL = 1 # days before. Send resume of event of next day by mail to professional

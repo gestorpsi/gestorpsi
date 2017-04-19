@@ -52,8 +52,8 @@ sent = [] # store professional.id + org.id : "12345+abcde"
                         send by email the resume of events of this org of next day
 
 """
-for oc in Occurrence.objects.filter(start_time__year=y, start_time__month=m, start_time__day=d): # correct
 #for oc in Occurrence.objects.filter(start_time__year=y, start_time__month=m, start_time__day=d, event__referral__organization__id='bcbfdb8e-1641-4478-9e7c-3e0f1befbede'): # debug/test
+for oc in Occurrence.objects.filter(start_time__year=y, start_time__month=m, start_time__day=d): # correct
     # for each professional
     for pr in oc.event.referral.professional.all():
         # for each org of professional
@@ -70,14 +70,16 @@ for oc in Occurrence.objects.filter(start_time__year=y, start_time__month=m, sta
                 for x in pr.person.emails.all():
                     to.append(u'%s' % x.email)
 
-                # list of occurrence of professional in day
-                for x in Occurrence.objects.filter(start_time__year=y, start_time__month=m, start_time__day=d,\
-                        event__referral__professional=pr, event__referral__organization=org).order_by('start_time'):
-                    oc_list.append(x)
+                # list of occurrence of professional in day, exclude unmarked and rescheduled.
+                for x in Occurrence.objects.filter(start_time__year=y, start_time__month=m, start_time__day=d,event__referral__professional=pr,\
+                        event__referral__organization=org).order_by('start_time').\
+                        exclude(scheduleoccurrence__occurrenceconfirmation__presence=4).\
+                        exclude(scheduleoccurrence__occurrenceconfirmation__presence=5):
+                            oc_list.append(x)
 
                 # send email if not empty list for both
                 if to and oc_list:
-                    title = u"Resumo dos seus eventos para %s, %s.\n\n" % ( week_days[date.today().isoweekday()], dt.strftime('%d %b %Y') )
+                    title = u"Resumo dos seus eventos para %s, %s.\n\n" % ( week_days[dt.isoweekday()], dt.strftime('%d %b %Y') )
 
                     # render html email
                     text = Context({'oc_list':oc_list, 'title':title, 'org':org})

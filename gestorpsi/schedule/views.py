@@ -534,7 +534,7 @@ def occurrence_confirmation_form(
         if denied_to_write:
             return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
-        form = form_class(request.POST, instance = occurrence_confirmation, initial={ 'device':initial_device, })
+        form = form_class(request.POST, instance=occurrence_confirmation, initial={'device':initial_device})
 
         # receive
         payment_valid = True
@@ -569,9 +569,9 @@ def occurrence_confirmation_form(
             occurrence.save()
 
             ## sendmail for careprofessional when presence is 4 or 5
-            if hasattr(occurrence_confirmation,'presence'):
-                if occurrence_confirmation.presence == 4 or occurrence_confirmation.presence == 5 :
-                    schedule_notify_email(request.user.get_profile().org_active, occurrence, occurrence_confirmation)
+            if hasattr(data,'presence'):
+                if data.presence == 4 or data.presence == 5 :
+                    schedule_notify_email(request.user.get_profile().org_active, occurrence, data)
 
             messages.success(request, _('Occurrence confirmation updated successfully'))
             return http.HttpResponseRedirect(redirect_to or request.path)

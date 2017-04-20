@@ -25,7 +25,19 @@ GNU General Public License for more details.
     <h2>{{ title }}</h2>
 
     {% for o in oc_list %}
-        <b>{{ o.start_time|date:"H:i" }}</b>
+
+        {% comment %}
+            showdt boolean
+            show full date and time when remark or unmark event (true)
+            show just time when send daily resume of events for professional (false)
+        {% endcomment %}
+
+        {% if showdt %}
+            <b>{{ o.start_time|date:"d / m / Y - H:i" }}</b>
+        {% else %}
+            <b>{{ o.start_time|date:"H:i" }}</b>
+        {% endif %}
+
         {% for x in o.event.referral.client.all %}{{ x.person.name }}{% endfor %}
         {% if o.annotation %} - {{ o.annotation }}{% endif %}
         <br />

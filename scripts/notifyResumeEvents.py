@@ -50,7 +50,6 @@ sent = [] # store professional.id + org.id : "12345+abcde"
                 all orgs of each professional
                     if notify settings is true for this org
                         send by email the resume of events of this org of next day
-
 """
 #for oc in Occurrence.objects.filter(start_time__year=y, start_time__month=m, start_time__day=d, event__referral__organization__id='bcbfdb8e-1641-4478-9e7c-3e0f1befbede'): # debug/test
 for oc in Occurrence.objects.filter(start_time__year=y, start_time__month=m, start_time__day=d): # correct
@@ -82,7 +81,7 @@ for oc in Occurrence.objects.filter(start_time__year=y, start_time__month=m, sta
                     title = u"Resumo dos seus eventos para %s, %s.\n\n" % ( week_days[dt.isoweekday()], dt.strftime('%d %b %Y') )
 
                     # render html email
-                    text = Context({'oc_list':oc_list, 'title':title, 'org':org})
+                    text = Context({'oc_list':oc_list, 'title':title, 'org':org, 'showdt':False})
                     template = get_template("schedule/schedule_notify_careprofessional.html").render(text)
                     # sendmail
                     msg = EmailMessage()

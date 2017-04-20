@@ -77,7 +77,7 @@ def schedule_notify_email(org, occurrence, occurrence_confirmation):
 
     if to:
         # render template
-        text = Context({'oc_list':oc_list, 'title':title, 'org':org})
+        text = Context({'oc_list':oc_list, 'title':title, 'org':org, 'showdt':True})
         template = get_template("schedule/schedule_notify_careprofessional.html").render(text)
         # sendmail
         msg = EmailMessage()
@@ -87,8 +87,9 @@ def schedule_notify_email(org, occurrence, occurrence_confirmation):
         msg.body = template
         msg.to = to
         msg.send()
+        return True
 
-    return True
+    return False
 
 
 def _access_check_by_occurrence(request, occurrence):
@@ -554,24 +555,24 @@ def occurrence_confirmation_form(
         # occurrence
         if form.is_valid() and payment_valid :
 
-            data = form.save(commit=False)
-            data.occurrence = occurrence
+            occurrence_confirmation = form.save(commit=False)
+            occurrence_confirmation.occurrence = occurrence
 
-            if int(data.presence) not in (1,2): # client not arrive, dont save datetime field
-                data.date_started = None
-                data.date_finished = None
+            if int(occurrence_confirmation.presence) not in (1,2): # client not arrive, dont save datetime field
+                occurrence_confirmation.date_started = None
+                occurrence_confirmation.date_finished = None
 
-            data.save()
+            occurrence_confirmation.save()
             form.save_m2m()
 
             # save occurrence comment
             occurrence.annotation = request.POST['occurrence_annotation']
             occurrence.save()
 
-            ## sendmail for careprofessional when presence is 4 or 5
-            if hasattr(data,'presence'):
-                if data.presence == 4 or data.presence == 5 :
-                    schedule_notify_email(request.user.get_profile().org_active, occurrence, data)
+            # sendmail for careprofessional when presence is 4 or 5
+            if hasattr(occurrence_confirmation,'presence'):
+                if occurrence_confirmation.presence == 4 or occurrence_confirmation.presence == 5 :
+                    schedule_notify_email(request.user.get_profile().org_active, occurrence, occurrence_confirmation)
 
             messages.success(request, _('Occurrence confirmation updated successfully'))
             return http.HttpResponseRedirect(redirect_to or request.path)

@@ -28,8 +28,8 @@ from gestorpsi.organization.views import list_prof_org
 
 urlpatterns = patterns('',
 
-    # section
-    url(r'^$', login_check(index), name='client-index'), # index
+    # client list index and paginator
+    url(r'^$', login_check(index), name='clients_index'),
     (r'^list/$', login_check(list)), #list objects
     (r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
     #(r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
@@ -61,7 +61,7 @@ urlpatterns = patterns('',
     # home
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/$', login_check(referral_list), name='client-referral-list'), # list
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/(?P<referral_id>\d+)/$', login_check(referral_home), name='client-referral-home'), # home
-    # new 
+    # new
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/form/$', login_check(referral_form), name='client-referral-new'), # new referral
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/referral/save/$', login_check(referral_form), name='client-referral-new-save'), # save new referral
     # edit

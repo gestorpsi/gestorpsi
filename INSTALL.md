@@ -60,9 +60,8 @@ $ pip install -r requirements.txt
 ```bash
 $ python manage.py syncdb
 $ python manage.py migrate
-$ cd scripts
-$ python creategroups.py
-$ cd ..
+$ ./scripts/install/createGroups.py
+$ ./scripts/install/createAdmin.py
 $ python manage.py shell
 ```
 

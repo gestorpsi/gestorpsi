@@ -20,8 +20,10 @@
 """
 
 # level above
-import sys
-sys.path.append('..')
+import sys, os
+
+parent_dir = os.path.realpath(__file__  + '/../../')
+sys.path.append(parent_dir)
 
 import header
 import re

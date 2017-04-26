@@ -51,7 +51,7 @@ SIGNATURE = u"GestorPsi - Prontuários Eletrônicos e Gestão de Serviços em Ps
 EMAIL_FROM = '' # eg: noreply@domain.com
 SERVER_EMAIL = EMAIL_FROM
 DEFAULT_FROM_EMAIL = EMAIL_FROM # GestorPsi<user@domain.com>
-FROM_EMAIL = EMAIl_FROM
+FROM_EMAIL = EMAIL_FROM
 
 EMAIL_HOST = '' # eg.: smtp.gmail.com
 EMAIL_HOST_USER = '' # eg: noreply@domain.com

@@ -29,7 +29,7 @@ from gestorpsi.organization.views import list_prof_org
 urlpatterns = patterns('',
 
     # client list index and paginator
-    url(r'^$', login_check(index), name='clients_index'),
+    url(r'^$', login_check(index), name='client-index'),
     (r'^list/$', login_check(list)), #list objects
     (r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
     #(r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter

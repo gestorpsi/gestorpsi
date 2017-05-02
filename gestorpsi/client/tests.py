@@ -31,7 +31,7 @@ class ClientTests(TestCase):
         setup_required_data()
 
     def test_client_index_should_redirect_unlogged_user(self):
-        req = self.cl.get(reverse('clients_index'))
+        req = self.cl.get(reverse('client-index'))
         self.assertEqual(req.status_code, 302)
 
     def test_client_index_should_work_for_logged_user(self):
@@ -44,7 +44,7 @@ class ClientTests(TestCase):
         user = User.objects.get(username=user_stub()["username"])
         user.is_superuser = True
         user.save()
-        req = self.cl.get(reverse('clients_index'))
+        req = self.cl.get(reverse('client-index'))
         self.assertEqual(req.status_code, 200)
 
 class ClientModelTest(TestCase):

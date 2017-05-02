@@ -4,6 +4,7 @@ from gestorpsi.gcm.models import PaymentType
 from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.address.models import City, State, Country, AddressType, Address
 from gestorpsi.document.models import TypeDocument
+from django.contrib.contenttypes.models import ContentType
 
 def setup_required_data():
     place = Place(label='testing place')
@@ -40,20 +41,17 @@ def setup_required_data():
         city.save()
     else:
         placeType = PlaceType.objects.get(description='Matriz')
+
     place.place_type = placeType
-    phone_type = PhoneType(description='Celular')
-    phone_type.save()
-    phone_type = PhoneType(description='Comercial')
-    phone_type.save()
-    phone_type = PhoneType(description='Fax')
-    phone_type.save()
+
     phone_type = PhoneType(description='Recado')
     phone_type.save()
-    phone_type = PhoneType(description='Residencial')
-    phone_type.save()
+    content_type_temp = ContentType()
+    content_type_temp.save()
     phone = Phone(area='23', phoneNumber='45679078', ext='4444',
-                  phoneType=phone_type)
+                  phoneType=phone_type, content_type=content_type_temp)
     phone.content_object = place
+    phone.save()
     address_type = AddressType(description='Home')
     address_type.save()
     address = Address()
@@ -80,7 +78,7 @@ def user_stub():
     return {
         "address": u'niceaddress',
         "address_number": u'244',
-        "city": u'1',
+        "city": u'3',
         "cpf": u'741.095.117-63',
         "email": u'user15555@gmail.com',
         "name": u'user15555',
@@ -88,9 +86,9 @@ def user_stub():
         "password1": u'nicepass123',
         "password2": u'nicepass123',
         "phone": u'(55) 5432-4321',
-        "plan": u'1',
+        "plan": u'2',
         "shortname": u'NICE',
-        "state": u'1',
+        "state": u'3',
         "username": u'user15',
         "zipcode": u'12312-123',
     }

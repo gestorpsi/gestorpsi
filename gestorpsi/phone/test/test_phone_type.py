@@ -26,5 +26,5 @@ class PhoneTypeTest(TestCase):
 
     def test_not_save_when_invalid_fields(self):
         phone_type = PhoneType()
-        with self.assertRaisesRegex(ValidationError,'description'):
+        with self.assertRaisesRegexp(ValidationError,'description'):
             phone_type.full_clean()

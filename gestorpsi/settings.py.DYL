@@ -16,7 +16,8 @@
 
 import os
 
-SEND_SIGNUP_MAIL = True
+import uuid
+uuid._uuid_generate_random = None
 
 # set path
 PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -50,7 +51,7 @@ URL_DEMO = "http://127.0.0.1:8000"
 SIGNATURE = u"GestorPsi - Prontuários Eletrônicos e Gestão de Serviços em Psicologia.\nwww.gestorpsi.com.br"
 
 # set smtp server
-EMAIL_FROM = '' # eg: noreply@domain.com
+EMAIL_FROM = 'teste@test.com' # eg: noreply@domain.com
 SERVER_EMAIL = EMAIL_FROM
 DEFAULT_FROM_EMAIL = EMAIL_FROM # GestorPsi<user@domain.com>
 FROM_EMAIL = EMAIL_FROM
@@ -68,7 +69,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'gestorpsi',                      # Or path to database file if using sqlite3.
         'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
+        'PASSWORD': '12345',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }

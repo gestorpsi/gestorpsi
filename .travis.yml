@@ -13,7 +13,7 @@ before_script:
   - mv gestorpsi/settings.py.TRAVIS gestorpsi/settings.py
 
 script:
-  - python manage.py test phone
+  - python manage.py test authentication
 
 after_script:
     - coveralls

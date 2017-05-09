@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+    # -*- coding: utf-8 -*-
 
 """
 Copyright (C) 2008 GestorPsi
@@ -19,7 +19,7 @@ from gestorpsi.device.views import index, form, save, save_device, index_type, f
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
-    (r'^$', login_check(index)), # list objects
+    url(r'^$', login_check(index), name='device-index'), # list objects
     (r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form)), # edit object form
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/order/$', login_check(order)), # edit object form

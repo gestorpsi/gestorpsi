@@ -68,3 +68,8 @@ class OrganizationViewTest(TestCase):
         response= self.client.get(reverse('organization-signature'))
         self.assertEquals(200,response.status_code)
         self.assertTemplateUsed(response, 'organization/organization_signature.html')
+
+    def testNotShowFormOnGet(self):
+        self.client.logout() # guarantee that the given user is signed out
+        response= self.client.get(reverse('organization-signature'))
+        self.assertEquals(302,response.status_code)

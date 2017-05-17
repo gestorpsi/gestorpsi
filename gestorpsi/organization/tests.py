@@ -20,7 +20,7 @@ from django.test.client import Client
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.test import Client as Cl
-from django.test import TestCase, RequestFactory
+from django.test import TestCase
 from gestorpsi.util.test_utils import user_stub, setup_required_data
 
 class OrganizationModelTest(TestCase):
@@ -58,22 +58,13 @@ class OrganizationModelTest(TestCase):
 
 class OrganizationViewTest(TestCase):
     def setUp(self):
-        self.factory = RequestFactory()
         # OBS: Using cl instead of client to evade conflicts with Client class
         self.cl = Cl()
         setup_required_data()
-        self.cl.post(reverse('registration-register'), user_stub())
-        self.cl.login(
-            username=user_stub()["username"],
-            password=user_stub()["password1"]
-        )
-        user = User.objects.get(username=user_stub()["username"])
-        user.is_superuser = True
-        user.save()
-        req = self.cl.get(reverse('client-index'), user_stub())
-        self.assertEqual(req.status_code, 200)
 
-	def testShowFormOnGet(self):
-		response= self.client.get(reverse('organization-signature'))
-		self.assertEquals(200,response.status_code)
-		self.assertTemplateUsed(response, 'organization_signature.html')
+    def testShowFormOnGet(self):
+        self.client.post(reverse('registration-register'), user_stub())
+        res = self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
+        response= self.client.get(reverse('organization-signature'))
+        self.assertEquals(200,response.status_code)
+        self.assertTemplateUsed(response, 'organization/organization_signature.html')

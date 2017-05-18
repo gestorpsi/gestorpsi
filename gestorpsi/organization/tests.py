@@ -65,11 +65,53 @@ class OrganizationViewTest(TestCase):
     def testShowFormOnGet(self):
         self.client.post(reverse('registration-register'), user_stub())
         res = self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
-        response= self.client.get(reverse('organization-signature'))
+        user = User.objects.get(username=user_stub()["username"])
+        user.is_superuser = True
+        user.save()
+        response= self.client.get('/organization/')
         self.assertEquals(200,response.status_code)
-        self.assertTemplateUsed(response, 'organization/organization_signature.html')
+        self.assertTemplateUsed(response, 'organization/organization_form.html')
 
     def testNotShowFormOnGet(self):
         self.client.logout() # guarantee that the given user is signed out
+        response= self.client.get('/organization/')
+        self.assertEquals(302,response.status_code)
+
+    def testShowFormResultsOnPost(self):
+        self.client.post(reverse('registration-register'), user_stub())
+        res = self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
+        user = User.objects.get(username=user_stub()["username"])
+        user.is_superuser = True
+        user.save()
+        response= self.client.post('/organization/', trade_name="Change trade name test", name="Change name company")
+        self.assertEquals(200,response.status_code)
+
+    def testShowSignatureOnGet(self):
+        self.client.post(reverse('registration-register'), user_stub())
+        res = self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
+        user = User.objects.get(username=user_stub()["username"])
+        user.is_superuser = True
+        user.save()
+        response= self.client.post(reverse('organization-signature'))
+        self.assertEquals(200,response.status_code)
+        self.assertTemplateUsed(response, 'organization/organization_signature.html')
+
+    def testNotShowSignatureOnGet(self):
+        self.client.logout() # guarantee that the given user is signed out
         response= self.client.get(reverse('organization-signature'))
+        self.assertEquals(302,response.status_code)
+
+    def testShowSuspensionOnGet(self):
+        self.client.post(reverse('registration-register'), user_stub())
+        res = self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
+        user = User.objects.get(username=user_stub()["username"])
+        user.is_superuser = True
+        user.save()
+        response= self.client.post(reverse('organization-suspension'))
+        self.assertEquals(200,response.status_code)
+        self.assertTemplateUsed(response, 'organization/organization_signature_suspension.html')
+
+    def testNotShowSuspensionOnGet(self):
+        self.client.logout() # guarantee that the given user is signed out
+        response= self.client.get(reverse('organization-suspension'))
         self.assertEquals(302,response.status_code)

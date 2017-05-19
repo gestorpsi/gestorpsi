@@ -93,10 +93,13 @@ class Address(models.Model):
             return 1
 
     def __unicode__(self):
-        return u"%s %s %s %s<br />%s %s %s %s %s (%s)" % (\
-            self.addressPrefix, self.addressLine1, self.addressNumber, self.addressLine2, \
-            self.zipCode, self.neighborhood, self.city, '' if not hasattr(self.city, 'state') else self.city.state.shortName, '' if not hasattr(self.city, 'state') else self.city.state.country, self.addressType\
-        )
+        result = u"%s %s %s %s<br />%s %s %s %s %s (%s)" % (\
+            self.addressPrefix, self.addressLine1, self.addressNumber, \
+            self.addressLine2, self.zipCode, self.neighborhood, self.city, \
+            '' if not hasattr(self.city, 'state') else self.city.state.shortName, \
+            '' if not hasattr(self.city, 'state') else self.city.state.country, self.addressType)
+
+        return result[:50] # only the first 50 chars
 
     def __empty__(self):
         return ''

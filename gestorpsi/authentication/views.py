@@ -17,7 +17,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -227,6 +227,19 @@ def send_signup_mail():
     msg.bcc =  bcc_list
     msg.send()
 
+def create_professional_responsible(org, person):
+    prof = ProfessionalResponsible()
+    prof.organization = org
+    prof.person = person
+    prof.name = person.name
+    prof.save()
+
+def create_invoice(org):
+    i = Invoice()
+    i.organization = org
+    i.status = 2 # free
+    i.save()
+
 
 '''
     from django-registration
@@ -277,24 +290,15 @@ def register(request, success_url=None,
                     activation_key = rp.activation_key.lower() # Normalize before trying anything with it.
                     RegistrationProfile.objects.activate_user(activation_key)
 
-            prof = ProfessionalResponsible()
-            prof.organization = org
-            prof.person = person
-            prof.name = person.name
-            prof.save()
+            create_professional_responsible(org, person)
+            create_invoice(org)
 
-            # invoice
-            i = Invoice()
-            i.organization = org
-            i.status = 2 # free
-            i.save()
-            
             bcc_list = ADMINS_REGISTRATION
 
             if (SEND_SIGNUP_MAIL):
                 send_signup_mail()
-            
-            return HttpResponseRedirect(reverse('registration-complete'))
+
+            return render(request, 'registration/registration_organization_complete.html')
 
     # mount form, new register
     else:
@@ -315,9 +319,3 @@ def register(request, success_url=None,
                 context_instance=RequestContext(request)
             )
 
-
-'''
-    registration complete. New org
-'''
-def complete(request):
-    return render_to_response('registration/registration_organization_complete.html', context_instance=RequestContext(request) )

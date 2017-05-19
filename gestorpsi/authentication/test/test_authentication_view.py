@@ -47,3 +47,4 @@ class SignupTests(TestCase):
         old_user_count = User.objects.count()
         response = self.client.post(reverse('registration-register'), user_stub())
         self.assertEqual(User.objects.count(), old_user_count+1)
+        self.assertEqual(response.status_code, 200)

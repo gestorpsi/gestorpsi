@@ -257,7 +257,7 @@ def register(request, success_url=None,
             msg.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar %s/gcm/\n\n' % URL_APP
             msg.body += u'Organização %s' % org
             msg.to = bcc_list
-            msg.send()
+            # msg.send()
             
             request.session['user_aux_id'] = user.id
 
@@ -289,7 +289,7 @@ def register(request, success_url=None,
 
             msg.to = [ user.email, ]
             msg.bcc =  bcc_list
-            msg.send()
+            # msg.send()
             
             return HttpResponseRedirect(reverse('registration-complete'))
 

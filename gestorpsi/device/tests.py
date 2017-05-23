@@ -16,22 +16,25 @@ GNU General Public License for more details.
 
 from django.test import TestCase, RequestFactory
 from django.test import Client as Cl
+from gestorpsi.organization.models import Organization
 from gestorpsi.device.models import Device
 from django.contrib.auth.models import User, UserManager, Group
 from django.core.urlresolvers import reverse
 from gestorpsi.util.test_utils import setup_required_data, user_stub
 
-device_stub = {
-	'device_brand': 'brand',
-	'device_model': 'model',
-	'device_part_number': 'part_number',
-	'device_lendable': 'True',
-	'device_comments': 'comments',
-	'device_durability': '1',
-	'device_prof_restriction': 'True',
-	'device_mobility': '1',
-	'device_active': 'True',
-}
+def device_stub ():
+	return {
+		'brand': 'brand',
+		'description': 'description',
+		'model': 'model',
+		'part_number': 'part_number',
+		'lendable': True,
+		'comments': 'comments',
+		'durability': '1',
+		'prof_restriction': True,
+		'mobility': '1',
+		'active': True,
+	}
 
 class DeviceTest(TestCase):
 	def setUp(self):
@@ -72,22 +75,36 @@ class DeviceTest(TestCase):
 		self.assertTemplateUsed(response, 'device/device_list.html')
 
 	def test_device_should_not_show_list_of_devices(self):
-		self.client.logout()
+		self.cl.logout()
 		response= self.cl.get('/device/')
 
 		self.assertEquals(302,response.status_code)
 
-	def test_service_creation_should_work_for_correct_values(self):
+	def test_show_device_add_form(self):
 		self.cl.post(reverse('registration-register'), user_stub())
 		res = self.cl.login(username=user_stub()["username"], password=user_stub()["password1"])
 		user = User.objects.get(username=user_stub()["username"])
 		user.is_superuser = True
 		user.save()
-		device_count = Device.objects.all().count()
+		response= self.cl.get('/device/add/')
+		self.assertEquals(200,response.status_code)
+		self.assertTemplateUsed(response, 'device/device_form.html')
 
-		self.device.post(reverse('device/device_form.html'))
-		self.device.post(reverse('device.device_write'), device_stub())
+	def test_didnt_show_device_add_form(self):
+		self.cl.logout()
+		response= self.cl.get('/device/add/')
+		self.assertEquals(302,response.status_code)
 
-		device_current_count = Device.objects.all().count()
+	# def test_service_creation_should_work_for_correct_values(self):
+	# 	self.cl.post(reverse('registration-register'), user_stub())
+	# 	res = self.cl.login(username=user_stub()["username"], password=user_stub()["password1"])
+	# 	user = User.objects.get(username=user_stub()["username"])
+	# 	user.is_superuser = True
+	# 	user.save()
+	# 	device_count = Device.objects.all().count()
 
-		self.assertEqual(device_current_count, device_count+1)
+	# 	self.cl.post(reverse('device-add'), device_stub())
+
+	# 	device_current_count = Device.objects.all().count()
+
+	# 	self.assertEqual(device_current_count, device_count+1)

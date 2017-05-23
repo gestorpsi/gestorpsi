@@ -21,6 +21,17 @@ from django.contrib.auth.models import User, UserManager, Group
 from django.core.urlresolvers import reverse
 from gestorpsi.util.test_utils import setup_required_data, user_stub
 
+device_stub = {
+	'device_brand': 'brand',
+	'device_model': 'model',
+	'device_part_number': 'part_number',
+	'device_lendable': 'True',
+	'device_comments': 'comments',
+	'device_durability': '1',
+	'device_prof_restriction': 'True',
+	'device_mobility': '1',
+	'device_active': 'True',
+}
 
 class DeviceTest(TestCase):
 	def setUp(self):
@@ -49,9 +60,34 @@ class DeviceTest(TestCase):
 		req = self.cl.get(reverse('device-index'))
 		self.assertEqual(req.status_code, 200)
 
-	def test_device_should_create(self):
+	def test_device_show_list_of_devices(self):
 		self.cl.post(reverse('registration-register'), user_stub())
 		res = self.cl.login(username=user_stub()["username"], password=user_stub()["password1"])
 		user = User.objects.get(username=user_stub()["username"])
 		user.is_superuser = True
 		user.save()
+		response= self.cl.get('/device/')
+
+		self.assertEquals(200,response.status_code)
+		self.assertTemplateUsed(response, 'device/device_list.html')
+
+	def test_device_should_not_show_list_of_devices(self):
+		self.client.logout()
+		response= self.cl.get('/device/')
+
+		self.assertEquals(302,response.status_code)
+
+	def test_service_creation_should_work_for_correct_values(self):
+		self.cl.post(reverse('registration-register'), user_stub())
+		res = self.cl.login(username=user_stub()["username"], password=user_stub()["password1"])
+		user = User.objects.get(username=user_stub()["username"])
+		user.is_superuser = True
+		user.save()
+		device_count = Device.objects.all().count()
+
+		self.device.post(reverse('device/device_form.html'))
+		self.device.post(reverse('device.device_write'), device_stub())
+
+		device_current_count = Device.objects.all().count()
+
+		self.assertEqual(device_current_count, device_count+1)

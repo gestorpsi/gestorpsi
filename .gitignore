@@ -2,3 +2,5 @@
 *.po
 *.swp
 */migrations
+*SECRET.key
+*test_db.sqlite3

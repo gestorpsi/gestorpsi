@@ -175,7 +175,7 @@ GNU General Public License for more details.
 
             <div id="logotype">
                 {% if user.profile.org_active.photo %}
-                    <img src="{{ MEDIA_URL }}img/organization/{{ user.profile.org_active.id }}/.thumb/{{ user.profile.org_active.photo }}" width="71" height="83" />
+                    <img src="{{ settings.MEDIA_URL }}img/organization/{{ user.profile.org_active.id }}/.thumb/{{ user.profile.org_active.photo }}" width="71" height="83" />
                 {% else %}
                     <img src="/media/img/generic_photo.gif" width="71" height="83" />
                 {% endif %}

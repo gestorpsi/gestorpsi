@@ -84,7 +84,7 @@
                         <small>{% trans "Image not available when Debug=True and server running in localhost" %}</small>
                         </div>
                     {% else %}
-                        <img width="134px" alt="{{ org_active.trade_name }}" src="{{ MEDIA_URL }}img/organization/{{ org_active.id}}/.thumb/{{ org_active.photo }}">
+                        <img width="134px" alt="{{ org_active.trade_name }}" src="{{ settings.MEDIA_URL }}img/organization/{{ org_active.id}}/.thumb/{{ org_active.photo }}">
                     {% endif %}
                 {% endif %}
                 </td>
@@ -137,9 +137,9 @@
                     </div>
                 {% else %}
                     {% if not object.person.photo %}
-                        <img width="116px" alt="Client Picture" src="{{ MEDIA_URL }}img/generic_photo.gif">
+                        <img width="116px" alt="Client Picture" src="{{ settings.MEDIA_URL }}img/generic_photo.gif">
                     {% else %}
-                        <img width="116px" alt="Client Picture" src="{{ MEDIA_URL }}img/organization/{{ org_active.id}}/.thumb/{{ object.person.photo }}">
+                        <img width="116px" alt="Client Picture" src="{{ settings.MEDIA_URL }}img/organization/{{ org_active.id}}/.thumb/{{ object.person.photo }}">
                     {% endif %}
                 {% endif %}
                 </td>

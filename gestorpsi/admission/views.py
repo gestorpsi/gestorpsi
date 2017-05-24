@@ -28,7 +28,7 @@ from gestorpsi.admission.models import *
 from gestorpsi.contact.models import Contact
 from gestorpsi.util.views import get_object_or_None
 from gestorpsi.util.decorators import permission_required_with_403
-from gestorpsi.settings import MEDIA_ROOT
+from django.conf import settings
 import os
 import uuid
 from gestorpsi.client.views import _access_check
@@ -123,12 +123,12 @@ def attach_save(request, object_id = None):
         filename = ''
 
         if 'file' in request.FILES:
-            path = '%simg/organization/%s' % (MEDIA_ROOT, user.get_profile().org_active.id)
+            path = '%simg/organization/%s' % (settings.MEDIA_ROOT, user.get_profile().org_active.id)
             if not os.path.exists(path):
                 os.mkdir(path)
                 os.chmod(path, 0777)
 
-            path = '%simg/organization/%s/attach' % (MEDIA_ROOT, user.get_profile().org_active.id)
+            path = '%simg/organization/%s/attach' % (settings.MEDIA_ROOT, user.get_profile().org_active.id)
             if not os.path.exists(path):
                 os.mkdir(path)
                 os.chmod(path, 0777)

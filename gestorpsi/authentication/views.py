@@ -31,7 +31,7 @@ from django.contrib.auth.views import logout as django_logout
 from django.core.mail import EmailMessage
 
 from gestorpsi.util.views import get_object_or_None
-from gestorpsi.settings import SITE_DISABLED, ADMIN_URL, ADMINS_REGISTRATION, SIGNATURE, URL_DEMO, URL_APP, URL_HOME, SEND_SIGNUP_MAIL
+from django.conf import settings
 from gestorpsi.organization.models import Organization, ProfessionalResponsible
 from gestorpsi.gcm.models.invoice import Invoice
 from gestorpsi.gcm.models.plan import Plan
@@ -54,7 +54,7 @@ def login_check(f):
 
 def user_authentication(request):
 
-    if SITE_DISABLED:
+    if settings.SITE_DISABLED:
         return render_to_response('core/site_disabled.html')
 
     if not request.method == "POST":
@@ -78,7 +78,7 @@ def user_authentication(request):
     # redirect to admin page
     if user.is_staff or user.is_superuser:
         login(request, user)
-        return HttpResponseRedirect(ADMIN_URL)
+        return HttpResponseRedirect(settings.ADMIN_URL)
 
     # user has not confirmed registration yet
     if user.registrationprofile_set.all()[0].activation_key != 'ALREADY_ACTIVATED':
@@ -185,7 +185,7 @@ def clear_login(user):
 
 
 def gestorpsi_login(request, *args, **kwargs):
-    if SITE_DISABLED:
+    if settings.SITE_DISABLED:
         return render_to_response('core/site_disabled.html')
     return django_login(request, *args, **kwargs)
 
@@ -210,8 +210,8 @@ def create_invoice(org):
 def send_signup_mail(org, user, request, invoice):
     # notify admins
     msg = EmailMessage()
-    msg.subject = u'Nova assinatura em %s' % URL_HOME
-    msg.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar %s/gcm/\n\n' % URL_APP
+    msg.subject = u'Nova assinatura em %s' % settings.URL_HOME
+    msg.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar %s/gcm/\n\n' % settings.URL_APP
     msg.body += u'Organização %s' % org
     msg.to = ADMINS_REGISTRATION
     msg.send()
@@ -229,22 +229,22 @@ def send_signup_mail(org, user, request, invoice):
     msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe. Sua conta está pronta para usar! "
     msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
 
-    msg.body += u"link funcionalidades: %s/funcionalidades/\n" % URL_HOME
-    msg.body += u"link como usar: %s/como-usar/\n" % URL_HOME
-    msg.body += u"link manual: %s/media/manual.pdf\n" % URL_DEMO
-    msg.body += u"link contato: %s/contato/\n\n" % URL_HOME
+    msg.body += u"link funcionalidades: %s/funcionalidades/\n" % settings.URL_HOME
+    msg.body += u"link como usar: %s/como-usar/\n" % settings.URL_HOME
+    msg.body += u"link manual: %s/media/manual.pdf\n" % settings.URL_DEMO
+    msg.body += u"link contato: %s/contato/\n\n" % settings.URL_HOME
     msg.body += u"Instruções no YouTube: https://www.youtube.com/channel/UC03EiqIuX72q-fi0MfWK8WA\n\n"
 
     msg.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( invoice.start_date.strftime("%d/%m/%Y"), invoice.end_date.strftime("%d/%m/%Y") )
-    msg.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % URL_APP
+    msg.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % settings.URL_APP
 
     msg.body += u"IMPORTANTE: As informações inseridas no sistema podem ser editadas mas não apagadas. Por isso, se for necessário fazer testes com informações fictícias para entender como o sistema funciona, utilize a nossa versão de demonstração: http://demo.gestorpsi.com.br\n\n"
 
-    msg.body += u"Endereço do GestorPSI: %s\n" % URL_APP
+    msg.body += u"Endereço do GestorPSI: %s\n" % settings.URL_APP
     msg.body += u"Usuário/Login  %s\n" % request.POST.get('username')
     msg.body += u"Senha %s\n" % request.POST.get('password1')
     msg.body += u"Plano %s\n\n" % org.prefered_plan
-    msg.body += u"%s" % SIGNATURE
+    msg.body += u"%s" % settings.SIGNATURE
 
     msg.to = [user.email]
     msg.bcc =  ADMINS_REGISTRATION
@@ -304,7 +304,7 @@ def register(request, success_url=None,
             create_professional_responsible(org, person)
             invoice = create_invoice(org) 
             
-            if (SEND_SIGNUP_MAIL):
+            if (settings.SEND_SIGNUP_MAIL):
                 send_signup_mail(org, user, request, invoice)
 
             return render(request, 'registration/registration_organization_complete.html')

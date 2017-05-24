@@ -25,7 +25,7 @@ import header
 from datetime import date, timedelta
 from django.core.mail import EmailMessage
 
-from gestorpsi.settings import URL_HOME, URL_APP, SIGNATURE, ADMINS_REGISTRATION, INVOICE_CHECK_EXPIRY
+from django.conf import settings
 from gestorpsi.gcm.models.invoice import Invoice
 
 def invoice_sendmail():
@@ -34,7 +34,7 @@ def invoice_sendmail():
     invoice_list = [] # list of Invoice
 
     # check days before expiry
-    for d in INVOICE_CHECK_EXPIRY :
+    for d in settings.INVOICE_CHECK_EXPIRY :
         # check all invoices that will be expire in 10 days.
         expiry = date.today() + timedelta(d) # corret
 
@@ -66,11 +66,11 @@ def invoice_sendmail():
             3 = URL contato
             4 = assinatura gestorPSI
         """
-        text_body = u"Bom dia.\n\nSua próxima assinatura já está disponível para pagamento em %s/organization/signature/\nVence em %s, evite ter o seu plano suspenso, pague até esta data.\n\nQualquer dúvida entre em contato pelo link %s/contato/\n" % ( URL_APP , li.expiry_date.strftime("%d %B %Y") , URL_HOME )
-        text_body += u"Quer suspender sua assinatura? Clique aqui %s/organization/suspension/\n\n%s" % ( URL_APP, SIGNATURE )
+        text_body = u"Bom dia.\n\nSua próxima assinatura já está disponível para pagamento em %s/organization/signature/\nVence em %s, evite ter o seu plano suspenso, pague até esta data.\n\nQualquer dúvida entre em contato pelo link %s/contato/\n" % ( settings.URL_APP , li.expiry_date.strftime("%d %B %Y") , settings.URL_HOME )
+        text_body += u"Quer suspender sua assinatura? Clique aqui %s/organization/suspension/\n\n%s" % ( settings.URL_APP, settings.SIGNATURE )
 
         text_subject = u'Assinatura disponível para pagamento - gestorpsi.com.br'
-        bcc = ADMINS_REGISTRATION
+        bcc = settings.ADMINS_REGISTRATION
 
         msg = EmailMessage()
         msg.subject = text_subject

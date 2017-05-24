@@ -30,10 +30,10 @@ import re
 
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Group, Permission
-from gestorpsi.settings import INSTALLED_APPS
+from django.conf import settings
 
 appnames = []
-for i in INSTALLED_APPS:
+for i in settings.INSTALLED_APPS:
     if re.search('gestorpsi.', i):
         appnames.append(re.sub('gestorpsi.','', i))
 

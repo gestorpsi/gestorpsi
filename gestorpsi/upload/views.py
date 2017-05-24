@@ -25,7 +25,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
-from gestorpsi.settings import MEDIA_ROOT
+from django.conf import settings
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.referral.models import ReferralAttach, Referral, REFERRAL_ATTACH_TYPE
 from gestorpsi.client.models import Client
@@ -37,7 +37,7 @@ def send(request):
         user = request.user
         filename = ''
         if 'file' in request.FILES:
-            pathdir = '%s/img/organization/%s' % (MEDIA_ROOT, user.get_profile().org_active.id)
+            pathdir = '%s/img/organization/%s' % (settings.MEDIA_ROOT, user.get_profile().org_active.id)
             if not os.path.exists(pathdir):
                 os.mkdir(pathdir)
                 os.mkdir('%s/.thumb' % pathdir)
@@ -160,12 +160,12 @@ def attach_save(request, referral_id=None, object_id=None, attach_id=None):
 
             if 'file' in request.FILES:
 
-                path = '%s/img/organization/%s' % (MEDIA_ROOT, user.get_profile().org_active.id)
+                path = '%s/img/organization/%s' % (settings.MEDIA_ROOT, user.get_profile().org_active.id)
                 if not os.path.exists(path):
                     os.mkdir(path)
                     os.chmod(path, 0777)
 
-                path = '%s/img/organization/%s/attach' % (MEDIA_ROOT, user.get_profile().org_active.id)
+                path = '%s/img/organization/%s/attach' % (settings.MEDIA_ROOT, user.get_profile().org_active.id)
                 if not os.path.exists(path):
                     os.mkdir(path)
                     os.chmod(path, 0777)

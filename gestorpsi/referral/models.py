@@ -32,7 +32,7 @@ from gestorpsi.schedule.models import ScheduleOccurrence
 from gestorpsi.organization.models import Organization
 from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.place.models import Room
-from gestorpsi.settings import REFERRAL_DISCHARGE_REASON_CANCELED
+from django.conf import settings
 from gestorpsi.covenant.models import Covenant
 
 fs = FileSystemStorage(location='/tmp')
@@ -135,7 +135,7 @@ class ReferralInRangeManager(models.Manager):
     
     def all(self, organization, datetime_start=None, datetime_end=None, service=None):
         r = Referral.objects.filter(service__organization=organization, date__gte=datetime_start, date__lt=datetime_end) \
-            .exclude(referraldischarge__reason=REFERRAL_DISCHARGE_REASON_CANCELED)
+            .exclude(referraldischarge__reason=settings.REFERRAL_DISCHARGE_REASON_CANCELED)
 
         if service:
             r = r.filter(Q(service__pk=service) | Q(referral__service__pk=service))

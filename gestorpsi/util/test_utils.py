@@ -15,7 +15,7 @@ from django.contrib.contenttypes.models import ContentType
 
 def setup_required_service():
     service_type = ServiceType()
-    service_type.name="Tipo de Servico" 
+    service_type.name="Tipo de Servico"
     service_type.save()
 
     area1 = Area()
@@ -52,7 +52,7 @@ def setup_required_service():
 def setup_required_client():
     organization1 = Organization.objects.get(name=user_stub()["organization"])
 
-    user = User.objects.create(username="user1", password="password")       
+    user = User.objects.create(username="user1", password="password")
     user.save()
 
     person = Person.objects.create(user=user)
@@ -183,4 +183,16 @@ def client_stub():
         "nickname": u'client',
         "gender" : 2,
         "comments": u'coments',
+    }
+
+def place_stub():
+
+    place_type = PlaceType(description= 'descricao')
+    place_type.save()
+
+    return {
+        "label": u'predio',
+        "place_type": place_type.id,
+        "hour_start": 2,
+        "hour_end": 8,
     }

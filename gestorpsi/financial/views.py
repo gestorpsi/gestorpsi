@@ -25,29 +25,33 @@ from django.contrib import messages
 from gestorpsi.financial.models import Receive
 from gestorpsi.financial.forms import ReceiveFormUpdate
 
+
 def receive_form(request, obj=False):
 
     obj = get_object_or_404(Receive, pk=obj)
-    pfx = 'receive_form---%s' % obj.id # hardcore Jquery, mask currency
+    pfx = 'receive_form---%s' % obj.id  # hardcode JQuery, currency mask.
 
     if request.POST:
-
-        form = ReceiveFormUpdate(request.POST , instance=obj, prefix=pfx)
+        form = ReceiveFormUpdate(request.POST, instance=obj, prefix=pfx)
 
         if form.is_valid():
             obj = form.save()
             messages.success(request, _(u'Salvo com sucesso!'))
-            return HttpResponseRedirect('/financial/receive/%s/' % obj.id )
+            return HttpResponseRedirect('/financial/receive/%s/' % obj.id)
 
     # mount form
     else:
         if not obj.launch_date:
-            form = ReceiveFormUpdate(instance=obj, prefix=pfx, initial={ 'launch_date':date.today() })
+            form = ReceiveFormUpdate(
+                    instance=obj,
+                    prefix=pfx,
+                    initial={'launch_date': date.today()}
+                    )
         else:
             form = ReceiveFormUpdate(instance=obj, prefix=pfx)
 
     # mount form or not valid form
-    return render_to_response( 'financial/financial_receive_form.html', { 
-            'form':form,
-            'obj':obj
-        }, context_instance=RequestContext(request) )
+    return render_to_response('financial/financial_receive_form.html', {
+            'form': form,
+            'obj': obj
+        }, context_instance=RequestContext(request))

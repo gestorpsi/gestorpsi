@@ -133,7 +133,7 @@ class RegistrationForm(AuthenticationRegistrationForm):
             p.phoneType_id = 2
             person = organization.care_professionals()[0]
             person.phones.add(p)
-            
+
         # add cpf number to 'first' professional registered
         if self.cleaned_data['cpf']:
             d = Document()

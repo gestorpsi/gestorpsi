@@ -252,6 +252,8 @@ CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 import djcelery
 djcelery.setup_loader()
 
+SEND_SIGNUP_MAIL = False
+
 # currency / financial / covenant
 USE_L10N = True
 DECIMAL_SEPARATOR = ','

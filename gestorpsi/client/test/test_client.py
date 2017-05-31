@@ -15,32 +15,31 @@ GNU General Public License for more details.
 """
 from django.test import TestCase
 
-from gestorpsi.client.models import Client, ClientManager
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from gestorpsi.client.models import Client
 from django.db.utils import DatabaseError
 from model_mommy import mommy
 
 class ClientModelTest(TestCase):
     def test_can_save_client_with_min_attributes(self):
-        fake_user = mommy.make('auth.User')
-        fake_person = mommy.make('person.Person', user=fake_user)
+        user = mommy.make('auth.User')
+        person = mommy.make('person.Person', user=user)
 
         old_count = Client.objects.count() 
 
         client = Client()
-        client.person = fake_person
+        client.person = person
         client.idRecord = 42
         client.save()
         self.assertGreater(Client.objects.count(), old_count)
 
     def test_raise_exception_when_missing_fields(self):
-        fake_user = mommy.make('auth.User')
-        fake_person = mommy.make('person.Person', user=fake_user)
+        user = mommy.make('auth.User')
+        person = mommy.make('person.Person', user=user)
 
         client = Client()
         with self.assertRaisesMessage(DatabaseError, "person_id"):
             client.save()
 
-        client.person = fake_person
+        client.person = person
         with self.assertRaisesMessage(DatabaseError, "idRecord"):
             client.save()

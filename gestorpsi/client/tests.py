@@ -27,5 +27,6 @@ from django.core.exceptions import ValidationError
 from .test.test_client import *
 
 #### VIEWS ####
+from .test.test_client_views import *
 
 #### FORMS ####

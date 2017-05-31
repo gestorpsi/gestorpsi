@@ -211,6 +211,7 @@ class Client(models.Model):
             ("client_change", "Can change clients"),
             ("client_list", "Can list clients"),
             ("client_write", "Can write clients"),
+            ("client_read", "Can read clients")
         )
 
     def revision(self):

@@ -5,15 +5,9 @@ python:
 before_install:
     - sudo apt-get update && sudo apt-get install -qq language-pack-pt
 
-before_install:
-    - sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-pt
-
-before_install:
-    - sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-pt
-
 install:
     - pip install git+https://github.com/digi604/django-smart-selects.git@eea07eeb759f75c77497b2425b84574cf6c6ac4d
-    - pip install -r requirements.txt
+    - pip install -r requirements-dev.txt
     - pip install coveralls unittest2
 
 before_script:

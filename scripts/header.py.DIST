@@ -20,8 +20,7 @@
     set path : full path to project root folder
 '''
 
-import sys, locale
-from os import environ
+import sys, locale, os
 from datetime import datetime
 
 reload(sys)
@@ -29,13 +28,16 @@ sys.setdefaultencoding("utf-8")
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
 # import Django settings
-environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
 
 # full path to Python libray
-sys.path.append("/usr/lib/python2.7/dist-packages")
+python_bin_path = os.popen("which python").read().strip()
+sys.path.append(python_bin_path)
 
 # full path to root Django project, manage.py
-path="/home/user/Desktop/dev/gestorpsi_github" 
+#TODO prevent errors when change the scripts folder structure, maybe check
+# for manage.py file and raise an error if not found
+path = os.path.realpath(__file__  + '/../../')
 
 # append paths inside of project
 sys.path.append('..')

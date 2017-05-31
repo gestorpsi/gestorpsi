@@ -16,8 +16,6 @@
 
 import os
 
-SEND_SIGNUP_MAIL = True
-
 # set path
 PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT_PATH, 'static')
@@ -31,13 +29,13 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 SITE_DISABLED = False # display "system is currently under maintenance" message instead login if True
 
-# notify admins when error http404 
+# notify admins when error http404
 ADMINS = (
      ('GestorPsi', 'noreply@domain.com'),
 )
 
 # notification people when new organization subscription
-ADMINS_REGISTRATION = ( 
+ADMINS_REGISTRATION = (
     ('seu-email@server.com'),
 )
 
@@ -65,12 +63,8 @@ DEFAULT_EMAIL_MIMETYPE = 'html'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'gestorpsi',                      # Or path to database file if using sqlite3.
-        'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(PROJECT_ROOT_PATH, 'test_db.sqlite3'),
     }
 }
 
@@ -257,6 +251,8 @@ CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 # Django celery: task scheduling package
 import djcelery
 djcelery.setup_loader()
+
+SEND_SIGNUP_MAIL = False
 
 # currency / financial / covenant
 USE_L10N = True

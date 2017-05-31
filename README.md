@@ -18,6 +18,8 @@ GNU General Public License for more details.
 GestorPsi - Psychology Services Management System
 ----------------------------------
 
+![build](https://travis-ci.org/gestorpsi/gestorpsi.svg?branch=master)
+
 
 About
 -----

@@ -40,6 +40,17 @@ $(document).ready(function() {
         $(element).load($(this).attr('href'));
         return false;
     });
+
+    /*
+     *  disable save_button after submit to avoid duplicate data.
+     */
+    // get first form
+    $(".save_button").click(function(){
+        $('form').first().submit();
+        $(this).attr('disabled',true);
+        $(this).attr('readonly',true);
+        return true;
+    });
     
     
     /**

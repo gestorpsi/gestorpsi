@@ -17,8 +17,6 @@ urlpatterns = patterns('',
     # registration org form
     url(r'^accounts/login/$', 'gestorpsi.authentication.views.gestorpsi_login', {'template_name': 'authentication/authentication_login_form.html'}, name='accounts-login-form'),
     url(r'^accounts/register/$', 'gestorpsi.authentication.views.register', name='registration-register'),
-    url(r'^accounts/complete/$', 'gestorpsi.authentication.views.complete', name='registration-complete'),
-
     # user custom admin for GCM
     url(r'^admin/gcm/$', 'gestorpsi.gcm.views.views.org_object_list', name='gcm-index'),
 

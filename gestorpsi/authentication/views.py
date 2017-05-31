@@ -17,7 +17,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -31,7 +31,7 @@ from django.contrib.auth.views import logout as django_logout
 from django.core.mail import EmailMessage
 
 from gestorpsi.util.views import get_object_or_None
-from gestorpsi.settings import SITE_DISABLED, ADMIN_URL, ADMINS_REGISTRATION, SIGNATURE, URL_DEMO, URL_APP, URL_HOME
+from gestorpsi.settings import SITE_DISABLED, ADMIN_URL, ADMINS_REGISTRATION, SIGNATURE, URL_DEMO, URL_APP, URL_HOME, SEND_SIGNUP_MAIL
 from gestorpsi.organization.models import Organization, ProfessionalResponsible
 from gestorpsi.gcm.models.invoice import Invoice
 from gestorpsi.authentication.forms import RegistrationForm
@@ -187,6 +187,59 @@ def gestorpsi_login(request, *args, **kwargs):
         return render_to_response('core/site_disabled.html')
     return django_login(request, *args, **kwargs)
 
+def send_signup_mail():
+    msg = EmailMessage()
+    msg.subject = u'Nova assinatura em %s' % URL_HOME
+    msg.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar %s/gcm/\n\n' % URL_APP
+    msg.body += u'Organização %s' % org
+    msg.to = bcc_list
+    msg.send()
+
+    request.session['user_aux_id'] = user.id
+
+    # message for client
+    user = User.objects.get(id=request.session['user_aux_id'])
+    msg = EmailMessage()
+    msg.subject = u"Assinatura GestorPSI.com.br"
+
+    msg.body = u"Olá, bom dia!\n\n"
+    msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe. Sua conta está pronta para usar! "
+    msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
+
+    msg.body += u"link funcionalidades: %s/funcionalidades/\n" % URL_HOME
+    msg.body += u"link como usar: %s/como-usar/\n" % URL_HOME
+    msg.body += u"link manual: %s/media/manual.pdf\n" % URL_DEMO
+    msg.body += u"link contato: %s/contato/\n\n" % URL_HOME
+    msg.body += u"Instruções no YouTube: https://www.youtube.com/channel/UC03EiqIuX72q-fi0MfWK8WA\n\n"
+
+    msg.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( i.start_date.strftime("%d/%m/%Y"), i.end_date.strftime("%d/%m/%Y") )
+    msg.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % URL_APP
+
+    msg.body += u"IMPORTANTE: As informações inseridas no sistema podem ser editadas mas não apagadas. Por isso, se for necessário fazer testes com informações fictícias para entender como o sistema funciona, utilize a nossa versão de demonstração: http://demo.gestorpsi.com.br\n\n"
+
+    msg.body += u"Endereço do GestorPSI: %s\n" % URL_APP
+    msg.body += u"Usuário/Login  %s\n" % request.POST.get('username')
+    msg.body += u"Senha  %s\n\n" % request.POST.get('password1')
+
+    msg.body += u"%s" % SIGNATURE
+
+    msg.to = [ user.email, ]
+    msg.bcc =  bcc_list
+    msg.send()
+
+def create_professional_responsible(org, person):
+    prof = ProfessionalResponsible()
+    prof.organization = org
+    prof.person = person
+    prof.name = person.name
+    prof.save()
+
+def create_invoice(org):
+    i = Invoice()
+    i.organization = org
+    i.status = 2 # free
+    i.save()
+
 
 '''
     from django-registration
@@ -222,7 +275,6 @@ def register(request, success_url=None,
 
         # form is valid and no errors found
         if form.is_valid() and not error_found:
-
             form.save(request)
 
             user = User.objects.get(username__iexact=form.cleaned_data['username'])
@@ -238,60 +290,15 @@ def register(request, success_url=None,
                     activation_key = rp.activation_key.lower() # Normalize before trying anything with it.
                     RegistrationProfile.objects.activate_user(activation_key)
 
-            prof = ProfessionalResponsible()
-            prof.organization = org
-            prof.person = person
-            prof.name = person.name
-            prof.save()
+            create_professional_responsible(org, person)
+            create_invoice(org)
 
-            # invoice
-            i = Invoice()
-            i.organization = org
-            i.status = 2 # free
-            i.save()
-            
             bcc_list = ADMINS_REGISTRATION
 
-            msg = EmailMessage()
-            msg.subject = u'Nova assinatura em %s' % URL_HOME
-            msg.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar %s/gcm/\n\n' % URL_APP
-            msg.body += u'Organização %s' % org
-            msg.to = bcc_list
-            msg.send()
-            
-            request.session['user_aux_id'] = user.id
+            if (SEND_SIGNUP_MAIL):
+                send_signup_mail()
 
-            # message for client
-            user = User.objects.get(id=request.session['user_aux_id'])
-            msg = EmailMessage()
-            msg.subject = u"Assinatura GestorPSI.com.br"
-
-            msg.body = u"Olá, bom dia!\n\n"
-            msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe. Sua conta está pronta para usar! "
-            msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
-
-            msg.body += u"link funcionalidades: %s/funcionalidades/\n" % URL_HOME
-            msg.body += u"link como usar: %s/como-usar/\n" % URL_HOME
-            msg.body += u"link manual: %s/media/manual.pdf\n" % URL_DEMO
-            msg.body += u"link contato: %s/contato/\n\n" % URL_HOME
-            msg.body += u"Instruções no YouTube: https://www.youtube.com/channel/UC03EiqIuX72q-fi0MfWK8WA\n\n"
-
-            msg.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( i.start_date.strftime("%d/%m/%Y"), i.end_date.strftime("%d/%m/%Y") )
-            msg.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % URL_APP
-
-            msg.body += u"IMPORTANTE: As informações inseridas no sistema podem ser editadas mas não apagadas. Por isso, se for necessário fazer testes com informações fictícias para entender como o sistema funciona, utilize a nossa versão de demonstração: http://demo.gestorpsi.com.br\n\n"
-
-            msg.body += u"Endereço do GestorPSI: %s\n" % URL_APP
-            msg.body += u"Usuário/Login  %s\n" % request.POST.get('username')
-            msg.body += u"Senha  %s\n\n" % request.POST.get('password1')
-
-            msg.body += u"%s" % SIGNATURE
-
-            msg.to = [ user.email, ]
-            msg.bcc =  bcc_list
-            msg.send()
-            
-            return HttpResponseRedirect(reverse('registration-complete'))
+            return render(request, 'registration/registration_organization_complete.html')
 
     # mount form, new register
     else:
@@ -312,9 +319,3 @@ def register(request, success_url=None,
                 context_instance=RequestContext(request)
             )
 
-
-'''
-    registration complete. New org
-'''
-def complete(request):
-    return render_to_response('registration/registration_organization_complete.html', context_instance=RequestContext(request) )

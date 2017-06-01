@@ -15,15 +15,14 @@ GNU General Public License for more details.
 """
 
 """
-   This file contains all configurations for Admin Interface
-   I{These models were created only for testing purposes}
-   @author: Sergio Durand
-   @version: 1.0
+	This file contains all configurations for Admin Interface
+	I{These models were created only for testing purposes}
+	@author: Sergio Durand
+	@version: 1.0
 """
 
 from django.contrib import admin
 from gestorpsi.device.models import Device, DeviceDetails
-
 
 class DeviceAdmin(admin.ModelAdmin):
     pass
@@ -32,4 +31,4 @@ class DeviceDetailsAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Device, DeviceAdmin)
-admin.site.register(DeviceDetails, DeviceDetailsAdmin)    
+admin.site.register(DeviceDetails, DeviceDetailsAdmin)

@@ -46,7 +46,7 @@ $(document).ready(function() {
      */
     // get parent form of submit
     $(".save_button").click(function(){
-        $(this).parent('form').submit();
+        $(this).parents('form:first').submit();
         $(this).attr('disabled',true);
         $(this).attr('readonly',true);
         return true;

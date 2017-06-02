@@ -12,6 +12,8 @@ from gestorpsi.address.models import City, State, Country, AddressType, Address
 from gestorpsi.document.models import TypeDocument
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Permission
+
 
 def setup_required_service():
     service_type = ServiceType()
@@ -48,6 +50,7 @@ def setup_required_service():
     person.save()
     person.organization.add(organization1)
     person.save()
+
 
 def setup_required_client():
     organization1 = Organization.objects.get(name=user_stub()["organization"])
@@ -126,8 +129,8 @@ def setup_required_data():
 
     address.city = city
     address.content_object = place
-
     place.save()
+
 
 def user_stub():
     st = State.objects.get(name="test")
@@ -152,6 +155,7 @@ def user_stub():
         "zipcode": u'12312-123',
     }
 
+
 def bad_user_stub():
     return {
         "address": u'niceaddress',
@@ -171,6 +175,7 @@ def bad_user_stub():
         "zipcode": u'12312-123',
     }
 
+
 def client_stub():
 
     person = Person.objects.all()[0]
@@ -184,6 +189,7 @@ def client_stub():
         "gender" : 2,
         "comments": u'coments',
     }
+
 
 def change_client_stub():
 
@@ -199,3 +205,9 @@ def change_client_stub():
         "gender" : 2,
         "comments": u'coments',
     }
+
+
+def add_permission(user, perm_code):
+    perm = Permission.objects.get(codename=perm_code)
+    user.user_permissions.add(perm)
+    user.save()

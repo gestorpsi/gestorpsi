@@ -98,46 +98,46 @@ class ClientViewsTests(TestCase):
 
         self.assertEqual(Client.objects.count(), old_client_count)
 
-    # def test_client_should_be_changed(self):
-    #     setup_required_data()
-    #     self.c.post(reverse('registration-register'), user_stub())
-    #     print(" USERS => ", User.objects.all().count())
-    #     self.assertEqual(User.objects.all().count(), 1)
-    #     res = self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
-    #     user = User.objects.get(username=user_stub()["username"])
-    #     user.is_superuser = True
-    #     user.save()
-    #
-    #     setup_required_service()
-    #     self.c.get(reverse('client-form-new'))
-    #     self.c.post(reverse('client-form-save'), client_stub())
-    #
-    #     old_client_count = Client.objects.count()
-    #
-    #     new_client = Client.objects.all()[0]
-    #     new_client_response = self.c.get(reverse('client-form-save', kwargs={'object_id': str(new_client.id)}), change_client_stub())
-    #
-        #
-        # change_client = Client.objects.all()[0]
-        #
-        # self.assertEqual(change_client.person.nickname, change_client_stub()["nickname"])
-        # self.assertEqual(Client.objects.count(), old_client_count)
+    def test_client_should_be_changed(self):
+        setup_required_data()
+        self.c.post(reverse('registration-register'), user_stub())
+        self.assertEqual(User.objects.all().count(), 1)
+        user = User.objects.get(username=user_stub()["username"])
+        user.is_superuser = True
+        user.save()
+        perm = Permission.objects.get(codename='client_write')
+        user.user_permissions.add(perm)
+        perm = Permission.objects.get(codename='client_read')
+        user.user_permissions.add(perm)
+        perm = Permission.objects.get(codename='client_list')
+        user.user_permissions.add(perm)
+        user.save()
+        self.c.login(username=user_stub()["username"], password=user_stub()["password1"])
+        setup_required_service()
+        res = self.c.get(reverse('client-form-new'))
+        self.assertEqual(res.status_code, 200)
+        self.c.post(reverse('client-form-save'), client_stub())
+        old_client_count = Client.objects.count()
+        new_client = Client.objects.all()[0]
+        new_client_response = self.c.get(reverse('client-form-save', kwargs={'object_id': str(new_client.id)}), change_client_stub())
+        change_client = Client.objects.all()[0]
+        self.assertEqual(change_client.person.nickname, change_client_stub()["nickname"])
+        self.assertEqual(Client.objects.count(), old_client_count)
+
 
     def test_company_should_create_with_valid_arguments(self):
         setup_required_data()
         self.c.post(reverse('registration-register'), user_stub())
         user = User.objects.get(username=user_stub()["username"])
         user.is_superuser = True
-        user.save()
         perm = Permission.objects.get(codename='client_write')
         user.user_permissions.add(perm)
-
+        user.save()
         setup_required_service()
         setup_required_client()
-
         old_company_count = Company.objects.count()
         person = Person.objects.get(name='Pessoa')
-        self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
+        self.c.login(username=user_stub()["username"], password=user_stub()["password1"])
         r = self.c.post(reverse('client-company-save'), {'person': person, 'name': person.name, 'nickname': person.nickname, 'photo': 'foto', 'gender': 2, 'comments': ''})
         self.assertEqual(Company.objects.count(), old_company_count+1)
 
@@ -145,7 +145,7 @@ class ClientViewsTests(TestCase):
     def test_company_should_create_with_none_arguments(self):
         setup_required_data()
         self.c.post(reverse('registration-register'), user_stub())
-        self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
+        self.c.login(username=user_stub()["username"], password=user_stub()["password1"])
         user = User.objects.get(username=user_stub()["username"])
         user.is_superuser = True
         user.save()

@@ -133,9 +133,10 @@ def setup_required_data():
 
 
 def user_stub():
-    st = State.objects.get(name="test")
-    city = City.objects.get(name="test")
+    st = State.objects.all()[0]
+    city = City.objects.all()[0]
     plan = Plan.objects.all()[0]
+    phone = Phone.objects.all()[0]
 
     return {
         "address": u'niceaddress',
@@ -147,7 +148,7 @@ def user_stub():
         "organization": u'niceorg',
         "password1": u'nicepass123',
         "password2": u'nicepass123',
-        "phone": u'45679078',
+        "phone": str(phone.phoneNumber),
         "plan": str(plan.id),
         "shortname": u'NICE',
         "state": str(st.id),

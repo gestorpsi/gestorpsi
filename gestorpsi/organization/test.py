@@ -16,6 +16,7 @@ from gestorpsi.person.models import Person
 from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.organization.models import Organization
 from gestorpsi.internet.models import EmailType, Email
+from gestorpsi.internet.models import IMNetwork
 from django.test.client import Client
 from django.test import TestCase
 from django.core.urlresolvers import reverse
@@ -83,8 +84,18 @@ class OrganizationViewTest(TestCase):
         user = User.objects.get(username=user_stub()["username"])
         user.is_superuser = True
         user.save()
-        response= self.client.post('/organization/', trade_name="Change trade name test", name="Change name company")
+        email_type = EmailType(description='Comercial')
+        email_type.save()
+        instant_message = IMNetwork(description='Hangouts')
+        instant_message.save()
+        response= self.client.post('/organization/save/', {'trade_name' : "Change trade name test", 'name' : "Change name company", 'short_name' : "CT", 'register_number' : '', 'cnes' : "", 'city_inscription' : "", 'photo' : "", 'comment' : ""
+        , 'state_inscription' : ""})
+        response= self.client.get('/organization/')
+        self.assertEquals(Organization.objects.all()[0].trade_name,"Change trade name test")
+        self.assertEquals(Organization.objects.all()[0].name, "Change name company")
+        self.assertEquals(Organization.objects.all()[0].short_name, "CT")
         self.assertEquals(200,response.status_code)
+
 
     def testShowSignatureOnGet(self):
         self.client.post(reverse('registration-register'), user_stub())

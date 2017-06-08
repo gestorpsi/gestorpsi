@@ -11,51 +11,48 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
-from django.contrib.auth.models import User, UserManager, Group
-from gestorpsi.person.models import Person
+from django.contrib.auth.models import User
 from gestorpsi.phone.models import Phone, PhoneType
 from gestorpsi.organization.models import Organization
 from gestorpsi.internet.models import EmailType, Email
 from gestorpsi.internet.models import IMNetwork
-from django.test.client import Client
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.test import Client as Cl
-from django.test import TestCase
 from gestorpsi.util.test_utils import user_stub, setup_required_data
 
 class OrganizationModelTest(TestCase):
     def setUp(self):
-    	self.name= 'testing organization'
+        self.name= 'testing organization'
         self.organization = Organization(name='testing organization')
 
     def testGetFisrtPhoneFull(self):
-    	self.phone_type = PhoneType(description='phone type test')
+        self.phone_type = PhoneType(description='phone type test')
         self.phone_type.save()
         self.phone = Phone(area='23', phoneNumber='45679078', ext='4444',
                       phoneType=self.phone_type, content_object = self.organization)
         self.phone.save()
-
         self.assertEquals(self.organization.get_first_phone(), self.phone)
+
     def testGetFisrtPhoneEmpty(self):
         self.assertEquals(self.organization.get_first_phone(), '')
 
     def testGetFisrtEmailFull(self):
-    	self.email_type = EmailType(description='type email')
-    	self.email_type.save()
-    	self.email= Email(email='vinirmv@gmail.com',email_type= self.email_type, content_object=self.organization)
-    	self.email.save()
-    	self.assertEquals(self.organization.get_first_email(), self.email)
+        self.email_type = EmailType(description='type email')
+        self.email_type.save()
+        self.email= Email(email='vinirmv@gmail.com',email_type= self.email_type, content_object=self.organization)
+        self.email.save()
+        self.assertEquals(self.organization.get_first_email(), self.email)
 
     def testGetFisrtEmailEmpty(self):
         self.assertEquals(self.organization.get_first_email(), '')
 
     def testUnicode(self):
-    	self.assertEquals(self.name, unicode(self.organization))
+        self.assertEquals(self.name, unicode(self.organization))
 
     def testClientNotExist(self):
-    	self.assertFalse(self.organization.clients().exists())
-    	#self.assertQuerysetEqual(self.organization.clients(), [])
+        self.assertFalse(self.organization.clients().exists())
+        #self.assertQuerysetEqual(self.organization.clients(), [])
 
 class OrganizationViewTest(TestCase):
     def setUp(self):
@@ -65,7 +62,7 @@ class OrganizationViewTest(TestCase):
 
     def testShowFormOnGet(self):
         self.client.post(reverse('registration-register'), user_stub())
-        res = self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
+        self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
         user = User.objects.get(username=user_stub()["username"])
         user.is_superuser = True
         user.save()
@@ -80,7 +77,7 @@ class OrganizationViewTest(TestCase):
 
     def testShowFormResultsOnPost(self):
         self.client.post(reverse('registration-register'), user_stub())
-        res = self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
+        self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
         user = User.objects.get(username=user_stub()["username"])
         user.is_superuser = True
         user.save()
@@ -99,7 +96,7 @@ class OrganizationViewTest(TestCase):
 
     def testShowSignatureOnGet(self):
         self.client.post(reverse('registration-register'), user_stub())
-        res = self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
+        self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
         user = User.objects.get(username=user_stub()["username"])
         user.is_superuser = True
         user.save()
@@ -114,7 +111,7 @@ class OrganizationViewTest(TestCase):
 
     def testShowSuspensionOnGet(self):
         self.client.post(reverse('registration-register'), user_stub())
-        res = self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
+        self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
         user = User.objects.get(username=user_stub()["username"])
         user.is_superuser = True
         user.save()

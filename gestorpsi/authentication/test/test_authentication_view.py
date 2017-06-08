@@ -15,35 +15,43 @@ GNU General Public License for more details.
 """
 
 from django.db import models
-from gestorpsi.person.models import Person
-from gestorpsi.organization.models import Organization
-from django.contrib.auth.models import User, UserManager, Group
-from django.contrib.sessions.models import Session
-from django.test import TestCase
-from gestorpsi.authentication.models import Profile, Role
-
-from django.test import TestCase, Client, RequestFactory
+from django.contrib.auth.models import User
+from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 from gestorpsi.util.test_utils import setup_required_data, bad_user_stub, user_stub
+
+from model_mommy import mommy
 
 
 class SignupTests(TestCase):
     def setUp(self):
-        self.factory = RequestFactory()
-        self.client = Client()
+        self.c = Client()
 
-    def test_signup_should_work(self):
-        response = self.client.get(reverse('registration-register'))
+    def test_have_access_to_signup_page(self):
+        response = self.c.get(reverse('registration-register'))
         self.assertEqual(response.status_code, 200)
 
     def test_signup_shouldnt_work_for_wrong_values(self):
-        setup_required_data()
         old_user_count = User.objects.count()
-        response = self.client.post(reverse('registration-register'), bad_user_stub())
+        response = self.c.post(reverse('registration-register'), bad_user_stub())
         self.assertEqual(User.objects.count(), old_user_count)
 
     def test_signup_with_correct_data_should_increase_total_number_of_users(self):
-        setup_required_data()
+        mommy.make('address.State')
+        city = mommy.make('address.City')
+        mommy.make('gcm.Plan', staff_size=99, duration=1)
+        mommy.make('address.Address', city=city)
+        mommy.make('address.AddressType', description='Comercial')
+        mommy.make('place.PlaceType', description='Matriz')
+        mommy.make('gcm.PaymentType', pk=4)
+        mommy.make('gcm.PaymentType', pk=1)
+        phone_type = mommy.make('phone.PhoneType', description="comercial")
+        phone = mommy.make('phone.Phone', area='23', phoneNumber='111111111', phoneType=phone_type)
+
+        mommy.make('place.RoomType')
+        mommy.make('document.TypeDocument', description='CPF')
+
         old_user_count = User.objects.count()
-        response = self.client.post(reverse('registration-register'), user_stub())
+        response = self.c.post(reverse('registration-register'), user_stub())
         self.assertEqual(User.objects.count(), old_user_count+1)
+        self.assertEqual(response.status_code, 200)

@@ -58,12 +58,12 @@ class Device(models.Model):
     available as well as the number of existing devices of the underlying type.
     @version: 1.0
     """
-    idDevice = UuidField(primary_key=True)
+    id = UuidField(primary_key=True)
     description = models.CharField(max_length=80)
     organization = models.ForeignKey(Organization, null=True)
 
     def get_all_device_details(self):
-        return DeviceDetails.objects.filter(device__id=self.idDevice)
+        return DeviceDetails.objects.filter(device__id=self.id)
 
     def __unicode__(self):
         return u"%s"%(self.description)
@@ -82,8 +82,6 @@ class Device(models.Model):
                 ("device_write", "Can write devices"),
             )
 
-
-
 class DeviceDetails(models.Model):
     """
     Instances of this class holds details about devices. For example, brand,
@@ -91,7 +89,7 @@ class DeviceDetails(models.Model):
     @version: 1.0
     @see: Device
     """
-    idDevice = UuidField(primary_key=True)
+    id = UuidField(primary_key=True)
     brand = models.CharField(max_length=80)
     model = models.CharField(max_length=80)
     part_number = models.CharField(max_length=45)

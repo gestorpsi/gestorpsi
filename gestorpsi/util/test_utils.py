@@ -1,4 +1,7 @@
 from gestorpsi.place.models import PlaceType, RoomType, Place
+from gestorpsi.person.models import Person
+from django.contrib.auth.models import User
+from gestorpsi.organization.models import Organization
 from gestorpsi.gcm.models import Plan
 from gestorpsi.gcm.models import PaymentType
 from gestorpsi.person.models import Person
@@ -9,7 +12,8 @@ from gestorpsi.organization.models import Organization
 from gestorpsi.admission.models import ReferralChoice as AdmissionChoice
 from gestorpsi.service.models import Service, ServiceType, Area
 from gestorpsi.address.models import City, State, Country, AddressType, Address
-from gestorpsi.document.models import TypeDocument
+from gestorpsi.internet.models import EmailType, IMNetwork
+from gestorpsi.document.models import TypeDocument, Issuer
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission
@@ -70,7 +74,6 @@ def setup_required_client():
     client.is_active = False
     client.save()
 
-
 def setup_required_data():
     country = Country(name='test', nationality='testing')
     country.save()
@@ -130,7 +133,15 @@ def setup_required_data():
     address.city = city
     address.content_object = place
     place.save()
+    
+    issuer = Issuer(description='SSP')
+    issuer.save()
 
+    email_type = EmailType(description='Comercial')
+    email_type.save()
+
+    instant_message = IMNetwork(description='Hangouts')
+    instant_message.save()
 
 def user_stub():
     st = State.objects.all()[0]
@@ -176,6 +187,23 @@ def bad_user_stub():
         "zipcode": u'12312-123',
     }
 
+def student_stub():
+    return {
+        "name": u'student',
+        "nickname": u'student',
+        "photo": 'student_photo',
+        "gender": 2,
+        "comments": ''
+    }
+
+def change_student_stub():
+    return {
+        "name": u'change_student',
+        "nickname": u'student',
+        "photo": 'student_photo',
+        "gender": 2,
+        "comments": ''
+    }
 
 def client_stub():
 

@@ -1,0 +1,3 @@
+-r requirements.txt
+pytest
+model_mommy

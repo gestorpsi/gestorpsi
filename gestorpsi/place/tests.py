@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 from gestorpsi.address.models import Address
 from gestorpsi.phone.models import Phone, PhoneType
-from gestorpsi.place.models import PlaceType, Place
+from gestorpsi.place.models import PlaceType, Place, Room, RoomType
 from gestorpsi.address.models import City, State, Country, AddressType
 import unittest
 
@@ -24,7 +24,7 @@ from django.test import TestCase, RequestFactory
 from django.test import Client as Cl
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from gestorpsi.util.test_utils import user_stub, setup_required_data, place_stub
+from gestorpsi.util.test_utils import user_stub, setup_required_data, place_stub, room_stub
 
 class PlaceTests(TestCase):
     def setUp(self):
@@ -82,3 +82,19 @@ class PlaceTests(TestCase):
         self.client.logout() # guarantee that the given user is signed out
         response= self.client.get('/place/deactive/')
         self.assertEquals(302,response.status_code)
+
+    def test_show_add_room(self):
+        self.client.post(reverse('registration-register'), user_stub())
+        res = self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
+        user = User.objects.get(username=user_stub()["username"])
+        user.is_superuser = True
+        user.save()
+
+        old_room_count = Room.objects.count()
+        print old_room_count
+        response= self.client.post('/place/room/save/', room_stub())
+        print response
+        new_room = Room.objects.all()[0]
+        new_room_response =  self.client.get('/place/room/'+str(new_room.id)+'/')
+        self.assertEquals(200,new_room_response.status_code)
+        self.assertEquals(Room.objects.count(), old_room_count+1)

@@ -242,8 +242,8 @@ def send_signup_mail(org, user, request, invoice):
 
     msg.body += u"Endereço do GestorPSI: %s\n" % URL_APP
     msg.body += u"Usuário/Login  %s\n" % request.POST.get('username')
-    msg.body += u"Senha  %s\n\n" % request.POST.get('password1')
-    msg.body += u'Plano %s' % org.prefered_plan
+    msg.body += u"Senha %s\n" % request.POST.get('password1')
+    msg.body += u"Plano %s\n\n" % org.prefered_plan
     msg.body += u"%s" % SIGNATURE
 
     msg.to = [user.email]

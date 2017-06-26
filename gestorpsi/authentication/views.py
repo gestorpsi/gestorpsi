@@ -207,7 +207,7 @@ def create_invoice(org):
     return i
 
 
-def send_signup_mail(org, user, request):
+def send_signup_mail(org, user, request, invoice):
     # notify admins
     msg = EmailMessage()
     msg.subject = u'Nova assinatura em %s' % URL_HOME
@@ -220,7 +220,7 @@ def send_signup_mail(org, user, request):
 
     # notify client
     user = User.objects.get(id=request.session['user_aux_id'])
-    i = create_invoice(org)
+    
     msg = EmailMessage()
 
     msg.subject = u"Assinatura GestorPSI.com.br"
@@ -235,7 +235,7 @@ def send_signup_mail(org, user, request):
     msg.body += u"link contato: %s/contato/\n\n" % URL_HOME
     msg.body += u"Instruções no YouTube: https://www.youtube.com/channel/UC03EiqIuX72q-fi0MfWK8WA\n\n"
 
-    msg.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( i.start_date.strftime("%d/%m/%Y"), i.end_date.strftime("%d/%m/%Y") )
+    msg.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( invoice.start_date.strftime("%d/%m/%Y"), invoice.end_date.strftime("%d/%m/%Y") )
     msg.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % URL_APP
 
     msg.body += u"IMPORTANTE: As informações inseridas no sistema podem ser editadas mas não apagadas. Por isso, se for necessário fazer testes com informações fictícias para entender como o sistema funciona, utilize a nossa versão de demonstração: http://demo.gestorpsi.com.br\n\n"
@@ -243,7 +243,7 @@ def send_signup_mail(org, user, request):
     msg.body += u"Endereço do GestorPSI: %s\n" % URL_APP
     msg.body += u"Usuário/Login  %s\n" % request.POST.get('username')
     msg.body += u"Senha  %s\n\n" % request.POST.get('password1')
-    msg.body += 'Plano %s' % org.prefered_plan
+    msg.body += u'Plano %s' % org.prefered_plan
     msg.body += u"%s" % SIGNATURE
 
     msg.to = [user.email]
@@ -302,9 +302,10 @@ def register(request, success_url=None,
                     RegistrationProfile.objects.activate_user(activation_key)
 
             create_professional_responsible(org, person)
-
+            invoice = create_invoice(org) 
+            
             if (SEND_SIGNUP_MAIL):
-                send_signup_mail(org, user, request)
+                send_signup_mail(org, user, request, invoice)
 
             return render(request, 'registration/registration_organization_complete.html')
 

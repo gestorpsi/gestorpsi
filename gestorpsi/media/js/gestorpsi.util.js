@@ -44,8 +44,11 @@ $(document).ready(function() {
     /*
      *  disable save_button after submit to avoid duplicate data.
      */
-    $(".save_button").live('click', function() {
+    // get parent form of submit
+    $(".save_button").click(function(){
+        $(this).parents('form:first').submit();
         $(this).attr('disabled',true);
+        $(this).attr('readonly',true);
         return true;
     });
     

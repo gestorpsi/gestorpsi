@@ -34,6 +34,7 @@ from gestorpsi.util.views import get_object_or_None
 from gestorpsi.settings import SITE_DISABLED, ADMIN_URL, ADMINS_REGISTRATION, SIGNATURE, URL_DEMO, URL_APP, URL_HOME, SEND_SIGNUP_MAIL
 from gestorpsi.organization.models import Organization, ProfessionalResponsible
 from gestorpsi.gcm.models.invoice import Invoice
+from gestorpsi.gcm.models.plan import Plan
 from gestorpsi.authentication.forms import RegistrationForm
 from registration.models import RegistrationProfile
 
@@ -182,24 +183,46 @@ def clear_login(user):
         #user.save()
         #user.get_profile().org_active = org       
 
+
 def gestorpsi_login(request, *args, **kwargs):
     if SITE_DISABLED:
         return render_to_response('core/site_disabled.html')
     return django_login(request, *args, **kwargs)
 
-def send_signup_mail():
+
+def create_professional_responsible(org, person):
+    prof = ProfessionalResponsible()
+    prof.organization = org
+    prof.person = person
+    prof.name = person.name
+    prof.save()
+    return prof
+
+
+def create_invoice(org):
+    i = Invoice()
+    i.organization = org
+    i.status = 2 # free
+    i.save()
+    return i
+
+
+def send_signup_mail(org, user, request, invoice):
+    # notify admins
     msg = EmailMessage()
     msg.subject = u'Nova assinatura em %s' % URL_HOME
     msg.body = u'Uma nova organizacao se registrou no GestorPSI. Para mais detalhes acessar %s/gcm/\n\n' % URL_APP
     msg.body += u'Organização %s' % org
-    msg.to = bcc_list
+    msg.to = ADMINS_REGISTRATION
     msg.send()
 
     request.session['user_aux_id'] = user.id
 
-    # message for client
+    # notify client
     user = User.objects.get(id=request.session['user_aux_id'])
+    
     msg = EmailMessage()
+
     msg.subject = u"Assinatura GestorPSI.com.br"
 
     msg.body = u"Olá, bom dia!\n\n"
@@ -212,34 +235,20 @@ def send_signup_mail():
     msg.body += u"link contato: %s/contato/\n\n" % URL_HOME
     msg.body += u"Instruções no YouTube: https://www.youtube.com/channel/UC03EiqIuX72q-fi0MfWK8WA\n\n"
 
-    msg.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( i.start_date.strftime("%d/%m/%Y"), i.end_date.strftime("%d/%m/%Y") )
+    msg.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( invoice.start_date.strftime("%d/%m/%Y"), invoice.end_date.strftime("%d/%m/%Y") )
     msg.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % URL_APP
 
     msg.body += u"IMPORTANTE: As informações inseridas no sistema podem ser editadas mas não apagadas. Por isso, se for necessário fazer testes com informações fictícias para entender como o sistema funciona, utilize a nossa versão de demonstração: http://demo.gestorpsi.com.br\n\n"
 
     msg.body += u"Endereço do GestorPSI: %s\n" % URL_APP
     msg.body += u"Usuário/Login  %s\n" % request.POST.get('username')
-    msg.body += u"Senha  %s\n\n" % request.POST.get('password1')
-
+    msg.body += u"Senha %s\n" % request.POST.get('password1')
+    msg.body += u"Plano %s\n\n" % org.prefered_plan
     msg.body += u"%s" % SIGNATURE
 
-    msg.to = [ user.email, ]
-    msg.bcc =  bcc_list
+    msg.to = [user.email]
+    msg.bcc =  ADMINS_REGISTRATION
     msg.send()
-
-def create_professional_responsible(org, person):
-    prof = ProfessionalResponsible()
-    prof.organization = org
-    prof.person = person
-    prof.name = person.name
-    prof.save()
-
-def create_invoice(org):
-    i = Invoice()
-    i.organization = org
-    i.status = 2 # free
-    i.save()
-
 
 '''
     from django-registration
@@ -283,20 +292,20 @@ def register(request, success_url=None,
 
             # active automatic
             org = Organization.objects.filter(organization__isnull=True).filter(person=person)[0]
+            org.prefered_plan = Plan.objects.get(pk=request.POST.get('plan'))
             org.active = True
             org.save()
+
             for p in org.person_set.all():
                 for rp in p.profile.user.registrationprofile_set.all():
                     activation_key = rp.activation_key.lower() # Normalize before trying anything with it.
                     RegistrationProfile.objects.activate_user(activation_key)
 
             create_professional_responsible(org, person)
-            create_invoice(org)
-
-            bcc_list = ADMINS_REGISTRATION
-
+            invoice = create_invoice(org) 
+            
             if (SEND_SIGNUP_MAIL):
-                send_signup_mail()
+                send_signup_mail(org, user, request, invoice)
 
             return render(request, 'registration/registration_organization_complete.html')
 
@@ -318,4 +327,3 @@ def register(request, success_url=None,
                 { 'form': form },
                 context_instance=RequestContext(request)
             )
-

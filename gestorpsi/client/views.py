@@ -806,10 +806,10 @@ def organization_clients(request):
     dict = {}
     array = []
 
-    for o in clients:
+    for client in clients:
         c = {
-            'id': o.id,
-            'name': u'%s%s%s' % (o.person.name, '' if not o.person.is_company() else _(' (Company)'), '' if o.active == True else _(' (Disabled)')),
+            'id': client.id,
+            'name': u'%s%s%s' % (client.person.name, '' if not client.person.is_company() else _(' (Company)'), '' if client.active == True else _(' (Disabled)')),
         }
         array.append(c)
 
@@ -911,25 +911,25 @@ def referral_occurrences_action(request, object_id=None, referral_id=None):
         confirmation of one or lot of occurrences
     '''
 
-    msg = False
-    c = 0
+    message = False
+    confirmation = 0
 
-    for x in request.POST.getlist('list_occurrence'):
+    for occurrence in request.POST.getlist('list_occurrence'):
 
         # get object and check org to avoid hack.
-        oc = get_object_or_404( ScheduleOccurrence, pk=x, event__referral__organization=request.user.get_profile().org_active )
+        object_ocurrence = get_object_or_404( ScheduleOccurrence, pk=occurrence, event__referral__organization=request.user.get_profile().org_active )
 
-        ocf = OccurrenceConfirmation()
-        ocf.occurrence = oc
-        ocf.presence = request.POST.get('id_action')
-        ocf.reason = request.POST.get('reason')
-        ocf.save()
+        occurrence_confirmation = OccurrenceConfirmation()
+        occurrence_confirmation.occurrence = object_ocurrence
+        occurrence_confirmation.presence = request.POST.get('id_action')
+        occurrence_confirmation.reason = request.POST.get('reason')
+        occurrence_confirmation.save()
 
-        c += 1
-        msg = True
+        confirmation += 1
+        message = True
 
-    if msg:
-        messages.success(request, _(u'Ocorrência salvo com sucesso! Total de %s' % c ))
+    if message:
+        messages.success(request, _(u'Ocorrência salvo com sucesso! Total de %s' % confirmation ))
 
     # return to list of futures events
     return HttpResponseRedirect('/client/%s/referral/%s/upcoming/' % (object_id, referral_id) )

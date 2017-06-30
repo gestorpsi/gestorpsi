@@ -1,10 +1,78 @@
 from gestorpsi.place.models import PlaceType, RoomType, Place
+from gestorpsi.person.models import Person
+from django.contrib.auth.models import User
+from gestorpsi.organization.models import Organization
 from gestorpsi.gcm.models import Plan
 from gestorpsi.gcm.models import PaymentType
+from gestorpsi.person.models import Person
+from gestorpsi.client.models import Client
 from gestorpsi.phone.models import Phone, PhoneType
+from django.utils.crypto import get_random_string
+from gestorpsi.organization.models import Organization
+from gestorpsi.admission.models import ReferralChoice as AdmissionChoice
+from gestorpsi.service.models import Service, ServiceType, Area
 from gestorpsi.address.models import City, State, Country, AddressType, Address
-from gestorpsi.document.models import TypeDocument
+from gestorpsi.internet.models import EmailType, IMNetwork
+from gestorpsi.document.models import TypeDocument, Issuer
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Permission
+
+
+def setup_required_service():
+    service_type = ServiceType()
+    service_type.name="Tipo de Servico"
+    service_type.save()
+
+    area1 = Area()
+    area1.area_name = "area 1"
+    area1.save()
+
+    organization1 = Organization.objects.get(name=user_stub()["organization"])
+
+    service1 = Service()
+    service1.area = area1;
+    service1.name = "Servico 1"
+    service1.organization = organization1
+    service1.service_type = service_type
+    service1.save()
+
+    a = AdmissionChoice()
+    a.weight = 1
+    a.save()
+
+    u = User()
+    u.username = "lala12"
+    u.password = "1234512678"
+    u.is_superuser = True
+    u.save()
+
+    person = Person()
+    person.name = "nome12"
+    person.user = u
+    person.nickname = "apelido12"
+    person.save()
+    person.organization.add(organization1)
+    person.save()
+
+
+def setup_required_client():
+    organization1 = Organization.objects.get(name=user_stub()["organization"])
+
+    user = User.objects.create(username="user1", password="password")
+    user.save()
+
+    person = Person.objects.create(user=user)
+    person.name = "Pessoa"
+    person.nickname = "nickname"
+    person.organization.add(organization1)
+    person.save()
+
+    client = Client()
+    client.person = person
+    client.idRecord = 2
+    client.is_active = False
+    client.save()
 
 def setup_required_data():
     country = Country(name='test', nationality='testing')
@@ -66,11 +134,21 @@ def setup_required_data():
     address.content_object = place
 
     place.save()
+    
+    issuer = Issuer(description='SSP')
+    issuer.save()
+
+    email_type = EmailType(description='Comercial')
+    email_type.save()
+
+    instant_message = IMNetwork(description='Hangouts')
+    instant_message.save()
 
 def user_stub():
-    st = State.objects.get(name="test")
-    city = City.objects.get(name="test")
+    st = State.objects.all()[0]
+    city = City.objects.all()[0]
     plan = Plan.objects.all()[0]
+    phone = Phone.objects.all()[0]
 
     return {
         "address": u'niceaddress',
@@ -82,7 +160,7 @@ def user_stub():
         "organization": u'niceorg',
         "password1": u'nicepass123',
         "password2": u'nicepass123',
-        "phone": u'45679078',
+        "phone": str(phone.phoneNumber),
         "plan": str(plan.id),
         "shortname": u'NICE',
         "state": str(st.id),
@@ -108,3 +186,57 @@ def bad_user_stub():
         "username": u'user15',
         "zipcode": u'12312-123',
     }
+
+def student_stub():
+    return {
+        "name": u'student',
+        "nickname": u'student',
+        "photo": 'student_photo',
+        "gender": 2,
+        "comments": ''
+    }
+
+def change_student_stub():
+    return {
+        "name": u'change_student',
+        "nickname": u'student',
+        "photo": 'student_photo',
+        "gender": 2,
+        "comments": ''
+    }
+
+def client_stub():
+
+    person = Person.objects.all()[0]
+    return {
+        "name": person.name,
+        "person": person,
+        "nickname": u'client',
+        "photo": u'foto_do_cliente',
+        "is_active": True,
+        "nickname": u'client',
+        "gender" : 2,
+        "comments": u'coments',
+    }
+
+
+def change_client_stub():
+
+    person = Person.objects.all()[0]
+
+    return {
+        "name": person.name,
+        "person": person,
+        "nickname": u'novo_nickname',
+        "photo": u'foto_do_cliente',
+        "is_active": True,
+        "nickname": u'client',
+        "gender" : 2,
+        "comments": u'coments',
+    }
+
+
+def add_permission(user, perm_code):
+    perm = Permission.objects.get(codename=perm_code)
+    user.user_permissions.add(perm)
+    user.save()

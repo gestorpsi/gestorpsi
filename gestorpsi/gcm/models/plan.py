@@ -1,18 +1,37 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 """
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
+
+DURATION = (
+    (1,  _('Mensal')),
+    (3,  _('Trimestral')),
+    (6,  _('Semestral')),
+    (12, _('Anual')),
+    (24, _('Bianual')),
+)
 
 class Plan(models.Model):
     name = models.CharField(_('Nome do Plano'), help_text=_('Ex: de 1 a 9 profissionais'), max_length=255)
     staff_size = models.IntegerField(_('Qtade profissionais'), null=True, blank=True, help_text=_(u'No máximo de profissionais ativos'))
     student_size = models.IntegerField(_('Qtade estudantes'), null=True, blank=True, help_text=_(u'No máximo de estudantes ativos'))
     value = models.DecimalField(_('Valor em R$'), max_digits=8, decimal_places=2, help_text=_('Utilizar pontos, nao virgulas'))
-    duration = models.IntegerField(_('Duracao'), help_text=_('Duracao em MESES do plano. Preencher 1 para plano mensal, 3 para trimestral etc'))
+    duration = models.IntegerField(_('Duracao'), choices=DURATION)
     weight = models.IntegerField(_('Peso'), max_length=4, null=True, blank=True)
     weight.help_text = _('Peso para ordenacao visual no formulario de cadastro. Utilizar valores inteiros aqui')
     active = models.BooleanField(u'Funcionando?', default=True)
@@ -24,17 +43,4 @@ class Plan(models.Model):
         ordering = ['weight',]
     
     def __unicode__(self):
-        duration = self.duration
-
-        if self.duration == '1':
-            duration = _('Mensal')
-        if self.duration == '3':
-            duration = _('Trimestral')
-        if self.duration == '6':
-            duration = _('Semestral')
-        if self.duration == '12':
-            duration = _('Anual')
-        if self.duration == '24':
-            duration = _('Bianual')
-
-        return u'%s - R$ %s/%s' % (self.name, self.value, duration)
+        return u'%s - R$ %s / %s' % (self.name, self.value, self.get_duration_display())

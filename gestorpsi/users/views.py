@@ -247,27 +247,24 @@ def set_form_user(request, object_id=0):
 
 
 @permission_required_with_403('users.users_write')
-def order(request, profile_id = None):
+def order(request, profile_id=None):
 
-    object = Profile.objects.get( pk=profile_id, person__organization=request.user.get_profile().org_active )
+    object = Profile.objects.get(pk=profile_id, person__organization=request.user.get_profile().org_active)
 
     if request.user.get_profile() == object:
         messages.error(request, _('Sorry, you can not disable yourself'))
     else:
-       # to check if is only one administrator 
-        if Role.objects.filter(organization=request.user.get_profile().org_active, group=Group.objects.get(name='administrator')).distinct().count() < 2:
-            messages.error(request, _('Cannot be removed of this permission because is the only one. ( %s )') % 'Administrador')
+        if object.user.is_active:
+            object.user.is_active = False
         else:
-            if object.user.is_active:
-                object.user.is_active = False
-            else:
-                object.user.is_active = True
-                for i in object.user.registrationprofile_set.exclude(activation_key='ALREADY_ACTIVATED'):
-                    i.activation_key = 'ALREADY_ACTIVATED'
-                    i.save()
+            object.user.is_active = True
+            # change all registration profile
+            for i in object.user.registrationprofile_set.exclude(activation_key='ALREADY_ACTIVATED'):
+                i.activation_key = 'ALREADY_ACTIVATED'
+                i.save()
 
-            object.user.save()
-            messages.success(request, ('%s' % (_('User activated successfully') if object.user.is_active else _('User deactivated successfully'))))
+        object.user.save()
+        messages.success(request, ('%s' % (_('User activated successfully') if object.user.is_active else _('User deactivated successfully'))))
     
     return HttpResponseRedirect('/user/%s/' % object.person.id)
 

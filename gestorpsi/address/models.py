@@ -75,7 +75,7 @@ class Address(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.CharField(max_length=36)
     content_object = generic.GenericForeignKey()
-    
+
     def __cmp__(self, other):
         if (self.addressPrefix == other.addressPrefix) and \
            (self.addressLine1 == other.addressLine1) and \
@@ -90,14 +90,17 @@ class Address(models.Model):
            (self.foreignCity == other.foreignCity):
             return 0
         else:
-            return 1    
-    
+            return 1
+
     def __unicode__(self):
-        return u"%s %s %s %s<br />%s %s %s %s %s (%s)" % (\
-            self.addressPrefix, self.addressLine1, self.addressNumber, self.addressLine2, \
-            self.zipCode, self.neighborhood, self.city, '' if not hasattr(self.city, 'state') else self.city.state.shortName, '' if not hasattr(self.city, 'state') else self.city.state.country, self.addressType\
-        )
-    
+        result = u"%s %s %s %s<br />%s %s %s %s %s (%s)" % (\
+            self.addressPrefix, self.addressLine1, self.addressNumber, \
+            self.addressLine2, self.zipCode, self.neighborhood, self.city, \
+            '' if not hasattr(self.city, 'state') else self.city.state.shortName, \
+            '' if not hasattr(self.city, 'state') else self.city.state.country, self.addressType)
+
+        return result[:50] # only the first 50 chars
+
     def __empty__(self):
         return ''
     area = property(__empty__)
@@ -110,31 +113,31 @@ class Address(models.Model):
         r = ""
         if self.addressPrefix:
             r += u'%s' % self.addressPrefix
-            
+
         if self.addressLine1:
             r += u' %s' % self.addressLine1
-            
+
         if self.addressNumber:
             r += u' %s' % self.addressNumber
-             
+
         if self.addressLine2:
             r += u' %s' % self.addressLine2
 
         if self.zipCode:
             r += u' CEP %s' % self.zipCode
-            
+
         if self.neighborhood:
             r += u' - %s' % self.neighborhood
-            
+
         if self.city:
             r += u' - %s' % self.city.name
-            
+
             if hasattr(self.city,'state') and self.city.state:
                 r += u' / %s' % self.city.state.shortName
-                    
+
                 if hasattr(self.city.state,'country') and self.city.state.country:
                     r += u' / %s' % self.city.state.country.name
-            
+
         if self.addressType:
             r += u' - (%s)' % self.addressType
 

@@ -22,26 +22,14 @@ from django.contrib.auth.models import User, UserManager, Group
 from django.core.urlresolvers import reverse
 from gestorpsi.util.test_utils import setup_required_data, user_stub
 
-def device_stub ():
-	return {
-		'brand': 'brand',
-		'description': 'description',
-		'model': 'model',
-		'part_number': 'part_number',
-		'lendable': True,
-		'comments': 'comments',
-		'durability': '1',
-		'prof_restriction': True,
-		'mobility': '1',
-		'active': True,
-	}
-
 class DeviceTest(TestCase):
 	def setUp(self):
 		self.factory = RequestFactory()
 		self.cl = Cl()
 		setup_required_data()
 		self.forbidden_string = "We're sorry, but you dont have permissions to execute this operation."
+		device = Device()
+		device.description = 'description'
 
 	def test_device_should_redirect_unlogged_users(self):
 		self.cl.logout() 
@@ -94,17 +82,3 @@ class DeviceTest(TestCase):
 		self.cl.logout()
 		response= self.cl.get('/device/add/')
 		self.assertEquals(302,response.status_code)
-
-	# def test_service_creation_should_work_for_correct_values(self):
-	# 	self.cl.post(reverse('registration-register'), user_stub())
-	# 	res = self.cl.login(username=user_stub()["username"], password=user_stub()["password1"])
-	# 	user = User.objects.get(username=user_stub()["username"])
-	# 	user.is_superuser = True
-	# 	user.save()
-	# 	device_count = Device.objects.all().count()
-
-	# 	self.cl.post(reverse('device-add'), device_stub())
-
-	# 	device_current_count = Device.objects.all().count()
-
-	# 	self.assertEqual(device_current_count, device_count+1)

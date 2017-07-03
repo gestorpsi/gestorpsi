@@ -22,7 +22,8 @@ from django.utils.translation import ugettext as _
 from django.contrib import messages
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.person.views import person_json_list, person_save
-from gestorpsi.careprofessional.models import ProfessionalProfile, ProfessionalIdentification, CareProfessional, Profession
+from gestorpsi.careprofessional.models import ProfessionalProfile, ProfessionalIdentification, CareProfessional, \
+    Profession
 from gestorpsi.careprofessional.forms import StudentProfileForm
 from gestorpsi.phone.models import PhoneType
 from gestorpsi.address.models import Country, State, AddressType, City
@@ -39,7 +40,6 @@ from gestorpsi.client.models import Client
 
 @permission_required_with_403('careprofessional.careprofessional_list')
 def index(request, template_name='careprofessional/careprofessional_list.html', deactive=False):
-
     # show active tab
     if deactive:
         action_tab_deactive = True
@@ -48,116 +48,137 @@ def index(request, template_name='careprofessional/careprofessional_list.html', 
 
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
 
-  
-@permission_required_with_403('careprofessional.careprofessional_list')
-def list(request, page=1, deactive=False, filter=None, initial=None, no_paging=False, is_student=False ):
 
+@permission_required_with_403('careprofessional.careprofessional_list')
+def list(request, page=1, deactive=False, filter=None, initial=None, no_paging=False, is_student=False):
     # professional
     if not is_student:
-        if deactive:
-            object = CareProfessional.objects.deactive(request.user.get_profile().org_active)
-        else:
-            object = CareProfessional.objects.active(request.user.get_profile().org_active)
-    # stundent
+        professional = take_professional(deactive, request)
+    # student
     else:
-        if deactive:
-            object = CareProfessional.objects.students_deactive(request.user.get_profile().org_active)
-        else:
-            object = CareProfessional.objects.students_active(request.user.get_profile().org_active)
+        professional = take_student_professional(deactive, request)
 
     if initial:
-        object = object.filter(person__name__istartswith = initial)
+        professional = professional.filter(person__name__istartswith=initial)
 
     if filter:
-        object = object.filter(person__name__icontains = filter)
+        professional = professional.filter(person__name__icontains=filter)
 
-    return HttpResponse(simplejson.dumps(person_json_list(request, object, 'careprofessional.careprofessional_read', page), sort_keys=True), mimetype='application/json')
+    return HttpResponse(
+        simplejson.dumps(person_json_list(request, professional, 'careprofessional.careprofessional_read', page),
+                         sort_keys=True), mimetype='application/json')
+
+
+def take_professional(deactive, request):
+    if deactive:
+        professional = CareProfessional.objects.deactive(request.user.get_profile().org_active)
+    else:
+        professional = CareProfessional.objects.active(request.user.get_profile().org_active)
+    return professional
+
+
+def take_student_professional(deactive, request):
+    if deactive:
+        professional = CareProfessional.objects.students_deactive(request.user.get_profile().org_active)
+    else:
+        professional = CareProfessional.objects.students_active(request.user.get_profile().org_active)
+    return professional
 
 
 @permission_required_with_403('careprofessional.careprofessional_read')
 def form(request, object_id=None, template_name='careprofessional/careprofessional_form.html', is_student=False):
-
     if object_id:
-        object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
+        professional = get_object_or_404(CareProfessional, pk=object_id,
+                                         person__organization=request.user.get_profile().org_active)
         tab = 'edit'
     else:
         if not request.user.has_perm('careprofessional.careprofessional_write'):
-            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
+            return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), },
+                                      context_instance=RequestContext(request))
 
         tab = 'add'
-        object = CareProfessional()
+        professional = CareProfessional()
 
     try:
         cities = City.objects.filter(state=request.user.get_profile().org_active.address.all()[0].city.state)
-    except:
+    except Exception:
         cities = {}
 
     if is_student:
-        student_form = StudentProfileForm(instance=object.studentprofile) if object_id else StudentProfileForm()
-        ServiceTypes = Service.objects.filter( active=True, organization=request.user.get_profile().org_active, academic_related=True )
+        student_form = StudentProfileForm(instance=professional.studentprofile) if object_id else StudentProfileForm()
+        ServiceTypes = Service.objects.filter(active=True, organization=request.user.get_profile().org_active,
+                                              academic_related=True)
     else:
-        ServiceTypes = Service.objects.filter( active=True, organization=request.user.get_profile().org_active)
+        ServiceTypes = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
 
-    if not object.active:
-        messages.info(request,  _('This professional is not enabled.'))
+    if not professional.active:
+        messages.info(request, _('This professional is not enabled.'))
 
     def notify_set():
-        if hasattr(object,'person') and object.person.notify.all():
-            return object.person.notify.get(org_id=request.user.profile.org_active.id)
+        if hasattr(professional, 'person') and professional.person.notify.all():
+            return professional.person.notify.get(org_id=request.user.profile.org_active.id)
         else:
             return None
 
-    return render_to_response(template_name, {
-                                    'object': object,
-                                    'student_form': student_form if is_student else None,
-                                    'phones' : None if not hasattr(object, 'person') else object.person.phones.all(),
-                                    'addresses' : None if not hasattr(object, 'person') else object.person.address.all(),
-                                    'documents' : None if not hasattr(object, 'person') else object.person.document.all(),
-                                    'emails' : None if not hasattr(object, 'person') else object.person.emails.all(),
-                                    'websites' : None if not hasattr(object, 'person') else object.person.sites.all(),
-                                    'ims' : None if not hasattr(object, 'person') else object.person.instantMessengers.all(),
-                                    'notify' : notify_set(),
-                                    'PROFESSIONAL_AREAS': Profession.objects.all(),
-                                    'WorkPlacesTypes': Place.objects.active().filter(organization = request.user.get_profile().org_active.id),
-                                    'countries': Country.objects.all(),
-                                    'PhoneTypes': PhoneType.objects.all(),
-                                    'AddressTypes': AddressType.objects.all(),
-                                    'EmailTypes': EmailType.objects.all(),
-                                    'IMNetworks': IMNetwork.objects.all() ,
-                                    'TypeDocuments': TypeDocument.objects.all(),
-                                    'Issuers': Issuer.objects.all(),
-                                    'States': State.objects.all(),
-                                    'MaritalStatusTypes': MaritalStatus.objects.all(),
-                                    'PlaceTypes': PlaceType.objects.all(),
-                                    'ServiceTypes': ServiceTypes,
-                                    'Cities': cities,
-                                    'ReferralDischargeReason': None if not object.have_referral_charged else ReferralDischargeReason.objects.all(),
-                                    'hours': HOURS,
-                                    'action_tab_form': tab, # show tab active
-                                    }, 
-                              context_instance=RequestContext(request)
-                              )
+    return render_to_response(template_name,
+                              {
+                                  'object': professional,
+                                  'student_form': student_form if is_student else None,
+                                  'phones': None if not hasattr(professional,
+                                                                'person') else professional.person.phones.all(),
+                                  'addresses': None if not hasattr(professional,
+                                                                   'person') else professional.person.address.all(),
+                                  'documents': None if not hasattr(professional,
+                                                                   'person') else professional.person.document.all(),
+                                  'emails': None if not hasattr(professional,
+                                                                'person') else professional.person.emails.all(),
+                                  'websites': None if not hasattr(professional,
+                                                                  'person') else professional.person.sites.all(),
+                                  'ims': None if not hasattr(professional,
+                                                             'person') else professional.person.instantMessengers.all(),
+                                  'notify': notify_set(),
+                                  'PROFESSIONAL_AREAS': Profession.objects.all(),
+                                  'WorkPlacesTypes': Place.objects.active().filter(
+                                      organization=request.user.get_profile().org_active.id),
+                                  'countries': Country.objects.all(),
+                                  'PhoneTypes': PhoneType.objects.all(),
+                                  'AddressTypes': AddressType.objects.all(),
+                                  'EmailTypes': EmailType.objects.all(),
+                                  'IMNetworks': IMNetwork.objects.all(),
+                                  'TypeDocuments': TypeDocument.objects.all(),
+                                  'Issuers': Issuer.objects.all(),
+                                  'States': State.objects.all(),
+                                  'MaritalStatusTypes': MaritalStatus.objects.all(),
+                                  'PlaceTypes': PlaceType.objects.all(),
+                                  'ServiceTypes': ServiceTypes,
+                                  'Cities': cities,
+                                  'ReferralDischargeReason': None if not professional.have_referral_charged else ReferralDischargeReason.objects.all(),
+                                  'hours': HOURS,
+                                  'action_tab_form': tab,  # show tab active
+                              },
+                              context_instance=RequestContext(request))
 
 
 @permission_required_with_403('careprofessional.careprofessional_write')
 def save_careprof(request, object_id, save_person, is_student=False):
     """
-    This view function returns the informations about CareProfessional 
+    This view function returns the informations about CareProfessional
     @param request: this is a request sent by the browser.
     @type request: a instance of the class C{HttpRequest} created by the framework Django
-    @param object: it is the tyoe of CareProfessional that must be filled.
-    @type object: an instance of the built-in type C{CareProfessional}.            
+    @param object: it is the type of CareProfessional that must be filled.
+    @type professional: an instance of the built-in type C{CareProfessional}.
     """
 
     if object_id:
-        object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
+        professional = get_object_or_404(CareProfessional, pk=object_id,
+                                         person__organization=request.user.get_profile().org_active)
     else:
-        object = CareProfessional()
+        professional = CareProfessional()
 
     if save_person:
-        object.person = person_save(request, get_object_or_None(Person, pk=object.person_id) or Person())
+        professional.person = person_save(request, get_object_or_None(Person, pk=professional.person_id) or Person())
 
-    object.save()
+    professional.save()
 
     '''
         remove service before add
@@ -168,37 +189,31 @@ def save_careprof(request, object_id, save_person, is_student=False):
     list_to_remove = []
 
     # remove service, compare from form and db.
-    for x in object.prof_services.all(): # professional
-        if not x.id in request.POST.getlist('professional_service'):
+    for professional_service in professional.prof_services.all():  # professional
+        if not professional_service.id in request.POST.getlist('professional_service'):
             # check referral
-            if Referral.objects.charged().filter( professional=object, service=x, status='01'):
-                list_to_remove.append(x) # add to msg
+            if Referral.objects.charged().filter(professional=professional, service=professional_service, status='01'):
+                list_to_remove.append(professional_service)  # add to msg
             else:
-                object.prof_services.remove(x) # remove from professional
+                professional.prof_services.remove(professional_service)  # remove from professional
 
     # add new service to professional
-    for x in request.POST.getlist('professional_service'):
-        object.prof_services.add(x) # no problem to replace
+    for professional_service in request.POST.getlist('professional_service'):
+        professional.prof_services.add(professional_service)  # no problem to replace
 
-
-    profile = get_object_or_None(ProfessionalProfile, pk=object.professionalProfile_id) or ProfessionalProfile()
-    profile.initialProfessionalActivities = request.POST.get('professional_initialActivitiesDate')
-    profile.save()
-    object.professionalProfile = profile
+    profile = add_request_profile_to_professional(request, professional)
 
     # remove all workplace
     profile.workplace.clear()
-    # update workplace
-    for x in request.POST.getlist('professional_workplace'):
-        profile.workplace.add( Place.objects.get( pk=x, organization=request.user.get_profile().org_active ) )
+    update_workplace(request, profile)
 
     if not is_student:
 
         if request.POST.get('professional_registerNumber') or request.POST.get('professional_area'):
-            if not object.professionalIdentification:
+            if not professional.professionalIdentification:
                 identification = ProfessionalIdentification()
             else:
-                identification = object.professionalIdentification
+                identification = professional.professionalIdentification
 
             if request.POST.get('professional_registerNumber'):
                 identification.registerNumber = request.POST.get('professional_registerNumber')
@@ -207,100 +222,129 @@ def save_careprof(request, object_id, save_person, is_student=False):
                 identification.profession = get_object_or_None(Profession, id=request.POST.get('professional_area'))
 
             identification.save()
-            object.professionalIdentification = identification
+            professional.professionalIdentification = identification
 
-    object.save()
-    return object, list_to_remove
+    professional.save()
+    return professional, list_to_remove
+
+
+def update_workplace(request, profile):
+    for professional_workplace in request.POST.getlist('professional_workplace'):
+        print professional_workplace
+        profile.workplace.add(
+            Place.objects.get(pk=professional_workplace, organization=request.user.get_profile().org_active))
+
+
+def add_request_profile_to_professional(request, professional):
+    profile = get_object_or_None(ProfessionalProfile, pk=professional.professionalProfile_id) or ProfessionalProfile()
+    profile.initialProfessionalActivities = request.POST.get('professional_initialActivitiesDate')
+    profile.save()
+    professional.professionalProfile = profile
+    return profile
 
 
 @permission_required_with_403('careprofessional.careprofessional_write')
 def save(request, object_id=None, save_person=True, is_student=False):
+    if is_student:  # verify if student can join in service
+        for professional_service in request.POST.getlist('professional_service'):
+            if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active,
+                                          academic_related=True, pk=professional_service):
+                return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), },
+                                          context_instance=RequestContext(request))
 
-    if is_student: # verify if student can join in service
-        for ps in request.POST.getlist('professional_service'):
-            if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active, academic_related=True, pk=ps):
-                return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
-
-    object, list_to_remove = save_careprof(request, object_id, save_person, is_student)
+    professional, list_to_remove = save_careprof(request, object_id, save_person, is_student)
 
     if is_student:
-        student_form = StudentProfileForm(request.POST, instance=object.studentprofile) if object_id else StudentProfileForm(request.POST)
+        student_form = StudentProfileForm(request.POST,
+                                          instance=professional.studentprofile) if object_id else StudentProfileForm(
+            request.POST)
         if student_form.is_valid():
             data = student_form.save(commit=False)
-            data.professional = object
+            data.professional = professional
             data.save()
 
     # one of service have referral and can't be removed from professional.
     if list_to_remove:
 
         # msg error
-        for x in list_to_remove:
+        for item in list_to_remove:
             try:
-                msg += u', %s' % x.name
+                msg += u', %s' % item.name
             except:
-                msg = u'%s' % x.name
+                msg = u'%s' % item.name
 
         # english error message
-        #messages.error(request, _('Impossible discharged of the service. Exist referral to this professional. Service(s) <br /> %s' % msg ))
-        #return HttpResponseRedirect(('/careprofessional/%s/' % object.id))
+        # messages.error(request, _('Impossible discharged of the service. Exist referral to this professional. Service(s) <br /> %s' % msg ))
+        # return HttpResponseRedirect(('/careprofessional/%s/' % object.id))
 
-        messages.error(request, _(u'Serviço não pode ser desligado. Existe inscrição para esse profissional. Serviço<br />%s' % msg ))
-        return HttpResponseRedirect(('/careprofessional/%s/' % object.id))
+        messages.error(request, _(
+            u'Serviço não pode ser desligado. Existe inscrição para esse profissional. Serviço<br />%s' % msg))
+        return HttpResponseRedirect(('/careprofessional/%s/' % professional.id))
     else:
-        messages.success(request, _('Professional saved successfully') if not is_student else _('Student saved successfully'))
-        return HttpResponseRedirect(('/careprofessional/%s/' % object.id) if not is_student else ('/careprofessional/student/%s/' % object.id))
+        messages.success(request,
+                         _('Professional saved successfully') if not is_student else _('Student saved successfully'))
+        return HttpResponseRedirect(('/careprofessional/%s/' % professional.id) if not is_student else (
+        '/careprofessional/student/%s/' % professional.id))
 
 
 @permission_required_with_403('careprofessional.careprofessional_write')
 def order(request, object_id=None, is_student=False):
+    professional = get_object_or_404(CareProfessional, pk=object_id,
+                                     person__organization=request.user.get_profile().org_active)
 
-    object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
-
-    if (object.active == True):
-        if object.resp_services.filter(active=True):
+    if professional.active:
+        if professional.resp_services.filter(active=True):
             messages.error(request, _('Sorry, you can not disable a responsible professional with active service(s)'))
-            messages.error(request, _('<br />Active services: <b>%s</b>') % ', '.join([ i.name for i in object.resp_services.filter(active=True)] ))
-            
-            return HttpResponseRedirect('/careprofessional/%s/' % object.id)
-        
-        if not object.have_referral_charged():
-            object.active = False
+            messages.error(request, _('<br />Active services: <b>%s</b>') % ', '.join(
+                [i.name for i in professional.resp_services.filter(active=True)]))
+
+            return HttpResponseRedirect('/careprofessional/%s/' % professional.id)
+
+        if not professional.have_referral_charged():
+            professional.active = False
         else:
             if request.method == 'POST':
-                ## set all upcoming occurrence as unmarked
-                for i in object.upcoming_occurrences():
-                    o = OccurrenceConfirmation()
-                    o.occurrence_id = i.id
-                    o.presence = 4 # unmarked
-                    o.save()
+                set_professional_occurrences_as_unmarked(professional)
 
-                # discharge all active 
+                # discharge all active
                 reason = get_object_or_404(ReferralDischargeReason, pk=request.POST.get('reason'))
-                for r in object.referrals_charged():
-                    if r.professional.all().count() > 1:
+                for referral in professional.referrals_charged():
+                    if referral.professional.all().count() > 1:
                         # there is another professional on same referral
                         # just remove it
-                        r.professional.remove(object)
+                        referral.professional.remove(professional)
                     else:
-                        # deative referral
-                        for c in r.client.all():
-                            rd = ReferralDischarge()
-                            rd.referral_id = r.pk
-                            rd.client_id = c.pk
-                            rd.reason_id = reason.pk
-                            rd.details = request.POST.get('details')
-                            rd.save()
-                object.active = False
+                        deactive_referral(reason, referral, request)
+                professional.active = False
     else:
-        object.active = True
+        professional.active = True
 
-    object.save(force_update=True)
-    
+    professional.save(force_update=True)
+
     messages.success(request, ('%s %s %s' % ( \
         (_('Student') if is_student else _('Professional')), \
-        (_('activated') if object.active else _('deactivated')), \
+        (_('activated') if professional.active else _('deactivated')), \
         _('successfully'))))
-    return HttpResponseRedirect(('/careprofessional/%s/' % object.id) if not is_student else ('/careprofessional/student/%s/' % object.id))
+    return HttpResponseRedirect(('/careprofessional/%s/' % professional.id) if not is_student else (
+    '/careprofessional/student/%s/' % professional.id))
+
+
+def set_professional_occurrences_as_unmarked(professional):
+    for i in professional.upcoming_occurrences():
+        occurrence = OccurrenceConfirmation()
+        occurrence.occurrence_id = i.id
+        occurrence.presence = 4  # unmarked
+        occurrence.save()
+
+
+def deactive_referral(reason, referral, request):
+    for client in referral.client.all():
+        referral_discharge = ReferralDischarge()
+        referral_discharge.referral_id = referral.pk
+        referral_discharge.client_id = client.pk
+        referral_discharge.reason_id = reason.pk
+        referral_discharge.details = request.POST.get('details')
+        referral_discharge.save()
 
 
 # permission
@@ -310,11 +354,12 @@ def client_list(request, object_id=False, active=True):
         id : Careprofessional.id
         active : Client active or inactive
     """
-    action_tab_client_list = True # show active tab
-    client_list_filter = _('Active') if active == str(1) else _('Inactive') # show filter
+    action_tab_client_list = True  # show active tab
+    client_list_filter = _('Active') if active == str(1) else _('Inactive')  # show filter
 
     # fix filter
-    object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
+    professional = get_object_or_404(CareProfessional, pk=object_id,
+                                     person__organization=request.user.get_profile().org_active)
 
     """
         referral have professional and client.
@@ -322,8 +367,13 @@ def client_list(request, object_id=False, active=True):
     """
     # filter by Client.active
     if active == str(1):
-        client_list = Client.objects.filter(referral__professional=object, person__organization=request.user.get_profile().org_active, active=True).order_by('person__name').distinct()
+        client_list = Client.objects.filter(referral__professional=professional,
+                                            person__organization=request.user.get_profile().org_active,
+                                            active=True).order_by('person__name').distinct()
     else:
-        client_list = Client.objects.filter(referral__professional=object, person__organization=request.user.get_profile().org_active, active=False).order_by('person__name').distinct()
+        client_list = Client.objects.filter(referral__professional=professional,
+                                            person__organization=request.user.get_profile().org_active,
+                                            active=False).order_by('person__name').distinct()
 
-    return render_to_response('careprofessional/careprofessional_client_list.html', locals(), context_instance=RequestContext(request))
+    return render_to_response('careprofessional/careprofessional_client_list.html', locals(),
+                              context_instance=RequestContext(request))

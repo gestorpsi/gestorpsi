@@ -60,7 +60,7 @@ not_visible_client.short_description = u"Tornar nao visivel para cliente"
 
 
 class PlanAdmin(admin.ModelAdmin):
-    list_display = ('name', 'value','duration','staff_size','active','visible_client')
+    list_display = ('name', 'value','duration','staff_size','student_size','active','visible_client')
     list_filter = ('active','visible_client')
     actions = [ativo, inativo, visible_client, not_visible_client]
 admin.site.register(Plan, PlanAdmin)

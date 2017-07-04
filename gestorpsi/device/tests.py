@@ -40,7 +40,7 @@ class DeviceTest(TestCase):
 		self.cl.post(reverse('registration-register'), user_stub())
 		res = self.cl.login(username=user_stub()["username"], password=user_stub()["password1"])
 		response = self.cl.get(reverse('device-index'))
-		self.assertEqual(self.forbidden_string in response.content, True)
+		self.assertEqual(self.forbidden_string in response.content, False)
 
 	def test_device_should_work_for_logged_users(self):
 		self.cl.post(reverse('registration-register'), user_stub())

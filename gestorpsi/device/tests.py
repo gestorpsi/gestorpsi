@@ -27,7 +27,6 @@ class DeviceTest(TestCase):
 		self.factory = RequestFactory()
 		self.cl = Cl()
 		setup_required_data()
-		self.forbidden_string = "We're sorry, but you dont have permissions to execute this operation."
 		device = Device()
 		device.description = 'description'
 
@@ -35,12 +34,6 @@ class DeviceTest(TestCase):
 		self.cl.logout() 
 		response = self.cl.get(reverse('device-index'))
 		self.assertEqual(response.status_code, 302)
-
-	def test_device_should_show_forbidden_page_for_users_without_permission(self):
-		self.cl.post(reverse('registration-register'), user_stub())
-		res = self.cl.login(username=user_stub()["username"], password=user_stub()["password1"])
-		response = self.cl.get(reverse('device-index'))
-		self.assertEqual(self.forbidden_string in response.content, False)
 
 	def test_device_should_work_for_logged_users(self):
 		self.cl.post(reverse('registration-register'), user_stub())
@@ -82,3 +75,17 @@ class DeviceTest(TestCase):
 		self.cl.logout()
 		response= self.cl.get('/device/add/')
 		self.assertEquals(302,response.status_code)
+
+	def test_show_deactive_devices(self):
+		self.client.post(reverse('registration-register'), user_stub())
+		res = self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
+		user = User.objects.get(username=user_stub()["username"])
+		user.is_superuser = True
+		user.save()
+		response= self.client.get('/device/deactive/')
+		self.assertEquals(200,response.status_code)
+		self.assertTemplateUsed(response, 'device/device_list.html')
+
+	def test_not_show_deactive_device_for_unlogged_user(self):
+		self.client.logout()
+		response= self.client.get('/device/deactive/')

@@ -24,7 +24,6 @@ GNU General Public License for more details.
 from django.contrib import admin
 from datetime import datetime
 
-from gestorpsi.gcm.models.subscribePlan import SubscribePlan
 from gestorpsi.gcm.models.invoice import Invoice
 from gestorpsi.gcm.models.plan import Plan
 from gestorpsi.gcm.models.payment import PaymentType
@@ -127,23 +126,9 @@ class InvoiceAdmin(admin.ModelAdmin):
     class Media:
         js = ('/media/js/jquery-1.6.4.min.js','/media/js/invoiceAdd.js')
 
-
 admin.site.register(Invoice, InvoiceAdmin)
+
 
 class PaymentTypeAdmin(admin.ModelAdmin):
     pass
 admin.site.register(PaymentType, PaymentTypeAdmin)
-
-
-class SubscribePlanAdmin(admin.ModelAdmin):
-    pass
-admin.site.register(SubscribePlan, SubscribePlanAdmin)
-    #list_display = ('organization','plan','start_date','end_date','expiry_date','status','date_payed','bank','situation_')
-    #list_filter = ('status',)
-    #actions = [pendente, pagoClienteCartao, pagoClienteBoleto, pagoClienteDeposito, pagoGratis]
-    #search_fields = ['organization__name','organization__id']
-    #readonly_fields = ('aud_author','aud_ip','aud_date')
-    #form = InvoiceForm
-
-    #class Media:
-        #js = ('/media/js/jquery-1.6.4.min.js','/media/js/invoiceAdd.js')

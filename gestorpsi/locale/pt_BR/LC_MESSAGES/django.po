@@ -3949,14 +3949,6 @@ msgstr "Não há funcionários cadastrados"
 msgid "Deactive"
 msgstr "Inativo"
 
-#: templates/client/client_company_related.html:57
-#: templates/client/client_family.html:79
-#: templates/client/client_print.html:169
-#: templates/client/client_print.html:188
-#: templates/client/client_related.html:78
-msgid "Responsible"
-msgstr "Responsável"
-
 #: templates/client/client_company_related_form.html:66
 #: templates/client/client_related.html:66
 msgid "Company related clients"
@@ -4199,8 +4191,19 @@ msgid "This company have no subscribed employees yet!"
 msgstr "Essa empresa ainda não possui nenhum funcionário cadastrado"
 
 #: templates/client/client_home.html:98
-msgid "/Responsible"
+#: templates/client/client_company_related.html:57
+#: templates/client/client_family.html:79
+#: templates/client/client_print.html:169
+#: templates/client/client_print.html:188
+#: templates/client/client_related.html:78
+msgid "Responsible"
 msgstr "Responsável"
+
+msgid "Email Responsible"
+msgstr "Email do Responsável"
+
+msgid "Name Responsible"
+msgstr "Nome do Responsável"
 
 #: templates/client/client_home.html:105
 msgid "Subscribe new employee .."

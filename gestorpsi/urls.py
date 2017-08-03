@@ -12,7 +12,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # url
-    (r'^$', login_required(frontend_start)),
+    (r'start/^$', login_required(frontend_start)),
 
     # registration org form
     url(r'^accounts/login/$', 'gestorpsi.authentication.views.gestorpsi_login', {'template_name': 'authentication/authentication_login_form.html'}, name='accounts-login-form'),
@@ -54,6 +54,8 @@ urlpatterns = patterns('',
     (r'^gcm/', include('gestorpsi.gcm.urls')),
     (r'^covenant/', include('gestorpsi.covenant.urls')),
     (r'^financial/', include('gestorpsi.financial.urls')),
+    (r'^promotion/', include('gestorpsi.promotion.urls')),
+    (r'^gateway/', include('gestorpsi.gateway.urls')),
 )
 
 if 'rosetta' in settings.INSTALLED_APPS:

@@ -14,6 +14,9 @@
     GNU General Public License for more details.
 """
 
+from datetime import date
+from dateutil.relativedelta import relativedelta
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
@@ -35,6 +38,7 @@ from gestorpsi.settings import SITE_DISABLED, ADMIN_URL, ADMINS_REGISTRATION, SI
 from gestorpsi.organization.models import Organization, ProfessionalResponsible
 from gestorpsi.gcm.models.invoice import Invoice
 from gestorpsi.gcm.models.plan import Plan
+from gestorpsi.gcm.models.payment import PaymentType
 from gestorpsi.authentication.forms import RegistrationForm
 from registration.models import RegistrationProfile
 
@@ -199,10 +203,26 @@ def create_professional_responsible(org, person):
     return prof
 
 
-def create_invoice(org):
+def create_invoice(org, status=None, paytype=None, bank=None, details=None):
+
+    # new invoice
     i = Invoice()
     i.organization = org
-    i.status = 2 # free
+    i.plan = org.prefered_plan
+
+    if status:
+        i.status = status
+        i.bank = bank
+        i.payment_type = PaymentType.objects.get(pk=paytype)
+
+        i.date_payed = date.today()
+        i.start_date = i.date_payed
+        i.end_date = i.start_date + relativedelta(years=5)
+        i.expiry_date = i.start_date + relativedelta(years=5)
+        i.payment_detail = u"gateway code: %s" %  details
+    else:
+        i.status = 2 # free
+
     i.save()
     return i
 

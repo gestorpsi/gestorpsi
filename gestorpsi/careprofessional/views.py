@@ -2,12 +2,10 @@
 
 """
 Copyright (C) 2008 GestorPsi
-
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
 of the License, or (at your option) any later version.
-
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -48,7 +46,7 @@ def index(request, template_name='careprofessional/careprofessional_list.html', 
 
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
 
-  
+
 @permission_required_with_403('careprofessional.careprofessional_list')
 def list(request, page=1, deactive=False, filter=None, initial=None, no_paging=False, is_student=False ):
 
@@ -134,7 +132,7 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
                                     'ReferralDischargeReason': None if not object.have_referral_charged else ReferralDischargeReason.objects.all(),
                                     'hours': HOURS,
                                     'action_tab_form': tab, # show tab active
-                                    }, 
+                                    },
                               context_instance=RequestContext(request)
                               )
 
@@ -142,11 +140,11 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
 @permission_required_with_403('careprofessional.careprofessional_write')
 def save_careprof(request, object_id, save_person, is_student=False):
     """
-    This view function returns the informations about CareProfessional 
+    This view function returns the informations about CareProfessional
     @param request: this is a request sent by the browser.
     @type request: a instance of the class C{HttpRequest} created by the framework Django
     @param object: it is the tyoe of CareProfessional that must be filled.
-    @type object: an instance of the built-in type C{CareProfessional}.            
+    @type object: an instance of the built-in type C{CareProfessional}.
     """
 
     if object_id:
@@ -260,9 +258,9 @@ def order(request, object_id=None, is_student=False):
         if object.resp_services.filter(active=True):
             messages.error(request, _('Sorry, you can not disable a responsible professional with active service(s)'))
             messages.error(request, _('<br />Active services: <b>%s</b>') % ', '.join([ i.name for i in object.resp_services.filter(active=True)] ))
-            
+
             return HttpResponseRedirect('/careprofessional/%s/' % object.id)
-        
+
         if not object.have_referral_charged():
             object.active = False
         else:
@@ -274,7 +272,7 @@ def order(request, object_id=None, is_student=False):
                     o.presence = 4 # unmarked
                     o.save()
 
-                # discharge all active 
+                # discharge all active
                 reason = get_object_or_404(ReferralDischargeReason, pk=request.POST.get('reason'))
                 for r in object.referrals_charged():
                     if r.professional.all().count() > 1:
@@ -295,7 +293,7 @@ def order(request, object_id=None, is_student=False):
         object.active = True
 
     object.save(force_update=True)
-    
+
     messages.success(request, ('%s %s %s' % ( \
         (_('Student') if is_student else _('Professional')), \
         (_('activated') if object.active else _('deactivated')), \

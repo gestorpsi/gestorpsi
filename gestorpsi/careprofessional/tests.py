@@ -23,6 +23,7 @@ from gestorpsi.service.models import Area, ServiceType, Service
 from gestorpsi.person.models import Person
 from gestorpsi.careprofessional.models import CareProfessional
 
+
 class StudentsTests(TestCase):
     def setUp(self):
         self.client = Client()
@@ -56,7 +57,7 @@ class StudentsTests(TestCase):
         new_student = CareProfessional.objects.all()[0]
         new_student_response = self.client.get(reverse('student-form', kwargs={'object_id': str(new_student.id)}))
 
-        self.assertEqual(CareProfessional.objects.count(), old_student_count+1)
+        self.assertEqual(CareProfessional.objects.count(), old_student_count + 1)
         self.assertEqual(new_student_response.status_code, 200)
 
     def test_student_should_not_create_with_none_arguments(self):
@@ -82,7 +83,8 @@ class StudentsTests(TestCase):
         old_student_count = CareProfessional.objects.count()
 
         new_student = CareProfessional.objects.all()[0]
-        self.client.post(reverse('careprofessional-save-update', kwargs={'object_id': str(new_student.id)}), change_student_stub())
+        self.client.post(reverse('careprofessional-save-update', kwargs={'object_id': str(new_student.id)}),
+                         change_student_stub())
         change_student = CareProfessional.objects.all()[0]
         change_student_response = self.client.get(reverse('student-form', kwargs={'object_id': str(new_student.id)}))
 

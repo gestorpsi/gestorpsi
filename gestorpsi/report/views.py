@@ -31,7 +31,7 @@ from gestorpsi.report.forms import ReportForm, ReportSaveAdmissionForm
 from gestorpsi.report.models import ReportAdmission, ReportsSaved, Report, ReportReferral
 from gestorpsi.referral.models import Referral
 from gestorpsi.service.models import Service
-from gestorpsi.settings import MEDIA_URL, MEDIA_ROOT
+from django.conf import settings
 from gestorpsi.util.views import write_pdf
 from gestorpsi.util.decorators import permission_required_with_403
 
@@ -278,7 +278,7 @@ def report_export(request):
             option_rows = data 
             option_colors = colors
 
-            IMG_PREFIX = '/media/' if int(request.POST.get('format')) == 1 else MEDIA_ROOT.replace('\\','/') + '/' # this a path bug fix. format == 1 (html)
+            IMG_PREFIX = '/media/' if int(request.POST.get('format')) == 1 else settings.MEDIA_ROOT.replace('\\','/') + '/' # this a path bug fix. format == 1 (html)
 
             if int(request.POST.get('format')) == 2: # pdf print
                 return write_pdf( html , locals(), ('%s-%s-%s-%s-%s.pdf' % (view, slugify(_('report-between')), request.POST.get('date_start').replace('/','-'), _('and'), request.POST.get('date_end').replace('/','-'))))

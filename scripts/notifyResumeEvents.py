@@ -27,10 +27,10 @@ from django.template.loader import get_template
 from django.template import Context
 
 from gestorpsi.schedule.models import Occurrence
-from gestorpsi.settings import NOTIFY_EVENTS_PROFESSIONAL
+from django.conf import settings
 
 # check if exist events of next day for all professionals
-dt = date.today() + timedelta(NOTIFY_EVENTS_PROFESSIONAL) # correct
+dt = date.today() + timedelta(settings.NOTIFY_EVENTS_PROFESSIONAL) # correct
 
 # main code
 week_days = (u'Segunda-feira', u'Terça-feira', u'Quarta-feira', u'Quinta-feira', u'Sexta-feira', u'Sábado', u'Domingo')

@@ -24,7 +24,7 @@ from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.schedule.views import schedule_occurrences
 from gestorpsi.referral.models import Queue
 from gestorpsi.person.models import Person
-from gestorpsi.settings import ADMIN_URL
+from django.conf import settings
 
 def birthdate_filter(request, frm=None, month=None, object=None, active=True):
     """
@@ -74,7 +74,7 @@ def start(request):
     try:
         profile = request.user.get_profile()
     except:
-        return HttpResponseRedirect(ADMIN_URL)
+        return HttpResponseRedirect(settings.ADMIN_URL)
 
     date = datetime.now()
 

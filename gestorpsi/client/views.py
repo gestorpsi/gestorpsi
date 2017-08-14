@@ -26,7 +26,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 
-from gestorpsi.settings import DEBUG, MEDIA_URL, MEDIA_ROOT, PAGE_RESULTS
+from django.conf import settings
 
 from gestorpsi.address.models import Country, State, AddressType, City
 
@@ -300,7 +300,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     
 
     # paginator result
-    p = Paginator(object_list, PAGE_RESULTS)
+    p = Paginator(object_list, settings.PAGE_RESULTS)
     page_number = 1 if not request.GET.get('page') else request.GET.get('page')
     page = p.page(page_number)
     object_list = page.object_list
@@ -771,7 +771,7 @@ def client_print(request, object_id = None):
             'org_active': request.user.get_profile().org_active, 
             'user': request.user, 
             'DEBUG': DEBUG, 
-            'MEDIA_URL': MEDIA_URL if request.POST.get('output') == 'html' else MEDIA_ROOT.replace('\\','/') + '/', 
+            'settings.MEDIA_URL': settings.MEDIA_URL if request.POST.get('output') == 'html' else settings.MEDIA_ROOT.replace('\\','/') + '/', 
             'company_related_clients': company_related_clients,
             'have_ehr_read_perms': have_ehr_read_perms,
             'all_payments': request.POST.get('all_payments'),

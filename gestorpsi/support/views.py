@@ -22,7 +22,7 @@ from django.template.context import RequestContext
 
 import uuid
 from gestorpsi.support.forms import TicketForm
-from gestorpsi.settings import EMAIL_FROM, ADMINS_REGISTRATION
+from django.conf import settings
 
 def ticket_form(request):
     if request.method == 'POST':
@@ -34,7 +34,7 @@ def ticket_form(request):
             new.save()
             body = ('%s\n\n%s\n%s\n%s') % (request.POST['question'], request.POST['contact_name'], request.POST['contact_phone'], request.POST['contact_email'] )
             subject = u"%s - %s" % ( _('[GestorPsi] Support Request'), str(uuid.uuid1())[:18] )
-            email = EmailMessage(subject, body, EMAIL_FROM , ADMINS_REGISTRATION, headers = {'Reply-To': request.POST['contact_email']} )
+            email = EmailMessage(subject, body, settings.EMAIL_FROM , settings.ADMINS_REGISTRATION, headers = {'Reply-To': request.POST['contact_email']} )
 
             try:
                 email.send()

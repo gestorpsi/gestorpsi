@@ -14,16 +14,16 @@ GNU General Public License for more details.
 """
 
 import os
-from gestorpsi.settings import MEDIA_ROOT, PROJECT_ROOT_PATH
+from django.conf import settings
 from reportlab.lib.units import cm
 from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from geraldo import ReportBand, BAND_WIDTH
 from geraldo import Image, Line, Label, SystemField
 
 def header_gen(organization, header_line=True, clinic_info=True):
-    # Cannot use image thumbnail because it's too large (PROJECT_ROOT_PATH,pathdir,'.thumb',organization.photo)
-    pathdir = '%simg/organization/%s' % (MEDIA_ROOT, organization.id)
-    imagefile = os.path.join(PROJECT_ROOT_PATH,pathdir,'.thumb-whitebg',organization.photo)
+    # Cannot use image thumbnail because it's too large (settings.PROJECT_ROOT_PATH,pathdir,'.thumb',organization.photo)
+    pathdir = '%simg/organization/%s' % (settings.MEDIA_ROOT, organization.id)
+    imagefile = os.path.join(settings.PROJECT_ROOT_PATH,pathdir,'.thumb-whitebg',organization.photo)
     class Header(ReportBand):
         height = 3.4*cm
         borders = {'bottom': False}

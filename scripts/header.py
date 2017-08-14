@@ -28,7 +28,7 @@ sys.setdefaultencoding("utf-8")
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
 # import Django settings
-os.environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'gestorpsi.settings.production'
 
 # full path to Python libray
 python_bin_path = os.popen("which python").read().strip()

@@ -10,9 +10,6 @@ install:
     - pip install -r requirements-dev.txt
     - pip install coveralls unittest2
 
-before_script:
-  - mv gestorpsi/settings.py.TRAVIS gestorpsi/settings.py
-
 script:
   - ./run_tests.sh
 

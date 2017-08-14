@@ -29,7 +29,7 @@ from gestorpsi.covenant.forms import CovenantForm
 from gestorpsi.service.models import Service
 from gestorpsi.financial.models import PaymentWay
 
-from gestorpsi.settings import PAGE_RESULTS #DEBUG, MEDIA_URL, MEDIA_ROOT
+from django.conf import settings
 
 """
     Tiago de Souza Moraes
@@ -242,7 +242,7 @@ def list_filter(request, active=True):
         search = ''
 
     # paginator result
-    p = Paginator(obj_list, PAGE_RESULTS)
+    p = Paginator(obj_list, settings.PAGE_RESULTS)
     page_number = 1 if not request.GET.get('page') else request.GET.get('page')
     page = p.page(page_number)
     object_list = page.object_list

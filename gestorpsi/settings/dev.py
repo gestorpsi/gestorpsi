@@ -15,11 +15,15 @@
 """
 
 import os
+from os.path import abspath, basename, dirname, join, normpath
+
+
+SEND_SIGNUP_MAIL = True
 
 # set path
-PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_ROOT_PATH, 'static')
-MEDIA_ROOT = os.path.join(PROJECT_ROOT_PATH, 'media')
+PROJECT_ROOT_PATH = dirname(dirname(abspath(__file__)))
+STATIC_ROOT = join(PROJECT_ROOT_PATH, 'static')
+MEDIA_ROOT = join(PROJECT_ROOT_PATH, 'media')
 
 # cookies
 LOCALE_PATHS = (PROJECT_ROOT_PATH + "/locale", PROJECT_ROOT_PATH + "/locale")
@@ -58,13 +62,14 @@ EMAIL_HOST_USER = '' # eg: noreply@domain.com
 EMAIL_HOST_PASSWORD = '' # eg: password123
 EMAIL_HOST_PORT = 465 # eg: 465 or 587 (gmail)
 EMAIL_USE_TLS = True
+SEND_SIGNUP_MAIL = False
 
 DEFAULT_EMAIL_MIMETYPE = 'html'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_ROOT_PATH, 'test_db.sqlite3'),
+        'NAME': join(PROJECT_ROOT_PATH, '../test_db.sqlite3'),
     }
 }
 
@@ -106,6 +111,10 @@ ADMIN_MEDIA_PREFIX = '%s/admin_media/' % URL_APP
 STATICFILES_DIRS = (
     MEDIA_ROOT,
 )
+
+# We store the secret key here
+# The required SECRET_KEY is fetched at the end of this file
+SECRET_FILE = normpath(join(PROJECT_ROOT_PATH, 'settings/run', 'SECRET.key'))
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY  = '4&(dsaHDH532Dd7Az!#hJk*%231_0!ds87s*dw3-fxz$dfs43x'
@@ -252,8 +261,6 @@ CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 import djcelery
 djcelery.setup_loader()
 
-SEND_SIGNUP_MAIL = False
-
 # currency / financial / covenant
 USE_L10N = True
 DECIMAL_SEPARATOR = ','
@@ -266,6 +273,19 @@ INVOICE_CHECK_EXPIRY = [4,7] # send mail for clients 4 and 7 days before expiry 
 # set notify
 NOTIFY_CLIENT_EVENT = 1 # days, send mail for client to remember about your event days before event.
 NOTIFY_EVENTS_PROFESSIONAL = 1 # days before. Send resume of event of next day by mail to professional
+
+# Grab the SECRET KEY
+try:
+    SECRET_KEY = open(SECRET_FILE).read().strip()
+except IOError:
+    try:
+        from django.utils.crypto import get_random_string
+        chars = 'abcdefghijklmnopqrstuvwxyz0123456789!$%&()=+-_'
+        SECRET_KEY = get_random_string(50, chars)
+        with open(SECRET_FILE, 'w') as f:
+            f.write(SECRET_KEY)
+    except IOError:
+        raise Exception('Could not open %s for writing!' % SECRET_FILE)
 
 if not DEBUG:
     import logging

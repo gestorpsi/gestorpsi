@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls.defaults import url, patterns, include
-from django.conf import settings
 from django.contrib import admin
 from gestorpsi.frontend.views import start as frontend_start
 from django.contrib.auth.decorators import login_required
 
-from gestorpsi.settings import MEDIA_ROOT, STATIC_ROOT
+from django.conf import settings
 
 admin.autodiscover()
 
@@ -45,8 +44,8 @@ urlpatterns = patterns('',
     (r'^report/', include('gestorpsi.report.urls')),
     (r'^support/', include('gestorpsi.support.urls')),
     (r'^frontend/', include('gestorpsi.frontend.urls')),
-    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT, 'show_indexes': False}),
-    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': STATIC_ROOT, 'show_indexes': False}),
+    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes': False}),
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT, 'show_indexes': False}),
     (r'^profile/', include('gestorpsi.profile.urls')),
     (r'^util/', include('gestorpsi.util.urls')),
     (r'^chaining/', include('smart_selects.urls')),

@@ -21,7 +21,7 @@ from django.core.mail import EmailMessage
 
 from gestorpsi.organization.models import Organization 
 from gestorpsi.gcm.models.invoice import Invoice, PaymentType
-from gestorpsi.settings import ADMINS_REGISTRATION, URL_APP
+from django.conf import settings
 
 # main code
 '''
@@ -36,7 +36,7 @@ for o in Organization.objects.filter(suspension=False, organization=None):
     # to check if resources of chosen plan are over of limit.
     if o.active: 
         if o.prefered_plan.staff_size and o.care_professionals().count() > o.prefered_plan.staff_size or o.prefered_plan.student_size and o.get_student_().count() > o.prefered_plan.student_size:
-            s += u"--- %s - %s/admin/organization/organization/%s/\n" % (o.name, URL_APP, o.id)
+            s += u"--- %s - %s/admin/organization/organization/%s/\n" % (o.name, settings.URL_APP, o.id)
 
             if o.prefered_plan.staff_size and o.care_professionals().count() > o.prefered_plan.staff_size:
                 s += u"Professional %s Plan %s\n" % (o.care_professionals().count(), o.prefered_plan.staff_size)
@@ -47,13 +47,13 @@ for o in Organization.objects.filter(suspension=False, organization=None):
             s += u'\n'
 
 # send email if not empty list for both
-if s and ADMINS_REGISTRATION:
+if s and settings.ADMINS_REGISTRATION:
     # sendmail
     msg = EmailMessage()
     msg.encoding = "utf-8"
     msg.subject = u"GestorPsi - orgs over of limit - %s " % datetime.today()
     msg.body = s
-    msg.to = ADMINS_REGISTRATION
+    msg.to = settings.ADMINS_REGISTRATION
     msg.send()
 
 '''

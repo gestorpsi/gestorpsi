@@ -64,3 +64,4 @@ class Phone(models.Model):
     def __unicode__(self):
         return "(%s) %s %s" % (self.area, self.phoneNumber, self.phoneType)
 
+reversion.register(Phone)

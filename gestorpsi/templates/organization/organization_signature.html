@@ -180,7 +180,7 @@ GNU General Public License for more details.
                                                 {% endifequal %}
 
                                                 <!-- cartao -->
-                                                {% ifequal x.payment_type.id 1 %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
+                                                {% ifequal x.payment_type.id 1 %}{{ x.plan.gateway_code|safe}}{% endifequal %}
 
                                             {% else %}
                                                 Pago em {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
@@ -243,7 +243,7 @@ GNU General Public License for more details.
                                                 {% endifequal %}
 
                                                 <!-- cartao -->
-                                                {% ifequal x.payment_type.id 1 %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
+                                                {% ifequal x.payment_type.id 1 %}{{ x.plan.gateway_code|safe}}{% endifequal %}
 
                                             {% else %}
                                                 Pago em {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
@@ -307,7 +307,7 @@ GNU General Public License for more details.
                                                 {% endifequal %}
 
                                                 <!-- cartao -->
-                                                {% ifequal x.payment_type.id 1 %}{{ x.plan.pagseguro_code|safe}}{% endifequal %}
+                                                {% ifequal x.payment_type.id 1 %}{{ x.plan.gateway_code|safe}}{% endifequal %}
 
                                             {% else %}
                                                 Pago em {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}

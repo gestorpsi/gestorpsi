@@ -24,7 +24,7 @@ from gestorpsi.gcm.models.plan import Plan
 class InvoiceForm(forms.ModelForm):
 
     organization = forms.ModelChoiceField(label=(u'Organização'), queryset=Organization.objects.filter(organization=None).order_by('name'))
-    plan = forms.ModelChoiceField(label=_('Plano'), queryset=Plan.objects.filter(active=True))
+    plan = forms.ModelChoiceField(label=_('Plano'), queryset=Plan.objects.filter(form__gte=1))
 
     class Meta:
         model = Invoice

@@ -32,39 +32,32 @@ from gestorpsi.gcm.forms.invoice import InvoiceForm
 '''
     filter and action for Plan
 '''
-# ativo
-def ativo(modeladmin, request, queryset):
+# visivel para assinatura principal
+def enable_plan_public_form(modeladmin, request, queryset):
     for obj in queryset:
-        obj.active = True
+        obj.form = 1
         obj.save()
-ativo.short_description = u"Ativar planos"
+enable_plan_public_form.short_description = u"Plano disponivel no form principal."
 
-def inativo(modeladmin, request, queryset):
+# visivel para assinatura promoção
+def enable_plan_promotion_form(modeladmin, request, queryset):
     for obj in queryset:
-        obj.active = False
+        obj.form = 2
         obj.save()
-inativo.short_description = u"Inativar planos"
+enable_plan_promotion_form.short_description = u"Plano disponivel no form promoção."
 
-# visivel para client
-def visible_client(modeladmin, request, queryset):
+def disable_plan(modeladmin, request, queryset):
     for obj in queryset:
-        obj.visible_client = True
+        obj.form = 0
         obj.save()
-visible_client.short_description = u"Tornar visivel para cliente"
-
-def not_visible_client(modeladmin, request, queryset):
-    for obj in queryset:
-        obj.visible_client = False
-        obj.save()
-not_visible_client.short_description = u"Tornar nao visivel para cliente"
+not_visible_client.short_description = u"Desligar Plano. Não disponível para nova assinatura."
 
 
 class PlanAdmin(admin.ModelAdmin):
     list_display = ('name', 'value','duration','staff_size','student_size','active','visible_client')
-    list_filter = ('active','visible_client')
-    actions = [ativo, inativo, visible_client, not_visible_client]
+    list_filter = ('form')
+    actions = [disable_plan, enable_plan_promotion_form, enable_plan_public_form]
 admin.site.register(Plan, PlanAdmin)
-
 
 
 '''

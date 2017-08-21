@@ -50,12 +50,11 @@ def disable_plan(modeladmin, request, queryset):
     for obj in queryset:
         obj.form = 0
         obj.save()
-not_visible_client.short_description = u"Desligar Plano. Não disponível para nova assinatura."
-
+disable_plan.short_description = u"Desligar Plano. Não disponível para nova assinatura."
 
 class PlanAdmin(admin.ModelAdmin):
-    list_display = ('name', 'value','duration','staff_size','student_size','active','visible_client')
-    list_filter = ('form')
+    list_display = ('name', 'value','duration','staff_size','student_size','form')
+    list_filter = ('form',)
     actions = [disable_plan, enable_plan_promotion_form, enable_plan_public_form]
 admin.site.register(Plan, PlanAdmin)
 

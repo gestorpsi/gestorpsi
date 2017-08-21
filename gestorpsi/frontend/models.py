@@ -14,5 +14,42 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from django.db import models
+from django.contrib.auth.models import User, UserManager, Group
 
-# Create your models here.
+
+# ultimos cadastrados
+# field SORT ? Alphabetics? Last 10? First 10?
+
+SORT = (
+    ('1', u'Ordem alfabética'),
+    ('2', u'Data de Cadastrato'),
+)
+
+LIMIT = (
+    (0, u'Não mostrar'),
+    (10, u'10 ultimos'),
+    (15, u'15 ultimos'),
+    (010, u'10 primeiros'),
+    (015, u'15 primeiros'),
+    (99 , u'Todos?'),
+)
+
+class FrontendProfile(models.Model):
+    """
+    careprofessional:
+        list of careprofessional, client, services and others
+        don't show of other careprofessional'
+
+    secretary:
+        all clients, all services, all queue, all...
+    """
+    user = models.OneToOneField(User, unique=True)
+    service = models.IntegerField(default=10, choices=LIMIT)
+    schedule = models.IntegerField(default=10, choices=LIMIT)
+    referral = models.IntegerField(default=10, choices=LIMIT)
+    queue = models.IntegerField(default=10, choices=LIMIT)
+    birthdate_client = models.IntegerField(default=10, choices=LIMIT)
+
+    def __unicode__(self):
+        return u"%s" % (self.profile)

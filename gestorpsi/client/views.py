@@ -15,6 +15,7 @@
 """
 
 import string
+import collections
 from datetime import datetime
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
@@ -183,6 +184,57 @@ def home(request, object_id=None):
                                         context_instance=RequestContext(request)
                             )
 
+def client_json(filter, object_list):
+    json_client = {}
+    i = 0
+
+    for client in object_list.filter(person__name__icontains=filter):
+        json_client[i] = {
+            'id': client.id, 
+            'name': client.person.name,
+        }
+        i = i + 1
+
+    return HttpResponse(simplejson.dumps(json_client, encoding='iso8859-1'), mimetype='application/json')
+
+def subscribed_client_pks(object_list, client_service_pk_list):
+    for client in object_list:
+        for referral in client.referrals_charged():
+            if referral.service.pk == request.GET.get('service') and client.pk not in client_service_pk_list:
+                client_service_pk_list.append(client.pk)
+                break
+
+    return client_service_pk_list
+
+def discharged_client_pks(object_list, client_service_pk_list):
+    for client in object_list:
+        for referral in client.referrals_discharged():
+            if referral.service.pk == request.GET.get('service') and client.pk not in client_service_pk_list:
+                client_service_pk_list.append(client.pk)
+                break
+    
+    return client_service_pk_list
+
+def filter_client(request, object_list):
+    url_extra = ''
+    Filter = collections.namedtuple('Filter', ['list_of_clients', 'url'])
+
+    if request.GET.get('initial'):
+        initial = request.GET.get('initial')
+        object_list = object_list.filter(person__name__istartswith=initial)
+        url_extra += '&initial=%s' % initial
+
+    if request.GET.get('search'):
+        search = request.GET.get('search')
+        object_list = object_list.filter(person__name__icontains=search)
+        url_extra += '&search=%s' % search
+
+    if request.GET.get('service'):
+        service = request.GET.get('service')
+        object_list = object_list.filter(referral__service=service).distinct()
+        url_extra += '&service=%s' % service
+
+    return Filter(object_list, url_extra)
 
 @permission_required_with_403('client.client_list')
 def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=False, retrn=False):
@@ -192,58 +244,39 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         search person family return JSON
         search client/initial letter return HTML
     """
-
     user = request.user
     object_list = Client.objects.from_user(user, 'deactive' if deactive else 'active')
 
-    """
-        return json
-    """
     if retrn == 'json':
+        return client_json(filter, object_list)
 
-        person = {}
-        i = 0
-
-        for c in object_list.filter(person__name__icontains=filter):
-            person[i] = {
-                'id': c.id, # client id
-                'name': c.person.name,
-            }
-            i = i + 1
-
-        return HttpResponse(simplejson.dumps(person, encoding='iso8859-1'), mimetype='application/json')
-
-    """
-        return default
-        client index / paginator
-    """
     list_url_base = '/client/list/' if not deactive else '/client/list/deactive/'
 
     url_extra = ''
     initial = ''
 
+    #filter
+    prev_object_list = object_list
+
+    object_list = filter_client(request, prev_object_list).list_of_clients
+    url_extra += filter_client(request, prev_object_list).url
+
     if request.GET.get('initial'):
         initial = request.GET.get('initial')
-        
-        if ord(initial) < 90:
+        z_ascii = 90;
+        a_ascii = 65;
+
+        if ord(initial) > a_ascii:
+            initial_prev = chr(ord(initial) - 1)  
+
+        if ord(initial) < z_ascii:
             initial_next = chr(ord(initial) + 1)
-
-        if ord(initial) > 65:
-            initial_prev = chr(ord(initial) - 1)
-
-        object_list = object_list.filter(person__name__istartswith = initial)
-        url_extra += '&initial=%s' % initial
 
     if request.GET.get('search'):
         search = request.GET.get('search')
-        object_list = object_list.filter(person__name__icontains = search)
-        url_extra += '&search=%s' % search
 
-    # filters
     if request.GET.get('service'):
         service = request.GET.get('service')
-        object_list = object_list.filter(referral__service=service).distinct()
-        url_extra += '&service=%s' % service
     
     client_service_pk_list = []
 
@@ -253,29 +286,19 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         if not request.GET.get('service'):
             object_list = object_list.filter(referral__service__isnull=False).distinct()
         else:
-            for c in object_list:
-                for r in c.referrals_charged():
-                    if r.service.pk == request.GET.get('service') and c.pk not in client_service_pk_list:
-                        client_service_pk_list.append(c.pk)
-                        break
-        
+            client_service_pk_list = subscribed_client_pks(object_list, client_service_pk_list)
+
         url_extra += '&subscribed=%s' % subscribed
     
-
     # discharged
     discharged = True if request.GET.get('discharged') == "true" else False
     if discharged:
         if not request.GET.get('service'):
             object_list = object_list.filter(referral__referraldischarge__isnull=False).distinct()
         else:
-            for c in object_list:
-                for r in c.referrals_discharged():
-                    if r.service.pk == request.GET.get('service') and c.pk not in client_service_pk_list:
-                        client_service_pk_list.append(c.pk)
-                        break
+            client_service_pk_list = discharged_client_pks(object_list, client_service_pk_list)
 
         url_extra += '&discharged=%s' % discharged
-
 
     # queued
     queued = True if request.GET.get('queued') == "true" else False
@@ -311,8 +334,6 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     initials = string.uppercase
 
     return render_to_response('tags/list_item.html', locals(), context_instance=RequestContext(request))
-
-
 
 @permission_required_with_403('client.client_read')
 def form(request, object_id=False, is_company=False):

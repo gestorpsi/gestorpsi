@@ -23,7 +23,7 @@ from django.contrib.auth.models import User, UserManager, Group
 
 SORT = (
     ('1', u'Ordem alfabética'),
-    ('2', u'Data de Cadastrato'),
+    ('2', u'Cadastro'),
 )
 
 LIMIT = (
@@ -45,11 +45,18 @@ class FrontendProfile(models.Model):
         all clients, all services, all queue, all...
     """
     user = models.OneToOneField(User, unique=True)
+
     service = models.IntegerField(default=10, choices=LIMIT)
+    service_sort = models.IntegerField(default=1, choices=SORT)
+
     schedule = models.IntegerField(default=10, choices=LIMIT)
     referral = models.IntegerField(default=10, choices=LIMIT)
     queue = models.IntegerField(default=10, choices=LIMIT)
     birthdate_client = models.IntegerField(default=10, choices=LIMIT)
+
+    subscribe_client = models.IntegerField(default=10, choices=LIMIT)
+    studant = models.IntegerField(default=10, choices=LIMIT)
+    client = models.IntegerField(default=10, choices=LIMIT)
 
     def __unicode__(self):
         return u"%s" % (self.profile)

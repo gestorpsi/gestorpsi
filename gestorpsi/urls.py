@@ -12,7 +12,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # url
-    (r'start/^$', login_required(frontend_start)),
+    (r'^$', login_required(frontend_start)),
 
     # registration org form
     url(r'^accounts/login/$', 'gestorpsi.authentication.views.gestorpsi_login', {'template_name': 'authentication/authentication_login_form.html'}, name='accounts-login-form'),

@@ -52,10 +52,10 @@ class FrontendProfile(models.Model):
     referral = models.IntegerField(u'Inscrição', default=10, choices=LIMIT)
     referral_sort = models.IntegerField(u'Ordenar inscrição', default=1, choices=SORT)
 
-    client = models.IntegerField(u'Client', default=10, choices=LIMIT)
-    client_sort = models.IntegerField(u'Ordenar client', default=1, choices=SORT)
+    client = models.IntegerField(u'Cliente', default=10, choices=LIMIT)
+    client_sort = models.IntegerField(u'Ordenar cliente', default=1, choices=SORT)
 
-    student = models.IntegerField(u'Studante', default=10, choices=LIMIT)
+    student = models.IntegerField(u'Estudante', default=10, choices=LIMIT)
     schedule = models.IntegerField(u'Agenda', default=10, choices=LIMIT)
     queue = models.IntegerField(u'Fila', default=10, choices=LIMIT)
     birthdate_client = models.IntegerField(u'Aniversário', default=10, choices=LIMIT)

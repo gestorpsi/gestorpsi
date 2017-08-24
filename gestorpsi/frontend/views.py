@@ -143,7 +143,10 @@ def settings(request):
         if FrontendProfile.objects.filter(user=request.user):
             form = FrontendProfileForm(request.POST, instance=request.user.frontendprofile)
         else:
-            form = FrontendProfileForm(request.POST)
+            prof = FrontendProfileForm()
+            prof.user = request.user
+            prof.save()
+            form = FrontendProfileForm(request.POST, instance=prof)
 
         if form.is_valid():
             form_save = form.save()

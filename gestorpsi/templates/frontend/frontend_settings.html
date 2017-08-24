@@ -29,14 +29,14 @@ GNU General Public License for more details.
 
     <form action={% url frontend-settings %} method="post">
         <div class="main_area">
-            <h3>{% trans "Configura&ccedil;&otilde;es" %} - Mostrar os seguintes itens ao iniciar</h3>
-            {% for f in form %}
-                <label>{{ f.label }}<br />
-                    {{ f }}
-                    {{ f.errors }}
-                    <br /><br />
-                </label>
-            {% endfor %}
+            <h3>{% trans "Configura&ccedil;&atilde;o Iniciar" %} - Mostrar os seguintes itens ao iniciar</h3>
+                {% for f in form %}
+                    <label>{{ f.label }}<br />
+                        {{ f }}
+                        {{ f.errors }}
+                        <br /><br />
+                    </label>
+                {% endfor %}
         </div>
 
         <!-- save button -->

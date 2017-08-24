@@ -163,4 +163,4 @@ def settings(request):
             form = FrontendProfileForm()
 
     tab_settings_class = 'active'  # tab settings active
-    return render_to_response('frontend/frontend_index.html', locals(), context_instance=RequestContext(request))
+    return render_to_response('frontend/frontend_settings.html', locals(), context_instance=RequestContext(request))

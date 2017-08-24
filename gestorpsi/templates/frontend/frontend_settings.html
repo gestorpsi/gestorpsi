@@ -27,13 +27,23 @@ GNU General Public License for more details.
 {% block core %}
     <h2 class="title_fronted">{% trans "Welcome" %} <b>{{ profile.person.name }}</b>  <br /></h2>
 
-    <div class="main_area">
-        <h3>{% trans "Configura&ccedil;&otilde;es" %}</h3>
+    <form action={% url frontend-settings %} method="post">
+        <div class="main_area">
+            <h3>{% trans "Configura&ccedil;&otilde;es" %}</h3>
+            {% for f in form %}
+                <label>{{ f.label }}<br />
+                    {{ f }} <br /><br />
+                </label>
+                {{ f.errors }}
+            {% endfor %}
+        </div>
 
-        <form action={% url frontend-settings %} method="post">
-            {{ form.as_p }}
-            <input type='submit' value='Salvar'>
-        </form>
+        <!-- save button -->
+        <div id="sidebar" class="sidebar_save">
+            <div class="bg_blue">
+                {% include "tags/save.html" %}
+            </div>
+        </div>
+    </form>
 
-    </div><!-- close main area -->
 {% endblock %}

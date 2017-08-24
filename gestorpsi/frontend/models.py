@@ -22,8 +22,8 @@ from django.contrib.auth.models import User, UserManager, Group
 # field SORT ? Alphabetics? Last 10? First 10?
 
 SORT = (
-    (1, u'Ordem alfabética'),
-    (2, u'Cadastro'),
+    (1, u'alfabética'),
+    (2, u'data cadastro'),
 )
 
 LIMIT = (
@@ -46,22 +46,20 @@ class FrontendProfile(models.Model):
     """
     user = models.OneToOneField(User, unique=True)
 
-    service = models.IntegerField(default=10, choices=LIMIT)
-    service_sort = models.IntegerField(default=1, choices=SORT)
+    service = models.IntegerField(u'Serviço', default=10, choices=LIMIT)
+    service_sort = models.IntegerField(u'Ordenar serviço', default=1, choices=SORT)
 
-    schedule = models.IntegerField(default=10, choices=LIMIT)
+    referral = models.IntegerField(u'Inscrição', default=10, choices=LIMIT)
+    referral_sort = models.IntegerField(u'Ordenar inscrição', default=1, choices=SORT)
 
-    referral = models.IntegerField(default=10, choices=LIMIT)
-    referral_sort = models.IntegerField(default=1, choices=SORT)
+    client = models.IntegerField(u'Client', default=10, choices=LIMIT)
+    client_sort = models.IntegerField(u'Ordenar client', default=1, choices=SORT)
 
-    queue = models.IntegerField(default=10, choices=LIMIT)
-    birthdate_client = models.IntegerField(default=10, choices=LIMIT)
-
-    subscribe_client = models.IntegerField(default=10, choices=LIMIT)
-    student = models.IntegerField(default=10, choices=LIMIT)
-
-    client = models.IntegerField(default=10, choices=LIMIT)
-    client_sort = models.IntegerField(default=1, choices=SORT)
+    student = models.IntegerField(u'Studante', default=10, choices=LIMIT)
+    schedule = models.IntegerField(u'Agenda', default=10, choices=LIMIT)
+    queue = models.IntegerField(u'Fila', default=10, choices=LIMIT)
+    birthdate_client = models.IntegerField(u'Aniversário', default=10, choices=LIMIT)
+    subscribe_client = models.IntegerField(u'Inscrição cliente', default=10, choices=LIMIT)
 
     def __unicode__(self):
         return u"%s" % (self.profile)

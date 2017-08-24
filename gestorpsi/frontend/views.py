@@ -15,9 +15,11 @@ GNU General Public License for more details.
 """
 
 from datetime import datetime
+from django.contrib import messages
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.utils.translation import ugettext as _
 
 from gestorpsi.client.models import Client
 from gestorpsi.careprofessional.models import CareProfessional
@@ -25,6 +27,9 @@ from gestorpsi.schedule.views import schedule_occurrences
 from gestorpsi.referral.models import Queue
 from gestorpsi.person.models import Person
 from gestorpsi.settings import ADMIN_URL
+
+from gestorpsi.frontend.models import FrontendProfile
+from gestorpsi.frontend.forms import FrontendProfileForm
 
 def birthdate_filter(request, frm=None, month=None, object=None, active=True):
     """
@@ -118,3 +123,44 @@ def start(request):
         return render_to_response('frontend/frontend_secretary.html', locals(), context_instance=RequestContext(request))
 
     raise Http404
+
+
+def settings(request):
+    """
+        save custom itens to show in FrontEnd home of User
+    """
+    # admin do not have profile
+    try:
+        profile = request.user.get_profile()
+    except:
+        return HttpResponseRedirect(ADMIN_URL)
+
+    if request.POST:
+        """
+            save OR update profile
+            redirect to render form
+        """
+        if FrontendProfile.objects.filter(user=request.user):
+            form = FrontendProfileForm(request.POST, instance=request.user.frontendprofile)
+        else:
+            form = FrontendProfileForm(request.POST)
+
+        if form.is_valid():
+            form_save = form.save()
+            messages.success(request, _(u'Configuração salva com sucesso!'))
+            return HttpResponseRedirect('/frontend/settings/')
+        else:
+            messages.error(request, _(u'Valor invalido!'))
+
+    else:
+        """
+            get OR create a profile
+            render form
+        """
+        if FrontendProfile.objects.filter(user=request.user):
+            form = FrontendProfileForm(instance=request.user.frontendprofile)
+        else:
+            form = FrontendProfileForm()
+
+    tab_settings_class = 'active'  # tab settings active
+    return render_to_response('frontend/frontend_index.html', locals(), context_instance=RequestContext(request))

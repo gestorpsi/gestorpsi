@@ -14,24 +14,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.contrib import admin
-from django.core.validators import BaseValidator, MinLengthValidator, MaxValueValidator
-from django.core import exceptions
-from django.utils.encoding import smart_str
-from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
 from django import forms
-from django.forms.models import *
-#from django.forms import *
-
-from django.db import models
-from django.utils.translation import ugettext as _
-
-from smart_selects.db_fields import ChainedForeignKey
-
-from gestorpsi import settings
-from gestorpsi.organization.models import *
-from gestorpsi.gcm.models.plan import Plan
+from gestorpsi.organization.models import Organization
 
 
 class OrganizationForm(forms.ModelForm):

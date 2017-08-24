@@ -15,19 +15,19 @@ GNU General Public License for more details.
 """
 
 from django.conf.urls.defaults import *
-from gestorpsi.frontend.views import start
+from gestorpsi.frontend.views import start, settings
 from gestorpsi.authentication.views import login_check
 
 urlpatterns = patterns('',
-    url(r'^$', login_check(start), name='frontend-home'), #list objects
-    #url(r'^(?P<month>\d+)/month/$', login_check(start), name="frontend-month"), # list objects
-    #(r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
-    #(r'^add/$', login_check(form)), #new object form
-    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', login_check(form)),
-    #(r'^save/$', login_check(save)), #save new object
-    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/save/$', login_check(save)),  #update object
-    #(r'^(?P<object_id>\d+)/delete/$', login_check(delete)), # delete object
-    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/delete/$', login_check(delete)),  #delete object
-    #(r'^print/$', login_required(print_list)), # print client list
-    #(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/print/$', login_required(print_record)),  # print record
+    # index
+    url(r'^$',
+        login_check(start),
+        name='frontend-home'), #list objects
+
+    # settings of schedule
+    url(
+        r'^settings/$', 
+        login_check(settings), 
+        name='frontend-settings'
+    ),
 )

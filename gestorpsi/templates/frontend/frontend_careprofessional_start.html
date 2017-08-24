@@ -16,9 +16,13 @@ GNU General Public License for more details.
 
 {% endcomment %}
 
-{% block menu_start %}active{% endblock %}
-
 {% load i18n %}
+
+{% block menu_frontend %}active{% endblock %}
+
+{% block submenu %}
+    {% include "frontend/frontend_submenu.html" %}
+{% endblock %}
 
 {% block core %}
     <h2 class="title_fronted">{% trans "Welcome" %} <b>{{ profile.person.name }}</b>  <br /></h2>

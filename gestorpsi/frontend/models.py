@@ -22,8 +22,8 @@ from django.contrib.auth.models import User, UserManager, Group
 # field SORT ? Alphabetics? Last 10? First 10?
 
 SORT = (
-    ('1', u'Ordem alfabética'),
-    ('2', u'Cadastro'),
+    (1, u'Ordem alfabética'),
+    (2, u'Cadastro'),
 )
 
 LIMIT = (
@@ -50,13 +50,18 @@ class FrontendProfile(models.Model):
     service_sort = models.IntegerField(default=1, choices=SORT)
 
     schedule = models.IntegerField(default=10, choices=LIMIT)
+
     referral = models.IntegerField(default=10, choices=LIMIT)
+    referral_sort = models.IntegerField(default=1, choices=SORT)
+
     queue = models.IntegerField(default=10, choices=LIMIT)
     birthdate_client = models.IntegerField(default=10, choices=LIMIT)
 
     subscribe_client = models.IntegerField(default=10, choices=LIMIT)
-    studant = models.IntegerField(default=10, choices=LIMIT)
+    student = models.IntegerField(default=10, choices=LIMIT)
+
     client = models.IntegerField(default=10, choices=LIMIT)
+    client_sort = models.IntegerField(default=1, choices=SORT)
 
     def __unicode__(self):
         return u"%s" % (self.profile)

@@ -196,7 +196,7 @@ GNU General Public License for more details.
                             <li><a id="customers" class="main_menu {% block menu_client_profile %}{% endblock %}" href="/profile/">{% trans "My profile" %}</a></li>
                             {# <li><a id="schedule" class="main_menu {% block menu_client_schedule %}{% endblock %}" href="/schedule/">{% trans "calendar" %}</a></li> #}
                         {% else %}
-                            <li><a id="start" class="main_menu {% block menu_start %}{% endblock %}" href="/frontend/">{% trans "start" %}</a></li>
+                            <li><a id="start" class="main_menu {% block menu_frontend %}{% endblock %}" href="/frontend/">{% trans "start" %}</a></li>
                             {% if perms.schedule.schedule_list %}<li><a id="schedule" class="main_menu {% block menu_schedule %}{% endblock %}" href="/schedule/">{% trans "calendar" %}</a></li>{% endif %}
                             {% if perms.client.client_list %}<li><a id="customers" class="main_menu {% block menu_client %}{% endblock %}" href="{% url client-index %}">{% trans "clients" %}</a></li>{% endif %}
                             {% if perms.contact.contact_list %}<li><a id="contacts" class="main_menu {% block menu_contact %}{% endblock %}"  href="/contact/">{% trans "contacts" %}</a></li>{% endif %}

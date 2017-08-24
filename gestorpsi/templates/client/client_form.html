@@ -21,13 +21,7 @@
 {% block menu_client %}active{% endblock %}
 
 {% block submenu %}
-    <ul id="sub_customers">
-        <li><a href="{% url client-index %}">{% trans "all" %}</a></li>
-        <li><a {% if not object.id %} class="active" {% endif %} href="{% url client-form-new %}">{% trans "add" %}</a></li>
-        <li><a href="{% url client-company-form %}">{% trans "add company" %}</a></li>
-        <li><a class="{% if deactive %} active {% endif %}" href="{% url client-list-deactive %}">{% trans "all Deactive" %}</a></li>
-        {% if object.id %}<li><a class="active">{{ object.person.name }}{% if referral %} - {{ referral }}{% endif %}</a></li>{% endif %}
-    </ul>
+    {% include "client/client_menu.html" %}
 {% endblock %}
 
 {% block core %}

@@ -15,7 +15,7 @@ GNU General Public License for more details.
 """
 
 from django.db import models
-from django.contrib.auth.models import User, UserManager, Group
+from django.contrib.auth.models import User
 
 
 # ultimos cadastrados

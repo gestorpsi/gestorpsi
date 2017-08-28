@@ -31,7 +31,7 @@ from gestorpsi.settings import ADMIN_URL
 from gestorpsi.frontend.models import FrontendProfile
 from gestorpsi.frontend.forms import FrontendProfileForm
 
-def birthdate_filter(request, frm=None, month=None, object=None, active=True):
+def birthdate_filter(request, frm=None, month=None, object=None, active=True, sort='increase'):
     """
         Birth date filter:
 
@@ -43,15 +43,22 @@ def birthdate_filter(request, frm=None, month=None, object=None, active=True):
                 careprofessional
                     clients of professional
 
-        month : integer / month of year
+        month  : integer / month of year
         object : Careprofessional object
         active : boolean : filter active or inactive Client
+        sort   : string: decreasing or indecrasing
     """
     # birthDate of month, order by day
     birthdate_list = [] # person object
 
+    # increasing
+    sort_list = range(1,32)
+    # decreasing
+    if sort == 'decreasing':
+        sort_list.reverse()
+
     if frm == 'secretary':
-        for d in range(1,32):
+        for d in sort_list:
             for p in Person.objects.filter(client__active=active,\
                     birthDate__month=month,\
                     birthDate__day=d,\
@@ -61,7 +68,7 @@ def birthdate_filter(request, frm=None, month=None, object=None, active=True):
     
     # filter by careprofessional (object)
     if frm == 'careprofessional':
-        for d in range(1,32):
+        for d in sort_list:
             for p in Client.objects.filter(referral__professional=object,\
                     active=active,\
                     person__organization=request.user.get_profile().org_active,\
@@ -81,7 +88,21 @@ def start(request):
     except:
         return HttpResponseRedirect(ADMIN_URL)
 
+    # no frontendProfile
+    if not FrontendProfile.objects.filter(user=request.user):
+        return HttpResponseRedirect('/frontend/settings/')
+
     date = datetime.now()
+
+    # list
+    list_subscribe = False
+    list_queue = False
+    list_birthdate = False
+    list_schedule = False
+    list_student = False
+    list_client = False
+    list_service = False
+    list_referral = False
 
     # current month
     month = (datetime.now().month) # integer
@@ -103,10 +124,26 @@ def start(request):
     """ user's professional and student home page """
     if request.user.get_profile().person.is_careprofessional() or request.user.get_profile().person.is_student():
         object = CareProfessional.objects.get(pk=request.user.get_profile().person.careprofessional.id)
-        events = schedule_occurrences(request, datetime.now().strftime('%Y'), datetime.now().strftime('%m'), datetime.now().strftime('%d')).filter(event__referral__professional=object)
-        referrals = object.referral_set.filter(status='01').order_by('-date')[:10]
-        queues = Queue.objects.filter(referral__professional=object, date_out=None).order_by('priority','date_in')
-        birthdate_list = birthdate_filter(request,'careprofessional',month,object,active)
+
+        list_schedule = schedule_occurrences(request, datetime.now().strftime('%Y'), datetime.now().strftime('%m'), datetime.now().strftime('%d')).filter(event__referral__professional=object)
+        if request.user.frontendprofile.referral > 0:
+            if request.user.frontendprofile.referral_sort == 1:
+                list_referral = object.referral_set.filter(status='01').order_by('-date')[:request.user.frontendprofile.referral]
+            else:
+                list_referral = object.referral_set.filter(status='01').order_by('date')[:request.user.frontendprofile.referral]
+
+        if request.user.frontendprofile.queue > 0:
+            if request.user.frontendprofile.queue_sort == 1:
+                list_queue = Queue.objects.filter(referral__professional=object, date_out=None).order_by('-date_in')
+            else:
+                list_queue = Queue.objects.filter(referral__professional=object, date_out=None).order_by('date_in')
+
+        if request.user.frontendprofile.birthdate_client > 0:
+            if request.user.frontendprofile.birthdate_client_sort == 1:
+                list_birthdate = birthdate_filter(request, 'careprofessional', month, object, active, 'increase')
+            else:
+                list_birthdate = birthdate_filter(request, 'careprofessional', month, object, active, 'decrease')
+
         return render_to_response('frontend/frontend_careprofessional_start.html', locals(), context_instance=RequestContext(request))
     
     """ user's employee home page """
@@ -115,7 +152,7 @@ def start(request):
             events of all careprofessional
             birth date of all persons
         """
-        birthdate_list = birthdate_filter(request,'secretary',month,active)
+        birthdate_list = birthdate_filter(request, 'secretary', month, active)
         events = schedule_occurrences(request,\
                 datetime.now().strftime('%Y'),\
                 datetime.now().strftime('%m'),\
@@ -129,12 +166,6 @@ def settings(request):
     """
         save custom itens to show in FrontEnd home of User
     """
-    # admin do not have profile
-    try:
-        profile = request.user.get_profile()
-    except:
-        return HttpResponseRedirect(ADMIN_URL)
-
     if request.POST:
         """
             save OR update profile

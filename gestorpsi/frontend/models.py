@@ -21,9 +21,14 @@ from django.contrib.auth.models import User
 # ultimos cadastrados
 # field SORT ? Alphabetics? Last 10? First 10?
 
-SORT = (
+COLUM = (
     (1, u'alfabética'),
     (2, u'data cadastro'),
+)
+
+SORT = (
+    (1, u'Crescente'),
+    (2, u'Decrescente'),
 )
 
 LIMIT = (
@@ -55,10 +60,16 @@ class FrontendProfile(models.Model):
     client = models.IntegerField(u'Cliente', default=10, choices=LIMIT)
     client_sort = models.IntegerField(u'Ordenar cliente', default=1, choices=SORT)
 
-    student = models.IntegerField(u'Estudante', default=10, choices=LIMIT)
-    schedule = models.IntegerField(u'Agenda', default=10, choices=LIMIT)
     queue = models.IntegerField(u'Fila', default=10, choices=LIMIT)
+    queue_sort = models.IntegerField(u'Ordenar fila', default=1, choices=SORT)
+
     birthdate_client = models.IntegerField(u'Aniversário', default=10, choices=LIMIT)
+    birthdate_sort = models.IntegerField(u'Ordenar Aniversário', default=1, choices=SORT)
+
+    student = models.IntegerField(u'Estudante', default=10, choices=LIMIT)
+    student_sort = models.IntegerField(u'Ordenar Aniversário', default=1, choices=SORT)
+
+    schedule = models.IntegerField(u'Agenda', default=10, choices=LIMIT)
     subscribe_client = models.IntegerField(u'Inscrição cliente', default=10, choices=LIMIT)
 
     def __unicode__(self):

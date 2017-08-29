@@ -26,6 +26,7 @@ from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.schedule.views import schedule_occurrences
 from gestorpsi.referral.models import Queue
 from gestorpsi.person.models import Person
+from gestorpsi.service.models import Service
 from gestorpsi.settings import ADMIN_URL
 
 from gestorpsi.frontend.models import FrontendProfile
@@ -125,25 +126,40 @@ def start(request):
     if request.user.get_profile().person.is_careprofessional() or request.user.get_profile().person.is_student():
         object = CareProfessional.objects.get(pk=request.user.get_profile().person.careprofessional.id)
 
-        list_schedule = schedule_occurrences(request, datetime.now().strftime('%Y'), datetime.now().strftime('%m'), datetime.now().strftime('%d')).filter(event__referral__professional=object)
+        if request.user.frontendprofile.schedule > 0:
+            list_schedule = schedule_occurrences(request, datetime.now().strftime('%Y'), datetime.now().strftime('%m'), datetime.now().strftime('%d')).filter(event__referral__professional=object)[:request.user.frontendprofile.schedule]
+
+        if request.user.frontendprofile.service > 0:
+            if request.user.frontendprofile.service_sort == 1:
+                list_service = object.prof_services.filter(active=True).order_by('name')[:request.user.frontendprofile.service]
+            if request.user.frontendprofile.service_sort == 2:
+                list_service = object.prof_services.filter(active=True).order_by('date')[:request.user.frontendprofile.service]
+
         if request.user.frontendprofile.referral > 0:
             if request.user.frontendprofile.referral_sort == 1:
-                list_referral = object.referral_set.filter(status='01').order_by('-date')[:request.user.frontendprofile.referral]
-            else:
+                list_referral = object.referral_set.filter(status='01').order_by('client__person__name')[:request.user.frontendprofile.referral]
+            if request.user.frontendprofile.referral_sort == 2:
                 list_referral = object.referral_set.filter(status='01').order_by('date')[:request.user.frontendprofile.referral]
 
         if request.user.frontendprofile.queue > 0:
             if request.user.frontendprofile.queue_sort == 1:
-                list_queue = Queue.objects.filter(referral__professional=object, date_out=None).order_by('-date_in')
-            else:
-                list_queue = Queue.objects.filter(referral__professional=object, date_out=None).order_by('date_in')
+                list_queue = Queue.objects.filter(referral__professional=object, date_out=None).order_by('-date_in')[:request.user.frontendprofile.queue]
+            if request.user.frontendprofile.queue_sort == 2:
+                list_queue = Queue.objects.filter(referral__professional=object, date_out=None).order_by('date_in')[:request.user.frontendprofile.queue]
 
         if request.user.frontendprofile.birthdate_client > 0:
-            if request.user.frontendprofile.birthdate_client_sort == 1:
-                list_birthdate = birthdate_filter(request, 'careprofessional', month, object, active, 'increase')
-            else:
-                list_birthdate = birthdate_filter(request, 'careprofessional', month, object, active, 'decrease')
+            list_birthdate = birthdate_filter(request, 'careprofessional', month, object, active, 'increase')
 
+        if request.user.frontendprofile.student > 0:
+            list_student = []
+            for srv in Service.objects.filter(responsibles=request.user.profile.person.careprofessional): 
+                for st in srv.professionals.filter(studentprofile__isnull=False):
+                    if not st in list_student:
+                        list_student.append(st)
+            # limit
+            list_student.sort()
+            list_student = list_student[:request.user.frontendprofile.student]
+            
         return render_to_response('frontend/frontend_careprofessional_start.html', locals(), context_instance=RequestContext(request))
     
     """ user's employee home page """
@@ -152,11 +168,11 @@ def start(request):
             events of all careprofessional
             birth date of all persons
         """
-        birthdate_list = birthdate_filter(request, 'secretary', month, active)
+        birthdate_list = birthdate_filter(request, 'secretary', month, active,'increase')
         events = schedule_occurrences(request,\
                 datetime.now().strftime('%Y'),\
                 datetime.now().strftime('%m'),\
-                datetime.now().strftime('%d')).filter(event__referral__professional__person__organization=request.user.get_profile().org_active )
+                datetime.now().strftime('%d')).filter(event__referral__professional__person__organization=request.user.get_profile().org_active)
         return render_to_response('frontend/frontend_secretary.html', locals(), context_instance=RequestContext(request))
 
     raise Http404

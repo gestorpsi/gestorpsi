@@ -21,23 +21,23 @@ from django.contrib.auth.models import User
 # ultimos cadastrados
 # field SORT ? Alphabetics? Last 10? First 10?
 
-COLUM = (
+SORT = (
     (1, u'alfabética'),
     (2, u'data cadastro'),
 )
 
-SORT = (
-    (1, u'Crescente'),
-    (2, u'Decrescente'),
-)
-
 LIMIT = (
     (0, u'Não mostrar'),
-    (10, u'10 ultimos'),
-    (15, u'15 ultimos'),
-    (010, u'10 primeiros'),
-    (015, u'15 primeiros'),
-    (99 , u'Todos?'),
+    (5, u'5 primeiros'),
+    (10, u'10 primeiros'),
+    (15, u'15 primeiros'),
+    (20, u'20 primeiros'),
+    (25, u'25 primeiros'),
+    (30, u'30 primeiros'),
+    (35, u'35 primeiros'),
+    (40, u'40 primeiros'),
+    (45, u'45 primeiros'),
+    (50, u'50 primeiros'),
 )
 
 class FrontendProfile(models.Model):
@@ -55,19 +55,19 @@ class FrontendProfile(models.Model):
     service_sort = models.IntegerField(u'Ordenar serviço', default=1, choices=SORT)
 
     referral = models.IntegerField(u'Inscrição', default=10, choices=LIMIT)
-    referral_sort = models.IntegerField(u'Ordenar inscrição', default=1, choices=SORT)
+    referral_sort = models.IntegerField(u'Ordenar inscrição', default=2, choices=SORT)
 
     client = models.IntegerField(u'Cliente', default=10, choices=LIMIT)
     client_sort = models.IntegerField(u'Ordenar cliente', default=1, choices=SORT)
 
     queue = models.IntegerField(u'Fila', default=10, choices=LIMIT)
-    queue_sort = models.IntegerField(u'Ordenar fila', default=1, choices=SORT)
+    queue_sort = models.IntegerField(u'Ordenar fila', default=2, choices=SORT)
 
     birthdate_client = models.IntegerField(u'Aniversário', default=10, choices=LIMIT)
-    birthdate_sort = models.IntegerField(u'Ordenar Aniversário', default=1, choices=SORT)
+    birthdate_sort = models.IntegerField(u'Ordenar Aniversário', default=2, choices=SORT)
 
     student = models.IntegerField(u'Estudante', default=10, choices=LIMIT)
-    student_sort = models.IntegerField(u'Ordenar Aniversário', default=1, choices=SORT)
+    student_sort = models.IntegerField(u'Ordenar estudante', default=1, choices=SORT)
 
     schedule = models.IntegerField(u'Agenda', default=10, choices=LIMIT)
     subscribe_client = models.IntegerField(u'Inscrição cliente', default=10, choices=LIMIT)

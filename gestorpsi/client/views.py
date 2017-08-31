@@ -16,6 +16,8 @@
 
 import string
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -311,6 +313,9 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     # mount page
     service_list = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
     initials = string.uppercase
+
+    date_start = datetime.now().strftime("%d/%m/%Y")
+    date_end = (datetime.now() + relativedelta(months=1)).strftime("%d/%m/%Y")
 
     return render_to_response('tags/list_item.html', locals(), context_instance=RequestContext(request))
 

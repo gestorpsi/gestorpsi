@@ -17,9 +17,9 @@
 {% load i18n %}
 
 <ul id="sub_customers">
-    <li><a href="/client/">{% trans "all" %}</a></li>
-    <li><a href="/client/add">{% trans "add" %}</a></li>
-    <li><a href="/client/add/company/">{% trans "add company" %}</a></li>
+    <li><a class="{% if tab_index %}active{% endif %}" href="/client/">{% trans "all" %}</a></li>
+    <li><a class="{% if tab_add %}active{% endif %}" href="/client/add">{% trans "add" %}</a></li>
+    <li><a class="{% if tab_add_comp %}active{% endif %}"href="/client/add/company/">{% trans "add company" %}</a></li>
     <li><a class="{% if deactive %} active {% endif %}" href="/client/deactive/">{% trans "all Deactive" %}</a></li>
     {% if object.id %}<li><a class="active">{{ object.person.name }}{% if referral %} - {{ referral }}{% endif %}</a></li>{% endif %}
     {% if obj.referral %}<li><a class="active">{% trans "Pagamento" %}</a></li>{% endif %}

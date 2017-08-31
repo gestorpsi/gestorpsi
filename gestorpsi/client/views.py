@@ -143,7 +143,9 @@ def _access_check_referral_write(request, referral=None):
 
 # list all active clients
 @permission_required_with_403('client.client_list')
-def index(request, deactive = False):
+def index(request, deactive=False):
+    tab_index = True
+
     # Test if clinic administrator has registered services before access client page.
     list_url_base = '/client/list/' if not deactive else '/client/list/deactive/'
 
@@ -188,19 +190,19 @@ def home(request, object_id=None):
 def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=False, retrn=False):
     """
         Tiago de Souza Moraes - 06/05/2014
-        retrn : string, JSON or HTML
+        retrn: return format: string, JSON or HTML
         search person family return JSON
         search client/initial letter return HTML
     """
 
     user = request.user
     object_list = Client.objects.from_user(user, 'deactive' if deactive else 'active')
+    tab_index = True
 
     """
         return json
     """
     if retrn == 'json':
-
         person = {}
         i = 0
 
@@ -307,7 +309,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     
 
     # mount page
-    service_list = Service.objects.filter( active=True, organization=request.user.get_profile().org_active )
+    service_list = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
     initials = string.uppercase
 
     return render_to_response('tags/list_item.html', locals(), context_instance=RequestContext(request))
@@ -393,6 +395,7 @@ def form(request, object_id=False, is_company=False):
                                     'ReferralChoices': ReferralChoice.objects.all(),
                                     'Relations': Relation.objects.all(),
                                     'cnae': cnae,
+                                    'tab_add': True,
                                    },
                                     context_instance=RequestContext(request)
                             )
@@ -416,6 +419,7 @@ def form(request, object_id=False, is_company=False):
                                     'ReferralChoices': ReferralChoice.objects.all(),
                                     'Relations': Relation.objects.all(),
                                     'cnae': cnae,
+                                    'tab_add': True,
                                    },
                                     context_instance=RequestContext(request)
                             )

@@ -28,28 +28,27 @@ GNU General Public License for more details.
     {% if initial_prev %}
         <a initial="{{ initial_prev }}" href="#" id="letter_back" class="arrow initial">{{ initial_prev }}</a>
     {% endif %}
-
     
     {#<div class="capital_letter">{% if not initial %}A{% else %}{{ initial|upper }}{% endif %}</div>#}
     <input name="quick_search" type="text" class="quick_search" id="quick_search" value="{{ search }}" /><a class="quick_search"></a> <a href="#" id="cleanup"></a>
     <table id="letter_menu" border="0" cellspacing="0" cellpadding="2">
-    <tr>
-        <td><a initial="" class="initial pointer">#</a></td>
-        {% for i in initials %}
-        <td>
-            <a initial="{{ i }}" class="initial pointer"{% if i|upper == initial|upper %} style="color:#333"{% endif %}>
-                {{ i }}
-            </a>
-        </td>
-        {% endfor %}
-    </tr>
+        <tr>
+            <td><a initial="" class="initial pointer">#</a></td>
+            {% for i in initials %}
+                <td>
+                    <a initial="{{ i }}" class="initial pointer"{% if i|upper == initial|upper %} style="color:#333"{% endif %}>
+                        {{ i }}
+                    </a>
+                </td>
+            {% endfor %}
+        </tr>
     </table>
     <input type="hidden" name="initial" value="{{ initial }}" />
 </div>
 
 <div class="search_header_aditional">
     <select name="service">
-        <option value="">Todos os serviços</option>
+        <option value="">Todos os servi&ccedil;os</option>
         {% for s in service_list %}
             <option value="{{ s.pk }}"{% if s.pk == service %} selected{% endif %}>{{ s }}</option>
         {% endfor %}
@@ -66,6 +65,16 @@ GNU General Public License for more details.
     <label>
         <input type="checkbox" name="nooccurrences"{% if nooccurrences %} checked{% endif %} />&nbsp;{% trans "Sem agendamentos" %}
     </label>
+    <label>
+        <input type="checkbox" id="admissiondate" name="admissiondate"{% if admissiondate %} checked{% endif %} />&nbsp;{% trans "Data admiss&atilde;o" %}
+    </label>
+</div>
+
+<div id="search_client_admission" style="display:none;">
+    <br />
+    <input placeholder="Data in&iacute;cio admiss&atilde;o" name="search_client_date_start" class="search_client_date_start" type="text"></label>
+    <input placeholder="Data fim admiss&atilde;o" name="search_client_date_end" class="search_client_date_end" type="text"></label> 
+    <br /><br />
 </div>
 
 <div id="msg_area" class="alert no_registers_available" style="display:none">
@@ -114,23 +123,25 @@ GNU General Public License for more details.
 </div>
 
 <script>
-function updateResults(url, initial) {
-    if(!url) {
-        if(!initial) {
-            initial = ''
+    function updateResults(url, initial) {
+        if(!url) {
+            if(!initial) {
+                initial = ''
+            }
+
+            var url = '{{ list_url_base }}?search=' + encodeURIComponent($("#quick_search").val()) + "&initial=" + initial + '&service=' + $('select[name=service]').val() + '&subscribed=' + $('input[name=subscribed]').is(":checked") + '&discharged=' + $('input[name=discharged]').is(":checked") + '&queued=' + $('input[name=queued]').is(':checked') + '&nooccurrences=' + $('input[name=nooccurrences]').is(':checked');
         }
-        var url = '{{ list_url_base }}?search=' + encodeURIComponent($("#quick_search").val()) + "&initial=" + initial + '&service=' + $('select[name=service]').val() + '&subscribed=' + $('input[name=subscribed]').is(":checked") + '&discharged=' + $('input[name=discharged]').is(":checked") + '&queued=' + $('input[name=queued]').is(':checked') + '&nooccurrences=' + $('input[name=nooccurrences]').is(':checked');
+        $('#page_results').load(url,function(responseTxt,statusTxt,xhr){
+                if(statusTxt=="success") {
+                    $('#pageof').text($('.pagination span.current').text());
+                    $('#object_length').text($('input[name=result_count]').val());
+                    }
+                if(statusTxt=="error")
+                    alert("Error: "+xhr.status+": "+xhr.statusText);
+        });
     }
-    $('#page_results').load(url,function(responseTxt,statusTxt,xhr){
-            if(statusTxt=="success") {
-                $('#pageof').text($('.pagination span.current').text());
-                $('#object_length').text($('input[name=result_count]').val());
-                }
-            if(statusTxt=="error")
-                alert("Error: "+xhr.status+": "+xhr.statusText);
-    });
-}
-$(function() {
+
+    $(function() {
         $('#quick_search').focus();
         $('#page_results .pagination a').click(function() {
             updateResults($(this).attr('href'));
@@ -175,5 +186,33 @@ $(function() {
                 $('a.quick_search').click();
             }
         });
-});
+
+        /*
+        * client search by adminission date section
+        */
+        // show and hide div search date
+        $('input#admissiondate').click(function(){
+            if (this.checked){
+                $("div#search_client_admission").show();
+            }else{
+                $("div#search_client_admission").hide();
+            }
+        });
+
+        // load datepicker calendar
+        $('input.search_client_date_end').datepicker({dateFormat:'dd/mm/yy', changeYear:true, "gotoCurrent":true});
+
+        // update date end after choosen
+        $('input.search_client_date_start, input.search_client_date_end').datepicker({
+            dateFormat:'dd/mm/yy',
+            changeYear:true,
+            gotoCurrent:true,
+            onSelect: function(dateText, inst){
+                dtsplit = dateText.split("/");
+                var enddate = new Date(dtsplit[2], dtsplit[1], dtsplit[0]);
+                enddate.setMonth(enddate.getMonth() + 1);
+                $("input.search_client_date_end").val(enddate.getDate() + "/" + enddate.getMonth() + "/" + enddate.getFullYear());
+            },
+        });
+    }); // end function
 </script>

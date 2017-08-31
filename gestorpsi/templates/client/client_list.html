@@ -21,20 +21,18 @@ GNU General Public License for more details.
 {% block menu_client %}active{% endblock %}
 
 {% block submenu %}
-		<ul>
-			<li><a display="list" class="{% if not deactive %} active {% endif %} first fastmenu" href="/client/">{% trans "all" %}</a></li>
-			<li><a display="form" class="fastmenu" href="/client/add">{% trans "add" %}</a></li>
-            <li><a href="/client/add/company/">{% trans "add company" %}</a></li>
-			<li><a class="{% if deactive %} active {% endif %}" href="/client/deactive/">{% trans "all Deactive" %}</a></li>
-		</ul>
+    {% include "client/client_menu.html" %}
+{% endblock %}
+
+{% block extrahead %}
+    <script type="text/javascript" src="/media/js/gestorpsi.client.search.js"></script>
 {% endblock %}
 
 {% block core %}
-<div class="registers_available">
-        
+    <div class="registers_available">
         <h2 id="title_addressbook" style="display: none"></h2>
         <h2 id="title_clients" style="display: none"></h2>
-        
+
         {% if deactive %}
             <h2 class="title_clients">{% trans "All Customers Deactive" %}<span class="hidden"> {% trans "with filter" %}<span></span></span></h2>
         {% else %}
@@ -42,8 +40,7 @@ GNU General Public License for more details.
         {% endif %}
         <p class="description">{% trans "Displaying" %} <span id="object_length"></span> {% trans "customer(s)" %}.<span id="pageof"></span></p>
         <h2 id="title_myoffice" style="display: none"></h2>
-        
-        
+
         <div class="main_area contact" id="page_results">
             
         </div>
@@ -59,5 +56,5 @@ GNU General Public License for more details.
                     });
                 });
         </script>
-</div>
+    </div>
 {% endblock %}

@@ -24,10 +24,6 @@ GNU General Public License for more details.
     {% include "client/client_menu.html" %}
 {% endblock %}
 
-{% block extrahead %}
-    <script type="text/javascript" src="/media/js/gestorpsi.client.search.js"></script>
-{% endblock %}
-
 {% block core %}
     <div class="registers_available">
         <h2 id="title_addressbook" style="display: none"></h2>
@@ -41,11 +37,10 @@ GNU General Public License for more details.
         <p class="description">{% trans "Displaying" %} <span id="object_length"></span> {% trans "customer(s)" %}.<span id="pageof"></span></p>
         <h2 id="title_myoffice" style="display: none"></h2>
 
-        <div class="main_area contact" id="page_results">
-            
-        </div>
+        <div class="main_area contact" id="page_results"></div>
+
         <script>
-        $(function() {
+            $(function() {
                 $('#page_results').load('{{ list_url_base }}',function(responseTxt,statusTxt,xhr){
                     if(statusTxt=="success") {
                         $('#pageof').text($('.pagination span.current').text());
@@ -54,7 +49,14 @@ GNU General Public License for more details.
                     if(statusTxt=="error")
                         alert("Error: "+xhr.status+": "+xhr.statusText);
                     });
-                });
+            });
         </script>
     </div>
+
+    <div id="sidebar" class="sidebar_save">
+        <div class="bg_blue">
+            <a class="mini quick_search" style="color:white; font-weight:bold; text-align:center;"><h3>Procurar</h3></a>
+        </div>
+    </div>
+
 {% endblock %}

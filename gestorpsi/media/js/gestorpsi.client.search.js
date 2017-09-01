@@ -104,12 +104,6 @@ GNU General Public License for more details.
             }
         });
 
-        // refresh search when out end date
-        $('input.search_client_date_end').focusout(function(){ 
-            updateResults();
-            return false;
-        });
-
         // load datepicker calendar
         $('input.search_client_date_end').datepicker({dateFormat:'dd/mm/yy', changeYear:true, "gotoCurrent":true});
 

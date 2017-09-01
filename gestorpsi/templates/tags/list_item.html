@@ -82,26 +82,27 @@ GNU General Public License for more details.
 </div>
 
 <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-<thead> 
+    <thead> 
         <tr class="zebra_1"> 
         <th></th> 
         <th></th>
         <th></th>
         </tr> 
-</thead>
-<tbody>
-    {% for i in object_list %}
-    <tr class="zebra_{% cycle 0,1 %}">
-        <td class="title">
-            <a href="{{ i.list_item_url }}" title="{{ i.list_item_title }}">{{ i.list_item_title }}</a>
-            <span style="font-weight:normal;">{% if i.list_item_title_aditional %}({{ i.list_item_title_aditional }}){% endif %}</span><br><i>{{ i.list_item_description }}</i>
-        </td>
-        <td>
-            <span class="phone">{{ i.list_item_extra_links|safe }}</span>
-        </td>
-    </tr>
-    {% endfor %}
-</tbody>
+    </thead>
+
+    <tbody>
+        {% for i in object_list %}
+            <tr class="zebra_{% cycle 0,1 %}">
+                <td class="title">
+                    <a href="{{ i.list_item_url }}" title="{{ i.list_item_title }}">{{ i.list_item_title }}</a>
+                    <span style="font-weight:normal;">{% if i.list_item_title_aditional %}({{ i.list_item_title_aditional }}){% endif %}</span><br><i>{{ i.list_item_description }}</i>
+                </td>
+                <td>
+                    <span class="phone">{{ i.list_item_extra_links|safe }}</span>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
 </table>
 
 <div class="pagination">

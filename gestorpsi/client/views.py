@@ -298,6 +298,29 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         url_extra += '&nooccurrences=%s' % nooccurrences
 
 
+    # admission date
+    admissiondate = True if request.GET.get('admissiondate') == "true" else False
+
+    if admissiondate:
+        # filter admission date
+        date_start = request.GET.get('admissionStart')
+        date_end = request.GET.get('admissionEnd')
+        f = "%s-%s-%s" # format YYYY-mm-dd
+
+        d,m,y = request.GET.get('admissionStart').split('/')
+        s = f % (y,m,d)
+        d,m,y = request.GET.get('admissionEnd').split('/')
+        e = f % (y,m,d)
+
+        object_list = object_list.filter(admission_date__gte=s, admission_date__lte=e)
+        url_extra += '&admissiondate=true&admissionStart=%s&admissionEnd=%s' % (s,e)
+    else:
+        # set initial date
+        date_start = datetime.now().strftime("%d/%m/%Y")
+        date_end = (datetime.now() + relativedelta(months=1)).strftime("%d/%m/%Y")
+        # set initial admission filter
+        url_extra += '&admissiondate=false'
+
     # service filter
     if client_service_pk_list: # exclude filtered for charged and discharged results
         object_list = object_list.filter(pk__in=client_service_pk_list)
@@ -313,9 +336,6 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     # mount page
     service_list = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
     initials = string.uppercase
-
-    date_start = datetime.now().strftime("%d/%m/%Y")
-    date_end = (datetime.now() + relativedelta(months=1)).strftime("%d/%m/%Y")
 
     return render_to_response('tags/list_item.html', locals(), context_instance=RequestContext(request))
 
@@ -792,9 +812,7 @@ def client_print(request, object_id = None):
 
         if request.POST.get('output') == 'pdf':
             return write_pdf('client/client_print.html', dict, '%s.pdf' % slugify(object.person.name))
-
     else:
-
         return render_to_response('client/client_print_form.html', locals(), context_instance=RequestContext(request))
 
 
@@ -1128,6 +1146,7 @@ def family_form(request, object_id = None, relation_id=None):
 
     return render_to_response('client/client_family_form.html', locals(), context_instance=RequestContext(request))
 
+
 @permission_required_with_403('client.client_list')
 def company_related(request, object_id = None):
     object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
@@ -1139,6 +1158,7 @@ def company_related(request, object_id = None):
     clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active)
 
     return render_to_response('client/client_company_related.html', locals(), context_instance=RequestContext(request))
+
 
 @permission_required_with_403('client.client_write')
 def company_related_form(request, object_id = None, company_client_id=None):

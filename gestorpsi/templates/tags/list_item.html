@@ -70,7 +70,7 @@ GNU General Public License for more details.
     </label>
 </div>
 
-<div id="search_client_admission" style="display:none;">
+<div id="search_client_admission" style="display:{% if admissiondate %}block{% else %}none{% endif %};">
     <br />
     <input placeholder="Data in&iacute;cio admiss&atilde;o" name="search_client_date_start" class="search_client_date_start" type="text" value="{{ date_start }}">
     <input placeholder="Data fim admiss&atilde;o" name="search_client_date_end" class="search_client_date_end" type="text" value="{{ date_end }}">
@@ -123,14 +123,25 @@ GNU General Public License for more details.
 </div>
 
 <script>
+
     function updateResults(url, initial) {
         if(!url) {
             if(!initial) {
                 initial = ''
             }
 
+            var admis;
             var url = '{{ list_url_base }}?search=' + encodeURIComponent($("#quick_search").val()) + "&initial=" + initial + '&service=' + $('select[name=service]').val() + '&subscribed=' + $('input[name=subscribed]').is(":checked") + '&discharged=' + $('input[name=discharged]').is(":checked") + '&queued=' + $('input[name=queued]').is(':checked') + '&nooccurrences=' + $('input[name=nooccurrences]').is(':checked');
+
+            if ($('input#admissiondate').is(':checked') == true){
+                var admis = "&admissiondate=true" + "&admissionStart=" + $('input[name=search_client_date_start]').val() + "&admissionEnd=" + $('input[name=search_client_date_end]').val();
+            } else { 
+                var admis = "&admissiondate=false";
+            }
+
+            var url = url + admis;
         }
+
         $('#page_results').load(url,function(responseTxt,statusTxt,xhr){
                 if(statusTxt=="success") {
                     $('#pageof').text($('.pagination span.current').text());
@@ -196,7 +207,15 @@ GNU General Public License for more details.
                 $("div#search_client_admission").show();
             }else{
                 $("div#search_client_admission").hide();
+                updateResults();
+                return false;
             }
+        });
+
+        // refresh search when out end date
+        $('input.search_client_date_end').focusout(function(){ 
+            updateResults();
+            return false;
         });
 
         // load datepicker calendar
@@ -208,6 +227,7 @@ GNU General Public License for more details.
             changeYear:true,
             gotoCurrent:true,
             onSelect: function(dateText, inst){
+                // update dateEnd calendar
                 dtsplit = dateText.split("/");
                 var enddate = new Date(dtsplit[2], dtsplit[1], dtsplit[0]);
                 enddate.setMonth(enddate.getMonth() + 1);

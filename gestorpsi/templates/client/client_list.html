@@ -34,23 +34,12 @@ GNU General Public License for more details.
         {% else %}
             <h2 class="title_clients">{% trans "All Customers" %}<span class="hidden"> {% trans "with filter" %}<span></span></span></h2>
         {% endif %}
+
         <p class="description">{% trans "Displaying" %} <span id="object_length"></span> {% trans "customer(s)" %}.<span id="pageof"></span></p>
         <h2 id="title_myoffice" style="display: none"></h2>
-
         <div class="main_area contact" id="page_results"></div>
-
-        <script>
-            $(function() {
-                $('#page_results').load('{{ list_url_base }}',function(responseTxt,statusTxt,xhr){
-                    if(statusTxt=="success") {
-                        $('#pageof').text($('.pagination span.current').text());
-                        $('#object_length').text($('input[name=result_count]').val());
-                    }
-                    if(statusTxt=="error")
-                        alert("Error: "+xhr.status+": "+xhr.statusText);
-                    });
-            });
-        </script>
+        <!-- render html result by JS -->
+        {% include "js/gestorpsi.client_list.js" %}
     </div>
 
     <div id="sidebar" class="sidebar_save">

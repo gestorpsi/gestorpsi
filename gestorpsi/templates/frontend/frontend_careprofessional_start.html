@@ -26,6 +26,7 @@ GNU General Public License for more details.
 
 {% block core %}
     <h2 class="title_fronted">{% trans "Welcome" %} <b>{{ profile.person.name }}</b><br /></h2>
+    <a href='/client/filterby/?admissiondate=true&admissionStart=01/01/2017&admissionEnd=31/12/2017&service=52b808ae-b7a5-4563-8044-d584beaa09f7'>PRE-FILTER</a>
 
     <!-- service -->
     {% if list_service %}

@@ -102,7 +102,7 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
         messages.info(request,  _('This professional is not enabled.'))
 
     def notify_set():
-        if hasattr(object,'person') and object.person.notify.all():
+        if hasattr(object,'person') and object.person.notify.filter(org_id=request.user.profile.org_active.id):
             return object.person.notify.get(org_id=request.user.profile.org_active.id)
         else:
             return None

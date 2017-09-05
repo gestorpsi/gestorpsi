@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 from django.db import models
 from django.contrib.auth.models import User
+from gestorpsi.service.models import Service
 
 
 # ultimos cadastrados
@@ -53,6 +54,8 @@ class FrontendProfile(models.Model):
 
     service = models.IntegerField(u'Serviço', default=10, choices=LIMIT)
     service_sort = models.IntegerField(u'Ordenar serviço', default=1, choices=SORT)
+
+    my_service = models.ManyToManyField(Service, verbose_name=u'Meus serviços', null=True, blank=True)
 
     referral = models.IntegerField(u'Inscrição', default=10, choices=LIMIT)
     referral_sort = models.IntegerField(u'Ordenar inscrição', default=2, choices=SORT)

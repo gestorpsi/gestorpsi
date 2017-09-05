@@ -143,20 +143,6 @@ def _access_check_referral_write(request, referral=None):
     return False
 
 
-# list all active clients
-@permission_required_with_403('client.client_list')
-def index(request, deactive=False):
-    tab_index = True
-
-    # Test if clinic administrator has registered services before access client page.
-    list_url_base = '/client/list/' if not deactive else '/client/list/deactive/'
-
-    if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
-        msg = _("There's no Service created yet. Please, create one before access Client, ") + " <a href='/service/add'> clique aqui.</a>"
-        return render_to_response('client/client_service_alert.html', {'object': msg }, context_instance=RequestContext(request))
-    return render_to_response('client/client_list.html', locals(), context_instance=RequestContext(request))
-
-
 # client home
 @permission_required_with_403('client.client_read')
 def home(request, object_id=None):
@@ -188,6 +174,50 @@ def home(request, object_id=None):
                             )
 
 
+# list all active clients
+@permission_required_with_403('client.client_list')
+def index(request, deactive=False):
+    tab_index = True
+
+    # Test if clinic administrator has registered services before access client page.
+    list_url_base = '/client/list/' if not deactive else '/client/list/deactive/'
+    list_url_base = '/client/list/?admissiondate=true&admissionStart=01/01/2017&admissionEnd=31/12/2017'
+    #list_url_base = '/client/filter/lixo/'
+
+    if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
+        msg = _("There's no Service created yet. Please, create one before access Client, ") + " <a href='/service/add'> clique aqui.</a>"
+        return render_to_response('client/client_service_alert.html', {'object': msg}, context_instance=RequestContext(request))
+    return render_to_response('client/client_list.html', locals(), context_instance=RequestContext(request))
+
+
+@permission_required_with_403('client.client_list')
+#def list_by_filter(request, admission=False, admisstart=False, admisend=False):
+def list_by_filter(request):
+    """
+        pre-formated filter by link, start page.
+        custom client list filter by url.
+        get variables from URL using get and pre-format to use function list.
+    """
+    admissionStart = request.GET.get('admissionStart')
+    admissionEnd = request.GET.get('admissionEnd')
+    service = request.GET.get('service')
+
+    # call function and return JSON format list
+    list_url_base = '/client/list/?'
+
+    if service: 
+        list_url_base += 'service=%s&' % service
+
+    if admissionStart and admissionEnd:
+        list_url_base += 'admissiondate=true&admissionStart=%s&admissionEnd=%s&' % (admissionStart, admissionEnd)
+
+    if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
+        msg = _("There's no Service created yet. Please, create one before access Client, ") + " <a href='/service/add'> clique aqui.</a>"
+        return render_to_response('client/client_service_alert.html', {'object': msg}, context_instance=RequestContext(request))
+
+    return render_to_response('client/client_list.html', locals(), context_instance=RequestContext(request))
+
+
 @permission_required_with_403('client.client_list')
 def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=False, retrn=False):
     """
@@ -196,7 +226,6 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         search person family return JSON
         search client/initial letter return HTML
     """
-
     user = request.user
     object_list = Client.objects.from_user(user, 'deactive' if deactive else 'active')
     tab_index = True
@@ -338,7 +367,6 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     initials = string.uppercase
 
     return render_to_response('tags/list_item.html', locals(), context_instance=RequestContext(request))
-
 
 
 @permission_required_with_403('client.client_read')
@@ -764,7 +792,6 @@ def save(request, object_id=None, is_company=False):
 
 @permission_required_with_403('client.client_read')
 def client_print(request, object_id = None):
-
     object = get_object_or_404( Client, pk=object_id, person__organization=request.user.get_profile().org_active )
 
     # check access by requested user

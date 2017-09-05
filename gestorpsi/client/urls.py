@@ -21,7 +21,7 @@ from gestorpsi.client.views import index, list, form, save, client_print, \
         referral_form, referral_discharge_form, schedule_daily, schedule_add, \
         occurrence_view, referral_occurrences, referral_int_form, referral_queue, \
         referral_queue_save, referral_queue_remove, referral_ext_form, referral_ext_save, family, family_form, \
-        company_related, company_related_form, referral_occurrences_action
+        company_related, company_related_form, referral_occurrences_action, list_by_filter
 from gestorpsi.online_messages.views import referral_messages, occurrence_chat, chat_message, update_chat_message, exit_chat, new_message_topic, topic_messages, new_topic_message, chat_messages_history
 from gestorpsi.authentication.views import login_check
 from gestorpsi.organization.views import list_prof_org
@@ -30,14 +30,14 @@ urlpatterns = patterns('',
 
     # client list index and paginator
     url(r'^$', login_check(index), name='client-index'),
-    (r'^list/$', login_check(list)), #list objects
-    (r'^page(?P<page>(\d)+)$', login_check(list)), #list objects
+    url(r'^list/$', login_check(list), name='client-list'), #list objects
+    url(r'^page(?P<page>(\d)+)$', login_check(list), name='client-list-pagination'), #list objects
     #(r'^initial/(?P<initial>[a-zA-Z])/page(?P<page>(\d)+)/$', login_check(list)), # quick filter
     url(r'^deactive/$', login_check(index), {'deactive': True}, name='client-list-deactive' ), #list objects
     url(r'^list/deactive/$', login_check(list), {'deactive': True}), #list objects
     # client search person family, return JSON
-    #(r'^filter/(?P<filter>\w+)/page(?P<page>(\d)+)/$', login_check(list), {'no_paging': True, 'retrn':'json'}), # quick search
     (r'^filter/(?P<filter>\w+)/$', login_check(list), {'no_paging': True, 'retrn':'json'}), # quick search
+    (r'^filterby/$', login_check(list_by_filter)), # filter by URL, pre-formated filter by url, link.
     (r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/order/$', login_check(order)),
     # client form
     url(r'^(?P<object_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/home/$', login_check(home), name='client-home'),

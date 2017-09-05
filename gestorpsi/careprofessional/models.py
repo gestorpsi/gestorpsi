@@ -323,5 +323,3 @@ class CareProfessional(models.Model):
         return a
 
 reversion.register(CareProfessional)
-
-

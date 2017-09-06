@@ -26,7 +26,45 @@ GNU General Public License for more details.
 
 {% block core %}
     <h2 class="title_fronted">{% trans "Welcome" %} <b>{{ profile.person.name }}</b><br /></h2>
-    <a href='/client/filterby/?admissiondate=true&admissionStart=01/01/2017&admissionEnd=31/12/2017&service=52b808ae-b7a5-4563-8044-d584beaa09f7'>PRE-FILTER</a>
+
+    <!-- my selected service -->
+    {% if request.user.frontendprofile.my_service.all.0 %}
+        <div class="main_area">
+            <h3>{% trans "My selected services" %}</h3>
+            <div class="contact">
+                <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for service in request.user.frontendprofile.my_service.all %}
+                            <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
+                                <td class="title">
+                                    <a class="title" href="/service/form/{{ service.id }}/" title="{{ service.name }}">{{ service.name_html|safe }}</a><br />
+                                    <div style="margin-left:26px;">
+                                    <i>{{ service.description }}</i>
+                                    </div>
+                                </td>
+                                <td>Lista de cliente</td>
+                                <td>
+                                    <ul>
+                                        <li><a href="/client/filterby/?admissiondate=true&admissionStart=01/{{ td.month }}/{{ td.year }}&admissionEnd={{ last_day_month }}/{{ td.month }}/{{ td.year }}&service={{ service.id }}">M&ecirc;s corrente</a></li>
+                                        <li><a href="/client/filterby/?admissiondate=true&admissionStart=01/01/{{ td.year }}&admissionEnd=31/12/{{ td.year }}&service={{ service.id }}">Ano corrente</a></li>
+                                        <li><a href="/client/filterby/?admissiondate=true&admissionStart={{ last30days }}&admissionEnd={{ td.day }}/{{ td.month }}/{{ td.year }}&service={{ service.id }}">&Uacute;ltimos 30 dias</a></li>
+                                        <li><a href="/client/filterby/?admissiondate=true&admissionStart={{ last60days }}&admissionEnd={{ td.day }}/{{ td.month }}/{{ td.year }}&service={{ service.id }}">&Uacute;ltimos 60 dias</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
 
     <!-- service -->
     {% if list_service %}
@@ -52,8 +90,7 @@ GNU General Public License for more details.
                                         <i>{{ service.description }}</i>
                                         </div>
                                     </td>
-                                    <td><span class="phone"></span><br />
-                                    <span class="email"></span></td>
+                                    <td><span class="phone"></span><br /><span class="email"></span></td>
                                     <td>
                                         {% if service.is_group %}
                                             <a style="padding-bottom: 5px; text-decoration:none" href="/service/{{ service.id }}/group/" class="group" title="{% trans "List groups in this service" %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>

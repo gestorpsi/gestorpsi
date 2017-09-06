@@ -14,7 +14,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+import calendar
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
 from django.contrib import messages
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -94,6 +97,13 @@ def start(request):
         return HttpResponseRedirect('/frontend/settings/')
 
     date = datetime.now()
+
+    td = date.today()
+    # last day of current month
+    last_day_month = calendar.monthrange(td.year, td.month)[1]
+    current_month = (td.day-last_day_month)+td.day
+    last30days = (td-relativedelta(months=3)).strftime("%d/%m/%Y")
+    last60days = (td-relativedelta(months=6)).strftime("%d/%m/%Y")
 
     # list
     list_subscribe = False
@@ -211,6 +221,9 @@ def settings(request):
             form = FrontendProfileForm(instance=request.user.frontendprofile)
         else:
             form = FrontendProfileForm()
+
+        # just services where Professional provide service.
+        form.fields['my_service'].choices = [[x.id, x.name] for x in request.user.get_profile().person.careprofessional.prof_services.all()]
 
     tab_settings_class = 'active'  # tab settings active
     return render_to_response('frontend/frontend_settings.html', locals(), context_instance=RequestContext(request))

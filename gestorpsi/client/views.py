@@ -27,6 +27,7 @@ from django.utils import simplejson
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 
 from gestorpsi.settings import DEBUG, MEDIA_URL, MEDIA_ROOT, PAGE_RESULTS
 
@@ -181,8 +182,6 @@ def index(request, deactive=False):
 
     # Test if clinic administrator has registered services before access client page.
     list_url_base = '/client/list/' if not deactive else '/client/list/deactive/'
-    list_url_base = '/client/list/?admissiondate=true&admissionStart=01/01/2017&admissionEnd=31/12/2017'
-    #list_url_base = '/client/filter/lixo/'
 
     if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
         msg = _("There's no Service created yet. Please, create one before access Client, ") + " <a href='/service/add'> clique aqui.</a>"
@@ -201,6 +200,7 @@ def list_by_filter(request):
     admissionStart = request.GET.get('admissionStart')
     admissionEnd = request.GET.get('admissionEnd')
     service = request.GET.get('service')
+    tab_index = True
 
     # call function and return JSON format list
     list_url_base = '/client/list/?'
@@ -242,7 +242,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
                 'id': c.id, # client id
                 'name': c.person.name,
             }
-            i = i + 1
+            i += 1
 
         return HttpResponse(simplejson.dumps(person, encoding='iso8859-1'), mimetype='application/json')
 
@@ -264,12 +264,12 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         if ord(initial) > 65:
             initial_prev = chr(ord(initial) - 1)
 
-        object_list = object_list.filter(person__name__istartswith = initial)
+        object_list = object_list.filter(person__name__istartswith=initial)
         url_extra += '&initial=%s' % initial
 
     if request.GET.get('search'):
         search = request.GET.get('search')
-        object_list = object_list.filter(person__name__icontains = search)
+        object_list = object_list.filter(Q(person__name__icontains=search) | Q(idRecord__icontains=search))  # idRecord / prontuario ou nome
         url_extra += '&search=%s' % search
 
     # filters

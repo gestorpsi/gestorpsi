@@ -14,19 +14,17 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-
-
-
 import reversion
 from datetime import datetime
+
 from django.db import models
 from django.utils.translation import ugettext as _
+
 from gestorpsi.organization.models import Organization
 from gestorpsi.careprofessional.models import CareProfessional
 from gestorpsi.client.models import Client
 from gestorpsi.util.uuid_field import UuidField
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+
 
 ATTACH_TYPE = (
     ('01', _('Termo de Consentimento Livre e Esclarecido (TCLE)')),

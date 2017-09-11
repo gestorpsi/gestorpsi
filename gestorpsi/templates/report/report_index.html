@@ -20,13 +20,11 @@ GNU General Public License for more details.
 
 {% block menu_report %}active{% endblock %}
 
-
 {% block submenu %}
     {% include "report/report_menu.html" %}
 {% endblock %}
 
 {% block core %}
-
     <script type="text/javascript" src="/media/js/gestorpsi.report.lib.js"></script>
     <script type="text/javascript" src="/media/js/gestorpsi.report.js"></script>
     <script type="text/javascript" src="/media/js/gestorpsi.report.forms.js"></script>
@@ -40,7 +38,6 @@ GNU General Public License for more details.
     <div id="report_clients"></div>
 
     <div class="report_main">
-
         <div class="tab_content reports_saved" style="display:none;">
             <p class="description">{% trans "Displaying saved reports. Here you can load saved data into report dashboard" %}</p>
             <div id="reports_saved_html">
@@ -50,9 +47,9 @@ GNU General Public License for more details.
         
         <div class="tab_content dashboard">
             <p class="description">{% trans "Displaying reports. Use the controls below to customize this page and save it on the tab My Reports" %}</p>
+
             <div class="report_filter_nav">
                 <form method="post" id="report_filter" action="{% url report_export %}">
-
                     {% trans "Reports for" %} {{ form.view }} 
                     {% trans "between" %} {{ form.date_start }} {% trans "and" %} {{ form.date_end }}
                     {{ form.accumulated }}
@@ -89,6 +86,10 @@ GNU General Public License for more details.
                     <div class="confirmation_status_filter hidden">
                         <br />
                         {% trans "Tipo de confirma&ccedil;&atilde;o" %} {{ form.confirmation_status }}
+                    </div>
+
+                    <div>
+                        {% trans "Preenchimento" %} {{ form.fill_check }}
                     </div>
 
                     <div style="margin-top:20px;margin-right:30px;" class="float_right">

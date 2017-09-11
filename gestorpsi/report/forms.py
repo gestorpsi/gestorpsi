@@ -14,15 +14,18 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from datetime import datetime
+
 from django import forms
 from django.utils.translation import gettext_lazy as _
+
 from gestorpsi.report.models import Report, ReportsSaved, VIEWS_CHOICES
 from gestorpsi.covenant.models import Covenant
 from gestorpsi.service.models import Service
 from gestorpsi.schedule.models import OCCURRENCE_CONFIRMATION_PRESENCE
 from gestorpsi.financial.models import STATUS, PaymentWay
 from gestorpsi.careprofessional.models import CareProfessional
-from datetime import datetime
+
 
 EXPORT_FORMATS = (
     (1, 'HTML'),
@@ -40,6 +43,13 @@ GRAPH_ACCUMULATED = (
     (False, _('Not accumulated Graph')),
 )
 
+FILL_CHOICE = (
+    (1, 'Cliente'),
+    (2, 'Evento'),
+    (3, 'Atendimento'),
+)
+
+
 class ReportForm(forms.ModelForm):
     """
     form used to filter results
@@ -54,9 +64,10 @@ class ReportForm(forms.ModelForm):
     export_graph_type = forms.ChoiceField(label=_('Graph Type format'), choices=GRAPH_TYPE, help_text=_('Here you can choose which type of graph you need. Note: only for HTML format'))
     receipt_status = forms.ChoiceField(label=_('Status do faturamento'), choices=STATUS, help_text=_('Status do faturamento'))
     payment_way = forms.ChoiceField(label=_('Forma de pagamento'), help_text=_('Forma de pagamento'))
-    cove = forms.ChoiceField( label=_(u'Convênio') )
-    professional = forms.ChoiceField( label=_(u'Profissional') )
-    confirmation_status = forms.ChoiceField( label=_(u'Confirmação'), widget=forms.CheckboxSelectMultiple(attrs={'class':'confirmation_select'}) )
+    cove = forms.ChoiceField(label=_(u'Convênio') )
+    professional = forms.ChoiceField(label=_(u'Profissional') )
+    confirmation_status = forms.ChoiceField(label=_(u'Confirmação'), widget=forms.CheckboxSelectMultiple(attrs={'class':'confirmation_select'}) )
+    fill_check = forms.ChoiceField(label=_(u'Formulário preenchido'), choices=FILL_CHOICE, help_text=_(u'Preenchimento do formulário'))
     
     class Meta:
         model = Report
@@ -97,6 +108,9 @@ class ReportForm(forms.ModelForm):
 
         # confirmation event
         self.fields['confirmation_status'].choices = tuple( [(u'999', 'Todos'), (u'888','Não confirmado'), (u'777','Confirmado')] + list(OCCURRENCE_CONFIRMATION_PRESENCE) )
+
+        # fill field of form
+        self.fields['fill_check'].choices = tuple([(u'1','Evento'), (u'2','Atendimento'), (u'3','Cadastro cliente')])
 
 
 class ReportSaveForm(forms.ModelForm):

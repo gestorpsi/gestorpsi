@@ -31,7 +31,6 @@ function chart_type_to_url() {
 
 
 function updateChart(json, force_type) {
-
     /**
      * update chart
      * read data from json, then bind graph
@@ -61,7 +60,7 @@ function updateChart(json, force_type) {
             if(force_type['points']) points_show = true;
         }
         
-        for (var i in json) {
+        for (var i in json){
             i = parseInt(i);
             var plot_ticks = new Array();
             var plot_data = new Array();
@@ -98,18 +97,16 @@ function updateChart(json, force_type) {
     }
 }
 
-function updateAdmission(data) {
 
+function updateAdmission(data) {
     /**
      * update all admission data
      */
-
     if(!data) data = '';
     
     /**
      * append chart types view to url
      */
-
     data += chart_type_to_url();
 
     /**
@@ -125,7 +122,6 @@ function updateAdmission(data) {
     /**
      * update admission data
      */
-
     $('div#report_table').load('/report/admission/?'+data);
 
     /**
@@ -133,18 +129,15 @@ function updateAdmission(data) {
      */
     
     //$('div#admission_demographic_data').load('/report/admission/demographic/?'+data);
-        
 
     /**
      * update save form
      */
-
     $('div#save_form').load('/report/admission/save/?'+data)
     
     /**
      * get date then update form fields
      */
-    
     $.getJSON('/report/date/?'+data, function(json) {
         $('.report_main [name=date_start]').val(json['date_start']);
         $('.report_main [name=date_end]').val(json['date_end']);
@@ -154,8 +147,8 @@ function updateAdmission(data) {
     });
 }
 
-function updateReferral(data) {
 
+function updateReferral(data){
     /**
      * update all admission data
      */
@@ -209,20 +202,18 @@ function updateReferral(data) {
     });
 }
 
+
 function updateSavedReports() {
     /**
      * load data into knowledge table
      */
-
     $.get('/report/saved/', function(html) {
         $('div.reports_saved #reports_saved_html').html(html);
     });
 }
 
 
-
 function updateReceive(data) {
-
     /**
      * update all receive data
      */
@@ -253,9 +244,7 @@ function updateReceive(data) {
 }
 
 
-
 function updateEvent(data) {
-
     /**
      * update all receive data
      */

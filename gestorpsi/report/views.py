@@ -50,7 +50,6 @@ def index(request):
         False:
         others can't user report
     """
-
     form = ReportForm(request.user.get_profile().org_active.created(), datetime.now(), request.user.get_profile().org_active)
 
     # permission, can't use professional filter
@@ -65,7 +64,6 @@ def index(request):
     """
     pass filter itens in right bar
     """
-    
     r = Report()
     filters = r.filters()
     

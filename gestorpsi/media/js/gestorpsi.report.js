@@ -15,23 +15,19 @@ GNU General Public License for more details.
 */
 
 $(function() {
-
     /**
      * load first data
      */
-
     updateAdmission('accumulated=True');
 
     /**
      * load report saved list
      */
-
     updateSavedReports('accumulated=True');
 
     /**
      * hide/display subscription report filter
      */
-    
     $('#report_filter select[name=view]').change(function() {
 
         // reset to hide all
@@ -69,6 +65,9 @@ $(function() {
             $('div.professional_filter').show();
             $('div.confirmation_status_filter').show();
             $('select#id_accumulated').show();
+        }
+        // select fill the fields
+        if( $(this).val() == 5 ){
         }
     });
 

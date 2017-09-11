@@ -51,6 +51,7 @@ VIEWS_CHOICES = (
     (2, _('Referrals')),
     (3, _('Faturamento')),
     (4, _('Evento')),
+    (5, _('Preenchimento')),
 )
 
 PIE_CHART_WIDTH = 620

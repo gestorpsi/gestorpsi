@@ -39,6 +39,7 @@ $(function() {
         $('div.service_filter').hide();
         $('select#id_accumulated').hide();
         $('div.confirmation_status_filter').hide();
+        $('div.fill_check').hide();
 
         // admission
         if( $(this).val() == 1 ){
@@ -67,7 +68,10 @@ $(function() {
             $('select#id_accumulated').show();
         }
         // select fill the fields
-        if( $(this).val() == 5 ){
+        if($(this).val() == 5){
+            $('div.fill_check').show();
+            $('div.service_filter').show();
+            $('div.professional_filter').show();
         }
     });
 
@@ -137,11 +141,9 @@ $(function() {
     
     $('#report_filter [name=update]').click(function() {
         $('div.loaded_report_title').hide();
-
         var date_start = $('form#report_filter [name=date_start]').val();
         var date_end = $('form#report_filter [name=date_end]').val();
         var accumulated = $('form#report_filter [name=accumulated]').val();
-        
         var data = 'date_start=' + date_start + '&date_end=' + date_end + '&accumulated=' + accumulated;
         
         // admission
@@ -155,22 +157,19 @@ $(function() {
         }
 
         // financial
-        if ( $('#report_filter [name = view]').val() == 3 ){ 
-
+        if ($('#report_filter [name = view]').val() == 3){ 
             var service = $('select#id_service').val();
             var professional = $('select#id_professional').val();
             var receipt_status = $('select#id_receipt_status').val();
             var payment_way = $('select#id_payment_way').val();
             var covenant = $('select#id_cove').val();
-
             // method get url
             data += '&service=' + service + '&professional=' + professional + '&receive=' + receipt_status + '&pway=' + payment_way + '&covenant=' + covenant;
             updateReceive(data);
         }
         
         // event
-        if ( $('#report_filter [name=view]').val() == 4 ){ 
-
+        if ($('#report_filter [name=view]').val() == 4){ 
             /*var confirmation_status = $('input:checkbox[name=confirmation_status]:checked').val();*/
             var service = $('select#id_service').val();
             var professional = $('select#id_professional').val();
@@ -184,6 +183,23 @@ $(function() {
             // get url
             data += '&service=' + service + '&professional=' + professional + '&status=' + confirmation_status + '&accumulated=' + accumulated;
             updateEvent(data);
+        }
+        
+        // check fill fields of form
+        if ($('#report_filter [name=view]').val() == 5){ 
+            var service = $('select#id_service').val();
+            var professional = $('select#id_professional').val();
+            var check_form = $('select#id_fill_check').val();
+
+            /*
+            var confirmation_status = new Array();
+            $("input:checkbox[name=confirmation_status]:checked").each(function() {
+                confirmation_status.push($(this).val());
+            });*/
+
+            // get url
+            data += '&service=' + service + '&professional=' + professional + '&fill=' + check_form;
+            updateFormFill(data);
         }
 
         return false;

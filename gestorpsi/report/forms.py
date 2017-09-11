@@ -49,6 +49,12 @@ FILL_CHOICE = (
     (3, 'Atendimento'),
 )
 
+FILL_ATTACH_CHOICE = (
+    (0, '--- Todos ---'),
+    (1, 'Sim'),
+    (2, u'Não'),
+)
+
 
 class ReportForm(forms.ModelForm):
     """
@@ -67,7 +73,8 @@ class ReportForm(forms.ModelForm):
     cove = forms.ChoiceField(label=_(u'Convênio') )
     professional = forms.ChoiceField(label=_(u'Profissional') )
     confirmation_status = forms.ChoiceField(label=_(u'Confirmação'), widget=forms.CheckboxSelectMultiple(attrs={'class':'confirmation_select'}) )
-    fill_check = forms.ChoiceField(label=_(u'Formulário preenchido'), choices=FILL_CHOICE, help_text=_(u'Preenchimento do formulário'))
+    fill_check = forms.ChoiceField(label=_(u'Formulario preenchido'), choices=FILL_CHOICE)
+    fill_check_attach = forms.ChoiceField(choices=FILL_ATTACH_CHOICE)
     
     class Meta:
         model = Report
@@ -110,7 +117,7 @@ class ReportForm(forms.ModelForm):
         self.fields['confirmation_status'].choices = tuple( [(u'999', 'Todos'), (u'888','Não confirmado'), (u'777','Confirmado')] + list(OCCURRENCE_CONFIRMATION_PRESENCE) )
 
         # fill field of form
-        self.fields['fill_check'].choices = tuple([(u'1','Evento'), (u'2','Atendimento'), (u'3','Cadastro cliente')])
+        self.fields['fill_check'].choices = tuple([(1,'Evento'), (2,'Atendimento'), (3,'Cadastro cliente')])
 
 
 class ReportSaveForm(forms.ModelForm):

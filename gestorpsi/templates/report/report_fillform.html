@@ -1,0 +1,137 @@
+<!-- all of this content will be to id report_table in main core -->
+
+{% load i18n %}
+
+<script type="text/javascript">
+        
+    function drawChart(rows, column){
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+
+        data.addColumn('date', 'Time of Day');
+        {% for i in column %} data.addColumn('number', "{{ i }}" ); {% endfor %}
+
+        data.addRows(rows);
+
+        // Set chart options
+        var options = {
+                       'width':960,
+                       'height':330,
+                       hAxis: {
+                            format: 'M/yy',
+                            gridlines: {count: 15}
+                       },
+                       vAxis: {
+                            title: 'Quantidade',
+                            gridlines: {color: 'none'},
+                            minValue: 0
+                       },
+                       series: {
+                            1: {curveType: 'function'}
+                       },
+
+                       legend: { position: 'bottom' }
+        };
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.LineChart(document.getElementById('graphic'));
+        chart.draw(data, options);
+    }
+
+</script>
+
+<!-- list of clients -->
+{% if option_rows %}
+
+       <!-- dialog -->
+       {% for x in sch_list %}
+       <div class="client_dialog dialog" id="{{ forloop.counter0 }}" style="display:none; width:600px !important;">
+                <h1 class="pointer">{{ x.0 }}</h1><a class="close_dialog">x</a>
+                <div style="clear:both;"></div>
+                <div class="date_range">{% trans "Client list between" %} {{ date_start|date:"d/m/Y" }} {% trans "and" %} {{ date_end|date:"d/m/Y" }}*</div>
+                <ul id="client_dialog" class="">
+                    {% for i in x.1 %}
+                        <li class="{% cycle 'odd' 'even' %}">
+                            <a href="/schedule/events/{{ i.id }}/confirmation/" target="_blank{{ i.event.id }}">{{ i.event.referral.client.all.0 }}</a>
+                            <small style="float:right; padding-right: 10px;">{{ i.start_time }}</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <small>{% trans "Total" %} {{ x.1.count }}</small>
+           </div>
+       {% endfor %}
+
+        <table class='report'>
+            <tr>
+                <th>&nbsp;</th>
+            </tr>
+            <tr>
+                <th>Estat&iacute;stica para o profissional, servi&ccedil;o, tipo de confirma&ccedil;&atilde;o e per&iacute;odo escolhido.</th>
+            </tr>
+            <tr>
+                <th id='graphic'></th>
+            </tr>
+        </table>
+
+        <div style="text-align:center; margin-top: 35px;">
+            <h1>Eventos no per&iacute;odo</h1>
+        </div>
+
+        <br />
+
+        <div style="margin: 0 auto; vertical-align:top; margin-left:15%;">
+
+        <table class="report">
+         <tbody>
+
+            <tr class="legend"> 
+                <th>Confirma&ccedil;&atilde;o</th> 
+                <th>Quantidade</th> 
+            </tr> 
+
+            {% for x in sch_list %}
+                <tr class="{% cycle 'odd' 'even' %}">
+                    <td style="text-align:center;">
+                        <a href="#" class="showdialog" name="{{ forloop.counter0 }}">{{ x.0 }}</a>
+                    </td>
+                    <td style="text-align:center;">
+                        {{ x.1.count }}
+                    </td>
+                </tr>
+
+            {% endfor %}
+                <tr class="{% cycle 'odd' 'even' %}"></tr>
+
+                <!-- total -->
+                <tr class="odd">
+                    <td style="text-align:center; font-weight:bold;">
+                        Total
+                    </td>
+                    <td style="text-align:center;">
+                        {{ total_events }}
+                    </td>
+                </tr>
+
+         </tbody>
+       </table>
+       </div>
+
+
+       <!-- call graphics -->
+       <script>
+            var rows = {{ option_rows }}
+
+            var lines = [];
+            {% for i in column %} lines.push( "{{ i }}" ); {% endfor %}
+
+            // call graphic function 
+            drawChart(rows,lines);
+
+       </script>
+
+{% else %}
+    <script>
+        $('#report_table').append('<h3>N&atilde;o h&aacute; relato de dados para o periodo escolhido.</h3>');
+    </script>
+{% endif %}

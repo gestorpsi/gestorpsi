@@ -134,6 +134,23 @@ def event_data(request, template='report/report_event.html'):
 
 
 @permission_required_with_403('report.report_list')
+def fillform_data(request, template='report/report_fillform.html'):
+    """
+    check fill fields of form.
+    """
+    print '--- fill form data'
+
+    data , colors , date_start, date_end, list_receive, total_receive = Report().get_receive_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('receive') , request.GET.get('service'), request.GET.get('pway'), request.GET.get('covenant') )
+
+    # variables of JS
+    option_title = u'Estatística de todos os profíssionais, serviços e pagamentos para o período escolhido.'
+    option_rows = data 
+    option_colors = colors
+
+    return render_to_response(template, locals(), context_instance=RequestContext(request))
+
+
+@permission_required_with_403('report.report_list')
 def report_client_list(request, report_class, view, filter):
     """
     fetch client list from selected admission report

@@ -190,6 +190,7 @@ $(function() {
             var service = $('select#id_service').val();
             var professional = $('select#id_professional').val();
             var check_form = $('select#id_fill_check').val();
+            var attach = $('select#id_fill_check_attach').val();
 
             /*
             var confirmation_status = new Array();
@@ -198,7 +199,7 @@ $(function() {
             });*/
 
             // get url
-            data += '&service=' + service + '&professional=' + professional + '&fill=' + check_form;
+            data += '&service=' + service + '&professional=' + professional + '&fill=' + check_form + '&attach=' + attach;
             updateFormFill(data);
         }
 

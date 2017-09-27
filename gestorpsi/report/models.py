@@ -509,7 +509,6 @@ class Report(models.Model):
         for x in cancelado:
             total_cancelado += x.total
 
-
         '''
             array
                 0 = Status label
@@ -560,6 +559,7 @@ class Report(models.Model):
             return data,date_start,date_end, service
         
         return [], None, None, None
+
 
     def get_chart_x_axis_label(self, date_start, date_end):
         """
@@ -674,6 +674,21 @@ class Report(models.Model):
             self.get_chart_x_axis_label(date_start, date_end))
         
         return chart.get_url()
+
+
+    def get_fillform_(self, organization, date_start, date_end, professional, service, fillform, attach):
+        """
+            to check fill fields of form
+        """
+        print '--- MODELS METHOD'
+        print fillform
+        print service
+
+        if fillform == '1':  # atendimento
+            print Client.objects.filter(referral__service_id=service)
+            print
+            print Client.objects.filter(referral__professional__id=professional)
+            return True
 
 
 class ReportsSavedManager(models.Manager):

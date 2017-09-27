@@ -140,10 +140,10 @@ def fillform_data(request, template='report/report_fillform.html'):
     """
     print '--- fill form data'
 
-    data , colors , date_start, date_end, list_receive, total_receive = Report().get_receive_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('receive') , request.GET.get('service'), request.GET.get('pway'), request.GET.get('covenant') )
+    data, colors, date_start, date_end, list_receive, total_receive = Report().get_fillform_( request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('professional'), request.GET.get('service'), request.GET.get('fill'), request.GET.get('attach'))
 
     # variables of JS
-    option_title = u'Estatística de todos os profíssionais, serviços e pagamentos para o período escolhido.'
+    option_title = u'Estatística de todos os atendimentos, serviço e profissional para o período escolhido.'
     option_rows = data 
     option_colors = colors
 

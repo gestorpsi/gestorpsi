@@ -44,9 +44,7 @@ GRAPH_ACCUMULATED = (
 )
 
 FILL_CHOICE = (
-    (1, 'Cliente'),
-    (2, 'Evento'),
-    (3, 'Atendimento'),
+    (1, 'Atendimento'),
 )
 
 FILL_ATTACH_CHOICE = (
@@ -115,9 +113,6 @@ class ReportForm(forms.ModelForm):
 
         # confirmation event
         self.fields['confirmation_status'].choices = tuple( [(u'999', 'Todos'), (u'888','Não confirmado'), (u'777','Confirmado')] + list(OCCURRENCE_CONFIRMATION_PRESENCE) )
-
-        # fill field of form
-        self.fields['fill_check'].choices = tuple([(1,'Evento'), (2,'Atendimento'), (3,'Cadastro cliente')])
 
 
 class ReportSaveForm(forms.ModelForm):

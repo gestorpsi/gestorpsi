@@ -35,6 +35,8 @@ from pygooglechart import Chart
 from pygooglechart import SimpleLineChart
 from pygooglechart import Axis
 
+from swingtime.models import Event
+
 from gestorpsi.util.views import get_object_or_None, color_rand
 from gestorpsi.admission.models import AdmissionReferral, ReferralChoice as AdmissionIndication
 from gestorpsi.client.models import Client
@@ -584,7 +586,7 @@ class Report(models.Model):
             start_tmp = start_tmp+scale
         return dots
 
-    def chart_dots_by_period(self, objects_range, date_start = None, date_end = None, accumulated=None, referral_discharged=False, accumulated_each_period=True):
+    def chart_dots_by_period(self, objects_range, date_start=None, date_end=None, accumulated=None, referral_discharged=False, accumulated_each_period=True):
         """
         return x and y coordinates in objects range
         note: object must have created() attribute
@@ -676,19 +678,86 @@ class Report(models.Model):
         return chart.get_url()
 
 
-    def get_fillform_(self, organization, date_start, date_end, professional, service, fillform, attach):
+    def get_fillform_(self, organization, date_start, date_end, professional, service, fillform, attach, charge):
         """
             to check fill fields of form
         """
-        print '--- MODELS METHOD'
-        print fillform
-        print service
-
         if fillform == '1':  # atendimento
-            print Client.objects.filter(referral__service_id=service)
-            print
-            print Client.objects.filter(referral__professional__id=professional)
-            return True
+            """
+            all clients, all services = a lot of memory
+
+            list = [ tmp0, tmp1, ... , tmpN ]
+
+            tmp = array
+                0 client
+                1 [array of referral] = aref
+                    0 referral
+                    1 total of occurrences of referral
+                    2 on hour
+                    3 off hour
+                    4 not confirmed
+                    5 others (exclude 1,2 and 3)
+                    6 attach, yes or no
+                    7 charge or discharge of service
+
+            """
+            list_client = []  # list
+            list_client_total = 0  # counter
+
+            #for per in organization.clients():
+            for per in organization.get_all_client_person_()[:10]: # lixo test
+                tmp = [False]*6
+                tmp[1] = []  # array of referrals
+
+                # date
+                start = datetime.strptime(date_start, '%d/%m/%Y')
+                end = datetime.strptime(date_end, '%d/%m/%Y')
+                ref_list = Referral.objects.filter(date__range=(start, end))
+
+                # attach
+                if attach == '0':
+                    ref_list = ref_list.filter(client__person=per)
+                if attach == '1':  # have attach
+                    ref_list = ref_list.filter(client__person=per, referralattach__isnull=False)
+                if attach == '2':  # don't have attach
+                    ref_list = ref_list.filter(client__person=per, referralattach__isnull=True)
+
+                # service
+                if service:
+                    ref_list = ref_list.filter(service__id=service)
+
+                # professional
+                if not professional == 'all':
+                    ref_list = ref_list.filter(professional__id=professional)
+
+                # discharge or charge
+                if charge == '1':
+                    ref_list = ref_list.filter(referraldischarge__isnull=False)
+                if charge == '2':
+                    ref_list = ref_list.filter(referraldischarge__isnull=True)
+
+                # all referral of client, number and statistics.
+                for ref in ref_list:
+
+                    list_client_total += 1 
+                    tmp[0] = per  # add if exist one referral
+                    aref = [False]*8
+
+                    aref[0] = ref
+                    aref[1] = ref.occurrence_set.all().count()
+                    aref[2] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__presence=1).count()
+                    aref[3] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__presence=2).count()
+                    aref[4] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=True).count()
+                    aref[5] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=False).exclude(scheduleoccurrence__occurrenceconfirmation__presence=1).exclude(scheduleoccurrence__occurrenceconfirmation__presence=2).count()
+                    aref[6] = 'Sim' if ref.referralattach_set.all() else u'Não'
+                    aref[7] = 'Ligado' if ref.referraldischarge_set.all() else 'Desligado'
+
+                    # add to array of referral
+                    tmp[1].append(aref)
+
+                list_client.append(tmp)  # add to main list
+
+            return list_client, list_client_total, date_start, date_end, professional, service, fillform, attach
 
 
 class ReportsSavedManager(models.Manager):

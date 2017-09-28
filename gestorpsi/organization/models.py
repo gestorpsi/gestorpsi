@@ -369,6 +369,12 @@ class Organization(models.Model):
     def clients(self):
         return self.person_set.filter(client__isnull=False, client__active=True)
 
+    def get_all_client_person_(self):
+        """
+            return all person that is a client
+        """
+        return self.person_set.filter(client__isnull=False)
+
     def care_professionals(self):
         return self.person_set.filter(careprofessional__isnull=False, careprofessional__active=True)
 

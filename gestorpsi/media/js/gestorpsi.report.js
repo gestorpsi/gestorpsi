@@ -191,15 +191,10 @@ $(function() {
             var professional = $('select#id_professional').val();
             var check_form = $('select#id_fill_check').val();
             var attach = $('select#id_fill_check_attach').val();
-
-            /*
-            var confirmation_status = new Array();
-            $("input:checkbox[name=confirmation_status]:checked").each(function() {
-                confirmation_status.push($(this).val());
-            });*/
+            var charge = $('select#id_fill_check_status').val();
 
             // get url
-            data += '&service=' + service + '&professional=' + professional + '&fill=' + check_form + '&attach=' + attach;
+            data += '&service=' + service + '&professional=' + professional + '&fill=' + check_form + '&attach=' + attach + '&charge=' + charge;
             updateFormFill(data);
         }
 

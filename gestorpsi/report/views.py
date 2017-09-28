@@ -27,11 +27,10 @@ from django.utils import simplejson
 from django.db.models import Q
 
 from gestorpsi.admission.models import AdmissionReferral
-from gestorpsi.report.forms import ReportForm, ReportSaveAdmissionForm
+from gestorpsi.report.forms import ReportForm
 from gestorpsi.report.models import ReportAdmission, ReportsSaved, Report, ReportReferral
-from gestorpsi.referral.models import Referral
 from gestorpsi.service.models import Service
-from gestorpsi.settings import MEDIA_URL, MEDIA_ROOT
+from gestorpsi.settings import MEDIA_ROOT
 from gestorpsi.util.views import write_pdf
 from gestorpsi.util.decorators import permission_required_with_403
 
@@ -128,8 +127,6 @@ def event_data(request, template='report/report_event.html'):
     option_rows = data 
     column = lines
 
-    #option_rows = "([ [new Date(2015, 0, 1), 5],  [new Date(2015, 0, 2), 7],  [new Date(2015, 0, 3), 3], [new Date(2015, 0, 4), 1],  [new Date(2015, 0, 5), 3],  [new Date(2015, 0, 6), 4], [new Date(2015, 0, 7), 3],  [new Date(2015, 0, 8), 4],  [new Date(2015, 0, 9), 2], [new Date(2015, 0, 10), 5], [new Date(2015, 0, 11), 8], [new Date(2015, 0, 12), 6], [new Date(2015, 0, 13), 3], [new Date(2015, 0, 14), 3], [new Date(2015, 0, 15), 5], [new Date(2015, 0, 16), 7], [new Date(2015, 0, 17), 6], [new Date(2015, 0, 18), 6], [new Date(2015, 0, 19), 3], [new Date(2015, 0, 20), 1], [new Date(2015, 0, 21), 2], [new Date(2015, 0, 22), 4], [new Date(2015, 0, 23), 6], [new Date(2015, 0, 24), 5], [new Date(2015, 0, 25), 9], [new Date(2015, 0, 26), 4], [new Date(2015, 0, 27), 9], [new Date(2015, 0, 28), 8], [new Date(2015, 0, 29), 6], [new Date(2015, 0, 30), 4], [new Date(2015, 0, 31), 6], [new Date(2015, 1, 1), 7], [new Date(2015, 1, 2), -10] ]);"
-     
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 
 
@@ -138,14 +135,7 @@ def fillform_data(request, template='report/report_fillform.html'):
     """
     check fill fields of form.
     """
-    print '--- fill form data'
-
-    data, colors, date_start, date_end, list_receive, total_receive = Report().get_fillform_( request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('professional'), request.GET.get('service'), request.GET.get('fill'), request.GET.get('attach'))
-
-    # variables of JS
-    option_title = u'Estatística de todos os atendimentos, serviço e profissional para o período escolhido.'
-    option_rows = data 
-    option_colors = colors
+    list_client, list_client_total, date_start, date_end, professional, service, fillform, attach = Report().get_fillform_( request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('professional'), request.GET.get('service'), request.GET.get('fill'), request.GET.get('attach'), request.GET.get('charge'))
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 
@@ -158,7 +148,7 @@ def report_client_list(request, report_class, view, filter):
     
     organization = request.user.get_profile().org_active
     report = Report()
-    date_start,date_end = report.set_date(organization, request.GET.get('date_start'), request.GET.get('date_end'))
+    date_start, date_end = report.set_date(organization, request.GET.get('date_start'), request.GET.get('date_end'))
 
     verbose_name, object_list, organization_total = report_class.objects.clients(request.user, date_start, date_end, view, filter, request.GET.get('service'))
 
@@ -198,7 +188,7 @@ def report_save(request, form_class=None, view=None, template='report/report_sav
 
     report = Report()
 
-    date_start , date_end = report.set_date( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') )
+    date_start, date_end = report.set_date(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'))
 
     # financial / revenues
     if view == 'receive':

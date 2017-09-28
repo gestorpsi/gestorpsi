@@ -14,8 +14,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from datetime import datetime
-
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
@@ -53,6 +51,12 @@ FILL_ATTACH_CHOICE = (
     (2, u'Não'),
 )
 
+FILL_STATUS_CHOICE = (
+    (0, '--- Todos ---'),
+    (1, 'Ligado'),
+    (2, u'Desligado'),
+)
+
 
 class ReportForm(forms.ModelForm):
     """
@@ -73,6 +77,7 @@ class ReportForm(forms.ModelForm):
     confirmation_status = forms.ChoiceField(label=_(u'Confirmação'), widget=forms.CheckboxSelectMultiple(attrs={'class':'confirmation_select'}) )
     fill_check = forms.ChoiceField(label=_(u'Formulario preenchido'), choices=FILL_CHOICE)
     fill_check_attach = forms.ChoiceField(choices=FILL_ATTACH_CHOICE)
+    fill_check_status = forms.ChoiceField(choices=FILL_STATUS_CHOICE)
     
     class Meta:
         model = Report

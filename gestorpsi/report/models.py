@@ -682,82 +682,94 @@ class Report(models.Model):
         """
             to check fill fields of form
         """
+        print '--- methods'
+        print organization
+        print date_start, date_end
+        print professional
+        print service
+        print fillform
+        print attach
+        print charge
+        print type(charge), type(attach)
+
         if fillform == '1':  # atendimento
             """
-            all clients, all services = a lot of memory
-
             list = [ tmp0, tmp1, ... , tmpN ]
-
             tmp = array
                 0 client
-                1 [array of referral] = aref
-                    0 referral
-                    1 total of occurrences of referral
-                    2 on hour
-                    3 off hour
-                    4 not confirmed
-                    5 others (exclude 1,2 and 3)
-                    6 attach, yes or no
-                    7 charge or discharge of service
+                1 referral
+                2 total of occurrences of referral
+                3 on hour
+                4 off hour
+                5 not confirmed
+                6 others (exclude 1,2 and 3)
+                7 attach, yes or no
+                8 charge or discharge of service
+            """
 
             """
-            list_client = []  # list
+                filters of referral
+            """
+            show_filters = ['Todos']*6  # show selected filter when print list
+
+            # date
+            start = datetime.strptime(date_start, '%d/%m/%Y')
+            end = datetime.strptime(date_end, '%d/%m/%Y')
+            ref_list = Referral.objects.filter(organization=organization, date__range=(start, end)).order_by('client__person__name')
+
+            show_filters[0] = date_start
+            show_filters[1] = date_end
+
+            # attach
+            if attach == '1':  # have attach
+                ref_list = ref_list.filter(referralattach__isnull=False)
+                show_filters[2] = u'Sim'
+
+            if attach == '2':  # don't have attach
+                ref_list = ref_list.filter(referralattach__isnull=True)
+                show_filters[2] = u'Não'
+
+            # service
+            if service:
+                ref_list = ref_list.filter(service__id=service)
+                show_filters[3] = Service.objects.get(pk=service)
+
+            # professional
+            if not professional == 'all':
+                ref_list = ref_list.filter(professional__id=professional)
+                show_filters[4] = CareProfessional.objects.get(pk=professional)
+
+            # discharge or charge
+            if charge == '1':
+                ref_list = ref_list.filter(referraldischarge__isnull=False)
+                show_filters[5] = u'Ligado'
+            if charge == '2':
+                ref_list = ref_list.filter(referraldischarge__isnull=True)
+                show_filters[5] = u'Desligado'
+
+            list_client = []  # list of client
             list_client_total = 0  # counter
 
-            #for per in organization.clients():
-            for per in organization.get_all_client_person_()[:10]: # lixo test
-                tmp = [False]*6
-                tmp[1] = []  # array of referrals
-
-                # date
-                start = datetime.strptime(date_start, '%d/%m/%Y')
-                end = datetime.strptime(date_end, '%d/%m/%Y')
-                ref_list = Referral.objects.filter(date__range=(start, end))
-
-                # attach
-                if attach == '0':
-                    ref_list = ref_list.filter(client__person=per)
-                if attach == '1':  # have attach
-                    ref_list = ref_list.filter(client__person=per, referralattach__isnull=False)
-                if attach == '2':  # don't have attach
-                    ref_list = ref_list.filter(client__person=per, referralattach__isnull=True)
-
-                # service
-                if service:
-                    ref_list = ref_list.filter(service__id=service)
-
-                # professional
-                if not professional == 'all':
-                    ref_list = ref_list.filter(professional__id=professional)
-
-                # discharge or charge
-                if charge == '1':
-                    ref_list = ref_list.filter(referraldischarge__isnull=False)
-                if charge == '2':
-                    ref_list = ref_list.filter(referraldischarge__isnull=True)
-
-                # all referral of client, number and statistics.
-                for ref in ref_list:
+            # all referral of client, number and statistics.
+            for ref in ref_list:  # for each person of referral
+                for cli in ref.client.all():
 
                     list_client_total += 1 
-                    tmp[0] = per  # add if exist one referral
-                    aref = [False]*8
+                    tmp = [False]*9
 
-                    aref[0] = ref
-                    aref[1] = ref.occurrence_set.all().count()
-                    aref[2] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__presence=1).count()
-                    aref[3] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__presence=2).count()
-                    aref[4] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=True).count()
-                    aref[5] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=False).exclude(scheduleoccurrence__occurrenceconfirmation__presence=1).exclude(scheduleoccurrence__occurrenceconfirmation__presence=2).count()
-                    aref[6] = 'Sim' if ref.referralattach_set.all() else u'Não'
-                    aref[7] = 'Ligado' if ref.referraldischarge_set.all() else 'Desligado'
+                    tmp[0] = cli
+                    tmp[1] = ref  # referral
+                    tmp[2] = ref.occurrence_set.all().count() # total of events
+                    tmp[3] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__presence=1).count()
+                    tmp[4] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__presence=2).count()
+                    tmp[5] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=True).count()
+                    tmp[6] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=False).exclude(scheduleoccurrence__occurrenceconfirmation__presence=1).exclude(scheduleoccurrence__occurrenceconfirmation__presence=2).count()
+                    tmp[7] = 'Sim' if ref.referralattach_set.all() else u'Não'
+                    tmp[8] = 'Ligado' if ref.referraldischarge_set.all() else 'Desligado'
 
-                    # add to array of referral
-                    tmp[1].append(aref)
+                    list_client.append(tmp)  # add to main list
 
-                list_client.append(tmp)  # add to main list
-
-            return list_client, list_client_total, date_start, date_end, professional, service, fillform, attach
+            return list_client, list_client_total, date_start, date_end, professional, service, fillform, attach, show_filters
 
 
 class ReportsSavedManager(models.Manager):

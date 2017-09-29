@@ -135,7 +135,7 @@ def fillform_data(request, template='report/report_fillform.html'):
     """
     check fill fields of form.
     """
-    list_client, list_client_total, date_start, date_end, professional, service, fillform, attach = Report().get_fillform_( request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('professional'), request.GET.get('service'), request.GET.get('fill'), request.GET.get('attach'), request.GET.get('charge'))
+    list_client, list_client_total, date_start, date_end, professional, service, fillform, attach, show_filters = Report().get_fillform_( request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('professional'), request.GET.get('service'), request.GET.get('fill'), request.GET.get('attach'), request.GET.get('charge'))
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 

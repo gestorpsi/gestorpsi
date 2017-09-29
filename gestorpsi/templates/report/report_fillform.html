@@ -5,51 +5,50 @@
 
     <!-- main -->
     <div style="text-align:center; margin-top: 35px;">
-        <h1>Lista de cliente conforme filtros.</h1>
-        <p>Total {{ list_client_total }}</p>
+        <h1>Lista de clientes</h1>
     </div>
 
-    <br />
+    <h4>Filtros</h4>
+    Total encontrado(s) {{ list_client_total }}<br />
+    Periodo {{ date_start }} - {{ date_end }}<br />
+    Profissional {{ show_filters.4 }}<br />
+    Servi&ccedil;o {{ show_filters.3 }}<br />
+    Anexo {{ show_filters.2 }}<br />
+    Situa&ccedil;&atilde;o {{ show_filters.5 }}<br />
 
-    <div style="margin: 0 auto; vertical-align:top; margin-left:15%;">
-        <table class="report">
-            <tbody>
+    <table class="report_list_receive">
+        <tbody>
 
-                <tr class="legend"> 
-                    <th>Cliente</th> 
-                    <th>Inscri&ccedil;&atilde;o</th> 
-                    <th>Total atendimento</th> 
-                    <th>Chegou no hor&aacute;rio</th> 
-                    <th>Chegou atrasado</th> 
-                    <th>N&atilde;o confirmado</th> 
-                    <th>Outros</th> 
-                    <th>Anexo</th> 
-                    <th>Situa&ccedil;&atilde;o</th> 
-                </tr> 
+            <tr class="legend">
+                <th>Cliente</th>
+                <th>Inscri&ccedil;&atilde;o</th>
+                <th>Total atendimento</th>
+                <th>Chegou no hor&aacute;rio</th>
+                <th>Chegou atrasado</th>
+                <th>N&atilde;o confirmado</th>
+                <th>Outros</th>
+                <th>Anexo</th>
+                <th>Situa&ccedil;&atilde;o</th>
+            </tr>
 
-                {% for x in list_client %}
-                    {% for xx in x.1 %}
-                        <tr class="{% cycle 'odd' 'even' %}">
-                            <td style="text-align:center;">
-                                <a href="{% url client-home x.0.client.id %}" class="showdialog">{{ x.0 }}</a>
-                            </td>
-                            <td style="text-align:center;"><a href="{% url client-referral-home x.0.client.id xx.0.id %}">{{ xx.0 }}</a></td>
-                            <td style="text-align:center;">{{ xx.1 }}</td>
-                            <td style="text-align:center;">{{ xx.2 }}</td>
-                            <td style="text-align:center;">{{ xx.3 }}</td>
-                            <td style="text-align:center;">{{ xx.4 }}</td>
-                            <td style="text-align:center;">{{ xx.5 }}</td>
-                            <td style="text-align:center;">{{ xx.6 }}</td>
-                            <td style="text-align:center;">{{ xx.7 }}</td>
-                        </tr>
-                    {% endfor %}
-                {% endfor %}
+            {% for x in list_client %}
+                <tr class="{% cycle 'odd' 'even' %}">
+                    <td style="text-align:center;"><a href="{% url client-home x.0.id %}" class="showdialog">{{ x.0 }}</a></td>
+                    <td style="text-align:center;"><a href="{% url client-referral-home x.0.id x.1.id %}">{{ x.1 }}</a></td>
+                    <td style="text-align:center;">{{ x.2 }}</td>
+                    <td style="text-align:center;">{{ x.3 }}</td>
+                    <td style="text-align:center;">{{ x.4 }}</td>
+                    <td style="text-align:center;">{{ x.5 }}</td>
+                    <td style="text-align:center;">{{ x.6 }}</td>
+                    <td style="text-align:center;">{{ x.7 }}</td>
+                    <td style="text-align:center;">{{ x.8 }}</td>
+                </tr>
+            {% endfor %}
 
-                <tr class="{% cycle 'odd' 'even' %}"></tr>
+            <tr class="{% cycle 'odd' 'even' %}"></tr>
 
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
 {% else %}
     <script>$('#report_table').append('<h3>N&atilde;o h&aacute; relato de dados para o periodo escolhido.</h3>');</script>
 {% endif %}

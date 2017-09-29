@@ -288,8 +288,24 @@ def report_export(request):
             if int(request.POST.get('format')) == 2: # pdf print
                 return write_pdf( html , locals(), ('%s-%s-%s-%s-%s.pdf' % (view, slugify(_('report-between')), request.POST.get('date_start').replace('/','-'), _('and'), request.POST.get('date_end').replace('/','-'))))
 
+
+        # fill fields form report
+        if request.POST.get('view') == '5':
+
+            view = u'prontuario'
+            title = _(u'Relatorio de prontuário')
+            html = 'report/report_fillform_export.html'
+
+            list_client, list_client_total, date_start, date_end, professional, service, fillform, attach, show_filters = Report().get_fillform_(request.user.get_profile().org_active, request.POST.get('date_start'), request.POST.get('date_end'), request.POST.get('professional'), request.POST.get('service'), request.POST.get('fill_check'), request.POST.get('fill_check_attach'), request.POST.get('fill_check_status'))
+
+            print list_client_total, list_client
+
+            IMG_PREFIX = '/media/' if int(request.POST.get('format')) == 1 else MEDIA_ROOT.replace('\\','/') + '/' # this a path bug fix. format == 1 (html)
+
+            if int(request.POST.get('format')) == 2: # pdf print
+                return write_pdf(html, locals(), ('%s-%s-%s-%s-%s.pdf' % (view, slugify(_('report-between')), date_start, _('and'), date_end)))
+
         # default out is html format
         remove_links = True
         export_graph_type = request.POST.get('export_graph_type')
-        return render_to_response( html , locals(), context_instance=RequestContext(request))
-
+        return render_to_response(html, locals(), context_instance=RequestContext(request))

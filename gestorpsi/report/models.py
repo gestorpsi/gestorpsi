@@ -681,17 +681,8 @@ class Report(models.Model):
     def get_fillform_(self, organization, date_start, date_end, professional, service, fillform, attach, charge):
         """
             to check fill fields of form
+            relatorios
         """
-        print '--- methods'
-        print organization
-        print date_start, date_end
-        print professional
-        print service
-        print fillform
-        print attach
-        print charge
-        print type(charge), type(attach)
-
         if fillform == '1':  # atendimento
             """
             list = [ tmp0, tmp1, ... , tmpN ]

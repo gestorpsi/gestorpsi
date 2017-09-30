@@ -1,0 +1,198 @@
+{% comment %}
+
+Copyright (C) 2008 GestorPsi
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+{% endcomment %}
+
+{% load i18n %}
+
+<!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <script type="text/javascript" src="/media/js/jquery-1.6.4.min.js"></script> <!-- JQuery Core Library -->
+        <script type="text/javascript" src="/media/js/jquery-ui-1.8.2.custom.min.js"></script> <!-- JQuery UI with Draggable -->
+
+        <style media="all">
+        @page {
+          size:  portrait;
+          margin: 1cm;
+        } 
+
+        body {
+                font-family: Verdana, Arial, Helvetica, sans-serif;
+                font-size: 12px;
+        }
+
+        hr {
+            margin-top: 0px;
+            clear: both;
+        }
+
+        a { color: black; text-decoration:none;}
+
+        table.report {
+             border: 0px;
+            width: 680px;
+            margin: 30px 20px 20px 20px;
+        }
+
+        table.report td {
+           text-align:center;
+           padding-top: 3px;
+           padding-left: 5px;
+           padding-right: 5px;
+        }
+
+        table.report td.left {
+            text-align:left;
+        }
+
+        table.report th {
+            font-size: 14px;
+            background-color: #fff;
+            text-align:left;
+        }
+
+        th.close_report a { display:none; }
+
+        .odd { background-color: #ececec;}
+
+        tr.title{
+            background: #e6e6e6;
+            text-align: center;
+            font-weight: bold;
+            font-size: 10px;
+        }
+
+        .zebra_1 {
+            background: #F9F9F9;
+        }
+
+        table.signature {
+            font-size: 11px;
+            text-align: center;
+            margin-right: 20px;
+        }
+
+        /**
+         * from pisa documentation: 
+         * "Pisa is not able to split table cells that are larger than the available space. 
+         * To work around it you may define what should happen in this case. 
+         * The -pdf-keep-in-frame-mode can be one of: "error", "overflow", "shrink", "truncate", where "shrink" 
+         * is the default value."
+         */
+
+        /*
+        table {
+            -pdf-keep-in-frame-mode: shrink;
+        }
+        */
+        </style>
+
+        <!--
+        <link rel="stylesheet" type="text/css" href="/media/css/report.css" media="print"/>
+        -->
+
+        <title>{{ title }}{% if sub_title %} - {{sub_title }}{% endif %}</title>
+    </head>
+
+    <body>
+        <table width="100%">
+            <tr>
+                <td width="5%">
+                    {% if org_active.photo %}
+                        {% if DEBUG  %}
+                            <div  style="border:1px solid black">
+                            <small>{% trans "Image not available when Debug=True and server running in localhost" %}</small>
+                            </div>
+                        {% else %}
+                            <img width="134px" alt="{{ org_active.trade_name }}" src="{{ IMG_PREFIX }}img/organization/{{ org_active.id}}/.thumb/{{ org_active.photo }}">
+                        {% endif %}
+                    {% endif %}
+                </td>
+
+                <td style="padding-left: 5px; font-size: 12px;">
+                    <b>{{ org_active.trade_name }}</b><br>
+                    {% if org_active.get_first_address %} {{ org_active.get_first_address|safe }} {% endif %}<br>
+                    {% if org_active.phones.all %} {{ org_active.phones.all|join:", "}} {% endif %}<br>
+                </td>
+
+                <td style="text-align:right;font-size: 12px;">
+                    <b>{{ title }} {% trans "Report" %}</b><br>
+                    {% trans "generated at" %} {% now "d/m/Y H:i" %} hs<br>
+                    {% trans "by " %} {{ request.user.get_profile.person.name }}<br>
+                </td>
+
+            </tr>
+        </table>
+
+        <h2>{{ title }} {% trans "between" %} {{ date_start }} {% trans "and" %} {{ date_end }}</h2>
+
+        <!-- list of clients -->
+        {% if list_client_total %}
+
+            <!-- main -->
+            <div style="text-align:center; margin-top: 35px;">
+                <h1>Lista de clientes</h1>
+            </div>
+
+            <h4>Filtros</h4>
+            Total encontrado(s) {{ list_client_total }}<br />
+            Periodo {{ date_start }} - {{ date_end }}<br />
+            Profissional {{ show_filters.4 }}<br />
+            Servi&ccedil;o {{ show_filters.3 }}<br />
+            Anexo {{ show_filters.2 }}<br />
+            Situa&ccedil;&atilde;o {{ show_filters.5 }}<br />
+
+            <br />
+
+            <table class="report_list_receive">
+                <tbody>
+
+                    <tr class="legend">
+                        <th>Cliente</th>
+                        <th>Inscri&ccedil;&atilde;o</th>
+                        <th>Total atendimento</th>
+                        <th>Chegou no hor&aacute;rio</th>
+                        <th>Chegou atrasado</th>
+                        <th>N&atilde;o confirmado</th>
+                        <th>Outros</th>
+                        <th>Anexo</th>
+                        <th>Situa&ccedil;&atilde;o</th>
+                    </tr>
+
+                    {% for x in list_client %}
+                        <tr class="{% cycle 'odd' 'even' %}">
+                            <td style="text-align:center;"><a href="{% url client-home x.0.id %}" class="showdialog">{{ x.0 }}</a></td>
+                            <td style="text-align:center;"><a href="{% url client-referral-home x.0.id x.1.id %}">{{ x.1 }}</a></td>
+                            <td style="text-align:center;">{{ x.2 }}</td>
+                            <td style="text-align:center;">{{ x.3 }}</td>
+                            <td style="text-align:center;">{{ x.4 }}</td>
+                            <td style="text-align:center;">{{ x.5 }}</td>
+                            <td style="text-align:center;">{{ x.6 }}</td>
+                            <td style="text-align:center;">{{ x.7 }}</td>
+                            <td style="text-align:center;">{{ x.8 }}</td>
+                        </tr>
+                    {% endfor %}
+
+                    <tr class="{% cycle 'odd' 'even' %}"></tr>
+
+                </tbody>
+            </table>
+        {% else %}
+            <script>$('#report_table').append('<h3>N&atilde;o h&aacute; relato de dados para o periodo escolhido.</h3>');</script>
+        {% endif %}
+
+    </body>
+</html>

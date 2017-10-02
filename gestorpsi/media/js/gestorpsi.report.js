@@ -285,8 +285,7 @@ $(function() {
             updateReceive($(this).attr('data'));
             $('form#report_filter select[name=view]').val('3');
         }
-        
-        return false;
+
     });
     
     /**
@@ -304,6 +303,9 @@ $(function() {
         if($('form#report_filter select[name=view]').val() == 3) // revenues / faturamente
             updateReceive('view=receive' + $(this).attr('data') + '&service=' + $('#report_filter [name=service]').val() + '&accumulated=' +$('#report_filter [name=accumulated]').val());
 
+        if($('form#report_filter select[name=view]').val() == 5) // medical record
+            updateFormFill('view=medicalrecord' + $(this).attr('data') + '&service=' + $('select#id_service').val() + '&professional=' + $('select#id_professional').val() + '&fill=' + $('select#id_fill_check').val() + '&attach=' + $('select#id_fill_check_attach').val() + '&charge=' + $('select#id_fill_check_status').val());
+                    
         $('div.loaded_report_title').hide();
         return false;
     });

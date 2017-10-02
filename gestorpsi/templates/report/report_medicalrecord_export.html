@@ -98,13 +98,24 @@ GNU General Public License for more details.
             -pdf-keep-in-frame-mode: shrink;
         }
         */
+        #footer {
+            background: #ececec none repeat scroll 0 0;
+            border: 1px solid #999999;
+            clear: both;
+            color: #000000;
+            font-size: 9px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            padding: 8px;
+            text-align: center;
+        }
         </style>
 
         <!--
         <link rel="stylesheet" type="text/css" href="/media/css/report.css" media="print"/>
         -->
 
-        <title>{{ title }}{% if sub_title %} - {{sub_title }}{% endif %}</title>
+        <title>{{ title }} ({{ list_client_total }})&nbsp;clientes com prontu&aacute;rios.</title>
     </head>
 
     <body>
@@ -144,7 +155,7 @@ GNU General Public License for more details.
 
             <!-- main -->
             <div style="text-align:center; margin-top: 35px;">
-                <h1>Lista de clientes</h1>
+                <h1>Relat&oacute;rio de ({{ list_client_total }}) clientes com prontu&aacute;rio.</h1>
             </div>
 
             <h4>Filtros</h4>
@@ -161,8 +172,8 @@ GNU General Public License for more details.
                 <tbody>
 
                     <tr class="legend">
-                        <th>Cliente</th>
-                        <th>Inscri&ccedil;&atilde;o</th>
+                        <th style="width=20%">Cliente</th>
+                        <th style="width=25%">Inscri&ccedil;&atilde;o</th>
                         <th>Total atendimento</th>
                         <th>Chegou no hor&aacute;rio</th>
                         <th>Chegou atrasado</th>
@@ -186,13 +197,13 @@ GNU General Public License for more details.
                         </tr>
                     {% endfor %}
 
-                    <tr class="{% cycle 'odd' 'even' %}"></tr>
-
                 </tbody>
             </table>
         {% else %}
             <script>$('#report_table').append('<h3>N&atilde;o h&aacute; relato de dados para o periodo escolhido.</h3>');</script>
         {% endif %}
 
+        <br />
+        {% include "core/footer.html" %}
     </body>
 </html>

@@ -289,12 +289,12 @@ function updateFormFill(data) {
     /**
      * update fill form data, call view
      */
-    $('div#report_table').load('/report/fillform/?'+data);
+    $('div#report_table').load('/report/medicalrecord/?'+data);
 
     /**
      * update save form
      */
-    $('div#save_form').load('/report/fillform/save/?'+data)
+    $('div#save_form').load('/report/medicalrecord/save/?'+data)
     
     /**
      * get date then update form fields

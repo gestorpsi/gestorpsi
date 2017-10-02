@@ -683,7 +683,7 @@ class Report(models.Model):
             report relatorios
             to check fill fields of form
         """
-        if fillform == '1':  # atendimento
+        if fillform == '1':  # prontuario / medical record
             """
             list = [ tmp0, tmp1, ... , tmpN ]
             tmp = array
@@ -700,13 +700,14 @@ class Report(models.Model):
 
             """
                 filters of referral
+                confirmed occurence filter
             """
             show_filters = ['Todos']*6  # show selected filter when print list
 
             # date
             start = datetime.strptime(date_start, '%d/%m/%Y')
             end = datetime.strptime(date_end, '%d/%m/%Y')
-            ref_list = Referral.objects.filter(organization=organization, date__range=(start, end)).order_by('client__person__name')
+            ref_list = Referral.objects.filter(organization=organization, date__range=(start, end), occurrence__scheduleoccurrence__session__isnull=False).order_by('client__person__name')
 
             show_filters[0] = date_start
             show_filters[1] = date_end
@@ -715,7 +716,6 @@ class Report(models.Model):
             if attach == '1':  # have attach
                 ref_list = ref_list.filter(referralattach__isnull=False)
                 show_filters[2] = u'Sim'
-
             if attach == '2':  # don't have attach
                 ref_list = ref_list.filter(referralattach__isnull=True)
                 show_filters[2] = u'Não'

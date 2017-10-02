@@ -131,7 +131,7 @@ def event_data(request, template='report/report_event.html'):
 
 
 @permission_required_with_403('report.report_list')
-def fillform_data(request, template='report/report_medicalrecord.html'):
+def medicalrecord_data(request, template='report/report_medicalrecord.html'):
     """
     check fill fields of form.
     """
@@ -291,7 +291,6 @@ def report_export(request):
 
         # fill fields form report
         if request.POST.get('view') == '5':
-
             view = u'prontuario'
             title = _(u'Relatorio de prontuário')
             html = 'report/report_medicalrecord_export.html'

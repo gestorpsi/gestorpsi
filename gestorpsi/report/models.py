@@ -49,11 +49,11 @@ from gestorpsi.financial.models import Receive
 from gestorpsi.schedule.models import ScheduleOccurrence
 
 VIEWS_CHOICES = (
-    (1, _('Admisssions')),
-    (2, _('Referrals')),
-    (3, _('Faturamento')),
-    (4, _('Evento')),
-    (5, _('Preenchimento')),
+    (1, _(u'Admisssions')),
+    (2, _(u'Referrals')),
+    (3, _(u'Faturamento')),
+    (4, _(u'Evento')),
+    (5, _(u'Prontuário')),
 )
 
 PIE_CHART_WIDTH = 620
@@ -680,8 +680,8 @@ class Report(models.Model):
 
     def get_fillform_(self, organization, date_start, date_end, professional, service, fillform, attach, charge):
         """
+            report relatorios
             to check fill fields of form
-            relatorios
         """
         if fillform == '1':  # atendimento
             """

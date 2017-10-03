@@ -133,7 +133,7 @@ function updateAdmission(data) {
     /**
      * update save form
      */
-    $('div#save_form').load('/report/admission/save/?'+data)
+    $('div#save_form').load('/report/admission/save/?'+data);
     
     /**
      * get date then update form fields
@@ -152,13 +152,11 @@ function updateReferral(data){
     /**
      * update all admission data
      */
-
     if(!data) data = '';
     
     /**
      * append chart types view to url
      */
-
     data += chart_type_to_url();
 
     /**
@@ -174,25 +172,21 @@ function updateReferral(data){
     /**
      * update admission data
      */
-    
     $('div#report_table').load('/report/referral/?'+data);
+
     /**
      * update demographic data
      */
-    
-    //$('div#admission_demographic_data').load('/report/admission/demographic/?'+data);
-        
+    $('div#admission_demographic_data').load('/report/admission/demographic/?'+data);
 
     /**
      * update save form
      */
-
-    $('div#save_form').load('/report/referral/save/?'+data)
+    $('div#save_form').load('/report/referral/save/?'+data);
     
     /**
      * get date then update form fields
      */
-    
     $.getJSON('/report/date/?'+data, function(json) {
         $('.report_main [name=date_start]').val(json['date_start']);
         $('.report_main [name=date_end]').val(json['date_end']);
@@ -232,7 +226,7 @@ function updateReceive(data) {
     /**
      * update save form
      */
-    $('div#save_form').load('/report/receive/save/?'+data)
+    $('div#save_form').load('/report/receive/save/?'+data);
     
     /**
      * get date then update form fields
@@ -263,7 +257,7 @@ function updateEvent(data) {
     /**
      * update save form
      */
-    $('div#save_form').load('/report/event/save/?'+data)
+    $('div#save_form').load('/report/event/save/?'+data);
     
     /**
      * get date then update form fields
@@ -292,9 +286,9 @@ function updateFormFill(data) {
     $('div#report_table').load('/report/formfill/?'+data);
 
     /**
-     * update save form
+     * update save form to save report
      */
-    $('div#save_form').load('/report/formfill/save/?'+data)
+    $('div#save_form').load('/report/formfill/save/?'+data);
     
     /**
      * get date then update form fields

@@ -175,33 +175,35 @@ def demographic_data(request, view='admission'):
 
 @permission_required_with_403('report.report_write')
 def report_save(request, form_class=None, view=None, template='report/report_save_form.html'):
-
     """
     save new report
+    render {{ url_post }} at report/report_save_form.html and update <form action> to save report for right section, view.
     """
     if request.method == 'POST':
-
         save_form = form_class(request.POST)
 
         if save_form.is_valid():
-            data = save_form.save( request.user , request.user.get_profile().org_active )
-            return HttpResponse( data.label )
+            data = save_form.save(request.user, request.user.get_profile().org_active)
+            return HttpResponse(data.label)
         else:
             raise Exception(_('Error to save register'))
 
     report = Report()
-
     date_start, date_end = report.set_date(request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'))
+
+    # admission / referral
+    if view == 'admission':
+        form = form_class(date_start=date_start, date_end=date_end, accumulated=request.GET.get('accumulated'))
 
     # financial / revenues
     if view == 'receive':
-        form = form_class( date_start=date_start , date_end=date_end , service=request.GET.get('service') ,  professional=request.GET.get('professional') , pway=request.GET.get('pway'), receive=request.GET.get('receive') , covenant=request.GET.get('covenant') )
-    # admission / referral
-    else:
-        form = form_class( date_start=date_start , date_end=date_end , service=Service.objects.get( organization=request.user.get_profile().org_active, pk=request.GET.get('service')) if request.GET.get('service') else None, accumulated=request.GET.get('accumulated'))
+        form = form_class(date_start=date_start, date_end=date_end, service=request.GET.get('service'),  professional=request.GET.get('professional'), pway=request.GET.get('pway'), receive=request.GET.get('receive'), covenant=request.GET.get('covenant'))
 
-    url_post = reverse('report_%s_save' % view) # url to post form
-    
+    # prontuario / medical record
+    if view == 'formfill':
+        form = form_class(date_start=date_start, date_end=date_end, professional=request.GET.get('professional'), service=request.GET.get('service'), formfill=request.GET.get('formfill'), attach=request.GET.get('attach'), charge=request.GET.get('charge'))
+
+    url_post = reverse('report_%s_save' % view) # update <form action url>
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 
 

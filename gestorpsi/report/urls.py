@@ -14,7 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, url
 from gestorpsi.report.views import *
 from gestorpsi.report.forms import *
 from gestorpsi.authentication.views import login_check
@@ -39,7 +39,7 @@ receive_save = {
 
 formfill_save = {
     'form_class': ReportSaveFormFillForm,
-    'view': 'receive',
+    'view': 'formfill',
 }
 
 urlpatterns = patterns('',
@@ -86,6 +86,7 @@ urlpatterns = patterns('',
     url(r'^receive/save/$', login_check(report_save), receive_save, name='report_receive_save'),
     url(r'^admission/save/$', login_check(report_save), admission_save, name='report_admission_save'),
     url(r'^referral/save/$', login_check(report_save), referral_save, name='report_referral_save'),
+    url(r'^formfill/save/$', login_check(report_save), formfill_save, name='report_formfill_save'),
     url(r'^saved/$', login_check(reports_saved)),
     url(r'^del/(?P<object_id>[0-9]*)/$', login_check(report_del), name='report_del'),
     url(r'^undelete/(?P<object_id>[0-9]*)/$', login_check(report_del), { 'undelete':True }, name='report_undelete'),

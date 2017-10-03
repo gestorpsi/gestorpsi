@@ -93,7 +93,6 @@ $(function() {
     /**
      * bind any click to hide message are if exists
      */
-    
     $('a, button').click(function() { 
         $('#msg_area').hide();    
     });
@@ -101,7 +100,6 @@ $(function() {
     /**
      * bind tab navigation
      */
-    
     $('ul#sub_report li a').click(function() {
         $('ul#sub_report li a').removeClass('active');
         $(this).addClass('active');
@@ -112,7 +110,6 @@ $(function() {
     /**
      * bind export data tab
      */
-    
     $('a.export_data_tab').click(function() {
         $('.dashboard_overview').hide();
         $('.report_filter_nav').show();
@@ -235,10 +232,8 @@ $(function() {
     /**
      * hide notification area
      */
-    
     $('#sub_report a').live('click', function() {
         $('div.saved_successfully').hide();
-    
     });
     
     /**
@@ -250,7 +245,6 @@ $(function() {
         /**
          * select dashboard tab
          */
-        
         $('ul#sub_report li a').removeClass('active');
         $('ul#sub_report li a:first').addClass('active');
         $('.tab_content').hide();
@@ -262,7 +256,6 @@ $(function() {
         /**
          * update admission
          */
-        
         if($(this).attr('view')==1) { // admission
             updateAdmission($(this).attr('data'));
             $('form#report_filter select[name=view]').val('1');
@@ -284,6 +277,11 @@ $(function() {
 
             updateReceive($(this).attr('data'));
             $('form#report_filter select[name=view]').val('3');
+        }
+
+        if($(this).attr('view')==5) { // prontuario / medical record
+            updateFormFill($(this).attr('data'));
+            $('form#report_filter select[name=view]').val('5');
         }
 
     });
@@ -319,7 +317,6 @@ $(function() {
      /**
       * bind form save actions
       */
-
      $('form#report_filter button[name=save]').unbind().click(function() {
           $('div.report_save_container').effect('slide', {'direction':'up'});
           return false;

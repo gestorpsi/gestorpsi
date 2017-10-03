@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding:utf-8 -*-
 
 """
 Copyright (C) 2008 GestorPsi
@@ -143,9 +143,10 @@ class ReportSaveAdmissionForm(ReportSaveForm):
     def __init__(self, *args, **kwargs):
         date_start = kwargs.pop('date_start', None)
         date_end = kwargs.pop('date_end', None)
-        service = kwargs.pop('service', None)
         accumulated = kwargs.pop('accumulated', None)
+
         super(ReportSaveAdmissionForm, self).__init__(*args, **kwargs)
+
         if date_start and date_end:
             self.fields['label'].initial = '%s %s %s %s' % (_('Admission between'), date_start.strftime("%d/%m/%Y"),  _('and'), date_end.strftime("%d/%m/%Y"))
             self.fields['data'].initial = 'view=admission&date_start=%s&date_end=%s&accumulated=%s'% (date_start.strftime("%d/%m/%Y"), date_end.strftime("%d/%m/%Y"), accumulated)
@@ -216,29 +217,31 @@ class ReportSaveReceiveForm(ReportSaveForm):
 
 class ReportSaveFormFillForm(ReportSaveForm):
     """
+    03 Out 2017 / Tiago Souza Moraes
+    save report
     medical record report
-    'save reports' function
     """
     def __init__(self, *args, **kwargs):
-
         date_start = kwargs.pop('date_start', None)
         date_end = kwargs.pop('date_end', None)
         service = kwargs.pop('service', None)
         professional = kwargs.pop('professional', None)
-        pway = kwargs.pop('pway', None)
-        receive = kwargs.pop('receive', None)
-        covenant = kwargs.pop('covenant', None)
+        formfill = kwargs.pop('formfill', None)
+        attach = kwargs.pop('attach', None)
+        charge = kwargs.pop('charge', None)
 
-        super(ReportSaveReceiveForm, self).__init__(*args, **kwargs)
+        super(ReportSaveFormFillForm, self).__init__(*args, **kwargs)
+
+        if formfill == '1':  # FORMFILL_CHOICE options
+            label = u'Prontuário atendimento'
 
         if date_start and date_end:
-
-            self.fields['label'].initial = u'%s %s %s %s' % ( _(u'Revenues between'), date_start.strftime("%d/%m/%Y"),  _('and'), date_end.strftime("%d/%m/%Y") )
-            self.fields['data'].initial = 'view=receive&date_start=%s&date_end=%s&service=%s&professional=%s&pway=%s&receive=%s&covenant=%s' % ( date_start.strftime("%d/%m/%Y") , date_end.strftime("%d/%m/%Y") , service , professional , pway , receive , covenant )
+            self.fields['label'].initial = u'%s %s %s %s %s' % ( label, _('between'), date_start.strftime("%d/%m/%Y"),  _('and'), date_end.strftime("%d/%m/%Y"))
+            self.fields['data'].initial = 'view=formfill&date_start=%s&date_end=%s&service=%s&professional=%s&formfill=%s&attach=%s&charge=%s' % ( date_start.strftime("%d/%m/%Y"), date_end.strftime("%d/%m/%Y"), service, professional, formfill, attach, charge)
 
     def save(self, user, organization, *args, **kwargs):
-        data = super(ReportSaveReceiveForm, self).save(commit=False, *args, **kwargs)
-        data.view = 3 # faturamento
+        data = super(ReportSaveFormFillForm, self).save(commit=False, *args, **kwargs)
+        data.view = 5  # medical record / prontuario
         data.user = user
         data.organization = organization
         data.save()

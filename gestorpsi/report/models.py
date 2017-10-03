@@ -27,7 +27,6 @@ from django.db.models import Q
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
-from django.utils import simplejson
 from django.core.urlresolvers import reverse
 
 from pygooglechart import PieChart3D
@@ -35,9 +34,7 @@ from pygooglechart import Chart
 from pygooglechart import SimpleLineChart
 from pygooglechart import Axis
 
-from swingtime.models import Event
-
-from gestorpsi.util.views import get_object_or_None, color_rand
+from gestorpsi.util.views import get_object_or_None
 from gestorpsi.admission.models import AdmissionReferral, ReferralChoice as AdmissionIndication
 from gestorpsi.client.models import Client
 from gestorpsi.careprofessional.models import CareProfessional
@@ -788,7 +785,7 @@ class ReportsSaved(models.Model):
     objects = ReportsSavedManager()
 
     def __unicode__(self):
-        return '%s' % (self.label)
+        return u'%s' % (self.label)
 
 class ReportAdmissionManager(models.Manager):
     def overview(self, range, date_start, date_end, accumulated=True):

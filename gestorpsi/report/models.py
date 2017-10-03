@@ -678,12 +678,12 @@ class Report(models.Model):
         return chart.get_url()
 
 
-    def get_fillform_(self, organization, date_start, date_end, professional, service, fillform, attach, charge):
+    def get_formfill_(self, organization, date_start, date_end, professional, service, formfill, attach, charge):
         """
             report relatorios
             to check fill fields of form
         """
-        if fillform == '1':  # prontuario / medical record
+        if formfill == '1':  # prontuario / medical record
             """
             list = [ tmp0, tmp1, ... , tmpN ]
             tmp = array
@@ -760,7 +760,7 @@ class Report(models.Model):
 
                     list_client.append(tmp)  # add to main list
 
-            return list_client, list_client_total, date_start, date_end, professional, service, fillform, attach, show_filters
+            return list_client, list_client_total, date_start, date_end, professional, service, formfill, attach, show_filters
 
 
 class ReportsSavedManager(models.Manager):

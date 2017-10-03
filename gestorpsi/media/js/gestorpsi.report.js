@@ -39,7 +39,7 @@ $(function() {
         $('div.service_filter').hide();
         $('select#id_accumulated').hide();
         $('div.confirmation_status_filter').hide();
-        $('div.fill_check').hide();
+        $('div.formfill_options').hide();
 
         // admission
         if( $(this).val() == 1 ){
@@ -69,7 +69,7 @@ $(function() {
         }
         // select fill the fields
         if($(this).val() == 5){
-            $('div.fill_check').show();
+            $('div.formfill_options').show();
             $('div.service_filter').show();
             $('div.professional_filter').show();
         }
@@ -189,12 +189,12 @@ $(function() {
         if ($('#report_filter [name=view]').val() == 5){ 
             var service = $('select#id_service').val();
             var professional = $('select#id_professional').val();
-            var check_form = $('select#id_fill_check').val();
-            var attach = $('select#id_fill_check_attach').val();
-            var charge = $('select#id_fill_check_status').val();
+            var formfill = $('select#id_formfill_choice').val();
+            var attach = $('select#id_formfill_attach').val();
+            var charge = $('select#id_formfill_status').val();
 
             // get url
-            data += '&service=' + service + '&professional=' + professional + '&fill=' + check_form + '&attach=' + attach + '&charge=' + charge;
+            data += '&service=' + service + '&professional=' + professional + '&formfill=' + formfill + '&attach=' + attach + '&charge=' + charge;
             updateFormFill(data);
         }
 
@@ -303,8 +303,8 @@ $(function() {
         if($('form#report_filter select[name=view]').val() == 3) // revenues / faturamente
             updateReceive('view=receive' + $(this).attr('data') + '&service=' + $('#report_filter [name=service]').val() + '&accumulated=' +$('#report_filter [name=accumulated]').val());
 
-        if($('form#report_filter select[name=view]').val() == 5) // medical record
-            updateFormFill('view=medicalrecord' + $(this).attr('data') + '&service=' + $('select#id_service').val() + '&professional=' + $('select#id_professional').val() + '&fill=' + $('select#id_fill_check').val() + '&attach=' + $('select#id_fill_check_attach').val() + '&charge=' + $('select#id_fill_check_status').val());
+        if($('form#report_filter select[name=view]').val() == 5) // medical record / prontuario
+            updateFormFill('view=medicalrecord' + $(this).attr('data') + '&service=' + $('select#id_service').val() + '&professional=' + $('select#id_professional').val() + '&formfill=' + $('select#id_formfill_choice').val() + '&attach=' + $('select#id_formfill_attach').val() + '&charge=' + $('select#id_formfill_status').val());
                     
         $('div.loaded_report_title').hide();
         return false;

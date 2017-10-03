@@ -131,11 +131,14 @@ def event_data(request, template='report/report_event.html'):
 
 
 @permission_required_with_403('report.report_list')
-def medicalrecord_data(request, template='report/report_medicalrecord.html'):
+def formfill_data(request):
     """
-    check fill fields of form.
+    check if field is fill of a form.
     """
-    list_client, list_client_total, date_start, date_end, professional, service, fillform, attach, show_filters = Report().get_fillform_( request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('professional'), request.GET.get('service'), request.GET.get('fill'), request.GET.get('attach'), request.GET.get('charge'))
+    list_client, list_client_total, date_start, date_end, professional, service, fillform, attach, show_filters = Report().get_formfill_( request.user.get_profile().org_active, request.GET.get('date_start'), request.GET.get('date_end'), request.GET.get('professional'), request.GET.get('service'), request.GET.get('formfill'), request.GET.get('attach'), request.GET.get('charge'))
+
+    if request.GET.get('formfill') == '1':
+        template='report/report_medicalrecord.html'
 
     return render_to_response(template, locals(), context_instance=RequestContext(request))
 
@@ -295,7 +298,7 @@ def report_export(request):
             title = _(u'Relatorio de prontuário')
             html = 'report/report_medicalrecord_export.html'
 
-            list_client, list_client_total, date_start, date_end, professional, service, fillform, attach, show_filters = Report().get_fillform_(request.user.get_profile().org_active, request.POST.get('date_start'), request.POST.get('date_end'), request.POST.get('professional'), request.POST.get('service'), request.POST.get('fill_check'), request.POST.get('fill_check_attach'), request.POST.get('fill_check_status'))
+            list_client, list_client_total, date_start, date_end, professional, service, fillform, attach, show_filters = Report().get_fillform_(request.user.get_profile().org_active, request.POST.get('date_start'), request.POST.get('date_end'), request.POST.get('professional'), request.POST.get('service'), request.POST.get('formfill_choice'), request.POST.get('formfill_attach'), request.POST.get('formfill_status'))
 
             IMG_PREFIX = '/media/' if int(request.POST.get('format')) == 1 else MEDIA_ROOT.replace('\\','/') + '/' # this a path bug fix. format == 1 (html)
 

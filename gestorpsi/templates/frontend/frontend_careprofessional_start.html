@@ -20,6 +20,10 @@ GNU General Public License for more details.
 
 {% block menu_frontend %}active{% endblock %}
 
+{% block extrahead %}
+    <script type="text/javascript" src="/media/js/gestorpsi.frontend.filter.js"></script>
+{% endblock %}
+
 {% block submenu %}
     {% include "frontend/frontend_submenu.html" %}
 {% endblock %}
@@ -30,33 +34,24 @@ GNU General Public License for more details.
     <!-- my selected service -->
     {% if request.user.frontendprofile.my_service.all.0 %}
         <div class="main_area">
-            <h3>{% trans "My selected services" %}</h3>
+            <h3>{% trans "services" %}</h3>
             <div class="contact">
                 <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
                     <tbody>
                         {% for service in request.user.frontendprofile.my_service.all %}
                             <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
                                 <td class="title">
                                     <a class="title" href="/service/form/{{ service.id }}/" title="{{ service.name }}">{{ service.name_html|safe }}</a><br />
-                                    <div style="margin-left:26px;">
-                                    <i>{{ service.description }}</i>
-                                    </div>
+                                    <div style="margin-left:26px;"><i>{{ service.description }}</i></div>
                                 </td>
-                                <td>Lista de cliente</td>
                                 <td>
-                                    <ul>
-                                        <li><a href="/client/filterby/?admissiondate=true&admissionStart=01/{{ td.month }}/{{ td.year }}&admissionEnd={{ last_day_month }}/{{ td.month }}/{{ td.year }}&service={{ service.id }}">M&ecirc;s corrente</a></li>
-                                        <li><a href="/client/filterby/?admissiondate=true&admissionStart=01/01/{{ td.year }}&admissionEnd=31/12/{{ td.year }}&service={{ service.id }}">Ano corrente</a></li>
-                                        <li><a href="/client/filterby/?admissiondate=true&admissionStart={{ last30days }}&admissionEnd={{ td.day }}/{{ td.month }}/{{ td.year }}&service={{ service.id }}">&Uacute;ltimos 30 dias</a></li>
-                                        <li><a href="/client/filterby/?admissiondate=true&admissionStart={{ last60days }}&admissionEnd={{ td.day }}/{{ td.month }}/{{ td.year }}&service={{ service.id }}">&Uacute;ltimos 60 dias</a></li>
-                                    </ul>
+                                    <select class="medium" id="autoloadfilter">
+                                        <option>--- Filtros</option>
+                                        <option value="/client/filterby/?admissiondate=true&admissionStart=01/{{ td.month }}/{{ td.year }}&admissionEnd={{ last_day_month }}/{{ td.month }}/{{ td.year }}&service={{ service.id }}">M&ecirc;s corrente</option>
+                                        <option value="/client/filterby/?admissiondate=true&admissionStart=01/01/{{ td.year }}&admissionEnd=31/12/{{ td.year }}&service={{ service.id }}">Ano corrente</option>
+                                        <option value="/client/filterby/?admissiondate=true&admissionStart={{ last3months }}&admissionEnd={{ td.day }}/{{ td.month }}/{{ td.year }}&service={{ service.id }}">&Uacute;ltimos 3 meses</option>
+                                        <option value="/client/filterby/?admissiondate=true&admissionStart={{ last6months }}&admissionEnd={{ td.day }}/{{ td.month }}/{{ td.year }}&service={{ service.id }}">&Uacute;ltimos 6 meses</option>
+                                    </select>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -74,13 +69,6 @@ GNU General Public License for more details.
             <div class="contact">
                 {% if list_service.0 %}
                     <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
                         <tbody>
                             {% for service in list_service %}
                                 <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
@@ -90,7 +78,7 @@ GNU General Public License for more details.
                                         <i>{{ service.description }}</i>
                                         </div>
                                     </td>
-                                    <td><span class="phone"></span><br /><span class="email"></span></td>
+
                                     <td>
                                         {% if service.is_group %}
                                             <a style="padding-bottom: 5px; text-decoration:none" href="/service/{{ service.id }}/group/" class="group" title="{% trans "List groups in this service" %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
@@ -116,13 +104,6 @@ GNU General Public License for more details.
             <div class="contact">
                 {% if list_schedule.0 %}
                     <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
                         <tbody>
                             {% for event in list_schedule %}
                                 <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
@@ -130,10 +111,7 @@ GNU General Public License for more details.
                                         <a href="/schedule/events/{{ event.id }}/confirmation/" title="{{ event }}">{{ event }}</a><br />
                                         {{ event.event.referral.client.all|join:", " }}<br />
                                     </td>
-                                    <td><span class="phone"></span><br />
-                                    <span class="email"></span></td>
-                                    <td>{{ event.event.referral.service }}<br />{{ event.room }}
-                                    </td>
+                                    <td>{{ event.event.referral.service }}<br />{{ event.room }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -153,29 +131,21 @@ GNU General Public License for more details.
             <div class="contact">
                 {% if list_referral.0 %}
                     <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
                         <tbody>
                             {% for referral in list_referral %}
                                 <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
                                     <td class="title">
                                         {{ referral.service_name_html|safe }}
-                                        <br />
                                         <div style="margin-left:25px;">
-                                        {% for client in referral.client.all %}
-                                            <a href="/client/{{ client.id }}/referral/{{ referral.id }}/"><i>{{ client }}</i></a>
-                                           {% if not forloop.last %}, {% endif %}
-                                        {% endfor %}
+                                            {% for client in referral.client.all %}
+                                                <a href="/client/{{ client.id }}/referral/{{ referral.id }}/"><i>{{ client }}</i></a>
+                                               {% if not forloop.last %}, {% endif %}
+                                            {% endfor %}
                                         </div>
                                     </td>
-                                    <td><span class="phone">{{ referral.date|date:"d/m/Y" }}</span><br />
-                                    <span class="email"></span></td>
-                                    <td><br /></td>
+                                    <td>
+                                        <span class="phone">{{ referral.date|date:"d/m/Y" }}</span><br />
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -195,13 +165,6 @@ GNU General Public License for more details.
             <div class="contact">
                 {% if list_queue.0 %}
                     <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
                         <tbody>
                             {% for queue in list_queue %}
                                 <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
@@ -210,7 +173,6 @@ GNU General Public License for more details.
                                         {% trans "Priority" %} {{ queue.get_priority_display }}<br />
                                         {% trans "Date in" %} {{ queue.date_in|date:"d/m/Y H:i" }}
                                     </td>
-                                    <td><span class="phone"></span><br /><span class="email"></span></td>
                                     <td>{{ queue.referral.service }}</td>
                                 </tr>
                             {% endfor %}
@@ -227,23 +189,17 @@ GNU General Public License for more details.
     <!-- student -->
     {% if list_student %}
         <div class="main_area">
-            <h3>{% trans "My students" %}</h3>
+            <h3>{% trans "Student" %}</h3>
             <div class="contact">
                 {% if list_student.0 %}
                     <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
                         <tbody>
                             {% for st in list_student %}
                                 <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
                                     <td class="title">
-                                        <a href="{{ st.person.name }}" title="{{ queue.client }}">{{ st.person.name }}</a><br />
+                                        <a href="{% url student-form st.id %}" title="{{ st.person.name }}">{{ st.person.name }}</a><br />
                                     </td>
+                                    <td></td>
                                 </tr>
                             {% endfor %}
                         </tbody>

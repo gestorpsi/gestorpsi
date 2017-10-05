@@ -52,10 +52,10 @@ class FrontendProfile(models.Model):
     """
     user = models.OneToOneField(User, unique=True)
 
-    service = models.IntegerField(u'Serviço', default=10, choices=LIMIT)
-    service_sort = models.IntegerField(u'Ordenar serviço', default=1, choices=SORT)
+    #service = models.IntegerField(u'Serviço', default=10, choices=LIMIT)
+    #service_sort = models.IntegerField(u'Ordenar serviço', default=1, choices=SORT)
 
-    my_service = models.ManyToManyField(Service, verbose_name=u'Meus serviços', null=True, blank=True)
+    my_service = models.ManyToManyField(Service, verbose_name=u'Serviço', null=True, blank=True)
 
     referral = models.IntegerField(u'Inscrição', default=10, choices=LIMIT)
     referral_sort = models.IntegerField(u'Ordenar inscrição', default=2, choices=SORT)

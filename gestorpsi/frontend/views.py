@@ -86,6 +86,8 @@ def birthdate_filter(request, frm=None, month=None, object=None, active=True, so
 
 def start(request):
 
+    tab_index_class = 'active'  # tab settings active
+
     # admin do not have profile
     try:
         profile = request.user.get_profile()
@@ -102,8 +104,8 @@ def start(request):
     # last day of current month
     last_day_month = calendar.monthrange(td.year, td.month)[1]
     current_month = (td.day-last_day_month)+td.day
-    last30days = (td-relativedelta(months=3)).strftime("%d/%m/%Y")
-    last60days = (td-relativedelta(months=6)).strftime("%d/%m/%Y")
+    last3months = (td-relativedelta(months=3)).strftime("%d/%m/%Y")
+    last6months = (td-relativedelta(months=6)).strftime("%d/%m/%Y")
 
     # list
     list_subscribe = False
@@ -139,17 +141,11 @@ def start(request):
         if request.user.frontendprofile.schedule > 0:
             list_schedule = schedule_occurrences(request, datetime.now().strftime('%Y'), datetime.now().strftime('%m'), datetime.now().strftime('%d')).filter(event__referral__professional=object)[:request.user.frontendprofile.schedule]
 
-        if request.user.frontendprofile.service > 0:
-            if request.user.frontendprofile.service_sort == 1:
-                list_service = object.prof_services.filter(active=True).order_by('name')[:request.user.frontendprofile.service]
-            if request.user.frontendprofile.service_sort == 2:
-                list_service = object.prof_services.filter(active=True).order_by('date')[:request.user.frontendprofile.service]
-
         if request.user.frontendprofile.referral > 0:
             if request.user.frontendprofile.referral_sort == 1:
                 list_referral = object.referral_set.filter(status='01').order_by('client__person__name')[:request.user.frontendprofile.referral]
             if request.user.frontendprofile.referral_sort == 2:
-                list_referral = object.referral_set.filter(status='01').order_by('date')[:request.user.frontendprofile.referral]
+                list_referral = object.referral_set.filter(status='01').order_by('-date')[:request.user.frontendprofile.referral]
 
         if request.user.frontendprofile.queue > 0:
             if request.user.frontendprofile.queue_sort == 1:
@@ -162,7 +158,7 @@ def start(request):
 
         if request.user.frontendprofile.student > 0:
             list_student = []
-            for srv in Service.objects.filter(responsibles=request.user.profile.person.careprofessional): 
+            for srv in Service.objects.filter(responsibles=request.user.profile.person.careprofessional, organization=request.user.get_profile().org_active): 
                 for st in srv.professionals.filter(studentprofile__isnull=False):
                     if not st in list_student:
                         list_student.append(st)

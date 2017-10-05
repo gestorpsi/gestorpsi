@@ -30,16 +30,107 @@ GNU General Public License for more details.
     <form action={% url frontend-settings %} method="post">
         <div class="main_area">
             <h3>{% trans "Configura&ccedil;&atilde;o Iniciar" %} - Mostrar os seguintes itens ao iniciar</h3>
-                {% for f in form %}
-                    <label>{{ f.label }}<br />
-                        {{ f }}
-                        {{ f.errors }}
-                        <br /><br />
+
+            <label>
+                {{ form.my_service.label }}<br />
+                {{ form.my_service }}
+                {{ form.my_service.errors }}
+            </label>
+
+            <fieldset>
+                <legend>{{ form.referral.label }}</legend>
+                <div>
+                    <label>Visualizar 
+                        {{ form.referral }}
+                        {{ form.referral.errors }}
                     </label>
-                {% endfor %}
+                    <label>Ordem
+                        {{ form.referral_sort }}
+                        {{ form.referral.errors }}
+                    </label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>{{ form.client.label }}</legend>
+                <div>
+                    <label>Visualizar 
+                        {{ form.client }}
+                        {{ form.client.errors }}
+                    </label>
+                    <label>Ordem
+                        {{ form.client_sort }}
+                        {{ form.client_sort.errors }}
+                    </label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>{{ form.queue.label }}</legend>
+                <div>
+                    <label>Visualizar 
+                        {{ form.queue }}
+                        {{ form.queue.errors }}
+                    </label>
+                    <label>Ordem
+                        {{ form.queue_sort }}
+                        {{ form.queue_sort.errors }}
+                    </label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>{{ form.birthdate_client.label }}</legend>
+                <div>
+                    <label>Visualizar 
+                        {{ form.birthdate_client }}
+                        {{ form.birthdate_client.errors }}
+                    </label>
+                    <label>Ordem
+                        {{ form.birthdate_sort }}
+                        {{ form.birthdate_sort.errors }}
+                    </label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>{{ form.student.label }}</legend>
+                <div>
+                    <label>Visualizar 
+                        {{ form.student }}
+                        {{ form.student.errors }}
+                    </label>
+                    <label>Ordem
+                        {{ form.student_sort }}
+                        {{ form.student_sort.errors }}
+                    </label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>{{ form.schedule.label }}</legend>
+                <div>
+                    <label>Visualizar 
+                        {{ form.schedule }}
+                        {{ form.schedule.errors }}
+                    </label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>{{ form.subscribe_client.label }}</legend>
+                <div>
+                    <label>Visualizar 
+                        {{ form.subscribe_client }}
+                        {{ form.subscribe_client.errors }}
+                    </label>
+                </div>
+            </fieldset>
+
+            <br />
         </div>
 
-        <!-- mount combox -->
+        <!-- render combox -->
         <script>
             $('select#id_my_service').multiSelect();
         </script>

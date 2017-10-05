@@ -1,4 +1,4 @@
-{% comment %}
+/**
 
 Copyright (C) 2008 GestorPsi
 
@@ -12,11 +12,16 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
-{% endcomment %}
+*/
 
-{% load i18n %}
+$(document).ready(function(){
 
-<ul id="sub_schedule">
-    <li><a class="{{ tab_index_class }}" href="{% url frontend-home %}">{% trans "Inicio" %}</a></li>
-    <li><a class="{{ tab_settings_class }}" href="{% url frontend-settings %}">{% trans "Configura&ccedil;&atilde;o" %}</a></li>
-</ul>
+    // auto load filter after selected.
+    $('select#autoloadfilter').bind('change', function(){
+        var url = $(this).val(); // get selected value
+        if (url){ // require a URL
+            window.location = url; // redirect
+        }
+        return false;
+    });
+});

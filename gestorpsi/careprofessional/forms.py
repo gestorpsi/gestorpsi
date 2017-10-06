@@ -21,10 +21,10 @@ from gestorpsi.careprofessional.models import StudentProfile, Profession
 class StudentProfileForm(forms.ModelForm):
     class Meta:
         model = StudentProfile
-        fields = ('lecture_class', 'period', 'class_duration', 'register_number', )
+        fields = ('lecture_class', 'period', 'class_duration', 'register_number','matrix_year')
 
     def __init__(self, *args, **kwargs):
         super(StudentProfileForm, self).__init__(*args, **kwargs)
         self.fields['lecture_class'].choices = [(i.id,i.academic_name) for i in Profession.objects.all()]
-        self.fields['lecture_class'].widget.attrs = {'class':'medium'}
+        self.fields['lecture_class'].widget.attrs = {'class':'big'}
         self.fields['register_number'].widget.attrs = {'class':'big'}

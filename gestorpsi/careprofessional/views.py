@@ -50,7 +50,10 @@ def index(request, template_name='careprofessional/careprofessional_list.html', 
 
   
 @permission_required_with_403('careprofessional.careprofessional_list')
-def list(request, page=1, deactive=False, filter=None, initial=None, no_paging=False, is_student=False ):
+def list(request, page=1, deactive=False, filter=None, initial=None, no_paging=False, is_student=False, matrixyear=False ):
+
+    print '--------'
+    print matrixyear
 
     # professional
     if not is_student:
@@ -65,11 +68,14 @@ def list(request, page=1, deactive=False, filter=None, initial=None, no_paging=F
         else:
             object = CareProfessional.objects.students_active(request.user.get_profile().org_active)
 
+        if matrixyear:
+            object = object.filter(studentprofile__matrix_year=matrixyear)
+
     if initial:
-        object = object.filter(person__name__istartswith = initial)
+        object = object.filter(person__name__istartswith=initial)
 
     if filter:
-        object = object.filter(person__name__icontains = filter)
+        object = object.filter(person__name__icontains=filter)
 
     return HttpResponse(simplejson.dumps(person_json_list(request, object, 'careprofessional.careprofessional_read', page), sort_keys=True), mimetype='application/json')
 

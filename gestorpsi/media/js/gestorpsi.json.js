@@ -477,7 +477,6 @@ function updateProfessional(url, deactive, app) {
 /** 
 * student list
 */
-
 function updateStudent(url, deactive, app) {
     if (!app) app = "careprofessional/student";
     $.getJSON(url, function(json) {

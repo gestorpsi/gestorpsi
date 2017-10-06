@@ -188,56 +188,6 @@ $(function() {
     });
 
     /**
-     * student quick filter deactive
-     */
-
-    $('div#search_header.student_search.deactive table#letter_menu tr td a, div#search_header.student_search.deactive a#letter_back, div#search_header.student_search.deactive a#letter_fwd').click(function() {
-        updateStudent('/careprofessional/student/initial/' + $(this).attr('initial') + '/page1/deactive/', true, 'careprofessional/student/initial/'+$(this).attr('initial'));
-    });
-
-    /**
-    * student quick search deactive
-    */
-
-    $('div#search_header.student_search.deactive a.quick_search').click(function() {
-        ($(this).prev().val().length >= 1) ? updateStudent('/careprofessional/student/filter/' + $(this).prev().val() + '/page1/deactive/', true, 'careprofessional/student/filter/'+$(this).prev().val()) : updateStudent('/careprofessional/student/page1/deactive/', true);
-    });
-
-    /**
-     * student clean up deactive
-     */
-
-    $('div#search_header.student_search.deactive a#cleanup').click(function() {
-        updateStudent('/careprofessional/student/page1/deactive/', true);
-    });
-
-    /**
-     * student quick filter active
-     */
-
-    $('div#search_header.student_search.active table#letter_menu tr td a, div#search_header.student_search.active a#letter_back, div#search_header.student_search.active a#letter_fwd').click(function() {
-        updateStudent('/careprofessional/student/initial/' + $(this).attr('initial') + '/page1/', false, 'careprofessional/student/initial/'+$(this).attr('initial'));
-    });
-
-
-    /**
-    * student quick search active
-    */
-
-    $('div#search_header.student_search.active a.quick_search').click(function() {
-        ($(this).prev().val().length >= 1) ? updateStudent('/careprofessional/student/filter/' + $(this).prev().val() + '/page1/', false, 'careprofessional/student/filter/'+$(this).prev().val()) : updateStudent('/careprofessional/student/page1');
-    });
-
-    /**
-     * student clean up active
-     */
-
-    $('div#search_header.student_search.active a#cleanup').click(function() {
-        updateStudent('/careprofessional/student/page1');
-    });
-
-
-    /**
      * device quick filter active
      */
 

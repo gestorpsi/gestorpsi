@@ -200,6 +200,7 @@ class StudentProfile(models.Model):
     class_duration = models.CharField(_('Student Class Duration'), max_length=255, null=True, blank=True)
     register_number = models.CharField(_('Student Register Number'), max_length=255, null=True, blank=True)
     professional = models.OneToOneField('CareProfessional')
+    matrix_year = models.CharField(_('Ano matriz'), max_length=4, null=True, blank=True)
     
     def __unicode__(self):
         return u'%s' % ( self.professional )

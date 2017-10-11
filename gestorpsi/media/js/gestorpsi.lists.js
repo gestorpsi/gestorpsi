@@ -22,7 +22,9 @@ GNU General Public License for more details.
 function buildPaginator(app, json_paginator, json_util, selector, deactive, extra_context) { 
         if(!selector) selector = 'div#list';
         url_extra = (deactive)?'/deactive/':'';
+        url_extra += (extra_context)? extra_context:'';
 
+        /* don't work, get extra_context formated
         if(extra_context) {
             var element_count = 0;
             url_extra += "?";
@@ -31,14 +33,15 @@ function buildPaginator(app, json_paginator, json_util, selector, deactive, extr
                 url_extra += i + "=" + extra_context[i];
                 element_count++;
             }
-        }
+        }*/
 
         var page_range = '';
 
         jQuery.each(json_paginator,  function(){
             if(this != json_util['paginator_actual_page']) 
                 page_range += '<a href="/' + app + '/page'+ this + url_extra + '">';
-            page_range += this;
+                page_range += this;
+
             if(this != json_util['paginator_actual_page']) 
                 page_range += '</a>';
             page_range += ' | ';
@@ -111,7 +114,3 @@ function buildTableList(tableTR, selector, has_perm_read) {
 	$('table.zebra tr:even').addClass('zebra_1');
 
 }
-
-
-
-

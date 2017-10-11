@@ -17,7 +17,7 @@ GNU General Public License for more details.
 /** 
 * student list
 */
-function updateStudent(url, deactive, app){
+function updateStudent(url, deactive, app, extra){
     if (!app) app = "careprofessional/student";
     $.getJSON(url, function(json) {
         var tableTR = '';
@@ -37,9 +37,9 @@ function updateStudent(url, deactive, app){
         });
 
         buildTableList(tableTR, 'div#list', json['util']['has_perm_read']);
-        buildPaginator(app, json['paginator'], json['util'], 'div#list', deactive);
+        buildPaginator(app, json['paginator'], json['util'], 'div#list', deactive, extra);
         $("ul.paginator a").unbind().click(function(){
-            updateStudent($(this).attr('href'), deactive, app);
+            updateStudent($(this).attr('href'), deactive, app, extra);
             return false;
         });
     });  

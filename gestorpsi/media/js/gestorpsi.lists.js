@@ -21,7 +21,8 @@ GNU General Public License for more details.
 
 function buildPaginator(app, json_paginator, json_util, selector, deactive, extra_context) { 
         if(!selector) selector = 'div#list';
-        url_extra = (deactive)?'/deactive/':'';
+        var url_extra;
+        url_extra = (deactive)?'deactive/':'';
         url_extra += (extra_context)? extra_context:'';
 
         /* don't work, get extra_context formated
@@ -55,12 +56,12 @@ function buildPaginator(app, json_paginator, json_util, selector, deactive, extr
         $('ul.paginator li.next a').hide();
         
         if(json_util['paginator_has_previous']) {
-            $('ul.paginator li.previous a').attr('href','/' + app + '/page' + json_util['paginator_previous_page_number'] + url_extra);
+            $('ul.paginator li.previous a').attr('href','/' + app + '/page' + json_util['paginator_previous_page_number'] + '/' + url_extra);
             $('ul.paginator li.previous a').show();
         }
 
         if(json_util['paginator_has_next']) {
-            $('ul.paginator li.next a').attr('href','/' + app + '/page' + json_util['paginator_next_page_number'] + url_extra);
+            $('ul.paginator li.next a').attr('href','/' + app + '/page' + json_util['paginator_next_page_number'] + '/' + url_extra);
             $('ul.paginator li.next a').show();
         }
         

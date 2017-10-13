@@ -959,14 +959,18 @@ def referral_occurrences_action(request, object_id=None, referral_id=None):
         ocf.reason = request.POST.get('reason')
         ocf.save()
 
+        for r in oc.receive_set.all():
+            r.status = 3  # cancelado
+            r.save()
+
         c += 1
         msg = True
 
     if msg:
-        messages.success(request, _(u'Ocorrência salvo com sucesso! Total de %s' % c ))
+        messages.success(request, _(u'Ocorrência salvo com sucesso! Total de %s' % c))
 
     # return to list of futures events
-    return HttpResponseRedirect('/client/%s/referral/%s/upcoming/' % (object_id, referral_id) )
+    return HttpResponseRedirect('/client/%s/referral/%s/upcoming/' % (object_id, referral_id))
 
     
 @permission_required_with_403('referral.referral_read')

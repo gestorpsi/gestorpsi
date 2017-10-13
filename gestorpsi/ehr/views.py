@@ -99,8 +99,7 @@ def _ehr_set_edit_status(request):
     this method checks if professional have rights to write a ehr object
     @request: request
     """
-    
-    status = 99 # unknown
+    status = 3  # Pending professional's confirmation
     
     if 'professional' in [i.name for i in request.user.groups.all()]:
         if request.POST.get('draft') == 'true':

@@ -690,9 +690,10 @@ class Report(models.Model):
                 3 on hour
                 4 off hour
                 5 not confirmed
-                6 others (exclude 1,2 and 3)
-                7 attach, yes or no
-                8 charge or discharge of service
+                6 filled
+                7 others (exclude 1,2 and 3)
+                8 attach, yes or no
+                9 charge or discharge of service
             """
 
             """
@@ -704,7 +705,7 @@ class Report(models.Model):
             # date
             start = datetime.strptime(date_start, '%d/%m/%Y')
             end = datetime.strptime(date_end, '%d/%m/%Y')
-            ref_list = Referral.objects.filter(organization=organization, date__range=(start, end), occurrence__scheduleoccurrence__session__descriptive__isnull=False).order_by('client__person__name').distinct()
+            ref_list = Referral.objects.filter(organization=organization, date__range=(start, end), occurrence__scheduleoccurrence__isnull=False).order_by('client__person__name').distinct()
 
             show_filters[0] = date_start
             show_filters[1] = date_end
@@ -743,7 +744,7 @@ class Report(models.Model):
                 for cli in ref.client.all():
 
                     list_client_total += 1 
-                    tmp = [False]*9
+                    tmp = [False]*10
 
                     tmp[0] = cli
                     tmp[1] = ref  # referral
@@ -751,9 +752,10 @@ class Report(models.Model):
                     tmp[3] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__presence=1).count()
                     tmp[4] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__presence=2).count()
                     tmp[5] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=True).count()
-                    tmp[6] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=False).exclude(scheduleoccurrence__occurrenceconfirmation__presence=1).exclude(scheduleoccurrence__occurrenceconfirmation__presence=2).count()
-                    tmp[7] = 'Sim' if ref.referralattach_set.all() else u'Não'
-                    tmp[8] = 'Ligado' if ref.referraldischarge_set.all() else 'Desligado'
+                    tmp[6] = ref.occurrence_set.filter(scheduleoccurrence__session__descriptive__isnull=False).count()
+                    tmp[7] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=False).exclude(scheduleoccurrence__occurrenceconfirmation__presence=1).exclude(scheduleoccurrence__occurrenceconfirmation__presence=2).count()
+                    tmp[8] = 'Sim' if ref.referralattach_set.all() else u'Não'
+                    tmp[9] = 'Ligado' if ref.referraldischarge_set.all() else 'Desligado'
 
                     list_client.append(tmp)  # add to main list
 

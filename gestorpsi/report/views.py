@@ -300,7 +300,7 @@ def report_export(request):
             title = _(u'Relatorio de prontuário')
             html = 'report/report_medicalrecord_export.html'
 
-            list_client, list_client_total, date_start, date_end, professional, service, fillform, attach, show_filters = Report().get_fillform_(request.user.get_profile().org_active, request.POST.get('date_start'), request.POST.get('date_end'), request.POST.get('professional'), request.POST.get('service'), request.POST.get('formfill_choice'), request.POST.get('formfill_attach'), request.POST.get('formfill_status'))
+            list_client, list_client_total, date_start, date_end, professional, service, fillform, attach, show_filters = Report().get_formfill_(request.user.get_profile().org_active, request.POST.get('date_start'), request.POST.get('date_end'), request.POST.get('professional'), request.POST.get('service'), request.POST.get('formfill_choice'), request.POST.get('formfill_attach'), request.POST.get('formfill_status'))
 
             IMG_PREFIX = '/media/' if int(request.POST.get('format')) == 1 else MEDIA_ROOT.replace('\\','/') + '/' # this a path bug fix. format == 1 (html)
 

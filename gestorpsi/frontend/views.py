@@ -218,8 +218,11 @@ def settings(request):
         else:
             form = FrontendProfileForm()
 
-        # just services where Professional provide service.
-        form.fields['my_service'].choices = [[x.id, x.name] for x in request.user.get_profile().person.careprofessional.prof_services.all()]
+        if request.user.get_profile().person.is_careprofessional():
+            # just services where Professional provide service.
+            form.fields['my_service'].choices = [[x.id, x.name] for x in request.user.get_profile().person.careprofessional.prof_services.all()]
+        else:
+            form.fields['my_service'].choices = Service.objects.none()
 
     tab_settings_class = 'active'  # tab settings active
     return render_to_response('frontend/frontend_settings.html', locals(), context_instance=RequestContext(request))

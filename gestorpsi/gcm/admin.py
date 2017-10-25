@@ -55,6 +55,7 @@ disable_plan.short_description = u"Desligar Plano. Não disponível para nova as
 class PlanAdmin(admin.ModelAdmin):
     list_display = ('name', 'value','duration','staff_size','student_size','form')
     list_filter = ('form',)
+    search_fields = ['gateway_code']
     actions = [disable_plan, enable_plan_promotion_form, enable_plan_public_form]
 admin.site.register(Plan, PlanAdmin)
 

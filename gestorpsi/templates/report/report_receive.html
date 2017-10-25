@@ -1,7 +1,6 @@
 <!-- all of this content will be to id report_table in main core -->
 
 <script type="text/javascript">
-
     function make_graphic1(rows, colors){ 
 
         // Create the data table.
@@ -9,7 +8,6 @@
 
         data.addColumn('string', 'Topping');
         data.addColumn('number', 'Slices');
-
         data.addRows( rows );
 
         // Set chart options
@@ -23,12 +21,10 @@
         var chart = new google.visualization.PieChart(document.getElementById('graphic'));
         chart.draw(data, options);
     }
-
 </script>
 
 <!-- list of clients -->
 {% if option_rows %}
-
         <table class='report'>
             <tr>
                 <th>&nbsp;</th>
@@ -165,10 +161,10 @@
         <script>
             // convert Python array to JS array
             var rows = [];
-            {% for i in option_rows %} rows.push( [ "{{ i.0 }}" , {{ i.1 }} ] ); {% endfor %}
+            {% for i in option_rows %} rows.push(["{{ i.0 }}", {{ i.1 }}]); {% endfor %}
 
             var colors = [];
-            {% for i in option_colors %} colors.push( [ "{{ i }}" ] ); {% endfor %}
+            {% for i in option_colors %} colors.push("{{ i }}"); {% endfor %}
 
             // call graphic function 
             make_graphic1(rows, colors);

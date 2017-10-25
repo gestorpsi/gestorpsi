@@ -446,7 +446,7 @@ class Report(models.Model):
 
             total_receive = aberto.count()+recebido.count()+faturado.count()+cancelado.count()
 
-            colors = ['red', 'green', 'orange', 'blue']
+            colors = ['#FF0000', '#008000', '#FF8000', '#0000FF']
 
         else:
 
@@ -454,25 +454,25 @@ class Report(models.Model):
                 receive_ar.append('0')
                 data.append( ['Aberto',aberto.count()] )
                 total_receive += aberto.count()
-                colors.append('red')
+                colors.append('#FF0000')
 
             if receive == '1':
                 receive_ar.append('1')
                 data.append( ['Recebido',recebido.count()] )
                 total_receive += recebido.count()
-                colors.append('green')
+                colors.append('#008000')
 
             if receive == '2':
                 receive_ar.append('2')
                 data.append( ['Faturado',faturado.count()] )
                 total_receive += faturado.count()
-                colors.append('orange')
+                colors.append('#FF8000')
 
             if receive == '3':
                 receive_ar.append('3')
                 data.append( ['Cancelado',cancelado.count()] )
                 total_receive += cancelado.count()
-                colors.append('blue')
+                colors.append('#0000FF')
 
 
         # filter by service
@@ -517,16 +517,16 @@ class Report(models.Model):
         '''
         # list of clients and counter %
         if '0' in receive_ar :
-            receive_list.append( ['Aberto',aberto,'red',total_aberto] )
+            receive_list.append( ['Aberto',aberto,'#FF0000',total_aberto] )
 
         if '1' in receive_ar :
-            receive_list.append( ['Recebido',recebido,'green',total_recebido] )
+            receive_list.append( ['Recebido',recebido,'#008000',total_recebido] )
 
         if '2' in receive_ar :
-            receive_list.append( ['Faturado',faturado,'orange',total_faturado] )
+            receive_list.append( ['Faturado',faturado,'#FF8000',total_faturado] )
 
         if '3' in receive_ar :
-            receive_list.append( ['Cancelado',cancelado,'blue',total_cancelado] )
+            receive_list.append( ['Cancelado',cancelado,'#0000FF',total_cancelado] )
 
         if total_receive == 0 :  # no data
             data = False
@@ -654,12 +654,12 @@ class Report(models.Model):
             chart.add_data(i)
 
         if not colours:
-            chart.set_colours(['0000FF']) # Set the line colour to blue
+            chart.set_colours(['#0000FF']) # Set the line colour to blue
         else:
             chart.set_colours(colours)
 
         # Set the vertical stripes
-        chart.fill_linear_stripes(Chart.CHART, 0, 'F2F2F2', 0.2, 'FFFFFF', 0.2)
+        chart.fill_linear_stripes(Chart.CHART, 0, '#F2F2F2', 0.2, '#FFFFFF', 0.2)
 
         # Set the horizontal dotted lines
         chart.set_grid(0, 25, 5, 5)

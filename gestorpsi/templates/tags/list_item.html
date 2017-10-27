@@ -106,6 +106,13 @@ GNU General Public License for more details.
 </table>
 
 <div class="pagination">
+    <span>Itens por p&aacute;gina</span>
+    <select name="item_per_page_selected" id="item_per_page_selected">
+        {% for x in item_per_page_options %}
+            <option value="{{ x }}" {% ifequal item_per_page_selected x %}selected{% endifequal %}>{{ x }}</option>
+        {% endfor %}
+    </select>
+
     <span class="step-links">
         {% if page.has_previous %}
             <a href="{{ list_url_base }}?page={{ page.previous_page_number }}{{ url_extra }}">{% trans "Previous" %}</a>

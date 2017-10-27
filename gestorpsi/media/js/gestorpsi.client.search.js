@@ -33,6 +33,10 @@ GNU General Public License for more details.
             var url = url + admis;
         }
 
+        // itens per page, ipp
+        ipp=$('select[name="item_per_page_selected"]').val();
+        var url = url + '&ipp=' + ipp;
+
         $('#page_results').load(url,function(responseTxt,statusTxt,xhr){
                 if(statusTxt=="success") {
                     $('#pageof').text($('.pagination span.current').text());

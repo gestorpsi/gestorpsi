@@ -352,14 +352,19 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     if client_service_pk_list: # exclude filtered for charged and discharged results
         object_list = object_list.filter(pk__in=client_service_pk_list)
     
+    # itens per page, ipp
+    item_per_page_options = ['10','15','20','25','30','35','40','45','50']
+    item_per_page_selected = request.GET.get('ipp')
+
+    if not item_per_page_selected:
+        item_per_page_selected = item_per_page_options[0]
 
     # paginator result
-    p = Paginator(object_list, PAGE_RESULTS)
+    p = Paginator(object_list, int(item_per_page_selected))
     page_number = 1 if not request.GET.get('page') else request.GET.get('page')
     page = p.page(page_number)
     object_list = page.object_list
     
-
     # mount page
     service_list = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
     initials = string.uppercase

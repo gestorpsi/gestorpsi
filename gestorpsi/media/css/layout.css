@@ -1652,8 +1652,8 @@ textarea.terms_of_service {
 }
 
 /* list paginator */
-
 ul.paginator, .pagination{
+        border: 2px solid #ccc;
         text-align: center;
         margin-top: 20px;
 }

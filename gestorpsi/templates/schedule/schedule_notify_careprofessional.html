@@ -40,6 +40,8 @@ GNU General Public License for more details.
 
         {% for x in o.event.referral.client.all %}{{ x.person.name }}{% endfor %}
         {% if o.annotation %} - {{ o.annotation }}{% endif %}
+        {% if o.occurrenceconfirmation.reason %} - {{ o.occurrenceconfirmation.reason }}{% endif %}
+
         <br />
     {% endfor %}
 

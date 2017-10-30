@@ -756,7 +756,7 @@ class Report(models.Model):
                     tmp[7] = ref.occurrence_set.filter(scheduleoccurrence__session__descriptive__isnull=False).count()
                     tmp[8] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=False).exclude(scheduleoccurrence__occurrenceconfirmation__presence=1).exclude(scheduleoccurrence__occurrenceconfirmation__presence=2).count()
                     tmp[9] = 'Sim' if ref.referralattach_set.all() else u'Não'
-                    tmp[10] = 'Inscrito' if cli.is_active() else 'Desligado'
+                    tmp[10] = 'Inscrito' if cli.referrals_discharged() else 'Desligado'
 
                     list_client.append(tmp)  # add to main list
 

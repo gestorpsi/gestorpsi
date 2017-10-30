@@ -3895,6 +3895,9 @@ msgstr "Perfil do Estagiário"
 msgid "All Students Deactive"
 msgstr "Estagiários Desativados"
 
+msgid "All Students Active"
+msgstr "Estagiários ativos"
+
 #: templates/careprofessional/student_list.html:45
 msgid "All Students"
 msgstr "Estagiários"

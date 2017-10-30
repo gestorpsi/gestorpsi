@@ -37,7 +37,7 @@ from gestorpsi.frontend.forms import FrontendProfileForm
 
 def birthdate_filter(request, frm=None, month=None, object=None, active=True, sort='increase'):
     """
-        Birth date filter:
+        Birthdate filter:
 
         return array of Person object
 
@@ -61,6 +61,7 @@ def birthdate_filter(request, frm=None, month=None, object=None, active=True, so
     if sort == 'decreasing':
         sort_list.reverse()
 
+    # all person or org
     if frm == 'secretary':
         for d in sort_list:
             for p in Person.objects.filter(client__active=active,\
@@ -69,7 +70,7 @@ def birthdate_filter(request, frm=None, month=None, object=None, active=True, so
                     organization=request.user.get_profile().org_active).order_by('name'):
                 if not p in birthdate_list:
                     birthdate_list.append(p)
-    
+
     # filter by careprofessional (object)
     if frm == 'careprofessional':
         for d in sort_list:
@@ -85,7 +86,6 @@ def birthdate_filter(request, frm=None, month=None, object=None, active=True, so
 
 
 def start(request):
-
     tab_index_class = 'active'  # tab settings active
 
     # admin do not have profile
@@ -99,7 +99,6 @@ def start(request):
         return HttpResponseRedirect('/frontend/settings/')
 
     date = datetime.now()
-
     td = date.today()
     # last day of current month
     last_day_month = calendar.monthrange(td.year, td.month)[1]
@@ -160,28 +159,26 @@ def start(request):
             list_student = []
             for srv in Service.objects.filter(responsibles=request.user.profile.person.careprofessional, organization=request.user.get_profile().org_active): 
                 for st in srv.professionals.filter(studentprofile__isnull=False):
-                    if not st in list_student:
-                        list_student.append(st)
+                    list_student.append([st.person.name, st.id])
+
             # limit
-            list_student.sort()
+            from operator import itemgetter
+            list_student = sorted(list_student, key=itemgetter(0), reverse=False)
             list_student = list_student[:request.user.frontendprofile.student]
             
-        return render_to_response('frontend/frontend_careprofessional_start.html', locals(), context_instance=RequestContext(request))
-    
     """ user's employee home page """
     if request.user.get_profile().person.is_employee():
         """
             events of all careprofessional
             birth date of all persons
         """
-        birthdate_list = birthdate_filter(request, 'secretary', month, active,'increase')
-        events = schedule_occurrences(request,\
+        list_birthdate = birthdate_filter(request, 'secretary', month, active,'increase')
+        list_schedule = schedule_occurrences(request,\
                 datetime.now().strftime('%Y'),\
                 datetime.now().strftime('%m'),\
                 datetime.now().strftime('%d')).filter(event__referral__professional__person__organization=request.user.get_profile().org_active)
-        return render_to_response('frontend/frontend_secretary.html', locals(), context_instance=RequestContext(request))
 
-    raise Http404
+    return render_to_response('frontend/frontend_index.html', locals(), context_instance=RequestContext(request))
 
 
 def settings(request):
@@ -204,7 +201,7 @@ def settings(request):
         if form.is_valid():
             form_save = form.save()
             messages.success(request, _(u'Configuração salva com sucesso!'))
-            return HttpResponseRedirect('/frontend/settings/')
+            return HttpResponseRedirect('/frontend/')
         else:
             messages.error(request, _(u'Valor invalido!'))
 

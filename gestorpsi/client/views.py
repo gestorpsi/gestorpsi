@@ -177,10 +177,11 @@ def home(request, object_id=None):
 # list all active clients
 @permission_required_with_403('client.client_list')
 def index(request, deactive=False):
-    tab_index = True
 
     # Test if clinic administrator has registered services before access client page.
     list_url_base = '/client/list/' if not deactive else '/client/list/deactive/'
+    tab_index = True if not deactive else False
+    tab_deactive = True if deactive else False
 
     if not Service.objects.filter(active=True, organization=request.user.get_profile().org_active).count():
         msg = _("There's no Service created yet. Please, create one before access Client, ") + " <a href='/service/add'> clique aqui.</a>"
@@ -226,7 +227,6 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     """
     user = request.user
     object_list = Client.objects.from_user(user, 'deactive' if deactive else 'active')
-    tab_index = True
 
     """
         return json

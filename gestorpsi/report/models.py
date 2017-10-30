@@ -744,18 +744,19 @@ class Report(models.Model):
                 for cli in ref.client.all():
 
                     list_client_total += 1 
-                    tmp = [False]*10
+                    tmp = [False]*11
 
                     tmp[0] = cli
                     tmp[1] = ref  # referral
                     tmp[2] = ref.occurrence_set.all().count() # total of events
                     tmp[3] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__presence=1).count()
                     tmp[4] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__presence=2).count()
-                    tmp[5] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=True).count()
-                    tmp[6] = ref.occurrence_set.filter(scheduleoccurrence__session__descriptive__isnull=False).count()
-                    tmp[7] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=False).exclude(scheduleoccurrence__occurrenceconfirmation__presence=1).exclude(scheduleoccurrence__occurrenceconfirmation__presence=2).count()
-                    tmp[8] = 'Sim' if ref.referralattach_set.all() else u'Não'
-                    tmp[9] = 'Ligado' if ref.referraldischarge_set.all() else 'Desligado'
+                    tmp[5] = tmp[3] + tmp[4]
+                    tmp[6] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=True).count()
+                    tmp[7] = ref.occurrence_set.filter(scheduleoccurrence__session__descriptive__isnull=False).count()
+                    tmp[8] = ref.occurrence_set.filter(scheduleoccurrence__occurrenceconfirmation__isnull=False).exclude(scheduleoccurrence__occurrenceconfirmation__presence=1).exclude(scheduleoccurrence__occurrenceconfirmation__presence=2).count()
+                    tmp[9] = 'Sim' if ref.referralattach_set.all() else u'Não'
+                    tmp[10] = 'Inscrito' if cli.is_active() else 'Desligado'
 
                     list_client.append(tmp)  # add to main list
 

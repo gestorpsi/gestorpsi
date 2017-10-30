@@ -2446,7 +2446,7 @@ msgstr "Lista de Cliente inativo"
 
 #: report/forms.py:48
 msgid "If selected will a list of clients for each report sub-item"
-msgstr "Imprimir lista de clients"
+msgstr "Imprimir lista de clientes"
 
 #: report/forms.py:49
 msgid "Acummulated graph?"

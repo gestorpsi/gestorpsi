@@ -40,6 +40,7 @@ $(function() {
         $('select#id_accumulated').hide();
         $('div.confirmation_status_filter').hide();
         $('div.formfill_options').hide();
+        $('div#list_client_checkbox').show();
 
         // admission
         if( $(this).val() == 1 ){
@@ -72,6 +73,7 @@ $(function() {
             $('div.formfill_options').show();
             $('div.service_filter').show();
             $('div.professional_filter').show();
+            $('div#list_client_checkbox').hide();
         }
     });
 

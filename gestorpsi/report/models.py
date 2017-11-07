@@ -659,7 +659,7 @@ class Report(models.Model):
             chart.set_colours(colours)
 
         # Set the vertical stripes
-        chart.fill_linear_stripes(Chart.CHART, 0, '#F2F2F2', 0.2, '#FFFFFF', 0.2)
+        chart.fill_linear_stripes(Chart.CHART, 0, 'F2F2F2', 0.2, 'FFFFFF', 0.2)
 
         # Set the horizontal dotted lines
         chart.set_grid(0, 25, 5, 5)

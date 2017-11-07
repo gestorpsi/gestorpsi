@@ -100,7 +100,13 @@ GNU General Public License for more details.
     <!-- schedule -->
     {% if list_schedule %}
         <div class="main_area">
-            <h3>{% trans "My today's schedule" %}</h3>
+
+            {% if request.user.get_profile.person.is_careprofessional or request.user.get_profile.person.is_student %}
+                <h3>{% trans "My today's schedule" %}</h3>
+            {% else %}
+                <h3>{% trans "Today's schedule" %}</h3>
+            {% endif %}
+
             <div class="contact">
                 {% if list_schedule.0 %}
                     <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
@@ -189,7 +195,7 @@ GNU General Public License for more details.
     <!-- student -->
     {% if list_student %}
         <div class="main_area">
-            <h3>{% trans "Student" %}</h3>
+            <h3>{% trans "All Students Active" %}</h3>
             <div class="contact">
                 {% if list_student.0 %}
                     <table id="search_results" class="zebra newtab" border="0" cellspacing="0" cellpadding="0">
@@ -197,7 +203,7 @@ GNU General Public License for more details.
                             {% for st in list_student %}
                                 <tr class="{% cycle 'zebra_0' 'zebra_1' %}">
                                     <td class="title">
-                                        <a href="{% url student-form st.id %}" title="{{ st.person.name }}">{{ st.person.name }}</a><br />
+                                        <a href="/careprofessional/student/{{ st.1 }}/" title="{{ st.0 }}">{{ st.0 }}</a><br />
                                     </td>
                                     <td></td>
                                 </tr>
@@ -210,7 +216,6 @@ GNU General Public License for more details.
             </div>
         </div>
     {% endif %}
-
 
     <!-- birthdate -->
     {% include "frontend/frontend_person_birthdate_list.html" %}

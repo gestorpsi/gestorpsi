@@ -14,29 +14,35 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 */
 
-
     function updateResults(url, initial) {
         if(!url) {
             if(!initial) {
                 initial = ''
             }
 
-            var admis;
             var url = '{{ list_url_base }}?search=' + encodeURIComponent($("#quick_search").val()) + "&initial=" + initial + '&service=' + $('select[name=service]').val() + '&subscribed=' + $('input[name=subscribed]').is(":checked") + '&discharged=' + $('input[name=discharged]').is(":checked") + '&queued=' + $('input[name=queued]').is(':checked') + '&nooccurrences=' + $('input[name=nooccurrences]').is(':checked');
 
+            // filter by admission date
             if ($('input#admissiondate').is(':checked') == true){
-                var admis = "&admissiondate=true" + "&admissionStart=" + $('input[name=search_client_date_start]').val() + "&admissionEnd=" + $('input[name=search_client_date_end]').val();
+                var url = url + "&admissiondate=true" + "&admissionStart=" + $('input[name=search_client_date_start]').val() + "&admissionEnd=" + $('input[name=search_client_date_end]').val();
             } else { 
-                var admis = "&admissiondate=false";
+                var url = url + "&admissiondate=false";
             }
 
-            var url = url + admis;
+            // export to PDF, exp
+            exp = $('input[name="export_pdf_list"]').is(':checked');
+            if (exp == true){
+                var url = url + '&exp=pdf';
+                window.open(url, '_blank', 'toolbar=0');
+                return false;
+            }
         }
 
         // itens per page, ipp
         ipp=$('select[name="item_per_page_selected"]').val();
         var url = url + '&ipp=' + ipp;
 
+        // reload result
         $('#page_results').load(url,function(responseTxt,statusTxt,xhr){
                 if(statusTxt=="success") {
                     $('#pageof').text($('.pagination span.current').text());
@@ -124,6 +130,7 @@ GNU General Public License for more details.
                 $("input.search_client_date_end").val(enddate.getDate() + "/" + enddate.getMonth() + "/" + enddate.getFullYear());
             },
         });
+
     }); // end function
 
 </script>

@@ -46,14 +46,14 @@ FORMFILL_CHOICE = (
 )
 
 FORMFILL_ATTACH_CHOICE = (
-    (0, '--- Todos ---'),
-    (1, 'Sim'),
+    (0, u'--- Todos ---'),
+    (1, u'Sim'),
     (2, u'Não'),
 )
 
 FORMFILL_STATUS_CHOICE = (
-    (0, '--- Todos ---'),
-    (1, 'Ligado'),
+    (0, u'--- Todos ---'),
+    (1, u'Ligado'),
     (2, u'Desligado'),
 )
 

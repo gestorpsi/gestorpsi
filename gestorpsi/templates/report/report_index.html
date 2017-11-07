@@ -102,13 +102,16 @@ GNU General Public License for more details.
                     <div style="clear:both;"></div>
 
                     <div class="export_data_form hidden">
+                        <div id="list_client_checkbox">
+                            <br />
+                            <label><b>{{ form.clients.label }}</b></label>{{ form.clients }}<br /><small>{{ form.clients.help_text }}</small>
+                        </div>
+
                         <br />
-                        <label><b>{{ form.clients.label }}</b></label><br />
-                        <br />{{ form.clients }}&nbsp;<small>{{ form.clients.help_text }}</small>
-                        <br /><br />
-                        <label><b>{{ form.format.label }}</b></label><br />
-                        <br />{{ form.format }}&nbsp;<small>{{ form.format.help_text }}</small>
-                        <br /><br />
+                        <label><b>{{ form.format.label }}</b></label>{{ form.format }}<br /><small>{{ form.format.help_text }}</small>
+
+                        <br />
+                        <br />
                         <button type="submit" name="export" class="report_submit_export">{% trans "Export Data" %}</button>
                     </div>
                     <br />

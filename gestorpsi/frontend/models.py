@@ -51,27 +51,17 @@ class FrontendProfile(models.Model):
         all clients, all services, all queue, all...
     """
     user = models.OneToOneField(User, unique=True)
-
-    #service = models.IntegerField(u'Serviço', default=10, choices=LIMIT)
-    #service_sort = models.IntegerField(u'Ordenar serviço', default=1, choices=SORT)
-
     my_service = models.ManyToManyField(Service, verbose_name=u'Serviço', null=True, blank=True)
-
     referral = models.IntegerField(u'Inscrição', default=10, choices=LIMIT)
     referral_sort = models.IntegerField(u'Ordenar inscrição', default=2, choices=SORT)
-
     client = models.IntegerField(u'Cliente', default=10, choices=LIMIT)
     client_sort = models.IntegerField(u'Ordenar cliente', default=1, choices=SORT)
-
     queue = models.IntegerField(u'Fila', default=10, choices=LIMIT)
     queue_sort = models.IntegerField(u'Ordenar fila', default=2, choices=SORT)
-
     birthdate_client = models.IntegerField(u'Aniversário', default=10, choices=LIMIT)
     birthdate_sort = models.IntegerField(u'Ordenar Aniversário', default=2, choices=SORT)
-
-    student = models.IntegerField(u'Estudante', default=10, choices=LIMIT)
-    student_sort = models.IntegerField(u'Ordenar estudante', default=1, choices=SORT)
-
+    student = models.IntegerField(u'Estagiário', default=10, choices=LIMIT)
+    student_sort = models.IntegerField(u'Ordenar estagiário', default=1, choices=SORT)
     schedule = models.IntegerField(u'Agenda', default=10, choices=LIMIT)
     subscribe_client = models.IntegerField(u'Inscrição cliente', default=10, choices=LIMIT)
 

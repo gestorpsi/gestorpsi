@@ -10,7 +10,7 @@
 
     <h4>Filtros</h4>
     Total encontrado(s) {{ list_client_total }}<br />
-    Periodo {{ date_start }} - {{ date_end }}<br />
+    Inscri&ccedil;&atilde;o entre {{ date_start }} e {{ date_end }}<br />
     Profissional {{ show_filters.4 }}<br />
     Servi&ccedil;o {{ show_filters.3 }}<br />
     Anexo {{ show_filters.2 }}<br />
@@ -21,29 +21,39 @@
 
             <tr class="legend">
                 <th>Cliente</th>
+                <th>Situa&ccedil;&atilde;o</th>
                 <th>Inscri&ccedil;&atilde;o</th>
-                <th>Total atendimento</th>
+                <th>Anexo</th>
+                <th>Total de eventos</th>
+                <th>N&atilde;o confirmado</th>
+                <th>N&atilde;o atendido</th>
+                <th>Atendimentos</th>
+                <th>Preenchido</th>
+
+                <!--
                 <th>Chegou no hor&aacute;rio</th>
                 <th>Chegou atrasado</th>
-                <th>N&atilde;o confirmado</th>
-                <th>Descri&ccedil;&atilde;o</th>
-                <th>Outros</th>
-                <th>Anexo</th>
-                <th>Situa&ccedil;&atilde;o</th>
+                -->
+
             </tr>
 
             {% for x in list_client %}
                 <tr class="{% cycle 'odd' 'even' %}">
                     <td style="text-align:center;"><a href="{% url client-home x.0.id %}" class="showdialog">{{ x.0 }}</a></td>
+                    <td style="text-align:center;">{{ x.10 }}</td>
                     <td style="text-align:center;"><a href="{% url client-referral-home x.0.id x.1.id %}">{{ x.1 }}</a></td>
+                    <td style="text-align:center;">{{ x.9 }}</td>
                     <td style="text-align:center;">{{ x.2 }}</td>
+                    <td style="text-align:center;">{{ x.6 }}</td>
+                    <td style="text-align:center;">{{ x.8 }}</td>
+                    <td style="text-align:center;">{{ x.5 }}</td>
+                    <td style="text-align:center;">{{ x.7 }}</td>
+
+                    <!--
                     <td style="text-align:center;">{{ x.3 }}</td>
                     <td style="text-align:center;">{{ x.4 }}</td>
-                    <td style="text-align:center;">{{ x.5 }}</td>
-                    <td style="text-align:center;">{{ x.6 }}</td>
-                    <td style="text-align:center;">{{ x.7 }}</td>
-                    <td style="text-align:center;">{{ x.8 }}</td>
-                    <td style="text-align:center;">{{ x.9 }}</td>
+                    -->
+
                 </tr>
             {% endfor %}
 

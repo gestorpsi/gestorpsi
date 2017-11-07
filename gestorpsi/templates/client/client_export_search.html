@@ -114,8 +114,6 @@ GNU General Public License for more details.
         <!--
         <link rel="stylesheet" type="text/css" href="/media/css/report.css" media="print"/>
         -->
-
-        <title>{{ title }} ({{ list_client_total }}) cliente{{ list_client_total|pluralize }} com prontu&aacute;rios.</title>
     </head>
 
     <body>
@@ -140,7 +138,7 @@ GNU General Public License for more details.
                 </td>
 
                 <td style="text-align:right;font-size: 12px;">
-                    <b>{{ title }} {% trans "Report" %}</b><br>
+                    <b>Lista de cliente</b><br>
                     {% trans "generated at" %} {% now "d/m/Y H:i" %} hs<br>
                     {% trans "by " %} {{ request.user.get_profile.person.name }}<br>
                 </td>
@@ -148,52 +146,34 @@ GNU General Public License for more details.
             </tr>
         </table>
 
-        <h2>{{ title }} {% trans "between" %} {{ date_start }} {% trans "and" %} {{ date_end }}</h2>
-
         <!-- list of clients -->
-        {% if list_client_total %}
+        {% if object_list %}
 
             <!-- main -->
             <div style="text-align:center; margin-top: 35px;">
-                <h1>Relat&oacute;rio de ({{ list_client_total }}) clientes com prontu&aacute;rio preenchido.</h1>
+                <h1>Lista de {{ object_list.count }} clientes.</h1>
             </div>
 
-            <h4>Filtros</h4>
-            Total encontrado(s) {{ list_client_total }}<br />
-            Inscri&ccedil;&atilde;o entre {{ date_start }} e {{ date_end }}<br />
-            Profissional {{ show_filters.4 }}<br />
-            Servi&ccedil;o {{ show_filters.3 }}<br />
-            Anexo {{ show_filters.2 }}<br />
-            Situa&ccedil;&atilde;o {{ show_filters.5 }}<br />
-
             <table class="report_list_receive">
-                <tbody>
+                <tr class="legend">
+                    <th>N&deg;</th>
+                    <th>Nome</th>
+                    <th>Idade</th>
+                    <th>Telefone</th>
+                    <th>N&deg; prontu&aacute;rio</th>
+                    <th>N&deg; prontu&aacute;rio legado</th>
+                </tr>
 
-                    <tr class="legend">
-                        <th style="width=25%">Cliente</th>
-                        <th>Situa&ccedil;&atilde;o</th>
-                        <th style="width=25%">Inscri&ccedil;&atilde;o</th>
-                        <th>Anexo</th>
-                        <th>Total de eventos</th>
-                        <th>N&atilde;o confirmado</th>
-                        <th>N&atilde;o antendido</th>
-                        <th>Atendimentos</th>
-                        <th>Preenchido</th>
+                {% for i in object_list %}
+                    <tr class="{% cycle 'odd' 'even' %}">
+                        <td style="text-align:center;">{{ forloop.counter }}</td>
+                        <td style="text-align:center;">{{ i.person.name }}</td>
+                        <td style="text-align:center;">{% if i.person.age %}{{ i.person.age }}{% endif %}</td>
+                        <td style="text-align:center;">{% for ph in i.person.phones.all %}{{ ph }}<br />{% endfor %}</td>
+                        <td style="text-align:center;">{{ i.idRecord }}</td>
+                        <td style="text-align:center;">{{ i.legacyRecord }}</td>
                     </tr>
-
-                    {% for x in list_client %}
-                        <tr class="{% cycle 'odd' 'even' %}">
-                            <td style="text-align:center;"><a href="{% url client-home x.0.id %}" class="showdialog">{{ x.0 }}</a></td>
-                            <td style="text-align:center;">{{ x.10 }}</td>
-                            <td style="text-align:center;"><a href="{% url client-referral-home x.0.id x.1.id %}">{{ x.1 }}</a></td>
-                            <td style="text-align:center;">{{ x.9 }}</td>
-                            <td style="text-align:center;">{{ x.2 }}</td>
-                            <td style="text-align:center;">{{ x.6 }}</td>
-                            <td style="text-align:center;">{{ x.8 }}</td>
-                            <td style="text-align:center;">{{ x.5 }}</td>
-                            <td style="text-align:center;">{{ x.7 }}</td>
-                        </tr>
-                    {% endfor %}
+                {% endfor %}
 
                 </tbody>
             </table>

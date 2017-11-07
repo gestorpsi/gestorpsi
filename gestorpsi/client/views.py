@@ -351,7 +351,17 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     # service filter
     if client_service_pk_list: # exclude filtered for charged and discharged results
         object_list = object_list.filter(pk__in=client_service_pk_list)
-    
+
+    # export to PDF
+    if request.GET.get('exp') == 'pdf': # pdf print
+        title = _(u'Lista de cliente')
+        html = 'client/client_export_search.html'
+
+        dt = u"%s-%s-%s" % (datetime.now().strftime('%d'), datetime.now().strftime('%b'), datetime.now().strftime('%Y'))
+        hr = u"%s-%s" % (datetime.now().strftime('%H'), datetime.now().strftime('%m'))
+        view = u'lista-cliente'
+        return write_pdf(html, locals(), (u'%s-%s-%s.pdf' % (view, dt, hr)))
+
     # itens per page, ipp
     item_per_page_options = ['10','15','20','25','30','35','40','45','50']
     item_per_page_selected = request.GET.get('ipp')
@@ -368,7 +378,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     # mount page
     service_list = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
     initials = string.uppercase
-
+    # default return
     return render_to_response('tags/list_item.html', locals(), context_instance=RequestContext(request))
 
 

@@ -356,7 +356,8 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     if request.GET.get('exp') == 'pdf': # pdf print
         title = _(u'Lista de cliente')
         html = 'client/client_export_search.html'
-
+        org_active = request.user.get_profile().org_active
+        IMG_PREFIX = MEDIA_ROOT.replace('\\','/') + '/'
         dt = u"%s-%s-%s" % (datetime.now().strftime('%d'), datetime.now().strftime('%b'), datetime.now().strftime('%Y'))
         hr = u"%s-%s" % (datetime.now().strftime('%H'), datetime.now().strftime('%m'))
         view = u'lista-cliente'

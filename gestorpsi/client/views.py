@@ -225,6 +225,17 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         search person family return JSON
         search client/initial letter return HTML
     """
+    show_filters = [u'Todos']*6
+
+    """
+    array
+        0 inscricao ativa
+        1 inscricao desligada
+        2 fila espera
+        3 sem agendamentos
+        4 data admissao inicio
+        5 data admissao fim
+    """
     user = request.user
     object_list = Client.objects.from_user(user, 'deactive' if deactive else 'active')
 
@@ -281,6 +292,8 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     # subscribed
     subscribed = True if request.GET.get('subscribed') == 'true' else False
     if subscribed:
+        show_filters[0] = "Sim"
+
         if not request.GET.get('service'):
             object_list = object_list.filter(referral__service__isnull=False).distinct()
         else:
@@ -296,6 +309,8 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     # discharged
     discharged = True if request.GET.get('discharged') == "true" else False
     if discharged:
+        show_filters[1] = "Sim"
+
         if not request.GET.get('service'):
             object_list = object_list.filter(referral__referraldischarge__isnull=False).distinct()
         else:
@@ -311,6 +326,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     # queued
     queued = True if request.GET.get('queued') == "true" else False
     if queued:
+        show_filters[2] = "Sim"
         queued = request.GET.get('queued')
         object_list = object_list.filter(referral__queue__isnull=False).distinct()
             
@@ -320,6 +336,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     # nooccurrences
     nooccurrences = True if request.GET.get('nooccurrences') == "true" else False
     if nooccurrences:
+        show_filters[3] = "Sim"
         nooccurrences = request.GET.get('nooccurrences')
         object_list = object_list.filter(referral__occurrence__isnull=True).distinct()
         url_extra += '&nooccurrences=%s' % nooccurrences
@@ -333,6 +350,9 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         date_start = request.GET.get('admissionStart')
         date_end = request.GET.get('admissionEnd')
         f = "%s-%s-%s" # format YYYY-mm-dd
+
+        show_filters[4] = date_start
+        show_filters[5] = date_end
 
         d,m,y = request.GET.get('admissionStart').split('/')
         s = f % (y,m,d)

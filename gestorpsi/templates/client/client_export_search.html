@@ -138,7 +138,7 @@ GNU General Public License for more details.
                 </td>
 
                 <td style="text-align:right;font-size: 12px;">
-                    <b>Lista de cliente</b><br>
+                    <b>Lista de clientes</b><br>
                     {% trans "generated at" %} {% now "d/m/Y H:i" %} hs<br>
                     {% trans "by " %} {{ request.user.get_profile.person.name }}<br>
                 </td>
@@ -154,22 +154,31 @@ GNU General Public License for more details.
                 <h1>Lista de {{ object_list.count }} clientes.</h1>
             </div>
 
+            <h4>Filtros</h4>
+            Total encontrado(s): {{ object_list.count }}<br />
+            Com inscri&ccedil;&atilde;o ativa: {{ show_filters.0 }}<br />
+            Com inscri&ccedil;&atilde;o desligada: {{ show_filters.1 }}<br />
+            Na fila de espera: {{ show_filters.2 }}<br />
+            Sem agendamentos: {{ show_filters.3 }}<br />
+            Data admiss&atilde;o entre: {{ show_filters.4 }} e {{ show_filters.5 }}<br />
+            <br />
+
             <table class="report_list_receive">
                 <tr class="legend">
-                    <th>N&deg;</th>
-                    <th>Nome</th>
-                    <th>Idade</th>
-                    <th>Telefone</th>
-                    <th>N&deg; prontu&aacute;rio</th>
-                    <th>N&deg; prontu&aacute;rio legado</th>
+                    <th width="5%">N&deg;</th>
+                    <th width="35%">Nome</th>
+                    <th width="5%">Idade</th>
+                    <th width="35%">Telefone</th>
+                    <th width="10%">N&deg; prontu&aacute;rio</th>
+                    <th width="10%">N&deg; prontu&aacute;rio legado</th>
                 </tr>
 
                 {% for i in object_list %}
                     <tr class="{% cycle 'odd' 'even' %}">
                         <td style="text-align:center;">{{ forloop.counter }}</td>
-                        <td style="text-align:center;">{{ i.person.name }}</td>
+                        <td style="text-align:justify;">{{ i.person.name }}</td>
                         <td style="text-align:center;">{% if i.person.age %}{{ i.person.age }}{% endif %}</td>
-                        <td style="text-align:center;">{% for ph in i.person.phones.all %}{{ ph }}<br />{% endfor %}</td>
+                        <td style="text-align:justify;">{% for ph in i.person.phones.all %}{{ ph }}{% endfor %}</td>
                         <td style="text-align:center;">{{ i.idRecord }}</td>
                         <td style="text-align:center;">{{ i.legacyRecord }}</td>
                     </tr>

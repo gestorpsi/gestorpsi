@@ -158,7 +158,7 @@ def start(request):
         if request.user.frontendprofile.student > 0:
             list_student = []
             for srv in Service.objects.filter(responsibles=request.user.profile.person.careprofessional, organization=request.user.get_profile().org_active): 
-                for st in srv.professionals.filter(studentprofile__isnull=False):
+                for st in srv.professionals.filter(studentprofile__isnull=False, active=True):
                     list_student.append([st.person.name, st.id])
 
             # limit

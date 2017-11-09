@@ -27,15 +27,13 @@ GNU General Public License for more details.
         <form method="post" action="" class="schedule refresh">
 
             <input type="hidden" name="tabtitle" class="tabtitle" />
-            <input type="hidden" name="day_month" id="id_day_month" value="{{  dtstart|date:"n" }}" />
+            <input type="hidden" name="day_month" id="id_day_month" value="{{ dtstart|date:"n" }}" />
             <input type="hidden" name="day_day" id="id_day_day" value="{{ dtstart|date:"j" }}" />
             <input type="hidden" name="day_year" id="id_day_year" value="{{ dtstart|date:"Y" }}" />
             <input type="hidden" name="room" id="id_room" value="{{ room_id }}" />
             <input type="hidden" name="slot_time" id="id_slot_time" value="{{ slot_time }}" />
             
             <div class="main_area">
-                {{ event_form.errors }}
-                {{ recurrence_form.errors }}
                 <a href="" id="help">&nbsp;</a>
                     <fieldset>
                         <legend>{% trans "Schedule Due" %}</legend>
@@ -57,32 +55,37 @@ GNU General Public License for more details.
                         <div class="event_is_online">
                             {{ recurrence_form.is_online }}
                         </div>
-
                     </fieldset>
 
                     {% if not referral %} {# schedule view #}
-                    <fieldset class="existing_referral" id="existing_referral_true">
-                        <legend>{% trans "Existing Referral" %}</legend>
-                    
-                        <div>
-                            <label style="margin-left: 0px !important;">{% trans "Client" %}<br />
-                                <div id="fb_client"></div> <!-- clients from organization -->
-                            </label>
-                        </div>
 
-                        <div class="hidden client_referrals" style="margin-left: 0px !important;">
-                            <label>{% trans "Service" %}<br />
-                                <select name="referral" class="big"></select>
-                            </label>
-                        </div>
+                        <fieldset class="existing_referral" id="existing_referral_true">
+                            <legend>{% trans "Existing Referral" %}</legend>
+                            <div>
+                                <label style="margin-left: 0px !important;">{% trans "Client" %}<br />
+                                    <div id="fb_client"></div> <!-- client of organization -->
+                                </label>
+                            </div>
 
-                        <div style="clear:both"><br />
-                            <a style="cursor:pointer;" onclick="$('fieldset#existing_referral_true').hide();$('fieldset.referral_group').show('slow'); ">{% trans "Schedule a Group?" %}</a>
-                        </div>
-                    </fieldset>
+                            <div class="hidden client_referrals" style="margin-left: 0px !important;">
+                                <label>{% trans "Service" %}<br />
+                                    <select name="referral" class="big"></select>
+                                </label>
+                            </div>
+
+                            <div style="clear:both"><br />
+                                <a style="cursor:pointer;" onclick="$('fieldset#existing_referral_true').hide();$('fieldset.referral_group').show('slow'); ">{% trans "Schedule a Group?" %}</a>
+                            </div>
+                        </fieldset>
 
                     {% else %} {# client schedule view #}
-                        <input type="hidden" name="referral" value="{{ referral.id }}" />
+                        <fieldset class="existing_referral" id="existing_referral_true">
+                            <legend>{% trans "Existing Referral" %}</legend>
+                                <input type="hidden" name="referral" value="{{ referral.id }}" />
+                                <p><b>Cliente:</b>&nbsp;{{ referral.client.all|join:", "}}</p>
+                                <p><b>Servi&ccedil;o:</b>&nbsp;{{ referral.service }}</p>
+                                <p><b>Profissional:</b>&nbsp;{{ referral.professional.all|join:", "}}</p>
+                        </fieldset>
                     {% endif %}
 
                     <fieldset class="referral_group hidden">
@@ -104,7 +107,7 @@ GNU General Public License for more details.
                         <legend>{% trans "Schedule Details" %}</legend>
 
                         <label>{% trans "Notes" %}<br />
-                            <textarea name="annotation" class="giant" rows="10"></textarea>
+                            {{ recurrence_form.annotation }}
                         </label>
 
                         <label>{% trans "Devices" %}<br /></label>
@@ -220,7 +223,15 @@ GNU General Public License for more details.
             <div id="sidebar" class="sidebar_save">
                 <div class="bg_blue">
                     {% include "tags/save.html" %}
+
+                    {% if to_confirm_conflict %}
+                        <span>
+                            <input type="checkbox" name="ignore_conflict" />
+                            &nbsp;Ignorar conflito
+                        </span>
+                    {% endif %}
                 </div>
+
             </div>
 
         </form>

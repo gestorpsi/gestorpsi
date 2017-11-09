@@ -108,7 +108,7 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
     device = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, choices = (
         [(i.id, i) for i in DeviceDetails.objects.all()]
         ))    
-    annotation = forms.CharField(required = False, widget=forms.Textarea())
+    annotation = forms.CharField(required=False, widget=forms.Textarea(attrs={'class':'giant','rows':'10'}))
     is_online = forms.BooleanField(required = False)
 
     class Meta:
@@ -135,7 +135,7 @@ class ScheduleOccurrenceForm(MultipleOccurrenceForm):
             widget=forms.Select(choices=timeslot_offset_options('end', int(request.user.get_profile().org_active.time_slot_schedule), place.hour_start, place.hour_end)) 
         )
 
-    def save(self, event, disable_check_busy = False):
+    def save(self, event, disable_check_busy=False):
         if self.cleaned_data['repeats'] == 'no':
             params = {}
         else:

@@ -138,6 +138,9 @@ def add_event(
         redirect_to = None
     ):
 
+    disable_check_busy = False
+    to_confirm_conflict = False  # dont show checkbox to ignore conflict
+
     # have to contains dtstart variable in URL. URL from schedule have to contains date and time data.
     if not 'dtstart' in request.GET:
         return http.HttpResponseRedirect('/schedule/')
@@ -150,6 +153,8 @@ def add_event(
     event_form = event_form_class
 
     if request.POST:
+        if request.POST.get('ignore_conflict') == 'on':
+            disable_check_busy = True
 
         # instance form
         recurrence_form = recurrence_form_class(request, room.place, request.POST)
@@ -158,7 +163,7 @@ def add_event(
         if recurrence_form.is_valid():
             if not request.POST.get('group'): # booking single client
                 referral = get_object_or_404(Referral, pk=request.POST.get('referral'), service__organization=request.user.get_profile().org_active)
-                event = recurrence_form.save(referral)
+                event_form = recurrence_form.save(referral, disable_check_busy=disable_check_busy)
 
             else: # booking a group
                 group = get_object_or_404(ServiceGroup, pk=request.POST.get('group'), service__organization=request.user.get_profile().org_active, active=True)
@@ -166,11 +171,11 @@ def add_event(
                     first = True
                     for group_member in group.charged_members():
                         if first:
-                            event = recurrence_form.save(group_member.referral)
+                            event_form = recurrence_form.save(group_member.referral)
                             first = False
                         else:
                             if not event.errors:
-                                event = recurrence_form.save(group_member.referral, True) # ignore busy check
+                                event_form = recurrence_form.save(group_member.referral, True) # ignore busy check
 
             if not request.POST.get('group'): # booking single client
                 '''
@@ -221,39 +226,35 @@ def add_event(
                             # update m2m
                             receive.save()
 
-
-            if not event.errors:
+            if not event_form.errors:
                 messages.success(request, _('Schedule saved successfully'))
                 return http.HttpResponseRedirect(redirect_to or '/schedule/')
             else:
-                return render_to_response(
-                    'schedule/event_detail.html', 
-                    dict(event=event),
-                    context_instance=RequestContext(request)
-                )
+                messages.info(request, _(u'Conflito de horário e/ou profissional e/ou cliente.'))
+                to_confirm_conflict = True  # show checkbox
 
+    else:
+        # mount form or return form errors
+        # convert hour:minutes to second to set initial select
+        interval_sec = time_delta_total_seconds( timedelta(minutes=int(request.user.get_profile().org_active.time_slot_schedule)) )
+        start_sec = time_delta_total_seconds( timedelta(hours=dtstart.hour, minutes=dtstart.minute) )
+        end_sec = start_sec + interval_sec
 
-    # mount form or return form errors
-    # convert hour:minutes to second to set initial select
-    interval_sec = time_delta_total_seconds( timedelta(minutes=int(request.user.get_profile().org_active.time_slot_schedule)) )
-    start_sec = time_delta_total_seconds( timedelta(hours=dtstart.hour, minutes=dtstart.minute) )
-    end_sec = start_sec + interval_sec
+        recurrence_form = recurrence_form_class( request,
+                                                 room.place, # start, end hour of place, render select in this range.
+                                                 initial = dict(
+                                                                dtstart=dtstart,
+                                                                day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
+                                                                until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
+                                                                room=room.id,
+                                                                start_time_delta=start_sec,
+                                                                end_time_delta=end_sec,
+                                                            )
+        )
 
-    recurrence_form = recurrence_form_class( request,
-                                             room.place, # start, end hour of place, render select in this range.
-                                             initial = dict(
-                                                            dtstart=dtstart, 
-                                                            day=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"), 
-                                                            until=datetime.strptime(dtstart.strftime("%Y-%m-%d"), "%Y-%m-%d"),
-                                                            room=room.id,
-                                                            start_time_delta=start_sec,
-                                                            end_time_delta=end_sec,
-                                                        )
-    )
+        recurrence_form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=room) | Q(mobility="2", lendable=True) | Q(place=room.place, mobility="2", lendable=False))]
 
-    recurrence_form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=room) | Q(mobility="2", lendable=True) | Q(place=room.place, mobility="2", lendable=False))]
-
-    return render_to_response( template,
+    return render_to_response(template,
                                dict(
                                         slot_time = request.user.get_profile().org_active.time_slot_schedule,
                                         dtstart = dtstart, 
@@ -264,6 +265,8 @@ def add_event(
                                         object = client,
                                         referral = referral,
                                         room_id = room.id,
+                                        disable_check_busy = disable_check_busy,
+                                        to_confirm_conflict = to_confirm_conflict,
                                     ),
                                 context_instance=RequestContext(request)
     )
@@ -280,6 +283,7 @@ def event_view(
     
     event = get_object_or_404(Referral, pk=pk, service__organization=request.user.get_profile().org_active)
     event_form = recurrence_form = None
+
     if request.method == 'POST':
         if '_update' in request.POST:
             event_form = event_form_class(request.POST, instance=event)

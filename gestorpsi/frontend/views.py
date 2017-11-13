@@ -159,7 +159,8 @@ def start(request):
             list_student = []
             for srv in Service.objects.filter(responsibles=request.user.profile.person.careprofessional, organization=request.user.get_profile().org_active): 
                 for st in srv.professionals.filter(studentprofile__isnull=False, active=True):
-                    list_student.append([st.person.name, st.id])
+                    if not [st.person.name, st.id] in list_student:
+                        list_student.append([st.person.name, st.id])
 
             # limit
             from operator import itemgetter

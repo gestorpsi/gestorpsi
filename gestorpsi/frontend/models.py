@@ -66,4 +66,4 @@ class FrontendProfile(models.Model):
     subscribe_client = models.IntegerField(u'Inscrição cliente', default=10, choices=LIMIT)
 
     def __unicode__(self):
-        return u"%s" % (self.profile)
+        return u"%s" % (self.user)

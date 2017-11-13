@@ -167,7 +167,7 @@ def home(request, object_id=None):
                                         'object': object,
                                         'referrals': referrals,
                                         'referrals_discharged': referrals_discharged,
-                                        'service_subscribers': Service.objects.filter(referral__client = object).distinct().count(),
+                                        'service_subscribers': Service.objects.filter(referral__client=object).distinct().count(),
                                         'care_delivered': c,
                                         },
                                         context_instance=RequestContext(request)
@@ -342,7 +342,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         url_extra += '&nooccurrences=%s' % nooccurrences
 
 
-    # admission date
+    # admission date of referral service
     admissiondate = True if request.GET.get('admissiondate') == "true" else False
 
     if admissiondate:
@@ -359,7 +359,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         d,m,y = request.GET.get('admissionEnd').split('/')
         e = f % (y,m,d)
 
-        object_list = object_list.filter(admission_date__gte=s, admission_date__lte=e)
+        object_list = object_list.filter(referral__date__gte=s, referral__date__lte=e)
         url_extra += '&admissiondate=true&admissionStart=%s&admissionEnd=%s' % (s,e)
     else:
         # set initial date

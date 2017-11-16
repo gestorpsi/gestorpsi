@@ -28,6 +28,13 @@ GNU General Public License for more details.
             } else { 
                 var url = url + "&admissiondate=false";
             }
+          
+            // filter by date subscribe a service
+            if ($('input#servicedate').is(':checked') == true){
+                var url = url + "&servicedate=true" + "&serviceStart=" + $('input[name=search_client_servicestart]').val() + "&serviceEnd=" + $('input[name=search_client_serviceend]').val();
+            } else { 
+                var url = url + "&servicedate=false";
+            }
 
             // export to PDF, exp
             exp = $('input[name="export_pdf_list"]').is(':checked');
@@ -39,7 +46,7 @@ GNU General Public License for more details.
         }
 
         // itens per page, ipp
-        ipp=$('select[name="item_per_page_selected"]').val();
+        ipp = $('select[name="item_per_page_selected"]').val();
         var url = url + '&ipp=' + ipp;
 
         // reload result
@@ -68,29 +75,26 @@ GNU General Public License for more details.
             updateResults(null, $(this).attr("initial"));
             return false;
         });
-        $('select[name=service]').change(function() {
-            updateResults();
-            return false;
-        });
+
         $('input[name=subscribed]').change(function() {
-            updateResults();
+            //updateResults();
             return false;
         });
         $('input[name=discharged]').change(function() {
-            updateResults();
+            //updateResults();
             return false;
         });
         $('input[name=queued]').change(function() {
-            updateResults();
+            //updateResults();
             return false;
         });
         $('input[name=nooccurrences]').change(function() {
-            updateResults();
+            //updateResults();
             return false;
         });
 
         $('a#cleanup').click(function() {
-            updateResults();
+            //updateResults();
             return false;
         });
 
@@ -109,8 +113,25 @@ GNU General Public License for more details.
                 $("div#search_client_admission").show();
             }else{
                 $("div#search_client_admission").hide();
-                updateResults();
-                return false;
+            }
+        });
+
+        // filter by a service
+        $('select[name=service]').change(function(){
+            // show service checkbox filter
+            if ($('select[name=service]').val()){ 
+                $('label[for=servicedate_label]').show();
+            } else { 
+                $('label[for=servicedate_label]').hide();
+            }
+        });
+
+        // show and hide input field for start/end date.
+        $('input#servicedate').click(function(){
+            if (this.checked){
+                $("div#search_client_servicedate").show();
+            }else{
+                $("div#search_client_servicedate").hide();
             }
         });
 

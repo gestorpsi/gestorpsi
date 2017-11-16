@@ -192,7 +192,7 @@ def index(request, deactive=False):
 @permission_required_with_403('client.client_list')
 def list_by_filter(request):
     """
-        pre-formated filter by link, start page.
+        pre-formated filter by link, start page, frontend.
         custom client list filter by url.
         get variables from URL using get and pre-format to use function list.
     """
@@ -341,10 +341,35 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         object_list = object_list.filter(referral__occurrence__isnull=True).distinct()
         url_extra += '&nooccurrences=%s' % nooccurrences
 
+    # service filter by join service date
+    servicedate = True if request.GET.get('servicedate') == "true" else False
+    if servicedate:
+        # filter admission date
+        servicedate_start = request.GET.get('serviceStart')
+        servicedate_end = request.GET.get('serviceEnd')
+        f = "%s-%s-%s" # format YYYY-mm-dd
+
+        #show_filters[4] = date_start
+        #show_filters[5] = date_end
+
+        d,m,y = request.GET.get('serviceStart').split('/')
+        s = f % (y,m,d)
+        d,m,y = request.GET.get('serviceEnd').split('/')
+        e = f % (y,m,d)
+
+        object_list = object_list.filter(referral__date__gte=s, referral__date__lte=e)
+        url_extra += '&servicedate=true&serviceStart=%s&serviceEnd=%s' % (s,e)
+    else:
+        # set initial date
+        # filter by date subscribe a service
+        servicedate_start = datetime.now().strftime("%d/%m/%Y")
+        servicedate_end = (datetime.now() + relativedelta(months=1)).strftime("%d/%m/%Y")
+        # set initial
+        url_extra += '&servicedate=false'
+
 
     # admission date of referral service
     admissiondate = True if request.GET.get('admissiondate') == "true" else False
-
     if admissiondate:
         # filter admission date
         date_start = request.GET.get('admissionStart')
@@ -359,7 +384,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         d,m,y = request.GET.get('admissionEnd').split('/')
         e = f % (y,m,d)
 
-        object_list = object_list.filter(referral__date__gte=s, referral__date__lte=e)
+        object_list = object_list.filter(admission_date__gte=s, admission_date__lte=e)
         url_extra += '&admissiondate=true&admissionStart=%s&admissionEnd=%s' % (s,e)
     else:
         # set initial date

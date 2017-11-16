@@ -47,34 +47,58 @@ GNU General Public License for more details.
 </div>
 
 <div class="search_header_aditional">
-    <select name="service">
-        <option value="">Todos os servi&ccedil;os</option>
-        {% for s in service_list %}
-            <option value="{{ s.pk }}"{% if s.pk == service %} selected{% endif %}>{{ s }}</option>
-        {% endfor %}
-    </select>
-    <label>
-        <input type="checkbox" name="subscribed"{% if subscribed %} checked{% endif %} />&nbsp;{% trans "Com inscrição ativa" %}
-    </label>
-    <label>
-        <input type="checkbox" name="discharged"{% if discharged %} checked{% endif %} />&nbsp;{% trans "Com inscrição desligada" %}
-    </label>
-    <label>
-        <input type="checkbox" name="queued"{% if queued %} checked{% endif %} />&nbsp;{% trans "Na Fila de Espera" %}
-    </label>
-    <label>
-        <input type="checkbox" name="nooccurrences"{% if nooccurrences %} checked{% endif %} />&nbsp;{% trans "Sem agendamentos" %}
-    </label>
-    <label>
-        <input type="checkbox" id="admissiondate" name="admissiondate"{% if admissiondate %} checked{% endif %} />&nbsp;{% trans "Data admiss&atilde;o" %}
-    </label>
+    <fieldset>
+        <legend>Filtros</legend>
+
+        <select name="service">
+            <option value="">Todos os servi&ccedil;os</option>
+            {% for s in service_list %}
+                <option value="{{ s.pk }}"{% if s.pk == service %} selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+        </select>
+        <label>
+            <input type="checkbox" name="subscribed"{% if subscribed %} checked{% endif %} />&nbsp;{% trans "Com inscrição ativa" %}
+        </label>
+        <label>
+            <input type="checkbox" name="discharged"{% if discharged %} checked{% endif %} />&nbsp;{% trans "Com inscrição desligada" %}
+        </label>
+        <label>
+            <input type="checkbox" name="queued"{% if queued %} checked{% endif %} />&nbsp;{% trans "Na Fila de Espera" %}
+        </label>
+        <label>
+            <input type="checkbox" name="nooccurrences"{% if nooccurrences %} checked{% endif %} />&nbsp;{% trans "Sem agendamentos" %}
+        </label>
+        <label>
+            <input type="checkbox" id="admissiondate" name="admissiondate"{% if admissiondate %} checked{% endif %} />&nbsp;{% trans "Data admiss&atilde;o" %}
+        </label>
+
+        <label for="servicedate_label" style="display:{% if servicedate %}block;{% else %}none;{% endif %}">
+            <input type="checkbox" id="servicedate" name="servicedate"{% if servicedate %} checked{% endif %} />&nbsp;{% trans "Data inscri&ccedil;&atilde;o servi&ccedil;o" %}
+        </label>
+
+    </fieldset>
 </div>
 
 <div id="search_client_admission" style="display:{% if admissiondate %}block{% else %}none{% endif %};">
-    <br />
-    <input placeholder="Data in&iacute;cio admiss&atilde;o" name="search_client_date_start" class="search_client_date_start" type="text" value="{{ date_start }}">
-    <input placeholder="Data fim admiss&atilde;o" name="search_client_date_end" class="search_client_date_end" type="text" value="{{ date_end }}">
-    <br /><br />
+    <label>Admiss&atilde;o - Filtro por data<br />
+        In&iacute;cio
+        <input placeholder="Data in&iacute;cio admiss&atilde;o" name="search_client_date_start" class="search_client_date_start" type="text" value="{{ date_start }}">
+        Fim
+        <input placeholder="Data fim admiss&atilde;o" name="search_client_date_end" class="search_client_date_end" type="text" value="{{ date_end }}">
+        <br />
+        <br />
+    </label>
+</div>
+
+<div id="search_client_servicedate" style="display:{% if servicedate %}block{% else %}none{% endif %};">
+    <label>Inscri&ccedil;&atilde;o no servi&ccedil;o - Filtro por data<br />
+        In&iacute;cio
+        <input placeholder="Data in&iacute;cio" name="search_client_servicestart" class="search_client_servicestart" type="text" value="{{ servicedate_start }}">
+        Fim
+        <input placeholder="Data fim" name="search_client_serviceend" class="search_client_serviceend" type="text" value="{{ servicedate_end }}">
+        <br />
+        <br />
+    </label>
 </div>
 
 <div id="msg_area" class="alert no_registers_available" style="display:none">

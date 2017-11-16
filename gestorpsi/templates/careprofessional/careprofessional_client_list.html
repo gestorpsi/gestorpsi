@@ -57,7 +57,7 @@ GNU General Public License for more details.
 
                                     {% for rc in i.referrals_charged %}
                                         <br />
-                                        {% trans "Referral ID" %}: <a href="{% url client-referral-home i.id rc.pk %}"><b>#{{ rc.pk }}</b></a>
+                                        {% trans "Referral ID" %}: <a href="{% url client-referral-home i.id rc.pk %}"><b>{{ rc.service }}&nbsp;#{{ rc.pk }}</b></a>
 
                                         <br />
                                         {% trans "Professionals" %}: {% for p in rc.professional.all %}<a href="{% url careprofessional-form p.id %}"><b>{{ p }}</b></a>{% if not forloop.last %}, {% endif %}{% endfor %}

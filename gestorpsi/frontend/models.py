@@ -54,8 +54,6 @@ class FrontendProfile(models.Model):
     my_service = models.ManyToManyField(Service, verbose_name=u'Serviço', null=True, blank=True)
     referral = models.IntegerField(u'Inscrição', default=10, choices=LIMIT)
     referral_sort = models.IntegerField(u'Ordenar inscrição', default=2, choices=SORT)
-    client = models.IntegerField(u'Cliente', default=10, choices=LIMIT)
-    client_sort = models.IntegerField(u'Ordenar cliente', default=1, choices=SORT)
     queue = models.IntegerField(u'Fila', default=10, choices=LIMIT)
     queue_sort = models.IntegerField(u'Ordenar fila', default=2, choices=SORT)
     birthdate_client = models.IntegerField(u'Aniversário', default=10, choices=LIMIT)

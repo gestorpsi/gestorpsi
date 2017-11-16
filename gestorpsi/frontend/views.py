@@ -112,7 +112,6 @@ def start(request):
     list_birthdate = False
     list_schedule = False
     list_student = False
-    list_client = False
     list_service = False
     list_referral = False
 

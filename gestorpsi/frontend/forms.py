@@ -20,5 +20,5 @@ from gestorpsi.frontend.models import FrontendProfile
 
 class FrontendProfileForm(forms.ModelForm):
     class Meta:
-        fields = ('my_service','schedule', 'referral', 'referral_sort', 'client', 'client_sort', 'queue','queue_sort', 'birthdate_client','birthdate_sort','subscribe_client', 'student','student_sort')
+        fields = ('my_service','schedule', 'referral', 'referral_sort', 'queue','queue_sort', 'birthdate_client','birthdate_sort','subscribe_client', 'student','student_sort')
         model = FrontendProfile

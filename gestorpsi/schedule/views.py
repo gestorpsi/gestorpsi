@@ -190,13 +190,12 @@ def add_event(
 
                         # Filter payment by pack or occurrence
                         for x in referral.covenant.filter(Q(charge=1) | Q(charge=2) ).distinct():
-
                             receive = Receive() # new
 
                             # by pack
                             if x.charge == 2:
                                 # check not terminated pack of same referral
-                                for p in Receive.objects.filter(occurrence__event=event, covenant_charge=2):
+                                for p in Receive.objects.filter(occurrence__event=event_form, covenant_charge=2):
                                     if not p.terminated_():
                                         # not terminated pack
                                         receive = p

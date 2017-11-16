@@ -157,10 +157,19 @@ def start(request):
 
         if request.user.frontendprofile.student > 0:
             list_student = []
-            for srv in Service.objects.filter(responsibles=request.user.profile.person.careprofessional, organization=request.user.get_profile().org_active): 
+
+            for srv in Service.objects.filter(active=True, responsibles=request.user.profile.person.careprofessional, organization=request.user.get_profile().org_active):
                 for st in srv.professionals.filter(studentprofile__isnull=False, active=True):
-                    if not [st.person.name, st.id] in list_student:
-                        list_student.append([st.person.name, st.id])
+                    tmp = []
+
+                    # all services where responsible is request user.
+                    for ss in st.prof_services.filter(active=True, responsibles=request.user.profile.person.careprofessional):
+                        if not ss in tmp:
+                            tmp.append(ss)
+
+                    # avoid duplicate student
+                    if not [st.person.name, st.id, tmp] in list_student:
+                        list_student.append([st.person.name, st.id, tmp])
 
             # limit
             from operator import itemgetter

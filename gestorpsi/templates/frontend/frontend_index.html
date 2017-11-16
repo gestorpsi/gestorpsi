@@ -205,7 +205,7 @@ GNU General Public License for more details.
                                     <td class="title">
                                         <a href="/careprofessional/student/{{ st.1 }}/" title="{{ st.0 }}">{{ st.0 }}</a><br />
                                     </td>
-                                    <td></td>
+                                    <td>{% for s in st.2 %}<p>{{ s }}</p>{% endfor %}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

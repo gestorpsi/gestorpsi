@@ -136,19 +136,33 @@ GNU General Public License for more details.
         });
 
         // load datepicker calendar
-        $('input.search_client_date_end').datepicker({dateFormat:'dd/mm/yy', changeYear:true, "gotoCurrent":true});
+        $('input.search_client_date_end').datepicker({dateFormat:'dd-mm-yy', changeYear:true, "gotoCurrent":true});
 
-        // update date end after choosen
+        // update date end after choosen for admission filter
         $('input.search_client_date_start, input.search_client_date_end').datepicker({
-            dateFormat:'dd/mm/yy',
+            dateFormat:'dd-mm-yy',
             changeYear:true,
             gotoCurrent:true,
             onSelect: function(dateText, inst){
                 // update dateEnd calendar
-                dtsplit = dateText.split("/");
+                dtsplit = dateText.split("-");
                 var enddate = new Date(dtsplit[2], dtsplit[1], dtsplit[0]);
                 enddate.setMonth(enddate.getMonth() + 1);
-                $("input.search_client_date_end").val(enddate.getDate() + "/" + enddate.getMonth() + "/" + enddate.getFullYear());
+                $("input.search_client_date_end").val(enddate.getDate() + "-" + enddate.getMonth() + "-" + enddate.getFullYear());
+            },
+        });
+
+        // update date end after choosen for service subscribe date filter
+        $('input.search_client_servicestart, input.search_client_serviceend').datepicker({
+            dateFormat:'dd-mm-yy',
+            changeYear:true,
+            gotoCurrent:true,
+            onSelect: function(dateText, inst){
+                // update dateEnd calendar
+                dtsplit = dateText.split("-");
+                var enddate = new Date(dtsplit[2], dtsplit[1], dtsplit[0]);
+                enddate.setMonth(enddate.getMonth() + 1);
+                $("input.search_client_serviceend").val(enddate.getDate() + "-" + enddate.getMonth() + "-" + enddate.getFullYear());
             },
         });
 

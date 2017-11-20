@@ -225,7 +225,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         search person family return JSON
         search client/initial letter return HTML
     """
-    show_filters = [u'Todos']*6
+    show_filters = [u'Todos']*8
 
     """
     array
@@ -235,6 +235,8 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         3 sem agendamentos
         4 data admissao inicio
         5 data admissao fim
+        6 data insc serviço inicio
+        7 data insc serviço fim
     """
     user = request.user
     object_list = Client.objects.from_user(user, 'deactive' if deactive else 'active')
@@ -281,9 +283,9 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         object_list = object_list.filter(Q(person__name__icontains=search) | Q(idRecord__icontains=search))  # idRecord / prontuario ou nome
         url_extra += '&search=%s' % search
 
-    # filters
-    if request.GET.get('service'):
-        service = request.GET.get('service')
+    # service
+    service = False if request.GET.get('service') == "False" else request.GET.get('service')
+    if service:
         object_list = object_list.filter(referral__service=service).distinct()
         url_extra += '&service=%s' % service
     
@@ -343,30 +345,32 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
 
     # service filter by join service date
     servicedate = True if request.GET.get('servicedate') == "true" else False
-    if servicedate:
-        # filter admission date
-        servicedate_start = request.GET.get('serviceStart')
-        servicedate_end = request.GET.get('serviceEnd')
+
+    if servicedate and service:
+        # format date
         f = "%s-%s-%s" # format YYYY-mm-dd
 
-        #show_filters[4] = date_start
-        #show_filters[5] = date_end
-
-        d,m,y = request.GET.get('serviceStart').split('/')
+        servicedate_start = request.GET.get('serviceStart')
+        d,m,y = servicedate_start.split('-')
         s = f % (y,m,d)
-        d,m,y = request.GET.get('serviceEnd').split('/')
+
+        servicedate_end = request.GET.get('serviceEnd')
+        d,m,y = servicedate_end.split('-')
         e = f % (y,m,d)
 
         object_list = object_list.filter(referral__date__gte=s, referral__date__lte=e)
-        url_extra += '&servicedate=true&serviceStart=%s&serviceEnd=%s' % (s,e)
+        url_extra += '&servicedate=true&serviceStart=%s&serviceEnd=%s' % (servicedate_start, servicedate_end)
+
+        # display filters
+        show_filters[6] = servicedate_start
+        show_filters[7] = servicedate_end
     else:
         # set initial date
         # filter by date subscribe a service
-        servicedate_start = datetime.now().strftime("%d/%m/%Y")
-        servicedate_end = (datetime.now() + relativedelta(months=1)).strftime("%d/%m/%Y")
+        servicedate_start = datetime.now().strftime("%d-%m-%Y")
+        servicedate_end = (datetime.now() + relativedelta(months=1)).strftime("%d-%m-%Y")
         # set initial
         url_extra += '&servicedate=false'
-
 
     # admission date of referral service
     admissiondate = True if request.GET.get('admissiondate') == "true" else False
@@ -379,17 +383,17 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         show_filters[4] = date_start
         show_filters[5] = date_end
 
-        d,m,y = request.GET.get('admissionStart').split('/')
+        d,m,y = request.GET.get('admissionStart').split('-')
         s = f % (y,m,d)
-        d,m,y = request.GET.get('admissionEnd').split('/')
+        d,m,y = request.GET.get('admissionEnd').split('-')
         e = f % (y,m,d)
 
         object_list = object_list.filter(admission_date__gte=s, admission_date__lte=e)
         url_extra += '&admissiondate=true&admissionStart=%s&admissionEnd=%s' % (s,e)
     else:
         # set initial date
-        date_start = datetime.now().strftime("%d/%m/%Y")
-        date_end = (datetime.now() + relativedelta(months=1)).strftime("%d/%m/%Y")
+        date_start = datetime.now().strftime("%d-%m-%Y")
+        date_end = (datetime.now() + relativedelta(months=1)).strftime("%d-%m-%Y")
         # set initial admission filter
         url_extra += '&admissiondate=false'
 

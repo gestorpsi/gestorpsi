@@ -71,9 +71,11 @@ GNU General Public License for more details.
         <label>
             <input type="checkbox" id="admissiondate" name="admissiondate"{% if admissiondate %} checked{% endif %} />&nbsp;{% trans "Data admiss&atilde;o" %}
         </label>
-
-        <label for="servicedate_label" style="display:{% if servicedate %}block;{% else %}none;{% endif %}">
-            <input type="checkbox" id="servicedate" name="servicedate"{% if servicedate %} checked{% endif %} />&nbsp;{% trans "Data inscri&ccedil;&atilde;o servi&ccedil;o" %}
+        <label>
+            <input type="checkbox" id="noreferral" name="noreferral"{% if noreferral %} checked{% endif %} />&nbsp;{% trans "Sem incri&ccedil;&atilde;o" %}
+        </label>
+        <label for="servicedate_label" style="display:{% if service %}block;{% else %}none;{% endif %}">
+            <input type="checkbox" id="servicedate" name="servicedate"{% if servicedate %} checked{% endif %} />&nbsp;{% trans "Data inscri&ccedil;&atilde;o no servi&ccedil;o" %}
         </label>
 
     </fieldset>

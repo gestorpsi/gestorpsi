@@ -19,7 +19,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render, render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext as _
@@ -225,7 +225,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         search person family return JSON
         search client/initial letter return HTML
     """
-    show_filters = [u'Todos']*8
+    show_filters = [u'Todos']*9
 
     """
     array
@@ -237,6 +237,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         5 data admissao fim
         6 data insc serviço inicio
         7 data insc serviço fim
+        8 sem inscrição
     """
     user = request.user
     object_list = Client.objects.from_user(user, 'deactive' if deactive else 'active')
@@ -283,16 +284,24 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         object_list = object_list.filter(Q(person__name__icontains=search) | Q(idRecord__icontains=search))  # idRecord / prontuario ou nome
         url_extra += '&search=%s' % search
 
+    # no referral, without subscribe a service
+    noreferral = True if request.GET.get('noreferral') == "true" else False
+    url_extra += '&noreferral=%s' % request.GET.get('noreferral')
+    if noreferral:
+        object_list = object_list.filter(referral__isnull=True)
+        show_filters[8] = "Sim"
+
     # service
     service = False if request.GET.get('service') == "False" else request.GET.get('service')
+    url_extra += '&service=%s' % service
     if service:
         object_list = object_list.filter(referral__service=service).distinct()
-        url_extra += '&service=%s' % service
     
     client_service_pk_list = []
 
     # subscribed
     subscribed = True if request.GET.get('subscribed') == 'true' else False
+    url_extra += '&subscribed=%s' % request.GET.get('subscribed')
     if subscribed:
         show_filters[0] = "Sim"
 
@@ -304,12 +313,11 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
                     if r.service.pk == request.GET.get('service') and c.pk not in client_service_pk_list:
                         client_service_pk_list.append(c.pk)
                         break
-        
-        url_extra += '&subscribed=%s' % subscribed
-    
 
     # discharged
     discharged = True if request.GET.get('discharged') == "true" else False
+    url_extra += '&discharged=%s' % request.GET.get('discharged')
+
     if discharged:
         show_filters[1] = "Sim"
 
@@ -322,30 +330,24 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
                         client_service_pk_list.append(c.pk)
                         break
 
-        url_extra += '&discharged=%s' % discharged
-
-
     # queued
     queued = True if request.GET.get('queued') == "true" else False
+    url_extra += '&queued=%s' % request.GET.get('queued')
     if queued:
         show_filters[2] = "Sim"
         queued = request.GET.get('queued')
         object_list = object_list.filter(referral__queue__isnull=False).distinct()
-            
-        url_extra += '&queued=%s' % queued
-
 
     # nooccurrences
     nooccurrences = True if request.GET.get('nooccurrences') == "true" else False
+    url_extra += '&nooccurrences=%s' % request.GET.get('nooccurrences')
     if nooccurrences:
         show_filters[3] = "Sim"
         nooccurrences = request.GET.get('nooccurrences')
         object_list = object_list.filter(referral__occurrence__isnull=True).distinct()
-        url_extra += '&nooccurrences=%s' % nooccurrences
 
     # service filter by join service date
     servicedate = True if request.GET.get('servicedate') == "true" else False
-
     if servicedate and service:
         # format date
         f = "%s-%s-%s" # format YYYY-mm-dd
@@ -369,32 +371,32 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         # filter by date subscribe a service
         servicedate_start = datetime.now().strftime("%d-%m-%Y")
         servicedate_end = (datetime.now() + relativedelta(months=1)).strftime("%d-%m-%Y")
-        # set initial
         url_extra += '&servicedate=false'
 
     # admission date of referral service
     admissiondate = True if request.GET.get('admissiondate') == "true" else False
     if admissiondate:
         # filter admission date
-        date_start = request.GET.get('admissionStart')
-        date_end = request.GET.get('admissionEnd')
         f = "%s-%s-%s" # format YYYY-mm-dd
 
-        show_filters[4] = date_start
-        show_filters[5] = date_end
-
+        date_start = request.GET.get('admissionStart')
         d,m,y = request.GET.get('admissionStart').split('-')
         s = f % (y,m,d)
+
+        date_end = request.GET.get('admissionEnd')
         d,m,y = request.GET.get('admissionEnd').split('-')
         e = f % (y,m,d)
 
         object_list = object_list.filter(admission_date__gte=s, admission_date__lte=e)
         url_extra += '&admissiondate=true&admissionStart=%s&admissionEnd=%s' % (s,e)
+
+        # display filters
+        show_filters[4] = date_start
+        show_filters[5] = date_end
     else:
         # set initial date
         date_start = datetime.now().strftime("%d-%m-%Y")
         date_end = (datetime.now() + relativedelta(months=1)).strftime("%d-%m-%Y")
-        # set initial admission filter
         url_extra += '&admissiondate=false'
 
     # service filter
@@ -428,8 +430,9 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     # mount page
     service_list = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
     initials = string.uppercase
+
     # default return
-    return render_to_response('tags/list_item.html', locals(), context_instance=RequestContext(request))
+    return render(request, 'tags/list_item.html', locals(), context_instance=RequestContext(request))
 
 
 @permission_required_with_403('client.client_read')

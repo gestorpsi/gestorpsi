@@ -14,35 +14,35 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 */
 
-    function updateResults(url, initial) {
-        if(!url) {
-            if(!initial) {
-                initial = ''
-            }
+$(document).ready(function(){
 
-            var url = '{{ list_url_base }}?search=' + encodeURIComponent($("#quick_search").val()) + "&initial=" + initial + '&service=' + $('select[name=service]').val() + '&subscribed=' + $('input[name=subscribed]').is(":checked") + '&discharged=' + $('input[name=discharged]').is(":checked") + '&queued=' + $('input[name=queued]').is(':checked') + '&nooccurrences=' + $('input[name=nooccurrences]').is(':checked');
+    function updateResults(url, initial){
+        if (!initial){
+            var initial = ''
+        }
 
-            // filter by admission date
-            if ($('input#admissiondate').is(':checked') == true){
-                var url = url + "&admissiondate=true" + "&admissionStart=" + $('input[name=search_client_date_start]').val() + "&admissionEnd=" + $('input[name=search_client_date_end]').val();
-            } else { 
-                var url = url + "&admissiondate=false";
-            }
-          
-            // filter by date subscribe a service
-            if ($('input#servicedate').is(':checked') == true){
-                var url = url + "&servicedate=true" + "&serviceStart=" + $('input[name=search_client_servicestart]').val() + "&serviceEnd=" + $('input[name=search_client_serviceend]').val();
-            } else { 
-                var url = url + "&servicedate=false";
-            }
+        var url = '{{ list_url_base }}?search=' + encodeURIComponent($("#quick_search").val()) + "&initial=" + initial + '&service=' + $('select[name=service]').val() + '&subscribed=' + $('input[name=subscribed]').is(":checked") + '&discharged=' + $('input[name=discharged]').is(":checked") + '&queued=' + $('input[name=queued]').is(':checked') + '&nooccurrences=' + $('input[name=nooccurrences]').is(':checked') + '&noreferral=' + $('input[name=noreferral]').is(":checked");
 
-            // export to PDF, exp
-            exp = $('input[name="export_pdf_list"]').is(':checked');
-            if (exp == true){
-                var url = url + '&exp=pdf';
-                window.open(url, '_blank', 'toolbar=0');
-                return false;
-            }
+        // filter by admission date
+        if ($('input#admissiondate').is(':checked') == true){
+            var url = url + "&admissiondate=true" + "&admissionStart=" + $('input[name=search_client_date_start]').val() + "&admissionEnd=" + $('input[name=search_client_date_end]').val();
+        } else {
+            var url = url + "&admissiondate=false";
+        }
+
+        // filter by date subscribe a service
+        if ($('input#servicedate').is(':checked') == true){
+            var url = url + "&servicedate=true" + "&serviceStart=" + $('input[name=search_client_servicestart]').val() + "&serviceEnd=" + $('input[name=search_client_serviceend]').val();
+        } else {
+            var url = url + "&servicedate=false";
+        }
+
+        // export to PDF, exp
+        exp = $('input[name="export_pdf_list"]').is(':checked');
+        if (exp == true){
+            var url = url + '&exp=pdf';
+            window.open(url, '_blank', 'toolbar=0');
+            return false;
         }
 
         // itens per page, ipp
@@ -51,57 +51,52 @@ GNU General Public License for more details.
 
         // reload result
         $('#page_results').load(url,function(responseTxt,statusTxt,xhr){
-                if(statusTxt=="success") {
-                    $('#pageof').text($('.pagination span.current').text());
-                    $('#object_length').text($('input[name=result_count]').val());
-                    }
-                if(statusTxt=="error")
-                    alert("Error: "+xhr.status+": "+xhr.statusText);
+            if(statusTxt=="success"){
+                $('#pageof').text($('.pagination span.current').text());
+                $('#object_length').text($('input[name=result_count]').val());
+            }
+
+            if(statusTxt=="error"){
+                alert("Error: "+xhr.status+": "+xhr.statusText);
+            }
         });
-    }
+
+    } // end updateResults
 
 
-    $(function() {
+    // bind functions
+    $(function(){
         $('#quick_search').focus();
-        $('#page_results .pagination a').click(function() {
-            updateResults($(this).attr('href'));
+
+        // paginator link ?
+        $('#page_results .pagination a').click(function(){
+            updateResults($(this).attr('href'), null);
             return false;
         });
-        $('a.quick_search').click(function() {
+
+        // submit procura buttom
+        $('a.quick_search').click(function(){
             updateResults();
             return false;
         });
-        $('a.initial').click(function() {
+
+        // initial letter of name
+        $('a.initial').click(function(){
             updateResults(null, $(this).attr("initial"));
             return false;
         });
 
-        $('input[name=subscribed]').change(function() {
-            //updateResults();
-            return false;
-        });
-        $('input[name=discharged]').change(function() {
-            //updateResults();
-            return false;
-        });
-        $('input[name=queued]').change(function() {
-            //updateResults();
-            return false;
-        });
-        $('input[name=nooccurrences]').change(function() {
-            //updateResults();
-            return false;
-        });
-
-        $('a#cleanup').click(function() {
-            //updateResults();
-            return false;
-        });
-
-        $('#quick_search').keydown(function(e) {
-            if (e.keyCode == 13) {
+        // name or part of name
+        $('#quick_search').keydown(function(e){
+            if (e.keyCode == 13){
                 $('a.quick_search').click();
             }
+        });
+
+        // clean up
+        $('a#cleanup').click(function(){
+            updateResults();
+            return false;
         });
 
         /*
@@ -168,4 +163,8 @@ GNU General Public License for more details.
 
     }); // end function
 
+    // unbind function, avoid duplicate action and request.
+    $('a.quick_search').unbind();
+
+}); // end ready
 </script>

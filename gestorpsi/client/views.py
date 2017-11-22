@@ -294,9 +294,8 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
 
     # service
     url_extra += '&service=%s' % request.GET.get('service')
-    if request.GET.get('service') == "False" or\
-            request.GET.get('service') == "None" or\
-            request.GET.get('service') == None or\
+    if request.GET.get('service') == "false" or\
+            request.GET.get('service') == "none" or\
             not request.GET.get('service'):
         service = False
     else:

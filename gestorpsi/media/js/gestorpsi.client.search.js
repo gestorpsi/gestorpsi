@@ -116,6 +116,7 @@ $(document).ready(function(){
             // show service checkbox filter
             if ($('select[name=service]').val()){ 
                 $('label[for=servicedate_label]').show();
+                $('input#noreferral').attr('checked', false);
             } else { 
                 $('label[for=servicedate_label]').hide();
             }
@@ -130,8 +131,31 @@ $(document).ready(function(){
             }
         });
 
-        // load datepicker calendar
-        $('input.search_client_date_end').datepicker({dateFormat:'dd-mm-yy', changeYear:true, "gotoCurrent":true});
+        // reset noreferral not any other checkbox
+        $('input:checkbox').click(function(){ 
+            if (this.name != 'noreferral'){ 
+                $('input#noreferral').attr('checked', false);
+            }
+        });
+
+        // show and hide input field for start/end date.
+        $('input#noreferral').click(function(){
+            if (this.checked){
+                // reset another checkbox
+                $("input[name=subscribed]").attr('checked', false);
+                $("input[name=discharged]").attr('checked', false);
+                $("input[name=queued]").attr('checked', false);
+                $("input[name=nooccurrences]").attr('checked', false);
+                $("input[name=admissiondate]").attr('checked', false);
+                $("input[name=servicedate]").attr('checked', false);
+                // hide input date
+                $("div#search_client_admission").hide();
+                $("div#search_client_servicedate").hide();
+                $('label[for=servicedate_label]').hide();
+                // select service
+                $("select[name=service]").val("");
+            }
+        });
 
         // update date end after choosen for admission filter
         $('input.search_client_date_start, input.search_client_date_end').datepicker({

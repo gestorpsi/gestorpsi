@@ -15,14 +15,17 @@ GNU General Public License for more details.
 */
 
 $(document).ready(function(){
-
     function updateResults(url, initial){
-        if (!initial){
-            var initial = ''
+        // URL default
+        if (!url){
+            if (!initial){
+                var initial = ''
+            }
+
+            var url = '{{ list_url_base }}?search=' + encodeURIComponent($("#quick_search").val()) + "&initial=" + initial + '&service=' + $('select[name=service]').val() + '&subscribed=' + $('input[name=subscribed]').is(":checked") + '&discharged=' + $('input[name=discharged]').is(":checked") + '&queued=' + $('input[name=queued]').is(':checked') + '&nooccurrences=' + $('input[name=nooccurrences]').is(':checked') + '&noreferral=' + $('input[name=noreferral]').is(":checked");
         }
 
-        var url = '{{ list_url_base }}?search=' + encodeURIComponent($("#quick_search").val()) + "&initial=" + initial + '&service=' + $('select[name=service]').val() + '&subscribed=' + $('input[name=subscribed]').is(":checked") + '&discharged=' + $('input[name=discharged]').is(":checked") + '&queued=' + $('input[name=queued]').is(':checked') + '&nooccurrences=' + $('input[name=nooccurrences]').is(':checked') + '&noreferral=' + $('input[name=noreferral]').is(":checked");
-
+        // URL from parameter
         // filter by admission date
         if ($('input#admissiondate').is(':checked') == true){
             var url = url + "&admissiondate=true" + "&admissionStart=" + $('input[name=search_client_date_start]').val() + "&admissionEnd=" + $('input[name=search_client_date_end]').val();
@@ -68,7 +71,7 @@ $(document).ready(function(){
     $(function(){
         $('#quick_search').focus();
 
-        // paginator link ?
+        // paginator link
         $('#page_results .pagination a').click(function(){
             updateResults($(this).attr('href'), null);
             return false;

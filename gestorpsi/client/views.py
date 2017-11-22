@@ -29,7 +29,7 @@ from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 
-from gestorpsi.settings import DEBUG, MEDIA_URL, MEDIA_ROOT, PAGE_RESULTS
+from gestorpsi.settings import DEBUG, MEDIA_URL, MEDIA_ROOT
 
 from gestorpsi.address.models import Country, State, AddressType, City
 
@@ -225,7 +225,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         search person family return JSON
         search client/initial letter return HTML
     """
-    show_filters = [u'Todos']*9
+    show_filters = [u'Todos']*10
 
     """
     array
@@ -238,6 +238,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         6 data insc serviço inicio
         7 data insc serviço fim
         8 sem inscrição
+        9 serviço
     """
     user = request.user
     object_list = Client.objects.from_user(user, 'deactive' if deactive else 'active')
@@ -292,8 +293,16 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         show_filters[8] = "Sim"
 
     # service
-    service = False if request.GET.get('service') == "False" else request.GET.get('service')
-    url_extra += '&service=%s' % service
+    url_extra += '&service=%s' % request.GET.get('service')
+    if request.GET.get('service') == "False" or\
+            request.GET.get('service') == "None" or\
+            request.GET.get('service') == None or\
+            not request.GET.get('service'):
+        service = False
+    else:
+        service = request.GET.get('service')
+        show_filters[9] = Service.objects.get(pk=service)
+
     if service:
         object_list = object_list.filter(referral__service=service).distinct()
     
@@ -313,7 +322,6 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
                     if r.service.pk == request.GET.get('service') and c.pk not in client_service_pk_list:
                         client_service_pk_list.append(c.pk)
                         break
-
     # discharged
     discharged = True if request.GET.get('discharged') == "true" else False
     url_extra += '&discharged=%s' % request.GET.get('discharged')
@@ -329,6 +337,7 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
                     if r.service.pk == request.GET.get('service') and c.pk not in client_service_pk_list:
                         client_service_pk_list.append(c.pk)
                         break
+
 
     # queued
     queued = True if request.GET.get('queued') == "true" else False
@@ -424,9 +433,9 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     # paginator result
     p = Paginator(object_list, int(item_per_page_selected))
     page_number = 1 if not request.GET.get('page') else request.GET.get('page')
-    page = p.page(page_number)
+    page = p.page(int(page_number))
     object_list = page.object_list
-    
+
     # mount page
     service_list = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)
     initials = string.uppercase

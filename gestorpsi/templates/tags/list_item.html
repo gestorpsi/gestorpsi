@@ -51,7 +51,7 @@ GNU General Public License for more details.
         <legend>Filtros</legend>
 
         <select name="service">
-            <option value="">Todos os servi&ccedil;os</option>
+            <option value="false">Todos os servi&ccedil;os</option>
             {% for s in service_list %}
                 <option value="{{ s.pk }}"{% if s.pk == service %} selected{% endif %}>{{ s }}</option>
             {% endfor %}
@@ -117,7 +117,7 @@ GNU General Public License for more details.
     </thead>
 
     <tbody>
-        {% for i in object_list %}
+        {% for i in page.object_list %}
             <tr class="zebra_{% cycle 0,1 %}">
                 <td class="title">
                     <a href="{{ i.list_item_url }}" title="{{ i.list_item_title }}">{{ i.list_item_title }}</a>

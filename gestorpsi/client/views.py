@@ -411,16 +411,14 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
     if client_service_pk_list: # exclude filtered for charged and discharged results
         object_list = object_list.filter(pk__in=client_service_pk_list)
 
-    # export to PDF
+    # export
     if request.GET.get('exp') == 'pdf': # pdf print
         title = _(u'Lista de cliente')
         html = 'client/client_export_search.html'
         org_active = request.user.get_profile().org_active
-        IMG_PREFIX = MEDIA_ROOT.replace('\\','/') + '/'
-        dt = u"%s-%s-%s" % (datetime.now().strftime('%d'), datetime.now().strftime('%b'), datetime.now().strftime('%Y'))
-        hr = u"%s-%s" % (datetime.now().strftime('%H'), datetime.now().strftime('%m'))
         view = u'lista-cliente'
-        return write_pdf(html, locals(), (u'%s-%s-%s.pdf' % (view, dt, hr)))
+        URL = MEDIA_URL
+        return render_to_response(html, locals())
 
     # itens per page, ipp
     item_per_page_options = ['10','15','20','25','30','35','40','45','50']

@@ -41,10 +41,10 @@ $(document).ready(function(){
         }
 
         // export to PDF, exp
-        exp = $('input[name="export_pdf_list"]').is(':checked');
+        exp = $('input[name="export_list"]').is(':checked');
         if (exp == true){
             var url = url + '&exp=pdf';
-            window.open(url, '_blank', 'toolbar=0');
+            window.open(url, '_blank', 'toolbar=0, scrollbars=1, status=1');
             return false;
         }
 
@@ -117,10 +117,13 @@ $(document).ready(function(){
         // filter by a service
         $('select[name=service]').change(function(){
             // show service checkbox filter
-            if ($('select[name=service]').val()){ 
+            if ($('select[name=service]').val() != 'false'){
                 $('label[for=servicedate_label]').show();
                 $('input#noreferral').attr('checked', false);
+                $('div#export_option').show();
             } else { 
+                $("input[name=export_list]").attr('checked', false);
+                $('div#export_option').hide();
                 $('label[for=servicedate_label]').hide();
             }
         });

@@ -544,4 +544,11 @@ $(function() {
         $('div.registers_available > h2 span').hide();
     });
 
+    // name or part of name, enter to submit
+    $('input.quick_search').keydown(function(e){
+        if (e.keyCode == 13){
+            $('a.quick_search').click();
+        }
+    });
+
 });

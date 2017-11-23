@@ -41,12 +41,14 @@ $(function(){
     * student quick search deactive
     */
     $('div#search_header.student_search.deactive a.quick_search').click(function() {
+        var val = $('input.quick_search').val();
+
         var matrix_year='';
         if ($("input[name=search_student_matrix_year]").val().length > 0) { 
             matrix_year = '?matrixyear=' + $("input[name=search_student_matrix_year]").val();
         }
 
-        ($(this).prev().val().length >= 1) ? updateStudent('/careprofessional/student/filter/' + $(this).prev().val() + '/page1/deactive/' + matrix_year, true, 'careprofessional/student/filter/' + $(this).prev().val(), matrix_year) : updateStudent('/careprofessional/student/page1/deactive/' + matrix_year, true, 'careprofessional/student', matrix_year);
+        (val.length >= 1) ? updateStudent('/careprofessional/student/filter/' + val + '/page1/deactive/' + matrix_year, true, 'careprofessional/student/filter/' + val, matrix_year) : updateStudent('/careprofessional/student/page1/deactive/' + matrix_year, true, 'careprofessional/student', matrix_year);
     });
     
     /**
@@ -76,13 +78,14 @@ $(function(){
     /**
     * student quick search active
     */
-    $('div#search_header.student_search.active a.quick_search').click(function() {
+    $('div#search_header.student_search.active a.quick_search, div#sidebar a.quick_search').click(function() {
+        var val = $('input.quick_search').val();
+
         var matrix_year='';
         if ($("input[name=search_student_matrix_year]").val().length > 0) { 
             matrix_year = '?matrixyear=' + $("input[name=search_student_matrix_year]").val();
         }
-
-        ($(this).prev().val().length >= 1) ? updateStudent('/careprofessional/student/filter/' + $(this).prev().val() + '/page1/' + matrix_year, false, 'careprofessional/student/filter/' + $(this).prev().val(), matrix_year) : updateStudent('/careprofessional/student/page1/' + matrix_year, false, 'careprofessional/student', matrix_year);
+        (val.length >= 1) ? updateStudent('/careprofessional/student/filter/' + val + '/page1/' + matrix_year, false, 'careprofessional/student/filter/' + val, matrix_year) : updateStudent('/careprofessional/student/page1/' + matrix_year, false, 'careprofessional/student', matrix_year);
     });
 
     /**

@@ -53,7 +53,7 @@ GNU General Public License for more details.
         <select name="service">
             <option value="false">Todos os servi&ccedil;os</option>
             {% for s in service_list %}
-                <option value="{{ s.pk }}"{% if s.pk == service %} selected{% endif %}>{{ s }}</option>
+                <option value="{{ s.pk }}"{% if s.pk == service.id %} selected{% endif %}>{{ s }}</option>
             {% endfor %}
         </select>
         <label>

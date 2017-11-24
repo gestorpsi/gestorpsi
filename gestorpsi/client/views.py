@@ -293,18 +293,15 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         show_filters[8] = "Sim"
 
     # service
-    url_extra += '&service=%s' % request.GET.get('service')
-    if request.GET.get('service') == "false" or\
-            request.GET.get('service') == "none" or\
-            not request.GET.get('service'):
-        service = False
-    else:
-        service = request.GET.get('service')
-        show_filters[9] = Service.objects.get(pk=service)
-
-    if service:
+    url_extra += "&service=%s" % request.GET.get('service')
+    # service can be none,None,False,false,empty or another
+    try:
+        service = Service.objects.get(pk=request.GET.get('service'), organization=request.user.get_profile().org_active)
+        show_filters[9] = service
         object_list = object_list.filter(referral__service=service).distinct()
-    
+    except:
+        service = False
+
     client_service_pk_list = []
 
     # subscribed

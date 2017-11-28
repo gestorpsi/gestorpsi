@@ -103,8 +103,8 @@ def start(request):
     # last day of current month
     last_day_month = calendar.monthrange(td.year, td.month)[1]
     current_month = (td.day-last_day_month)+td.day
-    last3months = (td-relativedelta(months=3)).strftime("%d/%m/%Y")
-    last6months = (td-relativedelta(months=6)).strftime("%d/%m/%Y")
+    last3months = (td-relativedelta(months=3)).strftime("%d-%m-%Y")
+    last6months = (td-relativedelta(months=6)).strftime("%d-%m-%Y")
 
     # list
     list_subscribe = False

@@ -47,10 +47,10 @@ GNU General Public License for more details.
                                 <td>
                                     <select class="medium" id="autoloadfilter">
                                         <option>--- Filtros</option>
-                                        <option value="/client/filterby/?admissiondate=true&admissionStart=01/{{ td.month }}/{{ td.year }}&admissionEnd={{ last_day_month }}/{{ td.month }}/{{ td.year }}&service={{ service.id }}">M&ecirc;s corrente</option>
-                                        <option value="/client/filterby/?admissiondate=true&admissionStart=01/01/{{ td.year }}&admissionEnd=31/12/{{ td.year }}&service={{ service.id }}">Ano corrente</option>
-                                        <option value="/client/filterby/?admissiondate=true&admissionStart={{ last3months }}&admissionEnd={{ td.day }}/{{ td.month }}/{{ td.year }}&service={{ service.id }}">&Uacute;ltimos 3 meses</option>
-                                        <option value="/client/filterby/?admissiondate=true&admissionStart={{ last6months }}&admissionEnd={{ td.day }}/{{ td.month }}/{{ td.year }}&service={{ service.id }}">&Uacute;ltimos 6 meses</option>
+                                        <option value="/client/filterby/?admissiondate=true&admissionStart=01-{{ td.month }}-{{ td.year }}&admissionEnd={{ last_day_month }}-{{ td.month }}-{{ td.year }}&service={{ service.id }}">M&ecirc;s corrente</option>
+                                        <option value="/client/filterby/?admissiondate=true&admissionStart=01-01-{{ td.year }}&admissionEnd=31-12-{{ td.year }}&service={{ service.id }}">Ano corrente</option>
+                                        <option value="/client/filterby/?admissiondate=true&admissionStart={{ last3months }}&admissionEnd={{ td.day }}-{{ td.month }}-{{ td.year }}&service={{ service.id }}">&Uacute;ltimos 3 meses</option>
+                                        <option value="/client/filterby/?admissiondate=true&admissionStart={{ last6months }}&admissionEnd={{ td.day }}-{{ td.month }}-{{ td.year }}&service={{ service.id }}">&Uacute;ltimos 6 meses</option>
                                     </select>
                                 </td>
                             </tr>

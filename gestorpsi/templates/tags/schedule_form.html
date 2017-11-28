@@ -20,12 +20,25 @@ GNU General Public License for more details.
 
 <div class="schedule">
     <div id="form">
-
         <h2 class="title_schedule title">{% trans "Adding New Event" %}</h2>
         <p class="description">{% trans "Inform the schedule details then click on Save button" %}</p>
 
-        <form method="post" action="" class="schedule refresh">
+        <!-- text about conflict -->
+        {% if event_form.errors %}
+            <div class="msg_area error">
+                {% trans "Some occurrences could not be registered due to conflict errors." %}<br />
+                {% trans "Follow below a list with these conflits and their reasons:" %}
+                <ul style="color:black;">
+                    {% for i in event_form.errors %}
+                        <li>{{ i.start_time|date:"r"|slice:":-9" }} - {{ i.end_time|date:"H:i" }}hs<br /><small> {{ i.error_message|join:".<br />" }}</small></li>
+                    {% endfor %}
+                </ul>
+                <a href="" style="color:black; font-weight:bold;">{% trans "Schedule on another day?" %}</a><br />
+                <a href="/schedule/" style="color:black;font-weight:bold;">{% trans "Go back to schedule" %}</a><br />
+            </div>
+        {% endif %}
 
+        <form method="post" action="" class="schedule refresh">
             <input type="hidden" name="tabtitle" class="tabtitle" />
             <input type="hidden" name="day_month" id="id_day_month" value="{{ dtstart|date:"n" }}" />
             <input type="hidden" name="day_day" id="id_day_day" value="{{ dtstart|date:"j" }}" />

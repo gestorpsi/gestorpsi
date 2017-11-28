@@ -174,7 +174,7 @@ def add_event(
                             event_form = recurrence_form.save(group_member.referral)
                             first = False
                         else:
-                            if not event.errors:
+                            if not event_form.errors:
                                 event_form = recurrence_form.save(group_member.referral, True) # ignore busy check
 
             if not request.POST.get('group'): # booking single client
@@ -229,7 +229,7 @@ def add_event(
                 messages.success(request, _('Schedule saved successfully'))
                 return http.HttpResponseRedirect(redirect_to or '/schedule/')
             else:
-                messages.info(request, _(u'Conflito de horário e/ou profissional e/ou cliente.'))
+                messages.info(request, _(u'Conflito no agendamento.'))
                 to_confirm_conflict = True  # show checkbox
 
     else:
@@ -414,13 +414,12 @@ def occurrence_confirmation_form_group(
 
         # update payments, not required.
         for x in Receive.objects.filter(occurrence=occurrence):
-
             pfx = 'receive_form---%s' % x.id # hardcode Jquery 
             # new! fill payment date today
             if not x.launch_date:
-                receive_list.append( ReceiveFormUpdate(request.POST, instance=x, prefix=pfx, initial={'launch_date':date.today()}) )
+                receive_list.append(ReceiveFormUpdate(request.POST, instance=x, prefix=pfx, initial={'launch_date':date.today()}))
             else:
-                receive_list.append( ReceiveFormUpdate(request.POST, instance=x, prefix=pfx) )
+                receive_list.append(ReceiveFormUpdate(request.POST, instance=x, prefix=pfx))
 
             if form_receive.is_valid():
                 fp = form_receive.save()
@@ -430,7 +429,6 @@ def occurrence_confirmation_form_group(
         form = form_class(request.POST, instance=occurrence_confirmation, initial={ 'device':initial_device, })
 
         if form.is_valid():
-
             data = form.save(commit=False)
             data.occurrence = occurrence
 
@@ -447,9 +445,7 @@ def occurrence_confirmation_form_group(
 
             messages.success(request, _('Occurrence confirmation updated successfully'))
             return http.HttpResponseRedirect(redirect_to or request.path)
-
         else:
-
             form.fields['device'].widget.choices = [(i.id, i) for i in DeviceDetails.objects.active(request.user.get_profile().org_active).filter(Q(room=occurrence.room) | Q(mobility=2, lendable=True) | Q(place =  occurrence.room.place, mobility=2, lendable=False))]
 
             messages.error(request, _(u'Campo inválido ou obrigatório'))

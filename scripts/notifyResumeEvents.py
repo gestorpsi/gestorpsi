@@ -33,7 +33,7 @@ from gestorpsi.settings import NOTIFY_EVENTS_PROFESSIONAL
 dt = date.today() + timedelta(NOTIFY_EVENTS_PROFESSIONAL) # correct
 
 # main code
-week_days = (u'Segunda-feira', u'Terça-feira', u'Quarta-feira', u'Quinta-feira', u'Sexta-feira', u'Sábado', u'Domingo')
+week_days = (u'Domingo', u'Segunda-feira', u'Terça-feira', u'Quarta-feira', u'Quinta-feira', u'Sexta-feira', u'Sábado')
 d = dt.day
 m = dt.month
 y = dt.year

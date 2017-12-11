@@ -581,8 +581,8 @@ def referral_int_form(request, object_id=None, referral_id=None):
                 gm = GroupMembers(group=group, client=object, referral=data)
                 gm.save()
 
-        messages.success(request, _('Referral saved successfully'))
-        return HttpResponseRedirect(reverse('client-referral-home', args=[object.id,data.id]) )
+            messages.success(request, _('Referral saved successfully'))
+            return HttpResponseRedirect(reverse('client-referral-home', args=[object.id,data.id]) )
     else:
         form = ReferralForm(request)
 

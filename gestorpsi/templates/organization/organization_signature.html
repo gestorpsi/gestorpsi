@@ -142,6 +142,7 @@ GNU General Public License for more details.
                                     <th>Vencimento</th>
                                     <th>A&ccedil;&atilde;o</th>
                                 </tr>
+
                                 <tr>
                                     {% for x in obj.invoice_.0 %}
                                         <th style='font-weight: normal;'>{{ x.plan }}</th>
@@ -154,7 +155,7 @@ GNU General Public License for more details.
 
                                                 <!-- boleto -->
                                                 {% ifequal x.payment_type.id 2 %}
-                                                    <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
+                                                    <form method="post" target="_blank" action="https://pagseguro.uol.com.br/v2/checkout/payment.html">
                                                         <!-- Campos obrigat&oacute;rios -->
                                                         <input name="receiverEmail" type="hidden" value="ozp@psico.net">
                                                         <input name="currency" type="hidden" value="BRL">
@@ -185,7 +186,8 @@ GNU General Public License for more details.
                                             {% else %}
                                                 Pago em {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
                                             {% endifequal %}
-                                        </th>
+
+                                        </th> <!-- fecha aqui -->
                                     {% endfor %}
                                 </tr>
                             </table>
@@ -217,7 +219,7 @@ GNU General Public License for more details.
                                             {% ifequal x.status 0 %}
                                                 <!-- boleto -->
                                                 {% ifequal x.payment_type.id 2 %}
-                                                    <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
+                                                    <form method="post" target="_blank" action="https://pagseguro.uol.com.br/v2/checkout/payment.html">
                                                         <!-- Campos obrigat&oacute;rios -->  
                                                         <input name="receiverEmail" type="hidden" value="ozp@psico.net">  
                                                         <input name="currency" type="hidden" value="BRL">  
@@ -248,9 +250,10 @@ GNU General Public License for more details.
                                             {% else %}
                                                 Pago em {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
                                             {% endifequal %}
-
-                                            <tr><th>.</th></tr>
+                                        
+                                        </th>
                                     </tr>
+                                    <tr><th>.</th></tr><!-- blank line -->
                                 {% endfor %}
                                             
                             </table>
@@ -277,11 +280,13 @@ GNU General Public License for more details.
                                         <th style='font-weight: normal;'>{{ x.start_date|date:"d M Y" }}</th>
                                         <th style='font-weight: normal;'>{{ x.end_date|date:"d M Y" }}</th>
                                         <th style='font-weight: normal;{% ifequal x.status 0 %} background-color:red;{% endifequal %}'>{{ x.expiry_date|date:"d M Y" }}</th>
-                                        <th style='font-weight: normal;{% ifnotequal x.status 0 %}background-color:green;'{% endifnotequal %}>
+                                        <th style='font-weight: normal;{% ifnotequal x.status 0 %} background-color:green;{% endifnotequal %}'>
+
+                                            <!-- not paid -->
                                             {% ifequal x.status 0 %}
                                                 <!-- boleto -->
                                                 {% ifequal x.payment_type.id 2 %}
-                                                    <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" target='_blank'>
+                                                    <form method="post" target="_blank" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" />
                                                         <!-- Campos obrigat&oacute;rios -->
                                                         <input name="receiverEmail" type="hidden" value="ozp@psico.net">
                                                         <input name="currency" type="hidden" value="BRL">
@@ -309,11 +314,14 @@ GNU General Public License for more details.
                                                 <!-- cartao -->
                                                 {% ifequal x.payment_type.id 1 %}{{ x.plan.gateway_code|safe}}{% endifequal %}
 
+                                            <!-- paid -->
                                             {% else %}
                                                 Pago em {{ x.date_payed|date:"d M Y" }} <br /> {% ifequal x.status 2 %} {{ x.get_status_display }} {% else %} {{ x.get_bank_display }} {% endifequal %}
                                             {% endifequal %}
+                                        </th>
                                     </tr>
-                                    <tr><th>.</th></tr>
+                                    <tr><th>.</th></tr><!-- blank line -->
+
                                 {% endfor %}
                             </table>
                     </div>

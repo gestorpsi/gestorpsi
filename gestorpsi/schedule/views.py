@@ -192,6 +192,10 @@ def add_event(
                         for x in referral.covenant.filter(Q(charge=1) | Q(charge=2) ).distinct():
                             receive = Receive() # new
 
+                            """
+                                by pack, by event.
+                                charge2 overwrite charge1
+                            """
                             # by pack
                             if x.charge == 2:
                                 # check not terminated pack of same referral

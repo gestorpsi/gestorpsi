@@ -92,12 +92,22 @@ class Receive(models.Model):
 
     def terminated_(self):
         '''
-            if pack have event times like as covenant
+            return Boolean, True OR False
+
+            return True:
+                if pack have event times like as covenant
+                if referral are discharge
         '''
-        if self.covenant_pack_size == self.occurrence.count():
-            return True
+        if self.referral:
+            if self.covenant_pack_size == self.occurrence.count() or self.referral.referraldischarge:
+                return True
+            else:
+                return False
         else:
-            return False
+            if self.covenant_pack_size == self.occurrence.count():
+                return True
+            else:
+                return False
 
 
     def status_color_(self):

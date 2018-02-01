@@ -706,8 +706,9 @@ def referral_form(request, object_id=None, referral_id=None):
 
 
 @permission_required_with_403('referral.referral_read')
-def referral_discharge_form(request, object_id = None, referral_id = None, discharge_id = None):
-    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+def referral_discharge_form(request, object_id=None, referral_id=None, discharge_id=None):
+
+    object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
 
     # check access by requested user

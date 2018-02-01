@@ -372,13 +372,13 @@ class Report(models.Model):
 
         # overview of all status
         # date range, all professional and all services
-        aberto = Receive.objects.filter(status=0, launch_date__gte=date_start, launch_date__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).distinct().order_by('occurrence__event__referral__client__person__name','referral__client__person__name','occurrence__start_time')
+        aberto = Receive.objects.filter(status=0, launch_date__gte=date_start, launch_date__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).order_by('occurrence__event__referral__client__person__name','referral__client__person__name').distinct()
 
-        recebido = Receive.objects.filter(status=1, launch_date__gte=date_start, launch_date__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).distinct().order_by('occurrence__event__referral__client__person__name','referral__client__person__name','occurrence__start_time')
+        recebido = Receive.objects.filter(status=1, launch_date__gte=date_start, launch_date__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).order_by('occurrence__event__referral__client__person__name','referral__client__person__name').distinct()
 
-        faturado = Receive.objects.filter(status=2, launch_date__gte=date_start, launch_date__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).distinct().order_by('occurrence__event__referral__client__person__name','referral__client__person__name','occurrence__start_time')
+        faturado = Receive.objects.filter(status=2, launch_date__gte=date_start, launch_date__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).order_by('occurrence__event__referral__client__person__name','referral__client__person__name').distinct()
 
-        cancelado = Receive.objects.filter(status=3, launch_date__gte=date_start, launch_date__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).distinct().order_by('occurrence__event__referral__client__person__name','referral__client__person__name','occurrence__start_time')
+        cancelado = Receive.objects.filter(status=3, launch_date__gte=date_start, launch_date__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).order_by('occurrence__event__referral__client__person__name','referral__client__person__name').distinct()
 
         # professional
         if not professional == 'all':
@@ -438,10 +438,10 @@ class Report(models.Model):
             receive_ar = ['0','1','2','3'] # all
 
             # graphic pizza
-            data.append( ['Aberto',aberto.count()] )
-            data.append( ['Recebido',recebido.count()] )
-            data.append( ['Faturado',faturado.count()] )
-            data.append( ['Cancelado',cancelado.count()] )
+            data.append(['Aberto', aberto.count()])
+            data.append(['Recebido', recebido.count()])
+            data.append(['Faturado', faturado.count()])
+            data.append(['Cancelado', cancelado.count()])
 
             total_receive = aberto.count()+recebido.count()+faturado.count()+cancelado.count()
 
@@ -515,19 +515,19 @@ class Report(models.Model):
                 3 = sum total of status
         '''
         # list of clients and counter %
-        if '0' in receive_ar :
-            receive_list.append( ['Aberto',aberto,'#FF0000',total_aberto] )
+        if '0' in receive_ar:
+            receive_list.append(['Aberto', aberto, '#FF0000', total_aberto])
 
-        if '1' in receive_ar :
-            receive_list.append( ['Recebido',recebido,'#008000',total_recebido] )
+        if '1' in receive_ar:
+            receive_list.append(['Recebido', recebido, '#008000', total_recebido])
 
-        if '2' in receive_ar :
-            receive_list.append( ['Faturado',faturado,'#FF8000',total_faturado] )
+        if '2' in receive_ar:
+            receive_list.append(['Faturado', faturado, '#FF8000', total_faturado])
 
-        if '3' in receive_ar :
-            receive_list.append( ['Cancelado',cancelado,'#0000FF',total_cancelado] )
+        if '3' in receive_ar:
+            receive_list.append(['Cancelado', cancelado, '#0000FF', total_cancelado])
 
-        if total_receive == 0 :  # no data
+        if total_receive == 0:  # no data
             data = False
 
         return data, colors, date_start, date_end, receive_list, total_receive

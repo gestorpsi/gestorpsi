@@ -200,7 +200,7 @@ def add_event(
                             if x.charge == 2:
                                 # check not terminated pack of same referral
                                 for p in Receive.objects.filter(occurrence__event=event_form, covenant_charge=2):
-                                    if not p.terminated_():
+                                    if not p.terminated_()[0]:
                                         # not terminated pack
                                         receive = p
 

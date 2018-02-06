@@ -97,17 +97,28 @@ class Receive(models.Model):
             return True:
                 if pack have event times like as covenant
                 if referral are discharge
+
+            return array
+                0 = terminated, True OR False
+                1 = list of confirmed presence of events , presence ID <= 3
+                2 = list of NOT confirmed presence of events, presence ID >= 4
         '''
+        r = [False]*3
+        r[1] = self.occurrence.filter(scheduleoccurrence__occurrenceconfirmation__presence__lte=3)  # confirmed
+        r[2] = self.occurrence.filter(scheduleoccurrence__occurrenceconfirmation__presence__gte=4)  # NOT confirmed
+
         if self.referral:
             if self.covenant_pack_size == self.occurrence.filter(scheduleoccurrence__occurrenceconfirmation__presence__lte=3).count() or self.referral.referraldischarge:
-                return True
+                r[0] = True
             else:
-                return False
+                r[0] = False
         else:
-            if self.covenant_pack_size == self.occurrence.count():
-                return True
+            if self.covenant_pack_size == self.occurrence.filter(scheduleoccurrence__occurrenceconfirmation__presence__lte=3).count():
+                r[0] = True
             else:
-                return False
+                r[0] = False
+
+        return r
 
 
     def status_color_(self):

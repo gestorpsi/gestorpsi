@@ -423,14 +423,28 @@
                     <small>
                         {{ x.status_color_|safe }}
 
-                        {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} - {% for x in x.get_display_payment_way_name_ %} {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
+                        {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_.0|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} - {% for x in x.get_display_payment_way_name_ %} {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
+                    </small>
+                </p>
 
+                <p>
+                  <small>
+                        Evento Confirmado<br />
+                        {% if x.terminated_.1 %}
+                                {% for o in x.terminated_.1.all %}
+                                    ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
+                                {% endfor %}
+                        {% else %}
+                            <a href="{% url financial-receive-form x.id %}">{{ x.created|date:"D, d b Y" }}</a>
+                        {% endif %}
+                        <br />
                         <br />
 
-                        {% if x.occurrence.all.0 %}
-                            {% for o in x.occurrence.all %}
-                                ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
-                            {% endfor %}
+                        Evento N&atilde;o Confirmado<br />
+                        {% if x.terminated_.2 %}
+                                {% for o in x.terminated_.2.all %}
+                                    ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
+                                {% endfor %}
                         {% else %}
                             <a href="{% url financial-receive-form x.id %}">{{ x.created|date:"D, d b Y" }}</a>
                         {% endif %}
@@ -447,17 +461,33 @@
                         <small>
                             {{ x.status_color_|safe }}
 
-                            {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} - {% for x in x.get_display_payment_way_name_ %} {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
+                            {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_.0|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} - {% for x in x.get_display_payment_way_name_ %} {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
                             <br />
+                        </small>
+                    </p>
 
-                            {% if x.occurrence.all.0 %}
-                                {% for o in x.occurrence.all %}
+                    <p>
+                        <small>
+                            Evento Confirmado<br />
+                            {% if x.terminated_.1 %}
+                                {% for o in x.terminated_.1.all %}
                                     ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
                                 {% endfor %}
                             {% else %}
                                 <a href="{% url financial-receive-form x.id %}">{{ x.created|date:"D, d b Y" }}</a>
                             {% endif %}
-                      </small>
+                            <br />
+                            <br />
+
+                            Evento N&atilde;o Confirmado<br />
+                            {% if x.terminated_.2 %}
+                                {% for o in x.terminated_.2.all %}
+                                    ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <a href="{% url financial-receive-form x.id %}">{{ x.created|date:"D, d b Y" }}</a>
+                            {% endif %}
+                        </small>
                     </p>
                 {% endfor %}
                 </p>
@@ -471,20 +501,34 @@
 
         <!-- eventos passados -->
         {% if receive_past_small %}
-            <p><h2 class='red'>Passados</h2>
+            <p><h2 class='red'>Passados</h2></p>
             {% for x in receive_past_small %}
                 <p>
                     <small>
                         {{ x.status_color_|safe }}
 
-                        {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} - {% for x in x.get_display_payment_way_name_ %} {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
+                        {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_.0|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} - {% for x in x.get_display_payment_way_name_ %} {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
+                    </small>
+                </p>
 
+                <p>
+                  <small>
+                        Evento Confirmado<br />
+                        {% if x.terminated_.1 %}
+                                {% for o in x.terminated_.1.all %}
+                                    ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
+                                {% endfor %}
+                        {% else %}
+                            <a href="{% url financial-receive-form x.id %}">{{ x.created|date:"D, d b Y" }}</a>
+                        {% endif %}
+                        <br />
                         <br />
 
-                        {% if x.occurrence.all.0 %}
-                            {% for o in x.occurrence.all %}
-                                ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
-                            {% endfor %}
+                        Evento N&atilde;o Confirmado<br />
+                        {% if x.terminated_.2 %}
+                                {% for o in x.terminated_.2.all %}
+                                    ({{ forloop.counter }})<a href="/schedule/events/{{ o.id }}/confirmation/">{{ o.start_time|date:"r"|slice:"-9" }} hs</a> {% if not forloop.last %} | {% endif %}
+                                {% endfor %}
                         {% else %}
                             <a href="{% url financial-receive-form x.id %}">{{ x.created|date:"D, d b Y" }}</a>
                         {% endif %}
@@ -501,7 +545,7 @@
                         <small>
                             {{ x.status_color_|safe }}
 
-                            {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} - {% for x in x.get_display_payment_way_name_ %} {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
+                            {{ x.name }} - {% ifequal x.covenant_charge 2 %} Pacote {{ x.covenant_pack_size }} sess&otilde;es {{ x.terminated_.0|yesno:"Finalizado, Nao finalizado" }} {% else %} {{ x.get_covenant_charge_display }} {% endifequal %} - R$ {{ x.total }} - {% for x in x.get_display_payment_way_name_ %} {{ x }} {% if not forloop.last %}, {% endif %} {% endfor %} 
                             <br />
 
                             {% if x.occurrence.all.0 %}

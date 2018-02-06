@@ -193,7 +193,7 @@ GNU General Public License for more details.
 
                                     <td style="text-align:center;">
                                         {% ifequal c.covenant_charge 2 %}
-                                            {{ c.get_covenant_charge_display }} ({{ c.covenant_pack_size }}) {% if c.terminated_ %}F{% else %}NF{% endif %}
+                                            {{ c.get_covenant_charge_display }} ({{ c.covenant_pack_size }}) {% if c.terminated_.0 %}F{% else %}NF{% endif %}
                                         {% else %}
                                             {{ c.get_covenant_charge_display }}
                                         {% endifequal %}

@@ -372,13 +372,13 @@ class Report(models.Model):
 
         # overview of all status
         # date range, all professional and all services
-        aberto = Receive.objects.filter(status=0, launch_date__gte=date_start, launch_date__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).order_by('occurrence__event__referral__client__person__name','referral__client__person__name').distinct()
+        aberto = Receive.objects.filter(status=0, launch_date__gte=date_start, launch_date__lte=date_end, occurrence__scheduleoccurrence__occurrenceconfirmation__presence__lte=3).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).order_by('occurrence__event__referral__client__person__name','referral__client__person__name').distinct()
 
-        recebido = Receive.objects.filter(status=1, launch_date__gte=date_start, launch_date__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).order_by('occurrence__event__referral__client__person__name','referral__client__person__name').distinct()
+        recebido = Receive.objects.filter(status=1, launch_date__gte=date_start, launch_date__lte=date_end, occurrence__scheduleoccurrence__occurrenceconfirmation__presence__lte=3).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).order_by('occurrence__event__referral__client__person__name','referral__client__person__name').distinct()
 
-        faturado = Receive.objects.filter(status=2, launch_date__gte=date_start, launch_date__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).order_by('occurrence__event__referral__client__person__name','referral__client__person__name').distinct()
+        faturado = Receive.objects.filter(status=2, launch_date__gte=date_start, launch_date__lte=date_end, occurrence__scheduleoccurrence__occurrenceconfirmation__presence__lte=3).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).order_by('occurrence__event__referral__client__person__name','referral__client__person__name').distinct()
 
-        cancelado = Receive.objects.filter(status=3, launch_date__gte=date_start, launch_date__lte=date_end).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).order_by('occurrence__event__referral__client__person__name','referral__client__person__name').distinct()
+        cancelado = Receive.objects.filter(status=3, launch_date__gte=date_start, launch_date__lte=date_end, occurrence__scheduleoccurrence__occurrenceconfirmation__presence__lte=3).filter( Q(occurrence__event__referral__client__person__organization=organization)| Q(referral__client__person__organization=organization) ).order_by('occurrence__event__referral__client__person__name','referral__client__person__name').distinct()
 
         # professional
         if not professional == 'all':

@@ -99,7 +99,7 @@ class Receive(models.Model):
                 if referral are discharge
         '''
         if self.referral:
-            if self.covenant_pack_size == self.occurrence.count() or self.referral.referraldischarge:
+            if self.covenant_pack_size == self.occurrence.filter(scheduleoccurrence__occurrenceconfirmation__presence__lte=3).count() or self.referral.referraldischarge:
                 return True
             else:
                 return False

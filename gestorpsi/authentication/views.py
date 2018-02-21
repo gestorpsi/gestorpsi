@@ -249,11 +249,11 @@ def send_signup_mail(org, user, request, invoice):
     msg.body += u"Obrigado por assinar o GestorPsi.\nSua solicitação foi recebida pela nossa equipe. Sua conta está pronta para usar! "
     msg.body += u"Qualquer dúvida que venha ter é possível consultar os links abaixo ou então entrar em contato conosco através do formulário de contato.\n\n"
 
-    msg.body += u"link funcionalidades: %s/funcionalidades/\n" % URL_HOME
+    msg.body += u"link funcionalidades: %s/funcionalidades-2/\n" % URL_HOME
     msg.body += u"link como usar: %s/como-usar/\n" % URL_HOME
     msg.body += u"link manual: %s/media/manual.pdf\n" % URL_DEMO
-    msg.body += u"link contato: %s/contato/\n\n" % URL_HOME
-    msg.body += u"Instruções no YouTube: https://www.youtube.com/channel/UC03EiqIuX72q-fi0MfWK8WA\n\n"
+    msg.body += u"link contato: %s#contato/\n\n" % URL_HOME
+    msg.body += u"Instruções no YouTube: https://www.youtube.com/playlist?list=PLJCW24WotJerfoEQvjutaG-NQg_4IgY6j\n\n"
 
     msg.body += u"O periodo de teste inicia em %s e termina em %s.\n" % ( invoice.start_date.strftime("%d/%m/%Y"), invoice.end_date.strftime("%d/%m/%Y") )
     msg.body += u"Antes do término do período de teste você deve optar por uma forma de pagamento aqui: %s/organization/signature/\n\n" % URL_APP

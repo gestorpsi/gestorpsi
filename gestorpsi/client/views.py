@@ -425,10 +425,11 @@ def list(request, page=1, initial=None, filter=None, no_paging=False, deactive=F
         item_per_page_selected = item_per_page_options[0]
 
     # paginator result
-    p = Paginator(object_list, int(item_per_page_selected))
-    page_number = 1 if not request.GET.get('page') else request.GET.get('page')
-    page = p.page(int(page_number))
-    object_list = page.object_list
+    if object_list:
+        p = Paginator(object_list, int(item_per_page_selected))
+        page_number = 1 if not request.GET.get('page') else request.GET.get('page')
+        page = p.page(int(page_number))
+        object_list = page.object_list
 
     # mount page
     service_list = Service.objects.filter(active=True, organization=request.user.get_profile().org_active)

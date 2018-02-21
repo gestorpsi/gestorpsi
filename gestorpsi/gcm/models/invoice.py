@@ -22,6 +22,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from threadlocals.threadlocals import get_current_request
 
+from gestorpsi.util.uuid_field import UuidField
 from gestorpsi.gcm.models.payment import PaymentType
 from gestorpsi.gcm.models.plan import Plan
 
@@ -30,6 +31,7 @@ INVOICE_STATUS_CHOICES = (
     (0, _(u'Pendente')),
     (1, _(u'Pago pelo Cliente')),
     (2, _(u'Pago / 1 mês grátis')),
+    (3, _(u'Cancelado')),
 )
 
 INVOICE_TYPES = (
@@ -66,6 +68,7 @@ class Invoice(models.Model):
             pass and current invoice
             start, expiry date < today
     """
+    reference = UuidField('Reference Gateway', null=False, blank=False)  # reference ID gateway.
     type = models.CharField(max_length=2, null=False, blank=False, choices=INVOICE_TYPES, default='2')
     
     organization = models.ForeignKey('organization.Organization', verbose_name=_('Organizacao'))

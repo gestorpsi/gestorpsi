@@ -168,7 +168,7 @@ GNU General Public License for more details.
                                                         <input name="itemWeight1" type="hidden" value="1000">
 
                                                         <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->
-                                                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date|date:"d M Y" }}-fim-{{ x.end_date|date:"d M Y" }}">
+                                                        <input name="reference" type="hidden" value="{{ x.reference }}">
 
                                                         <!-- Dados do comprador (opcionais) -->
                                                         <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">
@@ -232,7 +232,7 @@ GNU General Public License for more details.
                                                         <input name="itemWeight1" type="hidden" value="1000">
 
                                                         <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->  
-                                                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date|date:"d M Y" }}-fim-{{ x.end_date|date:"d M Y" }}">
+                                                        <input name="reference" type="hidden" value="{{ x.reference }}">
 
                                                         <!-- Dados do comprador (opcionais) -->  
                                                         <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">
@@ -299,7 +299,7 @@ GNU General Public License for more details.
                                                         <input name="itemWeight1" type="hidden" value="1000">
 
                                                         <!-- C&oacute;digo de refer&ecirc;ncia do pagamento no seu sistema (opcional) -->
-                                                        <input name="reference" type="hidden" value="{{ user.get_profile.org_active.id }}|inicio-{{ x.start_date|date:"d M Y" }}-fim-{{ x.end_date|date:"d M Y" }}">
+                                                        <input name="reference" type="hidden" value="{{ x.reference }}">
 
                                                         <!-- Dados do comprador (opcionais) -->
                                                         <input name="senderName" type="hidden" value="{{ obj.administrator.0.name }}">

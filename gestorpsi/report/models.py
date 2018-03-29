@@ -125,22 +125,36 @@ class Report(models.Model):
             sch_list[0] = []
             sch_list[0][0] = label/line
             sch_list[0][1] = ScheduleOccurrence.objects
+
+        '''
+
+        show_filter = [u'Todos']*3
+        '''
+            show_filter[0] = professional
+            show_filter[1] = service
+            show_filter[2] = status confirmation
         '''
 
         data = [] # main array for google pie char array
         total_events = 0 # total of all events, show in resume
-        date_start , date_end = self.set_date(organization, date_start, date_end)
+        date_start, date_end = self.set_date(organization, date_start, date_end)
 
         # filter by date range, all professional and all presence 
         sch_objs = ScheduleOccurrence.objects.filter(start_time__gte=date_start, start_time__lte=date_end, event__referral__organization=organization).order_by('event__referral__client')
 
         # professional
         if not 'all' in professional:
-            sch_objs = sch_objs.filter( event__referral__professional__id=professional )
+            sch_objs = sch_objs.filter(event__referral__professional__id=professional)
+            show_filter[0] = Professional.objects.get(pk=professional)
+        else:
+            show_filter[0] = u'Todos'
 
         # service
         if service:
-            sch_objs = sch_objs.filter( event__referral__service__id=service )
+            sch_objs = sch_objs.filter(event__referral__service__id=service)
+            show_filter[1] = Service.objects.get(pk=service)
+        else:
+            show_filter[1] = u'Todos'
 
         #
         # filter by presence confirmation
@@ -192,6 +206,12 @@ class Report(models.Model):
             sch_list.append([u'Confirmado',l])
             total_events += l.count()
 
+        # add labels to display
+        if '999' in status or not status:
+            show_filter[2] = ''
+            for x in sch_list:
+                show_filter[2] += u'%s, ' % x[0]
+
         #
         # graphic google chart
         #
@@ -231,9 +251,7 @@ class Report(models.Model):
         #
         # accumulated 
         #
-
         if accumulated == 'True':
-
                 # tmp = []
                 # tmp = [ [presence counter] ]
                 # tmp = [ [0,10,25,50,100] , [presence1] , [presenceN] ]
@@ -345,7 +363,7 @@ class Report(models.Model):
             data += '])' # close
 
         # return
-        return data, lines, date_start, date_end, sch_list, total_events
+        return data, lines, date_start, date_end, sch_list, total_events, show_filter
 
 
     def get_receive_(self, organization, date_start, date_end, professional, receive, service, pway, covenant):

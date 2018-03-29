@@ -293,6 +293,20 @@ def report_export(request):
             if int(request.POST.get('format')) == 2: # pdf print
                 return write_pdf( html , locals(), ('%s-%s-%s-%s-%s.pdf' % (view, slugify(_('report-between')), request.POST.get('date_start').replace('/','-'), _('and'), request.POST.get('date_end').replace('/','-'))))
 
+        # event report
+        if request.POST.get('view') == '4':
+
+            view = 'event'
+            title = u'Relatório de eventos'
+            html = 'report/report_event_export.html'
+    
+            data, lines, date_start, date_end, sch_list, total_events, show_filter = Report().get_event_(request.user.get_profile().org_active, request.POST.get('date_start'), request.POST.get('date_end'), request.POST.get('professional'), request.POST.get('service'), request.POST.get('confirmation_status'), request.POST.get('accumulated'))
+
+            IMG_PREFIX = '/media/' if int(request.POST.get('format')) == 1 else MEDIA_ROOT.replace('\\','/') + '/' # this a path bug fix. format == 1 (html)
+
+            if int(request.POST.get('format')) == 2: # pdf print
+                return write_pdf( html , locals(), ('%s-%s-%s-%s-%s.pdf' % (view, slugify(_('report-between')), request.POST.get('date_start').replace('/','-'), _('and'), request.POST.get('date_end').replace('/','-'))))
+
 
         # fill fields form report
         if request.POST.get('view') == '5':

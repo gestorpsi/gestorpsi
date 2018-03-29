@@ -125,14 +125,12 @@ class Report(models.Model):
             sch_list[0] = []
             sch_list[0][0] = label/line
             sch_list[0][1] = ScheduleOccurrence.objects
-
         '''
 
         show_filter = [u'Todos']*3
         '''
             show_filter[0] = professional
             show_filter[1] = service
-            show_filter[2] = status confirmation
         '''
 
         data = [] # main array for google pie char array
@@ -205,12 +203,6 @@ class Report(models.Model):
             l = sch_objs.filter(occurrenceconfirmation__isnull=False)
             sch_list.append([u'Confirmado',l])
             total_events += l.count()
-
-        # add labels to display
-        if '999' in status or not status:
-            show_filter[2] = ''
-            for x in sch_list:
-                show_filter[2] += u'%s, ' % x[0]
 
         #
         # graphic google chart

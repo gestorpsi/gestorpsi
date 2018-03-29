@@ -148,7 +148,7 @@ GNU General Public License for more details.
             </tr>
         </table>
 
-        <h2>{{ title }} {% trans "between" %} {{ date_start }} {% trans "and" %} {{ date_end }}</h2>
+        <h2>{{ title }} {% trans "between" %} {{ date_start }} {% trans "and" %} {{ date_end }}.</h2>
 
         <!-- list of clients -->
         {% if sch_list %}
@@ -159,11 +159,10 @@ GNU General Public License for more details.
             </div>
 
             <h4>Filtros</h4>
-            <b>Total encontrado(s) {{ total_events }}</b><br />
-            <b>Inscri&ccedil;&atilde;o entre</b> {{ date_start }} e {{ date_end }}<br />
-            <b>Profissional {{ show_filter.0 }}</b><br />
-            <b>Servi&ccedil;o {{ show_filter.1 }}</b><br />
-            <b>Tipo de confirma&ccedil;&atilde;o</b> {{ show_filter.2 }}<br />
+            <b>Total encontrado</b> {{ total_events }}<br />
+            <b>Evento entre</b> {{ date_start }} e {{ date_end }}<br />
+            <b>Profissional</b> {{ show_filter.0 }}<br />
+            <b>Servi&ccedil;o</b> {{ show_filter.1 }}<br />
 
             <br />
             <br />

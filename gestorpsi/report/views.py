@@ -121,7 +121,7 @@ def event_data(request, template='report/report_event.html'):
     """
     event
     """
-    data, lines, date_start, date_end, sch_list, total_events = Report().get_event_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('service'), request.GET.get('status'), request.GET.get('accumulated') )
+    data, lines, date_start, date_end, sch_list, total_events, show_filter = Report().get_event_( request.user.get_profile().org_active , request.GET.get('date_start') , request.GET.get('date_end') , request.GET.get('professional') , request.GET.get('service'), request.GET.get('status'), request.GET.get('accumulated') )
 
     # variables of JS
     option_rows = data 
@@ -305,7 +305,7 @@ def report_export(request):
             IMG_PREFIX = '/media/' if int(request.POST.get('format')) == 1 else MEDIA_ROOT.replace('\\','/') + '/' # this a path bug fix. format == 1 (html)
 
             if int(request.POST.get('format')) == 2: # pdf print
-                return write_pdf( html , locals(), ('%s-%s-%s-%s-%s.pdf' % (view, slugify(_('report-between')), request.POST.get('date_start').replace('/','-'), _('and'), request.POST.get('date_end').replace('/','-'))))
+                return write_pdf(html, locals(), ('%s-%s-%s-%s-%s.pdf' % (view, slugify(_('report-between')), request.POST.get('date_start').replace('/','-'), _('and'), request.POST.get('date_end').replace('/','-'))))
 
 
         # fill fields form report

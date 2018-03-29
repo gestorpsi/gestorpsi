@@ -67,7 +67,6 @@ class ReportForm(forms.ModelForm):
     date_end = forms.CharField()
     service = forms.ChoiceField(label=_('Service'))
     format = forms.ChoiceField(label=_('Export format'), choices=EXPORT_FORMATS, help_text=_('Here you can choose which format you want to export the data. For printing graphics please use HTML format'))
-    clients = forms.BooleanField(label=_('Include client list'), help_text=_('If selected will a list of clients for each report sub-item'))
     accumulated = forms.ChoiceField(label=_('Accumulated Graph'), choices=GRAPH_ACCUMULATED, help_text=_('Acummulated graph?'))
     export_graph_type = forms.ChoiceField(label=_('Graph Type format'), choices=GRAPH_TYPE, help_text=_('Here you can choose which type of graph you need. Note: only for HTML format'))
     receipt_status = forms.ChoiceField(label=_('Status do faturamento'), choices=STATUS, help_text=_('Status do faturamento'))

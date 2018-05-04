@@ -24,6 +24,7 @@ from swingtime.models import Occurrence
 from datetime import datetime
 
 from gestorpsi.client.models import Client
+from gestorpsi.util.views import _access_check_referral_write
 from gestorpsi.service.models import Service
 from gestorpsi.referral.models import Referral, Queue, ReferralExternal, ReferralAttach, REFERRAL_ATTACH_TYPE
 from gestorpsi.util.decorators import permission_required_with_403
@@ -75,11 +76,11 @@ def client_referrals(request, object_id = None):
     return HttpResponse(array, mimetype='application/json')
 
 
-def _referral_view(request, object_id = None, referral_id = None, template_name = 'client/client_referral_home.html', access_check_referral_write = None):
-    user = request.user
-    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+def _referral_view(request, object_id=None, referral_id=None, template_name='client/client_referral_home.html', access_check_referral_write=None):
+    object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
-    organization = user.get_profile().org_active.id
+    access_check_referral_write = _access_check_referral_write(request, referral)
+    organization = request.user.get_profile().org_active.id
     queues = Queue.objects.filter(referral=referral_id, client=object)
     referrals = ReferralExternal.objects.filter(referral=referral_id)
     payments = Receive.objects.filter(occurrence__event__referral=referral)
@@ -91,7 +92,6 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     tmpu = [] # upcoming
 
     for x in Receive.objects.filter( Q(occurrence__event__referral=referral) | Q(referral=referral) ).order_by('-occurrence__start_time','-id').distinct():
-
         # past
         if x.get_is_conclude_(): 
             if not x in tmpp:
@@ -106,25 +106,24 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
     receive_past_small = tmpp[0:5]
     receive_past_all = tmpp[5:]
 
-
     try:
         discharged = ReferralDischarge.objects.get(referral=referral)
     except:
         pass
 
     try:
-        indication = Indication.objects.get(referral = referral_id)
+        indication = Indication.objects.get(referral=referral_id)
     except:
         indication = None
 
-    attachs = ReferralAttach.objects.filter(referral = referral_id)
+    attachs = ReferralAttach.objects.filter(referral=referral_id)
 
     # permission to read file, user can be is a professional and/or a psychologist.
-    is_professional = user.get_profile().person.is_careprofessional()
+    is_professional = request.user.get_profile().person.is_careprofessional()
     is_psychologist = False
 
     if is_professional:
-        if str(user.get_profile().person.careprofessional.professionalIdentification.profession) == "Psicólogo":
+        if str(request.user.get_profile().person.careprofessional.professionalIdentification.profession) == "Psicólogo":
             is_psychologist = True
 
     types = REFERRAL_ATTACH_TYPE
@@ -134,8 +133,8 @@ def _referral_view(request, object_id = None, referral_id = None, template_name 
 
 def _referral_occurrences(request, object_id=None, referral_id=None, type='upcoming', template_name='client/client_referral_occurrences.html'):
 
-    object = get_object_or_404(Client, pk = object_id, person__organization=request.user.get_profile().org_active)
+    object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
     referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
-    occurrences = referral.past_occurrences_all() if type=='past' else  referral.upcoming_occurrences()
+    occurrences = referral.past_occurrences_all() if type=='past' else referral.upcoming_occurrences()
     
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))

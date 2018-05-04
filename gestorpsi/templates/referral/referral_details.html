@@ -62,7 +62,7 @@
             {% endif %} 
             {% if not referral.professional.all %}
                 {% trans "There is no professional in this referral." %}
-                {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator or user.get_profile.person.is_careprofessional %}
+                {% if request.user.get_profile.person.is_secretary or request.user.get_profile.person.is_administrator or request.user.get_profile.person.is_careprofessional %}
                 <a href="/client/{{ object.id}}/referral/{{ referral.id }}/form/">{% trans "Add one now?" %}</a>
                 {% endif %}
             {% else %}
@@ -288,7 +288,7 @@
     <p>
     {% if not referral.upcoming_occurrences %}
         {% trans "This customer has no upcoming schedules yet!" %}
-        {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
+        {% if request.user.get_profile.person.is_secretary or request.user.get_profile.person.is_administrator %}
             <a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}">{% trans "Book it now?" %}</a>
         {% endif %}
     {% else %}
@@ -303,7 +303,7 @@
              {% endif %}
 
                 - <i>({% trans "online and active event" %})</i> 
-                - <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}messages/chat/{{i.scheduleoccurrence.id}}">{% trans "Enter chat" %}</a>
+                - <a href="{% if request.user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}messages/chat/{{i.scheduleoccurrence.id}}">{% trans "Enter chat" %}</a>
                 - ({% firstof i.scheduleoccurrence.online_users "0" %} {% trans "online users" %})
              </p>
         {% endfor %}
@@ -329,16 +329,16 @@
              {% endif %}
              {% if i.scheduleoccurrence.is_online %} 
                 - <i>({% trans "online event" %})</i>
-                - <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}messages/chat/{{i.scheduleoccurrence.id}}">{% trans "Enter chat" %}</a>
+                - <a href="{% if request.user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}messages/chat/{{i.scheduleoccurrence.id}}">{% trans "Enter chat" %}</a>
                 - ({% firstof i.scheduleoccurrence.online_users "0" %} {% trans "online users" %})
              {% endif %}
                 </small>
              </p>
         {% endfor %}
     <p>
-        <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}referral/{{ referral.id }}/upcoming/">{% trans "See all" %}</a>
+        <a href="{% if request.user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}referral/{{ referral.id }}/upcoming/">{% trans "See all" %}</a>
         <br />
-        {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
+        {% if request.user.get_profile.person.is_secretary or request.user.get_profile.person.is_administrator %}
             <a href="/client/schedule/daily/?referral={{ referral.id }}&client={{ object.id }}" title="{% trans "Book new" %}">{% trans "Book new" %}</a>
         {% endif %}
         {% endif %}
@@ -357,11 +357,11 @@
             {% if i.scheduleoccurrence.is_online %}
             <i>(online)</i>
             {% ifnotequal i.scheduleoccurrence.messagetopic_set.count 0 %}
-            - <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}referral/{{referral.id}}/messages/chat/{{i.scheduleoccurrence.id}}">{% trans "View chat history" %}</a>
+            - <a href="{% if request.user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}referral/{{referral.id}}/messages/chat/{{i.scheduleoccurrence.id}}">{% trans "View chat history" %}</a>
             {% else %}
             - {% trans "There is no chat messages" %}
             {% endifnotequal %}
-            - <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}messages/chat/{{i.scheduleoccurrence.id}}">{% trans "Enter chat" %}</a>
+            - <a href="{% if request.user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}messages/chat/{{i.scheduleoccurrence.id}}">{% trans "Enter chat" %}</a>
             - ({% firstof i.scheduleoccurrence.online_users "0" %} {% trans "online users" %})
             {% endif %}
 
@@ -380,7 +380,7 @@
                  {% endfor %}
              {% endif %}
              <br />
-            {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
+            {% if request.user.get_profile.person.is_secretary or request.user.get_profile.person.is_administrator %}
                 <a href="/client/{{ object.id }}/occurence/{{ i.id }}/">
             {% endif %}
             {% if i.scheduleoccurrence.was_confirmed %}
@@ -388,14 +388,14 @@
             {% else %}
                 {% trans "This occurrence has not been confirmed yet" %}
             {% endif %}
-            {% if user.get_profile.person.is_secretary or user.get_profile.person.is_administrator %}
+            {% if request.user.get_profile.person.is_secretary or request.user.get_profile.person.is_administrator %}
                 </a>
             {% endif %}
             </small>
             </p>
         {% endfor %}
         <p>
-        <a href="{% if user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}referral/{{ referral.id }}/past/">{% trans "See all" %}</a>
+        <a href="{% if request.user.get_profile.person.is_client %}/profile/client/{% else %}/client/{{ object.id }}/{% endif %}referral/{{ referral.id }}/past/">{% trans "See all" %}</a>
         </p>
     {% endif %}
     </p>

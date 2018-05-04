@@ -58,7 +58,7 @@ from gestorpsi.referral.models import Referral, ReferralChoice, IndicationChoice
 from gestorpsi.referral.forms import ReferralForm, ReferralDischargeForm, QueueForm, ReferralExtForm
 from gestorpsi.referral.views import _referral_view, _referral_occurrences
 from gestorpsi.util.decorators import permission_required_with_403
-from gestorpsi.util.views import get_object_or_None
+from gestorpsi.util.views import get_object_or_None, _access_check_referral_write
 
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm, OccurrenceConfirmationForm
 from gestorpsi.schedule.views import add_event, occurrence_confirmation_form, _datetime_view
@@ -105,39 +105,6 @@ def _access_check(request, object=None):
 
         # check if client is referred by professional or if professional is owner of this record
         if professional_have_referral_with_client or professional_is_responsible_for_service or object.revision().user == request.user:
-            return True
-
-    return False
-
-
-def _access_check_referral_write(request, referral=None):
-    """
-    this method checks professional as users when accessing clients
-    @referral: referral object
-    """
-    # new referral form
-    if not referral.id:
-        return True
-
-    # check if user is professional and not admin or secretary. if it's true, check if professional has referral with this customer
-    if request.user.groups.filter(name='administrator') or request.user.groups.filter(name='secretary'):
-        return True
-
-    # check if professional or student
-    if request.user.groups.filter(name='professional') or request.user.groups.filter(name='student'):
-
-        professional_have_referral_with_client = False
-        professional_is_responsible_for_service = False
-
-        # lets check if request.user (professional) have referral with this client
-        if request.user.profile.person.careprofessional in [p for p in referral.professional.all()]:
-            professional_have_referral_with_client = True
-        
-        # lets check if request.user (professional) is responsible for this referral service
-        if request.user.profile.person.careprofessional in [p for p in referral.service.responsibles.all()]:
-            professional_is_responsible_for_service = True
-
-        if professional_have_referral_with_client or professional_is_responsible_for_service:
             return True
 
     return False
@@ -781,16 +748,14 @@ def referral_list(request, object_id=None, discharged=None):
 @permission_required_with_403('referral.referral_read')
 def referral_home(request, object_id=None, referral_id=None):
     object = get_object_or_404(Client, pk=object_id, person__organization=request.user.get_profile().org_active)
+    referral = get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)
 
     # check access by requested user
     if not _access_check(request, object):
         return render_to_response('403.html', {'object': _("Oops! You don't have access for this service!"), }, context_instance=RequestContext(request))
 
-    access_check_referral_write = False
-    if _access_check_referral_write(request, get_object_or_404(Referral, pk=referral_id, service__organization=request.user.get_profile().org_active)):
-        access_check_referral_write = True
-
-    return _referral_view(request, object_id, referral_id, 'client/client_referral_home.html', access_check_referral_write)
+    access_check_referral_write = _access_check_referral_write(request, referral)
+    return _referral_view(request, object_id, referral_id,'client/client_referral_home.html', access_check_referral_write)
 
 
 @permission_required_with_403('client.client_write')

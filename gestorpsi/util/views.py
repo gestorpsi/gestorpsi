@@ -26,6 +26,7 @@ from django.template import Context
 from gestorpsi.util.models import Cnae
 from gestorpsi.cbo.models import Occupation
 
+
 def get_object_or_new(klass, *args, **kwargs):
     # bitbucket.org/offline/django-annoying/src/tip/annoying/functions.py
     from django.shortcuts import _get_queryset
@@ -34,6 +35,7 @@ def get_object_or_new(klass, *args, **kwargs):
         return queryset.get(*args, **kwargs)
     except queryset.model.DoesNotExist:
         return klass()
+
 
 def get_object_or_None(klass, *args, **kwargs):
     """ Usage:
@@ -48,6 +50,7 @@ def get_object_or_None(klass, *args, **kwargs):
     except queryset.model.DoesNotExist:
         return None
 
+
 def cnae(request):
     '''
     filter Cnae's return a dict with cnae codes and sub classes names 
@@ -58,6 +61,7 @@ def cnae(request):
     
     return HttpResponse(simplejson.dumps(results))
 
+
 def ocupation(request):
     '''
     filter Cnae's return a dict with cnae codes and sub classes names 
@@ -67,6 +71,7 @@ def ocupation(request):
         results.append({'id': i.cbo_code, 'name': i.title })
     
     return HttpResponse(simplejson.dumps(results))
+
 
 def write_pdf(template_src, context_dict, filename='output.pdf'):
     template = get_template(template_src)
@@ -81,10 +86,12 @@ def write_pdf(template_src, context_dict, filename='output.pdf'):
         return response
     return http.HttpResponse('Erro making pdf! %s' % cgi.escape(html))
 
+
 def percentage(number, total):
     if not total:
         return 0
     return "%.1f" % ((int(number)*100.0)/int(total))
+
 
 def color_rand():
     # generate a random color in hexaformat: DDEE44
@@ -93,3 +100,34 @@ def color_rand():
     return a[:6]
     
 
+def _access_check_referral_write(request, referral=None):
+    """
+    this method checks if professional as users when accessing clients
+    @referral: referral object
+    """
+    # new referral form
+    if not referral.id:
+        return True
+
+    # check if user is professional and not admin or secretary. if it's true, check if professional has referral with this customer
+    if request.user.groups.filter(name='administrator') or request.user.groups.filter(name='secretary'):
+        return True
+
+    # check if professional or student
+    if request.user.groups.filter(name='professional') or request.user.groups.filter(name='student'):
+
+        professional_have_referral_with_client = False
+        professional_is_responsible_for_service = False
+
+        # lets check if request.user (professional) have referral with this client
+        if request.user.profile.person.careprofessional in [p for p in referral.professional.all()]:
+            professional_have_referral_with_client = True
+
+        # lets check if request.user (professional) is responsible for this referral service
+        if request.user.profile.person.careprofessional in [p for p in referral.service.responsibles.all()]:
+            professional_is_responsible_for_service = True
+
+        if professional_have_referral_with_client or professional_is_responsible_for_service:
+            return True
+
+    return False

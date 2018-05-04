@@ -29,7 +29,7 @@ from gestorpsi.settings import MEDIA_ROOT
 from gestorpsi.util.decorators import permission_required_with_403
 from gestorpsi.referral.models import ReferralAttach, Referral, REFERRAL_ATTACH_TYPE
 from gestorpsi.client.models import Client
-from gestorpsi.client.views import  _access_check_referral_write
+from gestorpsi.util.views import _access_check_referral_write
 
 @permission_required_with_403('upload.upload_write')
 def send(request):

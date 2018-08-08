@@ -108,7 +108,8 @@ class Receive(models.Model):
         r[2] = self.occurrence.filter(scheduleoccurrence__occurrenceconfirmation__presence__gte=4)  # NOT confirmed
 
         if self.referral:
-            if self.covenant_pack_size == self.occurrence.filter(scheduleoccurrence__occurrenceconfirmation__presence__lte=3).count() or self.referral.referraldischarge:
+            #if self.covenant_pack_size == self.occurrence.filter(scheduleoccurrence__occurrenceconfirmation__presence__lte=3).count() or self.referral.referraldischarge:
+            if self.covenant_pack_size == self.occurrence.filter(scheduleoccurrence__occurrenceconfirmation__presence__lte=3).count() or hasattr(self.referral,'referraldischarge_set'):
                 r[0] = True
             else:
                 r[0] = False

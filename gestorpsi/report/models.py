@@ -159,7 +159,7 @@ class Report(models.Model):
         #
 
         # all presence options confirmed or none marked
-        if '999' in status or not status:
+        if '999' in status or not status or status == None or status == '':
             status = "1,2,3,4,5,6,888" # Filter for each presence id end "not confirmed"
 
         if '1' in status:

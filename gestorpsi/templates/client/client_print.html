@@ -77,23 +77,17 @@
     <body>
         <table>
             <tr>
-                <td width="5%">
-                {% if org_active.photo %}
-                    {% if DEBUG  %}
-                        <div  style="border:1px solid black">
-                        <small>{% trans "Image not available when Debug=True and server running in localhost" %}</small>
-                        </div>
-                    {% else %}
-                        <img width="134px" alt="{{ org_active.trade_name }}" src="{{ MEDIA_URL }}img/organization/{{ org_active.id}}/.thumb/{{ org_active.photo }}">
+                <td width="33%">
+                    {% if org_active.photo %}
+                        <img alt="{{ org_active.trade_name }}" src="{{ MEDIA_URL }}img/organization/{{ org_active.id }}/{{ org_active.photo }}">
                     {% endif %}
-                {% endif %}
                 </td>
-                <td style="padding-left: 5px; font-size: 12px;">
+                <td width="33%" style="padding-left: 5px; font-size: 12px;">
                     <b>{{ org_active.trade_name }}</b><br>
                     {% if org_active.get_first_address %} {{ org_active.get_first_address|safe }} {% endif %}<br>
                     {% if org_active.phones.all %} {{ org_active.phones.all|join:", "}} {% endif %}<br>
                 </td>
-                <td style="text-align:right;font-size: 12px;">
+                <td width="33%" style="text-align:right;font-size: 12px;">
                     <b>{% trans "Client Report" %}</b><br>
                     {% trans "generated at" %} {% now "d/m/Y H:i" %} hs<br>
                     {% trans "by " %} {{ user.get_profile.person.name }}<br>
@@ -101,11 +95,13 @@
             </tr>
         </table>
 
-        <br>
         <table>
             <tr>
-                <td style="width: 626px; vertical-align: top; padding: 0px;">
-                      
+                <td style="width: 5%;"></td>
+            </tr>
+
+            <tr>
+                <td style="width: 80%; vertical-align: center; padding: 0px;">
                     <!-- client -->
                     <h1 class="nome">{{ object.person.name|title }}</h1>
                     <strong>{% trans "ID record" %}: </strong>{{ object.idRecord }}<br />
@@ -130,19 +126,14 @@
                     {% endif %}
                 </td>
 
-                <td>
-                {% if DEBUG  %}
-                    <div  style="border:1px solid black">
-                    <small>{% trans "Image not available when Debug=True and server running in localhost" %}</small>
-                    </div>
-                {% else %}
+                <td width="15%">
                     {% if not object.person.photo %}
-                        <img width="116px" alt="Client Picture" src="{{ MEDIA_URL }}img/generic_photo.gif">
+                        <img alt="Client Picture" src="{{ MEDIA_URL }}img/generic_photo.gif">
                     {% else %}
-                        <img width="116px" alt="Client Picture" src="{{ MEDIA_URL }}img/organization/{{ org_active.id}}/.thumb/{{ object.person.photo }}">
+                        <img alt="Client Picture" src="{{ MEDIA_URL }}img/organization/{{ org_active.id}}/.thumb/{{ object.person.photo }}">
                     {% endif %}
-                {% endif %}
                 </td>
+
             </tr>
         </table>
 

@@ -7424,3 +7424,7 @@ msgstr ""
 #: users/views.py:351
 msgid "Email updated successfully!"
 msgstr ""
+
+#: template/tags/schedule_sidebar.html
+msgid "Print receipt"
+msgstr "Imprimir recibo"

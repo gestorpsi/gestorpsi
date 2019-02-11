@@ -20,35 +20,37 @@ GNU General Public License for more details.
 
     <h3>{% trans 'Event Informations' %}</h3>
     <ul>
-        {% comment %}
-        <li><a href="/schedule/events/{{ occurrence.event.id }}/" title="{% trans "Upcomming Occurrences from this event" %}">{% trans "Upcomming Occurrences from this event" %}</a></li>
-        {% endcomment %}
         <li><a href="/client/{{ occurrence.event.referral.client.all.0.id }}/referral/{{ referral.id }}/upcoming/" class="client_calendar" title="{{ object.person.name }}">{% trans "Upcoming Occurrences" %}</a></li>
     </ul>
 
     <h3>{% trans 'Clients' %}</h3>
     <ul>
-     {% for c in occurrence.event.referral.client.all %}
-       <li><a class="customers" href="/client/{{c.id}}/referral/{{ occurrence.event.id }}/">{{ c }}</a><br /></li>
-     {% endfor %}
+        {% for c in occurrence.event.referral.client.all %}
+            <li><a class="customers" href="/client/{{c.id}}/referral/{{ occurrence.event.id }}/">{{ c }}</a><br /></li>
+        {% endfor %}
     </ul>
 
     {% if not occurrence.have_company %}
-    <h3>{% trans 'Client Family' %}</h3>
-    <ul>
-       <li><a class="client_family" href="/schedule/events/{{ occurrence.id }}/family/form/">{% if not occurrence.occurrencefamily %}{% trans "Schedule member family on this occurrence" %}{% else %}{% trans "See family members from this occurrence" %}{% endif %}</a><br /></li>
-    </ul>
+        <h3>{% trans 'Client Family' %}</h3>
+        <ul>
+            <li><a class="client_family" href="/schedule/events/{{ occurrence.id }}/family/form/">{% if not occurrence.occurrencefamily %}{% trans "Schedule member family on this occurrence" %}{% else %}{% trans "See family members from this occurrence" %}{% endif %}</a><br /></li>
+        </ul>
     {% else %}
-    <h3>{% trans 'Occurrence Employees' %}</h3>
-    <ul>
-       {% if not occurrence.occurrenceemployees %}
-       <li><a class="company_employees" href="{% url swingtime-occurrence-employee-form occurrence.id %}">{% trans "Schedule employee on this occurrence" %}</a><br /></li>
-       {% else %}
-            {% for f in occurrence.occurrenceemployees.client.all %}
-                <li><a href="/client/{{ f.id }}/" title="{{ f }}">{{ f }}</a></li>
-            {% endfor %}
-       {% endif %}
-    </ul>    
+        <h3>{% trans 'Occurrence Employees' %}</h3>
+        <ul>
+            {% if not occurrence.occurrenceemployees %}
+                <li><a class="company_employees" href="{% url swingtime-occurrence-employee-form occurrence.id %}">{% trans "Schedule employee on this occurrence" %}</a><br /></li>
+            {% else %}
+                {% for f in occurrence.occurrenceemployees.client.all %}
+                    <li><a href="/client/{{ f.id }}/" title="{{ f }}">{{ f }}</a></li>
+                {% endfor %}
+           {% endif %}
+        </ul>    
     {% endif %}
+
+    <h3>{% trans "Others" %}</h3>
+    <ul>
+        <li><a class="client_family" href="/schedule/events/{{ occurrence.id }}/receipt-print/">{% trans "Print receipt" %}</a><br /></li>
+    </ul>
 
 </div>

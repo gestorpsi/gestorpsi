@@ -29,9 +29,11 @@ from django.contrib import messages
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from django.template import Context
+from django.template.defaultfilters import slugify
 
 from swingtime.utils import create_timeslot_table, time_delta_total_seconds
 
+from gestorpsi.settings import MEDIA_ROOT
 from gestorpsi.referral.models import Referral
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.place.models import Place, Room
@@ -43,7 +45,7 @@ from gestorpsi.schedule.models import ScheduleOccurrence, OccurrenceConfirmation
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm, OccurrenceConfirmationForm
 
 from gestorpsi.util.decorators import permission_required_with_403
-from gestorpsi.util.views import get_object_or_None
+from gestorpsi.util.views import get_object_or_None, write_pdf
 
 from gestorpsi.financial.models import Receive
 from gestorpsi.financial.forms import ReceiveFormUpdate, ReceiveFormNew
@@ -1143,40 +1145,43 @@ def schedule_settings(request):
             ), context_instance=RequestContext(request) )
 
 
-def event_print_receipt(event_id=None, request):
-    print event_id
-    object = get_object_or_404( Client, pk=object_id, person__organization=request.user.get_profile().org_active )
+def occurrence_print_receipt(request, event_id=None):
+    #object = get_object_or_404( Client, pk=object_id, person__organization=request.user.get_profile().org_active )
+    occurrence = get_object_or_404(ScheduleOccurrence, pk=event_id, event__referral__service__organization=request.user.get_profile().org_active)
 
-    referral = object.referral_set.filter(pk__in=request.POST.getlist('referral'))
-    print_schedule = None if not request.POST.get('schedule') else True
-    print_demographic = None if not request.POST.get('demographic') else True
-    print_ehr = None if not request.POST.get('ehr') else True
-    signed_professional_responsible = None if not request.POST.get('signed_professional_responsible') else True
-    signed_professionals = None if not request.POST.get('signed_professionals') else True
-    signed_organization_reponsibles = None if not request.POST.get('signed_organization_reponsibles') else True
+    #referral = object.referral_set.filter(pk__in=request.POST.getlist('referral'))
+    #print_schedule = None if not request.POST.get('schedule') else True
+    #print_demographic = None if not request.POST.get('demographic') else True
+    #print_ehr = None if not request.POST.get('ehr') else True
+    #signed_professional_responsible = None if not request.POST.get('signed_professional_responsible') else True
+    #signed_professionals = None if not request.POST.get('signed_professionals') else True
+    #signed_organization_reponsibles = None if not request.POST.get('signed_organization_reponsibles') else True
 
-    company_related_clients = []
-    if object.is_company():
-        company_related_clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active)
+    #company_related_clients = []
+    #if object.is_company():
+        #company_related_clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active)
 
-        dict = {
-            'referral': referral,
-            'print_schedule': print_schedule,
-            'print_demographic': print_demographic,
-            'signed_professional_responsible': signed_professional_responsible,
-            'signed_professionals': signed_professionals,
-            'signed_organization_reponsibles': signed_organization_reponsibles,
-            'print_ehr': print_ehr,
-            'pagesize' : 'A4',
-            'object': object, 
-            'org_active': request.user.get_profile().org_active, 
-            'user': request.user, 
-            'DEBUG': DEBUG, 
-            'MEDIA_URL': MEDIA_URL if request.POST.get('output') == 'html' else MEDIA_ROOT.replace('\\','/') + '/', 
-            'company_related_clients': company_related_clients,
-            'have_ehr_read_perms': have_ehr_read_perms,
-            'all_payments': request.POST.get('all_payments'),
-            }
+    dict = {
+        'occurrence': occurrence,
+        'organization': occurrence.event.referral.organization,
+        'user': request.user, 
+        #'MEDIA_URL': MEDIA_URL if request.POST.get('output') == 'html' else MEDIA_ROOT.replace('\\','/') + '/', 
+        'MEDIA_URL': MEDIA_ROOT,
+        #'print_schedule': print_schedule,
+        #'print_demographic': print_demographic,
+        #'signed_professional_responsible': signed_professional_responsible,
+        #'signed_professionals': signed_professionals,
+        #'signed_organization_reponsibles': signed_organization_reponsibles,
+        #'print_ehr': print_ehr,
+        #'pagesize' : 'A4',
+        #'object': object, 
+        #'org_active': request.user.get_profile().org_active, 
+        #'DEBUG': DEBUG, 
+        #'company_related_clients': company_related_clients,
+        #'have_ehr_read_perms': have_ehr_read_perms,
+        #'all_payments': request.POST.get('all_payments'),
+        }
 
     # pdf output format
-    return write_pdf('client/client_print_receipt_payment.html', dict, '%s.pdf' % slugify(object.person.name))
+    #return render_to_response('client/client_occurrence_print_receipt.html', dict, context_instance=RequestContext(request))
+    return write_pdf('client/client_occurrence_print_receipt.html', dict, '%s.pdf' % slugify(u"%s" % occurrence.event.referral.client.all()[0].person.name))

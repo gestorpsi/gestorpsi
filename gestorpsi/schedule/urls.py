@@ -19,7 +19,7 @@ from gestorpsi.authentication.views import login_check
 from gestorpsi.referral.forms import ReferralForm
 from gestorpsi.schedule.forms import ScheduleOccurrenceForm, ScheduleSingleOccurrenceForm, OccurrenceConfirmationForm
 
-from gestorpsi.schedule.views import occurrence_view, schedule_settings, add_event, schedule_index, schedule_occurrence_listing_today, event_view, daily_occurrences, today_occurrences, occurrence_confirmation_form, occurrence_family_form, occurrence_employee_form, occurrence_group, week_view, week_view_table, occurrence_confirmation_form_group, diary_view, event_print_receipt
+from gestorpsi.schedule.views import occurrence_view, schedule_settings, add_event, schedule_index, schedule_occurrence_listing_today, event_view, daily_occurrences, today_occurrences, occurrence_confirmation_form, occurrence_family_form, occurrence_employee_form, occurrence_group, week_view, week_view_table, occurrence_confirmation_form_group, diary_view, occurrence_print_receipt
 
 urlpatterns = patterns('',
     url(
@@ -150,8 +150,8 @@ urlpatterns = patterns('',
         name='swingtime-occurrence-employee-form'
     ),
     url(
-        r'^events/(?P<event_id>\d+)/print-receipt/$',
-        login_check(event_print_receipt),
+        r'^events/(?P<event_id>\d+)/receipt-print/$',
+        login_check(occurrence_print_receipt),
         name='event-print-receipt'
     ),
     

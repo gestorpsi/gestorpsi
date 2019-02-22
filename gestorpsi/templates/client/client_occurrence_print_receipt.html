@@ -11,7 +11,7 @@
             @page {
               size: A4 portrait;
               margin: 1cm;
-            } 
+            }
 
             body {
                     font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -74,6 +74,11 @@
                 display: none;
             }
 
+            #img {
+                text-align: center;
+                vertical-align: middle;
+            }
+
         </style>
 
         <title>{{ organization.trande_name }}</title>
@@ -82,17 +87,17 @@
     <body>
         <table>
             <tr>
-                <td width="33%">
+                <td width="33%" style="text-align:center; font-size: 10px;">
                     {% if organization.photo %}
-                        <img alt="{{ organization.trade_name }}" src="{{ MEDIA_URL }}/img/organization/{{ organization.id }}/{{ organization.photo }}">
+                        <img id="img" alt="{{ organization.trade_name }}" src="{{ MEDIA_URL }}/img/organization/{{ organization.id }}/.thumb/{{ organization.photo }}">
                     {% endif %}
                 </td>
-                <td width="33%" style="padding-left: 5px; font-size: 12px;">
+                <td width="33%" style="text-align:left; padding-top:10px; font-size: 10px;">
                     <b>{{ organization.trade_name }}</b><br>
                     {% if organization.get_first_address %} {{ organization.get_first_address|safe }} {% endif %}<br>
                     {% if organization.phones.all %} {{ organization.phones.all|join:", "}} {% endif %}<br>
                 </td>
-                <td width="33%" style="text-align:right;font-size: 12px;">
+                <td width="33%" style="text-align:left; padding-top:10px; font-size: 10px;">
                     <b>Recibo do cliente</b><br>
                     {% trans "generated at" %} {% now "d/m/Y H:i" %} hs<br>
                     {% trans "by " %} {{ user.get_profile.person.name }}<br>
@@ -103,16 +108,22 @@
 
         <table>
             <tr>
-                <td>
+                <td style="text-align:center;">
                     <h1>R E C I B O</h1>
                 </td>
             </tr>
+            <tr>
+                <td style="text-align:center;">
+                </td>
+            </tr>
         </table>
-        <br />
 
         <table>
             <tr>
-                <td width="40%">
+                <td width="50%">
+                    <h2>Cliente</h2>
+                    {{ occurrence.event.referral.client.all.0.person.name }}
+
                     <h2>Profissional</h2>
                     {% if occurrence.event.referral.professional.all %}
                         {% for p in occurrence.event.referral.professional.all %}
@@ -122,21 +133,13 @@
                     {% endif %}
                 </td>
 
-                <td width="40%">
+                <td width="50%">
                     <h2>Servi&ccedil;o</h2>
                     {{ occurrence.event.referral.service.name }}
-                </td>
 
-                <td width="20%">
                     <h2>Valor</h2>
                     {% for x in occurrence.receive_set.all %}
-
-                        Forma de pagamento: {% for p in x.get_display_payment_way_name_ %}{{ p }}<br /><br />{% endfor %}
-                        Conv&ecirc;nio: {{ x.get_covenant_charge_display }}<br /><br />
-                        Situa&ccedil;&atilde;o: {{ x.get_status_display }}<br /><br />
-                        Valor: {{ x.price }}<br />
-                        Desconto: {{ x.off }}<br />
-                        Total: {{ x.total }}<br />
+                        Total: {{ x.total }}
                     {% endfor %}
                 </td>
             </tr>
@@ -144,17 +147,23 @@
 
 
         <!-- signature -->
-        <h1>Assinatura dos respons&aacute;veis</h1>
+        <h1 style="text-align:center;">Assinatura do respons&aacute;vel</h1>
         {% if occurrence.event.referral.professional.all.0 %}
             <table class="signature">
                 <tr>
                     {% for p in occurrence.event.referral.professional.all %}
-                    <td>____________________________</td>
-                    {% endfor %}
-                </tr>
-                <tr>
-                    {% for p in occurrence.event.referral.professional.all %}
-                    <td>{{ p.person.name }} {% if p.professionalIdentification.registerNumber %}{{ p.professionalIdentification.profession.symbol }} {{ p.professionalIdentification.registerNumber }} <br />{{ organization.trade_name }}{% endif %}</td>
+                        <td>{{ p.person.name }}
+                            {% if p.professionalIdentification.registerNumber %}
+                                - {{ p.professionalIdentification.profession.symbol }} {{ p.professionalIdentification.registerNumber }}
+                            {% endif %}
+
+                            {% for d in p.person.document.all %}
+                                {% ifequal d.typedocument CPF %}
+                                    - {{ d.typeDocument }} {{ d.document }}
+                                {% endifequal %}
+                            {% endfor %}
+                            <br />{{ organization.trade_name }}
+                        </td>
                     {% endfor %}
                 </tr>
             </table>

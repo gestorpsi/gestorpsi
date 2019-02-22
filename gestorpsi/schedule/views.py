@@ -1183,5 +1183,5 @@ def occurrence_print_receipt(request, event_id=None):
         }
 
     # pdf output format
-    #return render_to_response('client/client_occurrence_print_receipt.html', dict, context_instance=RequestContext(request))
+    # return render_to_response('client/client_occurrence_print_receipt.html', dict, context_instance=RequestContext(request))
     return write_pdf('client/client_occurrence_print_receipt.html', dict, '%s.pdf' % slugify(u"%s" % occurrence.event.referral.client.all()[0].person.name))

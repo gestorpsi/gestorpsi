@@ -151,8 +151,12 @@
         {% if occurrence.event.referral.professional.all.0 %}
             <table class="signature">
                 <tr>
+                    <td style="width:50%">
+                        ______________________<br />Assinatura
+                    </td>
                     {% for p in occurrence.event.referral.professional.all %}
-                        <td>{{ p.person.name }}
+                        <td style="width:50%">
+                            {{ p.person.name }}
                             {% if p.professionalIdentification.registerNumber %}
                                 - {{ p.professionalIdentification.profession.symbol }} {{ p.professionalIdentification.registerNumber }}
                             {% endif %}

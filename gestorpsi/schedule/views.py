@@ -1146,42 +1146,14 @@ def schedule_settings(request):
 
 
 def occurrence_print_receipt(request, event_id=None):
-    #object = get_object_or_404( Client, pk=object_id, person__organization=request.user.get_profile().org_active )
     occurrence = get_object_or_404(ScheduleOccurrence, pk=event_id, event__referral__service__organization=request.user.get_profile().org_active)
-
-    #referral = object.referral_set.filter(pk__in=request.POST.getlist('referral'))
-    #print_schedule = None if not request.POST.get('schedule') else True
-    #print_demographic = None if not request.POST.get('demographic') else True
-    #print_ehr = None if not request.POST.get('ehr') else True
-    #signed_professional_responsible = None if not request.POST.get('signed_professional_responsible') else True
-    #signed_professionals = None if not request.POST.get('signed_professionals') else True
-    #signed_organization_reponsibles = None if not request.POST.get('signed_organization_reponsibles') else True
-
-    #company_related_clients = []
-    #if object.is_company():
-        #company_related_clients = CompanyClient.objects.filter(company__person__client = object, company__person__organization=request.user.get_profile().org_active)
 
     dict = {
         'occurrence': occurrence,
         'organization': occurrence.event.referral.organization,
         'user': request.user, 
-        #'MEDIA_URL': MEDIA_URL if request.POST.get('output') == 'html' else MEDIA_ROOT.replace('\\','/') + '/', 
         'MEDIA_URL': MEDIA_ROOT,
-        #'print_schedule': print_schedule,
-        #'print_demographic': print_demographic,
-        #'signed_professional_responsible': signed_professional_responsible,
-        #'signed_professionals': signed_professionals,
-        #'signed_organization_reponsibles': signed_organization_reponsibles,
-        #'print_ehr': print_ehr,
-        #'pagesize' : 'A4',
-        #'object': object, 
-        #'org_active': request.user.get_profile().org_active, 
-        #'DEBUG': DEBUG, 
-        #'company_related_clients': company_related_clients,
-        #'have_ehr_read_perms': have_ehr_read_perms,
-        #'all_payments': request.POST.get('all_payments'),
         }
 
     # pdf output format
-    # return render_to_response('client/client_occurrence_print_receipt.html', dict, context_instance=RequestContext(request))
     return write_pdf('client/client_occurrence_print_receipt.html', dict, '%s.pdf' % slugify(u"%s" % occurrence.event.referral.client.all()[0].person.name))

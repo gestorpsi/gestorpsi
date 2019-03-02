@@ -21,6 +21,7 @@
 
             <tr class="legend">
                 <th>Cliente</th>
+                <th>Profissional</th>
                 <th>Situa&ccedil;&atilde;o</th>
                 <th>Inscri&ccedil;&atilde;o</th>
                 <th>Anexo</th>
@@ -40,6 +41,7 @@
             {% for x in list_client %}
                 <tr class="{% cycle 'odd' 'even' %}">
                     <td style="text-align:center;"><a href="{% url client-home x.0.id %}" class="showdialog">{{ x.0 }}</a></td>
+                    <td style="text-align:center;">{{ x.1.professional.all.0 }}</a></td>
                     <td style="text-align:center;">{{ x.10 }}</td>
                     <td style="text-align:center;"><a href="{% url client-referral-home x.0.id x.1.id %}">{{ x.1 }}</a></td>
                     <td style="text-align:center;">{{ x.9 }}</td>
@@ -48,12 +50,6 @@
                     <td style="text-align:center;">{{ x.8 }}</td>
                     <td style="text-align:center;">{{ x.5 }}</td>
                     <td style="text-align:center;">{{ x.7 }}</td>
-
-                    <!--
-                    <td style="text-align:center;">{{ x.3 }}</td>
-                    <td style="text-align:center;">{{ x.4 }}</td>
-                    -->
-
                 </tr>
             {% endfor %}
 

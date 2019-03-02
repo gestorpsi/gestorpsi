@@ -704,7 +704,6 @@ class Report(models.Model):
                 8 attach, yes or no
                 9 charge or discharge of service
             """
-
             """
                 filters of referral
                 confirmed occurence filter
@@ -714,7 +713,8 @@ class Report(models.Model):
             # date
             start = datetime.strptime(date_start, '%d/%m/%Y')
             end = datetime.strptime(date_end, '%d/%m/%Y')
-            ref_list = Referral.objects.filter(organization=organization, date__range=(start, end), occurrence__scheduleoccurrence__isnull=False).order_by('client__person__name').distinct()
+            #ref_list = Referral.objects.filter(organization=organization, date__range=(start, end), occurrence__scheduleoccurrence__isnull=False).order_by('client__person__name').distinct()
+            ref_list = Referral.objects.filter(organization=organization, date__range=(start, end)).order_by('client__person__name').distinct()
 
             show_filters[0] = date_start
             show_filters[1] = date_end

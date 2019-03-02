@@ -170,9 +170,10 @@ GNU General Public License for more details.
                 <tbody>
 
                     <tr class="legend">
-                        <th style="width=25%">Cliente</th>
+                        <th style="width=auto">Cliente</th>
+                        <th style="width=auto">Profissional</th>
                         <th>Situa&ccedil;&atilde;o</th>
-                        <th style="width=25%">Inscri&ccedil;&atilde;o</th>
+                        <th style="width=auto">Inscri&ccedil;&atilde;o</th>
                         <th>Anexo</th>
                         <th>Total de eventos</th>
                         <th>N&atilde;o confirmado</th>
@@ -184,6 +185,7 @@ GNU General Public License for more details.
                     {% for x in list_client %}
                         <tr class="{% cycle 'odd' 'even' %}">
                             <td style="text-align:center;"><a href="{% url client-home x.0.id %}" class="showdialog">{{ x.0 }}</a></td>
+                            <td style="text-align:center;">{{ x.1.professional.all.0 }}</a></td>
                             <td style="text-align:center;">{{ x.10 }}</td>
                             <td style="text-align:center;"><a href="{% url client-referral-home x.0.id x.1.id %}">{{ x.1 }}</a></td>
                             <td style="text-align:center;">{{ x.9 }}</td>

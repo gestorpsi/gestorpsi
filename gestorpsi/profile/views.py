@@ -55,6 +55,7 @@ def form(request):
     emails    = object.person.emails.all()
     websites  = object.person.sites.all()
     ims       = object.person.instantMessengers.all()
+    notify    = object.person.notify.get(org_id=request.user.profile.org_active.id)
 
     return render_to_response('profile/profile_person.html', locals(), context_instance=RequestContext(request))
 

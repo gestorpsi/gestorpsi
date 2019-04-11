@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (C) 2008 GestorPsi
+    Copyright (C) 2008 GestorPsi
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 """
 
 from django.http import Http404, HttpResponseRedirect
@@ -55,13 +55,16 @@ def form(request):
     emails    = object.person.emails.all()
     websites  = object.person.sites.all()
     ims       = object.person.instantMessengers.all()
-    notify    = object.person.notify.get(org_id=request.user.profile.org_active.id)
+
+    if object.person.notify.filter(org_id=request.user.profile.org_active.id):
+        notify = object.person.notify.get(org_id=request.user.profile.org_active.id)
 
     return render_to_response('profile/profile_person.html', locals(), context_instance=RequestContext(request))
 
 
 def form_careprofessional(request):
     object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
+
     workplaces = object.professionalProfile.workplace.all()
 
     return render_to_response('profile/profile_careprofessional.html', {
@@ -91,13 +94,17 @@ def save(request):
 
 def save_careprofessional(request):
     object = get_object_or_404(CareProfessional, pk=request.user.get_profile().person.careprofessional.id)
-    object = save_careprof(request, object.id, False)
+
+    if object.is_student:
+        object = save_careprof(request, object.id, False, True)
+    else:
+        object = save_careprof(request, object.id, False, False)
+
     messages.success(request, _('Professional profile saved successfully'))
     return HttpResponseRedirect('/profile/careprofessional/')
 
 
 def change_pass(request):
-
     tab = 'changepass'
 
     if request.user.get_profile().person.is_careprofessional:

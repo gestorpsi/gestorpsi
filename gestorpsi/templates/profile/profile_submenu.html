@@ -3,7 +3,7 @@
 <ul>
     <li><a class="first {% ifequal tab 'profile' %}active{% endifequal %}" href="/profile/">{% trans "Personal Profile" %}</a></li>
 
-    {% if object.person.is_careprofessional %}
+    {% if object.person.is_careprofessional or object.person.is_student %}
         <li><a class="{% ifequal tab 'careprof' %}active{% endifequal %}" href="/profile/careprofessional/">{% trans "Professional Profile" %}</a></li>
     {% endif %}
 

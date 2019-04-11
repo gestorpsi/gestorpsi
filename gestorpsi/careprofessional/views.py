@@ -16,10 +16,11 @@ GNU General Public License for more details.
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils import simplejson
 from django.utils.translation import ugettext as _
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from gestorpsi.person.models import Person, MaritalStatus
 from gestorpsi.person.views import person_json_list, person_save
 from gestorpsi.careprofessional.models import ProfessionalProfile, ProfessionalIdentification, CareProfessional, Profession
@@ -143,8 +144,8 @@ def form(request, object_id=None, template_name='careprofessional/careprofession
                               )
 
 
-@permission_required_with_403('careprofessional.careprofessional_write')
-def save_careprof(request, object_id, save_person, is_student=False):
+@login_required
+def save_careprof(request, object_id, save_person=False, is_student=False):
     """
     This view function returns the informations about CareProfessional 
     @param request: this is a request sent by the browser.
@@ -152,6 +153,8 @@ def save_careprof(request, object_id, save_person, is_student=False):
     @param object: it is the tyoe of CareProfessional that must be filled.
     @type object: an instance of the built-in type C{CareProfessional}.            
     """
+    if not request.user.has_perm('careprofessional.careprofessional_write') and not request.user.has_perm('careprofessional.change_studentprofile'):
+        raise Http404
 
     if object_id:
         object = get_object_or_404(CareProfessional, pk=object_id, person__organization=request.user.get_profile().org_active)
@@ -184,7 +187,6 @@ def save_careprof(request, object_id, save_person, is_student=False):
     for x in request.POST.getlist('professional_service'):
         object.prof_services.add(x) # no problem to replace
 
-
     profile = get_object_or_None(ProfessionalProfile, pk=object.professionalProfile_id) or ProfessionalProfile()
     profile.initialProfessionalActivities = request.POST.get('professional_initialActivitiesDate')
     profile.save()
@@ -196,22 +198,20 @@ def save_careprof(request, object_id, save_person, is_student=False):
     for x in request.POST.getlist('professional_workplace'):
         profile.workplace.add( Place.objects.get( pk=x, organization=request.user.get_profile().org_active ) )
 
-    if not is_student:
+    if request.POST.get('professional_registerNumber') or request.POST.get('professional_area'):
+        if not object.professionalIdentification:
+            identification = ProfessionalIdentification()
+        else:
+            identification = object.professionalIdentification
 
-        if request.POST.get('professional_registerNumber') or request.POST.get('professional_area'):
-            if not object.professionalIdentification:
-                identification = ProfessionalIdentification()
-            else:
-                identification = object.professionalIdentification
+        if request.POST.get('professional_registerNumber'):
+            identification.registerNumber = request.POST.get('professional_registerNumber')
 
-            if request.POST.get('professional_registerNumber'):
-                identification.registerNumber = request.POST.get('professional_registerNumber')
+        if request.POST.get('professional_area'):
+            identification.profession = get_object_or_None(Profession, id=request.POST.get('professional_area'))
 
-            if request.POST.get('professional_area'):
-                identification.profession = get_object_or_None(Profession, id=request.POST.get('professional_area'))
-
-            identification.save()
-            object.professionalIdentification = identification
+        identification.save()
+        object.professionalIdentification = identification
 
     object.save()
     return object, list_to_remove

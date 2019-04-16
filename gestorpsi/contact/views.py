@@ -14,7 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.utils import simplejson
+from django.utils import simplejson, html
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import RequestContext
@@ -332,6 +332,7 @@ def save_mini(request):
             obj.contact_owner = user.get_profile().person
             obj.save()
             r = u"%s|%s|%s" % (False, obj.id, obj.name)
+            r = html.escape(r)
 
     return HttpResponse(r)
 

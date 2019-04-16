@@ -24,6 +24,7 @@ from django.utils.translation import ugettext as _
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import slugify
 from django.utils import simplejson
+from django.utils.html import escape
 from django.db.models import Q
 
 from gestorpsi.admission.models import AdmissionReferral
@@ -184,7 +185,7 @@ def report_save(request, form_class=None, view=None, template='report/report_sav
 
         if save_form.is_valid():
             data = save_form.save(request.user, request.user.get_profile().org_active)
-            return HttpResponse(data.label)
+            return HttpResponse(escape(data.label))
         else:
             raise Exception(_('Error to save register'))
 

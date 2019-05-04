@@ -5,6 +5,6 @@ WORKDIR /gestorpsi
 ADD requirements.txt /gestorpsi/
 ENV LANG C
 RUN pip install -r requirements.txt
-ADD gestorpsi/ /gestorpsi/
 COPY ./docker/settings.py /gestorpsi/
 COPY ./manage.py /
+ADD gestorpsi/ /gestorpsi/

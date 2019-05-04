@@ -53,9 +53,13 @@ Todo
 Quick Install (with docker)
 
 ------------
-Just run:
 
-> $ docker-compose up
+> git clone https://github.com/fabioam/gestorpsi.git gestorpsi.git
+> cd gestorpsi.git
+> cp docker/settings.py gestorpsi/settings.py
+> git checkout feature/docker
+> docker-compose build --no-cache
+> docker-compose up
 
 Then go to http://127.0.0.1:8000 in your browser
 

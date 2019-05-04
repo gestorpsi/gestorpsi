@@ -23,6 +23,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from gestorpsi.person.models import Person
 from gestorpsi.util.uuid_field import UuidField
+from abc import ABCMeta, abstractproperty
 
 FAMILY_RELATION = ( 
     (1, _('Parents')),
@@ -92,6 +93,76 @@ class PersonLink(models.Model):
     def __unicode__(self):
         return u"%s" % self.person.name
 
+class SearchClients(object):
+    __metaclass__ = ABCMeta
+
+    @abstractproperty
+    def search(self, organization, query_pk_in=None):
+        pass
+
+class ClientSearchManager(object):
+    def __init__(self, client_type):
+        self.client_type = client_type
+
+    def clients(self):
+        return self.client_type.search
+
+class GenderMale(SearchClients):
+     def search(self, organization, query_pk_in=None):
+        male = super(ClientManager, self).get_query_set().filter(person__active=True, person__gender='1', person__organization=organization)
+        if query_pk_in:
+            male = male.filter(pk__in=query_pk_in)
+        return male
+
+class GenderFemale(SearchClients):
+    def search(self, organization, query_pk_in=None):
+        female = super(ClientManager, self).get_query_set().filter(person__active=True, person__gender='2', person__organization=organization)
+        if query_pk_in:
+            female = female.filter(pk__in=query_pk_in)
+        return female
+
+class GenderUnknown(SearchClients):
+    def search(self, organization, query_pk_in=None):
+        unkown_gender = super(ClientManager, self).get_query_set().filter(person__active=True, person__organization=organization).exclude(person__gender='1').exclude(person__gender='2')
+        if query_pk_in:
+            unkown_gender = unkown_gender.filter(pk__in=query_pk_in)
+        return unkown_gender
+
+class AgeChildren(SearchClients):
+    def search(self, organization, query_pk_in=None):
+        children = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__gt = datetime.now()-relativedelta(years=13), person__organization=organization)
+        if query_pk_in:
+            children = children.filter(pk__in=query_pk_in)
+        return children
+
+class AgeTeen(SearchClients):
+    def search(self, organization, query_pk_in=None):
+        teen = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=13), person__birthDate__gt = datetime.now()-relativedelta(years=18), person__organization=organization)
+        if query_pk_in:
+            teen = teen.filter(pk__in=query_pk_in)
+        return teen
+
+class AgeAdult(SearchClients):
+    def search(self, organization, query_pk_in=None):
+        adult = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=18), person__birthDate__gt = datetime.now()-relativedelta(years=66), person__organization=organization)
+        if query_pk_in:
+            adult = adult.filter(pk__in=query_pk_in)
+        return adult
+
+class AgeElderly(SearchClients):
+    def search(self, organization, query_pk_in=None):
+        elderly = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=66), person__organization=organization)
+        if query_pk_in:
+            elderly = elderly.filter(pk__in=query_pk_in)
+        return elderly
+
+class AgeUnknown(SearchClients):
+    def search(self, organization, query_pk_in=None):
+        unknown = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__isnull=True, person__organization=organization)
+        if query_pk_in:
+            unknown = unknown.filter(pk__in=query_pk_in)
+        return unknown
+
 class ClientManager(models.Manager):
     def active(self, organization):
         return super(Client, self).get_query_set().filter(active=True, person__organization = organization).order_by('person__name')
@@ -139,54 +210,6 @@ class ClientManager(models.Manager):
 
     def Companies(self, organization, query_pk_in=None):
         q = super(ClientManager, self).get_query_set().filter(person__active=True, person__company__isnull=False, person__organization=organization)
-        if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
-
-    def GenderMale(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__gender='1', person__organization=organization)
-        if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
-    
-    def GenderFemale(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__gender='2', person__organization=organization)
-        if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
-
-    def GenderUnknown(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__organization=organization).exclude(person__gender='1').exclude(person__gender='2')
-        if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
-
-    def AgeChildren(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__gt = datetime.now()-relativedelta(years=13), person__organization=organization)
-        if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
-
-    def AgeTeen(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=13), person__birthDate__gt = datetime.now()-relativedelta(years=18), person__organization=organization)
-        if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
-
-    def AgeAdult(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=18), person__birthDate__gt = datetime.now()-relativedelta(years=66), person__organization=organization)
-        if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
-
-    def AgeElderly(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=66), person__organization=organization)
-        if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
-
-    def AgeUnknown(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__isnull=True, person__organization=organization)
         if query_pk_in:
             q = q.filter(pk__in=query_pk_in)
         return q

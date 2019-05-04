@@ -1499,10 +1499,14 @@ class ReportReferralManager(models.Manager):
 class ReportDemographicManager(models.Manager):
     def gender(self, organization, client_pk_in=None):
         data = []
+        
+        male_client = GenderMale(organization, client_pk_in)
+        female_client = GenderFemale(organization, client_pk_in)
+        unknown_client = GenderUnknown(organization, client_pk_in)
 
-        male = Client.objects.GenderMale(organization, client_pk_in).count()
-        female = Client.objects.GenderFemale(organization, client_pk_in).count()
-        unknown = Client.objects.GenderUnknown(organization, client_pk_in).count()
+        male = Client.objects.ClientSearchManager(male_client).count()
+        female = Client.objects.ClientSearchManager(female_client).count()
+        unknown = Client.objects.ClientSearchManager(unknown_client).count()
         total = len(client_pk_in)
 
         data.append({'name': _('Male'), 'total': male, 'percentage': percentage(male, total)})
@@ -1514,11 +1518,17 @@ class ReportDemographicManager(models.Manager):
     def age(self, organization, client_pk_in=None):
         data = []
 
-        children = Client.objects.AgeChildren(organization, client_pk_in).count()
-        teen = Client.objects.AgeTeen(organization, client_pk_in).count()
-        adult = Client.objects.AgeAdult(organization, client_pk_in).count()
-        elderly = Client.objects.AgeElderly(organization, client_pk_in).count()
-        unknown = Client.objects.AgeUnknown(organization, client_pk_in).count()
+        children_client = AgeChildren(organization, client_pk_in)
+        teen_client = AgeTeen(organization, client_pk_in)
+        adult_client = AgeAdult(organization, client_pk_in)
+        elderly_client = AgeElderly(organization, client_pk_in)
+        unknown_client = AgeUnknown(organization, client_pk_in)
+
+        children = Client.objects.ClientSearchManager(children_client).count()
+        teen = Client.objects.ClientSearchManager(teen_client).count()
+        adult = Client.objects.ClientSearchManager(adult_client).count()
+        elderly = Client.objects.ClientSearchManager(elderly_client).count()
+        unknown = Client.objects.ClientSearchManager(unknown_client).count()
         total = len(client_pk_in)
 
         data.append({'name': _('Children'), 'total': children, 'percentage': percentage(children, total)})

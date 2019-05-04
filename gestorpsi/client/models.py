@@ -132,64 +132,64 @@ class ClientManager(models.Manager):
         return object_list
 
     def Individuals(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__company__isnull=True, person__organization=organization)
+        individuals = super(ClientManager, self).get_query_set().filter(person__active=True, person__company__isnull=True, person__organization=organization)
         if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
+            individuals = individuals.filter(pk__in=query_pk_in)
+        return individuals
 
     def Companies(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__company__isnull=False, person__organization=organization)
+        companies = super(ClientManager, self).get_query_set().filter(person__active=True, person__company__isnull=False, person__organization=organization)
         if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
+            companies = companies.filter(pk__in=query_pk_in)
+        return companies
 
     def GenderMale(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__gender='1', person__organization=organization)
+        male_clients = super(ClientManager, self).get_query_set().filter(person__active=True, person__gender='1', person__organization=organization)
         if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
+            male_clients = male_clients.filter(pk__in=query_pk_in)
+        return male_clients
     
     def GenderFemale(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__gender='2', person__organization=organization)
+        female_clients = super(ClientManager, self).get_query_set().filter(person__active=True, person__gender='2', person__organization=organization)
         if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
+            female_clients = female_clients.filter(pk__in=query_pk_in)
+        return female_clients
 
     def GenderUnknown(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__organization=organization).exclude(person__gender='1').exclude(person__gender='2')
+        unknown_gender_clients = super(ClientManager, self).get_query_set().filter(person__active=True, person__organization=organization).exclude(person__gender='1').exclude(person__gender='2')
         if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
+            unknown_gender_clients = unknown_gender_clients.filter(pk__in=query_pk_in)
+        return unknown_gender_clients
 
     def AgeChildren(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__gt = datetime.now()-relativedelta(years=13), person__organization=organization)
+        children = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__gt = datetime.now()-relativedelta(years=13), person__organization=organization)
         if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
+            children = children.filter(pk__in=query_pk_in)
+        return children
 
     def AgeTeen(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=13), person__birthDate__gt = datetime.now()-relativedelta(years=18), person__organization=organization)
+        teen = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=13), person__birthDate__gt = datetime.now()-relativedelta(years=18), person__organization=organization)
         if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
+            teen = teen.filter(pk__in=query_pk_in)
+        return teen
 
     def AgeAdult(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=18), person__birthDate__gt = datetime.now()-relativedelta(years=66), person__organization=organization)
+        adult = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=18), person__birthDate__gt = datetime.now()-relativedelta(years=66), person__organization=organization)
         if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
+            adult = adult.filter(pk__in=query_pk_in)
+        return adult
 
     def AgeElderly(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=66), person__organization=organization)
+        elderly = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__lte = datetime.now()-relativedelta(years=66), person__organization=organization)
         if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
+            elderly = elderly.filter(pk__in=query_pk_in)
+        return elderly
 
     def AgeUnknown(self, organization, query_pk_in=None):
-        q = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__isnull=True, person__organization=organization)
+        unknown = super(ClientManager, self).get_query_set().filter(person__active=True, person__birthDate__isnull=True, person__organization=organization)
         if query_pk_in:
-            q = q.filter(pk__in=query_pk_in)
-        return q
+            unknown = unknown.filter(pk__in=query_pk_in)
+        return unknown
 
 class Client(models.Model):
     id = UuidField(primary_key=True)
@@ -309,8 +309,8 @@ class Client(models.Model):
     
     def list_item_extra_links(self):
         html = ''
-        for r in self.referrals_charged():
-            html += u"<a title='%s' href='/client/%s/referral/%s/' style='color:#%s;'><div class='service_name_html' style='background-color:#%s;'>&nbsp;</div></a>" % (r, self.pk, r.pk, r.service.font_color, r.service.color)
+        for client_referral in self.referrals_charged():
+            html += u"<a title='%s' href='/client/%s/referral/%s/' style='color:#%s;'><div class='service_name_html' style='background-color:#%s;'>&nbsp;</div></a>" % (client_referral, self.pk, client_referral.pk, client_referral.service.font_color, client_referral.service.color)
         
         html += '<a class="admit" href="/admission/%s/" title="%s"><img src="/media/img/22/ico_reg.png"></a>' % (self.pk, _('Admission Details'))
 

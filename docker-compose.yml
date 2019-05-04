@@ -1,0 +1,32 @@
+version: '2'
+services:
+  db:
+    build: ./docker/mysql/
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_DATABASE: 'gestorpsi'
+      MYSQL_ROOT_HOST: "%"
+    networks:
+      vpcbr:
+        ipv4_address: 172.24.0.2
+  web:
+    build: .
+    command: /manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./gestorpsi:/gestorpsi
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      vpcbr:
+        ipv4_address: 172.24.0.3
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.24.0.0/16
+         gateway: 172.24.0.1

@@ -50,6 +50,66 @@ Todo
 - Reports
 
 
+Quick Install (with docker)
+
+------------
+Just run:
+
+> $ docker-compose up
+
+Then go to http://127.0.0.1:8000 in your browser
+
+Note:
+You must to have docker-compose installed before.
+For more information, please visit https://docs.docker.com/compose/install/
+
+
+Manual installation
+------------
+
+After downloaded and extracted GestorPsi source files, installing
+GestorPsi is done by the following:
+
+1) export PYTHONPATH environment variable to your django project
+dir.
+Ex.: if your sources was extracted to /home/foo/gestorpsi
+$ export PYTHONPATH="/home/foo/gestorpsi"
+
+2) Change to project Directory
+$ cd /home/foo/gestorpsi
+
+3) Create database tables
+$ python manage.py syncdb
+
+4) Install default groups and users data
+$ python install.py
+
+5) Open settings.py and edit the follow config:
+  -> DATABASE_NAME
+        -> DATABASE_USER
+        -> DATABASE_PASSWORD
+        -> DATABASE_HOST
+        -> DEBUG (set to False)
+        -> MEDIA_URL
+        -> MEDIA_ROOT
+        -> SECRET_KEY
+        -> TEMPLATE_DIRS
+        -> EMAIL_HOST
+        -> EMAIL_HOST_USER
+        -> EMAIL_HOST_PASSWORD 
+
+6) Compile language messages (optional)
+$ django-admin.py compilemessages -a
+
+7) Run development server
+$ python manage.py runserver
+
+8) Open your browser, and go to http://127.0.0.1:8000/
+
+If there are any errors during installing, check your build environment
+and try to find the error, otherwise contact one of the authors.
+
+
 Requirements
 ------------
 Before install GestorPsi, you need to get and install the follows
@@ -105,51 +165,6 @@ Python packages:
 
 - Firefox Web Browser (>=3.0.5)
   maintainer: http://www.mozilla.com/firefox/
-
-
-Installation
-------------
-After downloaded and extracted GestorPsi source files, installing
-GestorPsi is done by the following:
-
-1) export PYTHONPATH environment variable to your django project
-dir.
-Ex.: if your sources was extracted to /home/foo/gestorpsi
-$ export PYTHONPATH="/home/foo/gestorpsi"
-
-2) Change to project Directory
-$ cd /home/foo/gestorpsi
-
-3) Create database tables
-$ python manage.py syncdb
-
-4) Install default groups and users data
-$ python install.py
-
-5) Open settings.py and edit the follow config:
-  -> DATABASE_NAME
-        -> DATABASE_USER
-        -> DATABASE_PASSWORD
-        -> DATABASE_HOST
-        -> DEBUG (set to False)
-        -> MEDIA_URL
-        -> MEDIA_ROOT
-        -> SECRET_KEY
-        -> TEMPLATE_DIRS
-        -> EMAIL_HOST
-        -> EMAIL_HOST_USER
-        -> EMAIL_HOST_PASSWORD 
-
-6) Compile language messages (optional)
-$ django-admin.py compilemessages -a
-
-7) Run development server
-$ python manage.py runserver
-
-8) Open your browser, and go to http://127.0.0.1:8000/
-
-If there are any errors during installing, check your build environment
-and try to find the error, otherwise contact one of the authors.
 
 
 License

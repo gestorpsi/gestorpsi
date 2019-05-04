@@ -52,7 +52,10 @@ from gestorpsi.organization.models import TIME_SLOT_SCHEDULE, DEFAULT_SCHEDULE_V
 from gestorpsi.covenant.models import Covenant
 
 import locale
-locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+try:
+    locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+except:
+    pass
 
 
 def schedule_notify_email(org, occurrence, occurrence_confirmation):

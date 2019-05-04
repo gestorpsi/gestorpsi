@@ -13,7 +13,6 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
-
 # ***********************************************************************
 # FOR SOME REASON DJANGO IS NOT LOADING TESTS FROM INSIDE TEST FOLDER,
 # THIS FILE IS A WORKAROUND TO MAINTAIN AN ORGANIZED STRUCTURE FOR TESTS

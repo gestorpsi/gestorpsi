@@ -20,59 +20,64 @@ from gestorpsi.place.models import PlaceType, Place
 from gestorpsi.address.models import City, State, Country, AddressType
 import unittest
 
-class PlaceTest(unittest.TestCase):
+from django.test import TestCase, RequestFactory
+from django.test import Client as Cl
+from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
+from gestorpsi.util.test_utils import user_stub, setup_required_data, place_stub
+
+class PlaceTests(TestCase):
     def setUp(self):
-        self.place= Place(label='testing place', visible= True )
-        place_type= PlaceType(description= 'a place type')
-        place_type.save()
-        self.place.place_type= place_type
-        phone_type= PhoneType(description= 'phone type test')
-        phone= Phone(area= '23', phoneNumber= '45679078', ext= '4444', phoneType= phone_type)
-        phone.content_object = self.place
+        self.factory = RequestFactory()
+        # OBS: Using cl instead of client to evade conflicts with Client class
+        self.client = Cl()
+        setup_required_data()
 
-        addressType=AddressType(description='Home')
-        addressType.save()
-        address = Address()
-        address.addressPrefix = 'Rua'
-        address.addressLine1 = 'Rui Barbosa, 1234'
-        address.addressLine2 = 'Anexo II - Sala 4'
-        address.neighborhood = 'Centro'
-        address.zipCode = '12345-123'
-        address.addressType = AddressType.objects.get(pk=1)
+    def test_show_list_of_places(self):
+        self.client.post(reverse('registration-register'), user_stub())
+        res = self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
+        user = User.objects.get(username=user_stub()["username"])
+        user.is_superuser = True
+        user.save()
+        response= self.client.get('/place/')
+        self.assertEquals(200,response.status_code)
+        self.assertTemplateUsed(response, 'place/place_list.html')
 
-        country= Country( name= 'test', nationality= 'testing' )
-        country.save()
-        state= State(name= 'test', shortName= 't', country= country )
-        state.save()
-        city= City(name= 'test', state= state)
-        city.save()
+    def test_not_show_list_for_unlogged_user(self):
+        self.client.logout() # guarantee that the given user is signed out
+        response= self.client.get('/place/')
+        self.assertEquals(302,response.status_code)
 
-        address.city = city
-        address.content_object = self.place
+    def test_show_add_place(self):
+        self.client.post(reverse('registration-register'), user_stub())
+        res = self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
+        user = User.objects.get(username=user_stub()["username"])
+        user.is_superuser = True
+        user.save()
 
-        self.place.save()
+        old_place_count = Place.objects.count()
+        response= self.client.post('/place/save/', place_stub())
 
-    def testDefaultPlace(self):
-        #get all places stored in the database and put them in a list
-        #then compare the first (and probably only) stored-place with self.place 
-        self.assertEquals(  Place.objects.all()[0], self.place, 'place has not been appropriately saved' )
+        new_place = Place.objects.all()[0]
+        new_place_response =  self.client.get('/place/'+str(new_place.id)+'/')
+        self.assertEquals(200,new_place_response.status_code)
+        self.assertEquals(Place.objects.count(), old_place_count+1)
 
-class ViewPlaceTest( unittest.TestCase ):
-    urls = 'gestorpsi.place.urls'
-    
-    def setUp(self):
-        print 'setup'
-        
-    def testIndex(self):
-        #c= Client()
-        #print "%s" % c.post( '/index/', { 'joaoajoa': 2 } )
-        #self.assertEquals( 200, response.status_code )
-        pass
+    def test_not_show_form_for_unlogged_user(self):
+        self.client.logout() # guarantee that the given user is signed out
+        response= self.client.get('/place/add/')
+        self.assertEquals(302,response.status_code)
 
-    def tearDown(self):
-        print 'teardown'
-       
-def suite():
-    suite = unittest.TestLoader().loadTestsFromTestCase( PlaceTest )
-    suite.addTest( ViewPlaceTest('testIndex'))
-    return suite
+    def test_show_deactive_places(self):
+        self.client.post(reverse('registration-register'), user_stub())
+        res = self.client.login(username=user_stub()["username"], password=user_stub()["password1"])
+        user = User.objects.get(username=user_stub()["username"])
+        user.is_superuser = True
+        user.save()
+        response= self.client.get('/place/deactive/')
+        self.assertEquals(200,response.status_code)
+        self.assertTemplateUsed(response, 'place/place_list.html')
+
+    def test_not_show_deactive_places_for_unlogged_user(self):
+        self.client.logout() # guarantee that the given user is signed out
+        response= self.client.get('/place/deactive/')

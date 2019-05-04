@@ -74,6 +74,61 @@ def setup_required_client():
     client.is_active = False
     client.save()
 
+def setup_required_service():
+    service_type = ServiceType()
+    service_type.name="Tipo de Servico"
+    service_type.save()
+
+    area1 = Area()
+    area1.area_name = "area 1"
+    area1.save()
+
+    organization1 = Organization.objects.get(name=user_stub()["organization"])
+
+    service1 = Service()
+    service1.area = area1;
+    service1.name = "Servico 1"
+    service1.organization = organization1
+    service1.service_type = service_type
+    service1.save()
+
+    a = AdmissionChoice()
+    a.weight = 1
+    a.save()
+
+    u = User()
+    u.username = "lala12"
+    u.password = "1234512678"
+    u.is_superuser = True
+    u.save()
+
+    person = Person()
+    person.name = "nome12"
+    person.user = u
+    person.nickname = "apelido12"
+    person.save()
+    person.organization.add(organization1)
+    person.save()
+
+def setup_required_client():
+    organization1 = Organization.objects.get(name=user_stub()["organization"])
+
+    user = User.objects.create(username="user1", password="password")
+    user.save()
+
+    person = Person.objects.create(user=user)
+    person.name = "Pessoa"
+    person.nickname = "nickname"
+    person.organization.add(organization1)
+    person.save()
+
+    client = Client()
+    client.person = person
+    client.idRecord = 2
+    client.is_active = False
+    client.save()
+
+
 def setup_required_data():
     country = Country(name='test', nationality='testing')
     country.save()
@@ -133,7 +188,7 @@ def setup_required_data():
     address.city = city
     address.content_object = place
     place.save()
-    
+
     issuer = Issuer(description='SSP')
     issuer.save()
 
@@ -219,6 +274,17 @@ def client_stub():
         "comments": u'coments',
     }
 
+def place_stub():
+
+    place_type = PlaceType(description= 'descricao')
+    place_type.save()
+
+    return {
+        "label": u'predio',
+        "place_type": place_type.id,
+        "hour_start": 2,
+        "hour_end": 8,
+    }
 
 def change_client_stub():
 

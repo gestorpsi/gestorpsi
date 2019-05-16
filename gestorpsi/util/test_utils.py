@@ -132,6 +132,7 @@ def setup_required_data():
 
     address.city = city
     address.content_object = place
+
     place.save()
     
     issuer = Issuer(description='SSP')
@@ -166,7 +167,6 @@ def user_stub():
         "username": u'user15',
         "zipcode": u'12312-123',
     }
-
 
 def bad_user_stub():
     return {

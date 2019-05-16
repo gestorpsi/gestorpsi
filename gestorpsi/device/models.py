@@ -22,13 +22,13 @@ from gestorpsi.place.models import Place, Room
 from gestorpsi.careprofessional.models import Profession
 from gestorpsi.util.uuid_field import UuidField
 
-DURABILITY_TYPE= ( ('1',_('CONSUMABLE')), ('2', _('DURABLE')) )
+DURABILITY_TYPE = (('1', _('CONSUMABLE')), ('2', _('DURABLE')))
 """
 Devices are classified by their durability, thus this variable represents
 the two kinds of durability type that are used to classify them.
 """
 
-MOBILITY_TYPE= ( ( '1', _('FIX') ), ( '2', _('MOBILE') ) )
+MOBILITY_TYPE = (('1', _('FIX')), ('2', _('MOBILE')))
 """
 Similarly, devices are also classified by their mobility, thus this variable represents
 the two kinds of mobility type that are used to classify them.
@@ -37,62 +37,67 @@ the two kinds of mobility type that are used to classify them.
 class DeviceDetailsManager(models.Manager):
     def mobile(self):
         return super(DeviceDetailsManager, self).get_query_set().filter(mobility__exact='2')
-    
+
     def fix(self):
         return super(DeviceDetailsManager, self).get_query_set().filter(mobility__exact='1')
 
     def active(self, organization):
-        return super(DeviceDetailsManager, self).get_query_set().filter(active = True, device__organization = organization).order_by('model')
+        return super(DeviceDetailsManager, self).get_query_set().filter(
+            active=True,
+            device__organization=organization).order_by('model')
 
     def deactive(self, organization):
-        return super(DeviceDetailsManager, self).get_query_set().filter(active = False, device__organization = organization).order_by('model')
-        
+        return super(DeviceDetailsManager, self).get_query_set().filter(
+            active=False,
+            device__organization=organization).order_by('model')
+
 class Device(models.Model):
     """
-    The class C{Device} is used to represent devices in the context of the GestorPsi project. Using this class,
-    the user is able to query the quantity of some kind of device currently available as well as the number of existing
-    devices of the underlying type.
+    The class C{Device} is used to represent devices in the context of the GestorPsi project.
+    Using this class,the user is able to query the quantity of some kind of device currently
+    available as well as the number of existing devices of the underlying type.
     @version: 1.0
     """
     id = UuidField(primary_key=True)
-    description = models.CharField( max_length = 80 )
+    description = models.CharField(max_length=80)
     organization = models.ForeignKey(Organization, null=True)
 
     def get_all_device_details(self):
-        return DeviceDetails.objects.filter( device__id= self.id )
+        return DeviceDetails.objects.filter(device__id=self.id)
 
     def __unicode__(self):
-       return u"%s" % ( self.description )
+        return u"%s"%(self.description)
 
     def revision(self):
-        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
-   
-    class Meta:
-        ordering = ['description']
-        permissions = (
-            ("device_add", "Can add devices"),
-            ("device_change", "Can change devices"),
-            ("device_list", "Can list devices"),
-            ("device_write", "Can write devices"),
-        )
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest(
+            'revision__date_created').revision
 
-
+    class Meta():
+        def __init__(self):
+            ordering = ['description']
+            permissions = (
+                ("device_add", "Can add devices"),
+                ("device_change", "Can change devices"),
+                ("device_list", "Can list devices"),
+                ("device_write", "Can write devices"),
+            )
 
 class DeviceDetails(models.Model):
     """
-    Instances of this class holds details about devices. For example, brand, comments, and so forth.
+    Instances of this class holds details about devices. For example, brand,
+    comments, and so forth.
     @version: 1.0
     @see: Device
     """
     id = UuidField(primary_key=True)
-    brand = models.CharField( max_length=80 )
-    model = models.CharField( max_length=80 )
-    part_number = models.CharField( max_length=45 )
-    lendable = models.BooleanField( default=True )
-    comments = models.CharField( max_length=200 )
-    durability = models.CharField( max_length=1, choices=DURABILITY_TYPE )
+    brand = models.CharField(max_length=80)
+    model = models.CharField(max_length=80)
+    part_number = models.CharField(max_length=45)
+    lendable = models.BooleanField(default=True)
+    comments = models.CharField(max_length=200)
+    durability = models.CharField(max_length=1, choices=DURABILITY_TYPE)
     prof_restriction = models.ForeignKey(Profession, null=True)
-    mobility = models.CharField( max_length=1, choices=MOBILITY_TYPE )
+    mobility = models.CharField(max_length=1, choices=MOBILITY_TYPE)
     place = models.ForeignKey(Place, null=True)
     room = models.ForeignKey(Room, null=True)
     device = models.ForeignKey(Device)
@@ -100,18 +105,20 @@ class DeviceDetails(models.Model):
 
     objects = DeviceDetailsManager()
 
-    class Meta:
-        ordering = ['brand']
-        permissions = (
-            ("devicedetails_write", "Can write device details"),
-        )
+    class Meta():
+        def __init__(self):
+            ordering = ['brand']
+            permissions = (
+                ("devicedetails_write", "Can write device details"),
+            )
 
     def __unicode__(self):
-#      return u"%s - %s - %s" % (self.device.description, self.brand, self.model,)
-      return u"%s - %s - %s" % (self.model, self.brand, self.device.description,)
+        #return u"%s - %s - %s" % (self.device.description, self.brand, self.model,)
+        return u"%s - %s - %s" % (self.model, self.brand, self.device.description,)
 
     def revision(self):
-        return reversion.get_for_object(self).order_by('-revision__date_created').latest('revision__date_created').revision
+        return reversion.get_for_object(self).order_by('-revision__date_created').latest(
+            'revision__date_created').revision
 
 reversion.register(DeviceDetails, follow=['device'])
 reversion.register(Device)

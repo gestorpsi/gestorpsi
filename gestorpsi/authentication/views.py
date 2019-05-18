@@ -323,7 +323,7 @@ def register(request, success_url=None,
 
             create_professional_responsible(org, person)
             invoice = create_invoice(org) 
-            
+
             if (SEND_SIGNUP_MAIL):
                 send_signup_mail(org, user, request, invoice)
 

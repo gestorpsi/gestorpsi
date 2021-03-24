@@ -33,6 +33,6 @@ python-dateutil==1.5
 pytz==2013b
 raven==3.3.3
 reportlab==2.7
-rsa==3.1.1
+rsa==4.1
 six>=1.6.0
 wsgiref==0.1.2

@@ -11,7 +11,7 @@ django-extensions==1.1.1
 django-indexer==0.3.0
 django-notification==0.2
 django-paging==0.2.4
-django-registration==0.8
+django-registration==3.1.2
 django-threadlocals==0.8
 South==0.7.6
 django-reversion==1.7

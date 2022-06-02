@@ -21,7 +21,7 @@ https://github.com/dakrauth/django-swingtime/archive/v0.2.2.tar.gz
 django-templatetag-sugar==0.1
 eventlet==0.12.1
 greenlet==0.4.0
-html5lib==0.95
+html5lib==0.99999999
 kombu==2.5.10
 lockfile==0.9.1
 pisa==3.0.33
